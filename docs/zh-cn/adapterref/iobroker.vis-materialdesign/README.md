@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker VIS的材料设计小部件
-hash: itzmR337GeEOKnZgmnxGDNyDtAkP9llnB1FUlX/0asI=
+hash: RZC4Vqo/Q2PV3bS1R70YMGvpfv9L6aTmQ4g0UVw0eeg=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-toc中省略->
 
@@ -95,7 +95,8 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[编辑器设置]（＃editor-settings-11）
 -[数据-JSON结构]（＃data --- json结构）
 -[内部对象绑定]（＃internal-object-binding）
--[控制元素-自v0.5.0起**不推荐使用]（＃control-elements ---自v050起不推荐使用）
+-[HTML控件小部件]（＃html-control-widgets）
+-[控制元素-**自v0.5.0起不推荐使用**]（＃control-elements ---自v050起不推荐使用）
 -[响应式布局]（＃sensitive-layout）
 -[砌体视图]（＃masonry-views）
 -[编辑器设置]（＃editor-settings-12）
@@ -111,7 +112,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[脚本：ical转换]（＃script-ical-conversion）
 -[对话]（＃dialog）
 -[编辑器设置]（＃editor-settings-16）
--[HTML元素]（＃html-elements）
+-[HTML窗口小部件]（＃html-widgets）
 -[二手图书馆]（＃used-libraries）
 -[变更日志]（＃changelog）
 -[许可证]（＃license）
@@ -170,7 +171,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 在VIS编辑器中，您将为每个小部件找到一个按钮`use theme`。使用此按钮，您可以重置小部件以使用主题。这意味着如果您更改了颜色，字体或字体大小，则可以使用此按钮将其重置。
 
-借助此按钮，还可以从0.4.0之前的版本更新窗口小部件以使用主题。
+借助此按钮，还可以从0.4.0之前的版本更新您的小部件以使用主题。
 
 #####对非Material Design小部件使用绑定
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
@@ -209,7 +210,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>屏幕截图</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td>一些小部件支持<a href="https://materialdesignicons.com/" target="_blank">Material Design Icons</a>库。您可以从上方列表中弹出一个图标，或通过单击输入字段右侧的按钮来打开图像选择器。<br><br><b>图像颜色仅适用于材料设计图标，不适用于图像！</b></td></tr></tbody></table>
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-mdwIcon</td><td>图标</td><td>串</td><td></tr><tr><td>mdw-mdwIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>mdw-mdwIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr></tbody></table>
 
@@ -232,17 +233,17 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ＃＃ 纽扣
 #####按钮链接属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>link_default</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>buttonStyle</td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</tr><tr><td>href</td><td>链接</td><td>网址</td><td></tr><tr><td>openNewWindow</td><td>在新窗口中打开</td><td>布尔值</td><td>错误真正</tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td></tr><tr><td>textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>labelWidth</td><td>文字宽度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdwButtonPrimaryColor</td><td>原色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonSecondaryColor</td><td>二次色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonColorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconPosition</td><td>图像位置</td><td>串</td><td>左|对</tr><tr><td>iconHeight</td><td>影像高度</td><td>数</td><td></tr></tbody></table></details>
 
 #####按钮状态属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>state_default</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>buttonStyle</td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</tr><tr><td>值</td><td>值</td><td>串</td><td></tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td></tr><tr><td>textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>labelWidth</td><td>文字宽度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdwButtonPrimaryColor</td><td>原色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonSecondaryColor</td><td>二次色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonColorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconPosition</td><td>图像位置</td><td>串</td><td>左|对</tr><tr><td>iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table></details>
 
 #####按钮切换属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>toggle_default</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>buttonStyle</td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>toggleType</td><td>切换类型</td><td>串</td><td>布尔|值</tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误真正</tr><tr><td>valueOff</td><td>折价</td><td>串</td><td></tr><tr><td>valueOn</td><td>的价值</td><td>串</td><td></tr><tr><td>stateIfNotTrueValue</td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td></tr><tr><td>labelTrue</td><td>标签为真</td><td>串</td><td></tr><tr><td>labelColorFalse</td><td>标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> labelColorTrue</td><td>活动标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>labelWidth</td><td>文字宽度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdwButtonPrimaryColor</td><td>原色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonSecondaryColor</td><td>二次色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonColorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorBgTrue</td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> imageTrue</td><td>活动图像</td><td>串</td><td></tr><tr><td>imageTrueColor</td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconPosition</td><td>图像位置</td><td>串</td><td>左|对</tr><tr><td>iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table></details>
 
@@ -250,17 +251,17 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
 
 #####按钮垂直链接属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>link_vertical</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>buttonStyle</td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</tr><tr><td>href</td><td>链接</td><td>网址</td><td></tr><tr><td>openNewWindow</td><td>在新窗口中打开</td><td>布尔值</td><td>错误真正</tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td></tr><tr><td>textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>对准</td><td>对准</td><td>串</td><td>弹性启动|中心|柔性端</tr><tr><td>distanceBetweenTextAndImage</td><td>文字和图片之间的距离</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdwButtonPrimaryColor</td><td>原色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonSecondaryColor</td><td>二次色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonColorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconPosition</td><td>图像位置</td><td>串</td><td>顶部|底部</tr><tr><td>iconHeight</td><td>影像高度</td><td>数</td><td></tr></tbody></table></details>
 
 #####按钮垂直状态属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>state_vertical</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>buttonStyle</td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</tr><tr><td>值</td><td>值</td><td>串</td><td></tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td></tr><tr><td>textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>对准</td><td>对准</td><td>串</td><td>弹性启动|中心|柔性端</tr><tr><td>distanceBetweenTextAndImage</td><td>文字和图片之间的距离</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdwButtonPrimaryColor</td><td>原色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonSecondaryColor</td><td>二次色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonColorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconPosition</td><td>图像位置</td><td>串</td><td>顶部|底部</tr><tr><td>iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table></details>
 
 #####按钮垂直切换属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>toggle_vertical</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>buttonStyle</td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>toggleType</td><td>切换类型</td><td>串</td><td>布尔|值</tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误真正</tr><tr><td>valueOff</td><td>折价</td><td>串</td><td></tr><tr><td>valueOn</td><td>的价值</td><td>串</td><td></tr><tr><td>stateIfNotTrueValue</td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td></tr><tr><td>labelTrue</td><td>标签为真</td><td>串</td><td></tr><tr><td>labelColorFalse</td><td>标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> labelColorTrue</td><td>活动标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>对准</td><td>对准</td><td>串</td><td>弹性启动|中心|柔性端</tr><tr><td>distanceBetweenTextAndImage</td><td>文字和图片之间的距离</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdwButtonPrimaryColor</td><td>原色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdwButtonSecondaryColor</td><td>二次色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorBgTrue</td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> imageTrue</td><td>活动图像</td><td>串</td><td></tr><tr><td>imageTrueColor</td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconPosition</td><td>图像位置</td><td>串</td><td>顶部|底部</tr><tr><td>iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table></details>
 
@@ -268,17 +269,17 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
 #####按钮图标链接属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>link_icon</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>href</td><td>链接</td><td>网址</td><td></tr><tr><td>openNewWindow</td><td>在新窗口中打开</td><td>布尔值</td><td>错误真正</tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr></tbody></table></details>
 
 #####按钮图标状态属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>state_icon</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>值</td><td>值</td><td>串</td><td></tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td>数</td><td></tr><tr><td>lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table></details>
 
 #####按钮图标切换属性
-以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
+以下属性可用作[表格中的控制元素]（＃control-elements）或作为[HTML窗口小部件](#html-widgets)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr><thead><tbody><tr><td>类型</td><td>小部件类型</td><td>串</td><td>toggle_icon</td></tr><tr><td>调试</td><td>调试模式</td><td>布尔值</td><td>错误真正</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>toggleType</td><td>切换类型</td><td>串</td><td>布尔|值</tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误真正</tr><tr><td>valueOff</td><td>折价</td><td>串</td><td></tr><tr><td>valueOn</td><td>的价值</td><td>串</td><td></tr><tr><td>stateIfNotTrueValue</td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>generateHtmlControl</td><td>生成HTML元素</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> imageTrue</td><td>活动图像</td><td>串</td><td></tr><tr><td>imageTrueColor</td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> iconHeight</td><td>影像高度</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorBgTrue</td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> colorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td>数</td><td></tr><tr><td>lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table></details>
 
@@ -291,7 +292,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=4><img src="doc/en/media/checkbox_settings_common.png"></td><td>切换类型</td><td>定义应切换的数据点类型（布尔值或值）</td></tr><tr><td>折价</td><td>设置复选框为false的值</td></tr><tr><td>的价值</td><td>设置复选框为true</td></tr><tr><td>说明值是否等于“ on”条件</td><td>当值与“ on”条件不匹配时，设置复选框的状态</td></tr></tbody></table>
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-readOnly</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-toggleType</td><td>切换类型</td><td>串</td><td>布尔|值</tr><tr><td>mdw-valueOff</td><td>折价</td><td>串</td><td></tr><tr><td>mdw-valueOn</td><td>的价值</td><td>串</td><td></tr><tr><td>mdw-stateIfNotTrueValue</td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</tr><tr><td>mdw-vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-labelFalse</td><td>标签为假</td><td>串</td><td></tr><tr><td>mdw-labelTrue</td><td>标签为真</td><td>串</td><td></tr><tr><td>mdw-labelPosition</td><td> labelPosition</td><td>串</td><td>左|对|关</tr><tr><td>mdw-labelClickActive</td><td>激活标签点击</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-valueFontFamily</td><td> valueFontFamily</td><td>串</td><td></tr><tr><td>mdw-valueFontSize</td><td>值字体大小</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorCheckBox</td><td>复选框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorCheckBoxBorder</td><td>边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorCheckBoxHover</td><td>悬停复选框的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-labelColorFalse</td><td>标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-labelColorTrue</td><td>活动标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>mdw-lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>mdw-lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>mdw-lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td></tr><tr><td>mdw-lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td></tr><tr><td>mdw-lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>mdw-lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table>
 
@@ -338,7 +339,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=4><img src="doc/en/media/switch_settings_common.png"></td><td>切换类型</td><td>定义应切换的数据点类型（布尔值或值）</td></tr><tr><td>折价</td><td>设置开关为假的值</td></tr><tr><td>的价值</td><td>设置开关为真值</td></tr><tr><td>说明值是否等于“ on”条件</td><td>当值与“ on”条件不匹配时，设置开关的状态</td></tr></tbody></table>
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-readOnly</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-toggleType</td><td>切换类型</td><td>串</td><td>布尔|值</tr><tr><td>mdw-valueOff</td><td>折价</td><td>串</td><td></tr><tr><td>mdw-valueOn</td><td>的价值</td><td>串</td><td></tr><tr><td>mdw-stateIfNotTrueValue</td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</tr><tr><td>mdw-vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-labelFalse</td><td>标签为假</td><td>串</td><td></tr><tr><td>mdw-labelTrue</td><td>标签为真</td><td>串</td><td></tr><tr><td>mdw-labelPosition</td><td> labelPosition</td><td>串</td><td>左|对|关</tr><tr><td>mdw-labelClickActive</td><td>激活标签点击</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-valueFontFamily</td><td> valueFontFamily</td><td>串</td><td></tr><tr><td>mdw-valueFontSize</td><td>值字体大小</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorSwitchThumb</td><td>开关的拇指颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorSwitchTrack</td><td>跟踪开关的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorSwitchTrue</td><td>活动开关颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorSwitchHover</td><td>悬停开关颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorSwitchHoverTrue</td><td>选择的活动开关颜色/悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-labelColorFalse</td><td>标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-labelColorTrue</td><td>活动标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>锁定</b></i></td></tr><tr><td>mdw-lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td></tr><tr><td>mdw-lockIcon</td><td>图标</td><td>串</td><td></tr><tr><td>mdw-lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td></tr><tr><td>mdw-lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td></tr><tr><td>mdw-lockIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>mdw-lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td></tr></tbody></table>
 
@@ -422,7 +423,7 @@ JSON字符串必须是具有以下属性的对象数组：
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/progress_settings_colors.png"></td><td>颜色1进度的条件[&gt;]</td><td>从何时开始使用颜色1的条件。条件的值必须以百分比为单位</td></tr><tr><td>颜色2进度的条件[&gt;]</td><td>从应该使用颜色2的时间开始。条件的值必须以百分比为单位</td></tr><tr><td rowspan=1><img src="doc/en/media/progress_settings.png"></td><td>自定义标签</td><td>对于自定义标签，可以使用属性<code>[#value]</code>显示数据点的实际值。要显示当前百分比，您可以使用<code>[#percent]</code></td></tr></tbody></table>
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>mdw型</td><td>小部件类型</td><td>串</td><td>线性的</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>最小载重量</td><td>分</td><td>串</td><td></tr><tr><td>最大密度</td><td>最高</td><td>串</td><td></tr><tr><td>mdw-progressIndeterminate</td><td>不确定-连续动画</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw反向</td><td>冲销价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局</b></i></td></tr><tr><td>mdw-progressRounded</td><td>圆角</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-progressStriped</td><td>条纹的</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-progressStripedColor</td><td> progressStripedColor</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorProgressBackground</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorProgress</td><td>颜色进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorOneCondition</td><td>颜色1进度的条件[&gt;]</td><td>数</td><td></tr><tr><td>mdw-colorOne</td><td>颜色1进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorTwoCondition</td><td>颜色2进度的条件[&gt;]</td><td>数</td><td></tr><tr><td>mdw-color2</td><td>颜色2进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-showValueLabel</td><td>显示价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-valueLabelStyle</td><td>价值标题样式</td><td>串</td><td>progressPercent | progressValue | progressCustom</tr><tr><td> mdw-valueLabelUnit</td><td>单元</td><td>串</td><td></tr><tr><td>mdw-valueMaxDecimals</td><td>小数点</td><td>数</td><td></tr><tr><td>mdw-valueLabelCustom</td><td>自定义标签</td><td>串</td><td></tr><tr><td>mdw-textColor</td><td>分钟文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-textFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-textAlign</td><td> textAlign</td><td>串</td><td>开始中心|结束</tr></tbody></table>
 
@@ -464,7 +465,7 @@ JSON字符串必须是具有以下属性的对象数组：
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/progress_circular_settings_colors.png"></td><td>颜色1进度的条件[&gt;]</td><td>从何时开始使用颜色1的条件。条件的值必须以百分比为单位</td></tr><tr><td>颜色2进度的条件[&gt;]</td><td>从应该使用颜色2的时间开始。条件的值必须以百分比为单位</td></tr><tr><td rowspan=6><img src="doc/en/media/progress_settings.png"></td><td>自定义标签</td><td>对于自定义标签，可以使用属性<code>[#value]</code>显示数据点的实际值。要显示当前百分比，您可以使用<code>[#percent]</code></td></tr></tbody></table>
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>mdw型</td><td>小部件类型</td><td>串</td><td>圆</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>最小载重量</td><td>分</td><td>串</td><td></tr><tr><td>最大密度</td><td>最高</td><td>串</td><td></tr><tr><td>mdw-progressIndeterminate</td><td>不确定-连续动画</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局</b></i></td></tr><tr><td>mdw-progressCircularSize</td><td>尺寸</td><td>数</td><td></tr><tr><td>mdw-progressCircularWidth</td><td>厚度</td><td>数</td><td></tr><tr><td>mdw-progressCircularRotate</td><td>旋转起点</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorProgressBackground</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorProgress</td><td>颜色进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-innerColor</td><td>圆圈背景色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorOneCondition</td><td>颜色1进度的条件[&gt;]</td><td>数</td><td></tr><tr><td>mdw-colorOne</td><td>颜色1进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorTwoCondition</td><td>颜色2进度的条件[&gt;]</td><td>数</td><td></tr><tr><td>mdw-color2</td><td>颜色2进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-showValueLabel</td><td>显示价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-valueLabelStyle</td><td>价值标题样式</td><td>串</td><td>progressPercent | progressValue | progressCustom</tr><tr><td> mdw-valueLabelUnit</td><td>单元</td><td>串</td><td></tr><tr><td>mdw-valueMaxDecimals</td><td>小数点</td><td>数</td><td></tr><tr><td>mdw-valueLabelCustom</td><td>自定义标签</td><td>串</td><td></tr><tr><td>mdw-textColor</td><td>分钟文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-textFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-textFontFamily</td><td>字形</td><td>串</td><td></tr></tbody></table>
 
@@ -499,7 +500,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-oid工作</td><td>工作对象ID</td><td>串</td><td></tr><tr><td>mdw方向</td><td>方向</td><td>串</td><td>卧式|垂直</tr><tr><td>mdw-reverseSlider</td><td>反转滑块</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-knobSize</td><td>旋钮大小</td><td>串</td><td>旋钮小|旋钮旋钮大</tr><tr><td>mdw-readOnly</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>最小载重量</td><td>分</td><td>串</td><td></tr><tr><td>最大密度</td><td>最高</td><td>串</td><td></tr><tr><td>mdw-step</td><td>脚步</td><td>串</td><td></tr><tr><td>mdw-vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>步骤布局</b></i></td></tr><tr><td>mdw-showTicks</td><td>显示步骤</td><td>串</td><td>没有是的总是</tr><tr><td>mdw-tickSize</td><td>显示步长</td><td>数</td><td></tr><tr><td>mdw-tickLabels</td><td>步骤文本（逗号分隔）</td><td>串</td><td></tr><tr><td>mdw-tickTextColor</td><td>步骤的文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-tickFontFamily</td><td>步骤字体</td><td>串</td><td></tr><tr><td>mdw-tickFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-tickColorBefore</td><td>调节器前的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-tickColorAfter</td><td>调节器后的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorBeforeThumb</td><td>调节器前的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorThumb</td><td>调节器的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorAfterThumb</td><td>调节剂后颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-prepandText</td><td>文字预填</td><td>串</td><td></tr><tr><td>mdw-prepandTextWidth</td><td> prepandTextWidth</td><td>数</td><td></tr><tr><td>mdw-prepandTextColor</td><td>预设的文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandTextFontSize</td><td>文字大小</td><td>数</td><td></tr><tr><td>mdw-prepandTextFontFamily</td><td>预设的文字字体</td><td>串</td><td></tr><tr><td>mdw-showValueLabel</td><td>显示价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-valueLabelStyle</td><td>价值标题样式</td><td>串</td><td>slidePercent | SliderValue</tr><tr><td> mdw-valueLabelUnit</td><td>单元</td><td>串</td><td></tr><tr><td>mdw-valueFontFamily</td><td> valueFontFamily</td><td>串</td><td></tr><tr><td>mdw-valueFontSize</td><td>值字体大小</td><td>数</td><td></tr><tr><td>mdw-valueLabelColor</td><td>值的文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-valueLabelMin</td><td>值小于min的文字</td><td>串</td><td></tr><tr><td>mdw-valueLabelMax</td><td>值大于min的文字</td><td>串</td><td></tr><tr><td>mdw-valueLessThan</td><td>值文字的“小于”条件</td><td>数</td><td></tr><tr><td>mdw-textForValueLessThan</td><td>文字“小于”</td><td>串</td><td></tr><tr><td>mdw-valueGreaterThan</td><td>值文字的“大于”条件</td><td>数</td><td></tr><tr><td>mdw-textForValueGreaterThan</td><td>文字“大于”</td><td>串</td><td></tr><tr><td>mdw-valueLabelWidth</td><td>距离标签</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>控制器标签的布局</b></i></td></tr><tr><td>mdw-showThumbLabel</td><td>显示标签</td><td>串</td><td>没有是的总是</tr><tr><td>mdw-thumbSize</td><td>标签尺寸</td><td>数</td><td></tr><tr><td>mdw-thumbBackgroundColor</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-thumbFontColor</td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-thumbFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-thumbFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-useLabelRules</td><td>使用文字规则</td><td>布尔值</td><td>错误真正</tr></tbody></table>
 
@@ -556,7 +557,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
 ### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-oid工作</td><td>工作对象ID</td><td>串</td><td></tr><tr><td>最小载重量</td><td>分</td><td>串</td><td></tr><tr><td>最大密度</td><td>最高</td><td>串</td><td></tr><tr><td>mdw-step</td><td>脚步</td><td>串</td><td></tr><tr><td>mdw-readOnly</td><td>只读</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-startAngle</td><td>起始角度</td><td>数</td><td></tr><tr><td>mdw-arcLength</td><td>弧长</td><td>数</td><td></tr><tr><td>mdw-sliderWidth</td><td>滑块厚度</td><td>数</td><td></tr><tr><td>mdw-handleSize</td><td>旋钮大小</td><td>数</td><td></tr><tr><td>mdw-handleZoom</td><td>控制旋钮变焦</td><td>数</td><td></tr><tr><td>mdw-rtl</td><td>滑块从右向左移动</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorSliderBg</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorBeforeThumb</td><td>调节器前的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorThumb</td><td>调节器的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorAfterThumb</td><td>调节剂后颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-valueLabelColor</td><td>值的文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-showValueLabel</td><td>显示价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-valueLabelVerticalPosition</td><td>文字的垂直位置</td><td>数</td><td></tr><tr><td>mdw-valueLabelStyle</td><td>价值标题样式</td><td>串</td><td>slidePercent | SliderValue</tr><tr><td> mdw-valueLabelUnit</td><td>单元</td><td>串</td><td></tr><tr><td>mdw-valueFontFamily</td><td> valueFontFamily</td><td>串</td><td></tr><tr><td>mdw-valueFontSize</td><td>值字体大小</td><td>数</td><td></tr><tr><td>mdw-valueLabelMin</td><td>值小于min的文字</td><td>串</td><td></tr><tr><td>mdw-valueLabelMax</td><td>值大于min的文字</td><td>串</td><td></tr><tr><td>mdw-valueLessThan</td><td>值文字的“小于”条件</td><td>数</td><td></tr><tr><td>mdw-textForValueLessThan</td><td>文字“小于”</td><td>串</td><td></tr><tr><td>mdw-valueGreaterThan</td><td>值文字的“大于”条件</td><td>数</td><td></tr><tr><td>mdw-textForValueGreaterThan</td><td>文字“大于”</td><td>串</td><td></tr></tbody></table>
 
@@ -600,7 +601,7 @@ JSON字符串必须是具有以下属性的对象数组：
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=4><img src="doc/en/media/input_settings_common.png"></td><td>对象ID</td><td>数据点的ID</td></tr><tr><td>输入类型</td><td>文字栏位的输入类型</td></tr><tr><td>输入掩码</td><td>如果使用输入类型mask，则可以定义一个mask。允许的属性<a href="https://vuejs-tips.github.io/vue-the-mask/" target="_blank">在面具文档中</a>有所描述</td></tr><tr><td>最长长度</td><td>文本字段的最大输入长度</td></tr></tbody></table>
 
 #### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-inputType</td><td>输入类型</td><td>串</td><td>文字|编号日期|时间|面具</tr><tr><td>mdw-inputMask</td><td>输入掩码</td><td>串</td><td></tr><tr><td>mdw-inputMaxLength</td><td>最长长度</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局输入</b></i></td></tr><tr><td>mdw-inputLayout</td><td>布局</td><td>串</td><td>定期|独奏四舍五入|独奏|填充四舍五入|实心形|概述四舍五入轮廓形</tr><tr><td>mdw-inputAlignment</td><td>文字对齐</td><td>串</td><td>左|中心|对</tr><tr><td>mdw-inputLayoutBackgroundColor</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBackgroundColorHover</td><td>背景色悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBackgroundColorSelected</td><td>选择背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColor</td><td>边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColorHover</td><td>边框颜色悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColorSelected</td><td>选择边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputTextFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputTextFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputTextColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入标签</b></i></td></tr><tr><td>mdw-inputLabelText</td><td>文本</td><td>串</td><td></tr><tr><td>mdw-inputLabelColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLabelColorSelected</td><td>所选文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLabelFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputLabelFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputTranslateX</td><td>偏移量x</td><td>数</td><td></tr><tr><td>mdw-inputTranslateY</td><td>偏移y</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入的附录</b></i></td></tr><tr><td>mdw-inputPrefix</td><td>前置文字</td><td>串</td><td></tr><tr><td>mdw-inputSuffix</td><td>附加文字</td><td>串</td><td></tr><tr><td>mdw-inputAppendixColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputAppendixFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputAppendixFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入的子文本</b></i></td></tr><tr><td>mdw-showInputMessageAlways</td><td>总是显示</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-inputMessage</td><td>文本</td><td>串</td><td></tr><tr><td>mdw-inputMessageFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputMessageFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputMessageColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>柜台布局</b></i></td></tr><tr><td>mdw-showInputCounter</td><td>显示柜台</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-inputCounterColor</td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputCounterFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputCounterFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图示</b></i></td></tr><tr><td>mdw-clearIconShow</td><td>显示文字删除图标</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-clearIcon</td><td>文字删除图标</td><td>串</td><td></tr><tr><td>mdw-clearIconSize</td><td>文字删除图标的大小</td><td>数</td><td></tr><tr><td>mdw-clearIconColor</td><td>文字删除图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandIcon</td><td>带前缀的图标</td><td>串</td><td></tr><tr><td>mdw-prepandIconSize</td><td>前缀图标的大小</td><td>数</td><td></tr><tr><td>mdw-prepandIconColor</td><td>前缀图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandInnerIcon</td><td>内部前缀符号</td><td>串</td><td></tr><tr><td>mdw-prepandInnerIconSize</td><td>内部前缀符号的大小</td><td>数</td><td></tr><tr><td>mdw-prepandInnerIconColor</td><td>内部前缀符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-appendIcon</td><td>附加符号</td><td>串</td><td></tr><tr><td>mdw-appendIconSize</td><td>附加符号的大小</td><td>数</td><td></tr><tr><td>mdw-appendIconColor</td><td>附加符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-appendOuterIcon</td><td>外部附加符号</td><td>串</td><td></tr><tr><td>mdw-appendOuterIconSize</td><td>外部附加符号的大小</td><td>数</td><td></tr><tr><td>mdw-appendOuterIconColor</td><td>外部附加符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr></tbody></table>
 
@@ -676,7 +677,7 @@ JSON字符串必须是具有以下属性的对象数组：
 </ details>
 
 #### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-inputType</td><td>输入类型</td><td>串</td><td>文字|日期|时间</tr><tr><td>mdw-vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局输入</b></i></td></tr><tr><td>mdw-inputLayout</td><td>布局</td><td>串</td><td>定期|独奏四舍五入|独奏|填充四舍五入|实心形|概述四舍五入轮廓形</tr><tr><td>mdw-inputAlignment</td><td>文字对齐</td><td>串</td><td>左|中心|对</tr><tr><td>mdw-inputLayoutBackgroundColor</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBackgroundColorHover</td><td>背景色悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBackgroundColorSelected</td><td>选择背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColor</td><td>边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColorHover</td><td>边框颜色悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColorSelected</td><td>选择边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputTextFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputTextFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputTextColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入标签</b></i></td></tr><tr><td>mdw-inputLabelText</td><td>文本</td><td>串</td><td></tr><tr><td>mdw-inputLabelColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLabelColorSelected</td><td>所选文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLabelFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputLabelFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputTranslateX</td><td>偏移量x</td><td>数</td><td></tr><tr><td>mdw-inputTranslateY</td><td>偏移y</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入的附录</b></i></td></tr><tr><td>mdw-inputPrefix</td><td>前置文字</td><td>串</td><td></tr><tr><td>mdw-inputSuffix</td><td>附加文字</td><td>串</td><td></tr><tr><td>mdw-inputAppendixColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputAppendixFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputAppendixFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入的子文本</b></i></td></tr><tr><td>mdw-showInputMessageAlways</td><td>总是显示</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-inputMessage</td><td>文本</td><td>串</td><td></tr><tr><td>mdw-inputMessageFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputMessageFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputMessageColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>柜台布局</b></i></td></tr><tr><td>mdw-showInputCounter</td><td>显示柜台</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-inputCounterColor</td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputCounterFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputCounterFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图示</b></i></td></tr><tr><td>mdw-clearIconShow</td><td>显示文字删除图标</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-clearIcon</td><td>文字删除图标</td><td>串</td><td></tr><tr><td>mdw-clearIconSize</td><td>文字删除图标的大小</td><td>数</td><td></tr><tr><td>mdw-clearIconColor</td><td>文字删除图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-collapseIcon</td><td>菜单打开符号</td><td>串</td><td></tr><tr><td>mdw-collapseIconSize</td><td>菜单打开符号的大小</td><td>数</td><td></tr><tr><td>mdw-collapseIconColor</td><td>菜单打开符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandIcon</td><td>带前缀的图标</td><td>串</td><td></tr><tr><td>mdw-prepandIconSize</td><td>前缀图标的大小</td><td>数</td><td></tr><tr><td>mdw-prepandIconColor</td><td>前缀图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandInnerIcon</td><td>内部前缀符号</td><td>串</td><td></tr><tr><td>mdw-prepandInnerIconSize</td><td>内部前缀符号的大小</td><td>数</td><td></tr><tr><td>mdw-prepandInnerIconColor</td><td>内部前缀符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-appendOuterIcon</td><td>外部附加符号</td><td>串</td><td></tr><tr><td>mdw-appendOuterIconSize</td><td>外部附加符号的大小</td><td>数</td><td></tr><tr><td>mdw-appendOuterIconColor</td><td>外部附加符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>菜单数据</b></i></td></tr><tr><td>mdw-listDataMethod</td><td>菜单数据的输入方法</td><td>串</td><td>inputPerEditor | jsonStringObject | multistatesObject |值列表</tr><tr><td>mdw-countSelectItems</td><td>编辑器：菜单项计数</td><td>数</td><td></tr><tr><td>mdw-jsonStringObject</td><td> JSON字符串。必须是HTML转义！提示：在脚本中使用<a href="https://github.com/mathiasbynens/he#heencodetext-options" target="_blank">he库</a>编码为htmle</td><td>串</td><td></tr><tr><td>mdw-valueList</td><td>值表</td><td>串</td><td></tr><tr><td>mdw-valueListLabels</td><td>值清单：标签</td><td>串</td><td></tr><tr><td>mdw-valueListIcons</td><td>值清单：图片</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>菜单布局</b></i></td></tr><tr><td>mdw-listPosition</td><td>位置</td><td>串</td><td>汽车|顶部|底部</tr><tr><td>mdw-listPositionOffset</td><td>使用位置偏移</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-openOnClear</td><td>使用清除按钮打开菜单</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-listItemHeight</td><td>菜单项的高度</td><td>数</td><td></tr><tr><td>mdw-listItemBackgroundColor</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemBackgroundHoverColor</td><td>悬停颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemBackgroundSelectedColor</td><td>所选项目的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemRippleEffectColor</td><td>效果色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-showSelectedIcon</td><td>显示所选项目的图标</td><td>串</td><td>没有前置内部前置|附加外</tr><tr><td>mdw-listIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>mdw-listIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listIconHoverColor</td><td>图标悬停颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listIconSelectedColor</td><td>所选项目的图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-listItemFont</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-listItemFontColor</td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemFontHoverColor</td><td>字体悬停颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemFontSelectedColor</td><td>所选项目的字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemSubFontSize</td><td>第二文字字体大小</td><td>数</td><td></tr><tr><td>mdw-listItemSubFont</td><td>第二文字字体</td><td>串</td><td></tr><tr><td>mdw-listItemSubFontColor</td><td>第二文字字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemSubFontHoverColor</td><td>悬停第二个文字的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemSubFontSelectedColor</td><td>第二个所选文字的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-showValue</td><td>显示价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-listItemValueFontSize</td><td>值的字体大小</td><td>数</td><td></tr><tr><td>mdw-listItemValueFont</td><td>价值字体</td><td>串</td><td></tr><tr><td>mdw-listItemValueFontColor</td><td>值的字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemValueFontHoverColor</td><td>将鼠标悬停在值的字体颜色上</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemValueFontSelectedColor</td><td>所选值的字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>菜单项[x]</b></i></td></tr><tr><td> mdw-value [x]</td><td>值</td><td>串</td><td></tr><tr><td>mdw-label [x]</td><td>标签</td><td>串</td><td></tr><tr><td>mdw-subLabel [x]</td><td>第二文字</td><td>串</td><td></tr><tr><td>mdw-listIcon [x]</td><td>图标</td><td>串</td><td></tr><tr><td>mdw-listIconColor [x]</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-imageColorSelectedTextField [x]</td><td>文本框的选定图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr></tbody></table>
 
@@ -875,7 +876,7 @@ JSON字符串必须是具有以下属性的对象数组：
 </ details>
 
 #### HTML属性
-以下属性可用作[HTML元素](#html-elements)。
+以下属性可用作[HTML小部件](#html-widgets)。
 
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>共同</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>串</td><td></tr><tr><td>mdw-inputMode</td><td>输入模式</td><td>串</td><td>写选择</tr><tr><td>mdw-inputType</td><td>输入类型</td><td>串</td><td>文字|日期|时间</tr><tr><td>mdw-vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td></tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误真正</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局输入</b></i></td></tr><tr><td>mdw-inputLayout</td><td>布局</td><td>串</td><td>定期|独奏四舍五入|独奏|填充四舍五入|实心形|概述四舍五入轮廓形</tr><tr><td>mdw-inputAlignment</td><td>文字对齐</td><td>串</td><td>左|中心|对</tr><tr><td>mdw-inputLayoutBackgroundColor</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBackgroundColorHover</td><td>背景色悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBackgroundColorSelected</td><td>选择背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColor</td><td>边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColorHover</td><td>边框颜色悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLayoutBorderColorSelected</td><td>选择边框颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputTextFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputTextFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputTextColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入标签</b></i></td></tr><tr><td>mdw-inputLabelText</td><td>文本</td><td>串</td><td></tr><tr><td>mdw-inputLabelColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLabelColorSelected</td><td>所选文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputLabelFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputLabelFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputTranslateX</td><td>偏移量x</td><td>数</td><td></tr><tr><td>mdw-inputTranslateY</td><td>偏移y</td><td>数</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入的附录</b></i></td></tr><tr><td>mdw-inputPrefix</td><td>前置文字</td><td>串</td><td></tr><tr><td>mdw-inputSuffix</td><td>附加文字</td><td>串</td><td></tr><tr><td>mdw-inputAppendixColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputAppendixFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputAppendixFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>输入的子文本</b></i></td></tr><tr><td>mdw-showInputMessageAlways</td><td>总是显示</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-inputMessage</td><td>文本</td><td>串</td><td></tr><tr><td>mdw-inputMessageFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-inputMessageFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputMessageColor</td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>柜台布局</b></i></td></tr><tr><td>mdw-showInputCounter</td><td>显示柜台</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-inputCounterColor</td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-inputCounterFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-inputCounterFontFamily</td><td>字形</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>图示</b></i></td></tr><tr><td>mdw-clearIconShow</td><td>显示文字删除图标</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-clearIcon</td><td>文字删除图标</td><td>串</td><td></tr><tr><td>mdw-clearIconSize</td><td>文字删除图标的大小</td><td>数</td><td></tr><tr><td>mdw-clearIconColor</td><td>文字删除图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-collapseIcon</td><td>菜单打开符号</td><td>串</td><td></tr><tr><td>mdw-collapseIconSize</td><td>菜单打开符号的大小</td><td>数</td><td></tr><tr><td>mdw-collapseIconColor</td><td>菜单打开符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandIcon</td><td>带前缀的图标</td><td>串</td><td></tr><tr><td>mdw-prepandIconSize</td><td>前缀图标的大小</td><td>数</td><td></tr><tr><td>mdw-prepandIconColor</td><td>前缀图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-prepandInnerIcon</td><td>内部前缀符号</td><td>串</td><td></tr><tr><td>mdw-prepandInnerIconSize</td><td>内部前缀符号的大小</td><td>数</td><td></tr><tr><td>mdw-prepandInnerIconColor</td><td>内部前缀符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-appendOuterIcon</td><td>外部附加符号</td><td>串</td><td></tr><tr><td>mdw-appendOuterIconSize</td><td>外部附加符号的大小</td><td>数</td><td></tr><tr><td>mdw-appendOuterIconColor</td><td>外部附加符号的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>菜单数据</b></i></td></tr><tr><td>mdw-listDataMethod</td><td>菜单数据的输入方法</td><td>串</td><td>inputPerEditor | jsonStringObject | multistatesObject |值列表</tr><tr><td>mdw-countSelectItems</td><td>编辑器：菜单项计数</td><td>数</td><td></tr><tr><td>mdw-jsonStringObject</td><td> JSON字符串。必须是HTML转义！提示：在脚本中使用<a href="https://github.com/mathiasbynens/he#heencodetext-options" target="_blank">he库</a>编码为htmle</td><td>串</td><td></tr><tr><td>mdw-valueList</td><td>值表</td><td>串</td><td></tr><tr><td>mdw-valueListLabels</td><td>值清单：标签</td><td>串</td><td></tr><tr><td>mdw-valueListIcons</td><td>值清单：图片</td><td>串</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>菜单布局</b></i></td></tr><tr><td>mdw-listPosition</td><td>位置</td><td>串</td><td>汽车|顶部|底部</tr><tr><td>mdw-listPositionOffset</td><td>使用位置偏移</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-openOnClear</td><td>使用清除按钮打开菜单</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-listItemHeight</td><td>菜单项的高度</td><td>数</td><td></tr><tr><td>mdw-listItemBackgroundColor</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemBackgroundHoverColor</td><td>悬停颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemBackgroundSelectedColor</td><td>所选项目的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemRippleEffectColor</td><td>效果色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-showSelectedIcon</td><td>显示所选项目的图标</td><td>串</td><td>没有前置内部前置|附加外</tr><tr><td>mdw-listIconSize</td><td>图标大小</td><td>数</td><td></tr><tr><td>mdw-listIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listIconHoverColor</td><td>图标悬停颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listIconSelectedColor</td><td>所选项目的图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemFontSize</td><td>字体大小</td><td>数</td><td></tr><tr><td>mdw-listItemFont</td><td>字形</td><td>串</td><td></tr><tr><td>mdw-listItemFontColor</td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemFontHoverColor</td><td>字体悬停颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemFontSelectedColor</td><td>所选项目的字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemSubFontSize</td><td>第二文字字体大小</td><td>数</td><td></tr><tr><td>mdw-listItemSubFont</td><td>第二文字字体</td><td>串</td><td></tr><tr><td>mdw-listItemSubFontColor</td><td>第二文字字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemSubFontHoverColor</td><td>悬停第二个文字的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemSubFontSelectedColor</td><td>第二个所选文字的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-showValue</td><td>显示价值</td><td>布尔值</td><td>错误真正</tr><tr><td>mdw-listItemValueFontSize</td><td>值的字体大小</td><td>数</td><td></tr><tr><td>mdw-listItemValueFont</td><td>价值字体</td><td>串</td><td></tr><tr><td>mdw-listItemValueFontColor</td><td>值的字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemValueFontHoverColor</td><td>将鼠标悬停在值的字体颜色上</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-listItemValueFontSelectedColor</td><td>所选值的字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>菜单项[x]</b></i></td></tr><tr><td> mdw-value [x]</td><td>值</td><td>串</td><td></tr><tr><td>mdw-label [x]</td><td>标签</td><td>串</td><td></tr><tr><td>mdw-subLabel [x]</td><td>第二文字</td><td>串</td><td></tr><tr><td>mdw-listIcon [x]</td><td>图标</td><td>串</td><td></tr><tr><td>mdw-listIconColor [x]</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-imageColorSelectedTextField [x]</td><td>文本框的选定图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr></tbody></table>
 
@@ -1056,7 +1057,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ####编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最高要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最高要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
 
 ### JSON图表
 使用JSON图表，您可以最大程度地通过脚本创建混合图表（折线，条形图和堆积条形图）。
@@ -1160,8 +1161,546 @@ JSON字符串必须是具有以下属性的对象数组：
 * [此处]（https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113）
 * [ical Adapter]（https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2）
 
-####控制元素-自v0.5.0起已不推荐使用
-> **已弃用**改用[HTML元素](#html-elements)！
+### HTML控件小部件
+您可以直接在json字符串中使用[HTML小部件](#html-widgets)。如果要自定义包含小部件的单元格，请使用以下容器。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table_html_widget_example.gif)
+
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>物产</th></tr></thead><tbody><tr><td>行跨</td><td>跨x行的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td>科尔斯潘</td><td>跨x列的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td> cellStyleAttrs</td><td>单元格的CSS样式属性</td><td>串</td><td></td></tr><tr><td>html</td><td>任何html元素，例如。 html小部件</td><td>串</td><td></td></tr></tbody></table>
+
+<！-在目录中省略->
+
+#### HTML控件小部件-示例
+<details>
+
+```
+[
+	{
+		"col_1": "button toggle",
+		"col_2": {
+			"rowspan": "2",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+			style='width: 80px; height: 60px; position: relative; padding: 0px;'
+			mdw-type='toggle_vertical'
+			mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+			mdw-buttonStyle='raised'
+			mdw-toggleType='boolean'
+			mdw-stateIfNotTrueValue='on'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-buttontext='off'
+			mdw-labelTrue='on'
+			mdw-labelColorTrue='#000000'
+			mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.vertical.text'
+			mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.vertical.text'
+			mdw-alignment='center'
+			mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.primary'
+			mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.secondary'
+			mdw-colorBgTrue='green'
+			mdw-image='checkbox-blank-outline'
+			mdw-imageTrue='checkbox-marked'
+			mdw-iconPosition='top'
+			mdw-iconHeight='36'
+			mdw-lockEnabled='true'
+			mdw-autoLockAfter='10'
+			mdw-lockIconTop='5'
+			mdw-lockIconLeft='5'
+			mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+			mdw-lockFilterGrayscale='30'
+			></div></div>"
+		},
+		"col_3": "<div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+		style='width: 100%; height: 100%; position: relative; padding: 0px;'
+		mdw-type='toggle_default'
+		mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+		mdw-buttonStyle='raised'
+		mdw-toggleType='boolean'
+		mdw-stateIfNotTrueValue='on'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-buttontext='off'
+		mdw-labelTrue='on'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.default.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.default.text'
+		mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.primary'
+		mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.secondary'
+		mdw-colorBgTrue='#a2bc9f'
+		mdw-image='access-point-network-off'
+		mdw-imageColor='#c70000'
+		mdw-imageTrue='access-point-network'
+		mdw-imageTrueColor='#36fa29'
+		mdw-iconPosition='left'
+		mdw-autoLockAfter='10'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div>",
+		"col_4": "<div class='vis-widget materialdesign-widget materialdesign-icon-button materialdesign-button-html-element'
+		style='width: 48px; height: 48px; position: relative; padding: 0px;'
+		mdw-type='toggle_icon'
+		mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+		mdw-toggleType='boolean'
+		mdw-stateIfNotTrueValue='on'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-image='access-point-network-off'
+		mdw-imageColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.icon_off'
+		mdw-imageTrue='access-point-network'
+		mdw-imageTrueColor='orange'
+		mdw-colorBgFalse='#mdwTheme:vis-materialdesign.0.colors.button.icon.background_off'
+		mdw-colorBgTrue='#mdwTheme:vis-materialdesign.0.colors.button.icon.background_on'
+		mdw-colorPress='#mdwTheme:vis-materialdesign.0.colors.button.icon.pressed'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='45'
+		mdw-lockIconLeft='55'
+		mdw-lockIconSize='20'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon'
+		mdw-lockIconBackground='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon_background'
+		mdw-lockBackgroundSizeFactor='1'
+		mdw-lockFilterGrayscale='30'
+		></div>"
+	}, {
+		"col_1": "Checkbox / Switch",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-checkbox materialdesign-checkbox-html-element'
+		style='width: 71px; height: 24px; position: relative; overflow: visible !important; display: flex; align-items: center;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+		mdw-toggleType='boolean'
+		mdw-stateIfNotTrueValue='on'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-labelFalse='on'
+		mdw-labelTrue='off'
+		mdw-labelPosition='left'
+		mdw-labelClickActive='true'
+		mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.checkbox.value'
+		mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.checkbox.value'
+		mdw-colorCheckBox='#mdwTheme:vis-materialdesign.0.colors.checkbox.on'
+		mdw-colorCheckBoxBorder='#mdwTheme:vis-materialdesign.0.colors.checkbox.border'
+		mdw-colorCheckBoxHover='#mdwTheme:vis-materialdesign.0.colors.checkbox.hover'
+		mdw-labelColorFalse='#mdwTheme:vis-materialdesign.0.colors.checkbox.text_off'
+		mdw-labelColorTrue='#mdwTheme:vis-materialdesign.0.colors.checkbox.text_on'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='5'
+		mdw-lockIconLeft='5'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.checkbox.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div></div>",
+		"col_3": {
+			"cellStyleAttrs": "padding: 8px;",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-switch materialdesign-switch-html-element'
+			style='width: 83px; height: 44px; position: relative; overflow: visible !important; display: flex; align-items: center;'
+			mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+			mdw-toggleType='boolean'
+			mdw-stateIfNotTrueValue='on'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-labelFalse='off'
+			mdw-labelTrue='on'
+			mdw-labelPosition='right'
+			mdw-labelClickActive='true'
+			mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.switch.value'
+			mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.switch.value'
+			mdw-colorSwitchThumb='#mdwTheme:vis-materialdesign.0.colors.switch.off'
+			mdw-colorSwitchTrack='#mdwTheme:vis-materialdesign.0.colors.switch.track'
+			mdw-colorSwitchTrue='#mdwTheme:vis-materialdesign.0.colors.switch.on'
+			mdw-colorSwitchHover='#mdwTheme:vis-materialdesign.0.colors.switch.off_hover'
+			mdw-colorSwitchHoverTrue='#mdwTheme:vis-materialdesign.0.colors.switch.on_hover'
+			mdw-labelColorFalse='#mdwTheme:vis-materialdesign.0.colors.switch.text_off'
+			mdw-labelColorTrue='#mdwTheme:vis-materialdesign.0.colors.switch.text_on'
+			mdw-lockEnabled='true'
+			mdw-autoLockAfter='10'
+			mdw-lockIconTop='5'
+			mdw-lockIconLeft='5'
+			mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.switch.lock_icon'
+			mdw-lockFilterGrayscale='30'
+			></div></div>"
+		}
+	}, {
+		"col_1": "Button State",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-icon-button materialdesign-button-html-element'
+		style='width: 48px; height: 48px; position: relative; padding: 0px;'
+		mdw-type='state_icon'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-value='100'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-image='battery'
+		mdw-imageColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.icon_off'
+		mdw-iconHeight='26'
+		mdw-colorBgFalse='#mdwTheme:vis-materialdesign.0.colors.button.icon.background_off'
+		mdw-colorPress='#mdwTheme:vis-materialdesign.0.colors.button.icon.pressed'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='45'
+		mdw-lockIconLeft='55'
+		mdw-lockIconSize='20'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon'
+		mdw-lockIconBackground='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon_background'
+		mdw-lockBackgroundSizeFactor='1'
+		mdw-lockFilterGrayscale='30'
+		></div></div>",
+		"col_3": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+		style='width: 100px; height: 100%; position: relative; padding: 0px;'
+		mdw-type='state_default'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-buttonStyle='raised'
+		mdw-value='70'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-buttontext='70'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.default.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.default.text'
+		mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.primary'
+		mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.secondary'
+		mdw-image='battery-70'
+		mdw-iconPosition='left'
+		mdw-iconHeight='20'
+		mdw-lockEnabled='true'
+		mdw-autoLockAfter='10'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div></div>",
+		"col_4": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+		style='width: 102px; height: 67px; position: relative; padding: 0px;'
+		mdw-type='state_vertical'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-buttonStyle='raised'
+		mdw-value='10'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-buttontext='10'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.vertical.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.vertical.text'
+		mdw-alignment='center'
+		mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.primary'
+		mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.secondary'
+		mdw-image='battery-10'
+		mdw-iconPosition='top'
+		mdw-iconHeight='38'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='5'
+		mdw-lockIconLeft='5'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div></div>"
+	}, {
+		"col_1": "Progress",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-progress materialdesign-progress-html-element'
+		style='width: 83px; height: 81px; position: relative; padding: 0px;'
+		mdw-type='circular'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-min='0'
+		mdw-max='100'
+		mdw-progressCircularSize='80'
+		mdw-progressCircularWidth='10'
+		mdw-progressCircularRotate='90'
+		mdw-colorProgressBackground='#mdwTheme:vis-materialdesign.0.colors.progress.track_background'
+		mdw-colorProgress='#mdwTheme:vis-materialdesign.0.colors.progress.track'
+		mdw-innerColor='#mdwTheme:vis-materialdesign.0.colors.progress.circular_background'
+		mdw-colorOneCondition='60'
+		mdw-colorOne='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition1'
+		mdw-colorTwoCondition='80'
+		mdw-colorTwo='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition2'
+		mdw-showValueLabel='true'
+		mdw-valueLabelStyle='progressValue'
+		mdw-valueMaxDecimals='3'
+		mdw-textColor='#mdwTheme:vis-materialdesign.0.colors.progress.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.progress.text'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.progress.text'
+		></div></div>",
+		"col_3": {
+			"colspan": "2",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-progress materialdesign-progress-html-element'
+			style='width: 80%; height: 36px; position: relative; padding: 0px;'
+			mdw-type='linear'
+			mdw-oid='0_userdata.0.MDW.Table.Control.number'
+			mdw-min='0'
+			mdw-max='100'
+			mdw-colorProgressBackground='#mdwTheme:vis-materialdesign.0.colors.progress.track_background'
+			mdw-colorProgress='#mdwTheme:vis-materialdesign.0.colors.progress.track'
+			mdw-colorOneCondition='50'
+			mdw-colorOne='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition1'
+			mdw-colorTwoCondition='70'
+			mdw-colorTwo='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition2'
+			mdw-showValueLabel='true'
+			mdw-valueLabelStyle='progressPercent'
+			mdw-textColor='#mdwTheme:vis-materialdesign.0.colors.progress.text'
+			mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.progress.text'
+			mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.progress.text'
+			mdw-textAlign='end'
+			></div></div>"
+		}
+	}, {
+		"col_1": "Slider",
+		"col_2": {
+			"colspan": "2",
+			"cellStyleAttrs": "overflow: visible;",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-slider-vertical materialdesign-slider-html-element'
+			style='width: 90%; height: 60px; position: relative; overflow:visible !important; display: flex; align-items: center;'
+			mdw-oid='0_userdata.0.MDW.Table.Control.number'
+			mdw-orientation='horizontal'
+			mdw-knobSize='knobSmall'
+			mdw-step='1'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-showTicks='no'
+			mdw-tickTextColor='#mdwTheme:vis-materialdesign.0.colors.slider.tick'
+			mdw-tickFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.ticks'
+			mdw-tickFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.ticks'
+			mdw-tickColorBefore='#mdwTheme:vis-materialdesign.0.colors.slider.tick_before'
+			mdw-tickColorAfter='#mdwTheme:vis-materialdesign.0.colors.slider.tick_after'
+			mdw-colorBeforeThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_before'
+			mdw-colorThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control'
+			mdw-colorAfterThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_behind'
+			mdw-prepandTextWidth='1'
+			mdw-prepandTextColor='#mdwTheme:vis-materialdesign.0.colors.slider.text_prepand'
+			mdw-prepandTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.prepand'
+			mdw-prepandTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.prepand'
+			mdw-showValueLabel='true'
+			mdw-valueLabelStyle='sliderValue'
+			mdw-valueLabelUnit='%'
+			mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.value'
+			mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.value'
+			mdw-valueLabelColor='#mdwTheme:vis-materialdesign.0.colors.slider.text'
+			mdw-valueLabelWidth='50'
+			mdw-showThumbLabel='yes'
+			mdw-thumbBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.slider.control_background'
+			mdw-thumbFontColor='#mdwTheme:vis-materialdesign.0.colors.slider.control_text'
+			mdw-thumbFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.control'
+			mdw-thumbFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.control'
+			></div></div>"
+		},
+		"col_3": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-slider-round materialdesign-roundslider-html-element'
+		style='width: 79px; height: 67px; position: relative;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-step='1'
+		mdw-startAngle='135'
+		mdw-arcLength='270'
+		mdw-handleZoom='1.5'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-colorSliderBg='#mdwTheme:vis-materialdesign.0.colors.slider.background'
+		mdw-colorBeforeThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_before'
+		mdw-colorThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control'
+		mdw-colorAfterThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_behind'
+		mdw-valueLabelColor='#mdwTheme:vis-materialdesign.0.colors.slider.text'
+		mdw-showValueLabel='true'
+		mdw-valueLabelStyle='sliderValue'
+		mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.value'
+		mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.value'
+		></div></div>"
+	}, {
+		"col_1": "Select",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+		style='width: 90%; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-inputType='text'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-inputLayout='regular'
+		mdw-inputAlignment='left'
+		mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+		mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+		mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+		mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+		mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+		mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+		mdw-inputLabelText='by Editor'
+		mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+		mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+		mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+		mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+		mdw-inputTranslateX='-29'
+		mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+		mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+		mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+		mdw-showInputMessageAlways='true'
+		mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+		mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+		mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+		mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+		mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+		mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+		mdw-clearIconShow='true'
+		mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+		mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+		mdw-listDataMethod='inputPerEditor'
+		mdw-countSelectItems='2'
+		mdw-listPosition='auto'
+		mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+		mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+		mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+		mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+		mdw-showSelectedIcon='prepend-inner'
+		mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+		mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+		mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+		mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+		mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+		mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+		mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+		mdw-showValue='true'
+		mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+		mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+		mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+		mdw-value0='10'
+		mdw-label0='val0'
+		mdw-listIcon0='alpha-d-box'
+		mdw-value1='70'
+		mdw-label1='val1'
+		mdw-listIcon1='account-alert'
+		mdw-value2='100'
+		mdw-label2='val2'
+		mdw-listIcon2='karate'
+		></div></div>",
+		"col_3": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+		style='width: 90%; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-inputType='text'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-inputLayout='regular'
+		mdw-inputAlignment='left'
+		mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+		mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+		mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+		mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+		mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+		mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+		mdw-inputLabelText='by Value List'
+		mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+		mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+		mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+		mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+		mdw-inputTranslateX='-29'
+		mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+		mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+		mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+		mdw-showInputMessageAlways='true'
+		mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+		mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+		mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+		mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+		mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+		mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+		mdw-clearIconShow='true'
+		mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+		mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+		mdw-listDataMethod='valueList'
+		mdw-countSelectItems='0'
+		mdw-valueList='10;30;90'
+		mdw-valueListLabels='val1;val2;val3'
+		mdw-valueListIcons='home;home;home'
+		mdw-listPosition='auto'
+		mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+		mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+		mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+		mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+		mdw-showSelectedIcon='prepend-inner'
+		mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+		mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+		mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+		mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+		mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+		mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+		mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+		mdw-showValue='true'
+		mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+		mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+		mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+		></div></div>",
+		"col_4": {
+			"cellStyleAttrs": "padding: 6px;",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+			style='width: 293px; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+			mdw-oid='0_userdata.0.MDW.Table.Control.string'
+			mdw-inputType='text'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-inputLayout='solo-rounded'
+			mdw-inputAlignment='center'
+			mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+			mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+			mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+			mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+			mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+			mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+			mdw-inputLabelText='by JSON Editor'
+			mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+			mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+			mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+			mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+			mdw-inputTranslateX='-29'
+			mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+			mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+			mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+			mdw-showInputMessageAlways='true'
+			mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+			mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+			mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+			mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+			mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+			mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+			mdw-clearIconShow='true'
+			mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+			mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+			mdw-listDataMethod='jsonStringObject'
+			mdw-countSelectItems='0'
+			mdw-jsonStringObject='[   {
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Tag&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;1 day&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Tage&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;3 days&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Woche&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;7 days&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Wochen&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;14 days&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Monat&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;1 month&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Monate&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;2 months&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Monate&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;3 months&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;6 Monate&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;6 months&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Jahr&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;1 year&#x22;
+			&#x9;}
+			]'
+			mdw-listPosition='auto'
+			mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+			mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+			mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+			mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+			mdw-showSelectedIcon='prepend-inner'
+			mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+			mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+			mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+			mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+			mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+			mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+			mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+			mdw-showValue='true'
+			mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+			mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+			mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+			></div></div>"
+		}
+	}, {
+		"col_1": "col_1",
+		"col_2": "col_2",
+		"col_3": "col_3",
+		"col_4": "col_4"
+	}
+]
+
+```
+
+</ details>
+
+###控制元素-**自v0.5.0起不推荐使用**
+> **不推荐使用[HTML小部件](#html-widgets)！**
 
 要在表的单元格中生成控件元素（按钮，复选框等），您必须创建一个对象而不是字符串。
 
@@ -1209,7 +1748,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ```
 
 ＃＃＃＃＃ 一般
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>物产</th></tr></thead><tbody><tr><td>类型</td><td>控制元件类型</td><td>串</td><td><b>纽扣</b><ul><li><a href="#button-link-properties">按钮链接</a></li><li><a href="#button-state-properties">按钮状态</a></li><li><a href="#button-toggle-properties">按钮切换</a></li></ul><b>垂直按钮</b><ul><li><a href="#button-vertical-link-properties">按钮图标链接</a></li><li><a href="#button-vertical-state-properties">按钮图标状态</a></li><li><a href="#button-vertical-toggle-properties">按钮图标切换</a></li></ul><b>按钮图标</b><ul><li><a href="#button-icon-link-properties">按钮图标链接</a></li><li><a href="#button-icon-state-properties">按钮图标状态</a></li><li><a href="#button-icon-toggle-properties">按钮图标切换</a></li></ul><ul><li><a href="#progress-1">进展</a></li><li><a href="#progress-circular">progress_circular</a></li><li><a href="#slider-1">滑杆</a></li><li><a href="#slider-round">slide_round</a></li><li><a href="#switch-1">开关</a></li><li><a href="#checkbox-1">复选框</a></li><li><a href="#textfield">文本域</a></li><li><a href="#select-1">选择</a></li><li><a href="#autocomplete-1">自动完成</a></li><li><a href="#material-design-icons">材料设计图标</a></li><li><a href="#html">HTML</a></li></ul></td></tr><tr><td>宽度</td><td>控制元素的宽度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>高度</td><td>控制元素的高度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>行跨</td><td>跨x行的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td>科尔斯潘</td><td>跨x列的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td> verticalAlign</td><td>垂直对齐</td><td>串</td><td>顶部|中|底部</td></tr><tr><td>cellStyleAttrs</td><td>单元格的CSS样式属性</td><td>串</td><td>...</td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>物产</th></tr></thead><tbody><tr><td>类型</td><td>控制元件类型</td><td>串</td><td><b>纽扣</b><ul><li><a href="#button-link-properties">按钮链接</a></li><li><a href="#button-state-properties">按钮状态</a></li><li><a href="#button-toggle-properties">按钮切换</a></li></ul><b>垂直按钮</b><ul><li><a href="#button-vertical-link-properties">按钮图标链接</a></li><li><a href="#button-vertical-state-properties">按钮图标状态</a></li><li><a href="#button-vertical-toggle-properties">按钮图标切换</a></li></ul><b>按钮图标</b><ul><li><a href="#button-icon-link-properties">按钮图标链接</a></li><li><a href="#button-icon-state-properties">按钮图标状态</a></li><li><a href="#button-icon-toggle-properties">按钮图标切换</a></li></ul><ul><li><a href="#progress-1">进展</a></li><li><a href="#progress-circular">progress_circular</a></li><li><a href="#slider-1">滑杆</a></li><li><a href="#slider-round">slide_round</a></li><li><a href="#switch-1">开关</a></li><li><a href="#checkbox-1">复选框</a></li><li><a href="#textfield">文本域</a></li><li><a href="#select-1">选择</a></li><li><a href="#autocomplete-1">自动完成</a></li><li><a href="#material-design-icons">材料设计图标</a></li><li><a href="#html">HTML</a></li></ul></td></tr><tr><td>宽度</td><td>宽度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>高度</td><td>控制元素的高度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>行跨</td><td>跨x行的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td>科尔斯潘</td><td>跨x列的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td> verticalAlign</td><td>垂直对齐</td><td>串</td><td>顶部|中|底部</td></tr><tr><td>cellStyleAttrs</td><td>单元格的CSS样式属性</td><td>串</td><td>...</td></tr></tbody></table>
 
 ##响应式布局
 有两个小部件-Masonry Views和Grid Views-可以使用它们创建一个响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
@@ -1471,8 +2010,8 @@ ical2CalendarWidget();
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/dialog_settings_common.png"></td><td>显示对话框的方法</td><td>使用按钮或使用数据点显示对话框（布尔类型）</td></tr><tr><td> Conatins视图</td><td>对话框应显示的视图</td></tr><tr><td>如果分辨率低于则显示全屏对话框</td><td>如果分辨率低于给定值，则显示全屏对话框。</td></tr></tbody></table>
 
-## HTML元素
-从受支持的Material Design小部件创建html元素，以在支持html的任何其他小部件中使用它。
+## HTML窗口小部件
+从受支持的Material Design小部件创建html小部件，以在支持html的任何其他小部件中使用它。
 只需为您的Material Design小部件设置样式，然后按`generate Html Element`，将数据复制并粘贴到任何支持html标签的小部件中。
 或者在脚本中使用它来动态生成窗口小部件。
 
@@ -1518,11 +2057,11 @@ ical2CalendarWidget();
 
 <!-- omit in toc -->
 ### __WORK IN PROGRESS__
-* (Scrounger) HTML Element support for control widgets added
+* (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
 * (Scrounger) Table: Control Elements removed, using new HTML Elements -> breaking changes !!!
+* (Scrounger) list: using object id for json string added -> breaking changes !!!
 * (Scrounger) Documentation revised
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
-* (Scrounger) list: using object id for json string added -> breaking changes !!!
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 * (Scrounger) progress circular: auto size option added

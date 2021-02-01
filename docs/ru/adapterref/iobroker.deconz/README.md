@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
-title: Важно: Разработка версии 2.x.x остановлена. Не устанавливать.
-hash: 91pA5IsG6BdOllBnQVybbzjjPoeE9Bi4AY9lDb9wXOs=
+title: Важно: Разработка версии 2.x.x остановлена, но адаптер будет дорабатываться. Не устанавливать.
+hash: nAn5U6ErrjXj/7L/tYDfl9+h6Co6C40uUfaJ7/5oke0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -16,11 +16,11 @@ ioBroker deConz dresden-elektronik Адаптер
 
 ==============
 
-# Важно: разработка версии 2.x.x остановлена. Не устанавливать.
+# Важно: разработка версии 2.x.x остановлена, но адаптер будет дорабатываться. Не устанавливать.
 ## Уведомление
 Нет поддержки бета / предварительных версий deConz.
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 Требуемая версия js-контроллера> 2.x.x, обязательная node.js> = 10.x.x
 
@@ -116,7 +116,7 @@ Dafür gibt es das Objekt "действие".
 - [Шлюзы (аппаратные)] (https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## [Спонсоры](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
-Если вам нравится моя работа, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвования для Jey Cee, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
+Если вам понравилась моя работа, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвования для Jey Cee, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
 
 ## Присоединяйтесь к серверу Discord, чтобы обсудить все, что касается интеграции ioBroker-deconz!
 <a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>

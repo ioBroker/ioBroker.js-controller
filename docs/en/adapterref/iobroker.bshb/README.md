@@ -31,6 +31,10 @@ Work in progress. Feedback appreciated.
 
 ## Changelog
 
+### 0.1.13
+* (holomekc) update to api-version 2.1
+* (holomekc) add intrusionDetectionControl folder which contains trigger for alarm system
+
 ### 0.1.12
 * (holomekc) states and units
 * (holomekc) update license and copyright

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 0suiklRXYOyN3nVHV97UVCZua42xqf6uo1oXykfUO6Y=
+hash: 6cQUtoGYFQE/wvbZiTm1yPYsEVeQp8SWSXzFUKxQx2E=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -60,6 +60,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Uni (SHUNI-1) | unterstützt seit v4.0.4 | unterstützt seit v4.0.4 |
 | Shelly 1L (SHSW-L) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
 | Shelly Color Bulb (SHCB-1) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
+| Shelly Button (SHBTN-2) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -72,7 +73,11 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
-* (Stübi) - Support auf Shelly Color Bulb (SHCB-1) - Issue #317
+* (Stübi) - Support of Shelly Color Bulb (SHCB-1) - Issue #317
+* (Stübi) - Support of Shelly Button 1 (SHBTN-2) - Issue #316, #302, #303
+* (Stübi) - add state Total_Returned for Shelly EM3 - Issue #299
+* (Stübi) - add state transiton and fade_rate to Shelly Dimmer - Issue #260
+* (Stübi) - add state transiton for Shelly RGBW2 - Issue #289
 
 ### 4.0.4 (2020-11-15)
 * (Apollon77) update dependencies and shelly-iot lib

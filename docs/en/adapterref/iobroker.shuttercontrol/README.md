@@ -44,6 +44,12 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.1.5 (2021-01-22)
+* (simatec) BugFix io-package
+* (simatec) Source code structure changed
+* (FoxRo) new Feature "trigger delay"
+* (FoxRo) Bugfix for trigger
+
 ### 1.1.4 (2021-01-22)
 * (simatec) BugFix Log
 * (simatec) DEPENDENCIES updated

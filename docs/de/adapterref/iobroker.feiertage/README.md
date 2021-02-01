@@ -157,7 +157,7 @@ Es können natürlich weitere Instanzen des Adapters mit abweichenden Feiertagsa
 
 ## License
 
-Copyright (c) 2020 pix
+Copyright (c) 2021 pix
 
 The MIT License (MIT)
 

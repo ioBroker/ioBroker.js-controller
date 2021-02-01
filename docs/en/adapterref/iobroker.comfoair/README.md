@@ -2,7 +2,7 @@
 
 # ioBroker.comfoair
 
-![Number of Installations](http://iobroker.live/badges/comfoair-installed.svg) ![Number of Installations](http://iobroker.live/badges/comfoair-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.comfoair.svg)](https://www.npmjs.com/package/ iobroker.comfoair)
+![Number of Installations](http://iobroker.live/badges/comfoair-installed.svg) ![Number of Installations](http://iobroker.live/badges/comfoair-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.comfoair.svg)](<https://www.npmjs.com/package/ iobroker.comfoair>)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.comfoair.svg)](https://www.npmjs.com/package/iobroker.comfoair)
 
 [![NPM](https://nodei.co/npm/iobroker.comfoair.png?downloads=true)](https://nodei.co/npm/iobroker.comfoair/)
@@ -53,13 +53,15 @@ Values of your comfoair should be visible in the 'status' and the 'temperatures'
 
 By setting/changing values in the 'control' - channel, you control your comfoair ventilation. All values in the 'control' - channel have to be set with ACK=false to be recognized as commands for the adapter.
 
+Boostmode: set boosttime and start. Ventilation will go back to the previous level after boosttime. Returning is cancelled if the ventilation level is changed during boosttime.
+
 Tested on comfoair CA350.
 
 ## Changelog
 
 ### 1.1.3
 
-- level 'Auto' and boostmode added
+-   boostmode added
 
 ### 1.1.2
 

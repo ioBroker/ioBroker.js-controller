@@ -91,6 +91,9 @@ Der Inhalt des Datenpunktes `combined` wird mit einer CSS-Klasse übergeben. Die
 Der Adapter ist im Kompaktmodus von ioBroker lauffähig.
 
 ## Changelog
+### 2.0.10 (2021-02-01)
+* (wendy) "has no existing object" issue fixed
+
 ### 2.0.9 (2020-04-21)
 * (pix) NodeJS 10 or higher required
 
@@ -191,7 +194,7 @@ Der Adapter ist im Kompaktmodus von ioBroker lauffähig.
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2020 pix
+Copyright (c) 2016-2021 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

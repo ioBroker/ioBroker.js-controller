@@ -180,7 +180,7 @@ For a nicer look the following CSS is suggested to be used to the VIS editor.
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2020 pix
+Copyright (c) 2016-2021 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

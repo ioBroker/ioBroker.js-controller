@@ -233,6 +233,9 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 
 ## Changelog
 
+### 1.7.3 (2021-02-01)
+* (withstu) add upnp module and support bitrate, audio format and sample rate
+
 ### 1.7.2 (2021-01-30)
 * (withstu) fix seek in groups
 
@@ -325,7 +328,7 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 ## License
 MIT License
 
-Copyright (c) 2020 withstu <withstu@gmx.de>
+Copyright (c) 2021 withstu <withstu@gmx.de>
 
 derived from https://forum.iobroker.net/topic/10420/vorlage-denon-heos-script by Uwe Uhula
 TTS derived from https://github.com/ioBroker/ioBroker.sonos

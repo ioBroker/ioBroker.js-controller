@@ -75,6 +75,11 @@ You can deactivate HTTPS and authentication on these web instance, but better is
 -->
 
 ## Changelog
+
+### 4.0.8 (2021-01-31)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-CLOUD-S)
+* (bluefox) fix usage of credentials
+
 ### 4.0.7 (2021-01-30)
 * (bluefox) Show the invalid authentication message
 

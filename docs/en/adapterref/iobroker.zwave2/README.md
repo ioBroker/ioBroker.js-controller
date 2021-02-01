@@ -39,6 +39,11 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.8.9 (2021-01-31)
+* Labels for the Meter CC were improved to be unique
+* Many config files were added and updated
+* Improved compatibility with some devices, notably `ID Lock 150`, `Vision Security ZD2102-5`, `HomeSeer WD200+`
+* `currentValue` and similar values are now updated immediately when a set-type command succeeds. Verification is done after a short delay.
 
 ### 1.8.8 (2021-01-24)
 * Fixed an issue where communication with sleeping secure nodes could get stuck
@@ -60,9 +65,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * The interview is no longer aborted when a device does not respond to the Wakeup Capability query
 * Fixed a crash that could happen when compressing the value DB with an existing backup file
 * Added and updated several config files
-
-### 1.8.4 (2021-01-03)
-* Logfiles are created again
 
 ## License
 

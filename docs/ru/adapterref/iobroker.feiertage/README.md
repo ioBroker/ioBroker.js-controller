@@ -154,7 +154,7 @@ The adapter starts daily at midnight. Due to the nature of the subject, no highe
 
 ## License
 
-Copyright (c) 2020 pix
+Copyright (c) 2021 pix
 
 The MIT License (MIT)
 

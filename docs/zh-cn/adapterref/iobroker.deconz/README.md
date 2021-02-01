@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
-title: 重要说明：版本2.x.x的开发已停止。不要安装。
-hash: 91pA5IsG6BdOllBnQVybbzjjPoeE9Bi4AY9lDb9wXOs=
+title: 重要说明：版本2.x.x的开发已停止，但是适配器将得到进一步开发。不要安装。
+hash: nAn5U6ErrjXj/7L/tYDfl9+h6Co6C40uUfaJ7/5oke0=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -16,7 +16,7 @@ ioBroker deConz德累斯顿电子适配器
 
 ==============
 
-＃重要：停止版本2.x.x的开发。不要安装。
+＃重要说明：版本2.x.x的开发已停止，但适配器将得到进一步开发。不要安装。
 ＃＃ 注意
 不支持deConz的Beta /预发行版本。
 
@@ -27,7 +27,7 @@ ioBroker deConz德累斯顿电子适配器
 ＃＃ 英语
 连接到由dresden-elektronik开发的deConz软件。该软件旨在成为通用的ZigBee网关解决方案，使用来自dresden-elektronik的硬件，ConBee USB棒和RaspBee作为Raspberry Pi的模块。
 
-＃＃＃ 设定
+＃＃＃ 建立
 1.阅读deConz / Phoscon的文档，查看[links]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）部分。
 2.启动适配器
 3. *输入用于deConz的IP地址
@@ -102,9 +102,9 @@ Dafürgibt es das Objekt“行动”。
 #### Gruppe erstellen
    1.州“ groups.creategroup”名称degewünschtenNamen der Gruppe setzen。
 
-      戴米特·威尔德（Damit wird）
+      戴米特·威德·伊恩·里尔·格鲁佩·埃斯特尔特。
 
-   2.删除`manage.addtoGroup`的图片。
+   2. Die Lampe（n）负责`manage.addtoGroup`的工作。
 
       达祖·塞茨特（Dazu Setzt Man den State mit der der der Gruppe）。
 

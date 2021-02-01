@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
-title: Wichtig: Entwicklung von Version 2.x.x gestoppt. Nicht installieren.
-hash: 91pA5IsG6BdOllBnQVybbzjjPoeE9Bi4AY9lDb9wXOs=
+title: Wichtig: Die Entwicklung von Version 2.x.x wurde gestoppt, der Adapter wird jedoch weiterentwickelt. Nicht installieren.
+hash: nAn5U6ErrjXj/7L/tYDfl9+h6Co6C40uUfaJ7/5oke0=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -16,7 +16,7 @@ ioBroker deConz dresden-elektronik Adapter
 
 ==============
 
-# Wichtig: Entwicklung von Version 2.x.x gestoppt. Nicht installieren.
+# Wichtig: Die Entwicklung von Version 2.x.x wurde gestoppt, der Adapter wird jedoch weiterentwickelt. Nicht installieren.
 ## Beachten
 Keine Unterstützung für Beta / Pre-Release-Versionen von deConz.
 
@@ -27,7 +27,7 @@ Erforderliche js-controller Version> 2.x.x, Erforderliche node.js> = 10.x.x.
 ## Englisch
 Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
-### Konfiguration
+### Installieren
 1. Lesen Sie die Dokumentation zu deConz / Phoscon und lesen Sie den Abschnitt [links] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
 2. Starten Sie den Adapter
 3. * Geben Sie die IP-Adresse für deConz ein
@@ -81,7 +81,7 @@ Verbindet mit der von dresden-elektronik erled deConz-Software. Diese Software s
 
 4. "Erstelle API Key" enthält
 5. * Nameame (Standard ist Freude) und
-    * Passwort (wird beim ersten Anmelden in der Phoscon APP gehört) gehört
+    * Passwort
    * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App gehört" klicken
 
 #### Mehr als ein Befehl senden
@@ -94,7 +94,7 @@ Beispiele:
 `"on": true, "transitiontime": 5, "hue": 65500`
 
 #### Weisen Sie eine Szene
-   1. Stellen Sie alle Lichter in der Gruppe auf den Zustand ein, den Sie für die Szene Situationen
+   1. Stellen Sie alle Lichter in der Gruppe auf den Zustand ein, den Sie für die Szene Zustände
    2. Schreiben Sie den Namen Ihrer Szene im Status "Erstehende Szene"
 
    Das Kriege!

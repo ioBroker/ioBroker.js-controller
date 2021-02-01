@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: Material Design Widgets für ioBroker VIS
-hash: itzmR337GeEOKnZgmnxGDNyDtAkP9llnB1FUlX/0asI=
+hash: RZC4Vqo/Q2PV3bS1R70YMGvpfv9L6aTmQ4g0UVw0eeg=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png) <! - in toc weglassen ->
 
@@ -95,7 +95,8 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Editoreinstellungen] (# editor-settings-11)
 - [Daten - JSON-Struktur] (# Daten --- JSON-Struktur)
 - [interne Objektbindung] (# interne Objektbindung)
-- [Steuerelemente - **veraltet** seit v0.5.0] (# Steuerelemente --- veraltet seit v050)
+- [HTML Control Widgets] (# html-control-Widgets)
+- [Steuerelemente - **veraltet seit v0.5.0** (# Steuerelemente --- veraltet seit v050)
 - [Responsive Layout] (# Responsive-Layout)
 - [Mauerwerksansichten] (# Mauerwerksansichten)
 - [Editoreinstellungen] (# editor-settings-12)
@@ -111,7 +112,7 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Skript: Konvertierung] (# Skriptkonvertierung)
 - [Dialog] (# Dialog)
 - [Editoreinstellungen] (# editor-settings-16)
-- [HTML-Elemente] (# HTML-Elemente)
+- [HTML-Widgets] (# HTML-Widgets)
 - [gebrauchte Bibliotheken] (# gebrauchte Bibliotheken)
 - [Changelog] (# changelog)
 - [Lizenz] (# Lizenz)
@@ -209,7 +210,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 <table><thead><tr><th>Bildschirmfoto</th><th> Beschreibung</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td> Einige der Widgets unterstützen die <a href="https://materialdesignicons.com/" target="_blank">Material Design Icons-</a> Bibliothek. Sie können ein Symbol aus der obigen Liste auswählen oder die Bildauswahl öffnen, indem Sie auf die Schaltfläche rechts neben dem Eingabefeld klicken.<br><br> <b>Bildfarben gelten nur für die Materialdesignsymbole, nicht für ein Bild!</b></td></tr></tbody></table>
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-mdwIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-mdwIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> mdw-mdwIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr></tbody></table>
 
@@ -232,17 +233,17 @@ Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet
 
 ## Tasten
 ##### Eigenschaften der Schaltflächenverknüpfung
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> link_default</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> buttonStyle</td><td> Tastenstil</td><td> Zeichenfolge</td><td> Text | angehoben | nicht erhöht | umrissen</tr><tr><td> href</td><td> Verknüpfung</td><td> URL</td><td></tr><tr><td> openNewWindow</td><td> in einem neuen Fenster öffnen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Beschriftung</b></i></td></tr><tr><td> Schaltflächentext</td><td> Schaltflächentext</td><td> Zeichenfolge</td><td></tr><tr><td> textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> labelWidth</td><td> Textbreite</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdwButtonPrimaryColor</td><td> Primärfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonSecondaryColor</td><td> sekundäre Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonColorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> links | Recht</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr></tbody></table></details>
 
 ##### Eigenschaften des Schaltflächenstatus
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> state_default</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> buttonStyle</td><td> Tastenstil</td><td> Zeichenfolge</td><td> Text | angehoben | nicht erhöht | umrissen</tr><tr><td> Wert</td><td> Wert</td><td> Zeichenfolge</td><td></tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Beschriftung</b></i></td></tr><tr><td> Schaltflächentext</td><td> Schaltflächentext</td><td> Zeichenfolge</td><td></tr><tr><td> textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> labelWidth</td><td> Textbreite</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdwButtonPrimaryColor</td><td> Primärfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonSecondaryColor</td><td> sekundäre Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonColorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> links | Recht</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Verriegeln</b></i></td></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table></details>
 
 ##### Schaltfläche Eigenschaften umschalten
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> toggle_default</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> buttonStyle</td><td> Tastenstil</td><td> Zeichenfolge</td><td> Text | angehoben | nicht erhöht | umrissen</tr><tr><td> schreibgeschützt</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> toggleType</td><td> Art des Umschalters</td><td> Zeichenfolge</td><td> boolean | Wert</tr><tr><td> Druckknopf</td><td> Druckknopf</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> valueOff</td><td> Wert für aus</td><td> Zeichenfolge</td><td></tr><tr><td> valueOn</td><td> Wert für auf</td><td> Zeichenfolge</td><td></tr><tr><td> stateIfNotTrueValue</td><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Zeichenfolge</td><td> am | aus</tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Beschriftung</b></i></td></tr><tr><td> Schaltflächentext</td><td> Schaltflächentext</td><td> Zeichenfolge</td><td></tr><tr><td> labelTrue</td><td> Beschriften Sie true</td><td> Zeichenfolge</td><td></tr><tr><td> labelColorFalse</td><td> Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> labelColorTrue</td><td> aktive Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> labelWidth</td><td> Textbreite</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdwButtonPrimaryColor</td><td> Primärfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonSecondaryColor</td><td> sekundäre Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonColorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorBgFalse</td><td> Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorBgTrue</td><td> aktiver Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> imageTrue</td><td> aktives Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageTrueColor</td><td> aktive Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> links | Recht</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Verriegeln</b></i></td></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table></details>
 
@@ -250,17 +251,17 @@ Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steu
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
 
 ##### Schaltfläche Vertikale Verknüpfungseigenschaften
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> link_vertical</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> buttonStyle</td><td> Tastenstil</td><td> Zeichenfolge</td><td> Text | angehoben | nicht erhöht | umrissen</tr><tr><td> href</td><td> Verknüpfung</td><td> URL</td><td></tr><tr><td> openNewWindow</td><td> in einem neuen Fenster öffnen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Beschriftung</b></i></td></tr><tr><td> Schaltflächentext</td><td> Schaltflächentext</td><td> Zeichenfolge</td><td></tr><tr><td> textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> Ausrichtung</td><td> Ausrichtung</td><td> Zeichenfolge</td><td> Flex-Start | Mitte | Flex-End</tr><tr><td> distanceBetweenTextAndImage</td><td> Abstand zwischen Text und Bild</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdwButtonPrimaryColor</td><td> Primärfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonSecondaryColor</td><td> sekundäre Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonColorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> Nach oben | Unterseite</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr></tbody></table></details>
 
 ##### Eigenschaften des vertikalen Status der Schaltfläche
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> state_vertical</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> buttonStyle</td><td> Tastenstil</td><td> Zeichenfolge</td><td> Text | angehoben | nicht erhöht | umrissen</tr><tr><td> Wert</td><td> Wert</td><td> Zeichenfolge</td><td></tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Beschriftung</b></i></td></tr><tr><td> Schaltflächentext</td><td> Schaltflächentext</td><td> Zeichenfolge</td><td></tr><tr><td> textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> Ausrichtung</td><td> Ausrichtung</td><td> Zeichenfolge</td><td> Flex-Start | Mitte | Flex-End</tr><tr><td> distanceBetweenTextAndImage</td><td> Abstand zwischen Text und Bild</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdwButtonPrimaryColor</td><td> Primärfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonSecondaryColor</td><td> sekundäre Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonColorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> Nach oben | Unterseite</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Verriegeln</b></i></td></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> lockIconTop</td><td> Symbolabstand von oben [%]</td><td> Nummer</td><td></tr><tr><td> lockIconLeft</td><td> Symbolabstand von links [%]</td><td> Nummer</td><td></tr><tr><td> lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table></details>
 
 ##### Schaltfläche Vertikale Umschalteigenschaften
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> toggle_vertical</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> buttonStyle</td><td> Tastenstil</td><td> Zeichenfolge</td><td> Text | angehoben | nicht erhöht | umrissen</tr><tr><td> schreibgeschützt</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> toggleType</td><td> Art des Umschalters</td><td> Zeichenfolge</td><td> boolean | Wert</tr><tr><td> Druckknopf</td><td> Druckknopf</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> valueOff</td><td> Wert für aus</td><td> Zeichenfolge</td><td></tr><tr><td> valueOn</td><td> Wert für auf</td><td> Zeichenfolge</td><td></tr><tr><td> stateIfNotTrueValue</td><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Zeichenfolge</td><td> am | aus</tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Beschriftung</b></i></td></tr><tr><td> Schaltflächentext</td><td> Schaltflächentext</td><td> Zeichenfolge</td><td></tr><tr><td> labelTrue</td><td> Beschriften Sie true</td><td> Zeichenfolge</td><td></tr><tr><td> labelColorFalse</td><td> Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> labelColorTrue</td><td> aktive Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> Ausrichtung</td><td> Ausrichtung</td><td> Zeichenfolge</td><td> Flex-Start | Mitte | Flex-End</tr><tr><td> distanceBetweenTextAndImage</td><td> Abstand zwischen Text und Bild</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdwButtonPrimaryColor</td><td> Primärfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdwButtonSecondaryColor</td><td> sekundäre Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorBgFalse</td><td> Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorBgTrue</td><td> aktiver Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> imageTrue</td><td> aktives Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageTrueColor</td><td> aktive Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> Nach oben | Unterseite</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Verriegeln</b></i></td></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> lockIconTop</td><td> Symbolabstand von oben [%]</td><td> Nummer</td><td></tr><tr><td> lockIconLeft</td><td> Symbolabstand von links [%]</td><td> Nummer</td><td></tr><tr><td> lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table></details>
 
@@ -268,17 +269,17 @@ Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steu
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
 ##### Eigenschaften des Schaltflächensymbols
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> link_icon</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> href</td><td> Verknüpfung</td><td> URL</td><td></tr><tr><td> openNewWindow</td><td> in einem neuen Fenster öffnen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> colorBgFalse</td><td> Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr></tbody></table></details>
 
 ##### Eigenschaften des Schaltflächensymbolstatus
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> state_icon</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> Wert</td><td> Wert</td><td> Zeichenfolge</td><td></tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> colorBgFalse</td><td> Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verriegeln</b></i></td></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> lockIconTop</td><td> Symbolabstand von oben [%]</td><td> Nummer</td><td></tr><tr><td> lockIconLeft</td><td> Symbolabstand von links [%]</td><td> Nummer</td><td></tr><tr><td> lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td> Nummer</td><td></tr><tr><td> lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table></details>
 
 ##### Button Icon Eigenschaften umschalten
-Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Element](#html-elements) verwendet werden
+Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steuerelemente) oder als [HTML-Widgets](#html-widgets) verwendet werden
 
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr><thead><tbody><tr><td> Art</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> toggle_icon</td></tr><tr><td> debuggen</td><td> Debug-Modus</td><td> Boolescher Wert</td><td> false | wahr</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> schreibgeschützt</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> toggleType</td><td> Art des Umschalters</td><td> Zeichenfolge</td><td> boolean | Wert</tr><tr><td> Druckknopf</td><td> Druckknopf</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> valueOff</td><td> Wert für aus</td><td> Zeichenfolge</td><td></tr><tr><td> valueOn</td><td> Wert für auf</td><td> Zeichenfolge</td><td></tr><tr><td> stateIfNotTrueValue</td><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Zeichenfolge</td><td> am | aus</tr><tr><td> vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> generateHtmlControl</td><td> HTML-Element generieren</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbol</b></i></td></tr><tr><td> Bild</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> imageTrue</td><td> aktives Bild</td><td> Zeichenfolge</td><td></tr><tr><td> imageTrueColor</td><td> aktive Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> colorBgFalse</td><td> Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorBgTrue</td><td> aktiver Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> colorPress</td><td> Farbe gedrückt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verriegeln</b></i></td></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> lockIconTop</td><td> Symbolabstand von oben [%]</td><td> Nummer</td><td></tr><tr><td> lockIconLeft</td><td> Symbolabstand von links [%]</td><td> Nummer</td><td></tr><tr><td> lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td> Nummer</td><td></tr><tr><td> lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table></details>
 
@@ -291,7 +292,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=4><img src="doc/en/media/checkbox_settings_common.png"></td><td>Art des Umschalters</td><td> Definieren Sie, welcher Datentyp (Boolescher Wert oder Wert) umgeschaltet werden soll</td></tr><tr><td> Wert für aus</td><td> Legen Sie fest, bei welchem Wert das Kontrollkästchen falsch ist</td></tr><tr><td> Wert für auf</td><td> Legen Sie fest, bei welchem Wert das Kontrollkästchen aktiviert ist</td></tr><tr><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Setzen Sie den Status des Kontrollkästchens, wenn der Wert nicht mit der Bedingung &quot;Ein&quot; übereinstimmt</td></tr></tbody></table>
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-readOnly</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-toggleType</td><td> Art des Umschalters</td><td> Zeichenfolge</td><td> boolean | Wert</tr><tr><td> mdw-valueOff</td><td> Wert für aus</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueOn</td><td> Wert für auf</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-stateIfNotTrueValue</td><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Zeichenfolge</td><td> am | aus</tr><tr><td> mdw-vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Beschriftung</b></i></td></tr><tr><td> mdw-labelFalse</td><td> Beschriften Sie false</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-labelTrue</td><td> Beschriften Sie true</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-labelPosition</td><td> labelPosition</td><td> Zeichenfolge</td><td> links | rechts | aus</tr><tr><td> mdw-labelClickActive</td><td> Labelklick aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-valueFontFamily</td><td> valueFontFamily</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueFontSize</td><td> Wert Schriftgröße</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdw-colorCheckBox</td><td> Kontrollkästchenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorCheckBoxBorder</td><td> Randfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorCheckBoxHover</td><td> Schwebefarbe des Kontrollkästchens</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-labelColorFalse</td><td> Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-labelColorTrue</td><td> aktive Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verriegeln</b></i></td></tr><tr><td> mdw-lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> mdw-lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-lockIconTop</td><td> Symbolabstand von oben [%]</td><td> Nummer</td><td></tr><tr><td> mdw-lockIconLeft</td><td> Symbolabstand von links [%]</td><td> Nummer</td><td></tr><tr><td> mdw-lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> mdw-lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table>
 
@@ -338,7 +339,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=4><img src="doc/en/media/switch_settings_common.png"></td><td> Art des Umschalters</td><td> Definieren Sie, welcher Datentyp (Boolescher Wert oder Wert) umgeschaltet werden soll</td></tr><tr><td> Wert für aus</td><td> Stellen Sie ein, bei welchem Wert der Schalter falsch ist</td></tr><tr><td> Wert für auf</td><td> Stellen Sie ein, bei welchem Wert der Schalter wahr ist</td></tr><tr><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Stellen Sie den Status des Schalters ein, wenn der Wert nicht mit der Ein-Bedingung übereinstimmt</td></tr></tbody></table>
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-readOnly</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-toggleType</td><td> Art des Umschalters</td><td> Zeichenfolge</td><td> boolean | Wert</tr><tr><td> mdw-valueOff</td><td> Wert für aus</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueOn</td><td> Wert für auf</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-stateIfNotTrueValue</td><td> Geben Sie an, ob der Wert nicht der Bedingung &quot;Ein&quot; entspricht</td><td> Zeichenfolge</td><td> am | aus</tr><tr><td> mdw-vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Beschriftung</b></i></td></tr><tr><td> mdw-labelFalse</td><td> Beschriften Sie false</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-labelTrue</td><td> Beschriften Sie true</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-labelPosition</td><td> labelPosition</td><td> Zeichenfolge</td><td> links | rechts | aus</tr><tr><td> mdw-labelClickActive</td><td> Labelklick aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-valueFontFamily</td><td> valueFontFamily</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueFontSize</td><td> Wert Schriftgröße</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdw-colorSwitchThumb</td><td> Daumenfarbe des Schalters</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorSwitchTrack</td><td> Spurfarbe des Schalters</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorSwitchTrue</td><td> aktive Schalterfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorSwitchHover</td><td> Schwebefarbe des Schalters</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorSwitchHoverTrue</td><td> aktive Schalterfarbe ausgewählt / Hover</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-labelColorFalse</td><td> Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-labelColorTrue</td><td> aktive Etikettenfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verriegeln</b></i></td></tr><tr><td> mdw-lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-autoLockAfter</td><td> automatische Sperre nach [s]</td><td> Nummer</td><td></tr><tr><td> mdw-lockIcon</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-lockIconTop</td><td> Symbolabstand von oben [%]</td><td> Nummer</td><td></tr><tr><td> mdw-lockIconLeft</td><td> Symbolabstand von links [%]</td><td> Nummer</td><td></tr><tr><td> mdw-lockIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> mdw-lockIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-lockFilterGrayscale</td><td> Graufilter, wenn gesperrt</td><td> Nummer</td><td></tr></tbody></table>
 
@@ -422,7 +423,7 @@ Die JSON-Zeichenfolge muss ein Array von Objekten mit den folgenden Eigenschafte
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/progress_settings_colors.png"></td><td>Bedingung für Farbe 1 Fortschritt [&gt;]</td><td> Bedingung ab wann Farbe 1 verwendet werden soll. Der Wert der Bedingung muss in Prozent angegeben werden</td></tr><tr><td> Bedingung für den Fortschritt von Farbe 2 [&gt;]</td><td> Bedingung ab wann Farbe 2 verwendet werden soll. Der Wert der Bedingung muss in Prozent angegeben werden</td></tr><tr><td rowspan=1><img src="doc/en/media/progress_settings.png"></td><td> benutzerdefiniertes Etikett</td><td> Für benutzerdefinierte Beschriftungen können Sie die Eigenschaft <code>[#value]</code> , um den tatsächlichen Wert des Datenpunkts <code>[#value]</code> . Um den aktuellen <code>[#percent]</code> können Sie <code>[#percent]</code></td></tr></tbody></table>
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> mdw-Typ</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> linear</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-min</td><td> Mindest</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-max</td><td> max</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-progressIndeterminate</td><td> unbestimmt - kontinuierlich animiert</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-reverse</td><td> Kehrt den Wert um</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Layout</b></i></td></tr><tr><td> mdw-progressRounded</td><td> abgerundete Ecken</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-progressStriped</td><td> gestreift</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-progressStripedColor</td><td> progressStripedColor</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Farben</b></i></td></tr><tr><td> mdw-colorProgressBackground</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorProgress</td><td> Farbfortschritt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorOneCondition</td><td> Bedingung für Farbe 1 Fortschritt [&gt;]</td><td> Nummer</td><td></tr><tr><td> mdw-colorOne</td><td> Farbe 1 Fortschritt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorTwoCondition</td><td> Bedingung für den Fortschritt von Farbe 2 [&gt;]</td><td> Nummer</td><td></tr><tr><td> mdw-colorTwo</td><td> Farbe 2 Fortschritt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Beschriftung</b></i></td></tr><tr><td> mdw-showValueLabel</td><td> Wert anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-valueLabelStyle</td><td> Wertbeschriftungsstil</td><td> Zeichenfolge</td><td> progressPercent | progressValue | progressCustom</tr><tr><td> mdw-valueLabelUnit</td><td> Einheit</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueMaxDecimals</td><td> Dezimalpunkte</td><td> Nummer</td><td></tr><tr><td> mdw-valueLabelCustom</td><td> benutzerdefiniertes Etikett</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-textColor</td><td> Minuten Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> mdw-textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-textAlign</td><td> Textausrichtung</td><td> Zeichenfolge</td><td> start | Mitte | Ende</tr></tbody></table>
 
@@ -464,7 +465,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/progress_circular_settings_colors.png"></td><td> Bedingung für Farbe 1 Fortschritt [&gt;]</td><td> Bedingung ab wann Farbe 1 verwendet werden soll. Der Wert der Bedingung muss in Prozent angegeben werden</td></tr><tr><td> Bedingung für den Fortschritt von Farbe 2 [&gt;]</td><td> Bedingung ab wann Farbe 2 verwendet werden soll. Der Wert der Bedingung muss in Prozent angegeben werden</td></tr><tr><td rowspan=6><img src="doc/en/media/progress_settings.png"></td><td> benutzerdefiniertes Etikett</td><td> Für benutzerdefinierte Beschriftungen können Sie die Eigenschaft <code>[#value]</code> , um den tatsächlichen Wert des Datenpunkts <code>[#value]</code> . Um den aktuellen <code>[#percent]</code> können Sie <code>[#percent]</code></td></tr></tbody></table>
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> mdw-Typ</td><td> Widget-Typ</td><td> Zeichenfolge</td><td> kreisförmig</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-min</td><td> Mindest</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-max</td><td> max</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-progressIndeterminate</td><td> unbestimmt - kontinuierlich animiert</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Layout</b></i></td></tr><tr><td> mdw-progressCircularSize</td><td> Größe</td><td> Nummer</td><td></tr><tr><td> mdw-progressCircularWidth</td><td> Dicke</td><td> Nummer</td><td></tr><tr><td> mdw-progressCircularRotate</td><td> Startpunkt drehen</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Farben</b></i></td></tr><tr><td> mdw-colorProgressBackground</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorProgress</td><td> Farbfortschritt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-innerColor</td><td> Kreis Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorOneCondition</td><td> Bedingung für Farbe 1 Fortschritt [&gt;]</td><td> Nummer</td><td></tr><tr><td> mdw-colorOne</td><td> Farbe 1 Fortschritt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorTwoCondition</td><td> Bedingung für den Fortschritt von Farbe 2 [&gt;]</td><td> Nummer</td><td></tr><tr><td> mdw-colorTwo</td><td> Farbe 2 Fortschritt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Beschriftung</b></i></td></tr><tr><td> mdw-showValueLabel</td><td> Wert anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-valueLabelStyle</td><td> Wertbeschriftungsstil</td><td> Zeichenfolge</td><td> progressPercent | progressValue | progressCustom</tr><tr><td> mdw-valueLabelUnit</td><td> Einheit</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueMaxDecimals</td><td> Dezimalpunkte</td><td> Nummer</td><td></tr><tr><td> mdw-valueLabelCustom</td><td> benutzerdefiniertes Etikett</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-textColor</td><td> Minuten Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-textFontSize</td><td> Textgröße</td><td> Nummer</td><td></tr><tr><td> mdw-textFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr></tbody></table>
 
@@ -499,7 +500,7 @@ Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-oid-working</td><td> Arbeitsobjekt-ID</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-orientierung</td><td> Orientierung</td><td> Zeichenfolge</td><td> horizontal | vertikal</tr><tr><td> mdw-reverseSlider</td><td> Schieberegler umkehren</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-knobSize</td><td> Knopfgröße</td><td> Zeichenfolge</td><td> knobSmall | knobMedium | knaufBig</tr><tr><td> mdw-readOnly</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-min</td><td> Mindest</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-max</td><td> max</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-step</td><td> Schritte</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Schritte Layout</b></i></td></tr><tr><td> mdw-showTicks</td><td> Schritte zeigen</td><td> Zeichenfolge</td><td> nein | ja | immer</tr><tr><td> mdw-tickSize</td><td> Anzeigegröße der Schritte</td><td> Nummer</td><td></tr><tr><td> mdw-tickLabels</td><td> Text der Schritte (durch Kommas getrennt)</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-tickTextColor</td><td> Textfarbe der Schritte</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-tickFontFamily</td><td> Schriftart der Schritte</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-tickFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-tickColorBefore</td><td> Farbe vor dem Regler</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-tickColorAfter</td><td> Farbe nach dem Regler</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Farben</b></i></td></tr><tr><td> mdw-colorBeforeThumb</td><td> Farbe vor dem Regler</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorThumb</td><td> Farbe des Reglers</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorAfterThumb</td><td> Farbe nach dem Regler</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Beschriftung</b></i></td></tr><tr><td> mdw-prepandText</td><td> Text vorangestellt</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandTextWidth</td><td> prepandTextWidth</td><td> Nummer</td><td></tr><tr><td> mdw-prepandTextColor</td><td> Farbe des vorgefertigten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandTextFontSize</td><td> Textgröße vorab erweitert</td><td> Nummer</td><td></tr><tr><td> mdw-prepandTextFontFamily</td><td> Schriftart des Textes vorangestellt</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-showValueLabel</td><td> Wert anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-valueLabelStyle</td><td> Wertbeschriftungsstil</td><td> Zeichenfolge</td><td> sliderPercent | sliderValue</tr><tr><td> mdw-valueLabelUnit</td><td> Einheit</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueFontFamily</td><td> valueFontFamily</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueFontSize</td><td> Wert Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-valueLabelColor</td><td> Textfarbe des Wertes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-valueLabelMin</td><td> Text für Wert kleiner als min</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueLabelMax</td><td> Text für Wert größer als min</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueLessThan</td><td> &#39;kleiner als&#39; Bedingung für den Text des Wertes</td><td> Nummer</td><td></tr><tr><td> mdw-textForValueLessThan</td><td> Text für &#39;kleiner als&#39;</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueGreaterThan</td><td> Bedingung &#39;größer als&#39; für den Text des Werts</td><td> Nummer</td><td></tr><tr><td> mdw-textForValueGreaterThan</td><td> Text für &#39;größer als&#39;</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueLabelWidth</td><td> Abstandsetikett</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Layout des Controller-Labels</b></i></td></tr><tr><td> mdw-showThumbLabel</td><td> Etikett anzeigen</td><td> Zeichenfolge</td><td> nein | ja | immer</tr><tr><td> mdw-thumbSize</td><td> Etikettengröße</td><td> Nummer</td><td></tr><tr><td> mdw-thumbBackgroundColor</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-thumbFontColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-thumbFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-thumbFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-useLabelRules</td><td> Verwenden Sie die Regeln des Textes</td><td> Boolescher Wert</td><td> false | wahr</tr></tbody></table>
 
@@ -556,7 +557,7 @@ Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
 ### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-oid-working</td><td> Arbeitsobjekt-ID</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-min</td><td> Mindest</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-max</td><td> max</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-step</td><td> Schritte</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-readOnly</td><td> schreibgeschützt</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-startAngle</td><td> Startwinkel</td><td> Nummer</td><td></tr><tr><td> mdw-arcLength</td><td> Bogenlänge</td><td> Nummer</td><td></tr><tr><td> mdw-sliderWidth</td><td> Slider Thikness</td><td> Nummer</td><td></tr><tr><td> mdw-handleSize</td><td> Knopfgröße</td><td> Nummer</td><td></tr><tr><td> mdw-handleZoom</td><td> Knopfzoom bei Steuerung</td><td> Nummer</td><td></tr><tr><td> mdw-rtl</td><td> Schiebereglerbewegung von rechts nach links</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Farben</b></i></td></tr><tr><td> mdw-colorSliderBg</td><td> Hintergrund</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorBeforeThumb</td><td> Farbe vor dem Regler</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorThumb</td><td> Farbe des Reglers</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-colorAfterThumb</td><td> Farbe nach dem Regler</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-valueLabelColor</td><td> Textfarbe des Wertes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Beschriftung</b></i></td></tr><tr><td> mdw-showValueLabel</td><td> Wert anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-valueLabelVerticalPosition</td><td> vertikale Textposition des Wertes</td><td> Nummer</td><td></tr><tr><td> mdw-valueLabelStyle</td><td> Wertbeschriftungsstil</td><td> Zeichenfolge</td><td> sliderPercent | sliderValue</tr><tr><td> mdw-valueLabelUnit</td><td> Einheit</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueFontFamily</td><td> valueFontFamily</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueFontSize</td><td> Wert Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-valueLabelMin</td><td> Text für Wert kleiner als min</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueLabelMax</td><td> Text für Wert größer als min</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueLessThan</td><td> &#39;kleiner als&#39; Bedingung für den Text des Wertes</td><td> Nummer</td><td></tr><tr><td> mdw-textForValueLessThan</td><td> Text für &#39;kleiner als&#39;</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueGreaterThan</td><td> Bedingung &#39;größer als&#39; für den Text des Werts</td><td> Nummer</td><td></tr><tr><td> mdw-textForValueGreaterThan</td><td> Text für &#39;größer als&#39;</td><td> Zeichenfolge</td><td></tr></tbody></table>
 
@@ -600,7 +601,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=4><img src="doc/en/media/input_settings_common.png"></td><td> Objekt Identifikation</td><td> ID des Datenpunkts</td></tr><tr><td> Eingabetyp</td><td> Eingabetyp des Textfelds</td></tr><tr><td> Eingabemaske</td><td> Wenn Sie eine Eingabetypmaske verwenden, können Sie eine Maske definieren. Zulässige Eigenschaften werden im <a href="https://vuejs-tips.github.io/vue-the-mask/" target="_blank">Vue der Maskendokumentation beschrieben</a></td></tr><tr><td> maximale Länge</td><td> maximale Eingabelänge des Textfeldes</td></tr></tbody></table>
 
 #### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputType</td><td> Eingabetyp</td><td> Zeichenfolge</td><td> Text | Nummer | Datum | Zeit | Maske</tr><tr><td> mdw-inputMask</td><td> Eingabemaske</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMaxLength</td><td> maximale Länge</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Layout-Eingabe</b></i></td></tr><tr><td> mdw-inputLayout</td><td> Layout</td><td> Zeichenfolge</td><td> regelmäßig | solo | solo gerundet | solo geformt | gefüllt | gefüllt-gerundet | gefüllt-förmig | umrissen | umrissen gerundet | umrissen</tr><tr><td> mdw-inputAlignment</td><td> Textausrichtung</td><td> Zeichenfolge</td><td> links | Mitte | Recht</tr><tr><td> mdw-inputLayoutBackgroundColor</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBackgroundColorHover</td><td> Hintergrundfarbe schweben</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBackgroundColorSelected</td><td> Hintergrundfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColor</td><td> Randfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColorHover</td><td> Randfarbe schweben</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColorSelected</td><td> Rahmenfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputTextFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputTextFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputTextColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Bezeichnung der Eingabe</b></i></td></tr><tr><td> mdw-inputLabelText</td><td> Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputLabelColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLabelColorSelected</td><td> Textfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLabelFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputLabelFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputTranslateX</td><td> Versatz x</td><td> Nummer</td><td></tr><tr><td> mdw-inputTranslateY</td><td> Versatz y</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Anhänge der Eingabe</b></i></td></tr><tr><td> mdw-inputPrefix</td><td> vorangestellter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputSuffix</td><td> angehängter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputAppendixColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputAppendixFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputAppendixFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Untertext der Eingabe</b></i></td></tr><tr><td> mdw-showInputMessageAlways</td><td> immer anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-inputMessage</td><td> Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMessageFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMessageFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputMessageColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Zählerlayout</b></i></td></tr><tr><td> mdw-showInputCounter</td><td> Zähler anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-inputCounterColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputCounterFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputCounterFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbole</b></i></td></tr><tr><td> mdw-clearIconShow</td><td> Symbol zum Löschen von Text anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-clearIcon</td><td> Symbol zum Löschen von Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-clearIconSize</td><td> Größe des Textlöschsymbols</td><td> Nummer</td><td></tr><tr><td> mdw-clearIconColor</td><td> Farbe des Textes Löschsymbol</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandIcon</td><td> vorangestelltes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandIconSize</td><td> Größe des vorangestellten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-prepandIconColor</td><td> Farbe des vorangestellten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandInnerIcon</td><td> inneres vorangestelltes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandInnerIconSize</td><td> Größe des inneren vorangestellten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-prepandInnerIconColor</td><td> Farbe des inneren vorangestellten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-appendIcon</td><td> angehängtes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-appendIconSize</td><td> Größe des angehängten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-appendIconColor</td><td> Farbe des angehängten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-appendOuterIcon</td><td> äußeres angehängtes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-appendOuterIconSize</td><td> Größe des äußeren angehängten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-appendOuterIconColor</td><td> Farbe des äußeren angehängten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr></tbody></table>
 
@@ -676,7 +677,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 </ Details>
 
 #### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputType</td><td> Eingabetyp</td><td> Zeichenfolge</td><td> Text | Datum | Zeit</tr><tr><td> mdw-vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Layout-Eingabe</b></i></td></tr><tr><td> mdw-inputLayout</td><td> Layout</td><td> Zeichenfolge</td><td> regelmäßig | solo | solo gerundet | solo geformt | gefüllt | gefüllt-gerundet | gefüllt-förmig | umrissen | umrissen gerundet | umrissen</tr><tr><td> mdw-inputAlignment</td><td> Textausrichtung</td><td> Zeichenfolge</td><td> links | Mitte | Recht</tr><tr><td> mdw-inputLayoutBackgroundColor</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBackgroundColorHover</td><td> Hintergrundfarbe schweben</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBackgroundColorSelected</td><td> Hintergrundfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColor</td><td> Randfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColorHover</td><td> Randfarbe schweben</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColorSelected</td><td> Rahmenfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputTextFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputTextFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputTextColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Bezeichnung der Eingabe</b></i></td></tr><tr><td> mdw-inputLabelText</td><td> Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputLabelColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLabelColorSelected</td><td> Textfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLabelFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputLabelFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputTranslateX</td><td> Versatz x</td><td> Nummer</td><td></tr><tr><td> mdw-inputTranslateY</td><td> Versatz y</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Anhänge der Eingabe</b></i></td></tr><tr><td> mdw-inputPrefix</td><td> vorangestellter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputSuffix</td><td> angehängter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputAppendixColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputAppendixFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputAppendixFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Untertext der Eingabe</b></i></td></tr><tr><td> mdw-showInputMessageAlways</td><td> immer anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-inputMessage</td><td> Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMessageFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMessageFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputMessageColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Zählerlayout</b></i></td></tr><tr><td> mdw-showInputCounter</td><td> Zähler anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-inputCounterColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputCounterFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputCounterFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbole</b></i></td></tr><tr><td> mdw-clearIconShow</td><td> Symbol zum Löschen von Text anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-clearIcon</td><td> Symbol zum Löschen von Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-clearIconSize</td><td> Größe des Textlöschsymbols</td><td> Nummer</td><td></tr><tr><td> mdw-clearIconColor</td><td> Farbe des Textes Löschsymbol</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-kollapsIcon</td><td> Menü öffnen Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw -apseIconSize</td><td> Größe des Symbols zum Öffnen des Menüs</td><td> Nummer</td><td></tr><tr><td> mdw-kollapsIconColor</td><td> Farbe des offenen Menüsymbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandIcon</td><td> vorangestelltes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandIconSize</td><td> Größe des vorangestellten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-prepandIconColor</td><td> Farbe des vorangestellten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandInnerIcon</td><td> inneres vorangestelltes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandInnerIconSize</td><td> Größe des inneren vorangestellten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-prepandInnerIconColor</td><td> Farbe des inneren vorangestellten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-appendOuterIcon</td><td> äußeres angehängtes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-appendOuterIconSize</td><td> Größe des äußeren angehängten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-appendOuterIconColor</td><td> Farbe des äußeren angehängten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Daten des Menüs</b></i></td></tr><tr><td> mdw-listDataMethod</td><td> Eingabemethode für die Menüdaten</td><td> Zeichenfolge</td><td> inputPerEditor | jsonStringObject | multistatesObject | valueList</tr><tr><td> mdw-countSelectItems</td><td> Editor: Anzahl der Menüpunkte</td><td> Nummer</td><td></tr><tr><td> mdw-jsonStringObject</td><td> JSON-Zeichenfolge. Muss HTML entkommen sein! Hinweis: Verwenden Sie <a href="https://github.com/mathiasbynens/he#heencodetext-options" target="_blank">die Bibliothek</a> in Ihren Skripten, um sie in htmle zu codieren</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueList</td><td> Werteliste</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueListLabels</td><td> Werteliste: Labels</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueListIcons</td><td> Werteliste: Bilder</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Menü-Layout</b></i></td></tr><tr><td> mdw-listPosition</td><td> Position</td><td> Zeichenfolge</td><td> auto | Nach oben | Unterseite</tr><tr><td> mdw-listPositionOffset</td><td> Positionsversatz verwenden</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-openOnClear</td><td> Öffnen Sie das Menü mit der Schaltfläche Löschen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-listItemHeight</td><td> Höhe des Menüpunktes</td><td> Nummer</td><td></tr><tr><td> mdw-listItemBackgroundColor</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemBackgroundHoverColor</td><td> Schwebefarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemBackgroundSelectedColor</td><td> Farbe des ausgewählten Elements</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemRippleEffectColor</td><td> Effektfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-showSelectedIcon</td><td> Symbol des ausgewählten Elements anzeigen</td><td> Zeichenfolge</td><td> nein | voranstellen | prepend-inner | Append-Outer</tr><tr><td> mdw-listIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> mdw-listIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listIconHoverColor</td><td> Symbol Schwebefarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listIconSelectedColor</td><td> Symbolfarbe des ausgewählten Elements</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-listItemFont</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listItemFontColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemFontHoverColor</td><td> Schrift schweben Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemFontSelectedColor</td><td> Schriftfarbe des ausgewählten Elements</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemSubFontSize</td><td> zweite Textschriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-listItemSubFont</td><td> zweite Textschrift</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listItemSubFontColor</td><td> zweite Textschriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemSubFontHoverColor</td><td> Schwebefarbe des zweiten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemSubFontSelectedColor</td><td> Farbe des zweiten ausgewählten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-showValue</td><td> Wert anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-listItemValueFontSize</td><td> Schriftgröße des Wertes</td><td> Nummer</td><td></tr><tr><td> mdw-listItemValueFont</td><td> Schriftart des Wertes</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listItemValueFontColor</td><td> Schriftfarbe des Wertes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemValueFontHoverColor</td><td> Hover-Schriftfarbe des Werts</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemValueFontSelectedColor</td><td> Schriftfarbe des ausgewählten Werts</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Menüpunkt [x]</b></i></td></tr><tr><td> mdw-Wert [x]</td><td> Wert</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-label [x]</td><td> Etikette</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-subLabel [x]</td><td> zweiter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listIcon [x]</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listIconColor [x]</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-imageColorSelectedTextField [x]</td><td> ausgewählte Symbolfarbe für das Textfeld</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr></tbody></table>
 
@@ -875,7 +876,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 </ Details>
 
 #### HTML-Eigenschaften
-Die folgenden Eigenschaften können als [HTML-Element](#html-elements) verwendet werden.
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
 
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMode</td><td> Eingabemodus</td><td> Zeichenfolge</td><td> schreiben | wählen</tr><tr><td> mdw-inputType</td><td> Eingabetyp</td><td> Zeichenfolge</td><td> Text | Datum | Zeit</tr><tr><td> mdw-vibrateOnMobilDevices</td><td> vibrieren auf mobilen Geräten [s]</td><td> Nummer</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Layout-Eingabe</b></i></td></tr><tr><td> mdw-inputLayout</td><td> Layout</td><td> Zeichenfolge</td><td> regelmäßig | solo | solo gerundet | solo geformt | gefüllt | gefüllt-gerundet | gefüllt-förmig | umrissen | umrissen gerundet | umrissen</tr><tr><td> mdw-inputAlignment</td><td> Textausrichtung</td><td> Zeichenfolge</td><td> links | Mitte | Recht</tr><tr><td> mdw-inputLayoutBackgroundColor</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBackgroundColorHover</td><td> Hintergrundfarbe schweben</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBackgroundColorSelected</td><td> Hintergrundfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColor</td><td> Randfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColorHover</td><td> Randfarbe schweben</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLayoutBorderColorSelected</td><td> Rahmenfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputTextFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputTextFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputTextColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Bezeichnung der Eingabe</b></i></td></tr><tr><td> mdw-inputLabelText</td><td> Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputLabelColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLabelColorSelected</td><td> Textfarbe ausgewählt</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputLabelFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputLabelFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputTranslateX</td><td> Versatz x</td><td> Nummer</td><td></tr><tr><td> mdw-inputTranslateY</td><td> Versatz y</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Anhänge der Eingabe</b></i></td></tr><tr><td> mdw-inputPrefix</td><td> vorangestellter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputSuffix</td><td> angehängter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputAppendixColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputAppendixFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputAppendixFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Untertext der Eingabe</b></i></td></tr><tr><td> mdw-showInputMessageAlways</td><td> immer anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-inputMessage</td><td> Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMessageFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-inputMessageFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputMessageColor</td><td> Textfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Zählerlayout</b></i></td></tr><tr><td> mdw-showInputCounter</td><td> Zähler anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-inputCounterColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-inputCounterFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-inputCounterFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbole</b></i></td></tr><tr><td> mdw-clearIconShow</td><td> Symbol zum Löschen von Text anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-clearIcon</td><td> Symbol zum Löschen von Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-clearIconSize</td><td> Größe des Textlöschsymbols</td><td> Nummer</td><td></tr><tr><td> mdw-clearIconColor</td><td> Farbe des Textes Löschsymbol</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-kollapsIcon</td><td> Menü öffnen Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw -apseIconSize</td><td> Größe des Symbols zum Öffnen des Menüs</td><td> Nummer</td><td></tr><tr><td> mdw-kollapsIconColor</td><td> Farbe des offenen Menüsymbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandIcon</td><td> vorangestelltes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandIconSize</td><td> Größe des vorangestellten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-prepandIconColor</td><td> Farbe des vorangestellten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandInnerIcon</td><td> inneres vorangestelltes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandInnerIconSize</td><td> Größe des inneren vorangestellten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-prepandInnerIconColor</td><td> Farbe des inneren vorangestellten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-appendOuterIcon</td><td> äußeres angehängtes Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-appendOuterIconSize</td><td> Größe des äußeren angehängten Symbols</td><td> Nummer</td><td></tr><tr><td> mdw-appendOuterIconColor</td><td> Farbe des äußeren angehängten Symbols</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Daten des Menüs</b></i></td></tr><tr><td> mdw-listDataMethod</td><td> Eingabemethode für die Menüdaten</td><td> Zeichenfolge</td><td> inputPerEditor | jsonStringObject | multistatesObject | valueList</tr><tr><td> mdw-countSelectItems</td><td> Editor: Anzahl der Menüpunkte</td><td> Nummer</td><td></tr><tr><td> mdw-jsonStringObject</td><td> JSON-Zeichenfolge. Muss HTML entkommen sein! Hinweis: Verwenden Sie <a href="https://github.com/mathiasbynens/he#heencodetext-options" target="_blank">die Bibliothek</a> in Ihren Skripten, um sie in htmle zu codieren</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueList</td><td> Werteliste</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueListLabels</td><td> Werteliste: Labels</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valueListIcons</td><td> Werteliste: Bilder</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Menü-Layout</b></i></td></tr><tr><td> mdw-listPosition</td><td> Position</td><td> Zeichenfolge</td><td> auto | Nach oben | Unterseite</tr><tr><td> mdw-listPositionOffset</td><td> Positionsversatz verwenden</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-openOnClear</td><td> Öffnen Sie das Menü mit der Schaltfläche Löschen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-listItemHeight</td><td> Höhe des Menüpunktes</td><td> Nummer</td><td></tr><tr><td> mdw-listItemBackgroundColor</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemBackgroundHoverColor</td><td> Schwebefarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemBackgroundSelectedColor</td><td> Farbe des ausgewählten Elements</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemRippleEffectColor</td><td> Effektfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-showSelectedIcon</td><td> Symbol des ausgewählten Elements anzeigen</td><td> Zeichenfolge</td><td> nein | voranstellen | prepend-inner | Append-Outer</tr><tr><td> mdw-listIconSize</td><td> Symbolgröße</td><td> Nummer</td><td></tr><tr><td> mdw-listIconColor</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listIconHoverColor</td><td> Symbol Schwebefarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listIconSelectedColor</td><td> Symbolfarbe des ausgewählten Elements</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-listItemFont</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listItemFontColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemFontHoverColor</td><td> Schrift schweben Farbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemFontSelectedColor</td><td> Schriftfarbe des ausgewählten Elements</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemSubFontSize</td><td> zweite Textschriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-listItemSubFont</td><td> zweite Textschrift</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listItemSubFontColor</td><td> zweite Textschriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemSubFontHoverColor</td><td> Schwebefarbe des zweiten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemSubFontSelectedColor</td><td> Farbe des zweiten ausgewählten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-showValue</td><td> Wert anzeigen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-listItemValueFontSize</td><td> Schriftgröße des Wertes</td><td> Nummer</td><td></tr><tr><td> mdw-listItemValueFont</td><td> Schriftart des Wertes</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listItemValueFontColor</td><td> Schriftfarbe des Wertes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemValueFontHoverColor</td><td> Hover-Schriftfarbe des Werts</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-listItemValueFontSelectedColor</td><td> Schriftfarbe des ausgewählten Werts</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Menüpunkt [x]</b></i></td></tr><tr><td> mdw-Wert [x]</td><td> Wert</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-label [x]</td><td> Etikette</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-subLabel [x]</td><td> zweiter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listIcon [x]</td><td> Symbol</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-listIconColor [x]</td><td> Symbolfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-imageColorSelectedTextField [x]</td><td> ausgewählte Symbolfarbe für das Textfeld</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr></tbody></table>
 
@@ -1160,8 +1161,546 @@ Ein Beispiel für ein funktionierendes Widget finden Sie hier
 * [hier] (https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 * [ical Adapter] (https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2)
 
-#### Steuerelemente - **veraltet** seit v0.5.0
-> **veraltet** Verwenden Sie stattdessen [HTML-Element](#html-elements)!
+### HTML-Steuerungs-Widgets
+Sie können die [HTML-Widgets](#html-widgets) direkt in der json-Zeichenfolge verwenden. Wenn Sie die Zelle anpassen möchten, die das Widget enthält, verwenden Sie den folgenden Container.
+
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table_html_widget_example.gif)
+
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Eigenschaften</th></tr></thead><tbody><tr><td> Rowspan</td><td> Zelle, die x Zeilen umfasst</td><td> Nummer</td><td> 1, 2, 3, ...</td></tr><tr><td> Colspan</td><td> Zelle, die x Spalten umfasst</td><td> Nummer</td><td> 1, 2, 3, ...</td></tr><tr><td> cellStyleAttrs</td><td> CSS-Stilattribute für Zelle</td><td> Zeichenfolge</td><td></td></tr><tr><td> html</td><td> jedes HTML-Element, z. HTML-Widget</td><td> Zeichenfolge</td><td></td></tr></tbody></table>
+
+<! - in toc weglassen ->
+
+#### HTML Control Widgets - Beispiel
+<details>
+
+```
+[
+	{
+		"col_1": "button toggle",
+		"col_2": {
+			"rowspan": "2",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+			style='width: 80px; height: 60px; position: relative; padding: 0px;'
+			mdw-type='toggle_vertical'
+			mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+			mdw-buttonStyle='raised'
+			mdw-toggleType='boolean'
+			mdw-stateIfNotTrueValue='on'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-buttontext='off'
+			mdw-labelTrue='on'
+			mdw-labelColorTrue='#000000'
+			mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.vertical.text'
+			mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.vertical.text'
+			mdw-alignment='center'
+			mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.primary'
+			mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.secondary'
+			mdw-colorBgTrue='green'
+			mdw-image='checkbox-blank-outline'
+			mdw-imageTrue='checkbox-marked'
+			mdw-iconPosition='top'
+			mdw-iconHeight='36'
+			mdw-lockEnabled='true'
+			mdw-autoLockAfter='10'
+			mdw-lockIconTop='5'
+			mdw-lockIconLeft='5'
+			mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+			mdw-lockFilterGrayscale='30'
+			></div></div>"
+		},
+		"col_3": "<div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+		style='width: 100%; height: 100%; position: relative; padding: 0px;'
+		mdw-type='toggle_default'
+		mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+		mdw-buttonStyle='raised'
+		mdw-toggleType='boolean'
+		mdw-stateIfNotTrueValue='on'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-buttontext='off'
+		mdw-labelTrue='on'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.default.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.default.text'
+		mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.primary'
+		mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.secondary'
+		mdw-colorBgTrue='#a2bc9f'
+		mdw-image='access-point-network-off'
+		mdw-imageColor='#c70000'
+		mdw-imageTrue='access-point-network'
+		mdw-imageTrueColor='#36fa29'
+		mdw-iconPosition='left'
+		mdw-autoLockAfter='10'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div>",
+		"col_4": "<div class='vis-widget materialdesign-widget materialdesign-icon-button materialdesign-button-html-element'
+		style='width: 48px; height: 48px; position: relative; padding: 0px;'
+		mdw-type='toggle_icon'
+		mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+		mdw-toggleType='boolean'
+		mdw-stateIfNotTrueValue='on'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-image='access-point-network-off'
+		mdw-imageColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.icon_off'
+		mdw-imageTrue='access-point-network'
+		mdw-imageTrueColor='orange'
+		mdw-colorBgFalse='#mdwTheme:vis-materialdesign.0.colors.button.icon.background_off'
+		mdw-colorBgTrue='#mdwTheme:vis-materialdesign.0.colors.button.icon.background_on'
+		mdw-colorPress='#mdwTheme:vis-materialdesign.0.colors.button.icon.pressed'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='45'
+		mdw-lockIconLeft='55'
+		mdw-lockIconSize='20'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon'
+		mdw-lockIconBackground='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon_background'
+		mdw-lockBackgroundSizeFactor='1'
+		mdw-lockFilterGrayscale='30'
+		></div>"
+	}, {
+		"col_1": "Checkbox / Switch",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-checkbox materialdesign-checkbox-html-element'
+		style='width: 71px; height: 24px; position: relative; overflow: visible !important; display: flex; align-items: center;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+		mdw-toggleType='boolean'
+		mdw-stateIfNotTrueValue='on'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-labelFalse='on'
+		mdw-labelTrue='off'
+		mdw-labelPosition='left'
+		mdw-labelClickActive='true'
+		mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.checkbox.value'
+		mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.checkbox.value'
+		mdw-colorCheckBox='#mdwTheme:vis-materialdesign.0.colors.checkbox.on'
+		mdw-colorCheckBoxBorder='#mdwTheme:vis-materialdesign.0.colors.checkbox.border'
+		mdw-colorCheckBoxHover='#mdwTheme:vis-materialdesign.0.colors.checkbox.hover'
+		mdw-labelColorFalse='#mdwTheme:vis-materialdesign.0.colors.checkbox.text_off'
+		mdw-labelColorTrue='#mdwTheme:vis-materialdesign.0.colors.checkbox.text_on'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='5'
+		mdw-lockIconLeft='5'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.checkbox.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div></div>",
+		"col_3": {
+			"cellStyleAttrs": "padding: 8px;",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-switch materialdesign-switch-html-element'
+			style='width: 83px; height: 44px; position: relative; overflow: visible !important; display: flex; align-items: center;'
+			mdw-oid='0_userdata.0.MDW.Table.Control.bool'
+			mdw-toggleType='boolean'
+			mdw-stateIfNotTrueValue='on'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-labelFalse='off'
+			mdw-labelTrue='on'
+			mdw-labelPosition='right'
+			mdw-labelClickActive='true'
+			mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.switch.value'
+			mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.switch.value'
+			mdw-colorSwitchThumb='#mdwTheme:vis-materialdesign.0.colors.switch.off'
+			mdw-colorSwitchTrack='#mdwTheme:vis-materialdesign.0.colors.switch.track'
+			mdw-colorSwitchTrue='#mdwTheme:vis-materialdesign.0.colors.switch.on'
+			mdw-colorSwitchHover='#mdwTheme:vis-materialdesign.0.colors.switch.off_hover'
+			mdw-colorSwitchHoverTrue='#mdwTheme:vis-materialdesign.0.colors.switch.on_hover'
+			mdw-labelColorFalse='#mdwTheme:vis-materialdesign.0.colors.switch.text_off'
+			mdw-labelColorTrue='#mdwTheme:vis-materialdesign.0.colors.switch.text_on'
+			mdw-lockEnabled='true'
+			mdw-autoLockAfter='10'
+			mdw-lockIconTop='5'
+			mdw-lockIconLeft='5'
+			mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.switch.lock_icon'
+			mdw-lockFilterGrayscale='30'
+			></div></div>"
+		}
+	}, {
+		"col_1": "Button State",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-icon-button materialdesign-button-html-element'
+		style='width: 48px; height: 48px; position: relative; padding: 0px;'
+		mdw-type='state_icon'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-value='100'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-image='battery'
+		mdw-imageColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.icon_off'
+		mdw-iconHeight='26'
+		mdw-colorBgFalse='#mdwTheme:vis-materialdesign.0.colors.button.icon.background_off'
+		mdw-colorPress='#mdwTheme:vis-materialdesign.0.colors.button.icon.pressed'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='45'
+		mdw-lockIconLeft='55'
+		mdw-lockIconSize='20'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon'
+		mdw-lockIconBackground='#mdwTheme:vis-materialdesign.0.colors.button.icon.lock_icon_background'
+		mdw-lockBackgroundSizeFactor='1'
+		mdw-lockFilterGrayscale='30'
+		></div></div>",
+		"col_3": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+		style='width: 100px; height: 100%; position: relative; padding: 0px;'
+		mdw-type='state_default'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-buttonStyle='raised'
+		mdw-value='70'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-buttontext='70'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.default.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.default.text'
+		mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.primary'
+		mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.default.secondary'
+		mdw-image='battery-70'
+		mdw-iconPosition='left'
+		mdw-iconHeight='20'
+		mdw-lockEnabled='true'
+		mdw-autoLockAfter='10'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div></div>",
+		"col_4": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-button materialdesign-button-html-element'
+		style='width: 102px; height: 67px; position: relative; padding: 0px;'
+		mdw-type='state_vertical'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-buttonStyle='raised'
+		mdw-value='10'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-buttontext='10'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.button.vertical.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.button.vertical.text'
+		mdw-alignment='center'
+		mdw-mdwButtonPrimaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.primary'
+		mdw-mdwButtonSecondaryColor='#mdwTheme:vis-materialdesign.0.colors.button.vertical.secondary'
+		mdw-image='battery-10'
+		mdw-iconPosition='top'
+		mdw-iconHeight='38'
+		mdw-autoLockAfter='10'
+		mdw-lockIconTop='5'
+		mdw-lockIconLeft='5'
+		mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.button.lock_icon'
+		mdw-lockFilterGrayscale='30'
+		></div></div>"
+	}, {
+		"col_1": "Progress",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-progress materialdesign-progress-html-element'
+		style='width: 83px; height: 81px; position: relative; padding: 0px;'
+		mdw-type='circular'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-min='0'
+		mdw-max='100'
+		mdw-progressCircularSize='80'
+		mdw-progressCircularWidth='10'
+		mdw-progressCircularRotate='90'
+		mdw-colorProgressBackground='#mdwTheme:vis-materialdesign.0.colors.progress.track_background'
+		mdw-colorProgress='#mdwTheme:vis-materialdesign.0.colors.progress.track'
+		mdw-innerColor='#mdwTheme:vis-materialdesign.0.colors.progress.circular_background'
+		mdw-colorOneCondition='60'
+		mdw-colorOne='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition1'
+		mdw-colorTwoCondition='80'
+		mdw-colorTwo='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition2'
+		mdw-showValueLabel='true'
+		mdw-valueLabelStyle='progressValue'
+		mdw-valueMaxDecimals='3'
+		mdw-textColor='#mdwTheme:vis-materialdesign.0.colors.progress.text'
+		mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.progress.text'
+		mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.progress.text'
+		></div></div>",
+		"col_3": {
+			"colspan": "2",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-progress materialdesign-progress-html-element'
+			style='width: 80%; height: 36px; position: relative; padding: 0px;'
+			mdw-type='linear'
+			mdw-oid='0_userdata.0.MDW.Table.Control.number'
+			mdw-min='0'
+			mdw-max='100'
+			mdw-colorProgressBackground='#mdwTheme:vis-materialdesign.0.colors.progress.track_background'
+			mdw-colorProgress='#mdwTheme:vis-materialdesign.0.colors.progress.track'
+			mdw-colorOneCondition='50'
+			mdw-colorOne='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition1'
+			mdw-colorTwoCondition='70'
+			mdw-colorTwo='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition2'
+			mdw-showValueLabel='true'
+			mdw-valueLabelStyle='progressPercent'
+			mdw-textColor='#mdwTheme:vis-materialdesign.0.colors.progress.text'
+			mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.progress.text'
+			mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.progress.text'
+			mdw-textAlign='end'
+			></div></div>"
+		}
+	}, {
+		"col_1": "Slider",
+		"col_2": {
+			"colspan": "2",
+			"cellStyleAttrs": "overflow: visible;",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-slider-vertical materialdesign-slider-html-element'
+			style='width: 90%; height: 60px; position: relative; overflow:visible !important; display: flex; align-items: center;'
+			mdw-oid='0_userdata.0.MDW.Table.Control.number'
+			mdw-orientation='horizontal'
+			mdw-knobSize='knobSmall'
+			mdw-step='1'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-showTicks='no'
+			mdw-tickTextColor='#mdwTheme:vis-materialdesign.0.colors.slider.tick'
+			mdw-tickFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.ticks'
+			mdw-tickFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.ticks'
+			mdw-tickColorBefore='#mdwTheme:vis-materialdesign.0.colors.slider.tick_before'
+			mdw-tickColorAfter='#mdwTheme:vis-materialdesign.0.colors.slider.tick_after'
+			mdw-colorBeforeThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_before'
+			mdw-colorThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control'
+			mdw-colorAfterThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_behind'
+			mdw-prepandTextWidth='1'
+			mdw-prepandTextColor='#mdwTheme:vis-materialdesign.0.colors.slider.text_prepand'
+			mdw-prepandTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.prepand'
+			mdw-prepandTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.prepand'
+			mdw-showValueLabel='true'
+			mdw-valueLabelStyle='sliderValue'
+			mdw-valueLabelUnit='%'
+			mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.value'
+			mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.value'
+			mdw-valueLabelColor='#mdwTheme:vis-materialdesign.0.colors.slider.text'
+			mdw-valueLabelWidth='50'
+			mdw-showThumbLabel='yes'
+			mdw-thumbBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.slider.control_background'
+			mdw-thumbFontColor='#mdwTheme:vis-materialdesign.0.colors.slider.control_text'
+			mdw-thumbFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.control'
+			mdw-thumbFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.control'
+			></div></div>"
+		},
+		"col_3": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-slider-round materialdesign-roundslider-html-element'
+		style='width: 79px; height: 67px; position: relative;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-step='1'
+		mdw-startAngle='135'
+		mdw-arcLength='270'
+		mdw-handleZoom='1.5'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-colorSliderBg='#mdwTheme:vis-materialdesign.0.colors.slider.background'
+		mdw-colorBeforeThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_before'
+		mdw-colorThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control'
+		mdw-colorAfterThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_behind'
+		mdw-valueLabelColor='#mdwTheme:vis-materialdesign.0.colors.slider.text'
+		mdw-showValueLabel='true'
+		mdw-valueLabelStyle='sliderValue'
+		mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.value'
+		mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.value'
+		></div></div>"
+	}, {
+		"col_1": "Select",
+		"col_2": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+		style='width: 90%; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-inputType='text'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-inputLayout='regular'
+		mdw-inputAlignment='left'
+		mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+		mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+		mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+		mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+		mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+		mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+		mdw-inputLabelText='by Editor'
+		mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+		mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+		mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+		mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+		mdw-inputTranslateX='-29'
+		mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+		mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+		mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+		mdw-showInputMessageAlways='true'
+		mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+		mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+		mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+		mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+		mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+		mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+		mdw-clearIconShow='true'
+		mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+		mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+		mdw-listDataMethod='inputPerEditor'
+		mdw-countSelectItems='2'
+		mdw-listPosition='auto'
+		mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+		mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+		mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+		mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+		mdw-showSelectedIcon='prepend-inner'
+		mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+		mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+		mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+		mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+		mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+		mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+		mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+		mdw-showValue='true'
+		mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+		mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+		mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+		mdw-value0='10'
+		mdw-label0='val0'
+		mdw-listIcon0='alpha-d-box'
+		mdw-value1='70'
+		mdw-label1='val1'
+		mdw-listIcon1='account-alert'
+		mdw-value2='100'
+		mdw-label2='val2'
+		mdw-listIcon2='karate'
+		></div></div>",
+		"col_3": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+		style='width: 90%; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+		mdw-oid='0_userdata.0.MDW.Table.Control.number'
+		mdw-inputType='text'
+		mdw-vibrateOnMobilDevices='50'
+		mdw-inputLayout='regular'
+		mdw-inputAlignment='left'
+		mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+		mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+		mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+		mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+		mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+		mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+		mdw-inputLabelText='by Value List'
+		mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+		mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+		mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+		mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+		mdw-inputTranslateX='-29'
+		mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+		mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+		mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+		mdw-showInputMessageAlways='true'
+		mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+		mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+		mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+		mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+		mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+		mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+		mdw-clearIconShow='true'
+		mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+		mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+		mdw-listDataMethod='valueList'
+		mdw-countSelectItems='0'
+		mdw-valueList='10;30;90'
+		mdw-valueListLabels='val1;val2;val3'
+		mdw-valueListIcons='home;home;home'
+		mdw-listPosition='auto'
+		mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+		mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+		mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+		mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+		mdw-showSelectedIcon='prepend-inner'
+		mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+		mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+		mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+		mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+		mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+		mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+		mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+		mdw-showValue='true'
+		mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+		mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+		mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+		></div></div>",
+		"col_4": {
+			"cellStyleAttrs": "padding: 6px;",
+			"html": "<div style='display: flex; justify-content: center'><div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+			style='width: 293px; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+			mdw-oid='0_userdata.0.MDW.Table.Control.string'
+			mdw-inputType='text'
+			mdw-vibrateOnMobilDevices='50'
+			mdw-inputLayout='solo-rounded'
+			mdw-inputAlignment='center'
+			mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+			mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+			mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+			mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+			mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+			mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+			mdw-inputLabelText='by JSON Editor'
+			mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+			mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+			mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+			mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+			mdw-inputTranslateX='-29'
+			mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+			mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+			mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+			mdw-showInputMessageAlways='true'
+			mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+			mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+			mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+			mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+			mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+			mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+			mdw-clearIconShow='true'
+			mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+			mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+			mdw-listDataMethod='jsonStringObject'
+			mdw-countSelectItems='0'
+			mdw-jsonStringObject='[   {
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Tag&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;1 day&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Tage&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;3 days&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Woche&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;7 days&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Wochen&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;14 days&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Monat&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;1 month&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Monate&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;2 months&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Monate&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;3 months&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;6 Monate&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;6 months&#x22;
+			&#x9;},
+			&#x9;{
+			&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Jahr&#x22;,
+			&#x9;&#x9;&#x22;value&#x22;: &#x22;1 year&#x22;
+			&#x9;}
+			]'
+			mdw-listPosition='auto'
+			mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+			mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+			mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+			mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+			mdw-showSelectedIcon='prepend-inner'
+			mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+			mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+			mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+			mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+			mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+			mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+			mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+			mdw-showValue='true'
+			mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+			mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+			mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+			></div></div>"
+		}
+	}, {
+		"col_1": "col_1",
+		"col_2": "col_2",
+		"col_3": "col_3",
+		"col_4": "col_4"
+	}
+]
+
+```
+
+</ Details>
+
+### Steuerelemente - **veraltet seit v0.5.0**
+> **veraltet Verwenden Sie stattdessen [HTML-Widgets](#html-widgets)!**
 
 Um ein Steuerelement (Schaltfläche, Kontrollkästchen usw.) in der Zelle der Tabelle zu generieren, müssen Sie ein Objekt anstelle einer Zeichenfolge erstellen.
 
@@ -1471,8 +2010,8 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/dialog_settings_common.png"></td><td> Methode zum Anzeigen des Dialogs</td><td> Dialog mit einer Schaltfläche oder einem Datenpunkt anzeigen (Typ boolean)</td></tr><tr><td> Conatins Ansicht</td><td> die Ansicht, die vom Dialog angezeigt werden soll</td></tr><tr><td> Vollbilddialog anzeigen, wenn die Auflösung niedriger als ist</td><td> Vollbilddialog anzeigen, wenn die Auflösung unter dem angegebenen Wert liegt.</td></tr></tbody></table>
 
-## HTML-Elemente
-Erstellen Sie ein HTML-Element aus den unterstützten Material Design-Widgets, um es in jedem anderen Widget zu verwenden, das HTML unterstützt.
+## HTML-Widgets
+Erstellen Sie aus den unterstützten Material Design-Widgets ein HTML-Widget, um es in jedem anderen Widget zu verwenden, das HTML unterstützt.
 Gestalten Sie einfach Ihr Material Design-Widget, drücken Sie die `generate Html Element`, kopieren Sie die Daten und fügen Sie sie in ein beliebiges Widget ein, das HTML-Tags unterstützt.
 Oder verwenden Sie es in Skripten, um dynamisch Widgets zu generieren.
 
@@ -1518,11 +2057,11 @@ Der Adapter verwendet die folgenden Bibliotheken:
 
 <!-- omit in toc -->
 ### __WORK IN PROGRESS__
-* (Scrounger) HTML Element support for control widgets added
+* (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
 * (Scrounger) Table: Control Elements removed, using new HTML Elements -> breaking changes !!!
+* (Scrounger) list: using object id for json string added -> breaking changes !!!
 * (Scrounger) Documentation revised
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
-* (Scrounger) list: using object id for json string added -> breaking changes !!!
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 * (Scrounger) progress circular: auto size option added

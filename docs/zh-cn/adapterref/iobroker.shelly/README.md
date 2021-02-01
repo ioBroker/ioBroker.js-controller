@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 0suiklRXYOyN3nVHV97UVCZua42xqf6uo1oXykfUO6Y=
+hash: 6cQUtoGYFQE/wvbZiTm1yPYsEVeQp8SWSXzFUKxQx2E=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -60,6 +60,7 @@ hash: 0suiklRXYOyN3nVHV97UVCZua42xqf6uo1oXykfUO6Y=
 | Shelly Uni（SHUNI-1）|自v4.0.4起受支持|自v4.0.4起受支持|
 | Shelly 1L（SHSW-L）|自v4.0.5起受支持|自v4.0.5起受支持|
 | Shelly彩色灯泡（SHCB-1）|自v4.0.5起受支持|自v4.0.5起受支持|
+| Shelly Button（SHBTN-2）|自v4.0.5起受支持|自v4.0.5起受支持|
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
@@ -72,7 +73,11 @@ Sentry.io是开发人员从其应用程序中获得有关错误概述的一种�
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
-* (Stübi) - Support auf Shelly Color Bulb (SHCB-1) - Issue #317
+* (Stübi) - Support of Shelly Color Bulb (SHCB-1) - Issue #317
+* (Stübi) - Support of Shelly Button 1 (SHBTN-2) - Issue #316, #302, #303
+* (Stübi) - add state Total_Returned for Shelly EM3 - Issue #299
+* (Stübi) - add state transiton and fade_rate to Shelly Dimmer - Issue #260
+* (Stübi) - add state transiton for Shelly RGBW2 - Issue #289
 
 ### 4.0.4 (2020-11-15)
 * (Apollon77) update dependencies and shelly-iot lib
