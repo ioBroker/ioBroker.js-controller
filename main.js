@@ -1734,7 +1734,7 @@ function setMeta() {
                                             logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     }).catch(err => {
-                                        logger && logger.error(`Cannot update vendor information: ${err.message)}`);
+                                        logger && logger.error(`Cannot update vendor information: ${err.message}`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
