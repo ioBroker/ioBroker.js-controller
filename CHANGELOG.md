@@ -4,6 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (AlCalzone) support github branch names with slashes on adapter install
+* (foxriver76) Fix wrong logger pattern that caused issues on windows
+* (Apollon77) fix potential crash when restoring backup
+
 ## 3.2.13 (2021-02-01) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
