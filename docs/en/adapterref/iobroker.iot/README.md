@@ -31,13 +31,13 @@ Change the order of function and roles in self generated names:
 ### Concatenate words with
 You can define the word which will be placed between function and room. E.g. "in" and from "Dimmer living room" will be "Dimmer in living room".
 
-But is not suggested to do so, because recognition engine must analyse one more word and it can lead to misunderstandings.
+But is not suggested doing so, because recognition engine must analyse one more word and it can lead to misunderstandings.
 
 ### OFF level for switches
 Some groups consist of mixed devices: dimmers and switches. It is allowed to control them with "ON" and "OFF" commands and with percents.
-If command is "Set to 30%" and the *OFF level" is "30%" so the switches will be turned on. By command "Set to 25%" all switches will be turned OFF.
+If command is `Set to 30%` and the `OFF level is 30%` so the switches will be turned on. By command "Set to 25%" all switches will be turned OFF.
 
-Additionally if the command is "OFF", so the adapter will remember the current dimmer level if the actual value is over or equal to the "30%".
+Additionally, if the command is "OFF", so the adapter will remember the current dimmer level if the actual value is over or equal to the "30%".
 Later when the new "ON" command will come the adapter will switch the dimmer not to 100% but to the level in memory.
 
 Example:
@@ -67,7 +67,7 @@ The channel must have 4 states with following roles:
 
 ```
 Alexa, set the "device name" to "color"
-Alexa, turn the light fuschia
+Alexa, turn the light fuchsia
 Alexa, set the bedroom light to red
 Alexa, change the kitchen to the color chocolate
 ```
@@ -85,7 +85,7 @@ The adapter tries to generate virtual devices for smart home control (e.g. Amazo
 
 The are two important enumerations for that: rooms and functions.
 
-Rooms are like: living room, bath room, sleeping room.
+Rooms are like: living room, bathroom, sleeping room.
 Functions are like: light, blind, heating.
 
 Following conditions must be met to get the state in the automatically generated list:
@@ -107,7 +107,7 @@ All the rules will be ignored if the state has common.smartName. In this case ju
 
 if *common.smartName* is **false**, the state or enumeration will not be included into the list generation.
 
-The configuration dialog lets comfortable remove and add the single states to virtual groups or as single device.
+The configuration dialog lets the comfortable remove and add the single states to virtual groups or as single device.
 ![Configuration](img/configuration.png)
 
 If the group has only one state it can be renamed, as for this the state's smartName will be used.
@@ -116,7 +116,7 @@ If the group has more than one state, the group must be renamed via the enumerat
 To create own groups the user can install "scenes" adapter or create "script" in Javascript adapter.
 
 ### Replaces
-You can specify strings, that could be automatically replaced in the devices names. E.g if you set replaces to:
+You can specify strings, that could be automatically replaced in the devices names. E. g. if you set replaces to:
 ```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
 If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
 
@@ -179,7 +179,7 @@ The adapter will provide the details in two states with different detail level
 * **smart.lastCommandObj*** contains an JSON string that can be parsed to an object containing the following information
   * **words** contains the received words in an array
   * **intent** contains the type of query. Possible values currently are "askDevice", "controlDevice", "actionStart", "actionEnd", "askWhen", "askWhere", "askWho"
-  * **deviceId** contains a deviceId identifying the device the request was send to, delivered by Amazon, will be empty string if not provided
+  * **deviceId** contains a deviceId identifying the device the request was sent to, delivered by Amazon, will be empty string if not provided
   * **sessionId** contains a sessionId of the Skill session, should be the same if multiple commands were spoken, delivered by Amazon, will be empty string if not provided
   * **userId** contains a userId from the device owner (or maybe later the user that was interacting with the skill), delivered by Amazon, will be empty string if not provided
 
@@ -187,13 +187,13 @@ The adapter will provide the details in two states with different detail level
 
 **Return result via smart.lastResponse state**
 
-The response needs to be send within 200ms in the state "smart.lastResponse" and can be a simple text string or a JSON object.
-If it is a text string then this text will be send as response to the skill.
+The response needs to be sent within 200ms in the state "smart.lastResponse" and can be a simple text string or a JSON object.
+If it is a text string then this text will be sent as response to the skill.
 if the text is a JSON object then the following keys can be used:
 * **responseText** needs to contain the text to return to Amazon
 * **shouldEndSession** is a boolean and controls if the session will be closed after the response was spoken or stays open to accept another voice input.
 
-**Return result via message to iot instance**
+**Return result via the message to iot instance**
 
 The iot instance also accepts a message with the name "alexaCustomResponse" containing the key "response" with an object that can contain the keys **responseText** and **shouldEndSession** as described above.
 There will be no response from the iot instance to the message!
@@ -256,6 +256,9 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.8.12 (2021-02-02)
+* (bluefox) Fixed the dimmer issue with alisa.
+
 ### 1.8.11 (2021-01-20)
 * (Morluktom) Alexa - Corrected the request for percentage values
 
@@ -308,11 +311,11 @@ Following types are supported:
 * (bluefox) Added information about changed linking process.
 
 ### 1.7.6 (2020-08-25)
-* (bluefox) Some colors were changed in dark mode.
+* (bluefox) Some colors were changed in the dark mode.
 
 ### 1.7.5 (2020-08-21)
 * (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
-* (bluefox) Values for modes will be converted to numbers in Alisa
+* (bluefox) Values for modes will be converted to number in Alisa
 
 ### 1.7.3 (2020-08-16)
 * (bluefox) Added vacuum cleaner to Alisa
@@ -337,8 +340,8 @@ Following types are supported:
 * (bluefox) Do not try load the "sharp" if blood sugar not enabled
 
 ### 1.4.18 (2020-05-11)
-* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
-* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+* (Apollon77) Make sure that invalid configured states or values without a timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after the disconnect to not break adapter (Sentry IOBROKER-IOT-A)
 
 ### 1.4.17 (2020-05-11)
 * (bluefox) Better error output is implemented
@@ -360,10 +363,10 @@ Following types are supported:
 * fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
 
 ### 1.4.6 (2020-04-18)
-* (Apollon77) Add Sentry error reporting to React Frontend
+* (Apollon77) Add the Sentry error reporting to `React Frontend`
 
 ### 1.4.4 (2020-04-14)
-* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) remove js-controller 3.0 warnings and replace `adapter.objects` access
 * (Apollon77) add linux dependencies for canvas library
 * (Apollon77) add sentry configuration
 
@@ -384,7 +387,7 @@ Following types are supported:
 
 ### 1.3.1 (2020-02-09)
 * (Apollon77) Dependency updates
-* (APollon77) Make compatible with Admin > 4.0 because of updated socket.io
+* (Apollon77) Make compatible with Admin > 4.0 because of updated socket.io
 
 ### 1.2.1 (2020-01-18)
 * (bluefox) Fixed problem if the port of admin is not 8081
@@ -393,14 +396,14 @@ Following types are supported:
 * (TA2k) Google Home handling and visualization improved.
 
 ### 1.1.10 (2020-01-03)
-* (bluefox) Now is allowed to selected the temperature values as alexa states
-* (bluefox) Allowed to set type immediately after insertion of new state
+* (bluefox) Now is allowed to select the temperature values as alexa states
+* (bluefox) Allowed the setting type immediately after insertion of new state
 
 ### 1.1.9 (2019-11-27)
 * (bluefox) Fixed: sometimes the configuration could not be loaded
 
 ### 1.1.8 (2019-09-12)
-* (bluefox) Optimization of googe home communication was done
+* (bluefox) Optimization of google home communication was done
 
 ### 1.1.7 (2019-09-11)
 * (bluefox) The sending rate to google home is limited now
@@ -420,7 +423,7 @@ Following types are supported:
 ### 1.0.8 (2019-09-03)
 * (TA2k) Improved support for Google Home
 * (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
-* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Added support for manually adding states as devices
 * (TA2k) Fix update state after Sync
 * (TA2k) Added typical Google Home devices and traits/actions
 * (TA2k) Fix only process update message when Alexa is checked in the options
@@ -444,7 +447,7 @@ Following types are supported:
 * (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
+* (bluefox) Allowed the enablement and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home
@@ -474,7 +477,7 @@ Following types are supported:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

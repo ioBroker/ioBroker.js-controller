@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
+hash: BOgIlLXvibALjDtnvut6a+AclxyCj8/51xi+F2g0JqA=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -36,13 +36,13 @@ hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 -如果为true：“多功能厅”，例如“调光客厅”
 
 ###将单词与
-您可以定义将在功能和房间之间放置的单词。例如。 “在”中和从“调光器客厅”起将是“调光器在客厅”。
+您可以定义将放置在功能和房间之间的单词。例如。在“调光器起居室中”和“调光器起居室”中将是“调光器起居室”。
 
-但不建议这样做，因为识别引擎必须再分析一个单词，否则可能导致误解。
+但是不建议这样做，因为识别引擎必须再分析一个单词，否则可能导致误解。
 
-###开关的OFF级别
+###开关的OFF等级
 某些组由混合设备组成：调光器和开关。允许使用“ ON”和“ OFF”命令以及百分比来控制它们。
-如果命令为“设置为30％”，* OFF级别为“ 30％”，则开关将打开。通过命令“设置为25％”，所有开关将关闭。
+如果命令是`Set to 30%`和`OFF level is 30%`，则开关将打开。通过命令“设为25％”，所有开关都将关闭。
 
 另外，如果命令为“ OFF”，那么如果实际值大于或等于“ 30％”，则适配器将记住当前的调光器级别。
 稍后，当出现新的“ ON”命令时，适配器会将调光器切换到内存中的电平而不是100％。
@@ -74,7 +74,7 @@ hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 
 ```
 Alexa, set the "device name" to "color"
-Alexa, turn the light fuschia
+Alexa, turn the light fuchsia
 Alexa, set the bedroom light to red
 Alexa, change the kitchen to the color chocolate
 ```
@@ -92,15 +92,15 @@ Alexa, lock the "lock name"
 
 这是两个重要的枚举：房间和功能。
 
-房间就像：客厅，浴室，卧室。
+房间就像：起居室，浴室，卧室。
 功能如：灯光，窗帘，暖气。
 
-必须满足以下条件才能在自动生成的列表中获得状态：
+必须满足以下条件才能在自动生成的列表中获取状态：
 
 -状态必须处于某些“功能”枚举中。
--如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
+-如果状态未直接包含在“功能”中，则该状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
 
-可能是通道在“功能”中，但未声明自身。
+可能是通道在“功能”中，但未声明其状态。
 
 -状态必须是可写的：common.write = true
 -状态调光器必须具有common.type作为'number'
@@ -110,22 +110,22 @@ Alexa, lock the "lock name"
 
 状态名称将从功能和房间生成。例如。 “起居室”中的所有“灯”都将收集在虚拟设备“起居室的灯”中。
 用户无法更改此名称，因为它是自动生成的。
-但是，如果枚举名称更改，该名称也将更改。 （例如，功能“灯光”更改为“灯光”，因此“起居室灯光”将更改为“起居室灯光*”）
+但是，如果枚举名称更改，该名称也将更改。 （例如，“照明”功能更改为“照明”，因此“起居室照明”将更改为“起居室照明*”）
 
 如果状态具有common.smartName，则将忽略所有规则。在这种情况下，将仅使用智能名称。
 
-如果* common.smartName *为** false **，则状态或枚举将不包含在列表生成中。
+如果* common.smartName *为** false **，则状态或枚举将不包括在列表生成中。
 
 通过配置对话框，可以轻松删除单个状态并将其添加到虚拟组或作为单个设备。
 ![组态](../../../en/adapterref/iobroker.iot/img/configuration.png)
 
-如果该组只有一个状态，则可以重命名，因为将使用该状态的smartName。
+如果该组只有一个状态，则可以重命名，为此将使用该状态的smartName。
 如果该组具有多个状态，则必须通过枚举名称重命名该组。
 
 要创建自己的组，用户可以安装“场景”适配器或在Javascript适配器中创建“脚本”。
 
 ###替换
-您可以指定字符串，可以在设备名称中自动替换它们。例如，如果您将替换设置为：
+您可以指定字符串，可以在设备名称中自动替换它们。例如如果将替换设置为：
 
 ```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
 If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
@@ -180,16 +180,16 @@ or
 ### Text2command
 如果在配置对话框中定义了* text2command *实例，那么问题将发送到该实例。
 
-必须配置* text2command *，以解析期望的短语并给出答案。
+必须配置* text2command *，以便解析期望的短语并给出答案。
 
 ### Javascript
 有可能直接使用脚本处理问题。如果未选择* text2command *实例，则默认情况下将其激活。
 
 如果定义了* text2command *实例，那么此实例必须提供答案，而来自* script *的答案将被忽略。
 
-适配器将在两种状态下提供具有不同详细程度的详细信息
+适配器将在两种状态下提供具有不同详细信息级别的详细信息
 
-* **smart.lastCommand** 含接收到的文本，包括有关查询类型（意图）的信息。示例：“ askDevice StatusRasenmäher”
+* **smart.lastCommand** 含接收的文本，包括有关查询类型（意图）的信息。示例：“ askDevice StatusRasenmäher”
 * ** smart.lastCommandObj ***包含一个JSON字符串，可以将其解析为包含以下信息的对象
   * **单词**将接收到的单词包含在数组中
   * **意图**包含查询的类型。当前可能的值是“ askDevice”，“ controlDevice”，“ actionStart”，“ actionEnd”，“ askWhen”，“ askWhere”，“ askWho”
@@ -202,7 +202,7 @@ or
 **通过smart.lastResponse状态返回结果**
 
 响应需要在状态为“ smart.lastResponse”的200毫秒内发送，并且可以是简单的文本字符串或JSON对象。
-如果它是一个文本字符串，那么此文本将作为对技能的响应而发送。
+如果是文本字符串，则将发送此文本作为对技能的响应。
 如果文本是JSON对象，则可以使用以下键：
 
 * **responseText** 要包含要返回亚马逊的文本
@@ -269,12 +269,69 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 
 ## Changelog
+### 1.8.12 (2021-02-02)
+* (bluefox) Fixed the dimmer issue with alisa.
+
+### 1.8.11 (2021-01-20)
+* (Morluktom) Alexa - Corrected the request for percentage values
+
+### 1.8.10 (2021-01-20)
+* (bluefox) Added the reconnect strategy if DNS address cannot be resolved
+
+### 1.8.9 (2020-12-27)
+* (bluefox) Updated configuration GUI to the latest state
+
+### 1.8.8 (2020-12-14)
+* (bluefox) Corrected the "google home" error
+
+### 1.8.6 (2020-12-13)
+* (bluefox) Try to fix google home error
+
+### 1.8.5 (2020-11-23)
+* (bluefox) Corrected the configuration table for google home
+
+### 1.8.4 (2020-11-18)
+* (bluefox) Corrected the configuration table for google home
+
+### 1.8.3 (2020-11-16)
+* (bluefox) Trying to fix the set to false at start for google home
+
+### 1.8.2 (2020-11-15)
+* (bluefox) Added the debug outputs for google home
+
+### 1.8.1 (2020-11-13)
+* (bluefox) The deletion of google home devices was corrected
+
+### 1.8.0 (2020-11-12)
+* (bluefox) The google home table was rewritten
+
+### 1.7.15 (2020-11-05)
+* (Morluktom) Corrected the request for temperature
+
+### 1.7.14 (2020-11-05)
+* (bluefox) Updated the select ID dialog.
+
+#### 1.7.13 (2020-10-30)
+* (foxriver76) add eraseOnUpload flag for js-controller 3.2+
+
+### 1.7.12 (2020-09-25)
+* (bluefox) Updated the select ID dialog.
+
+### 1.7.9 (2020-09-17)
+* (bluefox) Updated GUI for config.
+
+### 1.7.7 (2020-09-02)
+* (bluefox) Added information about changed linking process.
+
+### 1.7.6 (2020-08-25)
+* (bluefox) Some colors were changed in the dark mode.
+
 ### 1.7.5 (2020-08-21)
 * (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
-* (bluefox) Values for modes will be converted to numbers in Alisa
+* (bluefox) Values for modes will be converted to number in Alisa
 
 ### 1.7.3 (2020-08-16)
 * (bluefox) Added vacuum cleaner to Alisa
@@ -299,8 +356,8 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (bluefox) Do not try load the "sharp" if blood sugar not enabled
 
 ### 1.4.18 (2020-05-11)
-* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
-* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+* (Apollon77) Make sure that invalid configured states or values without a timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after the disconnect to not break adapter (Sentry IOBROKER-IOT-A)
 
 ### 1.4.17 (2020-05-11)
 * (bluefox) Better error output is implemented
@@ -322,10 +379,10 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
 
 ### 1.4.6 (2020-04-18)
-* (Apollon77) Add Sentry error reporting to React Frontend
+* (Apollon77) Add the Sentry error reporting to `React Frontend`
 
 ### 1.4.4 (2020-04-14)
-* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) remove js-controller 3.0 warnings and replace `adapter.objects` access
 * (Apollon77) add linux dependencies for canvas library
 * (Apollon77) add sentry configuration
 
@@ -346,7 +403,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 
 ### 1.3.1 (2020-02-09)
 * (Apollon77) Dependency updates
-* (APollon77) Make compatible with Admin > 4.0 because of updated socket.io
+* (Apollon77) Make compatible with Admin > 4.0 because of updated socket.io
 
 ### 1.2.1 (2020-01-18)
 * (bluefox) Fixed problem if the port of admin is not 8081
@@ -355,14 +412,14 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (TA2k) Google Home handling and visualization improved.
 
 ### 1.1.10 (2020-01-03)
-* (bluefox) Now is allowed to selected the temperature values as alexa states
-* (bluefox) Allowed to set type immediately after insertion of new state
+* (bluefox) Now is allowed to select the temperature values as alexa states
+* (bluefox) Allowed the setting type immediately after insertion of new state
 
 ### 1.1.9 (2019-11-27)
 * (bluefox) Fixed: sometimes the configuration could not be loaded
 
 ### 1.1.8 (2019-09-12)
-* (bluefox) Optimization of googe home communication was done
+* (bluefox) Optimization of google home communication was done
 
 ### 1.1.7 (2019-09-11)
 * (bluefox) The sending rate to google home is limited now
@@ -382,7 +439,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ### 1.0.8 (2019-09-03)
 * (TA2k) Improved support for Google Home
 * (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
-* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Added support for manually adding states as devices
 * (TA2k) Fix update state after Sync
 * (TA2k) Added typical Google Home devices and traits/actions
 * (TA2k) Fix only process update message when Alexa is checked in the options
@@ -406,7 +463,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
+* (bluefox) Allowed the enablement and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home
@@ -436,7 +493,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

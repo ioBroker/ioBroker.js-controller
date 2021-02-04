@@ -3,33 +3,73 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: qOqMMSIK7Al/nLRHLVUli03Bwr0uyt0iYRkipKzxtFc=
+hash: Utg7/uDA/cK1Wc29XecalUq6bn8n6olNOfmw9sqEm0A=
 ---
-![логотип](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
+![Логотип](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
+![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.bshb.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.bshb.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/bshb-installed.svg)
+![Количество установок (стабильно)](http://iobroker.live/badges/bshb-stable.svg)
 ![Известные уязвимости](https://snyk.io/test/github/holomekc/ioBroker.bshb/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.bshb.png)
-![Трэвис-CI](http://img.shields.io/travis/holomekc/ioBroker.bshb/master.svg)
+![Трэвис-Си](http://img.shields.io/travis/holomekc/ioBroker.bshb/master.svg)
 
 # IoBroker.bshb
 [![Статус зависимости] (https://david-dm.org/holomekc/iobroker.bshb.svg)](https://david-dm.org/holomekc/iobroker.bshb)
 
 ## Адаптер bosch-smart-home-bridge для ioBroker
-Этот адаптер позволяет общаться с устройствами Bosch Smart Home.
+Этот адаптер позволяет обмениваться данными с устройствами Bosch Smart Home.
 
-[Контроллер Bosch Smart Home](https://www.bosch-smarthome.com/de/de/produkte/smart-system-solutions/smart-home-controller)
+[Контроллер умного дома Bosch](https://www.bosch-smarthome.com/de/de/produkte/smart-system-solutions/smart-home-controller)
 
-Для этого он использует библиотеку [Бош-смарт-дом-мост](https://github.com/holomekc/bosch-smart-home-bridge), которая использует информацию из официальных [Контроллер Bosch для умного дома Local REST API](https://github.com/BoschSmartHome/bosch-shc-api-docs).
+Для этого он использует библиотеку [мост для умного дома bosch](https://github.com/holomekc/bosch-smart-home-bridge), которая использует информацию из официального [Локальный интерфейс REST API контроллера умного дома Bosch](https://github.com/BoschSmartHome/bosch-shc-api-docs).
 
-Обсуждение на форуме ioBroker для адаптера BSHB: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
+Обсуждение на форуме ioBroker адаптера BSHB: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
 
 Примеры: https://github.com/holomekc/ioBroker.bshb/wiki/Examples
 
 Работа в процессе. Обратная связь приветствуется.
 
+Если вы хотите поддержать работу, я буду признателен за небольшое пожертвование. Это на 100% добровольно и не обязательно для использования адаптера. Вы найдете ссылку вверху.
+
 ## Changelog
+
+### 0.1.13
+* (holomekc) update to api-version 2.1
+* (holomekc) add intrusionDetectionControl folder which contains trigger for alarm system
+
+### 0.1.12
+* (holomekc) states and units
+* (holomekc) update license and copyright
+* (holomekc) fix typo in connectionType
+
+### 0.1.11
+* (holomekc) update dependencies
+* (holomekc) changes due to new ioBroker lib
+* (holomekc) add connection indicator
+* (holomekc) increase delay for timeout for longpolling to 2s
+* (holomekc) low not set as lowbat role in ioBroker anymore
+
+### 0.1.10
+* (holomekc) Add .npmignore to cleanup installation files
+
+### 0.1.9
+* (holomekc) Error in scenario handling fixed
+
+### 0.1.8
+* (holomekc) Minor improvements
+
+### 0.1.7
+* (holomekc) Improved error handling
+
+### 0.1.6
+* (holomekc) Added open doors and windows feature
+
+### 0.1.5
+* (holomekc) functions and rooms are only added for new channels 
+* (holomekc) increase timeout for requests which expect to contain more data
 
 ### 0.1.4
 * (holomekc) issue fixed in loading configuration
@@ -104,7 +144,7 @@ hash: qOqMMSIK7Al/nLRHLVUli03Bwr0uyt0iYRkipKzxtFc=
 
 MIT License
 
-Copyright (c) 2019 Christopher Holomek <holomekc.github@gmail.com>
+Copyright (c) 2021 Christopher Holomek <holomekc.github@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

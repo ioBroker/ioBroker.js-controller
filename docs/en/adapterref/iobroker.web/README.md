@@ -23,9 +23,9 @@ Read [here](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates
 
 ## Extensions
 Web driver supports extensions. The extension is URL handler, that will be called if such URL request appears.
-The extensions look like normal adapter, but they have no running process and will be called by web server.
+The extensions look like the normal adapter, but they have no running process and will be called by web server.
 
-E.g. the user can activate special proxy adapter and reach other devices (like web cams) in the same web server.
+E.g. the user can activate special proxy adapter and reach other devices (like webcams) in the same web server.
 It is required to let all services be available under one web server.
 
 ## Brute-force protection
@@ -70,6 +70,8 @@ This can be used for applications like *FullyBrowser*. When entering the wrong c
 to the Login Page. 
 
 ## Changelog
+### 3.3.0 (2021-02-01)
+* (bluefox) The admin GUI was rewritten with reactJS 
 
 ### 3.2.3 (2021-01-12)
 * (Apollon77) If no port is provided use default 8082 (Sentry IOBROKER-WEB-2S)
@@ -77,7 +79,7 @@ to the Login Page.
 
 ### 3.2.0 (2021-01-08)
 * (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
-* (raintonr) Allow to disable to serve files or states from DB
+* (raintonr) Allow disabling to serve files or states from DB
 
 ### 3.1.0 (2020-11-26)
 * (foxriver76) Add option for Basic Auth
@@ -229,7 +231,7 @@ to the Login Page.
 * (bluefox) update selectID dialog
 
 ### 1.7.0 (2016-08-30)
-* (bluefox) сompatible only with new admin
+* (bluefox) Compatible only with new admin
 
 ### 1.6.2 (2016-08-30)
 * (bluefox) updated SelectID Dialog
@@ -279,7 +281,7 @@ to the Login Page.
 
 ### 1.3.5 (2016-03-11)
 * (bluefox) update selectId dialog
-* (bluefox) enable get files from disk and not from cache, just request http://ip:8082/vis/file.png?something
+* (bluefox) enable get files from disk and not from the cache, just request http://ip:8082/vis/file.png?something
 * (bluefox) update packages
 
 ### 1.3.4 (2015-12-25)
@@ -422,7 +424,7 @@ to the Login Page.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

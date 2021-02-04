@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
+hash: CdIj955L1zu2HVxws/1QoD0VWQqXAJrLhpzEZiVyhPQ=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -28,9 +28,9 @@ hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
 
 ##扩展
 Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，则会调用该处理程序。
-这些扩展看起来像普通适配器，但是它们没有正在运行的进程，将由Web服务器调用。
+这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
-例如。用户可以激活特殊的代理适配器，并访问同一Web服务器中的其他设备（例如Web Cam）。
+例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如网络摄像头）。
 必须让所有服务在一台Web服务器下可用。
 
 ##暴力保护
@@ -72,9 +72,16 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 可以用于* FullyBrowser *之类的应用程序。一旦输入了错误的凭据，您将被重定向到登录页面。
 
 ## Changelog
+### 3.3.0 (2021-02-01)
+* (bluefox) The admin GUI was rewritten with reactJS 
+
+### 3.2.3 (2021-01-12)
+* (Apollon77) If no port is provided use default 8082 (Sentry IOBROKER-WEB-2S)
+* (Apollon77) update dependencies of socketio and simple-api
+
 ### 3.2.0 (2021-01-08)
 * (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
-* (raintonr) Allow to disable to serve files or states from DB
+* (raintonr) Allow disabling to serve files or states from DB
 
 ### 3.1.0 (2020-11-26)
 * (foxriver76) Add option for Basic Auth
@@ -226,7 +233,7 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 * (bluefox) update selectID dialog
 
 ### 1.7.0 (2016-08-30)
-* (bluefox) сompatible only with new admin
+* (bluefox) Compatible only with new admin
 
 ### 1.6.2 (2016-08-30)
 * (bluefox) updated SelectID Dialog
@@ -276,7 +283,7 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 
 ### 1.3.5 (2016-03-11)
 * (bluefox) update selectId dialog
-* (bluefox) enable get files from disk and not from cache, just request http://ip:8082/vis/file.png?something
+* (bluefox) enable get files from disk and not from the cache, just request http://ip:8082/vis/file.png?something
 * (bluefox) update packages
 
 ### 1.3.4 (2015-12-25)
@@ -419,7 +426,7 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

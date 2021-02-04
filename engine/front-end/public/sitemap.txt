@@ -119,6 +119,7 @@ https://doc.iobroker.net/#de/documentation/dev/adapterref.md
 https://doc.iobroker.net/#de/documentation/dev/adaptersecurity.md
 https://doc.iobroker.net/#de/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#de/documentation/dev/adaptertesting.md
+https://doc.iobroker.net/#de/documentation/dev/adaptertranslate.md
 https://doc.iobroker.net/#de/documentation/dev/adaptervis.md
 https://doc.iobroker.net/#de/documentation/dev/adddevice.md
 https://doc.iobroker.net/#de/documentation/dev/aliases.md
@@ -261,6 +262,7 @@ https://doc.iobroker.net/#en/documentation/dev/adapterref.md
 https://doc.iobroker.net/#en/documentation/dev/adaptersecurity.md
 https://doc.iobroker.net/#en/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#en/documentation/dev/adaptertesting.md
+https://doc.iobroker.net/#en/documentation/dev/adaptertranslate.md
 https://doc.iobroker.net/#en/documentation/dev/adaptervis.md
 https://doc.iobroker.net/#en/documentation/dev/adddevice.md
 https://doc.iobroker.net/#en/documentation/dev/aliases.md
@@ -403,6 +405,7 @@ https://doc.iobroker.net/#ru/documentation/dev/adapterref.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptersecurity.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptertesting.md
+https://doc.iobroker.net/#ru/documentation/dev/adaptertranslate.md
 https://doc.iobroker.net/#ru/documentation/dev/adaptervis.md
 https://doc.iobroker.net/#ru/documentation/dev/adddevice.md
 https://doc.iobroker.net/#ru/documentation/dev/aliases.md
@@ -545,6 +548,7 @@ https://doc.iobroker.net/#zh-cn/documentation/dev/adapterref.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptersecurity.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptertemplate.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptertesting.md
+https://doc.iobroker.net/#zh-cn/documentation/dev/adaptertranslate.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adaptervis.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adddevice.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/aliases.md

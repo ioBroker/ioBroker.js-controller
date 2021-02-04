@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
+hash: CdIj955L1zu2HVxws/1QoD0VWQqXAJrLhpzEZiVyhPQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -11,7 +11,7 @@ hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.web.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.web.svg)
 ![Тесты](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
-![НПМ](https://nodei.co/npm/iobroker.web.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 # IoBroker.web
 Веб-сервер на базе Node.js и экспресс для чтения файлов из БД ioBroker
@@ -49,7 +49,7 @@ http://IP:8082/state/system.adapter.web.0.alive =>
 {"val":true,"ack":true,"ts":1606831924559,"q":0,"from":"system.adapter.web.0","lc":1606777539894}
 ```
 
-или же
+или
 
 ```
 http://IP:8082/state/javascript.picture.png =>
@@ -72,9 +72,16 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 Это можно использовать для таких приложений, как *FullyBrowser* При однократном вводе неправильных учетных данных вы будете перенаправлены на страницу входа.
 
 ## Changelog
+### 3.3.0 (2021-02-01)
+* (bluefox) The admin GUI was rewritten with reactJS 
+
+### 3.2.3 (2021-01-12)
+* (Apollon77) If no port is provided use default 8082 (Sentry IOBROKER-WEB-2S)
+* (Apollon77) update dependencies of socketio and simple-api
+
 ### 3.2.0 (2021-01-08)
 * (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
-* (raintonr) Allow to disable to serve files or states from DB
+* (raintonr) Allow disabling to serve files or states from DB
 
 ### 3.1.0 (2020-11-26)
 * (foxriver76) Add option for Basic Auth
@@ -226,7 +233,7 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 * (bluefox) update selectID dialog
 
 ### 1.7.0 (2016-08-30)
-* (bluefox) сompatible only with new admin
+* (bluefox) Compatible only with new admin
 
 ### 1.6.2 (2016-08-30)
 * (bluefox) updated SelectID Dialog
@@ -276,7 +283,7 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 
 ### 1.3.5 (2016-03-11)
 * (bluefox) update selectId dialog
-* (bluefox) enable get files from disk and not from cache, just request http://ip:8082/vis/file.png?something
+* (bluefox) enable get files from disk and not from the cache, just request http://ip:8082/vis/file.png?something
 * (bluefox) update packages
 
 ### 1.3.4 (2015-12-25)
@@ -419,7 +426,7 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

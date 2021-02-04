@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: KAPiga+EB8Me3aBVyUvORD0MpVesJ46LGyA+8h5fYp8=
+hash: POmf7zWTwhMwMfgOvU1PxjKyLCJHQO/HZ6fkGLc6pIE=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -235,7 +235,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 *注意：*
 
-根据数据库的不同，必须在表名称之前插入数据库名称或数据库名称+模式-请参见上方“数据库结构”下的框。
+根据数据库的不同，必须在表名称之前插入数据库名称或数据库名称+架构-请参见上方“数据库结构”下的框。
 
 如果您的数据库名为“ iobroker”，则示例：
 
@@ -253,7 +253,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 消息可以具有以下三种格式之一：
 
 *一个ID和一个状态对象：`{id：'adapter.0.device.counter'，状态：{val：1，ts：10239499}}`
-*一个ID和状态对象数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
+*一个ID和状态对象的数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
 *具有状态对象`[{{id：'adapter.0.device.counter1'，state：{val：1，ts：10239499}，{id：'adapter.0.device.counter2'，state： {val：2，ts：10239599}]`
 
 此外，您可以添加属性`rules: true`来激活所有规则，例如`counter`，`changesOnly`，`de-bounce`等：`{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
@@ -340,13 +340,13 @@ sendTo('sql.0', 'getCounter', {
 });
 ```
 
-如果计数器将被替换，它也会被计算。
+如果将更换计数器设备，则也会对其进行计算。
 
 ##通过Javascript进行历史记录记录管理
 适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
 
 ###启用
-该消息需要具有数据点的“ id”。另外，可选的“选项”用于定义特定于数据点的设置：
+该消息需要具有数据点的“ id”。此外，用于定义数据点特定设置的可选“选项”：
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -431,6 +431,12 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ### __正在进行的工程__->
 
 ## Changelog
+
+### 1.15.5 (2021-01-22)
+* (Apollon77) make sure message query is a string (Sentry)
+
+### 1.15.4 (2021-01-17)
+* (Apollon77) Optimize stop handling
 
 ### 1.15.3 (2020-08-29)
 * (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.

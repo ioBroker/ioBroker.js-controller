@@ -233,6 +233,9 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 
 ## Changelog
 
+### 1.7.4 (2021-02-01)
+* (withstu) fix upnp init bug
+
 ### 1.7.3 (2021-02-01)
 * (withstu) add upnp module and support bitrate, audio format and sample rate
 

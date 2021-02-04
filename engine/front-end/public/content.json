@@ -896,15 +896,6 @@
           },
           "content": "dev/adapterdebug.md"
         },
-        "Translations": {
-          "title": {
-            "en": "Translations",
-            "de": "Übersetzungen",
-            "ru": "Переводы",
-            "zh-cn": "翻译"
-          },
-          "content": "dev/adaptertranslate.md"
-        },
         "Publish": {
           "title": {
             "en": "Publish",

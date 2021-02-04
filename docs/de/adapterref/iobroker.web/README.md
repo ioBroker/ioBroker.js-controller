@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
+hash: CdIj955L1zu2HVxws/1QoD0VWQqXAJrLhpzEZiVyhPQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -28,9 +28,9 @@ Lesen Sie [Hier](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certifi
 
 ## Erweiterungen
 Der Webtreiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anforderung angezeigt wird.
-Die Erweiterungen sehen aus wie normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
+Die Erweiterungen sehen aus wie der normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
 
-Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (wie Web-Cams) auf demselben Webserver erreichen.
+Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (wie Webcams) auf demselben Webserver erreichen.
 Es ist erforderlich, dass alle Dienste unter einem Webserver verfügbar sind.
 
 ## Brute-Force-Schutz
@@ -72,9 +72,16 @@ Ermöglicht die Anmeldung über die Standardauthentifizierung durch Senden von `
 Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal die falschen Anmeldeinformationen eingeben, werden Sie zur Anmeldeseite weitergeleitet.
 
 ## Changelog
+### 3.3.0 (2021-02-01)
+* (bluefox) The admin GUI was rewritten with reactJS 
+
+### 3.2.3 (2021-01-12)
+* (Apollon77) If no port is provided use default 8082 (Sentry IOBROKER-WEB-2S)
+* (Apollon77) update dependencies of socketio and simple-api
+
 ### 3.2.0 (2021-01-08)
 * (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
-* (raintonr) Allow to disable to serve files or states from DB
+* (raintonr) Allow disabling to serve files or states from DB
 
 ### 3.1.0 (2020-11-26)
 * (foxriver76) Add option for Basic Auth
@@ -226,7 +233,7 @@ Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal 
 * (bluefox) update selectID dialog
 
 ### 1.7.0 (2016-08-30)
-* (bluefox) сompatible only with new admin
+* (bluefox) Compatible only with new admin
 
 ### 1.6.2 (2016-08-30)
 * (bluefox) updated SelectID Dialog
@@ -276,7 +283,7 @@ Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal 
 
 ### 1.3.5 (2016-03-11)
 * (bluefox) update selectId dialog
-* (bluefox) enable get files from disk and not from cache, just request http://ip:8082/vis/file.png?something
+* (bluefox) enable get files from disk and not from the cache, just request http://ip:8082/vis/file.png?something
 * (bluefox) update packages
 
 ### 1.3.4 (2015-12-25)
@@ -419,7 +426,7 @@ Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -183,6 +183,20 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 2.0.0 (31.01.2021)
+* (simatec) BugFix detect last backup
+* (simatec) WebDAV added
+* (simatec) BugFix Zigbee
+* (simatec) stop/start Instances on restore
+* (simatec) Download Icon for Cloud Restore added
+* (simatec) javscript Backup added
+* (simatec) Grafana Backup added
+* (simatec) Restore added for some types without restart
+* (simatec) timestamp for history-json added
+* (simatec) Source code rewritten
+* (simatec) Restore revised
+* (simatec) fixed many small bugs
+
 ### 1.8.5 (11.01.2021)
 * (simatec) Bugfix Jarvis Backup
 * (simatec) Bugfix GUI

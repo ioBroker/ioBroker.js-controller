@@ -3,12 +3,15 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: qOqMMSIK7Al/nLRHLVUli03Bwr0uyt0iYRkipKzxtFc=
+hash: Utg7/uDA/cK1Wc29XecalUq6bn8n6olNOfmw9sqEm0A=
 ---
 ![商标](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
+![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.bshb.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.bshb.svg)
+![安装数量（最新）](http://iobroker.live/badges/bshb-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/bshb-stable.svg)
 ![已知漏洞](https://snyk.io/test/github/holomekc/ioBroker.bshb/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.bshb.png)
 ![特拉维斯](http://img.shields.io/travis/holomekc/ioBroker.bshb/master.svg)
@@ -29,7 +32,44 @@ BSHB适配器的ioBroker论坛讨论：https://forum.iobroker.net/topic/25370/te
 
 工作正在进行中。反馈表示赞赏。
 
+如果您想支持这项工作，我将不胜感激。这是100％自愿的，不需要使用适配器。您在顶部找到一个链接。
+
 ## Changelog
+
+### 0.1.13
+* (holomekc) update to api-version 2.1
+* (holomekc) add intrusionDetectionControl folder which contains trigger for alarm system
+
+### 0.1.12
+* (holomekc) states and units
+* (holomekc) update license and copyright
+* (holomekc) fix typo in connectionType
+
+### 0.1.11
+* (holomekc) update dependencies
+* (holomekc) changes due to new ioBroker lib
+* (holomekc) add connection indicator
+* (holomekc) increase delay for timeout for longpolling to 2s
+* (holomekc) low not set as lowbat role in ioBroker anymore
+
+### 0.1.10
+* (holomekc) Add .npmignore to cleanup installation files
+
+### 0.1.9
+* (holomekc) Error in scenario handling fixed
+
+### 0.1.8
+* (holomekc) Minor improvements
+
+### 0.1.7
+* (holomekc) Improved error handling
+
+### 0.1.6
+* (holomekc) Added open doors and windows feature
+
+### 0.1.5
+* (holomekc) functions and rooms are only added for new channels 
+* (holomekc) increase timeout for requests which expect to contain more data
 
 ### 0.1.4
 * (holomekc) issue fixed in loading configuration
@@ -104,7 +144,7 @@ BSHB适配器的ioBroker论坛讨论：https://forum.iobroker.net/topic/25370/te
 
 MIT License
 
-Copyright (c) 2019 Christopher Holomek <holomekc.github@gmail.com>
+Copyright (c) 2021 Christopher Holomek <holomekc.github@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

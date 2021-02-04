@@ -3,12 +3,15 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: qOqMMSIK7Al/nLRHLVUli03Bwr0uyt0iYRkipKzxtFc=
+hash: Utg7/uDA/cK1Wc29XecalUq6bn8n6olNOfmw9sqEm0A=
 ---
 ![Logo](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
+![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.bshb.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.bshb.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/bshb-installed.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/bshb-stable.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/holomekc/ioBroker.bshb/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.bshb.png)
 ![Travis-CI](http://img.shields.io/travis/holomekc/ioBroker.bshb/master.svg)
@@ -21,15 +24,52 @@ Dieser Adapter ermöglicht die Kommunikation mit Bosch Smart Home-Geräten.
 
 [Bosch Smart Home Controller](https://www.bosch-smarthome.com/de/de/produkte/smart-system-solutions/smart-home-controller)
 
-Zu diesem Zweck wird die Bibliothek [Bosch-Smart-Home-Brücke](https://github.com/holomekc/bosch-smart-home-bridge) verwendet, die die Informationen der offiziellen [Lokale REST-API für Bosch Smart Home Controller](https://github.com/BoschSmartHome/bosch-shc-api-docs) verwendet.
+Um dies zu erreichen, wird die Bibliothek [bosch-smart-home-brücke](https://github.com/holomekc/bosch-smart-home-bridge) verwendet, die die Informationen aus den offiziellen [Lokale REST-API des Bosch Smart Home Controllers](https://github.com/BoschSmartHome/bosch-shc-api-docs) verwendet.
 
-Diskussion im ioBroker-Forum zum BSHB-Adapter: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
+ioBroker Forum Diskussion für den BSHB Adapter: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
 
 Beispiele: https://github.com/holomekc/ioBroker.bshb/wiki/Examples
 
 In Arbeit. Feedback erwünscht.
 
+Wenn Sie die Arbeit unterstützen möchten, würde ich mich über eine kleine Spende freuen. Dies ist zu 100% freiwillig und für die Verwendung des Adapters nicht erforderlich. Oben finden Sie einen Link.
+
 ## Changelog
+
+### 0.1.13
+* (holomekc) update to api-version 2.1
+* (holomekc) add intrusionDetectionControl folder which contains trigger for alarm system
+
+### 0.1.12
+* (holomekc) states and units
+* (holomekc) update license and copyright
+* (holomekc) fix typo in connectionType
+
+### 0.1.11
+* (holomekc) update dependencies
+* (holomekc) changes due to new ioBroker lib
+* (holomekc) add connection indicator
+* (holomekc) increase delay for timeout for longpolling to 2s
+* (holomekc) low not set as lowbat role in ioBroker anymore
+
+### 0.1.10
+* (holomekc) Add .npmignore to cleanup installation files
+
+### 0.1.9
+* (holomekc) Error in scenario handling fixed
+
+### 0.1.8
+* (holomekc) Minor improvements
+
+### 0.1.7
+* (holomekc) Improved error handling
+
+### 0.1.6
+* (holomekc) Added open doors and windows feature
+
+### 0.1.5
+* (holomekc) functions and rooms are only added for new channels 
+* (holomekc) increase timeout for requests which expect to contain more data
 
 ### 0.1.4
 * (holomekc) issue fixed in loading configuration
@@ -104,7 +144,7 @@ In Arbeit. Feedback erwünscht.
 
 MIT License
 
-Copyright (c) 2019 Christopher Holomek <holomekc.github@gmail.com>
+Copyright (c) 2021 Christopher Holomek <holomekc.github@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

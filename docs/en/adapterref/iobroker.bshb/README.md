@@ -1,6 +1,8 @@
 ![Logo](admin/bshb-logo.jpg)
 # ioBroker.bshb
 
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/donate?business=holomekc%40googlemail.com&currency_code=EUR)
+
 [![NPM version](http://img.shields.io/npm/v/iobroker.bshb.svg)](https://www.npmjs.com/package/iobroker.bshb)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.bshb.svg)](https://www.npmjs.com/package/iobroker.bshb)
 ![Number of Installations (latest)](http://iobroker.live/badges/bshb-installed.svg)
@@ -28,6 +30,8 @@ Examples:
 https://github.com/holomekc/ioBroker.bshb/wiki/Examples
 
 Work in progress. Feedback appreciated.
+
+If you want to support the work I would appreciate a small donation. This is 100% voluntary and not necessary for the use of the adapter. You find a link at the top.
 
 ## Changelog
 

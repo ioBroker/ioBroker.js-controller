@@ -39,6 +39,12 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.8.10 (2021-02-03)
+* The startup should now be faster, especially if there are many sleeping devices
+* Fixed an issue where devices were incorrectly displayed as secure
+* Improved support for devices that use the legacy `Alarm CC`
+* Several improvements for Zooz and GE devices
+
 ### 1.8.9 (2021-01-31)
 * Labels for the Meter CC were improved to be unique
 * Many config files were added and updated
@@ -60,11 +66,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 
 ### 1.8.6 (2021-01-17)
 * Many, many changes... See https://github.com/zwave-js/node-zwave-js/blob/master/CHANGELOG.md#changelog for details
-
-### 1.8.5 (2021-01-06)
-* The interview is no longer aborted when a device does not respond to the Wakeup Capability query
-* Fixed a crash that could happen when compressing the value DB with an existing backup file
-* Added and updated several config files
 
 ## License
 

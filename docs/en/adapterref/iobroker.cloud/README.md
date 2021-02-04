@@ -75,6 +75,9 @@ You can deactivate HTTPS and authentication on these web instance, but better is
 -->
 
 ## Changelog
+### 4.0.9 (2021-02-01)
+* (bluefox) Support of lovelace via ioBroker.pro
+* (bluefox) Fixed error with the admin
 
 ### 4.0.8 (2021-01-31)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-CLOUD-S)
@@ -280,7 +283,7 @@ You can deactivate HTTPS and authentication on these web instance, but better is
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

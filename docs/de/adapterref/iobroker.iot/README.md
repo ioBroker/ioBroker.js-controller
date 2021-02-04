@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
+hash: BOgIlLXvibALjDtnvut6a+AclxyCj8/51xi+F2g0JqA=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -42,7 +42,7 @@ Dies wird jedoch nicht empfohlen, da die Erkennungs-Engine ein weiteres Wort ana
 
 ### AUS-Pegel für Schalter
 Einige Gruppen bestehen aus gemischten Geräten: Dimmer und Schalter. Es ist erlaubt, sie mit "EIN" - und "AUS" -Befehlen und mit Prozenten zu steuern.
-Wenn der Befehl "Auf 30% einstellen" und der * AUS-Pegel "" 30% "ist, werden die Schalter eingeschaltet. Mit dem Befehl" Auf 25% einstellen "werden alle Schalter ausgeschaltet.
+Wenn der Befehl `Set to 30%` und `OFF level is 30%` lautet, werden die Schalter eingeschaltet. Mit dem Befehl "Auf 25% einstellen" werden alle Schalter ausgeschaltet.
 
 Wenn der Befehl "AUS" ist, speichert der Adapter den aktuellen Dimmerpegel, wenn der tatsächliche Wert über oder gleich "30%" liegt.
 Später, wenn der neue Befehl "EIN" ertönt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
@@ -74,7 +74,7 @@ Der Kanal muss 4 Zustände mit folgenden Rollen haben:
 
 ```
 Alexa, set the "device name" to "color"
-Alexa, turn the light fuschia
+Alexa, turn the light fuchsia
 Alexa, set the bedroom light to red
 Alexa, change the kitchen to the color chocolate
 ```
@@ -100,7 +100,7 @@ Folgende Bedingungen müssen erfüllt sein, um den Status in die automatisch gen
 - Der Status muss sich in einer "Funktions" -Aufzählung befinden.
 - Der Status muss eine Rolle haben ("Status", "Schalter" oder "Ebene. *", Z. B. Ebene.Dimmer), wenn er nicht direkt in "Funktionen" enthalten ist.
 
-Es kann sein, dass sich der Kanal in den "Funktionen" befindet, sich aber nicht selbst angibt.
+Es kann sein, dass sich der Kanal in den "Funktionen" befindet, aber selbst nicht angeben.
 
 - Der Status muss beschreibbar sein: common.write = true
 - Der Zustandsdimmer muss common.type als 'number' haben.
@@ -110,7 +110,7 @@ Befindet sich der Status nur in "Funktionen" und nicht in einem "Raum", wird der
 
 Die Statusnamen werden aus Funktion und Raum generiert. Z.B. Alle *Lichter* im *Wohnzimmer* werden im virtuellen Gerät *Wohnzimmerlicht* gesammelt.
 Der Benutzer kann diesen Namen nicht ändern, da er automatisch generiert wird.
-Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. wurde die Funktion "Licht" in "Lichter" geändert, sodass das *Wohnzimmerlicht* in *Wohnzimmerlicht* geändert wird.)
+Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. die Funktion "Licht" wurde in "Lichter" geändert, so dass das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert wird)
 
 Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart Name verwendet.
 
@@ -125,7 +125,7 @@ Wenn die Gruppe mehr als einen Status hat, muss die Gruppe über die Namen der A
 Um eigene Gruppen zu erstellen, kann der Benutzer den Adapter "Szenen" installieren oder "Skript" im Javascript-Adapter erstellen.
 
 ### Ersetzt
-Sie können Zeichenfolgen angeben, die automatisch in den Gerätenamen ersetzt werden können. Zum Beispiel, wenn Sie Ersetzungen auf setzen:
+Sie können Zeichenfolgen angeben, die automatisch in den Gerätenamen ersetzt werden können. Z.B. Wenn Sie Ersetzungen festlegen auf:
 
 ```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
 If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
@@ -193,9 +193,9 @@ Der Adapter liefert die Details in zwei Zuständen mit unterschiedlicher Details
 * ** smart.lastCommandObj *** enthält eine JSON-Zeichenfolge, die auf ein Objekt analysiert werden kann, das die folgenden Informationen enthält
  * **Wörter** enthält die empfangenen Wörter in einem Array
  * **intent** enthält den Abfragetyp. Mögliche Werte sind derzeit "askDevice", "controlDevice", "actionStart", "actionEnd", "askWhen", "askWhere", "askWho".
- * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon übermittelt wird, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
+ * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon gesendet wurde, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
  * **sessionId** enthält eine sessionId der Skill-Sitzung. Sollte identisch sein, wenn mehrere von Amazon gelieferte Befehle gesprochen wurden, ist die Zeichenfolge leer, wenn sie nicht angegeben wird
- * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
+ * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder möglicherweise später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
 
  Weitere Informationen darüber, wie die Wörter erkannt werden und welche Art von Abfragen die Alexa Custom Skill unterscheidet, finden Sie unter https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
 
@@ -208,7 +208,7 @@ Wenn der Text ein JSON-Objekt ist, können die folgenden Schlüssel verwendet we
 * **responseText** muss den Text enthalten, um zu Amazon zurückzukehren
 * **shouldEndSession** ist ein Boolescher Wert und steuert, ob die Sitzung geschlossen wird, nachdem die Antwort gesprochen wurde, oder offen bleibt, um eine weitere Spracheingabe zu akzeptieren.
 
-** Ergebnis per Nachricht an iot-Instanz zurückgeben **
+** Ergebnis über die Nachricht an die iot-Instanz zurückgeben **
 
 Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" enthält, mit einem Objekt, das die Schlüssel **responseText** und **shouldEndSession** enthalten kann, wie oben beschrieben.
 Die iot-Instanz antwortet nicht auf die Nachricht!
@@ -272,9 +272,66 @@ Folgende Typen werden unterstützt:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.8.12 (2021-02-02)
+* (bluefox) Fixed the dimmer issue with alisa.
+
+### 1.8.11 (2021-01-20)
+* (Morluktom) Alexa - Corrected the request for percentage values
+
+### 1.8.10 (2021-01-20)
+* (bluefox) Added the reconnect strategy if DNS address cannot be resolved
+
+### 1.8.9 (2020-12-27)
+* (bluefox) Updated configuration GUI to the latest state
+
+### 1.8.8 (2020-12-14)
+* (bluefox) Corrected the "google home" error
+
+### 1.8.6 (2020-12-13)
+* (bluefox) Try to fix google home error
+
+### 1.8.5 (2020-11-23)
+* (bluefox) Corrected the configuration table for google home
+
+### 1.8.4 (2020-11-18)
+* (bluefox) Corrected the configuration table for google home
+
+### 1.8.3 (2020-11-16)
+* (bluefox) Trying to fix the set to false at start for google home
+
+### 1.8.2 (2020-11-15)
+* (bluefox) Added the debug outputs for google home
+
+### 1.8.1 (2020-11-13)
+* (bluefox) The deletion of google home devices was corrected
+
+### 1.8.0 (2020-11-12)
+* (bluefox) The google home table was rewritten
+
+### 1.7.15 (2020-11-05)
+* (Morluktom) Corrected the request for temperature
+
+### 1.7.14 (2020-11-05)
+* (bluefox) Updated the select ID dialog.
+
+#### 1.7.13 (2020-10-30)
+* (foxriver76) add eraseOnUpload flag for js-controller 3.2+
+
+### 1.7.12 (2020-09-25)
+* (bluefox) Updated the select ID dialog.
+
+### 1.7.9 (2020-09-17)
+* (bluefox) Updated GUI for config.
+
+### 1.7.7 (2020-09-02)
+* (bluefox) Added information about changed linking process.
+
+### 1.7.6 (2020-08-25)
+* (bluefox) Some colors were changed in the dark mode.
+
 ### 1.7.5 (2020-08-21)
 * (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
-* (bluefox) Values for modes will be converted to numbers in Alisa
+* (bluefox) Values for modes will be converted to number in Alisa
 
 ### 1.7.3 (2020-08-16)
 * (bluefox) Added vacuum cleaner to Alisa
@@ -299,8 +356,8 @@ Folgende Typen werden unterstützt:
 * (bluefox) Do not try load the "sharp" if blood sugar not enabled
 
 ### 1.4.18 (2020-05-11)
-* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
-* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+* (Apollon77) Make sure that invalid configured states or values without a timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after the disconnect to not break adapter (Sentry IOBROKER-IOT-A)
 
 ### 1.4.17 (2020-05-11)
 * (bluefox) Better error output is implemented
@@ -322,10 +379,10 @@ Folgende Typen werden unterstützt:
 * fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
 
 ### 1.4.6 (2020-04-18)
-* (Apollon77) Add Sentry error reporting to React Frontend
+* (Apollon77) Add the Sentry error reporting to `React Frontend`
 
 ### 1.4.4 (2020-04-14)
-* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) remove js-controller 3.0 warnings and replace `adapter.objects` access
 * (Apollon77) add linux dependencies for canvas library
 * (Apollon77) add sentry configuration
 
@@ -346,7 +403,7 @@ Folgende Typen werden unterstützt:
 
 ### 1.3.1 (2020-02-09)
 * (Apollon77) Dependency updates
-* (APollon77) Make compatible with Admin > 4.0 because of updated socket.io
+* (Apollon77) Make compatible with Admin > 4.0 because of updated socket.io
 
 ### 1.2.1 (2020-01-18)
 * (bluefox) Fixed problem if the port of admin is not 8081
@@ -355,14 +412,14 @@ Folgende Typen werden unterstützt:
 * (TA2k) Google Home handling and visualization improved.
 
 ### 1.1.10 (2020-01-03)
-* (bluefox) Now is allowed to selected the temperature values as alexa states
-* (bluefox) Allowed to set type immediately after insertion of new state
+* (bluefox) Now is allowed to select the temperature values as alexa states
+* (bluefox) Allowed the setting type immediately after insertion of new state
 
 ### 1.1.9 (2019-11-27)
 * (bluefox) Fixed: sometimes the configuration could not be loaded
 
 ### 1.1.8 (2019-09-12)
-* (bluefox) Optimization of googe home communication was done
+* (bluefox) Optimization of google home communication was done
 
 ### 1.1.7 (2019-09-11)
 * (bluefox) The sending rate to google home is limited now
@@ -382,7 +439,7 @@ Folgende Typen werden unterstützt:
 ### 1.0.8 (2019-09-03)
 * (TA2k) Improved support for Google Home
 * (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
-* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Added support for manually adding states as devices
 * (TA2k) Fix update state after Sync
 * (TA2k) Added typical Google Home devices and traits/actions
 * (TA2k) Fix only process update message when Alexa is checked in the options
@@ -406,7 +463,7 @@ Folgende Typen werden unterstützt:
 * (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
+* (bluefox) Allowed the enablement and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home
@@ -436,7 +493,7 @@ Folgende Typen werden unterstützt:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

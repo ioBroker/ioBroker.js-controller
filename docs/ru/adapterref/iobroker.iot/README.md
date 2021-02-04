@@ -2,31 +2,31 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iot/README.md
-title: ioBroker IoT-адаптер
-hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
+title: IoT-адаптер ioBroker
+hash: BOgIlLXvibALjDtnvut6a+AclxyCj8/51xi+F2g0JqA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
 ![Количество установок](http://iobroker.live/badges/iot-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.iot.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.iot.svg)
-![НПМ](https://nodei.co/npm/iobroker.iot.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.iot.png?downloads=true)
 
 # IoBroker IoT-адаптер
 Этот адаптер предназначен ТОЛЬКО для связи с Amazon Alexa, Google Home и Nightscout.
-Это не для удаленного доступа к вашему экземпляру ioBroker. Для этого используйте адаптер ioBroker.cloud.
+Это не для удаленного доступа к вашему экземпляру ioBroker. Для этого воспользуйтесь адаптером ioBroker.cloud.
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Настройки
 Чтобы использовать облачный адаптер, вам необходимо сначала зарегистрироваться в облаке ioBroker [https://iobroker.pro](https://iobroker.pro).
 
-[Ссылка на настройки типа Google API](https://developers.google.com/actions/smarthome/guides/)
+[Ссылка на настройки типа API Google](https://developers.google.com/actions/smarthome/guides/)
 
 ![вступление](../../../en/adapterref/iobroker.iot/img/intro.png)
 
 ### Язык
-Если вы выберете язык «по умолчанию», умные имена устройств и перечислений переводиться не будут. Если указан какой-то язык, все известные имена будут переведены на этот язык.
+Если вы выберете язык «по умолчанию», умные имена устройств и перечислений не будут переводиться. Если указан какой-либо язык, все известные имена будут переведены на этот язык.
 Это сделано для быстрого переключения между многими языками в демонстрационных целях.
 
 ### Сначала поместите функцию в имена
@@ -38,14 +38,14 @@ hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 ### Соедините слова с
 Вы можете определить слово, которое будет помещено между функцией и комнатой. Например. «В» и «Диммер в гостиной» будет «Диммер в гостиной».
 
-Но этого делать не рекомендуется, поскольку механизм распознавания должен проанализировать еще одно слово, и это может привести к недопониманию.
+Но делать это не рекомендуется, так как движок распознавания должен проанализировать еще одно слово, и это может привести к недоразумениям.
 
 ### Уровень ВЫКЛ для переключателей
-Некоторые группы состоят из смешанных устройств: диммеров и переключателей. Допускается управлять ими командами «ВКЛ» и «ВЫКЛ» и процентами.
-Если команда установлена на «Установить на 30%», а уровень * ВЫКЛ »равен« 30% », переключатели будут включены. По команде« Установить на 25% »все переключатели будут выключены.
+Некоторые группы состоят из смешанных устройств: диммеры и переключатели. Допускается управлять ими командами «ВКЛ» и «ВЫКЛ» и процентами.
+Если команда - `Set to 30%` и `OFF level is 30%`, переключатели будут включены. По команде «Установить на 25%» все переключатели будут выключены.
 
 Кроме того, если команда «ВЫКЛ», адаптер запомнит текущий уровень диммера, если фактическое значение больше или равно «30%».
-Позже при новой команде «ON» адаптер переключит диммер не на 100%, а на уровень в памяти.
+Позже, когда придет новая команда «ВКЛ», адаптер переключит диммер не на 100%, а на уровень в памяти.
 
 Пример:
 
@@ -61,7 +61,7 @@ hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 Вы можете выбрать поведение команды ON для состояния номера. Можно выбрать конкретное значение или использовать последнее ненулевое значение.
 
 ### Написать ответ на
-Для каждой команды будет создан текстовый ответ. Здесь вы можете определить идентификатор объекта, куда должен быть записан этот текст. Например. *sayit.0.tts.text*
+Для каждой команды будет создан текстовый ответ. Здесь вы можете определить ID объекта, куда должен быть записан этот текст. Например. *sayit.0.tts.text*
 
 ### Цвета
 Только сейчас только английский alexa поддерживает управление цветом.
@@ -70,11 +70,11 @@ hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 - level.color.saturation (требуется для обнаружения канала),
 - level.color.hue,
 - диммер уровня,
-- переключатель (по желанию)
+- переключатель (необязательно)
 
 ```
 Alexa, set the "device name" to "color"
-Alexa, turn the light fuschia
+Alexa, turn the light fuchsia
 Alexa, set the bedroom light to red
 Alexa, change the kitchen to the color chocolate
 ```
@@ -92,10 +92,10 @@ Alexa, lock the "lock name"
 
 Для этого есть два важных перечисления: комнаты и функции.
 
-Комнаты такие: гостиная, ванная, спальная комната.
+Комнаты похожи: гостиная, ванная, спальня.
 Функции такие: свет, жалюзи, обогрев.
 
-Для получения состояния в автоматически сгенерированном списке должны быть выполнены следующие условия:
+Чтобы состояние появилось в автоматически сгенерированном списке, должны быть выполнены следующие условия:
 
 - состояние должно быть в каком-то "функциональном" перечислении.
 - состояние должно иметь роль («состояние», «переключатель» или «уровень. *», например, level.dimmer), если оно не включено напрямую в «функции».
@@ -104,7 +104,7 @@ Alexa, lock the "lock name"
 
 - состояние должно быть доступно для записи: common.write = true
 - диммер должен иметь common.type как 'number'
-- состояние нагрева должно иметь общую единицу как «°C», «°F» или «° K» и общую. тип как «число»
+- состояние нагрева должно иметь общую единицу как «°C», «°F» или «° K» и общую. тип как «число».
 
 Если состояние находится только в «функциях», а не в какой-либо «комнате», будет использоваться имя состояния.
 
@@ -119,12 +119,12 @@ Alexa, lock the "lock name"
 ![Конфигурация](../../../en/adapterref/iobroker.iot/img/configuration.png)
 
 Если группа имеет только одно состояние, ее можно переименовать, так как для этого будет использоваться smartName состояния.
-Если у группы более одного состояния, группа должна быть переименована с помощью имен перечисления.
+Если у группы более одного состояния, группа должна быть переименована через имена перечисления.
 
 Для создания собственных групп пользователь может установить адаптер «сцены» или создать «скрипт» в адаптере Javascript.
 
 ### Заменяет
-Вы можете указать строки, которые могут автоматически заменяться в именах устройств. Например, если вы установите замену на:
+Вы можете указать строки, которые могут автоматически заменяться в именах устройств. E. g. если вы установите заменяет на:
 
 ```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
 If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
@@ -153,22 +153,22 @@ or
 
 ```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
 
-Если в настройках в поле «Белый список для сервисов» указать имя *custom_test* а вызов с «custom_test» в качестве имени сервиса, состояние **cloud.0.services.custom_test** будет установлено в *myString*
+Если в настройках в поле «Белый список для сервисов» указать имя *custom_test* а при вызове с именем сервиса «custom_test», состояние **cloud.0.services.custom_test** будет установлено на *myString*
 
 Вы можете написать «*» в белом списке, и все услуги будут разрешены.
 
-Здесь вы можете найти инструкции, как использовать его с [исполнитель](doc/tasker.md).
+Здесь вы найдете инструкции, как использовать его с [исполнитель](doc/tasker.md).
 
 Услуга IFTTT разрешена, только если установлен ключ IFTTT.
 
-Зарезервированные имена: «ifttt», «text2command», «simpleApi», «swagger». Они должны использоваться без префикса ```"custom_"```.
+Зарезервированные имена: ifttt, text2command, simpleApi, swagger. Они должны использоваться без префикса ```"custom_"```.
 
 ### Text2command
-Вы можете написать «text2command» в белом списке, вы можете отправить запрос POST на ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>``` для записи данных в переменную *text2command.X.text*
+Вы можете написать «text2command» в белом списке, вы можете отправить POST-запрос на ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>``` для записи данных в переменную *text2command.X.text*
 
 Вы также можете использовать метод GET ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>```
 
-«X» можно определить в настройках с помощью опции «Использовать экземпляр text2command».
+«X» можно указать в настройках с помощью опции «Использовать экземпляр text2command».
 
 ## Пользовательский навык
 Ответы на пользовательские навыки можно обрабатывать двумя способами:
@@ -191,21 +191,21 @@ or
 * **smart.lastCommand** содержит полученный текст, включая информацию о типе запроса (намерении). Пример: "askDevice Status Rasenmäher"
 * ** smart.lastCommandObj *** содержит строку JSON, которая может быть преобразована в объект, содержащий следующую информацию
  * **words** содержит полученные слова в массиве
- * **intent** содержит тип запроса. Возможные значения в настоящее время: «askDevice», «controlDevice», «actionStart», «actionEnd», «askWhen», «askWhere», «askWho».
+ * **intent** содержит тип запроса. Возможные значения в настоящее время: askDevice, controlDevice, actionStart, actionEnd, askWhen, askWhere, askWho.
  * **deviceId** содержит идентификатор устройства, на которое был отправлен запрос, доставленный Amazon, будет пустой строкой, если не указан
  * **sessionId** содержит sessionId сеанса Skill, должен быть таким же, если было произнесено несколько команд, доставленных Amazon, будет пустой строкой, если не указан
- * **userId** содержит userId от владельца устройства (или, может быть, позже пользователя, который взаимодействовал с навыком), доставленный Amazon, будет пустой строкой, если не указан
+ * **userId** содержит userId от владельца устройства (или, возможно, позже пользователя, который взаимодействовал с навыком), доставленный Amazon, будет пустой строкой, если не указан
 
  Более подробную информацию о том, как обнаруживаются слова и какие типы запросов различает Alexa Custom Skill, см. На https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
 
 ** Вернуть результат через состояние smart.lastResponse **
 
 Ответ должен быть отправлен в течение 200 мс в состоянии «smart.lastResponse» и может быть простой текстовой строкой или объектом JSON.
-Если это текстовая строка, то этот текст будет отправлен в качестве ответа навыку.
+Если это текстовая строка, то этот текст будет отправлен в ответ на навык.
 если текст является объектом JSON, можно использовать следующие ключи:
 
 * **responseText** должен содержать текст для возврата в Amazon
-* **shouldEndSession** - это логическое значение, которое определяет, будет ли сессия закрыта после того, как ответ был озвучен, или останется открытым для приема другого голосового ввода.
+* **shouldEndSession** является логическим значением и определяет, будет ли сеанс закрыт после произнесения ответа или останется открытым для приема другого голосового ввода.
 
 ** Вернуть результат через сообщение в экземпляр iot **
 
@@ -243,7 +243,7 @@ on({id: 'iot.0.smart.lastCommandObj', ack: true, change: 'any'}, obj => {
 ```
 
 ### Частное облако
-Если вы используете частный навык / действие / навык для связи с `Alexa/Google Home/Алиса`, то у вас есть возможность использовать экземпляр IoT для обработки запросов от него.
+Если вы используете частный навык / действие / навык для связи с `Alexa/Google Home/Алиса`, у вас есть возможность использовать экземпляр IoT для обработки запросов от него.
 
 Например. для `yandex alice`:
 
@@ -271,9 +271,66 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 1.8.12 (2021-02-02)
+* (bluefox) Fixed the dimmer issue with alisa.
+
+### 1.8.11 (2021-01-20)
+* (Morluktom) Alexa - Corrected the request for percentage values
+
+### 1.8.10 (2021-01-20)
+* (bluefox) Added the reconnect strategy if DNS address cannot be resolved
+
+### 1.8.9 (2020-12-27)
+* (bluefox) Updated configuration GUI to the latest state
+
+### 1.8.8 (2020-12-14)
+* (bluefox) Corrected the "google home" error
+
+### 1.8.6 (2020-12-13)
+* (bluefox) Try to fix google home error
+
+### 1.8.5 (2020-11-23)
+* (bluefox) Corrected the configuration table for google home
+
+### 1.8.4 (2020-11-18)
+* (bluefox) Corrected the configuration table for google home
+
+### 1.8.3 (2020-11-16)
+* (bluefox) Trying to fix the set to false at start for google home
+
+### 1.8.2 (2020-11-15)
+* (bluefox) Added the debug outputs for google home
+
+### 1.8.1 (2020-11-13)
+* (bluefox) The deletion of google home devices was corrected
+
+### 1.8.0 (2020-11-12)
+* (bluefox) The google home table was rewritten
+
+### 1.7.15 (2020-11-05)
+* (Morluktom) Corrected the request for temperature
+
+### 1.7.14 (2020-11-05)
+* (bluefox) Updated the select ID dialog.
+
+#### 1.7.13 (2020-10-30)
+* (foxriver76) add eraseOnUpload flag for js-controller 3.2+
+
+### 1.7.12 (2020-09-25)
+* (bluefox) Updated the select ID dialog.
+
+### 1.7.9 (2020-09-17)
+* (bluefox) Updated GUI for config.
+
+### 1.7.7 (2020-09-02)
+* (bluefox) Added information about changed linking process.
+
+### 1.7.6 (2020-08-25)
+* (bluefox) Some colors were changed in the dark mode.
+
 ### 1.7.5 (2020-08-21)
 * (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
-* (bluefox) Values for modes will be converted to numbers in Alisa
+* (bluefox) Values for modes will be converted to number in Alisa
 
 ### 1.7.3 (2020-08-16)
 * (bluefox) Added vacuum cleaner to Alisa
@@ -298,8 +355,8 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (bluefox) Do not try load the "sharp" if blood sugar not enabled
 
 ### 1.4.18 (2020-05-11)
-* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
-* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+* (Apollon77) Make sure that invalid configured states or values without a timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after the disconnect to not break adapter (Sentry IOBROKER-IOT-A)
 
 ### 1.4.17 (2020-05-11)
 * (bluefox) Better error output is implemented
@@ -321,10 +378,10 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
 
 ### 1.4.6 (2020-04-18)
-* (Apollon77) Add Sentry error reporting to React Frontend
+* (Apollon77) Add the Sentry error reporting to `React Frontend`
 
 ### 1.4.4 (2020-04-14)
-* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) remove js-controller 3.0 warnings and replace `adapter.objects` access
 * (Apollon77) add linux dependencies for canvas library
 * (Apollon77) add sentry configuration
 
@@ -345,7 +402,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 
 ### 1.3.1 (2020-02-09)
 * (Apollon77) Dependency updates
-* (APollon77) Make compatible with Admin > 4.0 because of updated socket.io
+* (Apollon77) Make compatible with Admin > 4.0 because of updated socket.io
 
 ### 1.2.1 (2020-01-18)
 * (bluefox) Fixed problem if the port of admin is not 8081
@@ -354,14 +411,14 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (TA2k) Google Home handling and visualization improved.
 
 ### 1.1.10 (2020-01-03)
-* (bluefox) Now is allowed to selected the temperature values as alexa states
-* (bluefox) Allowed to set type immediately after insertion of new state
+* (bluefox) Now is allowed to select the temperature values as alexa states
+* (bluefox) Allowed the setting type immediately after insertion of new state
 
 ### 1.1.9 (2019-11-27)
 * (bluefox) Fixed: sometimes the configuration could not be loaded
 
 ### 1.1.8 (2019-09-12)
-* (bluefox) Optimization of googe home communication was done
+* (bluefox) Optimization of google home communication was done
 
 ### 1.1.7 (2019-09-11)
 * (bluefox) The sending rate to google home is limited now
@@ -381,7 +438,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ### 1.0.8 (2019-09-03)
 * (TA2k) Improved support for Google Home
 * (TA2k) Added auto detection for RGB, RGBSingle, Hue, CT, MediaDevice, Switch, Info, Socket, Light, Dimmer, Thermostat, WindowTilt, Blinds, Slider
-* (TA2k) Added support for manualy adding states as devices
+* (TA2k) Added support for manually adding states as devices
 * (TA2k) Fix update state after Sync
 * (TA2k) Added typical Google Home devices and traits/actions
 * (TA2k) Fix only process update message when Alexa is checked in the options
@@ -405,7 +462,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 * (Apollon77) Change enable/disable of Amazon Alexa and of Google Home from configuration to be really "active if selected".
 
 ### 0.4.2 (2019-03-10)
-* (bluefox) Allowed the enable and disable of Amazon Alexa and of Google Home from configuration.
+* (bluefox) Allowed the enablement and disable of Amazon Alexa and of Google Home from configuration.
 
 ### 0.4.1 (2019-02-19)
 * (bluefox) Add version check to google home
@@ -435,7 +492,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

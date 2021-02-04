@@ -30,68 +30,72 @@ It is also possible to apply a filter to the log levels and also to the adapters
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (o0shojo0o) Bugfix 'Cannot read property common of null'
+
 ### 0.2.8 (2021-01-30)
-* (IdleBit) Bugfix NullPointerException
+* (o0shojo0o) Bugfix NullPointerException
 
 ### 0.2.7 (2021-01-24)
-* (IdleBit) Add overview card 
+* (o0shojo0o) Add overview card 
 
 ### 0.2.6 (2021-01-21)
 * (bluefox) Refactoring
 * (bluefox) Better translations
 
 ### 0.2.5 (2021-01-20)
-* (IdleBit) no real change only the description for the admin
+* (o0shojo0o) no real change only the description for the admin
 
 ### 0.2.4 (2021-01-16)
-* (IdleBit) bugfix display of the filter options
-* (IdleBit) bugfix display of template parameters
-* (IdleBit) add parameter logging Arch
-* (IdleBit) add parameter logging JsController
-* (IdleBit) add parameter logging Node
-* (IdleBit) add parameter logging Platform
-* (IdleBit) add parameter logging SourceVersion
+* (o0shojo0o) bugfix display of the filter options
+* (o0shojo0o) bugfix display of template parameters
+* (o0shojo0o) add parameter logging Arch
+* (o0shojo0o) add parameter logging JsController
+* (o0shojo0o) add parameter logging Node
+* (o0shojo0o) add parameter logging Platform
+* (o0shojo0o) add parameter logging SourceVersion
 
 ### 0.2.3 (2021-01-15)
-* (IdleBit) if the server address ends with "/", this must be removed. …
+* (o0shojo0o) if the server address ends with "/", this must be removed. …
 
 ### 0.2.2 (2021-01-10)
-* (IdleBit) handle uncomplete log message
+* (o0shojo0o) handle uncomplete log message
 
 ### 0.2.1 (2020-10-01)
-* (IdleBit) added forgetting native...
+* (o0shojo0o) added forgetting native...
 
 ### 0.2.0 (2020-10-01)
-* (IdleBit) optional selective logging on adapter basis
+* (o0shojo0o) optional selective logging on adapter basis
 
 ### 0.1.0 (2020-09-26)
-* (IdleBit) API key is no longer not displayed in clear text 
-* (IdleBit) API key is now stored encrypted
+* (o0shojo0o) API key is no longer not displayed in clear text 
+* (o0shojo0o) API key is now stored encrypted
   * ***Attention: The API key will be lost and must be set again!***
-* (IdleBit) higher dependencies of the js-controller (>=3.1.0)
+* (o0shojo0o) higher dependencies of the js-controller (>=3.1.0)
 
 ### 0.0.5 (2020-09-23)
-* (IdleBit) add param SystemName for display in Seq
+* (o0shojo0o) add param SystemName for display in Seq
 
 ### 0.0.4 (2020-09-23)
-* (IdleBit) bugfix at the server address check  
+* (o0shojo0o) bugfix at the server address check  
 
 ### 0.0.3 (2020-09-22)
-* (IdleBit) fix minimum js.controller version
+* (o0shojo0o) fix minimum js.controller version
 
 ### 0.0.2 (2020-09-17)
-* (IdleBit) new release for npm...
+* (o0shojo0o) new release for npm...
 
 ### 0.0.2-beta.0 (2020-09-16)
-* (IdleBit) initial release
+* (o0shojo0o) initial release
 
 ### 0.0.1
-* (IdleBit) initial push
+* (o0shojo0o) initial push
 
 ## License
 MIT License
 
-Copyright (c) 2021 IdleBit <info@bastelbunker.de>
+Copyright (c) 2021 Dennis Rathjen <info@bastelbunker.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
