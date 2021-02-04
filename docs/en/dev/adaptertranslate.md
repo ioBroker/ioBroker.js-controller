@@ -34,6 +34,8 @@ When an adapter is created with the [Adapter Creator](https://github.com/ioBroke
 
 Whenever you add some strings, you can simply use `gulp translateAndUpdateWordsJS` to add all missing translations.
 
+To automate translating the release notes also the use of the [release-script from @AlCalzone](https://github.com/AlCalzone/release-script) is an easy option that automates that from an english written changelog.
+
 ## Managed translations
 
 Automated translations are often not good enough or confusing, therefore ioBroker offers the Weblate platform for managed community translations:
