@@ -8,6 +8,7 @@
 * (AlCalzone) support github branch names with slashes on adapter install
 * (foxriver76) Fix wrong logger pattern that caused issues on windows
 * (Apollon77) fix potential crash when restoring backup
+* (Apollon77) restore old logfile deletion logic because rotator library do not work as expected
 
 ## 3.2.13 (2021-02-01) Release Grace
 **BREAKING CHANGES**
