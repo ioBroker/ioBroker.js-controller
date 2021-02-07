@@ -9,6 +9,9 @@
 * (foxriver76) Fix wrong logger pattern that caused issues on windows
 * (Apollon77) fix potential crash when restoring backup
 * (Apollon77) restore old logfile deletion logic because rotator library do not work as expected
+* (Apollon77) Optimize File DBs to lower write i/o by 50% ( backup file is not renamed instead of rewritten)
+* (AlCalzone/Apollon77) Restructure DB code to allow easier new DB types
+* (Apollon77) Try to fix logging when seq is used
 
 ## 3.2.13 (2021-02-01) Release Grace
 **BREAKING CHANGES**
