@@ -4352,14 +4352,14 @@ function init(compactGroupId) {
     // Get "objects" object
     // If "file" and on the local machine
     if (tools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
-        Objects = require('@iobroker/db-objects-file').Server;
+        Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
         Objects = require('./lib/objects');
     }
 
     // Get "states" object
     if (tools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
-        States  = require('@iobroker/db-states-file').Server;
+        States  = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
         States  = require('./lib/states');
     }
