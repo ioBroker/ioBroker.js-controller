@@ -114,6 +114,7 @@
     "prepublishOnly": "node lib/scripts/scripts.js --prepublish",
     "release": "release-script",
     "test": "node node_modules/mocha/bin/mocha test --exit",
+    "test-jsonl": "node node_modules/mocha/bin/mocha test/jsonl/ --exit",
     "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/ --exit",
     "test-redis-sentinel": "node node_modules/mocha/bin/mocha test/redis-sentinel/ --exit",
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"

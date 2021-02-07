@@ -57,10 +57,18 @@ jobs:
       - name: Install js-controller
         run: npm i
 
-      - name: Execute Tests
+      - name: Execute Standard Tests
         run: npm test
 
-      - name: Sentinel Tests (Linux)
+      - name: Install Jsonl packages
+        run: |
+          npm i @iobroker/db-states-jsonl
+          npm i @iobroker/db-objects-jsonl
+
+      - name: Execute Jsonl Tests
+        run: npm test-jsonl
+
+      - name: Redis Socket/Sentinel Tests (Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo chmod ogu+x test/redis-socket/setup-socket.sh
