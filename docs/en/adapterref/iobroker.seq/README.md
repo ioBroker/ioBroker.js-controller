@@ -31,7 +31,7 @@ It is also possible to apply a filter to the log levels and also to the adapters
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.2.9 (2021-02-05)
 * (o0shojo0o) Bugfix 'Cannot read property common of null'
 
 ### 0.2.8 (2021-01-30)

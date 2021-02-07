@@ -288,6 +288,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.8.0 (2021-02-04)
+* (Apollon77) Add configuration option to not write history entries where no command text was recognized
+
 ### 3.7.1 (2021-02-03)
 * (Apollon77) add some more detected text into summary and answerText states (textCommand commands should be in history back again)
 

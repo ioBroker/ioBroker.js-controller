@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adaptertranslate.md
 title: 适配器的翻译
-hash: 397W84qVYffJYSWkv8fxwwlq1WNcFCdgZ0vqe/MIGzQ=
+hash: 8XvB1Gq0qo9gVlIP2+QfpMZ3OQTE+OfKgPD94WrJdcQ=
 ---
 ＃适配器的翻译
 ＃＃ 介绍
@@ -38,6 +38,8 @@ ioBroker在[许多不同的语言](https://www.iobroker.net/#en/statistics)中�
 当使用[适配器创作者](https://github.com/ioBroker/create-adapter)创建适配器时，将创建正确的gulp文件。
 
 无论何时添加一些字符串，都可以简单地使用`gulp translateAndUpdateWordsJS`来添加所有缺少的翻译。
+
+为了自动翻译发行说明，还使用[@AlCalzone发布脚本](https://github.com/AlCalzone/release-script)是一个简单的选项，可以自动将英文书面变更日志中的信息自动翻译出来。
 
 ##托管翻译
 自动翻译通常不够好或令人困惑，因此ioBroker提供了用于托管社区翻译的Weblate平台：

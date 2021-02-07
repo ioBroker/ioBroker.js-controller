@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 6cQUtoGYFQE/wvbZiTm1yPYsEVeQp8SWSXzFUKxQx2E=
+hash: gMbGyaII/FLgAWZLkcYpd52mVRq++NaPyqxhL+/s/Is=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -61,6 +61,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly 1L (SHSW-L) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
 | Shelly Color Bulb (SHCB-1) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
 | Shelly Button (SHBTN-2) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
+| Shelly Motion (SHMOS-01) | unterstützt seit v4.0.6 | unterstützt seit v4.0.6 |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -69,7 +70,15 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 ## Changelog
 
-### 4.0.5-beta (2020-11-27)
+
+### 4.0.6 (2021-02-02)
+* (Stübi) - add min, max to state transiton for Shelly RGBW2 
+* (Stübi) - if a property in the returned json for a http request does not exist, it will not shown as an error anymore
+* (Stübi) - Bugfixing Shelly 1L
+* (klein0r) - Added shelly motion (SHMOS-01) 
+
+
+### 4.0.5 (2021-02-01)
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)

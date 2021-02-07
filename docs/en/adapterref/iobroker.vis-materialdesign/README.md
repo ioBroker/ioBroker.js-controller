@@ -30,9 +30,7 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 - [Adapter settings](#adapter-settings)
 	- [General](#general-1)
 	- [Theme Editor](#theme-editor)
-		- [Colors Theme](#colors-theme)
-		- [Fonts Theme](#fonts-theme)
-		- [Font Sizes Theme](#font-sizes-theme)
+		- [Theme Settings](#theme-settings)
 - [Widgets](#widgets)
 	- [Material Design Icons and Images](#material-design-icons-and-images)
 		- [Editor Settings](#editor-settings)
@@ -159,11 +157,22 @@ Starting with version 0.4.0 there is a settings page for the adapter. You can fi
 
 ## Theme Editor
 
-With the help of the Theme Editor you can centrally set colors, fonts and font sizes for all widgets via the adapter settings. This is realized with the help of the [Bindings of the VIS adapter](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects). For each widget datapoints (see screenshot below) are created with the set values. This makes it possible to use these settings in other widgets (not Material Design Widgets) via bindings.
+With the help of the Theme Editor you can centrally set colors, fonts and font sizes for all widgets via the adapter settings. For each widget datapoints (see screenshot below) are created with the set values. This makes it also possible to use these settings in other widgets (not Material Design Widgets) via bindings.
 
 ##### Datapoint structure
 
 ![Logo](doc/en/media/settings_datapoints.png)
+
+### Theme Settings
+
+![Logo](doc/en/media/settings_colors_light.png)
+
+Every settings page for colors, colors dark, font and font sizes look likes show in the screenshot above.
+
+Standard colors / fonts /font sizes can be defined in the upper area. These standard colors / fonts /font sizes can then be assigned to the individual widgets using the buttons in the table. If you change the default colors / fonts /font sizes, it will also change for all widgets that use this colors / fonts /font sizes.
+Additionally, it is possible to assign your own colors / fonts /font sizes to the widgets, independent of the standard colors.
+
+For colors there are two themes - light theme and dark theme. With the datapoint `vis-materialdesign.0.colors.darkTheme` you can switch between the two themes. For example this datapoint can be used in a script to switch between lights and dark colors on sunrise and sunset. 
 
 ##### VIS Editor (Restore / update old Widgets)
 
@@ -173,39 +182,20 @@ In the VIS Editor you will find a button `use theme` for each widget. With this 
 
 With the help of this button it is also possible to update your widgets from versions before 0.4.0 to use the themes.
 
+##### Change Datapoint Binding for Material Design Widgets
+
+![Logo](doc/en/media/settings_mdw_binding.gif)
+
+If you would like to change the using of others colors that are defined for other widgets, you can copy the datapoint binding by pressing the button with the material design icon. Just paste this in any color, fonts or font sizes field of a material design widget. For example a color "state binding" looks like `#mdwTheme:vis-materialdesign.0.colors.card.background`
+
 ##### Use Binding for non Material Design Widgets
 
 ![Logo](doc/en/media/settings_binding.gif)
 
-In the adapter settings you can copy the binding command to the clipboard by clicking on the default text or the id in the tables. This binding can then be used by copy and paste even for non Material Design Widgets.
-
-### Colors Theme
-For colors there are two themes - light theme and dark theme. With the datapoint `vis-materialdesign.0.colors.darkTheme` you can switch between the two themes.
-
-![Logo](doc/en/media/settings_colors_light.png)
-
-![Logo](doc/en/media/settings_colors_dark.png)
-
-Standard colors can be defined in the upper area. These standard colors can then be assigned to the individual widgets using the buttons in the table. If you change the default color, it will also change for all widgets that use this color.
-Additionally, it is possible to assign your own colors to the widgets, independent of the standard colors.
-
-### Fonts Theme
-
-![Logo](doc/en/media/settings_fonts.png)
-
-Standard fonts can be defined in the upper area. These standard fonts can then be assigned to the individual widgets using the buttons in the table. If you change the default color, it will also change for all widgets that use this color.
-Additionally, it is possible to assign your own fonts to the widgets, independent of the standard colors.
-
-### Font Sizes Theme
-
-![Logo](doc/en/media/settings_fontSizes.png)
-
-Standard font sizes can be defined in the upper area. These standard font sizes can then be assigned to the individual widgets using the buttons in the table. If you change the default color, it will also change for all widgets that use this color.
-Additionally, it is possible to assign your own font sizes to the widgets, independent of the standard colors.
+In the adapter settings you can copy the binding command to the clipboard by clicking on the button with iobroker icon. This binding can then be used by copy and paste even for non Material Design Widgets. For example a color binding looks like `{mode:vis-materialdesign.0.colors.darkTheme;light:vis-materialdesign.0.colors.light.card.background;dark:vis-materialdesign.0.colors.dark.card.background; mode === "true" ? dark : light}`
 
 
 # Widgets
-
 
 ## Material Design Icons and Images
 
@@ -6365,7 +6355,7 @@ JSON string must be an array of objects with the following properties:
 		<tr>
 			<td>dataColor</td>
 			<td>bar color</td>
-			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
 			<td/>
 		</tr>
 		<tr>
@@ -6402,7 +6392,7 @@ JSON string must be an array of objects with the following properties:
 </table>
 
 <!-- omit in toc -->
-#### Example
+#### Dataset JSON Properties - Example
 
 <details>
 <pre><code>
@@ -6475,6 +6465,97 @@ Settings that are not listed in the table below are self-explanatory.
 
 JSON string must be an array of objects with the following properties:
 
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>label</td>
+			<td>axis label of pie</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>value</td>
+			<td>pie value</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>dataColor</td>
+			<td>pie color</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueText</td>
+			<td>override text of pie</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueColor</td>
+			<td>color of value text</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueAppendix</td>
+			<td>appendix of value text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>tooltipTitle</td>
+			<td>tooltip title</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>tooltipText</td>
+			<td>tooltip text</td>
+			<td>string</td>
+			<td/>
+		</tr>		
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### Dataset JSON Properties - Example
+
+<details>
+<pre><code>
+[
+	{
+		"label": "val0",
+		"value": "30",
+		"valueColor": "#ffffff"
+	}, {
+		"label": "val1",
+		"value": "12.54645646"
+	}, {
+		"label": "val2",
+		"value": "48",
+		"dataColor": "#c2c2c2",
+		"valueAppendix": "\nextra"
+	}, {
+		"label": "val3",
+		"value": "97",
+		"valueColor": "#ffffff"
+	}, {
+		"label": "val4",
+		"value": "32",
+		"valueText": "text"
+	}
+]
+</pre></code>
+</details>
 
 
 ### Line History Chart:
@@ -7350,6 +7431,80 @@ JSON Chart supports data that have a timestamp. To use this the data array must 
 			"displayOrder": 1,
 			"tooltip_AppendText": " mm",
 			"datalabel_show": false
+		}
+	]
+}
+  
+</pre></code>
+</details>
+
+<details>
+<pre><code>
+{
+	"axisLabels": ["Jan", "Feb", "Mrz", "Apr"],
+	"graphs": [{
+			"type": "line",
+			"data": [40, 22, 160, 92],
+			"yAxis_id": 0,
+			"barIsStacked": true,
+			"datalabel_show": false,
+			"line_UseFillColor": true
+
+		}, {
+			"type": "bar",
+			"barIsStacked": true,
+			"data": [30, 69, 91, 35],
+			"yAxis_id": 0,
+			"barStackId": 0,
+			"color": "#6dd600",
+			"datalabel_color": "#FFFFFF",
+			"datalabel_align": "start",
+			"use_gradient_color": true,
+			"gradient_color": [{
+					"value": 60,
+					"color": "#6dd600"
+				}, {
+					"value": 0,
+					"color": "lightgray"
+				}
+			]
+		}, {
+			"type": "bar",
+			"barIsStacked": true,
+			"data": [17, 68, 83, 49],
+			"yAxis_id": 0,
+			"barStackId": 1,
+			"color": "#ff9800",
+			"datalabel_color": "#FFFFFF",
+			"datalabel_align": "start"
+		}, {
+			"type": "bar",
+			"barIsStacked": true,
+			"data": [95, 42, 34, 31],
+			"yAxis_id": 0,
+			"barStackId": 1,
+			"color": "#8e24aa",
+			"datalabel_color": "#FFFFFF",
+			"datalabel_align": "start"
+		}, {
+			"type": "bar",
+			"barIsStacked": true,
+			"data": [33, 44, 22, 34],
+			"yAxis_id": 0,
+			"barStackId": 2,
+			"color": "#a65628",
+			"datalabel_color": "#FFFFFF",
+			"datalabel_align": "start"
+		}, {
+			"type": "bar",
+			"barIsStacked": true,
+			"data": [28, 34, 45, 23],
+			"yAxis_id": 0,
+			"yAxis_max": "180",
+			"barStackId": 2,
+			"color": "#d32f2f",
+			"datalabel_color": "#FFFFFF",
+			"datalabel_align": "start"
 		}
 	]
 }
@@ -8720,15 +8875,17 @@ The adapter uses the following libraries:
 <!-- omit in toc -->
 ### __WORK IN PROGRESS__
 * (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
-* (Scrounger) Table: Control Elements removed, using new HTML Elements -> breaking changes !!!
-* (Scrounger) list: using object id for json string added -> breaking changes !!!
-* (Scrounger) Documentation revised
+* (Scrounger) Table: Control Elements removed, using new HTML Widgets -> breaking changes !!!
+* * (Scrounger) list: using object id for json string added -> breaking changes !!!
+* (Scrounger) new Value Widget added
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 * (Scrounger) progress circular: auto size option added
 * (Scrounger) VIS editor: html previews bug fixes
 * (Scrounger) input, autocomplete, select: autofocus option added
+* (Scrounger) Documentation revised
+* (Scrounger): bug fixes
 
 <!-- omit in toc -->
 ### 0.4.2 (2020-12-29)

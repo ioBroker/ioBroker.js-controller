@@ -10,7 +10,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.backitup/README.md
 title: ioBroker.backitup
-hash: Upac+ds+aawHBdT5V3oGnhq+8W7uXuW8+6jIKyPyc1w=
+hash: g821ge/t5shsaVHUGWlprvWtnPoFnxKcYAmEu7d7HnA=
 ---
 ![商标](../../../de/adapterref/iobroker.backitup/img/backitup.png)
 
@@ -30,6 +30,7 @@ hash: Upac+ds+aawHBdT5V3oGnhq+8W7uXuW8+6jIKyPyc1w=
 * [ioBroker备份]（＃ioBroker备份）
 * [CCU备份（Homematic）]（＃CCU-Backup-（Homematic））
 * [Mysql-Backup]（＃Mysql-Backup）
+    * [Redis备份]（＃Redis备份）
 * [InfluxDB备份]（＃InfluxDB备份）
     * [PostgreSQL备份]（＃PostgreSQL备份）
     * [Javascript-Backup]（＃Javascript-Backup）
@@ -57,6 +58,7 @@ Backitup是一种备份解决方案，可以对ioBroker安装和Homematic CCU进
 
 该适配器适用于多平台，除Linux安装外，还可以在Windows和Mac安装上使用。
 
+[背部](#Inhalt)
 ---
 
 ＃依赖关系
@@ -75,6 +77,7 @@ Backitup是一种备份解决方案，可以对ioBroker安装和Homematic CCU进
 *必须安装Influxd才能使用InfluxDB备份
     -[InfluxDB安装说明]（https://docs.influxdata.com/influxdb/v1.8/introduction/install/）
 
+[背部](#Inhalt)
 ---
 
 ＃备份类型
@@ -101,17 +104,19 @@ sudo reboot
 如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。
 
 ## InfluxDB备份
-如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br>为了能够执行InfluxDB备份，必须在iobroker.System上安装Influxd。<br>数据库是在本地还是在其他服务器上管理都没有关系。<br><br>如果要从远程服务器备份InfluxDB，则必须在远程服务器上的influxdb.conf中调整远程权限。
+如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br> **为了能够运行InfluxDB备份，必须在iobroker系统上安装Influxd。<br> **数据库是在本地还是在其他服务器上管理都没关系。<br><br>如果要从远程服务器备份InfluxDB，则必须在远程服务器上的influxdb.conf中调整RPC服务的远程权限。
 
 ```
-bind <IP-des-Servers>:8088
+bind-address = "<InfluxDB-IP>:8088"
 ```
 
 要么
 
 ```
-bind 0.0.0.0:8088
+bind-address = "0.0.0.0:8088"
 ```
+
+**更改配置后，必须重新启动InfluxDB服务。
 
 有关InfluxDB数据备份的更多信息，请参见[这里](https://docs.influxdata.com/influxdb/v1.8/administration/backup_and_restore/#online-backup-and-restore-for-influxdb-oss)。
 
@@ -122,14 +127,15 @@ bind 0.0.0.0:8088
 如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br>为了能够创建Javascript备份，必须在Javascript适配器配置中预先指定菜单项“文件路径中的镜像脚本”和“进行镜像的实例”。<br>然后，Backitup可以接管配置菜单中的设置
 
 ## Jarvis备份
-如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br>可以从Jarvis版本2.2.0-beta.7备份Jarvis配置。
+如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br> ***可以从Jarvis 2.2.0-beta.7版本备份Jarvis配置。
 
 ## Zigbee备份
 如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。
 
 ## Grafana备份
-如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br>为了能够创建Grafana备份，需要Grafana服务器的用户名和密码。<br><br>此外，必须在Grafana Web界面中生成API密钥才能访问仪表板。<br>可以在“配置→API密钥”下创建API密钥。
+如果激活，则此单独可调整的备份将与每个ioBroker备份一起创建，并且在指定的保留期限到期后也会删除。如果已设置其他ioBroker备份类型，则FTP或CIFS对此备份也有效。<br><br> **为了能够创建Grafana备份，需要Grafana用户名和密码。<br><br> **此外，必须在Grafana Web界面中生成API密钥才能访问仪表板。<br>可以在***“配置→API密钥” ***下创建API密钥。
 
+[背部](#Inhalt)
 ---
 
 ＃储存选项
@@ -164,6 +170,7 @@ FTP可以在所有操作系统上使用，并且可以替代CIFS挂载<br>FTP下
 ## WebDAV
 借助WebDAV，Backitup提供了解决多个云系统的可能性。<br>这里最著名的是NextCloud。为了建立WebDAV连接，需要云帐户的用户名和密码。<br>通过加密连接与云建立连接。<br><br>为了能够建立连接，云的主机名必须符合所有安全证书。无法使用本地IP地址进行连接，因为它不包含任何Lets Encrypt证书。<br><br> &gt;示例网址：“ https://example.com/remote.php/dav/files/username/”
 
+[背部](#Inhalt)
 ---
 
 ＃ 利用
@@ -223,6 +230,7 @@ FTP可以在所有操作系统上使用，并且可以替代CIFS挂载<br>FTP下
 
 语法：{value：<BackitupInstanz> .oneClick。<触发触发器>;值===“ true” ||值===正确吗？ “备份创建期间的文本”：“标准文本”}
 
+[背部](#Inhalt)
 ---
 
 ＃通知
@@ -234,36 +242,43 @@ FTP可以在所有操作系统上使用，并且可以替代CIFS挂载<br>FTP下
    *电邮
    * Whatsapp的
 
+[背部](#Inhalt)
 ---
 
 ＃恢复
-使用Backitup，可以还原通过ioBroker中的配置菜单创建的所有备份类型。<br><br>可以从所有存储介质执行还原。<br>基本上，最安全的方法是在本地执行还原。<br><br>为此，备份必须存储在iobroker备份文件夹中。在Linux系统上，此文件夹位于以下路径下：`/opt/iobroker/backups`
+使用Backitup，可以还原通过ioBroker中的配置菜单创建的所有备份类型。<br><br>可以从所有存储介质执行还原。<br><br> **基本上，最安全的方法是在本地执行还原。<br><br>如果选择最安全的方法并希望在本地进行还原，则必须将备份文件存储在iobroker备份文件夹中。在Linux系统上，此文件夹位于以下路径下：`/opt/iobroker/backups`
 
-必须仍然通过CCU的Web界面还原CCU备份。
+使用备份类型“ iobroker”和“ redis”时，iobroker将在还原期间停止，然后自动重新启动。<br>停止iobroker后，将打开一个新的浏览器选项卡，可以在其中查看还原进度。<br><br> ***如果此选项卡未打开，则必须检查块弹出窗口的浏览器设置。<br><br>
 
-对于备份类型“ iobroker”和“ redis”，iobroker在还原过程中将停止，然后自动重新启动。
+** iobroker不会与所有其他备份类型一起停止。在这里，只有受影响的适配器才暂时停止。<br><br>
 
 如果您希望手动还原备份，则应执行以下操作：
 
-1.还原ioBroker备份：
-    -像往常一样，备份必须位于“ opt / iobroker / backups /”目录中
-    -可以使用以下命令通过控制台进行还原：“ iobroker restore（列表中的备份编号）”。
-    -恢复后，需要“ iobroker全部上载”
+***还原ioBroker备份：***
 
-2.还原Raspberrymatic / CCU备份：
+    -像往常一样，备份必须位于目录opt / iobroker / backups中
+    -可以通过控制台使用以下命令来恢复它：iobroker restore <Backupfilename>。
+    -恢复后，必须将“ iobroker全部上传”
+
+可以在[这里](https://forum.iobroker.net/topic/27271/howto-iobroker-restore-unter-linux-durchf%C3%BChren)中找到有关使用备份还原以及手动还原的详细说明。
+
+**必须仍然通过CCU的Web界面还原CCU备份。
+
+***恢复Raspberrymatic / CCU备份：***
+
     -通过SCP将* .sbk文件复制到Raspberrymatic上的目录“ / usr / local / tmp目录”中
     -通过控制台以root用户身份登录到Raspberrymatic
     -在Raspberrymatic上执行命令：“ / bin / restoreBackup.sh / user / local / tmp / EuerBackupDateiname”。
     -在Raspberrymatic上执行命令：“ reboot”以重新启动PI
     -当然，也可以通过Web界面照常还原备份。
 
-可以在[这里](https://forum.iobroker.net/topic/27271/howto-iobroker-restore-unter-linux-durchf%C3%BChren)中找到有关使用备份还原以及手动还原的详细说明。
-
+[背部](#Inhalt)
 ---
 
 ＃ 故障排除
-    1.为了记录错误，必须在“ ioBroker实例”选项卡中将“备份”设置为“调试”。
+    为了记录错误，必须在“ ioBroker实例”选项卡中将“备份”设置为“调试”。
 
+[背部](#Inhalt)
 ---
 
 ＃遇到的错误/解决方案：
@@ -301,6 +316,9 @@ sudo reboot
 ```
 
     如果您尚未使用安装程序脚本设置Iobroker安装，并且您的用户使用其他名称，请在命令中用您的用户替换“ iobroker”。
+
+[背部](#Inhalt)
+---
 
 ## Changelog
 

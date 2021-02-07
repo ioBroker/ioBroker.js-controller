@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: qqvE2OM/6oZMWmhSpifTAMEcDCczFUPaus8TIljn38Y=
+hash: R/Ro5hZjXVFIpi+vg3CxrQWVR756UbHET4v+aaEyg0k=
 ---
 ![商标](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -38,7 +38,7 @@ ioBroker Growatt适配器可与Growatt Shine Server通信。
 将数据间隔时间更改为1分钟![高级设置](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
 
 ##系统重启
-在此页面上重新启动ShineWiFi-S模块，单击“立即重新启动”以启用您刚进行的新设置，并从ShineWiFi模块的内部网络服务器注销。
+在此页面上重新启动ShineWiFi-S模块，单击“立即重新启动”以启用您刚进行的新设置，并从ShineWiFi模块的内部Web服务器注销。
 ![系统重启](../../../en/adapterref/iobroker.growatt/docs/restart.png)
 
 ** Growatt端的图表没有变化。在那里，您只能看到数据记录器中数据的变化。**
@@ -63,6 +63,7 @@ Auf System重新启动gehen und Button herzhaft，aber vorsichtig Klicken。
 ** Es gibt keineÄnderungand den Diagrammen在Growatt-Seite之后，于5分钟后关闭。 Datenlogger中的Dort sehen Sie nur eineÄnderungder。**
 
 ＃适配器管理页面
+##主要设置
 ###用户和密码
 请输入您在Shine应用程序或Web门户中也使用的名称和密码。
 
@@ -80,14 +81,6 @@ Auf System重新启动gehen und Button herzhaft，aber vorsichtig Klicken。
 这些数据不适用于所有工厂（不是INV / MAX / TLX）。该数据集包含实时数据。
 此功能支持数据记录器的分钟间隔。
 
-###读取图表的最后数据
-**不推荐使用：将很快删除**这些数据仅适用于没有读取状态数据（INV / MAX / TLX）的工厂。搜索当天的最后有效数据。
-不支持分钟间隔。
-
-###读取图表数据
-**不推荐使用：将很快删除**这些数据仅适用于没有读取状态数据的工厂，并且需要读取图表的最后数据（INV / MAX / TLX）。数据被写入并存储为JSON字符串。
-不支持分钟间隔。
-
 ###读取总数据
 该数据记录包含聚合数据。
 
@@ -97,9 +90,32 @@ Auf System重新启动gehen und Button herzhaft，aber vorsichtig Klicken。
 ###阅读天气
 该数据集包含天气预报。
 
+##管理对象
+在这里，您可以定义逆变器采集的每个值（对象）应该发生什么。
+有很多不属于您的变频器的值。这些可以在这里删除。
+由于在保存时没有事件可以重新加载对象列表。按下保存时必须使用更新按钮。
+
+###正常
+对象保留，值被更新。
+
+###删除
+删除对象，并丢弃变频器加载的值。
+更新后，由于该对象不再存在，因此仅显示ID和操作。如果正常选择，则保存后将再次创建对象。
+
+###没有更新
+对象仍然存在，来自变频器的值将被丢弃。
+
 -*-
 
 ## Changelog
+### 0.0.19 (05.02.2021)
+* (PLCHome) The data from the chart is removed. These were only available in a 5-minute grid. The performance can now be queried via the history.
+* (PLCHome) Objects of unselected data areas are now deleted.
+* (PLCHome) You can choose objects to be ignored or deleted.
+
+### 0.0.18 (23.01.2021)
+* (PLCHome) wrong version info.
+
 ### 0.0.17 (21.01.2021)
 * (PLCHome) fixes a date issue on inverter history data.
 

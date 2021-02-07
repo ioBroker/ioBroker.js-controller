@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: qqvE2OM/6oZMWmhSpifTAMEcDCczFUPaus8TIljn38Y=
+hash: R/Ro5hZjXVFIpi+vg3CxrQWVR756UbHET4v+aaEyg0k=
 ---
 ![Logo](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -63,6 +63,7 @@ Auf System Neustart gehen und Button herzhaft, aber zukünftige Rechte.
 ** Es gibt keine Möglichkeit an den Diagrammen auf der Growatt-Seite, die bleibt bei 5min. Dort sehen Sie nur eine Frage der Daten im Datenlogger. **
 
 # Adapter-Administrationsseite
+## Haupteinstellungen
 ### Benutzer und Passwort
 Bitte geben Sie den Namen und das Passwort ein, die Sie auch in der Shine-App oder im Webportal verwenden.
 
@@ -80,14 +81,6 @@ Diese Funktion unterstützt Minutenintervalle für den Datenlogger.
 Diese Daten sind nicht für alle Anlagen verfügbar (nicht INV / MAX / TLX). Dieser Datensatz enthält Live-Daten.
 Diese Funktion unterstützt Minutenintervalle für den Datenlogger.
 
-### Letzte Daten des Diagramms lesen
-** Veraltet: Wird bald entfernt ** Diese Daten sind nur für Anlagen ohne Lesestatusdaten (INV / MAX / TLX) verfügbar. Es wird nach den letzten gültigen Daten für den Tag gesucht.
-Minutenintervalle werden nicht unterstützt.
-
-### Daten des Diagramms lesen
-** Veraltet: Wird bald entfernt ** Diese Daten sind nur für Anlagen ohne Lesestatusdaten verfügbar und erfordern die letzten gelesenen Daten der Tabelle (INV / MAX / TLX). Die Daten werden als JSON-Zeichenfolge geschrieben und gespeichert.
-Minutenintervalle werden nicht unterstützt.
-
 ### Gesamtdaten lesen
 Dieser Datensatz enthält Aggregationsdaten.
 
@@ -97,9 +90,32 @@ Dieser Datensatz enthält einige Daten vom Gerät. Einige Daten sind auch in den
 ### Wetter lesen
 Dieser Datensatz enthält die Wettervorhersage.
 
+## Objekte verwalten
+Hier können Sie festlegen, was mit jedem Wert (Objekt) geschehen soll, der vom Wechselrichter erfasst wird.
+Es gibt viele Werte, die nicht zu Ihrem Wechselrichter gehören. Diese können hier entfernt werden.
+Da es kein Ereignis gibt, mit dem die Objektliste beim Speichern neu geladen werden kann. Die Schaltfläche Aktualisieren muss verwendet werden, wenn Speichern gespeichert wird.
+
+### Normal
+Das Objekt bleibt erhalten, der Wert wird aktualisiert.
+
+### Löschen
+Das Objekt wird gelöscht und der vom Wechselrichter geladene Wert wird verworfen.
+Nach dem Update werden nur die ID und die Aktion angezeigt, da das Objekt nicht mehr vorhanden ist. Wenn Sie normal auswählen, wird das Objekt nach dem Speichern erneut erstellt.
+
+### Kein Update
+Das Objekt bleibt erhalten, die Werte vom Wechselrichter werden verworfen.
+
 -*-
 
 ## Changelog
+### 0.0.19 (05.02.2021)
+* (PLCHome) The data from the chart is removed. These were only available in a 5-minute grid. The performance can now be queried via the history.
+* (PLCHome) Objects of unselected data areas are now deleted.
+* (PLCHome) You can choose objects to be ignored or deleted.
+
+### 0.0.18 (23.01.2021)
+* (PLCHome) wrong version info.
+
 ### 0.0.17 (21.01.2021)
 * (PLCHome) fixes a date issue on inverter history data.
 

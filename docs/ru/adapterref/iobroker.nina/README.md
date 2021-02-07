@@ -3,34 +3,34 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: muyPiU+IM905WvLP//oa10+jTD1jcQHvlRDGnlxqp0Q=
+hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
 ---
-![логотип](../../../en/adapterref/iobroker.nina/admin/nina.png)
+![Логотип](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.nina.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.nina.svg)
 ![Статус зависимости](https://img.shields.io/david/TA2k/iobroker.nina.svg)
 ![Известные уязвимости](https://snyk.io/test/github/TA2k/ioBroker.nina/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.nina.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/TA2k/ioBroker.nina/master.svg)
+![Трэвис-Си](http://img.shields.io/travis/TA2k/ioBroker.nina/master.svg)
 
 # IoBroker.nina
 ## Адаптер nina для ioBroker
-Notfall-Информация- и Нахрихтен-приложение
+Notfall-Information- und Nachrichten-App
 
-<Https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
+<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
 
-<Https://warnung.bund.de/>
+<https://warnung.bund.de/>
 
 ### Начиная
-Die AGS deines Landkreises или kommasepariert mehrere AGS eingeben.
+Die AGS разрабатывает Landkreises или kommasepariert mehrere AGS eingeben.
 
-Liste der AGS mit Strg + F suchen:
+AGS (Amtlicher Gemeindeschlüssel) ermitteln: Über diese Seite kannst du den AGS für die gesuchte Stadt / Gemeinde ermitteln:
 
-<Https://warnung.bund.de/assets/json/suche_channel.json>
+<https://www.statistikportal.de/de/gemeindeverzeichnis>
 
 ### Error Ошибка запроса {"errno": "EPROTO", "code": "EPROTO", "syscall": "write"}
-Умеренный веб-сайт и его окончательный вариант: Debian Buster и RP4 muss folgende temporäre
+Веб-сайт, посвященный альте Verschlüsselung для Debian Buster и RP4 muss folgende temporäre Änderung vorgenommen werden:
 
 Änderungen in der /etc/ssl/openssl.cnf von:
 
@@ -39,6 +39,22 @@ Liste der AGS mit Strg + F suchen:
 в: [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
+
+### 0.0.23
+
+- (tomboxi) Convert all state changes to async.
+
+### 0.0.22
+
+- (tomboxi) Optionen zum Filtern und JSON Ausgabe hinzugefügt.
+
+### 0.0.19
+
+- (tomboxi) Auslastung reduziert. Objekte werden nur geändert wenn die Warnungen sich ändern.
+
+### 0.0.17
+
+- (tomboxi) Fehlerbehandlung verbessert. Option zum Deaktiveren der Area Objekte hinzugefügt.
 
 ### 0.0.13
 
@@ -80,7 +96,7 @@ Liste der AGS mit Strg + F suchen:
 
 MIT License
 
-Copyright (c) 2019 tomboxi <tombox_2020@gmail.com>
+Copyright (c) 2020 tomboxi <tombox_2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

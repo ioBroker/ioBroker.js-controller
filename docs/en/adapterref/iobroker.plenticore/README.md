@@ -171,6 +171,9 @@ The forecast values can then be used to set the MinSoC of the battery, enable or
 
 ## Changelog
 
+### 2.1.7
+- Updated base library to support js controller 3.2
+
 ### 2.1.6
 - Copyright year updated
 

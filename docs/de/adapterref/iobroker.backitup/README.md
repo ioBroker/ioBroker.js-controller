@@ -28,6 +28,7 @@ BADGE-NPM: https://nodei.co/npm/iobroker.backitup.png?downloads=true
 	* [ioBroker Backup](#ioBroker-Backup)
 	* [CCU Backup (Homematic)](#CCU-Backup-(Homematic))
 	* [Mysql-Backup](#Mysql-Backup)
+    * [Redis-Backup](#Redis-Backup)
 	* [InfluxDB-Backup](#InfluxDB-Backup)
     * [PostgreSQL-Backup](#PostgreSQL-Backup)
     * [Javascript-Backup](#Javascript-Backup)
@@ -55,6 +56,7 @@ Backitup ist eine Backuplösung, mit der das zyklische Sichern einer IoBroker-In
 
 Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installationen auch auf Windows und Mac Installationen verwendet werden.
 
+[zurück](#Inhalt)
 ---
 
 # Abhängigkeiten
@@ -73,6 +75,7 @@ Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installatio
 * Für die Verwendung des InfluxDB Backups muss influxd installiert sein
     - [Installationsanleitung InfluxDB](https://docs.influxdata.com/influxdb/v1.8/introduction/install/)
 
+[zurück](#Inhalt)
 ---
 
 # Backuptypen
@@ -91,27 +94,29 @@ Wichig hierbei ist, dass auch wenn der Mysql-Server auf einem entferten System l
 ## Redis-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.<br>
 Zur Verwendung von Redis mit Backitup sollten die Rechte für den iobroker-User angepasst werden:<br>
-    ```
-    sudo usermod -a -G redis iobroker
-    sudo reboot
-    ```
+```
+sudo usermod -a -G redis iobroker
+sudo reboot
+```
 
 ## History Daten Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.
 
 ## InfluxDB-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.<br><br>
-Um ein InfluxDB Backup ausführen zu können, muss Influxd auf dem iobroker.System installiert sein.<br>
-Hierbei ist es egal, ob die Datenbank lokal verwaltet wird oder auf einen anderen Server läuft.<br><br>
-Wenn die InfluxDB von einem entfernten Server gesichert werden soll, müssen in der influxdb.conf auf dem entfernten Server die Remote-Rechte angepasst werden.
+**Um ein InfluxDB Backup ausführen zu können, muss Influxd auf dem iobroker-System installiert sein.**<br>
+**Hierbei ist es egal, ob die Datenbank lokal verwaltet wird oder auf einen anderen Server läuft.**<br><br>
+Wenn die InfluxDB von einem entfernten Server gesichert werden soll, müssen in der influxdb.conf auf dem entfernten Server die Remote-Rechte für den RPC-Dienst angepasst werden.
 
 ```
-bind <IP-des-Servers>:8088
+bind-address = "<InfluxDB-IP>:8088"
 ```
 oder 
 ```
-bind 0.0.0.0:8088
+bind-address = "0.0.0.0:8088"
 ```
+
+**Nach dem Änderungen in der Konfiguration muss der InfluxDB-Dienst neugestartet werden.**
 
 Weitere Informationen zur Datensicherung der InfluxDB sind [hier](https://docs.influxdata.com/influxdb/v1.8/administration/backup_and_restore/#online-backup-and-restore-for-influxdb-oss) zu finden.
 
@@ -126,17 +131,18 @@ Backitup kann dann im Konfiguartionsmenü die Einstellungen übernehmen
 
 ## Jarvis-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.<br><br>
-Ein Backup der Jarvis-Konfiguration ist ab eine Jarvis-Version 2.2.0-beta.7 möglich.
+***Ein Backup der Jarvis-Konfiguration ist ab eine Jarvis-Version 2.2.0-beta.7 möglich.***
 
 ## Zigbee-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.
 
 ## Grafana-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.<br><br>
-Um ein Grafana-Backup erstellen zu können, wird der Benutzername und das Passwort des Grafana-Servers benötigt.<br><br>
-Des Weiteren muss in der Grafana-Weboberfläche ein Api-Key erzeugt werden, um Zugriff auf die Dashboards zu bekommen.<br>
-Der Api-Key kann unter "Configuration → API Keys" erstellt werden.
+**Um ein Grafana-Backup erstellen zu können, wird der Benutzername und das Passwort von Grafana benötigt.**<br><br>
+**Des Weiteren muss in der Grafana-Weboberfläche ein Api-Key erzeugt werden, um Zugriff auf die Dashboards zu bekommen.**<br>
+Der Api-Key kann unter ***"Configuration → API Keys"*** erstellt werden.
 
+[zurück](#Inhalt)
 ---
 
 # Speicher-Optionen
@@ -186,6 +192,7 @@ Um eine Verbindung aufbauen zu können, muss der Hostname der Cloud alle Sicherh
 Eine Verbindung mit lokaler IP-Adresse ist nicht möglich, da diese keine Lets Encrypt Zertifikate enthält.<br><br>
 > Beispiel URL: "https://example.com/remote.php/dav/files/username/"
 
+[zurück](#Inhalt)
 ---
 
 # Verwendung
@@ -242,6 +249,7 @@ Syntax: {BackitupInstanz.history.html}
 
 Syntax: {wert: <BackitupInstanz>.oneClick.<Auslösetrigger>; wert === "true" || wert === true ? "Text während der Backuperstellung" : "Standard-Text"}
 
+[zurück](#Inhalt)
 ---
 
 # Benachichtigungen
@@ -253,41 +261,49 @@ Syntax: {wert: <BackitupInstanz>.oneClick.<Auslösetrigger>; wert === "true" || 
    * E-Mail 
    * Whatsapp
 
+[zurück](#Inhalt)
 ---
 
 # Restore
 
 Mit Backitup ist es möglich, alle erzeugten Backup-Typen über das Konfiguartionsmenü im ioBroker auch wiederherzustellen.<br><br>
-Es kann aus allen Speichermedien ein restore ausgeführt werden.<br>
-Grundsätzlich ist aber der sicherste Weg, den restore lokal auszuführen.<br><br>
-Dafür müssen die Backups im iobroker Backup-Ordner abgelegt werden.
+Es kann aus allen Speichermedien ein Restore ausgeführt werden.<br><br>
+**Grundsätzlich ist aber der sicherste Weg, den Restore lokal auszuführen.**<br><br>
+Wer den sichersten Weg wählt und den Restore lokal ausführen möchte, muss die Backupdatei im iobroker Backup-Ordner ablegen.
 Auf Linuxsystemen befindet sich dieser Ordner unter folgenden Pfad: `/opt/iobroker/backups`
 
-Das CCU-Backup muss weiterhin über das Webinterface der CCU wiederhergestellt werden.
+Bei den Backuptypen "iobroker" und "redis" wird beim Restore der iobroker gestoppt und im Anschluss automatisch wieder gestartet.<br>
+Nach dem Stop des iobrokers öffnet sich ein neuer Browser-Tab, in dem der Verlauf des Restores zu sehen ist.<br><br>
+***Falls dieser Tab nicht öffnet, müssen die Browser-Einstellungen für Popups blockieren kontrolliert werden.***<br><br>
 
-Bei Backuptypen "iobroker" und "redis" wird beim Restore iobroker gestoppt und im Anschluss automatisch wieder gestartet.
+**Bei allen anderen Backuptypen wird iobroker nicht gestoppt. Hier werden lediglich die betroffnenen Adapter kurzzeitig gestoppt.**<br><br>
 
 Wer seine Backups lieber manuell wiederherstellen möchte, sollte folgende Punkte durchführen:
 
-1. Restore eines IoBroker Backups:
-    - Das Backup muss wie gewohnt im  Verzeichnis „opt/iobroker/backups/“ liegen
-    - Es kann über die Konsole mit Hilfe des Befehls: „iobroker restore (Nummer des Backups aus der Liste)“ wieder hergestellt werden.
-    - Nach dem Restore ist ein "iobroker upload all" nötig
+***Restore eines IoBroker Backups:***
+    - Das Backup muss wie gewohnt im  Verzeichnis `opt/iobroker/backups` liegen
+    - Es kann über die Konsole mit Hilfe des Befehls: `iobroker restore <Backupdateiname>` wieder hergestellt werden.
+    - Nach dem Restore ist ein `iobroker upload all` nötig
 
-2. Restore eines Raspberrymatic / CCU Backups:
+
+Eine detailierte Anleitung zum Restore mit Backitup und auch zum manuellen Restore ist [hier](https://forum.iobroker.net/topic/27271/howto-iobroker-restore-unter-linux-durchf%C3%BChren) zu finden.
+
+**Das CCU-Backup muss weiterhin über das Webinterface der CCU wiederhergestellt werden.**
+
+***Restore eines Raspberrymatic / CCU Backups:***
     - *.sbk Datei via SCP in das Verzeichnis „ /usr/local/tmp directory“ auf die Raspberrymatic  kopieren
     - Über die Konsole  als Root-User  auf der Raspberrymatic einloggen
     - Den Befehl: „/bin/restoreBackup.sh /user/local/tmp/EuerBackupDateiname“ auf der Raspberrymatic ausführen.
     - Den Befehl:“reboot“ auf der Raspberrymatic ausführen um den PI neu zu starten
     - Alternativ kann das Backup natürlich auch wie gewohnt über das Webinterface wieder hergestellt werden.
 
-Eine detailierte Anleitung zum Restore mit Backitup und auch zum manuellen Restore ist [hier](https://forum.iobroker.net/topic/27271/howto-iobroker-restore-unter-linux-durchf%C3%BChren) zu finden.
-
+[zurück](#Inhalt)
 ---
 
 # Fehlersuche
-    1. Um Fehler zu loggen, muss Backitup in unter dem IoBroker Reiter Instanzen auf Log-Stufe "debug" gestellt werden.
+    Um Fehler zu loggen, muss Backitup in unter dem IoBroker Reiter Instanzen auf Log-Stufe "debug" gestellt werden.
 
+[zurück](#Inhalt)
 --- 
 
 # Aufgetretene Fehler / Lösungen:
@@ -321,6 +337,9 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
     sudo reboot
     ```
     Wenn ihr nicht mit dem Installerscript eure Iobroker Installation aufgesetzt habt und euer User einen anderen Namen hat, bitte in dem Befehl "iobroker" durch euren User ersetzen.
+
+[zurück](#Inhalt)
+---
 
 ## Changelog
 

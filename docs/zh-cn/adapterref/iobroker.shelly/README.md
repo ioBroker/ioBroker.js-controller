@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 6cQUtoGYFQE/wvbZiTm1yPYsEVeQp8SWSXzFUKxQx2E=
+hash: gMbGyaII/FLgAWZLkcYpd52mVRq++NaPyqxhL+/s/Is=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -61,6 +61,7 @@ hash: 6cQUtoGYFQE/wvbZiTm1yPYsEVeQp8SWSXzFUKxQx2E=
 | Shelly 1L（SHSW-L）|自v4.0.5起受支持|自v4.0.5起受支持|
 | Shelly彩色灯泡（SHCB-1）|自v4.0.5起受支持|自v4.0.5起受支持|
 | Shelly Button（SHBTN-2）|自v4.0.5起受支持|自v4.0.5起受支持|
+| Shelly Motion（SHMOS-01）|自v4.0.6起受支持|自v4.0.6起受支持|
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
@@ -69,7 +70,15 @@ Sentry.io是开发人员从其应用程序中获得有关错误概述的一种�
 
 ## Changelog
 
-### 4.0.5-beta (2020-11-27)
+
+### 4.0.6 (2021-02-02)
+* (Stübi) - add min, max to state transiton for Shelly RGBW2 
+* (Stübi) - if a property in the returned json for a http request does not exist, it will not shown as an error anymore
+* (Stübi) - Bugfixing Shelly 1L
+* (klein0r) - Added shelly motion (SHMOS-01) 
+
+
+### 4.0.5 (2021-02-01)
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)

@@ -6,6 +6,7 @@
 ![Number of Installations](http://iobroker.live/badges/kodi-installed.svg)
 [![Tests](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)](https://travis-ci.org/instalator/ioBroker.kodi)
 
+[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 [![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)](https://nodei.co/npm/iobroker.kodi/)

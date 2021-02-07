@@ -205,7 +205,8 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ### 1.1.1
 
-* (klein0r) ...
+* (klein0r) Ignore trash types with empty match pattern
+* (klein0r) Added log message if the match pattern contains leading or trailing whitespaces
 
 ### 1.1.0
 

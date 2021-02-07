@@ -116,6 +116,7 @@ sudo chmod u+s `which ping`
 ### 1.3.0 (03.10.2020)
 * (Stübi) Reduce CPU Load
 * (Stübi) Add local link to alarm system
+* (Stübi) Bugfixing Issue #27 - bypass
 
 ### 1.2.9 (04.07.2020)
 * (Stübi) Bugfixing

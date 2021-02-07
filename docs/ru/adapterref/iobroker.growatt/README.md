@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: qqvE2OM/6oZMWmhSpifTAMEcDCczFUPaus8TIljn38Y=
+hash: R/Ro5hZjXVFIpi+vg3CxrQWVR756UbHET4v+aaEyg0k=
 ---
 ![Логотип](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -12,7 +12,7 @@ hash: qqvE2OM/6oZMWmhSpifTAMEcDCczFUPaus8TIljn38Y=
 ![Количество установок (последнее)](http://iobroker.live/badges/growatt-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/growatt-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)
-![НПМ](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
 
 # IoBroker.growatt
 ## Адаптер Growatt для ioBroker
@@ -27,7 +27,7 @@ ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 В настоящее время можно читать только данные, запись параметров или изменение параметров невозможно.
 
 # Интервал данных ускорения
-## Вы можете установить интервал регистрации от 5 минут до 1 минуты.
+## Вы можете установить интервал регистрации от 5 минут до 1 минуты
 Снимите резиновую заглушку кнопки KEY с ShineWiFi-S и коротко нажмите кнопку внутри. Загорится синий светодиод. Используйте свой телефон или компьютер для подключения к беспроводной сети, излучаемой модулем ShineWiFi-S. Имя сети / SSID - это серийный номер модуля ShineWiFi-S.
 
 ## Страница авторизации
@@ -38,14 +38,14 @@ ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 Измените время интервала данных на 1 минуту ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
 
 ## Перезагрузка системы
-Перезапустите модуль ShineWiFi-S на этой странице, нажмите «Перезагрузить немедленно», чтобы активировать новые настройки, которые вы только что сделали, и выйдите из внутреннего веб-сервера вашего модуля ShineWiFi.
+Перезагрузите модуль ShineWiFi-S на этой странице, нажмите «Перезагрузить немедленно», чтобы активировать новые настройки, которые вы только что сделали, и выйдите из внутреннего веб-сервера вашего модуля ShineWiFi.
 ![Перезагрузка системы](../../../en/adapterref/iobroker.growatt/docs/restart.png)
 
-** Нет изменений в диаграммах на стороне роста. Здесь вы можете увидеть только изменение данных из регистратора данных. **
+** Нет изменений в графиках на стороне роста. Здесь вы можете увидеть только изменение данных из регистратора данных. **
 
 # Немецкий - Интервал данных ускорения
 ## Du kannst das Protokollierungsintervall von 5 Minuten auf 1 Minute einstellen
-Den Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz drücken.
+Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz drücken.
 Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). Beim Netz mit einem Laptop or dem Handy anmelden.
 
 ## Einloggen
@@ -54,7 +54,7 @@ Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). B
 ![Страница авторизации](../../../en/adapterref/iobroker.growatt/docs/login.png)
 
 ## Расширенные настройки
-Auf "Advanced Settings" gehen und das Intervall ändern. (фон 5 ауф 1) ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+Auf "Advanced Settings" gehen und das Intervall ändern. (фон 5 auf 1) ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
 
 ## Перезагрузка системы
 Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
@@ -63,6 +63,7 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 ** Es gibt keine Änderung an den Diagrammen auf der Growatt-Seite, die bleiben bei 5min. Dort sehen Sie nur eine Änderung der Daten im Datenlogger. **
 
 # Страница администратора адаптера
+## Основные параметры
 ### Пользователь и пароль
 Введите имя и пароль, которые вы также используете в приложении Shine или на веб-портале.
 
@@ -80,14 +81,6 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 Эти данные доступны не для всех заводов (кроме INV / MAX / TLX). Этот набор данных содержит данные в реальном времени.
 Эта функция поддерживает минутные интервалы для регистратора данных.
 
-### Прочитать последние данные графика
-** Устарело: скоро будет удалено. ** Эти данные доступны только для заводов без считывания данных о состоянии (INV / MAX / TLX). Ищутся последние действительные данные за день.
-Минутные интервалы не поддерживаются.
-
-### Прочитать данные диаграммы
-** Устарело: скоро будет удалено. ** Эти данные доступны только для заводов без считывания данных о состоянии и требуют считывания последних данных диаграммы (INV / MAX / TLX). Данные записываются и хранятся в виде строки JSON.
-Минутные интервалы не поддерживаются.
-
 ### Прочитать общие данные
 Эта запись данных содержит данные агрегирования.
 
@@ -97,9 +90,32 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 ### Читать погоду
 Этот набор данных содержит прогноз погоды.
 
+## Управление объектами
+Здесь вы можете определить, что должно происходить с каждым значением (объектом), принимаемым инвертором.
+Есть много значений, которые не относятся к вашему инвертору. Их можно удалить здесь.
+Поскольку нет события, с которым список объектов можно было бы перезагрузить при сохранении. При нажатии кнопки сохранения необходимо использовать кнопку обновления.
+
+### Нормальный
+Объект остается, значение обновляется.
+
+### Удалить
+Объект удаляется, а значение, загруженное инвертором, отбрасывается.
+После обновления отображаются только идентификатор и действие, поскольку объект больше не существует. При обычном выборе объект будет создан снова после сохранения.
+
+### Нет обновлений
+Объект остается, значения от инвертора отбрасываются.
+
 -*-
 
 ## Changelog
+### 0.0.19 (05.02.2021)
+* (PLCHome) The data from the chart is removed. These were only available in a 5-minute grid. The performance can now be queried via the history.
+* (PLCHome) Objects of unselected data areas are now deleted.
+* (PLCHome) You can choose objects to be ignored or deleted.
+
+### 0.0.18 (23.01.2021)
+* (PLCHome) wrong version info.
+
 ### 0.0.17 (21.01.2021)
 * (PLCHome) fixes a date issue on inverter history data.
 

@@ -73,6 +73,8 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 
 # Adapter admin page
 
+## Main Settings
+
 ### User and Password
 Please enter the name and password that you also use in the Shine app or in the web portal.
 
@@ -90,16 +92,6 @@ This function supports minute intervals for the data logger.
 These data are not available for all plants (not INV/MAX/TLX). This dataset contains live data.
 This function supports minute intervals for the data logger.
 
-### Read last data of chart
-**Deprecated: Will be removed soon**
-These data are only available for the plants without read status data (INV/MAX/TLX). The last valid data for the day is searched for.
-Minute intervals are not supported.
-
-### Read data of chart
-**Deprecated: Will be removed soon**
-These data are only available for the plants without read status data and requires read last data of chart (INV/MAX/TLX). The data is written and stored as a JSON string.
-Minute intervals are not supported.
-
 ### Read total data
 This data record contains aggregation data.
 
@@ -109,10 +101,29 @@ This data record contains some data from the device. Some data are also availabl
 ### Read weather
 This data set contains the weather forecast.
 
+## Manage Objects
+Here you can define what should happen to each value (object) that is picked up by the inverter.
+There are a lot of values ​​that do not belong to your inverter. These can be removed here.
+Since there is no event with which the object list can be reloaded when saving. The update button must be used when save is pressed.
+
+### Normal
+The object remains, the value is updated.
+
+### Delete
+The object is deleted and the value loaded by the inverter is discarded.
+After the update, only the ID and the action are displayed because the object no longer exists. If you select normally, the object will be created again after saving.
+
+### No update
+The object remains, the values ​​from the inverter are discarded.
 
 -*-
 
 ## Changelog
+### 0.0.19 (05.02.2021)
+* (PLCHome) The data from the chart is removed. These were only available in a 5-minute grid. The performance can now be queried via the history.
+* (PLCHome) Objects of unselected data areas are now deleted.
+* (PLCHome) You can choose objects to be ignored or deleted.
+
 ### 0.0.18 (23.01.2021)
 * (PLCHome) wrong version info.
 

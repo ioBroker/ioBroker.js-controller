@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: muyPiU+IM905WvLP//oa10+jTD1jcQHvlRDGnlxqp0Q=
+hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
 ---
 ![商标](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -25,9 +25,9 @@ Notfall-Informations-和Nachrichten-App
 ＃＃＃ 入门
 模具AGS负责设计AGS eingeben。
 
-Lists der AGS mit Strg + F这样：
+AGS（AmtlicherGemeindeschlüssel）博物馆：AGS博物馆/ Gemeinde博物馆：
 
-<https://warnung.bund.de/assets/json/suche_channel.json>
+<https://www.statistikportal.de/de/gemeindeverzeichnis>
 
 ###错误请求错误{“ errno”：“ EPROTO”，“ code”：“ EPROTO”，“ syscall”：“ write”}
 在Debian Buster和RP4音乐网站上，您可以在以下网站上正常浏览：
@@ -39,6 +39,22 @@ Lists der AGS mit Strg + F这样：
 于：[system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
+
+### 0.0.23
+
+- (tomboxi) Convert all state changes to async.
+
+### 0.0.22
+
+- (tomboxi) Optionen zum Filtern und JSON Ausgabe hinzugefügt.
+
+### 0.0.19
+
+- (tomboxi) Auslastung reduziert. Objekte werden nur geändert wenn die Warnungen sich ändern.
+
+### 0.0.17
+
+- (tomboxi) Fehlerbehandlung verbessert. Option zum Deaktiveren der Area Objekte hinzugefügt.
 
 ### 0.0.13
 
@@ -80,7 +96,7 @@ Lists der AGS mit Strg + F这样：
 
 MIT License
 
-Copyright (c) 2019 tomboxi <tombox_2020@gmail.com>
+Copyright (c) 2020 tomboxi <tombox_2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

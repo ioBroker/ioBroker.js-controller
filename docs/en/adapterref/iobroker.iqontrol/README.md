@@ -1388,10 +1388,12 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Added type icon and type datapoint to widget-url-parameters.
 * (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
 * (sbormann) Added option to show badge value without unit.
+* (sbormann) Badge has now a maximum-width and uses marquee-effect.
 * (sbormann) Added toggle by icon for garage door (after optional confirmation).
 * (sbormann) Fixed not to open Dialog if clickOnTileOpensDialog is set to false.
 * (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
 * (sbormann) Text on transparent tiles is now white (can be configured).
+* (sbormann) When converting to bool, "off" is interpreted as false now.
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

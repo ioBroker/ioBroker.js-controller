@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adaptertranslate.md
 title: Перевод адаптеров
-hash: 397W84qVYffJYSWkv8fxwwlq1WNcFCdgZ0vqe/MIGzQ=
+hash: 8XvB1Gq0qo9gVlIP2+QfpMZ3OQTE+OfKgPD94WrJdcQ=
 ---
 # Перевод адаптеров
 ## Введение
@@ -38,6 +38,8 @@ ioBroker используется во всем мире в [много разн
 Когда создается адаптер с [Создатель адаптера](https://github.com/ioBroker/create-adapter), создается правильный файл gulp.
 
 Каждый раз, когда вы добавляете какие-то строки, вы можете просто использовать `gulp translateAndUpdateWordsJS`, чтобы добавить все отсутствующие переводы.
+
+Чтобы автоматизировать перевод примечаний к выпуску, также используйте [релиз-скрипт от @AlCalzone](https://github.com/AlCalzone/release-script) - простой вариант, который автоматизирует перевод из англоязычного журнала изменений.
 
 ## Управляемые переводы
 Автоматические переводы часто недостаточно хороши или сбивают с толку, поэтому ioBroker предлагает платформу Weblate для управляемых переводов сообщества:

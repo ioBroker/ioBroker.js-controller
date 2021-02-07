@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: Material Design Widgets für ioBroker VIS
-hash: RZC4Vqo/Q2PV3bS1R70YMGvpfv9L6aTmQ4g0UVw0eeg=
+hash: Vye/WwMabddyV97K5/V3JkrRWl+84DjGYM2FmWLySn4=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png) <! - in toc weglassen ->
 
@@ -34,15 +34,13 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Adaptereinstellungen] (# Adaptereinstellungen)
 - [Allgemein] (# allgemein-1)
 - [Theme Editor] (# Theme-Editor)
-- [Farbthema] (# Farben-Thema)
-- [Schriftarten-Thema] (# Schriftarten-Thema)
-- [Schriftgrößen-Thema] (# Schriftgrößen-Thema)
+- [Theme Settings] (# Theme-Einstellungen)
 - [Widgets] (# Widgets)
 - [Material Design Icons und Bilder] (# Material Design Icons und Bilder)
 - [Editoreinstellungen] (# Editoreinstellungen)
 - [HTML-Eigenschaften] (# HTML-Eigenschaften)
 - [Tasten] (# Tasten)
-- [Schaltflächen vertikal] (# Schaltflächen-vertikal)
+- [Schaltflächen vertikal] (# Schaltflächen vertikal)
 - [Buttons Icon] (# Buttons-Icon)
 - [Checkbox] (# Checkbox)
 - [Editoreinstellungen] (# editor-settings-1)
@@ -95,7 +93,7 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Editoreinstellungen] (# editor-settings-11)
 - [Daten - JSON-Struktur] (# Daten --- JSON-Struktur)
 - [interne Objektbindung] (# interne Objektbindung)
-- [HTML Control Widgets] (# html-control-Widgets)
+- [HTML Control Widgets] (# HTML-Control Widgets)
 - [Steuerelemente - **veraltet seit v0.5.0** (# Steuerelemente --- veraltet seit v050)
 - [Responsive Layout] (# Responsive-Layout)
 - [Mauerwerksansichten] (# Mauerwerksansichten)
@@ -161,10 +159,20 @@ Ab Version 0.4.0 gibt es eine Einstellungsseite für den Adapter. Sie finden es 
 | Wachposten | Verwenden Sie Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch anonym an die Entwickler zu melden. Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation] (https://github.com/ioBroker/plugin-sentry#plugin-sentry)! |
 
 ## Themeneditor
-Mit Hilfe des Design-Editors können Sie Farben, Schriftarten und Schriftgrößen für alle Widgets über die Adaptereinstellungen zentral einstellen. Dies wird mit Hilfe der [Bindungen des VIS-Adapters](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects) realisiert. Für jedes Widget werden Datenpunkte (siehe Abbildung unten) mit den festgelegten Werten erstellt. Dies ermöglicht die Verwendung dieser Einstellungen in anderen Widgets (nicht Material Design Widgets) über Bindungen.
+Mit Hilfe des Design-Editors können Sie Farben, Schriftarten und Schriftgrößen für alle Widgets über die Adaptereinstellungen zentral einstellen. Für jedes Widget werden Datenpunkte (siehe Abbildung unten) mit den festgelegten Werten erstellt. Auf diese Weise können diese Einstellungen auch in anderen Widgets (nicht in Material Design Widgets) über Bindungen verwendet werden.
 
 ##### Datenpunktstruktur
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_datapoints.png)
+
+### Themen Einstellungen
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
+
+Jede Einstellungsseite für Farben, dunkle Farben, Schriftarten und Schriftgrößen sieht wie im obigen Screenshot aus.
+
+Standardfarben / Schriftarten / Schriftgrößen können im oberen Bereich definiert werden. Diese Standardfarben / Schriftarten / Schriftgrößen können dann über die Schaltflächen in der Tabelle den einzelnen Widgets zugewiesen werden. Wenn Sie die Standardfarben / Schriftarten / Schriftgrößen ändern, ändert sich dies auch für alle Widgets, die diese Farben / Schriftarten / Schriftgrößen verwenden.
+Darüber hinaus ist es möglich, den Widgets unabhängig von den Standardfarben eigene Farben / Schriftarten / Schriftgrößen zuzuweisen.
+
+Für Farben gibt es zwei Themen - helles Thema und dunkles Thema. Mit dem Datenpunkt `vis-materialdesign.0.colors.darkTheme` können Sie zwischen den beiden Themen wechseln. Beispielsweise kann dieser Datenpunkt in einem Skript verwendet werden, um bei Sonnenaufgang und Sonnenuntergang zwischen hellen und dunklen Farben zu wechseln.
 
 ##### VIS Editor (Alte Widgets wiederherstellen / aktualisieren)
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/vis_editor_theme_restore.gif)
@@ -173,32 +181,15 @@ Im VIS-Editor finden Sie für jedes Widget eine Schaltfläche `use theme`. Mit d
 
 Mit Hilfe dieser Schaltfläche ist es auch möglich, Ihre Widgets von Versionen vor 0.4.0 zu aktualisieren, um die Themen zu verwenden.
 
+##### Datenpunktbindung für Materialdesign-Widgets ändern
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_mdw_binding.gif)
+
+Wenn Sie die Verwendung anderer Farben ändern möchten, die für andere Widgets definiert sind, können Sie die Datenpunktbindung kopieren, indem Sie auf die Schaltfläche mit dem Materialdesignsymbol klicken. Fügen Sie dies einfach in ein beliebiges Feld für Farben, Schriftarten oder Schriftgrößen eines Materialdesign-Widgets ein. Zum Beispiel sieht eine Farbe "Zustandsbindung" wie `#mdwTheme:vis-materialdesign.0.colors.card.background` aus
+
 ##### Bindung für Nicht-Material-Design-Widgets verwenden
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
 
-In den Adaptereinstellungen können Sie den Bindungsbefehl in die Zwischenablage kopieren, indem Sie auf den Standardtext oder die ID in den Tabellen klicken. Diese Bindung kann dann auch für Nicht-Material-Design-Widgets durch Kopieren und Einfügen verwendet werden.
-
-### Farbthema
-Für Farben gibt es zwei Themen - helles Thema und dunkles Thema. Mit dem Datenpunkt `vis-materialdesign.0.colors.darkTheme` können Sie zwischen den beiden Themen wechseln.
-
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
-
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
-
-Im oberen Bereich können Standardfarben definiert werden. Diese Standardfarben können dann über die Schaltflächen in der Tabelle den einzelnen Widgets zugewiesen werden. Wenn Sie die Standardfarbe ändern, ändert sich dies auch für alle Widgets, die diese Farbe verwenden.
-Darüber hinaus können Sie den Widgets unabhängig von den Standardfarben eigene Farben zuweisen.
-
-### Schriftart-Thema
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
-
-Standardschriftarten können im oberen Bereich definiert werden. Diese Standardschriftarten können dann über die Schaltflächen in der Tabelle den einzelnen Widgets zugewiesen werden. Wenn Sie die Standardfarbe ändern, ändert sich dies auch für alle Widgets, die diese Farbe verwenden.
-Darüber hinaus können Sie den Widgets unabhängig von den Standardfarben eigene Schriftarten zuweisen.
-
-### Schriftgrößen-Thema
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fontSizes.png)
-
-Standardschriftgrößen können im oberen Bereich definiert werden. Diese Standardschriftgrößen können dann über die Schaltflächen in der Tabelle den einzelnen Widgets zugewiesen werden. Wenn Sie die Standardfarbe ändern, ändert sich dies auch für alle Widgets, die diese Farbe verwenden.
-Darüber hinaus können Sie den Widgets unabhängig von den Standardfarben Ihre eigenen Schriftgrößen zuweisen.
+In den Adaptereinstellungen können Sie den Bindungsbefehl in die Zwischenablage kopieren, indem Sie auf die Schaltfläche mit dem iobroker-Symbol klicken. Diese Bindung kann dann auch für Nicht-Material-Design-Widgets durch Kopieren und Einfügen verwendet werden. Zum Beispiel sieht eine Farbbindung aus wie `{mode:vis-materialdesign.0.colors.darkTheme;light:vis-materialdesign.0.colors.light.card.background;dark:vis-materialdesign.0.colors.dark.card.background; mode === "true" ? dark : light}`
 
 # Widgets
 ## Material Design Icons und Bilder
@@ -1031,11 +1022,11 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 #### JSON-Eigenschaften des Datensatzes
 Die JSON-Zeichenfolge muss ein Array von Objekten mit den folgenden Eigenschaften sein:
 
-<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Etikette</td><td> Achsenbeschriftung des Balkens</td><td> Zeichenfolge</td><td/></tr><tr><td> Wert</td><td> Balkenwert</td><td> Nummer</td><td/></tr><tr><td> dataColor</td><td> Balkenfarbe</td><td> Zeichenfolge</td><td/></tr><tr><td> valueText</td><td> Text der Leiste überschreiben</td><td> Zeichenfolge</td><td/></tr><tr><td> valueColor</td><td> Farbe des Wertetextes</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td><td/></tr><tr><td> valueAnhang</td><td> Anhang des Wertetextes</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipTitle</td><td> Tooltip-Titel</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipText</td><td> Tooltip-Text</td><td> Zeichenfolge</td><td/></tr></tbody></table>
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Etikette</td><td> Achsenbeschriftung des Balkens</td><td> Zeichenfolge</td><td/></tr><tr><td> Wert</td><td> Balkenwert</td><td> Nummer</td><td/></tr><tr><td> dataColor</td><td> Balkenfarbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td><td/></tr><tr><td> valueText</td><td> Text der Leiste überschreiben</td><td> Zeichenfolge</td><td/></tr><tr><td> valueColor</td><td> Farbe des Wertetextes</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td><td/></tr><tr><td> valueAnhang</td><td> Anhang des Wertetextes</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipTitle</td><td> Tooltip-Titel</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipText</td><td> Tooltip-Text</td><td> Zeichenfolge</td><td/></tr></tbody></table>
 
 <! - in toc weglassen ->
 
-#### Beispiel
+#### JSON-Eigenschaften des Datensatzes - Beispiel
 <details> <pre><code> [ { "label": "val0", "value": "30", "valueColor": "#ffffff" }, { "label": "val1", "value": "12.54645646", "tooltipTitle": "myTitle" }, { "label": "val2", "value": "48", "dataColor": "#c2c2c2", "valueAppendix": "\n extra" }, { "label": "val3", "value": "97", "valueColor": "#ffffff" }, { "label": "val4", "value": "32", "valueText": "text" } ] </pre></code> </details>
 
 ### Kuchendiagramm
@@ -1048,6 +1039,13 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 
 #### JSON-Eigenschaften des Datensatzes
 Die JSON-Zeichenfolge muss ein Array von Objekten mit den folgenden Eigenschaften sein:
+
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Etikette</td><td> Achsenbeschriftung der Torte</td><td> Zeichenfolge</td><td/></tr><tr><td> Wert</td><td> Kuchenwert</td><td> Nummer</td><td/></tr><tr><td> dataColor</td><td> Kuchenfarbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td><td/></tr><tr><td> valueText</td><td> Text des Kuchens überschreiben</td><td> Zeichenfolge</td><td/></tr><tr><td> valueColor</td><td> Farbe des Wertetextes</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td><td/></tr><tr><td> valueAnhang</td><td> Anhang des Wertetextes</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipTitle</td><td> Tooltip-Titel</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipText</td><td> Tooltip-Text</td><td> Zeichenfolge</td><td/></tr></tbody></table>
+
+<! - in toc weglassen ->
+
+#### JSON-Eigenschaften des Datensatzes - Beispiel
+<details> <pre><code> [ { "label": "val0", "value": "30", "valueColor": "#ffffff" }, { "label": "val1", "value": "12.54645646" }, { "label": "val2", "value": "48", "dataColor": "#c2c2c2", "valueAppendix": "\nextra" }, { "label": "val3", "value": "97", "valueColor": "#ffffff" }, { "label": "val4", "value": "32", "valueText": "text" } ] </pre></code> </details>
 
 ### Linienverlaufsdiagramm:
 > Erforderlicher Adapter: [SQL] (https://github.com/ioBroker/ioBroker.sql), [Verlauf] (https://github.com/ioBroker/ioBroker.history) oder [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
@@ -1108,6 +1106,12 @@ Mit dem JSON-Diagramm haben Sie die maximale Freiheit, ein gemischtes Diagramm (
 
 #### Beispiel
 <details> <pre><code> { "axisLabels": ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"], "graphs": [ { "data": [19, 19, 18, 19, 19, 20, 20, 21, 22, 24, 24, 24, 23, 22, 23, 23, 24, 23, 23, 22, 22, 21, 20, 20], "type": "line", "color": "gray", "legendText": "Temperatur", "line_pointSizeHover": 5, "line_pointSize": 0, "line_Tension": 0.3, "yAxis_show": false, "yAxis_gridLines_show": false, "yAxis_gridLines_ticks_length": 5, "yAxis_min": 0, "yAxis_max": 30, "yAxis_step": 5, "yAxis_position": "left", "yAxis_appendix": " °C", "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 0, "tooltip_AppendText": " °C", "datalabel_backgroundColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "datalabel_color": "white", "datalabel_offset": -10, "datalabel_fontFamily": "RobotoCondensed-Light", "datalabel_fontSize": 12, "datalabel_borderRadius": 6, "datalabel_show": "auto", "line_PointColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorder": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorderHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "use_gradient_color": true, "gradient_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ], "use_line_gradient_fill_color": true, "line_gradient_fill_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ] }, { "data": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 19, 33, 36, 23, 14, 16, 34, 46, 40, 24, 22], "type": "line", "color": "#0d47a1", "legendText": "Regenwahrscheinlichkeit", "line_UseFillColor": true, "line_pointSize": 0, "line_pointSizeHover": 5, "yAxis_min": 0, "yAxis_max": 100, "yAxis_maxSteps": 10, "yAxis_position": "left", "yAxis_gridLines_show": false, "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "yAxis_appendix": " %", "displayOrder": 1, "tooltip_AppendText": " %", "datalabel_show": false }, { "data": ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1.3", "2.5", 0, 1.9, 1.17, 0, 0, 0, 0.18, 0.7, 0.2, 0, 0], "type": "bar", "color": "#6dd600", "legendText": "Niederschlag", "yAxis_min": 0, "yAxis_max": 5, "yAxis_maxSteps": 10, "yAxis_position": "right", "yAxis_gridLines_show": false, "yAxis_appendix": " mm", "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 1, "tooltip_AppendText": " mm", "datalabel_show": false } ] }
+
+</ pre> </ code> </ details>
+
+<details> <pre><code> { "axisLabels": ["Jan", "Feb", "Mrz", "Apr"], "graphs": [{ "type": "line", "data": [40, 22, 160, 92], "yAxis_id": 0, "barIsStacked": true, "datalabel_show": false, "line_UseFillColor": true
+
+}, {"type": "bar", "barIsStacked": true, "data": [30, 69, 91, 35], "yAxis_id": 0, "barStackId": 0, "color": "# 6dd600 "," datalabel_color ":" #FFFFFF "," datalabel_align ":" start "," use_gradient_color ": true," gradient_color ": [{" value ": 60," color ":" # 6dd600 "}, {" value ": 0," color ":" lightgray "}]}, {" type ":" bar "," barIsStacked ": true," data ": [17, 68, 83, 49]," yAxis_id ": 0, "barStackId": 1, "color": "# ff9800", "datalabel_color": "#FFFFFF", "datalabel_align": "start"}, {"type": "bar", "barIsStacked": true, "data ": [95, 42, 34, 31]," yAxis_id ": 0," barStackId ": 1," color ":" # 8e24aa "," datalabel_color ":" #FFFFFF "," datalabel_align ":" start "} , {"type": "bar", "barIsStacked": true, "data": [33, 44, 22, 34], "yAxis_id": 0, "barStackId": 2, "color": "# a65628" , "datalabel_color": "#FFFFFF", "datalabel_align": "start"}, {"type": "bar", "barIsStacked": true, "data": [28, 34, 45, 23], "yAxis_id ": 0," yAxis_max ":" 180 "," barStackId ": 2," color ":" # d32f2f "," datalabel_color ":" #FFFFFF " , "datalabel_align": "start"}]}
 
 </ pre> </ code> </ details>
 
@@ -2012,7 +2016,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 
 ## HTML-Widgets
 Erstellen Sie aus den unterstützten Material Design-Widgets ein HTML-Widget, um es in jedem anderen Widget zu verwenden, das HTML unterstützt.
-Gestalten Sie einfach Ihr Material Design-Widget, drücken Sie die `generate Html Element`, kopieren Sie die Daten und fügen Sie sie in ein beliebiges Widget ein, das HTML-Tags unterstützt.
+Gestalten Sie einfach Ihr Material Design-Widget, drücken Sie die `generate Html Element`, kopieren Sie die Daten und fügen Sie sie in ein Widget ein, das HTML-Tags unterstützt.
 Oder verwenden Sie es in Skripten, um dynamisch Widgets zu generieren.
 
 > Achtung:> *Attribute von HTML-Tags müssen von `'` (einfaches Anführungszeichen) umgeben sein>* doppelte Anführungszeichen `"`, die in Attributen verwendet werden, müssen wie `\"` maskiert werden >> Vergleichen Sie dies mit den gezeigten Beispielen der verschiedenen Widgets
@@ -2058,15 +2062,17 @@ Der Adapter verwendet die folgenden Bibliotheken:
 <!-- omit in toc -->
 ### __WORK IN PROGRESS__
 * (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
-* (Scrounger) Table: Control Elements removed, using new HTML Elements -> breaking changes !!!
-* (Scrounger) list: using object id for json string added -> breaking changes !!!
-* (Scrounger) Documentation revised
+* (Scrounger) Table: Control Elements removed, using new HTML Widgets -> breaking changes !!!
+* * (Scrounger) list: using object id for json string added -> breaking changes !!!
+* (Scrounger) new Value Widget added
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 * (Scrounger) progress circular: auto size option added
 * (Scrounger) VIS editor: html previews bug fixes
 * (Scrounger) input, autocomplete, select: autofocus option added
+* (Scrounger) Documentation revised
+* (Scrounger): bug fixes
 
 <!-- omit in toc -->
 ### 0.4.2 (2020-12-29)

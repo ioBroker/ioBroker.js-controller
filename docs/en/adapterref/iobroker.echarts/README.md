@@ -75,6 +75,9 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.4.11 (2021-02-06)
+* (bluefox) Fixed the dashed lines
+
 ### 0.4.10 (2020-12-22)
 * (bluefox) Allow the hiding of lines at start and show them via legend later
 * (bluefox) Use canvas renderer on touch devices to allow zoom and pan

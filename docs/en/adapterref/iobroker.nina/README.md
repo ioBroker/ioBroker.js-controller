@@ -23,9 +23,10 @@ Notfall-Informations- und Nachrichten-App
 
 Die AGS deines Landkreises oder kommasepariert mehrere AGS eingeben.
 
-Liste der AGS mit Strg+F suchen:
+AGS (Amtlicher Gemeindeschlüssel) ermitteln:
+Über diese Seite kannst du den AGS für die gesuchte Stadt / Gemeinde ermitteln:
 
-<https://warnung.bund.de/assets/json/suche_channel.json>
+<https://www.statistikportal.de/de/gemeindeverzeichnis>
 
 ### error Request error{"errno":"EPROTO","code":"EPROTO","syscall":"write"}
 

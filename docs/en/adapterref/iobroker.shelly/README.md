@@ -56,6 +56,7 @@ You find a detailed installation documentation here:
 |Shelly 1L (SHSW-L)|supported since v4.0.5|supported since v4.0.5|
 |Shelly Color Bulb (SHCB-1)|supported since v4.0.5|supported since v4.0.5|
 |Shelly Button (SHBTN-2)|supported since v4.0.5|supported since v4.0.5|
+|Shelly Motion (SHMOS-01)|supported since v4.0.6|supported since v4.0.6|
 
 
 
@@ -67,9 +68,12 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 
-### 4.0.6-beta (2021-02-02)
+### 4.0.6 (2021-02-02)
 * (Stübi) - add min, max to state transiton for Shelly RGBW2 
 * (Stübi) - if a property in the returned json for a http request does not exist, it will not shown as an error anymore
+* (Stübi) - Bugfixing Shelly 1L
+* (klein0r) - Added shelly motion (SHMOS-01) 
+
 
 ### 4.0.5 (2021-02-01)
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)

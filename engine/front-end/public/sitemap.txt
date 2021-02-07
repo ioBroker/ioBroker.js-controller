@@ -661,6 +661,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.admin/tab-system.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.admin/tab-users.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.alarm/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.alexa2/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.alias-manager/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.alpha2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.amazon-dash/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.artnet/README.md
@@ -715,6 +716,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.email/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.emby/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.energymanager/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.enet/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.epson_stylus_px830/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.exchangerates/README.md
@@ -801,6 +803,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.landroid/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.legrand-ecocompteur/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.letrika_comgw/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lg-ess-home/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lgtv-rs/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lgtv11/README.md
@@ -879,6 +882,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.opi/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.oppoplayer/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.owfs/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.owntracks/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.paw/README.md
@@ -973,6 +977,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.trashschedule/README.m
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tvspielfilm/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.twinkly/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.upnp/README.md
@@ -1066,6 +1071,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/tab-system.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/tab-users.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.alarm/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.alexa2/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.alias-manager/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.alpha2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.amazon-dash/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.artnet/README.md
@@ -1120,6 +1126,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.email/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.emby/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.energymanager/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.enet/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.epson_stylus_px830/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.exchangerates/README.md
@@ -1206,6 +1213,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.landroid/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.legrand-ecocompteur/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.letrika_comgw/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lg-ess-home/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lgtv-rs/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lgtv11/README.md
@@ -1284,6 +1292,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.opi/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.oppoplayer/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.owfs/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.owntracks/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.paw/README.md
@@ -1378,6 +1387,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.trashschedule/README.m
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tvspielfilm/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.twinkly/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.upnp/README.md
@@ -1471,6 +1481,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/tab-system.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/tab-users.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.alarm/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.alexa2/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.alias-manager/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.alpha2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.amazon-dash/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.artnet/README.md
@@ -1525,6 +1536,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.email/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.emby/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.energymanager/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.enet/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.epson_stylus_px830/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.exchangerates/README.md
@@ -1611,6 +1623,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.landroid/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.legrand-ecocompteur/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.letrika_comgw/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lg-ess-home/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lgtv-rs/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lgtv11/README.md
@@ -1689,6 +1702,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.opi/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.oppoplayer/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.owfs/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.owntracks/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.paw/README.md
@@ -1783,6 +1797,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.trashschedule/README.m
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tvspielfilm/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.twinkly/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.upnp/README.md
@@ -1876,6 +1891,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/tab-system.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/tab-users.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.alarm/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.alexa2/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.alias-manager/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.alpha2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.amazon-dash/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.artnet/README.md
@@ -1930,6 +1946,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.email/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.emby/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.energymanager/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.enet/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.epson_stylus_px830/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.exchangerates/README.md
@@ -2016,6 +2033,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.landroid/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lcn/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.legrand-ecocompteur/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.letrika_comgw/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lg-ess-home/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lgtv/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lgtv-rs/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lgtv11/README.md
@@ -2094,6 +2112,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.opi/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.oppoplayer/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.owfs/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.owntracks/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.paw/README.md
@@ -2188,6 +2207,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.trashschedule/READM
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tvspielfilm/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.twinkly/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.upnp/README.md

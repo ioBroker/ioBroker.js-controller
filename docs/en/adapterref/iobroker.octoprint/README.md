@@ -40,6 +40,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.8
+
+* (klein0r) Avoid constant refresh of file list
+
 ### 1.0.7
 
 * (klein0r) Fixed async object creation

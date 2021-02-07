@@ -26,7 +26,7 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.1.0 (2021-02-04)
 * (Apollon77) Try to fix the MaxSubscribes error when having many nodes
 * (Apollon77) Update to node-red 1.2.8
 

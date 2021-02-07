@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: muyPiU+IM905WvLP//oa10+jTD1jcQHvlRDGnlxqp0Q=
+hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
 ---
 ![Logo](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -22,23 +22,39 @@ Notfall-Informations- und Nachrichten-App
 
 <https://warnung.bund.de/>
 
-### Fertig machen
-Die AGS deines Landkreises oder kommasepariert mehrere AGS eingeben.
+### Einstieg
+Die AGS deines Landkreises oder kommasepariert mehrere AGS gehört.
 
-Liste der AGS mit Strg + F suchen:
+AGS (Amtlicher Gemeindeschlüssel) werden: Über diese Seite können Sie den AGS für die gesuchte Stadt / Gemeindeverwaltung:
 
-<https://warnung.bund.de/assets/json/suche_channel.json>
+<https://www.statistikportal.de/de/gemeindeverzeichnis>
 
-### Error Request error {"errno": "EPROTO", "code": "EPROTO", "syscall": "write"}
-Die Webseite hat eine alte Verschlüsselung bei Debian Buster und RP4 muss folgende temporäre Änderung vorgenommen werden:
+### Error Fehler anfordern {"errno": "EPROTO", "code": "EPROTO", "syscall": "write"}
+Die Webseite hat eine alte Verschlüsselung bei Debian Buster und RP4 muss zeit temporär verwandt werden:
 
-Änderungen in der /etc/ssl/openssl.cnf von:
+Geändert in der /etc/ssl/openssl.cnf von:
 
 [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 2
 
 in: [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
+
+### 0.0.23
+
+- (tomboxi) Convert all state changes to async.
+
+### 0.0.22
+
+- (tomboxi) Optionen zum Filtern und JSON Ausgabe hinzugefügt.
+
+### 0.0.19
+
+- (tomboxi) Auslastung reduziert. Objekte werden nur geändert wenn die Warnungen sich ändern.
+
+### 0.0.17
+
+- (tomboxi) Fehlerbehandlung verbessert. Option zum Deaktiveren der Area Objekte hinzugefügt.
 
 ### 0.0.13
 
@@ -80,7 +96,7 @@ in: [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVE
 
 MIT License
 
-Copyright (c) 2019 tomboxi <tombox_2020@gmail.com>
+Copyright (c) 2020 tomboxi <tombox_2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

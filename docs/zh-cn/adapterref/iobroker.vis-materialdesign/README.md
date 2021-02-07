@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker VIS的材料设计小部件
-hash: RZC4Vqo/Q2PV3bS1R70YMGvpfv9L6aTmQ4g0UVw0eeg=
+hash: Vye/WwMabddyV97K5/V3JkrRWl+84DjGYM2FmWLySn4=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-toc中省略->
 
@@ -34,9 +34,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[适配器设置]（＃adapter-settings）
 -[General]（＃general-1）
 -[主题编辑器]（＃theme-editor）
--[颜色主题]（＃colors-theme）
--[字体主题]（＃fonts-theme）
--[字体大小主题]（＃font-sizes-theme）
+-[主题设置]（＃theme-settings）
 -[小部件]（＃widgets）
 -[材料设计图标和图像]（＃material-design-icons-and-images）
 -[编辑器设置]（＃editor-settings）
@@ -93,7 +91,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[JSON属性]（＃json-properties-1）
 -[表格]（＃table）
 -[编辑器设置]（＃editor-settings-11）
--[数据-JSON结构]（＃data --- json结构）
+-[数据-JSON结构]（＃data --- json-stucture）
 -[内部对象绑定]（＃internal-object-binding）
 -[HTML控件小部件]（＃html-control-widgets）
 -[控制元素-**自v0.5.0起不推荐使用**]（＃control-elements ---自v050起不推荐使用）
@@ -161,10 +159,20 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 |哨兵使用Sentry库自动向开发人员匿名报告异常和代码错误。有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin-sentry#plugin-sentry）！ |
 
 ##主题编辑器
-借助主题编辑器，您可以通过适配器设置为所有小部件集中设置颜色，字体和字体大小。这是在[VIS适配器的绑定](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)的帮助下实现的。对于每个窗口小部件，使用设置值创建数据点（请参见下面的屏幕快照）。这样就可以通过绑定在其他窗口小部件（而非“材料设计窗口小部件”）中使用这些设置。
+借助主题编辑器，您可以通过适配器设置为所有小部件集中设置颜色，字体和字体大小。对于每个窗口小部件，使用设置值创建数据点（请参见下面的屏幕快照）。这样还可以通过绑定在其他窗口小部件（而非“材料设计窗口小部件”）中使用这些设置。
 
 #####数据点结构
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_datapoints.png)
+
+###主题设置
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
+
+颜色，深色，字体和字体大小的每个设置页面看起来都像上面的屏幕截图所示。
+
+标准颜色/字体/字体大小可以在上方区域中定义。然后，可以使用表格中的按钮将这些标准颜色/字体/字体大小分配给各个小部件。如果您更改默认颜色/字体/字体大小，则所有使用该颜色/字体/字体大小的小部件也将更改。
+此外，可以将您自己的颜色/字体/字体大小分配给小部件，而与标准颜色无关。
+
+对于颜色，有两个主题-浅色主题和深色主题。使用数据点`vis-materialdesign.0.colors.darkTheme`，您可以在两个主题之间切换。例如，可以在脚本中使用此数据点在日出和日落时在明暗之间切换。
 
 ##### VIS编辑器（还原/更新旧的小部件）
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/vis_editor_theme_restore.gif)
@@ -173,32 +181,15 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 借助此按钮，还可以从0.4.0之前的版本更新您的小部件以使用主题。
 
+#####更改材料设计小部件的数据点绑定
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_mdw_binding.gif)
+
+如果要更改为其他窗口小部件定义的其他颜色的使用，则可以通过按下带有材料设计图标的按钮来复制数据点绑定。只需将其粘贴到材质设计窗口小部件的任何颜色，字体或字体大小字段中即可。例如，颜色“状态绑定”看起来像`#mdwTheme:vis-materialdesign.0.colors.card.background`
+
 #####对非Material Design小部件使用绑定
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
 
-在适配器设置中，可以通过单击表中的默认文本或ID将绑定命令复制到剪贴板。然后，即使对于非Material Design小部件，也可以通过复制和粘贴使用此绑定。
-
-###颜色主题
-对于颜色，有两个主题-浅色主题和深色主题。使用数据点`vis-materialdesign.0.colors.darkTheme`，您可以在两个主题之间切换。
-
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
-
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
-
-可以在上方区域定义标准颜色。然后可以使用表格中的按钮将这些标准颜色分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
-此外，可以将您自己的颜色分配给小部件，而与标准颜色无关。
-
-###字体主题
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
-
-可以在上方区域定义标准字体。然后，可以使用表格中的按钮将这些标准字体分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
-另外，可以将您自己的字体分配给小部件，而与标准颜色无关。
-
-###字体大小主题
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fontSizes.png)
-
-可以在上方区域定义标准字体大小。然后，可以使用表格中的按钮将这些标准字体大小分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
-此外，可以将您自己的字体大小分配给小部件，而与标准颜色无关。
+在适配器设置中，您可以通过单击带有iobroker图标的按钮将绑定命令复制到剪贴板。然后，即使对于非Material Design小部件，也可以通过复制和粘贴使用此绑定。例如，颜色绑定看起来像`{mode:vis-materialdesign.0.colors.darkTheme;light:vis-materialdesign.0.colors.light.card.background;dark:vis-materialdesign.0.colors.dark.card.background; mode === "true" ? dark : light}`
 
 ＃小部件
 ##材质设计图标和图像
@@ -1031,11 +1022,11 @@ JSON字符串必须是具有以下属性的对象数组：
 ####数据集JSON属性
 JSON字符串必须是具有以下属性的对象数组：
 
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>标签</td><td>条轴标签</td><td>串</td><td/></tr><tr><td>值</td><td>条值</td><td>数</td><td/></tr><tr><td>dataColor</td><td>条形颜色</td><td>串</td><td/></tr><tr><td>valueText</td><td>覆盖栏文字</td><td>串</td><td/></tr><tr><td>valueColor</td><td>值文字的颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td><td/></tr><tr><td>价值附录</td><td>有价文字附录</td><td>串</td><td/></tr><tr><td>工具提示标题</td><td>工具提示标题</td><td>串</td><td/></tr><tr><td>工具提示文字</td><td>工具提示文字</td><td>串</td><td/></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>标签</td><td>条轴标签</td><td>串</td><td/></tr><tr><td>值</td><td>条值</td><td>数</td><td/></tr><tr><td>dataColor</td><td>条形颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td><td/></tr><tr><td> valueText</td><td>覆盖栏文字</td><td>串</td><td/></tr><tr><td>valueColor</td><td>值文字的颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td><td/></tr><tr><td>价值附录</td><td>有价文字附录</td><td>串</td><td/></tr><tr><td>工具提示标题</td><td>工具提示标题</td><td>串</td><td/></tr><tr><td>工具提示文字</td><td>工具提示文字</td><td>串</td><td/></tr></tbody></table>
 
 <！-在目录中省略->
 
-####示例
+####数据集JSON属性-示例
 <details> <pre><code> [ { "label": "val0", "value": "30", "valueColor": "#ffffff" }, { "label": "val1", "value": "12.54645646", "tooltipTitle": "myTitle" }, { "label": "val2", "value": "48", "dataColor": "#c2c2c2", "valueAppendix": "\n extra" }, { "label": "val3", "value": "97", "valueColor": "#ffffff" }, { "label": "val4", "value": "32", "valueText": "text" } ] </pre></code> </details>
 
 ＃＃＃ 饼形图
@@ -1049,6 +1040,13 @@ JSON字符串必须是具有以下属性的对象数组：
 ####数据集JSON属性
 JSON字符串必须是具有以下属性的对象数组：
 
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>标签</td><td>饼图的轴标签</td><td>串</td><td/></tr><tr><td>值</td><td>馅饼值</td><td>数</td><td/></tr><tr><td>dataColor</td><td>派颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td><td/></tr><tr><td> valueText</td><td>覆盖饼图文本</td><td>串</td><td/></tr><tr><td>valueColor</td><td>值文字的颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td><td/></tr><tr><td>价值附录</td><td>有价文字附录</td><td>串</td><td/></tr><tr><td>工具提示标题</td><td>工具提示标题</td><td>串</td><td/></tr><tr><td>工具提示文字</td><td>工具提示文字</td><td>串</td><td/></tr></tbody></table>
+
+<！-在目录中省略->
+
+####数据集JSON属性-示例
+<details> <pre><code> [ { "label": "val0", "value": "30", "valueColor": "#ffffff" }, { "label": "val1", "value": "12.54645646" }, { "label": "val2", "value": "48", "dataColor": "#c2c2c2", "valueAppendix": "\nextra" }, { "label": "val3", "value": "97", "valueColor": "#ffffff" }, { "label": "val4", "value": "32", "valueText": "text" } ] </pre></code> </details>
+
 ###线路历史记录图表：
 >必需的适配器：[SQL]（https://github.com/ioBroker/ioBroker.sql），[历史记录]（https://github.com/ioBroker/ioBroker.history）或[InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)！
 
@@ -1057,10 +1055,10 @@ JSON字符串必须是具有以下属性的对象数组：
 ####编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最高要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最高要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
 
 ### JSON图表
-使用JSON图表，您可以最大程度地通过脚本创建混合图表（折线，条形图和堆积条形图）。
+使用JSON图表，您可以最大程度地通过脚本创建混合图表（折线图，条形图和堆积条形图）。
 
 ![徽标]（doc / en / media / jsonChart.png）！[徽标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/jsonChart2.png)
 
@@ -1083,7 +1081,7 @@ JSON字符串必须是具有以下属性的对象数组：
 <！-在目录中省略->
 
 #####图形条形图spfeicifc
-<details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>bar已堆叠</td><td>堆积的酒吧。如果有组合图表（折线+堆积条形图），则还必须为折线数据集设置此值！</td><td>布尔值</td><td>假，真</td></tr><tr><td>barStackId</td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID</td><td>数</td><td>1，2，5，...</td></tr><tr><td> barColorHover</td><td>悬停颜色栏</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderColor</td><td>条的边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderWidth</td><td>条形边框的厚度</td><td>数</td><td>1，2，5，...</td></tr><tr><td> barBorderColorHover</td><td>条形的边框悬停颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderWidthHover</td><td>将鼠标悬停在边框上</td><td>数</td><td>1，2，5，...</td></tr></tbody></table></details>
+<details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>bar已堆叠</td><td>堆积的酒吧。如果您有组合图表（折线+堆积条形图），则还必须为折线数据集设置该值！</td><td>布尔值</td><td>假，真</td></tr><tr><td>barStackId</td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID</td><td>数</td><td>1，2，5，...</td></tr><tr><td> barColorHover</td><td>悬停颜色栏</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderColor</td><td>条的边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderWidth</td><td>条形边框的厚度</td><td>数</td><td>1，2，5，...</td></tr><tr><td> barBorderColorHover</td><td>条形的边框悬停颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderWidthHover</td><td>将鼠标悬停在边框上</td><td>数</td><td>1，2，5，...</td></tr></tbody></table></details>
 
 <！-在目录中省略->
 
@@ -1108,6 +1106,12 @@ JSON字符串必须是具有以下属性的对象数组：
 
 ####示例
 <details> <pre><code> { "axisLabels": ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"], "graphs": [ { "data": [19, 19, 18, 19, 19, 20, 20, 21, 22, 24, 24, 24, 23, 22, 23, 23, 24, 23, 23, 22, 22, 21, 20, 20], "type": "line", "color": "gray", "legendText": "Temperatur", "line_pointSizeHover": 5, "line_pointSize": 0, "line_Tension": 0.3, "yAxis_show": false, "yAxis_gridLines_show": false, "yAxis_gridLines_ticks_length": 5, "yAxis_min": 0, "yAxis_max": 30, "yAxis_step": 5, "yAxis_position": "left", "yAxis_appendix": " °C", "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 0, "tooltip_AppendText": " °C", "datalabel_backgroundColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "datalabel_color": "white", "datalabel_offset": -10, "datalabel_fontFamily": "RobotoCondensed-Light", "datalabel_fontSize": 12, "datalabel_borderRadius": 6, "datalabel_show": "auto", "line_PointColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorder": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorderHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "use_gradient_color": true, "gradient_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ], "use_line_gradient_fill_color": true, "line_gradient_fill_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ] }, { "data": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 19, 33, 36, 23, 14, 16, 34, 46, 40, 24, 22], "type": "line", "color": "#0d47a1", "legendText": "Regenwahrscheinlichkeit", "line_UseFillColor": true, "line_pointSize": 0, "line_pointSizeHover": 5, "yAxis_min": 0, "yAxis_max": 100, "yAxis_maxSteps": 10, "yAxis_position": "left", "yAxis_gridLines_show": false, "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "yAxis_appendix": " %", "displayOrder": 1, "tooltip_AppendText": " %", "datalabel_show": false }, { "data": ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1.3", "2.5", 0, 1.9, 1.17, 0, 0, 0, 0.18, 0.7, 0.2, 0, 0], "type": "bar", "color": "#6dd600", "legendText": "Niederschlag", "yAxis_min": 0, "yAxis_max": 5, "yAxis_maxSteps": 10, "yAxis_position": "right", "yAxis_gridLines_show": false, "yAxis_appendix": " mm", "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 1, "tooltip_AppendText": " mm", "datalabel_show": false } ] }
+
+</ pre> </ code> </ details>
+
+<details> <pre><code> { "axisLabels": ["Jan", "Feb", "Mrz", "Apr"], "graphs": [{ "type": "line", "data": [40, 22, 160, 92], "yAxis_id": 0, "barIsStacked": true, "datalabel_show": false, "line_UseFillColor": true
+
+}，{“ type”：“ bar”，“ barIsStacked”：true，“数据”：[30，69，91，35]，“ yAxis_id”：0，“ barStackId”：0，“ color”：“＃6dd600 “，” datalabel_color“：” #FFFFFF“，” datalabel_align“：”开始“，” use_gradient_color“：true，” gradient_color“：[{”值“：60，” color“：”＃6dd600“}，{”值“：0，” color“：” lightgray“}]}，{” type“：” bar“，” barIsStacked“：true，” data“：[17，68，83，49]，” yAxis_id“：0， “ barStackId”：1，“ color”：“＃ff9800”，“ datalabel_color”：“ #FFFFFF”，“ datalabel_align”：“开始”}，{“ type”：“ bar”，“ barIsStacked”：true，“数据“：[95，42，34，31]，” yAxis_id“：0，” barStackId“：1，” color“：”＃8e24aa“，” datalabel_color“：” #FFFFFF“，” datalabel_align“：”开始“} ，{“ type”：“ bar”，“ barIsStacked”：true，“数据”：[33，44，22，34]，“ yAxis_id”：0，“ barStackId”：2，“ color”：“＃a65628” ，“ datalabel_color”：“ #FFFFFF”，“ datalabel_align”：“开始”}，{“ type”：“ bar”，“ barIsStacked”：true，“ data”：[28，34，45，23]，“ yAxis_id “：0，” yAxis_max“：” 180“，” barStackId“：2，” color“：”＃d32f2f“，” datalabel_color“：” #FFFFFF“ ，“ datalabel_align”：“开始”}]}
 
 </ pre> </ code> </ details>
 
@@ -1748,7 +1752,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ```
 
 ＃＃＃＃＃ 一般
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>物产</th></tr></thead><tbody><tr><td>类型</td><td>控制元件类型</td><td>串</td><td><b>纽扣</b><ul><li><a href="#button-link-properties">按钮链接</a></li><li><a href="#button-state-properties">按钮状态</a></li><li><a href="#button-toggle-properties">按钮切换</a></li></ul><b>垂直按钮</b><ul><li><a href="#button-vertical-link-properties">按钮图标链接</a></li><li><a href="#button-vertical-state-properties">按钮图标状态</a></li><li><a href="#button-vertical-toggle-properties">按钮图标切换</a></li></ul><b>按钮图标</b><ul><li><a href="#button-icon-link-properties">按钮图标链接</a></li><li><a href="#button-icon-state-properties">按钮图标状态</a></li><li><a href="#button-icon-toggle-properties">按钮图标切换</a></li></ul><ul><li><a href="#progress-1">进展</a></li><li><a href="#progress-circular">progress_circular</a></li><li><a href="#slider-1">滑杆</a></li><li><a href="#slider-round">slide_round</a></li><li><a href="#switch-1">开关</a></li><li><a href="#checkbox-1">复选框</a></li><li><a href="#textfield">文本域</a></li><li><a href="#select-1">选择</a></li><li><a href="#autocomplete-1">自动完成</a></li><li><a href="#material-design-icons">材料设计图标</a></li><li><a href="#html">HTML</a></li></ul></td></tr><tr><td>宽度</td><td>宽度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>高度</td><td>控制元素的高度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>行跨</td><td>跨x行的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td>科尔斯潘</td><td>跨x列的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td> verticalAlign</td><td>垂直对齐</td><td>串</td><td>顶部|中|底部</td></tr><tr><td>cellStyleAttrs</td><td>单元格的CSS样式属性</td><td>串</td><td>...</td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>物产</th></tr></thead><tbody><tr><td>类型</td><td>控制元件类型</td><td>串</td><td><b>纽扣</b><ul><li><a href="#button-link-properties">按钮链接</a></li><li><a href="#button-state-properties">按钮状态</a></li><li><a href="#button-toggle-properties">按钮切换</a></li></ul><b>垂直按钮</b><ul><li><a href="#button-vertical-link-properties">按钮图标链接</a></li><li><a href="#button-vertical-state-properties">按钮图标状态</a></li><li><a href="#button-vertical-toggle-properties">按钮图标切换</a></li></ul><b>按钮图标</b><ul><li><a href="#button-icon-link-properties">按钮图标链接</a></li><li><a href="#button-icon-state-properties">按钮图标状态</a></li><li><a href="#button-icon-toggle-properties">按钮图标切换</a></li></ul><ul><li><a href="#progress-1">进展</a></li><li><a href="#progress-circular">progress_circular</a></li><li><a href="#slider-1">滑杆</a></li><li><a href="#slider-round">slide_round</a></li><li><a href="#switch-1">开关</a></li><li><a href="#checkbox-1">复选框</a></li><li><a href="#textfield">文本域</a></li><li><a href="#select-1">选择</a></li><li><a href="#autocomplete-1">自动完成</a></li><li><a href="#material-design-icons">材料设计图标</a></li><li><a href="#html">HTML</a></li></ul></td></tr><tr><td>宽度</td><td>控制元素的宽度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>高度</td><td>控制元素的高度，以％或px为单位</td><td>串</td><td>100％| 100像素</td></tr><tr><td>行跨</td><td>跨x行的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td>科尔斯潘</td><td>跨x列的单元格</td><td>数</td><td>1，2，3，...</td></tr><tr><td> verticalAlign</td><td>垂直对齐</td><td>串</td><td>顶部|中|底部</td></tr><tr><td>cellStyleAttrs</td><td>单元格的CSS样式属性</td><td>串</td><td>...</td></tr></tbody></table>
 
 ##响应式布局
 有两个小部件-Masonry Views和Grid Views-可以使用它们创建一个响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
@@ -2012,7 +2016,7 @@ ical2CalendarWidget();
 
 ## HTML窗口小部件
 从受支持的Material Design小部件创建html小部件，以在支持html的任何其他小部件中使用它。
-只需为您的Material Design小部件设置样式，然后按`generate Html Element`，将数据复制并粘贴到任何支持html标签的小部件中。
+只需为您的Material Design小部件设置样式，然后按`generate Html Element`，复制数据并将其粘贴到任何支持html标签的小部件中。
 或者在脚本中使用它来动态生成窗口小部件。
 
 >注意：> *html标记的属性必须用`'`（单引号）包围>* 须将属性中使用的双引号`"`像`\"`一样转义>>将其与所示示例进行比较不同的小部件
@@ -2042,7 +2046,7 @@ ical2CalendarWidget();
 ＃使用的库
 适配器使用以下库：
 
-* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
+* [适用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
@@ -2058,15 +2062,17 @@ ical2CalendarWidget();
 <!-- omit in toc -->
 ### __WORK IN PROGRESS__
 * (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
-* (Scrounger) Table: Control Elements removed, using new HTML Elements -> breaking changes !!!
-* (Scrounger) list: using object id for json string added -> breaking changes !!!
-* (Scrounger) Documentation revised
+* (Scrounger) Table: Control Elements removed, using new HTML Widgets -> breaking changes !!!
+* * (Scrounger) list: using object id for json string added -> breaking changes !!!
+* (Scrounger) new Value Widget added
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 * (Scrounger) progress circular: auto size option added
 * (Scrounger) VIS editor: html previews bug fixes
 * (Scrounger) input, autocomplete, select: autofocus option added
+* (Scrounger) Documentation revised
+* (Scrounger): bug fixes
 
 <!-- omit in toc -->
 ### 0.4.2 (2020-12-29)

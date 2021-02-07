@@ -7,6 +7,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.benq.png?downloads=true)](https://nodei.co/npm/iobroker.benq/)
 
+[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 IoBroker BenQ Projector adapter is used to control your BenQ projector via RS232 in conjunction with the Etnernet Gateway.
