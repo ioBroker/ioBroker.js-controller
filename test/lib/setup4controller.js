@@ -77,6 +77,9 @@ function startController(options, callback) {
         } else if (options.objects.type === 'redis') {
             console.log('Used class for Objects: Objects Redis Client');
             Objects = require('@iobroker/db-objects-redis').Client;
+        } else {
+            console.log('Used custom class for Objects (assume Server available): Objects ' + options.objects.type);
+            Objects = require('@iobroker/db-objects-' + options.objects.type).Server;
         }
     } else {
         console.log('Used class for Objects: Objects Server');
@@ -94,6 +97,9 @@ function startController(options, callback) {
         } else if (options.states.type === 'redis') {
             console.log('Used class for States: States Redis Client');
             States = require('@iobroker/db-states-redis').Client;
+        } else {
+            console.log('Used custom class for States (assume Server available): States ' + options.states.type);
+            States = require('@iobroker/db-states-' + options.states.type).Server;
         }
     } else {
         console.log('Used class for States: States Server');
