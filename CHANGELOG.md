@@ -4,10 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.15 (2021-02-08)
+## __WORK IN PROGRESS__
 * see CHANGELOG.md
 
-## 3.2.14 (2021-02-01) Release Grace
+## 3.2.15 (2021-02-01) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
@@ -29,7 +29,7 @@
 * (foxriver76) Fix wrong logger pattern that caused issues on windows
 * (Apollon77) fix potential crash when restoring backup
 * (Apollon77) restore old logfile deletion logic because rotator library do not work as expected
-* (Apollon77) Optimize File DBs to lower write i/o by 50% (backup file is not renamed instead of rewritten)
+* (Apollon77) Optimize File DBs to lower write i/o by 50% (backup file is now renamed instead of rewritten)
 * (AlCalzone/Apollon77) Restructure DB code to allow easier new DB types
 * (Apollon77) enhance letsencrypt to also allow to specify alternative names for certs
 
