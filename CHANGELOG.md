@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+## __WORK IN PROGRESS__
 * (AlCalzone) support github branch names with slashes on adapter install
 * (foxriver76) Fix wrong logger pattern that caused issues on windows
 * (Apollon77) fix potential crash when restoring backup
