@@ -4,16 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.14 (2021-02-08)
-* (AlCalzone) support github branch names with slashes on adapter install
-* (foxriver76) Fix wrong logger pattern that caused issues on windows
-* (Apollon77) fix potential crash when restoring backup
-* (Apollon77) restore old logfile deletion logic because rotator library do not work as expected
-* (Apollon77) Optimize File DBs to lower write i/o by 50% ( backup file is not renamed instead of rewritten)
-* (AlCalzone/Apollon77) Restructure DB code to allow easier new DB types
-* (Apollon77) Try to fix logging when seq is used
+## __WORK IN PROGRESS__
+* see CHANGELOG.md
 
-## 3.2.13 (2021-02-01) Release Grace
+## 3.2.14 (2021-02-01) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
@@ -26,11 +20,17 @@
 * (foxriver76) handling major adapter upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
 * (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
 * (AlCalzone) Support more Github URL formats for `iobroker url` command
+* (AlCalzone) support github branch names with slashes on adapter install
 * (foxriber76) Add notification system (see DOCS LINK TODO)
 * (foxriver76) enhance setup (and setup first) with redis to all port configuration
 * (foxriver76) set connectionName for redis connections and simulator support
 * (bluefox) Added "http" and "stream" options for logs
 * (Apollon77) add seq logging support to js-controller
+* (foxriver76) Fix wrong logger pattern that caused issues on windows
+* (Apollon77) fix potential crash when restoring backup
+* (Apollon77) restore old logfile deletion logic because rotator library do not work as expected
+* (Apollon77) Optimize File DBs to lower write i/o by 50% (backup file is not renamed instead of rewritten)
+* (AlCalzone/Apollon77) Restructure DB code to allow easier new DB types
 * (Apollon77) enhance letsencrypt to also allow to specify alternative names for certs
 
 **Optimizations and Fixes**
