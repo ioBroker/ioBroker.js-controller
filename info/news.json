@@ -1,611 +1,6 @@
 [
     {
         "title": {
-            "en": "** ATTENTION ** defective versions of the Tankerkönig adapter cause massive problems on the server!",
-            "de": "** ACHTUNG ** Defekte Versionen des Tankerkönig-Adapters verursachen massive Probleme auf dem Server!",
-            "ru": "** ВНИМАНИЕ ** Дефектные версии адаптера Tankerkönig вызывают серьезные проблемы на сервере!",
-            "pt": "** ATENÇÃO ** versões defeituosas do adaptador Tankerkönig causam enormes problemas no servidor!",
-            "nl": "** LET OP ** Defecte versies van de Tankerkönig-adapter veroorzaken enorme problemen op de server!",
-            "fr": "** ATTENTION ** les versions défectueuses de l'adaptateur Tankerkönig causent de gros problèmes sur le serveur!",
-            "it": "** ATTENZIONE ** le versioni difettose dell'adattatore Tankerkönig causano enormi problemi sul server!",
-            "es": "** ATENCIÓN ** las versiones defectuosas del adaptador Tankerkönig causan problemas masivos en el servidor!",
-            "pl": "** UWAGA ** wadliwe wersje adaptera Tankerkönig powodują ogromne problemy na serwerze!",
-            "zh-cn": "**注意**Tankerkönig适配器的有缺陷版本会导致服务器出现大量问题！"
-        },
-        "content": {
-            "en": "We have been repeatedly reminded by the Tankerkönig-Team that users with one of the defective versions between 1.0.5 and 2.0.4, are blocking their servers.<br>Please install only versions before 1.0.5 or after 2.0.4.",
-            "de": "Wir wurden wiederholt vom Tankerkönig-Team daran erinnert, dass Benutzer mit einer der fehlerhaften Versionen zwischen 1.0.5 und 2.0.4 ihre Server blockieren.<br>Bitte installieren Sie nur Versionen vor 1.0.5 oder nach 2.0.4.",
-            "ru": "Команда Tankerkönig-Team неоднократно напоминала нам, что пользователи с одной из дефектных версий между 1.0.5 и 2.0.4 блокируют свои серверы. <br> Пожалуйста, устанавливайте только версии до 1.0.5 или после 2.0.4.",
-            "pt": "Temos sido repetidamente lembrados pelo Tankerkönig-Team que os usuários com uma das versões defeituosas entre 1.0.5 e 2.0.4, estão bloqueando seus servidores.<br>Por favor, instale apenas versões anteriores a 1.0.5 ou posteriores à 2.0.4.",
-            "nl": "We hebben het Tankerkönig-team herhaaldelijk herinnerd aan het feit dat gebruikers met een van de defecte versies tussen 1.0.5 en 2.0.4 hun servers blokkeren.<br>Installeer alstublieft alleen versies vóór 1.0.5 of na 2.0.4.",
-            "fr": "L'équipe Tankerkönig nous a rappelé à plusieurs reprises que les utilisateurs qui utilisent l'une des versions défectueuses entre 1.0.5 et 2.0.4 bloquent leurs serveurs.<br>Veuillez installer uniquement les versions antérieures à 1.0.5 ou ultérieure.",
-            "it": "Ci è stato ripetutamente ricordato dal Team Tankerkönig che gli utenti con una delle versioni difettose tra 1.0.5 e 2.0.4 stanno bloccando i loro server.<br>Si prega di installare solo versioni precedenti alla 1.0.5 o successive alla 2.0.4.",
-            "es": "El equipo de Tankerkönig nos ha recordado repetidamente que los usuarios con una de las versiones defectuosas entre 1.0.5 y 2.0.4 están bloqueando sus servidores.<br>Instale solo las versiones anteriores a 1.0.5 o posteriores a 2.0.4.",
-            "pl": "Zespół Tankerkönig wielokrotnie przypominał, że użytkownicy z jedną z wadliwych wersji między 1.0.5 a 2.0.4 blokują swoje serwery. <br> Zainstaluj tylko wersje przed 1.0.5 lub po 2.0.4.",
-            "zh-cn": "Tankerkönig-Team一再提醒我们，有一个1.0.5和2.0.4之间缺陷版本的用户正在阻止他们的服务器。<br>请仅安装1.0.5之前或2.0.4之后的版本。"
-        },
-        "id": "tanker",
-        "created": "2019-02-24T00:00:00.000Z",
-        "class": "danger",
-        "fa-icon": "bolt",
-        "conditions": {
-            "tankerkoenig": "smaller(2.0.5)"
-        }
-    },
-    {
-        "title": {
-            "en": "Broadlink not maintained anymore",
-            "de": "Broadlink wird nicht mehr gepflegt",
-            "ru": "Broadlink больше не поддерживается",
-            "pt": "O Broadlink não é mais mantido",
-            "nl": "Broadlink niet meer onderhouden",
-            "fr": "Broadlink n'est plus maintenu",
-            "it": "Broadlink non mantenuto più",
-            "es": "Broadlink no se mantiene más",
-            "pl": "Broadlink nie jest już obsługiwany",
-            "zh-cn": "Broadlink不再维护了"
-        },
-        "content": {
-            "en": "This project is no longer maintained for personal reasons. Please use the ioBroker.broadlink2 instead.",
-            "de": "Dieses Projekt wird aus persönlichen Gründen nicht mehr gepflegt. Bitte verwenden Sie stattdessen den ioBroker.broadlink2.",
-            "ru": "Этот проект больше не поддерживается по личным причинам. Пожалуйста, используйте вместо этого ioBroker.broadlink2.",
-            "pt": "Este projeto não é mais mantido por motivos pessoais. Por favor, use o ioBroker.broadlink2 em seu lugar.",
-            "nl": "Dit project wordt om persoonlijke redenen niet langer onderhouden. Gebruik in plaats daarvan de ioBroker.broadlink2.",
-            "fr": "Ce projet n'est plus maintenu pour des raisons personnelles. Veuillez utiliser le ioBroker.broadlink2 à la place.",
-            "it": "Questo progetto non è più mantenuto per ragioni personali. Utilizzare invece ioBroker.broadlink2.",
-            "es": "Este proyecto ya no se mantiene por razones personales. Por favor use el ioBroker.broadlink2 en su lugar.",
-            "pl": "Ten projekt nie jest już utrzymywany z powodów osobistych. Zamiast tego użyj pliku ioBroker.broadlink2.",
-            "zh-cn": "由于个人原因，该项目不再维护。请改用ioBroker.broadlink2。"
-        },
-        "id": "broadlink",
-        "created": "2019-03-13T00:00:00.000Z",
-        "conditions": {
-            "broadlink": "installed",
-            "broadlink2": "!installed"
-        }
-    },
-    {
-        "title": {
-            "en": "Adapter 'Radar' will not be further developed!",
-            "de": "Radar wird nicht weiterentwickelt!",
-            "ru": "Адаптер 'Radar' больше не будет развиваться!",
-            "pt": "O Adaptador 'Radar' não será mais desenvolvido!",
-            "nl": "Adapter 'Radar' wordt niet verder ontwikkeld!",
-            "fr": "L'adaptateur 'Radar' ne sera plus développé!",
-            "it": "L'adattatore 'Radar' non sarà ulteriormente sviluppato!",
-            "es": "¡El adaptador 'Radar' no se desarrollará más!",
-            "pl": "Adapter 'Radar' nie będzie dalej rozwijany!",
-            "zh-cn": "适配器'Radar'将不再进一步开发！"
-        },
-        "content": {
-            "en": "Due to the development of the ioBroker.radar2 adapter, the further development of the ioBroker.radar adapter has been discontinued. Please install the new adapter to get more features.",
-            "de": "Aufgrund der Entwicklung des ioBroker.radar2 Adapters, wurde die Weiterentwicklung des ioBroker.radar-Adapters eingestellt. Bitte installieren Sie den neuen Adapter um weitere Funktionen zu bekommen.",
-            "ru": "В связи с разработкой адаптера ioBroker.radar2 дальнейшая разработка адаптера ioBroker.radar была прекращена. Пожалуйста, установите новый адаптер, чтобы получить больше возможностей.",
-            "pt": "Devido ao desenvolvimento do adaptador ioBroker.radar2, o desenvolvimento adicional do adaptador ioBroker.radar foi descontinuado. Por favor, instale o novo adaptador para obter mais recursos.",
-            "nl": "Vanwege de ontwikkeling van de ioBroker.radar2-adapter is de verdere ontwikkeling van de ioBroker.radar-adapter stopgezet. Installeer de nieuwe adapter om meer functies te krijgen.",
-            "fr": "En raison du développement de l'adaptateur ioBroker.radar2, le développement de l'adaptateur ioBroker.radar a été arrêté. Veuillez installer le nouvel adaptateur pour obtenir plus de fonctionnalités.",
-            "it": "A causa dello sviluppo dell'adattatore ioBroker.radar2, l'ulteriore sviluppo dell'adattatore ioBroker.radar è stato interrotto. Si prega di installare il nuovo adattatore per ottenere più funzionalità.",
-            "es": "Debido al desarrollo del adaptador ioBroker.radar2, el desarrollo adicional del adaptador ioBroker.radar se ha interrumpido. Instale el nuevo adaptador para obtener más características.",
-            "pl": "Dzięki rozwojowi adaptera ioBroker.radar2, dalszy rozwój adaptera ioBroker.radar został przerwany. Zainstaluj nowy adapter, aby uzyskać więcej funkcji.",
-            "zh-cn": "由于ioBroker.radar2适配器的开发，ioBroker.radar适配器的进一步开发已经停止。 请安装新适配器以获得更多功能。"
-        },
-        "id": "radar",
-        "created": "2019-03-22T00:00:00.000Z",
-        "conditions": {
-            "radar": "installed",
-            "radar2": "!installed"
-        }
-    },
-    {
-        "title": {
-            "en": "Please update ioBroker.weatherunderground",
-            "de": "Bitte updaten Sie ioBroker.weatherunderground",
-            "ru": "Пожалуйста, обновление ioBroker.weatherunderground",
-            "pt": "Por favor, atualize ioBroker.weatherunderground",
-            "nl": "Update ioBroker.weatherunderground",
-            "fr": "Veuillez mettre à jour ioBroker.weatherunderground",
-            "it": "Si prega di aggiornare ioBroker.weatherunderground",
-            "es": "Por favor, actualice ioBroker.weatherunderground",
-            "pl": "Proszę aktualizacja ioBroker.weatherunderground",
-            "zh-cn": "请更新的ioBroker。weatherunderground"
-        },
-        "content": {
-            "en": "Due to changes to the API, versions below 3.0.0 no longer work. Please update your version of ioBroker.weatherunderground.",
-            "de": "Wegen Änderungen der API, funktionieren Versionen unter 3.0.0 nicht mehr. Bitte aktualisieren Sie Ihre Version von ioBroker.weatherunderground.",
-            "ru": "Из-за изменений в API, версий ниже 3.0.0 больше не работают. Пожалуйста, обновите вашу версию ioBroker.weatherunderground.",
-            "pt": "Devido a alterações para a API, versões abaixo 3.0.0 não funcionam mais. Por favor, atualize sua versão do ioBroker.weatherunderground.",
-            "nl": "Door veranderingen aan de API versies hieronder 3.0.0 niet meer werken. Update uw versie van ioBroker.weatherunderground.",
-            "fr": "En raison des changements de l'API, les versions ci-dessous 3.0.0 ne fonctionnent plus. Veuillez mettre à jour votre version de ioBroker.weatherunderground.",
-            "it": "A causa di modifiche alle API, versioni di seguito 3.0.0 non funzionano più. Si prega di aggiornare la tua versione di ioBroker.weatherunderground.",
-            "es": "Debido a cambios en el API, las versiones a continuación 3.0.0 ya no funcionan. Por favor, actualice su versión de ioBroker.weatherunderground.",
-            "pl": "Ze względu na zmiany w API w wersji poniżej 3.0.0 już nie pracują. Proszę zaktualizować swoją wersję ioBroker.weatherunderground.",
-            "zh-cn": "由于变化的API，下文版本为3.0.0不再工作。 请更新版本的的ioBroker。weatherunderground的。"
-        },
-        "id": "weatherundergroundAdapter",
-        "fa-icon": "sun-o",
-        "created": "2019-03-24T00:00:00.000Z",
-        "conditions": {
-            "weatherunderground": "smaller(3.0.0)"
-        }
-    },
-    {
-        "title": {
-            "en": "Node.JS versions smaller than 8 will be soon deprecated",
-            "de": "Node.JS-Versionen, die kleiner als 8 sind, werden bald nicht mehr unterstützt",
-            "ru": "Версии Node.JS, меньшие 8, скоро будут устаревшими",
-            "pt": "Versões do Node.JS menores que 8 serão descontinuadas em breve",
-            "nl": "Node.JS-versies kleiner dan 8 worden binnenkort verouderd",
-            "fr": "Les versions de Node.JS inférieures à 8 seront bientôt obsolètes",
-            "it": "Le versioni di Node.JS inferiori a 8 saranno presto deprecate",
-            "es": "Las versiones de Node.JS más pequeñas que 8 pronto serán desaprobadas",
-            "pl": "Wersje Node.JS mniejsze niż 8 zostaną wkrótce wycofane",
-            "zh-cn": "小于8的Node.JS版本将很快被弃用"
-        },
-        "content": {
-            "en": "With the upcoming version 2 of the JS-controller, the support of Node.JS versions smaller than 8.x.x will be discontinued. Please update your system to a higher version. We recommend the Node.JS version 10.x.x.",
-            "de": "Mit der kommenden Version 2 des JS-Controllers wird die Unterstützung von Node.JS-Versionen kleiner als 8.x.x eingestellt. Bitte aktualisieren Sie Ihr System auf eine höhere Version. Wir empfehlen die Node.JS-Version 10.x.x.",
-            "ru": "С выходом второй версии JS-контроллера поддержка версий Node.JS, меньших 8.x.x, будет прекращена. Пожалуйста, обновите вашу систему до более поздней версии. Мы рекомендуем Node.JS версии 10.x.x.",
-            "pt": "Com a próxima versão 2 do controlador JS, o suporte às versões do Node.JS menores que 8.x.x será descontinuado. Atualize seu sistema para uma versão superior. Recomendamos a versão 10.x.x do Node.JS.",
-            "nl": "Met de komende versie 2 van de JS-controller wordt de ondersteuning van Node.JS-versies kleiner dan 8.x.x stopgezet. Werk uw systeem bij naar een hogere versie. We raden de Node.JS-versie 10.x.x aan.",
-            "fr": "Avec la prochaine version 2 du contrôleur JS, le support des versions de Node.JS inférieures à 8.x.x sera supprimé. Veuillez mettre à jour votre système avec une version supérieure. Nous recommandons la version 10.x.x de Node.JS.",
-            "it": "Con la prossima versione 2 del controller JS, il supporto delle versioni Node.JS inferiori a 8.x.x verrà sospeso. Si prega di aggiornare il sistema a una versione successiva. Consigliamo Node.JS versione 10.x.x.",
-            "es": "Con la próxima versión 2 del controlador JS, se suspenderá el soporte de las versiones Node.JS más pequeñas que 8.x.x. Actualice su sistema a una versión superior. Recomendamos el Node.JS versión 10.x.x.",
-            "pl": "W nadchodzącej wersji 2 kontrolera JS obsługa Node.JS w wersji mniejszej niż 8.x.x zostanie przerwana. Zaktualizuj system do wyższej wersji. Zalecamy wersję 10.x.x. Node.JS",
-            "zh-cn": "随着即将发布的JS-controller版本2，将不再支持小于8.x.x的Node.JS版本。请更新您的系统到更高版本。我们建议使用Node.JS版本10.x.x。"
-        },
-        "id": "js-controller",
-        "node-version": "smaller(8.0.0)",
-        "class": "warning",
-        "fa-icon": "ban",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "admin": "bigger(3.6.10)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the simple-api adapter smaller than 2.1.2",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem simple-api-Adapter, der kleiner als 2.1.2 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером simple-api меньше 2.1.2",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador simple-api menor que 2.1.2",
-            "nl": "JS-Controller 2.x is niet compatibel met de simple-api-adapter kleiner dan 2.1.2",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur simple-api inférieur à 2.1.2",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore simple-api più piccolo di 2.1.2.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador simple-api más pequeño que 2.1.2",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem simple-api mniejszym niż 2.1.2",
-            "zh-cn": "JS-Controller 2.x与小于2.1.2的simple-api适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the simple-api adapter with a version prior to 2.1.2. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem simple-api-Adapter mit einer Version vor 2.1.2 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером simple-api с версией, предшествующей 2.1.2. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador simple-api com uma versão anterior ao 2.1.2. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de simple-api-adapter met een versie ouder dan 2.1.2. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur simple-api avec une version antérieure à 2.1.2. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore simple-api con una versione precedente a 2.1.2. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador simple-api con una versión anterior a 2.1.2. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem simple-api z wersją wcześniejszą niż 2.1.2. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与2.1.2之前的版本的simple-api适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "simple-api",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "simple-api": "smaller(2.1.2)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the email adapter smaller than 1.0.5",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem email-Adapter, der kleiner als 1.0.5 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером email меньше 1.0.5",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador email menor que 1.0.5",
-            "nl": "JS-Controller 2.x is niet compatibel met de email-adapter kleiner dan 1.0.5",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur email inférieur à 1.0.5",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore email più piccolo di 1.0.5.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador email más pequeño que 1.0.5",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem email mniejszym niż 1.0.5",
-            "zh-cn": "JS-Controller 2.x与小于1.0.5的email适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the email adapter with a version prior to 1.0.5. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem email-Adapter mit einer Version vor 1.0.5 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером email с версией, предшествующей 1.0.5. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador email com uma versão anterior ao 1.0.5. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de email-adapter met een versie ouder dan 1.0.5. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur email avec une version antérieure à 1.0.5. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore email con una versione precedente a 1.0.5. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador email con una versión anterior a 1.0.5. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem email z wersją wcześniejszą niż 1.0.5. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与1.0.5之前的版本的email适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "email",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "email": "smaller(1.0.5)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the pushover adapter smaller than 1.1.1",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem pushover-Adapter, der kleiner als 1.1.1 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером pushover меньше 1.1.1",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador pushover menor que 1.1.1",
-            "nl": "JS-Controller 2.x is niet compatibel met de pushover-adapter kleiner dan 1.1.1",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur pushover inférieur à 1.1.1",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore pushover più piccolo di 1.1.1.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador pushover más pequeño que 1.1.1",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem pushover mniejszym niż 1.1.1",
-            "zh-cn": "JS-Controller 2.x与小于1.1.1的pushover适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the pushover adapter with a version prior to 1.1.1. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem pushover-Adapter mit einer Version vor 1.1.1 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером pushover с версией, предшествующей 1.1.1. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador pushover com uma versão anterior ao 1.1.1. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de pushover-adapter met een versie ouder dan 1.1.1. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur pushover avec une version antérieure à 1.1.1. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore pushover con una versione precedente a 1.1.1. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador pushover con una versión anterior a 1.1.1. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem pushover z wersją wcześniejszą niż 1.1.1. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与1.1.1之前的版本的pushover适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "pushover",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "pushover": "smaller(1.1.1)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the hue adapter smaller than 1.2.4",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem hue-Adapter, der kleiner als 1.2.4 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером hue меньше 1.2.4",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador hue menor que 1.2.4",
-            "nl": "JS-Controller 2.x is niet compatibel met de hue-adapter kleiner dan 1.2.4",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur hue inférieur à 1.2.4",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore hue più piccolo di 1.2.4.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador hue más pequeño que 1.2.4",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem hue mniejszym niż 1.2.4",
-            "zh-cn": "JS-Controller 2.x与小于1.2.4的hue适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the hue adapter with a version prior to 1.2.4. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem hue-Adapter mit einer Version vor 1.2.4 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером hue с версией, предшествующей 1.2.4. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador hue com uma versão anterior ao 1.2.4. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de hue-adapter met een versie ouder dan 1.2.4. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur hue avec une version antérieure à 1.2.4. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore hue con una versione precedente a 1.2.4. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador hue con una versión anterior a 1.2.4. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem hue z wersją wcześniejszą niż 1.2.4. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与1.2.4之前的版本的hue适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "hue",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "hue": "smaller(1.2.4)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the node-red adapter smaller than 1.10.1",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem node-red-Adapter, der kleiner als 1.10.1 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером node-red меньше 1.10.1",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador node-red menor que 1.10.1",
-            "nl": "JS-Controller 2.x is niet compatibel met de node-red-adapter kleiner dan 1.10.1",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur node-red inférieur à 1.10.1",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore node-red più piccolo di 1.10.1.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador node-red más pequeño que 1.10.1",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem node-red mniejszym niż 1.10.1",
-            "zh-cn": "JS-Controller 2.x与小于1.10.1的node-red适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the node-red adapter with a version prior to 1.10.1. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem node-red-Adapter mit einer Version vor 1.10.1 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером node-red с версией, предшествующей 1.10.1. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador node-red com uma versão anterior ao 1.10.1. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de node-red-adapter met een versie ouder dan 1.10.1. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur node-red avec une version antérieure à 1.10.1. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore node-red con una versione precedente a 1.10.1. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador node-red con una versión anterior a 1.10.1. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem node-red z wersją wcześniejszą niż 1.10.1. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与1.10.1之前的版本的node-red适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "node-red",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "node-red": "smaller(1.10.1)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the vis adapter smaller than 1.2.2",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem vis-Adapter, der kleiner als 1.2.2 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером vis меньше 1.2.2",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador vis menor que 1.2.2",
-            "nl": "JS-Controller 2.x is niet compatibel met de vis-adapter kleiner dan 1.2.2",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur vis inférieur à 1.2.2",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore vis più piccolo di 1.2.2.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador vis más pequeño que 1.2.2",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem vis mniejszym niż 1.2.2",
-            "zh-cn": "JS-Controller 2.x与小于1.2.2的vis适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the vis adapter with a version prior to 1.2.2. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem vis-Adapter mit einer Version vor 1.2.2 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером vis с версией, предшествующей 1.2.2. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador vis com uma versão anterior ao 1.2.2. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de vis-adapter met een versie ouder dan 1.2.2. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur vis avec une version antérieure à 1.2.2. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore vis con una versione precedente a 1.2.2. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador vis con una versión anterior a 1.2.2. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem vis z wersją wcześniejszą niż 1.2.2. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与1.2.2之前的版本的vis适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "vis",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "vis": "smaller(1.2.2)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the iqontrol adapter smaller than 0.2.12",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem iqontrol-Adapter, der kleiner als 0.2.12 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером iqontrol меньше 0.2.12",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador iqontrol menor que 0.2.12",
-            "nl": "JS-Controller 2.x is niet compatibel met de iqontrol-adapter kleiner dan 0.2.12",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur iqontrol inférieur à 0.2.12",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore iqontrol più piccolo di 0.2.12.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador iqontrol más pequeño que 0.2.12",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem iqontrol mniejszym niż 0.2.12",
-            "zh-cn": "JS-Controller 2.x与小于0.2.12的iqontrol适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the iqontrol adapter with a version prior to 0.2.12. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem iqontrol-Adapter mit einer Version vor 0.2.12 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером iqontrol с версией, предшествующей 0.2.12. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador iqontrol com uma versão anterior ao 0.2.12. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de iqontrol-adapter met een versie ouder dan 0.2.12. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur iqontrol avec une version antérieure à 0.2.12. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore iqontrol con una versione precedente a 0.2.12. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador iqontrol con una versión anterior a 0.2.12. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem iqontrol z wersją wcześniejszą niż 0.2.12. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与0.2.12之前的版本的iqontrol适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "iqontrol",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "iqontrol": "smaller(0.2.12)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the socketio adapter smaller than 2.1.2",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem socketio-Adapter, der kleiner als 2.1.2 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером socketio меньше 2.1.2",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador socketio menor que 2.1.2",
-            "nl": "JS-Controller 2.x is niet compatibel met de socketio-adapter kleiner dan 2.1.2",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur socketio inférieur à 2.1.2",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore socketio più piccolo di 2.1.2.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador socketio más pequeño que 2.1.2",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem socketio mniejszym niż 2.1.2",
-            "zh-cn": "JS-Controller 2.x与小于2.1.2的socketio适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the socketio adapter with a version prior to 2.1.2. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem socketio-Adapter mit einer Version vor 2.1.2 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером socketio с версией, предшествующей 2.1.2. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador socketio com uma versão anterior ao 2.1.2. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de socketio-adapter met een versie ouder dan 2.1.2. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur socketio avec une version antérieure à 2.1.2. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore socketio con una versione precedente a 2.1.2. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador socketio con una versión anterior a 2.1.2. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem socketio z wersją wcześniejszą niż 2.1.2. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与2.1.2之前的版本的socketio适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "socketio",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "socketio": "smaller(2.1.2)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the web adapter smaller than 2.4.9",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem web-Adapter, der kleiner als 2.4.9 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером web меньше 2.4.9",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador web menor que 2.4.9",
-            "nl": "JS-Controller 2.x is niet compatibel met de web-adapter kleiner dan 2.4.9",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur web inférieur à 2.4.9",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore web più piccolo di 2.4.9.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador web más pequeño que 2.4.9",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem web mniejszym niż 2.4.9",
-            "zh-cn": "JS-Controller 2.x与小于2.4.9的web适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the web adapter with a version prior to 2.4.9. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem web-Adapter mit einer Version vor 2.4.9 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером web с версией, предшествующей 2.4.9. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador web com uma versão anterior ao 2.4.9. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de web-adapter met een versie ouder dan 2.4.9. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur web avec une version antérieure à 2.4.9. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore web con una versione precedente a 2.4.9. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador web con una versión anterior a 2.4.9. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem web z wersją wcześniejszą niż 2.4.9. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与2.4.9之前的版本的web适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "web",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "web": "smaller(2.4.9)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the vis-hqwidgets adapter smaller than 1.1.3",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem vis-hqwidgets-Adapter, der kleiner als 1.1.3 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером vis-hqwidgets меньше 1.1.3",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador vis-hqwidgets menor que 1.1.3",
-            "nl": "JS-Controller 2.x is niet compatibel met de vis-hqwidgets-adapter kleiner dan 1.1.3",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur vis-hqwidgets inférieur à 1.1.3",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore vis-hqwidgets più piccolo di 1.1.3.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador vis-hqwidgets más pequeño que 1.1.3",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem vis-hqwidgets mniejszym niż 1.1.3",
-            "zh-cn": "JS-Controller 2.x与小于1.1.3的vis-hqwidgets适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the vis-hqwidgets adapter with a version prior to 1.1.3. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem vis-hqwidgets-Adapter mit einer Version vor 1.1.3 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером vis-hqwidgets с версией, предшествующей 1.1.3. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador vis-hqwidgets com uma versão anterior ao 1.1.3. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de vis-hqwidgets-adapter met een versie ouder dan 1.1.3. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur vis-hqwidgets avec une version antérieure à 1.1.3. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore vis-hqwidgets con una versione precedente a 1.1.3. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador vis-hqwidgets con una versión anterior a 1.1.3. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem vis-hqwidgets z wersją wcześniejszą niż 1.1.3. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与1.1.3之前的版本的vis-hqwidgets适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "vis-hqwidgets",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "vis-hqwidgets": "smaller(1.1.3)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the ble adapter smaller than 0.10.1",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem ble-Adapter, der kleiner als 0.10.1 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером ble меньше 0.10.1",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador ble menor que 0.10.1",
-            "nl": "JS-Controller 2.x is niet compatibel met de ble-adapter kleiner dan 0.10.1",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur ble inférieur à 0.10.1",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore ble più piccolo di 0.10.1.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador ble más pequeño que 0.10.1",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem ble mniejszym niż 0.10.1",
-            "zh-cn": "JS-Controller 2.x与小于0.10.1的ble适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the ble adapter with a version prior to 0.10.1. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem ble-Adapter mit einer Version vor 0.10.1 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером ble с версией, предшествующей 0.10.1. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador ble com uma versão anterior ao 0.10.1. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de ble-adapter met een versie ouder dan 0.10.1. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur ble avec une version antérieure à 0.10.1. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore ble con una versione precedente a 0.10.1. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador ble con una versión anterior a 0.10.1. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem ble z wersją wcześniejszą niż 0.10.1. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与0.10.1之前的版本的ble适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "ble",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-14T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "ble": "smaller(0.10.1)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the broadlink2 adapter smaller than 2.0.2",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem broadlink2-Adapter, der kleiner als 2.0.2 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером broadlink2 меньше 2.0.2",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador broadlink2 menor que 2.0.2",
-            "nl": "JS-Controller 2.x is niet compatibel met de broadlink2-adapter kleiner dan 2.0.2",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur broadlink2 inférieur à 2.0.2",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore broadlink2 più piccolo di 2.0.2.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador broadlink2 más pequeño que 2.0.2",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem broadlink2 mniejszym niż 2.0.2",
-            "zh-cn": "JS-Controller 2.x与小于2.0.2的broadlink2适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the broadlink2 adapter with a version prior to 2.0.2. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem broadlink2-Adapter mit einer Version vor 2.0.2 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером broadlink2 с версией, предшествующей 2.0.2. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador broadlink2 com uma versão anterior ao 2.0.2. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de broadlink2-adapter met een versie ouder dan 2.0.2. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur broadlink2 avec une version antérieure à 2.0.2. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore broadlink2 con una versione precedente a 2.0.2. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador broadlink2 con una versión anterior a 2.0.2. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem broadlink2 z wersją wcześniejszą niż 2.0.2. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与2.0.2之前的版本的broadlink2适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "broadlink2",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-15T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "broadlink2": "smaller(2.0.2)"
-        }
-    },
-    {
-        "title": {
-            "en": "JS-Controller 2.x is not compatible with the systeminfo adapter smaller than 0.3.1",
-            "de": "JS-Controller 2.x ist nicht kompatibel mit dem systeminfo-Adapter, der kleiner als 0.3.1 ist",
-            "ru": "JS-Controller 2.x несовместим с адаптером systeminfo меньше 0.3.1",
-            "pt": "O JS-Controller 2.x não é compatível com o adaptador systeminfo menor que 0.3.1",
-            "nl": "JS-Controller 2.x is niet compatibel met de systeminfo-adapter kleiner dan 0.3.1",
-            "fr": "JS-Controller 2.x n'est pas compatible avec l'adaptateur systeminfo inférieur à 0.3.1",
-            "it": "JS-Controller 2.x non è compatibile con l'adattatore systeminfo più piccolo di 0.3.1.",
-            "es": "JS-Controller 2.x no es compatible con el adaptador systeminfo más pequeño que 0.3.1",
-            "pl": "JS-Controller 2.x nie jest kompatybilny z adapterem systeminfo mniejszym niż 0.3.1",
-            "zh-cn": "JS-Controller 2.x与小于0.3.1的systeminfo适配器不兼容"
-        },
-        "content": {
-            "en": "The installed version of JS-Controller 2.x is not compatible with the systeminfo adapter with a version prior to 0.3.1. Please update the adapter to avoid problems.",
-            "de": "Die installierte Version von JS-Controller 2.x ist nicht mit dem systeminfo-Adapter mit einer Version vor 0.3.1 kompatibel. Bitte aktualisieren Sie den Adapter, um Probleme zu vermeiden.",
-            "ru": "Установленная версия JS-Controller 2.x несовместима с адаптером systeminfo с версией, предшествующей 0.3.1. Пожалуйста, обновите адаптер, чтобы избежать проблем.",
-            "pt": "A versão instalada do JS-Controller 2.x não é compatível com o adaptador systeminfo com uma versão anterior ao 0.3.1. Atualize o adaptador para evitar problemas.",
-            "nl": "De geïnstalleerde versie van JS-Controller 2.x is niet compatibel met de systeminfo-adapter met een versie ouder dan 0.3.1. Werk de adapter bij om problemen te voorkomen.",
-            "fr": "La version installée de JS-Controller 2.x n'est pas compatible avec l'adaptateur systeminfo avec une version antérieure à 0.3.1. Veuillez mettre à jour l'adaptateur pour éviter les problèmes.",
-            "it": "La versione installata di JS-Controller 2.x non è compatibile con l'adattatore systeminfo con una versione precedente a 0.3.1. Si prega di aggiornare l'adattatore per evitare problemi.",
-            "es": "La versión instalada de JS-Controller 2.x no es compatible con el adaptador systeminfo con una versión anterior a 0.3.1. Actualice el adaptador para evitar problemas.",
-            "pl": "Zainstalowana wersja JS-Controller 2.x nie jest kompatybilna z adapterem systeminfo z wersją wcześniejszą niż 0.3.1. Zaktualizuj adapter, aby uniknąć problemów.",
-            "zh-cn": "JS-Controller 2.x的安装版本与0.3.1之前的版本的systeminfo适配器不兼容。请更新适配器以避免出现问题。"
-        },
-        "id": "systeminfo",
-        "class": "warning",
-        "fa-icon": "exclamation-triangle",
-        "created": "2019-11-15T00:00:00.000Z",
-        "conditions": {
-            "js-controller": "bigger(2.0.0)",
-            "systeminfo": "smaller(0.3.1)"
-        }
-    },
-    {
-        "title": {
             "en": "BREAKING CHANGE: No support for iPad 1+2/Android<4.4 with updates for web, socketio and admin!",
             "de": "BREAKING CHANGE: Keine Unterstützung für iPad 1+2/Android<4.4 mit Updates für Web, Socketio und Admin!",
             "ru": "BREAKING CHANGE: нет поддержки iPad 1+2/Android<4.4 с обновлениями для Интернета, socketio и admin!",
@@ -1274,6 +669,74 @@
         "fa-icon": "bolt",
         "conditions": {
             "alexa2": "smaller(3.7.0)"
+        }
+    },
+    {
+        "title": {
+            "en": "js-controller 3.2.16 is available",
+            "de": "js-controller 3.2.16 ist verfügbar",
+            "ru": "js-controller 3.2.16 доступен",
+            "pt": "js-controller 3.2.16 está disponível",
+            "nl": "js-controller 3.2.16 is beschikbaar",
+            "fr": "js-controller 3.2.16 est disponible",
+            "it": "js-controller 3.2.16 è disponibile",
+            "es": "js-controller 3.2.16 está disponible",
+            "pl": "js-controller 3.2.16 jest dostępny",
+            "zh-cn": "js-controller 3.2.16可用"
+        },
+        "content": {
+            "en": "After intensive testing the new js-controller 3.2.16 is available now in the Beta repository. No issues are known at the moment. With this it is time to also try the new version and report back issues in Forum!",
+            "de": "Nach intensiven Tests ist der neue js-controller 3.2.16 jetzt im Beta-Repository verfügbar. Derzeit sind keine Probleme bekannt. Damit ist es Zeit, auch die neue Version auszuprobieren und Probleme im Forum zu melden!",
+            "ru": "После интенсивного тестирования новый js-контроллер 3.2.16 теперь доступен в бета-репозитории. На данный момент о проблемах не известно. Пришло время попробовать новую версию и сообщить о проблемах на форуме!",
+            "pt": "Após testes intensivos, o novo js-controller 3.2.16 está disponível agora no repositório Beta. Nenhum problema é conhecido no momento. Com isso, é hora de também experimentar a nova versão e relatar problemas no fórum!",
+            "nl": "Na intensief testen is de nieuwe js-controller 3.2.16 nu beschikbaar in de Beta-repository. Op dit moment zijn er geen problemen bekend. Hiermee is het tijd om ook de nieuwe versie te proberen en problemen terug te melden in Forum!",
+            "fr": "Après des tests intensifs, le nouveau js-controller 3.2.16 est maintenant disponible dans le référentiel Beta. Aucun problème n'est connu pour le moment. Avec cela, il est temps d'essayer également la nouvelle version et de signaler les problèmes dans le forum!",
+            "it": "Dopo un intenso test, il nuovo js-controller 3.2.16 è ora disponibile nel repository Beta. Al momento non sono noti problemi. Con questo è ora di provare anche la nuova versione e segnalare i problemi arretrati nel Forum!",
+            "es": "Después de pruebas intensivas, el nuevo js-controller 3.2.16 ya está disponible en el repositorio Beta. No se conocen problemas por el momento. Con esto, es hora de probar también la nueva versión e informar problemas anteriores en el Foro.",
+            "pl": "Po intensywnych testach nowy js-controller 3.2.16 jest już dostępny w repozytorium Beta. W tej chwili nie są znane żadne problemy. W związku z tym nadszedł czas, aby wypróbować nową wersję i zgłaszać problemy na forum!",
+            "zh-cn": "经过大量测试后，新的js-controller 3.2.16现在可以在Beta存储库中使用。目前尚无问题。有了这个，现在该尝试新版本并在论坛中报告问题了！"
+        },
+        "id": "jscontroller32infoall",
+        "created": "2021-02-09T07:00:00.000Z",
+        "class": "info",
+        "fa-icon": "exclamation-circle",
+        "repo": "latest",
+        "conditions": {
+            "js-controller": "smaller(3.2.0)"
+        }
+    },
+    {
+        "title": {
+            "en": "js-controller 3.2.16 is available. Please update!",
+            "de": "js-controller 3.2.16 ist verfügbar. Bitte aktualisieren!",
+            "ru": "js-controller 3.2.16 доступен. Пожалуйста обновите!",
+            "pt": "js-controller 3.2.16 está disponível. Por favor atualize!",
+            "nl": "js-controller 3.2.16 is beschikbaar. Update alstublieft!",
+            "fr": "js-controller 3.2.16 est disponible. Veuillez mettre à jour!",
+            "it": "js-controller 3.2.16 è disponibile. Per favore aggiornare!",
+            "es": "js-controller 3.2.16 está disponible. ¡Por favor actualice!",
+            "pl": "js-controller 3.2.16 jest dostępny. Proszę zaktualizować!",
+            "zh-cn": "js-controller 3.2.16可用。请更新！"
+        },
+        "content": {
+            "en": "After intensive testing the new js-controller 3.2.16 is available now in the Beta repository. No issues are known at the moment. Weencourage you to update to the latest 3.2 version and report back issues in Forum!",
+            "de": "Nach intensiven Tests ist der neue js-controller 3.2.16 jetzt im Beta-Repository verfügbar. Derzeit sind keine Probleme bekannt. Wir empfehlen Ihnen, auf die neueste Version 3.2 zu aktualisieren und frühere Probleme im Forum zu melden!",
+            "ru": "После интенсивного тестирования новый js-контроллер 3.2.16 теперь доступен в бета-репозитории. На данный момент о проблемах не известно. Мы советуем вам обновиться до последней версии 3.2 и сообщать о проблемах на форуме!",
+            "pt": "Após testes intensivos, o novo js-controller 3.2.16 está disponível agora no repositório Beta. Nenhum problema é conhecido no momento. Nós o encorajamos a atualizar para a versão 3.2 mais recente e relatar problemas no fórum!",
+            "nl": "Na intensief testen is de nieuwe js-controller 3.2.16 nu beschikbaar in de Beta-repository. Op dit moment zijn er geen problemen bekend. We moedigen u aan om bij te werken naar de nieuwste 3.2-versie en problemen terug te melden in Forum!",
+            "fr": "Après des tests intensifs, le nouveau js-controller 3.2.16 est maintenant disponible dans le référentiel Beta. Aucun problème n'est connu pour le moment. Nous vous encourageons à mettre à jour vers la dernière version 3.2 et à signaler les problèmes dans Forum!",
+            "it": "Dopo un intenso test, il nuovo js-controller 3.2.16 è ora disponibile nel repository Beta. Al momento non sono noti problemi. Ti invitiamo ad aggiornare alla versione 3.2 più recente e a segnalare i problemi arretrati nel Forum!",
+            "es": "Después de pruebas intensivas, el nuevo js-controller 3.2.16 ya está disponible en el repositorio Beta. No se conocen problemas por el momento. ¡Le recomendamos que actualice a la última versión 3.2 e informe los problemas anteriores en el Foro!",
+            "pl": "Po intensywnych testach nowy js-controller 3.2.16 jest już dostępny w repozytorium Beta. W tej chwili nie są znane żadne problemy. Zachęcamy do aktualizacji do najnowszej wersji 3.2 i zgłaszania problemów na forum!",
+            "zh-cn": "经过大量测试后，新的js-controller 3.2.16现在可以在Beta存储库中使用。目前尚无问题。我们鼓励您更新到最新的3.2版本并在论坛中报告问题！"
+        },
+        "id": "jscontroller32info32",
+        "created": "2021-02-09T07:00:00.000Z",
+        "class": "info",
+        "fa-icon": "exclamation-circle",
+        "repo": "latest",
+        "conditions": {
+            "js-controller": "between(3.2.0,3.2.15)"
         }
     }
 ]
