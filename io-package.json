@@ -30,103 +30,19 @@
                 "pl": "zobacz CHANGELOG.md",
                 "zh-cn": "看到CHANGELOG.md"
             },
-            "3.2.15": {
-                "en": "see CHANGELOG.md",
-                "de": "siehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md",
-                "zh-cn": "看到CHANGELOG.md"
-            },
-            "3.2.14": {
-                "en": "see CHANGELOG.md",
-                "de": "siehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md",
-                "zh-cn": "看到CHANGELOG.md"
-            },
             "3.1.6": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "3.1.5": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "3.1.4": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
+                "en": "see CHANGELOG.md",
+                "de": "Siehe CHANGELOG.md",
+                "ru": "см. CHANGELOG.md",
+                "pt": "veja CHANGELOG.md",
+                "nl": "zie CHANGELOG.md",
+                "fr": "voir CHANGELOG.md",
+                "it": "vedi CHANGELOG.md",
+                "es": "ver CHANGELOG.md",
+                "pl": "zobacz CHANGELOG.md",
+                "zh-cn": "看到CHANGELOG.md"
             },
             "3.0.20": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "3.0.19": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "3.0.18": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "3.0.14": {
                 "en": "see CHANGELOG.md",
                 "de": "Siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
@@ -139,30 +55,6 @@
                 "zh-cn": "看到CHANGELOG.md"
             },
             "2.2.9": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "2.2.8": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "2.2.7": {
                 "en": "see CHANGELOG.md",
                 "de": "Siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
@@ -175,18 +67,6 @@
                 "zh-cn": "看到CHANGELOG.md"
             },
             "2.1.1": {
-                "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
-                "ru": "исправления и оптимизации, см. CHANGELOG.md",
-                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
-                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
-                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
-                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
-                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
-                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
-                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
-            },
-            "2.1.0": {
                 "en": "see CHANGELOG.md",
                 "de": "Siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
@@ -199,16 +79,16 @@
                 "zh-cn": "看到CHANGELOG.md"
             },
             "1.5.14": {
-                "en": "Make sure Info Adapter tab is displayed automatically on install\nOptimize messages for CLI host commands\nReplace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker\nRefresh of default SSL certificates",
-                "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird.\nMeldungen für CLI-Hostbefehle optimiert.\nZur Vermeidung von Buildfehlern unter node.js 10+ wurde die Abhängigkeit zu winston-syslog angepasst.\nAktualisierung der Standard SSL-Zertifikate für den Admin.",
-                "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке\nОптимизировать сообщения для команд хоста CLI\nЗаменить зависимость winston-syslog, чтобы предотвратить ошибки сборки на node.js 10+ при установке или обновлении iobroker\nОбновить сертификаты по умолчанию",
-                "pt": "Certifique-se de que a guia Adaptador de Informações é exibida automaticamente ao instalar\nOtimizar mensagens para comandos do host CLI\nReiniciar a dependência do winston-syslog para evitar erros de compilação no node.js 10+ ao instalar ou atualizar o iobroker\nRefresh de certificados padrão",
-                "nl": "Zorg ervoor dat het tabblad Info Adapter automatisch wordt weergegeven tijdens de installatie\n Berichten optimaliseren voor CLI-hostopdrachten\nVerbeter de winston-syslog-afhankelijkheid om build-fouten te voorkomen op node.js 10+ bij het installeren of bijwerken van iobroker\nVernieuwen van SSL standaardcertificaten",
-                "fr": "Assurez-vous que l’onglet Info Adaptateur est affiché automatiquement lors de l’installation\nOptimize des messages pour les commandes d’hôte CLI\nRemplacez la dépendance winston-syslog pour éviter les erreurs de construction de node.js 10+ lors de l’installation ou de la mise à jour de iobroker\nRefresh des certificats par défaut",
-                "it": "Assicurarsi che la scheda Scheda info sia visualizzata automaticamente su installazione\nI messaggi ottimizzati per i comandi host CLI\nSostituisce la dipendenza winston-syslog per prevenire errori di generazione su node.js 10+ durante l'installazione o l'aggiornamento di iobroker\nRefresh dei certificati predefiniti",
-                "es": "Asegúrese de que la pestaña del Adaptador de información se muestre automáticamente en la instalación\nOptimice los mensajes para los comandos del host CLI\nReemplace la dependencia de winston-syslog para evitar errores de compilación en node.js 10+ al instalar o actualizar iobroker\nRefrescar los certificados predeterminados",
-                "pl": "Upewnij się, że zakładka Info Adapter jest wyświetlana automatycznie podczas instalacji nOptymalizuj komunikaty dla poleceń hosta CLI nReplace zależność winston-syslog, aby zapobiec błędom kompilacji na node.js 10+ podczas instalacji lub aktualizacji iobroker n Odśwież domyślne certyfikaty",
-                "zh-cn": "确保在安装\nOptimize消息上自动显示Info Adapter选项卡以显示CLI主机命令\n更新winston-syslog依赖关系以防止在安装或更新iobroker时对node.js 10+进行构建错误\n刷新默认SSL证书"
+                "en": "see CHANGELOG.md",
+                "de": "Siehe CHANGELOG.md",
+                "ru": "см. CHANGELOG.md",
+                "pt": "veja CHANGELOG.md",
+                "nl": "zie CHANGELOG.md",
+                "fr": "voir CHANGELOG.md",
+                "it": "vedi CHANGELOG.md",
+                "es": "ver CHANGELOG.md",
+                "pl": "zobacz CHANGELOG.md",
+                "zh-cn": "看到CHANGELOG.md"
             }
         },
         "desc": {
