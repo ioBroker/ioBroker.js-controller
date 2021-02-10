@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
+hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -21,7 +21,7 @@ hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 # IoBroker.vis-inventwo
 ## Schalter Widgets für den ioBroker.vis Adapter
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Tabelle</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Liste</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Kippschalter</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
+<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Tabelle</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Aufführen</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Kippschalter</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -41,6 +41,11 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.6
+- Problem mit Symbolfarbe für Navi-Widget Frei
+- Problem mit Hervorhebung auf Touch-verwandt
+- Problem mit Radiobutton-Widget und Datentyp Zahlen Nummernn
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
@@ -64,7 +69,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Slider Text anmachen möglich
 
 ## 2.7.1
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.7.0
 - Neues Widget: Farbslider
@@ -87,26 +92,26 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - JSON Tabelle Spalten können per Klick sortiert werden
 
 ## 2.5.11
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.10
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.9
 - Der Prozess der Bildfarbfilterung wurde behandelt
 - Die Bildfarbe kann jetzt ein Datenpunkt sein
 
 ## 2.5.8
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.7
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.6
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.5
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.4
 - Bugfix (Status: doppeltes senden dese Wertes bei touch)
@@ -115,23 +120,23 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Grauer Kippschalter hinzugefügt
 
 ## 2.5.2
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.1
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.0
 - Kippschalter hinzugefügt
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.3
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.2
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.1
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.0
 - Randstil zur JSON-Tabelle hinzugefügt
@@ -178,7 +183,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
-- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuellem Zugriff Text)
+- Werteliste hinzugefügt
 
 ## 1.3.8
 - Der Schieberegler wurde auf dezimal geändert
@@ -201,7 +206,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Option für den Hintergrund-Widget-Wert wurde korrigiert
 
 ### 1.3.2
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.3.1
 - Das Farbverhalten der Navigationsschaltfläche wurde geändert
@@ -229,13 +234,13 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.1.0
 - Slider-Widget hinzugefügt
 - Option zum Spiegeln des Bildes hinzugefügt
 - Neue Symbole hinzugefügt
-- Schaltflächen-Widgets wurden geändert, um Standardoptionen für Schriftart und Text zu verwenden
+- Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
 - Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt

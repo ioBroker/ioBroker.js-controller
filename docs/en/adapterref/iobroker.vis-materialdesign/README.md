@@ -44,68 +44,71 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 	- [Switch](#switch)
 		- [Editor Settings](#editor-settings-2)
 		- [HTML Properties](#html-properties-2)
-	- [Card](#card)
-	- [List](#list)
+	- [Value](#value)
 		- [Editor Settings](#editor-settings-3)
+		- [HTML Properties](#html-properties-3)
+	- [HTML Card](#html-card)
+	- [List](#list)
+		- [Editor Settings](#editor-settings-4)
 		- [Data JSON Properties](#data-json-properties)
 	- [IconList](#iconlist)
-		- [Editor Settings](#editor-settings-4)
+		- [Editor Settings](#editor-settings-5)
 		- [Data JSON Properties](#data-json-properties-1)
 	- [Progress](#progress)
-		- [Editor Settings](#editor-settings-5)
-		- [HTML Properties](#html-properties-3)
-	- [Progress Circular](#progress-circular)
 		- [Editor Settings](#editor-settings-6)
 		- [HTML Properties](#html-properties-4)
-	- [Slider](#slider)
+	- [Progress Circular](#progress-circular)
+		- [Editor Settings](#editor-settings-7)
 		- [HTML Properties](#html-properties-5)
-	- [Slider Round](#slider-round)
+	- [Slider](#slider)
 		- [HTML Properties](#html-properties-6)
+	- [Slider Round](#slider-round)
+		- [HTML Properties](#html-properties-7)
 	- [Input](#input)
 		- [Text input](#text-input)
-			- [Editor Settings](#editor-settings-7)
-			- [HTML Properties](#html-properties-7)
+			- [Editor Settings](#editor-settings-8)
+			- [HTML Properties](#html-properties-8)
 		- [Select](#select)
 			- [Menu JSON Properties](#menu-json-properties)
-			- [HTML Properties](#html-properties-8)
+			- [HTML Properties](#html-properties-9)
 		- [Autocomplete](#autocomplete)
 			- [Menu JSON Properties](#menu-json-properties-1)
-			- [HTML Properties](#html-properties-9)
+			- [HTML Properties](#html-properties-10)
 	- [Top App Bar](#top-app-bar)
 		- [Submenu](#submenu)
 			- [JSON Properties](#json-properties)
 	- [Charts](#charts)
 		- [Bar Chart](#bar-chart)
-			- [Editor Settings](#editor-settings-8)
+			- [Editor Settings](#editor-settings-9)
 			- [Dataset JSON Properties](#dataset-json-properties)
 		- [Pie Chart](#pie-chart)
-			- [Editor Settings](#editor-settings-9)
+			- [Editor Settings](#editor-settings-10)
 			- [Dataset JSON Properties](#dataset-json-properties-1)
 		- [Line History Chart:](#line-history-chart)
-			- [Editor Settings](#editor-settings-10)
+			- [Editor Settings](#editor-settings-11)
 		- [JSON Chart](#json-chart)
 			- [JSON Properties](#json-properties-1)
 	- [Table](#table)
-		- [Editor Settings](#editor-settings-11)
+		- [Editor Settings](#editor-settings-12)
 		- [Data - JSON Stucture](#data---json-stucture)
 		- [internal object binding](#internal-object-binding)
 		- [HTML Control Widgets](#html-control-widgets)
 		- [Control Elements - **deprecated since v0.5.0**](#control-elements---deprecated-since-v050)
 	- [Responsive Layout](#responsive-layout)
 		- [Masonry Views](#masonry-views)
-			- [Editor Settings](#editor-settings-12)
-		- [Grid Views](#grid-views)
 			- [Editor Settings](#editor-settings-13)
+		- [Grid Views](#grid-views)
+			- [Editor Settings](#editor-settings-14)
 	- [Alerts](#alerts)
-		- [Editor Settings](#editor-settings-14)
+		- [Editor Settings](#editor-settings-15)
 		- [Datapoint JSON Properties](#datapoint-json-properties)
 		- [Script: send alert to widget](#script-send-alert-to-widget)
 	- [Calendar](#calendar)
-		- [Editor Settings](#editor-settings-15)
+		- [Editor Settings](#editor-settings-16)
 		- [Datapoint JSON Properties](#datapoint-json-properties-1)
 		- [Script: ical conversion](#script-ical-conversion)
 	- [Dialog](#dialog)
-		- [Editor Settings](#editor-settings-16)
+		- [Editor Settings](#editor-settings-17)
 	- [HTML Widgets](#html-widgets)
 - [used libraries](#used-libraries)
 - [Changelog](#changelog)
@@ -2467,7 +2470,314 @@ The following properties can be used as [HTML Widgets](#html-widgets).
 </details>
 
 
-## Card
+## Value
+
+![Logo](doc/en/media/value.gif)
+
+As HTML Widget it can be used as an alternativ for Bindings by giving a better performance.
+
+### Editor Settings 
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/value_settings_common.png"></td>
+            <td>target type</td>
+            <td>If you would like to convert to an other type, choose the target type to convert to.</td>
+        </tr>
+        <tr>
+            <td>override text</td>
+            <td>override the value text. you can use <code>#value</code> to show the value in the text</td>
+        </tr>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/value_settings_number_formatting.png"></td>
+            <td>calculate</td>
+            <td>Use <code>#value</code> for the value of the datapoint and convert it by calculation using <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>
+        <tr>
+            <td>convert to duration</td>
+            <td>convert a duration in seconds to a readable string. Approved formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/durations/">see link</a>. You can also use <code>humanize</code></td>
+        </tr>
+        <tr>
+            <td rowspan=1><img src="doc/en/media/value_settings_boolean_formatting.png"></td>
+            <td>condition</td>
+            <td>Use <code>#value</code> for the value of the datapoint and conditions to format other types to boolean by using the <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>
+    </tbody>
+</table>
+
+### HTML Properties
+
+The following properties can be used as [HTML Widgets](#html-widgets).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-targetType</td>
+			<td>target type</td>
+			<td>string</td>
+			<td>auto | number | string | boolean
+		</tr>
+		<tr>
+			<td>mdw-overrideText</td>
+			<td>override text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-textAlign</td>
+			<td>textAlign</td>
+			<td>string</td>
+			<td>start | center | end
+		</tr>
+		<tr>
+			<td>mdw-valuesFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-valuesFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valuesFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandText</td>
+			<td>text prepanded</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandTextColor</td>
+			<td>color of text prepanded</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-prepandTextFontFamily</td>
+			<td>font of text prepanded</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandTextFontSize</td>
+			<td>size text prepanded</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendText</td>
+			<td>appended text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendTextColor</td>
+			<td>color of appended text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-appendTextFontFamily</td>
+			<td>font of appended text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendTextFontSize</td>
+			<td>font size of appended text</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>number formatting</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelUnit</td>
+			<td>unit</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-minDecimals</td>
+			<td>minimal decimals</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-maxDecimals</td>
+			<td>maximal decimals</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-calculate</td>
+			<td>calculate</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-convertToDuration</td>
+			<td>convert to duration</td>
+			<td>text</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>boolean formatting</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-textOnTrue</td>
+			<td>text if true</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textOnFalse</td>
+			<td>text if false</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-condition</td>
+			<td>condition</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-image</td>
+			<td>Image</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-imageColor</td>
+			<td>image color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-iconPosition</td>
+			<td>image position</td>
+			<td>string</td>
+			<td>left | right
+		</tr>
+		<tr>
+			<td>mdw-iconHeight</td>
+			<td>image height</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>value change effect</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-changeEffectEnabled</td>
+			<td>enabled</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-effectFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-effectFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-effectDuration</td>
+			<td>effect duration</td>
+			<td>number</td>
+			<td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-value materialdesign-value-html-element'
+	style='width: 218px; height: 30px; position: relative; display: flex; align-items: center;'
+	mdw-debug='false'
+	mdw-oid='0_userdata.0.MDW.Value.number'
+	mdw-targetType='auto'
+	mdw-textAlign='start'
+	mdw-valuesFontColor='#mdwTheme:vis-materialdesign.0.colors.value.text'
+	mdw-valuesFontFamily='#mdwTheme:vis-materialdesign.0.fonts.value.text'
+	mdw-valuesFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.value.text'
+	mdw-prepandText='aktuelle Leistung:'
+	mdw-prepandTextColor='#mdwTheme:vis-materialdesign.0.colors.value.prepand'
+	mdw-prepandTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.value.prepand'
+	mdw-prepandTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.value.prepand'
+	mdw-appendTextColor='#mdwTheme:vis-materialdesign.0.colors.value.append'
+	mdw-appendTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.value.append'
+	mdw-appendTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.value.append'
+	mdw-valueLabelUnit='W'
+	mdw-image='power-plug'
+	mdw-imageColor='#mdwTheme:vis-materialdesign.0.colors.value.icon'
+	mdw-iconPosition='left'
+	mdw-changeEffectEnabled='true'
+	mdw-effectFontColor='#00e640'
+	mdw-effectFontSize='20'
+	mdw-effectDuration='1000'
+></div>
+```
+
+</details>
+
+## HTML Card
 ![Logo](doc/en/media/cards.png)
 
 ## List
@@ -8843,18 +9153,7 @@ Or use it in scripts to generate dynamically Widgets.
 
 ![Logo](doc/en/media/html-elements.gif)
 
-More information about the supported properties can be found at the individual widgets:
-* [Buttons](#buttons)
-* [Buttons Vertical](#buttons-vertical)
-* [Buttons Icon](#buttons-icon)
-* 
-* [Slider](#slider)
-*
-* [Progress](#progress)
-* [Progress Circular](#progress-circular)
-*
-* [Checkbox](#checkbox)
-* [Switch](#switch)
+More information about the supported properties can be found in the chapter HTML Properties of the individual widgets
 
 # used libraries
 The adapter uses the following libraries:

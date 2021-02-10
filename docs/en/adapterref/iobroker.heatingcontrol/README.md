@@ -205,6 +205,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+
+### 2.1.1 (2021-02-08)
+* (René) bug fix Temperatur Offset: invert sign of TemperatureOffset 
+
 ### 2.1.0 (2021-01-31)
 * (René) see issue #198: add name to profile as a datapoint, used to be shown in visualisation
 * (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 

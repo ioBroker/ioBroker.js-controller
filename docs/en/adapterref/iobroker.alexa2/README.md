@@ -288,6 +288,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.8.1 (2021-02-09)
+* (Apollon77) Initialize volume for all devices on start
+
 ### 3.8.0 (2021-02-04)
 * (Apollon77) Add configuration option to not write history entries where no command text was recognized
 

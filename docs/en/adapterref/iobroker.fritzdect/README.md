@@ -44,7 +44,8 @@ The widget requires that also vis-metro and vis-jqui-mfd are installed
 
         The fritzbox allows only a limited number of logins in a timeframe. So very fast polling (update) attempts may lead to blocking of logins.
         There are no appropriate user rights set in the fritzbox.
-        There is a time elapsing in the fritzbox blocking the logins 
+        There is a time elapsing in the fritzbox blocking the logins.
+        A german doc is available here: [troubleshooting](./docs/de/troubleshooting.md)
 
  2. no login to the FritzBox, when using https
 
@@ -166,6 +167,7 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 * too many login attempts to FB are refused by providing '00000000' as response
 * Boost and WindowOpen can only be set for the next 24h. time=0 is cancelling the command
 * updates to the thermostat are within a 15min range, depending on the previous communication of thermostat with fritzbox the next cycle is sooner or later, but definitely not imediately after an ioBroker intervention
+* if a windowopenactiv is set on a thermostat, which is part of a group, then the whole group and its thermostats is set to windowopenactiv (function inside the FB)
 * only a few color temperatures are accepted (mapped already be the API to valid ones)
 * only the predefined colors are valid combinations (getcolordefaults)
 

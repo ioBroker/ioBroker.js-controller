@@ -53,6 +53,9 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 1.7.2 (2021-02-09)
+* (Apollon77) Try to detect websocket connection failures start over
+
 ### 1.7.0 (2021-01-26)
 * (Apollon77) add Heating Absence Permanent state and functionality
 * (Apollon77) add support for MULTI_MODE_INPUT_BLIND_CHANNEL

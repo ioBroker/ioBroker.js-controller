@@ -528,37 +528,12 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``readonly`` (Readonly):
 		* Possible values: "true"|"false"
 		* Default: "false" 
-	* ``invertUnreach`` (Invert UNREACH (use connected instead of unreach)):
-		* Possible values: "true"|"false"
-		* Default: "false" 
-	* ``invertGlowHide`` (Invert GLOW_HIDE):
-		* Possible values: "true"|"false"
-		* Default: "false" 
-	* ``additionalControlsSectionType`` (Appereance of ADDITIONAL_CONTROLS):
-		* Possible values: "none"|"collapsible"|"collapsible open"
-		* Default: "collapsible"
-	* ``additionalControlsCaption`` (Caption for ADDITIONAL_CONTROLS):
-		* Default: "Additional Controls"
-	* ``additionalControlsHeadingType`` (Appereance of ADDITIONAL_CONTROLS Headings):
-		* Possible values: "none"|"collapsible"|"collapsible open"
-		* Default: "collapsible"
-	* ``additionalInfoSectionType`` (Appereance of ADDITIONAL_INFO):
-		* Possible values: "none"|"collapsible"|"collapsible open"
-		* Default: "collapsible"
-	* ``additionalInfoCaption`` (Caption for ADDITIONAL_INFO):
-		* Default: "Additional Infos"
 	* ``renderLinkedViewInParentInstance`` (Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW):
 		* Possible values: "true"|"false"
 		* Default: "false" 
 	* ``renderLinkedViewInParentInstanceClosesPanel`` (After opening linked view in parent instance, close panel (if it is dismissible)):
 		* Possible values: "true"|"false"
 		* Default: "false" 
-* BATTERY Empty Icon:
-	* ``batteryActiveCondition`` (Condition):
-		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
-		* Default: ""
-	* ``batteryActiveConditionValue`` (Condition value):
-		* Default: ""
 * Tile-Behaviour (general):
 	* ``clickOnIconOpensDialog`` (Click on icon opens dialog (instead of toggling)):
 		* Possible values: "true"|"false"
@@ -571,10 +546,21 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* Default: "true" (for most devices)
 	* ``noZoomOnHover`` (Disable zoom-effect on hover):
 		* Possible values: "true"|"false"
-		* Default: "true"
+		* Default: "false" (for most devices)
+	* ``iconNoZoomOnHover`` (Disable zoom-effect on hover for icon):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``hideDeviceName`` (Hide device name):
 		* Possible values: "true"|"false"
 		* Default: "true"
+* Conditions for an Active Tile:
+	* ``tileActiveStateId`` (State ID (empty = STATE/LEVEL will be used)):
+		* Default: ""
+	* ``tileActiveCondition`` (Condition):
+		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
+		* Default: ""
+	* ``tileActiveConditionValue`` (Condition value):
+		* Default: ""
 * Tile-Behaviour if device is inactive:
 	* ``sizeInactive`` (Size of tile, if device is inactive):
 		* Possible values: ""|"narrowIfInactive shortIfInactive"|"narrowIfInactive"|"narrowIfInactive highIfInactive"|"narrowIfInactive xhighIfInactive"|"shortIfInactive"|"shortIfInactive wideIfInactive"|"shortIfInactive xwideIfInactive"|"wideIfInactive"|"xwideIfInactive"|"highIfInactive"|"xhighIfInactive"|"wideIfInactive highIfInactive"|"xwideIfInactive highIfInactive"|"wideIfInactive xhighIfInactive"|"xwideIfInactive xhighIfInactive"|"fullWidthIfInactive aspect-1-1IfInactive"|"fullWidthIfInactive aspect-4-3IfInactive"|"fullWidthIfInactive aspect-3-2IfInactive"|"fullWidthIfInactive aspect-16-9IfInactive"|"fullWidthIfInactive aspect-21-9IfInactive"|"fullWidthIfInactive fullHeightIfInactive"|"
@@ -717,14 +703,6 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``hideIconEnlarged`` (Hide icon, if device is enlarged):
 		* Possible values: "true"|"false"
 		* Default: "false"
-* Conditions for an Active Tile:
-	* ``tileActiveStateId`` (State ID (empty = STATE/LEVEL will be used)):
-		* Default: ""
-	* ``tileActiveCondition`` (Condition):
-		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
-		* Default: ""
-	* ``tileActiveConditionValue`` (Condition value):
-		* Default: ""
 * Timestamp:
 	* ``addTimestampToState`` (Add timestamp to state):
 		* Possible values: ""|"SA"|"ST"|"STA"|"SE"|"SEA"|"SE."|"SE.A"|"Se"|"SeA"|"STE"|"STEA"|"STE."|"STE.A"|"STe"|"STeA"|"T"|"TA"|"TE"|"TEA"|"TE."|"TE.A"|"Te"|"TeA"|"E"|"EA"|"E."|"E.A"|"e"|"eA"|"N"
@@ -732,20 +710,21 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``showTimestamp`` (Show Timestamp in dialog):
 		* Possible values: ""|"yes"|"no"|"always"|"never"
 		* Default: ""
-* URL/HTML:
-	* ``popupWidth`` (Width [px] for URL/HTML-Box):
-		* Default: "" 
-	* ``popupHeight`` (Height [px] for URL/HTML-Box):
+* BATTERY Empty Icon:
+	* ``batteryActiveCondition`` (Condition):
+		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
 		* Default: ""
-	* ``popupFixed`` (Fixed (not resizable)):
+	* ``batteryActiveConditionValue`` (Condition value):
+		* Default: ""
+* UNREACH Icon:
+	* ``invertUnreach`` (Invert UNREACH (use connected instead of unreach)):
 		* Possible values: "true"|"false"
 		* Default: "false" 
-	* ``openURLExternal`` (Open URL in new window (instead of showing as box in dialog)):
+* ERROR Icon:
+	* ``invertError`` (Invert ERROR (use ok instead of error)):
 		* Possible values: "true"|"false"
-		* Default: "false"
-	* ``popupAllowPostMessage`` (Allow postMessage-Communication for URL/HTML):
-		* Possible values: "true"|"false"
-		* Default: "false"
+		* Default: "false" 
+* BACKGROUND_VIEW/URL/HTML:
 	* ``backgroundURLDynamicIframeZoom`` (Dynamic zoom for BACKGROUND_VIEW/URL/HTML (this is the zoom-level in % that would be needed, to let the content fit into a single 1x1 tile)):
 		* Possible values: number from 0.01 to 200
 		* Default: ""
@@ -761,6 +740,43 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``overlayAboveBackgroundURL`` (Position Overlay above BACKGROUND_VIEW/URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
+* BADGE:
+	* ``badgeWithoutUnit`` (Show badge value without unit):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+* GLOW:
+	* ``invertGlowHide`` (Invert GLOW_HIDE):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+* URL/HTML:
+	* ``popupWidth`` (Width [px] for URL/HTML-Box):
+		* Default: "" 
+	* ``popupHeight`` (Height [px] for URL/HTML-Box):
+		* Default: ""
+	* ``popupFixed`` (Fixed (not resizable)):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``openURLExternal`` (Open URL in new window (instead of showing as box in dialog)):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``popupAllowPostMessage`` (Allow postMessage-Communication for URL/HTML):
+		* Possible values: "true"|"false"
+		* Default: "false"
+* ADDITIONAL_CONTROLS:
+	* ``additionalControlsSectionType`` (Appereance of ADDITIONAL_CONTROLS):
+		* Possible values: "none"|"collapsible"|"collapsible open"
+		* Default: "collapsible"
+	* ``additionalControlsCaption`` (Caption for ADDITIONAL_CONTROLS):
+		* Default: "Additional Controls"
+	* ``additionalControlsHeadingType`` (Appereance of ADDITIONAL_CONTROLS Headings):
+		* Possible values: "none"|"collapsible"|"collapsible open"
+		* Default: "collapsible"
+* ADDITIONAL_INFO:
+	* ``additionalInfoSectionType`` (Appereance of ADDITIONAL_INFO):
+		* Possible values: "none"|"collapsible"|"collapsible open"
+		* Default: "collapsible"
+	* ``additionalInfoCaption`` (Caption for ADDITIONAL_INFO):
+		* Default: "Additional Infos"
 </details>
 
 <details>
@@ -1394,6 +1410,13 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
 * (sbormann) Text on transparent tiles is now white (can be configured).
 * (sbormann) When converting to bool, "off" is interpreted as false now.
+* (sbormann) Added option to center device name and/or state.
+* (sbormann) Fixed option font-size for sub-header.
+* (sbormann) Moved option, to show toolbar in one single line, into the options-tab.
+* (sbormann) Added option, to invert Error Icon.
+* (sbormann) Rearranged device option for a better overview.
+* (sbormann) Added option noZoomOnHover for Icon (in device-options, section tile-behaviour (general) and, for all devices, in settings, section tile).
+* (sbormann) Added delay to visibility of badge to allow color-change happen before it appears.
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

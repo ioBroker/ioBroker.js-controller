@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
+hash: odSTrZwJDkv0OJaiU4jx+IZgY6uZ0iDDEMDC7G9iFVA=
 ---
 ![Logo](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -18,7 +18,7 @@ hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
 ## Nina Adapter für ioBroker
 Notfall-Informations- und Nachrichten-App
 
-<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
+<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA_node.html>
 
 <https://warnung.bund.de/>
 
@@ -39,6 +39,11 @@ Geändert in der /etc/ssl/openssl.cnf von:
 in: [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
+
+### 0.0.24
+- (thost96) fixed broken link in README
+- (thost96) added icon with transparent background for admin ui
+- (thost96) updated link on admin ui to the same as on this README as old link was broken
 
 ### 0.0.23
 

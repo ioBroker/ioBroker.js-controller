@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
+hash: odSTrZwJDkv0OJaiU4jx+IZgY6uZ0iDDEMDC7G9iFVA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -18,7 +18,7 @@ hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
 ## Адаптер nina для ioBroker
 Notfall-Information- und Nachrichten-App
 
-<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
+<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA_node.html>
 
 <https://warnung.bund.de/>
 
@@ -39,6 +39,11 @@ AGS (Amtlicher Gemeindeschlüssel) ermitteln: Über diese Seite kannst du den AG
 в: [system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
+
+### 0.0.24
+- (thost96) fixed broken link in README
+- (thost96) added icon with transparent background for admin ui
+- (thost96) updated link on admin ui to the same as on this README as old link was broken
 
 ### 0.0.23
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: Material Design Widgets für ioBroker VIS
-hash: Vye/WwMabddyV97K5/V3JkrRWl+84DjGYM2FmWLySn4=
+hash: 8Bn1VjVEOnn+scIp6XsV3VczX6nkoArNPscSmh0n5IM=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png) <! - in toc weglassen ->
 
@@ -48,68 +48,71 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Schalter] (# Schalter)
 - [Editoreinstellungen] (# editor-settings-2)
 - [HTML-Eigenschaften] (# html-properties-2)
-- [Karte] (# Karte)
-- [Liste] (# Liste)
+- [Wert] (# Wert)
 - [Editoreinstellungen] (# editor-settings-3)
+- [HTML-Eigenschaften] (# html-properties-3)
+- [HTML-Karte] (# HTML-Karte)
+- [Liste] (# Liste)
+- [Editoreinstellungen] (# editor-settings-4)
 - [Data JSON-Eigenschaften] (# data-json-properties)
 - [IconList] (# iconlist)
-- [Editoreinstellungen] (# editor-settings-4)
+- [Editoreinstellungen] (# editor-settings-5)
 - [Daten-JSON-Eigenschaften] (# data-json-properties-1)
 - [Fortschritt] (# Fortschritt)
-- [Editoreinstellungen] (# editor-settings-5)
-- [HTML-Eigenschaften] (# html-properties-3)
-- [Fortschrittsrundschreiben] (# Fortschrittsrundschreiben)
 - [Editoreinstellungen] (# editor-settings-6)
 - [HTML-Eigenschaften] (# html-properties-4)
-- [Slider] (# Slider)
+- [Fortschrittsrundschreiben] (# Fortschrittsrundschreiben)
+- [Editoreinstellungen] (# editor-settings-7)
 - [HTML-Eigenschaften] (# html-properties-5)
-- [Slider-Runde] (# Slider-Runde)
+- [Slider] (# Slider)
 - [HTML-Eigenschaften] (# html-properties-6)
+- [Slider-Runde] (# Slider-Runde)
+- [HTML-Eigenschaften] (# html-properties-7)
 - [Eingabe] (# Eingabe)
 - [Texteingabe] (# Texteingabe)
-- [Editoreinstellungen] (# editor-settings-7)
-- [HTML-Eigenschaften] (# html-properties-7)
+- [Editoreinstellungen] (# editor-settings-8)
+- [HTML-Eigenschaften] (# html-properties-8)
 - [Auswählen] (# Auswählen)
 - [Menü JSON-Eigenschaften] (# menu-json-properties)
-- [HTML-Eigenschaften] (# html-properties-8)
+- [HTML-Eigenschaften] (# html-properties-9)
 - [Autocomplete] (# Autocomplete)
 - [Menü JSON-Eigenschaften] (# menu-json-properties-1)
-- [HTML-Eigenschaften] (# html-properties-9)
+- [HTML-Eigenschaften] (# html-properties-10)
 - [Top App Bar] (# Top-App-Leiste)
 - [Untermenü] (# Untermenü)
 - [JSON-Eigenschaften] (# json-properties)
 - [Charts] (# Charts)
 - [Balkendiagramm] (# Balkendiagramm)
-- [Editoreinstellungen] (# editor-settings-8)
+- [Editoreinstellungen] (# editor-settings-9)
 - [Dataset JSON Properties] (# dataset-json-properties)
 - [Kreisdiagramm] (# Kreisdiagramm)
-- [Editoreinstellungen] (# editor-settings-9)
+- [Editoreinstellungen] (# editor-settings-10)
 - [JSON-Eigenschaften des Datensatzes] (# dataset-json-properties-1)
 - [Linienverlaufsdiagramm:] (# Linienverlaufsdiagramm)
-- [Editoreinstellungen] (# editor-settings-10)
+- [Editoreinstellungen] (# editor-settings-11)
 - [JSON-Diagramm] (# json-Diagramm)
 - [JSON-Eigenschaften] (# json-properties-1)
 - [Tabelle] (# Tabelle)
-- [Editoreinstellungen] (# editor-settings-11)
+- [Editoreinstellungen] (# editor-settings-12)
 - [Daten - JSON-Struktur] (# Daten --- JSON-Struktur)
 - [interne Objektbindung] (# interne Objektbindung)
 - [HTML Control Widgets] (# HTML-Control Widgets)
 - [Steuerelemente - **veraltet seit v0.5.0** (# Steuerelemente --- veraltet seit v050)
 - [Responsive Layout] (# Responsive-Layout)
 - [Mauerwerksansichten] (# Mauerwerksansichten)
-- [Editoreinstellungen] (# editor-settings-12)
-- [Rasteransichten] (# Rasteransichten)
 - [Editoreinstellungen] (# editor-settings-13)
-- [Warnungen] (# Warnungen)
+- [Rasteransichten] (# Rasteransichten)
 - [Editoreinstellungen] (# editor-settings-14)
+- [Warnungen] (# Warnungen)
+- [Editoreinstellungen] (# editor-settings-15)
 - [Datenpunkt-JSON-Eigenschaften] (# Datenpunkt-JSON-Eigenschaften)
 - [Skript: Benachrichtigung an Widget senden] (# Skript-Benachrichtigung an Widget senden)
 - [Kalender] (# Kalender)
-- [Editoreinstellungen] (# editor-settings-15)
+- [Editoreinstellungen] (# editor-settings-16)
 - [Datenpunkt-JSON-Eigenschaften] (# Datenpunkt-JSON-Eigenschaften-1)
 - [Skript: Konvertierung] (# Skriptkonvertierung)
 - [Dialog] (# Dialog)
-- [Editoreinstellungen] (# editor-settings-16)
+- [Editoreinstellungen] (# editor-settings-17)
 - [HTML-Widgets] (# HTML-Widgets)
 - [gebrauchte Bibliotheken] (# gebrauchte Bibliotheken)
 - [Changelog] (# changelog)
@@ -370,7 +373,57 @@ Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet 
 
 </ Details>
 
-## Karte
+## Wert
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/value.gif)
+
+Als HTML-Widget kann es als Alternative für Bindungen verwendet werden, indem eine bessere Leistung erzielt wird.
+
+### Editoreinstellungen
+Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+
+<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/value_settings_common.png"></td><td> Zieltyp</td><td> Wenn Sie in einen anderen Typ konvertieren möchten, wählen Sie den Zieltyp aus, in den konvertiert werden soll.</td></tr><tr><td> Text überschreiben</td><td> Überschreiben Sie den Wertetext. Sie können <code>#value</code> , um den Wert im Text <code>#value</code></td></tr><tr><td rowspan=2><img src="doc/en/media/value_settings_number_formatting.png"></td><td> Berechnung</td><td> Verwenden Sie <code>#value</code> für den Wert des Datenpunkts und konvertieren Sie ihn durch Berechnung mit <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs Auswertungsausdrücken</a></td></tr><tr><td> in Dauer umwandeln</td><td> Konvertieren Sie eine Dauer in Sekunden in eine lesbare Zeichenfolge. Genehmigte Formate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/durations/">siehe Link</a> . Sie können auch <code>humanize</code></td></tr><tr><td rowspan=1><img src="doc/en/media/value_settings_boolean_formatting.png"></td><td> Bedingung</td><td> Verwenden Sie <code>#value</code> für den Wert des Datenpunkts und die Bedingungen, um andere Typen mithilfe der <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">Ausdrücke für die Auswertung</a> von <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs</a> boolesch zu <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">formatieren</a></td></tr></tbody></table>
+
+### HTML-Eigenschaften
+Die folgenden Eigenschaften können als [HTML-Widgets](#html-widgets) verwendet werden.
+
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Verbreitet</b></i></td></tr><tr><td> mdw-oid</td><td> Objekt Identifikation</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-targetType</td><td> Zieltyp</td><td> Zeichenfolge</td><td> auto | Nummer | Zeichenfolge | Boolescher Wert</tr><tr><td> mdw-overrideText</td><td> Text überschreiben</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-debug</td><td> debuggen</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b><br>Layout</b></i></td></tr><tr><td> mdw-textAlign</td><td> Textausrichtung</td><td> Zeichenfolge</td><td> start | Mitte | Ende</tr><tr><td> mdw-valuesFontColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-valuesFontFamily</td><td> Schriftart</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-valuesFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-prepandText</td><td> Text vorangestellt</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandTextColor</td><td> Farbe des vorgefertigten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-prepandTextFontFamily</td><td> Schriftart des Textes vorangestellt</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-prepandTextFontSize</td><td> Textgröße vorab erweitert</td><td> Nummer</td><td></tr><tr><td> mdw-appendText</td><td> angehängter Text</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-appendTextColor</td><td> Farbe des angehängten Textes</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-appendTextFontFamily</td><td> Schriftart des angehängten Textes</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-appendTextFontSize</td><td> Schriftgröße des angehängten Textes</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Zahlenformatierung</b></i></td></tr><tr><td> mdw-valueLabelUnit</td><td> Einheit</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-minDecimals</td><td> minimale Dezimalstellen</td><td> Nummer</td><td></tr><tr><td> mdw-maxDecimals</td><td> maximale Dezimalstellen</td><td> Nummer</td><td></tr><tr><td> mdw-berechnen</td><td> Berechnung</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-convertToDuration</td><td> in Dauer umwandeln</td><td> Text</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Boolesche Formatierung</b></i></td></tr><tr><td> mdw-textOnTrue</td><td> Text wenn wahr</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-textOnFalse</td><td> Text wenn falsch</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-zustand</td><td> Bedingung</td><td> Zeichenfolge</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Symbol</b></i></td></tr><tr><td> mdw-image</td><td> Bild</td><td> Zeichenfolge</td><td></tr><tr><td> mdw-imageColor</td><td> Bildfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-iconPosition</td><td> Bildposition</td><td> Zeichenfolge</td><td> links | Recht</tr><tr><td> mdw-iconHeight</td><td> Bildhöhe</td><td> Nummer</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Wertänderungseffekt</b></i></td></tr><tr><td> mdw-changeEffectEnabled</td><td> aktiviert</td><td> Boolescher Wert</td><td> false | wahr</tr><tr><td> mdw-effectFontColor</td><td> Schriftfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</tr><tr><td> mdw-effectFontSize</td><td> Schriftgröße</td><td> Nummer</td><td></tr><tr><td> mdw-effectDuration</td><td> Effektdauer</td><td> Nummer</td><td></tr></tbody></table>
+
+<! - in toc weglassen ->
+
+#### HTML-Eigenschaften - Beispiel
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-value materialdesign-value-html-element'
+	style='width: 218px; height: 30px; position: relative; display: flex; align-items: center;'
+	mdw-debug='false'
+	mdw-oid='0_userdata.0.MDW.Value.number'
+	mdw-targetType='auto'
+	mdw-textAlign='start'
+	mdw-valuesFontColor='#mdwTheme:vis-materialdesign.0.colors.value.text'
+	mdw-valuesFontFamily='#mdwTheme:vis-materialdesign.0.fonts.value.text'
+	mdw-valuesFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.value.text'
+	mdw-prepandText='aktuelle Leistung:'
+	mdw-prepandTextColor='#mdwTheme:vis-materialdesign.0.colors.value.prepand'
+	mdw-prepandTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.value.prepand'
+	mdw-prepandTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.value.prepand'
+	mdw-appendTextColor='#mdwTheme:vis-materialdesign.0.colors.value.append'
+	mdw-appendTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.value.append'
+	mdw-appendTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.value.append'
+	mdw-valueLabelUnit='W'
+	mdw-image='power-plug'
+	mdw-imageColor='#mdwTheme:vis-materialdesign.0.colors.value.icon'
+	mdw-iconPosition='left'
+	mdw-changeEffectEnabled='true'
+	mdw-effectFontColor='#00e640'
+	mdw-effectFontSize='20'
+	mdw-effectDuration='1000'
+></div>
+```
+
+</ Details>
+
+## HTML-Karte
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
 
 ## Liste
@@ -2023,25 +2076,7 @@ Oder verwenden Sie es in Skripten, um dynamisch Widgets zu generieren.
 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/html-elements.gif)
 
-Weitere Informationen zu den unterstützten Eigenschaften finden Sie in den einzelnen Widgets:
-
-* [Tasten] (# Tasten)
-* [Schaltflächen vertikal] (# Schaltflächen vertikal)
-* [Buttons Icon] (# Buttons-Icon)
-
-*
-
-* [Schieberegler] (# Schieberegler)
-
-*
-
-* [Fortschritt] (# Fortschritt)
-* [Fortschrittsrundschreiben] (# Fortschrittsrundschreiben)
-
-*
-
-* [Checkbox] (# Checkbox)
-* [Schalter] (# Schalter)
+Weitere Informationen zu den unterstützten Eigenschaften finden Sie im Kapitel HTML-Eigenschaften der einzelnen Widgets
 
 # Gebrauchte Bibliotheken
 Der Adapter verwendet die folgenden Bibliotheken:

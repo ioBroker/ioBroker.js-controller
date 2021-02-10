@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nina/README.md
 title: ioBroker.nina
-hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
+hash: odSTrZwJDkv0OJaiU4jx+IZgY6uZ0iDDEMDC7G9iFVA=
 ---
 ![商标](../../../en/adapterref/iobroker.nina/admin/nina.png)
 
@@ -18,7 +18,7 @@ hash: LtcToEkY0KI1PvPCsfD0mZpOmtE2WYjUlaDPZ+pb4Uo=
 ## IoBroker的Nina适配器
 Notfall-Informations-和Nachrichten-App
 
-<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA.html>
+<https://www.bbk.bund.de/DE/NINA/Warn-App_NINA_node.html>
 
 <https://warnung.bund.de/>
 
@@ -39,6 +39,11 @@ AGS（AmtlicherGemeindeschlüssel）博物馆：AGS博物馆/ Gemeinde博物馆�
 于：[system_default_sect] MinProtocol = TLSv1.2 CipherString = DEFAULT @ SECLEVEL = 1
 
 ## Changelog
+
+### 0.0.24
+- (thost96) fixed broken link in README
+- (thost96) added icon with transparent background for admin ui
+- (thost96) updated link on admin ui to the same as on this README as old link was broken
 
 ### 0.0.23
 

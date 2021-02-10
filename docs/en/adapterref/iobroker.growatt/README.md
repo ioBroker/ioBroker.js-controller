@@ -119,10 +119,16 @@ The object remains, the values ​​from the inverter are discarded.
 -*-
 
 ## Changelog
+
+### 0.0.20 (09.02.2021)
+* (PLCHome) Create a date from the time or calendar structure for last history data for all devices
+
 ### 0.0.19 (05.02.2021)
 * (PLCHome) The data from the chart is removed. These were only available in a 5-minute grid. The performance can now be queried via the history.
 * (PLCHome) Objects of unselected data areas are now deleted.
 * (PLCHome) You can choose objects to be ignored or deleted.
+* (PLCHome) A link to the Growatt page was added, so the adapter now also appears in the overview.
+* (PLCHome) Recently, Growatt has changed the spelling of values, which letters are uppercase and lowercase. For this reason, the objects are now handled internally Case Insensively. If a warning is written in the log after the update when starting, you have to delete one of the two objects. If a warning is written in the log after the update when starting, you have to delete one of the two objects. And then restart the adapter so that it definitely uses the remaining object to store the value.
 
 ### 0.0.18 (23.01.2021)
 * (PLCHome) wrong version info.

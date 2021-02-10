@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
+hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -16,12 +16,12 @@ hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 ![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
-![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Стол</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Слайдер горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
+<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Изображение</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Таблица</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Слайдер горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -41,6 +41,11 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.6
+- Проблема с Symbolfarbe für Navi-Widget behoben
+- Problem mit Hervorhebung auf Touch-Geräten behoben
+- Проблема с Radiobutton-Widget и Datentyp Zahlen behobenn
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
@@ -142,7 +147,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
 
 ## 2.3.1
-- Фелер в JSON Tabelle behoben
+- Fehler в JSON Tabelle behoben
 
 ## 2.3.0
 - Problem behoben, bei dem Schaltflächen zweimal Werte senden
@@ -150,7 +155,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
-- Фелер в JSON Tabelle behoben
+- Fehler в JSON Tabelle behoben
 
 ## 2.2.2
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation

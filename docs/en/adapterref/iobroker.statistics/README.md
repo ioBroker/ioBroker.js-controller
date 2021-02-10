@@ -38,6 +38,9 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 * specify the configuration in the settings of the state (admin => objects)
 
 ## Changelog
+### 1.0.3 (2021-02-08)
+* (Apollon77) fix from sentry crash reports
+
 ### 1.0.2 (2021-01-06)
 * (foxthefox) try catch around the cronjobs
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: FN7/wD4lfP+fOAfD1I+LrEHjCHOIwfKUpX7Kv6dshz4=
+hash: lndETMHUqQ+85YXGHdCN2Oy94dDIzMkrJAxZZ9zWZTU=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -99,7 +99,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ### Verwenden Sie Autocreate
 * Auf der Registerkarte "Ansichten" finden Sie eine Schaltfläche "Ansichten automatisch erstellen"
 * Wenn Sie ioBroker-Aufzählungen wie Räume oder Funktionen gut gepflegt haben, können Sie mit dieser Funktion automatisch Ansichten mit den in diesen Aufzählungen aufgeführten Geräten erstellen
-* Beachten Sie, dass aufgrund der großen Anzahl unterschiedlicher Adapter und Geräte im ioBroker-univese die Autokrationsfunktion nicht alle Geräte zu 100% korrekt warten kann. Möglicherweise müssen Sie einige Einstellungen von Hand überarbeiten, um die besten Ergebnisse zu erzielen. Autocreate bietet Ihnen jedoch einen guten Ausgangspunkt, um in Sekundenschnelle Ihre eigene Visualisierung zu erstellen.
+* Beachten Sie, dass die Autokrationsfunktion aufgrund der großen Anzahl unterschiedlicher Adapter und Geräte im ioBroker-univese nicht alle Geräte zu 100% korrekt warten kann. Möglicherweise müssen Sie einige Einstellungen von Hand überarbeiten, um die besten Ergebnisse zu erzielen. Autocreate bietet Ihnen jedoch einen guten Ausgangspunkt, um in Sekundenschnelle Ihre eigene Visualisierung zu erstellen.
 
 ## URL-Parameter
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
@@ -131,7 +131,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Sie können die eingebauten Bilder oder die unter der Registerkarte "Bilder" hochgeladenen Bilder oder eine beliebige kostenlose URL verwenden
 * Sie können auch eine Variable in der Bild-URL verwenden. Dies kann beispielsweise für Wettervorhersagen nützlich sein. Verwenden Sie dieses Muster:
     * `` path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
-    * Beispiel: `` ./../ iqontrol.meta / userimages / demo / Flasche.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg``
+    * Beispiel: `` ./../ iqontrol.meta / userimages / demo / Bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg``
 * Dies lädt `` ./../ iqontrol.meta / userimages / demo / Bottle.jpg``, wenn Sie die Ansicht öffnen
 * Sobald der Status von "javascript.0.myimage" vom Server abgerufen wird, wird das Bild durch "./../ iqontrol.meta / userimages / demo / XXX.jpg" ersetzt, wobei " `XXX`` ist der Wert von` `javascript.0.myimage``
 * Wenn `` javascript.0.myimage`` keinen Wert hat, wird der Fallback `` whitestone`` verwendet (die Verwendung des Fallbacks ist optional)
@@ -191,7 +191,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ![Popup-Screenshot](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
 ### PostMessage-Communication (nur für Experten)
-* Technisch gesehen befindet sich der Inhalt von BACKGROUND_VIEW / URL / HTML in einem HTML-Element namens iframe, einer Website innerhalb einer Website
+* Technisch gesehen wird der Inhalt von BACKGROUND_VIEW / URL / HTML in ein HTML-Element namens iframe eingefügt, bei dem es sich um eine Website innerhalb einer Website handelt
 * Durch Aktivieren der Option "PostMessage-Kommunikation für BACKGROUND_VIEW / URL / HTML zulassen" können Sie die PostMessage-Kommunikation zwischen der Website in diesem Iframe und iQontrol selbst aktivieren
 * Um Befehle an iQontrol zu senden, können Sie den folgenden Javascript-Befehl verwenden: `` window.parent.postMessage (message, "*"); ``
     * `` message`` ist ein Javascript-Objekt im Format `` {Befehl: Befehl, stateId: stateId, Wert: Wert} ``
@@ -211,16 +211,16 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
         * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} ``
 * Dies setzt den ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` (`` <value> `` kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie `` {val: <sein Wert>, ack: true | false} ``)
         * `` {Befehl: "getState", stateId: <stateId>} ``
-* Dadurch sendet iQontrol den Wert des ioBroker-Status `` <stateId> `` (siehe unten, wie die Antwortnachricht empfangen wird).
+* Dies führt dazu, dass iQontrol den Wert des ioBroker-Status "<stateId>" sendet (siehe unten, wie die Antwortnachricht empfangen wird).
         * `` {Befehl: "getStateSubscribed", stateId: <stateId>} ``
-* Dadurch sendet iQontrol den Wert des ioBroker-Status "<stateId>" jetzt und jedes Mal, wenn sich sein Wert ändert (siehe unten, wie die Antwortnachrichten empfangen werden).
+* Dies veranlasst iQontrol, den Wert des ioBroker-Status "<stateId>" jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie die Antwortnachrichten empfangen werden).
         * `` {Befehl: "renderView", Wert: <viewID>} ``
 * Dadurch wird iQontrol angewiesen, eine Ansicht zu rendern, wobei `` <viewID> `` wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert werden muss (Groß- und Kleinschreibung beachten)
         * `` {Befehl: "openDialog", Wert: <Geräte-ID>} ``
 * Dadurch wird iQontrol angewiesen, ein Dialogfeld zu öffnen, in dem "Geräte-ID" wie "iqontrol. <Instanznummer>. Ansichten. <Ansichtsname>. Geräte. <Geräte-Nummer>" formatiert werden muss Dabei beginnt `` <Geräte-Nummer> `` bei 0 (das erste Gerät in einer Ansicht ist also Gerätenummer 0).
 * Um Nachrichten von iQontrol zu empfangen, müssen Sie einen Ereignis-Listener für das Ereignis "message" mit dem Javascript-Befehl `` window.addEventListener ("message", receivePostMessage, false); `` registrieren
     * Die Funktion `` receivePostMessage`` empfängt das Objekt `` event``
-* `` event.data`` enthält die Nachricht von iqontrol, die ein Objekt wie das folgende sein wird:
+* `` event.data`` enthält die Nachricht von iqontrol, die ein Objekt sein wird wie:
 * event.data = `` {Befehl: "getState", stateId: <stateId>, Wert: <stateObject>} `` - Dies ist die Antwort auf einen getState-Befehl oder einen getStateSubsribed-Befehl und gibt Ihnen den tatsächlichen ` `<Wert>` `-Objekt des ioBroker-Status`` <stateId>` `
 * `` <stateObject> `` selbst ist ein Objekt wie
 
@@ -411,7 +411,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` type`` ist optional und kann `` text`` (dies ist ein Fehler), `` number``, `` checkbox``, `` color``, `` select``, `` multipleSelect` sein `,` `historyInstance``,` `datapoint`` oder` `icon``
 * Wenn der Typ `` select`` oder `` multipleSelect`` ist, müssen Sie die möglichen Optionen angeben, indem Sie `` / <selectOptions> `` hinzufügen, wobei `` <selectOptions> `` eine Zeichenfolge im Format `` ist <Wert1>, <Caption1> / <Wert2>, <Caption2> / ... ``
 * Wenn der Typ `` number`` ist, können Sie min, max und step-width angeben, indem Sie `` / <numberOptions> `` hinzufügen, wobei `` <numberOptions> `` eine Zeichenfolge im Format `` <min> ist. <max>, <step> ``
-* Alle diese Parameter werden der Widget-Website über eine URL-Parameter-Zeichenfolge (wie `` widget.html? Parameter = value & parameter2 = value2``) mitgeteilt.
+* Alle diese Parameter werden der Widget-Website über eine URL-Parameter-Zeichenfolge (wie `` widget.html? Parameter = value & parameter2 = value2``) übergeben.
 * Sie können diese Einstellungen in Ihrer Widget-Website verwenden, indem Sie die URL-Parameter mit einer Funktion wie der folgenden anfordern:
 
 			````javascript
@@ -531,37 +531,12 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` readonly`` (Readonly):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` invertUnreach`` (Invert UNREACH (benutze verbunden statt nicht zu erreichen)):
-* Mögliche Werte: "true" | "false"
-* Standard: "false"
-* `` invertGlowHide`` (Invert GLOW_HIDE):
-* Mögliche Werte: "true" | "false"
-* Standard: "false"
-* `` AdditionalControlsSectionType`` (Aussehen von ADDITIONAL_CONTROLS):
-* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
-* Standard: "zusammenklappbar"
-* `` AdditionalControlsCaption`` (Beschriftung für ADDITIONAL_CONTROLS):
-* Standard: "Zusätzliche Steuerelemente"
-* `` AdditionalControlsHeadingType`` (Darstellung der Überschriften ADDITIONAL_CONTROLS):
-* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
-* Standard: "zusammenklappbar"
-* `` AdditionalInfoSectionType`` (Aussehen von ADDITIONAL_INFO):
-* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
-* Standard: "zusammenklappbar"
-* `` AdditionalInfoCaption`` (Beschriftung für ADDITIONAL_INFO):
-* Standard: "Zusätzliche Informationen"
 * `` renderLinkedViewInParentInstance`` (Offene verknüpfte Ansicht in der übergeordneten Instanz öffnen, wenn diese Ansicht als BACKGROUND_VIEW verwendet wird):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
 * `` renderLinkedViewInParentInstanceClosesPanel`` (Schließen Sie nach dem Öffnen der verknüpften Ansicht in der übergeordneten Instanz das Fenster (falls es nicht zulässig ist)):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* Leere BATTERIE-Symbol:
-* `` batterieAktivzustand`` (Zustand):
-* Mögliche Werte: "" | "bei" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
-* Standard: ""
-* `` batterieActiveConditionValue`` (Bedingungswert):
-* Standard: ""
 * Fliesenverhalten (allgemein):
 * `` clickOnIconOpensDialog`` (Klicken Sie auf das Symbol, um den Dialog zu öffnen (anstatt umzuschalten)):
 * Mögliche Werte: "true" | "false"
@@ -574,10 +549,21 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Standard: "true" (für die meisten Geräte)
 * `` noZoomOnHover`` (Zoom-Effekt beim Hover deaktivieren):
 * Mögliche Werte: "true" | "false"
-* Standard: "true"
+* Standard: "false" (für die meisten Geräte)
+* `` iconNoZoomOnHover`` (Deaktiviert den Zoomeffekt beim Hover für das Symbol):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
 * `` hideDeviceName`` (Gerätenamen ausblenden):
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
+* Bedingungen für eine aktive Kachel:
+* `` tileActiveStateId`` (Status-ID (leer = STATE / LEVEL wird verwendet)):
+* Standard: ""
+* `` tileActiveCondition`` (Bedingung):
+* Mögliche Werte: "" | "bei" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
+* Standard: ""
+* `` tileActiveConditionValue`` (Bedingungswert):
+* Standard: ""
 * Kachelverhalten bei inaktivem Gerät:
 * `` sizeInactive`` (Größe der Kachel, wenn das Gerät inaktiv ist):
 * Mögliche Werte: "" | "strictIfInactive shortIfInactive" | "strictIfInactive" | "strictIfInactive highIfInactive" | "strictIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | " "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive Aspekt-1-1IfInactive "|" fullWidth 2IfInactive "|" fullWidthIfInactive Aspekt-16-9IfInactive "|" fullWidthIfInactive Aspekt-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
@@ -720,14 +706,6 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` hideIconEnlarged`` (Symbol ausblenden, wenn das Gerät vergrößert ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* Bedingungen für eine aktive Kachel:
-* `` tileActiveStateId`` (Status-ID (leer = STATE / LEVEL wird verwendet)):
-* Standard: ""
-* `` tileActiveCondition`` (Bedingung):
-* Mögliche Werte: "" | "bei" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
-* Standard: ""
-* `` tileActiveConditionValue`` (Bedingungswert):
-* Standard: ""
 * Zeitstempel:
 * `` addTimestampToState`` (Zeitstempel zum Status hinzufügen):
 * Mögliche Werte: "" | "SA" | "ST" | "STA" | "SE" | "SEA" | "SE" | "SE.A" | "Se" | "SeA" | "STE" | "STEA" | "STE" | "STE.A" | "STe" | "STeA" | "T" | "TA" | "TE" | "TEA" | "TE." | "TE.A" | "Te" | "TeA" | "E" | "EA" | "E." | "EA" | "e" | "eA" | "N"
@@ -735,20 +713,21 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` showTimestamp`` (Zeitstempel im Dialog anzeigen):
 * Mögliche Werte: "" | "ja" | "nein" | "immer" | "nie"
 * Standard: ""
-* URL / HTML:
-* `` popupWidth`` (Breite [px] für URL / HTML-Box):
+* Leere BATTERIE-Symbol:
+* `` batterieAktivzustand`` (Zustand):
+* Mögliche Werte: "" | "bei" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
 * Standard: ""
-* `` popupHeight`` (Höhe [px] für URL / HTML-Box):
+* `` batterieActiveConditionValue`` (Bedingungswert):
 * Standard: ""
-* `` popupFixed`` (Behoben (nicht in der Größe veränderbar)):
+* UNREACH-Symbol:
+* `` invertUnreach`` (Invert UNREACH (benutze verbunden statt nicht zu erreichen)):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` openURLExternal`` (URL in neuem Fenster öffnen (anstatt im Dialogfeld als Feld angezeigt zu werden)):
+* FEHLERSymbol:
+* `` invertError`` (Invert ERROR (benutze ok anstelle von error)):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` popupAllowPostMessage`` (PostMessage-Kommunikation für URL / HTML zulassen):
-* Mögliche Werte: "true" | "false"
-* Standard: "false"
+* HINTERGRUND_VIEW / URL / HTML:
 * `` backgroundURLDynamicIframeZoom`` (Dynamischer Zoom für BACKGROUND_VIEW / URL / HTML (dies ist die Zoomstufe in%, die erforderlich wäre, damit der Inhalt in eine einzelne 1x1-Kachel passt)):
 * Mögliche Werte: Zahl von 0,01 bis 200
 * Standard: ""
@@ -764,6 +743,43 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` overlayAboveBackgroundURL`` (Positionsüberlagerung über BACKGROUND_VIEW / URL / HTML):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
+* ABZEICHEN:
+* `` badgeWithoutUnit`` (Badge-Wert ohne Einheit anzeigen):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* GLOW:
+* `` invertGlowHide`` (Invert GLOW_HIDE):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* URL / HTML:
+* `` popupWidth`` (Breite [px] für URL / HTML-Box):
+* Standard: ""
+* `` popupHeight`` (Höhe [px] für URL / HTML-Box):
+* Standard: ""
+* `` popupFixed`` (Behoben (nicht in der Größe veränderbar)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` openURLExternal`` (URL in neuem Fenster öffnen (anstatt im Dialogfeld als Feld angezeigt zu werden)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` popupAllowPostMessage`` (PostMessage-Kommunikation für URL / HTML zulassen):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* ADDITIONAL_CONTROLS:
+* `` AdditionalControlsSectionType`` (Aussehen von ADDITIONAL_CONTROLS):
+* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
+* Standard: "zusammenklappbar"
+* `` AdditionalControlsCaption`` (Beschriftung für ADDITIONAL_CONTROLS):
+* Standard: "Zusätzliche Steuerelemente"
+* `` AdditionalControlsHeadingType`` (Darstellung der Überschriften ADDITIONAL_CONTROLS):
+* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
+* Standard: "zusammenklappbar"
+* ZUSÄTZLICHE INFORMATION:
+* `` AdditionalInfoSectionType`` (Aussehen von ADDITIONAL_INFO):
+* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
+* Standard: "zusammenklappbar"
+* `` AdditionalInfoCaption`` (Beschriftung für ADDITIONAL_INFO):
+* Standard: "Zusätzliche Informationen"
 
 </ Details>
 
@@ -1095,7 +1111,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
@@ -1142,7 +1158,7 @@ Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In
     * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol hinter dem Datenpunkt auf der Registerkarte "Objekte" von iobroker, siehe oben).
 * iQontrol zeigt unter folgenden Umständen eine definierte Werteliste als Dropdown-Feld im Dialogfeld an:
 * Wenn der Typ 'Zahlen' ist und die Werteliste genau so viele Einträge enthält wie Schritte zwischen min- und max des Datenpunkts oder
-* Wenn der Typ 'boolean' ist, die Rolle jedoch nicht 'switch' oder ist
+* Wenn der Typ 'boolean' ist, die Rolle jedoch nicht 'switch' oder
 * wenn der Typ 'string' oder ist
 * wenn "Option zur Eingabe von Freitext hinzufügen" aktiviert ist
 * Ob die Gerätekachel als aktiv oder inaktiv angezeigt wird, wird ebenfalls aus dem STATE- oder LEVEL-Datenpunkt ermittelt. Darüber hinaus können Sie das Verhalten im Optionsbereich 'Bedingungen für eine aktive Kachel' frei anpassen. Sie können sogar einen anderen externen Datenpunkt festlegen, der den Status der Kachel bestimmt
@@ -1186,7 +1202,7 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ###<img src="img/icons/switch_on.png" width="32"> Schalter:
-* **STATE** *boolean* - Anzeige und Ein / Aus-Status
+* **STATE** *boolean* - Anzeigen und Ein- / Ausschalten
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ###<img src="img/icons/button.png" width="32"> Taste:
@@ -1238,7 +1254,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ###<img src="img/icons/fan_on.png" width="32"> Ventilator:
-* **STATE** *boolean* - Anzeige und Ein / Aus-Status
+* **STATE** *boolean* - Anzeigen und Ein- / Ausschalten
 * **LEVEL** *number* oder *value-list* - die Lüftergeschwindigkeit
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
@@ -1337,7 +1353,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
     * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
 * **COVER_URL** *string* - URL zum Titelbild
 * **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
-* **TRACK_NUMBER** *Nummer* - selbsterklärend
+* **TRACK_NUMBER** *number* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
 * **REPEAT** *Boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
@@ -1408,10 +1424,19 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Added type icon and type datapoint to widget-url-parameters.
 * (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
 * (sbormann) Added option to show badge value without unit.
+* (sbormann) Badge has now a maximum-width and uses marquee-effect.
 * (sbormann) Added toggle by icon for garage door (after optional confirmation).
 * (sbormann) Fixed not to open Dialog if clickOnTileOpensDialog is set to false.
 * (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
 * (sbormann) Text on transparent tiles is now white (can be configured).
+* (sbormann) When converting to bool, "off" is interpreted as false now.
+* (sbormann) Added option to center device name and/or state.
+* (sbormann) Fixed option font-size for sub-header.
+* (sbormann) Moved option, to show toolbar in one single line, into the options-tab.
+* (sbormann) Added option, to invert Error Icon.
+* (sbormann) Rearranged device option for a better overview.
+* (sbormann) Added option noZoomOnHover for Icon (in device-options, section tile-behaviour (general) and, for all devices, in settings, section tile).
+* (sbormann) Added delay to visibility of badge to allow color-change happen before it appears.
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

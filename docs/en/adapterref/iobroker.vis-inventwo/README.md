@@ -72,6 +72,11 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.7.6
+- Problem mit Symbolfarbe für Navi-Widget behoben
+- Problem mit Hervorhebung auf Touch-Geräten behoben
+- Problem mit Radiobutton-Widget und Datentyp Zahlen behobenn
+
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
 - Fehler beim Slider behoben wenn ungültiger Wert im Datenpunkt steht

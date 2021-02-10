@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
+hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -21,12 +21,12 @@ hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 ＃ioBroker.vis-inventwo
 ## Schalter窗口小部件ioBroker.vis适配器
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>普遍</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center><b>表</b><br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>清单</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
+<table><tr><td><center><b>普遍的</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center><b>桌子</b><br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>列表</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -41,6 +41,11 @@ hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.6
+-Navi-Widget behoben问题解答
+-问题与解决方案的联系方式
+-问题麻痹单选按钮和小部件和日期更新Zahlen behobenn
 
 ## 2.7.5
 -JSON Tabelle farbliche SchwellenwertefürZahlen
@@ -160,7 +165,7 @@ hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
--编辑器中的Datenpunktwerte werden jetzt bei allen Widgets
+-Datenpunktwerte werden jetzt bei allen Widgets in Editor编辑
 -Neues小部件：Marquee（Laufschrift）
 -通用和多州Verweildauerhinzugefügt
 -列表小部件Abstand zwischen denEinträgenkann eingestell werden
