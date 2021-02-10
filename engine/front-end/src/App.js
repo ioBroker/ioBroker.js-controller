@@ -301,7 +301,7 @@ class App extends Router {
             return null;
         }
 
-        return (<DialogError text={this.state.text} onClose={() => this.setState({errorText: ''})} />);
+        return <DialogError text={this.state.text} onClose={() => this.setState({errorText: ''})} />;
     }
 
     tabName2index(name) {
@@ -326,7 +326,7 @@ class App extends Router {
                 <span className={this.props.classes.languageText}>{LANGUAGES[this.state.language].short}</span>
             </div>,
             this.state.languageMenu ? [
-                (<Menu key="langMenu" id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
+                <Menu key="langMenu" id="language-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
                     this.setState({languageMenu: false, anchorMenu: null});
                 }}>
                     {Object.keys(LANGUAGES).map(lang => (
@@ -337,7 +337,7 @@ class App extends Router {
                             })
                         }>{LANGUAGES[lang].full}</MenuItem>
                     ))}
-                </Menu>)
+                </Menu>
             ] : null
         ];
     }
@@ -353,8 +353,8 @@ class App extends Router {
     }
 
     renderSearch() {
-        return (<div className={this.props.classes.searchDiv}><Input
-            className={this.props.classes.search + ' ' + (this.state.searchFocus ? this.props.classes.searchFocus : '')}
+        return <div className={this.props.classes.searchDiv}><Input
+            className={clsx(this.props.classes.search, this.state.searchFocus && this.props.classes.searchFocus)}
             //value={this.state.search}
             placeholder={I18n.t('Search...')}
             classes={{input: this.props.classes.searchInput}}
@@ -378,27 +378,28 @@ class App extends Router {
                     this.onSearch();
                 }
             }}
-        /><IconSearch className={this.props.classes.searchButton}/></div>);
+        /><IconSearch className={this.props.classes.searchButton}/></div>;
     }
 
     renderSearchResult(result, last) {
         const type = result.id.split('/').shift();
         const tab = type === '...' ? type : (type === 'adapterref' ? 'adapters' : 'documentation');
-        return (<div className={this.props.classes.sRdiv + ' ' + (!last ? this.props.classes.sRdivNotLast : '')}
-                     onClick={e => {
-                         e.preventDefault();
-                         e.stopPropagation();
-                         this.setState({searchResults: null});
-                         this.onNavigate(null, tab, result.id)
-                     }}>
+        return <div
+            className={clsx(this.props.classes.sRdiv, !last && this.props.classes.sRdivNotLast)}
+             onClick={e => {
+                 e.preventDefault();
+                 e.stopPropagation();
+                 this.setState({searchResults: null});
+                 this.onNavigate(null, tab, result.id)
+             }}>
             <div className={this.props.classes.sRdivType}>{I18n.t(tab)}</div>
             <div className={this.props.classes.sRdivText}>{type === '...' ? I18n.t('More %s results', result.title) : result.title}</div>
-        </div>);
+        </div>;
     }
 
     renderSearchResults() {
         const len = this.state.searchResults &&this.state.searchResults.length;
-        return (<Popper
+        return <Popper
             placement="bottom"
             disablePortal={false}
             anchorEl={this.searchAnchor}
@@ -413,9 +414,9 @@ class App extends Router {
                 },
             }}
             children={this.state.searchResults && this.state.searchResults.length ?
-                (<Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map((link, i) => this.renderSearchResult(link, len - 1 === i))}</Paper>) :
-                (<Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>)}
-        />);
+                <Paper className={this.props.classes.searchResultsDiv}>{this.state.searchResults.map((link, i) => this.renderSearchResult(link, len - 1 === i))}</Paper> :
+                <Paper className={this.props.classes.searchResultsDiv}>{I18n.t('No results found')}</Paper>}
+        />;
     }
 
     onNavigate(language, tab, page, chapter) {
@@ -427,7 +428,7 @@ class App extends Router {
 
     renderMenu(name) {
         if (this.state.menuOpened.indexOf(name) !== -1) {
-            return (<Menu id="simple-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
+            return <Menu id="simple-menu" transitionDuration={0} anchorEl={this.state.anchorMenu} open={true} onClose={() => {
                 const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
                 const pos = menuOpened.indexOf(name);
                 if (pos !== -1) {
@@ -453,7 +454,7 @@ class App extends Router {
                         {this.state.last}
                     </MenuItem>
                 )}
-            </Menu>);
+            </Menu>;
         }
     }
 
@@ -463,38 +464,42 @@ class App extends Router {
             selected = false;
         }
 
-        return (<Tabs className={this.props.classes.tabs}
-                      value={selected}
-                      variant="standard"
-                      onChange={(e, value) => {
-                          const selectedPage = Object.keys(PAGES)[value];
-                          if (selectedPage === 'blog') {
-                              window.localStorage.setItem('iobroker.net.lastSeenBlog', new Date().toISOString());
-                              this.setState({lastSeenBlog: Date.now()});
-                          }
+        return <Tabs
+            className={this.props.classes.tabs}
+            value={selected}
+            variant="standard"
+            onChange={(e, value) => {
+                  const selectedPage = Object.keys(PAGES)[value];
+                  if (selectedPage === 'blog') {
+                      window.localStorage.setItem('iobroker.net.lastSeenBlog', new Date().toISOString());
+                      this.setState({lastSeenBlog: Date.now()});
+                  }
 
-                          if (PAGES[selectedPage].links) {
-                              Utils.openLink(PAGES[selectedPage].links[this.state.language] || PAGES[selectedPage].links.en, PAGES[selectedPage].target);
-                          } else
-                          if (PAGES[selectedPage].link) {
-                              Utils.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
-                          } else if (PAGES[selectedPage].menu) {
-                              const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
-                              if (menuOpened.indexOf(selectedPage) === -1) {
-                                  menuOpened.push(selectedPage);
-                              }
-                              this.setState({menuOpened, anchorMenu: e.target})
-                          } else {
-                              this.onNavigate(this.state.language, selectedPage);
-                          }
-                      }}>
+                  if (PAGES[selectedPage].links) {
+                      Utils.openLink(PAGES[selectedPage].links[this.state.language] || PAGES[selectedPage].links.en, PAGES[selectedPage].target);
+                  } else
+                  if (PAGES[selectedPage].link) {
+                      Utils.openLink(PAGES[selectedPage].link, PAGES[selectedPage].target);
+                  } else if (PAGES[selectedPage].menu) {
+                      const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
+                      if (menuOpened.indexOf(selectedPage) === -1) {
+                          menuOpened.push(selectedPage);
+                      }
+                      this.setState({menuOpened, anchorMenu: e.target})
+                  } else {
+                      this.onNavigate(this.state.language, selectedPage);
+                  }
+              }}
+        >
 
             {Object.keys(PAGES).map(tab => {
-                if (!PAGES[tab].tabIndex) return null;
+                if (!PAGES[tab].tabIndex) {
+                    return null;
+                }
 
                 if (PAGES[tab].menu) {
                     return [
-                        (<Tab classes={{root: this.props.classes.tab}} key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>),
+                        <Tab classes={{root: this.props.classes.tab}} key={tab} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>,
                         this.renderMenu(tab)
                     ];
                 } else {
@@ -504,11 +509,11 @@ class App extends Router {
                             star = true;
                         }
                     }
-                    return (<Tab key={tab} classes={{root: clsx(this.props.classes.tab, star && this.props.classes.tabAction) }} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
+                    return <Tab key={tab} classes={{root: clsx(this.props.classes.tab, star && this.props.classes.tabAction) }} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>;
                 }
             })}
 
-        </Tabs>);
+        </Tabs>;
     }
 
     renderPagesMenu() {
@@ -535,9 +540,9 @@ class App extends Router {
                                 <ListItemText primary={I18n.t(PAGES[tab].name)} />
                             </ListItem>),
 
-                            this.state.menuOpened.indexOf(tab) !== -1 ? (<List className={this.props.classes.subMenu}>
+                            this.state.menuOpened.indexOf(tab) !== -1 ? <List className={this.props.classes.subMenu}>
                                 {PAGES[tab].menu.map(item =>
-                                    (<ListItem classes={{root: this.props.classes.subMenuItem}} selected={this.state.selectedPage === tab} button key={item}
+                                    <ListItem classes={{root: this.props.classes.subMenuItem}} selected={this.state.selectedPage === tab} button key={item}
                                                onClick={() => {
                                                    if (item.links) {
                                                        Utils.openLink(item.links[this.state.language] || item.links.en, item.target);
@@ -551,12 +556,12 @@ class App extends Router {
                                                }}>
                                         {item.icon ? (<ListItemIcon>{item.icon}</ListItemIcon>) : null}
                                         <ListItemText classes={{primary: this.props.classes.subMenuItemText}} primary={item.name} />
-                                    </ListItem>)
+                                    </ListItem>
                                 )}
-                            </List>) : null
+                            </List> : null
                         ];
                     } else {
-                        return (<ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
+                        return <ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
                             this.setState({showTabMenu: false}, () => {
                                 if (PAGES[tab].links) {
                                     Utils.openLink(PAGES[tab].links[this.state.language] || PAGES[tab].links.en, PAGES[tab].target);
@@ -568,9 +573,9 @@ class App extends Router {
                                 this.setState({showTabMenu: false});
                             });
                         }}>
-                            {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
+                            {PAGES[tab].icon ? <ListItemIcon>{PAGES[tab].icon}</ListItemIcon> : null}
                             <ListItemText primary={I18n.t(PAGES[tab].name)} />
-                        </ListItem>);
+                        </ListItem>;
                     }
                 })}
             </List>
@@ -579,18 +584,16 @@ class App extends Router {
 
     renderAppBar() {
         const noTabs = this.state.width <= TABS_WIDTH;
-        return (
-            <Toolbar position="static" variant="dense" className={this.props.classes.tabs + ' ' + (noTabs ? this.props.classes.tabsNoTabs : '')}>
-                {this.renderLogo()}
-                {this.renderLanguage()}
-                {this.renderSearch()}
-                <div style={{flex: 1}}/>
-                {noTabs ? (<IconButton key="menuButton" onClick={() => this.setState({showTabMenu: true})}>
-                    <IconMenu />
-                </IconButton>) : null}
-                {noTabs ? this.renderPagesMenu() : this.renderTabs()}
-            </Toolbar>
-        );
+        return <Toolbar position="static" variant="dense" className={this.props.classes.tabs + ' ' + (noTabs ? this.props.classes.tabsNoTabs : '')}>
+            {this.renderLogo()}
+            {this.renderLanguage()}
+            {this.renderSearch()}
+            <div style={{flex: 1}}/>
+            {noTabs ? (<IconButton key="menuButton" onClick={() => this.setState({showTabMenu: true})}>
+                <IconMenu />
+            </IconButton>) : null}
+            {noTabs ? this.renderPagesMenu() : this.renderTabs()}
+        </Toolbar>;
     }
 
     render() {

@@ -165,14 +165,14 @@ class Downloads extends Router {
         info: 'http://www.iobroker.net/docu/?page_id=8955&lang=de'
     }*/
     renderLine(name, value) {
-        return (<div key={name} className={this.props.classes.cardLine}>
+        return <div key={name} className={this.props.classes.cardLine}>
             <span className={this.props.classes.cardLineName}>{I18n.t(name)}:</span>
             <span className={this.props.classes.cardLineValue}>{value}</span>
-        </div>);
+        </div>;
     }
 
     formatDate(date) {
-        return date.substring(0, 4) + '-' + date.substring(4, 6) + '-' + date.substring(6, 8);
+        return `${date.substring(0, 4)}-${date.substring(4, 6)}-${date.substring(6, 8)}`;
     }
 
     formatDetails(details) {
@@ -195,36 +195,36 @@ class Downloads extends Router {
     }
 
     renderInfo() {
-        if (!this.state.info) return null;
+        if (!this.state.info) {
+            return null;
+        }
 
-        return (
-            <Dialog
-                className={this.props.classes.dialog}
-                fullWidth={this.state.mobile}
-                maxWidth="xl"
-                open={true}
-                onClose={() => this.closeDialog()}
-                aria-labelledby="max-width-dialog-title"
-            >
+        return <Dialog
+            className={this.props.classes.dialog}
+            fullWidth={this.state.mobile}
+            maxWidth="xl"
+            open={true}
+            onClose={() => this.closeDialog()}
+            aria-labelledby="max-width-dialog-title"
+        >
 
-                <DialogContent className={this.props.classes.dialogContent + ' ' + (this.state.mobile ? this.props.classes.dialogContentMobile : '')}>
-                    {this.state.info.endsWith('.md') ?
-                        (<Markdown
-                            path={'downloads/' + this.state.info}
-                            rootPath="documentation"
-                            language={this.props.language}
-                            theme={this.props.theme}
-                            mobile={this.props.mobile}
-                            editMode={false}
-                            editEnabled={false}
-                            onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
-                        />) : (<div dangerouslySetInnerHTML={{ __html: this.state.info}}/>)}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => this.closeDialog()} color="primary">{I18n.t('Close')}</Button>
-                </DialogActions>
-            </Dialog>
-        );
+            <DialogContent className={this.props.classes.dialogContent + ' ' + (this.state.mobile ? this.props.classes.dialogContentMobile : '')}>
+                {this.state.info.endsWith('.md') ?
+                    <Markdown
+                        path={'downloads/' + this.state.info}
+                        rootPath="documentation"
+                        language={this.props.language}
+                        theme={this.props.theme}
+                        mobile={this.props.mobile}
+                        editMode={false}
+                        editEnabled={false}
+                        onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
+                    /> : <div dangerouslySetInnerHTML={{ __html: this.state.info}}/>}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => this.closeDialog()} color="primary">{I18n.t('Close')}</Button>
+            </DialogActions>
+        </Dialog>;
     }
 
     onLink(link) {
@@ -237,9 +237,11 @@ class Downloads extends Router {
     }
 
     renderImage(image) {
-        if (this.state.filter && this.state.filter !== 'all' && this.state.filter !== image.device) return null;
+        if (this.state.filter && this.state.filter !== 'all' && this.state.filter !== image.device) {
+            return null;
+        }
 
-        return (<Card key={image.file} className={this.props.classes.card} style={{width: this.cardWidth}}>
+        return <Card key={image.file} className={this.props.classes.card} style={{width: this.cardWidth}}>
             <CardActionArea>
                 <div className={this.props.classes.cardMedia}
                      style={{backgroundImage: 'url(img/' + image.picture + ')'}}
@@ -270,14 +272,14 @@ class Downloads extends Router {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary" onClick={() => Utils.openLink(image.file.startsWith('http') ? image.file : 'http://iobroker.live/images/' + image.file)}>{I18n.t('Download')}</Button>
-                {image.info && (<Button size="small" color="primary" onClick={() => this.onLink(image.info)}>{I18n.t('Info')}</Button>)}
+                <Button size="small" color="primary" onClick={() => Utils.openLink(image.file.startsWith('http') ? image.file : 'https://iobroker.live/images/' + image.file)}>{I18n.t('Download')}</Button>
+                {image.info && <Button size="small" color="primary" onClick={() => this.onLink(image.info)}>{I18n.t('Info')}</Button>}
             </CardActions>
-        </Card>);
+        </Card>;
     }
 
     renderSnackbar() {
-        return (<Snackbar
+        return <Snackbar
             key="snackbar"
             anchorOrigin={{vertical: 'top', horizontal: 'right'}}
             open={!!this.state.tooltip}
@@ -294,71 +296,71 @@ class Downloads extends Router {
                     <IconClose />
                 </IconButton>,
             ]}
-        />);
+        />;
     }
 
     renderInfoAboutInstall() {
-        return (
-            <Paper key="instruction" className={this.props.classes.instructionDiv}>
-                {I18n.t('instruction1')}<br/>
-                {I18n.t('instruction2')}<br/><br/>
-                <b>1. </b>{I18n.t('instruction3')}
-                <pre className={this.props.classes.instructionCode}>
-                    curl -sLf https://deb.nodesource.com/setup_12.x | sudo -E bash -<br/>
-                    sudo apt-get install -y nodejs<br/>
-                    <IconButton
-                        className={this.props.classes.instructionCopy}
-                        title={I18n.t( 'copy to clipboard')}
-                        onClick={e => {
-                            Utils.onCopy(e, 'curl -sLf https://deb.nodesource.com/setup_12.x | sudo -E bash -\nsudo apt-get install -y nodejs');
-                            this.setState({tooltip: I18n.t('Copied')});
-                        }}><IconCopy fontSize="small"/></IconButton>
-                </pre>
-                <b>2. </b>{I18n.t('instruction4')}
-                <pre className={this.props.classes.instructionCode}>
-                    curl -sLf https://iobroker.net/install.sh | bash -<br/>
-                    <IconButton
-                        className={this.props.classes.instructionCopy}
-                        title={I18n.t( 'copy to clipboard')}
-                        onClick={e => {
-                            Utils.onCopy(e, 'curl -sLf https://iobroker.net/install.sh | bash -');
-                            this.setState({tooltip: I18n.t('Copied')});
-                        }}><IconCopy fontSize="small"/></IconButton>
-                </pre>
-            </Paper>
-        )
+        return <Paper key="instruction" className={this.props.classes.instructionDiv}>
+            {I18n.t('instruction1')}<br/>
+            {I18n.t('instruction2')}<br/><br/>
+            <b>1. </b>{I18n.t('instruction3')}
+            <pre className={this.props.classes.instructionCode}>
+                curl -sLf https://deb.nodesource.com/setup_12.x | sudo -E bash -<br/>
+                sudo apt-get install -y nodejs<br/>
+                <IconButton
+                    className={this.props.classes.instructionCopy}
+                    title={I18n.t( 'copy to clipboard')}
+                    onClick={e => {
+                        Utils.onCopy(e, 'curl -sLf https://deb.nodesource.com/setup_12.x | sudo -E bash -\nsudo apt-get install -y nodejs');
+                        this.setState({tooltip: I18n.t('Copied')});
+                    }}><IconCopy fontSize="small"/></IconButton>
+            </pre>
+            <b>2. </b>{I18n.t('instruction4')}
+            <pre className={this.props.classes.instructionCode}>
+                curl -sLf https://iobroker.net/install.sh | bash -<br/>
+                <IconButton
+                    className={this.props.classes.instructionCopy}
+                    title={I18n.t( 'copy to clipboard')}
+                    onClick={e => {
+                        Utils.onCopy(e, 'curl -sLf https://iobroker.net/install.sh | bash -');
+                        this.setState({tooltip: I18n.t('Copied')});
+                    }}><IconCopy fontSize="small"/></IconButton>
+            </pre>
+        </Paper>;
     }
 
     renderSelector() {
-        if (!this.state.content) return;
+        if (!this.state.content) {
+            return;
+        }
         const types = [];
         this.state.content.forEach(item => types.indexOf(item.device) === -1 && types.push(item.device));
 
-        return (<FormControl key="selector" className={this.props.classes.formControl}>
+        return <FormControl key="selector" className={this.props.classes.formControl}>
             <Select
                 value={this.state.filter}
                 onChange={e => this.setState({filter: e.target.value})}
                 input={<Input name="type" id="type-helper" />}
             >
                 <MenuItem value="all"><em>{I18n.t('All')}</em></MenuItem>
-                {types.map(type => (<MenuItem key={type} value={type}>{type}</MenuItem>))}
+                {types.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
             </Select>
             <FormHelperText>{I18n.t('Platform')}</FormHelperText>
-        </FormControl>)
+        </FormControl>;
     }
 
     render() {
         if (this.state.loadTimeout && !this.state.content) {
-            return (<Loader theme={this.props.theme}/>);
+            return <Loader theme={this.props.theme}/>;
         }
 
         return [
             this.renderInfoAboutInstall(),
             this.renderSelector(),
-            (<div key="table" className={this.props.classes.root + ' ' + (this.props.mobile ? this.props.classes.rootMobile : '')}>
+            <div key="table" className={this.props.classes.root + ' ' + (this.props.mobile ? this.props.classes.rootMobile : '')}>
                 {this.state.content && this.state.content.map(image => this.renderImage(image))}
-            </div>),
-            (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
+            </div>,
+            <Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>,
             this.renderSnackbar(),
             this.renderInfo(),
         ];
