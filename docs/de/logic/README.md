@@ -19,3 +19,6 @@ lastChanged: "13.09.2018"
    Sub-Dialoge und Details sollten in die Adapter-Referenz zum 
    entsprechenden Adapter verweisen.  
    @@@   
+
+
+Hier geht es zur [englischen Funktions-Doku](https://github.com/ioBroker/ioBroker.javascript/blob/master/docs/en/javascript.md)
