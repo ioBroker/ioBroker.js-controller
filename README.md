@@ -759,7 +759,7 @@ The values are not decrypted when the object itself is read!
 
 With this change and the Admin support for this soon the adapter developer do not need to struggle around with encryption or decryption of adapter values and can simply configure this.
 
-To preserve backward compatibility you can check for the feature flag ADAPTER_AUTO_DECRYPT_NATIVE or add a global Admin dependency to the respective Admin version. 
+To preserve backward compatibility you can check for the feature flag ADAPTER_AUTO_DECRYPT_NATIVE or add a global Admin dependency to the respective Admin (>=4.0.10) version. 
 
 #### Protect free reading of adapter configuration fields
 **Feature status:** Stable, since js-controller 2.0
