@@ -3,26 +3,37 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.exchangerates/README.md
 title: ioBroker.exchangerates
-hash: muIPAv/U9JCrm8kgxbS0ezyl6q1OwTP+mCeVP08N058=
+hash: 68ZjMJ2Tv9VaoDm/OZklWZJ6NKbd6+Z1KK9AvVdQftg=
 ---
 ![Logo](../../../en/adapterref/iobroker.exchangerates/admin/exchangerates.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/exchangerates-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.exchangerates.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.exchangerates.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/instalator/iobroker.exchangerates.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/instalator/ioBroker.exchangerates/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.exchangerates.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/instalator/ioBroker.exchangerates/master.svg)
+![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker.exchangerates
-## Tauscht Adapter für ioBroker aus
-Wechselkurse Zentralbank Russlands und Europäische Zentralbank und mehr ...
+[![Tests] (https://github.com/instalator/iobroker.exchangerates/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.exchangerates/actions/)
 
-Курсы валют ЦБ РФ, Европейского ЦБ и др. в Вашем ioBroker.
+## Tauscht Adapter gegen ioBroker aus
+Wechselkurse Zentralbank von Russland und Europäische Zentralbank und mehr ...
 
-[Informationen zu XML und JSON, API](https://www.cbr-xml-daily.ru)
+Курсы валют ЦБ РФ, Европейского ЦБ и др. ioBroker.
+
+[ONурсы ЦБ в в XML и JSON, API](https://www.cbr-xml-daily.ru)
 
 ## Changelog
+
+### 0.0.14
+* (instalator) change test
+
+### 0.0.13
+* (instalator) fixed error POL
+
+### 0.0.12
+* (instalator) fixed getObject
+* (instalator) fixed compact mode
 
 ### 0.0.11
 * (instalator) delete widgets
@@ -39,7 +50,7 @@ Wechselkurse Zentralbank Russlands und Europäische Zentralbank und mehr ...
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

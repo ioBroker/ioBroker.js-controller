@@ -9,14 +9,14 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ds18b20/README.md
 title: 的ioBroker.ds18b20
-hash: qgNU1clbVK0L2nl7I833ztViN5gKt2mLmpAei1ZoRh4=
+hash: yedjY0gRMmIZlTTQy2QMT3y5dMWKQsbURJBPlhSXrPI=
 ---
-![商标](../../../de/adapterref/iobroker.ds18b20/../../admin/ds18b20.png)
+![标识](../../../de/adapterref/iobroker.ds18b20/../../admin/ds18b20.png)
 
 ＃ioBroker.ds18b20
 适配器`ds18b20`可以将ioBroker中DS18B20类型的1-Wire温度传感器直接集成。
 
-需要具有支持1-Wire总线的适当硬件（例如Raspberry Pi），并且必须设置1-Wire总线以在系统上工作（传感器在`/sys/bus/w1/devices/`中列出）。
+需要支持1-Wire总线的适当硬件（例如Raspberry Pi），并且必须设置1-Wire总线以在系统上工作（传感器位于`/sys/bus/w1/devices/`中）。
 
 DS18B20传感器与Raspberry Pi的连接示例如下。
 
@@ -27,20 +27,20 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 *查询间隔可以根据每个传感器进行调整
 *可以调整每个传感器的测量值的舍入和转换
 
-##安装
+＃＃ 安装
 当前可以从最新的存储库中获得适配器。
 
 或者，可以通过URL`https://github.com/crycode-de/ioBroker.ds18b20.git`安装。
 
-##配置
-在适配器配置中，可以为所有传感器设置“标准轮询间隔” **（以毫秒为单位）。最小值为500。
+＃＃ 配置
+在适配器配置中，所有传感器的**标准轮询间隔**可以设置为毫秒。最小值为500。
 
 各个传感器可以手动添加，也可以通过*搜索传感器*添加到表格中。
 
-![组态](../../../de/adapterref/iobroker.ds18b20/./img/konfiguration.png)
+![配置](../../../de/adapterref/iobroker.ds18b20/./img/konfiguration.png)
 
 **地址**是传感器的1线地址/ ID，并同时确定对象ID。
-例如，地址为`28-0000077ba131`的传感器会收到对象ID`ds18b20.0.sensors.28-0000077ba131`。
+例如，地址为`28-0000077ba131`的传感器接收对象ID`ds18b20.0.sensors.28-0000077ba131`。
 
 可以自由选择**名称**以识别传感器。
 
@@ -51,7 +51,7 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 **单位**确定ioBroker对象中存储的值的单位。
 默认情况下，这是`°C`。
 
-通过**因子**和**偏移**，可以根据公式`Wert = (Wert * Faktor) + Offset`调整传感器读取的值。
+通过**因子**和**偏移**，可以根据公式`Wert = (Wert * Faktor) + Offset`来调整传感器读取的值。
 
 **小数点**表示该值四舍五入到小数点后多少位。
 在计算后使用因子和偏移进行舍入。
@@ -61,12 +61,12 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 如果没有此选项，则在发生错误时不会更新状态。
 
 ###将`°C`转换为`°F`
-为了使适配器在`°F`中返回测得的温度，必须将`1.8`作为因子，并将`32`作为偏移量。
+为确保适配器在`°F`中返回测得的温度，必须将`1.8`用作因子，并将`32`用作偏移量。
 
 ##动作
 通过写入状态`ds18b20.0.actions.readNow`，可以触发立即读取所有或特定传感器。
 
-为了触发所有传感器的立即读取，必须在该状态下编写关键字`all`。
+为了立即读取所有传感器，必须在该状态下编写关键字`all`。
 
 如果仅要读取某个传感器，则必须将传感器的地址或ioBroker对象ID写入该状态。
 
@@ -143,6 +143,12 @@ lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus
 lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
 ```
 
+###负温度下的内核错误
+在Raspberry Pi的5.10.y内核中，存在一个自2020年11月中旬开始出现的错误，例如，读取到的负温度为4092°C。 （请参阅[GitHub问题](https://github.com/raspberrypi/linux/issues/4124)）此错误已于02/08/2021的内核10/5/14中修复。 （请参阅[GitHub提交](https://github.com/Hexxeh/rpi-firmware/commit/115e3a5f77488d9ee30a33bcb5ac31eb587f60a8)）`rpi-update`应该可以解决此问题。
+
+在v1.2.2及更高版本的适配器版本中，这些显然不正确的值已转移到ioBroker State。
+从v1.2.3开始，适配器还检查读取的值是否合理（在-80到+150°C之间），并拒绝不合理的值。
+
 ##在远程Raspberry Pi上集成传感器
 还可以集成连接到远程Raspberry Pi的传感器。
 为此，使用* Samba *在远程Raspberry Pi上释放相应的目录，然后将其安装在ioBorker系统上。
@@ -206,6 +212,19 @@ sudo mount /mnt/remote-ds1820
 
 ## Changelog
 
+### 1.3.0 (2021-02-11)
+* (crycode-de) Searching for sensors now works for multiple 1-wire masters
+
+### 1.2.3 (2021-02-11)
+* (crycode-de) Added check of temperatures higher/lower than possible sensor values
+
+### 1.2.2 (2021-02-06)
+* (crycode-de) Fixed crash if settings are malformed (IOBROKER-DS18B20-3)
+
+### 1.2.1 (2021-01-09)
+* (crycode-de) Small fixes
+* (crycode-de) Updated dependencies
+
 ### 1.2.0 (2020-12-21)
 * (crycode-de) Added Sentry error reporting
 * (crycode-de) Updated dependencies
@@ -246,7 +265,7 @@ sudo mount /mnt/remote-ds1820
 
 ## License
 
-Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2021 Peter Müller <peter@crycode.de>
 
 ### MIT License
 

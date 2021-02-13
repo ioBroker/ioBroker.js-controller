@@ -112,7 +112,7 @@ Door and window states:
 
 ## Changelog
 
-### 0.0.28
+### 0.0.29
 
 - fix skoda refreshToken, smaller improvements
   

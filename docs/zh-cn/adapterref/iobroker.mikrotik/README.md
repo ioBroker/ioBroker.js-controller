@@ -3,30 +3,39 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mikrotik/README.md
 title: 无题
-hash: 7EeWKM8SDAAtM9HgqMYmms/HyCa9sK8wBPztX2k0EGQ=
+hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
 ---
-![商标](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png)ioBroker MikroTik路由器适配器
+![标识](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png)ioBroker MikroTik路由器适配器
 
 ![安装数量](http://iobroker.live/badges/mikrotik-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mikrotik.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mikrotik.svg)
-![测验](http://img.shields.io/travis/instalator/ioBroker.mikrotik/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mikrotik.png?downloads=true)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 =================
 
-##使用
+[![测试]（https://github.com/instalator/iobroker.mikrotik/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.mikrotik/actions/)
+
+＃＃ 使用
 ### Add_firewall
 将地址添加到防火墙列表并启用。
 例如`name,127.0.0.1,comment`。
 
-### Raw将命令api发送到mikrotik，例如`/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`。
+### Raw将命令api发送到mikrotik，例如：`/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`。或`ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
 ###重新启动，关闭重新启动/关闭mikrotik
 ### Usb_reset重置mikrotik中的电源USB
 *在路由器中删除后，创建的对象不会自动删除。*
 
 ## Changelog
+
+#### 1.0.13
+* (instalator) changed parse RAW command
+* (instalator) added last-link-up-time and last-link-down-time to interface
+* (instalator) added [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/31)
+
+#### 1.0.12
+* (instalator) fixed error symb
 
 #### 1.0.11
 * (instalator) fixed [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/28)
@@ -93,7 +102,7 @@ hash: 7EeWKM8SDAAtM9HgqMYmms/HyCa9sK8wBPztX2k0EGQ=
 
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,23 +3,29 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sanext/README.md
 title: ioBroker.sanext
-hash: 6iYqEKKZNls5JcrCiCT7RGj2FfS30U6FkMsDfFujIWo=
+hash: /1NQAs5hsEO5zROe69IA2MO23xH4YVyVzS9swD7JnWo=
 ---
-![логотип](../../../en/adapterref/iobroker.sanext/admin/sanext_l.png)
+![Логотип](../../../en/adapterref/iobroker.sanext/admin/sanext_l.png)
 
+![Количество установок](http://iobroker.live/badges/sanext-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sanext.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sanext.svg)
-![Статус зависимости](https://img.shields.io/david/instalator/iobroker.sanext.svg)
-![Известные уязвимости](https://snyk.io/test/github/instalator/ioBroker.sanext/badge.svg)
-![Трэвис-CI](http://img.shields.io/travis/instalator/ioBroker.sanext/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.sanext.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker.sanext
+[![Тесты] (https://github.com/instalator/iobroker.sanext/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.sanext/actions/)
+
 ## Адаптер Sanext для ioBroker
 Получение данных с теплосчетчиков Sanext
 
 ## Changelog
+
+### 0.0.5
+* (instalator) change test
+
+### 0.0.4
+* (instalator) fixed error
 
 ### 0.0.3
 * (GermanBluefox) Formatting and timer behavior cleaning
@@ -30,7 +36,7 @@ hash: 6iYqEKKZNls5JcrCiCT7RGj2FfS30U6FkMsDfFujIWo=
 ## License
 MIT License
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

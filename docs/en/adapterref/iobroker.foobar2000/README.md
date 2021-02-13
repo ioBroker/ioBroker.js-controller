@@ -2,11 +2,11 @@
 # Foobar2000 adapter for iobroker
 ![Number of Installations](http://iobroker.live/badges/foobar2000-installed.svg) ![Number of Installations](http://iobroker.live/badges/foobar2000-stable.svg) [![NPM version](https://img.shields.io/npm/v/iobroker.foobar2000.svg)](https://www.npmjs.com/package/iobroker.foobar2000)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.foobar2000.svg)](https://www.npmjs.com/package/iobroker.foobar2000)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.foobar2000/master.svg)](https://travis-ci.org/instalator/ioBroker.foobar2000)
+[![Tests](https://github.com/instalator/iobroker.foobar2000/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.foobar2000/actions/)   
 
 [![NPM](https://nodei.co/npm/iobroker.foobar2000.png?downloads=true)](https://nodei.co/npm/iobroker.foobar2000/)
 
-[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
+[![Donate](https://img.shields.io/badge/Donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 ![admin settings.](admin/admin.png)
@@ -20,6 +20,9 @@ To control the player, you must install the plugin [foo_httpcontrol](https://bit
 To display the cover as a link to a file, in the file ```c:\Users\{USER}\AppData\Roaming\foobar2000\foo_httpcontrol_data\foobar2000controller\config``` change the parameter ```albumart_prefer_embedded = 0```
 
 ## Changelog
+
+#### 2.0.4
+* (instalator) fixed error
 
 #### 2.0.3
 * (instalator) fixed admin error
@@ -53,7 +56,7 @@ To display the cover as a link to a file, in the file ```c:\Users\{USER}\AppData
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

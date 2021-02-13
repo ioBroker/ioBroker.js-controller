@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.haier/README.md
 title: ioBroker Haier空调适配器
-hash: M8iBGPREQPppA0fQYd/nqXn6x5eOFKirnS4aUYnUO9E=
+hash: ROuNUa5/rOhtGEF6rozSiVNfEYVPA01f94d2z8ozq4U=
 ---
-![商标](../../../en/adapterref/iobroker.haier/admin/haier_admin.png)
+![标识](../../../en/adapterref/iobroker.haier/admin/haier_admin.png)
 
 ![安装数量](http://iobroker.live/badges/haier-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.haier.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.haier.svg)
-![测验](http://img.shields.io/travis/instalator/ioBroker.haier/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.haier.png?downloads=true)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 ＃ioBroker Haier空调适配器
 =================
+
+[![测试]（https://github.com/instalator/iobroker.haier/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.haier/actions/)
 
 ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Haier空调。
 在“ Lightera”系列的空调上检查工作。
@@ -23,8 +24,8 @@ ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Ha
 ＃＃ 硬件
 作为TCP到串行网关，我使用此[代码]（https://github.com/instalator/ESP8266.TelnetToSerial）和此[device](https://blog.instalator.ru/archives/433)。
 
-##使用
-###电源
+＃＃ 使用
+＃＃＃ 力量
 打开和关闭空调。 （真假）
 
 ###临时
@@ -33,10 +34,10 @@ ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Ha
 ### Settemp
 设定温度。 （16-30°C）
 
-###模式
+＃＃＃ 模式
 * **自动**或** 0 **-一键即可为您提供舒适的房间！空调单元可以判断室内温度和湿度，并据此进行调整。
 * **凉**或** 1 **-冷藏室。
-* **热**或** 2 **-室内暖气。
+* **加热**或** 2 **-室内暖气。
 * **风扇**或** 3 **-仅风扇。
 * **干燥**或** 4 **-空气除湿。
 * **关闭**或** 5 **-关闭交流电源。
@@ -53,7 +54,7 @@ ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Ha
 * **两个**或** 3 **-双向。
 * **假**或** 0 **或**关闭**-关闭。
 
-###健康
+＃＃＃ 健康
 （是/否）空调中的水离子发生器可以产生大量阴离子，从而有效平衡空气中的位置和阴离子数量，还可以杀死细菌并加快房间中的灰尘沉积，最终净化室内的空气。房间。
 
 ### Lockremote
@@ -62,7 +63,7 @@ ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Ha
 ###压缩机
 如果压缩机开启
 
-###新鲜
+＃＃＃ 新鲜的
 （是/否）从房间中排出通风的空气，并吸入新鲜空气。
 （此功能在某些型号上不可用。）
 
@@ -70,6 +71,9 @@ ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Ha
 发送没有起始字节和校验和示例的RAW HEX代码：开机-** 0A000000000001014D02 **
 
 ## Changelog
+
+### 1.0.4
+   (instalator) change test
 
 ### 1.0.3
    (instalator) support admin3
@@ -108,7 +112,7 @@ ioBroker Haier适配器用于通过UART与TCP到串行网关的结合来控制Ha
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

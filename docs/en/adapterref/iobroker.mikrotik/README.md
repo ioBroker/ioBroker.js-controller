@@ -5,11 +5,11 @@ ioBroker MikroTik Router adapter
 ![Number of Installations](http://iobroker.live/badges/mikrotik-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.mikrotik.svg)](https://www.npmjs.com/package/iobroker.mikrotik)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mikrotik.svg)](https://www.npmjs.com/package/iobroker.mikrotik)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.mikrotik/master.svg)](https://travis-ci.org/instalator/ioBroker.mikrotik) 
+[![Tests](https://github.com/instalator/iobroker.mikrotik/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mikrotik/actions/) 
 
 [![NPM](https://nodei.co/npm/iobroker.mikrotik.png?downloads=true)](https://nodei.co/npm/iobroker.mikrotik/)
 
-[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
+[![Donate](https://img.shields.io/badge/Donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 ## Using
@@ -18,7 +18,9 @@ Add address to firewall list and enable.
 e.g. `name,127.0.0.1,comment`.
 ### raw
 Send command api to mikrotik  
-e.g. `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`.
+e.g.:  
+ `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. OR
+ `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
 ### reboot, shutdown
 Reboot/shutdown mikrotik
 ### usb_reset
@@ -28,6 +30,11 @@ Reset power USB in mikrotik
 *The created objects are not deleted automatically when deleted in the router.*
 
 ## Changelog
+
+#### 1.0.13
+* (instalator) changed parse RAW command
+* (instalator) added last-link-up-time and last-link-down-time to interface
+* (instalator) added [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/31)
 
 #### 1.0.12
 * (instalator) fixed error symb
@@ -97,7 +104,7 @@ Reset power USB in mikrotik
 
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

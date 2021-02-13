@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
+hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -58,6 +58,9 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 ## Verwendung
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
+### Zustände
+* Informationen zu den Bundesstaaten finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (Englisch) und [hier] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29) (Deutsch)
+
 ## Bekannte Probleme
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden
 * Einige Reinigungsfunktionen funktionieren möglicherweise nicht mit 710/711. Bitte verwenden Sie vorerst Version 0.5.8.
@@ -70,6 +73,13 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
+
+### 1.1.0
+* Stable release
+
+### 1.0.13
+* Using library version 0.5.6
+* Some improvements and fixes
 
 ### 1.0.12
 * Using library version 0.5.5
@@ -135,34 +145,17 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 * Some refactoring
 * Bump dependencies
 
-### 1.0.2 - 1.0.3
+### 1.0.1 - 1.0.3
 * Added support for Ozmo T8 AIVI
-
-### 1.0.1
 * Compact mode support
 * Added a button to save the last used custom area values
 * Added buttons to rerun saved custom areas
 * Some enhancements and fixes
 
 ### 1.0.0
-* Stable Release
+* Stable release
 
-### 0.6.3 - 0.6.5
-* Using library version 0.4.13
-* Set flag for compact mode to false
-* Some minor fixes
-* Some translations added
-
-### 0.6.2
-* Using library version 0.4.12
-* (boriswerner) Alternative API call for last clean log info (920/950)
-* (mrbungle64) Periodically polling of CleanLogs
-
-### 0.6.0 - 0.6.1
-* Using library version 0.4.10/11
-* Several enhancements and fixes
-
-### 0.0.1 - 0.5.9
+### 0.0.1 - 0.6.5
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)
 
 ## License

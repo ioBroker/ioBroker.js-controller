@@ -3,33 +3,46 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.starline/README.md
 title: ioBroker.starline
-hash: eE7OsQsPgGY5WR/tI1VKgccoL01ejEZw67m3XgE2TqU=
+hash: 0e9pfVWdmL6s9gl8je6O9oS7gHaqB19EvFOA6VA+WHo=
 ---
-![логотип](../../../en/adapterref/iobroker.starline/admin/starline_git.jpg)
+![Логотип](../../../en/adapterref/iobroker.starline/admin/starline_git.jpg)
 
 ![Количество установок](http://iobroker.live/badges/starline-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.starline.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.starline.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.starline/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.starline.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# IoBroker.starline
-Устройство поддержки StarLine телематика 2.0.
+# IoBroker.starline [![Тесты] (https://github.com/instalator/iobroker.starline/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.starline/actions/)
+Для работы драйвера необходимо установленное и настроенное противоугонное устройство поддерживающее сервис StarLine телематика 2.0.
 
-Драйвер позволяет получать данные о состоянии автомобиля через сервис StarLine Телематика. https://starline-online.ru.
+Драйвер позволяет получать данные состояния автомобиля через сервис StarLine Телематика. https://starline-online.ru.
 
 ##### Управление основными режимами работы автосигнализации:
   - Постановка/снятие с охраны
-  - Активация функции AntiHiJack
+  - Активация функции AntiHiJack
   - Автозапуск
-  - Активация сервисного режима (Valet)
+  - Активация сервисного режима (Valet)
   - Активация доп. каналов
-  - Включение / отключение подогревателя Webasto (При его наличии)
+  - Включение / отключение подогревателя Webasto (При его наличии)
   - Запрос координат автомобиля
   - Отключение датчиков удара и наклона
 
 ## Changelog
+
+#### 1.1.3
+* (instalator) fixed error parse mayak
+
+#### 1.1.2
+* (instalator) fixed objects
+* (instalator) fixed interval
+
+#### 1.1.1
+* (instalator) fixed send command
+
+#### 1.1.0
+* (instalator) fixed auth
+* (instalator) added support admin3
 
 #### 1.0.0
 * (instalator) up to stable
@@ -69,7 +82,7 @@ hash: eE7OsQsPgGY5WR/tI1VKgccoL01ejEZw67m3XgE2TqU=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

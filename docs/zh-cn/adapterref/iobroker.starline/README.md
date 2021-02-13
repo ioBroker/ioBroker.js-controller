@@ -3,33 +3,46 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.starline/README.md
 title: ioBroker.starline
-hash: eE7OsQsPgGY5WR/tI1VKgccoL01ejEZw67m3XgE2TqU=
+hash: 0e9pfVWdmL6s9gl8je6O9oS7gHaqB19EvFOA6VA+WHo=
 ---
-![商标](../../../en/adapterref/iobroker.starline/admin/starline_git.jpg)
+![标识](../../../en/adapterref/iobroker.starline/admin/starline_git.jpg)
 
 ![安装数量](http://iobroker.live/badges/starline-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.starline.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.starline.svg)
-![测验](http://img.shields.io/travis/instalator/ioBroker.starline/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.starline.png?downloads=true)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-＃ioBroker.starline
-Дляработыдрайверанеобходимоустановленноеинастроенноепротивоугонноеустройствоподержиаеее
+＃ioBroker.starline [![测试]（https://github.com/instalator/iobroker.starline/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.starline/actions/)
+Дляработыдрайверанеобходимоустановленноеинастроенноопротивоугонноеустройствоподержиаеее
 
-使用StarLineТелематика的话。 https://starline-online.ru。
+使用StarLineТелематика进行数据处理。 https://starline-online.ru。
 
 ##### Управление основными режимами работы автосигнализации:
   - Постановка/снятие с охраны
-  -АктивацияфункцииAntiHiJack
+  -АктивацияфункцииAntiHiJack
   - Автозапуск
-  -Активациясервисногорежима（代客）
+  -Активациясервисногорежима（代客）
   - Активация доп. каналов
-  -Включение/отключениеподогревателяWebasto（Приегоналичии）
+  -Включение/отключениеподогревателяWebasto（Приегоналичии）
   - Запрос координат автомобиля
   - Отключение датчиков удара и наклона
 
 ## Changelog
+
+#### 1.1.3
+* (instalator) fixed error parse mayak
+
+#### 1.1.2
+* (instalator) fixed objects
+* (instalator) fixed interval
+
+#### 1.1.1
+* (instalator) fixed send command
+
+#### 1.1.0
+* (instalator) fixed auth
+* (instalator) added support admin3
 
 #### 1.0.0
 * (instalator) up to stable
@@ -69,7 +82,7 @@ hash: eE7OsQsPgGY5WR/tI1VKgccoL01ejEZw67m3XgE2TqU=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

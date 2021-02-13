@@ -2,32 +2,42 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lgtv-rs/README.md
-title: ioBroker LG TV адаптер RS232
-hash: ggSIdOhu8GvDjjGhpesEpxaNFGX5g/UMCGsvDjQZnXM=
+title: ioBroker LG TV RS232 адаптер
+hash: Q0Lbf74YZj8BycBQkEPeWUo7hxoteQCdGvVyv8wIWiA=
 ---
-![логотип](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png)
+![Логотип](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png)
 
 ![Количество установок](http://iobroker.live/badges/lgtv-rs-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lgtv-rs.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lgtv-rs.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.lgtv-rs/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.lgtv-rs.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# IoBroker LG TV адаптер RS232
-ioBroker LG TV Адаптер RS232 используется для управления телевизором LG через RS232 в сочетании с Etnernet Gateway.
+# IoBroker LG TV RS232 адаптер
+[![Тесты] (https://github.com/instalator/iobroker.lgtv-rs/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.lgtv-rs/actions/)
+
+Адаптер ioBroker LG TV RS232 используется для управления телевизором LG через RS232 в сочетании со шлюзом Etnernet.
 Список моделей и команд содержится в файле `admin/commands.json`.
 
 ## Аппаратное обеспечение
-Драйвер позволяет подключаться к телевизору LG через [адаптер](http://blog.instalator.ru/archives/744) RS232 для Ethernet.
+Драйвер позволяет подключаться к телевизору LG через [адаптер](http://blog.instalator.ru/archives/744) RS232 к Ethernet.
 
-В качестве шлюза RS232 для Ethernet используется любая карта, совместимая с Arduino, в которую необходимо загрузить [этот код](https://github.com/stepansnigirev/ArduinoSerialToEthernet).
-Вам также понадобится Ethernet Shield W5100 или W5500 и конвертер RS232 в TTL.
+В качестве шлюза RS232 к Ethernet используется любая совместимая с Arduino карта, на которую необходимо загрузить [этот код](https://github.com/stepansnigirev/ArduinoSerialToEthernet).
+Вам также понадобится Ethernet Shield W5100 или W5500 и преобразователь RS232 в TTL.
 
-## Служба поддержки
+## Поддерживать
 Поддерживаемые модели: LD750 будет ...
 
 ## Changelog
+
+### 0.1.1
+  (instalator) change test
+
+### 0.1.0
+  (instalator) support compact mode
+  (instalator) support admin3
+  (instalator) refactoring
+
 ### 0.0.4
   (instalator) fix error
 
@@ -40,7 +50,7 @@ ioBroker LG TV Адаптер RS232 используется для управл
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

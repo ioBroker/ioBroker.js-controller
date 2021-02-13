@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.haier/README.md
 title: ioBroker Haier Klimaanlagenadapter
-hash: M8iBGPREQPppA0fQYd/nqXn6x5eOFKirnS4aUYnUO9E=
+hash: ROuNUa5/rOhtGEF6rozSiVNfEYVPA01f94d2z8ozq4U=
 ---
 ![Logo](../../../en/adapterref/iobroker.haier/admin/haier_admin.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/haier-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.haier.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.haier.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.haier/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.haier.png?downloads=true)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker Haier Klimaanlagenadapter
 =================
+
+[![Tests] (https://github.com/instalator/iobroker.haier/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.haier/actions/)
 
 Der ioBroker Haier-Adapter dient zur Steuerung Ihrer Haier-Klimaanlage über UART in Verbindung mit dem TCP to Serial Gateway.
 Die Arbeiten werden an der Klimaanlage der 'Lightera'-Serie überprüft.
@@ -54,7 +55,7 @@ Temperatur einstellen. (16 - 30 °C)
 * **false** oder **0** oder **off** - Off.
 
 ### Gesundheit
-(wahr / falsch) Der Wasserionengenerator in der Klimaanlage kann viel Anion erzeugen, um die Position und das Anion in der Luft effektiv auszugleichen, Bakterien abzutöten, das Staubsediment im Raum zu beschleunigen und schließlich die Luft zu reinigen das Zimmer.
+(wahr / falsch) Der Wasserionengenerator in der Klimaanlage kann viel Anion erzeugen, um die Position und das Anion in der Luft effektiv auszugleichen, Bakterien abzutöten, das Staubsediment im Raum zu beschleunigen und schließlich die Luft zu reinigen der Raum.
 
 ### Lockremote
 IR-Fernbedienung sperren (wahr / falsch)
@@ -63,13 +64,16 @@ IR-Fernbedienung sperren (wahr / falsch)
 Wenn der Kompressor eingeschaltet ist
 
 ### Frisch
-(wahr / falsch) Die verschmutzte Luft aus dem Raum ablassen und frische Luft einatmen.
+(wahr / falsch) Lassen Sie die verschmutzte Luft aus dem Raum ab und atmen Sie frische Luft ein.
 (Diese Funktion ist bei einigen Modellen nicht verfügbar.)
 
 ### Raw
 Senden Sie RAW HEX-Code ohne Startbytes und Prüfsummenbeispiel: Einschalten - **0A000000000001014D02**
 
 ## Changelog
+
+### 1.0.4
+   (instalator) change test
 
 ### 1.0.3
    (instalator) support admin3
@@ -108,7 +112,7 @@ Senden Sie RAW HEX-Code ohne Startbytes und Prüfsummenbeispiel: Einschalten - *
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

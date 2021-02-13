@@ -156,6 +156,15 @@ lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus
 lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
 ```
 
+### Kernel-Bug bei negativen Temperaturen
+
+Im Kernel 5.10.y des Raspberry Pi gab es ab Mitte November 2020 einen Bug, wodurch negative Temperaturen als beispielsweise 4092 °C gelesen wurden. (siehe [GitHub Issue](https://github.com/raspberrypi/linux/issues/4124))  
+Dieser Bug wurde im Kernel 5.10.14 am 08.02.2021 behoben. (siehe [GitHub Commit](https://github.com/Hexxeh/rpi-firmware/commit/115e3a5f77488d9ee30a33bcb5ac31eb587f60a8))  
+Ein `rpi-update` sollte somit das Problem beheben.
+
+Bei Adapterversionen bis einschließlich v1.2.2 werden diese offensichtlich falschen Werte in den ioBroker State übernommen.  
+Ab v1.2.3 prüft der Adapter zusätzlich, ob der gelesene Wert plausibel ist (zwischen -80 und +150 °C) und verwirft unplausible Werte.
+
 
 ## Einbindung von Sensoren an einem entfernten Raspberry Pi
 
@@ -215,6 +224,12 @@ In der Adapterkonfiguration muss dann der Systempfad für die 1-Wire Geräte auf
 Sollten auf dem ioBroker-System ebenfalls DS1820 Sensoren direkt angeschlossen sein, dann sollte am besten eine zweite Instanz des Adapters für die Remote-Sensoren erstellt werden.
 
 ## Changelog
+
+### 1.3.0 (2021-02-11)
+* (crycode-de) Searching for sensors now works for multiple 1-wire masters
+
+### 1.2.3 (2021-02-11)
+* (crycode-de) Added check of temperatures higher/lower than possible sensor values
 
 ### 1.2.2 (2021-02-06)
 * (crycode-de) Fixed crash if settings are malformed (IOBROKER-DS18B20-3)

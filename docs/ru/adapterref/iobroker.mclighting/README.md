@@ -2,80 +2,81 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mclighting/README.md
-title: ioBroker McLighting адаптер
-hash: +pUewii2TFoXNMHz/YwnT/oru4KU4iOxFCdIFwHsoXA=
+title: Адаптер ioBroker McLighting
+hash: dXdR0TFBVa8nzSi2OtTRjXFxpkRm6+/sy9Bi+JeHlWo=
 ---
-![логотип](../../../en/adapterref/iobroker.mclighting/admin/mclighting.png)
+![Логотип](../../../en/adapterref/iobroker.mclighting/admin/mclighting.png)
 
 ![Количество установок](http://iobroker.live/badges/mclighting-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.mclighting.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mclighting.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.mclighting/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mclighting.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# IoBroker Адаптер McLighting
+# IoBroker McLighting адаптер
 =================
 
-## Описание
-Драйвер позволяет управлять RGB-лентой на светодиодах WS2811 / WS2812, подключенной к ESP8266 с прошивкой [McLighting](https://github.com/toblum/McLighting)
-
-Если вы хотите использовать RGBW-светодиоды (например, SK6812), подключенные к ESP8266, вам нужна вот эта доработанная прошивка: [McLightingRGBW](https://github.com/FabLab-Luenen/McLighting) и в настройках драйвера выберите RGBW.
+[![Тесты] (https://github.com/instalator/iobroker.mclighting/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mclighting/actions/)
 
 ## Описание
-Драйвер позволяет управлять полосой RGB на светодиодах WS2811 / WS2812, подключенных к ESP8266 с прошивкой [McLighting](https://github.com/toblum/McLighting)
+Драйвер позволяет управлять RGB лентой на светодиодах WS2811 / WS2812, подключенной к ESP8266 с прошивкой [Маклайтинг](https://github.com/toblum/McLighting)
 
-Если вы хотите использовать RGBW-светодиоды (например, SK6812), подключенные к ESP8266, вам нужно просто вот так: [McLightingRGBW](https://github.com/FabLab-Luenen/McLighting) и выбрать в конфигурации адаптера *RGBW*
+Если вы хотите использовать RGBW-светодиоды (например, SK6812), подключенные к ESP8266, вам нужна вот эта доработанная прошивка: [McLightingRGBW](https://github.com/FabLab-Luenen/McLighting) и в настройках драйверов выбрать RGBW.
+
+## Описание
+Драйвер позволяет управлять полосой RGB на светодиодах WS2811 / WS2812, подключенных к ESP8266 с прошивкой [Маклайтинг](https://github.com/toblum/McLighting)
+
+Если вы хотите использовать светодиоды RGBW (например, SK6812), подключенные к ESP8266, вам следует просто использовать эту вилку: [McLightingRGBW](https://github.com/FabLab-Luenen/McLighting) и выбрать в конфигурации адаптера *RGBW*
 
 ## С помощью
 ### Яркость
 Установите яркость.
 
-Где <яркость> - это яркость как значение 0-255.
+Где <brightness> - это яркость в значении 0–255.
 
 ### Скорость Установите скорость.
- Где <скорость> - скорость от 0 до 255.
+ Где <speed> - скорость от 0 до 255.
 
 ### Mode Установить режим.
- Где <lightmode> является одним из следующих:
+ Где <lightmode> - одно из следующих значений:
 
-- выключен (выключите все светодиоды.)
-- все (Включите все светодиоды в заданном или ранее установленном цвете.)
-- стирание (включите все светодиоды в заданном или ранее установленном цвете с эффектом стирания.)
-- Радуга (Запускает эффект радуги.)
-- rainbowCycle (Запускает эффект цикла радуги.)
-- Theatrechase (Запускает эффект Theatrechase в заданном или ранее установленном цвете.)
-- theaterchaseRainbow (Запускает эффект Theatrechase с изменением цвета.)
-- телевизор (запускает ТВ симулятор.)
+- выкл. (выключить все светодиоды.)
+- all (включить все светодиоды заданного или ранее заданного цвета.)
+- wipe (включить все светодиоды заданного или ранее установленного цвета с эффектом вытеснения).
+- радуга (запускает эффект радуги.)
+- rainbowCycle (запускает эффект цикла радуги.)
+- Theaterchase (запускает эффект Theaterchase заданным или ранее заданным цветом.)
+- TheaterchaseRainbow (запускает эффект Theaterchase с изменением цвета.)
+- tv (запускает симулятор ТВ.)
 
-### Array_RGB (W)
- Зажгите несколько светодиодов заданными цветами.
+### Array_RGB (Вт)
+ Зажгите несколько светодиодов заданного цвета.
 
 ```
 +[numled][hexrgb(w)]+[numled][hexrgb(w)]+[numled][hexrgb(w)] [...] or
 [numled][hexrgb(w)],[numled][hexrgb(w)],[numled][hexrgb(w)],[...]
 ```
 
- Где <numled> - номер светодиода (начиная с 00), например, 01.
+ Где <numled> - это номер светодиода (начиная с 00), например 01.
 
- Где <hexrgb> - это цвет как HEX, например 04d2ff.
+ Где <hexrgb> - это цвет в виде HEX, например 04d2ff.
 
- Пример: + 09ffffff + 19ff0000 ИЛИ 09ffffff, 19ff0000
+ Пример: + 09ffffff + 19ff0000 ИЛИ 09ffffff, 19ff0000
 
 ### Color Установить цвет лампы по умолчанию.
- Где <r, g, b (, w)> - это цвет в виде числа (0 - 255), например, 32,300 (, 255)
+ Где <r, g, b (, w)> - это цвет в виде числа (0-255), например. 32,3 200 (, 255)
 
- Если активен режим 0 (статический) - установите цвет лампы по умолчанию и включите все светодиоды этого цвета.
+ Если активен режим 0 (статический) - установите цвет лампы по умолчанию и зажгите все светодиоды этого цвета.
 
 ### Color_R, color_G, color_B (, color_W) Установить цвет лампы по умолчанию.
- Где <r (g) (b) (w)> - это цвет в виде числа (0 - 255), например, 154
+ Где <r (g) (b) (w)> - это цвет в виде числа (0-255), например 154
 
- Если активен режим 0 (статический) - установите цвет лампы по умолчанию и включите все светодиоды этого цвета.
+ Если активен режим 0 (статический) - установите цвет лампы по умолчанию и зажгите все светодиоды этого цвета.
 
 ### Color_RGB (W) Установить цвет лампы по умолчанию.
- Где <hexrgb (w)> - это цвет как HEX, например 04d2ff
+ Где <hexrgb (w)> - это цвет как HEX, например 04d2ff
 
- Если активен режим 0 (статический) - установите цвет лампы по умолчанию и включите все светодиоды этого цвета.
+ Если активен режим 0 (статический) - установите цвет лампы по умолчанию и зажгите все светодиоды этого цвета.
 
 ### list_modes Список доступных режимов анимации в виде массива.
 Результат:
@@ -97,38 +98,44 @@ hash: +pUewii2TFoXNMHz/YwnT/oru4KU4iOxFCdIFwHsoXA=
 
 ```
 
-### Range_RGB (W)
- Подсветите несколько светодиодных диапазонов заданными цветами.
+### Range_RGB (Вт)
+ Зажигайте несколько светодиодных диапазонов заданных цветов.
 
 ```
 R[rangestart_led][rangeend_led][hexrgb(w)]R[rangestart_led][rangeend_led][hexrgb(w)]R[rangestart_led][rangeend_led][hexrgb(w)] [...] or
 [rangestart_led][rangeend_led][hexrgb(w)],[rangestart_led][rangeend_led][hexrgb(w)],[rangestart_led][rangeend_led][hexrgb(w)],[...]
 ```
 
- Где <rangestart_led> - начальный номер диапазона (числа, начинающиеся с 00), например, 00.
+ Где <rangestart_led> - это начальный номер диапазона (числа, начинающиеся с 00), например 00.
 
- Где <rangeend_led> - конечный номер диапазона (числа, начинающиеся с 00), например, 09.
+ Где <rangeend_led> - это конечный номер диапазона (числа, начинающиеся с 00), например 09.
 
- Где <hexrgb (w)> - это цвет как HEX, например 04d2ff.
+ Где <hexrgb (w)> - это цвет как HEX, например 04d2ff.
 
- Можно повторить несколько раз.
+ Можно повторять несколько раз.
 
- Пример: R0009ffffffR1019ff0000 ИЛИ 0009ffffff, 1019ff0000 загорает первые 10 светодиодов белым, а следующие 10 красным
+ Пример: R0009ffffffR1019ff0000 ИЛИ 0009ffffff, 1019ff0000 загорает первые 10 светодиодов белым, а следующие 10 - красным.
 
-### Set_all_RGB (W) Установить цвет лампы по умолчанию и зажечь все светодиоды этим цветом.
- Где <hexrgb (w)> - это цвет как HEX, например 04d2ff
+### Set_all_RGB (W) Установить цвет лампы по умолчанию и зажечь все светодиоды этого цвета.
+ Где <hexrgb (w)> - это цвет как HEX, например 04d2ff
 
-### Single_RGB (W) Загораются одиночные светодиоды заданного цвета.
- Где <numled> - номер светодиода (начиная с 00), например, 01.
+### Single_RGB (W) Зажечь одиночные светодиоды заданного цвета.
+ Где <numled> - это номер светодиода (начиная с 00), например 01.
 
- Где <hexrgb (w)> - это цвет как HEX, например 04d2ff.
+ Где <hexrgb (w)> - это цвет как HEX, например 04d2ff.
 
 ### Fx_mode Установить режим анимации.
- Где находится <animation_mode_id> из списка list_modes
+ Где <animation_mode_id> включен из list_modes
 
 ### Fx_mode_name Текущее имя fx_mode
 
 ## Changelog
+
+### 0.1.2
+* (instalator) change role
+
+### 0.1.1
+* (Bluefox) Fix clear timeouts
 
 ### 0.1.0
 * (instalator) refactoring

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
+hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -43,7 +43,7 @@ hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
 ## Установка
 Рекомендуется использовать версию Node.js 10 или более новую.
 
-Этот адаптер использует библиотеку холста, для которой может потребоваться дополнительная установка.
+Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
 Для полного набора функций установите следующие пакеты.
 
 Для систем Linux на базе Debian необходимо выполнить следующие команды:
@@ -55,21 +55,31 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 Для получения инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling.
 
-## Применение
+## Использование
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
+
+### Состояния
+* Информацию о состояниях можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (на английском языке) и [здесь] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29) (немецкий)
 
 ## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа
 * Некоторые функции очистки могут не работать с 710/711. Пожалуйста, используйте пока версию 0.5.8.
 * Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
-## ВОПРОСЫ-ОТВЕТЫ
+## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Заявление об ограничении ответственности
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
+
+### 1.1.0
+* Stable release
+
+### 1.0.13
+* Using library version 0.5.6
+* Some improvements and fixes
 
 ### 1.0.12
 * Using library version 0.5.5
@@ -135,34 +145,17 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Some refactoring
 * Bump dependencies
 
-### 1.0.2 - 1.0.3
+### 1.0.1 - 1.0.3
 * Added support for Ozmo T8 AIVI
-
-### 1.0.1
 * Compact mode support
 * Added a button to save the last used custom area values
 * Added buttons to rerun saved custom areas
 * Some enhancements and fixes
 
 ### 1.0.0
-* Stable Release
+* Stable release
 
-### 0.6.3 - 0.6.5
-* Using library version 0.4.13
-* Set flag for compact mode to false
-* Some minor fixes
-* Some translations added
-
-### 0.6.2
-* Using library version 0.4.12
-* (boriswerner) Alternative API call for last clean log info (920/950)
-* (mrbungle64) Periodically polling of CleanLogs
-
-### 0.6.0 - 0.6.1
-* Using library version 0.4.10/11
-* Several enhancements and fixes
-
-### 0.0.1 - 0.5.9
+### 0.0.1 - 0.6.5
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)
 
 ## License

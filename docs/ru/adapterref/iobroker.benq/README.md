@@ -3,31 +3,43 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.benq/README.md
 title: ioBroker BenQ Адаптер для проектора
-hash: QzbcM7ReY+xfy43lUEdZL+32mh9ElJ1JfucZtF8bG+Q=
+hash: YfmCWWyypsOuFfAS5vkeXbUOvtycDdAEiBM8nkinyGM=
 ---
-![логотип](../../../en/adapterref/iobroker.benq/admin/benq-logo.png)
+![Логотип](../../../en/adapterref/iobroker.benq/admin/benq-logo.png)
 
 ![Количество установок](http://iobroker.live/badges/benq-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.benq.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.benq.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.benq/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.benq.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker BenQ Адаптер для проектора
-Адаптер ioBroker BenQ Projector используется для управления проектором BenQ через RS232 в сочетании с Etnernet Gateway.
+[![Тесты] (https://github.com/instalator/iobroker.benq/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.benq/actions/)
+
+Адаптер ioBroker BenQ для проектора используется для управления проектором BenQ через RS232 вместе со шлюзом Etnernet.
 Список моделей и команд содержится в файле `admin/commands.json`.
 
 ## Аппаратное обеспечение
-Драйвер позволяет подключаться к проекторам BenQ через [адаптер](http://blog.instalator.ru/archives/744) RS232 для Ethernet.
+Драйвер позволяет подключаться к проекторам BenQ через [адаптер](http://blog.instalator.ru/archives/744) RS232 к Ethernet.
 
-В качестве шлюза RS232 для Ethernet используется любая карта, совместимая с Arduino, в которую необходимо загрузить [этот код](https://github.com/stepansnigirev/ArduinoSerialToEthernet).
-Вам также понадобится Ethernet Shield W5100 или W5500 и конвертер RS232 в TTL.
+В качестве шлюза RS232 к Ethernet используется любая совместимая с Arduino карта, на которую необходимо загрузить [этот код](https://github.com/stepansnigirev/ArduinoSerialToEthernet).
+Вам также понадобится Ethernet Shield W5100 или W5500 и преобразователь RS232 в TTL.
 
-## Служба поддержки
-Поддерживаемые модели: W1200, W1070, W1080, чтобы быть ...
+## Поддерживать
+Поддерживаемые модели: W1200, W1070, W1080 будет ...
 
 ## Changelog
+
+### 0.2.3
+ * (instalator) change test
+
+### 0.2.2
+ * (instalator) fixed clearTimeout
+
+### 0.2.1
+ * (instalator) support compact mode
+ * (instalator) support admin3
+ * (instalator) refactoring
 
 ### 0.0.6
   (instalator) initial
@@ -35,7 +47,7 @@ hash: QzbcM7ReY+xfy43lUEdZL+32mh9ElJ1JfucZtF8bG+Q=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,18 +3,19 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.benq/README.md
 title: ioBroker BenQ Projektoradapter
-hash: QzbcM7ReY+xfy43lUEdZL+32mh9ElJ1JfucZtF8bG+Q=
+hash: YfmCWWyypsOuFfAS5vkeXbUOvtycDdAEiBM8nkinyGM=
 ---
 ![Logo](../../../en/adapterref/iobroker.benq/admin/benq-logo.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/benq-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.benq.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.benq.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.benq/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.benq.png?downloads=true)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker BenQ Projektoradapter
+[![Tests] (https://github.com/instalator/iobroker.benq/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.benq/actions/)
+
 Der ioBroker BenQ Projector-Adapter dient zur Steuerung Ihres BenQ-Projektors über RS232 in Verbindung mit dem Etnernet Gateway.
 Die Liste der Modelle und Befehle ist in der Datei `admin/commands.json` enthalten.
 
@@ -29,13 +30,24 @@ Unterstützte Modelle: W1200, W1070, W1080 werden ...
 
 ## Changelog
 
+### 0.2.3
+ * (instalator) change test
+
+### 0.2.2
+ * (instalator) fixed clearTimeout
+
+### 0.2.1
+ * (instalator) support compact mode
+ * (instalator) support admin3
+ * (instalator) refactoring
+
 ### 0.0.6
   (instalator) initial
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

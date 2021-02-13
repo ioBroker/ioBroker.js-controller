@@ -3,11 +3,11 @@
 
 ![Number of Installations](http://iobroker.live/badges/benq-installed.svg) ![Number of Installations](http://iobroker.live/badges/benq-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.benq.svg)](https://www.npmjs.com/package/iobroker.benq)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.benq.svg)](https://www.npmjs.com/package/iobroker.benq)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.benq/master.svg)](https://travis-ci.org/instalator/ioBroker.benq)
+[![Tests](https://github.com/instalator/iobroker.benq/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.benq/actions/)   
 
 [![NPM](https://nodei.co/npm/iobroker.benq.png?downloads=true)](https://nodei.co/npm/iobroker.benq/)
 
-[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
+[![Donate](https://img.shields.io/badge/Donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 IoBroker BenQ Projector adapter is used to control your BenQ projector via RS232 in conjunction with the Etnernet Gateway.
@@ -24,6 +24,9 @@ Supported models: W1200, W1070, W1080 to be...
 
 ## Changelog
 
+### 0.2.3
+ * (instalator) change test
+
 ### 0.2.2
  * (instalator) fixed clearTimeout
 
@@ -38,7 +41,7 @@ Supported models: W1200, W1070, W1080 to be...
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,18 +3,19 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.exchangerates/README.md
 title: ioBroker.exchangerates
-hash: muIPAv/U9JCrm8kgxbS0ezyl6q1OwTP+mCeVP08N058=
+hash: 68ZjMJ2Tv9VaoDm/OZklWZJ6NKbd6+Z1KK9AvVdQftg=
 ---
-![商标](../../../en/adapterref/iobroker.exchangerates/admin/exchangerates.png)
+![标识](../../../en/adapterref/iobroker.exchangerates/admin/exchangerates.png)
 
+![安装数量](http://iobroker.live/badges/exchangerates-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.exchangerates.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.exchangerates.svg)
-![依赖状态](https://img.shields.io/david/instalator/iobroker.exchangerates.svg)
-![已知漏洞](https://snyk.io/test/github/instalator/ioBroker.exchangerates/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.exchangerates.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/instalator/ioBroker.exchangerates/master.svg)
+![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 ＃ioBroker.exchangerates
+[![测试]（https://github.com/instalator/iobroker.exchangerates/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.exchangerates/actions/)
+
 ##交换ioBroker的适配器
 俄罗斯中央银行和欧洲中央银行的汇率等等
 
@@ -23,6 +24,16 @@ hash: muIPAv/U9JCrm8kgxbS0ezyl6q1OwTP+mCeVP08N058=
 [КурсыЦБРФвXMLиJSON，API](https://www.cbr-xml-daily.ru)
 
 ## Changelog
+
+### 0.0.14
+* (instalator) change test
+
+### 0.0.13
+* (instalator) fixed error POL
+
+### 0.0.12
+* (instalator) fixed getObject
+* (instalator) fixed compact mode
 
 ### 0.0.11
 * (instalator) delete widgets
@@ -39,7 +50,7 @@ hash: muIPAv/U9JCrm8kgxbS0ezyl6q1OwTP+mCeVP08N058=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

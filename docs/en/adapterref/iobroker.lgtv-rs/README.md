@@ -3,12 +3,12 @@
 
 ![Number of Installations](http://iobroker.live/badges/lgtv-rs-installed.svg) ![Number of Installations](http://iobroker.live/badges/lgtv-rs-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.lgtv-rs.svg)](https://www.npmjs.com/package/iobroker.lgtv-rs)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.lgtv-rs.svg)](https://www.npmjs.com/package/iobroker.lgtv-rs)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.lgtv-rs/master.svg)](https://travis-ci.org/instalator/ioBroker.lgtv-rs)
+[![Tests](https://github.com/instalator/iobroker.lgtv-rs/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.lgtv-rs/actions/)   
 
 [![NPM](https://nodei.co/npm/iobroker.lgtv-rs.png?downloads=true)](https://nodei.co/npm/iobroker.lgtv-rs/)
 
-[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
+[![Donate](https://img.shields.io/badge/Donate-YooMoney-green)](https://sobe.ru/na/instalator)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)  
 
 IoBroker LG TV RS232 adapter is used to control your LG TV via RS232 in conjunction with the Etnernet Gateway.
 The list of models and commands is contained in the `admin/commands.json` file.
@@ -23,6 +23,9 @@ You will also need an Ethernet Shield W5100 or W5500 and an RS232 to TTL convert
 Supported models: LD750 to be...
 
 ## Changelog
+
+### 0.1.1
+  (instalator) change test
 
 ### 0.1.0
   (instalator) support compact mode
@@ -41,7 +44,7 @@ Supported models: LD750 to be...
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

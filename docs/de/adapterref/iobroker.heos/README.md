@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: EqPpB9VnuvNgbo3m4kgL2Yr7hVTMsRsOA4cxObppYgQ=
+hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
 ---
 ![Logo](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -20,10 +20,18 @@ hash: EqPpB9VnuvNgbo3m4kgL2Yr7hVTMsRsOA4cxObppYgQ=
 Mit dem Adapter können Sie HEOS von ioBroker aus steuern
 
 ## Aufbau
-* "AutoPlay": Spielt automatisch Musik ab, nachdem der Player angeschlossen oder die Stummschaltung aufgehoben wurde. Kann global in der Konfiguration konfiguriert werden. Wenn es global aktiviert ist, können Sie es für einen bestimmten Spieler mit dem Status auto_play deaktivieren
-* "ignore_broadcast_cmd": Dieser Player-Status wird konfiguriert, wenn der Player Befehle an alle Player ignorieren soll, z. player / set_mute & state = on oder Drücken der Wiedergabetaste für Voreinstellungen / Wiedergabelisten
+* **AutoPlay** Spielt automatisch Musik ab, nachdem der Player angeschlossen oder die Stummschaltung aufgehoben wurde. Kann global in der Konfiguration konfiguriert werden. Wenn es global aktiviert ist, können Sie es für einen bestimmten Spieler mit dem Status "auto_play" deaktivieren.
+* **Befehlsbereich** Definiert, an welche Spieler der Befehl von `` `scope / [cmd]` `` gesendet wird. Es kann an alle Spieler, alle führenden Spieler oder an alle PIDs im durch Kommas getrennten Zustand gesendet werden: `` `heos.0.command_scope_pid```
+* **Regex stumm schalten**
 
-## Befehl
+In der Konfiguration können Sie eine Funktion aktivieren, um den Player basierend auf einer Regex-Übereinstimmung mit den Songinformationen stummzuschalten. Damit können Anzeigen automatisch stummgeschaltet werden. Für Spotify können Sie beispielsweise den folgenden regulären Ausdruck verwenden: ```spotify:ad:|Advertisement```.
+
+* **ignore_broadcast_cmd** Dieser Player-Status wird konfiguriert, wenn der Player Befehle an alle Player ignorieren soll, z. player / set_mute & state = on oder Drücken der Wiedergabetaste für Voreinstellungen / Wiedergabelisten
+
+## Suchen
+Die Suchfunktion funktioniert nicht bei allen Quellen. Spotify und Amazon Music unterstützen die Suche.
+
+## Befehlsstatus
 HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pdf
 
 ### HEOS-Befehlsstatus
@@ -43,7 +51,7 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 ### Player-Befehlsstatus
 Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. set_volume & level = 20 | play_preset & preset = 1
 
-* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Player-Lautstärke ein
+* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Lautstärke des Players ein
 * "set_play_state & state = play | pause | stop": Legt den Player-Status fest
 * "set_play_mode & repeat = on_all | on_one | off & shuffle = on | off": Set Repeat and Shuffle-Modus
 * "set_mute & state = on | off": Spieler stumm schalten
@@ -51,188 +59,66 @@ Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. 
 * "volume_up & step = 1..10": Erhöhen Sie die Lautstärke
 * "play_next": Weiter spielen
 * "play_previous": Vorherige spielen
-* "play_preset & preset = 1 | 2 | .. | n": Preset n abspielen
+* "play_preset & preset = 1 | 2 | .. | n": Play preset n
 * "play_stream & url = url_path": URL-Stream abspielen
 * "add_to_queue & sid = 1025 & aid = 4 & cid = [CID]": Wiedergabeliste mit [CID] auf dem Player abspielen (Hilfe: 1 - jetzt spielen; 2 - als nächstes spielen; 3 - zum Ende hinzufügen; 4 - ersetzen und spielen)
 
-## Regex stumm schalten
-In der Konfiguration können Sie eine Funktion aktivieren, um den Player basierend auf einer Regex-Übereinstimmung mit den Songinformationen stummzuschalten. Damit können Anzeigen automatisch stummgeschaltet werden. Für Spotify können Sie beispielsweise den folgenden regulären Ausdruck verwenden: ```spotify:ad:|Advertisement```.
+## Sag es
+[SayIt Adapter](https://github.com/ioBroker/ioBroker.sayit) wird unterstützt.
 
-## Suchen
-Die Suchfunktion funktioniert nicht bei allen Quellen. Spotify und Amazon Music unterstützen die Suche.
+![Sag es](docs/media/sayit.png) ![Sayit Config](../../../en/adapterref/iobroker.heos/docs/media/sayit-config.png)
 
-## Quellen durchsuchen
-Um den Statusbetrag in ioBroker zu reduzieren, werden automatisch nur Wiedergabelisten und Voreinstellungen in den Status gespeichert. Zuerst müssen Sie jedoch auf die Schaltfläche Durchsuchen im Ordner Wiedergabelisten oder Voreinstellungen klicken. Sie finden und steuern sie im Ordner "Quellen". Wenn Sie die Musik einer Quelle durchsuchen möchten, klicken Sie einfach auf die Schaltfläche Durchsuchen. Sie finden das Suchergebnis im Status "sources.browse_result". Es gibt auch Befehle, um tiefer zu navigieren oder eine Ressource abzuspielen. Fügen Sie einfach die Befehle in das globale HEOS-Befehlsfeld ein. Wenn es sich um einen Durchsuchungsbefehl handelt, finden Sie das Ergebnis im Status browse_result. In der Konfiguration finden Sie eine Option zur Steuerung des Umfangs der Wiedergabebefehle. Damit können Sie steuern, ob die Spielbefehle an alle Spieler, an alle Anführer und Nicht-Gruppenspieler oder an eine Liste von Spieler-IDs gehen, die im Status command_scope_pid definiert sind.
+## Material UI
+[Material UI Adapter](https://github.com/ioBroker/ioBroker.material) wird unterstützt.
 
-Für die VIS-Integration können Sie das browse_result und das folgende Skript verwenden, um eine HTML-Tabelle zu generieren (diese ist nicht im Adapter integriert, sodass Sie die Möglichkeit haben, sie zu formatieren). Alternativ verwenden Sie das Skript von Uhula https://forum.iobroker.net/post/498779:
+![Material](../../../en/adapterref/iobroker.heos/docs/media/material-ui.png)
 
-```javascript
-on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
-  let data = JSON.parse(obj.state.val);
-  let html = `<style>
-  .heos-browse {
-      background-color: #333333;
-      color: #eaeaea;
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      overflow: auto;
-  }
-  .heos-browse table {
-      width: 100%;
-      border-collapse: collapse;
-  }
-  .heos-browse table,
-  .heos-browse th,
-  .heos-browse td {
-      border: 1px solid #929292;
-      border-width:1px 0;
-  }
-  .heos-browse th {
-      font-size: 2em;
-      border: 1px solid #c50000;
-      border-width: 0 0 1px 0;
-      text-align: center;
-  }
-  .heos-browse th {
-      padding: 15px;
-      height: 60px;
-  }
-  .heos-browse td {
-      padding: 5px;
-      height: 60px;
-  }
-  .heos-browse-btn {
-      color: #fff;
-      background-color: Transparent;
-      background-repeat:no-repeat;
-      border: none;
-      cursor:pointer;
-      overflow: hidden;
-      outline:none;
-      margin: 0 !important;
-      padding: 0 !important;
-      font-size: 30px !important;
-      line-height: 30px;
-      width: 60px;
-      height: 60px;
-  }
-  .heos-browse-btn-multi {
-      border-right: 1px solid #929292;
-  }
-  .heos-browse-row-media {
-      cursor: pointer;
-  }
-  .heos-browse-row-control {
-      color: #d60000;
-      cursor: pointer;
-  }
-  .heos-browse-image {
-      white-space: nowrap;
-      padding: 0 !important;
-      text-align: right;
-      font-size: 0;
-  }
-  .heos-browse-image img {
-      height: 60px;
-  }
-  .heos-browse-name {
-      width: 100%;
-      text-align: left;
-  }
-  .heos-browse-control {
-      padding: 0 !important;
-      margin: 0 !important;
-      white-space: nowrap;
-      font-size: 0;
-      text-align: right;
-  }
-  </style>`;
-  if(data){
-      html += "<div class=\"heos-browse\">"
-      html += "<table>"
-      html += "<tr><th>";
-      if(data.image_url.length){
-          html += "<img src=\"" + data.image_url + "\" height=\"30px\">";
-      }
-      html += "</th><th>" + (data.name == "sources" ? "Overview" : data.name) + "</th><th></th></tr>";
-      for (let i = 0; i < data.payload.length; i++) {
-          let payload = data.payload[i];
-          html += "<tr class=\"";
-          if(payload.type == "control"){
-            html += "heos-browse-row-control";
-          } else {
-              html += "heos-browse-row-media"
-          }
-          html += "\">";
-          html += "<td class=\"heos-browse-image\"";
-          if("browse" in payload.commands){
-              html += " onClick=\"servConn.setState('heos.0.command','" + payload.commands["browse"].replace(/'/g, "\\'") +"')\"";
-          } else if(Object.keys(payload.commands).length == 1){
-              html += " onClick=\"servConn.setState('heos.0.command','" + payload.commands[Object.keys(payload.commands)[0]].replace(/'/g, "\\'") +"')\"";
-          }
-          html += ">"
-          if(payload.image_url.length){
-            html += "<img src=\"" + payload.image_url + "\">";
-          }
-          html += "</td>";
-          html += "<td class=\"heos-browse-name\"";
-          if("browse" in payload.commands){
-              html += " onClick=\"servConn.setState('heos.0.command','" + payload.commands["browse"].replace(/'/g, "\\'") + "')\"";
-          } else if(Object.keys(payload.commands).length == 1){
-              html += " onClick=\"servConn.setState('heos.0.command','" + payload.commands[Object.keys(payload.commands)[0]].replace(/'/g, "\\'") +"')\"";
-          }
-          html += ">"
-          if(payload.type == "control"){
-            switch(payload.name){
-              case "load_next":
-                html += "Next page";
-                break;
-              case "load_prev":
-                html += "Previous page";
-                break;
-              case "play_all":
-                html += "Play all";
-                break;
-              case "back":
-                html += "Back";
-                break;
-              case "sources":
-                html += "Overview";
-                break;
-            }
-          } else {
-            html += payload.name;
-          }
-          html +="</td>";
-          html += "<td class=\"heos-browse-control\">";
-          for (let key in payload.commands) {
-            let command = payload.commands[key];
-            html += "<button class=\"heos-browse-btn"
-            if(Object.keys(payload.commands).length > 1){
-                html += " heos-browse-btn-multi"
-            }
-            html += "\" onClick=\"servConn.setState('heos.0.command','" + command.replace(/'/g, "\\'") +"')\">"
-            switch(key){
-                case "play":
-                html += "►";
-                break;
-                case "browse":
-                html += ">";
-                break;
-            }
-            html += "</button>";
-          }
-          html += "</td>";
-          html += "</tr>";
-      }
-      html += "</table></div>";
-  }
-  setState("0_userdata.0.heos.browse_result_html", html);
-});
-```
+## VIS
+### Installation
+* Erstellen Sie folgende Zeichenfolgenstatus:
+    * 0_userdata.0.heos.queue_pid
+    * 0_userdata.0.heos.queue_html
+    * 0_userdata.0.heos.browse_result_html
+
+### Player-Ansicht
+* Öffnen Sie die Datei: [player_view.json] (docs / vis / views / player_view.json)
+* Ersetzen Sie 123456789 durch die Player-PID
+* Ansicht in VIS importieren
+
+![Spieleransicht](../../../en/adapterref/iobroker.heos/docs/media/player-view.png)
+
+### Voreinstellungen
+* Öffnen Sie die Datei: [presets_view.json] (docs / vis / views / presets_view.json)
+* Ansicht in VIS importieren
+
+![Presets config](docs/media/presets-config.png) ![Voreinstellungen](../../../en/adapterref/iobroker.heos/docs/media/presets.png)
+
+### Warteschlange
+* Warteschlangen-Widget: [queue_player_widget.json] (docs / vis / views / queue_player_widget.json)
+* Warteschlangenansicht: [queue_view.json] (docs / vis / views / queue_view.json)
+* Warteschlangen-HTML-Generierungsskript: [queue.js] (docs / vis / scripts / queue.js)
+
+![Warteschlangen-Widget](../../../en/adapterref/iobroker.heos/docs/media/queue-widget.png)
+
+### Quellen durchsuchen
+* Widget durchsuchen: [browse_player_widget.json] (docs / vis / views / browse_player_widget.json)
+* Ansicht durchsuchen: [browse_view.json] (docs / vis / views / browse_view.json)
+* HTML-Generierungsskript durchsuchen: [browse.js] (docs / vis / scripts / browse.js)
+
+![Widget durchsuchen](docs/media/browse-widget.png) ![Quellen durchsuchen](docs/media/browse-sources.png) ![Tunein durchsuchen](../../../en/adapterref/iobroker.heos/docs/media/browse-tunein.png)
+
+Alternativ können Sie das Skript von Uhula verwenden: https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.5 (2021-02-12)
+* (withstu) add bit depth
+
+### 1.7.4 (2021-02-01)
+* (withstu) fix upnp init bug
+
+### 1.7.3 (2021-02-01)
+* (withstu) add upnp module and support bitrate, audio format and sample rate
 
 ### 1.7.2 (2021-01-30)
 * (withstu) fix seek in groups
@@ -326,7 +212,7 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 ## License
 MIT License
 
-Copyright (c) 2020 withstu <withstu@gmx.de>
+Copyright (c) 2021 withstu <withstu@gmx.de>
 
 derived from https://forum.iobroker.net/topic/10420/vorlage-denon-heos-script by Uwe Uhula
 TTS derived from https://github.com/ioBroker/ioBroker.sonos

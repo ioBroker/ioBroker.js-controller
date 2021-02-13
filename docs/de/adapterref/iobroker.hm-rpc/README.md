@@ -196,8 +196,10 @@ Auszug:
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.14.34 (2021-02-11)
 * (foxriver76) use async rpc calls for better error handling
+* (foxriver76) now log error events received by XML-RPC
+* (foxriver76) detect invalid params and log instead of crash
 
 ### 1.14.33 (2021-01-30)
 * (foxriver76) fix problems with CuxD and HMIP (fixes #307)

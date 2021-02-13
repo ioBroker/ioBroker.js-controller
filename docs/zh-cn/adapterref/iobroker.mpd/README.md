@@ -3,24 +3,30 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mpd/README.md
 title: ioBroker.mpd适配器
-hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
+hash: BE5qE1VcmCJxAla75VRDboDJGzG0LhArx2PnaGfw5mQ=
 ---
-![商标](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
+![标识](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
 ![安装数量](http://iobroker.live/badges/mpd-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mpd.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mpd.svg)
-![测验](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mpd.png?downloads=true)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-＃ioBroker.mpd适配器
+＃ioBroker.mpd适配器[![测试]（https://github.com/instalator/iobroker.mpd/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.mpd/actions/)
 连接到[音乐播放器守护程序](http://musicpd.org)服务器，发送命令，发出事件。
 
 ##文档
 另请参阅[MPD协议文档](http://www.musicpd.org/doc/protocol/)。
 
 ## Changelog
+
+#### 1.0.6
+* (instalator) update tests
+* (algar42) Increase timeout for SayIt to allow playing files longer than 10 secs
+
+#### 1.0.5
+* (instalator) fix error state
 
 #### 1.0.4
 * (instalator) Changed the appearance of the settings
@@ -105,7 +111,7 @@ hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -93,7 +93,7 @@ You can deactivate HTTPS and authentication on these web instance, but better is
 * (bluefox) Added the ignoring of restart on disconnect by the redirection 
 
 ### 4.0.2 (2021-01-24)
-* (Apollon77) Make sure states  which were not set or expired do not crash when requested via services (Sentry IOBROKER-CLOUD-P)
+* (Apollon77) Make sure states which were not set or expired do not crash when requested via services (Sentry IOBROKER-CLOUD-P)
 
 ### 4.0.1 (2021-01-16)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-CLOUD-N)

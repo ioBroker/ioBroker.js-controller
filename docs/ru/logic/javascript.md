@@ -1,10 +1,12 @@
 ---
 title: логика
 lastChanged: 13.09.2018
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/logic/javascript.md
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
-hash: YU15V5Vq3Z/18ExWZEL0QQ0xQ/y0l3NNCIaGieKfvPw=
+editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/logic/javascript.md
+hash: ZudagLmoS2E4nh0peg2u1JzyHNVRwKQZQUIzoquLd1Y=
 ---
 # JavaScript
-?> ***Это подстановочный знак*** . <br><br> Помогите с ioBroker и расширьте эту статью. Пожалуйста, обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть легко приняты.
+?> ***Это заполнитель*** .<br><br> Помогите с ioBroker и расширьте эту статью. Обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения можно было легко применить.
+
+[Документация по функциям на английском языке](https://github.com/ioBroker/ioBroker.javascript/blob/master/docs/en/javascript.md)

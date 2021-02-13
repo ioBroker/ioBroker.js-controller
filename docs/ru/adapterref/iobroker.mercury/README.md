@@ -3,20 +3,22 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mercury/README.md
 title: ioBroker.mercury
-hash: ikSSUb3TbTOnUW3NBRQWuJcu+dMe5mQdW8suNuSSWgo=
+hash: Gczr0skfaOUe1ay5WuSgq6K6o+Rw7pWyI2Kgn+9LpO4=
 ---
-![логотип](../../../en/adapterref/iobroker.mercury/admin/mercury.png)
+![Логотип](../../../en/adapterref/iobroker.mercury/admin/mercury.png)
 
-![Версия NPM](http://img.shields.io/npm/v/iobroker.mercury.svg)
+![Количество установок](http://iobroker.live/badges/mercury-installed.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mercury.svg)
-![Статус зависимости](https://img.shields.io/david/instalator/iobroker.mercury.svg)
-![Известные уязвимости](https://snyk.io/test/github/instalator/ioBroker.mercury/badge.svg)
+![Версия NPM](http://img.shields.io/npm/v/iobroker.mercury.svg)
+![Стабильный](http://iobroker.live/badges/mercury-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.mercury.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/instalator/ioBroker.mercury/master.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker.mercury
-## Ртутный адаптер для ioBroker
-Получение данных от электросчетчиков Меркурий.
+[![Тесты] (https://github.com/instalator/iobroker.mercury/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mercury/actions/)
+
+## Адаптер Mercury для ioBroker
+Получение данных со счетчиков электроэнергии Меркурий.
 Поддерживает TCP / IP и последовательные соединения.
 
 Поддерживаются следующие счетчики электроэнергии:
@@ -37,7 +39,7 @@ hash: ikSSUb3TbTOnUW3NBRQWuJcu+dMe5mQdW8suNuSSWgo=
 
 ## Объекты
 ** RAW ** - отправка команды RAW и получение ответа.
-Команда без адреса и CRC, байты разделены пробелом. Пример: для 1 счетчика фазы - считывание энергии за текущий месяц
+Команда без адреса и CRC, байты разделены пробелом. Пример: для однофазного счетчика - Считывание энергии за текущий месяц.
 
 ```
 32 0F
@@ -49,7 +51,48 @@ hash: ikSSUb3TbTOnUW3NBRQWuJcu+dMe5mQdW8suNuSSWgo=
 
 ## Changelog
 
-### 0.0.5
+### 0.1.4
+* (instalator) added frequency for 1 fase
+* (instalator) added powerQTotal for 1 fase
+* (instalator) added powerSTotal for 1 fase
+* (instalator) added cosfTotal for 1 fase
+* (instalator) change recconect
+
+### 0.1.3
+* (instalator) fixed error [issues 11](https://github.com/instalator/ioBroker.mercury/issues/11)
+* (instalator) fixed warn [issues 8](https://github.com/instalator/ioBroker.mercury/issues/8)
+
+### 0.1.2
+* (instalator) fixed error serial memory
+
+### 0.1.1
+* (instalator) fixed Unsigned value current
+* (instalator) fix for serial number > 240
+* (instalator) change recconect SerialPort
+* (instalator) refactoring
+
+### 0.1.0
+* (instalator) beta
+
+### 0.0.15
+* (instalator) fixed error Power
+
+### 0.0.13
+* (SanSanysch) translate
+* (instalator) added translate
+* (instalator) added temperature, frequency, full power
+* (instalator) fix error
+
+### 0.0.11
+* (instalator) added translate function (PLEASE HELP WITH THE TRANSLATION)
+* (instalator) fix error
+
+### 0.0.10
+* (instalator) Added setting Polling period main parameters
+* (instalator) Added setting Polling period of non-main parameters
+* (instalator) Refactoring and fix error
+
+### 0.0.8
 * (instalator) fixed error
 
 ### 0.0.4
@@ -69,7 +112,7 @@ hash: ikSSUb3TbTOnUW3NBRQWuJcu+dMe5mQdW8suNuSSWgo=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 instalator <vvvalt@mail.ru>
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,23 +3,24 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.synology/README.md
 title: ioBroker Synology适配器
-hash: ZgiDmF/OtQedayveb9quXFQrOdFw7ynRjreiqGbqxw0=
+hash: tmY0K1EQ19t8kcb8dvdFpborvlzzMaoGF8O4LaDq7og=
 ---
-![商标](../../../en/adapterref/iobroker.synology/admin/synology.png)
+![标识](../../../en/adapterref/iobroker.synology/admin/synology.png)
 
 ![安装数量](http://iobroker.live/badges/synology-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.synology.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.synology.svg)
-![测验](http://img.shields.io/travis/instalator/ioBroker.synology/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.synology.png?downloads=true)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 ＃ioBroker Synology适配器
-##说明
+[![测试]（https://github.com/instalator/iobroker.synology/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.synology/actions/)
+
+＃＃ 描述
 该驱动程序使您可以接收数据并管理Synology NAS服务器。
 
 ### 2FA设置
-如果您使用2FA，请参阅说明[这里](docs/en/template.md)
+如果使用2FA，请参阅说明[这里](docs/en/template.md)
 
 ### SendMethod
 您可以通过设置sendMethod对象来发送任何命令（方法），例如：获取SurveillanceStation信息是一个没有附加参数的getInfo方法。
@@ -49,16 +50,16 @@ hash: ZgiDmF/OtQedayveb9quXFQrOdFw7ynRjreiqGbqxw0=
 *搜索-控制播放搜索（0-100）
 * play_folder-将文件夹中的曲目添加到播放列表（id文件夹，例如``dir_5816''）
 * play_track-按其ID播放曲目（例如``music_120847''）
-* current_play-通过播放列表中当前曲目的编号控制和状态（例如``14''）
+* current_play-根据当前曲目在播放列表中的编号来控制和状态（例如``14''）
 
 *** DownloadStation ***：
 
-* activeTask-不完整的下载数量
+* activeTask-不完整下载数
 * listTasks-下载不完整的数组
 * shedule_enabled，shedule_emule_enabled-计划或立即下载的状态和控制
 * add_hash_download-添加到哈希下载（例如``8BD3CAD02FC9ECB661A12378414FA310D3F3FE03''）
 * add_url_download-添加下载URL或磁铁链接
-*文件夹-要下载的文件夹，在添加下载之前进行设置，否则将加载到默认文件夹中
+*文件夹-要下载的文件夹，在添加下载之前设置，否则将加载到默认文件夹中
 * pause_task，resume_task-暂停下载并继续。 （例如``dbid_170''或``170''或``all''）
 
 ###消息框
@@ -69,6 +70,42 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ```
 
 ## Changelog
+
+### 0.1.20
+* (instalator) fixed error
+
+### 0.1.18
+* (instalator) change link for album cover
+
+### 0.1.17
+* (instalator) added Sentry plugin support
+
+### 0.1.16
+* (instalator) fixed error
+
+### 0.1.15
+* (instalator) fixed error in parse Info
+* (instalator) fixed api undefined
+
+### 0.1.14
+* (instalator) fixed missing [datapoints](https://github.com/instalator/ioBroker.synology/issues/43)
+* (instalator) refactoring
+* (instalator) Changed the logging of some errors
+* (instalator) Changed format session in syno package
+
+### 0.1.11
+* (instalator) added motionDetected state
+* (SpectreKr*) Adding to FS Sharing
+
+### 0.1.10
+* (instalator) fixed copy cover file
+* (instalator) fix get packages for DSM 5.x
+* (instalator) Added option to select services for receiving data
+
+### 0.1.8
+* (instalator) fix error addDownload
+* (instalator) fixed listRadios
+* (instalator) fixed get cover
 
 ### 0.1.7
 * (instalator) fixed 2FA
@@ -123,7 +160,7 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

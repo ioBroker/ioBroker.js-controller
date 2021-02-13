@@ -3,21 +3,22 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kodi/README.md
 title: АдаптерKodiдляioBroker（JSON-RPC API）
-hash: 7CNAK2pno9o5iQNt4r+Gnu4vGbI+c25SGXrMG5Me1lk=
+hash: 0uKdz3zEnf9fcfqHeXAdWAnnKpfhDdB0AHr4OFRxmzs=
 ---
-![商标](../../../en/adapterref/iobroker.kodi/admin/kodi.png)
+![标识](../../../en/adapterref/iobroker.kodi/admin/kodi.png)
 
 ![NPM版本](https://img.shields.io/npm/v/iobroker.kodi.svg)
 ![安装数量](http://iobroker.live/badges/kodi-installed.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.kodi.svg)
-![测验](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)
+
+[![测试]（https://github.com/instalator/iobroker.kodi/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.kodi/actions/)
 
 [英文手册](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
 
 ＃АдаптерKodiдляioBroker（JSON-RPC API）
-KODIпоAPI JSON-RCP[тут]（http://kodi.wiki/view/JSON-RPC_API）иполныйсписокдоступныхкоманд（дляпротоколаверсии6）[тут](http://kodi.wiki/view/JSON-RPC_API/v6)。
+API JSON-RCP[тут]（http://kodi.wiki/view/JSON-RPC_API）иполныйсписокдоступныхкоманд（дляпротоколаверсии6）[тут](http://kodi.wiki/view/JSON-RPC_API/v6)。
 
 ***Примечание：ЭтотадаптертребуетNodejs 8.0 + ***
 
@@ -37,7 +38,7 @@ _Примечание：Файлadvancedsettings.xmlнесуществуетпо
 ```
 
 ## Конфигурация драйвера
-在JSON-RPC API（поумолчанию9090）和IP上添加IP标记。
+在JSON-RPC API（поумолчанию9090）和IP上创建IP协议。
 
 ## Использование
 ### ShowNotif：
@@ -45,16 +46,16 @@ _Примечание：Файлadvancedsettings.xmlнесуществуетпо
 
 **图片：**Уровеньсообщения
 
-  *'info'-0（默认），
-  *'警告'-1，
-  *'错误'-2。
+  *'info'-0（默认），
+  *'警告'-1，
+  *'错误'-2。
 
 **显示时间：**Времяотображениясообщениявмиллисекундах，минимум1500макс30000мс。
 
 **Пример:**
 
- * 1;Внимание;Протечкаводы; 15000
- *Внимание;Протечкаводы; 2; 10000
+ * 1;Внимание;Протечкаводы; 15000
+ *Внимание;Протечкаводы; 2; 10000
  * Внимание;Протечка воды
  * Протечка воды
 
@@ -70,24 +71,24 @@ sendTo("kodi.0", {
 ```
 
 ### SwitchPVR：
-ПереключениеPVR IPTVканаловпоназваниюканалавплейлисте。
+ПереключениеPVR IPTV的视频。
 **Пример：**ТВканал-探索科学探索，发现，
 
-### YouTube：
+＃＃＃ YouTube：
 Дляоткрытиявидеоссастаyoutubeдостаточнозаписатькодвидеовданныйстатус。 Начинаясверсии0.1.5иввышеможновставлятьпрямуюссылкунавидео，以及такжекодилиполнуиссылкуна。
 Например：Дляоткрытияэтого[видео](https://www.youtube.com/watch?v=Bvmxr24D4TA)，необходимоустановитьв-Bvmxr24D4TA
 
-###打开：
+＃＃＃ 打开：
 Сюдазаписываетсяссылканамедиконтентвсетиинтернетлибопутьдолокальногомедиафайла。
 ПослезаписизначенияначнетсявоспроизведениенапроигрывателеKODI。
 
-###位置：
-Текущаяпозициявплейлисте，такжевэтотстатусможнозаписатьнеобходимуюпозициюисет
+＃＃＃ 位置：
+Текущаяпозициявплейлисте，такжевэтотстатусможнозаписатьнеобходимуюпозициюисетет
 
-###寻求：
+＃＃＃ 寻找：
 标记0到100时。
 
-###重复：
+＃＃＃ 重复：
 Повтор воспроизведения, принимает следующие значения:
 
 *关闭-повторвоспроизведенияотключен
@@ -98,11 +99,11 @@ sendTo("kodi.0", {
 Перемешиваниеспискатрековвплейлистедляслучайноговоспроизведения。
 Принимаетзначенияtrue和false
 
-###播放：
+＃＃＃ 玩：
 Стартвоспроизведения（对，错）
 
-###速度：
-Скоростьвоспроизведения。 Фиксированныезначения（-32，-16，-8，-4，-2，-1，0，1，2，4，8，16，16，32），атакже'increment'и'decrement'
+＃＃＃ 速度：
+Скоростьвоспроизведения。 Фиксированныезначения（-32，-16，-8，-4，-2，-1，0，1，2，4，4，16，16，32），атакже'increment'и'decrement'
 
 ＃＃＃ 目录：
 Сюда записывается путь до папки или диска, в ответ в этот статус записывается список каталогов указанной папки или диска.
@@ -122,14 +123,28 @@ sendTo("kodi.0", {
 
 ```
 
-###系统：
- -EjectOpticalDrive-Извлекаетилизакрываетдисководоптическихдисков（еслиимеется）
- -冬眠-включениеспящегорежима
- -重新启动-перезагрузкасистемы
- -关闭-выключаетсистему
- -挂起-приостанавливаетKodi
+＃＃＃ 系统：
+ -EjectOpticalDrive-Извлекаетилизакрываетдисководоптическихдисков（еслиимеется）
+ -冬眠-включениеспящегорежима
+ -重新启动-перезагрузкасистемы
+ -关闭-выключаетсистему
+ -暂挂-приостанавливаетKodi
 
 ## Changelog
+
+#### 2.0.5
+* (instalator) changed css classes
+* (instalator) fixed error
+
+#### 2.0.4
+* (instalator) fixed thumbnails widget
+* (instalator) fixed info.tagline
+
+#### 2.0.2
+* (instalator) changed title in io-package.json
+* (instalator) changed seek
+* (instalator) fixed widgets
+* (instalator) fixed for thumbnails
 
 #### 2.0.1 (2020-04-13)
 * (instalator) fixed error if not used PVR

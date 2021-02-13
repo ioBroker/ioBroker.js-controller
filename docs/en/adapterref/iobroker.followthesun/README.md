@@ -23,6 +23,11 @@ Solar-noon values for some days like today, tomorrow or beginn of spring/summer/
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.2.7 (2021-02-11)
+* (HGlab01) Fix sun-movement bug (#61)
+* (HGlab01) Optimize keywords
+* (HGlab01) Bump node-schedule from 1.3.2 to 2.0.x
+
 ### 0.2.6 (2020-12-30)
 * (HGlab01) implement license check provided by app.fossa.com
 
@@ -47,9 +52,6 @@ Solar-noon values for some days like today, tomorrow or beginn of spring/summer/
 
 ### 0.1.0 (2020-11-30)
 * (HGlab01) first beta release
-
-### 0.0.7-0 (2020-07-21)
-* (HGlab01) alpha version
 
 ## License
 MIT License

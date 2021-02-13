@@ -3,30 +3,39 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mikrotik/README.md
 title: kein Titel
-hash: 7EeWKM8SDAAtM9HgqMYmms/HyCa9sK8wBPztX2k0EGQ=
+hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
 ---
 ![Logo](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png) ioBroker MikroTik Router Adapter
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mikrotik-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.mikrotik.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mikrotik.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.mikrotik/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mikrotik.png?downloads=true)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 =================
+
+[![Tests] (https://github.com/instalator/iobroker.mikrotik/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mikrotik/actions/)
 
 ## Verwenden
 ### Add_firewall
 Adresse zur Firewall-Liste hinzufügen und aktivieren.
 z.B. `name,127.0.0.1,comment`.
 
-### Raw Befehls-API an mikrotik senden, z. `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`.
+### Raw Befehls-API an mikrotik senden, z. B.: `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. ODER `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
 ### Neu starten, herunterfahren mikrotik neu starten / herunterfahren
-### Usb_reset USB in Mikrotik zurücksetzen
+### Usb_reset Stromversorgung USB in der Mikrotik zurücksetzen
 *Die erstellten Objekte werden beim Löschen im Router nicht automatisch gelöscht.*
 
 ## Changelog
+
+#### 1.0.13
+* (instalator) changed parse RAW command
+* (instalator) added last-link-up-time and last-link-down-time to interface
+* (instalator) added [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/31)
+
+#### 1.0.12
+* (instalator) fixed error symb
 
 #### 1.0.11
 * (instalator) fixed [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/28)
@@ -93,7 +102,7 @@ z.B. `name,127.0.0.1,comment`.
 
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

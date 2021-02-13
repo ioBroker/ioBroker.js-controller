@@ -3,29 +3,34 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.foobar2000/README.md
 title: Адаптер Foobar2000 для iobroker
-hash: 23LA1gH4BQKVFN7ld70hp/wjxpY6JGRskAhLIhsXfjs=
+hash: fbOZYCXQIBRpKL+vSNQAHr5EXJhUtwi/2rDWlKRDnEQ=
 ---
-![логотип](../../../en/adapterref/iobroker.foobar2000/admin/foobar2000.png)
+![Логотип](../../../en/adapterref/iobroker.foobar2000/admin/foobar2000.png)
 
 ![Количество установок](http://iobroker.live/badges/foobar2000-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.foobar2000.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.foobar2000.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.foobar2000/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.foobar2000.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# Foobar2000 адаптер для iobroker
-![Настройки администратора.](../../../en/adapterref/iobroker.foobar2000/admin/admin.png)
+# Foobar2000 адаптер для iobroker [![Тесты] (https://github.com/instalator/iobroker.foobar2000/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.foobar2000/actions/)
+![настройки администратора.](../../../en/adapterref/iobroker.foobar2000/admin/admin.png)
 
 ## С помощью
 Описание [тут](http://blog.instalator.ru/archives/541).
-Для управления проигрывателем необходимо установить плагин [foo_httpcontrol](https://bitbucket.org/oblikoamorale/foo_httpcontrol/downloads/).
-Обложка для ссылки в файле, необходимая в файле ```c:\Users\{USER}\AppData\Roaming\foobar2000\foo_httpcontrol_data\foobar2000controller\config``` изменить параметр ```albumart_prefer_embedded=0```
+Для управления проигрывателем установить плагин [foo_httpcontrol](https://bitbucket.org/oblikoamorale/foo_httpcontrol/downloads/).
+Для отображения обложки как ссылка на файл, необходимо в файле ```c:\Users\{USER}\AppData\Roaming\foobar2000\foo_httpcontrol_data\foobar2000controller\config``` изменить параметр ```albumart_prefer_embedded=0```
 
 Для управления плеером необходимо установить плагин [foo_httpcontrol](https://bitbucket.org/oblikoamorale/foo_httpcontrol/downloads/).
-Чтобы отобразить обложку в виде ссылки на файл, в файле ```c:\Users\{USER}\AppData\Roaming\foobar2000\foo_httpcontrol_data\foobar2000controller\config``` измените параметр ```albumart_prefer_embedded = 0```
+Чтобы обложка отображалась как ссылка на файл, в файле ```c:\Users\{USER}\AppData\Roaming\foobar2000\foo_httpcontrol_data\foobar2000controller\config``` измените параметр ```albumart_prefer_embedded = 0```
 
 ## Changelog
+
+#### 2.0.4
+* (instalator) fixed error
+
+#### 2.0.3
+* (instalator) fixed admin error
 
 #### 2.0.2
 * (instalator) fixed error
@@ -56,7 +61,7 @@ hash: 23LA1gH4BQKVFN7ld70hp/wjxpY6JGRskAhLIhsXfjs=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

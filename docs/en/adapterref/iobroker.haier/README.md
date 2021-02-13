@@ -2,13 +2,15 @@
 # ioBroker Haier air conditioning adapter
 =================
 
-![Number of Installations](http://iobroker.live/badges/haier-installed.svg) ![Number of Installations](http://iobroker.live/badges/haier-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.haier.svg)](https://www.npmjs.com/package/iobroker.haier)
+![Number of Installations](http://iobroker.live/badges/haier-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/haier-stable.svg) 
+[![NPM version](http://img.shields.io/npm/v/iobroker.haier.svg)](https://www.npmjs.com/package/iobroker.haier)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.haier.svg)](https://www.npmjs.com/package/iobroker.haier)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.haier/master.svg)](https://travis-ci.org/instalator/ioBroker.haier)
-
+[![Tests](https://github.com/instalator/iobroker.haier/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.haier/actions/)  
+ 
 [![NPM](https://nodei.co/npm/iobroker.haier.png?downloads=true)](https://nodei.co/npm/iobroker.haier/)
 
-[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
+[![Donate](https://img.shields.io/badge/Donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 IoBroker Haier adapter is used to control your Haier air conditioning via UART in conjunction with the TCP to Serial Gateway.
@@ -70,6 +72,9 @@ example: power on - **0A000000000001014D02**
 
 ## Changelog
 
+### 1.0.4
+   (instalator) change test
+
 ### 1.0.3
    (instalator) support admin3
    (instalator) support compact mode
@@ -107,7 +112,7 @@ example: power on - **0A000000000001014D02**
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

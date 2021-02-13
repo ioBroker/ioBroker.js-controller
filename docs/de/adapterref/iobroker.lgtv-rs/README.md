@@ -3,18 +3,19 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lgtv-rs/README.md
 title: ioBroker LG TV RS232 Adapter
-hash: ggSIdOhu8GvDjjGhpesEpxaNFGX5g/UMCGsvDjQZnXM=
+hash: Q0Lbf74YZj8BycBQkEPeWUo7hxoteQCdGvVyv8wIWiA=
 ---
 ![Logo](../../../en/adapterref/iobroker.lgtv-rs/admin/lg_admin.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/lgtv-rs-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.lgtv-rs.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.lgtv-rs.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.lgtv-rs/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.lgtv-rs.png?downloads=true)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker LG TV RS232 Adapter
+[![Tests] (https://github.com/instalator/iobroker.lgtv-rs/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.lgtv-rs/actions/)
+
 Der ioBroker LG TV RS232-Adapter dient zur Steuerung Ihres LG TV über RS232 in Verbindung mit dem Etnernet Gateway.
 Die Liste der Modelle und Befehle ist in der Datei `admin/commands.json` enthalten.
 
@@ -28,6 +29,15 @@ Sie benötigen außerdem einen Ethernet Shield W5100 oder W5500 und einen RS232-
 Unterstützte Modelle: LD750 wird ...
 
 ## Changelog
+
+### 0.1.1
+  (instalator) change test
+
+### 0.1.0
+  (instalator) support compact mode
+  (instalator) support admin3
+  (instalator) refactoring
+
 ### 0.0.4
   (instalator) fix error
 
@@ -40,7 +50,7 @@ Unterstützte Modelle: LD750 wird ...
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

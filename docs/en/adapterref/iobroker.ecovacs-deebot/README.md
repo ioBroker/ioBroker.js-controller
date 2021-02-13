@@ -53,6 +53,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 * Information on how to use this adapter can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
+### States
+
+* Information about the states can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (English) and [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Datenpunkte-%28DE%29) (German)
+
 ## Known issues
 
 * For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
@@ -65,9 +69,12 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.1.0
+* Stable release
+
 ### 1.0.13
 * Using library version 0.5.6
-* Several improvements and fixes
+* Some improvements and fixes
 
 ### 1.0.12
 * Using library version 0.5.5
@@ -141,7 +148,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 * Some enhancements and fixes
 
 ### 1.0.0
-* Stable Release
+* Stable release
 
 ### 0.0.1 - 0.6.5
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)

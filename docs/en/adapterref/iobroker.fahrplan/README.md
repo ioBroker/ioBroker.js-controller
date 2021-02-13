@@ -213,6 +213,10 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Gaudes) Add product selection to departure timetable
+* (Gaudes) Enhanced information reporting on error (Sentry Breadcrumbs)
+
 ### 1.0.3 (2021-01-27)
 * (Gaudes) Station search returns only stations (Sentry Multiple results found for station)
 * (Gaudes) Integrate SBB profile

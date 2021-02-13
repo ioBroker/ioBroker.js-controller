@@ -3,16 +3,17 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.kodi/README.md
 title: Kodдаптер Kodi для ioBroker (JSON-RPC-API)
-hash: 7CNAK2pno9o5iQNt4r+Gnu4vGbI+c25SGXrMG5Me1lk=
+hash: 0uKdz3zEnf9fcfqHeXAdWAnnKpfhDdB0AHr4OFRxmzs=
 ---
 ![Logo](../../../en/adapterref/iobroker.kodi/admin/kodi.png)
 
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.kodi.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/kodi-installed.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.kodi.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)
+
+[![Tests] (https://github.com/instalator/iobroker.kodi/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.kodi/actions/)
 
 [Englisches Handbuch](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
 
@@ -25,7 +26,7 @@ hash: 7CNAK2pno9o5iQNt4r+Gnu4vGbI+c25SGXrMG5Me1lk=
 Включение удаленного управления и веб-сервера.
 ![Fernbedienung aktivieren.](../../../en/adapterref/iobroker.kodi/admin/remote.png)
 
-JSON-RPC-API использует **по умолчанию порт 9090** для того чтобы его изменить необходимо внести изменения §
+JSON-RPC-API использует **по умолчанию порт 9090**
 
 _Примечание: Файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его! _
 
@@ -45,16 +46,16 @@ _Примечание: Файл advancedsettings.xml не существует �
 
 ** Bild: ** Уровень сообщения
 
-  * 'info' - 0 (Standard),
-  * 'Warnung' - 1,
-  * 'Fehler' - 2.
+  * 'info' - 0 (Standard),
+  * 'Warnung' - 1,
+  * 'Fehler' - 2.
 
 ** Anzeigezeit: ** Время отображения сообщения в миллисекундах, минимум 1500 макс 30000 мс.
 
 **Пример:**
 
- * 1; Внимание; Протечка воды; 15000
- * Внимание; Протечка воды; 2; 10000
+ * 1; Внимание; Протечка воды; 15000
+ * Внимание; Протечка воды; 2; 10000
  * Внимание;Протечка воды
  * Протечка воды
 
@@ -71,10 +72,10 @@ sendTo("kodi.0", {
 
 ### SwitchPVR:
 Переключение PVR IPTV каналов по названию канала в плейлисте.
-** :ример: ** ТВ канал - Discovery Science найдет как по полному наименованию так и по entdecken,
+** :ример: ** ТВ канал - Discovery Science найдет как по полному наименованию так к по entdecken,
 
 ### Youtube:
-Для открытия видео с сайта youtube достаточно записать код видео в данный статус. Начиная с версии 0.1.5 и в е можно вставлять прямую ссылку на видео, а также код или полную ссылке са
+Для открытия видео с сайта youtube достаточно записать код видео в данный статус. Начиная с версии 0.1.5 и выше можно вставлять прямую ссылку на видео, также код или полную ссылке
 Например: Для открытия этого [видео](https://www.youtube.com/watch?v=Bvmxr24D4TA), необходимо установить в статус - Bvmxr24D4TA
 
 ### Öffnen:
@@ -82,7 +83,7 @@ sendTo("kodi.0", {
 После записи значения начнется воспроизведение на проигрывателе KODI.
 
 ### Position:
-Текущая позиция в плейлисте, так же в этот статус можно записать необходимую позицую и KODI тут е
+Текущая позиция в плейлисте, так же в втот статус можно записать необходимую позицую и KODI тут
 
 ### Suchen:
 Текущее значение позиции воспроизведения в процентах от 0 до 100.
@@ -123,13 +124,27 @@ sendTo("kodi.0", {
 ```
 
 ### System:
- - EjectOpticalDrive - Извлекает или закрывает дисковод оптических дисков (если имеется)
- - Ruhezustand - включение спящего режима
- - Neustart - перезагрузка системы
- - Herunterfahren - выключает систему
- - Suspend - приостанавливает Kodi
+ - EjectOpticalDrive - Извлекает или закрывает дисковод оптических дисков (если имеется)
+ - Ruhezustand - включение спящего режима
+ - Neustart - перезагрузка системы
+ - Herunterfahren - выключает систему
+ - Suspend - приостанавливает Kodi
 
 ## Changelog
+
+#### 2.0.5
+* (instalator) changed css classes
+* (instalator) fixed error
+
+#### 2.0.4
+* (instalator) fixed thumbnails widget
+* (instalator) fixed info.tagline
+
+#### 2.0.2
+* (instalator) changed title in io-package.json
+* (instalator) changed seek
+* (instalator) fixed widgets
+* (instalator) fixed for thumbnails
 
 #### 2.0.1 (2020-04-13)
 * (instalator) fixed error if not used PVR

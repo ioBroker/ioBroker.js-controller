@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
+hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
 ---
-![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
+![标识](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
@@ -40,7 +40,7 @@ hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
 * Deebot OZMO苗条10
 * Deebot U2 Pro /电源
 
-##安装
+＃＃ 安装
 建议使用Node.js版本10或更高版本。
 
 该适配器使用画布库，可能需要其他安装。
@@ -55,8 +55,11 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
-##用法
-*有关如何使用此适配器的信息可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
+＃＃ 用法
+*有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
+
+＃＃＃ 状态
+*有关状态的信息可以在[here]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29）（英文）和[here]（https://github.com/github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-％28DE％29）（德语）
 
 ＃＃ 已知的问题
 *对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时
@@ -70,6 +73,13 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 我绝不隶属于ECOVACS。
 
 ## Changelog
+
+### 1.1.0
+* Stable release
+
+### 1.0.13
+* Using library version 0.5.6
+* Some improvements and fixes
 
 ### 1.0.12
 * Using library version 0.5.5
@@ -135,34 +145,17 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Some refactoring
 * Bump dependencies
 
-### 1.0.2 - 1.0.3
+### 1.0.1 - 1.0.3
 * Added support for Ozmo T8 AIVI
-
-### 1.0.1
 * Compact mode support
 * Added a button to save the last used custom area values
 * Added buttons to rerun saved custom areas
 * Some enhancements and fixes
 
 ### 1.0.0
-* Stable Release
+* Stable release
 
-### 0.6.3 - 0.6.5
-* Using library version 0.4.13
-* Set flag for compact mode to false
-* Some minor fixes
-* Some translations added
-
-### 0.6.2
-* Using library version 0.4.12
-* (boriswerner) Alternative API call for last clean log info (920/950)
-* (mrbungle64) Periodically polling of CleanLogs
-
-### 0.6.0 - 0.6.1
-* Using library version 0.4.10/11
-* Several enhancements and fixes
-
-### 0.0.1 - 0.5.9
+### 0.0.1 - 0.6.5
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)
 
 ## License

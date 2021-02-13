@@ -2,25 +2,31 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mpd/README.md
-title: адаптер ioBroker.mpd
-hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
+title: ioBroker.mpd адаптер
+hash: BE5qE1VcmCJxAla75VRDboDJGzG0LhArx2PnaGfw5mQ=
 ---
-![логотип](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
+![Логотип](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
 ![Количество установок](http://iobroker.live/badges/mpd-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mpd.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mpd.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mpd.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# IoBroker.mpd адаптер
-Подключитесь к серверу [музыкальный проигрыватель демон](http://musicpd.org), отправляйте команды, отправляйте события.
+# IoBroker.mpd адаптер [![Тесты] (https://github.com/instalator/iobroker.mpd/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mpd/actions/)
+Подключайтесь к серверу [демон музыкального плеера](http://musicpd.org), отправляйте команды, отправляйте события.
 
 ## Документация
-Смотрите также [Протокол MPD Документация](http://www.musicpd.org/doc/protocol/).
+См. Также [Документация по протоколу MPD](http://www.musicpd.org/doc/protocol/).
 
 ## Changelog
+
+#### 1.0.6
+* (instalator) update tests
+* (algar42) Increase timeout for SayIt to allow playing files longer than 10 secs
+
+#### 1.0.5
+* (instalator) fix error state
 
 #### 1.0.4
 * (instalator) Changed the appearance of the settings
@@ -105,7 +111,7 @@ hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

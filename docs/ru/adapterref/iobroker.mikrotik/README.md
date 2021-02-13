@@ -3,30 +3,39 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mikrotik/README.md
 title: без названия
-hash: 7EeWKM8SDAAtM9HgqMYmms/HyCa9sK8wBPztX2k0EGQ=
+hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
 ---
-![логотип](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png) ioBroker Адаптер MikroTik Router
+![Логотип](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png) ioBroker MikroTik Router адаптер
 
 ![Количество установок](http://iobroker.live/badges/mikrotik-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.mikrotik.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mikrotik.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.mikrotik/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mikrotik.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 =================
 
+[![Тесты] (https://github.com/instalator/iobroker.mikrotik/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mikrotik/actions/)
+
 ## С помощью
 ### Add_firewall
-Добавить адрес в список брандмауэров и включить.
+Добавьте адрес в список брандмауэра и включите.
 например `name,127.0.0.1,comment`.
 
-### Raw Отправить команду api в mikrotik, например. `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`.
-### Перезагрузка, выключение Перезагрузка / выключение микротик
+### Raw Отправить api команды в mikrotik, например: `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. ИЛИ `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
+### Перезагрузка, выключение перезагрузка / выключение микротика
 ### Usb_reset Сброс питания USB в микротике
 *Созданные объекты не удаляются автоматически при удалении в роутере.*
 
 ## Changelog
+
+#### 1.0.13
+* (instalator) changed parse RAW command
+* (instalator) added last-link-up-time and last-link-down-time to interface
+* (instalator) added [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/31)
+
+#### 1.0.12
+* (instalator) fixed error symb
 
 #### 1.0.11
 * (instalator) fixed [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/28)
@@ -93,7 +102,7 @@ hash: 7EeWKM8SDAAtM9HgqMYmms/HyCa9sK8wBPztX2k0EGQ=
 
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

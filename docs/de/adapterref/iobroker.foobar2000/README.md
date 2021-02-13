@@ -3,18 +3,17 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.foobar2000/README.md
 title: Foobar2000 Adapter für iobroker
-hash: 23LA1gH4BQKVFN7ld70hp/wjxpY6JGRskAhLIhsXfjs=
+hash: fbOZYCXQIBRpKL+vSNQAHr5EXJhUtwi/2rDWlKRDnEQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.foobar2000/admin/foobar2000.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/foobar2000-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.foobar2000.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.foobar2000.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.foobar2000/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.foobar2000.png?downloads=true)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# Foobar2000 Adapter für iobroker
+# Foobar2000 Adapter für iobroker [![Tests] (https://github.com/instalator/iobroker.foobar2000/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.foobar2000/actions/)
 ![Admin-Einstellungen.](../../../en/adapterref/iobroker.foobar2000/admin/admin.png)
 
 ## Verwenden
@@ -26,6 +25,12 @@ Um den Player zu steuern, müssen Sie das Plugin [foo_httpcontrol](https://bitbu
 Um das Cover als Link zu einer Datei anzuzeigen, ändern Sie in der Datei ```c:\Users\{USER}\AppData\Roaming\foobar2000\foo_httpcontrol_data\foobar2000controller\config``` den Parameter ```albumart_prefer_embedded = 0```
 
 ## Changelog
+
+#### 2.0.4
+* (instalator) fixed error
+
+#### 2.0.3
+* (instalator) fixed admin error
 
 #### 2.0.2
 * (instalator) fixed error
@@ -56,7 +61,7 @@ Um das Cover als Link zu einer Datei anzuzeigen, ändern Sie in der Datei ```c:\
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

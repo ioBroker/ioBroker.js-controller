@@ -3,7 +3,7 @@
 ![Number of Installations](http://iobroker.live/badges/starline-installed.svg) ![Number of Installations](http://iobroker.live/badges/starline-stable.svg) 
 [![NPM version](https://img.shields.io/npm/v/iobroker.starline.svg)](https://www.npmjs.com/package/iobroker.starline)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.starline.svg)](https://www.npmjs.com/package/iobroker.starline)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.starline/master.svg)](https://travis-ci.org/instalator/ioBroker.starline)
+[![Tests](https://github.com/instalator/iobroker.starline/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.starline/actions/)
 
 [![NPM](https://nodei.co/npm/iobroker.starline.png?downloads=true)](https://nodei.co/npm/iobroker.starline/)
 
@@ -24,6 +24,9 @@
   - Отключение датчиков удара и наклона
 
 ## Changelog
+
+#### 1.1.3
+* (instalator) fixed error parse mayak
 
 #### 1.1.2
 * (instalator) fixed objects

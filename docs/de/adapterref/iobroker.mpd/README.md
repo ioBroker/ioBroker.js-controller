@@ -3,24 +3,30 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mpd/README.md
 title: ioBroker.mpd Adapter
-hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
+hash: BE5qE1VcmCJxAla75VRDboDJGzG0LhArx2PnaGfw5mQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mpd-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.mpd.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mpd.svg)
-![Tests](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mpd.png?downloads=true)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# IoBroker.mpd Adapter
+# IoBroker.mpd Adapter [![Tests] (https://github.com/instalator/iobroker.mpd/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mpd/actions/)
 Stellen Sie eine Verbindung zu einem [Musik-Player-Daemon](http://musicpd.org) Server her, senden Sie Befehle, senden Sie Ereignisse aus.
 
 ## Dokumentation
 Siehe auch die [MPD-Protokolldokumentation](http://www.musicpd.org/doc/protocol/).
 
 ## Changelog
+
+#### 1.0.6
+* (instalator) update tests
+* (algar42) Increase timeout for SayIt to allow playing files longer than 10 secs
+
+#### 1.0.5
+* (instalator) fix error state
 
 #### 1.0.4
 * (instalator) Changed the appearance of the settings
@@ -105,7 +111,7 @@ Siehe auch die [MPD-Protokolldokumentation](http://www.musicpd.org/doc/protocol/
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

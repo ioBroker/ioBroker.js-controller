@@ -1,15 +1,14 @@
 ![Logo](admin/exchangerates.png)
 # ioBroker.exchangerates
 
+![Number of Installations](http://iobroker.live/badges/exchangerates-installed.svg)
+![Number of Installations](http://iobroker.live/badges/exchangerates-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.exchangerates.svg)](https://www.npmjs.com/package/iobroker.exchangerates)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.exchangerates.svg)](https://www.npmjs.com/package/iobroker.exchangerates)
-[![Dependency Status](https://img.shields.io/david/instalator/iobroker.exchangerates.svg)](https://david-dm.org/instalator/iobroker.exchangerates)
-[![Known Vulnerabilities](https://snyk.io/test/github/instalator/ioBroker.exchangerates/badge.svg)](https://snyk.io/test/github/instalator/ioBroker.exchangerates)
-[![Travis-CI](http://img.shields.io/travis/instalator/ioBroker.exchangerates/master.svg)](https://travis-ci.org/instalator/ioBroker.exchangerates)
-
+[![Tests](https://github.com/instalator/iobroker.exchangerates/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.exchangerates/actions/)   
 [![NPM](https://nodei.co/npm/iobroker.exchangerates.png?downloads=true)](https://nodei.co/npm/iobroker.exchangerates/)
 
-[![Donate](https://img.shields.io/badge/donate-YooMoney-green)](https://sobe.ru/na/instalator)
+[![Donate](https://img.shields.io/badge/Donate-YooMoney-green)](https://sobe.ru/na/instalator)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 ## exchangerates adapter for ioBroker
@@ -21,6 +20,9 @@ Exchange rates Central Bank of Russia and European Central Bank and more...
 [Курсы ЦБ РФ в XML и JSON, API](https://www.cbr-xml-daily.ru)
 
 ## Changelog
+
+### 0.0.14
+* (instalator) change test
 
 ### 0.0.13
 * (instalator) fixed error POL
@@ -44,7 +46,7 @@ Exchange rates Central Bank of Russia and European Central Bank and more...
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

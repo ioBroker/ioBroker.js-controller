@@ -4,7 +4,7 @@
 
 ![Number of Installations](http://iobroker.live/badges/mclighting-installed.svg) ![Number of Installations](http://iobroker.live/badges/mclighting-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mclighting.svg)](https://www.npmjs.com/package/iobroker.mclighting)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mclighting.svg)](https://www.npmjs.com/package/iobroker.mclighting)
-[![Tests](http://img.shields.io/travis/instalator/ioBroker.mclighting/master.svg)](https://travis-ci.org/instalator/ioBroker.mclighting)
+[![Tests](https://github.com/instalator/iobroker.mclighting/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.mclighting/actions/) 
 
 [![NPM](https://nodei.co/npm/iobroker.mclighting.png?downloads=true)](https://nodei.co/npm/iobroker.mclighting/)
 
@@ -126,6 +126,9 @@ Where <brightness> is the brightness as value 0-255.
  Current name fx_mode
   
 ## Changelog
+
+### 0.1.2
+* (instalator) change role
 
 ### 0.1.1
 * (Bluefox) Fix clear timeouts

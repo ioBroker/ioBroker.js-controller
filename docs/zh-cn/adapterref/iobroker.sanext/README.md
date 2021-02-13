@@ -3,23 +3,29 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sanext/README.md
 title: ioBroker.sanext
-hash: 6iYqEKKZNls5JcrCiCT7RGj2FfS30U6FkMsDfFujIWo=
+hash: /1NQAs5hsEO5zROe69IA2MO23xH4YVyVzS9swD7JnWo=
 ---
-![商标](../../../en/adapterref/iobroker.sanext/admin/sanext_l.png)
+![标识](../../../en/adapterref/iobroker.sanext/admin/sanext_l.png)
 
+![安装数量](http://iobroker.live/badges/sanext-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sanext.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sanext.svg)
-![依赖状态](https://img.shields.io/david/instalator/iobroker.sanext.svg)
-![已知漏洞](https://snyk.io/test/github/instalator/ioBroker.sanext/badge.svg)
-![特拉维斯](http://img.shields.io/travis/instalator/ioBroker.sanext/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.sanext.png?downloads=true)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 ＃ioBroker.sanext
+[![测试]（https://github.com/instalator/iobroker.sanext/workflows/Test%20and%20Release/badge.svg）](https://github.com/instalator/ioBroker.sanext/actions/)
+
 ##用于ioBroker的Sanext适配器
 从热量表Sanext接收数据
 
 ## Changelog
+
+### 0.0.5
+* (instalator) change test
+
+### 0.0.4
+* (instalator) fixed error
 
 ### 0.0.3
 * (GermanBluefox) Formatting and timer behavior cleaning
@@ -30,7 +36,7 @@ hash: 6iYqEKKZNls5JcrCiCT7RGj2FfS30U6FkMsDfFujIWo=
 ## License
 MIT License
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

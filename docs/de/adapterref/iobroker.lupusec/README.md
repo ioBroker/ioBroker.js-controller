@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: 6eC3phPn7QBqnpD1kNkMoEgysEnn6ByIWJjmi1B783U=
+hash: q8KHPpsXKoRn9lzMDs/fu53HSoekkRwcSEQYvFNNCKg=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -27,14 +27,14 @@ Detaillierte Informationen finden Sie hier: [Lupus](https://www.lupus-electronic
 ## Installation
 1. Installieren Sie den Adapter
 
-Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter in ioBroker zu konfigurieren. Der Discovery-Adapter sucht nach der richtigen IP-Adresse des Lupusec-Alarmsystems. Der andere Weg ist es, es manuell zu konfigurieren
+Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter in ioBroker zu konfigurieren. Der Erkennungsadapter sucht nach der richtigen IP-Adresse des Lupusec-Alarmsystems. Der andere Weg ist es, es manuell zu konfigurieren
 
 2. Manuelle Konfiguration des Adapters
 
 Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie nach Möglichkeit https (empfohlen).
 Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren möchten), wählen Sie einen Benutzer mit Schreibzugriff aus.
 ![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png) Wenn Sie Überwachungskameras an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie diese in ioBroker bereitstellen. Der Lupusec-Adapter findet alle Lupusec-Kameras selbst. Sie müssen eine Adresse (Ihre ioBroker IP-Adresse oder 0.0.0.0) und einen Port eingeben, um später eine Verbindung zu den Cams herstellen zu können.
-![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png) Wenn Sie Ihren Nuki-Türöffner an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie ihn auch von ioBroker aus verwenden. Im Administratormenü der ioBroker-Instanz können Sie Ihren Lupusec-Türsensor eingeben, der an der Nuki-Tür angebracht ist. Wenn Sie jetzt die Tür öffnen, an der der Nuki montiert ist, haben Sie den zusätzlichen Status "Tür geöffnet" statt nur "entriegelt". Wenn Sie keinen Lupusec-Türsensor an der Nuki-Tür haben, werden nur die Zustände "gesperrt" oder "gesperrt" angezeigt.
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png) Wenn Sie Ihren Nuki-Türöffner an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie ihn auch von ioBroker aus verwenden. Im Administratormenü der ioBroker-Instanz können Sie Ihren Lupusec-Türsensor eingeben, der an der Nuki-Tür angebracht ist. Wenn Sie jetzt die Tür öffnen, an der der Nuki montiert ist, haben Sie den zusätzlichen Status "Tür geöffnet" statt nur "entriegelt". Wenn Sie keinen Lupusec-Türsensor an der Nuki-Tür haben, sehen Sie nur die Zustände "gesperrt" oder "gesperrt".
 ![admin_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_nuki.png)
 
 Standardmäßig werden alle Lupusec-Geräte auf der Registerkarte ioBroker-Objekt angezeigt.
@@ -59,6 +59,7 @@ Voll unterstützt und individuell angepasst sind folgende Geräte:
   - Sirene draußen (Typ 48)
   - Leistungsschalter (Typ 48)
   - Stromzähler (Typ 50)
+  - Universeller IR-Controller (Typ 52)
   - Raumsensor V1 (Typ 54)
   - LCD-Temperatursensor (Typ 54)
   - Minitemperatur (Typ 54)
@@ -120,6 +121,14 @@ Folgende Dinge sind für die Zukunft geplant:
 * Schreiben einer Dokumentation für jeden Sensor / jedes Gerät
 
 ## Changelog
+
+### 1.3.1-beta-1 (07.02.2021)
+* (Stübi) Add universal IR controller (type 52)
+
+### 1.3.0 (03.10.2020)
+* (Stübi) Reduce CPU Load
+* (Stübi) Add local link to alarm system
+* (Stübi) Bugfixing Issue #27 - bypass
 
 ### 1.2.9 (04.07.2020)
 * (Stübi) Bugfixing

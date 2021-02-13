@@ -2,64 +2,65 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.synology/README.md
-title: ioBroker Synology адаптер
-hash: ZgiDmF/OtQedayveb9quXFQrOdFw7ynRjreiqGbqxw0=
+title: ioBroker адаптер Synology
+hash: tmY0K1EQ19t8kcb8dvdFpborvlzzMaoGF8O4LaDq7og=
 ---
-![логотип](../../../en/adapterref/iobroker.synology/admin/synology.png)
+![Логотип](../../../en/adapterref/iobroker.synology/admin/synology.png)
 
 ![Количество установок](http://iobroker.live/badges/synology-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.synology.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.synology.svg)
-![тесты](http://img.shields.io/travis/instalator/ioBroker.synology/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.synology.png?downloads=true)
-![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Пожертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-# IoBroker Synology адаптер
+# IoBroker Адаптер Synology
+[![Тесты] (https://github.com/instalator/iobroker.synology/workflows/Test%20and%20Release/badge.svg)](https://github.com/instalator/ioBroker.synology/actions/)
+
 ## Описание
 Драйвер позволяет получать данные и управлять сервером Synology NAS.
 
-### 2FA Настройки
-Если вы используете 2FA, см. Инструкции [Вот](docs/en/template.md)
+### Настройки 2FA
+Если вы используете 2FA, см. Инструкции [Вот](docs/en/template.md).
 
 ### SendMethod
-Вы можете отправить любую команду (метод), установив объект sendMethod, например: Получить информацию SurveillanceStation - это метод getInfo без дополнительных параметров.
+Вы можете отправить любую команду (метод), установив объект sendMethod, например: Get the SurveillanceStation info - это метод getInfo без дополнительных параметров.
 
 ```{"method": "getInfo", "params": {}}```
 
-### Control
+### Контроль
 ** commands.reboot ** - перезагрузить NAS
 
-** commands.shutdown ** - выключение NAS
+** commands.shutdown ** - выключить NAS
 
-. ***SurveillanceStation.cameras {NAMECAM}*** :
+*** SurveillanceStation.cameras. {NAMECAM} ***:
 
-* enabled - текущее состояние и включение / отключение камеры
+* enabled - Текущий статус и включение / отключение камеры
 * linkSnapshot - URL для снимка
 
 *** SurveillanceStation.HomeMode.status_on *** - Текущий статус и включение / отключение домашнего режима
 
-*** SurveillanceStation.getSnapshotCamera *** - Получить снимок по номеру камеры, файл сохраняется в каталоге ``...iobroker-data\synology_0\snapshotCam_2.jpg``
+*** SurveillanceStation.getSnapshotCamera *** - Получение снимка по номеру камеры, файл сохраняется в каталоге ``...iobroker-data\synology_0\snapshotCam_2.jpg``
 
-. ***AudioStation.players {PLAYERID}*** :
+*** AudioStation.players. {PLAYERID} ***:
 
-* play, pause, stop, next, prev - управление воспроизведением (кнопка, только true)
-* repeat - повторное управление (Off, All, One)
-* shuffle - Shuffle control (true / false)
-* громкость - громкость дистанционного проигрывателя (0-100)
-* seek - Управление поиском воспроизведения (0-100)
-* play_folder - добавляет треки из папки в список воспроизведения (папка id, например, `` dir_5816``)
-* play_track - Воспроизведение трека по его идентификатору (например, `` music_120847``)
-* current_play - управление и статус текущей дорожки по ее номеру в списке воспроизведения (например, `` 14``)
+* play, pause, stop, next, prev - Управление воспроизведением (кнопка, только true)
+* repeat - Повторить контроль (Выкл., Все, Один)
+* shuffle - управление перемешиванием (true / false)
+* volume - Громкость удаленного плеера (0-100)
+* seek - Управление поиском при воспроизведении (0-100)
+* play_folder - Добавить треки из папки в плейлист (id папки, например, `` dir_5816``)
+* play_track - проигрывать трек по его id (например, music_120847)
+* current_play - Контроль и статус текущего трека по его номеру в плейлисте (например, `` 14 '')
 
 *** DownloadStation ***:
 
 * activeTask - количество незавершенных загрузок
-* listTasks - массив с неполными загрузками
+* listTasks - массив с незавершенными загрузками
 * shedule_enabled, shedule_emule_enabled - Статус и контроль запланированных или немедленных загрузок
-* add_hash_download - добавить в Hash Downloads (например, `` 8BD3CAD02FC9ECB661A12378414FA310D3F3FE03``)
-* add_url_download - добавить URL загрузки или ссылку на магнит
-* folder - папка для загрузки, устанавливается перед добавлением загрузки, в противном случае она загружается в папку по умолчанию
-* pause_task, resume_task - приостановить загрузку и возобновить. (например, `` dbid_170`` или `` 170`` или `` all``)
+* add_hash_download - добавить в хеш-загрузку (например, `` 8BD3CAD02FC9ECB661A12378414FA310D3F3FE03 '')
+* add_url_download - добавить ссылку для скачивания или магнитную ссылку
+* папка - папка для загрузки, задается перед добавлением загрузки, в противном случае она загружается в папку по умолчанию
+* pause_task, resume_task - Приостановить загрузку и возобновить. (например, dbid_170 или 170 или all)
 
 ### Окно сообщения
 ```
@@ -69,6 +70,42 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ```
 
 ## Changelog
+
+### 0.1.20
+* (instalator) fixed error
+
+### 0.1.18
+* (instalator) change link for album cover
+
+### 0.1.17
+* (instalator) added Sentry plugin support
+
+### 0.1.16
+* (instalator) fixed error
+
+### 0.1.15
+* (instalator) fixed error in parse Info
+* (instalator) fixed api undefined
+
+### 0.1.14
+* (instalator) fixed missing [datapoints](https://github.com/instalator/ioBroker.synology/issues/43)
+* (instalator) refactoring
+* (instalator) Changed the logging of some errors
+* (instalator) Changed format session in syno package
+
+### 0.1.11
+* (instalator) added motionDetected state
+* (SpectreKr*) Adding to FS Sharing
+
+### 0.1.10
+* (instalator) fixed copy cover file
+* (instalator) fix get packages for DSM 5.x
+* (instalator) Added option to select services for receiving data
+
+### 0.1.8
+* (instalator) fix error addDownload
+* (instalator) fixed listRadios
+* (instalator) fixed get cover
 
 ### 0.1.7
 * (instalator) fixed 2FA
@@ -123,7 +160,7 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2020 instalator <vvvalt@mail.ru>
+Copyright (c) 2021 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

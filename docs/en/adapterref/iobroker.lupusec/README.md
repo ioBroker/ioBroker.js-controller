@@ -55,6 +55,7 @@ Fully supported and individually adapted are following devices:
   - Siren outside (Type 48)
   - Power Switch Meter (Type 48)
   - Electric Meter (Type 50)
+  - Universal IR Controller (Type 52)
   - Room sensor V1 (Type 54)
   - LCD temperature sensor (Type 54)  
   - Mini temperature (Type 54)
@@ -114,6 +115,7 @@ sudo chmod u+s `which ping`
 ## Changelog
 
 ### 1.3.1-beta-1 (07.02.2021)
+* (Stübi) Add universal IR controller (type 52)
 
 ### 1.3.0 (03.10.2020)
 * (Stübi) Reduce CPU Load
