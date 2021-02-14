@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.16",
+        "version": "3.3.0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -709,6 +709,7 @@
                     "regex": [
                         "^Exception-Code: EROFS",
                         "^Exception-Code: EIO",
+                        "^Exception-Code: ENXIO",
                         "^Exception-Code: EMFILE",
                         "^Exception-Code: EBADF",
                         "^Exception-Code: ENFILE",
