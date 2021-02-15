@@ -41,10 +41,6 @@
                     "type": "string",
                     "enum": ["Javascript/Node.js"]
                 },
-                "title": {
-                    "description": "[DEPRECATED] Longer name of adapter to show in admin",
-                    "type": "string"
-                },
                 "titleLang": {
                     "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
                     "$ref": "#/definitions/multilingual"
@@ -68,10 +64,6 @@
                 "messagebox": {
                     "description": "true if messagebox supported. If yes, the object system.adapter.<instance>.messagebox will be created to send messages to adapter",
                     "type": "boolean"
-                },
-                "readme": {
-                    "description": "[DEPRECATED]: Use docs",
-                    "type": "string"
                 },
                 "docs": {
                     "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
@@ -269,10 +261,6 @@
                         "type": "string"
                     }
                 },
-                "localLink": {
-                    "description": "[DEPRECATED] Use common.localLinks",
-                    "type": "string"
-                },
                 "loglevel": {
                     "description": "Default Loglevel after instance creation",
                     "type": "string",
@@ -281,10 +269,6 @@
                 "logTransporter": {
                     "description": "If this adapter receives logs from other hosts and adapters (e.g. to store them somewhere)",
                     "type": "boolean"
-                },
-                "main": {
-                    "description": "[DEPRECATED] Location of adapter main file",
-                    "type": "string"
                 },
                 "materialize": {
                     "description": "If adapter supports > admin3 (materialize style)",
