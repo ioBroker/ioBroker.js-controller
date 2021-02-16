@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: AbR/aFtFdM56RVjAIcfHQvBRFgYYKPb4pyLSHMG1HHc=
+hash: 2f1JTLdANv3W8733DPUa/4GZSHAWQ+wl8dwVD1EY2wQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fahrplan.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.fahrplan.svg)
-![Anzahl der Installationen (aktuell)](https://iobroker.live/badges/fahrplan-installed.svg?dummy=unused)
-![Anzahl der Installationen (stabil)](https://iobroker.live/badges/fahrplan-stable.svg?dummy=unused)
+![Anzahl der Installationen (aktuell)](https://iobroker.live/badges/fahrplan-installed.svg)
+![Anzahl der Installationen (stabil)](https://iobroker.live/badges/fahrplan-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/gaudes/iobroker.fahrplan.svg)
 ![NPM](https://nodei.co/npm/iobroker.fahrplan.png?downloads=true)
 
@@ -99,7 +99,7 @@ Hinweis zum Ausgabetext: Hier kann neben dem eigenen Kontakt für VIS z.B. auch 
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird in die Lage genommen.
-| Aktiv | Wenn der nachtragungsberechtigt ist, wird dieser nachlassen | Von | Numerische ID von Startbahnhof oder Starthaltestelle | Von (Eigenername) | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML-Ausgabe verwendet | Abfahrten | Anzahl abserder Abfahrten
+| Aktiv | Wenn der nachtragungsberechtigt ist, wird dieser nachlassen | Von | Numerische ID von Startbahnhof oder Starthaltestelle | Von (Eigenername) | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML-Ausgabe verwendet | Abfahrten | Anzahl abserder Abfahrten | Verkehrsmittel | Auswahl des Verkehrsmittels, z.B. Bus, S-Bahn, usw. Standardmäßig werden alle Verkehrsmittelwechsel
 
 ### Englisch
 Start und Ziel sowie Zwischenstopps müssen mit einer numerischen ID gekennzeichnet sein.
@@ -131,7 +131,7 @@ Hinweis für "Objekt für Ausgabetext": Es können einfache Status für die Verw
 
 Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Die Verbindungsinformationen werden aktualisiert, wenn das Element aktiviert ist Von | Numerische ID der Startstation oder des Startstopps | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Startstation oder Startstopp, der in der Ausgabe von HTML- und Verzögerungsbenachrichtigungen verwendet wird Abfahrten | Anzahl der zu empfangenden Abfahrten
+| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Die Verbindungsinformationen werden aktualisiert, wenn das Element aktiviert ist Von | Numerische ID der Startstation oder des Startstopps | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Startstation oder Startstopp, der in der Ausgabe von HTML- und Verzögerungsbenachrichtigungen verwendet wird Abfahrten | Anzahl der zu empfangenden Abfahrten Fahrzeug | Auswahl des Fahrzeugs, z.B. Bus, S-Bahn usw. Standardmäßig sind alle Fahrzeuge ausgewählt
 
 ## Changelog
 
@@ -141,9 +141,20 @@ Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Quality fixing (lgtm.com)
+
+### 1.0.4 (2021-02-13)
+* (Gaudes) Add product selection to departure timetable
+* (Gaudes) Update HAFAS client to 5.15.1 (Fix error Clientversion with OEBB profile)
+* (Gaudes) Enhanced information reporting on error (Sentry Breadcrumbs)
+* (Gaudes) Include Dependabot updates
+
+### 1.0.3 (2021-01-27)
 * (Gaudes) Station search returns only stations (Sentry Multiple results found for station)
 * (Gaudes) Integrate SBB profile
 * (Gaudes) Leave out superflous journey per route than configured
+* (Gaudes) Fix call of helper for correct counters
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.2 (2021-01-12)
 * (Gaudes) Configurable Headline for HTML tables
@@ -158,12 +169,6 @@ Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 
 ### 1.0.0 (2020-12-09)
 * (Gaudes) First stable release
-
-### 0.2.8 (2020-12-02)
-* (Gaudes) Fixing connection error to HAFAS
-
-### 0.2.7 (2020-11-28)
-* (Gaudes) Fixing connection error to HAFAS
 
 ## License
 MIT License

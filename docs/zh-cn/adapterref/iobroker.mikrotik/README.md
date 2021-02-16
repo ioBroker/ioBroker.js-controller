@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mikrotik/README.md
 title: 无题
-hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
+hash: s9sh6Po2FKvCaLYgJT6+Y7VguRY5ISxc+iKLPxNH6DQ=
 ---
 ![标识](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png)ioBroker MikroTik路由器适配器
 
@@ -22,12 +22,18 @@ hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
 将地址添加到防火墙列表并启用。
 例如`name,127.0.0.1,comment`。
 
-### Raw将命令api发送到mikrotik，例如：`/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`。或`ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
+### Raw将api命令发送到mikrotik，执行结果将在`mikrotik.0.commands.response`对象中接收，例如：`/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`。或`ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org``ip/kid-control/pause kid1``ip/kid-control/resume`
 ###重新启动，关闭重新启动/关闭mikrotik
 ### Usb_reset重置mikrotik中的电源USB
 *在路由器中删除后，创建的对象不会自动删除。*
 
 ## Changelog
+
+#### 1.0.15
+* (instalator) changed parse RAW
+
+#### 1.0.14
+* (instalator) added CAPsMAN [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/33)
 
 #### 1.0.13
 * (instalator) changed parse RAW command

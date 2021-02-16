@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: Material Design Widgets für ioBroker VIS
-hash: BapM8qjuGDXbuWGLy3h2ILdluOrltIxrQ3WIK3gNk6I=
+hash: +71Th9fzsIsMKTrYbhuHsRdDxKY2TMzHN9X9hBuSJW8=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png) <! - in toc weglassen ->
 
@@ -29,7 +29,7 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Praktische Beispiele] (# praktische Beispiele)
 - [Fragen und Antworten zu den Widgets] (# Fragen und Antworten zu den Widgets)
 - [Unterstützter Browser] (# unterstützter Browser)
-- [Unterstützte Browserfunktion zum Vibrieren auf Mobilgeräten] (# Unterstützte Browserfunktion zum Vibrieren auf Mobilgeräten)
+- [Unterstützte Browser-Funktion zum Vibrieren auf Mobilgeräten] (# Unterstützte Browser-Funktion zum Vibrieren auf Mobilgeräten)
 - [ioBroker VIS App] (# iobroker-vis-app)
 - [Adaptereinstellungen] (# Adaptereinstellungen)
 - [Allgemein] (# allgemein-1)
@@ -134,7 +134,7 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [HTML-Eigenschaften] (# html-properties-28)
 - [Top App Bar] (# Top-App-Leiste)
 - [Untermenü] (# Untermenü)
-- [JSON-Eigenschaften] (# json-properties)
+- [JSON-Eigenschaften des Untermenüs] (# submenu-json-properties)
 - [Charts] (# Charts)
 - [Balkendiagramm] (# Balkendiagramm)
 - [Editoreinstellungen] (# editor-settings-27)
@@ -145,7 +145,7 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Linienverlaufsdiagramm:] (# Linienverlaufsdiagramm)
 - [Editoreinstellungen] (# editor-settings-29)
 - [JSON-Diagramm] (# json-Diagramm)
-- [JSON-Eigenschaften] (# json-properties-1)
+- [JSON-Eigenschaften] (# json-properties)
 - [Tabelle] (# Tabelle)
 - [Editoreinstellungen] (# editor-settings-30)
 - [Daten - JSON-Struktur] (# Daten --- JSON-Struktur)
@@ -1782,12 +1782,12 @@ Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iob
 
 Untermenüs müssen durch eine JSON-Zeichenfolge definiert werden:
 
-#### JSON-Eigenschaften
+#### Untermenü JSON-Eigenschaften
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Text</td><td> Text des Eintrags</td><td> Zeichenfolge</td><td></td></tr><tr><td> Symbol</td><td> Symbol oder Bildpfad des Eintritts</td><td> Zeichenfolge</td><td></td></tr><tr><td> iconColor</td><td> Symbolfarbe (funktioniert nicht, wenn Bild verwendet wird)</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> Teiler</td><td> zeige einen Teiler</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> Benutzergruppen</td><td> Benutzergruppen, die diesen Eintrag anzeigen und steuern dürfen.</td><td> Array [Zeichenfolge]</td><td> ID der Benutzergruppen</td></tr><tr><td> behaviourNotInUserGroup</td><td> Eintrag ausblenden oder deaktivieren, wenn der Benutzer nicht Teil der Benutzergruppe ist</td><td> Zeichenfolge</td><td> verstecken, deaktiviert</td></tr></tbody></table>
 
 <! - in toc weglassen ->
 
-#### Beispiel
+#### Untermenü JSON-Eigenschaften - Beispiel
 <details> <pre><code> [ { "text": "subitem0", "icon": "account", "iconColor": "red" }, { "text": "subitem1", "icon": "home", "iconColor": "green", "divider": "true" }, { "text": "subitem1", "divider": "true", "icon": "/vis.0/myImages/devices/lxc_iobroker.png", "userGroups": ["administrator", "user"], "behaviorNotInUserGroup": "disabled" } ] </code></pre> </details>
 
 ## Diagramme
@@ -2824,7 +2824,7 @@ Der Adapter verwendet die folgenden Bibliotheken:
 -->
 
 <!-- omit in toc -->
-### __WORK IN PROGRESS__
+### 0.5.0-beta (2021-02-13)
 * (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
 * (Scrounger) Table: Control Elements removed, using new HTML Widgets -> breaking changes !!!
 * (Scrounger) list: using object id for json string added -> breaking changes !!!

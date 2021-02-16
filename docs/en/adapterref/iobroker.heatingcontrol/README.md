@@ -205,6 +205,13 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.2.0 (2021-02-15)
+* (René) see issue #146: different type of window sensor and also adjustable comparative value
+* (René) see issue #110: optionally every room can be set to "no heating" with separate datapoint
+* (René) see issue #185: maintenance function: Delete all unused datapoints (e.g. profiles) is implemented now for admin
+* (René) see issue #185: maintenance function: Delete all devices related to a room, when a room is deleted is implemented now for admin
+* (René) see issue #207: copy buttons for vis added
+* (René) see issue #219: bug fix: DecreaseValues and ProfilName are copied in CopyProfile now
 
 ### 2.1.1 (2021-02-08)
 * (René) bug fix Temperatur Offset: invert sign of TemperatureOffset 
@@ -214,7 +221,6 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 
 * (René) see issue #182: Temperatur Offset
 * (René) see issue #212: ActiveTimeSlot inkorrekt for vis
-
 
 ### 2.0.4 (2021-01-28)
 * (René) bug fix for issue #213: Warnung "!!! Statechange not handled"

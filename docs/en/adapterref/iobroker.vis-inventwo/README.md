@@ -72,6 +72,19 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.7.9
+- Option für die Bildgröße für das Image-Widget hinzugefügt
+- Fehler von vorheriger Version behoben
+
+## 2.7.8
+- Problem mit Textausrichtung behoben
+- Problem mit Bildgröße im Image-Widget behoben
+
+## 2.7.7
+
+- Problem mit der Bildgröße behoben
+- Problem mit dem Farbregler behoben, dass der Wert beim loslassen nicht gespeichert wurde
+
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget behoben
 - Problem mit Hervorhebung auf Touch-Geräten behoben

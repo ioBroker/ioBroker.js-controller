@@ -130,7 +130,7 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 			- [HTML Properties](#html-properties-28)
 	- [Top App Bar](#top-app-bar)
 		- [Submenu](#submenu)
-			- [JSON Properties](#json-properties)
+			- [Submenu JSON Properties](#submenu-json-properties)
 	- [Charts](#charts)
 		- [Bar Chart](#bar-chart)
 			- [Editor Settings](#editor-settings-27)
@@ -141,7 +141,7 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 		- [Line History Chart:](#line-history-chart)
 			- [Editor Settings](#editor-settings-29)
 		- [JSON Chart](#json-chart)
-			- [JSON Properties](#json-properties-1)
+			- [JSON Properties](#json-properties)
 	- [Table](#table)
 		- [Editor Settings](#editor-settings-30)
 		- [Data - JSON Stucture](#data---json-stucture)
@@ -8687,7 +8687,7 @@ Top App Bar with Navigation Drawer can be combined with the <a href="https://www
 
 submenus must be defined by a JSON string:
 
-#### JSON Properties
+#### Submenu JSON Properties
 
 <table>
     <thead>
@@ -8739,7 +8739,7 @@ submenus must be defined by a JSON string:
 </table>
 
 <!-- omit in toc -->
-#### Example
+#### Submenu JSON Properties - Example
 
 <details>
 <pre><code>
@@ -11254,7 +11254,7 @@ The adapter uses the following libraries:
 -->
 
 <!-- omit in toc -->
-### __WORK IN PROGRESS__
+### 0.5.0-beta (2021-02-13)
 * (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
 * (Scrounger) Table: Control Elements removed, using new HTML Widgets -> breaking changes !!!
 * (Scrounger) list: using object id for json string added -> breaking changes !!!

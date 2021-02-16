@@ -225,6 +225,9 @@ Sollten auf dem ioBroker-System ebenfalls DS1820 Sensoren direkt angeschlossen s
 
 ## Changelog
 
+### 1.4.0 (??)
+* (crycode-de) [WIP] Support for remote sensors using an own tiny daemon and encryped TCP sockets
+
 ### 1.3.0 (2021-02-11)
 * (crycode-de) Searching for sensors now works for multiple 1-wire masters
 

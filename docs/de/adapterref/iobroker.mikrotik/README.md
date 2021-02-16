@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mikrotik/README.md
 title: kein Titel
-hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
+hash: s9sh6Po2FKvCaLYgJT6+Y7VguRY5ISxc+iKLPxNH6DQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png) ioBroker MikroTik Router Adapter
 
@@ -22,12 +22,18 @@ hash: Nom7xpKrx956EIGUNjJt+Vvpzh8ZhRnv5R3Mk552sNY=
 Adresse zur Firewall-Liste hinzufügen und aktivieren.
 z.B. `name,127.0.0.1,comment`.
 
-### Raw Befehls-API an mikrotik senden, z. B.: `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. ODER `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
+### Raw Senden Sie den API-Befehl an mikrotik. Das Ergebnis der Ausführung wird im Objekt `mikrotik.0.commands.response` empfangen, z. B.: `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. ODER `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org` `ip/kid-control/pause kid1` `ip/kid-control/resume`
 ### Neu starten, herunterfahren mikrotik neu starten / herunterfahren
 ### Usb_reset Stromversorgung USB in der Mikrotik zurücksetzen
 *Die erstellten Objekte werden beim Löschen im Router nicht automatisch gelöscht.*
 
 ## Changelog
+
+#### 1.0.15
+* (instalator) changed parse RAW
+
+#### 1.0.14
+* (instalator) added CAPsMAN [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/33)
 
 #### 1.0.13
 * (instalator) changed parse RAW command

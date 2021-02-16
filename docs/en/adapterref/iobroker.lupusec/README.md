@@ -98,6 +98,14 @@ You find all connected surveillance cams under 'webcams'. You can copy the link 
 You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuki provides 2 states. The state nuki_state shows you the actuall state of the Nuki door opener like door is locked or unlocked. With the state nuki_action you can open, lock or unlock your door.  
 ![lupusec_obj_nuki](docs/en/img/lupusec_obj_nuki.png)
 
+### Lupusec SMS
+If you ar using the Lupusec XT1+, XT2+ or XT3 with an SMS sim card, you can send SMS with following states:
+![lupusec_obj_sms](docs/en/img/lupusec_obj_sms.png)
+
+Alternative you can send SMS from your JavaScript with following command:
+```
+sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
+``` 
 
 ## Troubleshooting
 If you start the Lupusec Adapter and you get the error that the alarm system is not reachable please try to ping the system from a terminal window of your ioBroker system. 
@@ -114,7 +122,10 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.1-beta-1 (07.02.2021)
+### 1.3.2-beta-2 (14.02.2021)
+* (Stübi) Send SMS if you are using a sim card
+
+### 1.3.1 (07.02.2021)
 * (Stübi) Add universal IR controller (type 52)
 
 ### 1.3.0 (03.10.2020)

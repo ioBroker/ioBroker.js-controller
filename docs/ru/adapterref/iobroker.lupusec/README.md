@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: q8KHPpsXKoRn9lzMDs/fu53HSoekkRwcSEQYvFNNCKg=
+hash: K0k5vvfJi3TuR4x+nkQ70nYeefXX626FHzYCnBXV/fg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -13,7 +13,7 @@ hash: q8KHPpsXKoRn9lzMDs/fu53HSoekkRwcSEQYvFNNCKg=
 ![Количество установок](http://iobroker.live/badges/lupusec-installed.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lupusec.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lupusec.svg)
-![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 # IoBroker.lupusec
 ** Требуется node.js 10.0 или выше и Admin v3! **
@@ -99,6 +99,15 @@ ioBroker предлагает те же объекты статуса, что и
 Вы найдете открыватель дверей Nuki под «устройствами», такими как устройства Lupusec. В Нуки предусмотрено 2 состояния. Состояние nuki_state показывает текущее состояние открывателя двери Nuki, например, дверь заблокирована или разблокирована. С помощью состояния nuki_action вы можете открывать, блокировать или разблокировать дверь.
 ![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
+### Lupusec SMS
+Если вы используете Lupusec XT1 +, XT2 + или XT3 с сим-картой для SMS, вы можете отправлять SMS со следующими состояниями: ![lupusec_obj_sms](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_sms.png)
+
+В качестве альтернативы вы можете отправить SMS со своего JavaScript с помощью следующей команды:
+
+```
+sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
+```
+
 ## Исправление проблем
 Если вы запускаете адаптер Lupusec и получаете сообщение об ошибке, что система охранной сигнализации недоступна, попробуйте выполнить эхо-запрос системы из окна терминала вашей системы ioBroker.
 
@@ -122,7 +131,10 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.1-beta-1 (07.02.2021)
+### 1.3.2-beta-2 (14.02.2021)
+* (Stübi) Send SMS if you are using a sim card
+
+### 1.3.1 (07.02.2021)
 * (Stübi) Add universal IR controller (type 52)
 
 ### 1.3.0 (03.10.2020)

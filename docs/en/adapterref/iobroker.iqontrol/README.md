@@ -1417,6 +1417,9 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Rearranged device option for a better overview.
 * (sbormann) Added option noZoomOnHover for Icon (in device-options, section tile-behaviour (general) and, for all devices, in settings, section tile).
 * (sbormann) Added delay to visibility of badge to allow color-change happen before it appears.
+* (sbormann) Fixed min/max/step for number of url-parameters of widgets (which fixed range for FLOT-Chart).
+* (sbormann) Added PANEL_HIDE and the corresponding option Invert PANEL_HIDE to panel.
+* (sbormann) Added manifest.json.
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

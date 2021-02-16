@@ -23,6 +23,9 @@ Connects your Vallox Air Ventilation system into your ioBroker home automation.
 
 ## Changelog
 
+### 1.1.2
+* Fixed wrong datatype (string) in temperature states instead of numbers
+
 ### 1.1.1
 * Fix adapter-checker issues
 
@@ -70,7 +73,7 @@ Connects your Vallox Air Ventilation system into your ioBroker home automation.
 ## License
 MIT License
 
-Copyright (c) 2020 hacki11
+Copyright (c) 2021 hacki11
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

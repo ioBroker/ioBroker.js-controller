@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: q8KHPpsXKoRn9lzMDs/fu53HSoekkRwcSEQYvFNNCKg=
+hash: K0k5vvfJi3TuR4x+nkQ70nYeefXX626FHzYCnBXV/fg=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -99,6 +99,15 @@ Sie finden alle angeschlossenen Überwachungskameras unter "Webcams". Sie könne
 Sie finden Ihren Nuki-Türöffner unter "Geräten" wie den Lupusec-Geräten. Der Nuki bietet 2 Staaten. Der Status nuki_state zeigt Ihnen den tatsächlichen Status des Nuki-Türöffners an, wenn die Tür verriegelt oder entriegelt ist. Mit dem Status nuki_action können Sie Ihre Tür öffnen, verriegeln oder entriegeln.
 ![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
+### Lupusec SMS
+Wenn Sie den Lupusec XT1 +, XT2 + oder XT3 mit einer SMS-SIM-Karte verwenden, können Sie SMS mit folgenden Zuständen senden: ![lupusec_obj_sms](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_sms.png)
+
+Alternativ können Sie SMS von Ihrem JavaScript mit folgendem Befehl senden:
+
+```
+sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
+```
+
 ## Fehlerbehebung
 Wenn Sie den Lupusec-Adapter starten und die Fehlermeldung erhalten, dass das Alarmsystem nicht erreichbar ist, versuchen Sie bitte, das System über ein Terminalfenster Ihres ioBroker-Systems zu pingen.
 
@@ -122,7 +131,10 @@ Folgende Dinge sind für die Zukunft geplant:
 
 ## Changelog
 
-### 1.3.1-beta-1 (07.02.2021)
+### 1.3.2-beta-2 (14.02.2021)
+* (Stübi) Send SMS if you are using a sim card
+
+### 1.3.1 (07.02.2021)
 * (Stübi) Add universal IR controller (type 52)
 
 ### 1.3.0 (03.10.2020)

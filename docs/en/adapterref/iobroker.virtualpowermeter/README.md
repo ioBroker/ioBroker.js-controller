@@ -58,6 +58,10 @@ Beispiel mit valuetrackerovertime:
 
 
 ## Changelog
+### 1.4.1 (2021-02-13)
+* (Omega236) on unit '%' interpret common.max as 100 if common.max not set
+### 1.4.0 (2021-02-12)
+* (Omega236) adding OptionalSwitch for Dimmer with On/Off State
 ### 1.3.2 (2021-01-27)
 * (Omega236) group total is now its own counter
 * (Omega236) improved precision
@@ -68,7 +72,7 @@ Beispiel mit valuetrackerovertime:
 * (scrounger) custom: autocomplete for group input added
 * (scrounger) option added -> group energy values can only increase 
 * (Omega236) Check duplicate Destination DP
-* (Omega236n) allows to Set Destination of DP
+* (Omega236) allows to Set Destination of DP
 ### 1.2.2 (2020-12-26
 * (Omega236) Group Calculations only after InitialFinished
 ### 1.2.1 (2020-04-15)

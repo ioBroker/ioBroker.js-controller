@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
+hash: Ky9zdbU5WI/dZsBo0e469I5mZiA68K9OX0CRy77/Vw0=
 ---
-![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
+![标识](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
 ![安装数量](http://iobroker.live/badges/sbfspot-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.sbfspot.svg)
@@ -18,13 +18,13 @@ hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
 
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 该适配器使用sbfspot从SMA电源逆变器读取数据。
 现在支持两种数据库类型（mySQL和sqlite）。
 从0.2.3版开始，有一个基于flo的vis窗口小部件可用于显示历史数据。
 
-##安装
+＃＃ 安装
 请按照https://github.com/SBFspot/SBFspot/wiki下的sbfspot安装说明进行操作
 
 [在基于手臂的系统上的详细安装](docs/en/install_arm.md)
@@ -32,7 +32,7 @@ hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
 ##提示
 *使用来自https://github.com/SBFspot/SBFspot的sbfspot的最新版本
 *适配器，sbfspot和数据库（mySQL或sqlite）必须在同一系统上运行，例如树莓派
-*可在https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite或https://www.rg-engineering.eu/index下找到Raspberry Pi（或类似版本）上sbfspot的安装手册。 php / produkte / software / plugin-fuer-iobroker-sbfspot
+*可在https://github.com/SBFspot/SBFspot/wiki/Installation-Linux-SQLite或https://www.rg-engineering.eu/index上找到Raspberry Pi（或类似版本）上sbfspot的安装手册。 php / produkte / software / plugin-fuer-iobroker-sbfspot
 *对于Raspberry Pi，在https://github.com/SBFspot/sbfspot-config下提供了一个半自动配置工具
 
 ＃＃ 已知的问题
@@ -45,6 +45,9 @@ hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
 有时必须多次调用npm intall才能成功安装所有必需的软件包
 
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
+
+## 4.0.4（2021-02-14）
+*（René）依赖关系已更新
 
 ## 4.0.3（2021-01-15）
 *（René）基于CI测试的错误修复
@@ -60,7 +63,7 @@ hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
 *（René）sqlite3程序包被Better-sqlite3取代
 * DP的（René）角色工作过度
 *（René）参见问题＃19：仅当添加日光时才获取数据
-*（René）请参阅问题29：小部件轴标签的默认颜色已更改
+*（René）参见问题＃29：小部件轴标签的默认颜色已更改
 *（René）小部件：如果添加的小部件太小，则记录日志
 
 ## 2.4.3（2020-04-02）

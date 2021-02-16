@@ -195,6 +195,8 @@ Auszug:
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 1.14.35 (2021-02-13)
+* (foxriver76) virtual devices now support ping, so use it, else it can be that instance won't register at CCU again (fixes #308)
 
 ### 1.14.34 (2021-02-11)
 * (foxriver76) use async rpc calls for better error handling

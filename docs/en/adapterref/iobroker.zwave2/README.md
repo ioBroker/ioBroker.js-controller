@@ -39,6 +39,17 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.8.11 (2021-02-14)
+* Implemented `Thermostat Fan Mode CC` and `Thermostat Fan State CC`
+* Fixed several sources of crashes
+* Fixed incorrect detection of secure nodes
+* Certain `.hex` firmware files are now parsed correctly
+* Added support for `.bin` firmware files
+* Avoid an infinite interview loop when devices don't advertise the end of the parameter list correctly
+* Sleeping nodes are now immediately marked as ready when restarting from cache
+* Unsolicited reports are no longer mapped from the root endpoint to endpoint 1 if that endpoint does not support the CC
+* Tons of new and improved device configuration files
+
 ### 1.8.10 (2021-02-03)
 * The startup should now be faster, especially if there are many sleeping devices
 * Fixed an issue where devices were incorrectly displayed as secure
@@ -63,9 +74,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * The values of the root endpoint of some legacy devices are now correctly updated
 * Added support for `Aeotec aerQ ZWA009-A` US/Canada/Mexico version
 * Fixed invalid parameter options in many config files
-
-### 1.8.6 (2021-01-17)
-* Many, many changes... See https://github.com/zwave-js/node-zwave-js/blob/master/CHANGELOG.md#changelog for details
 
 ## License
 

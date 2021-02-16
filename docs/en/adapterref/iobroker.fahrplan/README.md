@@ -133,7 +133,7 @@ Mit dem +-Button können neue Einträge zur Tabelle hinzugefügt werden.
 | Von                         | Numerische ID von Startbahnhof oder Starthaltestelle (Ermittlung über Suche)
 | Von (Eigener Name)          | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML-Ausgabe verwendet
 | Abfahrten                   | Anzahl abzurufender Abfahrten
-
+| Verkehrsmittel              | Auswahl des Verkehrsmittels, z.B. Bus, S-Bahn, usw. Standardmäßig werden alle Verkehrsmittel ausgewählt
 
 ### English
 
@@ -205,6 +205,7 @@ With +-Button new entries can be added to the table.
 | From                        | Numeric ID of start station oder start stop
 | From (Custom name)          | Custom name for start station oder start stop, used in HTML- and delay notification output
 | Departures                  | Number of departures to receive
+| Vehicle                     | Selection of vehicle, e.g. Bus, S-Bahn, etc. Per default all vehicles are selected
 
 ## Changelog
 
@@ -214,8 +215,13 @@ With +-Button new entries can be added to the table.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Quality fixing (lgtm.com)
+
+### 1.0.4 (2021-02-13)
 * (Gaudes) Add product selection to departure timetable
+* (Gaudes) Update HAFAS client to 5.15.1 (Fix error Clientversion with OEBB profile)
 * (Gaudes) Enhanced information reporting on error (Sentry Breadcrumbs)
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.3 (2021-01-27)
 * (Gaudes) Station search returns only stations (Sentry Multiple results found for station)
@@ -237,9 +243,6 @@ With +-Button new entries can be added to the table.
 
 ### 1.0.0 (2020-12-09)
 * (Gaudes) First stable release
-
-### 0.2.8 (2020-12-02)
-* (Gaudes) Fixing connection error to HAFAS
 
 ## License
 MIT License

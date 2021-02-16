@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: AbR/aFtFdM56RVjAIcfHQvBRFgYYKPb4pyLSHMG1HHc=
+hash: 2f1JTLdANv3W8733DPUa/4GZSHAWQ+wl8dwVD1EY2wQ=
 ---
-![商标](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
+![标识](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fahrplan.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.fahrplan.svg)
-![安装数量（最新）](https://iobroker.live/badges/fahrplan-installed.svg?dummy=unused)
-![安装数量（稳定）](https://iobroker.live/badges/fahrplan-stable.svg?dummy=unused)
+![安装数量（最新）](https://iobroker.live/badges/fahrplan-installed.svg)
+![安装数量（稳定）](https://iobroker.live/badges/fahrplan-stable.svg)
 ![依赖状态](https://img.shields.io/david/gaudes/iobroker.fahrplan.svg)
 ![NPM](https://nodei.co/npm/iobroker.fahrplan.png?downloads=true)
 
@@ -31,7 +31,7 @@ Der Adapter bietet hierbei drei Funktionen：
 VIS eingebunden werden中的Das HTML-Objekt kann einfach。
 
 ####路线图博物馆（Verspätungender Routen）
-路线图路线图路线图道路图。因此，通过Telegram oder Alexa erfolgen的kann beispielsweise eine Benachrichtigung，与Bestbinmmte VerbindungVerspätetist进行了交流。
+路线图路线图路线图道路图。因此，通过Telegram oder Alexa erfolgen的kann beispielsweise eine Benachrichtigung，跌倒了Allbin oder eine bestimmte Verbindungverspätetist。
 
 #### AbfahrtstafelnfürStationen
 Zusätzlich适配器适配器作者Abfahrtstafelfürkonfigurierte Stationen。
@@ -62,7 +62,7 @@ HTML对象可以很容易地在VIS中使用。
 
 ## Konfiguration
 ###德文
-Die Start- and Zielorte sowie Zwischenzielemüssenmit ihrer numerischen ID angegeben werden。
+Die Start- and Zielorte sowie Zwischenzielemüssenmit ihrer numerischen ID Angegeben werden。
 Eine Suchfunktion ist in Tab Einstellungen integriert。
 
 #### Tab Einstellungen
@@ -71,7 +71,7 @@ Eine Suchfunktion ist in Tab Einstellungen integriert。
 | Einstellung | Beschreibung | ------------------------------ | --- | | Anbieter | Auswahl des zu verwendenden Anbieters，aktuell DB，ÖBB和SBB | Aktualisierungsintervall |在Minuten的Angabe路线aktualisiert werden中的间隔| Verspätetmarkieren ab | Minbinn ab der die Verbindung地区的Verspätung地区。 Standardmäßigwerden nurVerspätungenab zwei Minuten markiert | HTML-Ansicht erzeugen | Erineugt专业版路线einem Objekt中的Route Eine konfigurierbare HTML-Tabelle | Detailierte Objekte speichern |遵守法律| JSON-Elemente speichern | DieRückgabevon HAFAS erfolgt als JSON，死者zur Fehlerbehebung gespeichert werden
 
 这样的集成是非常必要的。 Zuerst muss ein Anbieterausgewähltwerden。
-Danach kannüberdas Suchfeld和Drückendes Knopfs“搜寻” nach einer站的地质学家。
+Danach kannüberdas Suchfeld和Drückendes Knopfs“探索”纳赫艾纳站gesucht werden。
 Die Suchergebnisse der aktuellen寻求werden在der Tabelle angezeigt。
 
 #### Tab Routen
@@ -80,7 +80,7 @@ Die Suchergebnisse der aktuellen寻求werden在der Tabelle angezeigt。
 Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 
 | Einstellung | Beschreibung | ----------------------------- | --- | | Nr | Die Unmmer和wird automatisch vergeben的Entspricht dem Unterknoten。
-| Aktiv | Wenn的路线图和werden的图框信息|冯| Numerische ID von Startbahnhof oder Starthaltestelle（Ermittlungüber追求）|冯（艾格纳名字）| Benutzerdefinierter名称von Startbahnhof oder Starthaltestelle，来自HTML-和语言版本文本|纳赫Numerische ID von Zielbahnhof oder Zielhaltestelle（Ermittlungüber追求）| Nach（艾格纳名称）| Benutzerdefinierter名称von Zielbahnhof oder Zielhaltestelle，来自HTML-和语言文本verwendet |通过1 | Fahrtüberbestimmten Ort angegeben als numerische ID（可选，其他）|通过2 | Fahrtüberbestimmten Ort angegeben als numerische ID（可选，其他）| Verkehrsmittel | Auswahl des Verkehrsmittels，z.B.公交车，S-Bahn，usw。奥地利标准法院|最高版权|马克西姆·安扎尔（Umstiegen）。 0分钟前到Verbindungen。
+| Aktiv | Wenn的路线图和werden的图框信息|冯| Numerische ID von Startbahnhof oder Starthaltestelle（Ermittlungüber追求）|冯（艾格纳名字）| Benutzerdefinierter名称von Startbahnhof oder Starthaltestelle，来自HTML-和语言版本文本|纳赫Numerische ID von Zielbahnhof oder Zielhaltestelle（Ermittlungüber追求）| Nach（艾格纳名称）| Benutzerdefinierter名称von Zielbahnhof oder Zielhaltestelle，来自HTML-和语言文本verwendet |通过1 | Fahrtüberbestimmten Ort angegeben als numerische ID（可选，其他）|通过2 | Fahrtüberbestimmten Ort angegeben als numerische ID（可选，其他）| Verkehrsmittel | Auswahl des Verkehrsmittels，z.B.公交车，S-Bahn，usw。奥地利标准法院|最大限度。版权|马克西姆·安扎尔（Umstiegen）。 0分钟前到Verbindungen。
 | Abfahrten | Anzahl abzurufender Fahrten | Fahrradmitnahme | Nur Verbindungen mit Fahrradmitnahmeauswählen
 
 #### TabVerspätungsalarm
@@ -99,7 +99,7 @@ Hinweis zum Ausgabetext：来自VIS z.B.的kann neben einfachen Objekten “说�
 Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 
 | Einstellung | Beschreibung | ----------------------------- | --- | | Nr | Die Unmmer和wird automatisch vergeben的Entspricht dem Unterknoten。
-| Aktiv | Wenn der Eintrag女演员Wird Dieser Abgerufen |冯| Numerische ID von Startbahnhof oder Starthaltestelle（Ermittlungüber追求）|冯（艾格纳名字）| Benutzerdefinierter名称von Startbahnhof oder Starthaltestelle，来自HTML-Ausgabe verwendet | Abfahrten |安扎尔·阿布祖鲁芬德·阿法尔滕
+| Aktiv | Wenn der Eintrag女演员Wird Dieser Abgerufen |冯| Numerische ID von Startbahnhof oder Starthaltestelle（Ermittlungüber追求）|冯（艾格纳名字）| Benutzerdefinierter名称von Startbahnhof oder Starthaltestelle，来自HTML-Ausgabe verwendet | Abfahrten | Anzahl abzurufender Abfahrten | Verkehrsmittel | Auswahl des Verkehrsmittels，z.B.公交车，S-Bahn，usw。 Standardmäßigwerden alle Verkehrsmittelausgewählt
 
 ＃＃＃ 英语
 起点，终点和中途停留必须使用数字ID进行标识。
@@ -115,7 +115,7 @@ Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 
 使用+按钮，可以将新条目添加到表中。
 
-|设置|说明| ----------------------------- | --- | | Nr |该数字与对象中的子节点匹配，并自动分配。激活|激活路由后，连接信息将更新。来自| Start Station oder start stop的数字ID |来自（自定义名称）|启动站或启动停止的自定义名称，用于HTML-和延迟通知输出|到|目的地站或目的地站的数字ID |来自（自定义名称）|目标站或目标站的自定义名称，用于HTML-和延迟通知输出|通过1 |跨过特殊电台作为数字ID（可选，默认情况下为空）通过2 |跨过特殊电台作为数字ID（可选，默认情况下为空）车辆|选择车辆，例如公共汽车，轻轨等。默认情况下，所有车辆都被选择。最高转移路径上的最大传输，仅直接连接为0 |出发收到的出发数量|自行车|仅选择允许使用自行车的连接
+|设置|说明| ----------------------------- | --- | | Nr |该数字与对象中的子节点匹配，并自动分配。激活|激活路由后，连接信息将更新。来自| Start Station oder start stop的数字ID |来自（自定义名称）|启动站或启动停止的自定义名称，用于HTML-和延迟通知输出|到|目的地站或目的地站的数字ID |来自（自定义名称）|目标站或目标站的自定义名称，用于HTML-和延迟通知输出|通过1 |跨过特殊电台作为数字ID（可选，默认情况下为空）通过2 |跨过特殊电台作为数字ID（可选，默认情况下为空）车辆|选择车辆，例如公共汽车，轻轨等。默认情况下，所有车辆都被选择。最大限度。转移路径上的最大传输，仅直接连接为0 |出发收到的出发数量|自行车|仅选择允许使用自行车的连接
 
 #### Tab延迟警报
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_delaynotification.png)
@@ -131,7 +131,7 @@ Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 
 使用+按钮，可以将新条目添加到表中。
 
-|设置|说明| ----------------------------- | --- | | Nr |该数字与对象中的子节点匹配，并自动分配。激活|当项目激活时，连接信息将更新。来自| Start Station oder start stop的数字ID |来自（自定义名称）|启动站或启动停止的自定义名称，用于HTML-和延迟通知输出|出发收到的出发次数
+|设置|说明| ----------------------------- | --- | | Nr |该数字与对象中的子节点匹配，并自动分配。激活|当项目激活时，连接信息将更新。来自| Start Station oder start stop的数字ID |来自（自定义名称）|启动站或启动停止的自定义名称，用于HTML-和延迟通知输出|出发收到的出发数量|车辆|选择车辆，例如公共汽车，轻轨等。默认情况下，所有车辆都被选中
 
 ## Changelog
 
@@ -141,9 +141,20 @@ Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Quality fixing (lgtm.com)
+
+### 1.0.4 (2021-02-13)
+* (Gaudes) Add product selection to departure timetable
+* (Gaudes) Update HAFAS client to 5.15.1 (Fix error Clientversion with OEBB profile)
+* (Gaudes) Enhanced information reporting on error (Sentry Breadcrumbs)
+* (Gaudes) Include Dependabot updates
+
+### 1.0.3 (2021-01-27)
 * (Gaudes) Station search returns only stations (Sentry Multiple results found for station)
 * (Gaudes) Integrate SBB profile
 * (Gaudes) Leave out superflous journey per route than configured
+* (Gaudes) Fix call of helper for correct counters
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.2 (2021-01-12)
 * (Gaudes) Configurable Headline for HTML tables
@@ -158,12 +169,6 @@ Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 
 ### 1.0.0 (2020-12-09)
 * (Gaudes) First stable release
-
-### 0.2.8 (2020-12-02)
-* (Gaudes) Fixing connection error to HAFAS
-
-### 0.2.7 (2020-11-28)
-* (Gaudes) Fixing connection error to HAFAS
 
 ## License
 MIT License

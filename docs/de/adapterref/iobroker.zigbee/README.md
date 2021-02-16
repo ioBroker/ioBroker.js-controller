@@ -34,7 +34,12 @@ Zigbee-Geräte die nicht in der Liste aufgeführt sind, können zwar gepairt wer
 Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mit gleichen Funktionen und gleicher Technologie, welcher mit denselben Geräten über ein MQTT Protokoll kommuniziert. Wenn irgendwelche Verbesserungen oder neu unterstütze Geräte im Projekt Zigbee2MQTT eingefügt werden, können jene auch in dieses Projekt hinzugefügt werden. Solltet Ihr unterschiede merken, schreibt bitte ein Issue, wir kümmern uns darum
 
 ## Changelog
-### 1.4.2 (2020-12)
+### 1.4.4 (2021-02-14)
+* (kirovilya) External converters https://www.zigbee2mqtt.io/information/configuration.html#external-converters-configuration
+* (asgothian) Enhancement ping process
+* (asgothian) Devive query state-button
+* (asgothian) State Cleanup button
+* (arteck) Setting to use exposes instead of internal device description
 
 
 ### 1.4.1 (2020-12)

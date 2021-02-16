@@ -1,6 +1,8 @@
 ---
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.senec.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.senec.svg
+BADGE-Number of Installations (latest): http://iobroker.live/badges/senec-installed.svg
+BADGE-Number of Installations (stable): http://iobroker.live/badges/senec-stable.svg
 BADGE-Dependency Status: https://img.shields.io/david/nobl/iobroker.senec.svg
 BADGE-Known Vulnerabilities: https://snyk.io/test/github/nobl/ioBroker.senec/badge.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.senec.png?downloads=true
@@ -527,6 +529,15 @@ If a state is not documented (or only partially documented) and you know what it
    *Read-only text, which designates the serial number of wallbox [0..3].*
 
 ## Changelog
+### 1.1.0 (NoBl)
+* Updated to current adapter template
+* Integrated GitHub Testing and auto npm publishing
+* Some other administrative updates
+
+### 1.0.13 (NoBl)
+* Added System Description 19 for Senec.Home V3 Hybrid (Credits to noffycws)
+* Added Mode Descriptions for 86-91. (Credits to noffycws)
+
 ### 1.0.12 (NoBl)
 * Just set 'supportCustoms' to false so it won't show up in admin custom config.
 
@@ -593,7 +604,7 @@ If a state is not documented (or only partially documented) and you know what it
 ## License
 MIT License
 
-Copyright (c) 2020 Norbert Bluemle <github@bluemle.org>
+Copyright (c) 2021 Norbert Bluemle <github@bluemle.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

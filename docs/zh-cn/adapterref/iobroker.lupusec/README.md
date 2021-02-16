@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: q8KHPpsXKoRn9lzMDs/fu53HSoekkRwcSEQYvFNNCKg=
+hash: K0k5vvfJi3TuR4x+nkQ70nYeefXX626FHzYCnBXV/fg=
 ---
 ![标识](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -99,6 +99,15 @@ ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 您可以在Lupusec设备之类的“设备”下找到Nuki开门器。 Nuki提供2个州。状态nuki_state向您显示Nuki开门器的实际状态，例如门已锁定或未锁定。使用状态nuki_action，您可以打开，锁定或解锁门。
 ![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
+###狼疮短信
+如果您将Lupusec XT1 +，XT2 +或XT3与SMS SIM卡一起使用，则可以发送具有以下状态的SMS：![lupusec_obj_sms](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_sms.png)
+
+或者，您可以使用以下命令从JavaScript发送SMS：
+
+```
+sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
+```
+
 ＃＃ 故障排除
 如果启动Lupusec适配器，但收到错误消息，提示无法连接警报系统，请尝试从ioBroker系统的终端窗口ping系统。
 
@@ -122,7 +131,10 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.1-beta-1 (07.02.2021)
+### 1.3.2-beta-2 (14.02.2021)
+* (Stübi) Send SMS if you are using a sim card
+
+### 1.3.1 (07.02.2021)
 * (Stübi) Add universal IR controller (type 52)
 
 ### 1.3.0 (03.10.2020)

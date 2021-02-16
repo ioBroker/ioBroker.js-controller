@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
+hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 ---
-![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
+![标识](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/vis-inventwo-stable.svg)
@@ -21,12 +21,12 @@ hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 ＃ioBroker.vis-inventwo
 ## Schalter窗口小部件ioBroker.vis适配器
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>普遍的</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center><b>桌子</b><br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>列表</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
+<table><tr><td><center><b>普遍的</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图像</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center><b>桌子</b><br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>列表</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -34,13 +34,25 @@ hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 ---
 
 ##Unterstützung
-瀑布不夜城，阿尔弗雷德·尤德·斯彭德（Wer freuen unsüberjede Spende）。
+瀑布下的阿尔贝特教堂和地下教堂
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.9
+-图像小部件hinzugefügt的选项
+-Fehler von vorheriger版本behoben
+
+## 2.7.8
+-问题麻省理工学院
+-图像和小部件behoben的问题mitBildgröße
+
+## 2.7.7
+-比尔本德问题博物馆
+-问题麻省理工学院的法布雷格勒·贝霍本（Dem Farmegler behoben）
 
 ## 2.7.6
 -Navi-Widget behoben问题解答
@@ -63,7 +75,7 @@ hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 
 ## 2.7.2
 -Fehler在Radiobutton mit Bildfarbe behoben中
--费勒·贝霍本（Fehler behoben）：多贝特尔·克利肯（北国）
+-费勒·贝霍本（Fehler behoben）：多贝特尔·克利肯（Doppeltes klicken）北邦州立大学（Vermitldauer）
 -HovereffektfürButtons游戏
 -问题解答
 -滑块文本anhängenmöglich
@@ -80,7 +92,7 @@ hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 -费勒·贝霍本
 
 ## 2.6.0
--通用和多小部件Vergleichsoperatoren gleich，größer，kleiner und nichthinzugefügt
+-通用和多小部件Vergleichssoperatoren gleich，größer，kleiner und nichthinzugefügt
 -滑块最小/最大反转
 -滑块湿ert beim loslassen setzen
 -Widget um Wert zuerhöhenoder zu senken
@@ -158,14 +170,14 @@ hash: iwFsJEqjCUfaawYrq5MA9q0cv1AB5ppPU+3vM9IwH/U=
 -JSON Tabelle behoben中的Fehler
 
 ## 2.2.2
--Fehler im Multi Widget behoben：文本和文字的类型导航
+-Fehler im Multi Widget behoben：Bilder und Text文字导航类型导航
 
 ## 2.2.1
 -JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
--Datenpunktwerte werden jetzt bei allen Widgets in Editor编辑
+-编辑器中的Datenpunktwerte werden jetzt bei allen Widgets
 -Neues小部件：Marquee（Laufschrift）
 -通用和多州Verweildauerhinzugefügt
 -列表小部件Abstand zwischen denEinträgenkann eingestell werden

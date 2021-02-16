@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
+hash: Ky9zdbU5WI/dZsBo0e469I5mZiA68K9OX0CRy77/Vw0=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -45,6 +45,9 @@ In diesem Fall installieren Sie alle npm-Pakete neu
 Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pakete erfolgreich zu installieren
 
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 4.0.4 (2021-02-14)
+* (René) Abhängigkeiten aktualisiert
 
 ## 4.0.3 (2021-01-15)
 * (René) Fehlerbehebung basierend auf CI-Tests
