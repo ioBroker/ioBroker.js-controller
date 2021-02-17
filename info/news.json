@@ -738,5 +738,38 @@
         "conditions": {
             "js-controller": "between(3.2.0,3.2.15)"
         }
+    }, 
+    {
+        "title": {
+            "en": "Attention: MercedeMe Adapter needs urgent update",
+            "de": "Achtung: Der MercedeMe-Adapter muss dringend aktualisiert werden",
+            "ru": "Внимание: необходимо срочно обновить адаптер MercedeMe",
+            "pt": "Atenção: Adaptador MercedeMe precisa de atualização urgente",
+            "nl": "Let op: MercedeMe Adapter heeft dringend update nodig",
+            "fr": "Attention: l'adaptateur MercedeMe nécessite une mise à jour urgente",
+            "it": "Attenzione: l'adattatore MercedeMe necessita di un aggiornamento urgente",
+            "es": "Atención: el adaptador MercedeMe necesita una actualización urgente",
+            "pl": "Uwaga: adapter MercedeMe wymaga pilnej aktualizacji",
+            "zh-cn": "注意：MercedeMe适配器需要紧急更新"
+        },
+        "content": {
+                "en": "Because of a change in the mercedesMe protocol the adapter needs to be updated.",
+                "de": "Aufgrund einer Änderung des mercedesMe-Protokolls muss der Adapter aktualisiert werden.",
+                "ru": "Из-за изменения протокола mercedesMe адаптер необходимо обновить.",
+                "pt": "Devido a uma mudança no protocolo mercedesMe, o adaptador precisa ser atualizado.",
+                "nl": "Vanwege een wijziging in het mercedesMe-protocol moet de adapter worden bijgewerkt.",
+                "fr": "En raison d'un changement dans le protocole mercedesMe, l'adaptateur doit être mis à jour.",
+                "it": "A causa di una modifica nel protocollo mercedesMe, l'adattatore deve essere aggiornato.",
+                "es": "Debido a un cambio en el protocolo mercedesMe, el adaptador debe actualizarse.",
+                "pl": "Ze względu na zmianę protokołu mercedesMe adapter wymaga aktualizacji.",
+                "zh-cn": "由于mercedesMe协议的更改，因此需要更新适配器。"
+        },
+        "id": "mercedesme",
+        "created": "2021-02-17T22:00:00.000Z",
+        "class": "danger",
+        "fa-icon": "bolt",
+        "conditions": {
+            "mercedesme": "smaller(0.0.45)"
+        }
     }
 ]
