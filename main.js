@@ -2579,7 +2579,7 @@ function restartInstances(instances, cb) {
 }
 
 async function getInstances() {
-    const instances = await tools.getOrderedInstances(objects, logger, hostLogPrefix);
+    const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
     if (instances.length === 0) {
         logger.info(`${hostLogPrefix} no instances found`);
