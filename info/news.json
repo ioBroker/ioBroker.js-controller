@@ -685,60 +685,25 @@
             "zh-cn": "js-controller 3.2.16可用"
         },
         "content": {
-            "en": "After intensive testing the new js-controller 3.2.16 is available now in the Beta repository. No issues are known at the moment. With this it is time to also try the new version and report back issues in Forum!",
-            "de": "Nach intensiven Tests ist der neue js-controller 3.2.16 jetzt im Beta-Repository verfügbar. Derzeit sind keine Probleme bekannt. Damit ist es Zeit, auch die neue Version auszuprobieren und Probleme im Forum zu melden!",
-            "ru": "После интенсивного тестирования новый js-контроллер 3.2.16 теперь доступен в бета-репозитории. На данный момент о проблемах не известно. Пришло время попробовать новую версию и сообщить о проблемах на форуме!",
-            "pt": "Após testes intensivos, o novo js-controller 3.2.16 está disponível agora no repositório Beta. Nenhum problema é conhecido no momento. Com isso, é hora de também experimentar a nova versão e relatar problemas no fórum!",
-            "nl": "Na intensief testen is de nieuwe js-controller 3.2.16 nu beschikbaar in de Beta-repository. Op dit moment zijn er geen problemen bekend. Hiermee is het tijd om ook de nieuwe versie te proberen en problemen terug te melden in Forum!",
-            "fr": "Après des tests intensifs, le nouveau js-controller 3.2.16 est maintenant disponible dans le référentiel Beta. Aucun problème n'est connu pour le moment. Avec cela, il est temps d'essayer également la nouvelle version et de signaler les problèmes dans le forum!",
-            "it": "Dopo un intenso test, il nuovo js-controller 3.2.16 è ora disponibile nel repository Beta. Al momento non sono noti problemi. Con questo è ora di provare anche la nuova versione e segnalare i problemi arretrati nel Forum!",
-            "es": "Después de pruebas intensivas, el nuevo js-controller 3.2.16 ya está disponible en el repositorio Beta. No se conocen problemas por el momento. Con esto, es hora de probar también la nueva versión e informar problemas anteriores en el Foro.",
-            "pl": "Po intensywnych testach nowy js-controller 3.2.16 jest już dostępny w repozytorium Beta. W tej chwili nie są znane żadne problemy. W związku z tym nadszedł czas, aby wypróbować nową wersję i zgłaszać problemy na forum!",
-            "zh-cn": "经过大量测试后，新的js-controller 3.2.16现在可以在Beta存储库中使用。目前尚无问题。有了这个，现在该尝试新版本并在论坛中报告问题了！"
+            "en": "After intensive testing the new js-controller 3.2.16 is available now in the Beta repository. No issues are known at the moment. More information on the changes and instructions can be found in forum at https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "de": "Nach intensiven Tests ist der neue js-controller 3.2.16 jetzt im Beta-Repository verfügbar. Derzeit sind keine Probleme bekannt. Weitere Informationen zu den Änderungen und Anweisungen finden Sie im Forum unter https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "ru": "После интенсивного тестирования новый js-контроллер 3.2.16 теперь доступен в бета-репозитории. На данный момент о проблемах не известно. Более подробную информацию об изменениях и инструкции можно найти на форуме по адресу https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "pt": "Após intensos testes, o novo js-controller 3.2.16 está disponível agora no repositório Beta. Nenhum problema é conhecido no momento. Mais informações sobre as mudanças e instruções podem ser encontradas no fórum em https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "nl": "Na intensief testen is de nieuwe js-controller 3.2.16 nu beschikbaar in de Beta-repository. Momenteel zijn er geen problemen bekend. Meer informatie over de wijzigingen en instructies is te vinden op het forum op https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "fr": "Après des tests intensifs, le nouveau js-controller 3.2.16 est maintenant disponible dans le référentiel Beta. Aucun problème n'est connu pour le moment. Plus d'informations sur les changements et les instructions peuvent être trouvées dans le forum à https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "it": "Dopo un intenso test, il nuovo js-controller 3.2.16 è ora disponibile nel repository Beta. Al momento non sono noti problemi. Maggiori informazioni sulle modifiche e le istruzioni possono essere trovate nel forum su https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "es": "Después de pruebas intensivas, el nuevo js-controller 3.2.16 ya está disponible en el repositorio Beta. No se conocen problemas por el momento. Puede encontrar más información sobre los cambios y las instrucciones en el foro en https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "pl": "Po intensywnych testach nowy js-controller 3.2.16 jest już dostępny w repozytorium Beta. W tej chwili nie są znane żadne problemy. Więcej informacji o zmianach i instrukcje można znaleźć na forum pod adresem https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable",
+            "zh-cn": "经过大量测试后，新的js-controller 3.2.16现在可以在Beta存储库中使用。目前尚无问题。有关更改和说明的更多信息，请访问论坛，网址为https://forum.iobroker.net/topic/42385/js-controller-3-2-jetzt-im-stable 。"
         },
-        "id": "jscontroller32infoall",
-        "created": "2021-02-09T07:00:00.000Z",
+        "id": "jscontroller3216infoall",
+        "created": "2021-02-18T21:45:00.000Z",
         "class": "info",
         "fa-icon": "exclamation-circle",
-        "repo": "latest",
         "conditions": {
-            "js-controller": "smaller(3.2.0)"
+            "js-controller": "smaller(3.2.16)"
         }
     },
-    {
-        "title": {
-            "en": "js-controller 3.2.16 is available. Please update!",
-            "de": "js-controller 3.2.16 ist verfügbar. Bitte aktualisieren!",
-            "ru": "js-controller 3.2.16 доступен. Пожалуйста обновите!",
-            "pt": "js-controller 3.2.16 está disponível. Por favor atualize!",
-            "nl": "js-controller 3.2.16 is beschikbaar. Update alstublieft!",
-            "fr": "js-controller 3.2.16 est disponible. Veuillez mettre à jour!",
-            "it": "js-controller 3.2.16 è disponibile. Per favore aggiornare!",
-            "es": "js-controller 3.2.16 está disponible. ¡Por favor actualice!",
-            "pl": "js-controller 3.2.16 jest dostępny. Proszę zaktualizować!",
-            "zh-cn": "js-controller 3.2.16可用。请更新！"
-        },
-        "content": {
-            "en": "After intensive testing the new js-controller 3.2.16 is available now in the Beta repository. No issues are known at the moment. Weencourage you to update to the latest 3.2 version and report back issues in Forum!",
-            "de": "Nach intensiven Tests ist der neue js-controller 3.2.16 jetzt im Beta-Repository verfügbar. Derzeit sind keine Probleme bekannt. Wir empfehlen Ihnen, auf die neueste Version 3.2 zu aktualisieren und frühere Probleme im Forum zu melden!",
-            "ru": "После интенсивного тестирования новый js-контроллер 3.2.16 теперь доступен в бета-репозитории. На данный момент о проблемах не известно. Мы советуем вам обновиться до последней версии 3.2 и сообщать о проблемах на форуме!",
-            "pt": "Após testes intensivos, o novo js-controller 3.2.16 está disponível agora no repositório Beta. Nenhum problema é conhecido no momento. Nós o encorajamos a atualizar para a versão 3.2 mais recente e relatar problemas no fórum!",
-            "nl": "Na intensief testen is de nieuwe js-controller 3.2.16 nu beschikbaar in de Beta-repository. Op dit moment zijn er geen problemen bekend. We moedigen u aan om bij te werken naar de nieuwste 3.2-versie en problemen terug te melden in Forum!",
-            "fr": "Après des tests intensifs, le nouveau js-controller 3.2.16 est maintenant disponible dans le référentiel Beta. Aucun problème n'est connu pour le moment. Nous vous encourageons à mettre à jour vers la dernière version 3.2 et à signaler les problèmes dans Forum!",
-            "it": "Dopo un intenso test, il nuovo js-controller 3.2.16 è ora disponibile nel repository Beta. Al momento non sono noti problemi. Ti invitiamo ad aggiornare alla versione 3.2 più recente e a segnalare i problemi arretrati nel Forum!",
-            "es": "Después de pruebas intensivas, el nuevo js-controller 3.2.16 ya está disponible en el repositorio Beta. No se conocen problemas por el momento. ¡Le recomendamos que actualice a la última versión 3.2 e informe los problemas anteriores en el Foro!",
-            "pl": "Po intensywnych testach nowy js-controller 3.2.16 jest już dostępny w repozytorium Beta. W tej chwili nie są znane żadne problemy. Zachęcamy do aktualizacji do najnowszej wersji 3.2 i zgłaszania problemów na forum!",
-            "zh-cn": "经过大量测试后，新的js-controller 3.2.16现在可以在Beta存储库中使用。目前尚无问题。我们鼓励您更新到最新的3.2版本并在论坛中报告问题！"
-        },
-        "id": "jscontroller32info32",
-        "created": "2021-02-09T07:00:00.000Z",
-        "class": "info",
-        "fa-icon": "exclamation-circle",
-        "repo": "latest",
-        "conditions": {
-            "js-controller": "between(3.2.0,3.2.15)"
-        }
-    }, 
     {
         "title": {
             "en": "Attention: MercedeMe Adapter needs urgent update",
