@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
+hash: vrqyrwtsxbrT+QIGV1N1+IOMukmKrWtM05iSKgfTsnw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.10
+- Problem mit Bildern im Universal und Multi Widget behoben
+- Проблема с Bildwechesl im Universal и Multi Widget behoben
 
 ## 2.7.9
 - Option für die Bildgröße für das Image-Widget hinzugefügt

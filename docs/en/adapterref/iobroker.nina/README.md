@@ -46,6 +46,9 @@ CipherString = DEFAULT@SECLEVEL=1
 ## Changelog
 
 ### 0.0.24
+- fix js-controller warnings
+- minimized self expanding object tree
+- Accept long AGS Numbers
 - (thost96) fixed broken link in README
 - (thost96) added icon with transparent background for admin ui
 - (thost96) updated link on admin ui to the same as on this README as old link was broken

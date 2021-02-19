@@ -101,6 +101,10 @@ To send email from other adapter use **adapter.sendTo** function.
 For other services see documentation of **Nodemailer**: `[https://github.com/nodemailer/nodemailer](https://github.com/nodemailer/nodemailer)`
 
 ## Changelog
+
+### __WORK IN PROGRES__
+* (Apollon77) Call message callback always with error or without
+
 ### 1.0.7 (2020-06-11)
 * (Apollon77) Make sure adapter is not crashing on stop in some edge cases
 * (Apollon77) Add Sentry for crash reporting with js-controller >=3.x

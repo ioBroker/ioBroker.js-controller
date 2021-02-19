@@ -74,6 +74,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
   * New login process
     * Support for newer app version login
     * Support for Chinese server login
+* Initial support for some models (e.g. N3, N7 and N8 series)
 
 ### 1.1.0
 * Stable release

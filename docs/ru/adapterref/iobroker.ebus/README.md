@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
+hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -18,22 +18,25 @@ hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 
 ** Если вам это нравится, рассмотрите возможность пожертвования: **
 
-[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 Этот адаптер читает
 
 - данные из ebusd с использованием html
 
-В этом случае ebusd должен работать и должен иметь возможность отправлять данные, например, проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd, вкл. файлы конфигурации можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные на данный момент игнорируются.
+В этом случае должен работать ebusd и иметь возможность отправлять данные, например, проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd, вкл. файлы конфигурации можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные на данный момент игнорируются.
 
 Существует возможность опроса данных, которые не опрашиваются напрямую ebusd. Команда read -f используется для принудительного чтения через ebus.
 
 Другая функция - отправить любую команду в ebusd и получить ответ для работы, например. скрипты.
 
-текущая поддерживаемая версия ebusd: 3.3
+Текущая поддерживаемая версия ebusd: 3.3
 
-## Известные проблемы
+## Известные вопросы
 * пожалуйста, создавайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или захотите новые функции
+
+## 2.2.4 (17.02.2021)
+* (Рене) см. Проблему # 42: Uncaught ReferenceError: oView не определен в виджете, решена
 
 ## 2.2.3 (2020-10-24)
 * (Рене) создать историю DP, если она недоступна
@@ -43,7 +46,7 @@ hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 * (René) обновить зависимости
 
 ## 2.1.1 (27.06.2020)
-* (Рене) проблема № 26: исправление ошибки: "cmd not found" - это только сообщение отладки, а не ошибка
+* (Рене) проблема №26: исправление ошибки: «cmd not found» - это только сообщение отладки, а не ошибка
 
 ## 2.1.0 (17.06.2020)
 * (René) рефакторинг: используется async / await
@@ -82,13 +85,13 @@ hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 * (René) исправление ошибки: в vis 1.x некоторые значения не сохраняются
 
 ### 0.5.1
-* (René) исправление ошибки: если нечего опрашивать, пропустите соединение telnet
+* (René) исправление ошибки: если нечего опрашивать, пропустите telnet-соединение
 
 ### 0.5.0
 * (Рене) записывает дату по TCP в ebusd
 
 ### 0.4.2
-* (René) исправление ошибки для администратора V3
+* (René) исправление ошибки для админки V3
 
 ### 0.4.1
 * (René) логотип изменен
@@ -101,7 +104,7 @@ hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 * (René) admin3 поддержка
 
 ### 0.2.0
-* (Рене) добавить историю как JSON для vis
+* (René) добавить историю как JSON для vis
 * (René) добавить виджет на основе плавающего режима для отображения графика температуры, состояния и мощности
 
 ### 0.1.0

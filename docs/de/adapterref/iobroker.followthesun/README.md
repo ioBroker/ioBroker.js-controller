@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.followthesun/README.md
 title: ioBroker.followthesun
-hash: eAi1SpyORx03FIQD0nRM7NjJbd4NoSCu23k+SEwfH84=
+hash: QJaTG0uxkQ3xon1cTidL/ivLp4eZABLgoaDzBRYWF3k=
 ---
 ![Logo](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
@@ -16,18 +16,33 @@ hash: eAi1SpyORx03FIQD0nRM7NjJbd4NoSCu23k+SEwfH84=
 ![NPM](https://nodei.co/npm/iobroker.followthesun.png?downloads=true)
 
 # IoBroker.followthesun
-[![FOSSA-Status] (https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun?ref=badge_shield)![Testen und freigeben](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
+[![FOSSA-Status] (https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun?ref=badge_shield) ![Testen und freigeben](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
 
 ## Followthesun Adapter für ioBroker
 Dieser Adapter berechnet die aktuelle Höhe und den Azimut der Sonne basierend auf der Geoposition. Zusätzlich wird die Kompassrichtung und die Bewegung (Sonnenaufgang oder Sonnenuntergang) der Sonne gespeichert.
 Es wird die in der Konfiguration definierte Geoposition verwendet. Das Berechnungsintervall kann in Instanzeinstellungen definiert werden.
 Solar-Mittag-Werte für einige Tage wie heute, morgen oder den Beginn von Frühling / Sommer / Herbst / Winter werden ebenfalls gespeichert.
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
+
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.3.2 (2021-02-17)
+* (HGlab01) add Sentry support
+
+### 0.3.1 (2021-02-15)
+* (HGlab01) add sunrise, sunset, dusk and dawn (#67)
+* (HGlab01) smaller improvments
+* (HGlab01) use iobroker-jsonexplorer for state-management
+
+### 0.2.7 (2021-02-11)
+* (HGlab01) Fix sun-movement bug (#61)
+* (HGlab01) Optimize keywords
+* (HGlab01) Bump node-schedule from 1.3.2 to 2.0.x
+
 ### 0.2.6 (2020-12-30)
 * (HGlab01) implement license check provided by app.fossa.com
 
@@ -53,13 +68,10 @@ Solar-Mittag-Werte für einige Tage wie heute, morgen oder den Beginn von Frühl
 ### 0.1.0 (2020-11-30)
 * (HGlab01) first beta release
 
-### 0.0.7-0 (2020-07-21)
-* (HGlab01) alpha version
-
 ## License
 MIT License
 
-Copyright (c) 2020 HGlab01 <iobroker.followthesun@gmail.com>
+Copyright (c) 2021 HGlab01 <iobroker.followthesun@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

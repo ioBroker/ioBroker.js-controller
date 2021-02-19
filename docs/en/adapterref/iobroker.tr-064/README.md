@@ -96,6 +96,10 @@ iobroker upload tr-064
 
 ## Changelog
 
+### 4.2.6 (2021-02-18)
+* (Apollon77) Fix crash case (IOBROKER-TR-064-20)
+* (Apollon77) Get calllists working again
+
 ### 4.2.4 (2021-02-02)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-TR-064-1T)
 

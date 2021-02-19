@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue/README.md
 title: ioBroker Philips Hue Bridge Adapter
-hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
+hash: j1mPVDqpHsySN+sZGj7QwQbOalRdpf1bIWnKI9DgA3Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -17,11 +17,19 @@ hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
 
 ![Build-Status](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
 
+** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+
+## Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
+Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Genau dies ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet.
+Wenn Sie der ioBroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Englisch: gb:
 Dieser Adapter verbindet Ihre Philips Hue Bridges mit ioBroker, um Philips Hue LED-Lampen, Friends of Hue LED-Lampen, Streifen, Stecker wie von Osram und andere SmartLink-fähige Geräte (wie LivingWhites und einige LivingColors) zu steuern.
 
-### Installieren
-Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine entsprechende Adapterinstanz. Als Nächstes müssen Sie Ihre Hue Bridge mit ioBroker in den Adaptereinstellungen verbinden:
+### Einrichten
+Nachdem Sie diesen Adapter in ioBroker installiert haben, erstellen Sie eine entsprechende Adapterinstanz. Als Nächstes müssen Sie Ihre Hue-Bridge in den Adaptereinstellungen mit ioBroker verbinden:
 
 1. Wenn Sie eine andere Bridge als v2 verwenden, konfigurieren Sie den Port auf 80 (nicht https), andernfalls sollte 443 (https) der richtige Weg sein.
 2. Klicken Sie auf die Schaltfläche "Bridge suchen", um die IP-Adresse Ihrer Bridge abzurufen. Dadurch wird nach allen Brücken in Ihrer Umgebung gesucht. Wählen Sie dann die Brücke aus, zu der Sie eine Verbindung herstellen möchten. Das Feld "Brückenadresse" wird mit der IP-Adresse der von Ihnen gewählten Hue-Brücke gefüllt.
@@ -40,14 +48,14 @@ Bitte beachten Sie: Die Adapter-Einstellungsschaltfläche "Bridge suchen" ist in
 | __User__ | Benutzername Ihres Bridge-Benutzers. Sie können es erstellen, indem Sie auf die Schaltfläche "Benutzer erstellen" klicken und den Anweisungen auf dem Bildschirm folgen |
 | __Ignore Szenen__ | Wenn diese Option aktiviert ist, werden Szenen vom Adapter nicht angezeigt / gesteuert. |
 | __Ignore groups__ | Wenn diese Option aktiviert ist, werden Gruppen vom Adapter nicht angezeigt / gesteuert. |
-| __ "Legacy" -Struktur__ | Um die Abwärtskompatibilität zu unterstützen, ist es möglich, eine alte Objektstruktur in ioBroker zu halten. Diese alte Struktur ist `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. Die neue Struktur entfernt `<brdige_name_channel>` und macht es daher erforderlich, alte Skripte usw. anzupassen. Wenn der Adapter eine vorhandene alte Struktur erkennt, wird die Struktur verwendet, ohne das Kontrollkästchen zu aktivieren. Wenn jedoch eine Migration von einer alten zu einer neuen Struktur gewünscht wird, löschen Sie den gesamten `hue.<instance_number>`-Namespace einmal. |
-| __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des `status`-Datenpunkts eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet `0` die Szene aus und `1` schaltet sie ein. |
+| __ "Legacy" -Struktur__ | Um die Abwärtskompatibilität zu unterstützen, kann eine alte Objektstruktur in ioBroker gespeichert werden. Diese alte Struktur ist `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. Die neue Struktur entfernt `<brdige_name_channel>` und macht es daher erforderlich, alte Skripte usw. anzupassen. Wenn der Adapter eine vorhandene alte Struktur erkennt, wird die Struktur verwendet, ohne das Kontrollkästchen zu aktivieren. Wenn jedoch eine Migration von einer alten zu einer neuen Struktur gewünscht wird, löschen Sie den gesamten `hue.<instance_number>`-Namespace einmal. |
+| __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des Datenpunkts `status` eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet `0` die Szene aus und `1` schaltet sie ein. |
 | __Sync-Software-Sensoren__ | Synchronisieren Sie auch Software-Sensoren. Dies sind virtuelle Sensoren, z. erstellt von Hue Labs Szenen. Durch Steuern des Status-Datenpunkts eines solchen Sensors können Sie Szenen starten / stoppen, die dieser Logik folgen. In den meisten Fällen schaltet "0" die Szene aus und "1" schaltet sie ein |
-| __Polling__ | Wenn diese Option aktiviert ist, fragt der Adapter Statusänderungen ab, andernfalls kann er nur zur Steuerung von Lampen verwendet werden, nicht zur Anzeige ihres Status. |
+| __Polling__ | Wenn diese Option aktiviert ist, fragt der Adapter Statusänderungen ab. Andernfalls kann er nur zur Steuerung von Lampen verwendet werden, nicht zur Anzeige ihres Status. |
 | __Polling-Intervall__ | Legt fest, wie oft die Status abgefragt und somit in ioBroker aktualisiert werden. Niedrige Abfrageintervalle können in einigen Einstellungen zu Leistungsproblemen führen. Daher beträgt das minimal zulässige Abfrageintervall 2 Sekunden. Wenn das Abfrageintervall auf weniger als 2 Sekunden eingestellt ist, wird es zur Laufzeit auf 2 Sekunden eingestellt. |
 
 ### Zusätzliche Information
-Mit Version 3.3.0 wurden die Gruppenzustände `anyOn` und `allOn` steuerbar. Beachten Sie, dass sie sich bei Steuerung wie der Zustand `on` verhalten. In einigen Fällen kann es wünschenswert sein, in Ihrer Visualisierung einen steuerbaren `anyOn`-Status zu haben.
+Mit Version 3.3.0 wurden die Gruppenzustände `anyOn` und `allOn` steuerbar. Beachten Sie, dass sie sich bei Steuerung genauso verhalten wie der Zustand `on`. In einigen Fällen kann es wünschenswert sein, in Ihrer Visualisierung einen steuerbaren `anyOn`-Status zu haben.
 
 ## Deutsch: de:
 Bindet Philips Farbton / LivingColors / LivingWhites Lampen ein.
@@ -55,9 +63,46 @@ In den Adapter-Einstellungen muss die IP der Hue Bridge sowie ein Benutzername w
 
 ## Roadmap / Todo
 * Automatische Brückenerkennung
-* Automatische Benutzereinrichtung über die Bridge Link-Taste
+* Automatische Benutzereinrichtung über Bridge Link Button
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 3.5.0 (2021-02-18)
+* (foxriver76) use official js-controller regex for replacing forbidden chars (fixes #165)
+* (foxriver76) use release-script
+* (foxriver76) sentry added
+
+### 3.4.0 (2021-01-20)
+* (foxriver76) we now restart the adapter automatically to add new devices if they have been added to bridge
+
+### 3.3.11 (2021-01-12)
+* (foxriver76) fixed updating `anyOn` and `allOn` if legacy structure used
+
+### 3.3.9 (2021-01-11)
+* (foxriver76) we do not set states of non-existing states anymore
+
+### 3.3.8 (2020-10-11)
+* (foxriver76) marked read-only states accordingly
+
+### 3.3.7 (2020-10-04)
+* (Apollon77) do not catch undhandeledRejections anymore, because controller can handle and report now
+* (foxriver76) dependencies updated
+* (foxriver76) temperature is now correctly read-only
+* (foxriver76) fix duplicate filtering on browse
+
+### 3.3.5 (2020-06-03)
+* (foxriver76) fixed issue on frontend validation of polling intervals starting with 1
+
+### 3.3.4 (2020-06-02)
+* (foxriver76) implemented fix for problems with switches and handling id conflicts 
+
+### 3.3.3 (2020-05-31)
+* (foxriver76) we now handle potential id conflicts, when adding devices from different type with same name over time
+
 ### 3.3.2 (2020-05-15)
 * (foxriver76) internal optimizations - polling after change timeout removed, was 150 ms now instant
 

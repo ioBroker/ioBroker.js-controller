@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
 title: ioBroker飞利浦Hue桥适配器
-hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
+hash: j1mPVDqpHsySN+sZGj7QwQbOalRdpf1bIWnKI9DgA3Q=
 ---
-![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
+![标识](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
 ![安装数量](http://iobroker.live/badges/hue-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.hue.svg)
@@ -17,15 +17,23 @@ hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
 
 ![建立状态](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
 
-##英语：gb：
-该适配器将飞利浦Hue桥接器与ioBroker相连，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
+**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
 
-＃＃＃ 设定
-在ioBroker中安装此适配器后，请相应地创建一个适配器实例。接下来，您需要在适配器设置内将Hue桥与ioBroker连接：
+##什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生另一个代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。
+当您允许ioBroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
+##英语：gb：
+此适配器将您的Philips Hue桥与ioBroker连接，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
+
+＃＃＃ 设置
+在ioBroker中安装此适配器后，请相应地创建一个适配器实例。接下来，您需要在适配器设置中将Hue桥与ioBroker连接：
 
 1.如果您使用的不是v2，则将端口配置为80（非https），否则应使用443（https）。
 2.单击“查找网桥”按钮以获取网桥的IP地址。这将搜索您环境中的所有网桥。然后选择要连接的网桥。字段“网桥地址”将填充您所选的色相网桥的IP地址。
-3.接下来，在设置中单击“创建用户”按钮，然后步行至Hue桥接设备（即您的硬件）以按其圆形按钮。您将有30秒钟的时间进行。按下按钮后，应在字段“ Bridge User”中填充生成的字符串。
+3.接下来，单击设置中的“创建用户”按钮，然后步行至Hue桥接设备（即您的硬件）以按其圆形按钮。您将有30秒钟的时间进行。按下按钮后，应在字段“ Bridge User”中填充生成的字符串。
 4.修改适配器设置中的任何其他选项，然后选择“保存并关闭”。
 5.最后，您已经准备就绪：适配器将生成所有对象，以相应地控制Hue设备。
 
@@ -34,30 +42,67 @@ hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
 ###设置
 |名称|描述|
 |---|---|
-| __桥地址__ |您的色相桥的IP地址，您可以尝试通过按`Find Bridge`按钮检测到它。 |
+| __网桥地址__ |您的色相网桥的IP地址，您可以尝试通过按`Find Bridge`按钮检测到它。 |
 | __Port__ | Hue网桥的端口，通常为443（SSL）和80（非SSL）。 |
 | __User__ |网桥用户的用户名。您可以通过按`Create User`按钮并按照屏幕说明进行创建。 |
 | __User__ |网桥用户的用户名。您可以通过按“创建用户”按钮并按照屏幕说明进行创建。 |
 | __忽略场景__ |如果选中，则场景将不会由适配器显示/控制。 |
 | __忽略组__ |如果选中，则适配器将不会显示/控制组。
-| __“旧式”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，请一次删除整个`hue.<instance_number>`命名空间。 |
+| __“旧版”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，则一次删除整个`hue.<instance_number>`命名空间。 |
 | __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的`status`数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，`0`将场景关闭，而`1`将其打开。 |
-| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以按照该逻辑开始/停止场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
+| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
 | __轮询__ |如果选中，则适配器将轮询状态更改，否则只能用于控制指示灯，而不能显示其状态。 |
-| __轮询间隔__ |定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
+| __轮询间隔__ ||定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
 
 ＃＃＃ 附加信息
 在版本3.3.0中，组状态`anyOn`和`allOn`变得可控制，请注意，它们在被控制时的行为就像`on`状态。在某些情况下，可能希望在可视化中具有可控制的`anyOn`状态。
 
 ## Deutsch：de：
-Bindet飞利浦色相/ LivingColors / LivingWhites Lampen ein。
-在Adapter-Settings中，使用IP der Hue Bridge软件作为用户名konfiguriert werden。 Um einen用户zu aktivieren einmal auf创建用户drücken和dann innerhalb von 30 Sekunden den Button Button der Hue桥drücken。 Dann wird自动用户übergeben。
+Bindet Philips Hue / LivingColors / LivingWhites Lampen ein。
+在Adapter-Settings中，用户名konfiguriert werden属于IP der Hue Bridge。 Um einen用户zu aktivieren einmal auf创建用户drücken和dann innerhalb von 30 Sekunden den Button Button der Hue桥drücken。 Dann wird自动用户übergeben。
 
 ##路线图/ Todo
 *自动桥接发现
 *通过桥接链接按钮自动设置用户
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 3.5.0 (2021-02-18)
+* (foxriver76) use official js-controller regex for replacing forbidden chars (fixes #165)
+* (foxriver76) use release-script
+* (foxriver76) sentry added
+
+### 3.4.0 (2021-01-20)
+* (foxriver76) we now restart the adapter automatically to add new devices if they have been added to bridge
+
+### 3.3.11 (2021-01-12)
+* (foxriver76) fixed updating `anyOn` and `allOn` if legacy structure used
+
+### 3.3.9 (2021-01-11)
+* (foxriver76) we do not set states of non-existing states anymore
+
+### 3.3.8 (2020-10-11)
+* (foxriver76) marked read-only states accordingly
+
+### 3.3.7 (2020-10-04)
+* (Apollon77) do not catch undhandeledRejections anymore, because controller can handle and report now
+* (foxriver76) dependencies updated
+* (foxriver76) temperature is now correctly read-only
+* (foxriver76) fix duplicate filtering on browse
+
+### 3.3.5 (2020-06-03)
+* (foxriver76) fixed issue on frontend validation of polling intervals starting with 1
+
+### 3.3.4 (2020-06-02)
+* (foxriver76) implemented fix for problems with switches and handling id conflicts 
+
+### 3.3.3 (2020-05-31)
+* (foxriver76) we now handle potential id conflicts, when adding devices from different type with same name over time
+
 ### 3.3.2 (2020-05-15)
 * (foxriver76) internal optimizations - polling after change timeout removed, was 150 ms now instant
 

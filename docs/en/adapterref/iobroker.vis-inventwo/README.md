@@ -72,6 +72,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.7.10
+- Problem mit Bildern im Universal und Multi Widget behoben
+- Problem mit Bildwechesl im Universal und Multi Widget behoben
+
 ## 2.7.9
 - Option für die Bildgröße für das Image-Widget hinzugefügt
 - Fehler von vorheriger Version behoben

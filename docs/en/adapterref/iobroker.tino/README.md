@@ -125,6 +125,10 @@ zusätzlich werden für das Empfänger-Protokoll Version 2.0 folgende Datenpunkt
 
 
 ## Changelog
+### 1.0.2
+- (AndrObe) Fix for negative temperature values
+- (bowao) Update devDependencies
+
 ### 1.0.1
 - fix bug in interrupt detection for protocol V2
 

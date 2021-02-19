@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
+hash: vrqyrwtsxbrT+QIGV1N1+IOMukmKrWtM05iSKgfTsnw=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,10 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.10
+- Problem mit Bildern im Universal und Multi Widget gehört
+- Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
 - Option für die Bildgröße für das Image-Widget hinzugefügt
@@ -191,7 +195,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Widget-Untertitel gehört
 
 ## 2.0.0
-- Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget zussammen Verluste -> dem Universal Widget
+- Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt

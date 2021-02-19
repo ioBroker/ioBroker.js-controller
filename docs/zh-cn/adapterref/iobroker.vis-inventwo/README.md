@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
+hash: vrqyrwtsxbrT+QIGV1N1+IOMukmKrWtM05iSKgfTsnw=
 ---
 ![标识](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -42,6 +42,10 @@ hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 
 ---
 
+## 2.7.10
+-通用和多功能小工具的问题
+-通用和多功能小工具的问题
+
 ## 2.7.9
 -图像小部件hinzugefügt的选项
 -Fehler von vorheriger版本behoben
@@ -57,7 +61,7 @@ hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 ## 2.7.6
 -Navi-Widget behoben问题解答
 -问题与解决方案的联系方式
--问题麻痹单选按钮和小部件和日期更新Zahlen behobenn
+-问题MIT单选按钮和小部件和日期更新Zahlen behobenn
 
 ## 2.7.5
 -JSON Tabelle farbliche SchwellenwertefürZahlen
@@ -70,7 +74,7 @@ hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 -FehlendeÜbersetzungfürHover-Farbenhinzugefügt
 
 ## 2.7.3
--Fehler beim多州与州
+-费勒·贝因姆（Fehler beim）多国与祖拉登·贝霍本（MusterenZuständenbehoben）
 -Schatten und Rand HoverfürButtonshinzugefügt
 
 ## 2.7.2
@@ -92,7 +96,7 @@ hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 -费勒·贝霍本
 
 ## 2.6.0
--通用和多小部件Vergleichssoperatoren gleich，größer，kleiner und nichthinzugefügt
+-通用和多小部件Vergleichsoperatoren gleich，größer，kleiner und nichthinzugefügt
 -滑块最小/最大反转
 -滑块湿ert beim loslassen setzen
 -Widget um Wert zuerhöhenoder zu senken
@@ -170,7 +174,7 @@ hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 -JSON Tabelle behoben中的Fehler
 
 ## 2.2.2
--Fehler im Multi Widget behoben：Bilder und Text文字导航类型导航
+-Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
 -JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
@@ -192,7 +196,7 @@ hash: BOebidJ0HYn+CDA8vZZDo+vHpI91BYQZhp0iWFWvero=
 
 ## 2.0.0
 -开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann）
+-多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann（Ähnlichder Signalbild Funktion）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）

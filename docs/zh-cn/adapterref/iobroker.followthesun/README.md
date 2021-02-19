@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.followthesun/README.md
 title: ioBroker。跟随太阳
-hash: eAi1SpyORx03FIQD0nRM7NjJbd4NoSCu23k+SEwfH84=
+hash: QJaTG0uxkQ3xon1cTidL/ivLp4eZABLgoaDzBRYWF3k=
 ---
-![商标](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
+![标识](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.followthesun.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/followthesun-stable.svg)
@@ -21,13 +21,28 @@ hash: eAi1SpyORx03FIQD0nRM7NjJbd4NoSCu23k+SEwfH84=
 ## Followthesun ioBroker适配器
 该适配器根据地理区域计算太阳的当前高度和方位角。另外，还存储了罗盘方向和太阳的运动（日出或日落）。
 它使用配置中定义的地理位置。可以在实例首选项中定义计算间隔。
-也会存储今天，明天或春季/夏季/秋季/冬季开始的某些天的日正值。
+也会存储今天，明天或春季/夏季/秋季/冬季开始的某几天的日正值。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.3.2 (2021-02-17)
+* (HGlab01) add Sentry support
+
+### 0.3.1 (2021-02-15)
+* (HGlab01) add sunrise, sunset, dusk and dawn (#67)
+* (HGlab01) smaller improvments
+* (HGlab01) use iobroker-jsonexplorer for state-management
+
+### 0.2.7 (2021-02-11)
+* (HGlab01) Fix sun-movement bug (#61)
+* (HGlab01) Optimize keywords
+* (HGlab01) Bump node-schedule from 1.3.2 to 2.0.x
+
 ### 0.2.6 (2020-12-30)
 * (HGlab01) implement license check provided by app.fossa.com
 
@@ -53,13 +68,10 @@ hash: eAi1SpyORx03FIQD0nRM7NjJbd4NoSCu23k+SEwfH84=
 ### 0.1.0 (2020-11-30)
 * (HGlab01) first beta release
 
-### 0.0.7-0 (2020-07-21)
-* (HGlab01) alpha version
-
 ## License
 MIT License
 
-Copyright (c) 2020 HGlab01 <iobroker.followthesun@gmail.com>
+Copyright (c) 2021 HGlab01 <iobroker.followthesun@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
+hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -24,7 +24,7 @@ Dieser Adapter liest
 
 - Daten von ebusd mit HTML
 
-In diesem Fall muss ebusd ausgeführt werden und Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, Lastup und aus dem globalen Abschnitt werden analysiert. Alle anderen werden im Moment ignoriert.
+In diesem Fall muss ebusd ausgeführt werden und in der Lage sein, Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, Lastup und aus dem globalen Abschnitt werden analysiert. Alle anderen werden im Moment ignoriert.
 
 Es besteht die Möglichkeit, Daten abzufragen, die nicht direkt von ebusd abgefragt werden. Der Befehl 'read -f' wird verwendet, um das Lesen über den E-Bus zu erzwingen.
 
@@ -35,8 +35,11 @@ aktuell unterstützte ebusd-version: 3.3
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
+#2.2.2.4 (2021-02-17)
+* (René) siehe Problem Nr. 42: Nicht erfasster Referenzfehler: oView ist im gelösten Widget nicht definiert
+
 ## 2.2.3 (2020-10-24)
-* (René) Verlauf DP erstellen, falls nicht verfügbar
+* (René) Verlaufs-DP erstellen, falls nicht verfügbar
 
 ## 2.2.0 (2020-09-06)
 * (René) DP nur bei Bedarf ändern, um die Systemlast zu reduzieren

@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
+hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
 ---
-![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
+![标识](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![安装数量](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
@@ -16,9 +16,9 @@ hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 
 ＃ioBroker.MieleCloudService
-##说明
+＃＃ 描述
 该适配器用于从官方Miele 3rd-party API检索有关所有Miele @ Home设备的信息。
-无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.3 **
+无论它们是否通过Wi-Fi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.4 **
 
 ##先决条件
 * Miele @ Home用户（智能手机应用程序）
@@ -26,7 +26,7 @@ hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 * Miele Client_id（来自https://www.miele.com/developer/）
 * Miele Client_secret（来自https://www.miele.com/developer/）
 
-##安装
+＃＃ 安装
 要安装，请执行以下操作：
 
 1.使用以下命令通过管理员安装
@@ -38,22 +38,16 @@ hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 4.将您的Miele设备添加到应用程序（如果未自动添加）
 6.填写从Miele-developer团队收到的client_secret和client_id以及从应用程序获得的帐户ID和密码。
 
-＃＃ 去做
-*实施MieleAPI 1.0.4-https://www.miele.com/developer/news.html
-*添加哨兵
-*使用js-controller 3.2检查是否有新警告
-*使用js-controller加密密码
-
 ##文档
 请主要参考Miele发布的主要API文档
 
 * [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
-有两种数据点可用。作为人类可读的文本和数字。
+有2种可用的数据点。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
 具有一般含义的字段在下面列出。
-未列出的字段的含义因设备而异，并且不受Miele的贬低。
+未列出的字段的含义因设备而异，并且未由Miele记录。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
 这些原始值代表的清单如下：
@@ -164,9 +158,19 @@ hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
-### 2.1.0 (2021-02-xx)
+### 3.0.0 (2021-02-18)
+*  (grizzelbee) New: BREAKING CHANGE: Making use of build-in password de-/encryption. This raises the need to re-enter your passwords again, because the old ones can't be decrypted anymore.
+*  (grizzelbee) New: [70](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/70) Implements Miele API 1.0.4
+*  (grizzelbee) New: [64](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/64) Introduces data point estimatedFinishingTime
+*  (grizzelbee) New: [54](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/54) Poll interval can now freely be selected in seconds and minutes
+*  (grizzelbee) Upd: [73](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/73) BREAKING CHANGE: Removed white-spaces from any ID in device tree. This creates completely new device trees. So please delete the old ones.  
 *  (grizzelbee) Upd: removed david-dm badge
 *  (grizzelbee) Upd: updated dependencies
+*  (grizzelbee) Fix: added passwords to encryptedNative
+*  (grizzelbee) Fix: added passwords to protectedNative
+*  (grizzelbee) Fix: [63](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/63) added missing info.connection object to io-package
+*  (grizzelbee) Fix: [63](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/63) Fixed new Warnings introduced with js-controller 3.2
+*  (grizzelbee) Fix: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) Light-Actions should work now
 
 ### 2.0.3 (2020-09-15)
 * (grizzelbee) Upd: Updated country list in config dialog
@@ -206,7 +210,7 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 * (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
 
 ### 1.2.1 (2020-04-22)
-* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumble dryers, washer dryer and dishwashers. **Doesn't work perfectly currently.**  
 * (grizzelbee) Upd: Updated Documentation 
 * (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
 
@@ -214,11 +218,11 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 * (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
 * (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
 * (grizzelbee) Change: replaced the deprecated http-library **request** with **axios** 
-* (grizzelbee) Change: Made functions communicating with API asynchronus 
+* (grizzelbee) Change: Made functions communicating with API asynchronous 
   
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
-               Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
+               Please remember that Actions will only work if you put your device into the appropriate state (e.g. Mobile Control)
                please refer to [Miele-Documentation](#documentation) for more Information on actions. 
   
 ### 1.0.5 (2020-02-14)
@@ -243,18 +247,18 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 * (grizzelbee) Fixed bug in config interface introduced during password encryption that config values aren't loaded properly
 
 ### 1.0.1 (2020-02-04)
-* (grizzelbee) Fixes in environment for getting Adapater into the Repo
-* (grizzelbee) Passwords are stored encyrpted now
+* (grizzelbee) Fixes in environment for getting adapter into the Repo
+* (grizzelbee) Passwords are stored encrypted now
 
 ### 1.0.0 (2020-02-03)
 * (grizzelbee) renamed to MieleCloudService to get the ability to publish; the old Name is still blocked by hash99
-* (grizzelbee) Rewritten adapter from scratch - therefor it's incompatible with prior versions and needs to be installed freshly. 
+* (grizzelbee) Rewritten adapter from scratch - therefore it's incompatible with prior versions and needs to be installed freshly. 
 * (grizzelbee) Fix: fixed all build-errors
 * (grizzelbee) Fix: Fixed "NRefreshToken is not a function"-Bug 
-* (grizzelbee) Chg: removed Push-API checkbox (may be introduced newly when API supports this)
+* (grizzelbee) Chg: removed Push-API checkbox (maybe introduced newly when API supports this)
 * (grizzelbee) Chg: New Icon
-* (grizzelbee) New: added support for Non german Miele-Accounts (ALL should be included)
-* (grizzelbee) Completely new layout of datapoints
+* (grizzelbee) New: added support for non-german Miele-Accounts (ALL should be included)
+* (grizzelbee) Complete new layout of datapoints
 * (grizzelbee) Devicetypes are grouped now 
 
 ### 0.9.1 (2019-07-26)

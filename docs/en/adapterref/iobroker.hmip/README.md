@@ -53,7 +53,7 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.9.0 (2021-02-16)
 * (Apollon77) Round temperature values to nearest 0.5 degrees
 * (Apollon77) Only send values to HMIP when changed (reduce traffic!)
 * (Apollon77) Add debouncing to setPointTemperature changes (means value is sent out when "stable" for 5s!) (reduce traffic!)

@@ -645,6 +645,11 @@ msg.payload = {
 -->
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77/Nahasapeemapetilon) catch several API error cases to hopefully get around  adapter crashes on network errors
+* (Nahasapeemapetilon) add support for media groups and multiple image qualities
+
 ### 1.7.0 (2021-01-08)
 * (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 

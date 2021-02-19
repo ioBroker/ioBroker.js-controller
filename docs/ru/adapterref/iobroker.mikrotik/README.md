@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mikrotik/README.md
 title: без названия
-hash: s9sh6Po2FKvCaLYgJT6+Y7VguRY5ISxc+iKLPxNH6DQ=
+hash: l03AVE0l5fMyhDH6nYJ7yt3FriBrXjW4y0qv1IlBneE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png) ioBroker MikroTik Router адаптер
 
@@ -22,14 +22,14 @@ hash: s9sh6Po2FKvCaLYgJT6+Y7VguRY5ISxc+iKLPxNH6DQ=
 Добавьте адрес в список брандмауэра и включите.
 например `name,127.0.0.1,comment`.
 
-### Raw Отправить команду api в mikrotik, результат выполнения будет получен в объекте `mikrotik.0.commands.response`, например: `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. ИЛИ `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org``ip/kid-control/pause kid1``ip/kid-control/resume`
+### Raw Отправить команду api в mikrotik, результат выполнения будет получен в объекте `mikrotik.0.commands.response`, например: `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. ИЛИ `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org``ip/kid-control/print``ip/kid-control/pause .id=*1` `ip/kid-control/resume .id=*1`
 ### Перезагрузка, выключение перезагрузка / выключение микротика
 ### Usb_reset Сброс питания USB в микротике
 *Созданные объекты не удаляются автоматически при удалении в роутере.*
 
 ## Changelog
 
-#### 1.0.15
+#### 1.0.16
 * (instalator) changed parse RAW
 
 #### 1.0.14
