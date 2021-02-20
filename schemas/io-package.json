@@ -1,5 +1,6 @@
 {
-    "$schema": "http://json-schema.org/schema#",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$comment": "We have to update https://github.com/SchemaStore/schemastore too, whenever a change here should be made public",
     "definitions": {
         "multilingual": {
             "type": "object",
