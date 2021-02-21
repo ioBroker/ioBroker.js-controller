@@ -3627,11 +3627,10 @@ async function startInstance(id, wakeUp) {
                                     decache = decache || require('decache');
                                     decache(fileNameFull);
 
-                                    // Prior to requiring the main file make sure that ts-node has its hook registered
+                                    // Prior to requiring the main file make sure that the esbuild require hook was loaded
                                     // if this is a TypeScript adapter
                                     if (fileNameFull.endsWith('.ts')) {
-                                        require('ts-node/register/transpile-only');
-                                        process.env.TS_NODE_CWD = adapterDir;
+                                        require('esbuild-register');
                                     }
 
                                     procs[id].process = {
