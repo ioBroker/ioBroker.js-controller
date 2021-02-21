@@ -48,7 +48,6 @@ let States;
 let decache;
 
 const semver                = require('semver');
-const { cwd } = require('process');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
