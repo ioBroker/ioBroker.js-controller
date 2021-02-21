@@ -4,10 +4,25 @@ Der große Vorteil von Redis:
 Redis bietet verglichen mit den internen ioBroker-Datenbanken vor allem Vorteile in den Bereichen Datenzugriffsgeschwindigkeit,
 IO-Management im Dateisystem und bessere Nutzung von CPU-Ressourcen.
 Der js-controller wird entlastet. Ein vorher träges System kann wieder schneller werden.
-Wichtig ist allerdings das genügend RAM verfügbar ist
+Wichtig ist allerdings das genügend RAM verfügbar ist.
+
+## Redis FAQ
+
+1. Brauche ich Redis für meinen ioBroker oder nicht?
+Für alle üblichen Installationen reichen normalerweise die ioBroker-eigenen Datenbanken vollkommen aus!
+Erst wenn der js-controller dauerhaft 50-70% oder mehr CPU braucht und sich das System gleichzeitig träge anfühlt,
+kann es Sinn machen sich mit dem Thema Redis zu beschäftigen.
+Alternativ wird es nötig wenn man ein hochverfügbares ioBroker System anstrebt, aber dazu sich noch einige Dinge mehr nötig.
+
+2. Wie finde ich heraus ob ich Redis nutze oder nicht?
+Ein Aufruf von `iobroker status` zeigt an, welcher Datenbanktyp für die States- und Objects-Datenbanken verwendet werden.
+"file" bedeutet das die ioBroker eigenen Datenbanken genutzt werden. "redis" bedeutet das ein Redis im Einsatz ist.
+
+Eine detailierte Erläuterung findet man unter
+https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick
 
 
-**Installation von Redis**
+## Installation von Redis
 
 Redis muss als eigener Dienst installiert und konfiguriert werden und auch die Daten sollten beim Backup entsprechend berücksichtigt werden.
 Die persistierten Datenbanken werden in Form von JSON-Dateien im "iobroker-data"-Ordner gespeichert.
@@ -33,7 +48,7 @@ Die Installation erfolgt auf der Komanndozeile für
 
 
 
-**Redis einrichten**
+## Redis einrichten
 
 Prüfen kann man mittels `sudo systemctl status redis-server`.
 Falls es bei einem Reboot nicht automatisch wieder startet hilft ein `sudo systemctl enable redis-server`.
@@ -50,7 +65,7 @@ Danach startet `sudo systemctl restart redis-server` den Server mit der aktualis
 
 
 
-**ioBroker Datenbank auf Redis umstellen**
+## ioBroker Datenbank auf Redis umstellen
 
 Die meisten Änderungen und Datenabfragen finden mit der States-Datenbank statt. Alle Datenänderungen kommen hier an und werden dann wieder auf Adapter verteilt,
 wenn diese sich für bestimmte Daten angemeldet haben.
