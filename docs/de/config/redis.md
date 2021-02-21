@@ -1,4 +1,5 @@
-Bei Redis handelt es sich um eine Open Source In-Memory-Datenbank.Nähere Informationen dazu findet man unter https://redis.io/
+Bei Redis handelt es sich um eine Open Source In-Memory-Datenbank. 
+Nähere Informationen dazu findet man unter https://redis.io/
 
 Der große Vorteil von Redis:
 Redis bietet verglichen mit den internen ioBroker-Datenbanken vor allem Vorteile in den Bereichen Datenzugriffsgeschwindigkeit,
@@ -12,14 +13,17 @@ Wichtig ist allerdings das genügend RAM verfügbar ist.
 Für alle üblichen Installationen reichen normalerweise die ioBroker-eigenen Datenbanken vollkommen aus!
 Erst wenn der js-controller dauerhaft 50-70% oder mehr CPU braucht und sich das System gleichzeitig träge anfühlt,
 kann es Sinn machen sich mit dem Thema Redis zu beschäftigen.
-Alternativ wird es nötig wenn man ein hochverfügbares ioBroker System anstrebt, aber dazu sich noch einige Dinge mehr nötig.
+Alternativ wird es nötig wenn man ein hochverfügbares ioBroker System anstrebt, aber dazu sind noch einige Dinge mehr nötig.
 
 2. Wie finde ich heraus ob ich Redis nutze oder nicht?
+Manchmal ist ein User verwirrt, da er im Log etwas von Redis liest, beachte dabei Port 9000/9001,
+dies deutet auf die interne Datenbank hin und hat nichts mit der externen Redis Datenbank zu tun.
 Ein Aufruf von `iobroker status` zeigt an, welcher Datenbanktyp für die States- und Objects-Datenbanken verwendet werden.
 "file" bedeutet das die ioBroker eigenen Datenbanken genutzt werden. "redis" bedeutet das ein Redis im Einsatz ist.
 
-Eine detailierte Erläuterung findet man unter
-https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick
+
+Eine detailierte Erläuterung zum Thema Redis,
+findet man unter https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick
 
 
 ## Installation von Redis
@@ -57,11 +61,13 @@ Der Befehl `info` zeigt einige Informationen zum System, Speicherverbrauch und z
 
 Wenn man ein Single-Host -System betreibt bzw. ioBroker auf dem gleichen Host läuft, dann war es das auch schon.
 
+
 Falls auch andere Hosts auf diesen Redis-Server zugreifen sollen (Slaves oder so), dann muss dies noch erlaubt werden.
-Dazu muss /etc/redis/redis.conf editiert werden und
-die Zeile **bind 127.0.0.1** zu **bind 0.0.0.0** geändert werden und direkt darunter der **protected_mode** auf **no** gesetzt werden.
+Dazu muss /etc/redis/redis.conf editiert werden und die Zeile **bind 127.0.0.1** zu **bind 0.0.0.0** geändert werden und direkt darunter der **protected_mode** auf **no** gesetzt werden.
 
 Danach startet `sudo systemctl restart redis-server` den Server mit der aktualisierten Konfiguration neu.
+
+Nähere Details siehe https://www.iobroker.net/#de/documentation/config/multihost.md
 
 
 
