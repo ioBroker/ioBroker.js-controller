@@ -30,7 +30,6 @@ let notificationHandler;
 const exec            = cp.exec;
 const spawn           = cp.spawn;
 
-let   adapterDir      = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 let   upload; // will be used only once by upload of adapter
 
@@ -49,6 +48,7 @@ let States;
 let decache;
 
 const semver                = require('semver');
+const { cwd } = require('process');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
@@ -2617,8 +2617,8 @@ function getInstances() {
                 if (instance.common.mode === 'web' || instance.common.mode === 'none') {
                     if (instance.common.host === hostname) {
                         const name = instance._id.split('.')[2];
-                        const adapterDir_ = tools.getAdapterDir(name);
-                        if (!fs.existsSync(adapterDir_)) {
+                        const adapterDir = tools.getAdapterDir(name);
+                        if (!fs.existsSync(adapterDir)) {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
                             installQueue.push({id: instance._id, disabled: true, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom});
                             // start install queue if not started
@@ -3079,8 +3079,7 @@ function startScheduledInstance(callback) {
     }
     let skipped = false;
     const id = idsToStart[0];
-    const fileNameFull = scheduledInstances[idsToStart[0]].fileNameFull;
-    const wakeUp = scheduledInstances[idsToStart[0]].wakeUp;
+    const {adapterDir, fileNameFull, wakeUp} = scheduledInstances[idsToStart[0]];
 
     const processNextScheduledInstance = () => {
         let delay = (config.system && config.system.instanceStartInterval) || 2000;
@@ -3103,7 +3102,11 @@ function startScheduledInstance(callback) {
                 states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     try {
-                        procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                        procs[id].process = cp.fork(fileNameFull, args, {
+                            execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                            windowsHide: true,
+                            cwd: adapterDir
+                        });
                     } catch(err) {
                         logger.error(hostLogPrefix + ' instance ' + id + ' could not be started: ' + err.message);
                         delete procs[id].process;
@@ -3199,8 +3202,8 @@ async function startInstance(id, wakeUp) {
     }
 
     let fileName = instance.common.main || 'main.js';
-    const adapterDir_ = tools.getAdapterDir(name);
-    if (!fs.existsSync(adapterDir_)) {
+    const adapterDir = tools.getAdapterDir(name);
+    if (!fs.existsSync(adapterDir)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({
@@ -3225,7 +3228,7 @@ async function startInstance(id, wakeUp) {
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
-    let fileNameFull = path.join(adapterDir_, fileName);
+    let fileNameFull = path.join(adapterDir, fileName);
 
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') {
@@ -3234,10 +3237,10 @@ async function startInstance(id, wakeUp) {
 
     if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
-        fileNameFull = path.join(adapterDir_, fileName);
+        fileNameFull = path.join(adapterDir, fileName);
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
-            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir_, 'www'))) {
+            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir, 'www'))) {
                 logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
             } else {
                 logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
@@ -3250,7 +3253,7 @@ async function startInstance(id, wakeUp) {
     // read node.js engine requirements
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        let p = fs.readFileSync(`${adapterDir_}/package.json`);
+        let p = fs.readFileSync(`${adapterDir}/package.json`);
         p = JSON.parse(p.toString());
         procs[id].engine = p && p.engines && p.engines.node;
     } catch {
@@ -3552,8 +3555,10 @@ async function startInstance(id, wakeUp) {
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
                             procs[id].process = cp.fork(fileNameFull, args, {
+                                execArgv: tools.getDefaultNodeArgs(fileNameFull),
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                windowsHide: true
+                                windowsHide: true,
+                                cwd: adapterDir
                             });
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
@@ -3621,6 +3626,13 @@ async function startInstance(id, wakeUp) {
                                 try {
                                     decache = decache || require('decache');
                                     decache(fileNameFull);
+
+                                    // Prior to requiring the main file make sure that ts-node has its hook registered
+                                    // if this is a TypeScript adapter
+                                    if (fileNameFull.endsWith('.ts')) {
+                                        require('ts-node/register/transpile-only');
+                                        process.env.TS_NODE_CWD = adapterDir;
+                                    }
 
                                     procs[id].process = {
                                         logic: require(fileNameFull)({
@@ -3837,6 +3849,7 @@ async function startInstance(id, wakeUp) {
                 // queue up, but only if not already queued
                 scheduledInstances[id] = {
                     fileNameFull,
+                    adapterDir,
                     wakeUp
                 };
                 Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
@@ -3846,7 +3859,11 @@ async function startInstance(id, wakeUp) {
             //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 try {
-                    procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                    procs[id].process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        windowsHide: true,
+                        cwd: adapterDir
+                    });
                 } catch (err) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                 }
@@ -4403,14 +4420,6 @@ function init(compactGroupId) {
     if (!compactGroupController) {
         // Delete all log files older than x days
         logger.activateDateChecker(true, config.log.maxDays);
-    }
-
-    // If installed as npm module
-    adapterDir = adapterDir.split('/');
-    if (adapterDir.pop() === 'node_modules') {
-        adapterDir = adapterDir.join('/');
-    } else {
-        adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
     }
 
     // find our notifier transport
