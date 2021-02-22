@@ -2,6 +2,7 @@ Bei Redis handelt es sich um eine Open Source In-Memory-Datenbank.
 Nähere Informationen dazu findet man unter https://redis.io/
 
 Der große Vorteil von Redis:
+
 Redis bietet verglichen mit den internen ioBroker-Datenbanken vor allem Vorteile in den Bereichen Datenzugriffsgeschwindigkeit,
 IO-Management im Dateisystem und bessere Nutzung von CPU-Ressourcen.
 Der js-controller wird entlastet. Ein vorher träges System kann wieder schneller werden.
@@ -24,6 +25,31 @@ Ein Aufruf von `iobroker status` zeigt an, welcher Datenbanktyp für die States-
 
 Eine detailierte Erläuterung zum Thema Redis,
 findet man unter https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick
+
+## Redis Persistenz
+
+Normalerweise ist Redis eine "In-Speicher-Datenbank". Die Daten lagern also, im RAM. Wenn Redis beendet wird sind diese weg.
+Um aber auch ein Update zu ermöglichen, unterstützt Redis zwei Arten der Datenspeicherung auf Festplatte.
+Die RDB- und AOF Persistenz.
+
+**RDB** ist standardmäßig aktiv, diese Methode speichert den gesamten Inhalt in eine RDB Datei. Der Intervall der Speicherung kann konfigiert werden.
+Dies zu konfigurieren sollte eine Mischung aus Datensicherheit (wie viele Daten kann man verkraften bei einem Crash zu verlieren) und Schreiblast für das Speichermedium, da immer der gesamte Inhalt geschrieben wird.
+
+**AOF** generiert zwar mehr Schreiblast, stellt jedoch sicher, dass die Daten ganz aktuell sind.
+Dazu wird fortlaufend eine sog. AOF Datei geschrieben, wo alle Änderungen immer angehängt werden. In regelmäßigen Abständen wird diese Datei dann konsolidiert und verkleinert sich damit wieder. Für SD-Karten ist dies also eher nicht empfohlen.
+Wie oben schon erwähnt, wird dadurch mehr Ram benötigt. Falls dieser RAM mal nicht verfügbar ist,
+läuft - je nach Einstellungen - alles problemlos weiter.
+Ein Backup der Daten wird dann allerdings nicht erzeugt! Entsprechende Meldungen stehen nur im Logfile.
+
+Mehr Details zur Persistenz gibt es unter https://redis.io/topics/persistence
+
+**Redis Slaves**, also einen zweiten Redis-Server, ist eine weitere Möglichkeit immer aktuelle Daten als Sicherung zu haben.
+Wenn der Rechner mit dem Master-Redis defekt ist, existieren immer noch die Daten nahezu Echtzeit-aktuell auf dem Slave.
+Man kann diesen also nutzen um einen Dump zu erstellen um den Master neu aufzusetzen, oder man macht als schnelle Lösung den Slave zum Master und ändert die Datenbank-IPs im ioBroker und ist fast aktuell wieder online. Auch dieses findet man etwas detailierter unter https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick bzw https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf
+
+**Ein Slave schützt allerdings nicht gegen das versehentliche Löschen von Daten, da diese auf dem Slave auch direkt danach gelöscht sind. Hier helfen nur Backups.**
+
+
 
 
 ## Installation von Redis
@@ -102,8 +128,8 @@ Am einfachsten ist es natürlich, States und Objekte zusammen in einem Redis-Pro
 Dies bedeutet allerdings auch das nur alle Daten zusammen gesichert werden können.
 Bei der ioBroker File-DB waren States, Objekte und Files getrennt und konnten so selektiv gesichert werden.
 Auch die Schreiblast ist, wenn alles in einem Redis gespeichert ist, höher, da die Datenbank größer ist.
-Um auch mit einem Redis-Setup die sich oft ändernden States und nicht so oft geänderten Objekte und Dateien zu trennen, kann man einfach zwei Redis-Prozesse je Host nutzen.
-Anleitungen dazu gibt es zB unter https://gist.github.com/inecmc/f40ca0ee622e86999d9aa016c1b15e8c .
+Um auch mit einem Redis-Setup, die sich oft ändernden States und nicht so oft geänderten Objekte und Dateien zu trennen, kann man einfach zwei Redis-Prozesse je Host nutzen.
+Anleitungen dazu gibt es z.B. unter https://gist.github.com/inecmc/f40ca0ee622e86999d9aa016c1b15e8c .
 
 Bei `iobroker setup custom` werden einfach die jeweiligen unterschiedlichen Ports für States bzw. Objekte/Dateien angegeben.
 
