@@ -24,7 +24,7 @@ Ein Aufruf von `iobroker status` zeigt an, welcher Datenbanktyp für die States-
 
 
 Eine detailierte Erläuterung zum Thema Redis,
-findet man unter https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick
+findet man im [Forum](https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick)
 
 ## Redis Persistenz
 
@@ -45,7 +45,7 @@ Mehr Details zur Persistenz gibt es unter https://redis.io/topics/persistence
 
 **Redis Slaves**, also einen zweiten Redis-Server, ist eine weitere Möglichkeit immer aktuelle Daten als Sicherung zu haben.
 Wenn der Rechner mit dem Master-Redis defekt ist, existieren immer noch die Daten nahezu Echtzeit-aktuell auf dem Slave.
-Man kann diesen also nutzen um einen Dump zu erstellen um den Master neu aufzusetzen, oder man macht als schnelle Lösung den Slave zum Master und ändert die Datenbank-IPs im ioBroker und ist fast aktuell wieder online. Auch dieses findet man etwas detailierter unter https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick bzw https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf
+Man kann diesen also nutzen um einen Dump zu erstellen um den Master neu aufzusetzen, oder man macht als schnelle Lösung den Slave zum Master und ändert die Datenbank-IPs im ioBroker und ist fast aktuell wieder online. Auch dieses findet man etwas detailierter im [Forum](https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick) bzw unter https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf
 
 **Ein Slave schützt allerdings nicht gegen das versehentliche Löschen von Daten, da diese auf dem Slave auch direkt danach gelöscht sind. Hier helfen nur Backups.**
 
@@ -60,16 +60,20 @@ Die Installation erfolgt auf der Komanndozeile für
 
 **Debian**
 
->sudo apt update   
->sudo apt install redis
+```sh
+sudo apt update   
+sudo apt install redis
+```
 
 
 
 **Ubuntu**
 
->sudo add-apt-repository ppa:chris-lea/redis-server  
->sudo apt-get update  
->sudo apt-get install redis-server
+```sh
+sudo add-apt-repository ppa:chris-lea/redis-server  
+sudo apt-get update  
+sudo apt-get install redis-server
+```
 
 
 
@@ -93,7 +97,7 @@ Dazu muss /etc/redis/redis.conf editiert werden und die Zeile **bind 127.0.0.1**
 
 Danach startet `sudo systemctl restart redis-server` den Server mit der aktualisierten Konfiguration neu.
 
-Nähere Details siehe https://www.iobroker.net/#de/documentation/config/multihost.md
+Nähere Details siehe [Multihost](https://www.iobroker.net/#de/documentation/config/multihost.md)
 
 
 
@@ -106,8 +110,10 @@ Wer nur die States-Datenbank umstellt, sollte den Redis-Server idealerweise auf 
 
 Die Umstellung der "States" erfolgt dann über:
 
->iobroker stop  
->iobroker setup custom
+```sh
+iobroker stop  
+iobroker setup custom
+```
 
 
 Für die "Objects" die aktuellen Einstellungen bestätigen ("file" als Typ, IP, Port 9001) und
