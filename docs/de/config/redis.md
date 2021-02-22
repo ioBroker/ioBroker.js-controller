@@ -1,3 +1,5 @@
+# Die Redis-Datenbank für IoBroker
+
 Bei Redis handelt es sich um eine Open Source In-Memory-Datenbank. 
 Nähere Informationen dazu findet man unter https://redis.io/
 
