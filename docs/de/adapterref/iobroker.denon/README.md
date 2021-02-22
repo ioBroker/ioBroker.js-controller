@@ -899,6 +899,9 @@ und info.connection. Zusätzlich werden die folgenden States für jede Zone 2-12
 	### __WORK IN PROGRESS__
 -->
 
+### 1.10.4 (2021-02-20)
+* (foxriver76) if an older model (e.g. AVR 3808) just sends `NSE`, we do not set displayContent state anymore (fixes #112)
+
 ### 1.10.3 (2021-01-28)
 * (foxriver76) don't poll whole online presets after change, it is unnecessary load
 

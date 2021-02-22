@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.net-tools/README.md
 title: Сетевые инструменты
-hash: IzxWLgZMxRAWfn8DB4DpXBGjGipYz94IyOFgl8VTfPw=
+hash: E5GWcV7mbsnibvXXMxSgaDtZNq6oW3S9WM/TvOcvBxU=
 ---
 ![Логотип](../../../en/adapterref/iobroker.net-tools/admin/net-tools.png)
 
@@ -11,9 +11,14 @@ hash: IzxWLgZMxRAWfn8DB4DpXBGjGipYz94IyOFgl8VTfPw=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.net-tools.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.net-tools.svg)
 ![Тесты](https://travis-ci.org/jey-cee/ioBroker.net-tools.svg?branch=master)
-![НПМ](https://nodei.co/npm/iobroker.net-tools.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.net-tools.png?downloads=true)
 
 # Сетевые инструменты
+| [Спонсоры](https://github.com/iobroker-community-adapters/ioBroker.net-tools/blob/master/SPONSORS.md) | |
+|---|---|
+| [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url) | <a href="https://discord.gg/33w6jUh"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2"></a> |
+| [! [Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)] (https://www.paypal.com/cgi-bin/ webscr? cmd = _s-xclick &amp; hosted_button_id = 95YZN2LR59Q64 &amp; source = url) | <a href="https://discord.gg/33w6jUh"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2"></a> |
+
 ### Обнаружение устройств в сети
 Установите для объекта обнаружения значение true, чтобы обнаруживать устройства в вашей сети, этот процесс занимает некоторое время.
 Эта функция предоставляется адаптером обнаружения, что означает, что обнаружение будет установлено, если оно не установлено, и его необходимо запустить.
@@ -24,7 +29,7 @@ hash: IzxWLgZMxRAWfn8DB4DpXBGjGipYz94IyOFgl8VTfPw=
 Пингует указанные IP-адреса через определенный интервал и отслеживает результаты. (жив, об / с, время)
 
 ### Wake On LAN
-Установите для объекта wol значение true, и на ваше устройство будут отправлены 3 пакета WOL с временем ожидания 750 мс.
+Установите для объекта wol значение true, и на ваше устройство будут отправлены 3 пакета WOL с периодом времени 750 мсек.
 
 ### Сканирование портов
 Установите для сканирования значение true, при этом будут сканироваться все открытые порты в диапазоне 0-65535. Этот процесс требует времени.
@@ -48,22 +53,21 @@ hash: IzxWLgZMxRAWfn8DB4DpXBGjGipYz94IyOFgl8VTfPw=
 
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-## [Спонсоры](https://github.com/iobroker-community-adapters/ioBroker.net-tools/blob/master/SPONSORS.MD)
-Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка на пожертвование для Jey Cee, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
-
-##### Присоединяйтесь к серверу Discord, чтобы обсудить все, что касается интеграции сетевых инструментов!
-<a href="https://discord.gg/33w6jUh"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
-
 ## Changelog
 
-### 0.1.0 
+### 0.1.2
+* added device discovery to configuration page
+* start discovery if it is not started and stop it afterwards
+
+
+### 0.1.1 
 * initial release
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2020, Jey Cee <jey-cee@live.com>
+Copyright (c) 2020-2021, Jey Cee <jey-cee@live.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

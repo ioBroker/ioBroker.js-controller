@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker VIS的材料设计小部件
-hash: +71Th9fzsIsMKTrYbhuHsRdDxKY2TMzHN9X9hBuSJW8=
+hash: ENjJJDl17K74J1QPPRGU5WZ/vH6K7d8zfBLBdn7fzlQ=
 ---
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-toc中省略->
 
@@ -148,7 +148,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[JSON属性]（＃json-properties）
 -[表格]（＃table）
 -[编辑器设置]（＃editor-settings-30）
--[数据-JSON结构]（＃data --- json结构）
+-[数据-JSON结构]（＃data --- json-stucture）
 -[内部对象绑定]（＃internal-object-binding）
 -[使用HTML小部件的控制元素]（＃control-elements-using-html-widgets）
 -[控制元素-**自v0.5.0起不推荐使用**]（＃control-elements ---自v050起不推荐使用）
@@ -242,7 +242,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 #####更改材料设计小部件的数据点绑定
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_mdw_binding.gif)
 
-如果要更改为其他窗口小部件定义的其他颜色的使用，则可以通过按下带有材料设计图标的按钮来复制数据点绑定。只需将其粘贴到材质设计窗口小部件的任何颜色，字体或字体大小字段中即可。例如，颜色“状态绑定”看起来像`#mdwTheme:vis-materialdesign.0.colors.card.background`
+如果要更改为其他窗口小部件定义的其他颜色的使用，则可以通过按下带有材料设计图标的按钮来复制数据点绑定。只需将其粘贴到材质设计小部件的任何颜色，字体或字体大小字段中即可。例如，颜色“状态绑定”看起来像`#mdwTheme:vis-materialdesign.0.colors.card.background`
 
 #####对非Material Design小部件使用绑定
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
@@ -1108,7 +1108,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ###编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/value_settings_common.png"></td><td>目标类型</td><td>如果要转换为其他类型，请选择要转换为的目标类型。</td></tr><tr><td>覆盖文字</td><td>覆盖值文本。您可以使用<code>#value</code>在文本中显示值</td></tr><tr><td rowspan=2><img src="doc/en/media/value_settings_number_formatting.png"></td><td> 计算</td><td>将<code>#value</code>用作数据点的值，并使用<a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs评估表达式</a>通过计算将其转换</td></tr><tr><td>转换为持续时间</td><td>将持续时间（以秒为单位）转换为可读的字符串。必须根据moment.js库输入批准的格式，<a href="https://momentjs.com/docs/#/durations/">请参阅link</a> 。您也可以使用<code>humanize</code></td></tr><tr><td rowspan=1><img src="doc/en/media/value_settings_boolean_formatting.png"></td><td>健康）状况</td><td>使用<code>#value</code>作为数据点和条件的值，以通过使用<a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs评估表达式</a>将其他类型格式化为布尔值</td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/value_settings_common.png"></td><td>目标类型</td><td>如果要转换为其他类型，请选择要转换为的目标类型。</td></tr><tr><td>覆盖文字</td><td>覆盖值文本。您可以使用<code>#value</code>在文本中显示值</td></tr><tr><td rowspan=3><img src="doc/en/media/value_settings_number_formatting.png"></td><td> 计算</td><td>将<code>#value</code>用作数据点的值，并使用<a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs评估表达式</a>通过计算将其转换</td></tr><tr><td>将秒转换为持续时间</td><td>将持续时间（以秒为单位）转换为可读的字符串。必须根据<a href="https://github.com/jsmreese/moment-duration-format#template-string">矩量持续时间格式</a>库输入批准的格式。您也可以使用<code>humanize</code> 。<br><br>也可以将其与计算结合起来，例如，如果源值以分钟为单位，则可以使用计算将其转换为秒</td></tr><tr><td>将时间戳转换为日期时间</td><td>将时间戳转换为可读的日期时间。必须根据<a href="https://momentjs.com/docs/#/displaying/format/">momentjs</a>库输入批准的格式。<br><br>也可以将其与计算相结合</td></tr><tr><td rowspan=1><img src="doc/en/media/value_settings_boolean_formatting.png"></td><td> 健康）状况</td><td>使用<code>#value</code>作为数据点和条件的值，以通过使用<a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs评估表达式</a>将其他类型格式化为布尔值</td></tr></tbody></table>
 
 ### HTML属性
 以下属性可用作[HTML小部件](#html-widgets)。
@@ -1775,7 +1775,7 @@ JSON字符串必须是具有以下属性的对象数组：
 #####永久布局：
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> 对象ID</td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md" target="_blank">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md" target="_blank">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。可以<a href="https://www.iobroker.net/#en/documentation/viz/basic.md" target="_blank">在小部件8的视图中</a>使用此数字来定义在选择该项目时应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> 对象ID</td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md" target="_blank">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md" target="_blank">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。此数字可<a href="https://www.iobroker.net/#en/documentation/viz/basic.md" target="_blank">在小部件8的视图中</a>使用，以定义在选择该项目时应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
 
 ###子菜单
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
@@ -1835,7 +1835,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ####编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最大限度。要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最大限度。要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
 
 ### JSON图表
 使用JSON图表，您可以最大程度地通过脚本创建混合图表（折线图，条形图和堆积条形图）。
@@ -1851,7 +1851,7 @@ JSON字符串必须是具有以下属性的对象数组：
 <！-在目录中省略->
 
 #####图
-<details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [<a href="#data-with-time-axis">带有时间戳的值</a>]</td><td>数字</td></tr><tr><td>类型</td><td>图的类型</td><td>细绳</td><td>“线”，“栏”</td></tr><tr><td> legendText</td><td>传说文字</td><td>细绳</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数字</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> use_gradient_color</td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td>工具提示的标题</td><td>细绳</td><td></td></tr><tr><td>tooltip_text</td><td>工具提示的ovveride文字</td><td>细绳</td><td></td></tr><tr><td>tooltip_MinDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_MaxDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_AppendText</td><td>将文字附加到工具提示值</td><td>细绳</td><td></td></tr><tr><td>datalabel_show</td><td>显示图表的数据标签</td><td>字符串布尔值</td><td>错误，正确，自动</td></tr><tr><td>datalabel_anchor</td><td>数据标签的锚点</td><td>细绳</td><td>中心，开始，结束</td></tr><tr><td>datalabel_align</td><td>数据标签相对于锚点的位置</td><td>细绳</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td>datalabel_offset</td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_text_align</td><td>数据标签的文字匹配</td><td>细绳</td><td>左，开始，居中，结束，右</td></tr><tr><td>datalabel_rotation</td><td>数据标签的顺时针旋转角度（以度为单位）</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_steps</td><td>每x步显示数据标签</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_minDigits</td><td>数据标签的最小小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_maxDigits</td><td>数据标签的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_append</td><td>将文字附加到数据标签</td><td>细绳</td><td></td></tr><tr><td>datalabel_color</td><td>数据标签颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_fontFamily</td><td>数据标签字体系列</td><td>细绳</td><td></td></tr><tr><td>datalabel_fontSize</td><td>数据标签字体大小</td><td>数字</td><td>1，2，5，...</td></tr><tr><td> datalabel_backgroundColor</td><td>数据标签背景色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderColor</td><td>数据标签边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderWidth</td><td>数据标签边框宽度</td><td>数字</td><td>1，2，5，...</td></tr><tr><td> datalabel_borderRadius</td><td>数据标签边框半径</td><td>数字</td><td>1，2，5，...</td></tr></tbody></table></details>
+<details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [<a href="#values-with-timestamp">带有时间戳的值</a>]</td><td>数字</td></tr><tr><td>类型</td><td>图的类型</td><td>细绳</td><td>“线”，“栏”</td></tr><tr><td> legendText</td><td>传说文字</td><td>细绳</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数字</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> use_gradient_color</td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td>工具提示的标题</td><td>细绳</td><td></td></tr><tr><td>tooltip_text</td><td>工具提示的ovveride文字</td><td>细绳</td><td></td></tr><tr><td>tooltip_MinDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_MaxDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_AppendText</td><td>将文字附加到工具提示值</td><td>细绳</td><td></td></tr><tr><td>datalabel_show</td><td>显示图表的数据标签</td><td>字符串布尔值</td><td>错误，正确，自动</td></tr><tr><td>datalabel_anchor</td><td>数据标签的锚点</td><td>细绳</td><td>中心，开始，结束</td></tr><tr><td>datalabel_align</td><td>数据标签相对于锚点的位置</td><td>细绳</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td>datalabel_offset</td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_text_align</td><td>数据标签的文字匹配</td><td>细绳</td><td>左，开始，居中，结束，右</td></tr><tr><td>datalabel_rotation</td><td>数据标签的顺时针旋转角度（以度为单位）</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_steps</td><td>每x步显示数据标签</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_minDigits</td><td>数据标签的最小小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_maxDigits</td><td>数据标签的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_append</td><td>将文字附加到数据标签</td><td>细绳</td><td></td></tr><tr><td>datalabel_color</td><td>数据标签颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_fontFamily</td><td>数据标签字体系列</td><td>细绳</td><td></td></tr><tr><td>datalabel_fontSize</td><td>数据标签字体大小</td><td>数字</td><td>1，2，5，...</td></tr><tr><td> datalabel_backgroundColor</td><td>数据标签背景色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderColor</td><td>数据标签边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderWidth</td><td>数据标签边框宽度</td><td>数字</td><td>1，2，5，...</td></tr><tr><td> datalabel_borderRadius</td><td>数据标签边框半径</td><td>数字</td><td>1，2，5，...</td></tr></tbody></table></details>
 
 <！-在目录中省略->
 
@@ -2502,12 +2502,12 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 <b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ####编辑器设置
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。</td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x]</td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code></td></tr><tr><td>视线高度[x]</td><td>您可以在此处指定使用的视图的高度。<br><br>如果要使高度随视图而变化，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图：<br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。</td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x]</td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code></td></tr><tr><td>视线高度[x]</td><td>您可以在此处指定使用的视图的高度。<br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的窗口小部件，位置必须设置为相对，请参见屏幕截图：<br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
 
 ###网格视图
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
-网格视图具有多个`view in widget`集成，将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
+网格视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
 如果包含的视图具有相同的高度，则网格视图特别有用。
 
 <b>网格视图小部件共有12列。如果要使视图的宽度为4列，则必须在相应的视图中将列跨度设置为4 [x]</b>
@@ -2824,7 +2824,7 @@ HTML部件中包含圆形滑块和图标按钮
 -->
 
 <!-- omit in toc -->
-### 0.5.0-beta (2021-02-13)
+### __WORK IN PROGRESS__
 * (Scrounger) HTML Widgets added - use Material Design Widgets in any html element
 * (Scrounger) Table: Control Elements removed, using new HTML Widgets -> breaking changes !!!
 * (Scrounger) list: using object id for json string added -> breaking changes !!!

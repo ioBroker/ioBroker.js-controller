@@ -4,8 +4,8 @@ jarvis - just another remarkable vis
 
 [![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://paypal.me/chvoelkel)
 
-![Number of Installations](http://iobroker.live/badges/jarvis-installed.svg)
-![Stable Version](http://iobroker.live/badges/jarvis-stable.svg)
+![Number of Installations](https://iobroker.live/badges/jarvis-installed.svg)
+![Stable Version](https://iobroker.live/badges/jarvis-stable.svg)
 [![NPM Version](http://img.shields.io/npm/v/iobroker.jarvis.svg)](https://www.npmjs.com/package/iobroker.jarvis)
 [![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.jarvis/latest.svg)](https://github.com/Zefau/ioBroker.jarvis/releases/latest)
 [![Travis CI](https://travis-ci.com/Zefau/ioBroker.jarvis.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.jarvis)

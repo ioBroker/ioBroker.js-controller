@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: K0k5vvfJi3TuR4x+nkQ70nYeefXX626FHzYCnBXV/fg=
+hash: anR9zxamafrIIqE6Si3MJY0h+ENio71ITSX/n51kcak=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -27,7 +27,7 @@ Detaillierte Informationen finden Sie hier: [Lupus](https://www.lupus-electronic
 ## Installation
 1. Installieren Sie den Adapter
 
-Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter in ioBroker zu konfigurieren. Der Erkennungsadapter sucht nach der richtigen IP-Adresse des Lupusec-Alarmsystems. Der andere Weg ist es, es manuell zu konfigurieren
+Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter in ioBroker zu konfigurieren. Der Discovery-Adapter sucht nach der richtigen IP-Adresse des Lupusec-Alarmsystems. Der andere Weg ist es, es manuell zu konfigurieren
 
 2. Manuelle Konfiguration des Adapters
 
@@ -108,6 +108,12 @@ Alternativ können Sie SMS von Ihrem JavaScript mit folgendem Befehl senden:
 sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
 ```
 
+Wenn Sie das SMS-Gateway verwenden, können Sie den folgenden Befehl in Ihrem Skript verwenden:
+
+```
+sendTo('lupusec.0', 'smsgw', { number: '017247114711', text: 'Test message' });
+```
+
 ## Fehlerbehebung
 Wenn Sie den Lupusec-Adapter starten und die Fehlermeldung erhalten, dass das Alarmsystem nicht erreichbar ist, versuchen Sie bitte, das System über ein Terminalfenster Ihres ioBroker-Systems zu pingen.
 
@@ -131,7 +137,11 @@ Folgende Dinge sind für die Zukunft geplant:
 
 ## Changelog
 
-### 1.3.2-beta-2 (14.02.2021)
+### 1.3.3-beta-2 (17.02.2021)
+* (Stübi) Bugfixing
+* (Stübi) Send SMS with SMS gateway or SIM card
+
+### 1.3.2 (14.02.2021)
 * (Stübi) Send SMS if you are using a sim card
 
 ### 1.3.1 (07.02.2021)
@@ -259,7 +269,7 @@ Folgende Dinge sind für die Zukunft geplant:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019-2020 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019-2021 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

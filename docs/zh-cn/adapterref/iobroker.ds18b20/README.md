@@ -9,14 +9,14 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ds18b20/README.md
 title: 的ioBroker.ds18b20
-hash: yedjY0gRMmIZlTTQy2QMT3y5dMWKQsbURJBPlhSXrPI=
+hash: +VxuFVmwQYwavZM2kX5k6VefCAk5Nq3mNozrBktQMvc=
 ---
 ![标识](../../../de/adapterref/iobroker.ds18b20/../../admin/ds18b20.png)
 
 ＃ioBroker.ds18b20
 适配器`ds18b20`可以将ioBroker中DS18B20类型的1-Wire温度传感器直接集成。
 
-需要支持1-Wire总线的适当硬件（例如Raspberry Pi），并且必须设置1-Wire总线以在系统上工作（传感器位于`/sys/bus/w1/devices/`中）。
+需要具有支持1-Wire总线的适当硬件（例如Raspberry Pi），并且必须设置1-Wire总线以在系统上工作（传感器在`/sys/bus/w1/devices/`中列出）。
 
 DS18B20传感器与Raspberry Pi的连接示例如下。
 
@@ -26,21 +26,27 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 *查询传感器时的错误检测（校验和，通信错误，设备断开连接）
 *查询间隔可以根据每个传感器进行调整
 *可以调整每个传感器的测量值的舍入和转换
+*通过_Remote Client_支持远程系统上的传感器
 
 ＃＃ 安装
-当前可以从最新的存储库中获得适配器。
+该适配器可从稳定的最新存储库中获得。
 
-或者，可以通过URL`https://github.com/crycode-de/ioBroker.ds18b20.git`安装。
+也可以通过GitHub URL`https://github.com/crycode-de/ioBroker.ds18b20.git`安装最新的开发版本。
+但是，很少建议这样做！
 
 ＃＃ 配置
-在适配器配置中，所有传感器的**标准轮询间隔**可以设置为毫秒。最小值为500。
+在适配器配置中，可以为所有传感器设置“标准轮询间隔” **（以毫秒为单位）。最小值为500。
+此外，如有必要，可以调整1-Wire器件的**路径。
+仍然可以激活和配置集成服务器，以将传感器集成到远程系统中。
 
-各个传感器可以手动添加，也可以通过*搜索传感器*添加到表格中。
+各个传感器可以手动添加，也可以通过表格中的**搜索传感器**添加。
 
 ![配置](../../../de/adapterref/iobroker.ds18b20/./img/konfiguration.png)
 
 **地址**是传感器的1线地址/ ID，并同时确定对象ID。
-例如，地址为`28-0000077ba131`的传感器接收对象ID`ds18b20.0.sensors.28-0000077ba131`。
+例如，地址为`28-0000077ba131`的传感器会收到对象ID`ds18b20.0.sensors.28-0000077ba131`。
+
+对于直接连接的传感器，未设置**远程系统ID **（空），对于远程系统上的传感器，未设置相应的远程系统的ID
 
 可以自由选择**名称**以识别传感器。
 
@@ -51,7 +57,7 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 **单位**确定ioBroker对象中存储的值的单位。
 默认情况下，这是`°C`。
 
-通过**因子**和**偏移**，可以根据公式`Wert = (Wert * Faktor) + Offset`来调整传感器读取的值。
+通过**因子**和**偏移**，可以根据公式`Wert = (Wert * Faktor) + Offset`调整传感器读取的值。
 
 **小数点**表示该值四舍五入到小数点后多少位。
 在计算后使用因子和偏移进行舍入。
@@ -66,7 +72,7 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 ##动作
 通过写入状态`ds18b20.0.actions.readNow`，可以触发立即读取所有或特定传感器。
 
-为了立即读取所有传感器，必须在该状态下编写关键字`all`。
+为了触发所有传感器的立即读取，必须在该状态下编写关键字`all`。
 
 如果仅要读取某个传感器，则必须将传感器的地址或ioBroker对象ID写入该状态。
 
@@ -75,7 +81,7 @@ DS18B20传感器与Raspberry Pi的连接示例如下。
 
 ###`readNow`
 命令`readNow`从所有传感器或特定传感器启动立即查询。
-要查询所有传感器，可以将消息部分保留为空，或者可以使用字符串`all`。
+消息部分可以保留为空，或字符串`all`可用于查询所有传感器。
 要读取特定的传感器，必须将消息部分设置为传感器的地址或ioBroker ID。
 
 命令`readNow`不返回任何数据。它仅触发立即读取传感器。
@@ -109,9 +115,23 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
         log(ret.err, 'warn');
     } else {
         for (let s of ret.sensors) {
-            log('Sensor: ' + s);
+            if (s.remoteSystemId) {
+                log('Sensor: ' + s.address + '@' + s.remoteSystemId);
+            } else {
+                log('Sensor: ' + s.address);
+            }
         }
     }
+});
+```
+
+###`getRemoteSystems`
+可以通过`getRemoteSystems`查询当前连接的远程系统的系统ID。
+
+```js
+sendTo('ds18b20.0', 'getRemoteSystems', {}, (ret) => {
+    log('ret: ' + JSON.stringify(ret));
+    log('Verbundene Systeme: ' + ret.join(', '));
 });
 ```
 
@@ -143,74 +163,48 @@ lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus
 lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
 ```
 
+###在Raspberry Pi上使用许多传感器
+可以在线路上的Raspberry Pi上无错误操作的传感器数量是有限的，并且取决于某些技术条件（例如电缆长度）。
+第一次（有时是偶然的）故障通常是由大约10个传感器引起的。
+
+为了能够操作更多的传感器，可以将它们分为几个字符串（即几个GPIO）。
+然后，每个线束都需要自己的上拉电阻。
+
+要激活它，只需在文件`/boot/config.txt`§中添加几个具有相应GPIO编号的条目：
+
+```
+dtoverlay=w1-gpio,gpiopin=4
+dtoverlay=w1-gpio,gpiopin=17
+```
+
+然后，每个条目都会在系统中创建自己的`w1_bus_masterX`。
+
 ###负温度下的内核错误
-在Raspberry Pi的5.10.y内核中，存在一个自2020年11月中旬开始出现的错误，例如，读取到的负温度为4092°C。 （请参阅[GitHub问题](https://github.com/raspberrypi/linux/issues/4124)）此错误已于02/08/2021的内核10/5/14中修复。 （请参阅[GitHub提交](https://github.com/Hexxeh/rpi-firmware/commit/115e3a5f77488d9ee30a33bcb5ac31eb587f60a8)）`rpi-update`应该可以解决此问题。
+Raspberry Pi的5.10.y内核在2020年11月中旬出现一个错误，例如，负温度读数为4092°C。 （请参阅[GitHub问题](https://github.com/raspberrypi/linux/issues/4124)）此错误已于02/08/2021的内核10/5/14中修复。 （请参阅[GitHub提交](https://github.com/Hexxeh/rpi-firmware/commit/115e3a5f77488d9ee30a33bcb5ac31eb587f60a8)）`rpi-update`应该可以解决此问题。
 
 在v1.2.2及更高版本的适配器版本中，这些显然不正确的值已转移到ioBroker State。
-从v1.2.3开始，适配器还检查读取的值是否合理（在-80到+150°C之间），并拒绝不合理的值。
+从v1.2.3开始，适配器还会检查读取的值是否合理（在-80至+150°C之间），并拒绝不合理的值。
 
-##在远程Raspberry Pi上集成传感器
-还可以集成连接到远程Raspberry Pi的传感器。
-为此，使用* Samba *在远程Raspberry Pi上释放相应的目录，然后将其安装在ioBorker系统上。
+##在远程系统中集成传感器
+从_ioBroker.ds18b20_的1.4.0版本开始，可以通过您自己的_ioBroker.ds18b20远程客户端_直接集成远程系统上的传感器。所需的全部是远程系统上的Node.js。
 
-###远程Raspberry Pi上的配置
-安装Samba：
+必须在适配器配置中设置“激活远程传感器”的复选标记。然后，适配器在指定的端口上启动TCP服务器，并接受来自客户端的连接。
 
-```sh
-sudo apt install samba
-```
+服务器和客户端之间的连接使用`aes-256-cbc`算法进行加密。
+为此，必须在客户端上设置适配器配置中显示的加密密钥。
 
-在文件`/etc/samba/smb.conf`中进行配置：
+然后，_ioBroker.ds18b20远程客户端_建立与适配器的TCP连接，并显示在适配器配置的**已连接的远程系统**下。
 
-```ini
-[ds1820]
-path = /sys/devices/w1_bus_master1
-comment = DS1820 Temperature sensors.
-available = yes
-browseable = yes
-guest ok = yes
-writeable = no
-force user = root
-force group = root
-```
+### IoBroker.ds18b20远程客户端的安装
+通过适配器提供了_ioBroker.ds18b20 Remote Client_的设置。
 
-然后重新启动Samba以应用更改：
-
-```sh
-sudo systemctl restart smbd
-```
-
-ioBroker系统上的配置
-Samba客户端的安装：
-
-```sh
-sudo apt install smbclient
-```
-
-在文件`/etc/fstab`中添加安装项：
-
-```
-//<IP-ADRESSE-REMOTE-RPI>/ds1820 /mnt/remote-ds1820 cifs defaults,vers=1.0 0 0
-```
-
-为安装点创建目录：
-
-```sh
-sudo mkdir -p /mnt/remote-ds1820
-```
-
-挂载目录：
-
-```sh
-sudo mount /mnt/remote-ds1820
-```
-
-###适配器配置
-在适配器配置中，然后必须将1-Wire器件的系统路径设置为安装点`/mnt/remote-ds1820`。
-
-如果DS1820传感器也直接连接到ioBroker系统，则最好为远程传感器创建第二个适配器实例。
+可以在适配器配置中找到安装说明。
 
 ## Changelog
+
+### 1.4.0 (2021-02-21)
+* (crycode-de) Support for remote sensors using an own tiny daemon and encrypted TCP sockets
+* (crycode-de) Set `q` flag to `0x81` (general problem by sensor) if a sensor reported a `null` value
 
 ### 1.3.0 (2021-02-11)
 * (crycode-de) Searching for sensors now works for multiple 1-wire masters

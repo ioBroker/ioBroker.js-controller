@@ -5,7 +5,7 @@
 ![Number of Installations](http://iobroker.live/badges/upnp-installed.svg) ![Number of Installations](http://iobroker.live/badges/upnp-stable.svg) ![Logo](http://img.shields.io/npm/v/iobroker.upnp.svg) ![Image](https://travis-ci.org/Jey-Cee/ioBroker.upnp.svg?branch=master)
 
 
-***Node 4.x+ needed!***
+***Node 10.x+ needed!***
 
 1. [Deutsch](#german_description)
 	 * [Was ist UPnP?](#was-ist-upnp)
@@ -222,8 +222,12 @@ You can enable polling in admin via objects configuration.
 
 ## Changelog
 
+### 1.0.17 (2021-02-21)
+* (jey-cee) fix warning messages with js-controller 3.2.x [Github issue #63](https://github.com/iobroker-community-adapters/ioBroker.upnp/issues/63)
+
+
 ### 1.0.16 (2020-04-27)
-* fixes for js-controller 3
+* (jey-cee) fixes for js-controller 3
 
 ### 1.0.15 (2019-08-27)
 * (jey-cee) make control of devices work again (including player controls)
@@ -305,7 +309,7 @@ Breaking change: naming was changed and command to poll has another name - "requ
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2020 Jey Cee <jey-cee@live.com>
+Copyright (c) 2016-2021 Jey Cee <jey-cee@live.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

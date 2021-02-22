@@ -3,13 +3,16 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
+hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
-![NPM-Version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![stabile Version](http://iobroker.live/badges/ecovacs-deebot-stable.svg)
+![Letzte Version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
+![Anzahl der Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
 ![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/mrbungle64/iobroker.ecovacs-deebot.svg)
 ![Travis-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 # Ecovacs Deebot Adapter für ioBroker
@@ -22,26 +25,25 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot OZMO 930
 * Deebot OZMO 950
 
-### Diese Modelle funktionieren bekanntermaßen
+### Diese Modelle sollten ordnungsgemäß oder zumindest teilweise funktionieren
 * Deebot Slim 2
 * Deebot N79-Serie
-* Deebot 601
-* Deebot 710/711 (siehe "Bekannte Probleme")
+* Deebot M88
+* Deebot 600/601/605
+* Deebot 710/711/711s
 * Deebot 900
-* Deebot U2
 * Deebot OZMO 610
 * Deebot OZMO 900
-* Deebot OZMO T8-Serie
-
-### Diese Modelle sollten funktionieren
-* Deebot M88
-* Deebot 600/605
 * Deebot OZMO T5
+* Deebot OZMO T8-Serie
 * Deebot OZMO Slim 10
-* Deebot U2 Pro / Power
+* Deebot N3 MAX
+* Deebot N7
+* Deebot N8-Serie
+* Deebot U2-Serie
 
 ## Installation
-Es wird empfohlen, Version 10 von Node.js oder eine neuere Version zu verwenden.
+Es wird empfohlen, Version 10.x, 12.x oder 14.x von Node.js zu verwenden. Die mindestens erforderliche Version ist 10.x.
 
 Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind.
 Für den vollen Funktionsumfang installieren Sie bitte die folgenden Pakete.
@@ -62,8 +64,8 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Informationen zu den Bundesstaaten finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (Englisch) und [hier] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29) (Deutsch)
 
 ## Bekannte Probleme
-* Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden
-* Einige Reinigungsfunktionen funktionieren möglicherweise nicht mit 710/711. Bitte verwenden Sie vorerst Version 0.5.8.
+* Für einige Modelle (z. B. Deebot Ozmo 930) wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) da es einige Berichte gibt, dass die Verbindung nach ca. 24 Stunden
+* Einige Reinigungsfunktionen funktionieren möglicherweise nicht mit 710/711 / 711s. Bitte verwenden Sie vorerst Version 0.5.8.
 * Die "Kanten" -Funktion funktioniert nicht mit Deebot U2 (startet stattdessen die automatische Reinigung)
 
 ## FAQ
@@ -73,6 +75,12 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
+
+### 1.1.1
+* Using library version 0.6.0-alpha.3
+  * Updated login process
+  * Support for Chinese server login
+* Initial support for some models (e.g. N3, N7 and N8 series)
 
 ### 1.1.0
 * Stable release
@@ -162,7 +170,7 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 
 MIT License
 
-Copyright (c) 2020 Sascha Hölzel <mrb1232@posteo.de>
+Copyright (c) 2021 Sascha Hölzel <mrb1232@posteo.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -36,6 +36,9 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
+### 1.4.5 (2021-02-20)
+
+
 ### 1.4.4 (2021-02-14)
 * (kirovilya) External converters https://www.zigbee2mqtt.io/information/configuration.html#external-converters-configuration
 * (asgothian) Enhancement ping process

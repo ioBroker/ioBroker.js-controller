@@ -57,6 +57,9 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 	### __WORK IN PROGRESS__
 -->
 
+### 3.5.1 (2021-02-20)
+* (foxriver76) avoid crash cases on invalid xy, setting state for non-existing device and on failing user creation
+
 ### 3.5.0 (2021-02-18)
 * (foxriver76) use official js-controller regex for replacing forbidden chars (fixes #165)
 * (foxriver76) use release-script

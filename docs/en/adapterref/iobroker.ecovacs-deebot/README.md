@@ -1,9 +1,13 @@
 ![Logo](admin/ecovacs-deebot.png)
+
 # Ecovacs Deebot adapter for ioBroker
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
+![Stable version](http://iobroker.live/badges/ecovacs-deebot-stable.svg)
+[![Latest version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
+![Number of Installations](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
+[![Number of Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
 [![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
+[![Dependency Status](https://img.shields.io/david/mrbungle64/iobroker.ecovacs-deebot.svg)](https://david-dm.org/mrbungle64/iobroker.ecovacs-deebot)
 [![Travis-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot)
 
 This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js) library.
@@ -11,32 +15,33 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 ## Models
 
 ### Supported models
+
 * Deebot 901
 * Deebot OZMO 920
 * Deebot OZMO 930
 * Deebot OZMO 950
 
-### These models are known to work
+### These models should work properly or at least partially
+
 * Deebot Slim 2
 * Deebot N79 series
-* Deebot 601
-* Deebot 710/711 (see "Known issues")
+* Deebot M88
+* Deebot 600/601/605
+* Deebot 710/711/711s
 * Deebot 900
-* Deebot U2
 * Deebot OZMO 610
 * Deebot OZMO 900
-* Deebot OZMO T8 series
-
-### These models should work
-* Deebot M88
-* Deebot 600/605
 * Deebot OZMO T5
+* Deebot OZMO T8 series
 * Deebot OZMO Slim 10
-* Deebot U2 Pro/Power
+* Deebot N3 MAX
+* Deebot N7
+* Deebot N8 series
+* Deebot U2 series
 
 ## Installation
 
-It is recommended to use version 10 of Node.js or a newer version.
+It is recommended to use version 10.x, 12.x or 14.x of Node.js. The minimum required version is 10.x
 
 This adapter uses the canvas library which might require additional installations.
 For the full functional range please install the following packages.
@@ -59,8 +64,8 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Known issues
 
-* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
-* Some cleaning functions may not work with 710/711. Please use version 0.5.8 for now.
+* For some models (e.g. Deebot Ozmo 930) it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
+* Some cleaning functions may not work with 710/711/711s. Please use version 0.5.8 for now.
 * The "edge" function does not work with Deebot U2 (starts auto clean instead)
 
 ## FAQ
@@ -69,11 +74,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
-### 1.1.1 (alpha)
-* Using library version 0.6.0-alpha.1
-  * New login process
-    * Support for newer app version login
-    * Support for Chinese server login
+### 1.1.1
+* Using library version 0.6.0-alpha.3
+  * Updated login process
+  * Support for Chinese server login
 * Initial support for some models (e.g. N3, N7 and N8 series)
 
 ### 1.1.0

@@ -24,29 +24,35 @@ Ein Beispiel für die Anbindung von DS18B20 Sensoren an einen Raspberry Pi ist w
 * Fehlererkennung beim Abfragen der Sensoren (Checksumme, Kommunikationsfehler, Gerät getrennt)
 * Abfrageintervall pro Sensor anpassbar
 * Rundung und Umrechnung des gemessenen Wertes pro Sensor anpassbar
+* Unterstützung von Sensoren an entfernten Systemen über den _Remote Client_
 
 
 ## Installation
 
-Der Adapter ist aktuell über das latest-Repository verfügbar.
+Der Adapter ist über das stable- und latest-Repository verfügbar.
 
-Alternativ kann er über die URL `https://github.com/crycode-de/ioBroker.ds18b20.git` installiert werden.
+Über die GitHub URL `https://github.com/crycode-de/ioBroker.ds18b20.git` kann zudem die jeweils letzte Entwicklungsversion installiert werden.  
+Dies ist aber in den seltensten Fällen zu empfehlen!
 
 
 ## Konfiguration
 
-In der Adapterkonfiguration kann der **Standardabfrageintervall** für alle Sensoren in Millisekunden festgelegt werden. Das Minimum ist 500.
+In der Adapterkonfiguration kann der **Standardabfrageintervall** für alle Sensoren in Millisekunden festgelegt werden. Das Minimum ist 500.  
+Zudem kann der **Pfad der 1-Wire Geräte** bei Bedarf angepasst werden.  
+Für ein Einbindung von Sensoren an einem entfernten System kann weiterhin der hierfür integrierte Server aktiviert und konfiguriert werden.
 
-In einer Tabelle können die einzelnen Sensoren händisch oder über *Sensoren suchen* hinzugefügt werden.
+In einer Tabelle können die einzelnen Sensoren händisch oder über **Sensoren suchen** hinzugefügt werden.
 
 ![Konfiguration](./img/konfiguration.png)
 
-Die **Adresse** ist dabei die 1-Wire Adresse/ID des Sensors und bestimmt zugleich das die Objekt-ID.
+Die **Adresse** ist dabei die 1-Wire Adresse/ID des Sensors und bestimmt zugleich das die Objekt-ID.  
 Ein Sensor mit der Adresse `28-0000077ba131` bekommt beispielsweise die Objekt-ID `ds18b20.0.sensors.28-0000077ba131`.
+
+Die **Entfernte System-ID** ist die bei direkt angeschlossenen Sensoren nicht gesetzt (leer) und bei Sensoren an entfernten System die ID des jeweiligen entfernten Systems.
 
 Der **Name** ist zur Identifizierung des Sensors frei wählbar.
 
-Es kann für jeden Sensor ein extra **Abfrageintervall** in Millisekunden festgelegt werden.
+Es kann für jeden Sensor ein extra **Abfrageintervall** in Millisekunden festgelegt werden.  
 Wird das Feld leer gelassen, so gilt der Standardabfrageintervall.
 Das Minimum ist 500.
 
@@ -58,8 +64,8 @@ Standardmäßig ist dies `°C`.
 Die **Dezimalstellen** geben an, auf wie viele Stellen nach dem Komma der Wert gerundet wird.
 Die Rundung erfolgt nach der Berechnung mit Faktor und Offset.
 
-**Null bei Fehler** legt fest, wie mit Fehlern beim Lesen des Sensors verfahren werden soll.
-Ist die Option gesetzt, dann werden `null`-Werte bei Fehlern in den State des Sensors geschrieben.
+**Null bei Fehler** legt fest, wie mit Fehlern beim Lesen des Sensors verfahren werden soll.  
+Ist die Option gesetzt, dann werden `null`-Werte bei Fehlern in den State des Sensors geschrieben.  
 Ohne diese Option wird bei Fehlern der State nicht aktualisiert.
 
 
@@ -120,16 +126,30 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
         log(ret.err, 'warn');
     } else {
         for (let s of ret.sensors) {
-            log('Sensor: ' + s);
+            if (s.remoteSystemId) {
+                log('Sensor: ' + s.address + '@' + s.remoteSystemId);
+            } else {
+                log('Sensor: ' + s.address);
+            }
         }
     }
 });
 ```
 
+### `getRemoteSystems`
+
+Über `getRemoteSystems` können die System-IDs der aktuell verbundenen entfernten Systeme abgefragt werden.
+
+```js
+sendTo('ds18b20.0', 'getRemoteSystems', {}, (ret) => {
+    log('ret: ' + JSON.stringify(ret));
+    log('Verbundene Systeme: ' + ret.join(', '));
+});
+```
 
 ## Adapter-Informationen
 
-Über den `ds18b20.*.info.connection` State stellt jede Adapterinstanz eine Information bereit, ob alle konfigurierten Sensoren Daten liefern.
+Über den `ds18b20.*.info.connection` State stellt jede Adapterinstanz eine Information bereit, ob alle konfigurierten Sensoren Daten liefern.  
 Wenn das jeweils letzte Lesen von allen Sensoren erfolgreich war, ist dieser State `true`.
 Sobald einer der Sensoren einen Fehler aufweist, ist dieser State `false`.
 
@@ -156,6 +176,23 @@ lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus
 lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
 ```
 
+### Nutzung vieler Sensoren am Raspberry Pi
+
+Die Anzahl an Sensoren, die an einem Raspberry Pi an einem Strang fehlerfrei betrieben werden können, ist begrenzt und abhängig von einigen technischen Gegebenheiten (z.B. Leitungslänge).  
+Meistens treten ab etwa 10 Sensoren die ersten, teils zufälligen, Ausfälle auf.
+
+Um dennnoch mehr Sensoren betreiben zu können, ist es möglich diese auf mehrere Stänge (also mehrere GPIOs) aufzuteilen.
+Dabei benötigt dann jeder Strang einen eigenen Pullup-Widerstand.
+
+Zur Aktivierung werden in der Datei `/boot/config.txt` dann einfach mehrere Einträge mit der entsprechenden GPIO-Nummer hinzugefügt:
+
+```
+dtoverlay=w1-gpio,gpiopin=4
+dtoverlay=w1-gpio,gpiopin=17
+```
+
+Jeder Eintrag erzeugt dann einen eigenen `w1_bus_masterX` im System.
+
 ### Kernel-Bug bei negativen Temperaturen
 
 Im Kernel 5.10.y des Raspberry Pi gab es ab Mitte November 2020 einen Bug, wodurch negative Temperaturen als beispielsweise 4092 °C gelesen wurden. (siehe [GitHub Issue](https://github.com/raspberrypi/linux/issues/4124))  
@@ -166,67 +203,27 @@ Bei Adapterversionen bis einschließlich v1.2.2 werden diese offensichtlich fals
 Ab v1.2.3 prüft der Adapter zusätzlich, ob der gelesene Wert plausibel ist (zwischen -80 und +150 °C) und verwirft unplausible Werte.
 
 
-## Einbindung von Sensoren an einem entfernten Raspberry Pi
+## Einbindung von Sensoren an einem entfernten System
 
-Es ist ebenso möglich Sensoren einzubinden, die an einen entfernten Raspberry Pi angeschlossen sind.
-Hierzu wird das entsprechende Verzeichnis mittels *Samba* auf dem entfernten Raspberry Pi freigegeben und dann auf dem ioBorker-System gemountet.
+Ab Version 1.4.0 von _ioBroker.ds18b20_ können Sensoren an entfernten Systemen direkt über den eigenen _ioBroker.ds18b20 Remote Client_ eingebunden werden. Hierfür ist auf dem entfernten System lediglich Node.js erforderlich.
 
-### Konfiguration auf dem entfernten Raspberry Pi
+In der Adapterkonfiguration muss der Haken für **Entfernte Sensoren aktiviren** gesetzt sein. Der Adapter startet dann auf dem angegebenen Port einen TCP Server und nimmt Verbindungen der Clients entgegen.
 
-Installation von Samba:
-```sh
-sudo apt install samba
-```
+Die Verbindung zwischen Server und Client ist über einen `aes-256-cbc` Algorithmus verschlüsselt.  
+Hierfür muss bei den Clients der in der Adapterkonfiguration angezeigte Verschlüsselungsschlüssel gesetzt werden.
 
-Konfiguration in der Datei `/etc/samba/smb.conf`:
-```ini
-[ds1820]
-path = /sys/devices/w1_bus_master1
-comment = DS1820 Temperature sensors.
-available = yes
-browseable = yes
-guest ok = yes
-writeable = no
-force user = root
-force group = root
-```
+Der _ioBroker.ds18b20 Remote Client_ baut dann eine TCP Verbindung zum Adapter auf und wird in der Adapterkonfiguration unter **Verbundene entfernte Systeme** angezeigt.
 
-Anschließend Samba neu starten, um die Änderungen anzuwenden:
-```sh
-sudo systemctl restart smbd
-```
+### Installation des ioBroker.ds18b20 Remote Clients
 
-### Konfiguration auf dem ioBroker-System
+Ein Setup für den _ioBroker.ds18b20 Remote Client_ wird über den Adapter bereitgestellt.
 
-Installation des Samba Clients:
-```sh
-sudo apt install smbclient
-```
-
-Eintrag für den Mount in der Datei `/etc/fstab` hinzufügen:
-```
-//<IP-ADRESSE-REMOTE-RPI>/ds1820 /mnt/remote-ds1820 cifs defaults,vers=1.0 0 0
-```
-
-Verzeichnis für den Mountpunkt anlegen:
-```sh
-sudo mkdir -p /mnt/remote-ds1820
-```
-
-Verzeichnis mounten:
-```sh
-sudo mount /mnt/remote-ds1820
-```
-
-### Adapterkonfiguration
-In der Adapterkonfiguration muss dann der Systempfad für die 1-Wire Geräte auf den Mountpunkt `/mnt/remote-ds1820` gesetzt werden.
-
-Sollten auf dem ioBroker-System ebenfalls DS1820 Sensoren direkt angeschlossen sein, dann sollte am besten eine zweite Instanz des Adapters für die Remote-Sensoren erstellt werden.
+Anweisungen zur Einrichtung sind in der Adapterkonfiguration zu finden.
 
 ## Changelog
 
-### 1.4.0 (??)
-* (crycode-de) [WIP] Support for remote sensors using an own tiny daemon and encryped TCP sockets
+### 1.4.0 (2021-02-21)
+* (crycode-de) Support for remote sensors using an own tiny daemon and encrypted TCP sockets
 * (crycode-de) Set `q` flag to `0x81` (general problem by sensor) if a sensor reported a `null` value
 
 ### 1.3.0 (2021-02-11)

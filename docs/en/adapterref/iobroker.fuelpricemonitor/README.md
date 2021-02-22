@@ -26,6 +26,11 @@ Default schedule is done every 20 minutes and can be changed in the "instance" t
     ### __WORK IN PROGRESS__
 -->
 
+### 0.1.3 (2021-02-20)
+* (HGlab01) add attributes accessMod and clubCardText
+* (HGlab01) Improve logs
+* (HGlab01) fuel type (Diesel, Super, Gas) can be selected
+
 ### 0.1.2 (2021-02-17)
 * (HGlab01) first beta version
 

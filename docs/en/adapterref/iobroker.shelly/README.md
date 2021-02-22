@@ -68,7 +68,9 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 
-### 4.0.7-beta-1 (2021-02-07)
+### 4.0.7-beta-2 (2021-02-07)
+* (Stübi) - fixing the wrong identifier name from green to blue - Issue #334
+* (Stübi) - renamed Shelly Motion MQTT name 
 
 ### 4.0.6 (2021-02-02)
 * (Stübi) - add min, max to state transiton for Shelly RGBW2 

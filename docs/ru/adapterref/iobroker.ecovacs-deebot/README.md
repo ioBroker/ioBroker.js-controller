@@ -3,13 +3,16 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
+hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
-![Версия NPM](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![Стабильная версия](http://iobroker.live/badges/ecovacs-deebot-stable.svg)
+![Последняя версия](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
+![Количество установок](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
+![Количество загрузок](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
 ![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
+![Статус зависимости](https://img.shields.io/david/mrbungle64/iobroker.ecovacs-deebot.svg)
 ![Трэвис-Си](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 # Ecovacs Адаптер Deebot для ioBroker
@@ -22,26 +25,25 @@ hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
 * Deebot OZMO 930
 * Deebot OZMO 950
 
-### Эти модели, как известно, работают
+### Эти модели должны работать исправно или хотя бы частично
 * Deebot Slim 2
 * Deebot N79 серии
-* Deebot 601
-* Deebot 710/711 (см. «Известные проблемы»)
+* Deebot M88
+* Deebot 600/601/605
+* Deebot 710/711/711s
 * Deebot 900
-* Deebot U2
 * Deebot OZMO 610
 * Deebot OZMO 900
-* Deebot OZMO T8 серии
-
-### Эти модели должны работать
-* Deebot M88
-* Deebot 600/605
 * Deebot OZMO T5
+* Deebot OZMO T8 серии
 * Deebot OZMO Slim 10
-* Deebot U2 Pro / Мощность
+* Deebot N3 MAX
+* Deebot N7
+* Deebot N8 серии
+* Deebot U2 серии
 
 ## Установка
-Рекомендуется использовать версию Node.js 10 или более новую.
+Рекомендуется использовать Node.js. версии 10.x, 12.x или 14.x. Минимальная необходимая версия - 10.x
 
 Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
 Для полного набора функций установите следующие пакеты.
@@ -62,8 +64,8 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Информацию о состояниях можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (на английском языке) и [здесь] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29) (немецкий)
 
 ## Известные вопросы
-* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа
-* Некоторые функции очистки могут не работать с 710/711. Пожалуйста, используйте пока версию 0.5.8.
+* Для некоторых моделей (например, Deebot Ozmo 930) рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день. потому что есть некоторые сообщения о том, что соединение теряется через прибл. 24 часа
+* Некоторые функции очистки могут не работать с 710/711 / 711s. Пожалуйста, используйте пока версию 0.5.8.
 * Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
@@ -73,6 +75,12 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
+
+### 1.1.1
+* Using library version 0.6.0-alpha.3
+  * Updated login process
+  * Support for Chinese server login
+* Initial support for some models (e.g. N3, N7 and N8 series)
 
 ### 1.1.0
 * Stable release
@@ -162,7 +170,7 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 MIT License
 
-Copyright (c) 2020 Sascha Hölzel <mrb1232@posteo.de>
+Copyright (c) 2021 Sascha Hölzel <mrb1232@posteo.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -107,6 +107,11 @@ Alternative you can send SMS from your JavaScript with following command:
 sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
 ``` 
 
+if you are using the SMS gateway you can use following command in your script:
+```
+sendTo('lupusec.0', 'smsgw', { number: '017247114711', text: 'Test message' });
+``` 
+
 ## Troubleshooting
 If you start the Lupusec Adapter and you get the error that the alarm system is not reachable please try to ping the system from a terminal window of your ioBroker system. 
 
@@ -122,8 +127,9 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.3-beta-1 (17.02.2021)
+### 1.3.3-beta-2 (17.02.2021)
 * (Stübi) Bugfixing
+* (Stübi) Send SMS with SMS gateway or SIM card
 
 ### 1.3.2 (14.02.2021)
 * (Stübi) Send SMS if you are using a sim card

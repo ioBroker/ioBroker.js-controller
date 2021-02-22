@@ -3,13 +3,16 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
+hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
 ---
 ![标识](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
-![NPM版本](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
-![资料下载](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![稳定版](http://iobroker.live/badges/ecovacs-deebot-stable.svg)
+![最新版本](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
+![安装数量](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
+![下载次数](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
 ![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
+![依赖状态](https://img.shields.io/david/mrbungle64/iobroker.ecovacs-deebot.svg)
 ![特拉维斯](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 ＃适用于ioBroker的Ecovacs Deebot适配器
@@ -22,26 +25,25 @@ hash: T0ob73oJ4PwAa7s273V/xK0R8ip52IqyySOGm7/MLWo=
 * Deebot OZMO 930
 * Deebot OZMO 950
 
-###这些模型可以正常工作
+###这些模型应该正常运行或至少部分运行
 * Deebot苗条2
 * Deebot N79系列
-* Deebot 601
-* Deebot 710/711（请参阅“已知问题”）
+* Deebot M88
+* Deebot 600/601/605
+* Deebot 710/711 / 711s
 * Deebot 900
-* Deebot U2
 * Deebot OZMO 610
 * Deebot OZMO 900
-* Deebot OZMO T8系列
-
-###这些模型应该可以工作
-* Deebot M88
-* Deebot 600/605
 * Deebot OZMO T5
+* Deebot OZMO T8系列
 * Deebot OZMO苗条10
-* Deebot U2 Pro /电源
+* Deebot N3 MAX
+* Deebot N7
+* Deebot N8系列
+* Deebot U2系列
 
 ＃＃ 安装
-建议使用Node.js版本10或更高版本。
+建议使用Node.js的10.x，12.x或14.x版本。最低要求版本是10.x
 
 该适配器使用画布库，可能需要其他安装。
 要获得全部功能，请安装以下软件包。
@@ -62,8 +64,8 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 *有关状态的信息可以在[here]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29）（英文）和[here]（https://github.com/github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-％28DE％29）（德语）
 
 ＃＃ 已知的问题
-*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时
-*某些清洁功能可能不适用于710/711。请暂时使用0.5.8版。
+*对于某些型号（例如Deebot Ozmo 930），建议每天一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）因为有一些报告说大约过后连接丢失。 24小时
+*某些清洁功能可能不适用于710/711 / 711s。请暂时使用0.5.8版。
 *“边缘”功能不适用于Deebot U2（而是启动自动清洁）
 
 ＃＃ 常问问题
@@ -73,6 +75,12 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 我绝不隶属于ECOVACS。
 
 ## Changelog
+
+### 1.1.1
+* Using library version 0.6.0-alpha.3
+  * Updated login process
+  * Support for Chinese server login
+* Initial support for some models (e.g. N3, N7 and N8 series)
 
 ### 1.1.0
 * Stable release
@@ -162,7 +170,7 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 MIT License
 
-Copyright (c) 2020 Sascha Hölzel <mrb1232@posteo.de>
+Copyright (c) 2021 Sascha Hölzel <mrb1232@posteo.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

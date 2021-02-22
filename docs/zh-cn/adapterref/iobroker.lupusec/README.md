@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: K0k5vvfJi3TuR4x+nkQ70nYeefXX626FHzYCnBXV/fg=
+hash: anR9zxamafrIIqE6Si3MJY0h+ENio71ITSX/n51kcak=
 ---
 ![标识](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -43,7 +43,7 @@ hash: K0k5vvfJi3TuR4x+nkQ70nYeefXX626FHzYCnBXV/fg=
   -门触点/窗触点（类型4）
   -水传感器（5型）
   -紧急按钮（类型7）
-  -运动检测器/ 360度运动检测器（9类）
+  -运动探测器/ 360度运动探测器（9类）
   -CO传感器（13型）
   -烟雾探测器/热量探测器（类型14）
   -温度传感器V2（类型20）
@@ -108,6 +108,12 @@ ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 sendTo('lupusec.0', 'sms', { number: '017247114711', text: 'Test message' });
 ```
 
+如果您使用的是SMS网关，则可以在脚本中使用以下命令：
+
+```
+sendTo('lupusec.0', 'smsgw', { number: '017247114711', text: 'Test message' });
+```
+
 ＃＃ 故障排除
 如果启动Lupusec适配器，但收到错误消息，提示无法连接警报系统，请尝试从ioBroker系统的终端窗口ping系统。
 
@@ -131,7 +137,11 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.2-beta-2 (14.02.2021)
+### 1.3.3-beta-2 (17.02.2021)
+* (Stübi) Bugfixing
+* (Stübi) Send SMS with SMS gateway or SIM card
+
+### 1.3.2 (14.02.2021)
 * (Stübi) Send SMS if you are using a sim card
 
 ### 1.3.1 (07.02.2021)
@@ -259,7 +269,7 @@ sudo chmod u+s `which ping`
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019-2020 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019-2021 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

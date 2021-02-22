@@ -34,6 +34,9 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 Поэтому, если какие-либо улучшения или поддержка новых zigbee-устройств происходит в проекте Zigbee2MQTT, то можно перенести и добавить этот же функционал в этот драйвер. Если заметили это, то напиши issue - перенесем.
 
 ## Changelog
+### 1.4.5 (2021-02-20)
+
+
 ### 1.4.4 (2021-02-14)
 * (kirovilya) External converters https://www.zigbee2mqtt.io/information/configuration.html#external-converters-configuration
 * (asgothian) Enhancement ping process
