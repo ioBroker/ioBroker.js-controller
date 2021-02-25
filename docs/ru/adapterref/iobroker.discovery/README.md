@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
-title: ioBroker Discover Адаптер
-hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
+title: Адаптер ioBroker Discover
+hash: TRMhQmfwFIk+rQQCYWHl0qlyl6u492JB+0ttn84Xmqw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -17,7 +17,7 @@ hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 ** Обнаруживайте устройства всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, доступные с хоста.
-Только сейчас он может определять через ping, UPnP (планируется серийный).
+Только сейчас он может обнаруживать через ping, UPnP (планируется серийный).
 
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
@@ -71,8 +71,9 @@ hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 - Мпд
 - Musiccast
 - myDlink
-- Mysensors USB / Serial (9600, 38400, 57600, 115200)
+- Mysensors USB / последовательный порт (9600, 38400, 57600, 115200)
 - световые панели / холст nanoleaf
+- Сетевые инструменты
 - Нуки2
 - Орех
 - Onkyo
@@ -83,9 +84,9 @@ hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 - RFLink (серийный 57600 бод)
 - SamsungTV
 - Smappee
-- Solarlog
+- Соларлог
 - Соннен
-- Sonos
+- Сонос
 - Stiebel-Eltron / Tecalor ISG (плюс)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Соковыжималка
@@ -102,14 +103,14 @@ hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 ### Предлагаются как дополнительные адаптеры
 - Облако
 - История (если SQL или InfluxDB не найдены)
+- Интернет вещей
 - flot (предлагается при наличии History-Adapter)
 - JavaScript
 - Информация
-- мобильный
 - Vis
 - Интернет
 
-## Делать
+## Сделать
 - артнет? (Bluefox)
 - B-Control-Em? (Bluefox)
 - Cul / Maxcul (Bluefox)
@@ -126,13 +127,28 @@ hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 - смартметр (Apollon77)
 - унифи (jens-maus)
 - волк (улыбается-валет)
-- xs1 (откровенный шуток)
+- xs1 (откровенный шутник)
 
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
+* (JeyCee) removed mobile
+* (JeyCee) added iot and net-tools
+* (JeyCee) UI adjustments
+
+### 2.5.0 (2021-01-11)
+* (Zefau) Replace nuki2 with nuki-extended
+* (Zefau) Suggest jarvis for discovery as advice
+* (Apollon77) Add checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)
+
+### 2.4.1 (2020-12-06)
+* (Apollon77) Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)
+* (Apollon77) Fix potential crash case (Sentry IOBROKER-DISCOVERY-2C)
 
 ### 2.4.0 (2020-11-29)
 * (withstu) add heos

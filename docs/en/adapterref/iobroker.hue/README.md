@@ -57,6 +57,12 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 	### __WORK IN PROGRESS__
 -->
 
+### 3.5.2 (2021-02-24)
+* (foxriver76) fix crashes if wrong data type or invalid value passed for ct and hue, now logging an error
+* (foxriver76) fix crashes if rgb where outside allowed range or wrong type
+* (foxriver76) fix potential crashes on bridge discovery, due to unnecessary stringify/parse logic
+* (foxriver76) fix graphical issue with the label of bridge user when newly created, due to missing call of updateTextFields 
+
 ### 3.5.1 (2021-02-20)
 * (foxriver76) avoid crash cases on invalid xy, setting state for non-existing device and on failing user creation
 

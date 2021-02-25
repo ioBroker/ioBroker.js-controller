@@ -313,6 +313,9 @@ You can set option *Force Web-Sockets* to force using only web-sockets transport
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (foxriver76) make error logging on failed authentication more specific
+
 ### 3.1.4 (2021-01-13)
 * (Apollon77) Define instanceObject "connected" to prevent warning with js-controller 3.2
 

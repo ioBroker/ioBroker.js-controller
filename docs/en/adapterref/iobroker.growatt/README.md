@@ -21,55 +21,7 @@ Not all plant types are implemented.
 
 Currently only data can be read, writing parameters or changing parameters is not possible.
 
-# Speedup data interval
-
-## You can set the logger interval from 5 minutes to 1 minute
-
-Remove the rubber plug of the KEY button from ShineWiFi-S, and short press the button inside. The blue LED
-will light up. Use your phone or computer to connect to the wireless network emitted by the
-ShineWiFi-S module. The network name/SSID is the serial number of the ShineWiFi-S
-module.
-
-## Login Page
-After the connection is successfully established, open the web browser on your phone or
-computer and type 192.168.10.100 in the address bar. The username is admin, the
-default password is 12345678.
-![Login Page](docs/login.png)
-
-## Advanced Settings
-Change the data interval time to 1 minute
-![Advanced Settings](docs/advancedsettings.png)
-
-## System Restart
-Restart your ShineWiFi-S module on this page, click “Restart Immediate” to
-enable the new settings you just made and logout from the internal webserver of your
-ShineWiFi module.
-![System Restart](docs/restart.png)
-
-**There is no change to the charts on growatt side. There you can only see a change in the data from the datalogger.**
-
-# German - Speedup data interval
-
-## Du kannst das Protokollierungsintervall von 5 Minuten auf 1 Minute einstellen
-
-Den Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz drücken.
-Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). Beim Netz mit einem Laptop oder dem Handy anmelden.
-
-## Einloggen
-als Webadresse http://192.168.10.100 in der Browser eingeben.
-Der Username ist Admin und das Passwort 12345678 (sollte man gleich auch mal ändern, geht in System Management).
-![Login Page](docs/login.png)
-
-## Advanced Settings
-Auf "Advanced Settings" gehen und das Intervall ändern. (von 5 auf 1)
-![Advanced Settings](docs/advancedsettings.png)
-
-## System Restart
-Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
-![System Restart](docs/restart.png)
-
-**Es gibt keine Änderung an den Diagrammen auf der Growatt-Seite, die bleiben bei 5min. Dort sehen Sie nur eine Änderung der Daten im Datenlogger.**
-
+----------------------------------------------------------------------------------------------------------------------
 
 # Adapter admin page
 
@@ -116,9 +68,66 @@ After the update, only the ID and the action are displayed because the object no
 ### No update
 The object remains, the values ​​from the inverter are discarded.
 
+----------------------------------------------------------------------------------------------------------------------
+
+# Speedup data interval
+
+## You can set the logger interval from 5 minutes to 1 minute
+
+Remove the rubber plug of the KEY button from ShineWiFi-S, and short press the button inside. The blue LED
+will light up. Use your phone or computer to connect to the wireless network emitted by the
+ShineWiFi-S module. The network name/SSID is the serial number of the ShineWiFi-S
+module.
+
+## Login Page
+After the connection is successfully established, open the web browser on your phone or
+computer and type 192.168.10.100 in the address bar. The username is admin, the
+default password is 12345678.
+![Login Page](docs/login.png)
+
+## Advanced Settings
+Change the data interval time to 1 minute
+![Advanced Settings](docs/advancedsettings.png)
+
+## System Restart
+Restart your ShineWiFi-S module on this page, click “Restart Immediate” to
+enable the new settings you just made and logout from the internal webserver of your
+ShineWiFi module.
+![System Restart](docs/restart.png)
+
+**There is no change to the charts on growatt side. There you can only see a change in the data from the datalogger.**
+
+----------------------------------------------------------------------------------------------------------------------
+
+# German - Speedup data interval
+
+## Du kannst das Protokollierungsintervall von 5 Minuten auf 1 Minute einstellen
+
+Den Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz drücken.
+Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). Beim Netz mit einem Laptop oder dem Handy anmelden.
+
+## Einloggen
+als Webadresse http://192.168.10.100 in der Browser eingeben.
+Der Username ist Admin und das Passwort 12345678 (sollte man gleich auch mal ändern, geht in System Management).
+![Login Page](docs/login.png)
+
+## Advanced Settings
+Auf "Advanced Settings" gehen und das Intervall ändern. (von 5 auf 1)
+![Advanced Settings](docs/advancedsettings.png)
+
+## System Restart
+Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
+![System Restart](docs/restart.png)
+
+**Es gibt keine Änderung an den Diagrammen auf der Growatt-Seite, die bleiben bei 5min. Dort sehen Sie nur eine Änderung der Daten im Datenlogger.**
+
 -*-
 
 ## Changelog
+
+### 1.0.0 (24.02.2021)
+* (PLCHome) Read me
+* (PLCHome) fix: Create a date from the time or calendar structure for last history data for all devices sometimes not working
 
 ### 0.0.20 (09.02.2021)
 * (PLCHome) Create a date from the time or calendar structure for last history data for all devices

@@ -139,6 +139,10 @@ Here, measured values, control and status data are listed; depending on the func
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+__WORK IN PROGRESS__
+* (foxriver76) error handling improved when deleting obsolete devices/channels
+
 ### 1.14.35 (2021-02-13)
 * (foxriver76) virtual devices now support ping, so use it, else it can be that instance won't register at CCU again (fixes #308)
 

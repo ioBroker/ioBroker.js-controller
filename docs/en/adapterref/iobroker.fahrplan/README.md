@@ -214,8 +214,9 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.0.5 (2021-02-22)
 * (Gaudes) Quality fixing (lgtm.com)
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.4 (2021-02-13)
 * (Gaudes) Add product selection to departure timetable
@@ -240,9 +241,6 @@ With +-Button new entries can be added to the table.
 * (Gaudes) Fixing identical start and destination station
 * (Gaudes) Require vehicle in configuration
 * (Gaudes) Include Dependabot updates
-
-### 1.0.0 (2020-12-09)
-* (Gaudes) First stable release
 
 ## License
 MIT License

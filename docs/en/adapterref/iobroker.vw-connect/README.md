@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.30
+
+- fix mutiple car problem, add VWv2 mode at the moment there is no different between VW and VWv2
+  
 ### 0.0.29
 
 - fix skoda refreshToken, smaller improvements

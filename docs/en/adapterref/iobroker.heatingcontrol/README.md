@@ -205,6 +205,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.2.1 (2021-02-xx)
+* (René) bug fix to calculate average for temperatur offset
+
 ### 2.2.0 (2021-02-15)
 * (René) see issue #146: different type of window sensor and also adjustable comparative value
 * (René) see issue #110: optionally every room can be set to "no heating" with separate datapoint

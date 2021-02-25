@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: R/Ro5hZjXVFIpi+vg3CxrQWVR756UbHET4v+aaEyg0k=
+hash: tNfyZqnf+Sreq11IchgIq1RM4gZqrgSul0+RXZ0tEhY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -12,7 +12,7 @@ hash: R/Ro5hZjXVFIpi+vg3CxrQWVR756UbHET4v+aaEyg0k=
 ![Количество установок (последнее)](http://iobroker.live/badges/growatt-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/growatt-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)
-![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
 
 # IoBroker.growatt
 ## Адаптер Growatt для ioBroker
@@ -26,41 +26,7 @@ ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 
 В настоящее время можно читать только данные, запись параметров или изменение параметров невозможно.
 
-# Интервал данных ускорения
-## Вы можете установить интервал регистрации от 5 минут до 1 минуты
-Снимите резиновую заглушку кнопки KEY с ShineWiFi-S и коротко нажмите кнопку внутри. Загорится синий светодиод. Используйте свой телефон или компьютер для подключения к беспроводной сети, излучаемой модулем ShineWiFi-S. Имя сети / SSID - это серийный номер модуля ShineWiFi-S.
-
-## Страница авторизации
-После успешного установления соединения откройте веб-браузер на своем телефоне или компьютере и введите 192.168.10.100 в адресной строке. Имя пользователя - admin, пароль по умолчанию - 12345678.
-![Страница авторизации](../../../en/adapterref/iobroker.growatt/docs/login.png)
-
-## Расширенные настройки
-Измените время интервала данных на 1 минуту ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
-
-## Перезагрузка системы
-Перезагрузите модуль ShineWiFi-S на этой странице, нажмите «Перезагрузить немедленно», чтобы активировать новые настройки, которые вы только что сделали, и выйдите из внутреннего веб-сервера вашего модуля ShineWiFi.
-![Перезагрузка системы](../../../en/adapterref/iobroker.growatt/docs/restart.png)
-
-** Нет изменений в графиках на стороне роста. Здесь вы можете увидеть только изменение данных из регистратора данных. **
-
-# Немецкий - Интервал данных ускорения
-## Du kannst das Protokollierungsintervall von 5 Minuten auf 1 Minute einstellen
-Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz drücken.
-Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). Beim Netz mit einem Laptop or dem Handy anmelden.
-
-## Einloggen
-также Webadresse http://192.168.10.100 в браузере eingeben.
-Имя пользователя является администратором и паролем 12345678 (только для управления системой).
-![Страница авторизации](../../../en/adapterref/iobroker.growatt/docs/login.png)
-
-## Расширенные настройки
-Auf "Advanced Settings" gehen und das Intervall ändern. (фон 5 auf 1) ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
-
-## Перезагрузка системы
-Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
-![Перезагрузка системы](../../../en/adapterref/iobroker.growatt/docs/restart.png)
-
-** Es gibt keine Änderung an den Diagrammen auf der Growatt-Seite, die bleiben bei 5min. Dort sehen Sie nur eine Änderung der Daten im Datenlogger. **
+----------------------------------------------------------------------------------------------------------------------
 
 # Страница администратора адаптера
 ## Основные параметры
@@ -84,7 +50,7 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 ### Прочитать общие данные
 Эта запись данных содержит данные агрегирования.
 
-### Прочитать данные устройства
+### Чтение данных устройства
 Эта запись данных содержит некоторые данные с устройства. Некоторые данные также доступны в других категориях.
 
 ### Читать погоду
@@ -92,7 +58,7 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 
 ## Управление объектами
 Здесь вы можете определить, что должно происходить с каждым значением (объектом), принимаемым инвертором.
-Есть много значений, которые не относятся к вашему инвертору. Их можно удалить здесь.
+Есть много значений, которые не принадлежат вашему инвертору. Их можно удалить здесь.
 Поскольку нет события, с которым список объектов можно было бы перезагрузить при сохранении. При нажатии кнопки сохранения необходимо использовать кнопку обновления.
 
 ### Нормальный
@@ -103,15 +69,65 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 После обновления отображаются только идентификатор и действие, поскольку объект больше не существует. При обычном выборе объект будет создан снова после сохранения.
 
 ### Нет обновлений
-Объект остается, значения от инвертора отбрасываются.
+Объект остается, значения с инвертора отбрасываются.
+
+----------------------------------------------------------------------------------------------------------------------
+
+# Интервал данных ускорения
+## Вы можете установить интервал регистрации от 5 минут до 1 минуты.
+Снимите резиновую заглушку кнопки KEY с ShineWiFi-S и коротко нажмите кнопку внутри. Загорится синий светодиод. Используйте свой телефон или компьютер для подключения к беспроводной сети, излучаемой модулем ShineWiFi-S. Имя сети / SSID - это серийный номер модуля ShineWiFi-S.
+
+## Страница авторизации
+После успешного установления соединения откройте веб-браузер на своем телефоне или компьютере и введите 192.168.10.100 в адресной строке. Имя пользователя - admin, пароль по умолчанию - 12345678.
+![Страница авторизации](../../../en/adapterref/iobroker.growatt/docs/login.png)
+
+## Расширенные настройки
+Измените время интервала данных на 1 минуту ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+
+## Перезагрузка системы
+Перезагрузите модуль ShineWiFi-S на этой странице, нажмите «Перезагрузить немедленно», чтобы активировать новые настройки, которые вы только что сделали, и выйдите из внутреннего веб-сервера вашего модуля ShineWiFi.
+![Перезагрузка системы](../../../en/adapterref/iobroker.growatt/docs/restart.png)
+
+** Нет изменений в диаграммах на стороне роста. Здесь вы можете увидеть только изменение данных из регистратора данных. **
+
+----------------------------------------------------------------------------------------------------------------------
+
+# Немецкий - Интервал данных ускорения
+## Du kannst das Protokollierungsintervall von 5 Minuten auf 1 Minute einstellen
+Den Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz drücken.
+Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). Beim Netz mit einem Laptop or dem Handy anmelden.
+
+## Einloggen
+также Webadresse http://192.168.10.100 в браузере eingeben.
+Der Username ist Admin und das Passwort 12345678 (sollte man gleich auch mal ändern, geht in System Management).
+![Страница авторизации](../../../en/adapterref/iobroker.growatt/docs/login.png)
+
+## Расширенные настройки
+Auf "Advanced Settings" gehen und das Intervall ändern. (фон 5 auf 1) ![Расширенные настройки](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+
+## Перезагрузка системы
+Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
+![Перезагрузка системы](../../../en/adapterref/iobroker.growatt/docs/restart.png)
+
+** Es gibt keine Änderung an den Diagrammen auf der Growatt-Seite, die bleiben bei 5min. Dort sehen Sie nur eine Änderung der Daten im Datenlogger. **
 
 -*-
 
 ## Changelog
+
+### 1.0.0 (24.02.2021)
+* (PLCHome) Read me
+* (PLCHome) fix: Create a date from the time or calendar structure for last history data for all devices sometimes not working
+
+### 0.0.20 (09.02.2021)
+* (PLCHome) Create a date from the time or calendar structure for last history data for all devices
+
 ### 0.0.19 (05.02.2021)
 * (PLCHome) The data from the chart is removed. These were only available in a 5-minute grid. The performance can now be queried via the history.
 * (PLCHome) Objects of unselected data areas are now deleted.
 * (PLCHome) You can choose objects to be ignored or deleted.
+* (PLCHome) A link to the Growatt page was added, so the adapter now also appears in the overview.
+* (PLCHome) Recently, Growatt has changed the spelling of values, which letters are uppercase and lowercase. For this reason, the objects are now handled internally Case Insensively. If a warning is written in the log after the update when starting, you have to delete one of the two objects. If a warning is written in the log after the update when starting, you have to delete one of the two objects. And then restart the adapter so that it definitely uses the remaining object to store the value.
 
 ### 0.0.18 (23.01.2021)
 * (PLCHome) wrong version info.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: vrqyrwtsxbrT+QIGV1N1+IOMukmKrWtM05iSKgfTsnw=
+hash: IzNzRU8vSC6rRX93+j5u36qFZzb6d6qPpti1Oer3UfE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -19,9 +19,9 @@ hash: vrqyrwtsxbrT+QIGV1N1+IOMukmKrWtM05iSKgfTsnw=
 ![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
-## Schalter Widgets для адаптера ioBroker.vis
+## Виджеты Schalter для адаптера ioBroker.vis
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Изображение</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Стол</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Слайдер горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
+<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Изображение</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Стол</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Ползунок горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider горизонтальный</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -42,6 +42,9 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ---
 
+## 2.7.11
+- Исправлена ошибка
+
 ## 2.7.10
 - Problem mit Bildern im Universal und Multi Widget behoben
 - Проблема с Bildwechesl im Universal и Multi Widget behoben
@@ -52,7 +55,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## 2.7.8
 - Проблема с Textausrichtung behoben
-- Проблема с Bildgröße im Image-Widget behoben
+- Problem mit Bildgröße im Image-Widget behoben
 
 ## 2.7.7
 - Problem mit der Bildgröße behoben
@@ -93,7 +96,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - JSON Tabelle Kopfzeile kann fixiert werden
 - JSON Tabelle Fehler beim sortieren behoben
 - JSON Tabelle konfigurierbare Dummyzeile wenn JSON leer ist
-- Fehler behoben
+- Фелер Бехобен
 
 ## 2.6.0
 - Универсальный и мульти-виджет Vergleichsoperatoren gleich, größer, kleiner und nicht hinzugefügt
@@ -163,7 +166,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
 
 ## 2.3.1
-- Fehler в JSON Tabelle behoben
+- Фелер в JSON Tabelle behoben
 
 ## 2.3.0
 - Problem behoben, bei dem Schaltflächen zweimal Werte senden
@@ -171,13 +174,13 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
-- Fehler в JSON Tabelle behoben
+- Фелер в JSON Tabelle behoben
 
 ## 2.2.2
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
-- Fehler в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
+- Фелер в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
 - Fehler в Value-List behoben: Wert wird nicht aktualisiert
 
 ## 2.2.0
@@ -206,10 +209,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Исправлена проблема с числовыми значениями
 
 ### 1.3.7
-- Исправлена проблема с навигацией по тачскринам
+- Исправлена проблема с навигацией по тачскринам.
 
 ### 1.3.6
-- Добавлена опция установки состояния для навигации
+- Добавлена опция установки состояния для навигации.
 - Исправлена проблема с точками данных без конфигурации.
 
 ### 1.3.5
@@ -259,7 +262,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию.
 
 ### 1.0.0
-- Фон виджета и прозрачность контента, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
+- Фон виджета и непрозрачность содержимого, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок

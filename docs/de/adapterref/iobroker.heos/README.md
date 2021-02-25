@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
+hash: PA1xxbIdUY9UAxGcIs76l2xXxJ5jWLjYmnlYPv8b/6U=
 ---
 ![Logo](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.heos.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.heos.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/heos-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/heos-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/heos-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/withstu/iobroker.heos.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/withstu/ioBroker.heos/badge.svg)
@@ -37,7 +37,7 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 ### HEOS-Befehlsstatus
 * "system / connect": Versuchen Sie, eine Verbindung zu HEOS herzustellen
 * "System / Trennen": Trennen Sie die Verbindung zum HEOS
-* "System / Wiederverbindung": Trennen und Verbinden
+* "system / reconnect": Trennen und verbinden
 * "system / load_sources": Quellen neu laden
 * "group / set_group? pid = <pid1>, <pid2>, ...": Gruppe mit der Liste der Spieler-IDs festlegen, z. "group / set_group? pid = 12345678,12345679".
 * "group / set_group? pid = <pid1>": Löschen Sie eine vorhandene Gruppe, z. "group / set_group? pid = 12345678"
@@ -51,17 +51,24 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 ### Player-Befehlsstatus
 Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. set_volume & level = 20 | play_preset & preset = 1
 
-* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Lautstärke des Players ein
+* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Player-Lautstärke ein
 * "set_play_state & state = play | pause | stop": Legt den Player-Status fest
 * "set_play_mode & repeat = on_all | on_one | off & shuffle = on | off": Set Repeat and Shuffle-Modus
 * "set_mute & state = on | off": Spieler stumm schalten
 * "volume_down & step = 1..10": Niedrigere Lautstärke
 * "volume_up & step = 1..10": Erhöhen Sie die Lautstärke
 * "play_next": Weiter spielen
-* "play_previous": Vorherige spielen
+* "play_previous": Vorherige Wiedergabe
 * "play_preset & preset = 1 | 2 | .. | n": Play preset n
 * "play_stream & url = url_path": URL-Stream abspielen
 * "add_to_queue & sid = 1025 & aid = 4 & cid = [CID]": Wiedergabeliste mit [CID] auf dem Player abspielen (Hilfe: 1 - jetzt spielen; 2 - als nächstes spielen; 3 - zum Ende hinzufügen; 4 - ersetzen und spielen)
+
+## Bildfarbenextraktion
+Mit Version 1.7.6 werden die markanten Farben des Songcovers extrahiert und in drei neuen Player-Status gespeichert:
+
+* **current_image_color_palette** Prominente Farben, die von node-vibrierend ausgewählt werden.
+* **current_image_color_background** Farbe mit der größten Population im Bild. Kann als Hintergrundfarbe für Player-Steuerelemente in VIS verwendet werden.
+* **current_image_color_foreground** Farbe mit der zweitgrößten Population im Bild und einem guten Lesekontrast zur Hintergrundfarbe. Kann als Textfarbe für Player-Steuerelemente in VIS verwendet werden.
 
 ## Sag es
 [SayIt Adapter](https://github.com/ioBroker/ioBroker.sayit) wird unterstützt.
@@ -75,7 +82,7 @@ Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. 
 
 ## VIS
 ### Installation
-* Erstellen Sie folgende Zeichenfolgenstatus:
+* Erstellen Sie folgende Zeichenfolgenzustände:
     * 0_userdata.0.heos.queue_pid
     * 0_userdata.0.heos.queue_html
     * 0_userdata.0.heos.browse_result_html
@@ -110,6 +117,9 @@ Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. 
 Alternativ können Sie das Skript von Uhula verwenden: https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.6 (2021-02-24)
+* (withstu) add image color extraction
 
 ### 1.7.5 (2021-02-12)
 * (withstu) add bit depth

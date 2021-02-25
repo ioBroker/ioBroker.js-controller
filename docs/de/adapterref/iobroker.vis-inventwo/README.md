@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: vrqyrwtsxbrT+QIGV1N1+IOMukmKrWtM05iSKgfTsnw=
+hash: IzNzRU8vSC6rRX93+j5u36qFZzb6d6qPpti1Oer3UfE=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/vis-inventwo-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/vis-inventwo-installed.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
 ![Build-Status](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
@@ -34,7 +34,7 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
@@ -42,21 +42,24 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ---
 
+## 2.7.11
+- Fehlerbehebung
+
 ## 2.7.10
-- Problem mit Bildern im Universal und Multi Widget gehört
+- Problem mit Bildern im Universal- und Multi-Widget-Einstellungen
 - Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
 - Option für die Bildgröße für das Image-Widget hinzugefügt
 - Fehler von vorheriger Version gehört
 
-2.7.8
+#7. 2.7.8
 - Problem mit der Textausrichtung gehört
 - Problem mit Bildgröße im Image-Widget gehört
 
 ## 2.7.7
 - Problem mit der Bildstellung gehört
-- Problem mit dem Farbregler gehört, dass der Wert beim Loslassen nicht verkauft wurde
+- Problem mit dem Farbregler wurde, dass der Wert beim Loslassen nicht verkauft wurde
 
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget Frei
@@ -65,7 +68,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
-- Fehler beim Slider finden wenn ungültiger Wert im Datenpunkt steht
+- Fehler beim Slider gefunden wenn ungültiger Wert im Datenpunkt steht
 - Fehlerhafte: Signalbilder wurden mit eingefärbt
 - Option um Bildfarbe zu invertieren eingezogen, um Farbfilter zu entfernen
 - Color Slider kann nun zwischen HEX, RGB und CIE gehören
@@ -74,7 +77,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 
 ## 2.7.3
-- Fehler beim Multi-State und Steuern Zuständigkeiten
+- Fehler beim mehrstaatlichen und staatlichen Zuständigkeiten
 - Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
@@ -89,7 +92,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.0
 - Neues Widget: Farbslider
-- JSON Tabelle Spaltenformat boolean und number
+- JSON Tabelle Spaltenformat Boolescher Wert und Nummer
 - JSON Tabelle Kopfzeile kann fixiert werden
 - JSON Tabelle Fehler beim sortieren gehört
 - JSON Tabelle konfigurierbare Dummyzeile wenn JSON leer ist
@@ -271,7 +274,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ...
 
-### 0.1.0 (Erstveröffentlichungung)
+### 0.1.0 (Erstveröffentlichung)
 - Erfinde zwei Design-Widgets
 
 ...

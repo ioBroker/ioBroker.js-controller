@@ -72,6 +72,9 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.7.11
+- Bugfix
+
 ## 2.7.10
 - Problem mit Bildern im Universal und Multi Widget behoben
 - Problem mit Bildwechesl im Universal und Multi Widget behoben

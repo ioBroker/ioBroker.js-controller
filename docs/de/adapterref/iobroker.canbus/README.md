@@ -3,17 +3,16 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
+hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 ---
 # IoBroker.canbus
 ![Logo](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
 
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.canbus.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.canbus.svg)
-![Anzahl der Installationen (aktuell)](https://iobroker.live/badges/canbus-installed.svg)
+![Anzahl der Installationen (spätestens)](https://iobroker.live/badges/canbus-installed.svg)
 ![Anzahl der Installationen (stabil)](https://iobroker.live/badges/canbus-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/crycode-de/iobroker.canbus.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/crycode-de/ioBroker.canbus/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.canbus.png?downloads=true)
 
 [![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/canbus/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
@@ -30,17 +29,17 @@ Dieser Adapter verbindet ioBroker mit einem CAN-Bus (Controller Area Network).
 * Jede Nachricht kann zum Empfangen und / oder Senden von Daten konfiguriert sein
 * Möglichkeit zum automatischen Hinzufügen von Objekten für gesehene CAN-Nachrichten, die noch nicht konfiguriert sind
 * Konfigurieren Sie Parser für jede Nachricht zum Lesen / Schreiben von Daten aus / in den Rohnachrichtenpuffer
-  * Nummerierte Typen
+  * Numerische Typen
   * Boolesche Werte einschließlich Bitmaskenunterstützung
-  * Zeichenfolgen in unterschiedlichen Zeichenkodierungen
-  * Benutzerdefinierte Skripte zum Lesen / Schreiben aus / in den Puffer von Rohdaten
+  * Zeichenfolgen in verschiedenen Zeichenkodierungen
+  * Benutzerdefinierte Skripte zum Lesen / Schreiben von / in den Puffer von Rohdaten
 * Optionale Unterstützung für das RTR-Flag
 * Optionale Rohzustände, die rohe CAN-Nachrichtenobjekte enthalten
 
 ## Bedarf
 * Linux-Betriebssystem (wegen der verwendeten Socketcan-Bibliothek)
-* CAN-Hardware, die eine Schnittstelle wie "can0" erstellt
-* Einige Kenntnisse über die Nachrichten, die auf Ihrem CAN-Bus gesendet werden
+* CAN-Hardware, die vom Kernel unterstützt wird und eine Schnittstelle wie "can0" erstellt
+* Einige Kenntnisse über die auf Ihrem CAN-Bus gesendeten Nachrichten
 
 ## Parser
 Mit Parsern können Sie Daten aus dem CAN-Nachrichtenpuffer lesen oder in diesen schreiben.
@@ -48,7 +47,7 @@ Mit Parsern können Sie Daten aus dem CAN-Nachrichtenpuffer lesen oder in diesen
 Es gibt vordefinierte Parser für die folgenden Datentypen.
 Zusätzlich können Sie eigene Skripte schreiben, um Werte mit einem *benutzerdefinierten Parser* zu lesen / schreiben.
 
-### Nummerische Typen in *Big-Endian* und *Little-Endian*
+### Numerische Typen in *Big-Endian* und *Little-Endian*
 * Vorzeichenbehaftete und vorzeichenlose 8-, 16- und 32-Bit-Ganzzahl
 * 32 Bit Float
 * 64 Bit doppelt
@@ -114,8 +113,25 @@ Durch Schreiben von JSON-Daten in den Status `raw.send` können Sie CAN-Nachrich
 
 ## Changelog
 
-### 1.0.0-beta.4 (2020-11-27)
-* (crycode-de) Ignore read value if a parser returned undefined
+### 1.0.0 (2021-02-23)
+* (crycode-de) Sort messages in admin
+* (VeSler) Russian admin translations
+* (crycode-de) Updated dependencies
+
+### 1.0.0-beta.6 (2021-01-11)
+* (crycode-de) Fixed object setup sequence
+* (crycode-de) Fixed issue with multiple id definition check in admin
+* (crycode-de) Added multiple id definition check in backend
+
+### 1.0.0-beta.5 (2021-01-09)
+* (crycode-de) Added Sentry error reporting in admin
+* (crycode-de) Added check for multiple times configured message IDs in admin
+* (crycode-de) Message IDs are now transformed to upper case automatically in admin
+* (crycode-de) Updated dependencies
+
+### 1.0.0-beta.4 (2020-12-01)
+* (crycode-de) Ignore read value if a parser returned `undefined`
+* (crycode-de) Updated dependencies
 
 ### 1.0.0-beta.3 (2020-11-25)
 * (crycode-de) Fixed js-controller dependency
@@ -141,4 +157,4 @@ Durch Schreiben von JSON-Daten in den Status `raw.send` können Sie CAN-Nachrich
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 
-Copyright (c) 2020 Peter Müller <peter@crycode.de> (https://crycode.de/)
+Copyright (c) 2020-2021 Peter Müller <peter@crycode.de> (https://crycode.de/)

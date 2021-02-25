@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
+hash: PA1xxbIdUY9UAxGcIs76l2xXxJ5jWLjYmnlYPv8b/6U=
 ---
 ![Логотип](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -13,20 +13,20 @@ hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
 ![Количество установок (стабильно)](http://iobroker.live/badges/heos-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/withstu/iobroker.heos.svg)
 ![Известные уязвимости](https://snyk.io/test/github/withstu/ioBroker.heos/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.heos.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.heos.png?downloads=true)
 
 # IoBroker.heos
 ## Адаптер heos для ioBroker
-Адаптер позволяет управлять HEOS из ioBroker
+Адаптер позволяет управлять HEOS из ioBroker.
 
 ## Конфигурация
-* **Автозапуск** автоматическое воспроизведение музыки после подключения плеера или его включения. Может быть настроен глобально в конфигурации. Если он включен глобально, вы можете отключить его для одного конкретного игрока с состоянием `` auto_play``.
-* **Область действия команды** Определяет, каким игрокам будет отправлена команда `` scope / [cmd] ``. Его можно отправить всем игрокам, всем ведущим игрокам или всем PID в состоянии, разделенном запятыми: `` heos.0.command_scope_pid``
+* **Автозапуск** автоматическое воспроизведение музыки после подключения плеера или его включения. Можно настроить глобально в конфигурации. Если он включен глобально, вы можете отключить его для одного конкретного игрока с состоянием `` auto_play``.
+* **Область действия команды** Определяет, каким игрокам отправляется команда `` scope / [cmd] `` ``. Его можно отправить всем игрокам, всем ведущим игрокам или всем PID в состоянии, разделенном запятыми: `` heos.0.command_scope_pid``
 * **Отключить регулярное выражение**
 
 В конфигурации вы можете активировать функцию отключения звука проигрывателя на основе совпадения регулярного выражения в информации о песне. Это можно использовать для автоматического отключения звука рекламы. Например, для Spotify вы можете использовать следующее регулярное выражение: ```spotify:ad:|Advertisement```.
 
-* **ignore_broadcast_cmd** это состояние игрока настраивает, должен ли игрок игнорировать команды для всех игроков, например. player / set_mute & state = on или нажав кнопку воспроизведения для предустановок / списков воспроизведения
+* **ignore_broadcast_cmd** это состояние игрока настраивает, должен ли игрок игнорировать команды для всех игроков, например. player / set_mute & state = on или нажатие кнопки воспроизведения для предустановок / списков воспроизведения
 
 ## Искать
 Функция поиска работает не на всех источниках. Spotify и Amazon Music поддерживают поиск.
@@ -35,7 +35,7 @@ hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
 Спецификация HEOS CLI: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pdf
 
 ### Состояние команды HEOS
-* "system / connect": попробуйте подключиться к HEOS
+* "system / connect": попробуйте подключиться к HEOS.
 * «система / отключение»: отключение от HEOS.
 * "system / reconnect": отключение и подключение
 * "system / load_sources": перезагрузить источники
@@ -45,23 +45,30 @@ hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
 * "group / group_all": объединить всех игроков в одну группу.
 * "player / [cmd]": отправить команду всем игрокам. например player / set_mute & state = on
 * "лидер / [cmd]": отправить команду всем ведущим игрокам. например лидер / set_mute & state = on
-* "scope / [cmd]": отправить команду в настроенную область всем игрокам, ведущим игрокам или идентификаторам игроков, разделенных запятыми, в scope_pids
-* "...": все остальные команды пытаются отправить в HEOS.
+* "scope / [cmd]": отправить команду в настроенную область видимости всем игрокам, ведущим игрокам или идентификаторам игроков, разделенным запятыми, в scope_pids
+* "...": все остальные команды будут отправлены в HEOS.
 
 ### Состояние команды игрока
-Примечание: возможно использование нескольких команд, если они разделены вертикальной чертой, например. set_volume & level = 20 | play_preset & preset = 1
+Примечание. Возможно использование нескольких команд, если они разделены вертикальной чертой, например. set_volume & level = 20 | play_preset & preset = 1
 
 * "set_volume & level = 0 | 1 | .. | 100": установить громкость плеера.
-* "set_play_state & state = play | pause | stop": установить состояние игрока
+* "set_play_state & state = play | pause | stop": установить состояние игрока.
 * "set_play_mode & repeat = on_all | on_one | off & shuffle = on | off": установить режим повтора и перемешивания
 * "set_mute & state = on | off": отключение звука игрока
-* "volume_down & step = 1..10": уменьшение громкости
+* "volume_down & step = 1..10": меньшая громкость
 * "volume_up & step = 1..10": увеличить громкость
 * "play_next": играть дальше
 * "play_previous": воспроизвести предыдущее.
 * "play_preset & preset = 1 | 2 | .. | n": воспроизведение предустановки n.
 * "play_stream & url = url_path": воспроизведение URL-потока
-* "add_to_queue & sid = 1025 & aid = 4 & cid = [CID]": воспроизвести плейлист с [CID] на плеере (помощь: 1 - играть сейчас; 2 - играть дальше; 3 - добавить в конец; 4 - заменить и воспроизвести)
+* "add_to_queue & sid = 1025 & aid = 4 & cid = [CID]": плейлист с [CID] на плеере (помощь: 1 - играть сейчас; 2 - играть дальше; 3 - добавить в конец; 4 - заменить и воспроизвести)
+
+## Извлечение цвета изображения
+В версии 1.7.6 основные цвета обложки песни извлекаются и сохраняются в трех новых состояниях проигрывателя:
+
+* **current_image_color_palette** Яркие цвета, выбранные с помощью node-bright.
+* **current_image_color_background** цвет с наибольшей населенностью на изображении. Может использоваться в качестве цвета фона для элементов управления плеером в VIS.
+* **current_image_color_foreground** цвет со второй по величине населенностью на изображении и хорошим контрастом для чтения по сравнению с цветом фона. Может использоваться в качестве цвета текста для элементов управления проигрывателем в VIS.
 
 ## Скажи это
 [SayIt Адаптер](https://github.com/ioBroker/ioBroker.sayit) поддерживается.
@@ -91,7 +98,7 @@ hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
 * Откройте файл: [presets_view.json] (docs / vis / views / presets_view.json)
 * Импортировать вид в VIS
 
-![Конфигурация предустановок](docs/media/presets-config.png) ![Пресеты](../../../en/adapterref/iobroker.heos/docs/media/presets.png)
+![Конфигурация предустановок](docs/media/presets-config.png) ![Предустановки](../../../en/adapterref/iobroker.heos/docs/media/presets.png)
 
 ### Очередь
 * Виджет очереди: [queue_player_widget.json] (docs / vis / views / queue_player_widget.json)
@@ -107,9 +114,12 @@ hash: Gk5LtNbWu3H3WKTF7EEFw0InX73emA4x7w8wnKUur7U=
 
 ![Обзор виджета](docs/media/browse-widget.png) ![Обзор источников](docs/media/browse-sources.png) ![Обзор настройки](../../../en/adapterref/iobroker.heos/docs/media/browse-tunein.png)
 
-Альтернативно вы можете использовать скрипт из Ухулы: https://forum.iobroker.net/post/498779
+В качестве альтернативы вы можете использовать скрипт от Ухулы: https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.6 (2021-02-24)
+* (withstu) add image color extraction
 
 ### 1.7.5 (2021-02-12)
 * (withstu) add bit depth

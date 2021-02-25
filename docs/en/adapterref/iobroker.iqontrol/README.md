@@ -1397,6 +1397,14 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
+### dev
+* (sbormann) Enhanced rendering of badge to avoid color flickering.
+* (sbormann) Added option clickOnIconToggles and clickOnIconOpensDialog to all devices. The logic is now: 
+    1. If clickOnIconToggles is true => toggle
+	2. else if clickOnIconOpensDialog is true => open dialog
+	3. else if linked view is given => open link to view
+	4. else do nothing
+
 ### 1.6.1 (2021-02-21)
 * (sbormann) Fixed sentry error in main.js.
 * (sbormann) Reworked shuffle-process.

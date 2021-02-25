@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
+hash: TRMhQmfwFIk+rQQCYWHl0qlyl6u492JB+0ttn84Xmqw=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -73,6 +73,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - myDlink
 - Mysensoren USB / Seriell (9600, 38400, 57600, 115200)
 - Nanoleaf Light Panels / Canvas
+- Net Tools
 - Nuki2
 - Nuss
 - Onkyo
@@ -99,13 +100,13 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Yeelight
 - Z-Wave USB (getestet mit Aeon Labs)
 
-### Wird als zusätzliche Adapter angeboten
+### Wird als zusätzlicher Adapter angeboten
 - Wolke
 - Verlauf (wenn kein SQL oder InfluxDB gefunden wurde)
+- IoT
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
 - JavaScript
 - Die Info
-- Handy, Mobiltelefon
 - Vis
 - Netz
 
@@ -133,6 +134,21 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
+* (JeyCee) removed mobile
+* (JeyCee) added iot and net-tools
+* (JeyCee) UI adjustments
+
+### 2.5.0 (2021-01-11)
+* (Zefau) Replace nuki2 with nuki-extended
+* (Zefau) Suggest jarvis for discovery as advice
+* (Apollon77) Add checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)
+
+### 2.4.1 (2020-12-06)
+* (Apollon77) Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)
+* (Apollon77) Fix potential crash case (Sentry IOBROKER-DISCOVERY-2C)
 
 ### 2.4.0 (2020-11-29)
 * (withstu) add heos

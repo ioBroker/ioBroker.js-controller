@@ -25,6 +25,9 @@ Default schedule is done every 20 minutes and can be changed in the "instance" t
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.1.4 (2021-02-22)
+* (HGlab01) optimize device/channel deletion
+* (HGlab01) improve Sentry handling
 
 ### 0.1.3 (2021-02-20)
 * (HGlab01) add attributes accessMod and clubCardText

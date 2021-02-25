@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartgarden/README.md
 title: ioBroker.smartgarden
-hash: OsQJKPFLespy56pBoYTZ1FadDRWdCpOAduFjlvFE4IQ=
+hash: o3LEIPsZOXPt9rb4eR/VS+B10PqGVrEWXNSsZ8gKmZ0=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartgarden/admin/smartgarden.png)
 
@@ -55,7 +55,7 @@ GARDENA Smart System-Konto, Sie können sich mit diesem Konto anmelden und mit S
 
 	---
 
-*** Und es ist fast sicher, dass Sie ein Konto haben. ** Bitte verwenden Sie dasselbe Konto wie für die GARDENA-App, in der Ihre GARDENA-Geräte registriert sind. Andernfalls erhalten Sie keinen Zugriff auf Ihre Geräte. *
+*** Und es ist fast sicher, dass Sie ein Konto haben. *** *Bitte verwenden Sie dasselbe Konto wie für die GARDENA-App, in der Ihre GARDENA-Geräte registriert sind. Andernfalls erhalten Sie keinen Zugriff auf Ihre Geräte.*
 
 	---
 
@@ -66,7 +66,7 @@ GARDENA Smart System-Konto, Sie können sich mit diesem Konto anmelden und mit S
 Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mindestens einen [GARDENA Smart Device](#supported-devices) besitzen.
 
 ## Inhaltsverzeichnis
-  * [ioBroker Smartgarden-Adapter für GARDENA Smart System] (# iobroker-Smartgarden-Adapter für Gardena-Smart-System)
+  * [ioBroker Smartgarden-Adapter für GARDENA-Smart-System] (# iobroker-Smartgarden-Adapter für Gardena-Smart-System)
   * [Unterstützte Geräte] (# unterstützte Geräte)
   * [Anforderungen] (# Anforderungen)
   * [Inhaltsverzeichnis] (# Inhaltsverzeichnis)
@@ -89,11 +89,9 @@ Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mi
   * [Wünsche für Datenpunkte] (# Wünsche für Datenpunkte)
   * [Anmerkung] (# Anmerkung)
   * [Changelog] (# changelog)
+     * [1.0.4] (# 104)
      * [1.0.3] (# 103)
-     * [1.0.2] (# 102)
-     * [1.0.1] (# 101)
-     * [1.0.0] (# 100)
-     * [frühere Versionen] (# 060)
+     * [frühere Versionen] (# 102)
   * [Credits] (# Credits)
   * [Lizenz] (# Lizenz)
 
@@ -105,7 +103,7 @@ Adapter ist verfügbar
 
 Eine Beschreibung zur Installation von GitHub finden Sie in [Hier](https://www.iobroker.net/docu/index-235.htm?page_id=5379&lang=de#3_Adapter_aus_eigener_URL_installieren) (deutsche Sprache).
 
-## Adapter einrichten
+## Setup-Adapter
 1. Installieren Sie den Adapter
 2. Erstellen Sie eine Instanz des Adapters
 3. Überprüfen und vervollständigen Sie die Instanzkonfiguration
@@ -136,13 +134,12 @@ Bitte beachten Sie, dass Kennwort und Anwendungsschlüssel im Adapter codiert un
       | Parameter | Beschreibung |
       | - | - |
       | Loglevel | Loglevel: 0 = kein Protokoll, 1 = einige Protokolle, 2 = einige weitere Protokolle, 3 = alle Protokolle; Standard: 0 |
-| Überwachungsratengrenzen | Verwenden Sie die Überwachung für die Ratengrenzen der Gardena Smart System API. Ein-/ Ausschalten; Standard: Aus; *(neu in v1.0.2)* |
+| Überwachung der Ratengrenzen | Verwenden Sie die Überwachung für die Ratengrenzen der Gardena Smart System API. Ein-/ Ausschalten; Standard: Aus; *(neu in v1.0.2)* |
    | Verbindungswiederholungsintervall | Intervall für den erneuten Versuch, im Fehlerfall eine Verbindung zum Gardena Webservice herzustellen (in Sekunden); Standard: 300, Minimum: 60; *(neu in v1.0.3)* |
       | Ping-Frequenz | Häufigkeit für das Senden von Pings an Gardena Webservice (in Sekunden); Standard: 150, Minimum: 1, Maximum: 300 |
       | Auth-Faktor | Faktor für die Gültigkeit des Authentifizierungstokens; Standard: 1.001 |
       | Auth-URL | URL des Authentifizierungshosts; Standard: [https://api.authentication.husqvarnagroup.dev](https://api.authentication.husqvarnagroup.dev) |
       | Basis-URL | Webservice-Basis-URL; Standard: [https://api.smart.gardena.dev] (https://api.smart.gardena.dev) |
-      | TestVar | Verwenden Sie die Testvariable zum Debuggen. Ein-/ Ausschalten; Standard: Aus |
 
 ## Unterstützung bekommen
 Um Hilfe zu erhalten, lesen Sie diese [README] (README.md) und die [FAQ](FAQ.md) sorgfältig durch.
@@ -173,11 +170,11 @@ Die Steuerung / Überwachung für jedes Gerät ist über die in der folgenden Ta
 Wenn Sie weitere Informationen zu den Datenpunkten benötigen, lesen Sie bitte [https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/swagger](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/swagger).
 Dort finden Sie eine Beschreibung für jeden Datenpunkt; mit Ausnahme derjenigen, die als Datenpunkte des Adapters und nicht der GARDENA Smart System API gekennzeichnet sind.
 
-Der Adapter erstellt seine eigenen Datenpunkte für verschiedene Funktionen / Optionen, wenn die Funktion ausgewählt wird. Diese Datenpunkte werden nicht automatisch gelöscht, wenn die Funktion deaktiviert wird. Wenn Sie diese Datenpunkte nicht mehr benötigen, müssen sie von Hand gelöscht werden.
+Der Adapter erstellt seine eigenen Datenpunkte für verschiedene Features / Optionen, wenn das Feature ausgewählt wird. Diese Datenpunkte werden nicht automatisch gelöscht, wenn die Funktion deaktiviert wird. Wenn Sie diese Datenpunkte nicht mehr benötigen, können Sie sie manuell löschen.
 
 ### Allgemeine Informationen zu Datenpunkten
 Der Adapter ändert keine von der GARDENA Smart System API übertragenen Werte.
-Das einzige, was (ab Version 1.0.0) getan wird, ist die Überprüfung der Art der *Zeitstempel* und *Zahlen*
+Das einzige, was getan wird (ab Version 1.0.0), ist die Überprüfung der Art der *Zeitstempel* und *Zahlen*
 
 | auf | prüfen Beschreibung |
 | - | - |
@@ -203,8 +200,8 @@ Verwenden Sie zur Steuerung des Geräts den Datenpunkt
 
   Sekunden (bitte ein Vielfaches von 60 verwenden)
 
-  - für den automatischen Betrieb die Zeichenfolge "START_DONT_OVERRIDE" setzen
-  - um den aktuellen Betrieb abzubrechen und zur Nutzung der Ladestation zurückzukehren
+  - Für den automatischen Betrieb setzen Sie die Zeichenfolge "START_DONT_OVERRIDE"
+  - um den aktuellen Betrieb abzubrechen und zur Verwendung an der Ladestation zurückzukehren
 
   Zeichenfolge `PARK_UNTIL_NEXT_TASK`
 
@@ -261,7 +258,7 @@ Diese Funktion kann in der Konfiguration der Adapterinstanz zusammen mit der Anz
 Um diese Funktion in Betrieb zu nehmen, **stellen Sie bitte sicher, dass mindestens ein Zyklus von Mäh- und Ladeläufen fehlerfrei ist (z. B. nicht manuell unterbrochen oder Sensorsteuerung).** Es ist besser, wenn mindestens drei Läufe fehlerfrei ausgeführt werden.
 Diese Funktion versucht, den Normalfall zu erkennen und geht zunächst davon aus, dass der nächste Prozess ein Normalfall ist. Wenn dies fehlerhaft ist, wird dieser fehlerhafte Lauf als normaler Fall angesehen und die Läufe, die dann normal durchlaufen werden, als Fehlerfall. Wenn während des Laufs ein Fehler auftritt, stoppen Sie bitte den Adapter, löschen Sie die beiden Datenpunkte und starten Sie erneut.
 
-Weitere Informationen zu allgemeinen Prognosemechanismen finden Sie in [PROGNOSE.md](FORECAST.md).
+Weitere Informationen zu allgemeinen Prognosemechanismen finden Sie unter [PROGNOSE.md](FORECAST.md).
 
   **Anmerkungen:**
 
@@ -271,7 +268,7 @@ Der Lade- und Mähzyklus wird in der Historie gespeichert.
 
     2. Der Verlauf wird unter "info" gespeichert, damit der "LOCATION" benötigt wird
 
-gelöscht werden, z. Im Falle eines zukünftigen Updates geht es nicht verloren.
+gelöscht werden, z.B. Im Falle eines zukünftigen Updates geht es nicht verloren.
 
     3. Wenn Sie Ihren Mäher vom GARDENA Smart System trennen und
 
@@ -297,7 +294,7 @@ Verwenden Sie zur Steuerung des Geräts den Datenpunkt
 
   Ändern Sie diesen Datenpunkt, um alle Ventile zu stoppen.
 
-  - Um alle Ventile sofort zu stoppen, verwenden Sie die Zeichenfolge "STOP_UNTIL_NEXT_TASK"
+  - Um alle Ventile sofort zu stoppen, verwenden Sie die Zeichenfolge `STOP_UNTIL_NEXT_TASK`
 
 ** Hinweis: ** Zeigen Sie den Wert dieses Datenpunkts in Ihrer Anwendung nicht an, da der Wert größtenteils undefiniert ist. Darüber hinaus kann dieser Datenpunkt nicht als Auslöser für Ihre eigenen Aktionen dienen, da er nach dem Auslösen des Befehls nur auf den Wert *null* gesetzt wird.
 
@@ -410,7 +407,7 @@ Um festzustellen, ob Sie diese Ratenlimits erreicht haben, können Sie die Über
 Wenn Sie den Überwachungsstatus aktiviert haben, wird `info.RateLimitCounter` bei jeder Anforderung aktualisiert.
 Dieser Status speichert eine Datenstruktur mit der Anzahl der Anforderungen pro Monat, Tag, Stunde und für die letzten 30 und 31 Tage.
 
-Die Struktur befindet sich in [JSON](https://en.wikipedia.org/wiki/JSON) und sieht aus wie
+Die Struktur ist in [JSON](https://en.wikipedia.org/wiki/JSON) und sieht aus wie
 
 ```
 {
@@ -457,9 +454,9 @@ Adapter. Löschen Sie es daher von Zeit zu Zeit manuell oder schalten Sie die Ü
 
 ## Bewässerung beim Mähen nicht erlaubt
 ### Was ist das Problem?
-Wenn Sie sowohl einen Mäher als auch ein Bewässerungssystem mit Aufklappsprinklern haben, besteht die Gefahr, dass Ihr Mäher während der Bewässerung auf einen Aufklappsprinkler stößt und diesen beschädigt oder selbst beschädigt.
+Wenn Sie sowohl einen Mäher als auch ein Bewässerungssystem mit aufklappbaren Sprinklern haben, besteht die Gefahr, dass Ihr Mäher während der Bewässerung auf einen aufklappbaren Sprinkler stößt und diesen beschädigt oder selbst beschädigt.
 
-Um dies zu verhindern, sollte das Bewässerungssystem oder besser einzelne Ventile beim Mähen des Mähers ausgeschaltet werden.
+Um dies zu verhindern, sollte das Bewässerungssystem oder besser einzelne Ventile ausgeschaltet werden, wenn der Mäher mäht.
 
 ### Was wird gemacht?
 Mit dieser Funktion ist es möglich, die Bewässerung zu stoppen, wenn sich der Mäher auf dem Rasen befindet. Dies kann für jedes Ventil separat definiert werden.
@@ -494,7 +491,7 @@ Sie können diese Mäher-ID von der Registerkarte Objekte von ioBroker kopieren 
   | - | - |
   | `NO_WARNING` | keine Warnung, Ventil geöffnet |
   | `STOPPED` | Ventil automatisch geschlossen, weil Mäher mäht |
-  | `FORBIDDEN` | Ventil geschlossen, weil im Datenpunkt `irrigationWhileMowing_mowerDefinition_i` | der Sondercode `IRRIGATION_FORBIDDEN` gesetzt ist |
+  | `FORBIDDEN` | Ventil geschlossen, da im Datenpunkt `irrigationWhileMowing_mowerDefinition_i` | der Sondercode `IRRIGATION_FORBIDDEN` gesetzt ist |
   | `FORBIDDEN` | Ventil geschlossen, da im Datenpunkt` irrigationWhileMowing_mowerDefinition_i` | der spezielle Code `IRRIGATION_FORBIDDEN` gesetzt ist |
 
 Diese Funktion wird jedes Mal ausgeführt, wenn
@@ -517,7 +514,7 @@ So kann es passieren, dass Wasser durchgelassen wird.
 Dieser Adapter meldet **jeden Wert** als Datenpunkt, der über die GARDENA Smart System API bereitgestellt wird. Wenn jemand mehr Werte möchte, wenden Sie sich bitte an GARDENA und teilen Sie ihm mit, dass dieser Wert auch in der API enthalten sein wird. Gehen Sie dazu in der Fußzeile auf [GARDENA Entwicklerportal](https://developer.husqvarnagroup.cloud) zu ***Kontaktieren Sie uns und hinterlassen Sie Feedback*** .
 
 ## Hinweis
-Dies ist ein privates Projekt. Ich bin nicht mit GARDENA oder Husqvarna verbunden.
+Dies ist ein privates Projekt. Ich bin in keiner Verbindung mit GARDENA oder Husqvarna.
 
 ## Credits
 Vielen Dank an GARDENA / Husqvarna für die Bereitstellung dieser [öffentliche API](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/general) und besonderen Dank an Ihr Support-Team für die sehr gute und sehr schnelle Unterstützung.
@@ -525,6 +522,11 @@ Vielen Dank an GARDENA / Husqvarna für die Bereitstellung dieser [öffentliche 
 smartgarden logo: http://www.freepik.com Entworfen von Freepik
 
 ## Changelog
+### 1.0.4
+* (jpgorganizer)
+  - necessary adjustments due to js-controller v3.2
+  - option `useTestVariable` in adapter/instance configuration removed
+
 ### 1.0.3
 * (jpgorganizer)
   - improved error handling
@@ -665,4 +667,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2435 $ $Date: 2021-01-24 22:12:20 +0100 (So, 24 Jan 2021) $ --->
+<!--- SVN: $Rev: 2466 $ $Date: 2021-02-22 17:30:13 +0100 (Mo, 22 Feb 2021) $ --->

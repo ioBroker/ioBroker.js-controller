@@ -61,6 +61,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.45.0
+
+• Neue Icons hinzugefügt (Devices/Cleaner & Drinks/Wine)
+
+### 0.44.0
+
+• Neue Icons hinzugefügt (Devices/Laser)
+
 ### 0.43.0
 
 • Neue Icons hinzugefügt (Backgrounds & Brands)

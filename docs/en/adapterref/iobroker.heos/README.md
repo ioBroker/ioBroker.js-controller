@@ -60,6 +60,12 @@ Note: Multiple commands are possible, if they are separated with the pipe e.g. s
 * "play_stream&url=url_path": Play URL-Stream
 * "add_to_queue&sid=1025&aid=4&cid=[CID]": Play playlist with [CID] on player (aid: 1 – play now; 2 – play next; 3 – add to end; 4 – replace and play)
 
+## Image color extraction
+With version 1.7.6 the prominent colors of the song cover are extracted and saved to three new player states:
+* **current_image_color_palette**: Prominent colors selected by node-vibrant.
+* **current_image_color_background**: Color with the biggest population in the image. Can be used as background color for player controls in VIS.
+* **current_image_color_foreground**: Color with the second biggest population in the image and a good read contrast to the background color. Can be used as text color for player controls in VIS.
+
 ## SayIt
 [SayIt Adapter](https://github.com/ioBroker/ioBroker.sayit) is supported.
 
@@ -113,6 +119,9 @@ Alternative you can use the script from Uhula: https://forum.iobroker.net/post/4
 
 
 ## Changelog
+
+### 1.7.6 (2021-02-24)
+* (withstu) add image color extraction
 
 ### 1.7.5 (2021-02-12)
 * (withstu) add bit depth

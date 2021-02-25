@@ -271,6 +271,9 @@ Important: The user is in charge of connecting the correct data points to the wi
 
 ## Changelog
 
+### 1.2.4 (2021-02-22)
+* (Apollon77) Make sure data are of correct type (Sentry IOBROKER-S7-K)
+
 ### 1.2.3 (2021-02-17)
 * (Apollon77) null values will no longer be tried to send but give error message (Sentry IOBROKER-S7-8)
 * (Apollon77) Prevent some more crash cases (IOBROKER-S7-1, IOBROKER-S7-9, IOBROKER-S7-E, IOBROKER-S7-F, IOBROKER-S7-G)

@@ -67,7 +67,7 @@ To get both things please go to
 	
 	---
 	
-	***And it's almost certain that you have an account.** Please use the
+	***And it's almost certain that you have an account.*** *Please use the
 	same account as for the GARDENA app in which your GARDENA devices are 
 	registered. Otherwise you will not 	get access to your devices.*
 	
@@ -105,11 +105,9 @@ at least one [GARDENA smart device](#supported-devices).
   * [Wishes for data points](#Wishes-for-data-points)
   * [Note](#note)
   * [Changelog](#changelog)
+     * [1.0.4](#104)
      * [1.0.3](#103)
-     * [1.0.2](#102)
-     * [1.0.1](#101)
-     * [1.0.0](#100)
-     * [previous versions](#060)
+     * [previous versions](#102)
   * [Credits](#credits)
   * [License](#license)  
   
@@ -166,7 +164,6 @@ An description how to install from GitHub is available
       | auth factor  | Factor for validity of authentication token; default: 1.001 |
       | Auth-URL| Authentication host URL; default: [https://api.authentication.husqvarnagroup.dev](https://api.authentication.husqvarnagroup.dev)|
       | Base-URL| Webservice Base-URL; default: [https://api.smart.gardena.dev](https://api.smart.gardena.dev)|
-      | TestVar | use test variable for debug; switch on/off; default: off|	 
    
   
 ## Getting support
@@ -210,7 +207,7 @@ GARDENA smart system API.
 The adapter creates its own data points for various features / options when 
 the feature is selected. These data points are not automatically deleted 
 when the feature is deselected. If you no longer need these data points, 
-they must be deleted by hand.  
+they can be deleted manually.  
 
 ### General things to know about data points
 
@@ -606,6 +603,11 @@ GARDENA or Husqvarna.
 
 
 ## Changelog
+### 1.0.4
+* (jpgorganizer)
+  - necessary adjustments due to js-controller v3.2
+  - option `useTestVariable` in adapter/instance configuration removed
+
 ### 1.0.3
 * (jpgorganizer)
   - improved error handling
@@ -755,4 +757,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2435 $ $Date: 2021-01-24 22:12:20 +0100 (So, 24 Jan 2021) $ --->
+<!--- SVN: $Rev: 2466 $ $Date: 2021-02-22 17:30:13 +0100 (Mo, 22 Feb 2021) $ --->

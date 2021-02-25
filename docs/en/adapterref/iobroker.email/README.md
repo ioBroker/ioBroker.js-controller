@@ -102,7 +102,7 @@ For other services see documentation of **Nodemailer**: `[https://github.com/nod
 
 ## Changelog
 
-### __WORK IN PROGRES__
+### 1.0.9 (2021-02-22)
 * (Apollon77) Call message callback always with error or without
 
 ### 1.0.7 (2020-06-11)

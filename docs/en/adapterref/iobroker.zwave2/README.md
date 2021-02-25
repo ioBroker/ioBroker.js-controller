@@ -39,6 +39,16 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.8.12 (2021-02-23)
+* Implemented `Scene Actuator Configuration CC` and `Scene Controller Configuration CC`
+* Fixed an issue where sleeping nodes could block the send queue when it is not yet known whether they support `Wake Up CC`
+* Fixed a crash that could happen while logging a message while the driver is not ready yet
+* Fixed a crash that could happen while trying to bootstrap a device that does not respond after inclusion
+* The state value in `Thermostat Fan Mode CC` is now readonly
+* Configuration parameters may now have a unit
+* Tons of new and improved device configuration files
+* Unsolicited reports are no longer incorrectly mapped to all endpoints
+
 ### 1.8.11 (2021-02-14)
 * Implemented `Thermostat Fan Mode CC` and `Thermostat Fan State CC`
 * Fixed several sources of crashes
@@ -66,14 +76,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Fixed an issue where communication with sleeping secure nodes could get stuck
 * After changing a value, the verification of the new value happens with a larger delay to avoid capturing intermediate and outdated values
 * Several hundred device configuration files were added
-
-### 1.8.7 (2021-01-21)
-* The scene ID of `Scene Activation CC` now gets reset automatically
-* Fixed an error that could occur while configuring associations
-* Fixed two potential sources of crashes
-* The values of the root endpoint of some legacy devices are now correctly updated
-* Added support for `Aeotec aerQ ZWA009-A` US/Canada/Mexico version
-* Fixed invalid parameter options in many config files
 
 ## License
 

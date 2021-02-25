@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
+hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 ---
 # IoBroker.canbus
 ![Логотип](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
@@ -13,7 +13,6 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 ![Количество установок (последнее)](https://iobroker.live/badges/canbus-installed.svg)
 ![Количество установок (стабильно)](https://iobroker.live/badges/canbus-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/crycode-de/iobroker.canbus.svg)
-![Известные уязвимости](https://snyk.io/test/github/crycode-de/ioBroker.canbus/badge.svg)
 ![НПМ](https://nodei.co/npm/iobroker.canbus.png?downloads=true)
 
 [![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/canbus/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
@@ -23,15 +22,15 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 ## Адаптер CAN-шины для ioBroker
 Этот адаптер подключает ioBroker к сети контроллеров (шина CAN).
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-## Характеристики
+## Функции
 * Получать и отправлять необработанные сообщения с использованием стандартных и расширенных фреймов
 * Каждое сообщение может быть настроено для приема и / или отправки данных
 * Возможность автоматического добавления объектов для увиденных сообщений CAN, которые еще не настроены
 * Настройте парсеры для каждого сообщения для чтения / записи данных из / в буфер необработанных сообщений
   * Числовые типы
-  * Логические, включая поддержку битовой маски
+  * Логические значения, включая поддержку битовой маски
   * Строки в разных кодировках символов
   * Пользовательские скрипты для чтения / записи из / в буфер необработанных данных
 * Дополнительная поддержка флага RTR
@@ -39,7 +38,7 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 
 ## Требования
 * Операционная система Linux (из-за используемой библиотеки socketcan)
-* Оборудование CAN, которое создает интерфейс, подобный `can0`
+* Оборудование CAN, которое поддерживается ядром и создает интерфейс, подобный `can0`
 * Некоторые знания о сообщениях, отправляемых на шину CAN
 
 ## Парсеры
@@ -48,21 +47,21 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 Существуют предопределенные парсеры для следующих типов данных.
 Кроме того, вы можете написать собственные сценарии для чтения / записи значений с помощью *настраиваемого парсера*
 
-### Числовые типы в репрезентации *big-endian* и *little-endian*
+### Числовые типы в репрезентации *с прямым порядком байтов* и *с прямым порядком байтов*
 * Знаковые и беззнаковые 8-, 16- и 32-битные целые числа
 * 32-битное число с плавающей запятой
 * 64-битный двойной
 
-### Boolean
+### Логическое
 * 1 байт, включая поддержку битовой маски
 
-### Строка
+### Нить
 * Длина от 1 до 8 байт
 *Кодировка: * ascii *, * base64 *, * hex *, * latin1 *, * utf8 *, * utf16le*
 
-### Пользовательский
+### Обычай
 Для настраиваемого парсера вы должны предоставить собственный сценарий чтения и записи.
-Эти скрипты должны быть чистым javascript и работать в песочнице.
+Эти скрипты должны быть чистым javascript и запускаться в песочнице.
 
 В скриптах вы можете использовать следующие возможности:
 
@@ -79,14 +78,14 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 #### Пользовательский сценарий чтения
 В сценарии чтения вы должны прочитать `value` из переменной `buffer`.
 
-В начале пользовательского сценария чтения `buffer` будут данными принятого / текущего сообщения CAN (как в состоянии `.json`).
-`value` будет `undefined` и должен быть установлен сценарием.
+В начале пользовательского сценария чтения `buffer` будут данными полученного / текущего сообщения CAN (как в состоянии `.json`).
+`value` будет `undefined` и должен быть установлен скриптом.
 
 Содержимое переменной `value` в конце настраиваемого сценария чтения будет использоваться как новое значение для состояния.
 Если `value` равен `undefined`, он будет проигнорирован. Используя это, вы можете фильтровать сообщения в пользовательском сценарии чтения по частям данных.
 
 #### Пользовательский сценарий записи
-В сценарии записи вы должны изменить (или заменить) переменную `buffer`.
+В сценарии записи вам необходимо изменить (или заменить) переменную `buffer`.
 
 В начале пользовательского сценария записи, `buffer` будет текущими данными сообщения CAN (как в состоянии `.json`).
 `value` устанавливается в значение состояния, которое должно быть записано в `buffer`.
@@ -114,8 +113,25 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 
 ## Changelog
 
-### 1.0.0-beta.4 (2020-11-27)
-* (crycode-de) Ignore read value if a parser returned undefined
+### 1.0.0 (2021-02-23)
+* (crycode-de) Sort messages in admin
+* (VeSler) Russian admin translations
+* (crycode-de) Updated dependencies
+
+### 1.0.0-beta.6 (2021-01-11)
+* (crycode-de) Fixed object setup sequence
+* (crycode-de) Fixed issue with multiple id definition check in admin
+* (crycode-de) Added multiple id definition check in backend
+
+### 1.0.0-beta.5 (2021-01-09)
+* (crycode-de) Added Sentry error reporting in admin
+* (crycode-de) Added check for multiple times configured message IDs in admin
+* (crycode-de) Message IDs are now transformed to upper case automatically in admin
+* (crycode-de) Updated dependencies
+
+### 1.0.0-beta.4 (2020-12-01)
+* (crycode-de) Ignore read value if a parser returned `undefined`
+* (crycode-de) Updated dependencies
 
 ### 1.0.0-beta.3 (2020-11-25)
 * (crycode-de) Fixed js-controller dependency
@@ -141,4 +157,4 @@ hash: JG9ulj+GTIm+5hiIQgcTji7RE9/DL3LG+pQjj5S57sI=
 
 Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 
-Copyright (c) 2020 Peter Müller <peter@crycode.de> (https://crycode.de/)
+Copyright (c) 2020-2021 Peter Müller <peter@crycode.de> (https://crycode.de/)

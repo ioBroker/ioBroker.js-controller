@@ -18,15 +18,16 @@
 This adapter connects ioBroker to a Controller Area Network (CAN bus).
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Features
 
 * Receive and send raw messages using standard frames and extended frames
 * Each message may be configured for receiving and/or sending data
 * Ability to automatically add objects for seen CAN messages which are not already configured
 * Configure parsers for each message to read/write data from/to the raw message buffer
-  * Nummeric types
+  * Numeric types
   * Booleans including bitmask support
-  * Strings in differenct character encodings
+  * Strings in different character encodings
   * Custom scripts to read/write from/to the buffer of raw data
 * Optional support for the RTR flag
 * Optional raw states cotaining raw CAN message objects
@@ -34,7 +35,7 @@ This adapter connects ioBroker to a Controller Area Network (CAN bus).
 ## Requirements
 
 * Linux operating system (because of the used socketcan library)
-* CAN Hardware which creates an interface like `can0`
+* CAN Hardware which is supported by the kernel and creates an interface like `can0`
 * Some knowledge about the messages send on you CAN bus
 
 ## Parsers
@@ -44,7 +45,7 @@ Using parsers you are able to read data from or write data to the CAN message bu
 There are predefined parsers for the following data types.  
 Additionally you may write you own scripts to read/write values with a *custom parser*.
 
-### Nummeric types in *big-endian* and *little-endian* reperesentation
+### Numeric types in *big-endian* and *little-endian* reperesentation
 
 * Signed and unsigned 8, 16 and 32 bit integer
 * 32 bit float
@@ -104,6 +105,7 @@ They hold the stringified JSON data of the message data and can be used to handl
 By writing JSON data to the `raw.send` state you are able to send CAN messages containing any data you like.
 
 ### Raw message object example
+
 ```js
 {
   "id": 42,
@@ -115,8 +117,12 @@ By writing JSON data to the `raw.send` state you are able to send CAN messages c
 
 `ext` and `rtr` are optional and default to `false`.
 
-
 ## Changelog
+
+### 1.0.0 (2021-02-23)
+* (crycode-de) Sort messages in admin
+* (VeSler) Russian admin translations
+* (crycode-de) Updated dependencies
 
 ### 1.0.0-beta.6 (2021-01-11)
 * (crycode-de) Fixed object setup sequence
