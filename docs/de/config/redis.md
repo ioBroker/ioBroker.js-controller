@@ -8,7 +8,7 @@ Der große Vorteil von Redis:
 Redis bietet verglichen mit den internen ioBroker-Datenbanken vor allem Vorteile in den Bereichen Datenzugriffsgeschwindigkeit,
 IO-Management im Dateisystem und bessere Nutzung von CPU-Ressourcen.
 Der js-controller wird entlastet. Ein vorher träges System kann wieder schneller werden.
-Wichtig ist allerdings das genügend RAM verfügbar ist.
+Wichtig ist allerdings das genügend RAM verfügbar ist, da Redis alle Daten im RAM behält. Je nachdem was genau alles im Redis gespeichert wird, liegt der RAM Bedarf bei wenigen MB (z.B. wenn nur States im Redis liegen) bis zu über 200 MB (wenn z.B. auch Objekte und Files dort gespeichert sind).
 
 ## Redis FAQ
 
@@ -19,13 +19,12 @@ kann es Sinn machen sich mit dem Thema Redis zu beschäftigen.
 Alternativ wird es nötig wenn man ein hochverfügbares ioBroker System anstrebt, aber dazu sind noch einige Dinge mehr nötig.
 
 2. Wie finde ich heraus ob ich Redis nutze oder nicht?
-Manchmal ist ein User verwirrt, da er im Log etwas von Redis liest, beachte dabei Port 9000/9001,
-dies deutet auf die interne Datenbank hin und hat nichts mit der externen Redis Datenbank zu tun.
+Da auch die ioBroker eigenen Datenbanken das Redis-Protokoll für die Kommunikation nutzen, kann es manchmal verwirren, wenn man im Log etwas von Redis liest. So lange dabei aber Port 9000/9001 genannt sind deutet auf die interne Datenbank hin und hat nichts mit der externen Redis Datenbank zu tun.
 Ein Aufruf von `iobroker status` zeigt an, welcher Datenbanktyp für die States- und Objects-Datenbanken verwendet werden.
 "file" bedeutet das die ioBroker eigenen Datenbanken genutzt werden. "redis" bedeutet das ein Redis im Einsatz ist.
 
 
-Eine detailierte Erläuterung zum Thema Redis,
+Eine detailierte Erläuterung zum Thema Redis mit weiteren Informationen,
 findet man im [Forum](https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick)
 
 ## Redis Persistenz
@@ -34,11 +33,11 @@ Normalerweise ist Redis eine "In-Speicher-Datenbank". Die Daten lagern also, im 
 Um aber auch ein Update zu ermöglichen, unterstützt Redis zwei Arten der Datenspeicherung auf Festplatte.
 Die RDB- und AOF Persistenz.
 
-**RDB** ist standardmäßig aktiv, diese Methode speichert den gesamten Inhalt in eine RDB Datei. Der Intervall der Speicherung kann konfigiert werden.
-Dies zu konfigurieren sollte eine Mischung aus Datensicherheit (wie viele Daten kann man verkraften bei einem Crash zu verlieren) und Schreiblast für das Speichermedium, da immer der gesamte Inhalt geschrieben wird.
+**RDB** ist standardmäßig aktiv, diese Methode speichert den gesamten Inhalt in eine RDB Datei. Der Intervall der Speicherung kann konfigiert werden und sollte auf die eigenen bedürfnisse angepasst werden!
+Dies zu konfigurieren sollte eine Mischung aus Datensicherheit (wie viele Daten kann man verkraften bei einem Crash zu verlieren) und Schreiblast für das Speichermedium, da immer der gesamte Inhalt geschrieben wird (wenn auch Objekte im Redis liegen sind das ggf mehrere hundert MB!).
 
-**AOF** generiert zwar mehr Schreiblast, stellt jedoch sicher, dass die Daten ganz aktuell sind.
-Dazu wird fortlaufend eine sog. AOF Datei geschrieben, wo alle Änderungen immer angehängt werden. In regelmäßigen Abständen wird diese Datei dann konsolidiert und verkleinert sich damit wieder. Für SD-Karten ist dies also eher nicht empfohlen.
+**AOF** stellt jedoch sicher, dass die Daten ganz aktuell sind.
+Dazu wird fortlaufend eine sog. AOF Datei geschrieben, wo alle Änderungen immer angehängt werden. In regelmäßigen Abständen wird diese Datei dann konsolidiert und verkleinert sich damit wieder. Wie die finale Schreiblast genau ist, und ob das ganze damit für SD Karten gut ist oder eher nicht, hängt davon ab welche Daten gespeichert werden. Wenn Objekte und Files auch im Redis liegen ist das anhängen und seltene konsolidieren pot. deutlich "sparsamer" als das regelmässige speichern grosser Datenmengen.
 Wie oben schon erwähnt, wird dadurch mehr Ram benötigt. Falls dieser RAM mal nicht verfügbar ist,
 läuft - je nach Einstellungen - alles problemlos weiter.
 Ein Backup der Daten wird dann allerdings nicht erzeugt! Entsprechende Meldungen stehen nur im Logfile.
@@ -50,9 +49,6 @@ Wenn der Rechner mit dem Master-Redis defekt ist, existieren immer noch die Date
 Man kann diesen also nutzen um einen Dump zu erstellen um den Master neu aufzusetzen, oder man macht als schnelle Lösung den Slave zum Master und ändert die Datenbank-IPs im ioBroker und ist fast aktuell wieder online. Auch dieses findet man etwas detailierter im [Forum](https://forum.iobroker.net/topic/26327/redis-in-iobroker-%C3%BCberblick) bzw unter https://raw.githubusercontent.com/antirez/redis/5.0/redis.conf
 
 **Ein Slave schützt allerdings nicht gegen das versehentliche Löschen von Daten, da diese auf dem Slave auch direkt danach gelöscht sind. Hier helfen nur Backups.**
-
-
-
 
 ## Installation von Redis
 
@@ -77,12 +73,7 @@ sudo apt-get update
 sudo apt-get install redis-server
 ```
 
-
-
-
 **Achtung**: Für Windows gibt es keine offiziellen Redis-Builds.
-
-
 
 ## Redis einrichten
 
@@ -141,4 +132,9 @@ Anleitungen dazu gibt es z.B. unter https://gist.github.com/inecmc/f40ca0ee622e8
 
 Bei `iobroker setup custom` werden einfach die jeweiligen unterschiedlichen Ports für States bzw. Objekte/Dateien angegeben.
 
+Für States ist es empfohlen eher eine RDB Persistenz zu nutzen die dann je nach ANzahl der Änderungen alle 5-15 Minuten die Daten sichert. Für Objects/Files bietet sich eher die AOF Persistenz zur Minimierung der Schreiblast an.
+
+## Backup
+
+Redis speichert seine Dateien üblicherweise unter /var/lib/redis. Das dort liegenden dump.rdb bzw. appendonly.aof (je nach gewählter Persistenz) kann gespeichert werden. Man kann auch per `redis-cli BGSAVE` direkt vor dem Backup ein dump.rdb erzeugen lassen und dieses dann wegsichern.
 
