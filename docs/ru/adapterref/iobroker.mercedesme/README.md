@@ -3,22 +3,120 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mercedesme/README.md
 title: ioBroker.mercedesme
-hash: hd035ail6UGlZwA+QrLJPg3XlZFqkrsWSrc01wV25As=
+hash: cY1eX6hSp1hWxKXwnuZDfdFKSEYODDKpZkjW/vxTAZM=
 ---
-![логотип](../../../en/adapterref/iobroker.mercedesme/admin/mercedesme.png)
+![Логотип](../../../en/adapterref/iobroker.mercedesme/admin/mercedesme.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.mercedesme.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mercedesme.svg)
 ![Статус зависимости](https://img.shields.io/david/TA2k/iobroker.mercedesme.svg)
 ![Известные уязвимости](https://snyk.io/test/github/TA2k/ioBroker.mercedesme/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.mercedesme.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/TA2k/ioBroker.mercedesme/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.mercedesme.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/TA2k/ioBroker.mercedesme/master.svg)
 
 # IoBroker.mercedesme
 ## Адаптер mercedesme для ioBroker
-Mercedes me адаптер для ioBroker
+Адаптер Mercedes me для ioBroker Unter команды das commando auf klappen und den button neben start drücken wenn das command available ist.
+Удаленный sind vorgefertige Remote Befehle
 
 ## Changelog
+
+### 0.0.46
+
+- fix new login
+  
+### 0.0.45
+
+- Small improvments
+
+### 0.0.42
+
+- Fix Fueling history
+
+### 0.0.41
+
+- Fix reconnect
+
+### 0.0.40
+
+- Add windowLock and precond for old models
+
+### 0.0.39
+
+- Add remote functionality
+
+### 0.0.38
+
+- Add commands functionality
+
+### 0.0.36
+
+- Fix connection and gas price fetching
+
+### 0.0.35
+
+- Support for new app
+
+### 0.0.22
+
+- Rework fuel history, fix js-controller 3 issues
+
+### 0.0.21
+
+- Removed Socket.io connection
+
+### 0.0.19
+
+- Improve Error handling
+
+### 0.0.18
+
+- Bugfixing
+
+### 0.0.17
+
+- add connection via ODB Adapter (Adapter App)
+
+### 0.0.16
+
+- fix fueling will not recording probably
+
+### 0.0.15
+
+- fix soc history bug, add basic price and  adapter restart every 6h
+
+### 0.0.14
+
+- fix when webpage streams are not reachable
+
+### 0.0.13
+
+- add hard reconnect after 6h for stream data
+
+### 0.0.12
+
+- add gas prices via tankerkönig
+
+### 0.0.11
+
+- minor fixes
+
+### 0.0.10
+
+- fix socket refresh
+
+### 0.0.9
+
+- move code base to app add auxheat.
+- Auf App API umgestellt. Standheizung jetzt möglich.
+
+### 0.0.8
+
+- decrease reconnect for all sockets
+
+### 0.0.7
+
+- improve door open functionality add detailed state for door status
 
 ### 0.0.6
 
@@ -51,7 +149,7 @@ Mercedes me адаптер для ioBroker
 
 MIT License
 
-Copyright (c) 2019 tombox
+Copyright (c) 2020 tombox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

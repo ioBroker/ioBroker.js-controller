@@ -1404,6 +1404,10 @@ This device has some special predefined size- and display-settings to show a tex
 	2. else if clickOnIconOpensDialog is true => open dialog
 	3. else if linked view is given => open link to view
 	4. else do nothing
+* (sbormann) Fixed slider sometimes not working after swiping.
+* (sbormann) Prevent scrolling and flickering of background when dialog is opened.
+* (sbormann) Lights without hue but with active option linkGlowActiveColorToHue now glow in a slightly yellow.
+
 
 ### 1.6.1 (2021-02-21)
 * (sbormann) Fixed sentry error in main.js.

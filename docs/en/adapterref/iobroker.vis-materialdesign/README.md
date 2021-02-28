@@ -9221,7 +9221,7 @@ With the JSON chart you have the maximum freedom to create a mixed chart (line, 
         <tr>
             <td>tooltip_text</td>
             <td>ovveride text of tooltip</td>
-            <td>string</td>
+            <td>string | array[string]</td>
             <td></td>
         </tr>
         <tr>
@@ -9296,6 +9296,12 @@ With the JSON chart you have the maximum freedom to create a mixed chart (line, 
             <td>number</td>
             <td>0, 1, 2, ...</td>
         </tr>
+        <tr>
+            <td>datalabel_override</td>
+            <td>override text of data label</td>
+            <td>array[string]</td>
+            <td></td>
+        </tr>		
         <tr>
             <td>datalabel_append</td>
             <td>append text to data label</td>

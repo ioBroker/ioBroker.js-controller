@@ -120,6 +120,9 @@ Alternative you can use the script from Uhula: https://forum.iobroker.net/post/4
 
 ## Changelog
 
+### 1.7.7 (2021-02-25)
+* (withstu) add creation of missing version state
+
 ### 1.7.6 (2021-02-24)
 * (withstu) add image color extraction
 

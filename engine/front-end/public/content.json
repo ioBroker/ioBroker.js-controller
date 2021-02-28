@@ -557,12 +557,12 @@
           },
           "content": "config/multihost.md"
         },
-        "Redis": {
+        "The Redis database for ioBroker": {
           "title": {
-            "en": "Redis",
-            "de": "Redis",
+            "en": "The Redis database for ioBroker",
+            "de": "Die Redis-Datenbank für IoBroker",
             "ru": "Redis",
-            "zh-cn": "Redis的"
+            "zh-cn": "ioBroker的Redis数据库"
           },
           "content": "config/redis.md"
         },

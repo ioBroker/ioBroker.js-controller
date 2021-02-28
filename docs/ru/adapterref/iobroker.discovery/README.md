@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: Адаптер ioBroker Discover
-hash: TRMhQmfwFIk+rQQCYWHl0qlyl6u492JB+0ttn84Xmqw=
+hash: cSp632WFSVsYiDyNAPd4gSLbTsUOjf5nEERQyCe6Ngc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -110,6 +110,11 @@ hash: TRMhQmfwFIk+rQQCYWHl0qlyl6u492JB+0ttn84Xmqw=
 - Vis
 - Интернет
 
+## Если адаптер не может найти IP ...
+Адаптер проверяет сеть на IP-адрес текущего хоста (x.y.z.1..255). Дополнительно UPnP и mDNS используются для обнаружения IP-адресов.
+
+Если не все IP-адреса найдены, убедитесь, что пользователь iobroker может выполнить / bin / ping. Pot выполнить `sudo setcap cap_net_raw+p /bin/ping`, чтобы добавить недостающие возможности / разрешения.
+
 ## Сделать
 - артнет? (Bluefox)
 - B-Control-Em? (Bluefox)
@@ -127,7 +132,7 @@ hash: TRMhQmfwFIk+rQQCYWHl0qlyl6u492JB+0ttn84Xmqw=
 - смартметр (Apollon77)
 - унифи (jens-maus)
 - волк (улыбается-валет)
-- xs1 (откровенный шутник)
+- xs1 (откровенный шуток)
 
 <! - Заполнитель для следующей версии (в начале строки):
 
@@ -135,11 +140,15 @@ hash: TRMhQmfwFIk+rQQCYWHl0qlyl6u492JB+0ttn84Xmqw=
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
-* (JeyCee) removed mobile
+### 2.6.1 (2021-02-28)
 * (JeyCee) added iot and net-tools
+* (Apollon77) Adjust and optimize UDP and UPnP discoveries
+* (Apollon77) Add option to specify the "own IP address" and netmask to also allow discovery for e.g. docker cases where an external network should be scanned
+* (Apollon77) Fix ping progress counter when scanning multiple ip ranges
+* (JeyCee) removed mobile
+* (Apollon77) fix sonos and synology
 * (JeyCee) UI adjustments
+* (Apollon77) Fix crash cases (Sentry IOBROKER-DISCOVERY-2Q)
 
 ### 2.5.0 (2021-01-11)
 * (Zefau) Replace nuki2 with nuki-extended

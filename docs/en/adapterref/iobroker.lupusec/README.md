@@ -127,7 +127,7 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.3-beta-2 (17.02.2021)
+### 1.3.3 (17.02.2021)
 * (Stübi) Bugfixing
 * (Stübi) Send SMS with SMS gateway or SIM card
 

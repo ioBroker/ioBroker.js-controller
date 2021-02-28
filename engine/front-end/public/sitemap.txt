@@ -990,6 +990,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi-protect/README.m
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.valloxmv/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.valuetrackerovertime/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vedirect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.velux/README.md
@@ -1407,6 +1408,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi-protect/README.m
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.valloxmv/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.valuetrackerovertime/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vedirect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.velux/README.md
@@ -1824,6 +1826,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi-protect/README.m
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.valloxmv/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.valuetrackerovertime/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vedirect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.velux/README.md
@@ -2241,6 +2244,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi-protect/READM
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.valloxmv/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.valuetrackerovertime/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vedirect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.velux/README.md

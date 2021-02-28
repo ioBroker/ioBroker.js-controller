@@ -1581,6 +1581,11 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 5.0.2 (2021-02-27)
+* (bluefox) Fixed error in the rules
+
+### 5.0.0 (2021-02-27) [Birthday edition]
+* (bluefox) added the rules engine
 
 ### 4.11.0 (2021-02-16)
 * (Apollon77) Add some additional checks for getSchedules
@@ -1593,16 +1598,10 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 ### 4.10.14 (2021-01-25)
 * (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-5R)
 
-### 4.10.13 (2021-01-24)
-* (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-4B)
-
-### 4.10.11 (2021-01-22)
-* (Apollon77) Optimize error handling in createState and file mirror again
-
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2021 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

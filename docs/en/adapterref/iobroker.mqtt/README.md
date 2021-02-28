@@ -807,6 +807,10 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 ## Changelog
 
+### 2.3.5 (2021-02-27)
+* (Apollon77) js-controller 2.0 is now required at least
+* (arteck) change default subscribe to mqtt.0.*
+
 ### 2.3.4 (2021-01-25)
 * (Apollon77) Catch errors when setting states (Sentry IOBROKER-MQTT-1F)
 
