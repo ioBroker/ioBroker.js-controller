@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: IzNzRU8vSC6rRX93+j5u36qFZzb6d6qPpti1Oer3UfE=
+hash: NSD3SXKWIXGu5tazV6yUre9slhLg/ncHFdlblD90z0k=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.8.0
+- Просмотр в PopUp Option для универсального и мульти-виджета hinzugefügt
+- Исправлена ошибка
 
 ## 2.7.11
 - Исправлена ошибка
@@ -213,7 +217,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.3.6
 - Добавлена опция установки состояния для навигации.
-- Исправлена проблема с точками данных без конфигурации.
+- Исправлена проблема с датапоинтами без конфига.
 
 ### 1.3.5
 - Добавлена частота обновления таблицы
@@ -249,7 +253,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1
@@ -262,7 +266,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию.
 
 ### 1.0.0
-- Фон виджета и непрозрачность содержимого, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
+- Фон виджета и прозрачность содержимого, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок

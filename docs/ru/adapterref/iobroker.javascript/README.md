@@ -2638,22 +2638,20 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 5.0.5 (2021-02-28)
+* (bluefox) Implemented the toggle functionality
+
+### 5.0.4 (2021-02-28)
+* (bluefox) Fixed errors in rules
+
+### 5.0.3 (2021-02-28)
+* (bluefox) Implemented the memory for condition
+
 ### 5.0.2 (2021-02-27)
 * (bluefox) Fixed error in the rules
 
 ### 5.0.0 (2021-02-27) [Birthday edition]
 * (bluefox) added the rules engine
-
-### 4.11.0 (2021-02-16)
-* (Apollon77) Add some additional checks for getSchedules
-* (Garfonso) make sure promisified methods reject with Error instead of string so that async errors can be catched correctly
-* (Huseriato) update some german blockly translations
-
-### 4.10.15 (2021-01-31)
-* (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-5W)
-
-### 4.10.14 (2021-01-25)
-* (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-5R)
 
 ## License
 

@@ -72,6 +72,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.8.0
+- View in PopUp Option für Universal- und Multi-Widget hinzugefügt
+- Bugfix
+
 ## 2.7.11
 - Bugfix
 

@@ -961,6 +961,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.stockmarket/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sunnyportal/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sureflap/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.systeminfo/README.md
@@ -1023,6 +1024,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vodafone-speedtest/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.volumio/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vw-connect/README.md
@@ -1379,6 +1381,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.stockmarket/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sunnyportal/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sureflap/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.systeminfo/README.md
@@ -1441,6 +1444,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vodafone-speedtest/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.volumio/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vw-connect/README.md
@@ -1797,6 +1801,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.stockmarket/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sunnyportal/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sureflap/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.systeminfo/README.md
@@ -1859,6 +1864,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vodafone-speedtest/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.volumio/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vw-connect/README.md
@@ -2215,6 +2221,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.statistics/README.m
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.stockmarket/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sunnyportal/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sureflap/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.systeminfo/README.md
@@ -2277,6 +2284,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-rgraph/README.m
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vodafone-speedtest/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.volumio/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vw-connect/README.md

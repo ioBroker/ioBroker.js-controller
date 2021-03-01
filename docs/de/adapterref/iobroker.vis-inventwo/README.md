@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: IzNzRU8vSC6rRX93+j5u36qFZzb6d6qPpti1Oer3UfE=
+hash: NSD3SXKWIXGu5tazV6yUre9slhLg/ncHFdlblD90z0k=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -34,13 +34,17 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.8.0
+- Ansicht in PopUp Option für Universal- und Multi-Widget hinzugefügt
+- Fehlerbehebung
 
 ## 2.7.11
 - Fehlerbehebung
@@ -59,7 +63,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen 
 
 ## 2.7.7
 - Problem mit der Bildstellung gehört
-- Problem mit dem Farbregler wurde, dass der Wert beim Loslassen nicht verkauft wurde
+- Problem mit dem Farbregler gehört, dass der Wert beim Loslassen nicht verkauft wurde
 
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget Frei
@@ -68,7 +72,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen 
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
-- Fehler beim Slider gefunden wenn ungültiger Wert im Datenpunkt steht
+- Fehler beim Slider gehört wenn ungültiger Wert im Datenpunkt steht
 - Fehlerhafte: Signalbilder wurden mit eingefärbt
 - Option um Bildfarbe zu invertieren eingezogen, um Farbfilter zu entfernen
 - Color Slider kann nun zwischen HEX, RGB und CIE gehören
@@ -77,7 +81,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen 
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 
 ## 2.7.3
-- Fehler beim mehrstaatlichen und staatlichen Zuständigkeiten
+- Fehler beim Multi-State und Steuern Zuständigkeiten
 - Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
@@ -181,7 +185,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen 
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
-- Fehler in der Werteliste Werden: Wert wird nicht aktualisiert
+- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
 
 ## 2.2.0
 - Datenpunktwerte werden jetzt bei allen Widgets im Editor werden
@@ -198,7 +202,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht gehört möchtest, wir freuen 
 - Widget-Untertitel gehört
 
 ## 2.0.0
-- Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget
+- Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget zussammen Verluste -> dem Universal Widget
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt

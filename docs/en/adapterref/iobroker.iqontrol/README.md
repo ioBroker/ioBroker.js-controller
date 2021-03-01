@@ -1397,7 +1397,7 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
-### dev
+### 1.6.2 (2021-02-28)
 * (sbormann) Enhanced rendering of badge to avoid color flickering.
 * (sbormann) Added option clickOnIconToggles and clickOnIconOpensDialog to all devices. The logic is now: 
     1. If clickOnIconToggles is true => toggle
