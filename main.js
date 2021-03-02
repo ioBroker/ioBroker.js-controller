@@ -818,7 +818,7 @@ function reportStatus() {
     inputCount  = 0;
     outputCount = 0;
     if (!isStopping && compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
-        logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
+        logger.info(`${hostLogPrefix} Compact group controller ${compactGroup} does not own any processes, stop`);
         stop(false);
     }
 }
@@ -1727,27 +1727,27 @@ function setMeta() {
                                 logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
                                 vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
                                     .then(() => {
-                                        logger && logger.info(`Vendor information synchronised.`);
+                                        logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     }).catch(err => {
-                                        logger && logger.error(`Cannot update vendor information: ${err.message}`);
+                                        logger && logger.error(`${hostLogPrefix} Cannot update vendor information: ${err.message}`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     });
                             }
                         } catch (e) {
-                            logger && logger.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                            logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                             try {
                                 fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
-                                logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                             }
                         }
                     }
@@ -1880,11 +1880,11 @@ async function processMessage(msg) {
                 logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + ' execute shell command: ' + msg.message);
                 exec(msg.message, {windowsHide: true}, (err, stdout, stderr) => {
                     if (err) {
-                        return logger.error(`error: ${err}`);
+                        return logger.error(`${hostLogPrefix} error: ${err}`);
                     }
 
-                    logger.info(`stdout: ${stdout}`);
-                    logger.error(`stderr: ${stderr}`);
+                    logger.info(`${hostLogPrefix} stdout: ${stdout}`);
+                    logger.error(`${hostLogPrefix} stderr: ${stderr}`);
                 });
             } else {
                 logger.warn(hostLogPrefix + ' ' + tools.appName + ' ' + ' cannot execute shell command "' + msg.message + '" because not enabled in ' + tools.appName +'.json file');
@@ -2694,8 +2694,8 @@ function checkAndAddInstance(instance, ipArr) {
         instance.common.host = hostname;
         objects.setObject(instance._id, instance, err =>
             err ?
-                logger.error(`Cannot update hostname for ${instance._id}: ${err.message}`) :
-                logger.info(`Set hostname ${hostname} for ${instance._id}`));
+                logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${err.message}`) :
+                logger.info(`${hostLogPrefix} Set hostname ${hostname} for ${instance._id}`));
 
     }
 
@@ -3769,8 +3769,8 @@ async function startInstance(id, wakeUp) {
 
                                         // Restart group controller because still instances assigned to him, done via startInstance
                                         if (connected && compactProcs[currentCompactGroup].instances.length) {
-                                            logger.info(hostLogPrefix + ' Restart compact group controller ' + currentCompactGroup);
-                                            logger.debug('Instances: ' + JSON.stringify(compactProcs[currentCompactGroup].instances));
+                                            logger.info(`${hostLogPrefix} Restart compact group controller ${currentCompactGroup}`);
+                                            logger.debug(`${hostLogPrefix} Instances: ${JSON.stringify(compactProcs[currentCompactGroup].instances)}`);
 
                                             compactProcs[currentCompactGroup].instances.forEach(id => {
                                                 //noinspection JSUnresolvedVariable
@@ -4339,10 +4339,10 @@ function init(compactGroupId) {
             try {
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                     fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                    logger && logger.info(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
+                    logger && logger.info(`${hostLogPrefix} Deleted ${VENDOR_BOOTSTRAP_FILE}`);
                 }
             } catch (e) {
-                logger && logger.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                logger && logger.error( `${hostLogPrefix} Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
             }
         }, 30000);
     }
@@ -4474,8 +4474,8 @@ function init(compactGroupId) {
         }
 
         if (invalidVersion){
-            logger.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
-            logger.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+            logger.error(`${hostLogPrefix} ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`);
+            logger.error(`${hostLogPrefix} Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten`);
 
             console.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
             console.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
