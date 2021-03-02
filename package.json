@@ -34,7 +34,7 @@
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.6.0",
     "loadavg-windows": "^1.1.1",
-    "mime": "^2.5.0",
+    "mime": "^2.5.2",
     "ncp": "^2.0.0",
     "node-forge": "^0.10.0",
     "node-schedule": "^2.0.0",
