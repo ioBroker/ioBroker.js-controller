@@ -2577,73 +2577,63 @@ function restartInstances(instances, cb) {
     }
 }
 
-function getInstances() {
-    objects.getObjectView('system', 'instance', {}, (err, doc) => {
-        if (err && err.message && err.message.startsWith('Cannot find ')) {
-            logger.error(`${hostLogPrefix} _design/system missing - call node ${tools.appName}.js setup`);
-            //if (objects.destroy) objects.destroy();
-            //if (states  && states.destroy)  states.destroy();
-            //process.exit(1);
-            return;
-        } else if (err) {
-            logger.error(hostLogPrefix + ' Can not get instances: ' + err);
-        } else if (!doc.rows || doc.rows.length === 0) {
-            logger.info(`${hostLogPrefix} no instances found`);
-        } else {
-            const _ipArr = tools.findIPs();
-            if (!compactGroupController) {
-                logger.info(`${hostLogPrefix} ${doc.rows.length} instance${doc.rows.length === 1 ? '' : 's'} found`);
-            }
-            let count = 0;
+async function getInstances() {
+    const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
-            // first mark all instances as disabled to detect disabled once
-            for (const id of Object.keys(procs)) {
-                if (procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
-                    procs[id].config.common.enabled = false;
-                }
-            }
+    if (instances.length === 0) {
+        logger.info(`${hostLogPrefix} no instances found`);
+    } else {
+        const _ipArr = tools.findIPs();
+        if (!compactGroupController) {
+            logger.info(`${hostLogPrefix} ${instances.length} instance${instances.length === 1 ? '' : 's'} found`);
+        }
+        let count = 0;
 
-            for (let i = 0; i < doc.rows.length; i++) {
-                const instance = doc.rows[i].value;
-
-                // register all common fields, that may not be deleted, like "mobile" or "history"
-                //noinspection JSUnresolvedVariable
-                if (objects.addPreserveSettings && instance.common.preserveSettings) {
-                    //noinspection JSUnresolvedVariable
-                    objects.addPreserveSettings(instance.common.preserveSettings);
-                }
-
-                if (instance.common.mode === 'web' || instance.common.mode === 'none') {
-                    if (instance.common.host === hostname) {
-                        const name = instance._id.split('.')[2];
-                        const adapterDir = tools.getAdapterDir(name);
-                        if (!fs.existsSync(adapterDir)) {
-                            procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
-                            installQueue.push({id: instance._id, disabled: true, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom});
-                            // start install queue if not started
-                            installQueue.length === 1 && installAdapters();
-                        }
-                    }
-                    continue;
-                }
-
-                logger.debug(hostLogPrefix + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
-                console.log(hostLogPrefix + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
-
-                if (checkAndAddInstance(instance, _ipArr) && instance.common.enabled && (instance.common.mode !== 'extension' || !instance.native.webInstance)) {
-                    count++;
-                }
-            }
-
-            if (count > 0) {
-                logger.info(hostLogPrefix + ' starting ' + count + ' instance' + (count > 1 ? 's' : ''));
-            } else {
-                logger.warn(hostLogPrefix + ' does not start any instances on this host');
+        // first mark all instances as disabled to detect disabled once
+        for (const id of Object.keys(procs)) {
+            if (procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                procs[id].config.common.enabled = false;
             }
         }
 
-        initInstances();
-    });
+        for (const instance of instances) {
+            // register all common fields, that may not be deleted, like "mobile" or "history"
+            //noinspection JSUnresolvedVariable
+            if (objects.addPreserveSettings && instance.common.preserveSettings) {
+                //noinspection JSUnresolvedVariable
+                objects.addPreserveSettings(instance.common.preserveSettings);
+            }
+
+            if (instance.common.mode === 'web' || instance.common.mode === 'none') {
+                if (instance.common.host === hostname) {
+                    const name = instance._id.split('.')[2];
+                    const adapterDir = tools.getAdapterDir(name);
+                    if (!fs.existsSync(adapterDir)) {
+                        procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
+                        installQueue.push({id: instance._id, disabled: true, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom});
+                        // start install queue if not started
+                        installQueue.length === 1 && installAdapters();
+                    }
+                }
+                continue;
+            }
+
+            logger.debug(`${hostLogPrefix} check instance "${instance._id}" for host "${instance.common.host}"`);
+            console.log(`${hostLogPrefix} check instance "${instance._id}" for host "${instance.common.host}"`);
+
+            if (checkAndAddInstance(instance, _ipArr) && instance.common.enabled && (instance.common.mode !== 'extension' || !instance.native.webInstance)) {
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            logger.info(`${hostLogPrefix} starting ${count} instance${count > 1 ? 's' : ''}`);
+        } else {
+            logger.warn(`${hostLogPrefix} does not start any instances on this host`);
+        }
+    }
+
+    initInstances();
 }
 
 /**
