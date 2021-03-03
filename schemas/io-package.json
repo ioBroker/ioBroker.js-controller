@@ -81,7 +81,7 @@
                     "type": "boolean"
                 },
                 "readme": {
-                    "description": "Path to the ReadMe file",
+                    "description": "Url of the ReadMe file",
                     "type": "string"
                 },
                 "docs": {
