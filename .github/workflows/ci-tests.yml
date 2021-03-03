@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -57,10 +57,18 @@ jobs:
       - name: Install js-controller
         run: npm i
 
-      - name: Execute Tests
+      - name: Execute Standard Tests
         run: npm test
 
-      - name: Sentinel Tests (Linux)
+      - name: Install Jsonl packages
+        run: |
+          npm i @iobroker/db-states-jsonl
+          npm i @iobroker/db-objects-jsonl
+
+      - name: Execute Jsonl Tests
+        run: npm run test-jsonl
+
+      - name: Redis Socket/Sentinel Tests (Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo chmod ogu+x test/redis-socket/setup-socket.sh
@@ -89,7 +97,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.1.4
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node-version }}
 

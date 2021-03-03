@@ -30,7 +30,6 @@ let notificationHandler;
 const exec            = cp.exec;
 const spawn           = cp.spawn;
 
-let   adapterDir      = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 let   upload; // will be used only once by upload of adapter
 
@@ -818,7 +817,7 @@ function reportStatus() {
     inputCount  = 0;
     outputCount = 0;
     if (!isStopping && compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
-        logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
+        logger.info(`${hostLogPrefix} Compact group controller ${compactGroup} does not own any processes, stop`);
         stop(false);
     }
 }
@@ -1727,27 +1726,27 @@ function setMeta() {
                                 logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
                                 vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
                                     .then(() => {
-                                        logger && logger.info(`Vendor information synchronised.`);
+                                        logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     }).catch(err => {
-                                        logger && logger.error(`Cannot update vendor information: ${err.message}`);
+                                        logger && logger.error(`${hostLogPrefix} Cannot update vendor information: ${err.message}`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     });
                             }
                         } catch (e) {
-                            logger && logger.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                            logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                             try {
                                 fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
-                                logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                             }
                         }
                     }
@@ -1880,11 +1879,11 @@ async function processMessage(msg) {
                 logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + ' execute shell command: ' + msg.message);
                 exec(msg.message, {windowsHide: true}, (err, stdout, stderr) => {
                     if (err) {
-                        return logger.error(`error: ${err}`);
+                        return logger.error(`${hostLogPrefix} error: ${err}`);
                     }
 
-                    logger.info(`stdout: ${stdout}`);
-                    logger.error(`stderr: ${stderr}`);
+                    logger.info(`${hostLogPrefix} stdout: ${stdout}`);
+                    logger.error(`${hostLogPrefix} stderr: ${stderr}`);
                 });
             } else {
                 logger.warn(hostLogPrefix + ' ' + tools.appName + ' ' + ' cannot execute shell command "' + msg.message + '" because not enabled in ' + tools.appName +'.json file');
@@ -2608,8 +2607,8 @@ async function getInstances() {
             if (instance.common.mode === 'web' || instance.common.mode === 'none') {
                 if (instance.common.host === hostname) {
                     const name = instance._id.split('.')[2];
-                    const adapterDir_ = tools.getAdapterDir(name);
-                    if (!fs.existsSync(adapterDir_)) {
+                    const adapterDir = tools.getAdapterDir(name);
+                    if (!fs.existsSync(adapterDir)) {
                         procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
                         installQueue.push({id: instance._id, disabled: true, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom});
                         // start install queue if not started
@@ -2684,8 +2683,8 @@ function checkAndAddInstance(instance, ipArr) {
         instance.common.host = hostname;
         objects.setObject(instance._id, instance, err =>
             err ?
-                logger.error(`Cannot update hostname for ${instance._id}: ${err.message}`) :
-                logger.info(`Set hostname ${hostname} for ${instance._id}`));
+                logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${err.message}`) :
+                logger.info(`${hostLogPrefix} Set hostname ${hostname} for ${instance._id}`));
 
     }
 
@@ -3069,8 +3068,7 @@ function startScheduledInstance(callback) {
     }
     let skipped = false;
     const id = idsToStart[0];
-    const fileNameFull = scheduledInstances[idsToStart[0]].fileNameFull;
-    const wakeUp = scheduledInstances[idsToStart[0]].wakeUp;
+    const {adapterDir, fileNameFull, wakeUp} = scheduledInstances[idsToStart[0]];
 
     const processNextScheduledInstance = () => {
         let delay = (config.system && config.system.instanceStartInterval) || 2000;
@@ -3093,7 +3091,11 @@ function startScheduledInstance(callback) {
                 states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     try {
-                        procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                        procs[id].process = cp.fork(fileNameFull, args, {
+                            execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                            windowsHide: true,
+                            cwd: adapterDir
+                        });
                     } catch(err) {
                         logger.error(hostLogPrefix + ' instance ' + id + ' could not be started: ' + err.message);
                         delete procs[id].process;
@@ -3189,8 +3191,8 @@ async function startInstance(id, wakeUp) {
     }
 
     let fileName = instance.common.main || 'main.js';
-    const adapterDir_ = tools.getAdapterDir(name);
-    if (!fs.existsSync(adapterDir_)) {
+    const adapterDir = tools.getAdapterDir(name);
+    if (!fs.existsSync(adapterDir)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({
@@ -3215,7 +3217,7 @@ async function startInstance(id, wakeUp) {
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
-    let fileNameFull = path.join(adapterDir_, fileName);
+    let fileNameFull = path.join(adapterDir, fileName);
 
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') {
@@ -3224,10 +3226,10 @@ async function startInstance(id, wakeUp) {
 
     if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
-        fileNameFull = path.join(adapterDir_, fileName);
+        fileNameFull = path.join(adapterDir, fileName);
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
-            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir_, 'www'))) {
+            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir, 'www'))) {
                 logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
             } else {
                 logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
@@ -3240,7 +3242,7 @@ async function startInstance(id, wakeUp) {
     // read node.js engine requirements
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        let p = fs.readFileSync(`${adapterDir_}/package.json`);
+        let p = fs.readFileSync(`${adapterDir}/package.json`);
         p = JSON.parse(p.toString());
         procs[id].engine = p && p.engines && p.engines.node;
     } catch {
@@ -3542,8 +3544,10 @@ async function startInstance(id, wakeUp) {
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
                             procs[id].process = cp.fork(fileNameFull, args, {
+                                execArgv: tools.getDefaultNodeArgs(fileNameFull),
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                windowsHide: true
+                                windowsHide: true,
+                                cwd: adapterDir
                             });
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
@@ -3611,6 +3615,12 @@ async function startInstance(id, wakeUp) {
                                 try {
                                     decache = decache || require('decache');
                                     decache(fileNameFull);
+
+                                    // Prior to requiring the main file make sure that the esbuild require hook was loaded
+                                    // if this is a TypeScript adapter
+                                    if (fileNameFull.endsWith('.ts')) {
+                                        require('esbuild-register');
+                                    }
 
                                     procs[id].process = {
                                         logic: require(fileNameFull)({
@@ -3759,8 +3769,8 @@ async function startInstance(id, wakeUp) {
 
                                         // Restart group controller because still instances assigned to him, done via startInstance
                                         if (connected && compactProcs[currentCompactGroup].instances.length) {
-                                            logger.info(hostLogPrefix + ' Restart compact group controller ' + currentCompactGroup);
-                                            logger.debug('Instances: ' + JSON.stringify(compactProcs[currentCompactGroup].instances));
+                                            logger.info(`${hostLogPrefix} Restart compact group controller ${currentCompactGroup}`);
+                                            logger.debug(`${hostLogPrefix} Instances: ${JSON.stringify(compactProcs[currentCompactGroup].instances)}`);
 
                                             compactProcs[currentCompactGroup].instances.forEach(id => {
                                                 //noinspection JSUnresolvedVariable
@@ -3827,6 +3837,7 @@ async function startInstance(id, wakeUp) {
                 // queue up, but only if not already queued
                 scheduledInstances[id] = {
                     fileNameFull,
+                    adapterDir,
                     wakeUp
                 };
                 Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
@@ -3836,7 +3847,11 @@ async function startInstance(id, wakeUp) {
             //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 try {
-                    procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                    procs[id].process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        windowsHide: true,
+                        cwd: adapterDir
+                    });
                 } catch (err) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                 }
@@ -4329,10 +4344,10 @@ function init(compactGroupId) {
             try {
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                     fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                    logger && logger.info(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
+                    logger && logger.info(`${hostLogPrefix} Deleted ${VENDOR_BOOTSTRAP_FILE}`);
                 }
             } catch (e) {
-                logger && logger.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                logger && logger.error( `${hostLogPrefix} Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
             }
         }, 30000);
     }
@@ -4342,14 +4357,14 @@ function init(compactGroupId) {
     // Get "objects" object
     // If "file" and on the local machine
     if (tools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
-        Objects = require('@iobroker/db-objects-file').Server;
+        Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
         Objects = require('./lib/objects');
     }
 
     // Get "states" object
     if (tools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
-        States  = require('@iobroker/db-states-file').Server;
+        States  = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
         States  = require('./lib/states');
     }
@@ -4393,14 +4408,6 @@ function init(compactGroupId) {
     if (!compactGroupController) {
         // Delete all log files older than x days
         logger.activateDateChecker(true, config.log.maxDays);
-    }
-
-    // If installed as npm module
-    adapterDir = adapterDir.split('/');
-    if (adapterDir.pop() === 'node_modules') {
-        adapterDir = adapterDir.join('/');
-    } else {
-        adapterDir = __dirname.replace(/\\/g, '/') + '/node_modules';
     }
 
     // find our notifier transport
@@ -4464,8 +4471,8 @@ function init(compactGroupId) {
         }
 
         if (invalidVersion){
-            logger.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
-            logger.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+            logger.error(`${hostLogPrefix} ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`);
+            logger.error(`${hostLogPrefix} Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten`);
 
             console.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
             console.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');

@@ -110,6 +110,14 @@
                 "sysLogTypeComment":    "The type of the syslog protocol to use (Default: BSD).",
                 "app_nameComment":      "The name of the application (Default: process.title).",
                 "eolComment":           "The end of line character to be added to the end of the message (Default: Message without modifications)."
+            },
+            "seq1": {
+                "type":                 "seq",
+                "enabled":              false,
+                "serverUrl":            "http://IP:PORT",
+                "serverUrlComment":     "The http(s) URL including port of the seq server. If you use HTTPS a real certificate is needed; self signed certs are ot accepted.",
+                "apiKey":               "",
+                "apiKeyComment":        "The apiKey of the seq system"
             }
         }
     },
