@@ -557,7 +557,7 @@ id `system.adapter.<adapter.name>`
 * `common.os`                 - string or array of supported operation systems, e.g ["linux", "darwin"]
 * `common.platform`           - **mandatory** possible values: Javascript/Node.js, more coming
 * `common.preserveSettings`   - string (or array) with names of attributes in common of instance, which will not be deleted. E.g. "history", so by setState('system.adapter.mqtt.0", {..}) the field common.history will not be deleted even if new object does not have this field. To delete the attribute it must be explicitly done with ```common:{history: null}```.
-* `common.readme`             - deprecated. Use `docs`.
+* `common.readme`             - URL of the ReadMe file
 * `common.restartAdapters`    - array with names of adapter that must be restarted after this adapter is installed, e.g. ["vis"]
 * `common.schedule`           - CRON schedule if adapter runs in mode `schedule`.
 * `common.serviceStates`      - [true/false or path] if adapter can deliver additional states. If yes, the path adapter/lib/states.js will be called and it give following parameters function (objects, states, instance, config, callback). The function must deliver the array of points with values like function (err, result) { result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
