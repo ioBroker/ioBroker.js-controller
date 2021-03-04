@@ -37,6 +37,10 @@ You can read more about context [here](https://www.npmjs.com/package/http-proxy-
 Additionally the user can define the route path for proxy requests.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Fallback to "application/octet-stream" when mime type for a file could not be determined
+
 ### 1.2.1 (2020-04-14)
 * (bluefox) Corrected error with access to local files
 

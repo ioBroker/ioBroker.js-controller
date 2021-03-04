@@ -1,18 +1,17 @@
 ---
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.mydlink.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.mydlink.svg
+BADGE-Number of Installations (latest): http://iobroker.live/badges/mydlink-installed.svg
+BADGE-Number of Installations (stable): http://iobroker.live/badges/mydlink-stable.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adapters/ioBroker.mydlink/badge.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.mydlink.png?downloads=true
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: 8ZmcRc9HDuf1rvpmcj1/4KRrtRQDEhepPhbEKfqYfqA=
+hash: eCGuBeInjjV4cyy3m3rBlDYlL5onPbcwPiG46PBaZd0=
 ---
-![商标](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
-
-![安装数量](http://iobroker.live/badges/mydlink-stable.svg)
-![NPM版本](http://img.shields.io/npm/v/iobroker.mydlink.svg)
-![资料下载](https://img.shields.io/npm/dm/iobroker.mydlink.svg)
-![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)
-![保镖徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)
+![标识](../../../en/adapterref/iobroker.mydlink/../../admin/mydlink.png)
 
 ＃ioBroker.mydlink
 ioBroker的MyDlink适配器。
@@ -25,33 +24,41 @@ ioBroker的MyDlink适配器。
 
 当前测试的设备：
 
-|型号|类型图片|
+|型号|类型|图片|
 | :---: | :---: | :---: |
-| DSP-W215 |智能插头（插座，温度，电流）**需要轮询** | ![图片](../../../en/adapterref/iobroker.mydlink/docs/media/DSP_W215.png)|
-| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ![图片](../../../en/adapterref/iobroker.mydlink/docs/media/DCH_S150.png)|
-| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ！[图片]（docs / media / DCH_S150.png）|
+| DSP-W215 |智能插头（插座，温度，电流）**需要轮询** | ![图像](../../../en/adapterref/iobroker.mydlink/media/DSP_W215.png)|
+| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ![图像](../../../en/adapterref/iobroker.mydlink/media/DCH_S150.png)|
+| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ！[Image]（media / DCH_S150.png）|
 
-适配器需要轮询某些设备。较新的确实会发送推送消息，现在支持该消息。如果需要轮询，则传感器的读数和运动检测将被轮询间隔延迟（可以在配置中设置）。
+适配器需要轮询某些设备。较新的确实会发送推送消息，现在支持该消息。如果需要对传感器读数和运动检测进行轮询（可以在配置中设置），则轮询间隔会延迟传感器的读数和运动检测。
 
-####配置：
+＃＃＃＃ 配置：
 *设备列表，每个设备具有以下设置：
 
-<table><tr><td>名称</td><td>在此处设置名称，必须唯一（对于mydlink设备） </td></tr><tr><td>知识产权</td><td>在此处填写IP地址，主机名也应该有效</td></tr><tr><td>销</td><td> PIN码印在设备的不干胶标签上，可能在底部。可以是用于DSP-W115的TELNET，请参见下文。 </td></tr><tr><td>轮询间隔</td><td>每个设备的轮询间隔<br />设置为0以禁用轮询。 <br /> <b>建议：</b>为传感器设置一个快速轮询间隔，为插头设置一个较长的轮询间隔。 </td></tr><tr><td>使能</td><td>如果未启用，将不会被轮询或控制。 <br />可以禁用未插入的设备，以避免网络流量和日志中的错误消息。 </td></tr></table>
+<table><tr><td>姓名</td><td>在此处设置名称，必须唯一（对于mydlink设备）</td></tr><tr><td>知识产权</td><td>在此处填写IP地址，主机名也应该有效</td></tr><tr><td>别针</td><td>PIN码打印在设备的不干胶标签上，可能在底部。可以是用于DSP-W115的TELNET，请参见下文。</td></tr><tr><td>轮询间隔</td><td>每个设备的轮询间隔<br />设置为0以禁用轮询。<br /><b>建议：</b>为传感器设置一个快速轮询间隔，为插头设置一个较长的轮询间隔。</td></tr><tr><td>使能够</td><td>如果未启用，将不会被轮询或控制。<br />可以禁用未插入的设备，以避免网络流量和日志中的错误消息。</td></tr></table>
 
 适配器不会干扰应用程序的使用。
 
 ##设置DSP-W115
-其他*较新的*设备使用完全不同的协议和不同的设置。如果您从mydlink应用程序中删除设备，则可以将它们用作其他设备并输入常规PIN码。
+DSP-W115和其他“较新的”设备使用完全不同的协议和不同的设置。有两种使用方法。
 
-如果要继续使用该应用程序，则必须按照以下步骤将设备置于出厂模式：
+1.同时使用App和Adapter：
 
-1.在启动过程中按住wps / reset按钮将设备重置为恢复模式，直到它开始闪烁**红色**而不是橙色。
-2.现在正在运行telnet守护进程，连接到设备wifi
-3.运行“ telnet 192.168.0.20”并使用“ admin：123456”登录（或使用腻子，不要忘记选择“ telnet”而不是“ ssh”）。
-4.运行“ nvram_set FactoryMode 1”
-5.运行`reboot;退出；`重新启动设备。
+  如果要继续使用该应用程序，则必须按照以下步骤将设备置于出厂模式：
 
-现在，您应该输入`TELNET`作为Pin，适配器将从设备本身检索所需的数据。
+  1.在启动过程中按住wps / reset按钮将设备重置为恢复模式，直到它开始闪烁**红色**而不是橙色。
+  2.现在正在运行telnet守护进程，连接到设备wifi
+  3.运行“ telnet 192.168.0.20”并使用“ admin：123456”登录（或使用腻子，不要忘记选择“ telnet”而不是“ ssh”）。
+  4.运行“ nvram_set FactoryMode 1”
+  5.运行`reboot;退出；`重新启动设备。
+  6.现在，您应该输入“ TELNET”作为Pin，适配器将从设备本身检索所需的数据。
+2.不想使用该应用程序
+  1.从应用程序中删除设备，这将重置设备
+  2.再次开始在应用程序中进行设置，然后在设备上配置您的Wifi。
+  3.现在，设备将重新安装并连接到您的Wifi。在这段时间**关闭**应用程序中，请确保它确实关闭。
+  4.现在，该设备应该连接到您的Wifi，而不是连接到应用程序，以便贴纸中的PIN在适配器中起作用。
+
+  （如果设备未连接到您的wifi或设备不接受通过PIN进行的登录，请重试。按设备上的按钮，直到其亮起红色以进行重置。
 
 ## Changelog
 <!-- 
@@ -59,6 +66,18 @@ ioBroker的MyDlink适配器。
 	### __WORK IN PROGRESS__
 	npm install @alcalzone/release-script
 -->
+### __WORK IN PROGRESS__
+* added: `telnet` token is now case insensitive
+
+### 1.1.7 (2020-10-09)
+* fixed: prevent error message with new mydlink plugs on switch
+
+### 1.1.6 (2020-10-09)
+* fixed: prevent error message with new mydlink plugs on switch (broken)
+
+### 1.1.5 (2020-09-03)
+* Add: support for DCH-S160 water detector added (needs polling, linke motion detector).
+
 ### 1.1.4 (2020-06-23)
 * fixed: sometimes state was always reported as true.
 

@@ -106,4 +106,4 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 bluefox <dogafox@gmail.com>

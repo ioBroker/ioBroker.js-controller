@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
+hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
 ---
 ![Логотип](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -11,11 +11,9 @@ hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sma-em.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sma-em.svg)
 ![Тесты](https://travis-ci.org/CTJaeger/ioBroker.sma-em.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)
 
 # IoBroker.sma-em
-=================
-
 ### Информация
 Этот адаптер считывает информацию из SMA Energy Meter и SMA Home Manager 2.
 
@@ -27,7 +25,7 @@ hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 - Подробный счетчик каждой из 3 фаз
 - Серийный номер, версия программного обеспечения, SUSyID измерителя энергии SMA
 
-### Параметры
+### Опции
 - Варианты выбора по каждой отдельной фазе L1 / L2 / L3
 - Выбор нерасширенного режима для общей и счетчика активной мощности
 - Расширенный выбор режима для реактивной мощности, полной мощности, cosphi, силы тока, напряжения (требуется больше вычислительной мощности)
@@ -49,6 +47,8 @@ psurplus P-активная мощность / избыток qsurplus Q-реа�
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.6.3 (2021-03-04)
+* (TGuybrush) The adapter binds now to all external IPv4 addresses.
 
 ### 0.6.1-beta.0 (2021-01-18)
 * (TGuybrush) Bug fixes

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker VIS的材料设计小部件
-hash: qxZ/6gE9zHjqdg6OQq7B3jCLw3RPkXydEzKprEgvHN0=
+hash: lsan3IgIYpai3/qnv2yd9dhvqAdO0ZOB17OcChdLekc=
 ---
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-在目录中省略->
 
@@ -1851,7 +1851,7 @@ JSON字符串必须是具有以下属性的对象数组：
 <！-在目录中省略->
 
 #####图
-<details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [<a href="#values-with-timestamp">带有时间戳的值</a>]</td><td>数字</td></tr><tr><td>类型</td><td>图的类型</td><td>细绳</td><td>“线”，“栏”</td></tr><tr><td> legendText</td><td>传说文字</td><td>细绳</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数字</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> use_gradient_color</td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td>工具提示的标题</td><td>细绳</td><td></td></tr><tr><td>tooltip_text</td><td>工具提示的ovveride文字</td><td>字符串|数组[字符串]</td><td></td></tr><tr><td> tooltip_MinDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_MaxDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_AppendText</td><td>将文字附加到工具提示值</td><td>细绳</td><td></td></tr><tr><td>datalabel_show</td><td>显示图表的数据标签</td><td>字符串|布尔值</td><td>虚假，真实，自动</td></tr><tr><td>datalabel_anchor</td><td>数据标签的锚点</td><td>细绳</td><td>中心，开始，结束</td></tr><tr><td>datalabel_align</td><td>数据标签相对于锚点的位置</td><td>细绳</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td>datalabel_offset</td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_text_align</td><td>数据标签的文字匹配</td><td>细绳</td><td>左，开始，居中，结束，右</td></tr><tr><td>datalabel_rotation</td><td>数据标签的顺时针旋转角度（以度为单位）</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_steps</td><td>每x步显示数据标签</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_minDigits</td><td>数据标签的最小小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_maxDigits</td><td>数据标签的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_override</td><td>覆盖数据标签的文本</td><td>数组[字符串]</td><td></td></tr><tr><td> datalabel_append</td><td>将文字附加到数据标签</td><td>细绳</td><td></td></tr><tr><td>datalabel_color</td><td>数据标签颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_fontFamily</td><td>数据标签字体系列</td><td>细绳</td><td></td></tr><tr><td>datalabel_fontSize</td><td>数据标签字体大小</td><td>数字</td><td>1,2,5，...</td></tr><tr><td> datalabel_backgroundColor</td><td>数据标签背景色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderColor</td><td>数据标签边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderWidth</td><td>数据标签边框宽度</td><td>数字</td><td>1,2,5，...</td></tr><tr><td> datalabel_borderRadius</td><td>数据标签边框半径</td><td>数字</td><td>1,2,5，...</td></tr></tbody></table></details>
+<details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [<a href="#values-with-timestamp">带有时间戳的值</a>]</td><td>数字</td></tr><tr><td>类型</td><td>图的类型</td><td>细绳</td><td>“线”，“栏”</td></tr><tr><td> legendText</td><td>传说文字</td><td>细绳</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数字</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> use_gradient_color</td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td>工具提示的标题</td><td>字符串|数组[字符串]</td><td></td></tr><tr><td> tooltip_text</td><td>工具提示的ovveride文字</td><td>字符串|数组[字符串]</td><td></td></tr><tr><td> tooltip_MinDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_MaxDigits</td><td>工具提示值的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> tooltip_AppendText</td><td>将文字附加到工具提示值</td><td>细绳</td><td></td></tr><tr><td>datalabel_show</td><td>显示图表的数据标签</td><td>字符串|布尔值</td><td>虚假，真实，自动</td></tr><tr><td>datalabel_anchor</td><td>数据标签的锚点</td><td>细绳</td><td>中心，开始，结束</td></tr><tr><td>datalabel_align</td><td>数据标签相对于锚点的位置</td><td>细绳</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td>datalabel_offset</td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_text_align</td><td>数据标签的文字匹配</td><td>细绳</td><td>左，开始，居中，结束，右</td></tr><tr><td>datalabel_rotation</td><td>数据标签的顺时针旋转角度（以度为单位）</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_steps</td><td>每x步显示数据标签</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_minDigits</td><td>数据标签的最小小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_maxDigits</td><td>数据标签的最大小数</td><td>数字</td><td>0、1、2，...</td></tr><tr><td> datalabel_override</td><td>覆盖数据标签的文本</td><td>数组[字符串]</td><td></td></tr><tr><td> datalabel_append</td><td>将文字附加到数据标签</td><td>细绳</td><td></td></tr><tr><td>datalabel_color</td><td>数据标签颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_fontFamily</td><td>数据标签字体系列</td><td>细绳</td><td></td></tr><tr><td>datalabel_fontSize</td><td>数据标签字体大小</td><td>数字</td><td>1,2,5，...</td></tr><tr><td> datalabel_backgroundColor</td><td>数据标签背景色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderColor</td><td>数据标签边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderWidth</td><td>数据标签边框宽度</td><td>数字</td><td>1,2,5，...</td></tr><tr><td> datalabel_borderRadius</td><td>数据标签边框半径</td><td>数字</td><td>1,2,5，...</td></tr></tbody></table></details>
 
 <！-在目录中省略->
 
@@ -2565,7 +2565,7 @@ Masonry Views集成了多个`view in widget`，将根据小部件的宽度自动
 </ details>
 
 ###脚本：向小部件发送警报
-使用以下脚本，您可以向Alerts Widget使用的简单消息发送到datapoint。
+使用以下脚本，您可以将简单消息发送到Alerts Widget使用的数据点。
 该脚本必须放入全局脚本中。然后可以使用以下命令发送消息
 
 `materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
@@ -4341,10 +4341,17 @@ ical2CalendarWidget();
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
+* (Scrounger) dialog: option to set height in percent added
+* (Scrounger) json chart: option to override tooltip for every dataset added
+* (Scrounger) json chart: tooltip mode x / y added
+* (Scrounger) json chart: option to override data label added
+* (Scrounger) progress: rotate option added
+* (Scrounger) list: background color option added
 * (Scrounger) progress circular: auto size option added
 * (Scrounger) VIS editor: html previews bug fixes
 * (Scrounger) input, autocomplete, select: autofocus option added
 * (Scrounger) Documentation revised
+* (Scrounger) materialdesignicons library updated to v5.9.55
 * (Scrounger) bug fixes
 
 <!-- omit in toc -->

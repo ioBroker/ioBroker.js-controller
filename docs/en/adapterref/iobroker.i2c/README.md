@@ -65,11 +65,11 @@ The following devices are currently supported. The numbers in parenthesis are th
 
 Adafruit STEMMA Soil Sensor - I2C Capacitive Moisture Sensor using the ATSAMD10 chip.
 
-### ADS1015 (48-4B)
+### ADS1015 16-Bit 4-Channel ADC (48-4B)
 
 Texas Instruments 4x 3.3-kSPS, 12-Bit ADCs with Internal Reference.
 
-### ADS1115 (48-4B)
+### ADS1115 16-Bit 4-Channel ADC (48-4B)
 
 Texas Instruments 4x 860-SPS, 16-Bit ADCs with Internal Reference.
 
@@ -96,6 +96,30 @@ Microchip 8-Bit I/O Expander with Serial Interface.
 ### MCP23017 16-Bit I/O Expander (20-27)
 
 Microchip 16-Bit I/O Expander with Serial Interface.
+
+### MCP3422 18-Bit 2-Channel ADC (68)
+
+Microchip 18-Bit, 2-Channel Analog-to-Digital Converter with On-Board Reference.
+
+### MCP3423 18-Bit 2-Channel ADC (68-6F)
+
+Microchip 18-Bit, 2-Channel Analog-to-Digital Converter with On-Board Reference.
+
+### MCP3424 18-Bit 4-Channel ADC (68-6F)
+
+Microchip 18-Bit, 4-Channel Analog-to-Digital Converter with On-Board Reference.
+
+### MCP3426 16-Bit 2-Channel ADC (68)
+
+Microchip 16-Bit, 2-Channel Analog-to-Digital Converter with On-Board Reference.
+
+### MCP3427 16-Bit 2-Channel ADC (68-6F)
+
+Microchip 16-Bit, 2-Channel Analog-to-Digital Converter with On-Board Reference.
+
+### MCP3428 16-Bit 4-Channel ADC (68-6F)
+
+Microchip 16-Bit, 4-Channel Analog-to-Digital Converter with On-Board Reference.
 
 ### MCP4725 12-Bit Digital-to-Analog Converter (60-67)
 
@@ -236,6 +260,15 @@ If you are developing on a desktop PC and want to test I2C on a SBC (e.g. a Rasp
 Keep in mind that the RPC server is completely unsecured, so this should only be used for development inside a secure network!
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 1.2.0 (2021-03-02)
+
+-   (UncleSamSwiss) Added support for MCP342x family (#44).
+-   (UncleSamSwiss) Added proper error handling on all periodic I2C operations (#112).
 
 ### 1.1.1 (2020-11-29)
 

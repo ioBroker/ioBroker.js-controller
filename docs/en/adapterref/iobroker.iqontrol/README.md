@@ -1397,6 +1397,12 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
+### 1.6.3 (2021-03-03)
+* (sbormann) Added match-list to change device-options-function.
+* (sbormann) Added change device-states-function to options.
+* (sbormann) Fixed comparing to 0 for tile active conditions.
+* (sbormann) Enhanced speed of admin ui.
+
 ### 1.6.2 (2021-02-28)
 * (sbormann) Enhanced rendering of badge to avoid color flickering.
 * (sbormann) Added option clickOnIconToggles and clickOnIconOpensDialog to all devices. The logic is now: 
@@ -1407,7 +1413,6 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Fixed slider sometimes not working after swiping.
 * (sbormann) Prevent scrolling and flickering of background when dialog is opened.
 * (sbormann) Lights without hue but with active option linkGlowActiveColorToHue now glow in a slightly yellow.
-
 
 ### 1.6.1 (2021-02-21)
 * (sbormann) Fixed sentry error in main.js.

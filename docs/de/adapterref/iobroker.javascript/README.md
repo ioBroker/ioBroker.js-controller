@@ -67,20 +67,21 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 5.0.8 (2021-03-03)
+* (bluefox) Translations
+* (bluefox) Added the "set state with delay" block
+
+### 5.0.7 (2021-03-02)
+* (bluefox) Added the pushsafer block
+
+### 5.0.6 (2021-03-01)
+* (bluefox) Implemented the hysteresis
+
 ### 5.0.5 (2021-02-28)
 * (bluefox) Implemented the toggle functionality
 
 ### 5.0.4 (2021-02-28)
 * (bluefox) Fixed errors in rules
-
-### 5.0.3 (2021-02-28)
-* (bluefox) Implemented the memory for condition
-
-### 5.0.2 (2021-02-27)
-* (bluefox) Fixed error in the rules
-
-### 5.0.0 (2021-02-27) [Birthday edition]
-* (bluefox) added the rules engine
 
 ## License
 

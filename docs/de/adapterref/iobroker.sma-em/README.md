@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
+hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
 ---
 ![Logo](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -14,8 +14,6 @@ hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 ![NPM](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)
 
 # IoBroker.sma-em
-=================
-
 ### Die Info
 Dieser Adapter liest Informationen von SMA Energy Meter und SMA Home Manager 2.
 
@@ -49,6 +47,8 @@ psurplus P-Wirkleistung / Überschuss qsurplus Q-reaktive Leistung / Überschuss
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.6.3 (2021-03-04)
+* (TGuybrush) The adapter binds now to all external IPv4 addresses.
 
 ### 0.6.1-beta.0 (2021-01-18)
 * (TGuybrush) Bug fixes

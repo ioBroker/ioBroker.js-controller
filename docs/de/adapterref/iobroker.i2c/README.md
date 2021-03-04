@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.i2c/README.md
 title: ioBroker.i2c
-hash: PP4lNA7dovkN4gO2daBhn2zOhZwvcQ+RKn8JGnotQ4E=
+hash: HiafKBZXcIvhJGJZZKuT+LfM2j3JgZ8pnQi59bg3gY8=
 ---
 ![Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.i2c.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.i2c.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/i2c-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/i2c-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/i2c-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/UncleSamSwiss/iobroker.i2c.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c/badge.svg)
@@ -44,7 +44,7 @@ Nachdem Sie I2C aktiviert und konfiguriert haben, können Sie diesen Adapter üb
 ### Problem mit Zugriffsrechten
 Abhängig vom Alter Ihrer ioBroker-Installation verfügt der Benutzer `iobroker` (oder unter welchem Benutzer auch immer ioBroker ausgeführt wird) möglicherweise nicht über die entsprechenden Rechte für den Zugriff auf I2C.
 
-Wenn Sie ein Gerät angeschlossen haben und es nicht im Konfigurationsbildschirm angezeigt wird, stellen Sie bitte sicher, dass der Benutzer zur Gruppe `i2c` hinzugefügt wurde:
+Wenn Sie ein Gerät angeschlossen haben und es nicht im Konfigurationsbildschirm angezeigt wird, stellen Sie sicher, dass der Benutzer zur Gruppe `i2c` hinzugefügt wurde:
 
 ```sh
 sudo usermod -aG i2c iobroker
@@ -64,10 +64,10 @@ Die folgenden Geräte werden derzeit unterstützt. Die Zahlen in Klammern sind d
 ### Adafruit STEMMA Bodensensor (36)
 Adafruit STEMMA Bodensensor - Kapazitiver Feuchtigkeitssensor I2C mit dem ATSAMD10-Chip.
 
-### ADS1015 (48-4B)
+### ADS1015 16-Bit-4-Kanal-ADC (48-4B)
 Texas Instruments 4x 3,3-kSPS, 12-Bit-ADCs mit interner Referenz.
 
-### ADS1115 (48-4B)
+### ADS1115 16-Bit-4-Kanal-ADC (48-4B)
 Texas Instruments 4x 860-SPS, 16-Bit-ADCs mit interner Referenz.
 
 ### BME280 (76, 77)
@@ -80,13 +80,31 @@ MaxSonar GY-US42 Sonar-Entfernungsmesser 20 - 720 cm.
 Honeywell 3-Achsen-Digitalkompass-IC.
 
 ### INA219 Strom- / Leistungsüberwachung (40-4F)
-Zero In-Drift, bidirektionaler Strom- / Leistungsmonitor von Texas Instruments.
+Zero-Drift, bidirektionaler Strom- / Leistungsmonitor von Texas Instruments.
 
 ### MCP23008 8-Bit-E / A-Expander (20-27)
-Microchip 8-Bit I / O Expander mit serieller Schnittstelle.
+8-Bit-E / A-Expander mit Mikrochip und serieller Schnittstelle.
 
 ### MCP23017 16-Bit-E / A-Expander (20-27)
-Microchip 16-Bit I / O Expander mit serieller Schnittstelle.
+Microchip 16-Bit-E / A-Expander mit serieller Schnittstelle.
+
+### MCP3422 18-Bit-2-Kanal-ADC (68)
+Mikrochip 18-Bit-2-Kanal-Analog-Digital-Wandler mit integrierter Referenz.
+
+### MCP3423 18-Bit-2-Kanal-ADC (68-6F)
+Mikrochip 18-Bit-2-Kanal-Analog-Digital-Wandler mit integrierter Referenz.
+
+### MCP3424 18-Bit-4-Kanal-ADC (68-6F)
+Mikrochip 18-Bit, 4-Kanal-Analog-Digital-Wandler mit integrierter Referenz.
+
+### MCP3426 16-Bit-2-Kanal-ADC (68)
+16-Bit-Mikrochip-2-Kanal-Analog-Digital-Wandler mit integrierter Referenz.
+
+### MCP3427 16-Bit-2-Kanal-ADC (68-6F)
+16-Bit-Mikrochip-2-Kanal-Analog-Digital-Wandler mit integrierter Referenz.
+
+### MCP3428 16-Bit-4-Kanal-ADC (68-6F)
+16-Bit-4-Kanal-Analog-Digital-Wandler mit Mikrochip und integrierter Referenz.
 
 ### MCP4725 12-Bit-Digital-Analog-Wandler (60-67)
 Mikrochip 12-Bit-Digital-Analog-Wandler mit EEPROM-Speicher.
@@ -98,7 +116,7 @@ Remote 8-Bit-E / A-Expander von Texas Instruments für I2C-Bus.
 Remote 8-Bit-E / A-Expander von Texas Instruments für I2C-Bus.
 
 ### PCA9685 16-Kanal 12-Bit-PWM-Servo- / LED-Treiber (40-7F)
-Adafruit PCA9685 Breakout Board für 16-Kanal 12-Bit PWM. Der Adapter konzentrierte sich auf die Verwendung der 16 Kanäle von 0..4095 als LED-Dimmer.
+Adafruit PCA9685 Breakout-Board für 16-Kanal-12-Bit-PWM. Der Adapter konzentrierte sich auf die Verwendung der 16 Kanäle von 0..4095 als LED-Dimmer.
 Kann viele LEDs ansteuern, wenn PWM (und GND) an ein N-Kanal-Mosfet-Modul angeschlossen sind, z. basierend auf D4184. Verbinden Sie die LED GND mit dem MOSFET und +12 / 24 / n V mit dem Netzteil.
 
 ### QMC5883L 3-Achsen-Magnetsensor (0D)
@@ -111,7 +129,7 @@ Sensirion SHT3x Feuchtigkeits- und Temperatursensor.
 Devantech Ultrasonic Ranger Finder 16 - 600cm.
 
 ### SX1507 4-Kanal-Pegelverschiebungs-GPIO mit LED-Treiber (3E, 3F, 70, 71)
-Semtech Worlds niedrigster GPIO mit Spannungspegelverschiebung und LED-Treiber für 4 Kanäle.
+Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung und LED-Treiber für 4 Kanäle.
 
 ### SX1508 8-Kanal-Pegelverschiebungs-GPIO mit LED-Treiber und Tastaturmotor (20-23)
 Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung mit LED-Treiber und Tastaturmotor für 8 Kanäle.
@@ -168,13 +186,13 @@ sendTo(
 Die Kompatibilität wurde mit Raspberry Pi 3 und 4B getestet.
 
 ## Fehlerberichte und Funktionsanforderungen
-Verwenden Sie das GitHub-Repository, um Fehler zu melden oder neue Funktionen anzufordern.
+Bitte verwenden Sie das GitHub-Repository, um Fehler zu melden oder neue Funktionen anzufordern.
 
 Wenn Sie fehlende Abweichungen benötigen, geben Sie bitte den IC-Typ (Marke, Modell, ...) und dessen Adresse (n) an, wie in der Adapterkonfiguration angegeben.
 
 ## Entwicklung
 ### VS Code & Devcontainer
-Dieses Repository ist so eingerichtet, dass die Entwicklung mit VS Code und Devcontainer durchgeführt werden kann. Öffnen Sie einfach den Stammordner dieses Repositorys mit VS-Code und bestätigen Sie, dass Sie zu Devcontainer wechseln.
+Dieses Repository ist so eingerichtet, dass die Entwicklung mit VS Code und Devcontainer durchgeführt werden kann. Öffnen Sie einfach den Stammordner dieses Repositorys mit VS-Code und bestätigen Sie, zu Devcontainer zu wechseln.
 
 ### Remote I2C
 Wenn Sie auf einem Desktop-PC entwickeln und I2C auf einem SBC (z. B. einem Raspberry Pi) testen möchten, können Sie Folgendes tun:
@@ -221,9 +239,9 @@ Copyright (c) 2016 Skylar Stein
 
 Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der obige Urheberrechtshinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der oben genannte Copyright-Hinweis und dieser Genehmigungshinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
-DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE SOFTWARE.
+DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN, DIE AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE ENTSTEHEN SOFTWARE.
 
 ### ADS1x15
 Der ADS1x15-Code basiert auf https://github.com/alphacharlie/node-ads1x15/blob/master/index.js
@@ -236,9 +254,9 @@ Copyright (c) 2016 Adafruit Industries
 
 Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der obige Urheberrechtshinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der oben genannte Copyright-Hinweis und dieser Genehmigungshinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
-DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE SOFTWARE.
+DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN, DIE AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE ENTSTEHEN SOFTWARE.
 
 ### PCA9685
 Der PCA9685-Code basiert auf https://github.com/adafruit/Adafruit_Python_PCA9685/blob/master/Adafruit_PCA968/PCA9685.py
@@ -249,9 +267,9 @@ Copyright (c) 2016 Adafruit Industries Autor: Tony DiCola
 
 Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der obige Urheberrechtshinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der oben genannte Copyright-Hinweis und dieser Genehmigungshinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
-DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE SOFTWARE.
+DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN, DIE AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE ENTSTEHEN SOFTWARE.
 
 Ebenfalls basierend auf: https://github.com/tessel/servo-pca9685/blob/master/index.js
 
@@ -260,6 +278,19 @@ Copyright 2014 Technical Machine, Inc. Siehe die COPYRIGHT-Datei im obersten Ver
 Lizenziert unter der Apache-Lizenz, Version 2.0 <LICENSE-APACHE oder http://www.apache.org/licenses/LICENSE-2.0> oder der MIT-Lizenz <LICENSE-MIT oder http://opensource.org/licenses/MIT> nach Ihrer Wahl. Diese Datei darf nur gemäß diesen Bedingungen kopiert, geändert oder verteilt werden.
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 1.2.0 (2021-03-02)
+
+-   (UncleSamSwiss) Added support for MCP342x family (#44).
+-   (UncleSamSwiss) Added proper error handling on all periodic I2C operations (#112).
+
+### 1.1.1 (2020-11-29)
+
+-   (UncleSamSwiss) Fixed issue with device search not working (#53).
 
 ### 1.1.0 (2020-11-05)
 

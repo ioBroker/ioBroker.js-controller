@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
+hash: ZLsHppC757/KAgqLW2TbgD9QzBbDq34IOz/fWmHDLu8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -38,6 +38,14 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
 4. Добавьте свои устройства Miele-Devices в приложение (если не добавляются автоматически)
 6. Введите client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
 
+## Управление вашими устройствами
+Реализованы все поддерживаемые и документированные в настоящее время Действия для всех устройств (API V1.0.2).
+> Помните, что Действия будут работать только в том случае, если вы переведете свое устройство в соответствующее состояние (например, Mobile Control, powerOn, ...).
+Пожалуйста, обратитесь к [Miele-Документация](#documentation) для получения дополнительной информации о действиях.
+
+## Известные вопросы
+* Действие ambientLight, представленное в API 1.0.4, еще не реализовано
+
 ## Документация
 В основном обращайтесь к основной документации API, опубликованной Miele.
 
@@ -46,14 +54,14 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
 
 Есть несколько точек данных, доступных в 2-х видах. В виде удобочитаемого текста и числа.
 Эти числовые поля данных, принадлежащие текстовому полю, имеют то же имя, но с добавлением «_raw».
-Ниже перечислены поля, которые имеют общее значение.
+Те поля, которые имеют общее значение, перечислены ниже.
 Поля, которые не указаны в списке, различаются по своему значению от устройства к устройству и не документируются Miele.
 Если вам нужно ссылаться в скриптах на эти поля, всегда используйте значения _raw.
 Текстовые значения могут измениться в будущем, а также зависят от языка.
 Вот список того, что означают эти необработанные значения:
 
 ### Типы устройств
- | Исходное значение | Состояние |
+ | Исходное значение | Государство |
  |----------|-------|
  | 1 | СТИРАЛЬНАЯ МАШИНА |
  | 2 | СУШИЛКА |
@@ -65,31 +73,31 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
  | 15 | ПАРОВАЯ ПЕЧЬ |
  | 16 | СВЧ |
  | 17 | КОФЕЙНАЯ СИСТЕМА |
- | 18 | КАПОТ |
+ | 18 | ВЫТЯЖКА |
  | 19 | ХОЛОДИЛЬНИК |
  | 20 | МОРОЗИЛЬНИК |
  | 21 | КОМБИНАЦИЯ ХОЛОДИЛЬНИКА / МОРОЗИЛЬНИКА |
- | 23 | ВАКУУМНЫЙ ПЫЛЕСОС, АВТОМАТИЧЕСКИЙ РОБОТЫЙ ПЫЛЕСОС |
+ | 23 | ПЫЛЕСОС, АВТОМАТИЧЕСКИЙ ПЫЛЕСОС |
  | 24 | СТИРАЛЬНАЯ МАШИНА |
  | 25 | ПОДОГРЕВАТЕЛЬ |
  | 27 | ИНДУКЦИОННАЯ ПАНЕЛЬ |
  | 28 | ВАРОЧНЫЙ ГАЗ |
  | 31 | ПАРОВАЯ ПЕЧЬ КОМБИНАЦИЯ |
  | 32 | ВИННЫЙ ШКАФ |
- | 33 | КОНДИЦИОНЕР ВИНА |
+ | 33 | КОНДИЦИОНЕР ДЛЯ ВИНА |
  | 34 | КОНДИЦИОНЕР ДЛЯ ХРАНЕНИЯ ВИНА |
  | 39 | ДВОЙНАЯ ПЕЧЬ |
  | 40 | ДВОЙНАЯ ПАРОВАЯ ПЕЧЬ |
  | 41 | ДВОЙНАЯ ПЕЧЬ КОМБИНАЦИЯ |
  | 42 | ДВОЙНОЕ СВЧ |
- | 43 | ДВОЙНАЯ МИКРОВОЛНОВАЯ ПЕЧЬ |
+ | 43 | ДВОЙНАЯ СВЧ-ПЕЧЬ |
  | 45 | ПАРНАЯ ПЕЧЬ СВЧ-КОМБИНАЦИЯ |
  | 48 | ВАКУУМНЫЙ ЯЩИК |
  | 67 | ДИАЛОГОВЕН |
- | 68 | ВИННЫЙ ШКАФ КОМБИНАЦИЯ МОРОЗИЛЬНИКОВ |
+ | 68 | ВИННЫЙ ШКАФ КОМБИНАЦИЯ МОРОЗИЛЬНЫХ КАБЕЛЕЙ |
 
 ### Состояние / Статус
- | Исходное значение | Состояние |
+ | Исходное значение | Государство |
  |----------|-------|
 | 1 | ВЫКЛ |
  | 2 | STAND_BY |
@@ -112,7 +120,7 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
  | 255 | Устройство не в сети |
 
 ### ProgramType / Programmart
-| Исходное значение | Состояние |
+| Исходное значение | Государство |
 |----------|-------|
 | 0 | Нормальный режим работы |
 | 1 | Собственная программа |
@@ -120,18 +128,18 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
 | 3 | Программа очистки / ухода |
 
 ### DryStep / Trockenstufe
- | Исходное значение | Состояние |
+ | Исходное значение | Государство |
  |----------|-------|
  | 0 | Экстра сухой |
  | 1 | Нормальный Плюс |
  | 2 | Нормальный |
  | 3 | Слегка сухая |
- | 4 | Под утюг, уровень 1 |
+ | 4 | Подручный утюг, уровень 1 |
  | 5 | Под утюг 2-го уровня |
  | 6 | Машинный утюг |
 
 ### ProgramBezeichnung
-| Исходное значение | Состояние | доступен для |
+| Исходное значение | Государство | доступен для |
 |----------|-------|---------------|
 | 1 | «Баумволле» / «Хлопок» | Стиральная машина |
 | 23 | "Оберхемден" / | Стиральная машина |
@@ -142,7 +150,7 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
 | 123 | «Дунклс / Джинсы» | Стиральная машина |
 
 ### ProgramPhase
-| Исходное значение | Состояние | доступен для |
+| Исходное значение | Государство | доступен для |
 |----------|-------|---------------|
 | 260 | «Вашен» / «Стирка» | Стиральная машина |
 | 261 | «Spülen» / «Полоскание» | Стиральная машина |
@@ -158,12 +166,29 @@ hash: Rt1R3uCzO4q65gX4scbadbn9nI9XUGrcV4gq5LAfWao=
 Авторские права (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 3.0.2 (2021-03-03)
+*  (grizzelbee) Fix: [79](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/79) When a devices serial is missing, the identNumber is assigned instead.
+*  (grizzelbee) Upd: Changed folder name cooktops to hobs since this is the more common name
+
+### 3.0.1 (2021-02-25)
+> *Hint:* Action_Information and Action_Status objects are created on first action execution and contain infos to the last executed action.
+> Please take care of notes regarding [Controlling your devices](#Controlling your devices).
+*  (grizzelbee) Upd: Improved logging in some parts - objects get stringified.
+*  (grizzelbee) Fix: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) Actions are working again
+*  (grizzelbee) Upd: Actions are tested before sending whether they are permitted in current device state
+*  (grizzelbee) Upd: estimatedEndTime doesn't show seconds anymore
+*  (grizzelbee) Upd: Improved documentation
+*  (grizzelbee) Upd: removed unused function decrypt
+*  (grizzelbee) Upd: removed superfluent parameters
+
+
 ### 3.0.0 (2021-02-18)
+> Hint: ecoFeedback objects are created on the first run of the device. This allows to only create them, when they contain data.
 *  (grizzelbee) New: BREAKING CHANGE: Making use of build-in password de-/encryption. This raises the need to re-enter your passwords again, because the old ones can't be decrypted anymore.
 *  (grizzelbee) New: [70](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/70) Implements Miele API 1.0.4
 *  (grizzelbee) New: [64](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/64) Introduces data point estimatedFinishingTime
 *  (grizzelbee) New: [54](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/54) Poll interval can now freely be selected in seconds and minutes
-*  (grizzelbee) Upd: [73](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/73) BREAKING CHANGE: Removed white-spaces from any ID in device tree. This creates completely new device trees. So please delete the old ones.  
+*  (grizzelbee) Upd: [73](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/73) BREAKING CHANGE: Removed white-spaces from any ID in device tree. This creates completely new device trees. So please delete the old ones.
 *  (grizzelbee) Upd: removed david-dm badge
 *  (grizzelbee) Upd: updated dependencies
 *  (grizzelbee) Fix: added passwords to encryptedNative
@@ -192,7 +217,7 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 * (grizzelbee) Fix: Unit °Celsius is now shown as °C - not longer °Celsius
 * (grizzelbee) New: Introduced support for °Fahrenheit
 * (grizzelbee) New: Introduced support for new Value "plateStep" for Hobs.
-* (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens. 
+* (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens.
 * (grizzelbee) Fix: Datapoints with invalid values (null/-32768) are no longer created.
 
 ### 1.2.4 (2020-06-09)
@@ -200,35 +225,35 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 
 ### 1.2.3 (2020-06-07)
 * (grizzelbee) Upd: fixed snyk badge
-* (grizzelbee) Upd: Improved error handling 
+* (grizzelbee) Upd: Improved error handling
 
 ### 1.2.2 (2020-05-23)
-* (grizzelbee) Upd: removed node 8 from testing on travis.com 
-* (grizzelbee) Fix: signalActionRequired should work better now 
-* (grizzelbee) Upd: Updated documentation 
-* (grizzelbee) Upd: Improved error handling in function APISendRequest 
+* (grizzelbee) Upd: removed node 8 from testing on travis.com
+* (grizzelbee) Fix: signalActionRequired should work better now
+* (grizzelbee) Upd: Updated documentation
+* (grizzelbee) Upd: Improved error handling in function APISendRequest
 * (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
 
 ### 1.2.1 (2020-04-22)
-* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumble dryers, washer dryer and dishwashers. **Doesn't work perfectly currently.**  
-* (grizzelbee) Upd: Updated Documentation 
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumble dryers, washer dryer and dishwashers. **Doesn't work perfectly currently.**
+* (grizzelbee) Upd: Updated Documentation
 * (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
 
 ### 1.2.0 (2020-04-18)
 * (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
 * (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
-* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios** 
-* (grizzelbee) Change: Made functions communicating with API asynchronous 
-  
+* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios**
+* (grizzelbee) Change: Made functions communicating with API asynchronous
+
 ### 1.1.0 (2020-03-07)
-* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
-               Please remember that Actions will only work if you put your device into the appropriate state (e.g. Mobile Control)
-               please refer to [Miele-Documentation](#documentation) for more Information on actions. 
-  
+* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices.
+> Please remember that Actions will only work if you put your device into the appropriate state (e.g. Mobile Control)
+please refer to [Miele-Documentation](#documentation) for more Information on actions.
+
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
-* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
-               to schedule with less than a minute in the future
+* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity
+  to schedule with less than a minute in the future
 
 ### 1.0.4 (2020-02-12)
 * (grizzelbee) removed unneeded setTimeout from main
@@ -239,7 +264,7 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 * (grizzelbee) removed an overseen logging of Passwords
 * (grizzelbee) Fixed createTemperatureDatapoint to work with less than 3 values delivered from API
 * (grizzelbee) Added some documentation
-* (grizzelbee) Started implementation of DeviceActions 
+* (grizzelbee) Started implementation of DeviceActions
 
 
 ### 1.0.2 (2020-02-05)
@@ -252,14 +277,14 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 
 ### 1.0.0 (2020-02-03)
 * (grizzelbee) renamed to MieleCloudService to get the ability to publish; the old Name is still blocked by hash99
-* (grizzelbee) Rewritten adapter from scratch - therefore it's incompatible with prior versions and needs to be installed freshly. 
+* (grizzelbee) Rewritten adapter from scratch - therefore it's incompatible with prior versions and needs to be installed freshly.
 * (grizzelbee) Fix: fixed all build-errors
-* (grizzelbee) Fix: Fixed "NRefreshToken is not a function"-Bug 
+* (grizzelbee) Fix: Fixed "NRefreshToken is not a function"-Bug
 * (grizzelbee) Chg: removed Push-API checkbox (maybe introduced newly when API supports this)
 * (grizzelbee) Chg: New Icon
 * (grizzelbee) New: added support for non-german Miele-Accounts (ALL should be included)
 * (grizzelbee) Complete new layout of datapoints
-* (grizzelbee) Devicetypes are grouped now 
+* (grizzelbee) Devicetypes are grouped now
 
 ### 0.9.1 (2019-07-26)
 * (grizzelbee) Fix: Fixed small bug introduced in V0.9.0 throwing an exception in debugging code
@@ -269,13 +294,13 @@ Due to the fix that datapoints with invalid values aren't created any longer, I 
 * (grizzelbee) New: make poll interval configurable  (currently 1,2,3,4,5,7,10,15 Minutes)
 * (grizzelbee) Fix: fixed ESLint config
 * (grizzelbee) Upd: Changed order of config fields in UI
-* (grizzelbee) New: Set 5 Minutes poll interval and english response language as default to get initial values 
-* (grizzelbee) New: Parent-Datapoint of timevalues will be used to get a pretty readable time in the format h:mm. The deeper datapoints 0 and 1 will still be updated, but his will be removed in a future version to reduce workload.  
+* (grizzelbee) New: Set 5 Minutes poll interval and english response language as default to get initial values
+* (grizzelbee) New: Parent-Datapoint of timevalues will be used to get a pretty readable time in the format h:mm. The deeper datapoints 0 and 1 will still be updated, but his will be removed in a future version to reduce workload.
 
 ### 0.0.5 (2019-07-25)
 * (grizzelbee) Upd: some code maintenance
 * (grizzelbee) New: added reply-language to config
-                    - Miele API is currently able to reply in German or English, now you can choose.
+  - Miele API is currently able to reply in German or English, now you can choose.
 * (grizzelbee) New: created new Icon
 * (grizzelbee) Fix: fixed translation issues and translated adapter UI using gulp
 * (grizzelbee) Upd: Made changes to travis requested by apollon77

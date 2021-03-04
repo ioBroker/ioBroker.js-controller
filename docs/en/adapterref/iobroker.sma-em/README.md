@@ -1,6 +1,5 @@
 ![Logo](admin/sma-em.png)
 # ioBroker.sma-em
-=================
 
 ![Number of Installations](http://iobroker.live/badges/sma-em-installed.svg) ![Number of Installations](http://iobroker.live/badges/sma-em-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sma-em.svg)](https://www.npmjs.com/package/iobroker.sma-em)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sma-em.svg)](https://www.npmjs.com/package/iobroker.sma-em)
@@ -48,6 +47,8 @@ Example:
 -->
         
 ## Changelog
+### 0.6.3 (2021-03-04)
+* (TGuybrush) The adapter binds now to all external IPv4 addresses.
 
 ### 0.6.1-beta.0 (2021-01-18)
 * (TGuybrush) Bug fixes

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
+hash: FOpGMM+D05q9oz7BUxwiyH8xTi4YKqbiRxE8w9KqhiU=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -18,6 +18,8 @@ hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
 # IoBroker.lovelace
 ## Lovelace Adapter für ioBroker
 Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Home Assistant Lovelace-Benutzeroberfläche erstellen.
+
+[Deutsche Dokumentation](docs/de/README.md)
 
 ## Aufbau
 Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden könnten:
@@ -77,8 +79,8 @@ oder Sie verwenden einfach `lovelace.X.control.alarm (entity_id = alarm_control_
 
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
-Dieser Typ erforderte `min` und `max` Werte in `common` und optional `step` könnten hinzugefügt werden.
-Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` 'Nummer' setzen:
+Dieser Typ erforderte `min` und `max` Werte in `common` und optionale `step` könnten hinzugefügt werden.
+Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' setzen:
 
 ```
 common: {
@@ -95,7 +97,7 @@ common: {
 
 ### Eingang auswählen
 Dies kann manuell erfolgen, wenn der Entitätstyp input_select im benutzerdefinierten Dialogfeld ausgewählt ist.
-Die Liste der Optionen zur Auswahl sollte im Standardobjekt commom.states enthalten sein:
+Die Liste der Optionen, aus denen Sie auswählen können, sollte im Standardobjekt commom.states enthalten sein:
 
 ```
 "common": {
@@ -207,7 +209,7 @@ Getestet mit yr und daswetter. Für eines oder mehrere der folgenden Objekte mü
 - yr.0.forecast
 
 Getestet mit dem AccuWeather-Treiber v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
-Benutzerdefinierte Lovelace-Karte zur Unterstützung der Accuweather-Prognose erstellt - https://github.com/algar42/IoB.lovelace.accuweather-card
+Benutzerdefinierte Lovelace-Karte zur Unterstützung der Wetterprognose erstellt - https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ### Einkaufsliste
 Einkaufsliste schreibt die Werte in Form:
@@ -315,7 +317,7 @@ oder
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-in der Lovelace-Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovvelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
+in der Lovelace-Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in der Liebe [Hier](https://www.home-assistant.io/lovelace/views/#background).
 
 ## Themen
 Die Themen können im Konfigurationsdialog von ioBroker definiert werden.
@@ -425,7 +427,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ```
 
 ## Fehlerbehebung
-Wenn Sie den YAML-Code durcheinander gebracht haben und eine leere Seite sehen, aber immer noch das Hauptmenü haben, können Sie den Bearbeitungsmodus (falls noch nicht aktiviert) über das Menü aktivieren und dann das Menü erneut öffnen, um auf den "RAW Yaml Editor" zuzugreifen, in dem Sie sich befinden Sehen Sie sich den vollständigen YAML-Code an und können Sie ihn bereinigen.
+Wenn Sie den YAML-Code durcheinander gebracht haben und eine leere Seite sehen, aber immer noch das Hauptmenü haben, können Sie den Bearbeitungsmodus (falls nicht bereits aktiviert) über das Menü aktivieren und dann das Menü erneut öffnen, um auf den "RAW Yaml Editor" zuzugreifen, in dem Sie sich befinden Sehen Sie sich den vollständigen YAML-Code an und können Sie ihn bereinigen.
 Wenn dies nicht hilft, können Sie die Objekt-Lovelace. *. -Konfiguration im Raw-Editor in ioBroker öffnen und dort nachsehen.
 Sie können dieses Objekt auch aus einer Sicherung wiederherstellen. Es enthält die vollständige Konfiguration Ihrer Visualisierung.
 
@@ -462,7 +464,7 @@ Vorerst (20201021.4) wurden folgende Dateien geändert:
 Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 
 1. Gehen Sie zum Verzeichnis ./build.
-2. `git clone https:// github.com / GermanBluefox / home-Assistant-polymer.git` Es ist eine Abzweigung von https://github.com/home-assistant/frontend.git, aber einige Dinge wurden geändert ( siehe die Dateiliste früher).
+2. `git clone https:// github.com / GermanBluefox / home-assistent-polymer.git` es ist eine Abzweigung von https://github.com/home-assistant/frontend.git, aber einige Dinge wurden geändert ( siehe die Dateiliste früher).
 3. "CD Home-Assistant-Polymer"
 4. `git checkout master`
 5. `npm install`
@@ -470,9 +472,46 @@ Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 7. Kopieren Sie alle Dateien von `. / Build / home-Assistant-Polymer / hass_frontend` in`. / Hass_frontend` in diesem Repo
 8. Starten Sie die Aufgabe "Schlucken umbenennen".
 
+## Changelog
+
+<!--
+	PLACEHOLDER for next version:
+	## __WORK IN PROGRESS__
+-->
+### 1.5.0 (2021-02-15)
+* (Garfonso) Changed: defaultTheme and control.theme were in conflict. Now control.theme is set when selecting a new default theme.
+* (Garfonso) Added: control.themeDark to control devices in dark mode, too.
+* (Garfonso) Fixed: Device Icons with authentication now work
+* (Garfonso) Changed: previously only admin user could change the UI. Now also the owner of the configuration object and members of the owner group are allowed to change the UI.
+* (Garfonso) Internal code cleanup / breaking dependency update.
+* (Garfonso) Added: Support for pure humidity sensors.
+* (Garfonso) Added: Support for URL as entity_image
+* (Garfonso) Fixed: Adjust user-name/user-id handling to changes in js-controller 3.2.*
+* (Garfonso) Fixed: default themes do not show as selected
+* (Garfonso) Fixed: Loading themes / custom cards / image-proxy
+
+### 1.4.3 (2021-02-01)
+* (bluefox) Support of lovelace via ioBroker.pro
+
+### 1.4.2 (2021-01-08)
+* (thost96) Fixed: set Theme state type to string instead of text
+
+### 1.4.1 (2021-01-08)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
+
+### 1.3.6 (2021-01-08)
+* (Garfonso) Fixed: do not ignore devices deleted from iot / without smartName
+* (Garfosno) Added: Support location devices with one GPS state in string form
+* (Garfonso) Added: Support for log service, logs frontend errors in server log
+* (Garfonso) Added: Support for service calls with multiple ids, i.e. header switch of elements card
+* (Garfonso) Fixed: unique check for manual entities only checked instance 0. Made them a bit more userfriendly, too.
+* (Garfonso) Added: Possibility to select theme during runtime / select default dark theme
+* (Garfonso) Fixed: hideToolbar did hide tab bar, too
+* (Garfonso) Added: Support for iobroker_say service call (allows tts in mini-mediaplayer card using platform iobroker)
+
 ## License
 
-Copyright 2019-2020, bluefox <dogafox@gmail.com>
+Copyright 2019-2021, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

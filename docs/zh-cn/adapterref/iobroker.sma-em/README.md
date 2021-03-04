@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
+hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
 ---
-![商标](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
+![标识](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
 ![安装数量](http://iobroker.live/badges/sma-em-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sma-em.svg)
@@ -14,20 +14,18 @@ hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 ![NPM](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)
 
 ＃ioBroker.sma-em
-=================
-
 ###信息
-该适配器从SMA电能表和SMA Home Manager 2读取信息。
+该适配器从SMA电能表和SMA家庭管理器2读取信息。
 
 ＃＃＃ 状态
--有功，无功，视在功率的总和计数器
+-有功功率，无功功率，视在功率的总和计数器
 -cosphi，总谐波失真，电压，频率
--详细的有功，无功，视在功率，cosphi，安培数，电压三个阶段
--详细的三个阶段中的每个阶段都有剩余有功功率，无功功率，视在功率，cosphi，安培数，电压
+-关于有功功率，无功功率，视在功率，cosphi，安培数，电压的三个阶段的详细信息
+-详细的3相中的每相都有剩余的有功功率，无功功率，视在功率，cosphi，安培数，电压
 -详细的3个阶段的每个计数器
 -SMA电表的序列号，软件版本，SUSyID
 
-###选项
+＃＃＃ 选项
 -每个单独的相L1 / L2 / L3的选择选项
 -选择总功率和计数器有功功率的非扩展模式
 -针对无功功率，视在功率，cosphi，安培数，电压选择扩展模式（需要更多计算能力）
@@ -38,17 +36,19 @@ hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 -L3-第三阶段
 
 ###状态结构
-例：
+例子：
 
-pregard P有功功率/关于qregard Q无功功率/关于regard S-视在功率/关于
+pregard P有功功率/关于qregard Q无功功率/关于regard S表观功率/关于
 
-p剩余p有功功率/剩余q剩余q求功功率/剩余s视在功率/剩余
+p剩余p有功功率/剩余q剩余q求功功率/剩余s剩余视在功率/剩余
 
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __正在进行的工程__->
 
 ## Changelog
+### 0.6.3 (2021-03-04)
+* (TGuybrush) The adapter binds now to all external IPv4 addresses.
 
 ### 0.6.1-beta.0 (2021-01-18)
 * (TGuybrush) Bug fixes

@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis/README.md
 title: 可视化
-hash: s0IXJycIVFU+hFCz4cR2pK//ZI/Wcmkp5i2cJae/M5k=
+hash: FNj0GFQMdP+2EQnt3r9YurmvL4m/NY9Iy4yigkqRIUs=
 ---
-![商标](../../../en/adapterref/iobroker.vis/admin/vis.png)
+![标识](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
 ![安装数量](http://iobroker.live/badges/vis-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis.svg)
@@ -21,12 +21,12 @@ ioBroker平台的Web可视化。
 [在线演示](https://iobroker.click/)
 
 ##对象绑定
-通常，大多数小部件都具有ObjectID属性。并且此属性可以与对象ID的某些值绑定。
+通常，大多数小部件都具有ObjectID属性，并且此属性可以与对象ID的某些值绑定。
 但是还有另一种选择如何将窗口小部件的* any *属性绑定到某个ObjectID。
 
-只需写入§§JJJJJ_0_0§§属性，它将绑定到该对象的值（不在编辑模式下）。
-如果您要使用特殊格式，甚至可以使用它进行一些简单的操作，例如乘法或格式化。
-Patten具有以下格式：
+只需写入属性```{object.id}```§中，它将绑定到该对象的值（不在编辑模式下）。
+如果您使用特殊格式，甚至可以使用它进行一些简单的操作，例如乘法或格式化。
+彭定康的格式如下：
 
 ```
 {objectID;operation1;operation2;...}
@@ -46,8 +46,8 @@ Patten具有以下格式：
 -`HEX`-与十六进制相同，但大写。
 -`HEX2`-与hex2相同，但大写。
 -`date`-根据给定的格式格式化日期。格式与[iobroker.javascript]（https://github.com/iobroker/iobroker.javascript/blob/master/README.md#formatdate）中的格式相同
--`min（N）`-如果值小于N，则取N，否则取N
--`max（M）`-如果值大于M，则取M，否则取M
+-`min（N）`-如果值小于N，则取N，否则取值
+-`max（M）`-如果值大于M，则取M，否则取值
 -`sqrt`-平方根
 -`pow（n）`-N的幂。
 -`pow`-2的幂。
@@ -57,7 +57,7 @@ Patten具有以下格式：
 -`formatValue（decimals）`-根据系统设置格式化值并使用小数
 -`date（format）`-将值格式化为日期。格式如下：“ YYYY-MM-DD hh：mm：ss.sss”
 -`momentDate（format，useTodayOrYesterday）`-使用Moment.js将值格式化为日期。 [必须根据moment.js库输入批准的格式]（https://momentjs.com/docs/#/displaying/format/）。使用`useTodayOrYesterday = true`时，todayjs格式`ddd` /`dddd`被今天/昨天覆盖。
--`array（element1，element2 [，element3，element4]）`-返回索引的元素。例如：`{id.ack; array（ack为假，ack为真）}`
+-`array（element1，element2 [，element3，element4]）`-返回索引的元素。例如：`{id.ack; array（ack为假，ack为真）}}
 
 您可以在任何文本中使用此模式，例如
 
@@ -83,7 +83,7 @@ Last change: {objectRed.lc;date(hh:mm)}
 Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(h*h + w*w))}
 ```
 
-`{h:height;w:width;h*w}`将被解释为功能：
+`{h:height;w:width;h*w}`将被解释为以下功能：
 
 ```
 value = (function () {
@@ -113,7 +113,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 *`instance`-浏览器实例
 *`login`-是否需要登录（例如显示/隐藏注销按钮）
 
-注意：要在计算中使用“：”（例如，在字符串公式中），请使用“ ::”。
+注意：要在计算中使用“：”（例如，在字符串公式中），请改用“ ::”。
 
 **请记住**，样式定义将被解释为绑定，因此请使用`{{style: value}}`或仅
 
@@ -126,27 +126,27 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 为了那个原因。
 
 ##过滤器
-要在一个视图上可视化所有小部件的数量，可以使用过滤器减少视图上同时显示的小部件的数量。
+要在一个视图上可视化窗口小部件的总数，可以使用过滤器减少视图上同时显示的窗口小部件的数量。
 
 每个窗口小部件都有一个字段`filter`。如果您将其设置为某个值，例如`light`，因此您可以使用其他小部件`(bars - filters, filter - dropdown)`来控制哪个过滤器实际处于活动状态。
 
 ##控制界面
 Vis创建3个变量：
 
--`control.instance`-如果必须控制每个浏览器，则此处应编写浏览器实例或FFFFFFFF。
+-`control.instance`-如果必须控制每个浏览器，则应在此处编写浏览器实例或FFFFFFFF。
 -`control.data`-命令参数。请参阅特定的命令描述。
 -`control.command`-命令名称。编写此变量将触发命令。这意味着在写入命令之前，“实例”和“数据”必须与数据一起准备。
 
 命令：
 
-*`alert`-显示可见的警报窗口。 “ control.data”具有以下格式“ message; title; jquery-icon”。标题和jquery-icon是可选的。可以在[here]（http://jqueryui.com/themeroller/）中找到图标名称。要显示图标“ ui-icon-info”，请编写“ Message ;; info`”。
+*`alert`-在可见中显示警报窗口。 “ control.data”具有以下格式“ message; title; jquery-icon”。标题和jquery-icon是可选的。可以在[here]（http://jqueryui.com/themeroller/）中找到图标名称。要显示图标“ ui-icon-info”，请写“ Message ;; info`”。
 *`changeView`-切换到所需的视图。 “ control.data”必须具有视图名称。您也可以将项目名称指定为“项目/视图”。默认项目为“ main”。
-*`refresh`-重新加载，例如在将项目更改为在所有浏览器上重新加载后。
+*`refresh`-重新加载vis，例如在将项目更改为在所有浏览器上重新加载后。
 *`reload`-与刷新相同。
 *`dialog`-显示对话框窗口。对话框必须存在于视图中。之一：
 
     -`static-HTML-对话框`，
-    -静态-图标-对话框，
+    -`static-图标-对话框`，
     -`container-HTML-在jqui对话框中查看，
     -`container-ext cmd-在jqui对话框中查看，
     -`container-Icon-在jqui对话框中查看，
@@ -158,12 +158,12 @@ Vis创建3个变量：
 *`popup`-打开一个新的浏览器窗口。链接必须在`control.data`中指定，例如http://google.com
 *`playSound`-播放声音文件。文件的链接在`control.data`中指定，例如http://www.modular-planet.de/fx/marsians/Marsiansrev.mp3。
 
-  您可以在vis中上传自己的文件，并使其像`/vis.0/main/img/myFile.mp3`那样播放。
+  您可以在vis中上传自己的文件，并使其像`/vis.0/main/img/myFile.mp3`一样播放。
 
-如果用户更改视图或在开始时，变量将由vis填充
+如果用户更改视图或在开始时，变量将由vis填充。
 
 -`control.instance`：浏览器实例和`ack = true`
--`control.data`：以`project / view`格式的项目和视图名称，例如`main / view`（和`ack = true`）
+-`control.data`：以`project / view`形式的项目和视图名称，例如`main / view`（和`ack = true`）
 -`control.command`：`changedView`和`ack = true`
 
 您可以将JSON字符串或对象作为`{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}`写入control.command中。在这种情况下，实例和数据将从JSON对象获取。
@@ -175,11 +175,11 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ```
 
 ＃＃ 默认视图
-您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，用于显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
+您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，可以显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
 
 此外，您可以定义是否必须将此视图用作此分辨率的默认视图。
 
-因此，每次调用`index.html`（无`#viewName`）时，都会打开最适合此分辨率视图的视图。
+因此，每次调用`index.html`（不包含`#viewName`）时，都将打开最适合此分辨率视图的视图。
 如果只有一个视图带有*“ Default” *标志，那么将独立于屏幕分辨率或方向打开此视图。
 
 例如。您可以创建两个视图“ Landscape-Mobile”和“ Portrait-Mobile”，并且当您更改方向或屏幕尺寸时，这两个视图将自动切换。
@@ -192,20 +192,30 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 您可以在菜单“设置...”中对其进行配置。如果将时间间隔设置为“从不”，则将永远不会重新加载该页面。
 
 ###重新连接间隔
-设置断开连接之间的尝试间隔时间。如果设置为2秒，它将尝试每2秒建立一次连接。
+设置连接尝试之间的间隔（如果断开连接）。如果设置为2秒，它将尝试每2秒建立一次连接。
 
 ###黑暗重新连接屏幕
 有时（夜间），需要具有黑暗的加载屏幕。使用此选项可以进行设置。
 
-请注意，这些设置仅对重新连接有效，而对第一次连接无效。
+请注意，这些设置仅对重新连接有效，而对首次连接无效。
 
-![黑暗](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
+![黑暗的](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
 
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __正在进行的工程__->
 
 ## Changelog
+### 1.3.8 (2021-03-03)
+* (bluefox) fix play sounds on iOS Safari an android
+* (Scrounger) visEditInspect: format dimension added
+* (foxriver76) Replace travis and appveyor by the github actions
+* (Excodibur) Allow resources to be loaded as blob
+* (Excodibur ) Allow resources to be loaded as blob
+
+### 1.3.7 (2021-01-20)
+* (Scrounger) Bug Fixed - Binding in JSON string
+
 ### 1.3.6 (2020-12-13)
 * (twonky4) Corrected: old browser issue
 * (rbaranga) Corrected: play sounds on iOS Safari
@@ -479,7 +489,7 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 * (bluefox) change security settings
 
 ## License
- Copyright (c) 2013-2020 bluefox, https://github.com/GermanBluefox <dogafox@gmail.com>,
+ Copyright (c) 2013-2021 bluefox, https://github.com/GermanBluefox <dogafox@gmail.com>,
  
  Copyright (c) 2013-2014 hobbyquaker, https://github.com/hobbyquaker <hobbyquaker@gmail.com>,
  

@@ -27,6 +27,9 @@ You could also edit the update frequencies of live, daily and livetime data.
 This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers. For more details and for informations on how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
+### 1.1.6 (02.03.2020)
+* (HombachC) bumped dependencies; changes for new year 2021
+
 ### 1.1.5 (14.12.2020)
 * (HombachC) bumped dependencies; added tests for node.js 15
 

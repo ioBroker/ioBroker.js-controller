@@ -26,6 +26,9 @@ Some kind of WAF/proxy/entry Server should be put before ioBroker. (e.g. nginx i
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) prevent warnings with js-controller 3.2
+
 ### 1.0.0 (2021-02-26)
 * (Apollon77) js-controller 2.0 is now needed at least
 * (allesgutewarweg) Add more JSON decoded states

@@ -1,14 +1,13 @@
-![Logo](admin/mydlink.png)
+---
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.mydlink.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.mydlink.svg
+BADGE-Number of Installations (latest): http://iobroker.live/badges/mydlink-installed.svg
+BADGE-Number of Installations (stable): http://iobroker.live/badges/mydlink-stable.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/iobroker-community-adapters/ioBroker.mydlink/badge.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.mydlink.png?downloads=true
+---
+![Logo](../../admin/mydlink.png)
 # ioBroker.mydlink
-
-
-![Number of Installations](http://iobroker.live/badges/mydlink-installed.svg) ![Number of Installations](http://iobroker.live/badges/mydlink-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
-[![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink)
-
-[![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)](https://nodei.co/npm/iobroker.mydlink/) 
-
-
 
 MyDlink Adapter for ioBroker. 
 ------------------------------------------------------------------------------
@@ -22,9 +21,9 @@ Currently tested devices:
 
 | Model | Type  | Image |
 | :---: | :---: | :---: |
-| DSP-W215 | Smart Plug (socket, temperature, current) **Needs polling** | ![Image](docs/media/DSP_W215.png) |
-| DSP-W115 | Smart Plug (socket) | ![Image](docs/media/DSP_W115.png) | 
-| DCH-S150 | Motion Detector (last motion detected) **Needs polling** | ![Image](docs/media/DCH_S150.png) |
+| DSP-W215 | Smart Plug (socket, temperature, current) **Needs polling** | ![Image](media/DSP_W215.png) |
+| DSP-W115 | Smart Plug (socket) | ![Image](media/DSP_W115.png) | 
+| DCH-S150 | Motion Detector (last motion detected) **Needs polling** | ![Image](media/DCH_S150.png) |
 
 The adapter needs to poll some devices. Newer ones do send push messages, which is now supported. Sensor readings and motion detection will be 
 delayed by polling interval, if they need to be polled (can be set in config).
@@ -44,17 +43,22 @@ The adapter does not interfere with the use of the app.
 
 ## Setup of DSP-W115
 
-And other *newer* devices use a completely different protocol and a different setup. If you remove the devices from the mydlink app,
-you can just use them as the other devices and enter your usual PIN. 
+DSP-W115 and other *newer* devices use a completely different protocol and a different setup. There are two ways to use them.
 
-If you want to keep using the app, you have to put the device into factory mode, following this procedure:
-1. Reset device into recovery mode by holding the wps/reset button during boot until it starts blinking **red** instead of orange.
-2. Now a telnet deamon is running, connect to the device wifi
-3. Run `telnet 192.168.0.20` and login with `admin:123456` (or use putty, don't forget to select `telnet` instead of `ssh`).
-4. Run `nvram_set FactoryMode 1`
-5. Run `reboot; exit;` to reboot the device.
-
-Now you should enter `TELNET` as Pin and the adapter will retrieve the required data from the device itself.
+1. Use App and Adapter at the same time:
+  If you want to keep using the app, you have to put the device into factory mode, following this procedure:
+  1. Reset device into recovery mode by holding the wps/reset button during boot until it starts blinking **red** instead of orange.
+  2. Now a telnet deamon is running, connect to the device wifi
+  3. Run `telnet 192.168.0.20` and login with `admin:123456` (or use putty, don't forget to select `telnet` instead of `ssh`).
+  4. Run `nvram_set FactoryMode 1`
+  5. Run `reboot; exit;` to reboot the device.
+  6. Now you should enter `TELNET` as Pin, and the adapter will retrieve the required data from the device itself.
+2. Don't want to use the App
+  1. Remove the device from the app, this will reset the device
+  2. Start setup in the app again and configure your Wifi on the device.
+  3. Now the device will reoobt and connect to your Wifi. During that time **close** the app, make sure it is really closed.
+  4. Now the device should be connected to your Wifi and not connected to the app, so that the PIN from the sticker will work in the adapter.
+  (If the device does not connect to your wifi or the device does not accept login via the PIN please try again. Press the button on the device until it lights up red in order to reset.
 
 ## Changelog
 <!-- 
@@ -62,6 +66,9 @@ Now you should enter `TELNET` as Pin and the adapter will retrieve the required 
 	### __WORK IN PROGRESS__
 	npm install @alcalzone/release-script
 -->
+### __WORK IN PROGRESS__
+* added: `telnet` token is now case insensitive
+
 ### 1.1.7 (2020-10-09)
 * fixed: prevent error message with new mydlink plugs on switch
 
@@ -189,4 +196,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-

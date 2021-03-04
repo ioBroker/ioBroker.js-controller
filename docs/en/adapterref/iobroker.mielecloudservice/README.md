@@ -32,137 +32,13 @@ To install, do the following:
 4. Add your Miele-Devices to the App (if not added automatically)
 6. Fill in the client_secret and client_id received from Miele-developer Team and account-id and password from the App.
 
-## Changelog
-### 3.0.0 (2021-02-18)
-*  (grizzelbee) New: BREAKING CHANGE: Making use of build-in password de-/encryption. This raises the need to re-enter your passwords again, because the old ones can't be decrypted anymore.
-*  (grizzelbee) New: [70](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/70) Implements Miele API 1.0.4
-*  (grizzelbee) New: [64](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/64) Introduces data point estimatedFinishingTime
-*  (grizzelbee) New: [54](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/54) Poll interval can now freely be selected in seconds and minutes
-*  (grizzelbee) Upd: [73](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/73) BREAKING CHANGE: Removed white-spaces from any ID in device tree. This creates completely new device trees. So please delete the old ones.  
-*  (grizzelbee) Upd: removed david-dm badge
-*  (grizzelbee) Upd: updated dependencies
-*  (grizzelbee) Fix: added passwords to encryptedNative
-*  (grizzelbee) Fix: added passwords to protectedNative
-*  (grizzelbee) Fix: [63](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/63) added missing info.connection object to io-package
-*  (grizzelbee) Fix: [63](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/63) Fixed new Warnings introduced with js-controller 3.2
-*  (grizzelbee) Fix: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) Light-Actions should work now
+## Controlling your devices
+All currently supported and documented Actions for all devices are implemented (API V1.0.2).
+> Please remember that Actions will only work if you put your device into the appropriate state (e.g. Mobile Control, powerOn, ...).
+Please refer to [Miele-Documentation](#documentation) for more Information on actions.
 
-### 2.0.3 (2020-09-15)
-* (grizzelbee) Upd: Updated country list in config dialog
-* (grizzelbee) New: Some more debug code
-
-### 2.0.2 (2020-09-15)
-* (grizzelbee) New: Added some debug Code to find an Error
-* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
-
-### 2.0.1 (2020-09-14)
-* (grizzelbee) New: Added some debug Code to find an Error
-* (grizzelbee) Fix: fixed error on logout while invalidating token
-
-### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
-Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
-Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.
-* (grizzelbee) Change: New Icon
-* (grizzelbee) Fix: Number-datapoints are no longer created as strings due to their unit. They are correct numbers with units now.
-* (grizzelbee) Fix: Unit °Celsius is now shown as °C - not longer °Celsius
-* (grizzelbee) New: Introduced support for °Fahrenheit
-* (grizzelbee) New: Introduced support for new Value "plateStep" for Hobs.
-* (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens. 
-* (grizzelbee) Fix: Datapoints with invalid values (null/-32768) are no longer created.
-
-### 1.2.4 (2020-06-09)
-* (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
-
-### 1.2.3 (2020-06-07)
-* (grizzelbee) Upd: fixed snyk badge
-* (grizzelbee) Upd: Improved error handling 
-
-### 1.2.2 (2020-05-23)
-* (grizzelbee) Upd: removed node 8 from testing on travis.com 
-* (grizzelbee) Fix: signalActionRequired should work better now 
-* (grizzelbee) Upd: Updated documentation 
-* (grizzelbee) Upd: Improved error handling in function APISendRequest 
-* (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
-
-### 1.2.1 (2020-04-22)
-* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumble dryers, washer dryer and dishwashers. **Doesn't work perfectly currently.**  
-* (grizzelbee) Upd: Updated Documentation 
-* (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
-
-### 1.2.0 (2020-04-18)
-* (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
-* (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
-* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios** 
-* (grizzelbee) Change: Made functions communicating with API asynchronous 
-  
-### 1.1.0 (2020-03-07)
-* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
-               Please remember that Actions will only work if you put your device into the appropriate state (e.g. Mobile Control)
-               please refer to [Miele-Documentation](#documentation) for more Information on actions. 
-  
-### 1.0.5 (2020-02-14)
-* (grizzelbee) removed node-schedule as a dependency
-* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
-               to schedule with less than a minute in the future
-
-### 1.0.4 (2020-02-12)
-* (grizzelbee) removed unneeded setTimeout from main
-* (grizzelbee) Clearing scheduler on unload of adapter
-* (grizzelbee) Minor updates and fixed typos in Readme
-
-### 1.0.3 (2020-02-06)
-* (grizzelbee) removed an overseen logging of Passwords
-* (grizzelbee) Fixed createTemperatureDatapoint to work with less than 3 values delivered from API
-* (grizzelbee) Added some documentation
-* (grizzelbee) Started implementation of DeviceActions 
-
-
-### 1.0.2 (2020-02-05)
-* (grizzelbee) removed any logging of Passwords
-* (grizzelbee) Fixed bug in config interface introduced during password encryption that config values aren't loaded properly
-
-### 1.0.1 (2020-02-04)
-* (grizzelbee) Fixes in environment for getting adapter into the Repo
-* (grizzelbee) Passwords are stored encrypted now
-
-### 1.0.0 (2020-02-03)
-* (grizzelbee) renamed to MieleCloudService to get the ability to publish; the old Name is still blocked by hash99
-* (grizzelbee) Rewritten adapter from scratch - therefore it's incompatible with prior versions and needs to be installed freshly. 
-* (grizzelbee) Fix: fixed all build-errors
-* (grizzelbee) Fix: Fixed "NRefreshToken is not a function"-Bug 
-* (grizzelbee) Chg: removed Push-API checkbox (maybe introduced newly when API supports this)
-* (grizzelbee) Chg: New Icon
-* (grizzelbee) New: added support for non-german Miele-Accounts (ALL should be included)
-* (grizzelbee) Complete new layout of datapoints
-* (grizzelbee) Devicetypes are grouped now 
-
-### 0.9.1 (2019-07-26)
-* (grizzelbee) Fix: Fixed small bug introduced in V0.9.0 throwing an exception in debugging code
-
-### 0.9.0 (2019-07-26)
-* (grizzelbee) Upd: New versioning due to completeness and stability of the adapter (about 90%)
-* (grizzelbee) New: make poll interval configurable  (currently 1,2,3,4,5,7,10,15 Minutes)
-* (grizzelbee) Fix: fixed ESLint config
-* (grizzelbee) Upd: Changed order of config fields in UI
-* (grizzelbee) New: Set 5 Minutes poll interval and english response language as default to get initial values 
-* (grizzelbee) New: Parent-Datapoint of timevalues will be used to get a pretty readable time in the format h:mm. The deeper datapoints 0 and 1 will still be updated, but his will be removed in a future version to reduce workload.  
-
-### 0.0.5 (2019-07-25)
-* (grizzelbee) Upd: some code maintenance
-* (grizzelbee) New: added reply-language to config
-                    - Miele API is currently able to reply in German or English, now you can choose.
-* (grizzelbee) New: created new Icon
-* (grizzelbee) Fix: fixed translation issues and translated adapter UI using gulp
-* (grizzelbee) Upd: Made changes to travis requested by apollon77
-
-### 0.0.4
-* (hash99) add devices configuration
-
-### 0.0.3
-* (hash99) adapter conform
-
-### 0.0.1
-* (hash99) initial release
+## Known Issues
+* Action ambientLight introduced with API 1.0.4 is not implemented yet
 
 ## Documentation
 Please mainly refer to the main API documentation published by Miele
@@ -285,6 +161,155 @@ Here is a list of what these raw values stand for:
 |514 | "Trocknen" | Washer Dryer |
 |519 | "Abkühlen" | Washer Dryer |
 |532 | "Flusen ausspülen" | Washer Dryer |
+
+## Changelog
+### 3.0.2 (2021-03-03)
+*  (grizzelbee) Fix: [79](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/79) When a devices serial is missing, the identNumber is assigned instead.
+*  (grizzelbee) Upd: Changed folder name cooktops to hobs since this is the more common name
+
+### 3.0.1 (2021-02-25)
+> *Hint:* Action_Information and Action_Status objects are created on first action execution and contain infos to the last executed action.
+> Please take care of notes regarding [Controlling your devices](#Controlling your devices).
+*  (grizzelbee) Upd: Improved logging in some parts - objects get stringified.
+*  (grizzelbee) Fix: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) Actions are working again
+*  (grizzelbee) Upd: Actions are tested before sending whether they are permitted in current device state
+*  (grizzelbee) Upd: estimatedEndTime doesn't show seconds anymore
+*  (grizzelbee) Upd: Improved documentation
+*  (grizzelbee) Upd: removed unused function decrypt
+*  (grizzelbee) Upd: removed superfluent parameters
+
+
+### 3.0.0 (2021-02-18)
+> Hint: ecoFeedback objects are created on the first run of the device. This allows to only create them, when they contain data.
+*  (grizzelbee) New: BREAKING CHANGE: Making use of build-in password de-/encryption. This raises the need to re-enter your passwords again, because the old ones can't be decrypted anymore.
+*  (grizzelbee) New: [70](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/70) Implements Miele API 1.0.4
+*  (grizzelbee) New: [64](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/64) Introduces data point estimatedFinishingTime
+*  (grizzelbee) New: [54](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/54) Poll interval can now freely be selected in seconds and minutes
+*  (grizzelbee) Upd: [73](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/73) BREAKING CHANGE: Removed white-spaces from any ID in device tree. This creates completely new device trees. So please delete the old ones.
+*  (grizzelbee) Upd: removed david-dm badge
+*  (grizzelbee) Upd: updated dependencies
+*  (grizzelbee) Fix: added passwords to encryptedNative
+*  (grizzelbee) Fix: added passwords to protectedNative
+*  (grizzelbee) Fix: [63](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/63) added missing info.connection object to io-package
+*  (grizzelbee) Fix: [63](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/63) Fixed new Warnings introduced with js-controller 3.2
+*  (grizzelbee) Fix: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) Light-Actions should work now
+
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
+### 2.0.1 (2020-09-14)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on logout while invalidating token
+
+### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
+Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
+Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.
+* (grizzelbee) Change: New Icon
+* (grizzelbee) Fix: Number-datapoints are no longer created as strings due to their unit. They are correct numbers with units now.
+* (grizzelbee) Fix: Unit °Celsius is now shown as °C - not longer °Celsius
+* (grizzelbee) New: Introduced support for °Fahrenheit
+* (grizzelbee) New: Introduced support for new Value "plateStep" for Hobs.
+* (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens.
+* (grizzelbee) Fix: Datapoints with invalid values (null/-32768) are no longer created.
+
+### 1.2.4 (2020-06-09)
+* (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
+
+### 1.2.3 (2020-06-07)
+* (grizzelbee) Upd: fixed snyk badge
+* (grizzelbee) Upd: Improved error handling
+
+### 1.2.2 (2020-05-23)
+* (grizzelbee) Upd: removed node 8 from testing on travis.com
+* (grizzelbee) Fix: signalActionRequired should work better now
+* (grizzelbee) Upd: Updated documentation
+* (grizzelbee) Upd: Improved error handling in function APISendRequest
+* (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
+
+### 1.2.1 (2020-04-22)
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumble dryers, washer dryer and dishwashers. **Doesn't work perfectly currently.**
+* (grizzelbee) Upd: Updated Documentation
+* (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
+
+### 1.2.0 (2020-04-18)
+* (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
+* (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
+* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios**
+* (grizzelbee) Change: Made functions communicating with API asynchronous
+
+### 1.1.0 (2020-03-07)
+* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices.
+> Please remember that Actions will only work if you put your device into the appropriate state (e.g. Mobile Control)
+please refer to [Miele-Documentation](#documentation) for more Information on actions.
+
+### 1.0.5 (2020-02-14)
+* (grizzelbee) removed node-schedule as a dependency
+* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity
+  to schedule with less than a minute in the future
+
+### 1.0.4 (2020-02-12)
+* (grizzelbee) removed unneeded setTimeout from main
+* (grizzelbee) Clearing scheduler on unload of adapter
+* (grizzelbee) Minor updates and fixed typos in Readme
+
+### 1.0.3 (2020-02-06)
+* (grizzelbee) removed an overseen logging of Passwords
+* (grizzelbee) Fixed createTemperatureDatapoint to work with less than 3 values delivered from API
+* (grizzelbee) Added some documentation
+* (grizzelbee) Started implementation of DeviceActions
+
+
+### 1.0.2 (2020-02-05)
+* (grizzelbee) removed any logging of Passwords
+* (grizzelbee) Fixed bug in config interface introduced during password encryption that config values aren't loaded properly
+
+### 1.0.1 (2020-02-04)
+* (grizzelbee) Fixes in environment for getting adapter into the Repo
+* (grizzelbee) Passwords are stored encrypted now
+
+### 1.0.0 (2020-02-03)
+* (grizzelbee) renamed to MieleCloudService to get the ability to publish; the old Name is still blocked by hash99
+* (grizzelbee) Rewritten adapter from scratch - therefore it's incompatible with prior versions and needs to be installed freshly.
+* (grizzelbee) Fix: fixed all build-errors
+* (grizzelbee) Fix: Fixed "NRefreshToken is not a function"-Bug
+* (grizzelbee) Chg: removed Push-API checkbox (maybe introduced newly when API supports this)
+* (grizzelbee) Chg: New Icon
+* (grizzelbee) New: added support for non-german Miele-Accounts (ALL should be included)
+* (grizzelbee) Complete new layout of datapoints
+* (grizzelbee) Devicetypes are grouped now
+
+### 0.9.1 (2019-07-26)
+* (grizzelbee) Fix: Fixed small bug introduced in V0.9.0 throwing an exception in debugging code
+
+### 0.9.0 (2019-07-26)
+* (grizzelbee) Upd: New versioning due to completeness and stability of the adapter (about 90%)
+* (grizzelbee) New: make poll interval configurable  (currently 1,2,3,4,5,7,10,15 Minutes)
+* (grizzelbee) Fix: fixed ESLint config
+* (grizzelbee) Upd: Changed order of config fields in UI
+* (grizzelbee) New: Set 5 Minutes poll interval and english response language as default to get initial values
+* (grizzelbee) New: Parent-Datapoint of timevalues will be used to get a pretty readable time in the format h:mm. The deeper datapoints 0 and 1 will still be updated, but his will be removed in a future version to reduce workload.
+
+### 0.0.5 (2019-07-25)
+* (grizzelbee) Upd: some code maintenance
+* (grizzelbee) New: added reply-language to config
+  - Miele API is currently able to reply in German or English, now you can choose.
+* (grizzelbee) New: created new Icon
+* (grizzelbee) Fix: fixed translation issues and translated adapter UI using gulp
+* (grizzelbee) Upd: Made changes to travis requested by apollon77
+
+### 0.0.4
+* (hash99) add devices configuration
+
+### 0.0.3
+* (hash99) adapter conform
+
+### 0.0.1
+* (hash99) initial release
 
 ## License
 The MIT License (MIT)

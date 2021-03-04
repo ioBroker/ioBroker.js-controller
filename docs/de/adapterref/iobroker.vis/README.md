@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis/README.md
 title: Visualisierung
-hash: s0IXJycIVFU+hFCz4cR2pK//ZI/Wcmkp5i2cJae/M5k=
+hash: FNj0GFQMdP+2EQnt3r9YurmvL4m/NY9Iy4yigkqRIUs=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -16,16 +16,16 @@ hash: s0IXJycIVFU+hFCz4cR2pK//ZI/Wcmkp5i2cJae/M5k=
 WEB-Visualisierung für die ioBroker-Plattform.
 
 ## Installation & Dokumentation
-![Demo-Oberfläche](img/user0.png) ![Demo-Oberfläche](../../../en/adapterref/iobroker.vis/img/user7.png)
+![Demo-Schnittstelle](img/user0.png) ![Demo-Schnittstelle](../../../en/adapterref/iobroker.vis/img/user7.png)
 
 [Online-Demos](https://iobroker.click/)
 
 ## Bindungen von Objekten
-Normalerweise haben die meisten Widgets das ObjectID-Attribut. Und dieses Attribut kann mit einem Wert der Objekt-ID verknüpft werden.
+Normalerweise haben die meisten Widgets das ObjectID-Attribut, und dieses Attribut kann mit einem Wert der Objekt-ID verknüpft werden.
 Es gibt jedoch eine andere Option, wie *jedes* Attribut des Widgets an eine ObjectID gebunden werden kann.
 
 Schreiben Sie einfach in das Attribut ```{object.id}``` und es wird (nicht im Bearbeitungsmodus) an den Wert dieses Objekts gebunden.
-Wenn Sie ein spezielles Format verwenden, können Sie damit sogar einige einfache Vorgänge ausführen, z. Multiplizieren oder Formatieren.
+Wenn Sie das spezielle Format verwenden, können Sie damit sogar einige einfache Vorgänge ausführen, z. Multiplizieren oder Formatieren.
 Patten hat folgendes Format:
 
 ```
@@ -43,11 +43,11 @@ Folgende Operationen werden unterstützt:
 - `round (N)` - rundet den Wert mit N Stellen nach dem Punkt, z. 34,678; Runde (1) => 34,7
 - `hex` - Wert in Hexadezimalwert umwandeln. Alle Buchstaben sind in Kleinbuchstaben geschrieben.
 - `hex2` - Wert in Hexadezimalwert umwandeln. Alle Buchstaben sind in Kleinbuchstaben geschrieben. Wenn der Wert kleiner als 16 ist, wird die führende Null addiert.
-- `HEX` - wie Sechseck, jedoch im oberen Gehäuse.
-- `HEX2` - wie hex2, jedoch im oberen Gehäuse.
+- `HEX` - wie Hex, jedoch in Großbuchstaben.
+- `HEX2` - wie hex2, jedoch in Großbuchstaben.
 - `Datum` - Format Datum gemäß gegebenem Format. Das Format ist das gleiche wie in [iobroker.javascript] (https://github.com/iobroker/iobroker.javascript/blob/master/README.md#formatdate).
-- `min (N)` - Wenn der Wert kleiner als N ist, nehmen Sie den N-Wert
-- `max (M)` - Wenn der Wert größer als M ist, nehmen Sie den M-Wert
+- `min (N)` - Wenn der Wert kleiner als N ist, nimm den Wert N, sonst
+- `max (M)` - Wenn der Wert größer als M ist, nehmen Sie den Wert M, sonst
 - `sqrt` - Quadratwurzel
 - `pow (n)` - Potenz von N.
 - `pow` - Potenz von 2.
@@ -57,7 +57,7 @@ Folgende Operationen werden unterstützt:
 - `formatValue (Dezimalstellen)` - Formatieren Sie den Wert gemäß den Systemeinstellungen und verwenden Sie Dezimalstellen
 - `Datum (Format)` - Formatwert als Datum. Das Format lautet wie folgt: "JJJJ-MM-TT hh: mm: ss.sss"
 - `momentDate (format, useTodayOrYesterday)` - Formatieren Sie den Wert als Datum mit Moment.js. [Genehmigte Formate müssen gemäß der Bibliothek moment.js eingegeben werden] (https://momentjs.com/docs/#/displaying/format/). Mit `useTodayOrYesterday = true` wird das momentjs-Format` ddd` /` dddd` mit today / gestern überschrieben
-- `array (element1, element2 [, element3, element4])` - gibt das Element des Index zurück. Beispiel: `{id.ack; array (ack ist falsch, ack ist wahr)}`
+- `array (element1, element2 [, element3, element4])` - gibt das Element des Index zurück. Beispiel: `{id.ack; Array (ack ist falsch, ack ist wahr)}`
 
 Sie können dieses Muster in jedem Text verwenden, wie z
 
@@ -77,7 +77,7 @@ Um den Zeitstempel des Objekts anzuzeigen, schreiben Sie `.ts` oder `.lc` (für 
 Last change: {objectRed.lc;date(hh:mm)}
 ```
 
-Es gibt eine andere Möglichkeit, Muster zu schreiben:
+Es gibt eine andere Möglichkeit, das Muster zu schreiben:
 
 ```
 Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(h*h + w*w))}
@@ -93,7 +93,7 @@ value = (function () {
 })();
 ```
 
-Sie können *beliebige* Javascript-Funktionen verwenden. Argumente müssen mit ':' definiert werden. Andernfalls wird es als Formel interpretiert.
+Sie können *beliebige* Javascript-Funktionen verwenden. Argumente müssen mit ':' definiert werden. Andernfalls wird sie als Formel interpretiert.
 
 Achten Sie auf Typen. Alle von ihnen als Zeichenfolgen definiert. Um sicherzugehen, dass dieser Wert als Zahl behandelt wird, verwenden Sie die Funktion parseFloat.
 
@@ -135,13 +135,13 @@ Vis erstellt 3 Variablen:
 
 - `control.instance` - Hier sollte die Browserinstanz geschrieben werden oder FFFFFFFF, wenn jeder Browser gesteuert werden muss.
 - `control.data` - Parameter für den Befehl. Siehe spezifische Befehlsbeschreibung.
-- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen "Instanz" und "Daten" mit Daten vorbereitet werden.
+- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen die "Instanz" und "Daten" mit Daten vorbereitet werden.
 
 Befehle:
 
-* `alert` - Alarmfenster in vis anzeigen. "control.data" hat das folgende Format "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
-* `changeView` - wechselt zur gewünschten Ansicht. "control.data" muss den Namen der Ansicht haben. Sie können den Projektnamen auch als "Projekt / Ansicht" angeben. Das Standardprojekt ist "main".
-* `refresh` - vis neu laden, zum Beispiel nachdem das Projekt geändert wurde, um in allen Browsern neu zu laden.
+* `alert` - Alarmfenster im Vis anzeigen. "control.data" hat das folgende Format "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
+* `changeView` - wechselt zur gewünschten Ansicht. "control.data" muss den Namen view haben. Sie können den Projektnamen auch als "Projekt / Ansicht" angeben. Das Standardprojekt ist "main".
+* `refresh` - lädt das vis neu, beispielsweise nachdem das Projekt geändert wurde, um es in allen Browsern neu zu laden.
 * `reload` - wie aktualisieren.
 * `dialog` - Dialogfenster anzeigen. Der Dialog muss in der Ansicht vorhanden sein. Einer von:
 
@@ -160,13 +160,13 @@ Befehle:
 
   Sie können Ihre eigene Datei in vis hochladen und wie beispielsweise `/vis.0/main/img/myFile.mp3` abspielen lassen.
 
-Wenn der Benutzer die Ansicht ändert oder zu Beginn, werden die Variablen von vis mit gefüllt
+Wenn der Benutzer die Ansicht ändert oder zu Beginn, werden die Variablen vom vis mit gefüllt
 
 - `control.instance`: Browser-Instanz und` ack = true`
 - `control.data`: Projekt- und Ansichtsname in der Form` project / view`, z. `main / view` (und` ack = true`)
-- `control.command`:` changedView` und `ack = true`
+- `control.command`:` definedView` und `ack = true`
 
-Sie können den JSON-String oder das Objekt in control.command als `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
+Sie können den JSON-String oder das Objekt als Befehl in `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` in control.command schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
 
 Beispiel für einen Javascript-Adapter:
 
@@ -177,18 +177,18 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ## Standardansicht
 Sie können für jede Ansicht die gewünschte Auflösung definieren (Menü => Extras => Auflösung). Dies ist nur der visuelle Rand im Bearbeitungsmodus, um die Bildschirmgröße auf einem bestimmten Gerät anzuzeigen. Im Echtzeitmodus ist es nicht sichtbar und alle Widgets außerhalb des Rahmens sind sichtbar.
 
-Außerdem können Sie festlegen, ob diese Ansicht als Standard für diese Auflösung verwendet werden muss.
+Darüber hinaus können Sie festlegen, ob diese Ansicht als Standard für diese Auflösung verwendet werden muss.
 
-Jedes Mal, wenn die `index.html` (ohne `#viewName`) aufgerufen werden, wird die für diese Auflösungsansicht am besten geeignete geöffnet.
+Jedes Mal, wenn die `index.html` (ohne `#viewName`) aufgerufen werden, wird die für diese Auflösungsansicht am besten geeignete Ansicht geöffnet.
 Wenn nur eine Ansicht das Flag *"Standard"* hat, wird diese Ansicht unabhängig von der Bildschirmauflösung oder -ausrichtung geöffnet.
 
 Z.B. Sie können zwei Ansichten "Landscape-Mobile" und "Portrait-Mobile" erstellen. Diese beiden Ansichten werden automatisch umgeschaltet, wenn Sie die Ausrichtung oder Bildschirmgröße ändern.
 
-Es gibt ein Hilfs-Widget "Basic - Bildschirmauflösung", das die tatsächliche Bildschirmauflösung und die am besten geeignete Standardansicht für diese Auflösung anzeigt.
+Es gibt ein Hilfs-Widget "Grundlegend - Bildschirmauflösung", das die tatsächliche Bildschirmauflösung und die am besten geeignete Standardansicht für diese Auflösung anzeigt.
 
 ## Die Einstellungen
-### Nachladen, wenn länger als
-Es gibt die Regel, dass nach einer gewissen Unterbrechungszeit die gesamte VIS-Seite neu geladen wird, um das Projekt zu synchronisieren.
+### Nachladen, wenn der Schlaf länger als ist
+Es gibt eine Regel, dass nach einer gewissen Unterbrechungszeit die gesamte VIS-Seite neu geladen wird, um das Projekt zu synchronisieren.
 Sie können es im Menü "Einstellungen ..." konfigurieren. Wenn Sie das Intervall auf "nie" setzen, wird die Seite nie neu geladen.
 
 ### Intervall wieder verbinden
@@ -206,6 +206,16 @@ Beachten Sie, dass diese Einstellungen nur für die erneute Verbindung und nicht
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.3.8 (2021-03-03)
+* (bluefox) fix play sounds on iOS Safari an android
+* (Scrounger) visEditInspect: format dimension added
+* (foxriver76) Replace travis and appveyor by the github actions
+* (Excodibur) Allow resources to be loaded as blob
+* (Excodibur ) Allow resources to be loaded as blob
+
+### 1.3.7 (2021-01-20)
+* (Scrounger) Bug Fixed - Binding in JSON string
+
 ### 1.3.6 (2020-12-13)
 * (twonky4) Corrected: old browser issue
 * (rbaranga) Corrected: play sounds on iOS Safari
@@ -479,7 +489,7 @@ Beachten Sie, dass diese Einstellungen nur für die erneute Verbindung und nicht
 * (bluefox) change security settings
 
 ## License
- Copyright (c) 2013-2020 bluefox, https://github.com/GermanBluefox <dogafox@gmail.com>,
+ Copyright (c) 2013-2021 bluefox, https://github.com/GermanBluefox <dogafox@gmail.com>,
  
  Copyright (c) 2013-2014 hobbyquaker, https://github.com/hobbyquaker <hobbyquaker@gmail.com>,
  

@@ -703,6 +703,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.digitalstrom/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.discovery/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.divera247/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.doorbird/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ds18b20/README.md
@@ -1123,6 +1124,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.digitalstrom/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.discovery/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.divera247/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.doorbird/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ds18b20/README.md
@@ -1543,6 +1545,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.digitalstrom/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.discovery/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.divera247/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.doorbird/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ds18b20/README.md
@@ -1963,6 +1966,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.devices/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.digitalstrom/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.discovergy/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.discovery/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.divera247/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.doorbird/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ds18b20/README.md

@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
+hash: FOpGMM+D05q9oz7BUxwiyH8xTi4YKqbiRxE8w9KqhiU=
 ---
-![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
+![标识](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.lovelace.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.lovelace.svg)
@@ -19,22 +19,24 @@ hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
 ## IoBroker的lovelace适配器
 使用此适配器，您可以使用Home Assistant Lovelace UI构建ioBroker的可视化。
 
-##配置
+[德意志文件](docs/de/README.md)
+
+＃＃ 配置
 如何配置实体有两种方法：
 
--自动
--手册
+- 汽车
+- 手动的
 
-###自动
-在自动模式下，类似的过程将应用于`google home`或`material adapter`。
+＃＃＃ 汽车
+在自动模式下，类似的过程将应用于`google home`或`material adapter`§。
 
 ***仅会检测到已定义`function`和`room`类别的对象和通道***
 
 您可以定义友好名称，这将在实体中使用。
 
-###手册
+＃＃＃ 手动的
 可以在对象树（如sql或histroy）中手动定义对象。必须提供实体的类型以及对象的名称（可选）。
-使用此方法，只能创建简单实体，例如input_number，input_text或input_boolean。它可能没有多个状态或属性。
+使用此方法，只能创建简单实体，例如input_number，input_text或input_boolean。它不能具有多个状态或属性。
 
 ##面板
 ###警报面板
@@ -73,11 +75,11 @@ createState(
 );
 ```
 
-或者您只使用`lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)`。
+或者您仅使用`lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)`即可。
 
 ###数字输入
-如果在自定义对话框中选择了input_number实体类型，则可以手动完成此操作。
-可以添加`common`中必需的`min`和`max`值以及可选的`step`类型。
+如果选择了自定义对话框中的input_number实体类型，则可以手动完成此操作。
+可以添加`common`中的此类型所需的`min`和`max`值以及可选的`step`。
 如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为“数字”：
 
 ```
@@ -200,8 +202,8 @@ createState(
 );
 ```
 
-###天气
-经过yr和daswetter的测试。以下一个或多个对象必须设置为`Function=Weather`和`Room=Any`以在配置中可用：
+＃＃＃ 天气
+经过yr和daswetter的测试。以下一个或多个对象必须设置为`Function=Weather`和`Room=Any`才能在配置中使用：
 
 -daswetter.0.NextDays.Location_1
 -yr.0.cast
@@ -221,7 +223,7 @@ createState(
 
 进入`lovelace.X.control.shopping_list`状态。
 
-###地图
+＃＃＃ 地图
 对象必须看起来像这样：
 
 ```
@@ -281,13 +283,13 @@ createState('location.latitude', 39.5681295, false, {
 要隐藏工具栏，可以在“主题”选项卡上的ioBroker配置对话框中设置复选框。
 要显示它，可以再次在对话框中将其禁用，或者仅使用`?toolbar=true`参数调用URL。
 
-### Markdown
+###降价
 您可以像[iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)中那样在markdown中使用绑定。
 
 例如。文本`Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.`将在markdown面板中生成文本`Admin adapter is alive`。
 
 ##自定义卡
-###自定义卡的上传
+###上载自定义卡
 要上传自定义卡，请输入以下内容：
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
@@ -296,7 +298,7 @@ createState('location.latitude', 39.5681295, false, {
 
 以下定制卡可以成功测试：
 
--bignumber-card：https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
+-bignumber-card：https：//github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 -simple-thermostat：https：//github.com/nervetattoo/simple-thermostat/releases（采用最新版本）
 -恒温器：https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card（都需要.js和.lib.js文件）
 
@@ -311,7 +313,7 @@ createState('location.latitude', 39.5681295, false, {
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
-要么
+或者
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
@@ -402,7 +404,7 @@ sendTo('lovelace.0', 'send', {message: 'Message text', title: 'Title'}); // full
 sendTo('lovelace.0', 'send', 'Message text'); // short version
 ```
 
-要么
+或者
 
 ```
 setState('lovelace.0.notifications.add', '{"message": "Message text", "title": "Title"}'); // full version
@@ -425,7 +427,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ```
 
 ＃＃ 故障排除
-如果您弄乱了YAML代码并看到空白页，但仍具有顶部菜单，则可以从菜单启用编辑模式（如果尚未启用），然后再次打开菜单以访问“ RAW Yaml Editor”查看完整的YAML代码并可以对其进行清理。
+如果您弄乱了YAML代码并看到空白页，但仍具有顶部菜单，则可以从菜单启用编辑模式（如果尚未启用），然后再次打开菜单以访问“ RAW Yaml Editor”查看完整的YAML代码，并可以对其进行清理。
 如果那没有帮助，则可以在ioBroker的原始编辑器中打开对象lovelace。*。configuration并在那里查看。
 您也可以从备份中还原该对象。它包含可视化的完整配置。
 
@@ -433,17 +435,17 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 使用的资源在这里https://github.com/GermanBluefox/home-assistant-polymer。
 
 ＃＃ 去做
-必须从当前用户而不是从default_user获得安全性
+必须从当前用户那里获取安全性，而不是从default_user中获取安全性
 
-##发展
-###版本
+＃＃ 发展
+＃＃＃ 版本
 二手版本的home-assistant-frontend@20201021.4
 
 ###如何构建新的Lovelace版本
-首先必须将** https：//github.com/home-assistant/frontend（dev分支）实际**手动合并到https://github.com/GermanBluefox/home-assistant-polymer.git（* ** iob ***分支！）。
+首先必须将** https：//github.com/home-assistant/frontend（dev分支）实际**手动**合并到https://github.com/GermanBluefox/home-assistant-polymer.git（* ** iob ***分支！）。
 
 ioBroker的所有更改都标记有注释`// IoB`。
-目前（20201021.4）已修改以下文件：
+目前（20201021.4）修改了以下文件：
 
 -`.gitignore`-添加`.idea`忽略
 -`build-scripts / gulp / app.js`-添加新的gulp任务
@@ -462,17 +464,54 @@ ioBroker的所有更改都标记有注释`// IoB`。
 之后，在`./build`文件夹中签出修改后的版本。然后。
 
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的分支，但有些东西被修改了（请参阅前面的文件列表）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的一个分支，但是有些东西被修改了（请参阅前面的文件列表）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`
 6.`gulp build-app`发行版或`gulp development-iob`调试版。要在更改后构建Web，可以调用`webpack-dev-app`以加快构建速度，但是在该版本准备就绪后，无论如何都需要调用`build-app`。
-7.将所有文件从./build/home-assistant-polymer/hass_frontend复制到该仓库中的./hass_frontend中。
+7.在此仓库中，将所有文件从./build/home-assistant-polymer/hass_frontend复制到`。/ hass_frontend`中。
 8.启动“ gulp重命名”任务。
+
+## Changelog
+
+<!--
+	PLACEHOLDER for next version:
+	## __WORK IN PROGRESS__
+-->
+### 1.5.0 (2021-02-15)
+* (Garfonso) Changed: defaultTheme and control.theme were in conflict. Now control.theme is set when selecting a new default theme.
+* (Garfonso) Added: control.themeDark to control devices in dark mode, too.
+* (Garfonso) Fixed: Device Icons with authentication now work
+* (Garfonso) Changed: previously only admin user could change the UI. Now also the owner of the configuration object and members of the owner group are allowed to change the UI.
+* (Garfonso) Internal code cleanup / breaking dependency update.
+* (Garfonso) Added: Support for pure humidity sensors.
+* (Garfonso) Added: Support for URL as entity_image
+* (Garfonso) Fixed: Adjust user-name/user-id handling to changes in js-controller 3.2.*
+* (Garfonso) Fixed: default themes do not show as selected
+* (Garfonso) Fixed: Loading themes / custom cards / image-proxy
+
+### 1.4.3 (2021-02-01)
+* (bluefox) Support of lovelace via ioBroker.pro
+
+### 1.4.2 (2021-01-08)
+* (thost96) Fixed: set Theme state type to string instead of text
+
+### 1.4.1 (2021-01-08)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
+
+### 1.3.6 (2021-01-08)
+* (Garfonso) Fixed: do not ignore devices deleted from iot / without smartName
+* (Garfosno) Added: Support location devices with one GPS state in string form
+* (Garfonso) Added: Support for log service, logs frontend errors in server log
+* (Garfonso) Added: Support for service calls with multiple ids, i.e. header switch of elements card
+* (Garfonso) Fixed: unique check for manual entities only checked instance 0. Made them a bit more userfriendly, too.
+* (Garfonso) Added: Possibility to select theme during runtime / select default dark theme
+* (Garfonso) Fixed: hideToolbar did hide tab bar, too
+* (Garfonso) Added: Support for iobroker_say service call (allows tts in mini-mediaplayer card using platform iobroker)
 
 ## License
 
-Copyright 2019-2020, bluefox <dogafox@gmail.com>
+Copyright 2019-2021, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
