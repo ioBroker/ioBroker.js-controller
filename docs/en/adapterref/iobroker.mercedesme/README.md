@@ -19,7 +19,7 @@ Remote sind vorgefertige Remote Befehle
 
 ## Changelog
 
-### 0.0.48
+### 0.0.50
 
 - fix refresh token
   

@@ -239,6 +239,10 @@ There are some programs in folder *test' to test the TCP communication:
 -->
 ## Changelog
 
+### 3.2.6 (2021-03-05)
+* (Apollon77) Prevent a crash case (Sentry IOBROKER-MODBUS-20)
+* (Apollon77) Better handle invalid responses
+
 ### 3.2.4 (2021-01-30)
 * (Sierra83) also support ttyXRUSB0 style devices
 

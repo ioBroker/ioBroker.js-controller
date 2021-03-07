@@ -125,6 +125,9 @@ Auf System Restart gehen und Button herzhaft, aber vorsichtig Klicken.
 
 ## Changelog
 
+### 1.0.1 (05.03.2021)
+* (PLCHome) Duplicate keys are transmitted, I try to filter them out.
+
 ### 1.0.0 (24.02.2021)
 * (PLCHome) Read me
 * (PLCHome) fix: Create a date from the time or calendar structure for last history data for all devices sometimes not working

@@ -74,6 +74,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.1.2 (alpha)
+* Using library version 0.6.0-alpha.6
+* Quite a lot refactoring (processing map data)
+
 ### 1.1.1
 * Using library version 0.6.0-alpha.3
   * Updated login process

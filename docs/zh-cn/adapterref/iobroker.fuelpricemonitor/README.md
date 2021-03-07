@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fuelpricemonitor/README.md
 title: ioBroker.fuelpricemonitor
-hash: n3zMBzWWBzeWkTqr2IdPViqDSWxVZjDkc2H4z1XoZ4I=
+hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
 ---
 ![标识](../../../en/adapterref/iobroker.fuelpricemonitor/admin/fuelpricemonitor.png)
 
@@ -19,8 +19,8 @@ hash: n3zMBzWWBzeWkTqr2IdPViqDSWxVZjDkc2H4z1XoZ4I=
 [![FOSSA状态]（https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor.svg?type=shield）](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor?ref=badge_shield)![测试与发布](https://github.com/HGlab01/ioBroker.fuelpricemonitor/workflows/Test%20and%20Release/badge.svg)
 
 ioBroker的## fuelpricemonitor适配器
-该适配器根据您配置的地理位置从官方的奥地利数据库中检索燃油（柴油，超级和汽油）价格。
-默认计划每20分钟完成一次，可以在“实例”选项卡中进行更改。
+该适配器根据您配置的地理位置从奥地利官方数据库中检索燃油（柴油，Super95和CNG）的价格。可以添加其他位置。
+默认计划是在实例选项卡中作为cron作业每20分钟完成一次。
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！
 
@@ -29,6 +29,20 @@ ioBroker的## fuelpricemonitor适配器
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 0.2.0 (2021-03-04)
+* (HGlab01) additional locations can be added
+* (HGlab01) for a proper working of the new version a uninstall/install is recommended
+* (HGlab01) small improvements
+
+### 0.1.4 (2021-02-22)
+* (HGlab01) optimize device/channel deletion
+* (HGlab01) improve Sentry handling
+
+### 0.1.3 (2021-02-20)
+* (HGlab01) add attributes accessMod and clubCardText
+* (HGlab01) Improve logs
+* (HGlab01) fuel type (Diesel, Super95, CNG) can be selected
 
 ### 0.1.2 (2021-02-17)
 * (HGlab01) first beta version

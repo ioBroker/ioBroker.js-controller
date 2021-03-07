@@ -122,6 +122,12 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 2.0.7
+* (instalator) fixed error subscribeNotification Player.OnResume [issues 49](https://github.com/instalator/ioBroker.kodi/issues/49)
+* (instalator) added user ratings [issues 57](https://github.com/instalator/ioBroker.kodi/issues/57)
+* (instalator) fix error [issues 58](https://github.com/instalator/ioBroker.kodi/issues/58)
+* (instalator) fixed error widgets
+
 #### 2.0.5
 * (instalator) changed css classes
 * (instalator) fixed error

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fuelpricemonitor/README.md
 title: ioBroker.fuelpricemonitor
-hash: n3zMBzWWBzeWkTqr2IdPViqDSWxVZjDkc2H4z1XoZ4I=
+hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.fuelpricemonitor/admin/fuelpricemonitor.png)
 
@@ -18,17 +18,31 @@ hash: n3zMBzWWBzeWkTqr2IdPViqDSWxVZjDkc2H4z1XoZ4I=
 # IoBroker.fuelpricemonitor
 [![Статус FOSSA] (https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor?ref=badge_shield) ![Тестирование и выпуск](https://github.com/HGlab01/ioBroker.fuelpricemonitor/workflows/Test%20and%20Release/badge.svg)
 
-## Fuelpricemonitor адаптер для ioBroker
-Этот адаптер извлекает цены на топливо (дизельное топливо, супер и газ) из официальной базы данных Австрии на основе вашего настроенного географического положения.
-Расписание по умолчанию составляется каждые 20 минут и может быть изменено на вкладке «Экземпляр».
+## Адаптер fuelpricemonitor для ioBroker
+Этот адаптер извлекает цены на топливо (дизельное топливо, Super95 и CNG) из официальной базы данных Австрии на основе вашего настроенного географического положения. Могут быть добавлены дополнительные места.
+Расписание по умолчанию выполняется каждые 20 минут как задание cron на вкладке экземпляра.
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 0.2.0 (2021-03-04)
+* (HGlab01) additional locations can be added
+* (HGlab01) for a proper working of the new version a uninstall/install is recommended
+* (HGlab01) small improvements
+
+### 0.1.4 (2021-02-22)
+* (HGlab01) optimize device/channel deletion
+* (HGlab01) improve Sentry handling
+
+### 0.1.3 (2021-02-20)
+* (HGlab01) add attributes accessMod and clubCardText
+* (HGlab01) Improve logs
+* (HGlab01) fuel type (Diesel, Super95, CNG) can be selected
 
 ### 0.1.2 (2021-02-17)
 * (HGlab01) first beta version

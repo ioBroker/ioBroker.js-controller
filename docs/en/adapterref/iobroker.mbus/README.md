@@ -44,6 +44,9 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Send a reset to the device before reading data
+
 ### 2.3.2 (2021-02-27)
 * (Apollon77) Prevent crash case(Sentry IOBROKER-MBUS-H)
 

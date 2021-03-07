@@ -44,6 +44,9 @@ Returns a buffer as a string
 
 ## Changelog
 
+### 0.1.5
+* (instalator) fixed a bug with polling multiple counters
+
 ### 0.1.4
 * (instalator) added frequency for 1 fase
 * (instalator) added powerQTotal for 1 fase

@@ -4,7 +4,6 @@
 ![Number of Installations](http://iobroker.live/badges/panasonic-viera-installed.svg) ![Number of Installations](http://iobroker.live/badges/panasonic-viera-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.panasonic-viera.svg)](https://www.npmjs.com/package/iobroker.panasonic-viera)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.panasonic-viera.svg)](https://www.npmjs.com/package/iobroker.panasonic-viera)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.panasonic-viera.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.panasonic-viera)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.panasonic-viera/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.panasonic-viera)
 
 [![NPM](https://nodei.co/npm/iobroker.panasonic-viera.png?downloads=true)](https://nodei.co/npm/iobroker.panasonic-viera/)
 

@@ -163,9 +163,11 @@ Here is a list of what these raw values stand for:
 |532 | "Flusen ausspülen" | Washer Dryer |
 
 ## Changelog
-### 3.0.2 (2021-03-03)
+### 3.0.2 (2021-03-05)
 *  (grizzelbee) Fix: [79](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/79) When a devices serial is missing, the identNumber is assigned instead.
 *  (grizzelbee) Upd: Changed folder name cooktops to hobs since this is the more common name
+*  (grizzelbee) Upd: added PowerOn/Off buttons for Coffee-systems & hoods
+*  (grizzelbee) Upd: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) testing actions better before sending to permit errors
 
 ### 3.0.1 (2021-02-25)
 > *Hint:* Action_Information and Action_Status objects are created on first action execution and contain infos to the last executed action.

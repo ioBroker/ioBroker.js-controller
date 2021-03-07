@@ -870,7 +870,7 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 * (bluefox) Add option to overwrite the client "clean session" settings
 
 ### 2.1.0 (2019-05-02)
-* (Zefau) Add option to send message using messagebox
+* (Zefau) Add option to send the message using messagebox
 * (Zefau) Fix error with logging on pubrec
 
 ### 2.0.6 (2019-01-16)
@@ -883,13 +883,13 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 * (Apollon77) Subscribe to topics after connect
 
 ### 2.0.3 (2018-08-11)
-* (bluefox) Prefix in server was corrected
+* (bluefox) Prefix in the server was corrected
 
 ### 2.0.2 (2018-08-09)
 * (bluefox) Behaviour of "set" topics was changed
 
 ### 2.0.1 (2018-07-06)
-* (bluefox) Double prefix by client was fixed
+* (bluefox) Double prefix by the client was fixed
 
 ### 2.0.0 (2018-03-05)
 * (bluefox) broke node.js 4 support
@@ -917,7 +917,7 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 ### 1.3.1 (2017-02-02)
 * (bluefox) Update mqtt packages
-* (bluefox) add Interval before send topics by connection ans send interval settings
+* (bluefox) add Interval before send topics by connection and send interval settings
 * (bluefox) reorganise configuration dialog
 
 ### 1.3.0 (2017-01-07)
@@ -941,13 +941,13 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 * (bluefox) fix authentication in server
 
 ### 1.1.1 (2016-09-12)
-* (bluefox) do not parse JSON states, that do not have attribute "val" to support other systems
+* (bluefox) do not parse JSON states, that do not have the attribute `val` to support other systems
 
 ### 1.1.0 (2016-07-23)
 * (bluefox) add new setting: Use different topic names for set and get
 
 ### 1.0.4 (2016-07-19)
-* (bluefox) convert values like "+58,890" into numbers too
+* (bluefox) convert values like `+58,890` into numbers too
 
 ### 1.0.3 (2016-05-14)
 * (cdjm) change client protocolID
@@ -966,7 +966,7 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 * (bluefox) fix SSL
 
 ### 0.4.2 (2016-02-10)
-* (bluefox) create object "info.connection"
+* (bluefox) create the object `info.connection`
 * (bluefox) add reconnection tests
 
 ### 0.4.1 (2016-02-04)
@@ -996,7 +996,7 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 ### 0.2.11 (2015-10-17)
 * (bluefox) set maximal length of topic name
-* (bluefox) convert "true" and "false" to boolean values
+* (bluefox) convert `true` and `false` to boolean values
 
 ### 0.2.10 (2015-09-16)
 * (bluefox) protect against empty topics
@@ -1014,7 +1014,7 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 * (bluefox) subscribe to all states if no mask defined
 
 ### 0.2.4 (2015-05-14)
-* (bluefox) add state "clients" to server with the list of clients
+* (bluefox) add state `clients` to server with the list of clients
 
 ### 0.2.3 (2015-05-14)
 * (bluefox) fix some errors
@@ -1062,7 +1062,7 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
