@@ -2560,6 +2560,12 @@ async function processMessage(msg) {
 
             break;
         }
+
+        case 'restartController':
+            const restart = require('./lib/restart').restart;
+            msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
+            setTimeout(() => restart(), 200); // let the answer to be sent
+            break;
     }
 }
 
@@ -3097,20 +3103,20 @@ function startScheduledInstance(callback) {
                             cwd: adapterDir
                         });
                     } catch(err) {
-                        logger.error(hostLogPrefix + ' instance ' + id + ' could not be started: ' + err.message);
+                        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
                         delete procs[id].process;
                     }
                     if (procs[id].process) {
                         storePids(); // Store all pids to make possible kill them all
-                        logger.info(hostLogPrefix + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+                        logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${procs[instance._id].process.pid}`);
 
                         procs[id].process.on('exit', (code, signal) => {
                             outputCount++;
                             states.setState(id + '.alive', {val: false, ack: true, from: hostObjectPrefix});
                             if (signal) {
-                                logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
+                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
-                                logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
+                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
                             } else {
                                 code = parseInt(code, 10);
                                 const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
@@ -3131,7 +3137,7 @@ function startScheduledInstance(callback) {
                 });
                 return;
             } else {
-                !wakeUp && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
+                !wakeUp && logger.warn(`${hostLogPrefix} instance ${instance._id} already running with pid ${procs[id].process.pid}`);
                 skipped = true;
             }
         } else {
@@ -3699,11 +3705,11 @@ async function startInstance(id, wakeUp) {
                                 // Exit handler for compact groups
                                 const groupExitHandler = (code, signal) => {
                                     if (signal) {
-                                        logger.warn(hostLogPrefix + ' compactgroup controller ' + currentCompactGroup + ' terminated due to ' + signal);
+                                        logger.warn(`${hostLogPrefix} compactgroup controller ${currentCompactGroup} terminated due to ${signal}`);
                                     } else if (code === null) {
-                                        logger.info(hostLogPrefix + ' compactgroup controller ' + currentCompactGroup + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                                        logger.info(`${hostLogPrefix} compactgroup controller ${currentCompactGroup} terminated with code ${code} (${getErrorText(code) || ''})`);
                                     } else {
-                                        logger.info(hostLogPrefix + ' compactgroup controller ' + currentCompactGroup + ' terminated');
+                                        logger.info(`${hostLogPrefix} compactgroup controller ${currentCompactGroup} terminated`);
                                     }
 
                                     if (compactProcs[currentCompactGroup] && compactProcs[currentCompactGroup].process) {
@@ -3864,9 +3870,9 @@ async function startInstance(id, wakeUp) {
                             outputCount++;
                             states.setState(id + '.alive', {val: false, ack: true, from: hostObjectPrefix});
                             if (signal) {
-                                logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
+                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
-                                logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
+                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
                             } else {
                                 code = parseInt(code, 10);
                                 const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
@@ -4273,7 +4279,7 @@ function stop(force, callback) {
         }
 
         if (!states || force) {
-            logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated') + '. Could not reset alive status for instances');
+            logger.info(`${hostLogPrefix} ${wasForced ? 'force terminating' : 'terminated'}. Could not reset alive status for instances`);
             if (typeof callback === 'function') {
                 return void callback();
             } else {
@@ -4288,13 +4294,13 @@ function stop(force, callback) {
                 for (const i of Object.keys(procs)) {
                     if (procs[i].process) {
                         if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
-                            logger.info(hostLogPrefix + ' Adapter ' + procs[i].config.common.name + ' still running');
+                            logger.info(`${hostLogPrefix} Adapter ${procs[i].config.common.name} still running`);
                         }
                     }
                 }
                 for (const i of Object.keys(compactProcs)) {
                     if (compactProcs[i].process) {
-                        logger.info(hostLogPrefix + ' Compact group controller ' + i + ' still running');
+                        logger.info(`${hostLogPrefix} Compact group controller ${i} still running`);
                     }
                 }
             }
