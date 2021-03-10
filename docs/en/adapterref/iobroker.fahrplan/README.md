@@ -215,6 +215,7 @@ With +-Button new entries can be added to the table.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Fix route selection in delay config
 * (Gaudes) Fix SBB product suburban-train (Sentry #21)
 
 ### 1.0.5 (2021-02-22)

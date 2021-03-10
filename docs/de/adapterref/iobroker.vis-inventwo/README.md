@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: NSD3SXKWIXGu5tazV6yUre9slhLg/ncHFdlblD90z0k=
+hash: 9rmpfpT12ta9ctLo3e1zgmJowPj/72Pa8WDmbBhKKpI=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -36,11 +36,17 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link wird zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+#8. 2.8.2
+- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" wird ist ",
+
+## 2.8.1
+- Fehlerhafte: Farbschieberegler RGB aktualisiert bei Dp.
 
 ## 2.8.0
 - Ansicht in PopUp Option für Universal- und Multi-Widget hinzugefügt
@@ -50,7 +56,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlerbehebung
 
 ## 2.7.10
-- Problem mit Bildern im Universal- und Multi-Widget-Einstellungen
+- Problem mit Bildern im Universal und Multi Widget gehört
 - Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
@@ -63,7 +69,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.7
 - Problem mit der Bildstellung gehört
-- Problem mit dem Farbregler gehört, dass der Wert beim Loslassen nicht verkauft wurde
+- Problem mit dem Farbregler wurde, dass der Wert beim Loslassen nicht verkauft wurde
 
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget Frei
@@ -72,7 +78,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
-- Fehler beim Slider gehört wenn ungültiger Wert im Datenpunkt steht
+- Fehler beim Slider gefunden wenn ungültiger Wert im Datenpunkt steht
 - Fehlerhafte: Signalbilder wurden mit eingefärbt
 - Option um Bildfarbe zu invertieren eingezogen, um Farbfilter zu entfernen
 - Color Slider kann nun zwischen HEX, RGB und CIE gehören
@@ -185,7 +191,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
-- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
+- Fehler in der Werteliste Werden: Wert wird nicht aktualisiert
 
 ## 2.2.0
 - Datenpunktwerte werden jetzt bei allen Widgets im Editor werden

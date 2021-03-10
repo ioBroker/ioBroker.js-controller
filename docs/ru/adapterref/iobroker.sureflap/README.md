@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sureflap/README.md
 title: ioBroker.sureflap
-hash: CvgX9nV9Iu3qbzg7qfuqsuhRMbEJ1i800qF6DWbSkY0=
+hash: mdm2mZU9PL4s5vJkKXjVZUb+DjM1kXYMMi+ZG6+0Utk=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sureflap.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sureflap.svg)
@@ -41,7 +41,7 @@ hash: CvgX9nV9Iu3qbzg7qfuqsuhRMbEJ1i800qF6DWbSkY0=
 ### Структура
 Адаптер создает следующую иерархическую структуру:
 
-адаптер<br> ├ имя_хозяйства<br> │ ├ имя_хаба<br> │ │ ├ led_mode<br> │ │ ├ онлайн<br> │ │ └ flap_name<br> │ │ ├ аккумулятор<br> │ │ ├ battery_percentage<br> │ │ ├ онлайн<br> │ │ ├ контроль<br> │ │ │ ├ комендантский час<br> │ │ │ └ режим блокировки<br> │ │ ├ комендантский час<br> │ │ │ └ 0..i<br> │ │ │ ├ включен<br> │ │ │ ├ lock_time<br> │ │ │ └unlock_time<br> │ │ └ last_curfew<br> │ │ └ 0..i<br> │ │ ├ включен<br> │ │ ├ lock_time<br> │ │ └ unlock_time<br> │ └ домашние животные<br> │ └ pet_name<br> │ ├ имя<br> │ ├ внутри<br> │ └ так как<br> └ информация<br> ├ all_devices_online<br> └ соединение<br>
+адаптер<br> ├ имя_хозяйства<br> │ ├ имя_хаба<br> │ │ ├ led_mode<br> │ │ ├ онлайн<br> │ │ └ flap_name<br> │ │ ├ аккумулятор<br> │ │ ├ battery_percentage<br> │ │ ├ curfew_active<br> │ │ ├ онлайн<br> │ │ ├ контроль<br> │ │ │ ├ комендантский час<br> │ │ │ └ режим блокировки<br> │ │ ├ комендантский час<br> │ │ │ └ 0..i<br> │ │ │ ├ включен<br> │ │ │ ├ lock_time<br> │ │ │ └unlock_time<br> │ │ └ last_curfew<br> │ │ └ 0..i<br> │ │ ├ включен<br> │ │ ├ lock_time<br> │ │ └ unlock_time<br> │ └ домашние животные<br> │ └ pet_name<br> │ ├ имя<br> │ ├ внутри<br> │ └ так как<br> └ информация<br> ├ all_devices_online<br> └ подключение<br>
 
 ## Примечания
 SureFlap® и Sure Petcare® являются зарегистрированными товарными знаками [SureFlap Ltd.](https://www.surepetcare.com/).
@@ -49,6 +49,11 @@ SureFlap® и Sure Petcare® являются зарегистрированны
 Изображение откидной створки для кошек, концентратора и приложения для смартфона предоставляется бесплатно в [Конечно Petcare®](https://www.surepetcare.com/en-us/press).
 
 ## Changelog
+
+### 1.0.4 (2021-03-07)
+* (Sickboy78) added state curfew_active for pet flap devices
+* (Sickboy78) fixed normalization of device names
+* (Sickboy78) fixed changeable values not resetting when change fails
 
 ### 1.0.3 (2021-02-28)
 * (Sickboy78) code improvements from review

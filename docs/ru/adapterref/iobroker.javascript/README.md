@@ -2638,6 +2638,9 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 5.0.12 (2021-03-07)
+* (bluefox) fixed error in blockly
+
 ### 5.0.11 (2021-03-07)
 * (bluefox) added date to the time condition
 
@@ -2650,9 +2653,6 @@ return 'your result';
 ### 5.0.8 (2021-03-03)
 * (bluefox) Translations
 * (bluefox) Added the "set state with delay" block
-
-### 5.0.7 (2021-03-02)
-* (bluefox) Added the pushsafer block
 
 ## License
 

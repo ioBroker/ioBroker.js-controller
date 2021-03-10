@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fuelpricemonitor/README.md
 title: ioBroker.fuelpricemonitor
-hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
+hash: VveHgPApeFx1VhAc2EheNXz5kXX0ErbqiB6pBQmc9RI=
 ---
 ![标识](../../../en/adapterref/iobroker.fuelpricemonitor/admin/fuelpricemonitor.png)
 
@@ -22,13 +22,19 @@ ioBroker的## fuelpricemonitor适配器
 该适配器根据您配置的地理位置从奥地利官方数据库中检索燃油（柴油，Super95和CNG）的价格。可以添加其他位置。
 默认计划是在实例选项卡中作为cron作业每20分钟完成一次。
 
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息和如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！
+
+**使用JSCONTROLER 3.2.16版或更高版本的作品！**
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.2.1 (2021-03-08)
+* (HGlab01) Bump js-controller to 3.2.16 for proper device/channel/state deletion
+* (HGlab01) use function deleteEverything from json-Explorer@0.0.13
+* (HGlab01) improve device/channel/state cleaning
 
 ### 0.2.0 (2021-03-04)
 * (HGlab01) additional locations can be added

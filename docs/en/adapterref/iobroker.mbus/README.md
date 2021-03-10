@@ -44,7 +44,7 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.3.4 (2021-03-07)
 * (Apollon77) Send a reset to the device before reading data
 
 ### 2.3.2 (2021-02-27)

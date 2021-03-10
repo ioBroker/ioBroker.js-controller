@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fuelpricemonitor/README.md
 title: ioBroker.fuelpricemonitor
-hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
+hash: VveHgPApeFx1VhAc2EheNXz5kXX0ErbqiB6pBQmc9RI=
 ---
 ![Логотип](../../../en/adapterref/iobroker.fuelpricemonitor/admin/fuelpricemonitor.png)
 
@@ -24,11 +24,17 @@ hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
 
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
 
+** РАБОТАЕТ С ВЕРСИЕЙ JSCONTROLER 3.2.16 ИЛИ ПОЗЖЕ! **
+
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.2.1 (2021-03-08)
+* (HGlab01) Bump js-controller to 3.2.16 for proper device/channel/state deletion
+* (HGlab01) use function deleteEverything from json-Explorer@0.0.13
+* (HGlab01) improve device/channel/state cleaning
 
 ### 0.2.0 (2021-03-04)
 * (HGlab01) additional locations can be added

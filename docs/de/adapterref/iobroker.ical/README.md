@@ -189,6 +189,9 @@ Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möch
 
 ## Changelog
 
+### 1.9.2 (2021-03-07)
+* (Apollon77) Prevent crash case when summary is not provided (Sentry IOBROKER-ICAL-K)
+
 ### 1.9.1 (2021-01-30)
 * (Apollon77) try to make sure all code is executed before adapter is ended
 

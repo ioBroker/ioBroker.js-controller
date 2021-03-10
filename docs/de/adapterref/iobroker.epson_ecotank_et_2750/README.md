@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: IUDWowD2F47qpsEbXuEhUQ+yOlzvgfzE2z3VtnW5xyg=
+hash: 8hEnYUGXM2t/Yic/vCydD+FKLvO4qRyNHe2Os4AAV4I=
 ---
 ![Logo](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
@@ -16,7 +16,7 @@ hash: IUDWowD2F47qpsEbXuEhUQ+yOlzvgfzE2z3VtnW5xyg=
 ## EPSON EcoTank ET-2750 Adapter für ioBroker
 Dieser Adapter liest den Tankfüllstand und andere Informationen aus [EPSON EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750) und speichert sie in ioBroker.
 
-[EPSON EcoTank ET-4750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) wird ebenfalls unterstützt (getestet von [Homoran](https://forum.iobroker.net/user/homoran))
+[EPSON EcoTank ET-4750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) wird ebenfalls unterstützt (getestet von [Homoran](https://forum.iobroker.net/user/homoran)) [EPSON EcoTank ET-2721] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) wird ebenfalls unterstützt (getestet von [mikepiko](https://github.com/mikepiko))
 
 ## Aufbau
 1. Erstellen Sie eine neue Instanz des Adapters

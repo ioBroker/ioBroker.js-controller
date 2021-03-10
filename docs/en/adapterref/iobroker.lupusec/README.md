@@ -127,7 +127,7 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
-### 1.3.4-beta-1 (01.03.2021)
+### 1.3.4 (01.03.2021)
 * (Stübi) Bugfixing
 
 ### 1.3.3 (17.02.2021)

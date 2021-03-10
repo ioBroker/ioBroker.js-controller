@@ -60,6 +60,8 @@ For more information visit https://minukodu.de/en or watch at youtube https://yo
 
 
 ## Changelog
+### 1.4.0 (2021-03-07)
+* updated app to V1.13.0
 ### 1.3.1 (2021-01-24)
 * updated app to V1.12.1
 ### 1.3.0 (2021-01-24)

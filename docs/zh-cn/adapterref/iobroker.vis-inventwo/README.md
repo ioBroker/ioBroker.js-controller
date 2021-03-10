@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: NSD3SXKWIXGu5tazV6yUre9slhLg/ncHFdlblD90z0k=
+hash: 9rmpfpT12ta9ctLo3e1zgmJowPj/72Pa8WDmbBhKKpI=
 ---
 ![标识](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -26,7 +26,7 @@ hash: NSD3SXKWIXGu5tazV6yUre9slhLg/ncHFdlblD90z0k=
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在非适配器适配器中正常运行，并且图标不可用。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -34,13 +34,19 @@ hash: NSD3SXKWIXGu5tazV6yUre9slhLg/ncHFdlblD90z0k=
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
+瀑布下的瀑布，阿尔弗雷德·尤德·斯彭德（Afrédeüberjede Spende）。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.8.2
+-问题解决者Colorslider behoben：在Datenpunkt gesetzt中出现的错误，在“ Wert bei Freigabe aktualisieren”，“
+
+## 2.8.1
+-Fehler behoben：彩色滑块RGB aktualisiert bei DpÄnderungnicht（WICHTIG：Datenpunktemüssenneuausgewähltwerden！）
 
 ## 2.8.0
 -在通用选项和多小部件中查看弹出菜单选项
@@ -50,11 +56,11 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -错误修正
 
 ## 2.7.10
--通用和多功能小工具的问题
+-通用和多功能小工具behoben的问题
 -通用和多功能小工具的问题
 
 ## 2.7.9
--图片和小工具hinzugefügt的选项
+-图像小部件hinzugefügt的选项
 -Fehler von vorheriger版本behoben
 
 ## 2.7.8
@@ -63,12 +69,12 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ## 2.7.7
 -Bildgrößebehoben问题
--问题麻省理工学院院长Farbregler behoben，《戴斯·德·沃特》杂志beim loslassen nicht gespeichert wurde
+-问题MIT DEM Farbregler Behoben，《戴斯·德·沃特》杂志beim loslassen nicht gespeichert wurde
 
 ## 2.7.6
 -Navi-Widget behoben问题解答
 -问题与解决方案
--问题MIT单选按钮和小部件和日期更新Zahlen behobenn
+-问题麻痹单选按钮和小部件以及日期更新Zahlen behobenn
 
 ## 2.7.5
 -JSON Tabelle farbliche SchwellenwertefürZahlen
@@ -81,7 +87,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -FehlendeÜbersetzungfürHover-Farbenhinzugefügt
 
 ## 2.7.3
--费勒·贝因姆（Fehler beim）
+-费勒·贝姆（Fehler beim）
 -Schatten und Rand HoverfürButtonshinzugefügt
 
 ## 2.7.2
@@ -99,7 +105,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -JSON Tabelle Spaltenformat布尔值和数字
 -JSON Tabelle Kopfzeile kann fixiert werden
 -JSON Tabelle Fehler beim sortieren behoben
--JSON Tabelle konfigurierbare Dummyzeile wenn JSON学习者
+-JSON Tabelle konfigurierbare Dummyzeile wenn JSON文件
 -费勒·贝霍本（Fehler behoben）
 
 ## 2.6.0
@@ -121,7 +127,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -错误修正
 
 ## 2.5.9
--Dur Prozess der Bildfarbfilterung wurdegeändert
+-世界文学奖
 -Die Bildfarbe kann jetzt ein Datenpunkt sein
 
 ## 2.5.8
@@ -137,7 +143,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -错误修正
 
 ## 2.5.4
--错误修正（状态：多普勒斯·森德·迪斯·维尔特斯·贝触摸
+-错误修正（状态：多普勒斯·森德·德·维尔特斯·贝触摸）
 
 ## 2.5.3
 -Grauer Kippschalterhinzugefügt
@@ -181,11 +187,11 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -JSON Tabelle behoben中的Fehler
 
 ## 2.2.2
--Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
+-Fehler im Multi Widget behoben：文字和文字类型导航
 
 ## 2.2.1
 -JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
--价值清单《 behoben》中的费勒：Wert wird nicht aktualisiert
+-价值清单behoben中的Fehler：Wrt wird nicht aktualisiert
 
 ## 2.2.0
 -Datenpunktwerte werden jetzt bei allen Widgets in Editor angezeigt
@@ -198,12 +204,12 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ## 2.0.1
 -Übersetzungsfehlerbehoben
--边境Farbe behoben
+-Border Farbe behoben
 -Widget-Untertitel behoben
 
 ## 2.0.0
--开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann）
+-开关，按钮，导航和背景小部件（默认设置）-> dem通用小部件
+-多个小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）
@@ -246,7 +252,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -数值开关的固定状态颜色
 
 ## 1.2.2
--漏洞修复：滑块值，配置
+-错误修复：滑块值，配置
 
 ## 1.2.1
 -固定的滑块小部件：分为两个小部件（水平和垂直）

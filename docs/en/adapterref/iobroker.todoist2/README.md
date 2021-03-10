@@ -166,6 +166,9 @@ Example for any image you like:
 ```
 
 ## Changelog
+### 0.8.6
+* (rde-master) Bugfix and bump axios to 0.21.1
+
 ### 0.8.4
 * (rde-master) add option to add images in HTML Button
 

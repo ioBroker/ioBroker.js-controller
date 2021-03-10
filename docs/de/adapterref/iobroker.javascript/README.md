@@ -67,6 +67,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 5.0.12 (2021-03-07)
+* (bluefox) fixed error in blockly
+
 ### 5.0.11 (2021-03-07)
 * (bluefox) added date to the time condition
 
@@ -79,9 +82,6 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ### 5.0.8 (2021-03-03)
 * (bluefox) Translations
 * (bluefox) Added the "set state with delay" block
-
-### 5.0.7 (2021-03-02)
-* (bluefox) Added the pushsafer block
 
 ## License
 

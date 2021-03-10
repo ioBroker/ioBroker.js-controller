@@ -3,24 +3,24 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: IUDWowD2F47qpsEbXuEhUQ+yOlzvgfzE2z3VtnW5xyg=
+hash: 8hEnYUGXM2t/Yic/vCydD+FKLvO4qRyNHe2Os4AAV4I=
 ---
 ![Логотип](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
 ![Количество установок](https://iobroker.live/badges/epson_ecotank_et_2750-stable.svg?dummy=unused)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.epson_ecotank_et_2750.svg?dummy=unused)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.epson_ecotank_et_2750.svg?dummy=unused)
-![NPM](https://nodei.co/npm/iobroker.epson_ecotank_et_2750.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.epson_ecotank_et_2750.png?downloads=true)
 
 # IoBroker.epson_ecotank_et_2750
 ## Адаптер EPSON EcoTank ET-2750 для ioBroker
 Этот адаптер считывает уровень в резервуаре и другую информацию из [EPSON EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750) и сохраняет в ioBroker.
 
-[EPSON EcoTank ET-4750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) также поддерживается (проверено [Homoran](https://forum.iobroker.net/user/homoran))
+[EPSON EcoTank ET-4750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) также поддерживается (проверено [Homoran](https://forum.iobroker.net/user/homoran)) [EPSON EcoTank ET-2721] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) также поддерживается (проверено [mikepiko](https://github.com/mikepiko))
 
 ## Конфигурация
 1. Создайте новый экземпляр адаптера.
-2. Заполните URL / IP-адрес и порт EPSON EcoTank ET-2750.
+2. Заполните URL / IP и порт EPSON EcoTank ET-2750.
 3. Настройте Synctime (по умолчанию 10 минут).
 4. Сохраните настройки.
 

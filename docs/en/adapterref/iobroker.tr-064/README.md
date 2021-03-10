@@ -96,6 +96,15 @@ iobroker upload tr-064
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) try to better handle calllist resets on FW updates
+
+### 4.2.8 (2021-03-09)
+* (Apollon77) Optimize customized HTML templates if state is empty
+
+### 4.2.7 (2021-03-08)
+* (Apollon77) Allow customized HTML templates again
+
 ### 4.2.6 (2021-02-18)
 * (Apollon77) Fix crash case (IOBROKER-TR-064-20)
 * (Apollon77) Get calllists working again

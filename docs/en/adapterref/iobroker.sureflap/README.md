@@ -52,6 +52,7 @@ adapter<br>
 │ │ └ flap_name<br>
 │ │ &nbsp;&nbsp;&nbsp; ├ battery<br>
 │ │ &nbsp;&nbsp;&nbsp; ├ battery_percentage<br>
+│ │ &nbsp;&nbsp;&nbsp; ├ curfew_active<br>
 │ │ &nbsp;&nbsp;&nbsp; ├ online<br>
 │ │ &nbsp;&nbsp;&nbsp; ├ control<br>
 │ │ &nbsp;&nbsp;&nbsp; │ ├ curfew<br>
@@ -82,6 +83,11 @@ SureFlap® and Sure Petcare® are registered trademarks of [SureFlap Ltd.](https
 The picture of the cat flap, hub and smartphone app is provided free to use from [Sure Petcare®](https://www.surepetcare.com/en-us/press).
 
 ## Changelog
+
+### 1.0.4 (2021-03-07)
+* (Sickboy78) added state curfew_active for pet flap devices
+* (Sickboy78) fixed normalization of device names
+* (Sickboy78) fixed changeable values not resetting when change fails
 
 ### 1.0.3 (2021-02-28)
 * (Sickboy78) code improvements from review

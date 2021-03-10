@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fuelpricemonitor/README.md
 title: ioBroker.fuelpricemonitor
-hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
+hash: VveHgPApeFx1VhAc2EheNXz5kXX0ErbqiB6pBQmc9RI=
 ---
 ![Logo](../../../en/adapterref/iobroker.fuelpricemonitor/admin/fuelpricemonitor.png)
 
@@ -16,7 +16,7 @@ hash: VbwwxYpP3almhqy15Fje9oLAxpejUtnqfr9y1EvOiMo=
 ![NPM](https://nodei.co/npm/iobroker.fuelpricemonitor.png?downloads=true)
 
 # IoBroker.fuelpricemonitor
-[![FOSSA-Status] (https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor?ref=badge_shield)![Testen und freigeben](https://github.com/HGlab01/ioBroker.fuelpricemonitor/workflows/Test%20and%20Release/badge.svg)
+[![FOSSA-Status] (https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.fuelpricemonitor?ref=badge_shield) ![Testen und freigeben](https://github.com/HGlab01/ioBroker.fuelpricemonitor/workflows/Test%20and%20Release/badge.svg)
 
 ## Kraftstoffpreismonitor-Adapter für ioBroker
 Dieser Adapter ruft die Kraftstoffpreise (Diesel, Super95 und CNG) aus der offiziellen Österreich-Datenbank basierend auf Ihrer geografischen Position ab. Zusätzliche Standorte können hinzugefügt werden.
@@ -24,11 +24,17 @@ Der Standardzeitplan wird alle 20 Minuten als Cron-Job auf der Registerkarte "In
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
 
+** ARBEITET MIT JSCONTROLER VERSION 3.2.16 ODER SPÄTER! **
+
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.2.1 (2021-03-08)
+* (HGlab01) Bump js-controller to 3.2.16 for proper device/channel/state deletion
+* (HGlab01) use function deleteEverything from json-Explorer@0.0.13
+* (HGlab01) improve device/channel/state cleaning
 
 ### 0.2.0 (2021-03-04)
 * (HGlab01) additional locations can be added

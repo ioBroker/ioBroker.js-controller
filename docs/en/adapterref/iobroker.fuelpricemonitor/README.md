@@ -17,14 +17,19 @@
 This adapter retrieves the fuel (Diesel, Super95 and CNG) prices from the offical Austria database based on your configered geo-position. Additional locations can be added.
 Default schedule is done every 20 minutes as cron job in the instance tab.  
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!  
 
-**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
+**WORKS WITH JSCONTROLER VERSION 3.2.16 OR LATER!**
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.2.1 (2021-03-08)
+* (HGlab01) Bump js-controller to 3.2.16 for proper device/channel/state deletion
+* (HGlab01) use function deleteEverything from json-Explorer@0.0.13
+* (HGlab01) improve device/channel/state cleaning
 
 ### 0.2.0 (2021-03-04)
 * (HGlab01) additional locations can be added

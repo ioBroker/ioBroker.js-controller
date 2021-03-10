@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sureflap/README.md
 title: ioBroker.sureflap
-hash: CvgX9nV9Iu3qbzg7qfuqsuhRMbEJ1i800qF6DWbSkY0=
+hash: mdm2mZU9PL4s5vJkKXjVZUb+DjM1kXYMMi+ZG6+0Utk=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sureflap.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sureflap.svg)
@@ -41,14 +41,19 @@ Die folgenden Zustände können geändert werden und wirken sich auf Ihr Gerät 
 ### Struktur
 Der Adapter erstellt die folgende hierarchische Struktur:
 
-Adapter<br> ├ Haushaltsname<br> │ ├ Hubname<br> │ │ ├ led_mode<br> │ │ ├ online<br> │ │ └ Klappenname<br> │ │ ├ Batterie<br> │ │ ├ Batterieprozentsatz<br> │ │ ├ online<br> │ │ ├ Kontrolle<br> Ausgangssperre<br> │ │ │ └ Sperrmodus<br> Ausgangssperre<br> │ │ │ └ 0..i<br> │ │ │ ├ aktiviert<br> │ │ │ ├ lock_time<br> │ │ │ └unlock_time<br> │ │ └ last_curfew<br> │ │ └ 0..i<br> │ │ ├ aktiviert<br> │ │ ├ lock_time<br> │ │ └ entsperren_Zeit<br> │ └ Haustiere<br> │ └ pet_name<br> │ ├ Name<br> │ ├ innen<br> │ └ seit<br> └ info<br> ├ all_devices_online<br> └ Verbindung<br>
+Adapter<br> ├ Haushaltsname<br> │ ├ Hubname<br> │ │ ├ led_mode<br> │ │ ├ online<br> │ │ └ Klappenname<br> │ │ ├ Batterie<br> │ │ ├ Batterieprozentsatz<br> │ │ ├ Ausgangssperre_aktiv<br> │ │ ├ online<br> │ │ ├ Kontrolle<br> Ausgangssperre<br> │ │ │ └ Sperrmodus<br> Ausgangssperre<br> │ │ │ └ 0..i<br> │ │ │ ├ aktiviert<br> │ │ │ ├ lock_time<br> │ │ │ └unlock_time<br> │ │ └ last_curfew<br> │ │ └ 0..i<br> │ │ ├ aktiviert<br> │ │ ├ lock_time<br> │ │ └ entsperren_Zeit<br> │ └ Haustiere<br> │ └ pet_name<br> │ ├ Name<br> │ ├ innen<br> │ └ seit<br> └ info<br> ├ all_devices_online<br> └ Verbindung<br>
 
 ## Anmerkungen
 SureFlap® und Sure Petcare® sind eingetragene Marken von [SureFlap Ltd.](https://www.surepetcare.com/)
 
-Das Bild der Katzenklappen-, Hub- und Smartphone-App kann ab [Sicher Petcare®](https://www.surepetcare.com/en-us/press) kostenlos zur Verfügung gestellt werden.
+Das Bild der Katzenklappe, des Hubs und der Smartphone-App kann ab [Sicher Petcare®](https://www.surepetcare.com/en-us/press) kostenlos zur Verfügung gestellt werden.
 
 ## Changelog
+
+### 1.0.4 (2021-03-07)
+* (Sickboy78) added state curfew_active for pet flap devices
+* (Sickboy78) fixed normalization of device names
+* (Sickboy78) fixed changeable values not resetting when change fails
 
 ### 1.0.3 (2021-02-28)
 * (Sickboy78) code improvements from review
