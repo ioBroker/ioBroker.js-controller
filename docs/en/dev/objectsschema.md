@@ -523,7 +523,7 @@ id `system.adapter.<adapter.name>`
 * `common.config.width`       - default width for configuration dialog (deprecated - valid only for admin2)
 * `common.dataFolder`         - folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it.
 * `common.dataSource`         - How the data will be received from device:  `poll/push/assumption`. It is important together with `connectionType`.
-* `common.dependencies`       - Array like `[{"js-controller": ">=2.0.0"}]` that describes which ioBroker modules are required for this adapter. 
+* `common.dependencies`       - Array like `[{"js-controller": ">=2.0.0"}]` that describes which ioBroker modules are required for this adapter on the same host.
 * `common.docs`               - The structure like `{"en": "docs/en/README.md", "de": ["docs/de/README.md", "docs/de/README1.md"]}` that describes the documentation if not in README.md
 * `common.enabled`            - **mandatory** [true/false] value should be false so new instances are disabled by default
 * `common.engineTypes`        - deprecated. Use engine in package.json 
@@ -531,6 +531,7 @@ id `system.adapter.<adapter.name>`
 * `common.expert`             - show this object only in expert mode in admin
 * `common.extIcon`            - link to external icon for uninstalled adapters. Normally on github.
 * `common.getHistory`         - [true/false] if adapter supports getHistory message
+* `common.globalDependencies` - Array like `[{"admin": ">=2.0.0"}]` that describes which ioBroker modules are required for this adapter on one of the hosts.
 * `common.icon`               - name of the local icon (should be located in subdirectory "admin")
 * `common.installedVersion`   - Do not use it, will be set internally only
 * `common.keywords`           - Similar to keywords in package.json, but can be defined in many languages. Just an array. 
