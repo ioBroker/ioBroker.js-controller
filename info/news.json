@@ -768,7 +768,7 @@
         "created": "2021-03-12T01:00:00.000Z",
         "conditions": {
             "zwave": "installed",
-            "zwave2": "!installed",
+            "zwave2": "!installed"
         }
     }
 ]
