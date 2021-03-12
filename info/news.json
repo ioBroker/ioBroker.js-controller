@@ -736,5 +736,39 @@
         "conditions": {
             "mercedesme": "smaller(0.0.45)"
         }
+    },
+    {
+        "title": {
+            "en": "The legacy Z-Wave adapter is deprecated",
+            "de": "Der originale Z-Wave-Adapter ist veraltet",
+            "ru": "Устаревший адаптер Z-Wave устарел",
+            "pt": "O adaptador Z-Wave legado está obsoleto",
+            "nl": "Legacy Z-Wave-adapter is verouderd",
+            "fr": "L'adaptateur Z-Wave hérité est obsolète",
+            "it": "L'adattatore Z-Wave legacy è obsoleto",
+            "es": "El adaptador heredado Z-Wave está en desuso",
+            "pl": "Starsza karta Z-Wave jest przestarzała",
+            "zh-cn": "旧版Z-Wave适配器已弃用"
+        },
+        "content": {
+            "en": "The legacy Z-Wave adapter (ioBroker.zwave) is deprecated. The main developer of OpenZWave has announced that he'll focus on other things from now on. As a result, OpenZWave and this adapter won't get any updates going forward.\n\nYou should use ioBroker.zwave2 instead.\n\nIf you are going to switch, be aware that the state IDs will change. It is recommended that you use the ioBroker alias function instead of the adapter's IDs in scripts and visualizations so you can change them all in one place instead of having to edit many things.",
+            "de": "Der originale Z-Wave-Adapter (ioBroker.zwave) ist veraltet. Der Hauptentwickler von OpenZWave hat angekündigt, dass er sich von nun an auf andere Dinge konzentrieren wird. Infolgedessen werden OpenZWave und dieser Adapter in Zukunft keine Updates erhalten.\n\nSie sollten stattdessen ioBroker.zwave2 verwenden.\n\nWenn Sie wechseln möchten, beachten Sie, dass sich die Status-IDs ändern. Es wird empfohlen, die ioBroker-Aliasfunktion anstelle die IDs der Adapter in Skripten und Visualisierungen zu verwenden, damit sie alle an einem Ort verändert werden können.",
+            "ru": "Устаревший адаптер Z-Wave (ioBroker.zwave) устарел. Главный разработчик OpenZWave объявил, что с этого момента он сосредоточится на других вещах. В результате OpenZWave и этот адаптер не получат никаких обновлений в будущем.\n\nВместо этого вам следует использовать ioBroker.zwave2.\n\nЕсли вы собираетесь переключиться, имейте в виду, что идентификаторы состояний изменятся. Рекомендуется использовать функцию псевдонима ioBroker вместо идентификаторов адаптера в сценариях и визуализациях, чтобы вы могли изменить их все в одном месте, вместо того, чтобы редактировать множество вещей.",
+            "pt": "O adaptador Z-Wave herdado (ioBroker.zwave) está obsoleto. O principal desenvolvedor do OpenZWave anunciou que se concentrará em outras coisas a partir de agora. Como resultado, o OpenZWave e este adaptador não receberão nenhuma atualização daqui para frente.\n\nVocê deve usar ioBroker.zwave2 em vez disso.\n\nSe você for trocar, esteja ciente de que os IDs de estado serão alterados. É recomendável usar a função de alias ioBroker em vez dos IDs do adaptador em scripts e visualizações, para que você possa alterá-los todos em um só lugar, em vez de ter que editar muitas coisas.",
+            "nl": "De oude Z-Wave-adapter (ioBroker.zwave) is verouderd. De hoofdontwikkelaar van OpenZWave heeft aangekondigd dat hij zich vanaf nu op andere dingen zal concentreren. Als gevolg hiervan krijgen OpenZWave en deze adapter in de toekomst geen updates.\n\nU moet in plaats daarvan ioBroker.zwave2 gebruiken.\n\nAls u gaat overschakelen, houd er dan rekening mee dat de status-ID's zullen veranderen. Het wordt aanbevolen dat u de ioBroker-aliasfunctie gebruikt in plaats van de adapter-ID's in scripts en visualisaties, zodat u ze allemaal op één plaats kunt wijzigen in plaats van veel dingen te moeten bewerken.",
+            "fr": "L'adaptateur Z-Wave hérité (ioBroker.zwave) est obsolète. Le développeur principal d'OpenZWave a annoncé qu'il se concentrerait désormais sur d'autres choses. En conséquence, OpenZWave et cet adaptateur ne recevront aucune mise à jour.\n\nVous devez utiliser ioBroker.zwave2 à la place.\n\nSi vous allez changer, sachez que les identifiants d'état changeront. Il est recommandé d'utiliser la fonction d'alias ioBroker au lieu des ID de l'adaptateur dans les scripts et les visualisations afin de pouvoir tous les modifier au même endroit au lieu d'avoir à modifier beaucoup de choses.",
+            "it": "L'adattatore Z-Wave legacy (ioBroker.zwave) è deprecato. Lo sviluppatore principale di OpenZWave ha annunciato che d'ora in poi si concentrerà su altre cose. Di conseguenza, OpenZWave e questo adattatore non riceveranno alcun aggiornamento in futuro.\n\nDovresti invece usare ioBroker.zwave2.\n\nSe hai intenzione di cambiare, tieni presente che gli ID di stato cambieranno. Si consiglia di utilizzare la funzione alias ioBroker invece degli ID dell'adattatore negli script e nelle visualizzazioni in modo da poterli modificare tutti in un unico posto invece di dover modificare molte cose.",
+            "es": "El adaptador Z-Wave heredado (ioBroker.zwave) está en desuso. El desarrollador principal de OpenZWave ha anunciado que se centrará en otras cosas a partir de ahora. Como resultado, OpenZWave y este adaptador no recibirán actualizaciones en el futuro.\n\nEn su lugar, debería utilizar ioBroker.zwave2.\n\nSi va a cambiar, tenga en cuenta que los ID de estado cambiarán. Se recomienda que utilice la función de alias de ioBroker en lugar de los ID del adaptador en los scripts y visualizaciones para que pueda cambiarlos todos en un solo lugar en lugar de tener que editar muchas cosas.",
+            "pl": "Starsza karta Z-Wave (ioBroker.zwave) jest przestarzała. Główny programista OpenZWave ogłosił, że od teraz skupi się na innych rzeczach. W rezultacie OpenZWave i ten adapter nie będą otrzymywać żadnych aktualizacji.\n\nZamiast tego powinieneś użyć ioBroker.zwave2.\n\nJeśli zamierzasz się przełączyć, pamiętaj, że identyfikatory stanów ulegną zmianie. Zaleca się używanie funkcji aliasu ioBroker zamiast identyfikatorów adaptera w skryptach i wizualizacjach, aby można było je wszystkie zmienić w jednym miejscu, zamiast edytować wiele rzeczy.",
+            "zh-cn": "不推荐使用旧版Z-Wave适配器（ioBroker.zwave）。 OpenZWave的主要开发人员宣布，从现在开始，他将专注于其他方面。结果，OpenZWave和此适配器将无法获得任何更新。\n\n您应该改用ioBroker.zwave2。\n\n如果要切换，请注意状态ID会更改。建议您在脚本和可视化文件中使用ioBroker别名功能代替适配器的ID，以便可以在一处更改它们，而不必进行许多编辑。"
+        },
+        "id": "zwave-deprecated",
+        "class": "info",
+        "fa-icon": "hourglass-end",
+        "created": "2021-03-12T01:00:00.000Z",
+        "conditions": {
+            "zwave": "installed",
+            "zwave2": "!installed",
+        }
     }
 ]
