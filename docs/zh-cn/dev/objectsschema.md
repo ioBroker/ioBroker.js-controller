@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心理念
-hash: dXiU5TyBCaPcN+GSJjxNVuUiAZD/umlovNUioUKOgho=
+hash: n8dJiUG75kHBTZHtngVHHfmjO2mmQZiU2GL8hCgN0tM=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
 
 对象代表很少更改的较大数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关更多信息，请参见下面的信息，特定类型的对象需要哪些可用的对象类型以及哪些强制属性。适配器模块将为您提供诸如setObject，getObject等功能。
 
-状态代表系统中经常变化的数据，例如f.e.如果指示灯亮起或熄灭，运动检测器检测到某种运动，客厅的温度或按了遥控器的按钮。与对象相反，状态可以用来触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个功能，例如setState，getState等。
+状态代表系统中经常变化的数据，例如f.e.如果指示灯亮起或熄灭，运动检测器检测到某种运动，起居室的温度或按了遥控器的按钮。与对象相反，状态可以用来触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个功能，例如setState，getState等。
 
 对于每个状态，还必须存在一个带有`type=state`的对应对象。
 
@@ -128,7 +128,7 @@ getState / stateChange / setState对象的属性：
 *`val`-实际值-可以是JSON-“可编码”的任何类型
 *`ack`-一个布尔型标志，指示目标系统是否已确认该值
 *`ts`-指示状态的最后更新的unix时间戳（以毫秒为单位）
-*`lc`-Unix时间戳，指示该状态的实际值的最后一次更改（以毫秒为单位）
+*`lc`-Unix时间戳，指示状态的实际值的最后一次更改（以毫秒为单位）
 *`from`-完成`setState`的适配器实例
 *`user`-用户名，用于设置值
 *`expire`-一个整数值，可用于设置在给定秒数后到期的状态。可以与`setValue`一起使用。该值到期后，它将从redisDB中消失。
@@ -176,13 +176,13 @@ getState / stateChange / setState对象的属性：
 
 ###对象类型
 *`state`-父类的类型应该是通道，设备，实例或主机
-*`channel`-反对组织一个或多个状态。父母应该是设备。
-*`device`-阻止对一个或多个通道或状态进行分组。除适配器实例名称空间外，不应有任何父项。
+*`channel`-反对对一个或多个状态进行分组。父母应该是设备。
+*`device`-阻止对一个或多个通道或状态进行分组的对象。除适配器实例名称空间外，不应有任何父项。
 *`enum`-持有一个数组的对象common.members指向状态，通道，设备或文件。枚举可以有一个父枚举（可能是树结构）
 *`host`-运行控制器进程的主机
 *`adapter`-适配器的默认配置。存在状态也表示适配器已成功安装。 （建议：应具有一个属性，其中包含安装它的主机的数组）
 *`instance`-适配器的实例。父级必须是适配器类型
-*`meta'-很少更改适配器或其实例所需的元信息
+*`meta`-很少更改适配器或其实例所需的元信息
 *`config`-配置
 *`script`-脚本
 *`user`-用户
@@ -194,7 +194,7 @@ getState / stateChange / setState对象的属性：
 ＃＃＃＃＃ 状态
 属性：
 
-*`common.type`（可选-（默认为blend ==任何类型）（可能的值：数字，字符串，布尔值，数组，对象，混合对象，文件）。作为例外，类型为meta的对象可以具有common.type .type = meta.user`或`meta.folder`
+*`common.type`（可选-（默认为blend ==任何类型）（可能的值：数字，字符串，布尔值，数组，对象，混合对象，文件）。作为例外，类型为meta的对象可以具有common .type = meta.user`或`meta.folder`
 *`common.min`（可选）
 *`common.max`（可选）
 *`common.step`（可选）-增加/减少间隔。例如。调温器为0.5
@@ -206,7 +206,7 @@ getState / stateChange / setState对象的属性：
 *`common.write`（布尔值，强制性）-如果状态为可写，则为true
 *`common.role`（字符串，强制性）-状态的角色（在用户界面中用于指示要选择哪个小部件，请参见下文）
 *类型编号的`common.states`（可选）属性，带有可能状态的对象'{'value'：'valueName'，'value2'：'valueName2'，0：'OFF'，1：'ON'}`
-*`common.workingID`（字符串，可选）-如果此状态具有辅助状态WORKING。如果前几部分与实际名称相同，则必须在此处写上全名或仅写最后一部分。用于HM.LEVEL，通常值为“ WORKING”
+*`common.workingID`（字符串，可选）-如果此状态具有助手状态WORKING。如果前几部分与实际名称相同，则必须写上全名或最后一部分。用于HM.LEVEL，通常值为“ WORKING”
 *`common.custom`（可选）-具有特定适配器的自定义设置的结构。像`{“ influxdb.0”：{“ enabled”：true，“ alias”：“ name”}}`一样。 “ enabled”属性是必需的，如果不为true，则将删除整个属性。
 
 #####状态`common.history`
@@ -252,7 +252,7 @@ getState / stateChange / setState对象的属性：
 *`light.color`-具有颜色更改功能的灯光控制
 *`light.color.rgb`-以RGB设置颜色
 *`light.color.rgbw`-以RGBW设置颜色
-*`light.color.hsl`-在“色相/饱和度/亮度”中设置颜色（“色相光-LivingColors ...”）
+*`light.color.hsl`-以色相/饱和度/亮度设置颜色（色相光-LivingColors ...）
 *`light.color.hslct`-在“色相/饱和度/亮度”或“色温”中设置颜色（色相扩展色光）
 *`light.color.ct`-色温K
 
@@ -263,7 +263,7 @@ getState / stateChange / setState对象的属性：
 *`sensor.door.lock`-打开，关闭，锁定
 *`sensor.window`-打开，关闭
 *`sensor.window.3`-打开，倾斜，关闭
-*`sensor.water`-正确（警报），错误（无警报）
+*`sensor.water`-真（警报），假（无警报）
 *`sensor.fire`-正确（警报），错误（无警报）
 *`sensor.CO2`-真（警报），假（无警报）
 
@@ -282,7 +282,7 @@ getState / stateChange / setState对象的属性：
 * ...
 
 ####频道说明
-~~属性名称可以由适配器自由定义，用** bold **字体书写的属性名称除外。~~
+~~属性名称可以由适配器自由定义，用** bold **字体编写的属性除外。~~
 
 “ W”-common.write = true
 
@@ -486,7 +486,7 @@ ID
 ＃＃＃＃ 适配器
 id`system.adapter.<adapter.name>`
 
-*注意：*除特殊标记为“强制性”的标记外，所有标志都是可选的。
+*注意：*所有标志都是可选的，除非特殊标记为“强制性”。
 
 *`common.adminColumns`-自定义属性，必须在对象浏览器的admin中显示。像：`[{“ name”：{“ en”：“ KNX address”}，“ path”：“ native.address”，“ width”：100，“ align”：“ left”}，{“ name”： “ DPT”，“ path”：“ native.dpt”，“ width”：100，“ align”：“ right”，“ type”：“ number”，“ edit”：true，“ objTypes”：[“ state” ，“ channel”]}]`。 type是属性的类型（例如字符串，数字，布尔值），只有在启用了编辑功能后才需要。 objTypes是对象类型的列表，可以具有这样的属性。也仅在编辑模式下使用。
 *`common.adminTab.fa-icon`-TAB的“真棒字体”图标名称。
@@ -494,7 +494,7 @@ id`system.adapter.<adapter.name>`
 *`common.adminTab.link`-TAB中iframe的链接。您可以像这样使用参数替换：“ http：//％ip％：％port％”。 IP将替换为主机IP。 “端口”将从native.port中提取。
 *`common.adminTab.name`-管理员中TAB的名称
 *`common.adminTab.singleton`-[true / false]如果适配器具有用于管理员的TAB。对于所有实例，将仅显示一个TAB。
-*`common.allowInit`-[true / false]如果设置更改或适配器已启动，则允许将“计划的”适配器称为“不在时间表中”。或在配置更改后允许调度的适配器启动一次，然后按调度启动。
+*`common.allowInit`-[true / false]如果设置更改或适配器已启动，则允许将“计划的”适配器称为“不在时间表中”。或者在配置更改后允许调度适配器启动一次，然后按调度启动。
 *`common.availableModes`-common.mode的值（如果可能有多个模式）
 *`common.blockly`-[true / false]如果适配器具有用于块的自定义块。 （需要admin / blockly.js）
 *`common.connectionType`-与设备的连接类型：`local / cloud`。也可以参考`common.dataSource`。
@@ -505,7 +505,7 @@ id`system.adapter.<adapter.name>`
 *`common.config.width`-配置对话框的默认宽度（不建议使用-仅对admin2有效）
 *`common.dataFolder`-相对于iobroker-data的文件夹，适配器存储数据。该文件夹将被备份并自动恢复。您可以在其中使用变量'％INSTANCE％'。
 *`common.dataSource`-如何从设备接收数据：`poll / push / assumption`。与`connectionType`一起使用很重要。
-*`common.dependencies`-类似[[{“ js-controller”：“> = 2.0.0”}]]之类的数组，它描述此适配器需要哪些ioBroker模块。
+*`common.dependencies`-类似[[{“ js-controller”：“> = 2.0.0”}]]的数组，它描述了同一主机上此适配器需要哪些ioBroker模块。
 *`common.docs`-类似于`{“ en”：“ docs / en / README.md”，“ de”：[“ docs / de / README.md”，“ docs / de / README1.md” ]}`来描述文档（如果不在README.md中）
 *`common.enabled`-强制性[true / false]值应为false，因此默认情况下禁用新实例
 *`common.engineTypes`-不推荐使用。在package.json中使用引擎
@@ -513,6 +513,7 @@ id`system.adapter.<adapter.name>`
 *`common.expert`-仅在admin中的专家模式下显示此对象
 *`common.extIcon`-链接到已卸载适配器的外部图标。通常在github上。
 *`common.getHistory`-[true / false]如果适配器支持getHistory消息
+*`common.globalDependencies`-类似于[[{“ admin”：“> = 2.0.0”}]]之类的数组，它描述主机之一上的此适配器需要哪些ioBroker模块。
 *`common.icon`-本地图标的名称（应位于子目录“ admin”中）
 *`common.installedVersion`-请勿使用，只能在内部设置
 *`common.keywords`-与package.json中的关键字相似，但是可以用多种语言定义。只是一个数组。
@@ -523,8 +524,8 @@ id`system.adapter.<adapter.name>`
 *`common.main`-**已弃用**在package.json中使用main。
 *`common.materializeTab`-如果适配器支持> tab的admin3（具体化样式）
 *`common.materialize`-如果适配器支持> admin3（具体化样式）
-*`common.messagebox`-如果支持消息框，则为true。如果是，则将创建对象system.adapter。＆lt; adapter.name＆gt; adapter.instance＆gt.messagebox，以将消息发送给适配器（用于电子邮件，推送，...;
-*`common.mode`-**必填**可能的值见下文
+*`common.messagebox`-如果支持消息框，则为true。如果是，则将创建对象system.adapter。＆lt; adapter.name＆gt; adapter.instance＆gt.messagebox，以将消息发送到适配器（用于电子邮件，推送，...;
+*`common.mode`-**必填**可能的值见下
 *`common.name`-**必需**不带“ ioBroker”的适配器的名称。
 *`common.noConfig`-[true / false]不显示实例的配置对话框
 *`common.noIntro`-从不在管理员的“简介/概述”屏幕上显示此适配器的实例（例如图标，小部件）
@@ -537,7 +538,7 @@ id`system.adapter.<adapter.name>`
 *`common.osDependencies.linux`-此适配器所需的debian / centos软件包数组（当然，只有具有apt，apt-get，yum作为软件包管理器的OS）
 *`common.osDependencies.win32`-未使用，因为win32没有程序包管理器
 *`common.os`-支持的操作系统的字符串或数组，例如[“ linux”，“ darwin”]
-*`common.platform`-**必填**可能的值：Javascript / Node.js，更多新内容
+*`common.platform`-**必填**可能的值：Javascript / Node.js，还会有更多
 *`common.preserveSettings`-具有实例公共属性名称的字符串（或数组），不会被删除。例如。 “ history”，因此通过setState（'system.adapter.mqtt.0“，{..}），即使新对象没有此字段，也不会删除common.history字段。要删除该属性，必须明确用```common：{history：null}```完成。
 *`common.readme`-自述文件的URL
 *`common.restartAdapters`-具有适配器名称的阵列，必须在安装此适配器后重新启动它，例如[“可见”]
@@ -547,14 +548,14 @@ id`system.adapter.<adapter.name>`
 *`common.singleton`-适配器在整个系统中只能安装一次
 *`common.stopBeforeUpdate`-[true / false]如果适配器必须在更新前停止
 *`common.stopTimeout`-超时，以毫秒为单位，直到适配器关闭。默认值500ms。
-*`common.subscribable`-该适配器的变量必须与sendTo一起订阅才能启用更新
+*`common.subscribable`-必须使用sendTo订阅此适配器的变量以启用更新
 *`common.subscribe`-变量名，自动订阅
 *`common.supportCustoms`-[true / false]如果适配器支持每种状态的设置。它必须在admin中具有custom.html文件。样本可以在ioBroker.history中找到
 *`common.supportStopInstance`-[true / false]如果适配器支持信号stopInstance（需要** messagebox **）。该信号将在停止前发送到适配器。 （如果问题发生在SIGTERM上，则使用）
 *`common.titleLang`-**必填**所有受支持语言的适配器的更长名称，例如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}
 *`common.title`-（不建议使用）适配器的更长名称，以在admin中显示
 *`common.type`-适配器类型。参见[类型]（adapterpublish.md）
-*`common.unchanged`-（系统）请不要使用此标志。这是通知系统的标志，必须在admin中显示配置对话框。
+*`common.unchanged`-（系统）请不要使用此标志。这是一个通知系统的标志，必须在admin中显示配置对话框。
 *`common.unsafePerm`-[true / false]如果必须使用“ npm --unsafe-perm”参数安装软件包
 *`common.version`-**必需**可用版本
 *`common.wakeup`-如果将一些值写入`system.adapter.NAME.x.wakeup`中，适配器将启动。通常，适配器应在事件处理后停止。
@@ -599,7 +600,7 @@ id`system.host.<host>`
 
 ####配置
 ＃＃＃＃ 脚本
-*`common.platform`-（强制）可能的值`Javascript / Node.js`（以后还会有）
+*`common.platform`-（强制）可能的值`Javascript / Node.js`（以后还会有更多）
 *`common.enabled`-（强制）是否激活了脚本
 *`common.source`-（强制性）脚本源
 *`common.engine`-（可选）*脚本引擎*应该运行此脚本的实例（例如'javascript.0'）-如果自动选择省略的引擎

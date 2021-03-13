@@ -67,6 +67,9 @@ Please follow the Steps to ensure the Adapter will work correctly and you can se
 
 ## Changelog
 
+### 1.0.3
+* Added more info for playing item
+
 ### 1.0.0
 * First stable public release
 * Added support for Https and Http

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: BOgIlLXvibALjDtnvut6a+AclxyCj8/51xi+F2g0JqA=
+hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -19,14 +19,14 @@ Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwen
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Die Einstellungen
-Um den Cloud-Adapter zu verwenden, müssen Sie sich zuerst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
+Um einen Cloud-Adapter zu verwenden, müssen Sie sich zuerst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
 
 [Verweis auf die Einstellungen des Google API-Typs](https://developers.google.com/actions/smarthome/guides/)
 
 ![Intro](../../../en/adapterref/iobroker.iot/img/intro.png)
 
 ### Sprache
-Wenn Sie "Standard" -Sprache auswählen, werden die intelligenten Namen von Geräten und Aufzählungen nicht übersetzt. Wenn eine Sprache angegeben ist, werden alle bekannten Namen in diese Sprache übersetzt.
+Wenn Sie "Standard" -Sprache auswählen, werden die Smart-Namen von Geräten und Aufzählungen nicht übersetzt. Wenn eine Sprache angegeben ist, werden alle bekannten Namen in diese Sprache übersetzt.
 Zu Demonstrationszwecken wird schnell zwischen vielen Sprachen gewechselt.
 
 ### Platziere die Funktion zuerst in den Namen
@@ -45,7 +45,7 @@ Einige Gruppen bestehen aus gemischten Geräten: Dimmer und Schalter. Es ist erl
 Wenn der Befehl `Set to 30%` und `OFF level is 30%` lautet, werden die Schalter eingeschaltet. Mit dem Befehl "Auf 25% einstellen" werden alle Schalter ausgeschaltet.
 
 Wenn der Befehl "AUS" ist, speichert der Adapter den aktuellen Dimmerpegel, wenn der tatsächliche Wert über oder gleich "30%" liegt.
-Später, wenn der neue Befehl "EIN" ertönt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
+Später, wenn der neue "EIN" -Befehl kommt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
 
 Beispiel:
 
@@ -54,17 +54,17 @@ Beispiel:
 - Befehl: "Licht auf 40% einstellen". Der Adapter speichert diesen Wert für *Dimmer* stellt ihn auf "Dimmer" und schaltet den *Schalter* ein.
 - Befehl: "Licht ausschalten". Der Adapter stellt den *Dimmer* auf 0% und schaltet den *Schalter* aus.
 - Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => ON.
-- Befehl: "Licht auf 20% einstellen". *Dimmer* => 20%, *Schalter* => AUS. Der Wert für den Dimmer wird nicht gespeichert, da er unter *AUS* liegt.
+- Befehl: "Licht auf 20% einstellen". *Dimmer* => 20%, *Schalter* => AUS. Der Wert für Dimmer wird nicht gespeichert, da er unter *OFF-Pegel* liegt.
 - Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => ON.
 
 ### Von ON
-Sie können das Verhalten des EIN-Befehls für den Nummernstatus auswählen. Der spezifische Wert kann ausgewählt werden oder der letzte Wert ungleich Null wird verwendet.
+Sie können das Verhalten des ON-Befehls für den Nummernstatus auswählen. Der spezifische Wert kann ausgewählt werden oder der letzte Wert ungleich Null wird verwendet.
 
 ### Antwort schreiben an
 Für jeden Befehl wird die Textantwort generiert. Hier können Sie die Objekt-ID definieren, in die dieser Text geschrieben werden muss. Z.B. *sayit.0.tts.text*
 
 ### Farben
-Momentan unterstützt nur Englisch Alexa die Farbkontrolle.
+Momentan unterstützt nur Englisch Alexa die Farbsteuerung.
 Der Kanal muss 4 Zustände mit folgenden Rollen haben:
 
 - level.color.saturation (erforderlich für die Erkennung des Kanals),
@@ -100,17 +100,17 @@ Folgende Bedingungen müssen erfüllt sein, um den Status in die automatisch gen
 - Der Status muss sich in einer "Funktions" -Aufzählung befinden.
 - Der Status muss eine Rolle haben ("Status", "Schalter" oder "Ebene. *", Z. B. Ebene.Dimmer), wenn er nicht direkt in "Funktionen" enthalten ist.
 
-Es kann sein, dass sich der Kanal in den "Funktionen" befindet, aber selbst nicht angeben.
+Es kann sein, dass sich der Kanal in den "Funktionen" befindet, sich aber nicht selbst angibt.
 
 - Der Status muss beschreibbar sein: common.write = true
-- Der Zustandsdimmer muss common.type als 'number' haben.
+- Der Zustandsdimmer muss den Typ common.type als 'number' haben.
 - Die Zustandsheizung muss eine gemeinsame Einheit als '°C', '°F' oder '° K' und einen gemeinsamen Typ als 'Nummer' haben.
 
 Befindet sich der Status nur in "Funktionen" und nicht in einem "Raum", wird der Name des Status verwendet.
 
 Die Statusnamen werden aus Funktion und Raum generiert. Z.B. Alle *Lichter* im *Wohnzimmer* werden im virtuellen Gerät *Wohnzimmerlicht* gesammelt.
 Der Benutzer kann diesen Namen nicht ändern, da er automatisch generiert wird.
-Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. die Funktion "Licht" wurde in "Lichter" geändert, so dass das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert wird)
+Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. die Funktion "Licht" wurde in "Lichter" geändert, sodass das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert wird.)
 
 Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart Name verwendet.
 
@@ -167,7 +167,7 @@ Reservierte Namen sind "ifttt", "text2command", "simpleApi", "swagger". Diese m�
 ### Text2command
 Sie können "text2command" in eine weiße Liste schreiben. Sie können eine POST-Anfrage an ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>``` senden, um Daten in die Variable *text2command.X.text* zu schreiben.
 
-Sie können auch die GET-Methode verwenden ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>```
+Sie können auch die GET-Methode verwenden
 
 "X" kann in den Einstellungen mit der Option "text2command-Instanz verwenden" definiert werden.
 
@@ -189,11 +189,11 @@ Wenn die Instanz *text2command* definiert ist, muss diese Instanz die Antwort be
 
 Der Adapter liefert die Details in zwei Zuständen mit unterschiedlicher Detailstufe
 
-* **smart.lastCommand** enthält den empfangenen Text einschließlich einer Information über die Art der Abfrage (Absicht). Beispiel: "askDevice Status Rasenmäher"
+* **smart.lastCommand** enthält den empfangenen Text einschließlich einer Information über den Abfragetyp (Absicht). Beispiel: "askDevice Status Rasenmäher"
 * ** smart.lastCommandObj *** enthält eine JSON-Zeichenfolge, die auf ein Objekt analysiert werden kann, das die folgenden Informationen enthält
  * **Wörter** enthält die empfangenen Wörter in einem Array
  * **intent** enthält den Abfragetyp. Mögliche Werte sind derzeit "askDevice", "controlDevice", "actionStart", "actionEnd", "askWhen", "askWhere", "askWho".
- * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon gesendet wurde, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
+ * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon übermittelt wird, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
  * **sessionId** enthält eine sessionId der Skill-Sitzung. Sollte identisch sein, wenn mehrere von Amazon gelieferte Befehle gesprochen wurden, ist die Zeichenfolge leer, wenn sie nicht angegeben wird
  * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder möglicherweise später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
 
@@ -259,7 +259,7 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 
 Folgende Typen werden unterstützt:
 
-- `alexa` - mit Amazon Alexa oder Amazon Custom Skill handeln
+- `alexa` - agiert mit Amazon Alexa oder Amazon Custom Skill
 - `ghome` - Handeln mit Google Actions über Google Home
 - `alisa` - mit Yandex Алиса handeln
 - `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
@@ -272,6 +272,15 @@ Folgende Typen werden unterstützt:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.8.15 (2021-03-12)
+* (bluefox) implemented the sensor functionality in alisa
+
+### 1.8.14 (2021-03-12)
+* (bluefox) allowed the control of the blinds in alisa
+
+### 1.8.13 (2021-02-04)
+* (Apollon77) add missing object smart.lastObjectID
+
 ### 1.8.12 (2021-02-02)
 * (bluefox) Fixed the dimmer issue with alisa.
 
@@ -279,7 +288,7 @@ Folgende Typen werden unterstützt:
 * (Morluktom) Alexa - Corrected the request for percentage values
 
 ### 1.8.10 (2021-01-20)
-* (bluefox) Added the reconnect strategy if DNS address cannot be resolved
+* (bluefox) Added the reconnection strategy if DNS address cannot be resolved
 
 ### 1.8.9 (2020-12-27)
 * (bluefox) Updated configuration GUI to the latest state

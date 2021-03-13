@@ -343,6 +343,12 @@ Here is a list of the problems that have occurred so far and their solutions, if
 
 ## Changelog
 
+### 2.0.4 (10.03.2021)
+* (simatec) Bugfix history json
+* (simatec) BugFix Redis backup
+* (simatec) chmod for backup directory added
+* (simatec) error handling for Grafana backup added
+
 ### 2.0.3 (04.03.2021)
 * (simatec) Promise for redis aof added
 * (simatec) BugFix Grafana restore

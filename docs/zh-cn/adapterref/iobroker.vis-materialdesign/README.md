@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker VIS的材料设计小部件
-hash: lsan3IgIYpai3/qnv2yd9dhvqAdO0ZOB17OcChdLekc=
+hash: zTpTkfftGuplabpisKo2F58hyfWV71c97KFy0INy++o=
 ---
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-在目录中省略->
 
@@ -27,7 +27,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[一般]（＃general）
 -[在线示例项目]（＃online-example-project）
 -[实用示例]（＃practical-examples）
--[有关小部件的问题和答案]（＃questions-and-answers-about-the-widgets）
+-[有关小部件的问题和解答]（＃questions-and-answers-about-the-widgets）
 -[支持的浏览器]（＃supported-browser）
 -[支持在移动设备上振动的浏览器功能]（＃支持浏览器在移动设备上振动的功能）
 -[ioBroker VIS App]（＃iobroker-vis-app）
@@ -177,7 +177,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 ##在线示例项目
 由[iobroker.click](https://iobroker.click/index.html)提供，这要归功于bluefox和iobroker。
 
-* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> （ <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a> ）
+* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS运行时</a>（ <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a> ）
 * <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS编辑器</a>（ <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a> ）
 
 ##实际例子
@@ -1238,7 +1238,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ### HTML属性
 以下属性可用作[HTML小部件](#html-widgets)。
 
-<table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>mdw型</td><td>小部件类型</td><td>细绳</td><td>圆</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>常见的</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>细绳</td><td></tr><tr><td>最小载重量</td><td>分</td><td>细绳</td><td></tr><tr><td>最大密度</td><td>最大限度</td><td>细绳</td><td></tr><tr><td>mdw-progressIndeterminate</td><td>不确定-连续动画</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误|真的</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局</b></i></td></tr><tr><td>mdw-progressCircularSize</td><td>尺寸</td><td>数字</td><td></tr><tr><td>mdw-progressCircularWidth</td><td>厚度</td><td>数字</td><td></tr><tr><td>mdw-progressCircularRotate</td><td>旋转起点</td><td>数字</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorProgressBackground</td><td>背景颜色</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorProgress</td><td>颜色进度</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-innerColor</td><td>圆圈背景色</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorOneCondition</td><td>颜色1进度的条件[&gt;]</td><td>数字</td><td></tr><tr><td>mdw-colorOne</td><td>颜色1进度</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorTwoCondition</td><td>颜色2进度的条件[&gt;]</td><td>数字</td><td></tr><tr><td>mdw-color2</td><td>颜色2进度</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-showValueLabel</td><td>显示价值</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw-valueLabelStyle</td><td>价值标题样式</td><td>细绳</td><td>progressPercent | progressValue | progressCustom</tr><tr><td> mdw-valueLabelUnit</td><td>单元</td><td>细绳</td><td></tr><tr><td>mdw-valueMaxDecimals</td><td>小数点</td><td>数字</td><td></tr><tr><td>mdw-valueLabelCustom</td><td>自定义标签</td><td>细绳</td><td></tr><tr><td>mdw-textColor</td><td>分钟文字颜色</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-textFontSize</td><td>字体大小</td><td>数字</td><td></tr><tr><td>mdw-textFontFamily</td><td>字形</td><td>细绳</td><td></tr></tbody></table>
+<table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>mdw型</td><td>小部件类型</td><td>细绳</td><td>线性的</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>常见的</b></i></td></tr><tr><td>mdw-oid</td><td>对象ID</td><td>细绳</td><td></tr><tr><td>最小载重量</td><td>分</td><td>细绳</td><td></tr><tr><td>最大密度</td><td>最大限度</td><td>细绳</td><td></tr><tr><td>mdw-reverse</td><td>冲销价值</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw-invertValue</td><td>反转价值</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw调试</td><td>调试</td><td>布尔值</td><td>错误|真的</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>布局</b></i></td></tr><tr><td>mdw-progressRounded</td><td>圆角</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw-progressIndeterminate</td><td>不确定-连续动画</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw-progressRotate</td><td>旋转90度</td><td>细绳</td><td>noRotate |是旋转</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>group_layoutStriped</b></i></td></tr><tr><td> mdw-progressStriped</td><td>有条纹的</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw-progressStripedColor</td><td> progressStripedColor</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-stripAngle</td><td> stripAngle</td><td>数字</td><td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>颜色</b></i></td></tr><tr><td>mdw-colorProgressBackground</td><td>背景颜色</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorProgress</td><td>颜色进度</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorOneCondition</td><td>颜色1进度的条件[&gt;]</td><td>数字</td><td></tr><tr><td>mdw-colorOne</td><td>颜色1进度</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-colorTwoCondition</td><td>颜色2进度的条件[&gt;]</td><td>数字</td><td></tr><tr><td>mdw-color2</td><td>颜色2进度</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>贴标</b></i></td></tr><tr><td>mdw-showValueLabel</td><td>显示价值</td><td>布尔值</td><td>错误|真的</tr><tr><td>mdw-valueLabelStyle</td><td>价值标题样式</td><td>细绳</td><td>progressPercent | progressValue | progressCustom</tr><tr><td> mdw-valueLabelUnit</td><td>单元</td><td>细绳</td><td></tr><tr><td>mdw-valueMaxDecimals</td><td>小数点</td><td>数字</td><td></tr><tr><td>mdw-valueLabelCustom</td><td>自定义标签</td><td>细绳</td><td></tr><tr><td>mdw-textColor</td><td>分钟文字颜色</td><td>细绳</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</tr><tr><td> mdw-textFontSize</td><td>字体大小</td><td>数字</td><td></tr><tr><td>mdw-textFontFamily</td><td>字形</td><td>细绳</td><td></tr><tr><td>mdw-textAlign</td><td> textAlign</td><td>细绳</td><td>开始中心|结尾</tr></tbody></table>
 
 <！-在目录中省略->
 
@@ -1815,7 +1815,7 @@ JSON字符串必须是具有以下属性的对象数组：
 ####编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/piechart_settings_common.png"></td><td>设置数据集</td><td>可以通过编辑器输入PieChart的数据，也可以使用JSON字符串</td></tr><tr><td>项目数</td><td>使用vis编辑器获取列表数据的饼数</td></tr><tr><td>对象编号</td><td>包含json字符串的数据点的对象ID。允许的属性如下所述</td></tr><tr><td rowspan=><img src="doc/en/media/barchart_settings_dataset.png"></td><td>对象ID [x]</td><td>使用vis编辑器的单个饼图的对象ID</td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/piechart_settings_common.png"></td><td>设置数据集</td><td>可以通过编辑器输入PieChart的数据，也可以使用JSON字符串</td></tr><tr><td>项目数</td><td>使用vis编辑器获取列表数据的饼数</td></tr><tr><td>对象编号</td><td>包含json字符串的数据点的对象ID。允许的属性如下所述</td></tr><tr><td rowspan=><img src="doc/en/media/barchart_settings_dataset.png"></td><td>对象ID [x]</td><td>使用vis编辑器的单个馅饼的对象ID</td></tr></tbody></table>
 
 ####数据集JSON属性
 JSON字符串必须是具有以下属性的对象数组：
@@ -1871,12 +1871,12 @@ JSON字符串必须是具有以下属性的对象数组：
 <！-在目录中省略->
 
 ##### GradientColor
-<details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>价值</td><td>应当在其中应用颜色的值</td><td>数字</td><td>1,2,5，...</td></tr><tr><td>颜色</td><td>物有所值</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr></tbody></table></details>
+<details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>价值</td><td>应在其中应用颜色的值</td><td>数字</td><td>1,2,5，...</td></tr><tr><td>颜色</td><td>物有所值</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr></tbody></table></details>
 
 <！-在目录中省略->
 
 具有时间轴的#####图表JSON图表支持具有时间戳的数据。要使用此功能，数据数组必须具有时间戳记值（x轴值）和值（y轴值）。
-######个带有时间戳的值
+######带有时间戳的值
 <details><table><thead><tr><th>财产</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>Ť</td><td>时间戳-xAxis值</td><td>数字</td><td>1,2,5，...</td></tr><tr><td> ÿ</td><td>时间戳记值-yAxis值</td><td>数字</td><td>1,2,5，...</td></tr></tbody></table></details>
 
 ######具有时间戳的数据的x轴设置
@@ -2502,7 +2502,7 @@ Masonry Views集成了多个`view in widget`，将根据小部件的宽度自动
 <b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
 
 ####编辑器设置
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。</td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x]</td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code></td></tr><tr><td>视线高度[x]</td><td>您可以在此处指定使用的视图的高度。<br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图：<br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。</td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x]</td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code></td></tr><tr><td>视线高度[x]</td><td>您可以在此处指定使用的视图的高度。<br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，必须将位置设置为相对，请参见屏幕截图：<br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
 
 ###网格视图
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
@@ -2515,7 +2515,7 @@ Masonry Views集成了多个`view in widget`，将根据小部件的宽度自动
 <b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
 
 ####编辑器设置
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。</td></tr><tr><td rowspan=2><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。<br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。</td></tr><tr><td>视线高度[x]</td><td>您可以在此处指定使用的视图的高度。<br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图：<br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义可应用各个视图[x]的列跨度的规则以及视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。</td></tr><tr><td rowspan=2><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。<br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。</td></tr><tr><td>视线高度[x]</td><td>您可以在此处指定使用的视图的高度。<br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，必须将位置设置为相对，请参见屏幕截图：<br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tbody></table>
 
 ##警报
 可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
@@ -2565,7 +2565,7 @@ Masonry Views集成了多个`view in widget`，将根据小部件的宽度自动
 </ details>
 
 ###脚本：向小部件发送警报
-使用以下脚本，您可以将简单消息发送到Alerts Widget使用的数据点。
+使用以下脚本，您可以向Alerts Widget使用的简单消息发送到datapoint。
 该脚本必须放入全局脚本中。然后可以使用以下命令发送消息
 
 `materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
@@ -2748,18 +2748,18 @@ ical2CalendarWidget();
 ###编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/dialog_settings_common.png"></td><td>显示对话框的方法</td><td>使用按钮或使用数据点显示对话框（布尔类型）</td></tr><tr><td> Conatins视图</td><td>对话框应显示的视图</td></tr><tr><td>如果分辨率低于，则显示全屏对话框</td><td>如果分辨率低于给定值，则显示全屏对话框。</td></tr></tbody></table>
+<table><thead><tr><th>截屏</th><th>环境</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/dialog_settings_common.png"></td><td>显示对话框的方法</td><td>使用按钮或数据点（布尔型）显示对话框</td></tr><tr><td>Conatins视图</td><td>对话框应显示的视图</td></tr><tr><td>如果分辨率低于，则显示全屏对话框</td><td>如果分辨率低于给定值，则显示全屏对话框。</td></tr></tbody></table>
 
 ## HTML窗口小部件
 从受支持的Material Design小部件创建html小部件，以在支持html的任何其他小部件中使用它。
 只需为您的Material Design小部件设置样式，然后按`generate Html Element`，复制数据并将其粘贴到支持html标签的任何小部件中。
-或在脚本中使用它来动态生成窗口小部件。
+或者在脚本中使用它来动态生成窗口小部件。
 
 >注意：> *html标记的属性必须用`'`（单引号）包围>* 引号`"`必须像`\"`一样转义§§SSSSS_1§§>>将其与所示示例进行比较不同的小部件
 
 ![标识](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/html-elements.gif)
 
-有关支持的属性的更多信息，请参见各个小部件的HTML属性一章。
+有关受支持属性的更多信息，请参见各个小部件的HTML属性一章。
 
 ＃＃＃ 例子
 <！-在目录中省略->
@@ -4345,6 +4345,9 @@ ical2CalendarWidget();
 * (Scrounger) json chart: option to override tooltip for every dataset added
 * (Scrounger) json chart: tooltip mode x / y added
 * (Scrounger) json chart: option to override data label added
+* (Scrounger) charts: legend distance to bottom option added
+* (Scrounger) button state: active background color option added
+* (Scrounger) buttons: vibrate on mobil devices bug fix
 * (Scrounger) progress: rotate option added
 * (Scrounger) list: background color option added
 * (Scrounger) progress circular: auto size option added

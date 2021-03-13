@@ -1053,7 +1053,6 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zont/README.md
-https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zwave2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.adb/README.md
@@ -1474,7 +1473,6 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zont/README.md
-https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zwave2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.adb/README.md
@@ -1895,7 +1893,6 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zont/README.md
-https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zwave2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.adb/README.md
@@ -2316,5 +2313,4 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.yr/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zigbee/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zont/README.md
-https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.zwave2/README.md

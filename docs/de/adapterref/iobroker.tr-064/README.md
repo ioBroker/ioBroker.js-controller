@@ -103,8 +103,16 @@ iobroker upload tr-064
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 4.2.11 (2021-03-12)
+* (Apollon77) fix id-reset detection for single calls
+
+### 4.2.10 (2021-03-11)
+* (Apollon77) better handle caller id resets by reboots/FW updates to also update list specific counter and log when this happened
+
+### 4.2.9 (2021-03-10)
 * (Apollon77) try to better handle calllist resets on FW updates
+* (Apollon77) Make sure jsonDeviceList do not get deleted on start
+* (Apollon77) Better handle not initialized calllist templates
 
 ### 4.2.8 (2021-03-09)
 * (Apollon77) Optimize customized HTML templates if state is empty

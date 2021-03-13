@@ -70,6 +70,10 @@ The result object `ret` looks as follows:
 	Placeholder for next release:
 	### __WORK IN PROGRESS__
 -->
+### 2.7.1 (2021-03-12)
+* Dependency updates
+* Fixed issues in `io-package.json` and README found by the adapter checker
+
 ### 2.7.0 (2021-02-24)
 * Compatibility with gateway firmware v1.13.21
 * Added `whenPowerRestored` setting to configure what bulbs do after a power loss
@@ -312,7 +316,7 @@ The result object `ret` looks as follows:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2021 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

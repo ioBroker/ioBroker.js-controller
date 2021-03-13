@@ -16,6 +16,8 @@ By the default Shelly firmware (no flashing of firmware needed!). You will find 
 
 If you use the CoAP protocol Shelly devices with Firmware 1.8.0 or above works only with the Shelly Adapter 4.0.0 or above. If you use devices with Firmware below 1.8.0 except of the Shelly 4Pro you have have to use Shelly Adapter 3.3.6 or below. The Shelly Adapter 4.0.0 or above would not work in this case! 
 
+Attention, new firmware versions above 1.9.4 you have to enter a CoIoT server fot CoAP. You have to enter the IP address of your ioBroker server followed by the port 5683 on your Shelly device. For example, ioBroker runs on the IP address 192.168.1.2. Now you have to enter 192.168.1.2:5683 and activate CoIoT.
+
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to me as the developer.** More details see below!
 
 ## Installation
@@ -68,9 +70,11 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 
-### 4.0.7-beta-2 (2021-02-07)
+### 4.0.7-beta-3 (2021-02-07)
 * (Stübi) - fixing the wrong identifier name from green to blue - Issue #334
 * (Stübi) - renamed Shelly Motion MQTT name 
+* (Stübi) - Because polling for battery devices is only permieted every 60 sec., the online state will not supported anymore. 
+* (Stübi) - Polling for all battery devices changed to 60 sec. This can not be changed to any other value, still if you a power supply.
 
 ### 4.0.6 (2021-02-02)
 * (Stübi) - add min, max to state transiton for Shelly RGBW2 

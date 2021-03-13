@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: gMbGyaII/FLgAWZLkcYpd52mVRq++NaPyqxhL+/s/Is=
+hash: aUx4LgA4Rh+9FvJOkaNIVlYNJve3nA6el/g/iebpyEw=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -21,6 +21,8 @@ Der Adapter kommuniziert mit Shelly-Geräten über die REST-API und das CoAP- od
 Standardmäßig Shelly-Firmware (kein Flashen der Firmware erforderlich!). Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](https://shelly.cloud/)
 
 Wenn Sie das CoAP-Protokoll verwenden, funktionieren Shelly-Geräte mit Firmware 1.8.0 oder höher nur mit dem Shelly-Adapter 4.0.0 oder höher. Wenn Sie Geräte mit Firmware unter 1.8.0 mit Ausnahme von Shelly 4Pro verwenden, müssen Sie Shelly Adapter 3.3.6 oder niedriger verwenden. Der Shelly Adapter 4.0.0 oder höher würde in diesem Fall nicht funktionieren!
+
+Achtung, bei neuen Firmware-Versionen über 1.9.4 müssen Sie einen CoIoT-Server für CoAP eingeben. Sie müssen die IP-Adresse Ihres ioBroker-Servers gefolgt vom Port 5683 auf Ihrem Shelly-Gerät eingeben. Beispielsweise wird ioBroker unter der IP-Adresse 192.168.1.2 ausgeführt. Jetzt müssen Sie 192.168.1.2:5683 eingeben und CoIoT aktivieren.
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
@@ -70,6 +72,12 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 ## Changelog
 
+
+### 4.0.7-beta-3 (2021-02-07)
+* (Stübi) - fixing the wrong identifier name from green to blue - Issue #334
+* (Stübi) - renamed Shelly Motion MQTT name 
+* (Stübi) - Because polling for battery devices is only permieted every 60 sec., the online state will not supported anymore. 
+* (Stübi) - Polling for all battery devices changed to 60 sec. This can not be changed to any other value, still if you a power supply.
 
 ### 4.0.6 (2021-02-02)
 * (Stübi) - add min, max to state transiton for Shelly RGBW2 

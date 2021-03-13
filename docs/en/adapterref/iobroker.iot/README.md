@@ -256,6 +256,11 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.8.15 (2021-03-12)
+* (bluefox) implemented the sensor functionality in alisa
+
+### 1.8.14 (2021-03-12)
+* (bluefox) allowed the control of the blinds in alisa
 
 ### 1.8.13 (2021-02-04)
 * (Apollon77) add missing object smart.lastObjectID
@@ -267,7 +272,7 @@ Following types are supported:
 * (Morluktom) Alexa - Corrected the request for percentage values
 
 ### 1.8.10 (2021-01-20)
-* (bluefox) Added the reconnect strategy if DNS address cannot be resolved
+* (bluefox) Added the reconnection strategy if DNS address cannot be resolved
 
 ### 1.8.9 (2020-12-27)
 * (bluefox) Updated configuration GUI to the latest state

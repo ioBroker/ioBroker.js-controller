@@ -5697,7 +5697,7 @@ The following properties can be used as [HTML Widgets](#html-widgets).
 			<td>mdw-type</td>
 			<td>Widget type</td>
 			<td>string</td>
-			<td>circular</td>
+			<td>linear</td>
 		</tr>
 		<tr>
 			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
@@ -5721,8 +5721,14 @@ The following properties can be used as [HTML Widgets](#html-widgets).
 			<td>
 		</tr>
 		<tr>
-			<td>mdw-progressIndeterminate</td>
-			<td>indeterminate - continuously animates</td>
+			<td>mdw-reverse</td>
+			<td>Revers value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-invertValue</td>
+			<td>invert value</td>
 			<td>boolean</td>
 			<td>false | true
 		</tr>
@@ -5736,20 +5742,41 @@ The following properties can be used as [HTML Widgets](#html-widgets).
 			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout</b></i></td>
 		</tr>
 		<tr>
-			<td>mdw-progressCircularSize</td>
-			<td>size</td>
-			<td>number</td>
-			<td>
+			<td>mdw-progressRounded</td>
+			<td>rounded corners</td>
+			<td>boolean</td>
+			<td>false | true
 		</tr>
 		<tr>
-			<td>mdw-progressCircularWidth</td>
-			<td>thickness</td>
-			<td>number</td>
-			<td>
+			<td>mdw-progressIndeterminate</td>
+			<td>indeterminate - continuously animates</td>
+			<td>boolean</td>
+			<td>false | true
 		</tr>
 		<tr>
-			<td>mdw-progressCircularRotate</td>
-			<td>rotate start point</td>
+			<td>mdw-progressRotate</td>
+			<td>rotate 90 degress</td>
+			<td>string</td>
+			<td>noRotate | yesRotate
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>group_layoutStriped</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-progressStriped</td>
+			<td>striped</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-progressStripedColor</td>
+			<td>progressStripedColor</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-stripAngle</td>
+			<td>stripAngle</td>
 			<td>number</td>
 			<td>
 		</tr>
@@ -5765,12 +5792,6 @@ The following properties can be used as [HTML Widgets](#html-widgets).
 		<tr>
 			<td>mdw-colorProgress</td>
 			<td>color progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-		</tr>
-		<tr>
-			<td>mdw-innerColor</td>
-			<td>circle background color</td>
 			<td>string</td>
 			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 		</tr>
@@ -5848,6 +5869,12 @@ The following properties can be used as [HTML Widgets](#html-widgets).
 			<td>font</td>
 			<td>string</td>
 			<td>
+		</tr>
+		<tr>
+			<td>mdw-textAlign</td>
+			<td>textAlign</td>
+			<td>string</td>
+			<td>start | center | end
 		</tr>
 	</tbody>
 </table>
@@ -12787,6 +12814,9 @@ The adapter uses the following libraries:
 * (Scrounger) json chart: option to override tooltip for every dataset added
 * (Scrounger) json chart: tooltip mode x / y added
 * (Scrounger) json chart: option to override data label added
+* (Scrounger) charts: legend distance to bottom option added
+* (Scrounger) button state: active background color option added
+* (Scrounger) buttons: vibrate on mobil devices bug fix
 * (Scrounger) progress: rotate option added
 * (Scrounger) list: background color option added
 * (Scrounger) progress circular: auto size option added
