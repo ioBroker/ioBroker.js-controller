@@ -487,11 +487,10 @@ function register(it, expect, context) {
         });
     });
 
-    it(testName + 'should close DB', async done => {
+    it(testName + 'should close DB', () => {
         const objects = context.objects;
         // we running as a server, so nothing should happens
-        await objects.destroy();
-        done();
+        return objects.destroy();
     });
 }
 
