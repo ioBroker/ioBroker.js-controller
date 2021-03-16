@@ -2561,11 +2561,12 @@ async function processMessage(msg) {
             break;
         }
 
-        case 'restartController':
+        case 'restartController': {
             const restart = require('./lib/restart').restart;
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
             setTimeout(() => restart(), 200); // let the answer to be sent
             break;
+        }
     }
 }
 
@@ -4574,7 +4575,7 @@ function init(compactGroupId) {
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1000);
     }, 30000);
 
-    const exceptionHandler = async err => {
+    const exceptionHandler = err => {
         if (compactGroupController) {
             console.error(err.message || err);
             if (err.stack) {
