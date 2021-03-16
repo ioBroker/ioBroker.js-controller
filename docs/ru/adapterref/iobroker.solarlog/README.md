@@ -3,45 +3,51 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: wBB1fOkh1pUD1WNC1D6srYRqE5LKuVIJq/zFYpGUT6k=
+hash: JrCGjlDBD6R6mF+NNj8ajarvw7LOIHac0YU/8vcMuqg=
 ---
-![логотип](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
+![Логотип](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
 ![Количество установок](http://iobroker.live/badges/solarlog-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.solarlog.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.solarlog.svg)
-![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.solarlog.svg)
+![НПМ](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)
 
 # IoBroker.solarlog
-Адаптер ioBroker для устройств Solarlog
+Адаптер ioBroker для Solarlog - устройства
 
 ## Solarlog - Настройки
 Открытый JSON-интерфейс (offene Json-Schnittstelle) должен быть активирован в меню конфигурации Solarlog (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 ## Адаптер - Настройки
-### Базовые настройки
-Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и интервал опроса (в миллисекундах, минимум 10 секунд, рекомендуется 30 секунд или более).
+### Основные настройки
+Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и интервал опроса (в миллисекундах, минимум 10 секунд, рекомендуется 30 секунд и более).
 
-Безопасность: вы можете активировать пароль пользователя в вашем Solarlog и флажок «логин пользователя активирован» и добавить свой пароль в конфигурации адаптера, или вы можете запустить Solarlog и адаптер без пароля пользователя. Если активирован вход пользователя в систему, рекомендуется остановить адаптер при использовании интерфейса пользователя solarlog - в противном случае вам необходимо будет повторно входить в систему после каждого запроса адаптера.
+Безопасность: вы можете активировать «пользовательский» - пароль в своем Solarlog и флажок «пользовательский логин активирован» и добавить свой пароль в конфигурацию адаптера, или вы можете запустить Solarlog и адаптер без пароля пользователя. Если активирован вход в систему, рекомендуется останавливать адаптер при использовании пользовательского интерфейса solarlog (в противном случае необходимо повторно входить в систему после каждого запроса адаптера).
 
 ### Расширенные настройки
-Проверьте, все ли данные преобразователя / субметра / устройства должны быть собраны.
+Проверьте, все ли инверторы / субметры / устройства / интеллектуальная энергия - данные должны быть собраны.
 
-Проверьте, нужно ли собирать исторические данные, и установите время суток, когда объекты исторических данных будут обновлены.
+Проверьте, нужно ли собирать исторические данные, и установите время дня, когда объекты исторических данных будут обновляться.
 
-Прогноз: при желании адаптер получает прогноз - данные с помощью API Forecast.Solar. На самом деле, прогнозируется общий киловатт-час на сегодняшний день и завтра, который обновляется каждый час. Более подробные или дополнительные данные доступны по запросу (пожалуйста, откройте вопрос).
+Прогноз: опционально адаптер получает прогноз - данные с помощью API Forecast.Solar. Фактически, прогнозируется общее количество кВтч на сегодняшний и завтрашний день, обновляющееся каждый час. Более подробные или дополнительные данные доступны по запросу (пожалуйста, откройте вопрос).
 
 ## Аппаратное обеспечение
 Проверено на: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
 
-SolarLog 50: нет открытых устройств JSON-Interface @ SolarLog 50. Таким образом, определенные значения в «info» и «status» канале будут «ACCESS DENIED». Если вы предпочитаете другое решение, пожалуйста, откройте проблему или опубликуйте ваши предпочтения в соответствующей проблеме.
+SolarLog 50: нет открытых устройств JSON-Interface @ SolarLog 50. Таким образом, определенные значения в канале «информация» и «статус» будут иметь значение «ДОСТУП ОТКЛОНЕН». Если вы предпочитаете другое решение, откройте вопрос или опубликуйте свои предпочтения в соответствующем выпуске.
 
 ## Changelog
 
+### 2.0.2
+-   smart energy 'switch group' data added.
+
+### 2.0.1
+
+-   bugfix (better timing to set inverter data).
+
 ### 2.0.0
 
--   Complete code redesign.
+-   Complete code redesign to reduce traffic between adapter and solarlog. NEW: System informations (info) and solarlogs setpoint-values for year, current and all month and current day (forecast).
 
 ### 1.3.0
 
@@ -175,7 +181,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

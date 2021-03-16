@@ -2,29 +2,31 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi-protect/README.md
-title: ioBroker.unifi защиты
-hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
+title: ioBroker.unifi-protect
+hash: kVU+S8IfYy33mD9ct9mVjQT4+bMS8mhxVBWtV2Yy4TI=
 ---
-![логотип](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
+![Логотип](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.unifi-protect.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.unifi-protect.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/unifi-protect-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/unifi-protect-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/unifi-protect-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/peterbaumert/iobroker.unifi-protect.svg)
 ![Известные уязвимости](https://snyk.io/test/github/peterbaumert/ioBroker.unifi-protect/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.unifi-protect.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.unifi-protect.png?downloads=true)
 
 # IoBroker.unifi-protect
+** Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств. ** Подробнее см. Ниже!
+
 ## Адаптер unifi-protect для ioBroker
-Подключается к Unifi Protect Controller и извлекает все данные из добавленных камер.
+Подключается к Unifi Protect Controller и извлекает все данные с добавленных камер.
 
-Стандартные порты, если вы их не изменили:
+Стандартные порты, если вы не изменили их самостоятельно:
 
- - Облачный ключ плюс Gen2: 7443
- - UDM Pro: 443
+ - Облачный ключ Plus Gen2: 7443
+ - UDM Pro: 443
 
-## Примеры для getThumbnail и getSnapshot
+## Примеры getThumbnail и getSnapshot
 ```
 // Settings
 const path = '/opt/iobroker/tmp/temp.jpg';
@@ -61,7 +63,17 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 });
 ```
 
+## Что такое Sentry.io и что передается на серверы этой компании?
+Sentry.io - это сервис, позволяющий разработчикам получать информацию об ошибках в своих приложениях. Именно это и реализовано в этом адаптере.
+
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, адрес электронной почты, имя и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+
 ## Changelog
+
+### 0.0.12 (2021-03-14)
+* added smart detections
+* fixed some lastMotion stuff
+* added UnifiOs Support for CloudKey
 
 ### 0.0.11 (2020-02-27)
 * changed Admin interface a little

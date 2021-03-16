@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
+hash: 1LGy1ICDEzzOc2jTfe/K7Ywf7uqk3IT3c95CGb91UIw=
 ---
 ![Logo](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -15,7 +15,7 @@ hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
 
 # IoBroker.sma-em
 ### Die Info
-Dieser Adapter liest Informationen von SMA Energy Meter und SMA Home Manager 2.
+Dieser Adapter liest Informationen von SMA Energy Meter und Sunny Home Manager 2.
 
 ### Zustände
 - Summe und Zähler der Wirkleistung, Blindleistung, Scheinleistung
@@ -23,7 +23,7 @@ Dieser Adapter liest Informationen von SMA Energy Meter und SMA Home Manager 2.
 - Detailliert Jede der 3 Phasen in Bezug auf Wirkleistung, Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung
 - Detailliert Jede der 3 Phasen mit Überschuss an Wirkleistung, Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung
 - Detailliert Jeder der 3 Phasenzähler
-- Seriennummer, Softwareversion, SUSyID des SMA-Energiezählers
+- Seriennummer, Softwareversion, SUSyID des SMA-Energiezählers und Sunny Home Manager
 
 ### Optionen
 - Auswahlmöglichkeiten für jede einzelne Phase L1 / L2 / L3
@@ -45,6 +45,10 @@ psurplus P-Wirkleistung / Überschuss qsurplus Q-reaktive Leistung / Überschuss
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
+## Rechtliche Hinweise
+SMA und Sunny Home Manager sind eingetragene Marken der SMA Solar Technology AG <https://www.sma.de/en.html>
+
+Alle anderen Marken sind Eigentum ihrer jeweiligen Inhaber.
 
 ## Changelog
 ### 0.6.3 (2021-03-04)

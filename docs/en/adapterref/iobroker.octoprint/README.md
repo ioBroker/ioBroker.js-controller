@@ -40,6 +40,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.9
+
+* (klein0r) nodejs 12 required
+
 ### 1.0.8
 
 * (klein0r) Avoid constant refresh of file list

@@ -75,6 +75,8 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Stübi) - renamed Shelly Motion MQTT name 
 * (Stübi) - Because polling for battery devices is only permieted every 60 sec., the online state will not supported anymore. 
 * (Stübi) - Polling for all battery devices changed to 60 sec. This can not be changed to any other value, still if you a power supply.
+* (Stübi) - Add state for led light control for Shelly Plug S - Issue #344
+* (quedrum) - Shelly1 Garage with ADDon and reed switch - Issue #276
 
 ### 4.0.6 (2021-02-02)
 * (Stübi) - add min, max to state transiton for Shelly RGBW2 

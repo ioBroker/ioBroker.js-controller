@@ -67,6 +67,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 5.0.15 (2021-03-13)
+* (bluefox) Rules: added "use trigger value" for the "set action" blocks
+
 ### 5.0.14 (2021-03-11)
 * (bluefox) fixed the font for the editor 
 
@@ -78,9 +81,6 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 
 ### 5.0.10 (2021-03-07)
 * (bluefox) added date to the time condition
-
-### 5.0.9 (2021-03-04)
-* (bluefox) fixed the error if no condition
 
 ## License
 

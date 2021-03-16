@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi-protect/README.md
 title: ioBroker.unifi保护
-hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
+hash: kVU+S8IfYy33mD9ct9mVjQT4+bMS8mhxVBWtV2Yy4TI=
 ---
-![商标](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
+![标识](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.unifi-protect.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.unifi-protect.svg)
@@ -16,13 +16,15 @@ hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
 ![NPM](https://nodei.co/npm/iobroker.unifi-protect.png?downloads=true)
 
 ＃ioBroker.unifi-protect
-## IoBroker的unifi保护适配器
+**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
+
+## IoBroker的unifi-protect适配器
 连接到Unifi Protect Controller并从添加的摄像机中提取所有数据。
 
 标准端口（如果未自行更改）：
 
- -Cloud Key Plus Gen2：7443
- -UDM Pro：443
+ -Cloud Key Plus Gen2：7443
+ -UDM Pro：443
 
 ## GetThumbnail和getSnapshot的示例
 ```
@@ -61,7 +63,17 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 });
 ```
 
+##什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本上不会崩溃的无错误适配器。
+
 ## Changelog
+
+### 0.0.12 (2021-03-14)
+* added smart detections
+* fixed some lastMotion stuff
+* added UnifiOs Support for CloudKey
 
 ### 0.0.11 (2020-02-27)
 * changed Admin interface a little

@@ -8,7 +8,7 @@
 [![NPM](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)](https://nodei.co/npm/iobroker.sma-em/)
 
 ### Info
-This adapter reads information from SMA Energy Meter and SMA Home Manager 2.
+This adapter reads information from SMA Energy Meter and Sunny Home Manager 2.
 
 ### States
 - Total and Counter of active power, reactive power, apparent power
@@ -16,7 +16,7 @@ This adapter reads information from SMA Energy Meter and SMA Home Manager 2.
 - Detailed Each of the 3 phases with regard of active power, reactive power, apparent power, cosphi, Amperage, Voltage
 - Detailed Each of the 3 phases with surplus of active power, reactive power, apparent power, cosphi, Amperage, Voltage
 - Detailed Each of the 3 phases counter
-- Serial Number, Software Version, SUSyID of SMA Energy Meter
+- Serial Number, Software Version, SUSyID of SMA Energy Meter and Sunny Home Manager
 
 ### Options
 - Selection options over each individual phase L1 / L2 / L3
@@ -97,6 +97,11 @@ Example:
 
 ### 0.0.1
 * (Marcolotti) initial release
+
+## Legal Notices
+SMA and Sunny Home Manager are registered trademarks of SMA Solar Technology AG <https://www.sma.de/en.html>
+
+All other trademarks are the property of their respective owners.
 
 ## License
 The MIT License (MIT)

@@ -203,6 +203,10 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ## Changelog
 
+### 1.1.2
+
+* (klein0r) Nodejs 12 required
+
 ### 1.1.1
 
 * (klein0r) Ignore trash types with empty match pattern

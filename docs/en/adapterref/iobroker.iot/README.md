@@ -256,6 +256,9 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.8.16 (2021-03-13)
+* (bluefox) fixed the blind functionality in alisa
+
 ### 1.8.15 (2021-03-12)
 * (bluefox) implemented the sensor functionality in alisa
 

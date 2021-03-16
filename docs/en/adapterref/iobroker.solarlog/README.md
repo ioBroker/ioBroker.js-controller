@@ -23,7 +23,7 @@ Security: you can activate the 'user' - password in your Solarlog and the 'user 
 
 ### Advanced settings
 
-Check if all inverter / submeters / devices - data is to be collected.
+Check if all inverter / submeters / devices / smart energy - data is to be collected.
 
 Check if historical data is to be collected and set the time of day when the historical data objects will be updated.
 
@@ -37,6 +37,9 @@ Solarlog 200PM+ / 300PM+ / 500 / 1200Meter / 50
 SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain values in the 'info' and the 'status' channel will be 'ACCESS DENIED'. If you prefer another solution, please open an issue or post your preferences in a corresponding issue.
 
 ## Changelog
+
+### 2.0.2
+-   smart energy 'switch group' data added.
 
 ### 2.0.1
 
@@ -178,7 +181,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

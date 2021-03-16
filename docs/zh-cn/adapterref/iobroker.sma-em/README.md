@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
+hash: 1LGy1ICDEzzOc2jTfe/K7Ywf7uqk3IT3c95CGb91UIw=
 ---
 ![标识](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -15,15 +15,15 @@ hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
 
 ＃ioBroker.sma-em
 ###信息
-该适配器从SMA电能表和SMA家庭管理器2读取信息。
+该适配器从SMA电能表和Sunny Home Manager 2读取信息。
 
 ＃＃＃ 状态
--有功功率，无功功率，视在功率的总和计数器
+-有功，无功，视在功率的总和计数器
 -cosphi，总谐波失真，电压，频率
--关于有功功率，无功功率，视在功率，cosphi，安培数，电压的三个阶段的详细信息
--详细的3相中的每相都有剩余的有功功率，无功功率，视在功率，cosphi，安培数，电压
+-详细的有功，无功，视在功率，cosphi，安培数，电压3个阶段中的每个阶段
+-详细的3相中的每相都有剩余有功功率，无功功率，视在功率，cosphi，安培数，电压
 -详细的3个阶段的每个计数器
--SMA电表的序列号，软件版本，SUSyID
+-SMA电表和Sunny Home Manager的序列号，软件版本，SUSyID
 
 ＃＃＃ 选项
 -每个单独的相L1 / L2 / L3的选择选项
@@ -38,13 +38,17 @@ hash: 0kx2TWqDDrWP53gDP2D8sqUzn0hmdrhh/f+b3dTPgUk=
 ###状态结构
 例子：
 
-pregard P有功功率/关于qregard Q无功功率/关于regard S表观功率/关于
+pregard P有功功率/关于qregard Q无功功率/关于regard S-视在功率/关于
 
-p剩余p有功功率/剩余q剩余q求功功率/剩余s剩余视在功率/剩余
+p剩余p有功功率/剩余q剩余q求功功率/剩余s视在功率/剩余
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __正在进行的工程__->
+### __进展中__->
+＃＃ 法律声明
+SMA和Sunny Home Manager是SMA Solar Technology AG <https://www.sma.de/en.html>的注册商标。
+
+所有其他商标均为其各自所有者的财产。
 
 ## Changelog
 ### 0.6.3 (2021-03-04)

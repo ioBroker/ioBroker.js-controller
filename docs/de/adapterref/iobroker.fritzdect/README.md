@@ -69,6 +69,13 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 2.1.12
+* new values for DECT500
+* back to full unit testing
+
+### 2.1.11 (npm)
+* template for fritzfon
+
 ### 2.1.10
 * comfort/night is AUTO but reintroduced as operationmode
 

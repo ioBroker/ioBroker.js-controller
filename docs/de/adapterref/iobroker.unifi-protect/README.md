@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi-protect/README.md
 title: ioBroker.unifi-schützen
-hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
+hash: kVU+S8IfYy33mD9ct9mVjQT4+bMS8mhxVBWtV2Yy4TI=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
 
@@ -16,13 +16,15 @@ hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
 ![NPM](https://nodei.co/npm/iobroker.unifi-protect.png?downloads=true)
 
 # IoBroker.unifi-schützen
+** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+
 ## Unifi-Protect-Adapter für ioBroker
 Stellt eine Verbindung zum Unifi Protect Controller her und ruft alle Daten von hinzugefügten Kameras ab.
 
 Standardports, wenn nicht von Ihnen selbst geändert:
 
- - Cloud Key Plus Gen2: 7443
- - UDM Pro: 443
+ - Cloud Key Plus Gen2: 7443
+ - UDM Pro: 443
 
 ## Beispiele für getThumbnail und getSnapshot
 ```
@@ -61,7 +63,17 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 });
 ```
 
+## Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
+Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Changelog
+
+### 0.0.12 (2021-03-14)
+* added smart detections
+* fixed some lastMotion stuff
+* added UnifiOs Support for CloudKey
 
 ### 0.0.11 (2020-02-27)
 * changed Admin interface a little

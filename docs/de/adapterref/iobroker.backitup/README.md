@@ -343,6 +343,11 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 2.0.5 (14.03.2021)
+* (simatec) error handling for redis backup added
+* (simatec) error handling for history backup added
+* (simatec) BugFix Grafana backup
+
 ### 2.0.4 (10.03.2021)
 * (simatec) Bugfix history json
 * (simatec) BugFix Redis backup

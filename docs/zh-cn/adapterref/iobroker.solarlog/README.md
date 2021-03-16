@@ -3,15 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: wBB1fOkh1pUD1WNC1D6srYRqE5LKuVIJq/zFYpGUT6k=
+hash: JrCGjlDBD6R6mF+NNj8ajarvw7LOIHac0YU/8vcMuqg=
 ---
-![商标](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
+![标识](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
 ![安装数量](http://iobroker.live/badges/solarlog-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.solarlog.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.solarlog.svg)
 ![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.solarlog.svg)
 
 ＃ioBroker.solarlog
 用于Solarlog的ioBroker适配器-设备
@@ -26,7 +25,7 @@ hash: wBB1fOkh1pUD1WNC1D6srYRqE5LKuVIJq/zFYpGUT6k=
 安全性：您可以在Solarlog中激活“用户”-密码，并在“用户登录已激活”复选框中添加密码，然后在适配器配置中添加密码，也可以在没有用户密码的情况下运行Solarlog和适配器。如果激活了用户登录，建议在使用solarlog-用户界面时停止适配器（否则，在每次请求适配器后都需要重新登录）。
 
 ＃＃＃ 高级设置
-检查是否所有逆变器/子表/设备-数据都将被收集。
+检查是否所有逆变器/电表/设备/智能能源-数据都将被收集。
 
 检查是否要收集历史数据，并设置一天中更新历史数据对象的时间。
 
@@ -39,9 +38,16 @@ SolarLog 50：没有开放的JSON接口@ SolarLog 50设备。因此，“信息�
 
 ## Changelog
 
+### 2.0.2
+-   smart energy 'switch group' data added.
+
+### 2.0.1
+
+-   bugfix (better timing to set inverter data).
+
 ### 2.0.0
 
--   Complete code redesign.
+-   Complete code redesign to reduce traffic between adapter and solarlog. NEW: System informations (info) and solarlogs setpoint-values for year, current and all month and current day (forecast).
 
 ### 1.3.0
 
@@ -175,7 +181,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

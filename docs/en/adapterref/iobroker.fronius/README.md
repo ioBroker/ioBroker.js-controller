@@ -18,7 +18,7 @@ This is an ioBroker adapter for your Fronius PV inverter with Fronius Datalogger
 
 ## Changelog
 
-### 1.1.3 (2020-12-xx)
+### 1.1.3 (2021-03-15)
 * (nkleber78) Split main.js into multiple files for better maintenance
 * (nkleber78) Prevent creating info objects which are not supported by the inverters
 * (schweigel) Added archive request values

@@ -94,6 +94,8 @@ Keep your credentials save! <br />To reject all Tokens, change your Tesla accoun
 * Hombach
 
 ## Changelog
+### 0.4.0
+* (dbweb-ch) Implement 2FA Authentification, use new authentification flow
 ### 0.3.2
 * (dbweb-ch) Bugfix logging leading to a crash when authentication failed
 ### 0.3.1
