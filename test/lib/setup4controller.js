@@ -152,13 +152,13 @@ function startController(options, callback) {
     states = new States(settingsStates);
 }
 
-function stopController(cb) {
+async function stopController(cb) {
     if (objects) {
-        objects.destroy();
+        await objects.destroy();
         objects = null;
     }
     if (states) {
-        states.destroy();
+        await states.destroy();
         states = null;
     }
 

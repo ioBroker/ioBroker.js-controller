@@ -4270,12 +4270,12 @@ function stop(force, callback) {
         reportInterval = null;
     }
 
-    stopInstances(force, wasForced => {
+    stopInstances(force, async wasForced => {
         pluginHandler.destroyAll();
         notificationHandler && notificationHandler.storeNotifications();
 
         if (objects && objects.destroy) {
-            objects.destroy();
+            await objects.destroy();
         }
 
         if (!states || force) {
@@ -4288,44 +4288,47 @@ function stop(force, callback) {
             return;
         }
         outputCount++;
-        states.setState(hostObjectPrefix + '.alive', {val: false, ack: true, from: hostObjectPrefix}, () => {
-            logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
-            if (wasForced) {
-                for (const i of Object.keys(procs)) {
-                    if (procs[i].process) {
-                        if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
-                            logger.info(`${hostLogPrefix} Adapter ${procs[i].config.common.name} still running`);
-                        }
-                    }
-                }
-                for (const i of Object.keys(compactProcs)) {
-                    if (compactProcs[i].process) {
-                        logger.info(`${hostLogPrefix} Compact group controller ${i} still running`);
+        try {
+            await states.setStateAsync(hostObjectPrefix + '.alive', {val: false, ack: true, from: hostObjectPrefix});
+        } catch {
+            // ignore
+        }
+        logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
+        if (wasForced) {
+            for (const i of Object.keys(procs)) {
+                if (procs[i].process) {
+                    if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
+                        logger.info(`${hostLogPrefix} Adapter ${procs[i].config.common.name} still running`);
                     }
                 }
             }
-            states && states.destroy && states.destroy();
+            for (const i of Object.keys(compactProcs)) {
+                if (compactProcs[i].process) {
+                    logger.info(`${hostLogPrefix} Compact group controller ${i} still running`);
+                }
+            }
+        }
+        states && states.destroy && await states.destroy();
 
-            if (typeof callback === 'function') {
-                return void callback();
-            } else {
-                setTimeout(() => {
-                    try {
-                        // avoid pids been written after deletion
-                        if (storeTimer) {
-                            clearTimeout(storeTimer);
-                        }
-                        // delete pids.txt
-                        fs.unlinkSync(path.join(__dirname, 'pids.txt'));
-                    } catch (e) {
-                        if (e.code !== 'ENOENT') {
-                            logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
-                        }
+        if (typeof callback === 'function') {
+            return void callback();
+        } else {
+            setTimeout(() => {
+                try {
+                    // avoid pids been written after deletion
+                    if (storeTimer) {
+                        clearTimeout(storeTimer);
                     }
-                    process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
-                }, 1000);
-            }
-        });
+                    // delete pids.txt
+                    fs.unlinkSync(path.join(__dirname, 'pids.txt'));
+                } catch (e) {
+                    if (e.code !== 'ENOENT') {
+                        logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                    }
+                }
+                process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
+            }, 1000);
+        }
     });
 }
 
@@ -4571,7 +4574,7 @@ function init(compactGroupId) {
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1000);
     }, 30000);
 
-    const exceptionHandler = err => {
+    const exceptionHandler = async err => {
         if (compactGroupController) {
             console.error(err.message || err);
             if (err.stack) {
@@ -4583,16 +4586,6 @@ function init(compactGroupId) {
         console.error(err.message || err);
         if (err.stack) {
             console.error(err.stack);
-        }
-        if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
-            // TODO Remove as soon as socketio is no longer used
-            logger.error(`${hostLogPrefix} fragmentedOperation: restart objects`);
-            // restart objects
-            objects.destroy();
-            objects = null;
-            // Give time to close the objects
-            setTimeout(() => createObjects(), 3000);
-            return;
         }
 
         // If by terminating one more exception => stop immediately to break the circle
