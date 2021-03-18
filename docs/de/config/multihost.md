@@ -52,7 +52,7 @@ Das nun erscheinende Menü wie folgt ausfüllen
 **Dieser Schritt ist unbedingt nötig, falls Redis DB im Einsatz ist.**
 
 Über die Konsole auf dem Slave bitte eingeben
-1. `sudo iobroker setup custom`
+1. `iobroker setup custom`
 
 
 Das nun erscheinende Menü wie folgt ausfüllen
