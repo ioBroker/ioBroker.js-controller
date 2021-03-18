@@ -16,7 +16,7 @@ ist nicht mehr über deren Webinterface(s) erreichbar.
 Es ist daher sinnvoll für einen Slave einen Host mit Minimalinstallation zu verwenden, also nur den js-controller und den admin.
 
 
-##Installation
+## Installation
 
 ### Master Konfiguration
 Auf dem Master folgendes Kommando ausführen:
