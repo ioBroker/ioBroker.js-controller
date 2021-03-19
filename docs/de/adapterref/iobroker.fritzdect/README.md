@@ -69,7 +69,7 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
-### 2.1.12
+### 2.1.12 (npm)
 * new values for DECT500
 * back to full unit testing
 

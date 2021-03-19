@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: PA1xxbIdUY9UAxGcIs76l2xXxJ5jWLjYmnlYPv8b/6U=
+hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
 ---
 ![Logo](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -51,15 +51,15 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 ### Player-Befehlsstatus
 Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. set_volume & level = 20 | play_preset & preset = 1
 
-* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Player-Lautstärke ein
+* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Lautstärke des Players ein
 * "set_play_state & state = play | pause | stop": Legt den Player-Status fest
 * "set_play_mode & repeat = on_all | on_one | off & shuffle = on | off": Set Repeat and Shuffle-Modus
 * "set_mute & state = on | off": Spieler stumm schalten
 * "volume_down & step = 1..10": Niedrigere Lautstärke
 * "volume_up & step = 1..10": Erhöhen Sie die Lautstärke
 * "play_next": Weiter spielen
-* "play_previous": Vorherige Wiedergabe
-* "play_preset & preset = 1 | 2 | .. | n": Play preset n
+* "play_previous": Vorherige spielen
+* "play_preset & preset = 1 | 2 | .. | n": Preset n abspielen
 * "play_stream & url = url_path": URL-Stream abspielen
 * "add_to_queue & sid = 1025 & aid = 4 & cid = [CID]": Wiedergabeliste mit [CID] auf dem Player abspielen (Hilfe: 1 - jetzt spielen; 2 - als nächstes spielen; 3 - zum Ende hinzufügen; 4 - ersetzen und spielen)
 
@@ -80,6 +80,12 @@ Mit Version 1.7.6 werden die markanten Farben des Songcovers extrahiert und in d
 
 ![Material](../../../en/adapterref/iobroker.heos/docs/media/material-ui.png)
 
+## Voreinstellungen und Wiedergabelisten
+Der Adapter fordert die aktuellen Wiedergabelisten und Voreinstellungen nicht automatisch an. Um die Daten zu aktualisieren / anzufordern und die Wiedergabestatus zu erstellen, müssen Sie zuerst die Quellen durchsuchen:
+
+- Voreinstellungen / Favoriten: `` `heos.0.sources.1028.browse```
+- Wiedergabelisten: `` `heos.0.sources.1025.browse```
+
 ## VIS
 ### Installation
 * Erstellen Sie folgende Zeichenfolgenzustände:
@@ -95,6 +101,7 @@ Mit Version 1.7.6 werden die markanten Farben des Songcovers extrahiert und in d
 ![Spieleransicht](../../../en/adapterref/iobroker.heos/docs/media/player-view.png)
 
 ### Voreinstellungen
+* Klicken Sie auf die Schaltfläche `` `heos.0.sources.1028.browse```, um Presets zu laden
 * Öffnen Sie die Datei: [presets_view.json] (docs / vis / views / presets_view.json)
 * Ansicht in VIS importieren
 
@@ -117,6 +124,9 @@ Mit Version 1.7.6 werden die markanten Farben des Songcovers extrahiert und in d
 Alternativ können Sie das Skript von Uhula verwenden: https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.7 (2021-02-25)
+* (withstu) add creation of missing version state
 
 ### 1.7.6 (2021-02-24)
 * (withstu) add image color extraction

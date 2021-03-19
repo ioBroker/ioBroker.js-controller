@@ -67,6 +67,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 5.1.0 (2021-03-19)
+* (bluefox) Implemented the debug of scripts possibility
+
 ### 5.0.15 (2021-03-13)
 * (bluefox) Rules: added "use trigger value" for the "set action" blocks
 
@@ -77,9 +80,6 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 * (bluefox) fixed error in blockly
 
 ### 5.0.11 (2021-03-07)
-* (bluefox) added date to the time condition
-
-### 5.0.10 (2021-03-07)
 * (bluefox) added date to the time condition
 
 ## License

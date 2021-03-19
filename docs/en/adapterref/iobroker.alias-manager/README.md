@@ -66,12 +66,19 @@ Here you can:
 
 ## Changelog
 
+### 0.0.7 (2021-03-21)
+* (sbormann) Fixed typos.
+* (sbormann) Changed the way ioBroker-Objects are fetched (much faster).
+* (sbormann) Added copy-button to datapoints.
+* (sbormann) Empty fields are now removed (before they were set to null).
+* (sbormann) Changed mode to onlyWWW.
+
 ### 0.0.6 (2021-01-18)
-* (sbormann) Added delete datapoint
-* (sbormann) Some fixes 
+* (sbormann) Added delete datapoint.
+* (sbormann) Some fixes .
 
 ### 0.0.1
-* (sbormann) Initial release
+* (sbormann) Initial release.
 
 ## License
 MIT License

@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.dysonairpurifier/README.md
 title: ioBroker.dysonAirPurifier
-hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
+hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 ---
 # IoBroker.dysonAirPurifier
 ![Logo] (admin / dyson_logo.svg)! [Logo](../../../en/adapterref/iobroker.dysonairpurifier/admin/dyson_pure_cool.jpg)
 
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/dysonairpurifier-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/dysonairpurifier-installed.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.dysonairpurifier.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/dysonairpurifier-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Grizzelbee/iobroker.dysonairpurifier.svg)
@@ -45,7 +45,7 @@ Verbindet Ihre Dyson-Lüfter, Heizlüfter, Luftreiniger und Luftbefeuchter mit i
 * Mindestens js-Controller 3.0.0 ist erforderlich
 * Mindestens Admin 4.0.9 ist erforderlich
 * Um diesen Adapter zum Laufen zu bringen, benötigen Sie ein Dyson-Konto.
-* Stellen Sie sicher, dass Sie Ihren Fan Ihrem Konto hinzufügen. Entweder per App oder online.
+* Stellen Sie sicher, dass Sie Ihren Fan zu Ihrem Konto hinzufügen. Entweder per App oder online.
 
 ### Adapterinstallation
 #### Verwenden von npm
@@ -80,7 +80,7 @@ Dieser Adapter kann derzeit die folgenden Zustände Ihrer Geräte steuern:
 * Schwingung, Schwingung des Lüfters.
 * ContinuousMonitoring, Continuous Monitoring von Umgebungssensoren, auch wenn das Gerät ausgeschaltet ist.
 * MainPower, Hauptleistung des Lüfters.
-* AutomaticMode, Fan befindet sich im automatischen Modus.
+* AutomaticMode, Lüfter befindet sich im automatischen Modus.
 * Durchflussrichtung, Richtung, in die der Lüfter bläst. EIN = vorne; AUS = Zurück (auch bekannt als Jet-Fokus)
 * Jetfocus, Richtung, in die der Lüfter bläst. EIN = vorne; AUS = Zurück (auch bekannt als Jet-Fokus)
 * Heizmodus, Heizmodus [EIN / AUS]
@@ -94,11 +94,7 @@ Dieser Adapter kann derzeit die folgenden Zustände Ihrer Geräte steuern:
 
 Mögliche Werte für diese Zustände sind nachstehend bekannt, soweit bekannt.
 Die Lüftergeschwindigkeit erlaubt nur Werte von 1 bis 10 und Auto. Wenn Sie die Lüftergeschwindigkeit auf 0 einstellen möchten, müssen Sie die Hauptstromversorgung ausschalten.
-Welches ist, was die Dyson App auch tut.
-
-### Machen
-* IP von Geräten automatisch erkennen
-* Fügen Sie in der Objektansicht Symbole für jeden Fächertyp wie tradfri oder alexa hinzu
+Welches ist, was die Dyson-App auch tut.
 
 ### Bekannte Probleme
 * Keine automatische IP-Erkennung von Geräten
@@ -111,7 +107,7 @@ Informationen kopiert und erweitert von <https://github.com/shadowwa/Dyson-MQTT2
 | ------------- | ----- | ----- | ----- |
 | Modus-Grund | Der aktuelle Modus wurde von RemoteControl, App, Scheduler | eingestellt PRC, LAPP, LSCH, PUI | |
 | Staatsgrund | | MODUS | |
-| rssi | WIFI Stärke | -100 - 0 | dBm |
+| rssi | WIFI-Stärke | -100 - 0 | dBm |
 | Kanal | WIFI-Kanal | 52 | |
 | fqhp | | 96704 | |
 | fghp | | 70480 | |
@@ -119,7 +115,7 @@ Informationen kopiert und erweitert von <https://github.com/shadowwa/Dyson-MQTT2
 #### Produktstatus
 | Name | Bedeutung | mögliche Werte | Einheit |
 | ------------- | ----- | ----- | ----- |
-| ercd | Letzter Fehlercode | KEINE oder einige Hexa-Werte | |
+| ercd | Letzter Fehlercode | NONE oder einige Hexa-Werte | |
 | filf | verbleibende Filterlebensdauer | 0000 - 4300 | Stunden |
 | fmod | Modus | LÜFTER, AUTO | |
 | fpwr | Hauptstrom | EIN, AUS | |
@@ -166,7 +162,7 @@ Informationen kopiert und erweitert von <https://github.com/shadowwa/Dyson-MQTT2
 | ----- | ----- |
 | KEINE | Es ist kein Fehler aktiv |
 | 57C2 | unbekannt |
-| 11E1 | Die Oszillation wurde deaktiviert. Bitte drücken Sie die Taste "Oszillation" auf Ihrer Fernbedienung, um fortzufahren |
+| 11E1 | Die Oszillation wurde deaktiviert. Bitte drücken Sie die Taste "Oszillation" auf Ihrer Fernbedienung, um fortzufahren. |
 
 #### Planer
 | Name | Bedeutung | mögliche Werte | Einheit |
@@ -199,7 +195,7 @@ Redundante Werte?
 | ------------- | ----- | ----- | ----- |
 | pal0 - pal9 | Anzahl der zweiten Ausgaben in diesem Staubniveau seit Beginn der Stunde 0000 - 3600 | |
 | Handfläche | scheint ein Medianwert von palX | zu sein | |
-| vol0 - vol9 | Anzahl der zweiten Ausgaben in diesem Voc-Level seit Beginn der Stunde | 0000 - 3600 | |
+| vol0 - vol9 | Anzahl der zweiten Ausgaben in diesem Vokalniveau seit Beginn der Stunde | 0000 - 3600 | |
 | volm | scheint ein Medianwert von volX | zu sein | |
 | aql0 - aql9 | Anzahl der zweiten Ausgaben in diesem Bereich der Luftqualität max (pal, vol)) seit Beginn der Stunde | 0000 - 3600 | |
 | aqlm | scheint ein Medianwert von aqlX | zu sein | |
@@ -215,11 +211,15 @@ Dyson, pure cool, pure hot & cool und andere sind Marken oder eingetragene Marke
 
 ## Changelog
 
+### 0.8.1 (2021-02-19) (Fall into the flames)
+* (grizzelbee) New: added icons to each fan type in device tree
+* (grizzelbee) New: Showing Filter type correctly - not as code anymore
+* (grizzelbee) Upd: updated dependencies
+
 ### 0.8.0 (2021-02-18) (Beyond the mirror)
 * (grizzelbee) New: Log as info if account is active on login; else log as warning. 
 * (grizzelbee) New: [#21](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/21) Improvement for humidifier support
 * (grizzelbee) Fix: [#67](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/67) Adapter sometimes wrote objects instead of values.
-
 
 ### 0.7.5 (2021-02-12) (I won't surrender)
 * (grizzelbee) Fix: [#65](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/65) Adapter get online again after changes to dyson cloud API login procedure.

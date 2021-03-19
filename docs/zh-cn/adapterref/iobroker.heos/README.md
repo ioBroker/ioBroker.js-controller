@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: PA1xxbIdUY9UAxGcIs76l2xXxJ5jWLjYmnlYPv8b/6U=
+hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
 ---
 ![标识](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -20,16 +20,16 @@ hash: PA1xxbIdUY9UAxGcIs76l2xXxJ5jWLjYmnlYPv8b/6U=
 该适配器可以从ioBroker控制HEOS
 
 ＃＃ 配置
-* **自动播放**：连接播放器或处于静音状态后自动播放音乐。可以在配置中全局配置。如果全局启用了此功能，则可以针对状态为“ auto_play”的一个特定播放器禁用它。
-* **命令范围**：定义将“ scope / [cmd]”命令发送到哪个玩家。它可以发送给所有播放器，所有领先播放器或处于逗号分隔状态的所有PID：```heos.0.command_scope_pid```
+* **自动播放**：连接播放器或处于静音状态后自动播放音乐。可以在配置中全局配置。如果全局启用了该功能，则可以针对状态为“ auto_play”的一个特定玩家禁用该功能。
+* **命令范围**：定义将“ scope / [cmd]”命令发送到哪个玩家。它可以发送给所有播放器，所有主要播放器或处于逗号分隔状态的所有PID：```heos.0.command_scope_pid```
 * **静音正则表达式**：
 
-在配置中，您可以根据歌曲信息的正则表达式匹配，激活使播放器静音的功能。可以用来自动使广告静音。例如对于Spotify，您可以使用以下正则表达式：```spotify:ad:|Advertisement```。
+在配置中，您可以根据歌曲信息的正则表达式匹配，激活使播放器静音的功能。可以用来自动使广告静音。例如，对于Spotify，您可以使用以下正则表达式：```spotify:ad:|Advertisement```。
 
-* **ignore_broadcast_cmd** 如果播放器应忽略对所有播放器的命令，则配置此播放器状态，例如播放器/ set_mute＆state = on或按播放按钮以获取预设/播放列表
+* **ignore_broadcast_cmd** 如果播放器应该忽略对所有播放器的命令，则配置此播放器状态，例如播放器/ set_mute＆state = on或按播放按钮以获取预设/播放列表
 
 ＃＃ 寻找
-搜寻功能并非在所有来源上都适用。 Spotify和Amazon Music支持寻求。
+查找功能不适用于所有来源。 Spotify和Amazon Music支持寻求。
 
 ##命令状态
 HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pdf
@@ -61,10 +61,10 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 *“ play_previous”：播放上一个
 *“ play_preset＆preset = 1 | 2 | .. | n”：播放预设n
 *“ play_stream＆url = url_path”：播放URL流
-*“ add_to_queue＆sid = 1025＆aid = 4＆cid = [CID]”：播放器上带有[CID]的播放列表（帮助：1 –现在播放； 2 –下一个播放； 3 –添加到结尾； 4 –替换并播放）
+*“ add_to_queue＆sid = 1025＆aid = 4＆cid = [CID]”：播放器上带有[CID]的播放列表（帮助：1 –现在播放； 2 –接下来播放； 3 –添加到结尾； 4 –替换并播放）
 
 ##图像颜色提取
-在版本1.7.6中，歌曲封面的突出颜色被提取并保存到三种新的播放器状态：
+使用1.7.6版时，歌曲封面的突出颜色将被提取并保存到三个新的播放器状态：
 
 * **current_image_color_palette** 节点活跃选择的突出颜色。
 * **current_image_color_background** 图像中人口最多的颜色。可用作VIS中播放器控件的背景色。
@@ -79,6 +79,12 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 支持[材质UI适配器](https://github.com/ioBroker/ioBroker.material)。
 
 ![材料](../../../en/adapterref/iobroker.heos/docs/media/material-ui.png)
+
+##预设和播放列表
+适配器不会自动请求当前的播放列表和预设。要更新/请求数据并创建播放状态，您必须首先浏览源：
+
+-预设/收藏夹：``heos.0.sources.1028.browse`''
+-播放列表：```heos.0.sources.1025.browse`''
 
 ## VIS
 ＃＃＃ 安装
@@ -95,6 +101,7 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 ![播放器视图](../../../en/adapterref/iobroker.heos/docs/media/player-view.png)
 
 ###预设
+*单击按钮``heos.0.sources.1028.browse`''以加载预设
 *打开文件：[presets_view.json]（docs / vis / views / presets_view.json）
 *将视图导入VIS
 
@@ -117,6 +124,9 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 或者，您可以使用Uhula中的脚本：https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.7 (2021-02-25)
+* (withstu) add creation of missing version state
 
 ### 1.7.6 (2021-02-24)
 * (withstu) add image color extraction

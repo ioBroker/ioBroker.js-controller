@@ -77,6 +77,11 @@ With version 1.7.6 the prominent colors of the song cover are extracted and save
 
 ![Material](docs/media/material-ui.png)
 
+## Presets & Playlists
+The adapter does not automatically requests the current playlists and presets. To update/request the data and create the play states you have to browse the sources first:
+- Presets/Favorites: ```heos.0.sources.1028.browse```
+- Playlists: ```heos.0.sources.1025.browse```
+
 ## VIS
 
 ### Installation
@@ -93,6 +98,7 @@ With version 1.7.6 the prominent colors of the song cover are extracted and save
 ![Player view](docs/media/player-view.png)
 
 ### Presets
+* Click button ```heos.0.sources.1028.browse``` to load presets
 * Open the file: [presets_view.json](docs/vis/views/presets_view.json)
 * Import view into VIS
 

@@ -77,6 +77,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 ### 1.1.2 (alpha)
 * Using library version 0.6.0-alpha.7
 * Quite a lot of improvements for processing map data, spot areas and virtual boundaries
+* Some improvements and fixes
 
 ### 1.1.1
 * Using library version 0.6.0-alpha.3

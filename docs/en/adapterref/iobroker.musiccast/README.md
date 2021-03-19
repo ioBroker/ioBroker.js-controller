@@ -11,7 +11,7 @@
 adapter for Yamaha MusicCast devices like WX-010/030, YSP-1600
 
 ## Installation:
-Installation requires nodejs v4 at minimum
+Installation requires nodejs v10 at minimum
 
 from npm
 ```javascript
@@ -199,6 +199,10 @@ The following objects are currently implemented:
 * dialog level
 
 ## Changelog
+#### 0.2.0
+* refactoring with "create adaptor"
+* async/await
+
 #### 0.1.5
 * (Scrounger) error handling when device is not reachable
 

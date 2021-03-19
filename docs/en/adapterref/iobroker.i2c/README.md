@@ -335,7 +335,7 @@ This project is based on the [i2c-bus](https://www.npmjs.com/package/i2c-bus) NP
 
 ## License
 
-Copyright 2020 UncleSamSwiss
+Copyright 2021 UncleSamSwiss
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

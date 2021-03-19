@@ -214,9 +214,10 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.0.6 (2021-03-16)
 * (Gaudes) Fix route selection in delay config
 * (Gaudes) Fix SBB product suburban-train (Sentry #21)
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.5 (2021-02-22)
 * (Gaudes) Quality fixing (lgtm.com)
@@ -238,12 +239,6 @@ With +-Button new entries can be added to the table.
 ### 1.0.2 (2021-01-12)
 * (Gaudes) Configurable Headline for HTML tables
 * (Gaudes) Fix correct deletion of unneeded objects (Sentry)
-* (Gaudes) Include Dependabot updates
-
-### 1.0.1 (2020-12-28)
-* (Gaudes) Fixing different errors from HAFAS
-* (Gaudes) Fixing identical start and destination station
-* (Gaudes) Require vehicle in configuration
 * (Gaudes) Include Dependabot updates
 
 ## License

@@ -2638,6 +2638,9 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 5.1.0 (2021-03-19)
+* (bluefox) Implemented the debug of scripts possibility
+
 ### 5.0.15 (2021-03-13)
 * (bluefox) Rules: added "use trigger value" for the "set action" blocks
 
@@ -2648,9 +2651,6 @@ return 'your result';
 * (bluefox) fixed error in blockly
 
 ### 5.0.11 (2021-03-07)
-* (bluefox) added date to the time condition
-
-### 5.0.10 (2021-03-07)
 * (bluefox) added date to the time condition
 
 ## License

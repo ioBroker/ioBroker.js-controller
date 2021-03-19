@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: ZLsHppC757/KAgqLW2TbgD9QzBbDq34IOz/fWmHDLu8=
+hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
 ---
 ![标识](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -39,17 +39,17 @@ hash: ZLsHppC757/KAgqLW2TbgD9QzBbDq34IOz/fWmHDLu8=
 6.填写从Miele-developer团队收到的client_secret和client_id以及从应用程序获得的帐户ID和密码。
 
 ##控制您的设备
-实现了所有设备当前所有受支持和记录的操作（API V1.0.2）。
->请记住，仅当您将设备置于适当的状态（例如，Mobile Control，powerOn等）时，“操作”才有效。
-请参阅[Miele文档](#documentation)了解有关操作的更多信息。
+已实现所有设备当前所有受支持和记录的操作（API V1.0.4）。
+>请记住，仅当您将设备置于适当的状态（例如，Mobile Control，powerOn等）时，“操作”才起作用。
+请参阅[Miele文档](#documentation)有关动作的更多信息。
 
 ＃＃ 已知的问题
-* API 1.0.4引入的动作ambientLight尚未实现
+* 没有
 
 ##文档
 请主要参考Miele发布的主要API文档
 
-* [一般文档]（https://www.miele.com/developer/swagger-ui/index.html）
+* [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
 有2种可用的数据点。作为人类可读的文本和数字。
@@ -144,7 +144,7 @@ hash: ZLsHppC757/KAgqLW2TbgD9QzBbDq34IOz/fWmHDLu8=
 | 1 | “ Baumwolle” /“棉” |洗衣机|
 | 23 | “ Oberhemden” / |洗衣机|
 | 27 | “Imprägnieren” / |洗衣机|
-| 48 | “弗洛森·奥斯普兰” |洗衣机烘干机|
+| 48 | “弗吕森·奥斯普林” |洗衣机烘干机|
 | 50 | “ DunkleWäsche” / |洗衣机烘干机|
 | 122 | “ Express 20” / |洗衣机烘干机|
 | 123 | “扣篮/牛仔裤” |洗衣机|
@@ -166,9 +166,25 @@ hash: ZLsHppC757/KAgqLW2TbgD9QzBbDq34IOz/fWmHDLu8=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
-### 3.0.2 (2021-03-03)
+### 4.0.0 (2021-03-18) (Symphony of life)
+> ***Hint:*** The adapter received a complete code refactoring! This means that most of the code has been changed and some parts are working now differently than ever before. Update with care and read the change log!
+*  (grizzelbee) New: FULL support of Miele cloud API v1.0.4
+*  (grizzelbee) Upd: [83](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/83) estimatedEndTime isn't shown anymore after the device has finished
+*  (grizzelbee) Upd: [85](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/85) full code refactoring and split into multiple files. 
+*  (grizzelbee) Upd: [86](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/86) every folder and device now gets a nice little icon
+*  (grizzelbee) Upd: [89](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/89) Washer dryers are fully supported now
+*  (grizzelbee) Upd: [90](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/90) implemented targetTemperature for fridges & freezers
+*  (grizzelbee) Upd: Devices get fully created on startup and aren't modified afterwards - only updated
+*  (grizzelbee) Upd: New folder ecoFeedback to group ecoFeedback states 
+*  (grizzelbee) Upd: New folder IDENT to group ident states
+*  (grizzelbee) Upd: Removed signalActionRequired - since there is no signalDoor for washing machines, dryers and dishwashers this approach doesn't work
+*  (grizzelbee) Upd: All folders and states which are being created depend on the capabilities of their devices as described in [this Miele documentation](https://www.miele.com/developer/assets/API_V1.x.x_capabilities_by_device.pdf). So there shouldn't be useless states anymore caused by the generic Miele cloud API.
+
+### 3.0.2 (2021-03-05)
 *  (grizzelbee) Fix: [79](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/79) When a devices serial is missing, the identNumber is assigned instead.
 *  (grizzelbee) Upd: Changed folder name cooktops to hobs since this is the more common name
+*  (grizzelbee) Upd: added PowerOn/Off buttons for Coffee-systems & hoods
+*  (grizzelbee) Upd: [74](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/74) testing actions better before sending to permit errors
 
 ### 3.0.1 (2021-02-25)
 > *Hint:* Action_Information and Action_Status objects are created on first action execution and contain infos to the last executed action.
@@ -210,15 +226,15 @@ hash: ZLsHppC757/KAgqLW2TbgD9QzBbDq34IOz/fWmHDLu8=
 * (grizzelbee) Fix: fixed error on logout while invalidating token
 
 ### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
-Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
-Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.
+Some breaking changes in this release. Some data points changed their type. May require fixes in scripts. **Update with care!**
+Due to the fix that data points with invalid values aren't created any longer, I recommend deleting all data points in Object view.
 * (grizzelbee) Change: New Icon
-* (grizzelbee) Fix: Number-datapoints are no longer created as strings due to their unit. They are correct numbers with units now.
+* (grizzelbee) Fix: Number-data points are no longer created as strings due to their unit. They are correct numbers with units now.
 * (grizzelbee) Fix: Unit °Celsius is now shown as °C - not longer °Celsius
 * (grizzelbee) New: Introduced support for °Fahrenheit
 * (grizzelbee) New: Introduced support for new Value "plateStep" for Hobs.
 * (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens.
-* (grizzelbee) Fix: Datapoints with invalid values (null/-32768) are no longer created.
+* (grizzelbee) Fix: Data points with invalid values (null/-32768) are no longer created.
 
 ### 1.2.4 (2020-06-09)
 * (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
@@ -283,8 +299,8 @@ please refer to [Miele-Documentation](#documentation) for more Information on ac
 * (grizzelbee) Chg: removed Push-API checkbox (maybe introduced newly when API supports this)
 * (grizzelbee) Chg: New Icon
 * (grizzelbee) New: added support for non-german Miele-Accounts (ALL should be included)
-* (grizzelbee) Complete new layout of datapoints
-* (grizzelbee) Devicetypes are grouped now
+* (grizzelbee) Complete new layout of data points
+* (grizzelbee) Device types are grouped now
 
 ### 0.9.1 (2019-07-26)
 * (grizzelbee) Fix: Fixed small bug introduced in V0.9.0 throwing an exception in debugging code
@@ -295,7 +311,7 @@ please refer to [Miele-Documentation](#documentation) for more Information on ac
 * (grizzelbee) Fix: fixed ESLint config
 * (grizzelbee) Upd: Changed order of config fields in UI
 * (grizzelbee) New: Set 5 Minutes poll interval and english response language as default to get initial values
-* (grizzelbee) New: Parent-Datapoint of timevalues will be used to get a pretty readable time in the format h:mm. The deeper datapoints 0 and 1 will still be updated, but his will be removed in a future version to reduce workload.
+* (grizzelbee) New: Parent-Datapoint of time values will be used to get a pretty readable time in the format h:mm. The deeper datapoints 0 and 1 will still be updated, but his will be removed in a future version to reduce workload.
 
 ### 0.0.5 (2019-07-25)
 * (grizzelbee) Upd: some code maintenance

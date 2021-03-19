@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.dysonairpurifier/README.md
 title: ioBroker.dysonAirPurifier
-hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
+hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 ---
 ![安装数量（最新）](http://iobroker.live/badges/dysonairpurifier-installed.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.dysonairpurifier.svg)
@@ -33,10 +33,10 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 *戴森Pure Humidify + Cool（PH01，产品类型358）
 
 ＃＃ 特征
-将您的戴森风扇，风扇加热器，空气净化器和空气加湿器连接到ioBroker。
+将戴森的风扇，风扇加热器，空气净化器和空气加湿器连接到ioBroker。
 
 *从设备和传感器读取值
-*通过使您能够更改某些值（主电源，振荡，加热，风扇速度等），可以控制设备
+*通过使您能够更改某些值（主功率，振荡，加热，风扇速度等），可以控制设备
 *从Dyson服务器读取设备列表
 
 ＃＃ 安装
@@ -52,20 +52,20 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 在ioBroker安装上运行```npm install ioBroker.dysonairpurifier```，以从npm存储库中获取此适配器的最新版本。
 
 ####替代方法：使用GitHub URL
-通过将ioBroker Admin UI指向GitHub上的最新稳定版本进行安装：<https://github.com/Grizzelbee/ioBroker.dysonairpurifier/tarball/master/>
+通过将ioBroker管理员UI指向GitHub上的最新稳定版本进行安装：<https://github.com/Grizzelbee/ioBroker.dysonairpurifier/tarball/master/>
 
-您也可以使用此方法安装较早的发行版（通过指向版本标记，例如，URL中的```v0.6.0```而不是```master```），但是通常最好使用最新版本。
+您也可以使用此方法安装较早的发行版（通过指向版本标记，例如，URL中的§§JJJJ_0_0§§而不是```master```§），但是通常首选最新版本。
 
 ###需要配置数据
 * Dyson帐户用户名
-* Dyson帐户密码（此适配器最多可处理32个字符的密码）
-*局域网中的风扇/空气净化器IP地址。
+* Dyson帐户密码（此适配器最多可以处理32个字符的密码）
+*您的局域网中的风扇/空气净化器IP地址。
 
 *请注意*：由于早期开发状态以及Dyson不符合mDNS的实施，因此您需要在首次运行之后*提供设备的本地IP。
 
 *附加说明*：自版本0.7.1起，适配器在未提供主机地址/ IP时尝试使用其主机名（序列号）连接到设备。这将在两个先决条件下起作用：
 
-1.您的局域网中正在运行一个DNS服务器。在您的路由器中（例如FritzBox运行DNS）或专用路由器。
+1.您的局域网中有一个DNS服务器正在运行。既可以在您的路由器中（例如FritzBox上运行的是DNS），也可以是专用的。
 2.您尚未更改默认设备名称。
 
 >在此适配器的首次启动时，将查询所有设备的Dyson API，并将在设备树中创建所有受支持的设备-其基本信息由API提供，并带有附加字段“ Hostaddress”。
@@ -81,8 +81,8 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 * ContinuousMonitoring，即使设备关闭也可以连续监视环境传感器。
 * MainPower，风扇的主电源。
 * AutomaticMode，风扇处于自动模式。
-*气流方向，风扇吹向的方向。 ON =前； OFF =后退（又名Jet聚焦）
-* Jetfocus，风扇吹向的方向。 ON =前； OFF =后退（又名Jet聚焦）
+*气流方向，风扇吹向的方向。 ON =前； OFF =后退（又称Jet聚焦）
+* Jetfocus，风扇吹向的方向。 ON =前； OFF =后退（又称Jet聚焦）
 *加热模式，加热模式[ON / OFF]
 * HeatingTargetTemp，加热目标温度
 * AirQualityTarget，自动模式下的目标空气质量。
@@ -93,23 +93,19 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 *水硬度，软，中，硬
 
 据了解，这些状态的可能值记录在下面。
-风扇速度仅允许从1到10以及“自动”的值。如果您想将风扇速度设置为0，则需要关闭主电源。
+风扇速度仅允许从1到10以及“自动”的值。如果要将风扇速度设置为0，则需要关闭主电源。
 戴森应用程序也可以做到这一点。
-
-＃＃＃ 去做
-*自动检测设备的IP
-*在对象视图中为每种风扇类型添加符号，例如tradfri或alexa
 
 ＃＃＃ 已知的问题
 *不自动检测设备的IP
 
-## Dyson API数据说明（消息有效负载）
+## Dyson API数据（消息有效负载）的说明
 从<https://github.com/shadowwa/Dyson-MQTT2RRD/blob/master/README.md>复制和扩展的信息
 
 ＃＃＃ 当前状态
 |名称|意思|可能的值|单位 |
 | ------------- | ----- | ----- | ----- |
-|模式原因|当前模式已由RemoteControl，App，计划程序| PRC，LAPP，LSCH，PUI | |
+|模式原因|当前模式已通过RemoteControl，App，Scheduler设置。 PRC，LAPP，LSCH，PUI | |
 |国家原因| |模式| |
 | rssi | WIFI强度| -100-0 | dBm |
 |频道| WIFI频道| 52 | |
@@ -120,17 +116,17 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 |名称|意思|可能的值|单位 |
 | ------------- | ----- | ----- | ----- |
 | ercd |最后的错误代码| NONE或某些六进制值| |
-| lf剩余滤芯寿命| 0000-4300 |小时|
+|战利品|剩余滤清器寿命| 0000-4300 |小时|
 | fmod |模式|风扇，汽车| |
 | fpwr |主电源|开，关| |
 | fnst |风扇状态|开，关，风扇| |
 | fnsp |风扇转速0001-0010，自动| |
 | fdir |又称Fandirection。喷气对焦/开=前，关=后|开，关| |
 | ffoc | JetFocus |开，关|
-| nmod |夜间模式|开，关| |
+| nmod |夜间模式|开启，关闭| |
 |儿子|振荡|开启，关闭| |
 | osal |振荡角度下界| 0005-355 | °（度）|
-| osau |振荡角度上边界| 0005-355 | °（度）|
+| osau | OscillationAngle上边界| 0005-355 | °（度）|
 | oscs |振荡活动|开，关，空闲| |
 | ancp |摆角| CUST，0180 |°（度）|
 | qtar |空气质量指标| 0001 =好，0002 =正常，0003 =差，0004 =非常差| |
@@ -150,8 +146,8 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 | cdrr | CleanDurationRemaining | |
 | rect | AutoHumidificationTarget | |
 | cltr | TimeRemainingToNextClean | |
-|线水硬度| |
-| wacd |警告代码？ |无... |
+|棉线|水硬度| |
+| wacd |警告代码？ |没有... |
 | rstf |重置过滤器生命周期|
 | bril | | 0002 |
 |科尔夫| |开，关|
@@ -165,7 +161,7 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 |错误代码|含义|
 | ----- | ----- |
 |无|没有活动的错误|
-| 57C2 |未知 |
+| 57C2 |不明|
 | 11E1 |振荡已被禁用。请按遥控器上的“振荡”按钮以继续。 |
 
 ####调度程序
@@ -197,11 +193,11 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 ＃＃＃＃ 数据
 |名称|意思|可能的值|单位 |
 | ------------- | ----- | ----- | ----- |
-| pal0-pal9 |自小时开始以来，在此级别的灰尘上花费的秒数| 0000-3600 | |
-|手掌|似乎是palX的中位数| |
+| pal0-pal9 |自小时开始以来在此级别的灰尘上花费的秒数| 0000-3600 | |
+|手掌|似乎是palX的中位数| | |
 | vol0-vol9 |自小时开始以来，此级别voc的第二次支出| 0000-3600 | |
-|卷似乎是volX的中间值| | |
-| aql0-aql9 |在此空气质量水平上第二次消费的次数|自小时开始以来的最大值（pal，vol））| 0000-3600 | |
+| volm |似乎是volX的中间值| | |
+| aql0-aql9 |在此空气质量水平上第二次消费的次数|从小时开始算起（max（pal，vol））| 0000-3600 | |
 | aqlm |似乎是aqlX的中位数| | |
 |收藏夹|似乎是在特定时间花费几秒钟| 0000-3600 | |
 | faos |似乎是在特定时间花费几秒钟| 0000-3600 | |
@@ -211,15 +207,19 @@ hash: ShIF+5iIKT80k7rZg0+alJWJ45t72RYFbjfXk8Tev2Q=
 | tmpm |开尔文的温度？ | 0000-5000 | |
 
 ＃＃ 法律声明
-戴森，pure cool，pure hot＆cool和其他均为[戴森有限公司](https://www.dyson.com)的商标或注册商标。所有其他商标均为其各自所有者的财产。
+戴森，纯净，纯净，凉爽和其他均为[戴森有限公司](https://www.dyson.com)的商标或注册商标。所有其他商标均为其各自所有者的财产。
 
 ## Changelog
+
+### 0.8.1 (2021-02-19) (Fall into the flames)
+* (grizzelbee) New: added icons to each fan type in device tree
+* (grizzelbee) New: Showing Filter type correctly - not as code anymore
+* (grizzelbee) Upd: updated dependencies
 
 ### 0.8.0 (2021-02-18) (Beyond the mirror)
 * (grizzelbee) New: Log as info if account is active on login; else log as warning. 
 * (grizzelbee) New: [#21](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/21) Improvement for humidifier support
 * (grizzelbee) Fix: [#67](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/67) Adapter sometimes wrote objects instead of values.
-
 
 ### 0.7.5 (2021-02-12) (I won't surrender)
 * (grizzelbee) Fix: [#65](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/65) Adapter get online again after changes to dyson cloud API login procedure.

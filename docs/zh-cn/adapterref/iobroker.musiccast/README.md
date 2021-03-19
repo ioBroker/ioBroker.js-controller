@@ -3,21 +3,21 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.musiccast/README.md
 title: ioBroker.musiccast
-hash: tt/h/le4GOU9PDRh7t6r+yzRzstX8rUJyno2AOEsUHM=
+hash: FWruI73yp9zrKb04C0x3SjjvJj222EL77NS/r/h1XD8=
 ---
-![商标](../../../en/adapterref/iobroker.musiccast/admin/musiccast.png)
+![标识](../../../en/adapterref/iobroker.musiccast/admin/musiccast.png)
 
 ![安装数量](http://iobroker.live/badges/musiccast-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.musiccast.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.musiccast.svg)
-![建立状态](https://travis-ci.org/foxthefox/ioBroker.musiccast.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.musiccast.svg)
+![建置状态](https://travis-ci.org/foxthefox/ioBroker.musiccast.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.musiccast.png?downloads=true)
 
 ＃ioBroker.musiccast
-适用于Yamaha MusicCast设备的适配器，例如WX-010 / 030，YSP-1600
+适用于WX-010 / 030，YSP-1600等Yamaha MusicCast设备的适配器
 
-##安装：
-安装至少需要nodejs v4
+＃＃ 安装：
+安装至少需要nodejs v10
 
 从npm
 
@@ -33,17 +33,17 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 
 ##设置
 管理员页面“ +”可用于手动添加IP地址，设备ID，类型和名称。
-按下搜索按钮进行发现。如果有多个设备，则必须多次单击按钮，直到找到所有设备。不幸的是，发现一次仅返回一个对象，这可能是您的任何MusicCast设备。如果返回值与表的一部分相同，则必须再次单击该按钮。有时，它有助于再次保存并打开damin页面。
+按下搜索按钮进行发现。如果有多个设备，则必须多次单击按钮，直到找到所有设备。不幸的是，发现一次仅返回一个对象，这可能是您的任何MusicCast设备。如果返回值与表中已经存在的返回值相同，则必须再次单击该按钮。有时，这有助于再次保存并打开damin页面。
 
 在不太可能的情况下，如果两个或更多设备提供相同的ID，则稍微更改一个ID。否则，适配器无法区分这两个设备。
 
-如果您想查看播放曲目的播放时间更新，请启用/选中相应的复选框。请注意，这会增加消息计数（对于每个设备，每秒更新一次更新）。
+如果您想查看所听曲目的播放时间更新，请启用/选中相应的复选框。请注意，这会增加消息计数（对于每个设备，每秒更新一次更新）。
 
 ##可用对象
 当前实现了以下对象：
 
 ###基本（区域）
-|对象|价值|设定|说明|
+|对象|值|可设置|描述|
 |--------|-------|:-:|--------|
 | {zone} .power | boolean | x | true / false-> ON / Standby |
 | {zone} .zone_b | boolean |？| true / false->目标区域是区域B |
@@ -77,10 +77,10 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | {zone} .pure_direct | boolean | x |设置纯直接|
 | {zone} .enhancer | boolean | x |设置增强器|
 | {zone} .bass_extension | boolean | x |设置低音扩展|
-| {zone} .sleep | value | x |睡眠计时器|
+| {zone} .sleep | value | x | sleep计时器|
 
 ### Netusb
-|对象|价值|设定|说明|
+|对象|值|可设置|描述|
 |--------|-------|:-:|--------|
 | netusb.input |值| x |设置/实际输入|
 | netusb.playPause |布尔值| x |设置播放/暂停|
@@ -98,7 +98,7 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | netusb.track |文本|-|轨道名称|
 | netusb.albumart_url | text |-|专辑封面的http地址|
 | netusb.albumart_id | value |-|相册ID |
-| netusb.play_time | value |-|播放时间，以s |
+| netusb.play_time | value |-|播放时间，单位为s |
 | netusb.play_queue_type | text |-| netusb队列类型|
 | netusb.total_time | value |-|播放的总时间，以s |
 | netusb.recent_info | json |-|播放项目的历史记录|
@@ -107,8 +107,8 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | netusb.usb_devicetype | text |-|连接的USB设备的类型|
 | netusb.attribute | value |-|哪个possibiolites具有服务，将被解码|
 
-###系统
-|对象|价值|设定|说明|
+＃＃＃ 系统
+|对象|值|可设置|描述|
 |--------|-------|:-:|--------|
 | system.api_version |值|-| API版本|
 | system.system_version | value |-|系统版本|
@@ -118,7 +118,7 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | system.inputs。{service} .play_info_type | value |-|可用的输入服务类型|
 
 ＃＃＃ 激光唱机
-|对象|价值|设定|说明|
+|对象|值|可设置|描述|
 |--------|-------|:-:|--------|
 | cd.playPause |布尔值| x |设置播放/暂停|
 | cd.playback |文本|-|状态CD播放器|
@@ -126,12 +126,12 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | cd.next | boolean | x |设置正向|
 | cd.prev | boolean | x | set倒带|
 | cd.shuffle | boolean | x |切换随机播放|
-| cd.shuffle_stat | text |-|随机播放状态|
+| cd.shuffle_stat |文本|-|随机播放状态|
 | cd.repeat |布尔值| x |切换重复|
 | cd.repeat_stat | text |-|重复状态|
-| cd.device_stat |文本|-|设备状态|
+| cd.device_stat | text |-|设备状态|
 | cd.playtime | value |-|当前播放时间|
-| cd.totaltime | value |-|当前曲目总时间|
+| cd.totaltime | value |-|当前曲目的总时间|
 | cd.disctime | value |-| CD总时间|
 | cd.tracknumber |值|-|播放中的当前曲目|
 | cd.totaltracks | value |-|总CD轨道|
@@ -140,7 +140,7 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | cd.track |文本|-|轨道名称|
 
 ###调谐器
-|对象|价值|设定|说明|
+|对象|值|可设置|描述|
 |--------|-------|:-:|--------|
 | tuner.common_preset_info | array |-|预设信息|
 | tuner.am.preset_info | array |-|预设AM信息|
@@ -150,34 +150,34 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 | tuner.am.freq | number | x | AM频率（kHz）|
 | tuner.am.tuned |布尔值|-| AM调谐|
 | tuner.fm.preset |编号| x | FM预设编号|
-| tuner.fm.freq |数字| x | FM频率（kHz）|
+| tuner.fm.freq | number | x | FM频率（kHz）|
 | tuner.fm.tuned |布尔值|-| FM调谐|
 | tuner.fm.audio_mode | string |-| FM单声道/立体声|
 | tuner.dab.preset |编号| x | DAB预设编号|
 | tuner.dab.id |编号|-| DAB站ID |
 | tuner.dab.status |字符串|-| DAB状态|
 | tuner.dab.freq |数字|-| DAB频率|
-| tuner.dab.category |串|  -  |主/辅|
+| tuner.dab.category | string |-|主要/次要|
 | tuner.dab.audio_mode | string |-| DAB单声道/立体声|
 | tuner.dab.bit_rate |数字|-| DAB比特率，单位为kpbs |
 | tuner.dab.quality |编号|-| DAB质量0-100 |
 | tuner.dab.tune_aid |编号|-| DAB信号强度0-100 |
 | tuner.dab.off_air |布尔值|-| DAB广播|
-| tuner.dab.dab_plus |布尔|  -  | DAB + |
+| tuner.dab.dab_plus |布尔值|-| DAB + |
 | tuner.dab.program_type | string |-| DAB程序类型|
 | tuner.dab.ch_label |字符串|-| DAB CH标签|
 | tuner.dab.service_label |字符串|-| DAB服务标签|
 | tuner.dab.dls | string |-| DAB DLS |
-| tuner.dab.ensemble_label |字符串|-|| DAB集成标签|
+| tuner.dab.ensemble_label |字符串|-| DAB集成标签|
 | tuner.dab.initial_scan_progress | number |-| DAB初始扫描进度0-100 |
 | tuner.dab.total_station_num | number |-| DAB总站数0-255 |
 | tuner.rds.program_type | string |-| RDS程序类型|
-| tuner.rds.program_service | string |-| RDS程序服务|
+| tuner.rds.program_service |字符串|-| RDS程序服务|
 | tuner.rds.radio_text_a | string |-| RDS文本A |
 | tuner.rds.radio_text_b | string |-| RDS文本B |
 
 ＃＃＃ 时钟
-|对象|价值|设定|说明|
+|对象|值|可设置|描述|
 |--------|-------|:-:|--------|
 | clock.auto_sync | boolean | x |时钟自动同步|
 | clock.format | string | x |时钟格式12h / 24h |
@@ -185,18 +185,18 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 || clock.volume | number | x |时钟闹钟音量|
 | clock.fade_interval | number | x |时钟警报淡入间隔|
 | clock.fade_type | number | x |时钟闹钟淡入类型|
-| clock.mode | string | x |一天/每周的闹钟模式|
+| clock.mode | string | x |每天/每周一次的闹钟模式|
 | clock.repeat | boolean | x |如果指定了一天，则重复闹钟警报|
 | clock。{day} .enable | boolean | x |时钟设置有效性|
 | clock。{day} .time | string |-|时钟闹钟启动时间hhmm 00-23,00-59 |
-| clock。{day} .beep | boolean | x | Clock Beep有效性|
-| clock。{day} .playback_type | string |-||时钟闹钟的播放类型恢复/预设|
+| clock。{day} .beep | boolean | x | Ceep Beep有效性|
+| clock。{day} .playback_type | string |-||时钟闹钟播放类型“恢复/预设” |
 | clock。{day} .resume_input | string |-||闹钟恢复输入ID |
-| clock。{day} .preset_type | string |-|时钟闹钟预设类型|
-| clock。{day} .preset_num | number |-||闹铃预设输入ID |
+| clock。{day} .preset_type | string |-||闹铃预设类型|
+| clock。{day} .preset_num | number |-|时钟闹钟预设输入ID |
 | clock。{day} .preset_netusb_input | string |-||时钟警报netusb输入ID |
 | clock。{day} .preset_netusb_text | string |-||时钟警报netusb文本|
-| clock。{day} .preset_tuner_band | string |-||时钟闹钟调谐器频段|
+| clock。{day} .preset_tuner_band | string |-|时钟闹钟调谐器频段|
 | clock。{day} .preset_tuner_number | number |-||时钟警报调谐器频率或电台ID |
 
 ＃＃ 去做
@@ -207,6 +207,19 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 *对话等级
 
 ## Changelog
+#### 0.2.0
+* refactoring with "create adaptor"
+* async/await
+
+#### 0.1.5
+* (Scrounger) error handling when device is not reachable
+
+#### 0.1.4
+* (Scrounger) correction of type mismatch (array object)
+
+#### 0.1.3
+* (foxthefox) added writing for linkControl/linkAudioDelay/linkAudioQuality
+
 #### 0.1.2
 * (Scrounger) correction of type mismatch (string boolean)
 
@@ -268,4 +281,4 @@ npm install https://github.com/foxthefox/ioBroker.musiccast/tarball/master --pro
 
 The MIT License (MIT)
 
-Copyright (c) 2017 - 2019 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2017 - 2021 foxthefox <foxthefox@wysiwis.net>

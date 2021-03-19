@@ -548,11 +548,11 @@
           },
           "content": "config/cli.md"
         },
-        "multihost": {
+        "Multihost": {
           "title": {
-            "en": "multihost",
+            "en": "Multihost",
             "de": "Multihost",
-            "ru": "multihost",
+            "ru": "Мультихост",
             "zh-cn": "高级配置 - 多主机"
           },
           "content": "config/multihost.md"

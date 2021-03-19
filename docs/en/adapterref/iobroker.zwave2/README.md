@@ -39,6 +39,21 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.9.0 (2021-03-16)
+* Upgraded to `zwave-js` version 7
+* Nodes with a completed interview are no longer queried for all their values when restarting. As a result the adapter is now ready much much faster after a restart, but you'll see many yellow values until the devices have sent updated data.
+* The device list in the configuration dialog now displays a better type for the devices, for example `Wall Controller` instead of `Routing Slave`
+* Network heal no longer times out early in large networks
+* Fixed a crash: `supportedCCs is not iterable`. If this happens to you, re-interview affected devices.
+* Relaxed the checks when a report gets mapped from the root endpoint to higher endpoints
+* Some encrypted messages that were previously dropped are now accepted
+* Prevent the interview of sleeping nodes to get stuck until a re-interview under certain circumstances
+* After a restart, sleeping nodes have their status correctly determined even if they weren't interviewed completely before
+* Notification variables are now auto-idled after 5 minutes as it was intended, not after 5 hours
+* The `deltaTime` and `previousValue` values for the Meter CC are now hidden
+* Fixed a crash that could happen after node inclusion
+* Tons of new and improved device configuration files
+
 ### 1.8.12 (2021-02-23)
 * Implemented `Scene Actuator Configuration CC` and `Scene Controller Configuration CC`
 * Fixed an issue where sleeping nodes could block the send queue when it is not yet known whether they support `Wake Up CC`
@@ -71,11 +86,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Many config files were added and updated
 * Improved compatibility with some devices, notably `ID Lock 150`, `Vision Security ZD2102-5`, `HomeSeer WD200+`
 * `currentValue` and similar values are now updated immediately when a set-type command succeeds. Verification is done after a short delay.
-
-### 1.8.8 (2021-01-24)
-* Fixed an issue where communication with sleeping secure nodes could get stuck
-* After changing a value, the verification of the new value happens with a larger delay to avoid capturing intermediate and outdated values
-* Several hundred device configuration files were added
 
 ## License
 
