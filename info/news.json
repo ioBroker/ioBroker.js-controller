@@ -770,5 +770,38 @@
             "zwave": "installed",
             "zwave2": "!installed"
         }
+    },
+        {
+        "title": {
+                "en": "Please remove ioBroker Forum entry from radar2 monitoring configuration.",
+                "de": "Bitte entfernen Sie den Eintrag ioBroker-Forum aus der Radar2-Überwachungskonfiguration.",
+                "ru": "Удалите запись на форуме ioBroker из конфигурации мониторинга radar2.",
+                "pt": "Remova a entrada do fórum ioBroker da configuração de monitoramento do radar2.",
+                "nl": "Verwijder het ioBroker Forum-item uit de radar2-bewakingsconfiguratie.",
+                "fr": "Veuillez supprimer l'entrée du forum ioBroker de la configuration de surveillance radar2.",
+                "it": "Rimuovere la voce del forum ioBroker dalla configurazione del monitoraggio radar2.",
+                "es": "Elimine la entrada del Foro ioBroker de la configuración de monitoreo de radar2.",
+                "pl": "Usuń wpis na forum ioBroker z konfiguracji monitorowania radar2.",
+                "zh-cn": "请从radar2监视配置中删除ioBroker论坛条目。"
+        },
+        "content": {
+                "en": "The radar2 adapter contains a default entry that monitors the ioBroker Forum. Please remove this entry (called \"Forum\" and points to forum.iobroker.net) from your adapter configuration, because this generates a huge unneeded traffic on the forum.",
+                "de": "Der Radar2-Adapter enthält einen Standardeintrag, der das ioBroker-Forum überwacht. Bitte entfernen Sie diesen Eintrag (\"Forum\" genannt und verweist auf forum.iobroker.net) aus Ihrer Adapterkonfiguration, da dies einen großen, nicht benötigten Datenverkehr im Forum erzeugt.",
+                "ru": "Адаптер radar2 содержит запись по умолчанию, которая отслеживает форум ioBroker. Пожалуйста, удалите эту запись (которая называется «Форум» и указывает на forum.iobroker.net) из конфигурации вашего адаптера, потому что это создает огромный ненужный трафик на форуме.",
+                "pt": "O adaptador radar2 contém uma entrada padrão que monitora o fórum ioBroker. Remova esta entrada (chamada \"Fórum\" e aponta para forum.iobroker.net) da configuração do adaptador, porque isso gera um enorme tráfego desnecessário no fórum.",
+                "nl": "De radar2-adapter bevat een standaarditem dat het ioBroker-forum bewaakt. Verwijder dit item (genaamd \"Forum\" en verwijst naar forum.iobroker.net) uit uw adapterconfiguratie, omdat dit een enorm onnodig verkeer op het forum genereert.",
+                "fr": "L'adaptateur radar2 contient une entrée par défaut qui surveille le forum ioBroker. Veuillez supprimer cette entrée (appelée \"Forum\" et pointe vers forum.iobroker.net) de la configuration de votre adaptateur, car cela génère un énorme trafic inutile sur le forum.",
+                "it": "L'adattatore radar2 contiene una voce predefinita che controlla il forum ioBroker. Per favore rimuovi questa voce (chiamata \"Forum\" e punta a forum.iobroker.net) dalla configurazione dell'adattatore, perché questo genera un enorme traffico non necessario sul forum.",
+                "es": "El adaptador radar2 contiene una entrada predeterminada que supervisa el ioBroker Forum. Elimine esta entrada (llamada \"Foro\" y apunta a forum.iobroker.net) de la configuración de su adaptador, ya que esto genera un enorme tráfico innecesario en el foro.",
+                "pl": "Adapter radar2 zawiera domyślny wpis, który monitoruje forum ioBroker. Usuń ten wpis (zwany „Forum” i wskazuje na forum.iobroker.net) z konfiguracji twojego adaptera, ponieważ generuje to ogromny niepotrzebny ruch na forum.",
+                "zh-cn": "Radar2适配器包含一个监视ioBroker论坛的默认条目。请从您的适配器配置中删除此条目（称为“论坛”，并指向forum.iobroker.net），因为这会在论坛上产生大量不必要的流量。"
+        },
+        "id": "radar2-forum",
+        "class": "info",
+        "fa-icon": "bolt",
+        "created": "2021-03-19T08:00:00.000Z",
+        "conditions": {
+            "radar2": "installed"
+        }
     }
 ]
