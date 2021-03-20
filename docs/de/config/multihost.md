@@ -44,7 +44,7 @@ Das nun erscheinende Menü wie folgt ausfüllen
 2. `iobroker multihost enable`
   ``` enter pass phrase```
 
-3. `sudo service iobroker restart`
+3. `iobroker restart`
 
 
 ### Slave Konfiguration
@@ -83,7 +83,7 @@ Enter secret phrase for connection: *****
 Config ok. Please restart ioBroker: "iobroker restart"
 ```
 
-2. `sudo service iobroker restart`
+2. `iobroker restart`
 
 
 
