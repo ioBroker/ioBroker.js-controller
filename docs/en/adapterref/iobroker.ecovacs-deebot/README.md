@@ -16,10 +16,11 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ### Supported models
 
-* Deebot 901
-* Deebot OZMO 920
+* Deebot 900/901
 * Deebot OZMO 930
-* Deebot OZMO 950
+* Deebot OZMO 920/950
+
+The models listed are those that I have in use myself or which are technically identical to these.
 
 ### These models should work properly or at least partially
 
@@ -28,9 +29,8 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot M88
 * Deebot 600/601/605
 * Deebot 710/711/711s
-* Deebot 900
 * Deebot OZMO 610
-* Deebot OZMO 900
+* Deebot OZMO 900/905
 * Deebot OZMO T5
 * Deebot OZMO T8 series
 * Deebot OZMO Slim 10
@@ -39,12 +39,18 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot N8 series
 * Deebot U2 series
 
+The models listed are either already known to work or are technically similar to these models.
+Nevertheless, the functionality may be partially limited.
+
+I try to achieve a wide range of functionality, but decide this case by case depending on complexity and various other criteria.
+There is of course no claim to full functionality.
+
 ## Installation
 
 It is recommended to use version 10.x, 12.x or 14.x of Node.js. The minimum required version is 10.x
 
-This adapter uses the canvas library which might require additional installations.
-For the full functional range please install the following packages.
+This adapter uses the [node-canvas](https://www.npmjs.com/package/canvas) library for some map-related functionality which may require the installation of some additional packages.
+This is optional and not necessary for models without map functionality, but for full functional range please install the following packages.
 
 For Debian-based Linux systems the following commands should be executed:
 ```bash
@@ -62,15 +68,15 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 * Information about the states can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (English) and [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Datenpunkte-%28DE%29) (German)
 
-## Known issues
-
-* For some models (e.g. Deebot Ozmo 930) it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
-* Some cleaning functions may not work with 710/711/711s. Please use version 0.5.8 for now.
-* The "edge" function does not work with Deebot U2 (starts auto clean instead)
-
 ## FAQ
 
 * Frequently asked questions can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
+
+## Known issues
+
+* For some models (e.g. Deebot OZMO 930) it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
+* Some cleaning functions may not work with Deebot 710/711/711s. Please use version 0.5.8 for now.
+* The "edge" function does not work with Deebot U2 (starts auto clean instead)
 
 ## Changelog
 

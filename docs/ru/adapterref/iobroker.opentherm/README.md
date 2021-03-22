@@ -3,41 +3,41 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.opentherm/README.md
 title: ioBroker.opentherm
-hash: TT07Q6Qq2KXWMzdu39Uyobzc+G9cSxBhxbb0CaseEWc=
+hash: Sjm4VAMYNXS2QPK+JpDO9nQ8pvG/bi3sGQO+cnpFNr8=
 ---
-![логотип](../../../en/adapterref/iobroker.opentherm/admin/opentherm.png)
+![Логотип](../../../en/adapterref/iobroker.opentherm/admin/opentherm.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.opentherm.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/opentherm-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/opentherm-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/opentherm-stable.svg)
-![Состояние зависимости](https://img.shields.io/david/iobroker-community-adapters//iobroker.opentherm.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.opentherm.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters//ioBroker.opentherm/master.svg)
+![Статус зависимости](https://img.shields.io/david/DrozmotiX/ioBroker.opentherm.svg)
+![Известные уязвимости](https://snyk.io/test/github/DrozmotiX/ioBroker.opentherm/badge.svg)
+![НПМ](https://nodei.co/npm/ioBroker.opentherm.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/DrozmotiX/iobroker.opentherm/master.svg)
 
 # IoBroker.opentherm
 Этот адаптер объединяет все функции шлюза opentherm в ioBroker.
 Opentherm - это протокол шлюза, используемый несколькими современными системами отопления, такими как Remeha.
 
-Для получения дополнительной информации http://otgw.tclcode.com/index.html#intro со всеми кредитами для разработчиков.
+Для получения дополнительной информации http://otgw.tclcode.com/index.html#intro со всеми кредитами разработчикам.
 
 ### Рекомендуемая функциональность в конечном состоянии:
-* Предоставьте сервер ретрансляции TCP / IP, чтобы разрешить подключение другого программного обеспечения монитора OpenTherm к этому экземпляру (при использовании прямого подключения USB)
-* Где возможно, отрегулируйте значения в ioBroker и отправьте команду в Opentherm
+* Предоставьте сервер ретрансляции TCP / IP, чтобы разрешить другим программным обеспечением монитора OpenTherm подключение к этому экземпляру (при использовании прямого USB-подключения)
+* По возможности настройте значения в ioBroker и отправьте команду в Opentherm.
 * Пожалуйста, не стесняйтесь добавлять запросы функций
 
 ### В настоящее время реализовано
 * Подключение к OpenTherm Gateway по TCP / IP
-* Подключение к OpenTherm Gateway напрямую через USB-соединение
+* Подключайтесь к OpenTherm Gateway напрямую через USB-соединение
 
 ## Сделать
-* Подключение к OpenTherm Gateway напрямую через USB-соединение
-* Предоставьте сервер ретрансляции TCP / IP, чтобы разрешить подключение другого программного обеспечения монитора OpenTherm к этому экземпляру (при использовании прямого подключения USB)
+* Подключайтесь к OpenTherm Gateway напрямую через USB-соединение
+* Предоставьте сервер ретрансляции TCP / IP, чтобы разрешить другим программным обеспечением монитора OpenTherm подключение к этому экземпляру (при использовании прямого USB-подключения)
 * Где
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

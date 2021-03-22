@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: A4BU5mIekOJUya3Lt5RdoOhPusUNE4/eshBSmlQ/Jm4=
+hash: OuR8MefMR0W8HD0uepODxQyPj1gkE6QIp5bvy0IVcTE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -11,12 +11,12 @@ hash: A4BU5mIekOJUya3Lt5RdoOhPusUNE4/eshBSmlQ/Jm4=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.wled.svg)
 ![Количество установок (последнее)](http://iobroker.live/badges/wled-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/wled-stable.svg)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wled.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled/badge.svg)
+![Статус зависимости](https://img.shields.io/david/DrozmotiX/iobroker.wled.svg)
+![Известные уязвимости](https://snyk.io/test/github/DrozmotiX/ioBroker.wled/badge.svg)
 ![НПМ](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 # IoBroker.wled
-![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
+![Тестирование и выпуск](https://github.com/DrozmotiX/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
 
 ** Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств. ** Подробнее см. Ниже!
 
@@ -27,28 +27,38 @@ hash: A4BU5mIekOJUya3Lt5RdoOhPusUNE4/eshBSmlQ/Jm4=
 
 ## Инструкции
 Адаптер автоматически пытается найти устройства WLED в вашей сети с помощью служб Bonjour.
-Известные проблемы: сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает, что автоматическое обнаружение не будет выполнено.
+Известные проблемы: сети с разделением VLAN в большинстве случаев не маршрутизируют широковещательный трафик, что означает, что автоматическое обнаружение не будет выполнено.
 
 Не волнуйтесь, в этом случае вы можете добавить устройство вручную по IP-адресу.
 
-1) Убедитесь, что ваше устройство WLED работает и доступно по сети 2) Установите адаптер 3) Настройте интервалы времени для опроса данных и автоматического определения цикла 4 - A) Запустите адаптер, устройства должны обнаруживаться автоматически 4 - B) Если A выходит из строя , используйте кнопку Add-Device и укажите IP-адрес устройства. 5) Адаптер немедленно отправит изменения и опрашивает данные каждые x секунд (настраивается)
+1) Убедитесь, что ваше устройство WLED работает и доступно по сети 2) Установите адаптер 3) Настройте интервалы времени для опроса данных и автоматического определения цикла 4 - A) Запустите адаптер, устройства должны обнаруживаться автоматически 4 - B) Если A выходит из строя , используйте кнопку Add-Device и укажите IP-адрес устройства 5) Адаптер немедленно отправит изменения и опрашивает данные каждые x секунд (настраивается)
 
-## Делать
+## Сделать
 * [] Переключить опрос на сокетные соединения, ожидается реализация в прошивке WLED.
 
 ## Поддержите меня
-Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Что такое Sentry.io и что передается на серверы этой компании?
-Sentry.io - это сервис, позволяющий разработчикам получать обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
+Sentry.io - это сервис, позволяющий разработчикам получать информацию об ошибках в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
+
+### 0.5.6 (2021-01-03)
+* (DutchmanNL) Bugfix : State type definition for time and pmt
+
+### 0.5.5 (2021-01-03)
+* (DutchmanNL) add development option to disable sentry
+* (DutchmanNL) split API calls, avoid not needed query's
+* (DutchmanNL) Bugfix : issue with boolean attributes #40
+* (DutchmanNL) add new state definition for WLED version 0.11
+* (DutchmanNL) Bugfix : You are assigning a string to the state "wled.0.xxxx.seg.0.col.0
 
 ### 0.5.4 (2020-09-02)
 * (DutchmanNL) Support WLED 0.10.2, new state definitions implemented

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
+hash: FGoED+UdO2o6ZLgBwOPbJeTF1eGr5Gssmk+K2kznlXQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,10 +20,11 @@ hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
 
 ## Модели
 ### Поддерживаемые модели
-* Deebot 901
-* Deebot OZMO 920
+* Deebot 900/901
 * Deebot OZMO 930
-* Deebot OZMO 950
+* Deebot OZMO 920/950
+
+Перечисленные модели - это те, которые я использую сам или которые технически идентичны им.
 
 ### Эти модели должны работать исправно или хотя бы частично
 * Deebot Slim 2
@@ -31,22 +32,27 @@ hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
 * Deebot M88
 * Deebot 600/601/605
 * Deebot 710/711/711s
-* Deebot 900
 * Deebot OZMO 610
-* Deebot OZMO 900
+* Deebot OZMO 900/905
 * Deebot OZMO T5
 * Deebot OZMO T8 серии
 * Deebot OZMO Slim 10
 * Deebot N3 MAX
 * Deebot N7
-* Deebot N8 серии
-* Deebot U2 серии
+* Серия Deebot N8
+* Серия Deebot U2
+
+Перечисленные модели либо уже работают, либо технически аналогичны этим моделям.
+Тем не менее, функциональность может быть частично ограничена.
+
+Я стараюсь достичь широкого диапазона функциональных возможностей, но решаю этот вопрос индивидуально, в зависимости от сложности и различных других критериев.
+Претензий на полную функциональность конечно же нет.
 
 ## Установка
 Рекомендуется использовать Node.js. версии 10.x, 12.x или 14.x. Минимальная необходимая версия - 10.x
 
-Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
-Для полного набора функций установите следующие пакеты.
+Этот адаптер использует библиотеку [узел-холст](https://www.npmjs.com/package/canvas) для некоторых функций, связанных с картой, которые могут потребовать установки некоторых дополнительных пакетов.
+Это необязательно и не обязательно для моделей без функции карты, но для полного функционального диапазона установите следующие пакеты.
 
 Для систем Linux на базе Debian необходимо выполнить следующие команды:
 
@@ -63,18 +69,23 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 ### Состояния
 * Информацию о состояниях можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (на английском языке) и [здесь] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29) (немецкий)
 
-## Известные вопросы
-* Для некоторых моделей (например, Deebot Ozmo 930) рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день. потому что есть некоторые сообщения о том, что соединение теряется через прибл. 24 часа
-* Некоторые функции очистки могут не работать с 710/711 / 711s. Пожалуйста, используйте пока версию 0.5.8.
-* Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
-
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
+
+## Известные вопросы
+* Для некоторых моделей (например, Deebot OZMO 930) рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день. потому что есть некоторые сообщения о том, что соединение теряется через прибл. 24 часа
+* Некоторые функции очистки могут не работать с Deebot 710/711 / 711s. Пожалуйста, используйте пока версию 0.5.8.
+* Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
 ## Заявление об ограничении ответственности
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
+
+### 1.1.2 (alpha)
+* Using library version 0.6.0-alpha.7
+* Quite a lot of improvements for processing map data, spot areas and virtual boundaries
+* Some improvements and fixes
 
 ### 1.1.1
 * Using library version 0.6.0-alpha.3

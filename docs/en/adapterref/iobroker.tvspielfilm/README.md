@@ -132,6 +132,9 @@ For a nicer look the following CSS is suggested to be used to the VIS editor.
 ```
 
 ## Changelog
+### 2.0.2 (2021-03-19)
+(DutchmanNL) Now cron is initialized at adapter start
+
 ### 2.0.1 (2020-04-21)
 * (pix) NodeJS 10 or higher required
 

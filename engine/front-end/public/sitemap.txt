@@ -709,6 +709,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.dysonairpurifier/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.easee/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.echarts/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ecovacs-deebot/README.md
@@ -720,6 +721,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.energymanager/README.m
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.enet/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.epson_stylus_px830/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.esphome/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.exchangerates/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.fahrplan/README.md
@@ -921,6 +923,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.rssfeed/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.s7/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sainlogic/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.samsung/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sanext/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sayit/README.md
@@ -980,6 +983,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tr-064/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.traccar/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
@@ -1129,6 +1133,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.dysonairpurifier/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.easee/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.echarts/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ecovacs-deebot/README.md
@@ -1140,6 +1145,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.energymanager/README.m
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.enet/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.epson_stylus_px830/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.esphome/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.exchangerates/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.fahrplan/README.md
@@ -1341,6 +1347,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.rssfeed/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.s7/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sainlogic/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.samsung/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sanext/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sayit/README.md
@@ -1400,6 +1407,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tr-064/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.traccar/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
@@ -1549,6 +1557,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.dysonairpurifier/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.easee/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.echarts/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ecovacs-deebot/README.md
@@ -1560,6 +1569,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.energymanager/README.m
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.enet/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.epson_stylus_px830/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.esphome/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.exchangerates/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.fahrplan/README.md
@@ -1761,6 +1771,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.rssfeed/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.s7/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sainlogic/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.samsung/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sanext/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sayit/README.md
@@ -1820,6 +1831,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tr-064/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.traccar/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
@@ -1969,6 +1981,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.doorio/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ds18b20/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.dwd/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.dysonairpurifier/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.easee/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ebus/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.echarts/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ecovacs-deebot/README.md
@@ -1980,6 +1993,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.energymanager/READM
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.enet/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.epson_ecotank_et_2750/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.epson_stylus_px830/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.esphome/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.eventlist/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.exchangerates/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.fahrplan/README.md
@@ -2181,6 +2195,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.rssfeed/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.s7/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sainlogic/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.samsung/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sanext/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sayit/README.md
@@ -2240,6 +2255,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tr-064/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.traccar/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md

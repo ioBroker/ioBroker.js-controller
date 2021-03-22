@@ -35,6 +35,9 @@ current supported ebusd-version: 3.3
    
 ## Changelog
 
+## 2.2.5 (2021-03-21)
+* (René) dependencies updated
+
 ## 2.2.4 (2021-02-17)
 * (René) see issue #42: Uncaught ReferenceError: oView is not defined in widget solved
 
@@ -117,7 +120,7 @@ current supported ebusd-version: 3.3
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

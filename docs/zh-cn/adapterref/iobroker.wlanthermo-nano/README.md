@@ -3,23 +3,23 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-nano
-hash: uWZeBaWWKa6keB36zElfXjpS1cG3oLU3kjK7ZPomu7U=
+hash: TCdxIYuhBO7sdgAgrQ053kqmZav2Q3PI+b5kJoAlLac=
 ---
-![商标](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
+![标识](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.wlanthermo-nano.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.wlanthermo-nano.svg)
-![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.wlanthermo-nano.svg)
+![依赖状态](https://img.shields.io/david/DrozmotiX/iobroker.wlanthermo-nano.svg)
 ![安装数量](http://iobroker.live/badges/wlanthermo-nano-stable.svg)
-![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wlanthermo-nano/badge.svg)
+![已知漏洞](https://snyk.io/test/github/DrozmotiX/ioBroker.wlanthermo-nano/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.wlanthermo-nano.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.wlanthermo-nano/master.svg)
+![特拉维斯](http://img.shields.io/travis/DrozmotiX/ioBroker.wlanthermo-nano/master.svg)
 
 ＃ioBroker.wlanthermo-nano
 ## IoBroker的wlanthermo-nano适配器
 [无线局域网](https://github.com/WLANThermo-nano/WLANThermo_nano_Software/wiki "WLANThermo Nano")，您的烧烤运动的数字优势
 
-##配置
+＃＃ 配置
 可以在管理界面中安装和配置适配器。
 请在实例配置中输入IP地址，用户名和密码。
 
@@ -34,7 +34,7 @@ hash: uWZeBaWWKa6keB36zElfXjpS1cG3oLU3kjK7ZPomu7U=
 <a href="https://discord.gg/cNAeGjJ"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ＃＃ 支持我
-如果您喜欢我的作品，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
+如果您喜欢我的作品，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

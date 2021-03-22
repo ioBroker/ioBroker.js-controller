@@ -3,17 +3,17 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-nano
-hash: uWZeBaWWKa6keB36zElfXjpS1cG3oLU3kjK7ZPomu7U=
+hash: TCdxIYuhBO7sdgAgrQ053kqmZav2Q3PI+b5kJoAlLac=
 ---
 ![Logo](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.wlanthermo-nano.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.wlanthermo-nano.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.wlanthermo-nano.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/DrozmotiX/iobroker.wlanthermo-nano.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/wlanthermo-nano-stable.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wlanthermo-nano/badge.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/DrozmotiX/ioBroker.wlanthermo-nano/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.wlanthermo-nano.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.wlanthermo-nano/master.svg)
+![Travis-CI](http://img.shields.io/travis/DrozmotiX/ioBroker.wlanthermo-nano/master.svg)
 
 # IoBroker.wlanthermo-nano
 ## Wlanthermo-nano Adapter für ioBroker
@@ -24,7 +24,7 @@ Der Adapter kann über die Administrationsoberfläche installiert und konfigurie
 Bitte geben Sie IP-Adresse, Benutzername und Passwort in die Instanzkonfiguration ein.
 
 ## Machen
-* [] Pitmaster-Einstellungen optimieren, Zustände nur im verwandten Modus beschreibbar machen, sonst schreibgeschützt
+* [] Optimiere die Pitmaster-Einstellungen, mache Zustände nur im verwandten Modus beschreibbar, sonst schreibgeschützt
 * [] Automatische Geräteerkennung implementieren
 * [] Implementieren Sie den Online-Status des Geräts
 * [x] mehrere Geräte zulassen
@@ -34,7 +34,7 @@ Bitte geben Sie IP-Adresse, Benutzername und Passwort in die Instanzkonfiguratio
 <a href="https://discord.gg/cNAeGjJ"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

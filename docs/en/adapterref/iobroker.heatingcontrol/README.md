@@ -155,6 +155,13 @@ The standard behavior for override is, when you change temperature the override 
 and you change to 28°C after 15 minutes then 28°C is only used for the last 5 minutes. With that option you restart override whenever you change override temperature.
 In example above 28°C would then be used for 20 minutes which leads to 15 minutes 25°C and 20 minutes 28°C 
 
+## override mode
+There are two mode adjustable in admin for all rooms.
+* timer controlled
+this is the wellknown function, which uses a temperature and a duration. The given temperature is used for the duration and then temperature target will set back to value in auto mode
+* until next profile point
+this is a new function. Here we can use a temperature override until next profile point. The duration will be ignored but must be non-zero!
+
 
 ## Thermostat handles "window is open"
 Some thermostats can handle "window is open" by itself. In those cases a direct connection between window sensor and thermostat is configured and thermostat reduces
@@ -205,7 +212,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.2.1 (2021-02-xx)
+### 2.3.0 (2021-03-20)
+* (René) see issue #187: show remaining override timeConverter
+* (René) see issue #225: support different languages for vis
+* (René) see issue #223: new overide mode "until next profile point"
 * (René) bug fix to calculate average for temperatur offset
 
 ### 2.2.0 (2021-02-15)

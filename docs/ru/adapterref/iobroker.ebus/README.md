@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
+hash: 8aotru73N3/+THRhHXAzo4uriEoughYC2hblYdLXlUY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -14,7 +14,7 @@ hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 ![НПМ](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
 
 # IoBroker.ebus
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ** Если вам это нравится, рассмотрите возможность пожертвования: **
 
@@ -24,16 +24,19 @@ hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 
 - данные из ebusd с использованием html
 
-В этом случае должен работать ebusd и иметь возможность отправлять данные, например, проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd, вкл. файлы конфигурации можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные на данный момент игнорируются.
+В этом случае ebusd должен работать и иметь возможность отправлять данные, например, проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd, вкл. файлы конфигурации можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные на данный момент игнорируются.
 
 Существует возможность опроса данных, которые не опрашиваются напрямую ebusd. Команда read -f используется для принудительного чтения через ebus.
 
-Другая функция - отправить любую команду в ebusd и получить ответ для работы, например. скрипты.
+Еще одна функция - отправить любую команду в ebusd и получить ответ для работы, например. скрипты.
 
-Текущая поддерживаемая версия ebusd: 3.3
+текущая поддерживаемая версия ebusd: 3.3
 
 ## Известные вопросы
 * пожалуйста, создавайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или захотите новые функции
+
+## 2.2.5 (21.03.2021)
+* (René) зависимости обновлены
 
 ## 2.2.4 (17.02.2021)
 * (Рене) см. Проблему # 42: Uncaught ReferenceError: oView не определен в виджете, решена
@@ -46,7 +49,7 @@ hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 * (René) обновить зависимости
 
 ## 2.1.1 (27.06.2020)
-* (Рене) проблема №26: исправление ошибки: «cmd not found» - это только сообщение отладки, а не ошибка
+* (Рене) проблема № 26: исправление ошибки: "cmd not found" - это только сообщение об отладке, а не ошибка
 
 ## 2.1.0 (17.06.2020)
 * (René) рефакторинг: используется async / await
@@ -101,10 +104,10 @@ hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 
 ### 0.3.0
 * (René) поддержка ebusd
-* (René) admin3 поддержка
+* (René) поддержка admin3
 
 ### 0.2.0
-* (René) добавить историю как JSON для vis
+* (Рене) добавить историю как JSON для vis
 * (René) добавить виджет на основе плавающего режима для отображения графика температуры, состояния и мощности
 
 ### 0.1.0
@@ -114,12 +117,12 @@ hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
 * (Рене) Кодировка UTF8
 
 ### 0.0.2
-* (Рене) первый выпуск
+* (Рене) первоначальный выпуск
 
 ## Changelog
 
 ## License
-Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

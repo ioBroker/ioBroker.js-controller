@@ -6,12 +6,12 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)](https://www.npmjs.com/package/iobroker.coronavirus-statistics)
 ![Number of Installations (latest)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.coronavirus-statistics/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.coronavirus-statistics)
 
 [![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)](https://nodei.co/npm/ioBroker.coronavirus-statistics/)
 
-![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)](https://david-dm.org/iobroker-community-adapters/ioBroker.coronavirus-statistics)
+![Test and Release](https://github.com/c/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+[![Dependency Status](https://img.shields.io/david/DrozmotiX/ioBroker.coronavirus-statistics.svg)](https://david-dm.org/DrozmotiX/ioBroker.coronavirus-statistics)
 ## Coronavirus Live Statistics adapter for ioBroker
 
 Adapter to show Global Corona Virus information and current reports

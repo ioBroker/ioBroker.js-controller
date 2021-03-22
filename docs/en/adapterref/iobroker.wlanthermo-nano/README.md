@@ -3,13 +3,13 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.wlanthermo-nano.svg)](https://www.npmjs.com/package/iobroker.wlanthermo-nano)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.wlanthermo-nano.svg)](https://www.npmjs.com/package/iobroker.wlanthermo-nano)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.wlanthermo-nano.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.wlanthermo-nano)
+[![Dependency Status](https://img.shields.io/david/DrozmotiX/iobroker.wlanthermo-nano.svg)](https://david-dm.org/DrozmotiX/iobroker.wlanthermo-nano)
 ![Number of Installations](http://iobroker.live/badges/wlanthermo-nano-installed.svg) ![Number of Installations](http://iobroker.live/badges/wlanthermo-nano-stable.svg)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wlanthermo-nano/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wlanthermo-nano)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.wlanthermo-nano/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.wlanthermo-nano)
 
 [![NPM](https://nodei.co/npm/iobroker.wlanthermo-nano.png?downloads=true)](https://nodei.co/npm/iobroker.wlanthermo-nano/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.wlanthermo-nano/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.wlanthermo-nano)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/DrozmotiX/ioBroker.wlanthermo-nano/master.svg)](https://travis-ci.org/DrozmotiX/ioBroker.wlanthermo-nano)
 
 ## wlanthermo-nano adapter for ioBroker
 
@@ -35,7 +35,7 @@ Please enter IP-adress, username and password in the instance configuration.
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
-[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+[![Donate](https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 
 ## Changelog

@@ -3,42 +3,43 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-погода
-hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
+hash: 9kdqDhi+btPZ0neZoDFdB8A77uv3pxdmCKw5C04ENzk=
 ---
-![логотип](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
+![Логотип](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
 ![Количество установок](http://iobroker.live/badges/vis-weather-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.vis-weather.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
-![тесты](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
-![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.vis-weather.svg)
+![Тесты](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
+![НПМ](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
 
 # IoBroker.vis-weather
-** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+** Если вам это нравится, рассмотрите возможность пожертвования: **
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-Этот виджет отображает данные прогноза погоды от DasWetter.com или weatherunderground. Вам также нужен работающий DasWetter-Adpater или weatherunderground-Adapter ...
+Этот виджет показывает прогноз погоды с сайта DasWetter.com или с сайта weatherunderground. Вам также потребуется запустить DasWetter-Adpater или weatherunderground-Adapter ...
 
-В Weatherunderground вам нужен прогноз на следующие 36 часов.
-В DasWetter.com вам нужна одна из четырех структур данных прогноза. Вы можете выбрать тот, который вы хотите отобразить.
+В погодных условиях вам нужен прогноз на следующие 36 часов.
+В DasWetter.com вам необходимо включить одну из четырех структур данных прогноза. Вы можете выбрать тот, который хотите отобразить.
 
-## Notes / wiki
-### Определить прогнозные часы
-По умолчанию диаграмма прогноза показывает 40 часов (DasWetter) или 36 часов (wunderground). Если вы предпочитаете показывать только, например, Прогноз на 10 часов, просто удалите ненужные OID под oid_groups в vis-edit.
+## Примечания / вики
+### Определить часы прогноза
+По умолчанию диаграмма прогноза показывает 40 часов (DasWetter) или 36 часов (wunderground). Если вы предпочитаете показывать только, например, Прогноз на 10 часов, просто удалите ненужные OID в oid_groups в vis-edit.
 
 ### OID не создаются автоматически при использовании DasWetter
-Обычно OID создаются автоматически при выборе экземпляра или структуры данных. Когда вы получите «OID недоступен», проверьте, используете ли вы «NextDaysDetailed» в DasWetter.
+Обычно OID создаются автоматически при выборе экземпляра или структуры данных. Когда вы получите сообщение «Нет доступных OID», проверьте, используете ли вы «NextDaysDetailed» в DasWetter.
 Возможно, вам потребуется включить «NextDaysDetailed».
 
 ## Известные вопросы
-* пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), если вы обнаружите ошибки или пожелаете новых функций
+* пожалуйста, создавайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), если вы обнаружите ошибки или захотите новые функции
 
 ## Changelog
 
+### 2.5.3 (2021-03-21)
+* (René) dependencies updated
 
-### 2.5.2 (2019-12-xx)
+### 2.5.2 (2019-12-12)
 * (René) some changes to make it compatible with widgets in sbfspot and ebus
 
 ### 2.5.1 (2019-12-08)
@@ -128,7 +129,7 @@ hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

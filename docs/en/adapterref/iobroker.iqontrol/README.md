@@ -1397,7 +1397,10 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
-### 1.6.5 dev
+### 1.6.6 (2021-03-21)
+* (sbormann) Fix for double admin page.
+
+### 1.6.5 (2021-03-20)
 * (sbormann) If you change the device-specific option 'Return to OFF_SET_VALUE after [ms]' of buttons to 0, the button toggles now. 
 * (sbormann) Fixed noZoomOnHover for device icon on large screens. 
 * (sbormann) The options of the change device-options-function are now sorted alphabetically. 
@@ -1407,6 +1410,10 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Added option to customs-dialog to define the number of digits to be rounded to. 
 * (sbormann) Now also numerical values are treatet as strings, if common.role is string (before it was converted to level).
 * (sbormann) Now empty values on a value-list are not longer ignored.
+* (sbormann) Some fine adjustments to panel.
+* (sbormann) Updated type-detector.
+* (sbormann) Added edit button to views.
+* (sbormann) INFO_A/B will be hidden if value is empty.
 
 ### 1.6.4 (2021-03-06)
 * (sbormann) Added select id dialog to change-device-states function.

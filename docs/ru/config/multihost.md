@@ -4,7 +4,7 @@ lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/multihost.md
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
-hash: ZK6+69/2TfNCap3aqV0VaFy58lXm/Z6Q2ksbjmj30h8=
+hash: gH4zuuZ+a67CUc09gI901hft2T4V48aHFUypPcHeiak=
 ---
 # Работа с несколькими хостами
 ioBroker может выполнять задачи на нескольких серверах. Это позволяет распределять нагрузку обработки между несколькими хостами.
@@ -41,7 +41,7 @@ Host name of this machine [ioBroker-RasPi]:
 
 ``` enter pass phrase```
 
-3. `sudo service iobroker restart`
+3. `iobroker restart`
 
 ### Конфигурация ведомого
 ** Этот шаг абсолютно необходим, если используется Redis DB. **
@@ -80,7 +80,7 @@ Enter secret phrase for connection: *****
 Config ok. Please restart ioBroker: "iobroker restart"
 ```
 
-2. `sudo service iobroker restart`
+2. `Перезапуск iobroker`
 
 После этого вновь созданный хост появится в основной системе в разделе «Хосты».
 

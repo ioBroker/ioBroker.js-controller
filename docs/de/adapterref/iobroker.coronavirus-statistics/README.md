@@ -3,20 +3,20 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-Statistik
-hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
+hash: MOsS11IupbrP75CRJu1NoKyrADHytwiXSEIZfcLWpzc=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/DrozmotiX/ioBroker.coronavirus-statistics/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/DrozmotiX/ioBroker.coronavirus-statistics.svg)
 
 <img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 # IoBroker.coronavirus-statistics
-![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+![Testen und freigeben](https://github.com/c/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
 
 ## Coronavirus Live Statistics-Adapter für ioBroker
 Adapter zur Anzeige von Informationen zum globalen Corona-Virus und aktuellen Berichten
@@ -36,7 +36,7 @@ Folgende Informationen sind verfügbar:
 | FällePerOneMillion | Anzahl der völlig bekannten Fälle pro Million Einwohner |
 | kritisch | Menge der kritischen Situation (Krankenhausaufenthalt) |
 | Todesfälle | Anzahl der aktuell registrierten Todesfälle |
-| TodesfällePerOneMillion | Anzahl der derzeit registrierten Todesfälle pro Million Einwohner |
+| TodesfällePerOneMillion | Anzahl der aktuell registrierten Todesfälle pro Million Einwohner |
 | flag | Länderflagge, Link zum Github-Standort |
 | wiederhergestellt | Anzahl der vollständig bekannten wiederhergestellten Fälle |
 | todayCases | Neue Fälle bis heute |
@@ -70,7 +70,7 @@ Sie können wählen, ob alle Daten empfangen werden sollen, oder nur bestimmte R
 <span style="color:red">Impfdaten sind derzeit nur für Deutschland verfügbar und werden nur abgerufen, wenn *&quot;Bundeslaender&quot;* aktiviert ist</span>
 
 ## Fehlende Länder hinzufügen
-Es kann vorkommen, dass Länder nicht korrekt erkannt werden, da die API einige Ländernamen liefert, die nicht ISO-konform sind. In einem solchen Fall erhalten Sie eine Warnmeldung im Protokoll, die so aussieht
+Es kann vorkommen, dass Länder nicht korrekt erkannt werden, da die API einige Ländernamen liefert, die nicht ISO-konform sind. In diesem Fall wird im Protokoll eine Warnmeldung angezeigt, die folgendermaßen aussieht
 
 ```
 coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
@@ -90,7 +90,7 @@ Die JSON-Zeichenfolge sieht dann folgendermaßen aus:
 }
 ```
 
-Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen werden. Dem wird dann der Name des Landes aus den [Liste mit Ländernamen](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) zugeordnet.
+Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen werden. Diesem wird dann der Name des Landes aus den [Liste mit Ländernamen](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) zugeordnet.
 
 ## Changelog
 
@@ -98,6 +98,23 @@ Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen we
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.8 (2021-01-27)
+* (DutchmanNL) Bugfix : Gernmany vaccinaation data, source changed code updated
+* (DutchmanNL) Removed states (not available anymore by RKI)
+  * Impfungen pro 1.000 Einwohner
+  * Indikation nach Alter 
+  * Berufliche Indikation
+  * Medizinische Indikation
+  * Pflegeheim-bewohnerIn
+* (DutchmanNL) New states (provided by RKI)
+  * Differenz zum Vortag 
+  * Gesamtzahl bisher verabreichter Impfstoffdosen
+  * Gesamtzahl kumulatiev BioNTech
+  * Gesamtzahl kumulatiev Moderna
+  * Impf-quote
+  * Zweit Impfungen kumulativ
+  * Zweit Impfungen Differenz zum Vortag
 
 ### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
 * (DutchmanNL) Added Impfungen pro 1.000 Einwohner

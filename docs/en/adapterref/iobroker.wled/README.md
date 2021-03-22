@@ -5,11 +5,11 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.wled.svg)](https://www.npmjs.com/package/iobroker.wled)
 ![Number of Installations (latest)](http://iobroker.live/badges/wled-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/wled-stable.svg)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.wled.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.wled)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled)
+[![Dependency Status](https://img.shields.io/david/DrozmotiX/iobroker.wled.svg)](https://david-dm.org/DrozmotiX/iobroker.wled)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.wled/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.wled)
 
 [![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)](https://nodei.co/npm/iobroker.wled/)
-![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
+![Test and Release](https://github.com/DrozmotiX/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
 
 **This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
 
@@ -40,7 +40,7 @@ Don't worry, in that case you can add the device manually by IP-Adress.
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
-[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+[![Donate](https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## What is Sentry.io and what is reported to the servers of that company?
 Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.

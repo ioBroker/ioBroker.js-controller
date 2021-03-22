@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: 9qw5IcAtLdQhB/lSZQfA5dd/4lUQ27QrcxZY8eSsPNI=
+hash: M3BSjH+H7ckYXW5082PjsEOBI6lXAGo39K3kPiZgtJc=
 ---
-![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
+![Alt-Text](https://raw.githubusercontent.com/DrozmotiX/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
-![Alt-Text](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
+![Alt-Text](https://travis-ci.org/DrozmotiX/ioBroker.discovergy.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/discovergy-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.discovergy.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
@@ -18,7 +18,7 @@ Es verwendet die Discovergy-API, um Daten Ihrer Zähler zu lesen und die aktuell
 
 https://api.discovergy.com/docs/
 
-Bitte zögern Sie nicht, ein Problem für Ihre gewünschte Funktionalität oder Probleme hinzuzufügen, damit ich es mir ansehen kann!
+Bitte zögern Sie nicht, ein Problem für Ihre gewünschte Funktionalität oder Probleme, die Sie sehen, hinzuzufügen, damit ich es mir ansehen kann!
 
 Anmerkung: Ich habe nicht alle möglichen Geräte und auch das Demo-Konto bietet nicht alle vorhandenen Werte, die Geräte bereitstellen können.
 Wenn Sie die folgende Fehlermeldung erhalten:
@@ -31,7 +31,7 @@ Nicht aus dem Admin-Webinterface kopieren und einfügen, hier fehlen Information
 Sie können diesen Adapter testen, indem Sie die Demo-Anmeldeinformationen von Discovery (oder mit Ihren eigenen :-)) verwenden: Benutzername = demo@discovergy.com pass = demo
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Mitwirkende
 * AlCalzone
@@ -39,27 +39,39 @@ Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende lei
 
 ## Changelog
 
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### __WORK IN PROGRESS__
+-->
+
+### 0.5.7 (2021-03-19)
+* (DutchmanNL) Change why of password encryption, you my need to re-enter your credentials !
+* (DutchmanNL) Bugfix : State "system.this.discovergy.0.alive" has no existing object, this might lead to an error in future versions
+
+### 0.5.6 (2021-03-18)
+* (DutchmanNL) Bugfix : Voltage unknown
+
 ### 0.5.4 (19-04-2020) Bugfix : Wrong Unit
-* (Dutchman) Bugfix : Wrong Unit
+* (DutchmanNL) Bugfix : Wrong Unit
 
 ### 0.5.3 (19-04-2020) Bugfix : change root back to SerialNumber
-* (Dutchman) Bugfix : Change root of information back to SerialNumber instead of MeterId
+* (DutchmanNL) Bugfix : Change root of information back to SerialNumber instead of MeterId
 
 ### 0.5.2 (18-04-2020) Code improvements
-* (Dutchman) Optimize and simplify code
-* (Dutchman) Set calculation factors in attribute definition
-* (Dutchman) Send information about missing state attribute definitions to sentry
+* (DutchmanNL) Optimize and simplify code
+* (DutchmanNL) Set calculation factors in attribute definition
+* (DutchmanNL) Send information about missing state attribute definitions to sentry
 
 ### 0.5.1 (17-04-2020) Avoid writing objects unnecessarily
-* (Dutchman) Implement Sentry
-* (Dutchman) Bugfix : Avoid writing objects unnecessarily
-* (Dutchman) Ensure propper handling of await instead of fire and forget
+* (DutchmanNL) Implement Sentry
+* (DutchmanNL) Bugfix : Avoid writing objects unnecessarily
+* (DutchmanNL) Ensure propper handling of await instead of fire and forget
 
 ### 0.5.0 
-* (Dutchman) Rebuild complete logic of data pulling
-* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
-* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
-* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (DutchmanNL) Rebuild complete logic of data pulling
+* (DutchmanNL) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (DutchmanNL) For new Devices : Write error for unknwon states but create device with basic information
+* (DutchmanNL) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
 
 ### 0.4.9 Fix wrong readings and make intervall adjustable
 * (Dutchman) code cleanup
@@ -104,39 +116,39 @@ Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende lei
 * Implemented additional datapoints for Power, Power_x_Consumption and Power_x_Delivery, the power value can have a positive and negative number depending of if u consumer or produce for the network. Seperate - and + values to seperated datapoints.
 
 ### 0.2.6
-* (Dutchman) new version published on NPM
+* (DutchmanNL) new version published on NPM
 * (AlCalzone) code reviewd, several fixes
 * (AlCalzone) fixed dependency with package request
-* (Dutchman) installation now possible by ioBroker Admin
+* (DutchmanNL) installation now possible by ioBroker Admin
 
 ### 0.2.5
-* (Dutchman) Reduced logging
-* (Dutchman) Implemented multiple meter support
-* (Dutchman) implemented "info" object which provides basic information of the device
-* (Dutchman) Implemented all values which are available by demo-account of discovergy
-* (Dutchman) Please remove all current objects within tree discoververgy.x, version 0.2.5 introduce device creation by serial number !
-* (Dutchman) Changed object tree of device from meterId to sererialnumber, please not this means all vallue are now in a different tree
-* (Dutchman) Remark : not all possbile devices are in the demo, if a device cannot be handled you will get an error message i need that information to implement !
+* (DutchmanNL) Reduced logging
+* (DutchmanNL) Implemented multiple meter support
+* (DutchmanNL) implemented "info" object which provides basic information of the device
+* (DutchmanNL) Implemented all values which are available by demo-account of discovergy
+* (DutchmanNL) Please remove all current objects within tree discoververgy.x, version 0.2.5 introduce device creation by serial number !
+* (DutchmanNL) Changed object tree of device from meterId to sererialnumber, please not this means all vallue are now in a different tree
+* (DutchmanNL) Remark : not all possbile devices are in the demo, if a device cannot be handled you will get an error message i need that information to implement !
 
 
 ### 0.2.2
-* (Dutchman) add support for values power1, power2
-* (Dutchman) add support for values voltage1, voltage1 & voltage3
+* (DutchmanNL) add support for values power1, power2
+* (DutchmanNL) add support for values voltage1, voltage1 & voltage3
 
 ### 0.2.0
-* (Dutchman) reduced logging from every 3 seconds to only error if values are received which cannot be handled
-* (Dutchman) last time step of syncronisation added, currenlty unix time needs to be converted in next release
+* (DutchmanNL) reduced logging from every 3 seconds to only error if values are received which cannot be handled
+* (DutchmanNL) last time step of syncronisation added, currenlty unix time needs to be converted in next release
 
 ### 0.1.0
-* (Dutchman) first working release, data is received every 3 seconds
+* (DutchmanNL) first working release, data is received every 3 seconds
 
 ### 0.0.3
-* (Dutchman) initial release
+* (DutchmanNL) initial release
 
 ## License
 MIT License
 
-Copyright (c) 2020 Dutchman
+Copyright (c) 2021 DutchmanNL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

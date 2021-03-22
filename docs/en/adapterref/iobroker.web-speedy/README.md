@@ -5,12 +5,12 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.web-speedy.svg)](https://www.npmjs.com/package/iobroker.web-speedy)
 ![Number of Installations (latest)](http://iobroker.live/badges/web-speedy-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/web-speedy-stable.svg)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.web-speedy.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.web-speedy)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.web-speedy/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.web-speedy)
+[![Dependency Status](https://img.shields.io/david/DrozmotiX/iobroker.web-speedy.svg)](https://david-dm.org/DrozmotiX/iobroker.web-speedy)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.web-speedy/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.web-speedy)
 
 [![NPM](https://nodei.co/npm/iobroker.web-speedy.png?downloads=true)](https://nodei.co/npm/iobroker.web-speedy/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.web-speedy/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.web-speedy)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/DrozmotiX/ioBroker.web-speedy/master.svg)](https://travis-ci.org/DrozmotiX/ioBroker.web-speedy)
 
 ## web-speedy adapter for ioBroker
 
@@ -36,14 +36,14 @@ However, you still can influance some things (see datapoints):
 | test_specific_url   | Enter specific server URL [Please find a server URL here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A) |
 
 
-![Mbyte](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbyte.png)
-![Mbit](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbit.png)
-![States](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/states.png)
+![Mbyte](https://raw.githubusercontent.com/DrozmotiX/ioBroker.web-speedy/master/admin/Mbyte.png)
+![Mbit](https://raw.githubusercontent.com/DrozmotiX/ioBroker.web-speedy/master/admin/Mbit.png)
+![States](https://raw.githubusercontent.com/DrozmotiX/ioBroker.web-speedy/master/admin/states.png)
 
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
-[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+[![Donate](https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

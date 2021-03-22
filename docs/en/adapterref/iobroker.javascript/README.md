@@ -1581,6 +1581,9 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 5.1.1 (2021-03-21)
+* (bluefox) Implemented the debug of the instances from javascript adapter
+
 ### 5.1.0 (2021-03-19)
 * (bluefox) Implemented the debug of scripts possibility
 
@@ -1592,9 +1595,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 ### 5.0.12 (2021-03-07)
 * (bluefox) fixed error in blockly
-
-### 5.0.11 (2021-03-07)
-* (bluefox) added date to the time condition
 
 ## License
 

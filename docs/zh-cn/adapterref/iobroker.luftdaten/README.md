@@ -3,26 +3,26 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luftdaten/README.md
 title: ioBroker.luftdaten
-hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
+hash: xVdeyCQIZ18NQX8QFGf5y8NLoKX1+aLSr0BZIvU3WR0=
 ---
-![商标](../../../en/adapterref/iobroker.luftdaten/admin/luftdaten.png)
+![标识](../../../en/adapterref/iobroker.luftdaten/admin/luftdaten.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.luftdaten.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.luftdaten.svg)
-![稳定](http://iobroker.live/badges/luftdaten-stable.svg)
+![稳定的](http://iobroker.live/badges/luftdaten-stable.svg)
 ![已安装](http://iobroker.live/badges/luftdaten-installed.svg)
 ![依赖状态](https://img.shields.io/david/klein0r/iobroker.luftdaten.svg)
 ![已知漏洞](https://snyk.io/test/github/klein0r/ioBroker.luftdaten/badge.svg)
-![建立状态](http://img.shields.io/travis/klein0r/ioBroker.luftdaten.svg)
+![建置状态](http://img.shields.io/travis/klein0r/ioBroker.luftdaten.svg)
 ![NPM](https://nodei.co/npm/iobroker.luftdaten.png?downloads=true)
 
 ＃ioBroker.luftdaten
 该适配器将“ luftdaten.info”传感器数据添加到您的ioBroker安装中。
 您可以决定是否要通过ip添加本地传感器，还是只想使用lufdaten.info的API来获取另一个传感器的数据。
 
-##配置
-###本地
-1.构建您自己的适配器并将其添加到本地wifi网络
+＃＃ 配置
+＃＃＃ 当地的
+1.构建自己的适配器并将其添加到本地wifi网络
 2.创建适配器的新实例
 3.选择“本地”作为类型
 4.在第二个输入中填写传感器的IP或主机名
@@ -32,12 +32,12 @@ hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
 
 *您可以在“实例”标签中随意更改计划设置（默认为每15分钟一次）。*
 
-###遥控器
+＃＃＃ 偏僻的
 1.选择在线地图上的传感器之一：[deutschland.maps.luftdaten.info]（https://deutschland.maps.luftdaten.info/）
 2.单击传感器并复制ID（#XXXXX）
 3.创建适配器的新实例
 4.选择“远程”作为类型
-5.在第二个输入中填写传感器的ID
+5.在第二个输入中填写传感器的ID（不带＃）
 6.选择一个名称并保存设置
 
 等待几分钟，直到cronjob首次收集数据。
@@ -49,8 +49,66 @@ hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
 -像素
 -GermanBluefox
 -Apollon77
+-多米尼克·利内曼
 
 ## Changelog
+
+### 1.0.3
+
+* (klein0r) Remove non-numeric characters from sensor id
+
+### 1.0.2
+
+* (klein0r) Fixed async object creation
+
+### 1.0.1
+
+* (klein0r) Added iobroker sentry
+
+### 1.0.0
+
+* (klein0r) First stable release
+
+### 0.0.18
+
+* (klein0r) Added units for pressure and noise
+
+### 0.0.17
+
+* (klein0r) Added link to sensor map
+
+### 0.0.16
+
+* (klein0r) Minor bugfixes
+
+### 0.0.15
+
+* (klein0r) setTimeout found in main.js, but no clearTimeout detected
+
+### 0.0.14
+
+* (klein0r) Fixed sensor data check issue
+
+### 0.0.13
+
+* (klein0r) Added missing translations
+
+### 0.0.12
+
+* (klein0r) Minor bugfixes
+* (dominik-lienemann) Added timestamp of last sensor update
+
+### 0.0.11
+
+* (klein0r) fixed units of states
+
+### 0.0.10
+
+* (klein0r) changed API url
+
+### 0.0.9
+
+* (klein0r) minor bugfixes
 
 ### 0.0.9
 
@@ -89,7 +147,7 @@ hash: V9t7m6Emx480nHv9PJShEpf5rxuCfRCcvmQuDzMbOi4=
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

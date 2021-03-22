@@ -4,7 +4,7 @@ lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/config/multihost.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: ZK6+69/2TfNCap3aqV0VaFy58lXm/Z6Q2ksbjmj30h8=
+hash: gH4zuuZ+a67CUc09gI901hft2T4V48aHFUypPcHeiak=
 ---
 # The multihost operation
 ioBroker is able to have the tasks done by several servers. This allows the processing load to be distributed across multiple hosts.
@@ -41,7 +41,7 @@ Host name of this machine [ioBroker-RasPi]:
 
 ``` enter pass phrase```
 
-3. `sudo service iobroker restart`
+3. `iobroker restart`
 
 ### Slave configuration
 ** This step is absolutely necessary if Redis DB is in use. **
@@ -80,7 +80,7 @@ Enter secret phrase for connection: *****
 Config ok. Please restart ioBroker: "iobroker restart"
 ```
 
-2. `sudo service iobroker restart`
+2. `iobroker restart`
 
 The newly created host then appears on the main system under Hosts.
 

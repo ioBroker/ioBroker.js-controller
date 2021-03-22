@@ -3,19 +3,19 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knmi-weather/README.md
 title: ioBroker.knmi-Wetter
-hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
+hash: B8pknfSa8cIgxU53BXnwLLPudRQIfKsjCLRD8Hp+1bc=
 ---
 ![Logo](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.knmi-weather.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/knmi-weather-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/knmi-weather-stable.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/DrozmotiX/ioBroker.knmi-weather.svg)
 ![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
 
 # IoBroker.knmi-Wetter
-![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+![Testen und freigeben](https://github.com/DrozmotiX/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
 
 ## KNMI-Wetterdaten und Alarme für ioBroker
 KNMI bietet eine API, deren Daten alle 10 Minuten basierend auf allen vom Institut gesammelten Sensordaten aktualisiert werden.
@@ -35,7 +35,7 @@ Standortdaten beziehen sich auf GPS-Koordinaten, die in der Administratorkonfigu
 Weitere Informationen finden Sie unter: http://weerlive.nl/index.php Holen Sie sich Ihren kostenlosen API-Schlüssel hier: http://weerlive.nl/delen.php
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 <!--

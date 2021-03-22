@@ -1,5 +1,5 @@
-![alt text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
-![alt text](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
+![alt text](https://raw.githubusercontent.com/DrozmotiX/ioBroker.discovergy/master/admin/Discovergy_logo.png)
+![alt text](https://travis-ci.org/DrozmotiX/ioBroker.discovergy.svg?branch=master)
 ![Number of Installations](http://iobroker.live/badges/discovergy-installed.svg) ![Number of Installations](http://iobroker.live/badges/discovergy-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.discovergy.svg)](https://www.npmjs.com/package/iobroker.discovergy)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.discovergy.svg)](https://www.npmjs.com/package/iobroker.discovergy)
 
@@ -29,7 +29,7 @@ pass = demo
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
-[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+[![Donate](https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
@@ -37,6 +37,10 @@ If you like my work, please feel free to provide a personal donation
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 0.5.7 (2021-03-19)
+* (DutchmanNL) Change why of password encryption, you my need to re-enter your credentials !
+* (DutchmanNL) Bugfix : State "system.this.discovergy.0.alive" has no existing object, this might lead to an error in future versions
 
 ### 0.5.6 (2021-03-18)
 * (DutchmanNL) Bugfix : Voltage unknown

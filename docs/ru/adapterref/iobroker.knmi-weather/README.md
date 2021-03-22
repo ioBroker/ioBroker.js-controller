@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knmi-weather/README.md
 title: ioBroker.knmi-погода
-hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
+hash: B8pknfSa8cIgxU53BXnwLLPudRQIfKsjCLRD8Hp+1bc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
 
@@ -11,13 +11,13 @@ hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)
 ![Количество установок (последнее)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/knmi-weather-stable.svg)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)
-![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
+![Статус зависимости](https://img.shields.io/david/DrozmotiX/ioBroker.knmi-weather.svg)
+![НПМ](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
 
 # IoBroker.knmi-weather
-![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+![Тестирование и выпуск](https://github.com/DrozmotiX/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
 
-## KNMI-Погодные данные и сигналы тревоги для ioBroker
+## KNMI-Погодные данные и будильники для ioBroker
 KNMI предоставляет API, данные которого обновляются каждые 10 минут на основе всех данных датчиков, собираемых институтом.
 Этот адаптер позволяет читать этот API (требуется регистрация!) И сохранять все соответствующие значения в удобных для пользователя состояниях для дальнейшей обработки в уведомлениях (пример: Telegram / Pushover) или визуализации.
 
@@ -28,14 +28,14 @@ API можно использовать бесплатно до 300 раз в д
 * Погодная сигнализация
 * Текущие климатические условия
 * Прогноз сегодня, завтра, послезавтра
-* Карты текущего Rain-Radar предоставлены «[Buienradar] (https://www.buienradar.nl)»
+* Карты текущего Rain-Radar предоставлены "[Buienradar] (https://www.buienradar.nl)"
 
 Данные о местоположении связаны с координатами GPS, хранящимися в конфигурации администратора.
 
 Для получения дополнительной информации посетите: http://weerlive.nl/index.php Получите бесплатный ключ API здесь: http://weerlive.nl/delen.php
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 <!--

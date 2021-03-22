@@ -3,38 +3,38 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-nano
-hash: uWZeBaWWKa6keB36zElfXjpS1cG3oLU3kjK7ZPomu7U=
+hash: TCdxIYuhBO7sdgAgrQ053kqmZav2Q3PI+b5kJoAlLac=
 ---
 ![Логотип](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.wlanthermo-nano.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.wlanthermo-nano.svg)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wlanthermo-nano.svg)
+![Статус зависимости](https://img.shields.io/david/DrozmotiX/iobroker.wlanthermo-nano.svg)
 ![Количество установок](http://iobroker.live/badges/wlanthermo-nano-stable.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wlanthermo-nano/badge.svg)
+![Известные уязвимости](https://snyk.io/test/github/DrozmotiX/ioBroker.wlanthermo-nano/badge.svg)
 ![НПМ](https://nodei.co/npm/iobroker.wlanthermo-nano.png?downloads=true)
-![Трэвис-Си](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.wlanthermo-nano/master.svg)
+![Трэвис-Си](http://img.shields.io/travis/DrozmotiX/ioBroker.wlanthermo-nano/master.svg)
 
 # IoBroker.wlanthermo-nano
 ## Wlanthermo-nano адаптер для ioBroker
-[WLANThermo Nano](https://github.com/WLANThermo-nano/WLANThermo_nano_Software/wiki "WLANThermo Nano"), цифровое преимущество для барбекю
+[WLANThermo Nano](https://github.com/WLANThermo-nano/WLANThermo_nano_Software/wiki "WLANThermo Nano"), цифровое преимущество для вашего спорта с барбекю
 
 ## Конфигурация
 Адаптер можно установить и настроить в интерфейсе администратора.
 Пожалуйста, введите IP-адрес, имя пользователя и пароль в конфигурации экземпляра.
 
-## Делать
+## Сделать
 * [] Оптимизировать настройки питмастера, сделать состояния доступными только для записи в соответствующем режиме, в противном случае - только для чтения
 * [] Реализовать автоматическое определение устройства
 * [] Реализовать состояние устройства онлайн
-* [x] разрешить несколько устройств
+* [x] разрешить использование нескольких устройств
 * [] очистка кода
 
-## Присоединяйтесь к серверу Discord, чтобы обсудить все об интеграции ioBroker-WlanThermo!
+## Присоединяйтесь к серверу Discord, чтобы обсудить все, что касается интеграции ioBroker-WlanThermo!
 <a href="https://discord.gg/cNAeGjJ"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Поддержите меня
-Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

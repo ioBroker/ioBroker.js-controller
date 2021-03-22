@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-Wetter
-hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
+hash: 9kdqDhi+btPZ0neZoDFdB8A77uv3pxdmCKw5C04ENzk=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -12,33 +12,34 @@ hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.vis-weather.svg)
 
-# IoBroker.vis-weather
-** Wenn es dir gefällt, erwäge bitte eine Spende: **
+# IoBroker.vis-Wetter
+** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder Weatherunderground an. Sie benötigen den DasWetter-Adpater oder Weatherunderground-Adapter, der ebenfalls ausgeführt wird ...
+Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder weatherunderground an. Sie müssen auch DasWetter-Adpater oder weatherunderground-Adapter ausführen ...
 
-Bei schlechtem Wetter müssen Sie die Vorhersage für die nächsten 36 Stunden aktivieren.
-In DasWetter.com muss eine von vier Prognosedatenstrukturen aktiviert sein. Sie können den anzuzeigenden auswählen.
+Bei Wetteruntergründen muss die Vorhersage der nächsten 36 Stunden aktiviert sein.
+In DasWetter.com muss eine von vier Prognosedatenstrukturen aktiviert sein. Sie können diejenige auswählen, die Sie anzeigen möchten.
 
 ## Notizen / Wiki
 ### Prognosestunden definieren
-Standardmäßig zeigt das Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunden (wunderground). Wenn Sie es vorziehen, nur z. 10 Stunden Vorhersage, löschen Sie einfach die unnötigen OIDs unter oid_groups in vis-edit.
+Standardmäßig zeigt das Prognosediagramm 40 Stunden (DasWetter) oder 36 Stunden (Wunderground). Wenn Sie es vorziehen, nur z. 10 Stunden Prognose, löschen Sie einfach die unnötigen OIDs unter oid_groups in vis-edit.
 
 ### OIDs werden bei Verwendung von DasWetter nicht automatisch erstellt
-Normalerweise werden OIDs automatisch erstellt, wenn Sie eine Instanz oder Datenstruktur auswählen. Wenn Sie "keine OIDs verfügbar" erhalten, überprüfen Sie, ob Sie "NextDaysDetailed" in DasWetter verwenden.
+Normalerweise werden OIDs automatisch erstellt, wenn Sie eine Instanz oder Datenstruktur auswählen. Wenn Sie "Keine OIDs verfügbar" erhalten, überprüfen Sie, ob Sie "NextDaysDetailed" in DasWetter verwenden.
 Möglicherweise müssen Sie "NextDaysDetailed" aktivieren.
 
 ## Bekannte Probleme
-* Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.vis-weather/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
 ## Changelog
 
+### 2.5.3 (2021-03-21)
+* (René) dependencies updated
 
-### 2.5.2 (2019-12-xx)
+### 2.5.2 (2019-12-12)
 * (René) some changes to make it compatible with widgets in sbfspot and ebus
 
 ### 2.5.1 (2019-12-08)
@@ -128,7 +129,7 @@ Möglicherweise müssen Sie "NextDaysDetailed" aktivieren.
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

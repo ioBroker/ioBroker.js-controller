@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.opentherm/README.md
 title: ioBroker.opentherm
-hash: TT07Q6Qq2KXWMzdu39Uyobzc+G9cSxBhxbb0CaseEWc=
+hash: Sjm4VAMYNXS2QPK+JpDO9nQ8pvG/bi3sGQO+cnpFNr8=
 ---
 ![Logo](../../../en/adapterref/iobroker.opentherm/admin/opentherm.png)
 
@@ -11,10 +11,10 @@ hash: TT07Q6Qq2KXWMzdu39Uyobzc+G9cSxBhxbb0CaseEWc=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
 ![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/opentherm-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/opentherm-stable.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters//iobroker.opentherm.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.opentherm.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters//ioBroker.opentherm/master.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/DrozmotiX/ioBroker.opentherm.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/DrozmotiX/ioBroker.opentherm/badge.svg)
+![NPM](https://nodei.co/npm/ioBroker.opentherm.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/DrozmotiX/iobroker.opentherm/master.svg)
 
 # IoBroker.opentherm
 Dieser Adapter integriert alle Funktionen des opentherm-Gateways in ioBroker.
@@ -32,12 +32,12 @@ Weitere Informationen finden Sie unter http://otgw.tclcode.com/index.html#intro 
 * Stellen Sie eine direkte Verbindung zum OpenTherm Gateway über eine USB-Verbindung her
 
 ## Machen
-* Stellen Sie eine direkte USB-Verbindung zu OpenTherm Gateway her
+* Stellen Sie eine direkte Verbindung zum OpenTherm Gateway über eine USB-Verbindung her
 * Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Überwachungssoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
 * Wo
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

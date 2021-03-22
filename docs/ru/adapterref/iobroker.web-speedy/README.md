@@ -2,46 +2,46 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web-speedy/README.md
-title: ioBroker.web-скоростной
-hash: c53coGGAwPoPNkVflNuBVhYnpJXOP0mQ8U3HTL42Klo=
+title: ioBroker.web-speedy
+hash: SOLdAZSiuEwO+0FLjgLsyMFd7E/8DV8xyANM1lRUKNk=
 ---
-![логотип](../../../en/adapterref/iobroker.web-speedy/admin/web-speedy.png)
+![Логотип](../../../en/adapterref/iobroker.web-speedy/admin/web-speedy.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.web-speedy.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.web-speedy.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/web-speedy-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/web-speedy-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/web-speedy-stable.svg)
-![Состояние зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.web-speedy.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.web-speedy/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.web-speedy.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.web-speedy/master.svg)
+![Статус зависимости](https://img.shields.io/david/DrozmotiX/iobroker.web-speedy.svg)
+![Известные уязвимости](https://snyk.io/test/github/DrozmotiX/ioBroker.web-speedy/badge.svg)
+![НПМ](https://nodei.co/npm/iobroker.web-speedy.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/DrozmotiX/ioBroker.web-speedy/master.svg)
 
 # IoBroker.web-speedy
-## Web-speedy адаптер для ioBroker
-Web-Speedy позволяет вам регулярно проверять ваше интернет-соединение и сохранять результаты в ioBroker!
+## Веб-адаптер для ioBroker
+Web-Speedy позволяет вам регулярно проверять подключение к Интернету и сохранять результаты в ioBroker!
 
 ### Как использовать этот адаптер
-При первом запуске он извлекает лучшие серверы поблизости на основе результатов проверки связи и запускает первый тест.
+При первом запуске он найдет ближайшие ближайшие серверы на основе результатов пинга и запустит первый тест.
 
-Web-Speedy построен так, что все выполнение обрабатывается автоматически, то есть у вас нет страницы конфигурации.
-Тем не менее, вы все еще можете влиять на некоторые вещи (см. Точки данных):
+Web-Speedy построен таким образом, что все выполнение выполняется автоматически, что означает, что у вас нет страницы конфигурации.
+Однако вы все еще можете влиять на некоторые вещи (см. Данные):
 
 | Государство | Описание |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| test_auto_modus | Режим сервера для автоматического запуска тестов с |
-| test_auto_intervall | Интервал времени для автоматического выполнения теста (по умолчанию = 30, если установлено значение 0, автоматический тест не будет запущен!) |
-| test_best | Запустите тестирование на лучшем сервере на основе результатов последнего пинга |
-| test_by_id | Запустите тестирование на определенном идентификаторе сервера сейчас! |
-| test_by_url | Запустите тестирование на определенном URL сервера сейчас! |
-| test_duration | Максимальная продолжительность (в секундах) одного теста (загрузка или загрузка) |
-| test_specific | Используйте раскрывающийся список, чтобы выбрать один из 5 лучших серверов, найденных при предыдущем сканировании |
-| test_specific_id | Введите идентификатор конкретного сервера [Пожалуйста, найдите идентификатор сервера здесь](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A) |
-| test_specific_url | Введите URL конкретного сервера [Пожалуйста, найдите здесь URL сервера] (https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wmeA) |
+| test_auto_modus | Серверный режим для автоматического запуска тестов с |
+| test_auto_intervall | Интервал времени для автоматического выполнения теста (по умолчанию = 30, если установлено значение 0, автоматический тест запускаться не будет!) |
+| test_best | Запустить тест сейчас на лучшем сервере по результатам последнего пинга |
+| test_by_id | Запустите тест на определенном ID сервера прямо сейчас! |
+| test_by_url | Запустите тест на определенном URL-адресе сервера прямо сейчас! |
+| test_duration | Максимальная продолжительность (в секундах) одного тестового прогона (загрузка или загрузка) |
+| test_specific | Используйте раскрывающийся список, чтобы выбрать один из 5 лучших серверов, обнаруженных при предыдущем сканировании |
+| test_specific_id | Введите идентификатор конкретного сервера [Пожалуйста, найдите здесь ID сервера](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A) |
+| test_specific_url | Введите URL-адрес конкретного сервера [Здесь можно найти URL-адрес сервера] (https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk |wme8A) |
 
-![мегабайт](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbyte.png) ![Mbit](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbit.png) ![состояния](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/states.png)
+![Мбайт](https://raw.githubusercontent.com/DrozmotiX/ioBroker.web-speedy/master/admin/Mbyte.png) ![Мбит](https://raw.githubusercontent.com/DrozmotiX/ioBroker.web-speedy/master/admin/Mbit.png) ![состояния](https://raw.githubusercontent.com/DrozmotiX/ioBroker.web-speedy/master/admin/states.png)
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

@@ -3,12 +3,12 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.vedirect.svg)](https://www.npmjs.com/package/iobroker.vedirect)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vedirect.svg)](https://www.npmjs.com/package/iobroker.vedirect)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.vedirect.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.vedirect)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.vedirect/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.vedirect)
+[![Dependency Status](https://img.shields.io/david/DrozmotiX/iobroker.vedirect.svg)](https://david-dm.org/DrozmotiX/iobroker.vedirect)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.vedirect/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.vedirect)
 
 [![NPM](https://nodei.co/npm/iobroker.vedirect.png?downloads=true)](https://nodei.co/npm/iobroker.vedirect/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.vedirect/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.vedirect)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/DrozmotiX/ioBroker.vedirect/master.svg)](https://travis-ci.org/DrozmotiX/ioBroker.vedirect)
 
 ## vedirect adapter for ioBroker
 
@@ -53,7 +53,7 @@ Set the proper device (example /dev/ttyUSB0) in adapter config.
 ## License
 MIT License
 
-Copyright (c) 2020 DutchmanNL <rdrozda@hotmail.com>
+Copyright (c) 2021 DutchmanNL <rdrozda@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

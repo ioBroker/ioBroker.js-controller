@@ -61,6 +61,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.48.0
+
+• Neue Icons hinzugefügt (Brands & Health)
+
 ### 0.47.0
 
 • Neue Icons hinzugefügt (Animated Icons)

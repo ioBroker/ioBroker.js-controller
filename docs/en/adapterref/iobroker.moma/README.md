@@ -36,8 +36,8 @@ MoMa needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
 
-### 1.2.8 (2020-??-??)
-* (AWhiteKnight) new fields, systeminformation lib 4.27.10 
+### 1.2.8 (2021-03-??)
+* (AWhiteKnight) new fields, systeminformation lib 5.6.7 
 
 ### 1.2.7 (2020-10-18)
 * (AWhiteKnight) remove leading i in names that are not a number, systeminformation lib 4.27.0 

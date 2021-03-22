@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
+hash: QSvQPDMUstUgUng8PB4U+05xrwrmuxU06lsfjKX97FU=
 ---
-![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
+![标识](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![安装数量](http://iobroker.live/badges/heatingcontrol-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
@@ -18,7 +18,7 @@ hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 
 **如果您愿意，请考虑捐赠：**
 
-[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 ##用于控制加热系统的适配器。
 特征：
@@ -28,46 +28,46 @@ hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 *支持所有类型的恒温器（前提条件：它必须在ioBroker中可用）
 * Homematic设备自动检测
 *支持多个配置文件
-*如果温控器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
-*当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （要做的事情：实施改进的控制）
+*如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
+*当前，当达到设定温度时，执行器直接关闭。只要设定点温度低于实际温度，执行器就会打开。 （要做的事情：实施改进的控制）
 *每个房间支持无限数量的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
-*如果房间内装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
+*如果房间中装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）；可选配SensorDelay
-*与Feiertag-Adapter或任何其他接口，以检测公众假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
+*与Feiertag-Adapter或任何其他接口，以检测公众假期。公众假期可以是正常的一天，也可以是星期天。 （管理员设置）
 *手动控制温度超过一定时间
-*预定加热时间
+*预定的加热时间
 *从恒温器接管更改（可选）
 *支持来自[Pittini]（https://github.com/Pittini/iobroker-heatingcontrol-vis）的可视化。谢谢！
 
 [常问问题](doc/FAQ.md)
 
-##安装
+＃＃ 安装
 ##设置
-###主要
+＃＃＃ 主要的
 *功能=每个房间用于检测恒温器，执行器和传感器的功能。这是系统枚举之一
 *时区=用于cron调整cron作业
 * Feiertag的路径-适配器=如果您拥有使用Feiertag-Adapter自动检测今天的公众假期的权限，请在此处设置路径（例如feiertage.0）
 *当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
 *使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
 *使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
-*如果没有加热时间=仅对执行器有效，则使用执行器。定义在没有加热时间的情况下如何设置执行器
-*如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，则可以永久打开或关闭它们
+*如果没有加热时间=仅对执行器有效，请使用执行器。定义在没有加热时间的情况下如何设置执行器
+*如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器，但带有加热执行器，则可以永久打开或关闭它们
 
-###个人资料
+＃＃＃ 轮廓
 *配置文件类型=支持三种不同的配置文件类型（周一至周日或周一至周五和周六/周日或每天）
-*配置文件数量=如果需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
+*配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
-*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+*““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
 *所有房间的清单。您可以在此处禁用房间。
-*按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
+*按下右侧的编辑按钮以打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
 *在这里您可以验证并设置恒温器，执行器和传感器的对象ID
-*您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后您会得到一个空行，需要填写。编辑按钮将打开系统上可用设备的列表
+*您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后，您会得到一个空行，需要填写。编辑按钮将打开系统上可用设备的列表
 *温控器：
 
 **应设置名称，目标温度OID和当前温度OID。
@@ -85,14 +85,14 @@ hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | ActivePeriodActive |如果关闭，则将不使用配置文件。 |
 | CurrentProfile |选择当前配置文件（基于1，表示配置文件1使用heatingcontrol.0.Profiles.0下的数据点）|
-| LastProgramRun |显示适配器运行的最后一次时间 |
+| LastProgramRun |显示适配器运行的最后一次时间。 |
 
 ###温度降低/升高
 | DP名称|描述|相对降低的目标温度|绝对降低的目标温度|
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
-|来宾升高温度，因为客人想要变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
+|宾客出席|升高温度，因为客人想要变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
 | PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
-|现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
+|现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
 *在两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
@@ -107,22 +107,22 @@ hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 
 *修复所有房间的温度
 
-使用此选项，您可以在不激活供暖时段时为每个房间使用一个目标温度
+使用此选项，您可以在不激活供暖时段的情况下为每个房间使用一个目标温度
 
 * 没有
 
-如果没有激活加热时间，则使用此选项不会将任何东西发送到恒温器。当加热期间仍处于活动状态时，目标温度从最后一个标签开始保持。
+如果没有激活加热时间，则使用此选项不会将任何东西发送到恒温器。当加热期仍处于活动状态时，目标温度从最后一个标签开始保持。
 在这种情况下，如果您使用适配器中的执行器，则可以定义执行器的设置方式（关闭，打开或保持原样）
 
 ＃＃ 其他
 * HolidayPresent /今天公开假期
 
-如果在管理员中启用了“像星期天一样的假日礼物”或“像星期天一样的公共假日”，则当适配器被告知今天是公共假日或您在家度假时，将使用星期日的个人资料。
+如果您在管理员中启用了“像星期天一样的假日礼物”或“像星期天一样的公共假日”，则当适配器被告知今天是公共假日或您在家度假时，将使用星期日的个人资料。
 
 ###窗口打开
 如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
 
-*通过Profiles.0.room.WindowOpenDec（如果配置了相对降低）打开窗口时，降低当前轮廓温度（true）
+*通过Profiles.0.room.WindowOpenDec（如果配置了相对降低）打开窗口（真）时降低当前轮廓温度
 *如果配置了绝对减小，则在打开窗口（真）时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease
 
 可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
@@ -131,26 +131,37 @@ hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 您可以使用日历或任何其他数据点来更改适配器中的数据点。
 只需在admin中配置来自ical或其他数据点的事件即可。支持的是
 
-|数据点|说明| ------------------------------------- | ---------- -------------------------------------------------- ---------------- | heatingcontrol.0。当前| |将其设置为true（如果是布尔型）或设置为一个比限制高的数字（如果是数字）| heatingcontrol.0.HolidayPresent |当您在假期在家中时，将其设置为true | heatingcontrol.0.VacationAbsent |当您不在家度假时，将其设置为true | heatingcontrol.0.GuestsPresent | |将其设置为true（如果是布尔值）或将其设置为一个更高的值（如果是数字，则为limit）| heatingcontrol.0.PartyNow |将其设置为true（对于布尔值）或大于限制的数字（对于数字）
+|数据点|说明| ------------------------------------- | ---------- -------------------------------------------------- ---------------- | heatingcontrol.0。当前| |将其设置为true（如果是布尔型）或设置为一个比限制高的数字（如果是数字）| heatingcontrol.0.HolidayPresent |当您在假期在家中时，将其设置为true | heatingcontrol.0.VacationAbsent |当您在假期不在家时，将其设置为true | heatingcontrol.0.GuestsPresent | |将其设置为true（如果是布尔值）或将其设置为一个更高的值（如果是数字，则为limit）| heatingcontrol.0.PartyNow |将其设置为true（对于布尔值）或大于限制的数字（对于数字）
 
-提示：使用数字数据点，您可以算出房子里有多少人，然后再决定例如我们有足够的聚会...
+提示：使用数字数据点，您可以算出房子里有多少人，然后再决定例如我们有足够的聚会准备...
 
 ##使用恒温器的更改
 许多用户要求一个选项来将恒温器的更改接管适配器。现在实现了四个选项：
 
-|选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有温控器的变化将被忽略|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中提前设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|直到下一个轮廓点|从恒温器的变化视为目标温度，直到下一个轮廓点。这是手动模式，因此仅使用窗口传感器。所有其他| |增加/减少被忽略。每个房间中都有一个数据点，可以在到达下一个配置文件点之前禁用手动模式。
+|选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有温控器的变化将被忽略|作为替代|温控器的变化被视为优先；覆盖时间必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中预先设置。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|直到下一个轮廓点|从恒温器的变化视为目标温度，直到下一个轮廓点为止。这是手动模式，因此仅使用窗口传感器。其他所有| |增加/减少被忽略。每个房间中都有一个数据点，可以在到达下一个配置文件点之前禁用手动模式。
 
 ##更改温度时扩展覆盖
-替代的标准行为是，当您更改温度时，替代时间不会更改。例如，如果您在25°C下启动覆盖20分钟，而在15分钟后更改为28°C，则仅在最后5分钟使用28°C。使用该选项，只要您更改倍率温度，就可以重新启动倍率。
-在高于28°C的示例中，将使用20分钟，这将导致15分钟（25°C）和20分钟（28°C）
+替代的标准行为是，当您更改温度时，替代时间不会更改。例如，如果您在25°C下启动覆盖20分钟，而在15分钟后更改为28°C，则仅在最后5分钟内使用28°C。使用该选项，只要您更改倍率温度，就可以重新启动倍率。
+例如，在高于28°C的温度下将使用20分钟，这将导致15分钟（25°C）和20分钟（28°C）
+
+##覆盖模式
+所有房间的管理模式有两种。
+
+*计时器控制
+
+这是众所周知的函数，它使用温度和持续时间。给定温度用于持续时间，然后温度目标将在自动模式下重新设置为值
+
+*直到下一个轮廓点
+
+这是一个新功能。在这里，我们可以使用温度倍率直到下一个轮廓点。持续时间将被忽略，但不能为零！
 
 ##温控器处理“窗口打开”
-一些恒温器可以自己处理“窗口打开”。在那些情况下，会配置车窗传感器和恒温器之间的直接连接，并且在打开车窗时恒温器会降低其目标温度。
-结合选项“使用恒温器的更改” /“直到下一个配置文件点”将导致此状态变为意外的手动状态。在这种情况下，将使用降低的温度直到下一个轮廓点。
+一些恒温器可以自行处理“窗口打开”。在那些情况下，会配置车窗传感器和恒温器之间的直接连接，并且在打开车窗时恒温器会降低其目标温度。
+结合选项“使用恒温器的更改” /“直到下一个配置文件点”，将导致此状态变为意外的手动状态。在这种情况下，将使用降低的温度直到下一个轮廓点。
 但是adpater可以处理此行为。您必须启用选项“ Thermostat处理'Window is Open'”，并且还可以在适配器中配置窗口传感器。
-当窗口打开时，适配器等待最大值。恒温器设定的新目标温度为3秒。如果在那段时间内收到新的目标温度，它将用作降低的绝对温度。状态将变为“自动打开窗口”。窗户一旦关闭，状态就会恢复为自动，恒温器会将原始目标温度设置为“注意” **，在这种情况下，请勿使用“传感器打开延迟”。如果使用它，则从恒温器接收到目标温度后，将出现“打开窗口”事件。最终以手动状态结束。
+窗口打开后，适配器等待最大时间。恒温器设定的新目标温度为3秒。如果在那段时间内收到新的目标温度，它将用作降低的绝对温度。状态将变为“自动打开窗口”。窗口一旦关闭，状态就会恢复为自动，并且恒温器会将原始目标温度设置为**注意**，在这种情况下，请勿使用传感器打开延迟。如果使用它，则从恒温器接收到目标温度后，将出现“打开窗口”事件。最终以手动状态结束。
 
-##复制期间和配置文件
+##复制期限和复制配置文件
 ``heatingcontrol.0.Profiles.1.CopyProfile heatingcontrol.0.Profiles.1.Room.CopyProfile``
 
 和
@@ -158,9 +169,9 @@ hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 ``heatingcontrol.0.Profiles.1.Küche.Fri.CopyPeriods``
 
 CopyProfile将按下按钮的配置文件的全部内容复制到下一个配置文件。在上面的示例中，该按钮位于配置文件1中。该按钮将所有内容从配置文件1复制到配置文件2。
-如果只想复制一个房间，请使用某个房间的按钮。
+如果您只想复制一个房间，请使用某个房间的按钮。
 
-CopyPeriods每天或每个房间的周一至周五可用。这会将期间复制到下一部分。在上面的示例中，CopyPeriods将所有时间段从厨房房间的星期五复制到厨房房间的星期六。
+CopyPeriods每天或每个房间的周一至周五可用。这会将句点复制到下一部分。在上面的示例中，CopyPeriods将所有时间段从厨房房间的星期五复制到厨房房间的星期六。
 所以你可以在“每天分别”配置文件中，复制从星期一到星期日的时间段...
 
 ##问题和功能请求
@@ -176,12 +187,47 @@ HM温控器具有两个版本的开窗功能。一方面用作温度下降检测
 当窗口打开时，此功能使适配器切换到手动模式。理想情况下，应禁用此功能，以免干扰适配器的功能。
 如果恒温器使用了来自窗户传感器的信息，则应启用“恒温器处理窗户打开”选项。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本上不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 2.0.1 (2021-01-18)
+### 2.3.0 (2021-03-20)
+* (René) see issue #187: show remaining override timeConverter
+* (René) see issue #225: support different languages for vis
+* (René) see issue #223: new overide mode "until next profile point"
+* (René) bug fix to calculate average for temperatur offset
+
+### 2.2.0 (2021-02-15)
+* (René) see issue #146: different type of window sensor and also adjustable comparative value
+* (René) see issue #110: optionally every room can be set to "no heating" with separate datapoint
+* (René) see issue #185: maintenance function: Delete all unused datapoints (e.g. profiles) is implemented now for admin
+* (René) see issue #185: maintenance function: Delete all devices related to a room, when a room is deleted is implemented now for admin
+* (René) see issue #207: copy buttons for vis added
+* (René) see issue #219: bug fix: DecreaseValues and ProfilName are copied in CopyProfile now
+
+### 2.1.1 (2021-02-08)
+* (René) bug fix Temperatur Offset: invert sign of TemperatureOffset 
+
+### 2.1.0 (2021-01-31)
+* (René) see issue #198: add name to profile as a datapoint, used to be shown in visualisation
+* (René) see issue #194: limit and step width for increase / decrease values adjustable in admin 
+* (René) see issue #182: Temperatur Offset
+* (René) see issue #212: ActiveTimeSlot inkorrekt for vis
+
+### 2.0.4 (2021-01-28)
+* (René) bug fix for issue #213: Warnung "!!! Statechange not handled"
+
+### 2.0.3 (2021-01-24)
+* (René) bug fix for issue #211: endless change of temperatures
+
+### 2.0.2 (2021-01-22)
+* (René) bug fix for issue #208: exception "undefined is not a valid state value"
+* (René) bug fix for issue #209: Not all open windows are recognized
+
+### 2.0.1 (2021-01-19)
 * (René) bug fix for issue #204: do not take over reduced temperature in manual mode
+* (René) bug fix for issue #203: Warnings "has no existing object, this might lead to an error"
+* (René) bug fix for issue #205: override start
 
 ### 2.0.0 (2021-01-16)
 * (René) internal refactoring

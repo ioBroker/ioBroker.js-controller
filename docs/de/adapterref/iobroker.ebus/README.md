@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: xxNMxOww/Mb3yCrqbYQpAG95lD28PdziSWOPvmWfjAo=
+hash: 8aotru73N3/+THRhHXAzo4uriEoughYC2hblYdLXlUY=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -24,7 +24,7 @@ Dieser Adapter liest
 
 - Daten von ebusd mit HTML
 
-In diesem Fall muss ebusd ausgeführt werden und in der Lage sein, Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, Lastup und aus dem globalen Abschnitt werden analysiert. Alle anderen werden im Moment ignoriert.
+In diesem Fall muss ebusd ausgeführt werden und Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, Lastup und aus dem globalen Abschnitt werden analysiert. Alle anderen werden im Moment ignoriert.
 
 Es besteht die Möglichkeit, Daten abzufragen, die nicht direkt von ebusd abgefragt werden. Der Befehl 'read -f' wird verwendet, um das Lesen über den E-Bus zu erzwingen.
 
@@ -35,11 +35,14 @@ aktuell unterstützte ebusd-version: 3.3
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
+## 2.2.5 (2021-03-21)
+* (René) Abhängigkeiten aktualisiert
+
 #2.2.2.4 (2021-02-17)
 * (René) siehe Problem Nr. 42: Nicht erfasster Referenzfehler: oView ist im gelösten Widget nicht definiert
 
 ## 2.2.3 (2020-10-24)
-* (René) Verlaufs-DP erstellen, falls nicht verfügbar
+* (René) Verlauf DP erstellen, falls nicht verfügbar
 
 ## 2.2.0 (2020-09-06)
 * (René) DP nur bei Bedarf ändern, um die Systemlast zu reduzieren
@@ -54,7 +57,7 @@ aktuell unterstützte ebusd-version: 3.3
 ## 2.0.0 (2020-04-26)
 * (René) "Anfrage" ersetzt durch "gebogen"
 
-## 1.0.0 (15.12.2019)
+## 1.0.0 (2019-12-15)
 * (René) Update auf meinen eigenen Flot 3.0
 
 ## 0.8.2 (2019-11-10)
@@ -67,7 +70,7 @@ aktuell unterstützte ebusd-version: 3.3
 * (René) hcmode2 Wert 5 = EVU Sperrzeit
 
 ### 0.7.0 (28.01.2019)
-* (René) fügt ein anpassbares Timeout hinzu
+* (René) füge ein anpassbares Timeout hinzu
 
 ### 0.6.0 (06.01.2019)
 * (René) Unterstützung des Kompaktmodus
@@ -119,7 +122,7 @@ aktuell unterstützte ebusd-version: 3.3
 ## Changelog
 
 ## License
-Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -140,7 +140,7 @@
               "title": {
                 "en": "Working with images",
                 "de": "Arbeiten mit Images",
-                "ru": "Работа с изображениями",
+                "ru": "Работа с образами диска",
                 "zh-cn": "使用图像"
               },
               "content": "install/images.md"

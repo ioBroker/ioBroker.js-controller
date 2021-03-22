@@ -3,20 +3,20 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker。冠状病毒统计
-hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
+hash: MOsS11IupbrP75CRJu1NoKyrADHytwiXSEIZfcLWpzc=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
 ![安装数量（最新）](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
+![已知漏洞](https://snyk.io/test/github/DrozmotiX/ioBroker.coronavirus-statistics/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
-![依赖状态](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)
+![依赖状态](https://img.shields.io/david/DrozmotiX/ioBroker.coronavirus-statistics.svg)
 
 <img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 ＃ioBroker.coronavirus-statistics
-![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+![测试与发布](https://github.com/c/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
 
 ##用于ioBroker的冠状病毒实时统计适配器
 显示全球冠状病毒信息和当前报告的适配器
@@ -32,30 +32,30 @@ hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 |数据点|详情|
 |--|--|
 |活跃当前感染人数|
-|案例已知案件数量|
-| casesPerOneillion |每百万公民的已知案件总数|
+|案例|已知案件数量|
+| casesPerOneillion |每百万名公民的已知案件总数|
 |关键|紧急情况量（住院）|
 |死亡当前登记死亡人数|
-|每百万人死亡人数|当前每百万公民的登记死亡人数|
-|标志国家标志，链接到github位置|
+|每百万人死亡人数|当前每百万公民登记的死亡人数|
+|标志|国家标志，链接到github位置|
 |恢复|完全已知的康复病例数量|
-|今天案例今天的新案例|
-|今天死亡|今天有很多众所周知的人死亡 |
+|今天的案例|今天的新案例|
+|今日死亡|今天有很多众所周知的人死亡 |
 |测试全球进行的covid-19测试总数|
 |每百万个县进行测试|全球每100万次进行的covid-19测试总数|
 
-请注意，此适配器使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
+请注意，此适配器使用尽可能多的最新信息，但可能会延迟几个小时，具体取决于国家/地区的报告。
 德国联邦州：https://npgeo-corona-npgeo-de.hub.arcgis.com/ s通用来源：https://coronavirus-19-api.herokuapp.com
 
 ＃＃ 高级设置
-|选项|描述 |
+|选项|说明|
 |--|--|
 |所有国家|获取全球所有国家/地区的数据（默认值：false）|
 |大洲|在单独状态下按大陆分组总金额（默认：false）|
 |删除未使用的状态|取消选择国家时删除数据（默认值：false）|
 
-##仅限于德国
-|选项|描述 |
+##仅适用于德国
+|选项|说明|
 |--|--|
 |联邦州|获取德国的联邦州数据（仅选中，默认为false）|
 |县|获取德国县的数据（仅选中，默认为false）|
@@ -64,24 +64,24 @@ hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 |所有城市|所有德国城市（默认为false）|
 |所有县|所有德国县（默认为false）|
 
-可以获得联邦州（Bundesländer），城市（Städte）县（Landeskreise）的数据。
+可以获取联邦州（Bundesländer），城市（Städte）县（Landeskreise）的数据。
 您可以选择接收所有数据，也可以只选择高级设置中的特定区域。
 
-<span style="color:red">疫苗接种数据目前仅适用于德国，并且仅在*“ Bundeslaender” *被激活时才能检索</span>
+<span style="color:red">疫苗接种数据目前仅适用于德国，并且只有在*“ Bundeslaender” *被激活时才能检索</span>
 
-##添加缺失的国家
-由于API提供的某些国家/地区名称与ISO不一致，因此可能无法正确识别国家/地区。在这种情况下，您将在日志中收到一条警告消息，如下所示
+##添加缺少的国家
+由于API提供的某些国家/地区名称与ISO不一致，因此可能无法正确识别国家/地区。在这种情况下，您会在日志中收到一条警告消息，看起来像这样
 
 ```
 coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
 ```
 
-使用数据点`coronavirus-statistics.0.countryTranslator`您可以自己分配国家/地区。在此处查找相应国家/地区的名称：
+使用数据点`coronavirus-statistics.0.countryTranslator`，您可以自己分配国家/地区。在此处查找相应国家/地区的名称：
 
 [列出国家名称](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
 
-使用选定的国家名称，您必须创建一个JSON字符串，并将其输入到数据点`coronavirus-statistics.0.countryTranslator`中。
-然后，JSON字符串如下所示：
+使用选定的国家名称，您必须创建一个JSON字符串并将其输入到数据点`coronavirus-statistics.0.countryTranslator`中。
+JSON字符串如下所示，例如：
 
 ```
 {
@@ -90,7 +90,7 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 }
 ```
 
-作为第一个值，警告消息中的名称必须从日志中获取。然后将[列出国家名称](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)中的国家名称分配给它。
+作为第一个值，警告消息中的名称必须从日志中获取。然后将[列出国家名称](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)中的国家/地区名称分配给该国家/地区。
 
 ## Changelog
 
@@ -98,6 +98,23 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.8 (2021-01-27)
+* (DutchmanNL) Bugfix : Gernmany vaccinaation data, source changed code updated
+* (DutchmanNL) Removed states (not available anymore by RKI)
+  * Impfungen pro 1.000 Einwohner
+  * Indikation nach Alter 
+  * Berufliche Indikation
+  * Medizinische Indikation
+  * Pflegeheim-bewohnerIn
+* (DutchmanNL) New states (provided by RKI)
+  * Differenz zum Vortag 
+  * Gesamtzahl bisher verabreichter Impfstoffdosen
+  * Gesamtzahl kumulatiev BioNTech
+  * Gesamtzahl kumulatiev Moderna
+  * Impf-quote
+  * Zweit Impfungen kumulativ
+  * Zweit Impfungen Differenz zum Vortag
 
 ### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
 * (DutchmanNL) Added Impfungen pro 1.000 Einwohner

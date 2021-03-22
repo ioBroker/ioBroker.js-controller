@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: dPaZrY82W5uOIwBnz3dTKuJ+zx/AehkaSWU6foadBbs=
+hash: FGoED+UdO2o6ZLgBwOPbJeTF1eGr5Gssmk+K2kznlXQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,10 +20,11 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 
 ## Modelle
 ### Unterstützte Modelle
-* Deebot 901
-* Deebot OZMO 920
+* Deebot 900/901
 * Deebot OZMO 930
-* Deebot OZMO 950
+* Deebot OZMO 920/950
+
+Die aufgeführten Modelle sind diejenigen, die ich selbst in Gebrauch habe oder die technisch mit diesen identisch sind.
 
 ### Diese Modelle sollten ordnungsgemäß oder zumindest teilweise funktionieren
 * Deebot Slim 2
@@ -31,9 +32,8 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot M88
 * Deebot 600/601/605
 * Deebot 710/711/711s
-* Deebot 900
 * Deebot OZMO 610
-* Deebot OZMO 900
+* Deebot OZMO 900/905
 * Deebot OZMO T5
 * Deebot OZMO T8-Serie
 * Deebot OZMO Slim 10
@@ -42,11 +42,17 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot N8-Serie
 * Deebot U2-Serie
 
+Die aufgeführten Modelle funktionieren entweder bereits oder sind diesen Modellen technisch ähnlich.
+Trotzdem kann die Funktionalität teilweise eingeschränkt sein.
+
+Ich versuche, ein breites Spektrum an Funktionen zu erreichen, entscheide dies jedoch von Fall zu Fall in Abhängigkeit von der Komplexität und verschiedenen anderen Kriterien.
+Es besteht natürlich kein Anspruch auf volle Funktionalität.
+
 ## Installation
 Es wird empfohlen, Version 10.x, 12.x oder 14.x von Node.js zu verwenden. Die mindestens erforderliche Version ist 10.x.
 
-Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind.
-Für den vollen Funktionsumfang installieren Sie bitte die folgenden Pakete.
+Dieser Adapter verwendet die Bibliothek [Node-Canvas](https://www.npmjs.com/package/canvas) für einige kartenbezogene Funktionen, für die möglicherweise einige zusätzliche Pakete installiert werden müssen.
+Dies ist optional und für Modelle ohne Kartenfunktionalität nicht erforderlich. Für den vollen Funktionsumfang installieren Sie bitte die folgenden Pakete.
 
 Für Debian-basierte Linux-Systeme sollten die folgenden Befehle ausgeführt werden:
 
@@ -61,20 +67,25 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ### Zustände
-* Informationen zu den Bundesstaaten finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (Englisch) und [hier] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29) (Deutsch)
-
-## Bekannte Probleme
-* Für einige Modelle (z. B. Deebot Ozmo 930) wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) da es einige Berichte gibt, dass die Verbindung nach ca. 24 Stunden
-* Einige Reinigungsfunktionen funktionieren möglicherweise nicht mit 710/711 / 711s. Bitte verwenden Sie vorerst Version 0.5.8.
-* Die "Kanten" -Funktion funktioniert nicht mit Deebot U2 (startet stattdessen die automatische Reinigung)
+* Informationen zu den Bundesstaaten finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/States-%28EN%29) (Englisch) und [hier] (https:// github .com / mrbungle64 / ioBroker.ecovacs-deebot / wiki / Datenpunkte-% 28DE% 29)
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
+
+## Bekannte Probleme
+* Für einige Modelle (z. B. Deebot OZMO 930) wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) da es einige Berichte gibt, dass die Verbindung nach ca. 24 Stunden
+* Einige Reinigungsfunktionen funktionieren möglicherweise nicht mit Deebot 710/711 / 711s. Bitte verwenden Sie vorerst Version 0.5.8.
+* Die "Kanten" -Funktion funktioniert nicht mit Deebot U2 (startet stattdessen die automatische Reinigung)
 
 ## Haftungsausschluss
 Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
+
+### 1.1.2 (alpha)
+* Using library version 0.6.0-alpha.7
+* Quite a lot of improvements for processing map data, spot areas and virtual boundaries
+* Some improvements and fixes
 
 ### 1.1.1
 * Using library version 0.6.0-alpha.3

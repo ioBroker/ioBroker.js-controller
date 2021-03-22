@@ -342,6 +342,14 @@ Die beiden Kanäle haben die identischen Zustände. Alle Zustände sind schreibg
 Der Kanal besteht aus schreibgeschützten Zuständen vom Typ `number`, die Informationen über den Wechselrichter der sonnenBatterie liefern.
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 1.7.1 (2021-03-19)
+* (foxriver76) do not log warnings on inverter endpoint if battery does not support it (closes #55)
+
 ### 1.7.0 (2020-11-12)
 * (foxriver76) new channels for powermeter and inverter
 

@@ -5,12 +5,12 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.opentherm.svg)](https://www.npmjs.com/package/iobroker.opentherm)
 ![Number of Installations (latest)](http://iobroker.live/badges/opentherm-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/opentherm-stable.svg)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/ioBroker.opentherm.svg)](https://david-dm.org/iobroker-community-adapters/ioBroker.opentherm)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.opentherm/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.opentherm)
+[![Dependency Status](https://img.shields.io/david/DrozmotiX/ioBroker.opentherm.svg)](https://david-dm.org/DrozmotiX/ioBroker.opentherm)
+[![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.opentherm/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.opentherm)
 
 [![NPM](https://nodei.co/npm/ioBroker.opentherm.png?downloads=true)](https://nodei.co/npm/ioBroker.opentherm/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/iobroker.opentherm/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.opentherm)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/DrozmotiX/iobroker.opentherm/master.svg)](https://travis-ci.org/DrozmotiX/ioBroker.opentherm)
 
 This adapter integrates all features of the opentherm gateway into ioBroker.
 Opentherm is an gateway protocol used by several modern heating systems like Remeha.
@@ -35,7 +35,7 @@ For more information http://otgw.tclcode.com/index.html#intro with all credits t
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
-[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+[![Donate](https://raw.githubusercontent.com/DrozmotiX/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

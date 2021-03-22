@@ -281,6 +281,14 @@ The both channels have the identical states. All states are read-only numbers.
 The channel consists of read-only states of type `number`, providing information about the inverter of your battery.
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 1.7.1 (2021-03-19)
+* (foxriver76) do not log warnings on inverter endpoint if battery does not support it (closes #55)
+
 ### 1.7.0 (2020-11-12)
 * (foxriver76) new channels for powermeter and inverter
 

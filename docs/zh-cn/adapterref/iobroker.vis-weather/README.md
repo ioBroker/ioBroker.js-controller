@@ -3,16 +3,15 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis天气
-hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
+hash: 9kdqDhi+btPZ0neZoDFdB8A77uv3pxdmCKw5C04ENzk=
 ---
-![商标](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
+![标识](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
 ![安装数量](http://iobroker.live/badges/vis-weather-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.vis-weather.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.vis-weather.svg)
 
 ＃ioBroker.vis-天气
 **如果您愿意，请考虑捐赠：**
@@ -37,8 +36,10 @@ hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
 
 ## Changelog
 
+### 2.5.3 (2021-03-21)
+* (René) dependencies updated
 
-### 2.5.2 (2019-12-xx)
+### 2.5.2 (2019-12-12)
 * (René) some changes to make it compatible with widgets in sbfspot and ebus
 
 ### 2.5.1 (2019-12-08)
@@ -128,7 +129,7 @@ hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
 * (René) initial release
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

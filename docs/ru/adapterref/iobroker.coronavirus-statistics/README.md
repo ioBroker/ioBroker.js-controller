@@ -3,20 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-статистика
-hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
+hash: MOsS11IupbrP75CRJu1NoKyrADHytwiXSEIZfcLWpzc=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
 ![Количество установок (последнее)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
+![Известные уязвимости](https://snyk.io/test/github/DrozmotiX/ioBroker.coronavirus-statistics/badge.svg)
 ![НПМ](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)
+![Статус зависимости](https://img.shields.io/david/DrozmotiX/ioBroker.coronavirus-statistics.svg)
 
 <img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 # IoBroker.coronavirus-statistics
-![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+![Тестирование и выпуск](https://github.com/c/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
 
 ## Адаптер живой статистики по коронавирусу для ioBroker
 Адаптер для отображения информации о Global Corona Virus и текущих отчетов
@@ -31,7 +31,7 @@ hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 
 | Datapoint | Подробности |
 |--|--|
-| активный | Количество инфицированных людей |
+| активный | Количество инфицированных в настоящее время |
 | случаи | Количество полностью известных случаев |
 | casePerOneMillion | Количество полностью известных случаев на миллион жителей |
 | критический | Количество критических ситуаций (госпитализировано) |
@@ -42,7 +42,7 @@ hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 | сегодняКейсы | Новые дела к сегодняшнему дню |
 | todayDeaths | Сегодня погибло количество полностью известных людей |
 | тест | Общее количество тестов на covid-19, проведенных во всем мире |
-| тестов на миллион уездов | Общее количество тестов на covid-19, проведенных в мире на миллион |
+| тестов на миллион уездов | Общее количество тестов на covid-19, проведенных в мире на один миллион |
 
 Имейте в виду, что этот адаптер использует как можно больше актуальной информации, но возможна задержка на несколько часов в зависимости от отчета страны.
 Федеральные земли Германии: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Общий источник: https://coronavirus-19-api.herokuapp.com
@@ -62,21 +62,21 @@ hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 | Города | Получить данные по городам Германии (только выбрано, по умолчанию false) |
 | Все федеральные земли | Все федеральные земли Германии (по умолчанию false) |
 | Все города | Все города Германии (по умолчанию false) |
-| Все округа | Все округа Германии (по умолчанию false) |
+| Все уезды | Все округа Германии (по умолчанию false) |
 
 Можно получить данные для федеральных земель (Bundesländer), городов (Städte) округов (Landeskreise).
 Вы можете выбрать получение всех данных или просто выбрать определенные регионы в дополнительных настройках.
 
-<span style="color:red">В настоящее время данные о вакцинации доступны только для Германии и будут получены только при активации *&quot;Bundeslaender&quot;* </span>
+<span style="color:red">Данные о вакцинации в настоящее время доступны только для Германии и будут получены только при активации *&quot;Bundeslaender&quot;* </span>
 
 ## Добавить отсутствующие страны
-Может случиться так, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждающее сообщение в журнале, которое выглядит следующим образом
+Может случиться так, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждающее сообщение в журнале, которое выглядит следующим образом:
 
 ```
 coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
 ```
 
-Используя точку данных `coronavirus-statistics.0.countryTranslator`, вы можете назначить страну самостоятельно. Ищите здесь название соответствующей страны:
+Используя точку данных `coronavirus-statistics.0.countryTranslator`, вы можете назначить страну самостоятельно. Найдите здесь название соответствующей страны:
 
 [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
 
@@ -98,6 +98,23 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.8 (2021-01-27)
+* (DutchmanNL) Bugfix : Gernmany vaccinaation data, source changed code updated
+* (DutchmanNL) Removed states (not available anymore by RKI)
+  * Impfungen pro 1.000 Einwohner
+  * Indikation nach Alter 
+  * Berufliche Indikation
+  * Medizinische Indikation
+  * Pflegeheim-bewohnerIn
+* (DutchmanNL) New states (provided by RKI)
+  * Differenz zum Vortag 
+  * Gesamtzahl bisher verabreichter Impfstoffdosen
+  * Gesamtzahl kumulatiev BioNTech
+  * Gesamtzahl kumulatiev Moderna
+  * Impf-quote
+  * Zweit Impfungen kumulativ
+  * Zweit Impfungen Differenz zum Vortag
 
 ### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
 * (DutchmanNL) Added Impfungen pro 1.000 Einwohner
