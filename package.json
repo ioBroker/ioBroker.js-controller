@@ -18,10 +18,10 @@
     "iobroker": "./iobroker.js"
   },
   "dependencies": {
-    "@iobroker/db-objects-file": "~1.1.4",
-    "@iobroker/db-objects-redis": "~1.1.4",
-    "@iobroker/db-states-file": "~1.1.4",
-    "@iobroker/db-states-redis": "~1.1.4",
+    "@iobroker/db-objects-file": "~1.2.0",
+    "@iobroker/db-objects-redis": "~1.2.0",
+    "@iobroker/db-states-file": "~1.2.0",
+    "@iobroker/db-states-redis": "~1.2.0",
     "@iobroker/plugin-base": "~1.2.1",
     "@iobroker/plugin-sentry": "~1.1.10",
     "chokidar": "^3.5.1",
