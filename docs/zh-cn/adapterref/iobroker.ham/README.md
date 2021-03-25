@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ham/README.md
 title: ioBroker Homebridge配件经理
-hash: LqJkGBTKLwpEowhRXJMqL8JiCgbQgeamsXQKiRqqzsI=
+hash: VVjUsOWBM3T0R4hTH7h7G0A7fshotq1t3rSBmkuux4A=
 ---
 ![标识](../../../en/adapterref/iobroker.ham/admin/ham.png)
 
@@ -12,10 +12,9 @@ hash: LqJkGBTKLwpEowhRXJMqL8JiCgbQgeamsXQKiRqqzsI=
 ![安装数量（最新）](https://iobroker.live/badges/ham-installed.svg)
 ![安装数量（稳定）](https://iobroker.live/badges/ham-stable.svg)
 ![依赖状态](https://img.shields.io/david/ioBroker/iobroker.ham.svg)
-![保管员徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.ham.svg)
 ![NPM](https://nodei.co/npm/iobroker.ham.png?downloads=true)
 
-＃ioBroker Homebridge配件经理
+＃ioBroker Homebridge配件管理器[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/ham/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 **测试：**![测试与发布](https://github.com/ioBroker/ioBroker.ham/workflows/Test%20and%20Release/badge.svg)
 
 在ioBroker中使用Homebridge插件，或将全局安装的Homebridge作为ioBroker适配器运行。
@@ -31,7 +30,7 @@ hash: LqJkGBTKLwpEowhRXJMqL8JiCgbQgeamsXQKiRqqzsI=
 您只需将模块列表添加到Adapter配置中，并在JSON编辑器中提供配置（请参阅插件说明）。
 此后，所有Homebridge对象也将在ioBroker中创建，所有可写对象也可以更改。
 
-**重要提示：此模式允许使用提供的homebridge插件的设备集成。没有提供Home应用程序可以使用的“桥梁”！**
+**重要提示：此模式允许使用提供的homebridge插件的设备集成。没有提供Home App可以使用的“桥梁”！**
 
 可以在此处找到已成功尝试的插件和示例的链接：https://forum.iobroker.net/viewtopic.php?f=20&t=15021
 
@@ -74,8 +73,9 @@ Homebridge模块的安装也可以通过ioBroker完成。
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* (Apollon77) update homebridge and wrapper to 1.3.2 (latest as of today). IMPORTANT: Requires also homebridge 1.3.x installed when using global mode and local mode will update to 1.3.x too! Check your plugins for updates!
+### 4.0.1 (2021-03-24)
+* (Apollon77) update homebridge and wrapper to 1.3.4 (latest as of today). IMPORTANT: Requires also homebridge 1.3.x installed when using global mode and local mode will update to 1.3.x too! Check your plugins for updates!
+* (UncleSamSwiss) Add an experimental version of new plugin selection and configuration tab - TRY IT OUT!
 * (Apollon77) IMPORTANT: Configurations in local/global mode with child bridges will NOT work because ioBroker can not access the data on the child bridge processes!
 
 ### 3.0.2 (2020-11-29)

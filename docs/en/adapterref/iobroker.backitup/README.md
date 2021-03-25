@@ -343,6 +343,13 @@ Here is a list of the problems that have occurred so far and their solutions, if
 
 ## Changelog
 
+### 2.1.0 (24.03.2021)
+* (simatec) Admin-Tab added
+* (simatec) dependencies targz removed
+* (simatec) dependencies tar-fs added
+* (simatec) dependencies updated
+* (simatec) small Bugfixes
+
 ### 2.0.5 (14.03.2021)
 * (simatec) error handling for redis backup added
 * (simatec) error handling for history backup added

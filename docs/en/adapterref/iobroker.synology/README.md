@@ -65,6 +65,11 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 1.0.0
+* (Apollon77) BREAKING CHANGE: Please set password new in admin!
+* (Apollon77) js-controller 3.0 is now needed minimum!
+* (Apollon77 store password now encrypted)
+
 ### 0.1.20
 * (instalator) fixed error
 

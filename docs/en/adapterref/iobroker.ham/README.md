@@ -5,7 +5,7 @@
 ![Number of Installations (latest)](https://iobroker.live/badges/ham-installed.svg)
 ![Number of Installations (stable)](https://iobroker.live/badges/ham-stable.svg)
 [![Dependency Status](https://img.shields.io/david/ioBroker/iobroker.ham.svg)](https://david-dm.org/ioBroker/iobroker.ham)
-[![Greenkeeper badge](https://badges.greenkeeper.io/ioBroker/ioBroker.ham.svg)](https://greenkeeper.io/)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/ham/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 [![NPM](https://nodei.co/npm/iobroker.ham.png?downloads=true)](https://nodei.co/npm/iobroker.ham/)
 
@@ -71,10 +71,10 @@ For this to work you need to provide the location of the systems global node-mod
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* (Apollon77) update homebridge and wrapper to 1.3.3 (latest as of today). IMPORTANT: Requires also homebridge 1.3.x installed when using global mode and local mode will update to 1.3.x too! Check your plugins for updates!
+### 4.0.1 (2021-03-24)
+* (Apollon77) update homebridge and wrapper to 1.3.4 (latest as of today). IMPORTANT: Requires also homebridge 1.3.x installed when using global mode and local mode will update to 1.3.x too! Check your plugins for updates!
+* (UncleSamSwiss) Add an experimental version of new plugin selection and configuration tab - TRY IT OUT!
 * (Apollon77) IMPORTANT: Configurations in local/global mode with child bridges will NOT work because ioBroker can not access the data on the child bridge processes!
-* (UncleSamSwiss) Add an experimental version of new plugin selection and configuration tab
 
 ### 3.0.2 (2020-11-29)
 * (Apollon77) update homebridge in wrapper to 1.1.6 (latest as of today)

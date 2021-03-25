@@ -14,6 +14,9 @@ You can control playback and query status.
 
 ## Changelog
 
+### 0.2.3
+* (volkerrichert) add missing seconds definitions in io-package.json
+
 ### 0.2.2
 * (volkerrichert) "enable" compact mode
 

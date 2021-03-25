@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
+hash: VOEU6debzsADBNNFLtInlFVRClI/z3ueG0mmZ5SUs9E=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -43,7 +43,7 @@ hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
 > Помните, что Действия будут работать только в том случае, если вы переведете свое устройство в соответствующее состояние (например, Mobile Control, powerOn, ...).
 Пожалуйста, обратитесь к [Miele-Документация](#documentation) для получения дополнительной информации о действиях.
 
-## Известные вопросы
+## Известные проблемы
 * никто
 
 ## Документация
@@ -73,13 +73,13 @@ hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
  | 15 | ПАРОВАЯ ПЕЧЬ |
  | 16 | СВЧ |
  | 17 | КОФЕЙНАЯ СИСТЕМА |
- | 18 | КАПОТ |
+ | 18 | ВЫТЯЖКА |
  | 19 | ХОЛОДИЛЬНИК |
  | 20 | МОРОЗИЛЬНИК |
  | 21 | КОМБИНАЦИЯ ХОЛОДИЛЬНИКА / МОРОЗИЛЬНИКА |
  | 23 | ПЫЛЕСОС, АВТОМАТИЧЕСКИЙ ПЫЛЕСОС |
  | 24 | СТИРАЛЬНАЯ МАШИНА |
- | 25 | ПОДОГРЕВАТЕЛЬ |
+ | 25 | ПОГРЕВАТЕЛЬ БЛЮДА |
  | 27 | ИНДУКЦИОННАЯ ПАНЕЛЬ |
  | 28 | ВАРОЧНЫЙ ГАЗ |
  | 31 | ПАРОВАЯ ПЕЧЬ КОМБИНАЦИЯ |
@@ -103,7 +103,7 @@ hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
  | 2 | STAND_BY |
  | 3 | ПРОГРАММИРОВАННАЯ |
  | 4 | PROGRAMMED_WAITING_TO_START |
- | 5 | БЕГ |
+ | 5 | РАБОТАЕТ |
  | 6 | ПАУЗА |
  | 7 | END_PROGRAMMED |
  | 8 | ОТКАЗ |
@@ -162,10 +162,17 @@ hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
 | 519 | «Абкюлен» | Стиральная машина с сушкой |
 | 532 | "Flusen ausspülen" | Стиральная машина с сушкой |
 
-## Авторские права
-Авторские права (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
+## Авторское право
+Авторские права (c) 2019, 2021 grizzelbee <open.source@hingsen.de>
 
 ## Changelog
+### 4.0.1 (2021-03-23) (Sign of the cross)
+*  (grizzelbee) Fix: [96](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/96) Added missing ACTIONS.Action_Information again
+*  (grizzelbee) Fix: [97](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/97) removed unneeded additional "VentilationStep/Lüfterstufe" in path and fixed warning with this. VentilationStep-switch should work properly now.
+*  (grizzelbee) Fix: [98](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/98) Color-Action has now valid type 'String'
+*  (grizzelbee) Fix: Power switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+*  (grizzelbee) Fix: Light switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+
 ### 4.0.0 (2021-03-18) (Symphony of life)
 > ***Hint:*** The adapter received a complete code refactoring! This means that most of the code has been changed and some parts are working now differently than ever before. Update with care and read the change log!
 *  (grizzelbee) New: FULL support of Miele cloud API v1.0.4

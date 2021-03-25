@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: Y3LfuhBlGSBH6jmK7CnDM3nai71WINNc2hKrTektnU0=
+hash: ta5dqjq9hiDt/O9tAyUW0v8x3IxE4jUStgNheusOVs0=
 ---
 ![Logo](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -15,7 +15,7 @@ hash: Y3LfuhBlGSBH6jmK7CnDM3nai71WINNc2hKrTektnU0=
 ## Beschreibung
 de: Dieser Adapter ermöglicht den Import von knxproj-Dateien aus ETS. Es generiert die Übersetzung zwischen KNX-Gruppenadressen und ioBroker und platziert die Geräte in Räumen (insbesondere für MobileUI).
 
-Es wird mit Standard-KNX / LAN-Gateways verbunden.
+Es stellt eine Verbindung zu Standard-KNX / LAN-Gateways her.
 
 Bevor Sie beginnen: Jeder DPT von com.Objects sollte in Ihrem ETS-Projekt festgelegt werden. Jedes Gerät sollte nach Ihrer Einrichtungsstruktur sortiert sein.
 
@@ -23,7 +23,7 @@ Bevor Sie beginnen: Jeder DPT von com.Objects sollte in Ihrem ETS-Projekt festge
 * Importieren der Datei "knxproj"
 * Generieren einer ETS-ähnlichen Objektstruktur
 * Finden und Kombinieren von Act-Channel und State-Channel (Heuristik)
-* Aktualisierung aller Status beim Start
+* Aktualisierung aller Zustände beim Start
 * Senden eines READ an den KNX-Bus, während auf das Statusobjekt geschrieben wird
 * Sortieren von Kanälen zu Räumen
 
@@ -60,20 +60,20 @@ Wenn der Adapter erfolgreich gestartet wird, stehen Ihre Datenpunkte für alles 
 ### Datenpunkttypen
 Alle DPTs gemäß "Systemspezifikationen, Interworking, Datenpunkttypen" der KNX Association sind verfügbar. Das bedeutet, dass Sie zwei Arten von Informationen erhalten können: 1) einen Wert oder eine Zeichenfolge 2) durch Kommas getrennte Werte oder ein Array von Werten (im Moment weiß ich nicht, wie ich besser damit umgehen soll)
 
-Beispielsweise wird ein DPT5.001 als vorzeichenlose Ganzzahl mit 8-Bit codiert. Dies ergibt einen einzelnen Wert. Der DPT3.007 (Control Dimming) ist als 1Bit (Boolean) + 3Bit (Int ohne Vorzeichen) codiert.
+Beispielsweise wird ein DPT5.001 als vorzeichenlose Ganzzahl mit 8 Bit codiert. Dies ergibt einen einzelnen Wert. Der DPT3.007 (Control Dimming) ist als 1Bit (Boolean) + 3Bit (Int ohne Vorzeichen) codiert.
 Dies führt z.B. in einem Wert wie "0,5", wobei "0" "Abnahme" und "5" die Anzahl der Intervalle bedeutet.
 
 ## Wie werden die Datenpunkte entstehen?
 ### 1) Auslesen aller Kommunikationsobjektreferenzen (im folgenden KOR)
-Es werden die Gruppenaddressreferenz (im folgenden GAR) identifiziert. Ausserdem erhalten der erste gehört die Attribut write = yes und read = no. Alle betreffenden GAR IDs werden nur den DPT empfangen
+Es werden die Gruppenaddressreferenz (im folgenden GAR) IDs der betreffenden DPT der KOR gehören, wenn er vorhanden ist. Ausserdem erhalten der erste gehört die Attribut write = yes und read = no. Alle betreffenden GAR IDs werden nur den DPT empfangen
 
 ### 2) Erzeugen der Gruppenadressstruktur (im folgenden GAS)
-Hier wird die GAS-Anzeige der GAR-IDs erhalten und auch die DPTs verloren, fällt stirbt unter 1) noch nicht erwartet ist.
+Hier wird die GAS-Anzeige der GAR-IDs entfernt und auch die DPTs verkauft, fällt stirbt unter 1) noch nicht erwartet ist.
 
 ### 3) Herausfinden der Schalt- und Statusaddressen
 Im ETS-Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Betrachtungsprüfung aller Gruppenadressnamen durch mit der Auswertung auf Status und Staat.
 Wird ein Pärchen gefunden, wird mehr als 90% gefunden, dann wird entschieden, dass die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei heißt GA1 das schreiben = wahr und lesen = falsch und GA2 das schreiben = falsch und lesen = wahr.
-Werden werden die DPT abgeklagt aus der politischen korrespondierenden GA. Aus diesem Grund ist es anders, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
+Werden werden die DPT abgezogen aus der entsprechendenig korrespondierenden GA. Aus diesem Grund ist es anders, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
 
 Weiterhin werden die Flaggen in den Gerätekonfigurationen betrachtet. Dabei werden die Flaggen wie folgt gehört:
 
@@ -104,25 +104,37 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 * einheitliche Beschriftung der GA-Namen (z.B "EG Wohnen Decke Licht schalten" und "EG Wohnen Decke Licht schalten status")
 * Vermeidung von Sonderzeichen ",. /; \ &% $ § []".
 
-2) Prüfen ob das KNX / LAN GW befindetbar ist. Wenn es das nicht ist, versucht der Adapter sich zu ändern.
+2) Prüfen ob das KNX / LAN GW befindetbar ist. Wenn es das nicht ist, wird der Adapter sich selbst zugegeben.
 
-3) Physikalische Adresse richtig gewählt (wichtig beim Einsatz von Linienkopplern). !!! ACHTUNG: Die hier ist die physikalische Adresse ist NICHT die Adresse des LAN Gateways und darf nicht auf 0 enden !!!
+3) Physikalische Adresse richtig gewählt (wichtig beim Einsatz von Linienkopplern). !!! ACHTUNG: Die hier ist die physikalische Adresse ist nicht die Adresse des LAN Gateways und darf nicht auf 0 enden !!!
 
 4) Der Port der LAN Schnittstelle ist i.d.R. 3671
 
 5.
 
 ## Geplante Funktionen
+<<<<<<< KOPF
+
+=======
+
 =======
 
 ## Geplante Funktionen
+>>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
+
 * Hinzufügen von Adressen zur Objektbeschreibung (ID)
 * selektiver Import von knx-Projekt
 * Knotenversion> 8.9.4 erforderlich!
 
 ## Changelog
+<<<<<<< HEAD
+### 1.0.45 (2021_03_22)
+* import of ETS v5.7.5 projects
+
+=======
+>>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
 ### 1.0.44 (2021_01_22)
-* fixed act and state handling 
+* fixed act and state handling
 * added some new datapoint types
 * fix facility and room recognition and device allocation
 

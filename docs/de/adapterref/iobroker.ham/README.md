@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ham/README.md
 title: ioBroker Homebridge Zubehörmanager
-hash: LqJkGBTKLwpEowhRXJMqL8JiCgbQgeamsXQKiRqqzsI=
+hash: VVjUsOWBM3T0R4hTH7h7G0A7fshotq1t3rSBmkuux4A=
 ---
 ![Logo](../../../en/adapterref/iobroker.ham/admin/ham.png)
 
@@ -12,10 +12,9 @@ hash: LqJkGBTKLwpEowhRXJMqL8JiCgbQgeamsXQKiRqqzsI=
 ![Anzahl der Installationen (spätestens)](https://iobroker.live/badges/ham-installed.svg)
 ![Anzahl der Installationen (stabil)](https://iobroker.live/badges/ham-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/ioBroker/iobroker.ham.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/ioBroker/ioBroker.ham.svg)
 ![NPM](https://nodei.co/npm/iobroker.ham.png?downloads=true)
 
-# IoBroker Homebridge Zubehörmanager
+# IoBroker Homebridge Zubehörmanager [![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/ham/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 ** Tests: ** ![Testen und freigeben](https://github.com/ioBroker/ioBroker.ham/workflows/Test%20and%20Release/badge.svg)
 
 Verwenden Sie Homebridge-Plugins in ioBroker oder führen Sie eine global installierte Homebridge als ioBroker-Adapter aus.
@@ -62,7 +61,7 @@ Damit dies funktioniert, müssen Sie den Speicherort des globalen Knotenmodulord
 * homebridge-homee v0.2.4 - Ein vollwertiges, aktuelles Plugin für Homee
 * homebridge-ikea-tradfri-gateway v1.0.26 - Tradfri
 * homebridge-noolite v0.0.29 - Noolite über USB MTRF-64- oder МТRF-64-Module
-* homebridge-platform-wemo v1.0.1 - Belkin WeMo Platform Plugin
+* homebridge-platform-wemo v1.0.1 - Belkin WeMo Platform-Plugin
 * homebridge-saisone v1.0.1 - Ein Plugin zur Anzeige der aktuellen Jahreszeit.
 * homebridge-vera v0.8.2 - VeraLink ist eine Anwendung für Z-Wave-Zubehör von Vera (Node.js 8.11.3).
 
@@ -74,8 +73,9 @@ Damit dies funktioniert, müssen Sie den Speicherort des globalen Knotenmodulord
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* (Apollon77) update homebridge and wrapper to 1.3.2 (latest as of today). IMPORTANT: Requires also homebridge 1.3.x installed when using global mode and local mode will update to 1.3.x too! Check your plugins for updates!
+### 4.0.1 (2021-03-24)
+* (Apollon77) update homebridge and wrapper to 1.3.4 (latest as of today). IMPORTANT: Requires also homebridge 1.3.x installed when using global mode and local mode will update to 1.3.x too! Check your plugins for updates!
+* (UncleSamSwiss) Add an experimental version of new plugin selection and configuration tab - TRY IT OUT!
 * (Apollon77) IMPORTANT: Configurations in local/global mode with child bridges will NOT work because ioBroker can not access the data on the child bridge processes!
 
 ### 3.0.2 (2020-11-29)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
+hash: VOEU6debzsADBNNFLtInlFVRClI/z3ueG0mmZ5SUs9E=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -40,7 +40,7 @@ Gehen Sie zur Installation wie folgt vor:
 
 ## Steuern Ihrer Geräte
 Alle derzeit unterstützten und dokumentierten Aktionen für alle Geräte sind implementiert (API V1.0.4).
-> Bitte denken Sie daran, dass Aktionen nur funktionieren, wenn Sie Ihr Gerät in den entsprechenden Zustand versetzen (z. B. Mobile Control, PowerOn, ...).
+> Bitte denken Sie daran, dass Aktionen nur funktionieren, wenn Sie Ihr Gerät in den entsprechenden Zustand versetzen (z. B. Mobile Control, powerOn, ...).
 Weitere Informationen zu Aktionen finden Sie in [Miele-Dokumentation](#documentation).
 
 ## Bekannte Probleme
@@ -76,7 +76,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHL- / GEFRIERKOMBINATION |
+ | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |
@@ -127,7 +127,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 | 2 | Automatisches Programm |
 | 3 | Reinigungs- / Pflegeprogramm |
 
-### Trocknungsschritt / Trockenstufe
+### TrocknenSchritt / Trockenstufe
  | Rohwert | Staat |
  |----------|-------|
  | 0 | Extra trocken |
@@ -163,9 +163,16 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 | 532 | "Flusen ausspülen" | Waschtrockner |
 
 ## Urheberrechte ©
-Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
+Copyright (c) 2019, 2021 grizzelbee <open.source@hingsen.de>
 
 ## Changelog
+### 4.0.1 (2021-03-23) (Sign of the cross)
+*  (grizzelbee) Fix: [96](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/96) Added missing ACTIONS.Action_Information again
+*  (grizzelbee) Fix: [97](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/97) removed unneeded additional "VentilationStep/Lüfterstufe" in path and fixed warning with this. VentilationStep-switch should work properly now.
+*  (grizzelbee) Fix: [98](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/98) Color-Action has now valid type 'String'
+*  (grizzelbee) Fix: Power switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+*  (grizzelbee) Fix: Light switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+
 ### 4.0.0 (2021-03-18) (Symphony of life)
 > ***Hint:*** The adapter received a complete code refactoring! This means that most of the code has been changed and some parts are working now differently than ever before. Update with care and read the change log!
 *  (grizzelbee) New: FULL support of Miele cloud API v1.0.4

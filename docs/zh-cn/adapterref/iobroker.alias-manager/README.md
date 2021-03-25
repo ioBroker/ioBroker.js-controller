@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alias-manager/README.md
 title: ioBroker.alias-manager
-hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
+hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 ---
 ![标识](../../../en/adapterref/iobroker.alias-manager/admin/alias-manager.png)
 
@@ -24,24 +24,24 @@ hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
 ![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_1.png)
 
 *（1）点击“管理别名”
-*（2）要创建新别名，请在“ NEW ALIAS”上滑动或
+*（2）要创建新别名，请点击“ NEW ALIAS”或
 *（3）选择一个现有的别名进行编辑
 
-![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_2.png)
+![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_2b.png)
 
 *（1）然后，您将找到一个具有此别名常规设置的区域，例如名称或常用角色
 *（2）在下面，您将找到一个列表，其中包含别名的所有数据点
-*（3）您可以将数据点添加到此列表或
-*（4）通过单击垃圾图标删除数据点
+*（3）您可以通过添加一个空的或通过选择现有的iobroker数据点并将其设置复制到新的别名数据点来将别名数据点添加到此列表中
+*（4）您可以通过单击垃圾图标来删除数据点
 *每个数据点都有几个用于配置它的字段：
     *在灰色区域，您可以设置名称或删除数据点
     *在蓝色区域中，您可以配置角色，类型和-可选-单位
-*在绿色区域中，您可以设置可选的最小值和最大值，并确定数据点是否应为只读（common.write为关闭状态）以及是否可以访问其值（common.read为打开状态），这将是大多数情况下的正确设置情况）
+*在绿色区域中，您可以设置可选的最小值和最大值，并确定数据点是否应为只读（common.write为关闭状态）以及是否可以访问其值（common.read为打开状态）-这将是大多数情况下的正确设置情况）
 *在红色区域中，您可以：
 *（5）配置链接到该别名数据点的原始ioBroker数据点。两者（原始数据点和别名数据点）都保持同步。
 *（6）此外，您可以配置读取和写入的转换功能。
 *示例：如果将“ val / 10”设置为“ Read-Function”，则aias-datapoint的值将始终为原始数据点的10％。
-*在大多数情况下，您随后将“ val * 10”配置为“写功能”，以在写入别名数据点时也保持此比率。
+*在大多数情况下，您随后将“ val * 10”配置为“写入功能”，以在写入别名数据点时也保持此比率。
 *请在ioBroker-documenation中的https://www.iobroker.net/#en/documentation/dev/aliases.md下了解有关别名的更多信息
 
 ![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_3.png)
@@ -60,7 +60,7 @@ hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
 *您的风扇带有多个数据点，例如“ SET”，“ ERROR”和“ UNREACH”
 *这些别名数据点链接到原始数据点，例如``hm-rpc.0.JEQ0698034.1.STATE''，``hm-rpc.0.JEQ0698034.0.ERROR''和``hm-rpc.0 .JEQ0698034.0.UNREACH``
 *现在，如果您的设备坏了，必须更换一个新设备，其序列号将会更改，例如，更改为ASDF1234
-*要一次更新所有别名数据点中的所有链接，可以搜索hm-rpc.0.JEQ0698034并将其替换为hm-rpc.0.ASDF1234
+*要一次性更新所有别名数据点中的所有链接，可以搜索hm-rpc.0.JEQ0698034并将其替换为hm-rpc.0.ASDF1234
 *在创建与旧别名相似的新别名时，这也很有用。只需复制别名，设置新的ID和名称，然后使用替换功能即可调整链接的数据点
 
 ![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_5.png)
@@ -72,12 +72,22 @@ hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
 
 ## Changelog
 
+### 0.0.8 (2021-03-22)
+* (sbormann) Added ability to create alias-datapoint from existing datapoint.
+
+### 0.0.7 (2021-03-21)
+* (sbormann) Fixed typos.
+* (sbormann) Changed the way ioBroker-Objects are fetched (much faster).
+* (sbormann) Added copy-button to datapoints.
+* (sbormann) Empty fields are now removed (before they were set to null).
+* (sbormann) Changed mode to onlyWWW.
+
 ### 0.0.6 (2021-01-18)
-* (sbormann) Added delete datapoint
-* (sbormann) Some fixes 
+* (sbormann) Added delete datapoint.
+* (sbormann) Some fixes .
 
 ### 0.0.1
-* (sbormann) Initial release
+* (sbormann) Initial release.
 
 ## License
 MIT License

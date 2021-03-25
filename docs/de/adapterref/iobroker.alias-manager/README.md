@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alias-manager/README.md
 title: ioBroker.alias-manager
-hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
+hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 ---
 ![Logo](../../../en/adapterref/iobroker.alias-manager/admin/alias-manager.png)
 
@@ -27,12 +27,12 @@ Verwaltet und erstellt Aliase.
 * (2) Um einen neuen Alias zu erstellen, klicken Sie auf 'NEUE ALIAS' oder
 * (3) Wählen Sie einen vorhandenen Alias zum Bearbeiten aus
 
-![Bildschirmfoto](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_2.png)
+![Bildschirmfoto](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_2b.png)
 
 * (1) Sie finden dann einen Bereich mit allgemeinen Einstellungen dieses Alias, wie dem Namen oder der allgemeinen Rolle
 * (2) Nachfolgend finden Sie eine Liste mit allen Datenpunkten des Alias
-* (3) Sie können dieser Liste Datenpunkte hinzufügen oder
-* (4) Löschen Sie Datenpunkte, indem Sie auf das Müllsymbol klicken
+* (3) Sie können dieser Liste Alias-Datenpunkte hinzufügen, indem Sie entweder einen leeren hinzufügen oder einen vorhandenen iobroker-Datenpunkt auswählen und seine Einstellungen auf einen neuen Alias-Datenpunkt kopieren
+* (4) Sie können Datenpunkte löschen, indem Sie auf das Müllsymbol klicken
 * Jeder Datenpunkt verfügt über mehrere Felder, um ihn zu konfigurieren:
     * Im grauen Bereich können Sie den Namen festlegen oder den Datenpunkt löschen
     * Im blauen Bereich können Sie die Rolle, den Typ und - optional - die Einheit konfigurieren
@@ -72,12 +72,22 @@ Verwaltet und erstellt Aliase.
 
 ## Changelog
 
+### 0.0.8 (2021-03-22)
+* (sbormann) Added ability to create alias-datapoint from existing datapoint.
+
+### 0.0.7 (2021-03-21)
+* (sbormann) Fixed typos.
+* (sbormann) Changed the way ioBroker-Objects are fetched (much faster).
+* (sbormann) Added copy-button to datapoints.
+* (sbormann) Empty fields are now removed (before they were set to null).
+* (sbormann) Changed mode to onlyWWW.
+
 ### 0.0.6 (2021-01-18)
-* (sbormann) Added delete datapoint
-* (sbormann) Some fixes 
+* (sbormann) Added delete datapoint.
+* (sbormann) Some fixes .
 
 ### 0.0.1
-* (sbormann) Initial release
+* (sbormann) Initial release.
 
 ## License
 MIT License

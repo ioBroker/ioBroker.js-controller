@@ -17,13 +17,15 @@ The open JSON-interface (offene Json-Schnittstelle) has to be activated in the S
 
 ### Basic settings
 
-Set Solarlog - IP-address (192.XXX.X.XXX), port (optional) and polling - interval (in milliseconds, minimum 10s, recommended 30s or more).
+Set Solarlog - IP-address (192.XXX.X.XXX), port (optional) and polling - interval for consumption/production in seconds ('live'- data, min 10s).
 
 Security: you can activate the 'user' - password in your Solarlog and the 'user login activated' checkbox & add your password in the adapter config or you can run Solarlog and adapter without user password. If user-login is activated, it is recommended to stop the adapter while using the solarlog - user interface (otherwise you need to re-login after every request of the adapter).
 
 ### Advanced settings
 
 Check if all inverter / submeters / devices / smart energy - data is to be collected.
+
+Set polling - interval for average & sum up values in minutes (min 5min).
 
 Check if historical data is to be collected and set the time of day when the historical data objects will be updated.
 
@@ -38,7 +40,12 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
+### 2.1.0
+
+-   Cockpit-Data (consumption/production/battery/feed) added. Polling structure optimized for a faster polling of certain values ('live'-data).
+
 ### 2.0.2
+
 -   smart energy 'switch group' data added.
 
 ### 2.0.1

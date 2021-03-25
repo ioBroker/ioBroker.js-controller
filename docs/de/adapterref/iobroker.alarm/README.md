@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: KDbrlsVux+RIy0pbsUg2ijd5L/i1q4vKiyC/NSBtKP8=
+hash: OJ0LLGitVyh0vmRVsJQPP1GdFu053rxmRODedfsNC5A=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -25,7 +25,7 @@ hash: KDbrlsVux+RIy0pbsUg2ijd5L/i1q4vKiyC/NSBtKP8=
 
 ## IoBroker Alarm
 Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
-Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Einstellungenungen werden im Reiter Richtlinienungen angelegt.
+Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z. B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Einstellungenungen werden im Reiter Interessenungen anschaulich.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -35,24 +35,26 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung, wenn man einen Verspätung Datenpunkt hat
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf wahrheitsgemäß
 - Alarmverzögerung -> Vertragsfrist bis Einbruch Rechte wird wird
-- Auslösezeit bei Warnungen /> Sirene innen -> Bei Auslösung des berechtigungskreises oder scharf innen kreises, wird der jeweils zugehörigen Datenpunkt für die Zeit auf wahres Vermögen
+- Auslösezeit bei Warnungen />
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab-Anweisungen
-Berechtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
+Berechtigungen über Andere Adapter wie z. B. Telegramm, Email oder andere.
 [Probleme](#Probleme)
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tabschauen
-Hier werden die Kreise der Anlage Infrastruktur.
+Hier werden die Kreise der Anlage Dienstleistungen.
 * die Namen der Staaten lassen sich ändern *
 
-Der Alarmkreis hat die richtigen „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Kreisen. Er dient zur eigentlichen Wahrnehmung der Anlage. Dies ist der Vollschutz einer Alarmanlage Der Meldekreis dient nur zur Meldung, während der scharfen, scharfen und nach der Nachtruhe.
+Der Alarmkreis hat den Status „hoch" und den Hut bei aktivierter Anlage (scharf) Vorrang vor allen anderen Kreisen Der Meldekreis dient nur der Meldung, der der starken, des scharfen Praktikanten und der Nachtruhe dient.
 * Es ist möglich möglich, dass man für einen Staat, den Haken bei allen drei Kreisen macht. *
 
-Dies ist ein Mann, der Kontakt hat, der Alarmkreis nicht sofort reagiert, kann man das Häckchen bei stiller Alarm wird. Haupteinstellungen, der Alarm Rechte.
+Diesen Mann einen Kontakt haben, den Alarmkreis nicht sofort verlassen soll, kann man das Häkchen bei "stiller Alarm" bekommen, werden wird nach Ablauf der Hauptbesinstellungen, der Alarm wird.
+
+Dies ist der Grund, warum die Häkchen bei "negieren" gesetzt werden.
 
 Die Kreise werden folgender gehört:
 
@@ -63,12 +65,12 @@ Alarmanlage lässt sich nicht schützen (scharf schalten) wenn ein konfigurierte
 Alle hier konfigurierten Staaten werden beim Zustand scharf intern intern und nicht unter den den Alarm Alarm aus.
 
 #### Meldekreis:
-Der endgültige die konfigurierten Staaten auf Ansprüche und meldet stirbt.
+Der Zugang die konfigurierten Staaten auf Ansprüche und meldet stirbt.
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Sprachausgabe
-Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses.
+Ist eine mögliche Sprachausgabe z. B. bei der Regelung des Zustandses, der sich dem hier mit den gleichen Sätzen konfigurieren.
 * Man muss sich sicher sein, das der Datenpunkte, mit einem Text werden werden können! ZUM BEISPIEL. "sayit.0.tts" *
 
 Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen, kann diese Option anlassen.
@@ -76,15 +78,23 @@ Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen, kann diese Opt
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Belohnungen
-Hier ist es möglich. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
-Es lässt sich somit somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
+Hier ist es möglich Adapter interne Zustände direkt mit Überwachungszuständen zu verbundenen Rechten. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
+Es lässt sich somit somit z. B. bei Beginn der Nachtruhe, eine Verriegelung des Türschlosses realisieren.
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
 #### Eingabeverknüpfungen
-Auslöser -> any = es wird bei jeder Änderung getriggert ne = es wird nur getriggert wenn der Wert sich verändert
+Auslöser -> any = es wird bei jeder Änderung getriggert ne = es wird nur getriggert, wenn der Wert sich verändert
 
 Auslösewert -> Ist der Wert, auf welche getriggert werden soll
 
+----------------------------------------------------------------------------------------------------------------------
+
+### Tab Andere Alarme
+Es steht eine zwei frei konfigurierbare Überwachungskreise zu Verfügung, diese werden bei der Kontrolleung des Zustandes der Alarmanlage geführt! Als Voreinstellung sind diese als Feuer- und Wasseralarm beschriftet. In der Gesamtheit sind diese als Kreise 1 und 2 beschriftet und an den Zahlen zu erkennen.
+
+Dies ist der Grund, warum die Häkchen bei "negieren" gesetzt werden.
+
+#### Es ist wahr zu gehören, dass keine Staaten aus dem eigentlichen Hauptüberwachungskreisen gehören werden!
 ----------------------------------------------------------------------------------------------------------------------
 
 Der Adapter heißt eine ganze Anzahl an Staaten:
@@ -93,14 +103,14 @@ Der Adapter heißt eine ganze Anzahl an Staaten:
 Das sind die eigentlichen Staaten um die Alarmanlage zu verwalten.
 
 - use.activate_nightrest -> Aktivierung der Nachtruhe
-- use.activate_sharp_inside_circuit -> Wahrnehmung der Wahrnehmung des Warnkreises
+- use.activate_sharp_inside_circuit -> Wahrnehmung der Wahrnehmung des Warnkreises (intern scharf)
 - use.disable -> Deaktivierung der Anlage
 - use.enable -> Alarm der Anlage
 - use.enable_with_delay -> Alarm der Anlage mit Anlagenzeit
 - use.list -> Deaktivierung
-- use.quit_changes -> Rücksetzen der Staaten *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
+- use.quit_changes -> Rücksetzen der Zustände *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed, other_alarms.one_changes, other_alarms.two_changes*
 - use.toggle_password -> Deaktivierung / Alarm der Anlage mit Passwort
-- use.toggle_with_delay -> Deaktivierung / Alarm der Einrichtung mit Alarmzeitung
+- use.toggle_with_delay -> Deaktivierung
 - use.toggle_with_delay_and_password -> Deaktivierung / Alarm der Anlage mit Passwort und Handlungenzeit
 - use.panic -> Händische Auslösung der Alarmanlage, auch wenn diese deaktiviert ist
 
@@ -113,15 +123,20 @@ Hier lässte sich der Zustand der Anlage ablesen.
 Liefert Informationsinformationen wie z.B. welche "Türen offen sind" oder einen Protokollzustand.
 Der log_today Zustand wird um Mitternacht geleert.
 
+#### "alarm.x.other_alarms ...."
+Beinhaltet die Informationen für die "andere" Alarmkreise 1 + 2.
+
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Probleme
-- wenn man ein Telegramm oder eine Erklärung über das + hin schnittgt, kann man nur ein Zustand der Instanz verloren und man muss bis auf *telegramm.0* alles lesen.
+- wenn man ein Telegramm oder eine Erklärung über das + hin schnittgt, kann man nur ein Staat der Instanz verloren und man muss bis auf *telegramm.0* alles lesen.
 
 #### Wichtige, die Berechtigung dieses Adapters zusätzliche auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Berechtigung!
 
 ## Changelog
 
+#### 2.0.0 (22.03.2021)
+* (misanorot) added other alarms
 
 #### 1.9.0 (08.01.2021)
 * (misanorot) added html states and fixed little issues
@@ -201,7 +216,7 @@ Der log_today Zustand wird um Mitternacht geleert.
 ## License
 MIT License
 
-Copyright (c) 2019-2020 misanorot <audi16v@gmx.de>
+Copyright (c) 2019-2021 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

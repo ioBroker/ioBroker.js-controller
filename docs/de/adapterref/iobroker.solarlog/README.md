@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: JrCGjlDBD6R6mF+NNj8ajarvw7LOIHac0YU/8vcMuqg=
+hash: kKAdXDlNvQdAVqIsZmi5a6+6azXQzT1PO2eqnZNa3Qk=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -20,16 +20,18 @@ Die offene JSON-Schnittstelle muss im Konfigurationsmenü des Solarlog aktiviert
 
 ## Adapter - Einstellungen
 ### Grundeinstellungen
-Stellen Sie Solarlog - IP-Adresse (192.XXX.X.XXX), Port (optional) und Abfrageintervall (in Millisekunden, mindestens 10 Sekunden, empfohlenen 30 Sekunden oder mehr) ein.
+Stellen Sie Solarlog - IP-Adresse (192.XXX.X.XXX), Port (optional) und Abfrageintervall für Verbrauch / Produktion in Sekunden ein ('Live'-Daten, min 10s).
 
-Sicherheit: Sie können das Kennwort 'Benutzer' in Ihrem Solarlog und das Kontrollkästchen 'Benutzeranmeldung aktiviert' aktivieren und Ihr Kennwort in der Adapterkonfiguration hinzufügen oder Solarlog und Adapter ohne Benutzerkennwort ausführen. Wenn die Benutzeranmeldung aktiviert ist, wird empfohlen, den Adapter zu stoppen, während Sie die Solarlog-Benutzeroberfläche verwenden (andernfalls müssen Sie sich nach jeder Anforderung des Adapters erneut anmelden).
+Sicherheit: Sie können das Kennwort 'Benutzer' in Ihrem Solarlog und das Kontrollkästchen 'Benutzeranmeldung aktiviert' aktivieren und Ihr Kennwort in der Adapterkonfiguration hinzufügen oder Solarlog und Adapter ohne Benutzerkennwort ausführen. Wenn die Benutzeranmeldung aktiviert ist, wird empfohlen, den Adapter während der Verwendung der Solarlog-Benutzeroberfläche zu stoppen (andernfalls müssen Sie sich nach jeder Anforderung des Adapters erneut anmelden).
 
 ### Erweiterte Einstellungen
 Überprüfen Sie, ob alle Wechselrichter / Submeter / Geräte / Smart Energy - Daten erfasst werden sollen.
 
+Stellen Sie das Abfrageintervall für Durchschnitts- und Summenwerte in Minuten (min. 5 Minuten) ein.
+
 Überprüfen Sie, ob historische Daten erfasst werden sollen, und legen Sie die Tageszeit fest, zu der die historischen Datenobjekte aktualisiert werden.
 
-Prognose: Optional erhält der Adapter Prognosedaten mithilfe der Forecast.Solar-API. Tatsächlich werden die heutigen und morgigen Gesamt-kWh vorhergesagt und jede Stunde aktualisiert. Detailliertere oder zusätzliche Daten sind auf Anfrage erhältlich (bitte öffnen Sie ein Problem).
+Prognose: Optional erhält der Adapter Prognosedaten mithilfe der Forecast.Solar-API. Tatsächlich werden die Gesamt-kWh von heute und morgen vorhergesagt und jede Stunde aktualisiert. Detailliertere oder zusätzliche Daten sind auf Anfrage erhältlich (bitte öffnen Sie ein Problem).
 
 ## Hardware
 Getestet am: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
@@ -38,7 +40,12 @@ SolarLog 50: Es gibt keine offenen JSON-Interface @ SolarLog 50-Geräte. Bestimm
 
 ## Changelog
 
+### 2.1.0
+
+-   Cockpit-Data (consumption/production/battery/feed) added. Polling structure optimized for a faster polling of certain values ('live'-data).
+
 ### 2.0.2
+
 -   smart energy 'switch group' data added.
 
 ### 2.0.1

@@ -23,11 +23,11 @@ Manages and creates aliases.
 * (2) To create a new alias, klick on 'NEW ALIAS' or
 * (3) Select an existing alias to edit
 
-![Screenshot](img/manual_screenshot_2.png)
+![Screenshot](img/manual_screenshot_2b.png)
 * (1) You will then find an area with general settings of this alias, like the name or the common role
 * (2) Below you will find a list with all the datapoints of the alias
-* (3) You can add datapoints to this list or
-* (4) Delete datapoints by clicking on the garbage-icon
+* (3) You can add alias-datapoints to this list either by adding an empty one or by selecting an existing iobroker-datapoint and copy its settings to a new alias-datapoint
+* (4) You can delete datapoints by clicking on the garbage-icon
 * Every datapoint has several fields to configure it:
     * In the grey area you may set the name or delete the datapoint
     * In the blue area you can configure the role, the type and - optional - the unit
@@ -65,6 +65,9 @@ Here you can:
 * (3) Finally you can delete the entire Alias by clicking on 'DELETE ALIAS'
 
 ## Changelog
+
+### 0.0.8 (2021-03-22)
+* (sbormann) Added ability to create alias-datapoint from existing datapoint.
 
 ### 0.0.7 (2021-03-21)
 * (sbormann) Fixed typos.

@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.32
+
+- correct selection of last recent trips
+  
 ### 0.0.31
 
 - enable multiple selection of trip types

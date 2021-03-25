@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
+hash: VOEU6debzsADBNNFLtInlFVRClI/z3ueG0mmZ5SUs9E=
 ---
 ![标识](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -41,15 +41,15 @@ hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
 ##控制您的设备
 已实现所有设备当前所有受支持和记录的操作（API V1.0.4）。
 >请记住，仅当您将设备置于适当的状态（例如，Mobile Control，powerOn等）时，“操作”才起作用。
-请参阅[Miele文档](#documentation)有关动作的更多信息。
+请参阅[Miele文档](#documentation)了解有关操作的更多信息。
 
 ＃＃ 已知的问题
-* 没有
+* 没有任何
 
 ##文档
 请主要参考Miele发布的主要API文档
 
-* [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
+* [一般文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
 有2种可用的数据点。作为人类可读的文本和数字。
@@ -163,9 +163,16 @@ hash: Ew5C/WAqxQyCGVP/+828vB0zzLpiKzpAD/T+7SwXc8A=
 | 532 | “弗吕森·奥斯普兰” |洗衣机烘干机|
 
 ##版权
-版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
+版权所有（c）2019，2021 grizzelbee <open.source@hingsen.de>
 
 ## Changelog
+### 4.0.1 (2021-03-23) (Sign of the cross)
+*  (grizzelbee) Fix: [96](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/96) Added missing ACTIONS.Action_Information again
+*  (grizzelbee) Fix: [97](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/97) removed unneeded additional "VentilationStep/Lüfterstufe" in path and fixed warning with this. VentilationStep-switch should work properly now.
+*  (grizzelbee) Fix: [98](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/98) Color-Action has now valid type 'String'
+*  (grizzelbee) Fix: Power switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+*  (grizzelbee) Fix: Light switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+
 ### 4.0.0 (2021-03-18) (Symphony of life)
 > ***Hint:*** The adapter received a complete code refactoring! This means that most of the code has been changed and some parts are working now differently than ever before. Update with care and read the change log!
 *  (grizzelbee) New: FULL support of Miele cloud API v1.0.4

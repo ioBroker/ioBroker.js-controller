@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alias-manager/README.md
 title: ioBroker.alias-manager
-hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
+hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.alias-manager/admin/alias-manager.png)
 
@@ -27,16 +27,16 @@ hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
 * (2) Чтобы создать новый псевдоним, нажмите «NEW ALIAS» или
 * (3) Выберите существующий псевдоним для редактирования
 
-![Скриншот](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_2.png)
+![Скриншот](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_2b.png)
 
 * (1) Затем вы найдете область с общими настройками этого псевдонима, такими как имя или общая роль
 * (2) Ниже вы найдете список со всеми точками данных псевдонима.
-* (3) Вы можете добавить точки данных в этот список или
-* (4) Удалите точки данных, щелкнув значок мусора
+* (3) Вы можете добавить alias-datapoints в этот список, либо добавив пустой, либо выбрав существующий iobroker-datapoint и скопировав его настройки в новый alias-datapoint.
+* (4) Вы можете удалить точки данных, щелкнув значок мусора
 * Каждая точка данных имеет несколько полей для ее настройки:
     * В серой области вы можете установить имя или удалить точку данных
     * В синей области вы можете настроить роль, тип и - необязательно - единицу
-* В зеленой области вы можете установить необязательные минимальные и максимальные значения, а также определить, должна ли точка данных быть доступна только для чтения (common.write отключена) и можно ли получить доступ к ее значению (common.read включен - что будет правильной настройкой для большинства случаи)
+* В зеленой области вы можете установить необязательные минимальные и максимальные значения, а также определить, должна ли точка данных быть доступна только для чтения (common.write отключена), и можно ли получить доступ к ее значению (common.read включен - что будет правильной настройкой для большинства случаи)
 * В красной области вы можете:
 * (5) Настройте исходный ioBroker-datapoint, с которым связан этот псевдоним-datapoint. Оба (исходная точка данных и точка-псевдоним) должны быть синхронизированы.
 * (6) Кроме того, вы можете настроить функции преобразования для чтения и записи.
@@ -72,12 +72,22 @@ hash: G4vVyjNU6QL9zxmYhP4+3lUjdda4Ix6Gw6kwITT/5Og=
 
 ## Changelog
 
+### 0.0.8 (2021-03-22)
+* (sbormann) Added ability to create alias-datapoint from existing datapoint.
+
+### 0.0.7 (2021-03-21)
+* (sbormann) Fixed typos.
+* (sbormann) Changed the way ioBroker-Objects are fetched (much faster).
+* (sbormann) Added copy-button to datapoints.
+* (sbormann) Empty fields are now removed (before they were set to null).
+* (sbormann) Changed mode to onlyWWW.
+
 ### 0.0.6 (2021-01-18)
-* (sbormann) Added delete datapoint
-* (sbormann) Some fixes 
+* (sbormann) Added delete datapoint.
+* (sbormann) Some fixes .
 
 ### 0.0.1
-* (sbormann) Initial release
+* (sbormann) Initial release.
 
 ## License
 MIT License

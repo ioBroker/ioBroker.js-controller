@@ -23,6 +23,11 @@ This adapter imports in real time the position and the extended data from [Tracc
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.0.7 (2021-03-24)
+* (o0shojo0o) bugfix special characters in password or username
+* (o0shojo0o) code refactor
+* (o0shojo0o) better handling with new device or geolocation at runtime
+
 ### 0.0.6 (2021-03-19)
 * (o0shojo0o) adjustments according to the adapter review
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.esphome/README.md
 title: ioBroker.esphome
-hash: i0jIzhp5OlhVc4b6frxgJYvg1A4EbqdBspOSUAQwCHI=
+hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
 ---
 ![标识](../../../en/adapterref/iobroker.esphome/admin/esphome.png)
 
@@ -16,6 +16,8 @@ hash: i0jIzhp5OlhVc4b6frxgJYvg1A4EbqdBspOSUAQwCHI=
 ![NPM](https://nodei.co/npm/iobroker.esphome.png?downloads=true)
 
 ＃ioBroker.esphome
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/ESPHome/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 **测试：**![测试与发布](https://github.com/DrozmotiX/ioBroker.esphome/workflows/Test%20and%20Release/badge.svg)
 
 ## IoBroker的ESPHome适配器
@@ -88,6 +90,9 @@ switch:
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (DutchmanNL) Update Translations
 
 ### 0.1.5 (2021-03-21)
 * (DutchmanNL) Add Translations

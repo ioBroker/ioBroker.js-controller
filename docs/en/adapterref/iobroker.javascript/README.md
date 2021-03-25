@@ -1581,20 +1581,20 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 5.1.4 (2021-03-23)
+* (bluefox) fixed the error with the simulation
+
+### 5.1.3 (2021-03-23)
+* (bluefox) fixed the error in the debugging
+
+### 5.1.2 (2021-03-22)
+* (bluefox) Showed the runtime information for the rules
+
 ### 5.1.1 (2021-03-21)
 * (bluefox) Implemented the debug of the instances from javascript adapter
 
 ### 5.1.0 (2021-03-19)
 * (bluefox) Implemented the debug of scripts possibility
-
-### 5.0.15 (2021-03-13)
-* (bluefox) Rules: added "use trigger value" for the "set action" blocks
-
-### 5.0.14 (2021-03-11)
-* (bluefox) fixed the font for the editor 
-
-### 5.0.12 (2021-03-07)
-* (bluefox) fixed error in blockly
 
 ## License
 

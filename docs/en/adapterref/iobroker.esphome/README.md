@@ -6,6 +6,7 @@
 ![Number of Installations (latest)](http://iobroker.live/badges/esphome-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/esphome-stable.svg)
 [![Dependency Status](https://img.shields.io/david/DrozmotiX/iobroker.esphome.svg)](https://david-dm.org/DrozmotiX/iobroker.esphome)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/ESPHome/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 [![Known Vulnerabilities](https://snyk.io/test/github/DrozmotiX/ioBroker.esphome/badge.svg)](https://snyk.io/test/github/DrozmotiX/ioBroker.esphome)
 
 [![NPM](https://nodei.co/npm/iobroker.esphome.png?downloads=true)](https://nodei.co/npm/iobroker.esphome/)
@@ -85,6 +86,9 @@ switch:
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (DutchmanNL) Update Translations
 
 ### 0.1.5 (2021-03-21)
 * (DutchmanNL) Add Translations
