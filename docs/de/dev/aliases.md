@@ -149,7 +149,7 @@ Seit Version 3.0 des js-controllers können getrennte Status- und Kommando-Daten
             id: {
                 read: 'state.id.to.read.from',
                 write: 'state.id.to.write.to'
-            }
+            },
             read: 'val * 10 + 1',
             write: '(val - 1) / 10'
         }
