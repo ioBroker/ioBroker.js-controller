@@ -1872,11 +1872,11 @@ async function processMessage(msg) {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
 
-    logger.debug(hostLogPrefix + ' Incoming Host message ' + msg.command);
+    logger.debug(`${hostLogPrefix} Incoming Host message ${msg.command}`);
     switch (msg.command) {
         case 'shell':
             if (config.system && config.system.allowShellCommands) {
-                logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + ' execute shell command: ' + msg.message);
+                logger.info(`${hostLogPrefix} ${tools.appName} execute shell command: ${msg.message}`);
                 exec(msg.message, {windowsHide: true}, (err, stdout, stderr) => {
                     if (err) {
                         return logger.error(`${hostLogPrefix} error: ${err}`);
@@ -1886,7 +1886,7 @@ async function processMessage(msg) {
                     logger.error(`${hostLogPrefix} stderr: ${stderr}`);
                 });
             } else {
-                logger.warn(hostLogPrefix + ' ' + tools.appName + ' ' + ' cannot execute shell command "' + msg.message + '" because not enabled in ' + tools.appName +'.json file');
+                logger.warn(`${hostLogPrefix} ${tools.appName} cannot execute shell command "${msg.message}" because not enabled in ${tools.appName}.json file`);
             }
 
             break;
@@ -1894,13 +1894,13 @@ async function processMessage(msg) {
         case 'cmdExec': {
             const args = [__dirname + '/' + tools.appName + '.js'];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
-                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected key "data" with the command as string. Got as "data": ' + JSON.stringify(msg.message.data));
+                logger.warn(`${hostLogPrefix} ${tools.appName} Invalid cmdExec object. Expected key "data" with the command as string. Got as "data": ${JSON.stringify(msg.message.data)}`);
             } else {
                 const cmd = msg.message.data.split(' ');
                 for (let i = 0; i < cmd.length; i++) {
                     args.push(cmd[i]);
                 }
-                logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + args.slice(1).join(' '));
+                logger.info(`${hostLogPrefix} ${tools.appName} ${args.slice(1).join(' ')}`);
 
                 const child = spawn('node', args, {windowsHide: true});
                 if (child.stdout) {
@@ -1914,13 +1914,13 @@ async function processMessage(msg) {
                 if (child.stderr) {
                     child.stderr.on('data', data => {
                         data = data.toString().replace(/\n/g, '');
-                        logger.error(hostLogPrefix + ' ' + tools.appName + ' ' + data);
+                        logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
                         msg.from && sendTo(msg.from, 'cmdStderr', {id: msg.message.id, data: data});
                     });
                 }
 
                 child.on('exit', exitCode => {
-                    logger.info(hostLogPrefix + ' ' + tools.appName + ' exit ' + exitCode);
+                    logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
                     if (msg.from) {
                         sendTo(msg.from, 'cmdExit', {id: msg.message.id, data: exitCode});
                         // Sometimes finished command is lost, recent it
@@ -1941,7 +1941,7 @@ async function processMessage(msg) {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             tools.sendDiagInfo(obj);
                         } catch (err) {
-                            logger.error(hostLogPrefix + ' cannot collect diagnostics: ' + err);
+                            logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
                             tools.sendDiagInfo(null);
                         }
                     }
@@ -2003,14 +2003,14 @@ async function processMessage(msg) {
                                     sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
                                 }
                             } else {
-                                logger.warn(hostLogPrefix + ' Requested repository "' + active + '" does not exist in config.');
+                                logger.warn(`${hostLogPrefix} Requested repository "${active}" does not exist in config.`);
                                 sendTo(msg.from, msg.command, null, msg.callback);
                             }
                         }
                     });
                 });
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2102,7 +2102,7 @@ async function processMessage(msg) {
                 try {
                     ioPack = fs.readJSONSync(__dirname + '/io-package.json');
                 } catch {
-                    logger.error(hostLogPrefix + ' cannot read and parse "' + __dirname + '/io-package.json"');
+                    logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
                 }
                 if (ioPack) {
                     ioPack.common.host = hostname;
@@ -2112,7 +2112,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2129,7 +2129,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2137,7 +2137,7 @@ async function processMessage(msg) {
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {path: __dirname, platform: os.platform()}, msg.callback);
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2155,7 +2155,7 @@ async function processMessage(msg) {
                     }
                     if (_child.stderr) {
                         _child.stderr.on('data', data =>
-                            logger.error(hostLogPrefix + ' ls ' + data));
+                            logger.error(`${hostLogPrefix} ls ${data}`));
                     }
 
                     _child.on('exit', (/*exitCode*/) => {
@@ -2177,7 +2177,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2190,7 +2190,7 @@ async function processMessage(msg) {
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
 
                 if (!fs.existsSync(logFile_)) {
-                    logFile_ = __dirname + '/../../log/' + tools.appName + '.log';
+                    logFile_ = `${__dirname}/../../log/${tools.appName}.log`;
                 }
 
                 if (fs.existsSync(logFile_)) {
@@ -2213,7 +2213,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, [0], msg.callback);
                 }
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2226,7 +2226,7 @@ async function processMessage(msg) {
                 // uptime
                 tools.getHostInfo(objects, (err, data) => {
                     if (err) {
-                        logger.error(hostLogPrefix + ' cannot get getHostInfo: ' + err);
+                        logger.error(`${hostLogPrefix} cannot get getHostInfo: ${err}`);
                     }
                     data = data || {};
                     data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
@@ -2242,7 +2242,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, data, msg.callback);
                 });
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2273,7 +2273,7 @@ async function processMessage(msg) {
 
                 sendTo(msg.from, msg.command, data, msg.callback);
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2298,7 +2298,7 @@ async function processMessage(msg) {
                     }
                 });
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2339,7 +2339,7 @@ async function processMessage(msg) {
                     }
                 });
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2356,7 +2356,7 @@ async function processMessage(msg) {
                 let logs  = [];
 
                 // LogList
-                logs.push('Actual Loglist - ' + JSON.stringify(logList));
+                logs.push(`Actual Loglist - ${JSON.stringify(logList)}`);
 
                 // Read current state of all log subscribers
                 states.getKeys('*.logging', (err, keys) => {
@@ -2372,14 +2372,14 @@ async function processMessage(msg) {
                                             (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))) {
                                             logs.push('Subscriber - ' + id + ' ENABLED');
                                         } else {
-                                            logs && logs.push('Subscriber - ' + id + ' (disabled)');
+                                            logs && logs.push(`Subscriber - ${id} (disabled)`);
                                         }
                                     }
                                 }
                             }
                             setTimeout(() => {
                                 for (let m = 0; m < logs.length; m++) {
-                                    logger.error(hostLogPrefix + ' LOGINFO: ' + logs[m]);
+                                    logger.error(`${hostLogPrefix} LOGINFO: ${logs[m]}`);
                                 }
                                 logs = [];
                             }, 3000);
@@ -2409,7 +2409,7 @@ async function processMessage(msg) {
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
@@ -2419,7 +2419,7 @@ async function processMessage(msg) {
                 // start upload if no tasks running
                 uploadTasks.length === 1 && startAdapterUpload();
             } else {
-                logger.error(hostLogPrefix + ' No adapter name is specified for upload command from  ' + msg.from);
+                logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
             }
             break;
         }
@@ -2435,7 +2435,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
                 }
             } else {
-                logger.info(hostLogPrefix + ' ' + msg.message.id + ' still in installQueue, rebuild will be done with install');
+                logger.info(`${hostLogPrefix} ${msg.message.id} still in installQueue, rebuild will be done with install`);
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, {result: 'pending'}, msg.callback);
                 }
@@ -2462,7 +2462,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, {error}, msg.callback);
                 }
             } else {
-                logger.error(hostLogPrefix + ' No adapter name is specified for readBaseSettings command from  ' + msg.from);
+                logger.error(`${hostLogPrefix} No adapter name is specified for readBaseSettings command from  ${msg.from}`);
             }
             break;
 
