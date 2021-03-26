@@ -32,7 +32,7 @@ Project content:
 - Translator
 
 ## How to create the documentation
-See [how to participate](http://www.iobroker.net/react/)
+See [how to participate](https://www.iobroker.net/#de/documentation/community/styleguidedoc.md)
 
 ## Changelog
 Read the change log [here](CHANGELOG.md).
