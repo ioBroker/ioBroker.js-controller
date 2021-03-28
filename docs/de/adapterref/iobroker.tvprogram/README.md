@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tvprogram/README.md
 title: ioBroker.tvprogram
-hash: nqWOf4ufvn2twgN8hVqOw2cKIwAFr3l7O3vs7fb2QXY=
+hash: cPgdwWrJXbqS7GiB5bHHUoeTEtqBbkObLE5a1q2aq6Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.tvprogram/admin/tvprogram.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.tvprogram.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tvprogram.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/tvprogram-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/tvprogram-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/tvprogram-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/oweitman/iobroker.tvprogram.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/oweitman/ioBroker.tvprogram/badge.svg)
@@ -26,7 +26,7 @@ Die Daten können in verschiedenen Widgets angezeigt werden.
 
 Der Adapter befindet sich in einer Beta-Phase, in der Widgets / Funktionen noch getestet werden. Funktionen / Widgets können hinzugefügt und entfernt oder vollständig ausgetauscht werden.
 
-Verweise auf Probleme oder Funktionsanforderungen können im iobroker-Forum im entsprechenden Thread hinterlassen oder diskutiert werden
+Verweise auf Probleme oder Funktionsanfragen können im iobroker-Forum im entsprechenden Thread hinterlassen oder diskutiert werden
 
 Zum Einrichten muss der Adapter bereits auf die erforderlichen Daten zugegriffen und diese ausgefüllt haben.
 Aufgrund ihrer Größe werden die Daten nicht in Datenpunkten, sondern in Dateien (Linux-Pfad: / opt / iobroker / data-files / tvprogram) und im Speicher des Adapters gespeichert.
@@ -43,7 +43,7 @@ Sie können konfigurieren, wie viele verschiedene Fernsehgeräte oder zumindest 
 
 ### Widgets
 Widgets werden nur in modernen Browsern (Google Chrome, Mozilla Firefox, Opera, Safari) unterstützt.
-Internet Explorer oder Microsoft Edge ohne Chromium (Version <79) werden nicht unterstützt.
+Nicht unterstützt Internet Explorer oder Microsoft Edge ohne Chromium (Version <79).
 
 #### Zeit
 Dieses Widget zeigt das aktuelle TV-Programm auf einer Timeline nach TV-Kanal.
@@ -195,7 +195,7 @@ So ändern Sie die Formatierung der abwechselnden Hintergrundfarben der Sendunge
 ```
 
 ### Bereitgestellte Datenpunkte
-Der folgende Datenpunktsatz ist für jedes erstellte Fernsehgerät vorhanden
+Der folgende Satz von Datenpunkten ist für jedes erstellte Fernsehgerät vorhanden
 
 ** Kanalfilter **
 
@@ -226,7 +226,7 @@ Die angegebenen Daten sind
 
 ** selectchannel **
 
-Dieser Datenpunkt wird verwendet, um einen Kanalwechselbefehl mit einem Klick auf das Kanallogo oder das Schaltersymbol in der Detailansicht zu erkennen.
+Dieser Datenpunkt wird verwendet, um einen Kanalwechselbefehl durch Klicken auf das Kanallogo oder das Schaltersymbol in der Detailansicht zu erkennen.
 
 **Show**
 
@@ -297,7 +297,7 @@ Fordern Sie ab sofort alle Lieblingssendungen bis zum Ende der gespeicherten Dat
 
 ** Gültige Parameter sind **
 
-Array von Favoriten
+Reihe von Favoriten
 
 **Kehrt zurück:**
 
@@ -433,7 +433,7 @@ var timer = setInterval(function() {
 },1000*60);
  ```
 
-Um diese Daten zu visualisieren, kann die Widget-JSON-Vorlage des Adapters myTime bei der folgenden Vorlage helfen.
+Um diese Daten zu visualisieren, kann die Widget-JSON-Vorlage des Adapters myTime bei der folgenden Vorlage hilfreich sein.
 Geben Sie als json_oid den Datenpunkt mit der Datensatzliste und als json_template den folgenden Code ein:
 
 ```javascript
@@ -529,11 +529,11 @@ Um diese Vorlage zu verwenden, wählen Sie bitte den Datensatzlisten-Datenpunkt 
 ### Machen
 Widget-Fernsehprogramm:
 
-- Problem: endlose Schriftrolle in Firefox
-- Ideen für weitere Widgets basierend auf dem vorhandenen TV-Programm-Skript
-- Datenadapter für andere Quellen (Internet, Hardware wie Enigma, VU-Box)
+- Datenadapter für andere Quellen (Internet, Hardware wie Enigma, VU-Box). Überlegungen hierzu werden derzeit aufgrund der geringen Nachfrage ausgesetzt
+- ~~ Ideen für weitere Widgets basierend auf dem vorhandenen TV-Programm-Skript ~~
+- ~~ Problem: endlose Schriftrolle in Firefox ~~
 - ~~ zu besprechen: Datenpunkt, mit allen Aufnahmedaten, sollte auf einem Videorecorder-Adapter oder in einem separaten Skript ~~ implementiert werden
-- ~~ responsives Design für Detailansicht-> kein responsives Design für jquery-Dialog möglich, andere Lösung mit festen Layouts für Höhe> Breite ~~ gefunden
+- ~~ Responsive Design für Detailansicht-> Kein Responsive Design für JQuery-Dialog möglich. Es wurde eine andere Lösung mit festen Layouts für Höhe> Breite ~~ gefunden
 - ~~ Problem: kleiner Pixelfehler, wenn der Bildlaufbereich auf der linken Seite vollständig ist ~~
 
 ## Changelog

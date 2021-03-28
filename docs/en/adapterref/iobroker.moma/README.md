@@ -32,12 +32,13 @@ Another solution is to increase the time value for interval0.
 
 MoMa uses the platform independant library 'systeminformation' (https://github.com/sebhildebrandt/systeminformation) to gather information about the computer. Many of the calls are exposed to be used in timer intervalls - see reference below.
 
-MoMa needs at least nodejs version 8 / ES9 / ECMAScript2018.
+MoMa needs at least nodejs version 10.
 
 ## Changelog
 
-### 1.2.8 (2021-03-??)
-* (AWhiteKnight) new fields, systeminformation lib 5.6.7 
+### 1.2.8 (2021-03-26)
+* (AWhiteKnight) eliminate warning messages (issue #52), upgrade to systeminformation lib 5.6.8
+	- in systeminformation many states of currentLoad have been renamed. The old ones will be deleted and the new ones created. Have a look into the logs.
 
 ### 1.2.7 (2020-10-18)
 * (AWhiteKnight) remove leading i in names that are not a number, systeminformation lib 4.27.0 

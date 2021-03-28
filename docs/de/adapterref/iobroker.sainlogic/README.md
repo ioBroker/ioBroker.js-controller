@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sainlogic/README.md
 title: ioBroker.sainlogic
-hash: hod32R3uebNevrTeoMM0luiWFXhD8B8qBXN+vXXSH5E=
+hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
 ---
 ![Logo](../../../en/adapterref/iobroker.sainlogic/admin/sainlogic.png)
 
@@ -27,6 +27,7 @@ Bekannte Arbeitsgeräte:
 1. ELV WS980Wifi
 1. Eurochron EFWS2900 (nur Listener-Modus)
 1. Froggit WH400SE
+1. Froggit DP1500
 1. Sainlogic WS3500 (nur Listener-Modus)
 
 ## Verwendung
@@ -41,7 +42,7 @@ Mit den neuesten Firmware-Versionen unterstützt die Wetterstation das Senden vo
 Verwenden Sie die 'WS View'-App auf Ihrem Mobilgerät, um die Wetterstation zu konfigurieren. Konfigurieren Sie die folgenden Einstellungen für benutzerdefinierte Servereinstellungen:
 
 - Server: IP / Hostname Ihres IOBroker-Servers
-- Pfad: alles, merken Sie es sich einfach für die Adapterkonfiguration
+- Pfad: Alles, merken Sie es sich einfach für die Adapterkonfiguration
 - Port: Jede Zahl zwischen 1024 und 65000 (Standard ist 45000) muss auf Ihrem IOBroker-System eindeutig und frei sein
 - Stations-ID: nicht verwendet
 - Stationsschlüssel: nicht verwendet
@@ -57,7 +58,7 @@ Wählen Sie in der Instanzkonfiguration die Registerkarte 'Listener' und stellen
 - Pfad: Geben Sie denselben Pfad wie in der WS View-App ein
 - URL weiterleiten: Wenn Sie die empfangenen Daten an einen anderen Verbraucher weiterleiten möchten, können Sie eine zusätzliche Adresse angeben. Z.B. Möglicherweise erhalten Sie Daten im WU-Format und möchten diese dennoch an WeatherUnderground weiterleiten.
 
-Speichern.
+Sparen.
 Der Listener startet und wartet auf eingehende Verbindungen. Basierend auf Ihrem Intervall sollte im Protokoll die Meldung "Listener hat Update erhalten: ..." mit den Daten angezeigt werden.
 
 ### Scheduler-Modus:
@@ -71,7 +72,7 @@ Wählen Sie in der Instanzkonfiguration die Registerkarte 'Scheduler' und stelle
 - Port: Geben Sie den Port ein, zu dem eine Verbindung hergestellt werden soll (Standard ist 45000).
 - Intervall: Geben Sie ein Intervall in Sekunden ein (ich würde mindestens 10 Sekunden empfehlen, um das System oder das Netzwerk nicht zu überlasten).
 
-Speichern.
+Sparen.
 
 Der Schheduler startet nach der ersten Intervallzeit und stellt eine Verbindung zur Wetterstation her. Im Protokoll sollte die Meldung "Scheduler zieht nach neuen Daten" angezeigt werden. Wenn Sie den Protokollmodus auf Debuggen einstellen, werden auch die empfangenen Datenzeichenfolgen angezeigt.
 

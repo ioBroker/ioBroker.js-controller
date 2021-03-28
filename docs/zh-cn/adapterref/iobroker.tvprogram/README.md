@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tvprogram/README.md
 title: ioBroker.tv程序
-hash: nqWOf4ufvn2twgN8hVqOw2cKIwAFr3l7O3vs7fb2QXY=
+hash: cPgdwWrJXbqS7GiB5bHHUoeTEtqBbkObLE5a1q2aq6Y=
 ---
 ![标识](../../../en/adapterref/iobroker.tvprogram/admin/tvprogram.png)
 
@@ -26,15 +26,15 @@ hash: nqWOf4ufvn2twgN8hVqOw2cKIwAFr3l7O3vs7fb2QXY=
 
 适配器处于beta阶段，在该阶段中仍在测试小部件/功能，可以添加和删除或完全交换功能/小部件。
 
-可以在iobroker论坛中的相应主题中保留或讨论问题或功能请求的引用
+可以在iobroker论坛中的相应主题中保留或讨论对问题或功能请求的引用
 
 要进行设置，适配器必须已经访问并填充了必要的数据。
-由于其大小，数据不会存储在数据点中，而是存储在文件中（Linux路径：/ opt / iobroker / data-files / tvprogram）和适配器的内存中。
-在配置中，窗口小部件仅需要填充适配器的任何数据点（例如cmd）。
+由于其大小，数据不会存储在数据点中，而是存储在文件（Linux路径：/ opt / iobroker / data-files / tvprogram）和适配器的内存中。
+在配置中，窗口小部件仅需要用适配器的任何数据点（例如cmd）填充。
 小部件会自动搜索所有剩余的数据点。
 
 ##开发人员手册
-该适配器当前只能通过github安装。可以在iobroker中的“适配器”选项卡中，通过github按钮（猫符号）使用专家视图进行操作。
+该适配器当前只能通过github安装。可以在iobroker的“适配器”选项卡中，通过github按钮（猫符号）使用专家视图来完成此操作。
 
 然后在“任何”选项卡中输入github存储库https://github.com/oweitman/ioBroker.tvprogram的URL并安装它。
 
@@ -46,32 +46,32 @@ hash: nqWOf4ufvn2twgN8hVqOw2cKIwAFr3l7O3vs7fb2QXY=
 不支持不带Chromium（版本<79）的Internet Explorer或Microsoft Edge。
 
 ＃＃＃＃ 时间
-该小部件按时间顺序在每个电视频道上显示当前电视节目。
+此小部件按电视频道在时间轴上显示当前的电视节目。
 
 如果通道徽标后面的文本通过显示出来，则必须在小部件中选择背景色。
-通常，为视图或至少为小部件选择显式的前景和背景颜色是一种很好的方法。
+通常，为视图或至少为小部件选择显式的前景色和背景色是一种很好的方法。
 标记位置ist每15秒更新一次。
 
-如果安装后出现问题，并且未正确显示小部件，请从shell尝试以下命令：
+如果安装后出现问题，并且未正确显示窗口小部件，请从shell尝试以下命令：
 
 iobroker上传所有
 
 以下属性可用于在vis中进行配置
 
-|属性|例子描述 |
+|属性|例子说明|
 | --------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
 | tvprogram_oid | tvprogram.0.tv1.cmd |电视节目适配器实例的数据点。 |
-| widthItem | 120 | 30分钟分段的标准宽度（以像素为单位）|
+| widthItem | 120 | 30分钟段的标准宽度（以像素为单位）|
 | heightRow | 35 |每行显示的高度|
 | headerfontpercent | 125 |标题的大小（百分比）（时间）|
-| broadcastfontpercent | 75 |广播中的字符大小（百分比）|
+| broadcastfontpercent | 75 |广播中的字符大小（以百分比为单位）|
 | Highlightcolor |黄色|最喜欢的颜色|
-|标记位置百分比| 25 |标记在小部件宽度中的位置百分比 |
-| dialogwidthpercent | 90 |对话框的大小（以小部件的百分比表示）|
-| dialogheightpercent | 90 |对话框的大小（以小部件的百分比表示）|
+| markpositionpercent | 25 |标记的位置（以小部件宽度的百分比表示）|
+| dialogwidthpercent | 90 |对话框的大小（以小部件的百分比为单位）|
+| dialogheightpercent | 90 |对话框的大小（以小部件的百分比为单位）|
 
 ##### CSS类
-请更改w00001为您的小部件ID
+请将w00001更改为您的小部件ID
 
 更改对话框的格式
 
@@ -119,21 +119,21 @@ iobroker上传所有
 
 以下属性可用于在vis中进行配置
 
-|属性|例子描述 |
+|属性|例子说明|
 | -------------- | -------------------- | --------------------------------------------------- |
 | oid | tvprogram.0.tv 1.cmd |电视节目适配器实例的数据点。 |
 |频道名称|没有显示徽标（关闭）或频道名称|
-| showweekday |是的显示工作日|
-| maxfavorites | 10 |显示的最大收藏夹|
+|表演周日|是的显示工作日|
+| maxfavorites | 10 |最多可显示的收藏夹|
 | Highlightcolor |黄色|最喜欢的颜色|
 
 ＃＃＃＃ 控制
 此小部件显示所有实际广播。您可以单击频道徽标来切换频道。
-您可以单击广播以获取有关广播的详细信息。
+您可以单击广播以获取有关w广播的详细信息。
 
 以下属性可用于在vis中进行配置
 
-|属性|例子描述 |
+|属性|例子说明|
 | --------------------- | ------------------------ | -------------------------------------------------------------------------------------------------- |
 | oid | tvprogram.0.tv1.cmd |电视节目适配器实例的数据点。 |
 |时间| |如果为空，则将显示实际广播。 |
@@ -141,13 +141,13 @@ iobroker上传所有
 |时间| 20：15/200 |如果持续时间，则此时的广播将显示200分钟|
 |时间| 2021-02-15T20：15：00.000Z |如果日期字符串有效，则将显示该时间的广播。记住时区|
 | heightRow | 35 |每行显示的高度|
-| broadcastfontpercent | 75 |广播中的字符大小（百分比）|
+| broadcastfontpercent | 75 |广播中的字符大小（以百分比为单位）|
 | Highlightcolor |黄色|最喜欢的颜色|
-| dialogwidthpercent | 90 |对话框的大小（以小部件的百分比表示）|
-| dialogheightpercent | 90 |对话框的大小（以小部件的百分比表示）|
+| dialogwidthpercent | 90 |对话框的大小（以小部件的百分比为单位）|
+| dialogheightpercent | 90 |对话框的大小（以小部件的百分比为单位）|
 
 ##### CSS类
-请更改w00001为您的小部件ID
+请将w00001更改为您的小部件ID
 
 更改广播的交替背景色的格式
 
@@ -164,23 +164,23 @@ iobroker上传所有
 ＃＃＃＃ 搜索
 使用此小部件，您可以搜索标题内的广播，开始日期以及广播类型。
 输入字段“发件人”已预填实际日期。如果此字段未更改，则搜索从实际时间开始。
-如果将此字段更改为将来或过去的日期，则搜索将从该日期的00:00开始。
+如果您将此字段更改为将来的日期或过去的日期，则搜索将从该日期的00:00开始。
 必须填写/选择输入字段searchtext和category中的一个或两个。
 
 以下属性可用于在vis中进行配置
 
-|属性|例子描述 |
+|属性|例子说明|
 | --------------------- | ------------------- | ---------------------------------------------------- |
 |对象ID | tvprogram.0.tv1.cmd |电视节目适配器实例的数据点。 |
 | maxresults | 10 |列表中的最大结果|
 | heightRow | 35 |每行显示的高度|
-| broadcastfontpercent | 75 |广播中的字符大小（百分比）|
+| broadcastfontpercent | 75 |广播中的字符大小（以百分比为单位）|
 | Highlightcolor |黄色|最喜欢的颜色|
-| dialogwidthpercent | 90 |对话框的大小（以小部件的百分比表示）|
-| dialogheightpercent | 90 |对话框的大小（以小部件的百分比表示）|
+| dialogwidthpercent | 90 |对话框的大小（以小部件的百分比为单位）|
+| dialogheightpercent | 90 |对话框的大小（以小部件的百分比为单位）|
 
 ##### CSS类
-请更改w00001为您的小部件ID
+请将w00001更改为您的小部件ID
 
 更改广播的交替背景色的格式
 
@@ -203,7 +203,7 @@ iobroker上传所有
 
 ** cmd **
 
-此数据点用于小部件和适配器之间的内部通信
+该数据点用于小部件和适配器之间的内部通信
 
 **最喜欢的**
 
@@ -214,7 +214,7 @@ iobroker上传所有
 如果用户单击广播详细信息视图中的“记录”按钮，则将设置此数据点。
 提供的数据是
 
-|领域例子描述 |
+|领域例子说明|
 | ----------- | -------------------------- | ---------------------- |
 | startTime | 2021-01-01T00：10：00 + 01：00 |开始时间 |
 | endTime | 2021-01-01T00：10：30 + 01：00 |结束时间|
@@ -226,11 +226,11 @@ iobroker上传所有
 
 **选择频道**
 
-通过单击详细信息视图中的通道徽标或切换图标，此数据点可用于识别通道切换命令。
+通过单击详细信息视图中的通道徽标或切换图标，此数据点用于识别通道切换命令。
 
 **展示**
 
-此数据点包含在小部件电视程序中是否仅显示收藏夹或所有内容的状态
+此数据点包含在小工具tvprogram中是否仅显示收藏夹或所有内容的状态
 
 **配置**
 
@@ -351,7 +351,7 @@ sendTo("tvprogram.0","getServerBroadcastDate",{channelfilter:[1,6,22,7],date:"20
 
 **有效参数为**
 
-channelfilter：您最喜欢的频道的channelID数组。categoryfilter：可选的categoryID数组datetimefrom：datetime到datetimetill的日期时间：datetime直到textfilter：可选的标题或标题的一部分，以搜索maxresults：可选的最大结果数。默认值为10
+channelfilter：您最喜欢的频道的channelID数组。categoryfilter：可选的categoryID数组datetimefrom：datetime到datetimetill的日期时间：datetime直到textfilter：可选的标题或标题的一部分，以搜索maxresults：可选的最大结果数。预设值为10
 
 **返回：**
 
@@ -478,9 +478,9 @@ var timer = setInterval(function() {
 ```
 
 ####为小程序tvprogram中的记录列表数据点中的程序着色
-以下模板用于适配器rssfeed中的小部件JSON模板。
-该模板不会生成任何可见的输出，但会生成使当前程序着色的CSS指令。
-它还会在详细视图中为记录按钮着色。
+以下模板适用于适配器rssfeed中的小部件JSON模板。
+该模板不会生成任何可见的输出，但会生成使当前程序着色的css指令。
+它还会在详细视图中为记录按钮上色。
 
 要使用此模板，请在小部件属性json_oid中选择记录列表数据点，然后在json_template中插入以下模板
 
@@ -513,7 +513,7 @@ var timer = setInterval(function() {
 -配置显示的电视频道和顺序，可以通过dragNdrop重新排序。
 -单击徽标后通过数据点切换命令
 -放大/缩小
--下一天和上一天的导航
+-前天和后天的导航
 -播放按钮切换频道数据点
 -中心放大第二天
 -回到今天
@@ -529,11 +529,11 @@ var timer = setInterval(function() {
 ＃＃＃ 去做
 小部件电视节目：
 
--问题：Firefox无限滚动
--基于现有电视节目脚本的其他小部件的想法
--其他来源的数据适配器（Internet，硬件，例如Enigma，VU-Box）
+-用于其他来源（Internet，诸如Enigma，VU-Box等硬件）的数据适配器。由于需求低，目前暂不考虑此问题
+-~~基于现有电视节目脚本的其他小部件的想法~~
+-~~问题：在Firefox中无尽滚动~~
 -~~待讨论：Datenpunkt，mit allen Aufnahmedaten，应该在录像机适配器或单独的脚本中实现~~
--~~用于细节视图的响应设计-> jQuery对话框无法进行响应设计，找到了另一种解决方案，其高度>宽度固定布局~~
+-~~用于细节视图的响应式设计-> jquery对话框无法进行响应式设计，找到了另一种解决方案，其高度>宽度固定布局
 -~~问题：如果滚动窗格在左侧完成，则像素出现小故障~~
 
 ## Changelog

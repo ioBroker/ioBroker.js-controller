@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: ta5dqjq9hiDt/O9tAyUW0v8x3IxE4jUStgNheusOVs0=
+hash: xiWyDYd30ali/ijXzsYDvpZQ4LlbKF9of94Ml/eduSA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -112,27 +112,15 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 
 5) Durch die Möglichkeit der Statusabfrage ist eines zu beachten: Es ist sicherzustellen, dass nicht mehr als 40 Anfragen pro Sekunde vom ioBroker generiert werden, denn diese können dann Physikalisch Bedingt nicht détémehr dépétée andemehr dépété.
 
-## Планируемые функции
-<<<<<<< ГОЛОВА
-
-=======
-
-=======
-
 ## Запланированные функции
->>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
-
 * добавление адресов в описание объекта (id)
 * выборочный импорт knx-проекта
 * требуется версия узла> 8.9.4!
 
 ## Changelog
-<<<<<<< HEAD
 ### 1.0.45 (2021_03_22)
 * import of ETS v5.7.5 projects
 
-=======
->>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
 ### 1.0.44 (2021_01_22)
 * fixed act and state handling
 * added some new datapoint types

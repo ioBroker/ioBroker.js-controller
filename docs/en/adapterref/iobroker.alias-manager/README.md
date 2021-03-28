@@ -66,6 +66,11 @@ Here you can:
 
 ## Changelog
 
+### 0.1.0 (2021-03-27)
+* (sbormann) Alias-ID can now be an object with seperate datapoints for read and write.
+* (sbormann) Alias-Datapoints can now be collapsed.
+* (sbormann) Added Autocreate Alias function.
+
 ### 0.0.8 (2021-03-22)
 * (sbormann) Added ability to create alias-datapoint from existing datapoint.
 

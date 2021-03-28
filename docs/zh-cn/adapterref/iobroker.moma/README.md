@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.moma/README.md
 title: 无题
-hash: FgNb7HbH5pBb6C/UQvijmpBEebETJ0v0uW2BPLLuiWI=
+hash: kib0AXGWoomKdqx4mLxIEgJU6gVuZDaqYBslywZ/meE=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -14,27 +14,27 @@ hash: FgNb7HbH5pBb6C/UQvijmpBEebETJ0v0uW2BPLLuiWI=
 ![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/AWhiteKnight/ioBroker.moma/master.svg)
 
-<h1><img src="admin/moma.png" width="64"/> ioBroker.moma </h1>
+<h1><img src="admin/moma.png" width="64"/>ioBroker.moma</h1>
 
 ##适用于ioBroker的moma适配器
 ** MoMa **是用于基于ioBroker的家庭自动化安装的** Mo **针织和** Ma **维护的适配器。
-** MoMa **的目标是家庭（自动化）安装，这比在一台机器上全部运行的一台机器或少数在一个网络内进行一些基本负载平衡的机器要复杂得多。
+** MoMa **的目标是家庭（自动化）安装，这比在一台机器上全部运行的一台机器或少数在一个网络内进行基本负载平衡的机器要复杂得多。
 
-不能替代** Puppet **** Chef** ** Salt **** Ansible** 管理工具。
+它不能替代** Puppet **** Chef** ** Salt **** Ansible** 管理工具。
 它们用于具有许多计算机的大型环境，并且能够远程安装软件包。 **MoMa** 仅能远程更新现有安装，无远程安装且无远程配置。
 
-**注意：**
+**注意力：**
 
-当使用JavaScript适配器时，当出现错误“ RangeError：超出最大调用堆栈大小”时，请将“启动时不注册所有状态”标志设置为true。 <br>当您在启动时注册所有状态时，每个状态更改事件也会为JavaScript适配器生成一个事件。特别是对于Windows，此大量事件可能会成为问题。 <br>另一种解决方案是增加interval0的时间值。
+使用JavaScript适配器时，当出现错误“ RangeError：超出最大调用堆栈大小”时，请将“启动时不注册所有状态”标志设置为true。<br>当您在启动时注册所有状态时，每个状态更改事件也会为JavaScript适配器生成一个事件。特别是对于Windows，此大量事件可能会成为问题。<br>另一种解决方案是增加interval0的时间值。
 
-MoMa使用平台独立库“ systeminformation”（https://github.com/sebhildebrandt/systeminformation）来收集有关计算机的信息。公开了许多呼叫将在计时器间隔中使用-请参阅下面的参考。
+MoMa使用平台独立的库“ systeminformation”（https://github.com/sebhildebrandt/systeminformation）来收集有关计算机的信息。公开了许多呼叫将在计时器间隔中使用-请参阅下面的参考。
 
-MoMa至少需要nodejs版本8 / ES9 / ECMAScript2018。
+MoMa至少需要nodejs版本10。
 
-##安装
+＃＃ 安装
 在ioBroker存储库“最新”中可用
 
-替代方案：
+选择：
 
 npm安装iobroker.moma
 
@@ -54,7 +54,7 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 +公用树（moma.meta），在该树下，每个实例都会创建一个设备\ <主机名\>，其中包含对该实例的引用和一些监视信息。
 +一个用于维护的管理标签（操作系统，js-controller，适配器的更新）
 
-##参考
+＃＃ 参考
 管理员tabMoMa可用于启动更新或在必要时启动重新启动。
 
 启动时将调用库系统信息的以下功能：
@@ -92,7 +92,7 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 * fsStats-文件访问统计信息-Windows不支持
 * disksIO-块设备的IO统计信息-Windows不支持
 
-在时间间隔3（每小时默认一次）中调用以下库系统信息功能：
+在间隔3（每小时默认一次）中调用以下库系统信息功能：
 
 * networkInterfaceDefault-默认网络接口
 * networkInterfaces-可用的网络接口
@@ -115,6 +115,19 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 * checkBatteries-检查电池状态变量（当前实现的状态名称：LOWBAT，LOW_BAT）
 
 ## Changelog
+
+### 1.2.8 (2021-03-26)
+* (AWhiteKnight) eliminate warning messages (issue #52), upgrade to systeminformation lib 5.6.8
+	- in systeminformation many states of currentLoad have been renamed. The old ones will be deleted and the new ones created. Have a look into the logs.
+
+### 1.2.7 (2020-10-18)
+* (AWhiteKnight) remove leading i in names that are not a number, systeminformation lib 4.27.0 
+
+### 1.2.6 (2020-04-27)
+* (AWhiteKnight) fix typo, precise error location, systeminformation lib 4.23.6 
+
+### 1.2.5 (2020-04-12)
+* (AWhiteKnight) minor bugfixing, prepare stable release 
 
 ### 1.2.4 (2020-03-20)
 * (AWhiteKnight) bugfixing: issues #45 #42 #24, controller update working again 

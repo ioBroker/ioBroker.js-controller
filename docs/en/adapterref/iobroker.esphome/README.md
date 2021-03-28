@@ -13,28 +13,37 @@
 
 **Tests:** ![Test and Release](https://github.com/DrozmotiX/ioBroker.esphome/workflows/Test%20and%20Release/badge.svg)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## ESPHome adapter for ioBroker
 
 Control your ESP8266/ESP32 with simple yet powerful configuration files created and managed by ESPHome.
-The adapter will connect to ESPHome managed device by its native API and ensur all data is synchronised (live-event handling, no data polling ! :)
+Native integration of ESPHome managed device (Including Dashboard) by its native API and ensure all data is synchronised (live-event handling, no data polling ! :)
 
-This adapter use the [esphome-native-api](https://github.com/Nafaya/esphome-native-api#readme) with all credits to @Nafaya, thank you!
+![Logo](admin/img/dashboard.png)
+
+This adapter uses the [esphome-native-api](https://github.com/Nafaya/esphome-native-api#readme) with all credits to @Nafaya to interact with [ESPHome API](https://esphome.io/components/api.html?highlight=api)!
 
 ## [Documentation](https://DrozmotiX.github.io/languages/en/ESPHome/)
 
-All our adapter documentation can be found at [The DrozmotiX Docu Page](https://DrozmotiX.github.io)
+All our adapter documentation can be found at [The DrozmotiX Docu Page](https://DrozmotiX.github.io/languages/en/ESPHome)
 
 ## Prerequisites
 
-You should be familiar how to use ESPHome and add devices/sensor to a the YAML file.
-Please ensure API is activated as the adapter will interact by ESPHome native API, you can define a password if needed
-[See ESPHome API refference](https://esphome.io/components/api.html?highlight=api)
+    * NodeJS >= 12.x
+    * Python >=3.6, <4.0
+    * API is activated in YAML
+    * For admin tabs (optional)
+        * ESPHome Dashboard IP is provided in instance settings
+
+### Activate API in YAML
 
 ```
 api:
   password: 'MyPassword'
 ```
 
+### Example config
 Example config, for more examples see [The DrozmotiX Docu Page](https://DrozmotiX.github.io) or [ESPHome Documentation](https://esphome.io/index.html)
 ```
 esphome:
@@ -79,6 +88,10 @@ switch:
     output: 'gpio_12'
     
 ```
+## Support me
+If you like my work, please consider a personal donation  
+(this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
+[![Donate](https://raw.githubusercontent.com/DrozmotiX/ioBroker.sourceanalytix/main/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
@@ -87,8 +100,11 @@ switch:
     ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
-* (DutchmanNL) Update Translations
+### 0.2.0-0 (2021-03-27) Native Integration of ESPHome Dashboard
+* (DutchmanNL) Translations updated
+* (DutchmanNL) Configuration page updated
+* (DutchmanNL) Added to sentry error reporting
+* (DutchmanNL) Native integration of ESPHome Dashboard added
 
 ### 0.1.5 (2021-03-21)
 * (DutchmanNL) Add Translations

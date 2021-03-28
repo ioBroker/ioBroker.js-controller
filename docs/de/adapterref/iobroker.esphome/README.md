@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.esphome/README.md
 title: ioBroker.esphome
-hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
+hash: E454mMb+nPjhHG6HRyFwJRxALtjTn4+6hZk2i/fgT2Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.esphome/admin/esphome.png)
 
@@ -20,24 +20,33 @@ hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
 
 ** Tests: ** ![Testen und freigeben](https://github.com/DrozmotiX/ioBroker.esphome/workflows/Test%20and%20Release/badge.svg)
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## ESPHome-Adapter für ioBroker
 Steuern Sie Ihren ESP8266 / ESP32 mit einfachen, aber leistungsstarken Konfigurationsdateien, die von ESPHome erstellt und verwaltet werden.
-Der Adapter stellt über seine native API eine Verbindung zum von ESPHome verwalteten Gerät her und stellt sicher, dass alle Daten synchronisiert sind (Live-Ereignisbehandlung, keine Datenabfrage! :)
+Native Integration des von ESPHome verwalteten Geräts (einschließlich Dashboard) durch die native API und Sicherstellung, dass alle Daten synchronisiert sind (Live-Ereignisbehandlung, keine Datenabfrage! :)
 
-Dieser Adapter verwendet die [esphome-native-api](https://github.com/Nafaya/esphome-native-api#readme) mit allen Credits an @Nafaya, danke!
+![Logo](../../../en/adapterref/iobroker.esphome/admin/img/dashboard.png)
+
+Dieser Adapter verwendet die [esphome-native-api] (https://github.com/Nafaya/esphome-native-api#readme) mit allen Credits an @Nafaya für die Interaktion mit [ESPHome API](https://esphome.io/components/api.html?highlight=api)!
 
 ## [Dokumentation](https://DrozmotiX.github.io/languages/en/ESPHome/)
-Alle unsere Adapterdokumentationen finden Sie unter [Die DrozmotiX Docu Seite](https://DrozmotiX.github.io)
+Alle unsere Adapterdokumentationen finden Sie unter [Die DrozmotiX Docu Seite](https://DrozmotiX.github.io/languages/en/ESPHome)
 
 ## Voraussetzungen
-Sie sollten mit der Verwendung von ESPHome vertraut sein und der YAML-Datei Geräte / Sensoren hinzufügen.
-Stellen Sie sicher, dass die API aktiviert ist, da der Adapter über die native ESPHome-API interagiert. Sie können bei Bedarf ein Kennwort definieren. [Siehe ESPHome-API-Referenz](https://esphome.io/components/api.html?highlight=api)
+    * NodeJS> = 12.x.
+    * Python> = 3,6, <4,0
+    * API ist in YAML aktiviert
+    * Für Admin-Registerkarten (optional)
+        * ESPHome Dashboard IP wird in den Instanzeinstellungen bereitgestellt
 
+### API in YAML aktivieren
 ```
 api:
   password: 'MyPassword'
 ```
 
+### Beispielkonfiguration
 Beispielkonfiguration, weitere Beispiele siehe [Die DrozmotiX Docu-Seite] (https://DrozmotiX.github.io) oder [ESPHome-Dokumentation](https://esphome.io/index.html)
 
 ```
@@ -84,6 +93,9 @@ switch:
 
 ```
 
+## Unterstütze mich
+Wenn Ihnen meine Arbeit gefällt, ziehen Sie bitte eine persönliche Spende in Betracht (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.sourceanalytix/main/admin/button.png)](http://paypal.me/DutchmanNL)
+
 ## Changelog
 
 <!--
@@ -91,8 +103,11 @@ switch:
     ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
-* (DutchmanNL) Update Translations
+### 0.2.0-0 (2021-03-27) Native Integration of ESPHome Dashboard
+* (DutchmanNL) Translations updated
+* (DutchmanNL) Configuration page updated
+* (DutchmanNL) Added to sentry error reporting
+* (DutchmanNL) Native integration of ESPHome Dashboard added
 
 ### 0.1.5 (2021-03-21)
 * (DutchmanNL) Add Translations

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.esphome/README.md
 title: ioBroker.esphome
-hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
+hash: E454mMb+nPjhHG6HRyFwJRxALtjTn4+6hZk2i/fgT2Q=
 ---
 ![标识](../../../en/adapterref/iobroker.esphome/admin/esphome.png)
 
@@ -20,24 +20,33 @@ hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
 
 **测试：**![测试与发布](https://github.com/DrozmotiX/ioBroker.esphome/workflows/Test%20and%20Release/badge.svg)
 
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 ## IoBroker的ESPHome适配器
 使用由ESPHome创建和管理的简单但功能强大的配置文件来控制ESP8266 / ESP32。
-适配器将通过其本地API连接到ESPHome受管设备，并确保所有数据都已同步（实时事件处理，无数据轮询！：）
+ESPHome受管设备（包括仪表板）通过其本机API进行本机集成，并确保所有数据都是同步的（实时事件处理，无数据轮询！:)
 
-该适配器将[esphome-native-api](https://github.com/Nafaya/esphome-native-api#readme)与@Nafaya的所有积分一起使用，谢谢！
+![标识](../../../en/adapterref/iobroker.esphome/admin/img/dashboard.png)
+
+该适配器使用[esphome-native-api]（https://github.com/Nafaya/esphome-native-api#readme），所有积分均归@Nafaya所有，以与[ESPHome API进行交互](https://esphome.io/components/api.html?highlight=api)！
 
 ## [文献资料](https://DrozmotiX.github.io/languages/en/ESPHome/)
-我们所有的适配器文档都可以在[DrozmotiX文档页面](https://DrozmotiX.github.io)中找到
+我们所有的适配器文档都可以在[DrozmotiX文档页面](https://DrozmotiX.github.io/languages/en/ESPHome)中找到
 
 ##先决条件
-您应该熟悉如何使用ESPHome并将设备/传感器添加到YAML文件。
-请确保已激活API，因为适配器将通过ESPHome本机API进行交互，您可以根据需要定义密码[请参阅ESPHome API参考](https://esphome.io/components/api.html?highlight=api)
+    * NodeJS> = 12.x
+    * Python> = 3.6，<4.0
+    * API已在YAML中激活
+    *对于管理标签（可选）
+        *实例设置中提供了ESPHome仪表板IP
 
+###在YAML中激活API
 ```
 api:
   password: 'MyPassword'
 ```
 
+###示例配置
 示例配置，有关更多示例，请参见[DrozmotiX Docu页面]（https://DrozmotiX.github.io）或[ESPHome文档](https://esphome.io/index.html)
 
 ```
@@ -84,6 +93,9 @@ switch:
 
 ```
 
+＃＃ 支持我
+如果您喜欢我的作品，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/DrozmotiX/ioBroker.sourceanalytix/main/admin/button.png）](http://paypal.me/DutchmanNL)
+
 ## Changelog
 
 <!--
@@ -91,8 +103,11 @@ switch:
     ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
-* (DutchmanNL) Update Translations
+### 0.2.0-0 (2021-03-27) Native Integration of ESPHome Dashboard
+* (DutchmanNL) Translations updated
+* (DutchmanNL) Configuration page updated
+* (DutchmanNL) Added to sentry error reporting
+* (DutchmanNL) Native integration of ESPHome Dashboard added
 
 ### 0.1.5 (2021-03-21)
 * (DutchmanNL) Add Translations

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.esphome/README.md
 title: ioBroker.esphome
-hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
+hash: E454mMb+nPjhHG6HRyFwJRxALtjTn4+6hZk2i/fgT2Q=
 ---
 ![Логотип](../../../en/adapterref/iobroker.esphome/admin/esphome.png)
 
@@ -20,24 +20,33 @@ hash: 8Y4ipsVXecu71h2LUjgVWSx8EgTDS/9pd4cNWuAuyNI=
 
 ** Тесты: ** ![Тестирование и выпуск](https://github.com/DrozmotiX/ioBroker.esphome/workflows/Test%20and%20Release/badge.svg)
 
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+
 ## Адаптер ESPHome для ioBroker
 Управляйте своим ESP8266 / ESP32 с помощью простых, но мощных файлов конфигурации, созданных и управляемых ESPHome.
-Адаптер подключится к управляемому устройству ESPHome с помощью собственного API и обеспечит синхронизацию всех данных (обработка событий в реальном времени, без опроса данных! :)
+Встроенная интеграция управляемого устройства ESPHome (включая Dashboard) с помощью собственного API и обеспечение синхронизации всех данных (обработка событий в реальном времени, без опроса данных! :)
 
-Этот адаптер использует [esphome-native-api](https://github.com/Nafaya/esphome-native-api#readme) со всеми кредитами @Nafaya, спасибо!
+![Логотип](../../../en/adapterref/iobroker.esphome/admin/img/dashboard.png)
+
+Этот адаптер использует [esphome-native-api] (https://github.com/Nafaya/esphome-native-api#readme) со всеми кредитами @Nafaya для взаимодействия с [ESPHome API](https://esphome.io/components/api.html?highlight=api)!
 
 ## [Документация](https://DrozmotiX.github.io/languages/en/ESPHome/)
-Всю нашу документацию по адаптерам можно найти в [Страница документации DrozmotiX](https://DrozmotiX.github.io).
+Всю нашу документацию по адаптерам можно найти в [Страница документации DrozmotiX](https://DrozmotiX.github.io/languages/en/ESPHome)
 
 ## Предварительные требования
-Вы должны знать, как использовать ESPHome и добавлять устройства / датчики в файл YAML.
-Убедитесь, что API активирован, так как адаптер будет взаимодействовать с собственным API ESPHome. При необходимости вы можете указать пароль. [См. Ссылку на ESPHome API.](https://esphome.io/components/api.html?highlight=api)
+    * NodeJS> = 12.x
+    * Python> = 3.6, <4.0
+    * API активирован в YAML
+    * Для вкладок администратора (необязательно)
+        * IP-адрес панели управления ESPHome указывается в настройках экземпляра.
 
+### Активировать API в YAML
 ```
 api:
   password: 'MyPassword'
 ```
 
+### Пример конфигурации
 Пример конфигурации, дополнительные примеры см. В [Страница документации DrozmotiX] (https://DrozmotiX.github.io) или [ESPHome Documentation](https://esphome.io/index.html)
 
 ```
@@ -84,6 +93,9 @@ switch:
 
 ```
 
+## Поддержите меня
+Если вам нравятся мои работы, рассмотрите возможность личного пожертвования (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/DrozmotiX/ioBroker.sourceanalytix/main/admin/button.png)](http://paypal.me/DutchmanNL)
+
 ## Changelog
 
 <!--
@@ -91,8 +103,11 @@ switch:
     ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
-* (DutchmanNL) Update Translations
+### 0.2.0-0 (2021-03-27) Native Integration of ESPHome Dashboard
+* (DutchmanNL) Translations updated
+* (DutchmanNL) Configuration page updated
+* (DutchmanNL) Added to sentry error reporting
+* (DutchmanNL) Native integration of ESPHome Dashboard added
 
 ### 0.1.5 (2021-03-21)
 * (DutchmanNL) Add Translations

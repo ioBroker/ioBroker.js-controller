@@ -194,6 +194,10 @@ show();
 
 ## Changelog
 
+### 1.2.1
+
+* (klein0r) Extended regex for My Data (DIY)
+
 ### 1.2.0
 
 * (klein0r) Added hide if value for My Data (DIY)

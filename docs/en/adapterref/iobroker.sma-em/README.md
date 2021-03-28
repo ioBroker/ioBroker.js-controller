@@ -9,37 +9,45 @@
 
 ### Info
 This adapter reads information from SMA Energy Meter and Sunny Home Manager 2.
+It supports the SMA-EMETER-protocol-2. 
+SMA Energy Meter and Sunny Home Manager 2 multicast datagrams with their energy measurement data to the network every second.
+The SMA Energy Meter Adapter receives these multicast messages and stores them as iobroker states.
 
-### States
-- Total and Counter of active power, reactive power, apparent power
-- cosphi, Total Harmonic Distortion, Voltage, Frequency
-- Detailed Each of the 3 phases with regard of active power, reactive power, apparent power, cosphi, Amperage, Voltage
-- Detailed Each of the 3 phases with surplus of active power, reactive power, apparent power, cosphi, Amperage, Voltage
-- Detailed Each of the 3 phases counter
-- Serial Number, Software Version, SUSyID of SMA Energy Meter and Sunny Home Manager
+![States](docs/en/img/overview.png)
 
-### Options
-- Selection options over each individual phase L1 / L2 / L3
-- Selection non-extended Mode for Total and Counter of active power
-- Selection extended Mode for reactive power, apparent power, cosphi, Amperage, Voltage (requires more computing power)
+### States in non-extended mode
+- Instantaneous values of total active power consumption (pregard) and active power feed-in (psurplus)
+- Energy meter values of total active power consumption (pregardcounter) and active power feed-in (psurpluscounter)
+- SMA Time Tick counter, Timestamp of last Message received, 
+- Serial Number, SUSyID, Software Version of SMA Energy Meter and Sunny Home Manager
+- Detailed values for each of the individual phases L1 / L2 / L3 (optional):
+  - Instantaneous values of active power consumption (pregard) and active power feed-in (psurplus) per phase
+  - Energy meter values of active power consumption (pregardcounter) and active power feed-in (psurpluscounter) per phase
+  
+### States in extended mode
+In addition to the states in non-extended mode, the following values are available in extended mode
+- Instantaneous values of total reactive power consumption (qregard) and reactive power feed-in (qsurplus)
+- Energy meter values of total reactive power consumption (qregardcounter) and reactive power feed-in (qsurpluscounter)
+- Instantaneous values of total apparent power consumption (sregard) and apparent power feed-in (ssurplus)
+- Energy meter values of total apparent power consumption (sregardcounter) and apparent power feed-in (ssurpluscounter)
+- cosphi (power factor)
+- grid frequency (only available with Sunny Home Manager 2, SMA Energy Meter currently does not provide any grid frequency values)
+- Detailed for each of the individual phases L1 / L2 / L3 (optional):
+  - Instantaneous values of reactive and apparent power consumption/feed-in per phase
+  - Energy meter values of reactive and apparent power consumption/feed-in per phase
+  - Voltage and Amperage per phase
 
-### Folder-Structure
+### Configuration Options
 
-- L1 - Phase 1
-- L2 - Phase 2
-- L3 - Phase 3
+![Settings](docs/en/img/adminpage.png)
 
-### States-Structure
+- Multicast IP: The default setting is 239.12.255.254. 
+- Multicast Port: The default setting for the UDP port is 9522.
+  (Both should not be changed, as SMA devices always use this IP address and port)
+- Details L1 - L3: These selection options can be used to display details of each phase.
+- Extended Mode: Provides more detailed information such as reactive power, apparent power, cosphi, grid frequency, voltage, amperage
+  (Do not configure Details L1-L3 and Extended Mode simultaneously since this puts a high load on the ioBroker system)
 
-Example:  
-
-          pregard P-active power / regard 
-          qregard Q-reactive power / regard
-          sregard S-apparent power / regard
-         
-          psurplus P-active power / surplus
-          qsurplus Q-reaktive power /surplus
-          ssurplus S-apparent power /surplus
 
 <!--
     Placeholder for the next version (at the beginning of the line):

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sainlogic/README.md
 title: ioBroker.sainlogic
-hash: hod32R3uebNevrTeoMM0luiWFXhD8B8qBXN+vXXSH5E=
+hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
 ---
 ![标识](../../../en/adapterref/iobroker.sainlogic/admin/sainlogic.png)
 
@@ -27,12 +27,13 @@ hash: hod32R3uebNevrTeoMM0luiWFXhD8B8qBXN+vXXSH5E=
 1. ELV WS980Wifi
 1. Eurochron EFWS2900（仅侦听器模式）
 1. Froggit WH400SE
+1. Froggit DP1500
 1. Sainlogic WS3500（仅侦听器模式）
 
 ＃＃ 用法
 适配器支持两种模式以显示气象站的数据。
 
-如果您的气象站提供了适配器，则在侦听器模式下适配器不支持其他传感器。当前支持的温度和湿度。如果您还有其他传感器，请提出github问题并发布您的数据字符串，因为这有助于我扩展功能。
+如果从气象站交付，则在侦听器模式下，适配器确实支持其他传感器。当前支持的温度和湿度。如果您还有其他传感器，请提出github问题并发布您的数据字符串，因为这有助于我扩展功能。
 
 ###侦听器模式：
 使用最新的固件版本，气象站支持将数据发送到自定义服务器。该适配器将充当此类服务器。设置需要两个步骤：
@@ -53,11 +54,11 @@ hash: hod32R3uebNevrTeoMM0luiWFXhD8B8qBXN+vXXSH5E=
 
 -有效：正确
 -IP：选择IOBroker的IP，气象站将能够连接到该IP（默认值为0.0.0.0，以允许所有IP），如果您有多个网络，则这主要是相关的，否则默认值将起作用
--端口：输入与WS View应用程序相同的端口
+-端口：输入与WS View应用程序中相同的端口
 -路径：输入与WS View应用程序中相同的路径
 -转发URL：如果要将接收到的数据转发给其他使用者，则可以指定其他地址。例如。您可能会收到WU格式的数据，但仍然希望将其转发给WeatherUnderground。
 
-救。
+保存。
 侦听器将启动并等待传入的连接。根据您的时间间隔，您应该在日志中看到一条带有数据的消息“侦听器收到更新：...”。
 
 ###调度程序模式：
@@ -69,9 +70,9 @@ hash: hod32R3uebNevrTeoMM0luiWFXhD8B8qBXN+vXXSH5E=
 -有效：正确
 -IP：选择气象站的IP，请确保IP是固定的且不会更改
 -端口：输入要连接的端口（默认为45000）
--间隔：输入间隔（以秒为单位）（我建议至少10秒，以免系统或网络过载）
+-时间间隔：输入时间间隔（以秒为单位）（我建议至少10秒，以免系统或网络过载）
 
-救。
+保存。
 
 在第一个间隔时间之后，调度程序将启动并连接到气象站。您应该在日志中看到类似“计划程序提取新数据”的消息。如果将日志模式设置为调试，则还将看到收到的数据字符串。
 

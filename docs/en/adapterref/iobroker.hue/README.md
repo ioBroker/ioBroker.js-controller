@@ -57,6 +57,9 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 	### __WORK IN PROGRESS__
 -->
 
+### 3.5.4 (2021-03-25)
+* (foxriver76) fixing several edge case crashes
+
 ### 3.5.2 (2021-02-24)
 * (foxriver76) fix crashes if wrong data type or invalid value passed for ct and hue, now logging an error
 * (foxriver76) fix crashes if rgb where outside allowed range or wrong type

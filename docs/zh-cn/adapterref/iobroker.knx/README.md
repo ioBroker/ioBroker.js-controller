@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: ta5dqjq9hiDt/O9tAyUW0v8x3IxE4jUStgNheusOVs0=
+hash: xiWyDYd30ali/ijXzsYDvpZQ4LlbKF9of94Ml/eduSA=
 ---
 ![标识](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -87,7 +87,7 @@ Weiterhin werden死于旗帜中的旗帜。关于北威州的标志：
 | x | -| x | x | x | ein Trigger darauflöstGroupValueRead aus |
 
 ### 4）Erzeugen der Datenpunktpaare（im folgenden DPP）
-Ein DPP与erzeugt，GA，GAR和DPT有效结合。 Mit diesen DPP适配器适配器。 Fehlen还在einer GA的DPT小组工作。 A. Wege gefunden werden konnte，所以我们很高兴GA维护DPP维护和维护。
+Ein DPP与erzeugt，GA，GAR和DPT有效结合。 Mit diesen DPP适配器适配器。 Fehlen还在einer GA的DPT上任职。 A. Wege gefunden werden konnte，所以我们很高兴GA维护DPP维护和维护。
 
 Im Idealfall werden somitfüreinen Schaltkanal 2 DPP erzeugt。达斯特·达斯·沙尔滕。在疾病中，GAR ID des Status DPP提示者。状态DPP否否是参考。
 
@@ -112,27 +112,15 @@ Lese-Flag Markierten DPP律师事务所开始abgefragt。死于美国时刻了�
 
 5）结束状态后的状态：结束状态40的Anfragen pro Sekunde vom ioBroker生成器werden，创建连接器和网关。
 
-##计划的功能
-<<<<<<< HEAD
-
-=======
-
-=======
-
 ##计划中的功能
->>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
-
 *将地址添加到对象描述（id）
 *选择性导入knx-project
 *要求节点版本> 8.9.4！
 
 ## Changelog
-<<<<<<< HEAD
 ### 1.0.45 (2021_03_22)
 * import of ETS v5.7.5 projects
 
-=======
->>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
 ### 1.0.44 (2021_01_22)
 * fixed act and state handling
 * added some new datapoint types

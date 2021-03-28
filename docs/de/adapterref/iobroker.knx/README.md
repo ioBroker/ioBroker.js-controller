@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: ta5dqjq9hiDt/O9tAyUW0v8x3IxE4jUStgNheusOVs0=
+hash: xiWyDYd30ali/ijXzsYDvpZQ4LlbKF9of94Ml/eduSA=
 ---
 ![Logo](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -113,26 +113,14 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 5.
 
 ## Geplante Funktionen
-<<<<<<< KOPF
-
-=======
-
-=======
-
-## Geplante Funktionen
->>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
-
 * Hinzufügen von Adressen zur Objektbeschreibung (ID)
 * selektiver Import von knx-Projekt
 * Knotenversion> 8.9.4 erforderlich!
 
 ## Changelog
-<<<<<<< HEAD
 ### 1.0.45 (2021_03_22)
 * import of ETS v5.7.5 projects
 
-=======
->>>>>>> 58557769786a7c2a96f335d1af2767dc22aa1a30
 ### 1.0.44 (2021_01_22)
 * fixed act and state handling
 * added some new datapoint types

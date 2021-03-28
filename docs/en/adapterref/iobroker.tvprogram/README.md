@@ -556,9 +556,9 @@ and insert the following template in json_template
 ### Todo
 
 widget tvprogram: 
-- Problem: endless scroll in firefox
-- Ideas for further widgets based on the existing TV program script
-- Data adapter for other sources (Internet, hardware such as Enigma, VU-Box)
+- Data adapter for other sources (Internet, hardware such as Enigma, VU-Box). Considerations on this are currently suspended due to the low demand
+- ~~Ideas for further widgets based on the existing TV program script~~
+- ~~Problem: endless scroll in firefox~~
 - ~~to be discussed: Datenpunkt, mit allen Aufnahmedaten, should be implementet at a videorecorder adapter or in a seperate script~~
 - ~~responsive design for detail view->no responsive design possible for jquery dialog, found another solution with fixed layouts for height>width~~
 - ~~Problem: small Pixel glitch if scroll pane is completle on the left side~~

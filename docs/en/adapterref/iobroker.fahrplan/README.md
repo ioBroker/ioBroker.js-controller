@@ -216,8 +216,10 @@ With +-Button new entries can be added to the table.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Update HAFAS client to 5.15.2 (Fix error 'invalid json response body' with OEBB profile)
 * (Gaudes) Configurable colors for delays and on time
 * (Gaudes) Prepare for WebLate translations
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.6 (2021-03-16)
 * (Gaudes) Fix route selection in delay config

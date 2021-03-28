@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: 1LGy1ICDEzzOc2jTfe/K7Ywf7uqk3IT3c95CGb91UIw=
+hash: 7NwCP3kKDqTEiFrkjO1XCWvLGkZFIT7V5xbCYadAA2Q=
 ---
 ![标识](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -16,35 +16,51 @@ hash: 1LGy1ICDEzzOc2jTfe/K7Ywf7uqk3IT3c95CGb91UIw=
 ＃ioBroker.sma-em
 ###信息
 该适配器从SMA电能表和Sunny Home Manager 2读取信息。
+它支持SMA-EMETER-protocol-2。
+SMA电能表和Sunny Home Manager 2每秒将其电能测量数据多播数据报到网络。
+SMA电能表适配器接收这些多播消息并将其存储为iobroker状态。
 
-＃＃＃ 状态
--有功，无功，视在功率的总和计数器
--cosphi，总谐波失真，电压，频率
--详细的有功，无功，视在功率，cosphi，安培数，电压3个阶段中的每个阶段
--详细的3相中的每相都有剩余有功功率，无功功率，视在功率，cosphi，安培数，电压
--详细的3个阶段的每个计数器
--SMA电表和Sunny Home Manager的序列号，软件版本，SUSyID
+![状态](../../../en/adapterref/iobroker.sma-em/docs/en/img/overview.png)
 
-＃＃＃ 选项
--每个单独的相L1 / L2 / L3的选择选项
--选择总功率和计数器有功功率的非扩展模式
--针对无功功率，视在功率，cosphi，安培数，电压选择扩展模式（需要更多计算能力）
+###处于非扩展模式
+-总有功功率消耗（预充电）和有功功率馈入（剩余）的瞬时值
+-总有功功率消耗（pregardcounter）和有功功率馈入（psurpluscounter）的电表值
+-SMA Time Tick计数器，收到的最后一条消息的时间戳，
+-序列号，SUSyID，SMA电表和Sunny Home Manager的软件版本
+-L1 / L2 / L3各个相的详细值（可选）：
+  -每相有功功率（预充电）和有功功率馈入（剩余）的瞬时值
+  -每相的有功功率消耗量（pregardcounter）和有功功率馈入量（psurpluscounter）的电表值
 
-###文件夹结构
--L1-第一阶段
--L2-第二阶段
--L3-第三阶段
+###处于扩展模式
+除了非扩展模式下的状态外，以下值在扩展模式下可用
 
-###状态结构
-例子：
+-总无功功率消耗（qregard）和无功功率馈入（qsurplus）的瞬时值
+-总无功功率消耗（qregardcounter）和无功功率馈入（qsurpluscounter）的电表值
+-总视在功率消耗（瞬时）和视在功率馈入（盈余）的瞬时值
+-电能表的总视在功耗（sregardcounter）和视在功率馈入（ssurpluscounter）的值
+-cosphi（功率因数）
+-电网频率（仅可用于Sunny Home Manager 2，SMA电表当前不提供任何电网频率值）
+-详细介绍了L1 / L2 / L3的各个阶段（可选）：
+  -每相无功和视在功率消耗/馈入的瞬时值
+  -每相无功功率和视在功率消耗/馈电的电表值
+  -每相电压和安培数
 
-pregard P有功功率/关于qregard Q无功功率/关于regard S-视在功率/关于
+###配置选项
+![设定值](../../../en/adapterref/iobroker.sma-em/docs/en/img/adminpage.png)
 
-p剩余p有功功率/剩余q剩余q求功功率/剩余s视在功率/剩余
+-组播IP：默认设置为239.12.255.254。
+-组播端口：UDP端口的默认设置为9522。
+
+  （两者均不应更改，因为SMA设备始终使用此IP地址和端口）
+
+-详细信息L1-L3：这些选择选项可用于显示每个阶段的详细信息。
+-扩展模式：提供更多详细信息，例如无功功率，视在功率，cosphi，电网频率，电压，安培数
+
+  （请勿同时配置“ Details L1-L3”和“ Extended Mode”，因为这会给ioBroker系统带来很大的负担）
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 ＃＃ 法律声明
 SMA和Sunny Home Manager是SMA Solar Technology AG <https://www.sma.de/en.html>的注册商标。
 

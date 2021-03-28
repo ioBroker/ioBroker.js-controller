@@ -22,6 +22,7 @@ Known working devices:
 1. ELV WS980Wifi
 1. Eurochron EFWS2900  (Listener mode only)
 1. Froggit WH400SE
+1. Froggit DP1500
 1. Sainlogic WS3500 (Listener mode only)
 
 ## Usage

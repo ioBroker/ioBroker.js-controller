@@ -61,6 +61,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.49.1
+
+• Bugfix
+
+### 0.49.0
+
+• Neue Icons hinzugefügt (Brands)
+
 ### 0.48.0
 
 • Neue Icons hinzugefügt (Brands & Health)
@@ -351,7 +359,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 • Erstveröffentlichung
 
 ### 0.0.1
-• Die Idee ist geboren
+• Die Idee ist geboren (16.05.2020)
 
 ## License
 

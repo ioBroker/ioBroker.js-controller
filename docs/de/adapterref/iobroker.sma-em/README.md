@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: 1LGy1ICDEzzOc2jTfe/K7Ywf7uqk3IT3c95CGb91UIw=
+hash: 7NwCP3kKDqTEiFrkjO1XCWvLGkZFIT7V5xbCYadAA2Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -16,31 +16,47 @@ hash: 1LGy1ICDEzzOc2jTfe/K7Ywf7uqk3IT3c95CGb91UIw=
 # IoBroker.sma-em
 ### Die Info
 Dieser Adapter liest Informationen von SMA Energy Meter und Sunny Home Manager 2.
+Es unterstützt das SMA-EMETER-Protokoll-2.
+SMA Energy Meter und Sunny Home Manager 2 Multicast-Datagramme mit ihren Energiemessdaten werden jede Sekunde an das Netzwerk gesendet.
+Der SMA Energy Meter Adapter empfängt diese Multicast-Nachrichten und speichert sie als iobroker-Status.
 
-### Zustände
-- Summe und Zähler der Wirkleistung, Blindleistung, Scheinleistung
-- Phosphi, harmonische Gesamtverzerrung, Spannung, Frequenz
-- Detailliert Jede der 3 Phasen in Bezug auf Wirkleistung, Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung
-- Detailliert Jede der 3 Phasen mit Überschuss an Wirkleistung, Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung
-- Detailliert Jeder der 3 Phasenzähler
-- Seriennummer, Softwareversion, SUSyID des SMA-Energiezählers und Sunny Home Manager
+![Zustände](../../../en/adapterref/iobroker.sma-em/docs/en/img/overview.png)
 
-### Optionen
-- Auswahlmöglichkeiten für jede einzelne Phase L1 / L2 / L3
-- Auswahl des nicht erweiterten Modus für Gesamt und Zähler der Wirkleistung
-- Auswahl erweiterter Modus für Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung (erfordert mehr Rechenleistung)
+### Zustände im nicht erweiterten Modus
+- Momentanwerte des gesamten Wirkleistungsverbrauchs (Pregard) und der Wirkleistungseinspeisung (Psurplus)
+- Energiezählerwerte des gesamten Wirkleistungsverbrauchs (Pregardcounter) und der Wirkleistungseinspeisung (Psurpluscounter)
+- SMA Time Tick Zähler, Zeitstempel der zuletzt empfangenen Nachricht,
+- Seriennummer, SUSyID, Softwareversion von SMA Energy Meter und Sunny Home Manager
+- Detaillierte Werte für jede der einzelnen Phasen L1 / L2 / L3 (optional):
+  - Momentanwerte des Wirkleistungsverbrauchs (Pregard) und der Wirkleistungseinspeisung (Psurplus) pro Phase
+  - Energiezählerwerte des Wirkleistungsverbrauchs (Pregardcounter) und der Wirkleistungseinspeisung (Psurpluscounter) pro Phase
 
-### Ordnerstruktur
-- L1 - Phase 1
-- L2 - Phase 2
-- L3 - Phase 3
+### Zustände im erweiterten Modus
+Zusätzlich zu den Zuständen im nicht erweiterten Modus stehen im erweiterten Modus die folgenden Werte zur Verfügung
 
-### Zustandsstruktur
-Beispiel:
+- Momentanwerte des gesamten Blindleistungsverbrauchs (qRegard) und der Blindleistungseinspeisung (qsurplus)
+- Energiezählerwerte des gesamten Blindleistungsverbrauchs (qRegardcounter) und der Blindleistungseinspeisung (qsurpluscounter)
+- Momentanwerte des gesamten scheinbaren Stromverbrauchs (sregard) und der scheinbaren Stromzufuhr (ssurplus)
+- Energiezählerwerte des gesamten scheinbaren Stromverbrauchs (sregardcounter) und der scheinbaren Stromzufuhr (ssurpluscounter)
+- Phosphi (Leistungsfaktor)
+- Netzfrequenz (nur mit Sunny Home Manager 2 verfügbar, SMA Energy Meter liefert derzeit keine Netzfrequenzwerte)
+- Detailliert für jede der einzelnen Phasen L1 / L2 / L3 (optional):
+  - Momentanwerte des Blind- und Scheinleistungsverbrauchs / Einspeisung pro Phase
+  - Energiezählerwerte des Blind- und Scheinleistungsverbrauchs / Einspeisung pro Phase
+  - Spannung und Stromstärke pro Phase
 
-Pregard P-Wirkleistung / Rücksicht auf Q-Blindleistung / Rücksicht auf Sregard S-Scheinleistung / Rücksicht
+### Einstellmöglichkeiten
+![die Einstellungen](../../../en/adapterref/iobroker.sma-em/docs/en/img/adminpage.png)
 
-psurplus P-Wirkleistung / Überschuss qsurplus Q-reaktive Leistung / Überschuss ssurplus S-Scheinleistung / Überschuss
+- Multicast-IP: Die Standardeinstellung ist 239.12.255.254.
+- Multicast-Port: Die Standardeinstellung für den UDP-Port ist 9522.
+
+  (Beide sollten nicht geändert werden, da SMA-Geräte immer diese IP-Adresse und diesen Port verwenden.)
+
+- Details L1 - L3: Mit diesen Auswahloptionen können Details zu jeder Phase angezeigt werden.
+- Erweiterter Modus: Bietet detailliertere Informationen wie Blindleistung, Scheinleistung, Phosphi, Netzfrequenz, Spannung und Stromstärke
+
+  (Konfigurieren Sie die Details L1-L3 und den erweiterten Modus nicht gleichzeitig, da dies das ioBroker-System stark belastet.)
 
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 

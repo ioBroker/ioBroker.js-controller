@@ -27,7 +27,7 @@ Default schedule is done every 20 minutes as cron job in the instance tab.
     ### __WORK IN PROGRESS__
 -->
 
-### 0.2.3-0 (2021-03-23)
+### 0.2.3 (2021-03-26)
 * (HGlab01) switch library from deprecated "request" to "axios"
 
 ### 0.2.2 (2021-03-13)

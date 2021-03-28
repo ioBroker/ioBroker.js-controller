@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.moma/README.md
 title: kein Titel
-hash: FgNb7HbH5pBb6C/UQvijmpBEebETJ0v0uW2BPLLuiWI=
+hash: kib0AXGWoomKdqx4mLxIEgJU6gVuZDaqYBslywZ/meE=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.moma.svg)
@@ -14,7 +14,7 @@ hash: FgNb7HbH5pBb6C/UQvijmpBEebETJ0v0uW2BPLLuiWI=
 ![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/AWhiteKnight/ioBroker.moma/master.svg)
 
-<h1><img src="admin/moma.png" width="64"/> ioBroker.moma </h1>
+<h1><img src="admin/moma.png" width="64"/>ioBroker.moma</h1>
 
 ## Moma Adapter für ioBroker
 ** MoMa ** ist ein Adapter für ** Überwachung ** und ** Wartung einer ioBroker-basierten Hausautomationsinstallation.
@@ -25,11 +25,11 @@ Diese sind für große Umgebungen mit vielen Computern vorgesehen und können Pa
 
 **Beachtung:**
 
-Wenn Sie den JavaScript-Adapter verwenden, setzen Sie das Flag &quot;Nicht alle Zustände beim Start registrieren&quot; auf &quot;true&quot;, wenn der Fehler &quot;RangeError: Maximale Aufrufstapelgröße überschritten&quot; angezeigt wird. <br> Wenn Sie beim Start alle Status registrieren, generiert jedes Statusänderungsereignis auch ein Ereignis für den JavaScript-Adapter. Insbesondere unter Windows kann diese größere Anzahl von Ereignissen zu einem Problem werden. <br> Eine andere Lösung besteht darin, den Zeitwert für Intervall 0 zu erhöhen.
+Wenn Sie den JavaScript-Adapter verwenden, setzen Sie das Flag &quot;Nicht alle Zustände beim Start registrieren&quot; auf &quot;true&quot;, wenn der Fehler &quot;RangeError: Maximale Aufrufstapelgröße überschritten&quot; angezeigt wird.<br> Wenn Sie beim Start alle Status registrieren, generiert jedes Statusänderungsereignis auch ein Ereignis für den JavaScript-Adapter. Insbesondere für Windows kann diese größere Anzahl von Ereignissen zu einem Problem werden.<br> Eine andere Lösung besteht darin, den Zeitwert für Intervall 0 zu erhöhen.
 
 MoMa verwendet die plattformunabhängige Bibliothek 'systeminformation' (https://github.com/sebhildebrandt/systeminformation), um Informationen über den Computer zu sammeln. Viele der Anrufe können in Timer-Intervallen verwendet werden - siehe Referenz unten.
 
-MoMa benötigt mindestens nodejs Version 8 / ES9 / ECMAScript2018.
+MoMa benötigt mindestens nodejs Version 10.
 
 ## Installation
 Verfügbar im ioBroker-Repository 'neueste'
@@ -40,7 +40,7 @@ npm installiere iobroker.moma
 
 Funktioniert auch in Multihost-Umgebungen. Stellen Sie vor der Installation sicher, dass die richtige Instanz ausgewählt ist.
 
-** Achtung: ** Derzeit müssen Sie auf jedem Slave eine Instanz von Admin-Adapter installieren, um dies zu umgehen.
+** Achtung: ** Derzeit müssen Sie auf jedem Slave eine Instanz von Admin-Adapter installieren, um dieses Problem zu umgehen.
 Der Admin-Adapter muss nicht aktiv sein!
 
 ## Kernkonzept
@@ -115,6 +115,19 @@ Folgende Funktionen von **MoMa** werden in Intervall 4 aufgerufen (Standard jede
 * checkBatteries - prüft Batteriezustandsvariablen (aktuell implementierte Zustandsnamen: LOWBAT, LOW_BAT)
 
 ## Changelog
+
+### 1.2.8 (2021-03-26)
+* (AWhiteKnight) eliminate warning messages (issue #52), upgrade to systeminformation lib 5.6.8
+	- in systeminformation many states of currentLoad have been renamed. The old ones will be deleted and the new ones created. Have a look into the logs.
+
+### 1.2.7 (2020-10-18)
+* (AWhiteKnight) remove leading i in names that are not a number, systeminformation lib 4.27.0 
+
+### 1.2.6 (2020-04-27)
+* (AWhiteKnight) fix typo, precise error location, systeminformation lib 4.23.6 
+
+### 1.2.5 (2020-04-12)
+* (AWhiteKnight) minor bugfixing, prepare stable release 
 
 ### 1.2.4 (2020-03-20)
 * (AWhiteKnight) bugfixing: issues #45 #42 #24, controller update working again 

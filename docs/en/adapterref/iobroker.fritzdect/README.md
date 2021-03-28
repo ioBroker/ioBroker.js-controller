@@ -186,6 +186,10 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+### 2.1.13
+* correction at group of switches (switchtype not recognized -> simpleonoff)
+* functionbitmask 32768 moved to role: switches
+
 ### 2.1.12 (npm)
 * new values for DECT500
 * back to full unit testing
