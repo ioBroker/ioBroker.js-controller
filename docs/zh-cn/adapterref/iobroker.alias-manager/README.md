@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alias-manager/README.md
 title: ioBroker.alias-manager
-hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
+hash: 9IsSTpLgU5aBahGBJ1itH4LjUYBnaZ/OjtIp5dtOZVU=
 ---
 ![标识](../../../en/adapterref/iobroker.alias-manager/admin/alias-manager.png)
 
@@ -21,6 +21,7 @@ hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 管理和创建别名。
 
 ##快速介绍
+###管理别名
 ![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_1.png)
 
 *（1）点击“管理别名”
@@ -36,7 +37,7 @@ hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 *每个数据点都有几个用于配置它的字段：
     *在灰色区域，您可以设置名称或删除数据点
     *在蓝色区域中，您可以配置角色，类型和-可选-单位
-*在绿色区域中，您可以设置可选的最小值和最大值，并确定数据点是否应为只读（common.write为关闭状态）以及是否可以访问其值（common.read为打开状态）-这将是大多数情况下的正确设置情况）
+*在绿色区域中，您可以设置可选的最小值和最大值，并确定数据点是否应为只读（common.write为关闭状态）以及是否可以访问其值（common.read为打开状态），这将是大多数情况下的正确设置情况）
 *在红色区域中，您可以：
 *（5）配置链接到该别名数据点的原始ioBroker数据点。两者（原始数据点和别名数据点）都保持同步。
 *（6）此外，您可以配置读取和写入的转换功能。
@@ -47,14 +48,14 @@ hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 ![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_3.png)
 
 *（1）单击“复制别名”进行复制或
-*（2）在“ RENAME ALIAS”上重命名别名，将打开以下对话框：
+*（2）在“重命名别名”上重命名别名，将打开以下对话框：
 
 ![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_4.png)\您可以在这里：
 
 *（1）设置一个新的ID，然后
 *（2）为别名设置一个新的通用名称
 *（3）通过单击“添加替换”，您可以在以下列表中添加行，您可以在其中：
-    *（4）输入一个字符串，将对其进行搜索并替换为（5）该字符串
+    *（4）输入一个字符串，将对其进行搜索，并将其替换为（5）该字符串
 *使用此功能，您可以快速更改原始的ioBroker数据点，您的别名数据点已链接到
 * 例子：
 *您的风扇带有多个数据点，例如“ SET”，“ ERROR”和“ UNREACH”
@@ -70,7 +71,48 @@ hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 *（2）通过单击“保存更改”仅保存一个数据点
 *（3）最后，您可以通过单击“删除别名”来删除整个别名
 
+###自动创建别名
+![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_6b.png)
+
+*（1）点击“自动别名”
+
+![截屏](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_7b.png)
+
+*（1）首先从ioBroker对象树中选择设备的ID
+*（2）然后单击“尝试从该设备创建别名”
+*（3）之后，您将找到确定的Alias和
+*（4）所选设备的所有数据点的列表
+    *将检查所有自动识别的数据点（仅保存选中的行）
+*如果自动识别，则数据点将设置“目的地ID”。这将是别名的相应数据点（原始数据点将链接到此新的别名数据点）。 autocreate-function尝试匹配已标准化的datapoint-id，具体取决于所识别的设备类型。但是，您可以根据需要更改设置，但是每个“目的地ID”都必须是唯一的。
+*最后，您可以输入目标别名数据点的名称
+*所有未自动识别的数据点均未选中，显示在列表中。您可以手动调整设置并激活复选框。
+*（5）您也可以手动将其他数据点添加到此列表或清除完整列表
+*（6）然后可以将新的别名与所有选中的（！）数据点一起保存（未选中的数据点将被丢弃）
+*之后，您将被自动转移到“管理别名”标签，并且新的别名将被打开，以根据需要调整其设置
+
 ## Changelog
+
+### 0.1.4 (2021-03-30)
+* (sbormann) Updated dependencies.
+* (sbormann) Removed bottom-border if used as tab.
+
+### 0.1.3 (2021-03-29)
+* (sbormann) Changed admin tab to singleton mode.
+
+### 0.1.2 (2021-03-29)
+* (sbormann) Fixed link to admin tab.
+* (sbormann) Added translations.
+
+### 0.1.1 (2021-03-28)
+* (sbormann) Added alias-manager as tab to the ioBroker side menu.
+* (sbormann) Added list of aliases to main tab.
+* (sbormann) Enhanced open all / close all function for collapsibles.
+* (sbormann) Added translations.
+
+### 0.1.0 (2021-03-27)
+* (sbormann) Alias-ID can now be an object with seperate datapoints for read and write.
+* (sbormann) Alias-Datapoints can now be collapsed.
+* (sbormann) Added Autocreate Alias function.
 
 ### 0.0.8 (2021-03-22)
 * (sbormann) Added ability to create alias-datapoint from existing datapoint.

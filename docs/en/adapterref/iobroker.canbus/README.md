@@ -119,8 +119,10 @@ By writing JSON data to the `raw.send` state you are able to send CAN messages c
 
 ## Changelog
 
-### 1.0.3 (dev)
+### 1.1.0 (WIP)
 * (crycode-de) Fixed config import in admin
+* (crycode-de) Added ioBroker state data type option for custom parsers
+* (crycode-de) Added import/export feature for messages as json or csv
 
 ### 1.0.2 (2021-03-26)
 * (crycode-de) Fixed issue where missing state prevented custom parser write

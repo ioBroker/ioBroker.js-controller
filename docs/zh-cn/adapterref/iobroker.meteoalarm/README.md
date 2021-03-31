@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.metalarm
-hash: dSIeHPUsGeGD6TJaFSBoVxbTLJFv/IL/lp8haqD9UHg=
+hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
 ---
-![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
+![标识](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
-![保镖徽章](https://snyk.io/test/github/jack-blackson/ioBroker.meteoalarm/badge.svg)
+![保管员徽章](https://snyk.io/test/github/jack-blackson/ioBroker.meteoalarm/badge.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meteoalarm.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.meteoalarm.svg)
 ![安装数量](http://iobroker.live/badges/meteoalarm-stable.svg)
@@ -19,11 +19,11 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ＃＃ 如何使用它
 有两种方法可以获取链接以检索气象警报信息。
 
-选项1：选择您的国家/地区，然后按“加载区域”，然后选择区域。然后自动填充xml。只需按保存就可以了。
+选项1：选择您的国家/地区，然后按“加载区域”，然后选择区域。然后，将自动填充xml。只需按保存就可以了。
 
-选项2：转到http://meteoalarm.eu并选择您的地区。然后转到右上方的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
+选项2：转到http://meteoalarm.eu并选择您的地区。然后转到右上角的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
 
-![商标](../../../en/adapterref/iobroker.meteoalarm/screenshot.png)
+![标识](../../../en/adapterref/iobroker.meteoalarm/screenshot.png)
 
 ##可用字段
 |字段名称|描述|
@@ -46,7 +46,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |图标|报警类型图标|
 
 ##警报类型
-|报警类型|说明|
+|警报类型|描述|
 |:---:|:---:|
 | 1 |风|
 | 2 |雪/冰|
@@ -66,48 +66,54 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |警报级别|描述|
 |:---:|:---:|
 |绿色|当前无警告。 |
-|黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视暴露于气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
-|橙色|天气很危险。已经预测到异常的气象现象。可能会造成损坏和事故。要非常细心和小心，并与预期的气象条件保持同步。 |
-|红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端破坏和事故危及生命和财产。 |
+|黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视面临气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
+|橙色|天气很危险。已经预测到异常的气象现象。可能会造成损坏和事故。要非常专心和细心，并与预期的气象条件保持同步。 |
+|红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端损坏和事故危及生命和财产。 |
 
 ##支持的国家
 *奥地利
 * 克罗地亚
 * 捷克共和国
 *芬兰
-*德国
+* 德国
 *希腊
 *匈牙利
 *爱尔兰
-*以色列
+* 以色列
 * 意大利
 *拉脱维亚
 *立陶宛
 *马耳他
 * 摩尔多瓦
 *黑山
-*荷兰
+* 荷兰
 * 挪威
 *波兰
 * 罗马尼亚
 *塞尔维亚
 *斯洛伐克
-*西班牙
-*瑞士
+* 西班牙
+* 瑞士
 *瑞典
 
 如果找不到您的国家，请在github上创建一个问题，我很乐意添加
 
 ##不可能的国家
-*法国（没有RSS提要）
-*葡萄牙（不可拆分）
+*法国（无RSS提要）
+*葡萄牙（不可分裂）
 *斯洛文尼亚（没有RSS提要）
 
 ##要实现的功能
 *一天处理多个警报
 
+## 1.1.3（2021-03-29）
+*（jack-blackson）错误修复了适配器检查器
+
+## 1.1.2（2021-03-29）
+*（jack-blackson）无法修复数据更新的错误修正，由于CORS错误而删除了链接自动生成
+
 ## 1.1.1（2020-10-28）
-*（jack-blackson）错误修正HTML资料
+*（jack-blackson）错误修正HTML数据
 
 ## 1.1.0（2020-03-29）
 *（杰克·布莱克森）Bugfix德国
@@ -117,7 +123,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 ## 1.0.8（2019-11-15）
 *（jack-blackson）添加了波兰，摩尔多瓦，希腊，罗马尼亚
-*（jack-blackson）添加了新的数据点以获取到天气地图的链接
+*（jack-blackson）添加了新的数据点以获取到“天气地图”的链接
 
 ## 1.0.7（2019-11-13）
 *（jack-blackson）添加了捷克共和国，爱尔兰，以色列，立陶宛，拉脱维亚，黑山，马耳他，塞尔维亚，瑞典
@@ -129,10 +135,10 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 *（jack-blackson）较小的日志记录调整
 
 ## 1.0.4（2019-09-11）
-*（杰克·布莱克森）特拉维斯错误
+*（杰克·布莱克森）特拉维斯（Travis）错误
 
 ## 1.0.3（2019-09-09）
-*（jack-blackson）的小错误修正，从“恶魔”类型更改为“时间表”
+*（jack-blackson）的一些小错误修正，从“恶魔”类型更改为“时间表”
 
 ## 1.0.2（2019-08-25）
 *（jack-blackson）重新排序了发布信息
@@ -144,7 +150,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 *（jack-blackson）发行版本
 
 ### 0.6.0（2019-08-05）
-*（jack-blackson）将天气图标本地存储在适配器中
+*（jack-blackson）将天气图标存储在适配器本地
 
 ### 0.5.0（2019-07-21）
 *（jack-blackson）处理超时
@@ -166,15 +172,15 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ### 0.1.0（2019-07-11）
 *（杰克·布莱克森）初始版本
 
-##积分
-钟声由Freepik从www.flaticon.com设计
+##学分
+图标中的钟声由Freepik从www.flaticon.com设计
 
 ## Changelog
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2021 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

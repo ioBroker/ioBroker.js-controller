@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: dSIeHPUsGeGD6TJaFSBoVxbTLJFv/IL/lp8haqD9UHg=
+hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -59,7 +59,7 @@ Option 2: Gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Geh
 | 9 | Lawine |
 | 10 | Regen |
 | 11 | Unbekannt |
-| 12 | Flut |
+| 12 | Hochwasser |
 | 13 | Regenflut |
 
 ## Alarmstufen
@@ -73,7 +73,7 @@ Option 2: Gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Geh
 ## Unterstützte Länder
 * Österreich
 * Kroatien
-* Tschechien
+* Tschechische Republik
 * Finnland
 * Deutschland
 * Griechenland
@@ -106,6 +106,12 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
 
+## 1.1.3 (2021-03-29)
+* (jack-blackson) Fehler behebt die Adapterprüfung
+
+## 1.1.2 (2021-03-29)
+* (jack-blackson) Bugfix für nicht funktionierende Datenaktualisierung, entfernte Link-Autogeneration aufgrund von CORS-Fehlern
+
 ## 1.1.1 (2020-10-28)
 * (jack-blackson) Bugfix HTML-Daten
 
@@ -115,7 +121,7 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 ## 1.0.9 (2020-02-06)
 * (Jack-Blackson) Bugfix Deutschland
 
-## 1.0.8 (15.11.2019)
+## 1.0.8 (2019-11-15)
 * (jack-blackson) Hinzugefügt Polen, Moldawien, Griechenland, Rumänien
 * (jack-blackson) Neuer Datenpunkt hinzugefügt, um einen Link zur Wetterkarte zu erhalten
 
@@ -144,7 +150,7 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 * (Jack-Blackson) Release-Version
 
 ### 0.6.0 (05.08.2019)
-* (Jack-Blackson) Speichern Sie die Wettersymbole lokal im Adapter
+* (jack-blackson) Speichern Sie die Wettersymbole lokal im Adapter
 
 ### 0.5.0 (2019-07-21)
 * (Jack-Blackson) Handle Timeouts
@@ -174,7 +180,7 @@ Bell in Icon von Freepik von www.flaticon.com
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2021 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

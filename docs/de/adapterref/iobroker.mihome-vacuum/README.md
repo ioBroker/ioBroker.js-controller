@@ -3,55 +3,66 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: HmC70Kx52qe84OihnYTlAL+bjnM+H4Z4i9oR66doEIQ=
+hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/mihome-vacuum-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
-![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mihome-vacuum.svg?branch=master)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/mihome-vacuum-installed.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.mihome-vacuum.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.mihome-vacuum/badge.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/mihome-vacuum-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
 # IoBroker Mihome-Vakuumadapter
+![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.mihome-vacuum/workflows/Test%20and%20Release/badge.svg)
+
 [Deutsche beschreibung hier](README_de.md)
 
 Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
 
 ## Inhalt
+ - [Bekannte Fehler] (# bekannte_Fehler)
+    - [Fehler bei der Installation (Zeichenfläche)] (# error_at_installation)
+    - [HTTP-Fehler beim Abrufen des Token-Cookies {}] (# http_error_when_getting_token_cookie {})
 - [Setup] (# Konfiguration)
-    - [Adapter konfigurieren] (# Adapterkonfiguration)
-        - [Kontrolle über Alexa] (# Kontrolle über Alexa)
-        - [Zweiter Roboter] (# zweiter Roboter)
-    - [Valetudo konfigurieren] (# valetudo-config)
+    - [Adapter konfigurieren] (# Adapterkonfiguration)
+        - [Kontrolle über Alexa] (# Kontrolle über Alexa)
+        - [Zweiter Roboter] (# zweiter Roboter)
+    - [Valetudo konfigurieren] (# valetudo-config)
 - [Funktionen] (# Funktionen)
-    - [S50-Befehle] (# Befehle-des-s50)
-    - [Gehe zu] (# gehe zu)
+    - [S50-Befehle] (# Befehle des s50)
+    - [Gehe zu] (# gehe zu)
 - [zone Clean] (# zoneclean)
-    - [Zimmer] (# Zimmer)
-    - [Timer] (# Timer)
-    - [Eigene Befehle] (# send-your-own-Befehle)
-    - [sendTo hook] (# send-custom-befehle-with-sendto)
+    - [Zimmer] (# Zimmer)
+    - [Timer] (# Timer)
+    - [Eigene Befehle] (# send-your-own-Befehle)
+    - [sendTo hook] (# send-custom-befehle-with-sendto)
 - [Widget] (# Widget)
 - [Bugs] (# Bugs)
 - [Changelog] (# changelog)
+
+## Bekannte Fehler
+### Fehler bei der Installation
+wenn Ihre Installation fehlerhaft ausgeführt wird. Das Canvas-Paket konnte nicht installiert werden
+
+`` npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Beenden Sie den Status 1``
+
+Bitte installieren Sie Canvas und die Bibliotheken manuell mit:
+
+`` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ``
+
+`` sudo npm install canvas --unsafe-perm = true ``
+
+### HTTP-Fehler beim Abrufen des Token-Cookies {}
+Manchmal kann man keine Verbindung zur Xiaomi Cloud herstellen. Bitte öffnen Sie den Browser, gehen Sie zu Mihome und melden Sie sich an. Geben Sie den Code ein, den Sie per E-Mail erhalten haben. Danach sollte die Verbindung funktionieren.
 
 ## Aufbau
 Derzeit ist das Finden des Tokens das größte Problem.
 Bitte folgen Sie den Anweisungen im Link:
 
 [Token Turorial](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
-
-### Fehler bei der Installation
-wenn Ihre Installation fehlerhaft ausgeführt wird. Das Canvas-Paket konnte nicht installiert werden
-
-`` npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Beenden Sie den Status 1``
-
-Bitte installieren Sie canvas und die Bibliotheken manuell mit:
-
-`` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ``
-
-`` sudo npm install canvas --unsafe-perm = true ``
 
 ### Adapterkonfiguration
 - Für die IP-Adresse muss die IP-Adresse des Roboters im Format "192.168.178.XX" eingegeben werden.
@@ -60,11 +71,11 @@ Bitte installieren Sie canvas und die Bibliotheken manuell mit:
 - Abfrageintervall Die Zeit in ms, in der die Statuswerte des Roboters abgerufen werden (sollte nicht <10000 sein).
 
 #### Kontrolle über Alexa
-In der Konfiguration wird der Status alexa hinzufügen aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
+In der Konfiguration wird der Status "Alexa hinzufügen" aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
 
 #### Setzen Sie die angehaltene Zonenreinigung mit der Starttaste fort
 Wenn diese Option aktiviert ist, setzt das Vakuum die Zonenreinigung fort, wenn der Status "Start" auf "true" gesetzt wird, wenn er während einer laufenden Zonenreinigung angehalten wurde.
-Wenn diese Option deaktiviert ist, startet der Staubsauger beim Senden des Startbefehls eine neue "normale Reinigung", auch wenn dieser während einer laufenden Zonenreinigung angehalten wurde.
+Wenn diese Option deaktiviert ist, startet das Vakuum beim Senden des Startbefehls eine neue "normale Reinigung", auch wenn diese während einer laufenden Zonenreinigung angehalten wurde.
 
 - Experimentell: Mit dem Kontrollkästchen "Eigene Befehle senden" werden Objekte erstellt, über die Sie Ihre eigenen Befehle an den Roboter senden und empfangen können.
 
@@ -104,7 +115,7 @@ Die zweite Möglichkeit besteht darin, ein src img-Widget zu verwenden, um die P
 ## Funktionen
 ### Befehle des S50 (zweite Generation)
 Die Kartengröße beträgt immer 52000 mm x 52000 mm, daher sind Werte von 0 bis 51999 mm möglich.
-Leider kann die Position und Position der Karte nicht abgefragt werden, dies kann sich von Saugen zu Saugen ändern. Als Basis dient immer die letzte Saugkarte sowie in der App.
+Leider kann die Position und Position der Karte nicht abgefragt werden, dies kann sich von Absaugen zu Absaugen ändern. Als Basis dient immer die letzte Saugkarte sowie in der App.
 Wenn der Roboter nur einen Bereich aufnimmt und die Karte immer auf die gleiche Weise erstellt, können Sie sie zuverlässig an Orte senden oder den Bereich staubsaugen lassen.
 
 #### Gehe zu
@@ -146,10 +157,10 @@ Beispiel:
 neuerer Staubsauger mit der neuesten Home App unterstützt die Definition von Räumen, siehe [Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
 Jeder Raum in der aktuellen Karte verfügt über einen Index, der dann über die App dem Raum zugewiesen wird. Vom Roboter erhalten wir nur eine Zuordnung mit Raumnummer und Index. Der Adapter fragt diese Räume bei jedem Start des Adapters ab und erstellt für jeden Raum einen Kanal, der dann den aktuellen Raumindex kennt. Das gleiche passiert manuell mit der Schaltfläche loadRooms. Dieser Kanal kann dann den ioBroker-Räumen zugewiesen werden. Wenn die Taste roomClean gedrückt wird, wird der Index der Karte ermittelt und an den Roboter gesendet, damit dieser diesen Raum absaugen kann. Zuvor ist die Lüfterleistung auf Einzelraumabsaugung eingestellt. Wenn Sie noch nicht die Möglichkeit haben, die Räume in der App zu benennen, besteht auch die Möglichkeit, einen solchen Kanal manuell durch Angabe des Kartenindex zu erstellen. Es ist auch möglich, Zonenkoordinaten anstelle von mapIndex hinzuzufügen.
-Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie die ioBroker-Räume diesem Datenpunkt zuweisen und dann die Taste drücken.
+Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie diesem Datenpunkt die ioBroker-Räume zuweisen und dann die Taste drücken.
 
 #### Timer
-Sobald der Staubsauger die Raumfunktion unterstützt (siehe oben), können auch Timer erstellt werden, die dann die entsprechenden Raumkanäle auslösen oder deren mapIndexe ermitteln.
+Sobald der Staubsauger die Raumfunktion unterstützt (siehe oben), können auch Timer erstellt werden, die dann die entsprechenden Raumkanäle auslösen oder deren mapIndexes ermitteln.
 Der Timer kann direkt über Räume und / oder Raumkanäle ausgelöst werden.
 Die Timer selbst werden über den Konfigurationsbereich erstellt, werden dann aber zu einem Datenpunkt. Dort kann jeder Timer einmal aktiviert / deaktiviert oder übersprungen werden. Ein direkter Start ist ebenfalls möglich. Der Vorteil der ioBroker-Timer besteht darin, dass sie im VIS angezeigt und verwendet werden können und Sie den Roboter vom Internet trennen können, da die Timer der App von China aus ausgelöst werden.
 
@@ -167,7 +178,7 @@ Die folgenden Methoden und Parameter werden unterstützt:
 | Methode | params | Beschreibung |
 |-----------      |-------                                                              |-------------------                                                                                     |
 | get_timer | | Gibt den eingestellten Timer zurück. Einstellen der Saugzeiten BSp. 12 Uhr 30 in 5 Tagen |
-| set_timer | [["TIME_IN_MS", ["30 12 * * 1,2,3,4,5", ["start_clean", ""]]] | Timer aktivieren / deaktivieren |
+| set_timer | [["TIME_IN_MS", ["30 12 * * 1,2,3,4,5", ["start_clean", ""]]]] | Timer aktivieren / deaktivieren |
 | upd_timer | ["1481997713308", "Ein / Aus"] | |
 | | | Rettet die Zeiten des Do Not Distrube |
 | get_dnd_timer | | DND-Zeiten löschen |
@@ -206,7 +217,7 @@ sendTo("mihome-vacuum.0",
 Die unterstützten Befehle sind:
 
 | Beschreibung | `commandName` | Erforderliche Parameter | Bemerkungen |
-| Reinigungsvorgang starten | `startVacuuming` | - Keine - | |
+| Starten Sie den Reinigungsvorgang `startVacuuming` | - Keine - | |
 | Stoppen Sie den Reinigungsvorgang `stopVacuuming` | - Keine - | |
 | Unterbrechen Sie den Reinigungsvorgang `pause` | - Keine - | |
 | Wartejobs löschen | `clearQueue` | - Keine - | |
@@ -242,19 +253,37 @@ Die unterstützten Befehle sind:
 - Widget zu der Zeit ohne Funktion
 
 ## Changelog
+### 2.2.4 (2020-09-15)
+* (dirkhe) add config for send Pause Before Home
+### 2.2.3 (2020-08-20)
+* (dirkhe) room DP are not deleted, on map change 
+### 2.2.0 (2020-08-13)
+* (MeisterTR) add test for Viomi and Dreame Api 
+### 2.1.1 (2020-07-10)
+* (bluefox) Refactoring
+* (bluefox) Support of compact mode added
+
+### 2.0.10 (2020-07-05)
+* try to starting of cleaning 3 times, if robot not answers and some fixes
+
 ### 2.0.9 (2020-03-05)
 * (dirkhe) add state info for room channels and change queue info from number to JSON
+
 ### 2.0.8 (2020-02-26)
 * (dirkhe) decreased communication with robot
+
 ### 2.0.7 (2020-02-25)
 * (dirkhe) add Resuming after pause for rooms
+
 ### 2.0.6 (2020-02-17)
 * (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
+
 ### 2.0.4 (2020-02-13)
 * (MeisterTR) add cloud login to get token
 * (MeisterTR) add cloud Map
 * (MeisterTR) add new and old Map format
 * (MeisterTR) rebuild config page
+
 ### 1.10.5 (2020-02-11)
 * send Ping only if not connected, otherwise get_status
 * set button states to true, if clicked
@@ -262,6 +291,7 @@ Die unterstützten Befehle sind:
 
 ### 1.10.4 (2020-02-06)
 * (MeiserTR) add valetudo map support for gen3 and gen2 2XXX
+
 ### 1.10.1 (2020-01-20)
 * (dirkhe) added zone as room handling
 * (dirkhe) timer could room channels directly
@@ -332,3 +362,26 @@ Die unterstützten Befehle sind:
 
 ### 0.0.1 (2017-01-16)
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

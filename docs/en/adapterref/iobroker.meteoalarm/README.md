@@ -105,6 +105,10 @@ If you don't find your country, please create an issue on github, and I will be 
 
 
 ## Changelog
+## 1.1.3 (2021-03-29)
+* (jack-blackson) Error fixes adapter checker
+## 1.1.2 (2021-03-29)
+* (jack-blackson) Bugfix for not working data update, removed link autogeneration due to CORS errors
 ## 1.1.1 (2020-10-28)
 * (jack-blackson) Bugfix HTML Data
 ## 1.1.0 (2020-03-29)
@@ -155,7 +159,7 @@ Bell in icon designed by Freepik from www.flaticon.com
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2021 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

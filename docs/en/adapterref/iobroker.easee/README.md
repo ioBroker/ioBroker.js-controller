@@ -18,27 +18,8 @@ Adapter to connect Easee Wallbox
 
 ## Changelog
 
-### 0.0.1
-* (Newan) initial release
-### 0.0.2
-* (Newan) add config values
-### 0.0.3
-* (Newan) add config writeable
-### 0.0.4
-* (Newan) fixed config writeable
-* (Newan) reboot charger
-### 0.0.5
-* (Newan) add energy used values
-### 0.1.0
-* (Newan) Preparation for the first stable version
-### 0.1.1
-* (Newan) Password encrypt + bugfix for the stable version
-### 0.1.2
-* (Newan) Object reconstruction
-### 0.1.3
-* (Newan) Add #2 max Ampere changeable
-### 0.1.4
-* (Newan) Add new objects
+### 1.0.0
+* (Newan) Stable Version with SignalR
 
 
 ## Donation

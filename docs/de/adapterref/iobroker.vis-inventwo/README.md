@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 9rmpfpT12ta9ctLo3e1zgmJowPj/72Pa8WDmbBhKKpI=
+hash: 5AqtxomN45BJZp6t+TUgHeZjCKecrFKVo2echctEGP8=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -36,27 +36,30 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link wird zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
+## 2.8.3
+- Bug-Fix
+
 #8. 2.8.2
-- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" wird ist ",
+- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" Steuern ist ",
 
 ## 2.8.1
-- Fehlerhafte: Farbschieberegler RGB aktualisiert bei Dp.
+- Fehlerweise: Farbschieberegler RGB wird bei Dp.
 
 ## 2.8.0
 - Ansicht in PopUp Option für Universal- und Multi-Widget hinzugefügt
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.7.11
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.7.10
-- Problem mit Bildern im Universal und Multi Widget gehört
+- Problem mit Bildern im Universal- und Multi-Widget-Einstellungen
 - Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
@@ -69,7 +72,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.7
 - Problem mit der Bildstellung gehört
-- Problem mit dem Farbregler wurde, dass der Wert beim Loslassen nicht verkauft wurde
+- Problem mit dem Farbregler gehört, dass der Wert beim Loslassen nicht verkauft wurde
 
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget Frei
@@ -87,7 +90,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 
 ## 2.7.3
-- Fehler beim Multi-State und Steuern Zuständigkeiten
+- Fehler beim mehrstaatlichen und behinderten Zuständigkeiten
 - Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
@@ -98,7 +101,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Slider Text anmachen möglich
 
 ## 2.7.1
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.7.0
 - Neues Widget: Farbslider
@@ -121,26 +124,26 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - JSON Tabelle Spalten können per Klick sortiert werden
 
 ## 2.5.11
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.10
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.9
 - Der Prozess der Bildfarbfilterung wurde behandelt
 - Die Bildfarbe kann jetzt ein Datenpunkt sein
 
 ## 2.5.8
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.7
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.6
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.5
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.4
 - Bugfix (Status: doppeltes senden dese Wertes bei touch)
@@ -149,23 +152,23 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Grauer Kippschalter hinzugefügt
 
 ## 2.5.2
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.1
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.5.0
 - Kippschalter hinzugefügt
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.4.3
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.4.2
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.4.1
-- Fehlerbehebung
+- Bug-Fix
 
 ## 2.4.0
 - Randstil zur JSON-Tabelle hinzugefügt
@@ -187,11 +190,11 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.2.2
-- Fehler im Multi Widget Rechte: Bilder und Text ändern nicht bei Typ Navigation
+- Fehler im Multi Widget behoben: Bilder und Text wechselt nicht bei Typ-Navigation
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
-- Fehler in der Werteliste Werden: Wert wird nicht aktualisiert
+- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
 
 ## 2.2.0
 - Datenpunktwerte werden jetzt bei allen Widgets im Editor werden
@@ -235,7 +238,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Option für den Hintergrund-Widget-Wert wurde korrigiert
 
 ### 1.3.2
-- Fehlerbehebung
+- Bug-Fix
 
 ### 1.3.1
 - Das Farbverhalten der Navigationsschaltfläche wurde geändert
@@ -263,7 +266,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Fehlerbehebung
+- Bug-Fix
 
 ### 1.1.0
 - Slider-Widget hinzugefügt

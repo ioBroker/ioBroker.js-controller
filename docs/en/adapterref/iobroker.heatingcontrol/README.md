@@ -212,6 +212,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.3.1 (2021-04-xx)
+* (René) some optimisations for vis translation
+
 ### 2.3.0 (2021-03-20)
 * (René) see issue #187: show remaining override timeConverter
 * (René) see issue #225: support different languages for vis

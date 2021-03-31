@@ -61,6 +61,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.50.0
+
+• Neue Icons hinzugefügt (Gardinen)
+
 ### 0.49.1
 
 • Bugfix

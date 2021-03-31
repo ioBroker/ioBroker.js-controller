@@ -356,6 +356,15 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 0.7.6 (2021-03-29)
+* (foxriver76) added `requests` package as pip dev
+* (foxriver76) added logging for rest server
+
 ### 0.7.3 (2020-12-25)
 * (foxriver76) fixed debug logging on discovery
 

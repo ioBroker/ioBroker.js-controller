@@ -90,6 +90,10 @@ thanks to @sigi234
 * 
 -->
 
+### 1.5.1 (2021-03-28)
+* replaced presence images with smaller ones
+
+
 ### 1.5.0 (2021-03-26)
 * new widget Presence
 
@@ -101,9 +105,6 @@ thanks to @sigi234
 * removed lint 
 
 ### 1.4.5 (2021-03-26)
-* update internal test-and-release script
-
-### 1.4.4 (2021-03-26)
 * update internal test-and-release script
 
 ## License

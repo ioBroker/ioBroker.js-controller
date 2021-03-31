@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alias-manager/README.md
 title: ioBroker.alias-manager
-hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
+hash: 9IsSTpLgU5aBahGBJ1itH4LjUYBnaZ/OjtIp5dtOZVU=
 ---
 ![Logo](../../../en/adapterref/iobroker.alias-manager/admin/alias-manager.png)
 
@@ -21,6 +21,7 @@ hash: ILBDuxI8z888yva6KEGk9WIp6hJCYxuO23vtEQFwtzg=
 Verwaltet und erstellt Aliase.
 
 ## Quick Intro
+### Aliase verwalten
 ![Bildschirmfoto](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_1.png)
 
 * (1) Klicken Sie auf "ALIASEN VERWALTEN".
@@ -70,7 +71,48 @@ Verwaltet und erstellt Aliase.
 * (2) Speichern Sie nur einen Datenpunkt, indem Sie auf "ÄNDERUNGEN SPEICHERN" klicken.
 * (3) Schließlich können Sie den gesamten Alias löschen, indem Sie auf "ALIAS LÖSCHEN" klicken.
 
+### Alias automatisch erstellen
+![Bildschirmfoto](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_6b.png)
+
+* (1) Klicken Sie auf "AUTOCREATE ALIASE".
+
+![Bildschirmfoto](../../../en/adapterref/iobroker.alias-manager/img/manual_screenshot_7b.png)
+
+* (1) Wählen Sie zuerst eine ID eines Geräts aus dem ioBroker-Objektbaum aus
+* (2) Klicken Sie dann auf "VERSUCHEN SIE, ALIAS AUS DIESEM GERÄT ZU ERSTELLEN".
+* (3) Anschließend finden Sie die festgelegten Einstellungen für den Alias und
+* (4) Eine Liste aller Datenpunkte des ausgewählten Geräts
+    * Alle automatisch erkannten Datenpunkte werden überprüft (nur markierte Zeilen werden gespeichert)
+* Wenn automatisch erkannt, wird für den Datenpunkt eine Ziel-ID festgelegt. Dies ist der entsprechende Datenpunkt des Alias (der ursprüngliche Datenpunkt wird mit diesem neuen Alias-Datenpunkt verknüpft). Die Autocreate-Funktion versucht, abhängig vom erkannten Gerätetyp mit standardisierten Datenpunkt-IDs übereinzustimmen. Sie können die Einstellungen jedoch beliebig ändern, aber jede Ziel-ID muss eindeutig sein.
+* Und schließlich können Sie einen Namen für den Ziel-Alias-Datenpunkt eingeben
+* Alle NICHT automatisch erkannten Datenpunkte werden in der Liste deaktiviert angezeigt. Sie können die Einstellungen manuell anpassen und das Kontrollkästchen aktivieren.
+* (5) Sie können dieser Liste auch manuell andere Datenpunkte hinzufügen oder die vollständige Liste löschen
+* (6) Sie können dann den neuen Alias mit allen aktivierten (!) Datenpunkten speichern (nicht aktivierte Datenpunkte werden verworfen).
+* Anschließend werden Sie automatisch auf die Registerkarte 'ALIASEN VERWALTEN' weitergeleitet und der neue Alias wird geöffnet, um die Einstellungen nach Bedarf anzupassen
+
 ## Changelog
+
+### 0.1.4 (2021-03-30)
+* (sbormann) Updated dependencies.
+* (sbormann) Removed bottom-border if used as tab.
+
+### 0.1.3 (2021-03-29)
+* (sbormann) Changed admin tab to singleton mode.
+
+### 0.1.2 (2021-03-29)
+* (sbormann) Fixed link to admin tab.
+* (sbormann) Added translations.
+
+### 0.1.1 (2021-03-28)
+* (sbormann) Added alias-manager as tab to the ioBroker side menu.
+* (sbormann) Added list of aliases to main tab.
+* (sbormann) Enhanced open all / close all function for collapsibles.
+* (sbormann) Added translations.
+
+### 0.1.0 (2021-03-27)
+* (sbormann) Alias-ID can now be an object with seperate datapoints for read and write.
+* (sbormann) Alias-Datapoints can now be collapsed.
+* (sbormann) Added Autocreate Alias function.
 
 ### 0.0.8 (2021-03-22)
 * (sbormann) Added ability to create alias-datapoint from existing datapoint.

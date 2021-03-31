@@ -4670,6 +4670,19 @@ Settings that are not listed in the table below are self-explanatory.
             <td>override the value text. you can use <code>#value</code> to show the value in the text</td>
         </tr>
         <tr>
+            <td rowspan=3><img src="doc/en/media/value_settings_layout.png"></td>
+            <td>font color</td>
+            <td>Define the color of the text. Additional it's posible to use <code>#value</code> for conditions to show diffrent colors depending on the value of the datapoint. Allowed expression see <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>
+        <tr>
+            <td>color of the text prepanded</td>
+            <td>Define the color of the text. Additional it's posible to use <code>#value</code> for conditions to show diffrent colors depending on the value of the datapoint. Allowed expression see <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>
+        <tr>
+            <td>color of appended text</td>
+            <td>Define the color of the text. Additional it's posible to use <code>#value</code> for conditions to show diffrent colors depending on the value of the datapoint. Allowed expression see <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>								
+        <tr>
             <td rowspan=3><img src="doc/en/media/value_settings_number_formatting.png"></td>
             <td>calculate</td>
             <td>Use <code>#value</code> for the value of the datapoint and convert it by calculation using <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
@@ -4689,8 +4702,19 @@ Settings that are not listed in the table below are self-explanatory.
             <td>condition</td>
             <td>Use <code>#value</code> for the value of the datapoint and conditions to format other types to boolean by using the <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
         </tr>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/value_settings_image.png"></td>
+            <td>Image</td>
+            <td>Select a materialdesignicon or an image. Additional it's posible to use <code>#value</code> for conditions to show diffrent images / icons depending on the value of the datapoint. Allowed expression see <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>
+        <tr>
+            <td>image color</td>
+            <td>Define the color of the materialdesignicon. Additional it's posible to use <code>#value</code> for conditions to show diffrent colors depending on the value of the datapoint. Allowed expression see <a href="https://mathjs.org/docs/expressions/syntax.html#operators" _target="blank">mathjs evaluation expressions</a></td>
+        </tr>					
     </tbody>
 </table>
+
+
 
 ### HTML Properties
 
