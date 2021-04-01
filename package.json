@@ -29,7 +29,7 @@
     "debug": "^4.3.1",
     "decache": "^4.6.0",
     "deep-clone": "^3.0.3",
-    "esbuild": "^0.8.49",
+    "esbuild": "^0.11.2",
     "esbuild-register": "^2.0.0",
     "event-stream": "^4.0.1",
     "fs-extra": "^9.1.0",
