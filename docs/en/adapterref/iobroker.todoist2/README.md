@@ -15,7 +15,7 @@
 ## ioBroker.Todoist
 
 This Adapater is for integrating todoist.
-He uses the REST API
+It uses the REST API
 https://developer.todoist.com/rest/v1/#overview
 
 Dieser Adaber dient zur zur Integration von todoist.
@@ -41,7 +41,7 @@ https://developer.todoist.com/rest/v1/#overview
 Dieser Adapter verfügt über die Möglichtkeit mit sendTo zu arbeiten:
 Hier ist der nötige Ausbau:
 
- ``` 
+``` 
  sendTo("todoist2", "send", {
      funktion: {name/string - see below!},
      task: {name/string},
@@ -62,7 +62,7 @@ Hier ist der nötige Ausbau:
 
 Hier die Liste der funktion:
 
- ``` 
+``` 
 
 add_task --> new Task
 del_task --> delete Task
@@ -94,7 +94,7 @@ Aktiviere diese Funktion nur wenn du einen Premium Account hast.
 ## HTML
 
 Example for CSS HTML Table
- ``` 
+``` 
 #task_table {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -122,7 +122,7 @@ Example for CSS HTML Table
 ```
 
 Example for CSS HTML Button
- ``` 
+``` 
 .button {
  background-color: #4CAF50;
  border: none;
@@ -156,12 +156,12 @@ margin-right: 0.5em;
 ```
 
 Example for SVG Icon in Button
- ``` 
+``` 
 <svg class="button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false"> <path class="cls-2" d="M18,3H6A3,3,0,0,0,3,6V18a3,3,0,0,0,3,3H18a3,3,0,0,0,3-3V6A3,3,0,0,0,18,3Zm1,15a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V6A1,1,0,0,1,6,5H18a1,1,0,0,1,1,1Z"/><path class="cls-2" d="M14.7,8.39l-3.78,5L9.29,11.28a1,1,0,0,0-1.58,1.23l2.43,3.11a1,1,0,0,0,.79.38h0a1,1,0,0,0,.79-.39l4.57-6a1,1,0,1,0-1.6-1.22Z"/></g></g></g></svg>
 
 ```
 Example for any image you like:
- ``` 
+``` 
 <img src="/todoist2.admin/todoist.png" width="24" height="24">
 ```
 

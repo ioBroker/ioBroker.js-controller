@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.todoist2/README.md
 title: ioBroker.todoist2
-hash: ZhJ4iln2JUDTkAR1nwwrBfVX2UQ8q7kYR+XhP4YVrE4=
+hash: JnrbCuCmIG7I5yZGnlAqVr5gSd2WM/nLYMTYksyjZrw=
 ---
-![商标](../../../en/adapterref/iobroker.todoist2/admin/todoist.png)
+![标识](../../../en/adapterref/iobroker.todoist2/admin/todoist.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.template.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.template.svg)
@@ -18,151 +18,154 @@ hash: ZhJ4iln2JUDTkAR1nwwrBfVX2UQ8q7kYR+XhP4YVrE4=
 
 ＃ioBroker.todoist2
 ## IoBroker.Todoist
-该Adapater用于整合todoist。
-他使用REST API https://developer.todoist.com/rest/v1/#overview
+此Adapater用于整合todoist。
+它使用REST API https://developer.todoist.com/rest/v1/#overview
 
 Dieser Adaber dient zur zur Integration von todoist。
 错误的Rest API https://developer.todoist.com/rest/v1/#overview
 
 ## Beschreibung
-*适配器位于Todolisten aus和legt diese als状态，而sosass diese在VIS angezeigt werdenkönnen中
-* Anlage als Text，JSON或HTML格式
+*适配器在VIS和Angezeigt werdenkönnen中的状态和状态
+* Anlage als Text，JSON oder HTMLmöglich
 * Anlage von Projekten，标签和版块
 * Anlage ist frei Konfigurierbar
 * ein“发送至” Blocked wurdeeingefügtum neue Aufgaben anzulegen
 * eine黑名单指令zurVerfügung
 * Eine Syncronisierung von Projekten istmöglich
-* Todoskönnen（每块），sendto，oder（每对象）Objektte im Objektbaum angelegt werden
-* Alle Funktionen der akutellen Rest API声明
+* Todoskönnen（每块），sendto，oder（每块Objekte im Objektbaum angelegt werden）
+* Alle Funktionen der akutellen Rest API密码
 
 *自动机Löschenalter Objekte（测试版）
 
 ＃ 发送至
-Dieser AdapterverfügtüberdieMöglichtkeitmit sendTo zu arbeiten：Hier ist der dernötigeAusbau：
+Dieser AdapterverfügtüberdieMöglichtkeitmit sendTo zu arbeiten：Hier ist dernötigeAusbau：
 
 ``` 
-sendTo("todoist2", "send", {
-    funktion: {name/string - see below!},
-    task: {name/string},
-    task_id: {number},
-    project: {name/string},
-    project_id: {number},
-    section: {name/string},
-    section_id: {number},
-    parent: {number},
-    order: {number},
-    label: {name/string},
-    label_id: {number},
-    priority: {number},
-    date: JJJJ-MM-TT,
-    });
+ sendTo("todoist2", "send", {
+     funktion: {name/string - see below!},
+     task: {name/string},
+     task_id: {number},
+     project: {name/string},
+     project_id: {number},
+     section: {name/string},
+     section_id: {number},
+     parent: {number},
+     order: {number},
+     label: {name/string},
+     label_id: {number},
+     priority: {number},
+     date: JJJJ-MM-TT,
+     });
 
-``
+```
 
 列表功能：
 
 ``` 
 
-dd_task --> new Task
-el_task --> delete Task
-dd_project --> new Project
-el_project --> delete Project
-lose_task --> close Task
-eopen_task --> reopen Task
-dd_section --> new Section
-el_section --> delete Section
+add_task --> new Task
+del_task --> delete Task
+add_project --> new Project
+del_project --> delete Project
+close_task --> close Task
+reopen_task --> reopen Task
+add_section --> new Section
+del_section --> delete Section
 
-``
+```
 
 ＃块状
-Dieser Adapterfürgtein den bereich中的todoist sendTo hinzu：![商标](../../../en/adapterref/iobroker.todoist2/blockly.png)
+Dieser Adapterfürgtein den bereich中的todoist sendTo hinzu：![标识](../../../en/adapterref/iobroker.todoist2/blockly.png)
 
-＃过滤
+＃ 筛选
 Siekönnenüberdie Filter Funktion von Todoist ganz einfach eigene听别人说。
-B筛选器：“ today” gibt alle heutefälligenTodos aus us ...
+B筛选器：“今天” gibt alle heutefälligenTodos aus usw ...
 
 Wichtig：Todoistnötig的Funktion ist ein Premium帐户！帐户保费帐户已失效。
 
-＃配置der Listen
+＃配置der监听
 ## HTML
 CSS HTML表示例
 
 ``` 
-task_table {
- font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
- border-collapse: collapse;
- width: 100%;
+#task_table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#task_table td, #task_table th {
+  border: 1px solid #ddd;
+  padding: 16px;
+}
+
+#task_table tr:nth-child(even){background-color: #f2f2f2;}
+
+#task_table tr:hover {background-color: #ddd;}
+
+#task_table th {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
 
 
-task_table td, #task_table th {
- border: 1px solid #ddd;
- padding: 16px;
-
-
-task_table tr:nth-child(even){background-color: #f2f2f2;}
-
-task_table tr:hover {background-color: #ddd;}
-
-task_table th {
- padding-top: 6px;
- padding-bottom: 6px;
- text-align: left;
- background-color: #4CAF50;
- color: white;
-
-
-
-``
+```
 
 CSS HTML按钮示例
 
 ``` 
-button {
-background-color: #4CAF50;
-border: none;
-color: white;
-padding: 8px 16px;
-text-align: center;
-text-decoration: none;
-display: inline-block;
-font-size: 16px;
-margin: 4px 2px;
-cursor: pointer;
-transition-duration: 0.4s;
+.button {
+ background-color: #4CAF50;
+ border: none;
+ color: white;
+ padding: 8px 16px;
+ text-align: center;
+ text-decoration: none;
+ display: inline-block;
+ font-size: 16px;
+ margin: 4px 2px;
+ cursor: pointer;
+ transition-duration: 0.4s;
+}
 
+.button__icon{
+width: 1.2em;
+height: 1.2em;
+fill: black;
+margin-right: 0.5em;
+}
 
-button__icon{
-idth: 1.2em;
-eight: 1.2em;
-ill: black;
-argin-right: 0.5em;
+.button:hover {
+  background-color: red;
+  color: black;
+}
 
+.button:hover {
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
 
-button:hover {
- background-color: red;
- color: black;
-
-
-button:hover {
- box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-
-
-``
+```
 
 按钮中的SVG图标示例
 
 ``` 
-svg class="button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false"> <path class="cls-2" d="M18,3H6A3,3,0,0,0,3,6V18a3,3,0,0,0,3,3H18a3,3,0,0,0,3-3V6A3,3,0,0,0,18,3Zm1,15a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V6A1,1,0,0,1,6,5H18a1,1,0,0,1,1,1Z"/><path class="cls-2" d="M14.7,8.39l-3.78,5L9.29,11.28a1,1,0,0,0-1.58,1.23l2.43,3.11a1,1,0,0,0,.79.38h0a1,1,0,0,0,.79-.39l4.57-6a1,1,0,1,0-1.6-1.22Z"/></g></g></g></svg>
+<svg class="button__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false"> <path class="cls-2" d="M18,3H6A3,3,0,0,0,3,6V18a3,3,0,0,0,3,3H18a3,3,0,0,0,3-3V6A3,3,0,0,0,18,3Zm1,15a1,1,0,0,1-1,1H6a1,1,0,0,1-1-1V6A1,1,0,0,1,6,5H18a1,1,0,0,1,1,1Z"/><path class="cls-2" d="M14.7,8.39l-3.78,5L9.29,11.28a1,1,0,0,0-1.58,1.23l2.43,3.11a1,1,0,0,0,.79.38h0a1,1,0,0,0,.79-.39l4.57-6a1,1,0,1,0-1.6-1.22Z"/></g></g></g></svg>
 
-``
+```
 
 您喜欢的任何图像的示例：
 
 ``` 
-img src="/todoist2.admin/todoist.png" width="24" height="24">
-``
+<img src="/todoist2.admin/todoist.png" width="24" height="24">
+```
 
 ## Changelog
+### 0.8.6
+* (rde-master) Bugfix and bump axios to 0.21.1
+
 ### 0.8.4
 * (rde-master) add option to add images in HTML Button
 

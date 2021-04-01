@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: 6OUWoEhaUFW+Uy+gxdJgmnwOhzJhVHqVyin9sfbrBgY=
+hash: V5ZB2SHBuJhNZJPgjDR9iAchuHd6MUzAH6e4yJSnZOk=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -64,15 +64,18 @@ Die Konfigurationswerte werden validiert und es können nur korrekte Werte gespe
 
 ### Fritzbox IP-Adresse, Benutzer und Passwort
 Die Konfiguration von IP-Adresse, Benutzer und Passwort ist erforderlich, um die Gerätedaten von der fritzbox abzurufen.
-Daher muss ein Benutzer in der Fritzbox erstellt werden. Dies ist bei neuerer Firmware-Version (> = 7.25) der fritzbox erforderlich. Weitere Informationen finden Sie hier: https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/Empfehlungen%20zur%20Benutzerfu%CC%88hrung%20bei%20der%20Anmeldung%20an%20einer%20FRITZ%21Box_v1.1.pdf Das Passwort ist verschlüsselt und wurde nicht im Klartext gespeichert. Der Benutzername und das Passwort dürfen maximal 32 Zeichen lang sein. Weitere Informationen finden Sie unter: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf % 20nicht% 20leer% 20sein.
+Daher muss ein Benutzer in der Fritzbox erstellt werden. Dies ist bei neueren Firmware-Versionen (> = 7.25) der fritzbox erforderlich. Weitere Informationen finden Sie hier: https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/Empfehlungen%20zur%20Benutzerfu%CC%88hrung%20bei%20der%20Anmeldung%20an%20einer%20FRITZ%21Box_v1.1.pdf Das Passwort ist verschlüsselt und wurde nicht im Klartext gespeichert. Der Benutzername und das Passwort dürfen maximal 32 Zeichen lang sein. Weitere Informationen finden Sie unter: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf % 20nicht% 20leer% 20sein.
 
 ### Ssl Option
-In einigen Fällen konnte der Adapter keine Verbindung zur Fritzbox herstellen. Es kann hilfreich sein, diese Option zu deaktivieren.
+In einigen Fällen konnte der Adapter keine Verbindung zur Fritzbox herstellen. Es könnte hilfreich sein, diese Option zu deaktivieren.
 In diesem Fall versucht der Adapter, eine Verbindung ohne https herzustellen.
 
 ### Intervall
 Sie haben separate Intervalle für Familienmitglieder und Fritzbox-Geräte.
 Das Intervall für Fritzbox-Geräte kann zwischen 1 und 59 Minuten konfiguriert werden. Normalerweise ist ein Wert zwischen 1 und 5 Minuten ein optimales Intervall zum Lesen der Fritzbox-Daten. Familienmitglieder können von 10 bis 600 Sekunden konfiguriert werden. Jeder neue Zyklus beginnt, wenn der vorherige Zyklus beendet ist.
+
+### Filterzeit
+Wenn die Filterzeit größer als 0s ist, wird der Status eines Familienmitglieds zweimal (nach der Filterzeit) überprüft, wenn sich der Status in false ändert. Wenn der Status wahr ist, wird der Status sofort festgelegt.
 
 ### Verlaufsadapter
 Über den Verlaufsadapter werden einige Werte berechnet. Sie können wählen, ob für diese Berechnungen der Verlauf, der SQL- oder der Influxdb-Adapter verwendet werden soll. Der Verlaufsadapter muss vorläufig installiert werden und kann dann im Konfigurationsdialog ausgewählt werden.
@@ -92,12 +95,20 @@ Wenn diese Option aktiviert ist, wird das FB-Geräteobjekt erneut mit der Gerät
 ### Erstellung von Netzinformationen
 Diese Option kann aktiviert werden, wenn die Erstellung von FB-Geräten zulässig ist. Wenn diese Option aktiviert ist, werden die Netzobjekte für jedes Gerät in der Fritzbox-Geräteliste erstellt.
 
+### Gäste Information
+Wenn diese Option aktiviert ist, werden die Status für Gäste erstellt.
+
+### Qr-Code-Generierung
+Wenn diese Option aktiviert ist, wird der QR-Code vom Gast-WLAN generiert.
+
 ### Einstellungen für Familienmitglieder
-Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar und angeben, ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter eine Statuspräsenz und prüft, ob das Mitglied anwesend ist oder nicht. Der Status wurde geändert, wenn sich der Anwesenheitsstatus geändert hat.
+Für ein konfiguriertes Familienmitglied sollten Sie den Mitgliedsnamen, den Hostnamen, die Mac- und IP-Adresse, einen Kommentar und angeben, ob das Mitglied aktiviert ist. Eine Gruppe ist optional. Wenn Sie es leer lassen und das Kompatibilitätsflag auf true setzen, ähnelt das Verhalten einer älteren Version des Adapers. In einer zukünftigen Version müssen Sie den Anwesenheitsstatus eines Familienmitglieds verwenden.
+Für jedes Mitglied erstellt der Adapter einen Anwesenheitsstatus und prüft, ob das Mitglied anwesend ist oder nicht. Der Status wurde geändert, wenn sich der Anwesenheitsstatus geändert hat. Sie können auch die Filterung für ein Mitglied aktivieren. Wenn der Zustand wahr ist, ändert sich der Zustand sofort in wahr. Wenn es falsch ist, wird der Wert nach der Filterzeit erneut überprüft.
+Wenn der Status in beiden Fällen falsch ist, ändert sich der Status in falsch. Ansonsten ändert es sich nicht.
 Um die Geschwindigkeitsinformationen in den Objekten zu erhalten, müssen Sie die Option fb-Geräte auswählen.
 
 ### Whitelist-Einstellungen
-In die weiße Liste können Sie jedes bekannte Gerät einfügen. Unbekannte Geräte werden im Blacklist-Objekt aufgelistet.
+In die weiße Liste können Sie jedes bekannte Gerät einfügen. Alle unbekannten Geräte werden im Blacklist-Objekt aufgelistet.
 Wenn Sie das Kontrollkästchen in der Überschrift der Tabelle aktivieren, sind alle Geräte ausgewählt.
 
 ## Eigenschaften
@@ -108,10 +119,10 @@ Die Funktion prüft die Verfügbarkeit der verwendeten Fritzbox-Funktionen. Die 
 Unter dem Ordner guest können Sie den Status wlan auf true oder false setzen. Anschließend wird der Gast wlan ein- oder ausgeschaltet.
 
 ### QR-Code des Gast-WLAN
-Der QR-Code des Gast-WLAN wird im Status-WLAN im Gastordner gespeichert. Der QR-Code kann im Basis-Bool-SVG-Widget angezeigt werden.
+Der QR-Code des Gast-WLAN wird im Status-WLAN im Gastordner gespeichert. Der QR-Code kann im Basis-Bool-SVG-Widget in vis angezeigt werden.
 
 ### Schalten Sie den Internetzugang von Fritzbox-Geräten ein / aus
-Unter dem Ordner FB-Geräte können Sie den deaktivierten Status auf true oder false setzen und der Internetzugang dieses Geräts ist in der Fritzbox gesperrt.
+Unter dem Ordner FB-Geräte können Sie den Deaktivierungsstatus auf true oder false setzen und der Internetzugang dieses Geräts ist in der Fritzbox gesperrt.
 
 ### Gäste holen, schwarze Liste
 In dieser Funktion wird geprüft, ob ein Benutzer als Gast angemeldet ist. Wird auch überprüft, ob ein Gerät nicht in der Whitelist aufgeführt ist.
@@ -121,7 +132,7 @@ Diese Geräte werden der Blacklist hinzugefügt.
 Für jedes Familienmitglied werden die Anwesenheit, das Kommen und Gehen sowie mehrere andere Informationen berechnet und im Mitgliedsobjekt gespeichert, wenn ein Verlaufsadapter ausgewählt ist.
 
 ### Hostnummer, aktive Geräte
-Die Anzahl der Geräte und wie viele aktiv sind, wird von der Fritzbox abgerufen.
+Die Anzahl der Geräte und wie viele aktiv sind, werden von der Fritzbox abgerufen.
 
 ## Objekte
 ### ObjektpräsenzAlle
@@ -146,10 +157,10 @@ Hier finden Sie Informationen zum letzten Update und zum Verbindungsstatus des A
 Hier finden Sie Informationen zur Anzahl der aktiven Gäste und Tabellenobjekte mit den darin enthaltenen Geräteinformationen.
 
 ### Objekt-Blacklist
-Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den unbekannten Geräteinformationen.
+Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den darin enthaltenen unbekannten Geräteinformationen.
 
 ### Objekt member.present
-Hier finden Sie Informationen zur Anwesenheit eines Mitglieds am aktuellen Tag und wie lange das Mitglied seit der letzten Änderung den Status wahr hat.
+Hier finden Sie Informationen über die Anwesenheit eines Mitglieds am aktuellen Tag und darüber, wie lange der Status des Mitglieds seit der letzten Änderung wahr war.
 
 ### Objekt member.absent
 Hier finden Sie Informationen zur Abwesenheit eines Mitglieds am aktuellen Tag und wie lange der Status des Mitglieds seit der letzten Änderung falsch war.
@@ -167,6 +178,18 @@ Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
     * Did some changes
     * Did some more changes
 -->
+### 1.1.3 (2021-03-31)
+* (afuerhoff) family groups implemented
+* (afuerhoff) compatability mode implemented
+* (afuerhoff) dependencies updated
+* (afuerhoff) configuration options added
+* (afuerhoff) dialogboxes optimized
+* (afuerhoff) translations updated
+* (afuerhoff) general program structure optimized
+* (afuerhoff) filter for family members implemeted
+* (afuerhoff) password handling updated
+* (afuerhoff) documentation updated
+
 ### 1.1.2 (2021-01-13)
 * (afuerhoff) QR-Code implemented
 * (afuerhoff) setState presence only if changed
@@ -195,9 +218,6 @@ Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 
 ### 1.0.4 (2020-06-28)
 * (afuerhoff) bugfix json list and guest handling, new object guest.presence
-
-### 1.0.3 (2020-05-26)
-* (afuerhoff) bugfix checking mac or ip
 
 ## License
 MIT License

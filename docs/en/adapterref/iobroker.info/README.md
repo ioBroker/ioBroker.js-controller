@@ -316,6 +316,7 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 
 ### 1.8.0 (2021-xx-xx)
 * (ldittmar81) Update libraries
+* (ldittmar82) Added Wifi, Docker, USB, Printer, Bluetooth and Audio infos
 
 ### 1.7.15 (2021-01-13)
 * (Apollon77) fix crash case (Sentry IOBROKER-INFO-1X)

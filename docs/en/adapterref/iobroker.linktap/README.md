@@ -30,6 +30,9 @@ Important: The desired schedules must be set up in the app prior to use. These c
 
 ## Changelog
 
+### 0.1.8
+* (Smart-Gang) Retrieve historical data (API update from manufacturer) and optimize data point settings.
+
 ### 0.1.7
 * (Smart-Gang) First public release
 

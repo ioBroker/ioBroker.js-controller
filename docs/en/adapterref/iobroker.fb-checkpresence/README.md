@@ -80,7 +80,10 @@ In this case the adapter tries to connect without https.
 ### Interval
 You have separate intervals for family members and Fritzbox devices.
 The interval for Fritzbox devices can be configured from 1 to 59 minutes. Normally a value between 1 and 5 minutes is an optimal interval to read the fritzbox data. Family members could be configured from 10s to 600s. Every new cycle starts if the previous cycle 
-is finished. 
+is finished.
+
+### Filter time
+If the filter time is greater than 0s the state of a family member is checked twice (after the filter time) if the state is changing to false. If the state is true the state is immediate set.  
 
 ### History adapter
 Over the history adapter some values are calculated. You can choose, if the history, the sql or the influxdb adapter is used for this calculations. The history adapter must be installed preliminary and can then selected in the configuration dialog. 
@@ -101,8 +104,16 @@ If this option is checked, then the FB device object are re-synchronized with th
 This option can be checked if the creation of FB devices is allowed. If this option is checked, 
 the mesh objects for every device in the Fritzbox device list are created.
 
+### guest information
+If this option is checked the states for guests are created. 
+
+### qr-code generation
+If this option is checked the qr-code from guest wlan is generated. 
+
 ### Family member settings
-For a configured family member you must enter the Name, the mac- or ip-address, a comment and if the member is enabled for calculating. For every member the adapter creates a state presence and checks if the member is present or absent. The state was changed if the presence state changed. 
+For a configured family member you should enter the member name, the hostname, the mac- and ip-address, a comment and if the member is enabled. A group is optional. If you leave it empty and set the compatibility flag to true the behaviour is like an older version of the adaper. In a future version you have to use the presence state from a family member. 
+For every member the adapter creates a presence state and checks if the member is present or absent. The state was changed if the presence state changed. You can also enable the filtering for a member. If the state is true the state changes immediately to true. If it is false then the value will checked after the filter time again.
+If the state is in both cases false then the state changes to false. Otherwise it does not change.
 To get the speed information in the objects you have to select fb-devices option.
 
 ### Whitelist settings
@@ -180,6 +191,18 @@ Here you will find information about the history of the current day.
     * Did some changes
     * Did some more changes
 -->
+### 1.1.3 (2021-03-31)
+* (afuerhoff) family groups implemented
+* (afuerhoff) compatability mode implemented
+* (afuerhoff) dependencies updated
+* (afuerhoff) configuration options added
+* (afuerhoff) dialogboxes optimized
+* (afuerhoff) translations updated
+* (afuerhoff) general program structure optimized
+* (afuerhoff) filter for family members implemeted
+* (afuerhoff) password handling updated
+* (afuerhoff) documentation updated
+
 ### 1.1.2 (2021-01-13)
 * (afuerhoff) QR-Code implemented
 * (afuerhoff) setState presence only if changed
@@ -208,9 +231,6 @@ Here you will find information about the history of the current day.
 
 ### 1.0.4 (2020-06-28)
 * (afuerhoff) bugfix json list and guest handling, new object guest.presence
-
-### 1.0.3 (2020-05-26)
-* (afuerhoff) bugfix checking mac or ip
 
 ## License
 MIT License
