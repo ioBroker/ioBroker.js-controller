@@ -72,7 +72,7 @@
     "istanbul": "^0.4.5",
     "mocha": "^8.3.0",
     "sinon": "^9.2.4",
-    "sinon-chai": "^3.5.0"
+    "sinon-chai": "^3.6.0"
   },
   "homepage": "http://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
