@@ -3153,6 +3153,12 @@ function startScheduledInstance(callback) {
     processNextScheduledInstance();
 }
 
+/**
+ * Start given instance
+ * @param {string} id - id of instance, like 'system.adapter.hm-rpc.0'
+ * @param {boolean} wakeUp
+ * @returns {Promise<void>}
+ */
 async function startInstance(id, wakeUp) {
     if (isStopping || !connected) {
         return;
@@ -3295,8 +3301,22 @@ async function startInstance(id, wakeUp) {
     if (availableMemMB !== undefined && availableMemMB < (typeof config.system.memLimitError === 'number' ? config.system.memLimitError : 50)) {
         logger.error(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
         logger.error(`${hostLogPrefix} In future versions, the adapter might not be started!`);
+
+        // add it to notifications for popup
+        try {
+            await notificationHandler.addMessage('system', 'memIssues', `Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`, `system.host.${hostname}`);
+        } catch (e) {
+            logger.warn(`${hostLogPrefix} Could not add OOM notification: ${e.message}`);
+        }
     } else if (availableMemMB !== undefined && availableMemMB < (typeof config.system.memLimitWarn === 'number' ? config.system.memLimitWarn : 100)) {
         logger.warn(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
+
+        // add it to notifications for popup
+        try {
+            await notificationHandler.addMessage('system', 'memIssues', `Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`, `system.host.${hostname}`);
+        } catch (e) {
+            logger.warn(`${hostLogPrefix} Could not add OOM notification: ${e.message}`);
+        }
     }
 
     //noinspection JSUnresolvedVariable
