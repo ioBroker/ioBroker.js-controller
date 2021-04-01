@@ -65,7 +65,7 @@
     "@types/yargs": "^16.0.0",
     "chai": "^4.3.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^7.21.0",
+    "eslint": "^7.23.0",
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^3.0.0",
     "gulp-replace": "^1.0.0",
