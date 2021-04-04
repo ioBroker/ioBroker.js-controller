@@ -12,6 +12,23 @@
 
 This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js) library.
 
+## Features
+
+Some noteworthy features are:
+
+* Retrieve information (e.g. battery, cleaning log, consumable, cleaning and charging status)
+* Send clean commands (e.g. auto, spot area, custom area)
+* Send some other commands (e.g. play sound, reset consumables, move)
+* Save and rerun custom areas
+* Adjustment of vacuum power (clean speed) and water level
+* Retrieve information of the maps incl. spot areas and virtual boundaries
+* Retrieve information while cleaning (e.g. current position, map and area)
+* Delete, save and recreate virtual boundaries *)
+
+*) Experimental
+
+Please note: Some features are only available for some models
+
 ## Models
 
 ### Supported models
@@ -81,8 +98,9 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 ## Changelog
 
 ### 1.1.2 (alpha)
-* Using library version 0.6.0-alpha.7
+* Using library version 0.6.0-beta.0
 * Added experimental functions for deleting, saving and to recreate saved virtual boundaries (920,950,T8)
+* Added option to control clean speed and water level separately for each spot area
 * Quite a lot of improvements for processing map data, spot areas and virtual boundaries
 * Move some states from "info" channel to sub channels "info.library" and "info.network"
 * Added some cleaning log values

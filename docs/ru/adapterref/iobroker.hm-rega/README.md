@@ -113,6 +113,9 @@ IP-адрес CCU можно выбрать в раскрывающемся ме
 	### __WORK IN PROGRESS__
 -->
 
+### 3.0.17 (2021-04-04)
+* (foxriver76) correctly identify incomplete requests
+
 ### 3.0.16 (2021-01-31)
 * (foxriver76) fix issue with non-existing objects when using LAN-Gateways
 

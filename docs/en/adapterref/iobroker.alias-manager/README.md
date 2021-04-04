@@ -89,7 +89,7 @@ Here you can:
 
 ## Changelog
 
-### 0.1.4 (2021-03-30)
+### 1.0.0 (2021-03-30)
 * (sbormann) Updated dependencies.
 * (sbormann) Removed bottom-border if used as tab.
 

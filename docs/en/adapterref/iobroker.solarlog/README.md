@@ -40,9 +40,9 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
-### 2.1.0
+### 2.1.1
 
--   Cockpit-Data (consumption/production/battery/feed) added. Polling structure optimized for a faster polling of certain values ('live'-data).
+-   Cockpit- (consumption/production/battery/feed) and LCD-display data added. Polling structure optimized for a faster polling of certain values ('live'-data).
 
 ### 2.0.2
 

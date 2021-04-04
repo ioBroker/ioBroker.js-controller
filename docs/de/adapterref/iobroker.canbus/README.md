@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
+hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 ---
 # IoBroker.canbus
 ![Logo](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
@@ -31,8 +31,13 @@ Dieser Adapter verbindet ioBroker mit einem CAN-Bus (Controller Area Network).
 * Konfigurieren Sie Parser für jede Nachricht zum Lesen / Schreiben von Daten aus / in den Rohnachrichtenpuffer
   * Numerische Typen
   * Boolesche Werte einschließlich Bitmaskenunterstützung
-  * Zeichenfolgen in verschiedenen Zeichenkodierungen
-  * Benutzerdefinierte Skripte zum Lesen / Schreiben von / in den Puffer von Rohdaten
+  * Zeichenfolgen in verschiedenen Zeichencodierungen
+  * Benutzerdefinierte Skripte zum Lesen / Schreiben aus / in den Puffer von Rohdaten
+* Erweiterte Import / Export-Funktion
+  * Importieren Sie Nachrichtenkonfigurationen, um Ihre vorhandene Konfiguration zu erweitern
+  * Importieren Sie vordefinierte "bekannte" Konfigurationen von GitHub in die Admin-Oberfläche
+  * Exportieren und importieren Sie Ihre Nachrichtenkonfigurationen als "json" - oder "csv" -Dateien
+* Optionale Unterstützung für feste Datenlängen (DLC)
 * Optionale Unterstützung für das RTR-Flag
 * Optionale Rohzustände, die rohe CAN-Nachrichtenobjekte enthalten
 
@@ -112,6 +117,28 @@ Durch Schreiben von JSON-Daten in den Status `raw.send` können Sie CAN-Nachrich
 `ext` und `rtr` sind optional und standardmäßig `false`.
 
 ## Changelog
+
+### 1.1.1 (2021-04-02)
+* (crycode-de) Import bugfixes
+* (crycode-de) Prevent wrong log warning if a parser returned undefined
+* (crycode-de) Added react errorboundary for better clientside error handling
+
+### 1.1.0 (2021-04-01)
+* (crycode-de) Added import/export feature for messages in json or csv format
+* (crycode-de) Added import of well known configurations from GitHub
+* (crycode-de) Fixed config import in admin
+* (crycode-de) Added ioBroker state data type option for custom parsers
+
+### 1.0.2 (2021-03-26)
+* (crycode-de) Fixed issue where missing state prevented custom parser write
+* (DutchmanNL) Dutch translation updates
+* (UncleSamSwiss) French translation updates
+* (VeSler) Russian translation updates
+
+### 1.0.1 (2021-03-12)
+* (crycode-de) Use a queue to process _parser_ and _send_ state changes in the correct order
+* (crycode-de) Fixed some spelling issues
+* (crycode-de) Updated dependencies
 
 ### 1.0.0 (2021-02-23)
 * (crycode-de) Sort messages in admin

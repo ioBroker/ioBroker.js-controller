@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
+hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 ---
 ![NPM版本](https://img.shields.io/npm/v/iobroker.canbus.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.canbus.svg)
@@ -33,12 +33,17 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
   *布尔值，包括位掩码支持
   *不同字符编码的字符串
   *自定义脚本以读取/写入原始数据的缓冲区
+*高级导入/导出功能
+  *导入消息配置以扩展现有配置
+  *在管理界面中从GitHub导入预定义的“知名”配置
+  *将消息配置导出和导入为json文件或csv文件
+*对固定数据长度（DLC）的可选支持
 *对RTR标志的可选支持
 *包含原始CAN消息对象的可选原始状态
 
 ＃＃ 要求
 * Linux操作系统（由于使用了socketcan库）
-*内核支持的CAN硬件，它创建一个类似于`can0`的接口
+*内核支持的CAN硬件，它会创建一个类似于`can0`的接口
 *有关在您的CAN总线上发送的消息的一些知识
 
 ##解析器
@@ -47,7 +52,7 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 为以下数据类型提供了预定义的解析器。
 另外，您可以编写自己的脚本来使用* custom parser *读取/写入值。
 
-### * big-endian *和* little-endian *表示形式中的数值类型
+＃big＃和* little-endian *表示形式中的数字类型
 *有符号和无符号8、16和32位整数
 * 32位浮点数
 * 64位双
@@ -96,7 +101,7 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 您可以处理/修改脚本中的`<messageId>.json`或`<messageId>.<parserId>`状态。
 
 此外，如果在适配器配置中启用了状态，则可以使用`raw.received`和`raw.send`状态。
-它们保存消息数据的字符串化JSON数据，可用于独立于已配置的消息来处理每个已接收或发送的消息。
+它们保存消息数据的字符串化JSON数据，可用于独立于已配置的消息来处理每个接收或发送的消息。
 通过将JSON数据写入`raw.send`状态，您可以发送包含任何所需数据的CAN消息。
 
 ###原始消息对象示例
@@ -112,6 +117,28 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 `ext`和`rtr`是可选的，默认为`false`。
 
 ## Changelog
+
+### 1.1.1 (2021-04-02)
+* (crycode-de) Import bugfixes
+* (crycode-de) Prevent wrong log warning if a parser returned undefined
+* (crycode-de) Added react errorboundary for better clientside error handling
+
+### 1.1.0 (2021-04-01)
+* (crycode-de) Added import/export feature for messages in json or csv format
+* (crycode-de) Added import of well known configurations from GitHub
+* (crycode-de) Fixed config import in admin
+* (crycode-de) Added ioBroker state data type option for custom parsers
+
+### 1.0.2 (2021-03-26)
+* (crycode-de) Fixed issue where missing state prevented custom parser write
+* (DutchmanNL) Dutch translation updates
+* (UncleSamSwiss) French translation updates
+* (VeSler) Russian translation updates
+
+### 1.0.1 (2021-03-12)
+* (crycode-de) Use a queue to process _parser_ and _send_ state changes in the correct order
+* (crycode-de) Fixed some spelling issues
+* (crycode-de) Updated dependencies
 
 ### 1.0.0 (2021-02-23)
 * (crycode-de) Sort messages in admin

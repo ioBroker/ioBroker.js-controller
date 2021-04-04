@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
+hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 ---
 # IoBroker.canbus
 ![Логотип](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
@@ -25,7 +25,7 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Функции
-* Получать и отправлять необработанные сообщения с использованием стандартных и расширенных фреймов
+* Получать и отправлять необработанные сообщения с использованием стандартных и расширенных фреймов.
 * Каждое сообщение может быть настроено для приема и / или отправки данных
 * Возможность автоматического добавления объектов для увиденных сообщений CAN, которые еще не настроены
 * Настройте парсеры для каждого сообщения для чтения / записи данных из / в буфер необработанных сообщений
@@ -33,13 +33,18 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
   * Логические значения, включая поддержку битовой маски
   * Строки в разных кодировках символов
   * Пользовательские скрипты для чтения / записи из / в буфер необработанных данных
+* Расширенная функция импорта / экспорта
+  * Импорт конфигураций сообщений для расширения существующей конфигурации
+  * Импорт предопределенных "хорошо известных" конфигураций из GitHub в интерфейсе администратора.
+  * Экспортируйте и импортируйте конфигурации сообщений в виде файлов `json` или` csv`
+* Дополнительная поддержка фиксированной длины данных (DLC)
 * Дополнительная поддержка флага RTR
 * Дополнительные необработанные состояния, содержащие необработанные объекты сообщений CAN
 
 ## Требования
 * Операционная система Linux (из-за используемой библиотеки socketcan)
 * Оборудование CAN, которое поддерживается ядром и создает интерфейс, подобный `can0`
-* Некоторые знания о сообщениях, отправляемых на шину CAN
+* Некоторые знания о сообщениях, отправляемых на CAN-шину
 
 ## Парсеры
 Используя синтаксические анализаторы, вы можете читать или записывать данные в буфер сообщений CAN.
@@ -85,7 +90,7 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 Если `value` равен `undefined`, он будет проигнорирован. Используя это, вы можете фильтровать сообщения в пользовательском сценарии чтения по частям данных.
 
 #### Пользовательский сценарий записи
-В сценарии записи вам необходимо изменить (или заменить) переменную `buffer`.
+В сценарии записи вы должны изменить (или заменить) переменную `buffer`.
 
 В начале пользовательского сценария записи, `buffer` будет текущими данными сообщения CAN (как в состоянии `.json`).
 `value` устанавливается в значение состояния, которое должно быть записано в `buffer`.
@@ -112,6 +117,28 @@ hash: XkbzcNm4GvpY+3s92qZBnvoAQP8Y2/Fk4evGX7JbhZ8=
 `ext` и `rtr` являются необязательными и по умолчанию равны `false`.
 
 ## Changelog
+
+### 1.1.1 (2021-04-02)
+* (crycode-de) Import bugfixes
+* (crycode-de) Prevent wrong log warning if a parser returned undefined
+* (crycode-de) Added react errorboundary for better clientside error handling
+
+### 1.1.0 (2021-04-01)
+* (crycode-de) Added import/export feature for messages in json or csv format
+* (crycode-de) Added import of well known configurations from GitHub
+* (crycode-de) Fixed config import in admin
+* (crycode-de) Added ioBroker state data type option for custom parsers
+
+### 1.0.2 (2021-03-26)
+* (crycode-de) Fixed issue where missing state prevented custom parser write
+* (DutchmanNL) Dutch translation updates
+* (UncleSamSwiss) French translation updates
+* (VeSler) Russian translation updates
+
+### 1.0.1 (2021-03-12)
+* (crycode-de) Use a queue to process _parser_ and _send_ state changes in the correct order
+* (crycode-de) Fixed some spelling issues
+* (crycode-de) Updated dependencies
 
 ### 1.0.0 (2021-02-23)
 * (crycode-de) Sort messages in admin

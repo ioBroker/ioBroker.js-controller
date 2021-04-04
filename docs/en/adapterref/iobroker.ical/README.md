@@ -189,6 +189,9 @@ Whitelist: If you only want to include events of a specific location use regular
 
 ## Changelog
 
+### 1.9.3 (2021-04-01)
+* (Apollon77) Better handling of some ical cases 
+
 ### 1.9.2 (2021-03-07)
 * (Apollon77) Prevent crash case when summary is not provided (Sentry IOBROKER-ICAL-K)
 

@@ -5290,17 +5290,23 @@ JSON string must be an array of objects with the following properties:
 			<td/>
 		</tr>
 		<tr>
+			<td>readOnly</td>
+			<td>button is read only</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
 			<td>showValueLabel</td>
 			<td>show value as text</td>
-			<td>string</td>
-			<td/>
+			<td>boolean</td>
+			<td>false | true</td>
 		</tr>
 		<tr>
 			<td>valueAppendix</td>
 			<td>append text to value</td>
 			<td>string</td>
 			<td/>
-		</tr>		
+		</tr>
 		<tr>
 			<td>background</td>
 			<td>background color</td>
@@ -5371,7 +5377,7 @@ JSON string must be an array of objects with the following properties:
 			<td>lockEnabled</td>
 			<td>enable Locking</td>
 			<td>boolean</td>
-			<td>false | true
+			<td>false | true</td>
 		</tr>
 	</tbody>
 </table>
@@ -12834,6 +12840,7 @@ The adapter uses the following libraries:
 * (Scrounger) Card layout bug fixes for HTML Card, IconList, List and Table Widget
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
+* (Scrounger) icon list: read only option for buttons added
 * (Scrounger) dialog: option to set height in percent added
 * (Scrounger) json chart: option to override tooltip for every dataset added
 * (Scrounger) json chart: tooltip mode x / y added

@@ -242,6 +242,11 @@ The supported commands are:
 - Widget at the time without function
 
 ## Changelog
+### 3.0.0 WORK IN PROZESS...
+ * full rewrite 
+### 2.2.5 (2021-04-02)
+* added S7 Support
+* bugfixes for S5 Max and others
 ### 2.2.4 (2020-09-15)
 * (dirkhe) add config for send Pause Before Home
 ### 2.2.3 (2020-08-20)

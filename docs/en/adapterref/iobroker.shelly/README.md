@@ -70,7 +70,7 @@ When the adapter crashes or an other Code error happens, this error message that
 ## Changelog
 
 
-### 4.0.7-beta-3 (2021-02-07)
+### 4.0.7 (2021-02-07)
 * (Stübi) - fixing the wrong identifier name from green to blue - Issue #334
 * (Stübi) - renamed Shelly Motion MQTT name 
 * (Stübi) - Because polling for battery devices is only permieted every 60 sec., the online state will not supported anymore. 

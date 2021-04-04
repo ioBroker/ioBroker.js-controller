@@ -35,6 +35,10 @@ Kaffee spendieren/serve a coffee
 
 ### 1.6.0
 
+* new values for isg-version 12 implemented
+
+### 1.6.1
+
 * isg-sites to read values from, can now be select by the user
 
 ### 1.5.3

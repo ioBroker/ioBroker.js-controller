@@ -21,17 +21,47 @@ Install this adapter via ioBroker Admin:
 
 This is the IP address of your KEBA KeContact wallbox.
 
+### Firmware check
+
+Once a day adapter will check if a newer firmware is available at KEBA website. This information will be printed to log as warning.
+
+### Passive Mode
+
+Activate this option if you wnat to control your wallbox by your own and yu do not wish this adapter to do some automatics. In this case all subsequent options regarding PV automatics and power limitation will be ignored.
+
+### Load charging sessions
+
+You can check this option to periodically download the latest charging sessions (30) from your wall box.
+ATTENTION for users from version v1.1.1 and below: you have to check this option to still receive for charging sessions!
+
 ### Refresh Interval
 
-This is the interval in seconds how often the wallbox should be queried for new values.
+This is the interval in seconds how often the wallbox should be queried for new values. Normally it is not needed (set to 0).
+The wallbox continually sends broadcasts that are absolutely sufficient to keep data up to date.
 
 The default value is 30 seconds which is a good balance between the load for the KeConnect and having up-to-date information in ioBroker.
 
-### other options
+### PV automatics
 
-You can also define states for PV optimized charging of car or limiting max. power of main power.
+To charge your vehicle accordingly to a surplus (e.g. by photovoltaics) you can also define states which represent surplus and regard of main power. These value are used to calculate amperage which can be used for charging. By additional values you can define
+* a different mimimum amperage than the default 6 A (only needed for e.g. Renault Zoe)
+* a value of regard power that may be used to start charging (that means charging will start even if not enough surplus is available - suggested 0 W for 1 phases charging, 500 W to 2000 W for 3 phases charging)
+* an increment for amperage (suggested 500 mA)
+* a value of regard that may be temporarily used to uphold charging session (that means charging will stop later even if enough surplus is no longer available - starting regard will be added - suggested 500 W)
+* minimum duration of charging session (even if surplus is no longer sufficient, a charging session wil llast at least this time - suggested 300 sec)
+
+### power limitation
+
+You can also limit max. power of your wallbox to limit main power. E.g. when running night-storage heaters you might have to respect a maximum power limitation. If you enter a value, your wallbox will be limited continously to not pass your power limit. Up to three states of energy meters can be specified for limitation. All values will be added to calculate current consumption. An extra checkbox is used to specified whether wallbox power is included (in this case wallbox power will be subtracted from the state values).
 
 ## Changelog
+
+### 1.1.2 (2021-04-02)
+* (Sneak-L8) default state of photovoltaics automatic set to true for new users
+* (Sneak-L8) new option to select whether charging sessions list should be downloaded and be saved in states or not, do so only once an hour
+             ATTENTION for users from version v1.1.1 and below: you have to check this option to still receive for charging sessions!
+* (Sneak-L8) firmware version check
+* (Sneak-L8) expanded readme
 
 ### 1.1.1 (2021-02-25)
 * (Sneak-L8) internal state update prevented recognition of state change

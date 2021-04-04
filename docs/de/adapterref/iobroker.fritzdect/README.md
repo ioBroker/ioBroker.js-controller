@@ -69,6 +69,10 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 2.1.14
+* operationmode and hkrmode tracking also after commands
+* extended blinds
+
 ### 2.1.13
 * correction at group of switches (switchtype not recognized -> simpleonoff)
 * functionbitmask 32768 moved to role: switches
