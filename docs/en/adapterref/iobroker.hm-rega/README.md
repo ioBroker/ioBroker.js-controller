@@ -113,6 +113,9 @@ Finally, the variables created in the CCU are listed
 	### __WORK IN PROGRESS__
 -->
 
+### 3.0.18 (2021-04-05)
+* (foxriver76) local link now respects port and protocol
+
 ### 3.0.17 (2021-04-04)
 * (foxriver76) correctly identify incomplete requests
 

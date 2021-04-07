@@ -52,7 +52,10 @@ To charge your vehicle accordingly to a surplus (e.g. by photovoltaics) you can 
 
 ### power limitation
 
-You can also limit max. power of your wallbox to limit main power. E.g. when running night-storage heaters you might have to respect a maximum power limitation. If you enter a value, your wallbox will be limited continously to not pass your power limit. Up to three states of energy meters can be specified for limitation. All values will be added to calculate current consumption. An extra checkbox is used to specified whether wallbox power is included (in this case wallbox power will be subtracted from the state values).
+You can also limit max. power of your wallbox to limit main power. E.g. when running night-storage heaters you might have to respect a maximum power limitation.
+If you enter a value, your wallbox will be limited continously to not pass your power limit.
+Up to three states of energy meters can be specified for limitation. All values will be added to calculate current consumption.
+An extra checkbox is used to specified whether wallbox power is included (in this case wallbox power will be subtracted from the state values).
 
 ## Changelog
 

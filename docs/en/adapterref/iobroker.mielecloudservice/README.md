@@ -163,12 +163,15 @@ Here is a list of what these raw values stand for:
 |532 | "Flusen ausspülen" | Washer Dryer |
 
 ## Changelog
-### 4.0.1 (2021-03-23) (Sign of the cross)
+### 4.0.1 (2021-04-06) (Sign of the cross)
+*  (grizzelbee) Fix: [90](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/90) setting the targetTemperature should work now.
 *  (grizzelbee) Fix: [96](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/96) Added missing ACTIONS.Action_Information again
 *  (grizzelbee) Fix: [97](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/97) removed unneeded additional "VentilationStep/Lüfterstufe" in path and fixed warning with this. VentilationStep-switch should work properly now.
 *  (grizzelbee) Fix: [98](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/98) Color-Action has now valid type 'String'
+*  (grizzelbee) Fix: [102](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/102) Fixed ACTIONS.VentilationStep has no existing object
 *  (grizzelbee) Fix: Power switch is write protected now when in state 'None'. State 'None' means: No action permitted.
 *  (grizzelbee) Fix: Light switch is write protected now when in state 'None'. State 'None' means: No action permitted.
+*  (grizzelbee) Fix: http error 404 will be catched when requesting device actions
 
 ### 4.0.0 (2021-03-18) (Symphony of life)
 > ***Hint:*** The adapter received a complete code refactoring! This means that most of the code has been changed and some parts are working now differently than ever before. Update with care and read the change log!

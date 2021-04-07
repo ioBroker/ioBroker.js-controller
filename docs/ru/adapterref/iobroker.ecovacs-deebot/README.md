@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: qGBFk0sikuR2Igv7BtHEhdAvWdw4uA6V9wigza4kd+M=
+hash: 1d7KU08pEpgFEPk5lobDG6m7w25Ap2BBBkHzvhuuKN8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -24,11 +24,11 @@ hash: qGBFk0sikuR2Igv7BtHEhdAvWdw4uA6V9wigza4kd+M=
 * Получить информацию (например, аккумулятор, журнал очистки, расходные материалы, состояние очистки и зарядки)
 * Отправлять чистые команды (например, авто, точечная область, настраиваемая область)
 * Отправить некоторые другие команды (например, воспроизвести звук, сбросить расходные материалы, переместить)
-* Сохранение и повторный запуск пользовательских областей
+* Сохраните пользовательскую область последнего запуска и повторно запустите сохраненные области
 * Регулировка мощности вакуума (чистая скорость) и уровня воды
+* Получить информацию во время процесса очистки (например, текущее положение и площадь)
 * Получить информацию о картах, вкл. точечные области и виртуальные границы
-* Получение информации во время уборки (например, текущее положение, карта и область)
-* Удалить, сохранить и воссоздать виртуальные границы *)
+* Удалять, сохранять и воссоздавать отдельные виртуальные границы, а также полный набор виртуальных границ *)
 
 *) Экспериментальный
 
@@ -99,12 +99,12 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 ## Changelog
 
 ### 1.1.2 (alpha)
-* Using library version 0.6.0-beta.0
-* Added experimental functions for deleting, saving and to recreate saved virtual boundaries (920,950,T8)
+* Using library version 0.6.0-beta.3
+* Added experimental functions for deleting, saving and recreating saved virtual boundaries (920,950,T8)
 * Added option to control clean speed and water level separately for each spot area
 * Quite a lot of improvements for processing map data, spot areas and virtual boundaries
 * Move some states from "info" channel to sub channels "info.library" and "info.network"
-* Added some cleaning log values
+* Added some cleaning log values and some states for current cleaning stats
 * Some improvements and fixes
 
 ### 1.1.1

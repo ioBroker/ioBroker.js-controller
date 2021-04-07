@@ -35,6 +35,8 @@ HEOS CLI specification: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 * "system/disconnect": Disconnect from HEOS
 * "system/reconnect": Disconnect and Connect
 * "system/load_sources": Reload sources
+* "system/reboot": Reboot connected player
+* "system/reboot_all": Reboot all players
 * "group/set_group?pid=<pid1>,<pid2>,...": Set group with the list of player ids e.g. "group/set_group?pid=12345678,12345679".
 * "group/set_group?pid=<pid1>" : Delete existing group e.g. "group/set_group?pid=12345678"
 * "group/ungroup_all" : Delete all groups
@@ -125,6 +127,9 @@ Alternative you can use the script from Uhula: https://forum.iobroker.net/post/4
 
 
 ## Changelog
+
+### 1.7.8 (2021-02-25)
+* (withstu) add reboot
 
 ### 1.7.7 (2021-02-25)
 * (withstu) add creation of missing version state

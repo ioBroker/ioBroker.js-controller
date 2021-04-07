@@ -71,7 +71,7 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
 ## Changelog
 ### 2.1.14
 * operationmode and hkrmode tracking also after commands
-* extended blinds
+* extended datapoints for blinds from Rollatron
 
 ### 2.1.13
 * correction at group of switches (switchtype not recognized -> simpleonoff)

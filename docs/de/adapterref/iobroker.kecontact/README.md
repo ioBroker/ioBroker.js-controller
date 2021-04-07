@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.kecontact/README.md
 title: ioBroker-Adapter für KEBA KeContact Wallbox
-hash: vjCbP+Q83JgDZKTsurLlO6g+lu0iIW+GUqLR8Ogzg6g=
+hash: 3TGw2BzL18r0FDVXL2G3tXy67ifvIYC96MS8+edrVxY=
 ---
 ![Adapter-Logo](../../../en/adapterref/iobroker.kecontact/admin/charger.png)
 
@@ -55,7 +55,10 @@ Um Ihr Fahrzeug entsprechend einem Überschuss aufzuladen (z. B. durch Photovolt
 * Mindestdauer der Ladesitzung (auch wenn der Überschuss nicht mehr ausreicht, dauert eine Ladesitzung mindestens dieses Mal - empfohlen 300 Sekunden)
 
 ### Leistungsbegrenzung
-Sie können auch max. Leistung Ihrer Wallbox zur Begrenzung der Hauptleistung. Z.B. Wenn Sie Nachtspeicherheizungen betreiben, müssen Sie möglicherweise eine maximale Leistungsbegrenzung einhalten. Wenn Sie einen Wert eingeben, wird Ihre Wallbox kontinuierlich eingeschränkt, um Ihr Leistungslimit nicht zu überschreiten. Zur Begrenzung können bis zu drei Zustände von Energiezählern angegeben werden. Alle Werte werden addiert, um den Stromverbrauch zu berechnen. Über ein zusätzliches Kontrollkästchen wird angegeben, ob die Wallbox-Leistung enthalten ist (in diesem Fall wird die Wallbox-Leistung von den Statuswerten abgezogen).
+Sie können auch max. Leistung Ihrer Wallbox zur Begrenzung der Hauptleistung. Z.B. Wenn Sie Nachtspeicherheizungen betreiben, müssen Sie möglicherweise eine maximale Leistungsbegrenzung einhalten.
+Wenn Sie einen Wert eingeben, wird Ihre Wallbox kontinuierlich eingeschränkt, um Ihr Leistungslimit nicht zu überschreiten.
+Zur Begrenzung können bis zu drei Zustände von Energiezählern angegeben werden. Alle Werte werden addiert, um den Stromverbrauch zu berechnen.
+Über ein zusätzliches Kontrollkästchen wird angegeben, ob die Wallbox-Leistung enthalten ist (in diesem Fall wird die Wallbox-Leistung von den Statuswerten abgezogen).
 
 ## Legal
 Dieses Projekt ist weder direkt noch indirekt mit der Firma KEBA AG verbunden.

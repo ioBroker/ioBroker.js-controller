@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: qGBFk0sikuR2Igv7BtHEhdAvWdw4uA6V9wigza4kd+M=
+hash: 1d7KU08pEpgFEPk5lobDG6m7w25Ap2BBBkHzvhuuKN8=
 ---
-![标识](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
+![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![稳定版](http://iobroker.live/badges/ecovacs-deebot-stable.svg)
 ![最新版本](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
@@ -24,11 +24,11 @@ hash: qGBFk0sikuR2Igv7BtHEhdAvWdw4uA6V9wigza4kd+M=
 *检索信息（例如电池，清洁日志，消耗品，清洁和充电状态）
 *发送整洁的命令（例如自动，专色区域，自定义区域）
 *发送其他一些命令（例如播放声音，重置消耗品，移动）
-*保存并重新运行自定义区域
+*保存上次运行的自定义区域，然后重新运行保存的区域
 *调整真空功率（清洁速度）和水位
+*在清洁过程中检索信息（例如当前位置和区域）
 *检索地图信息，包括点区域和虚拟边界
-*清洁时检索信息（例如当前位置，地图和区域）
-*删除，保存和重新创建虚拟边界*）
+*删除，保存和重新创建单个虚拟边界以及全套虚拟边界*）
 
 *）实验
 
@@ -99,12 +99,12 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 ## Changelog
 
 ### 1.1.2 (alpha)
-* Using library version 0.6.0-beta.0
-* Added experimental functions for deleting, saving and to recreate saved virtual boundaries (920,950,T8)
+* Using library version 0.6.0-beta.3
+* Added experimental functions for deleting, saving and recreating saved virtual boundaries (920,950,T8)
 * Added option to control clean speed and water level separately for each spot area
 * Quite a lot of improvements for processing map data, spot areas and virtual boundaries
 * Move some states from "info" channel to sub channels "info.library" and "info.network"
-* Added some cleaning log values
+* Added some cleaning log values and some states for current cleaning stats
 * Some improvements and fixes
 
 ### 1.1.1

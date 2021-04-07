@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
+hash: xMScfDEp8hMGPeoSdX8S0DZ9fWX9k0DpFcVmOSakMnA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -24,11 +24,11 @@ hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
 * **Область действия** Определяет, каким игрокам отправляется команда `` scope / [cmd] ``. Его можно отправить всем игрокам, всем ведущим игрокам или всем PID в состоянии, разделенном запятыми: `` heos.0.command_scope_pid``
 * **Отключить регулярное выражение**
 
-В конфигурации вы можете активировать функцию отключения звука проигрывателя на основе совпадения регулярного выражения в информации о песне. Это можно использовать для автоматического отключения рекламы. Например, для Spotify вы можете использовать следующее регулярное выражение: ```spotify:ad:|Advertisement```.
+В конфигурации вы можете активировать функцию отключения звука проигрывателя на основе совпадения регулярного выражения в информации о песне. Это можно использовать для автоматического отключения звука рекламы. Например, для Spotify вы можете использовать следующее регулярное выражение: ```spotify:ad:|Advertisement```.
 
 * **ignore_broadcast_cmd** это состояние игрока настраивает, должен ли игрок игнорировать команды для всех игроков, например. player / set_mute & state = on или нажав кнопку воспроизведения для предустановок / списков воспроизведения
 
-## Искать
+## Стремиться
 Функция поиска работает не на всех источниках. Spotify и Amazon Music поддерживают поиск.
 
 ## Состояние команды
@@ -39,6 +39,8 @@ hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
 * «система / отключение»: отключение от HEOS.
 * "system / reconnect": отключение и подключение
 * "system / load_sources": перезагрузить источники
+* "system / reboot": перезагрузить подключенный плеер
+* "system / reboot_all": перезагрузить всех игроков
 * "group / set_group? pid = <pid1>, <pid2>, ...": установить группу со списком идентификаторов игроков, например "group / set_group? pid = 12345678,12345679".
 * "group / set_group? pid = <pid1>": удалить существующую группу, например. "group / set_group? pid = 12345678"
 * "group / ungroup_all": удалить все группы
@@ -87,7 +89,7 @@ hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
 - Плейлисты: `` heos.0.sources.1025.browse``
 
 ## ВИС
-### Установка
+### Монтаж
 * Создайте следующие строковые состояния:
     * 0_userdata.0.heos.queue_pid
     * 0_userdata.0.heos.queue_html
@@ -124,6 +126,9 @@ hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
 Альтернативно вы можете использовать скрипт от Ухулы: https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.8 (2021-02-25)
+* (withstu) add reboot
 
 ### 1.7.7 (2021-02-25)
 * (withstu) add creation of missing version state

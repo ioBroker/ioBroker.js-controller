@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: qGBFk0sikuR2Igv7BtHEhdAvWdw4uA6V9wigza4kd+M=
+hash: 1d7KU08pEpgFEPk5lobDG6m7w25Ap2BBBkHzvhuuKN8=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -24,11 +24,11 @@ Einige bemerkenswerte Merkmale sind:
 * Informationen abrufen (z. B. Batterie, Reinigungsprotokoll, Verbrauchsmaterial, Reinigungs- und Ladestatus)
 * Senden Sie saubere Befehle (z. B. Auto, Spot-Bereich, benutzerdefinierter Bereich).
 * Senden Sie einige andere Befehle (z. B. Sound abspielen, Verbrauchsmaterialien zurücksetzen, verschieben)
-* Speichern Sie benutzerdefinierte Bereiche und führen Sie sie erneut aus
+* Speichern Sie den zuletzt ausgeführten benutzerdefinierten Bereich und führen Sie die gespeicherten Bereiche erneut aus
 * Einstellung der Vakuumleistung (Reinigungsgeschwindigkeit) und des Wasserstandes
+* Informationen während des Reinigungsvorgangs abrufen (z. B. aktuelle Position und Bereich)
 * Informationen zu den Karten abrufen inkl. Spotbereiche und virtuelle Grenzen
-* Informationen während der Reinigung abrufen (z. B. aktuelle Position, Karte und Gebiet)
-* Virtuelle Grenzen löschen, speichern und neu erstellen *)
+* Löschen, Speichern und Neuerstellen einzelner virtueller Grenzen sowie eines vollständigen Satzes virtueller Grenzen *)
 
 *) Experimentell
 
@@ -99,12 +99,12 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 ## Changelog
 
 ### 1.1.2 (alpha)
-* Using library version 0.6.0-beta.0
-* Added experimental functions for deleting, saving and to recreate saved virtual boundaries (920,950,T8)
+* Using library version 0.6.0-beta.3
+* Added experimental functions for deleting, saving and recreating saved virtual boundaries (920,950,T8)
 * Added option to control clean speed and water level separately for each spot area
 * Quite a lot of improvements for processing map data, spot areas and virtual boundaries
 * Move some states from "info" channel to sub channels "info.library" and "info.network"
-* Added some cleaning log values
+* Added some cleaning log values and some states for current cleaning stats
 * Some improvements and fixes
 
 ### 1.1.1

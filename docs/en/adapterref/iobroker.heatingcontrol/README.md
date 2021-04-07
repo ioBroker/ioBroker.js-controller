@@ -212,7 +212,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.3.1 (2021-04-xx)
+### 2.3.1 (2021-04-05)
 * (René) some optimisations for vis translation
 
 ### 2.3.0 (2021-03-20)

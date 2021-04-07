@@ -112,6 +112,14 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.33
+
+- add auto accept of new privacy consent
+  
+### 0.0.32
+
+- correct selection of last recent trips
+  
 ### 0.0.32
 
 - correct selection of last recent trips

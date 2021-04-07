@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kecontact/README.md
 title: 用于KEBA KeContact壁盒的ioBroker适配器
-hash: vjCbP+Q83JgDZKTsurLlO6g+lu0iIW+GUqLR8Ogzg6g=
+hash: 3TGw2BzL18r0FDVXL2G3tXy67ifvIYC96MS8+edrVxY=
 ---
 ![适配器徽标](../../../en/adapterref/iobroker.kecontact/admin/charger.png)
 
@@ -55,7 +55,10 @@ Wallbox连续发送绝对足够使数据保持最新状态的广播。
 *充电会话的最短持续时间（即使剩余不再足够，充电会话也至少会持续此时间-建议300秒）
 
 ###功率限制
-您还可以限制最大墙盒的电源以限制主电源。例如。在运行夜间存储加热器时，您可能必须遵守最大功率限制。如果您输入一个值，则您的wallbox将连续受到限制，以不超过您的功率限制。最多可以指定三种状态的电度表进行限制。所有值都将相加以计算电流消耗。一个额外的复选框用于指定是否包括墙盒电源（在这种情况下，将从状态值中减去墙盒电源）。
+您还可以限制最大壁箱的功率以限制主功率。例如。在运行夜间存储加热器时，您可能必须遵守最大功率限制。
+如果您输入一个值，则您的wallbox将连续受到限制，以不超过您的功率限制。
+最多可以指定三种状态的电度表进行限制。所有值都将相加以计算电流消耗。
+一个额外的复选框用于指定是否包括墙盒电源（在这种情况下，将从状态值中减去墙盒电源）。
 
 ＃＃ 合法的
 该项目与KEBA AG公司没有直接或间接的联系。

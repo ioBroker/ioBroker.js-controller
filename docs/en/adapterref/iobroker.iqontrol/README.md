@@ -407,8 +407,8 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* 'widget-urlparameters'
 		* syntax: ``<meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/>``
 		* The user will be asked for these parameters when chosing the widget as URL or BACKGROUND_URL or autocreates a widget
-		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select``, ``multipleSelect``, ``historyInstance``, ``datapoint`` or ``icon``
-		    * If type is ``select`` or ``multipleSelect`` then you need to specify the possible options by adding ``/<selectOptions>``, where ``<selectOptions>`` is a string of the format ``<value1>,<caption1>/<value2>,<caption2>/...``
+		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select``, ``multipleSelect``, ``combobox``, ``historyInstance``, ``datapoint`` or ``icon``
+		    * If type is ``select``, ``multipleSelect`` or ``combobox`` then you need to specify the possible options by adding ``/<selectOptions>``, where ``<selectOptions>`` is a string of the format ``<value1>,<caption1>/<value2>,<caption2>/...`` (combobox is a selectbox with the possibility to enter free text)
 		    * If type is ``number`` then can specify min, max and step-width by adding ``/<numberOptions>``, where ``<numberOptions>`` is a string of the format ``<min>,<max>,<step>``
 		* All these parameters will be given to the widget-website via an url-parameter-string (like ``widget.html?parameter=value&parameter2=value2``)
 		* You can use these settings inside your widget-website by requesting the url-parameters with a function like this:
@@ -1319,6 +1319,95 @@ In addition to normal thermostat you can define:
 * **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
 * **VOLTAGE**: *number* - voltage that will be displayed in small in the upper right corner
 
+### <img src="img/icons/time_alarmclock_on.png" width="32"> Date and Time:
+* **STATE**: *boolean* - if true the tile will be showed as active 
+* **SUBJECT**: *string* - to set a description
+* **RINGING**: *boolean* - if true an alarm-bell is shown
+	* Keep in mind: you can configure a quit and a snooze-button via ADDITIONAL_CONTROLS
+* **TIME**, **SECOND_TIME**: *string* - String with date and or time or duration (you can specify the format in the device options) for first and second time
+    * SECOND_TIME IS NOT YET IMPLEMENTED, WILL COME SOON
+	
+<details>
+<summary>Show possible time formats: (<ins>klick to open</ins>)</summary>
+
+In the device options, under the device-specific section, you can set the timeformat of your datapoint and how it is displayed. You can use the following tokens:
+
+|           |                                | Token              | Example                                              | Datapoint | Display                 | Picker                  |
+|----------:|-------------------------------:|--------------------|------------------------------------------------------|-----------|-------------------------|-------------------------|
+| Timestamp | Unix s Timestamp               | X                  | 1410715640.579                                       | X         | ---                     | ---                     |
+|           | Unix ms Timestamp              | x                  | 1410715640579                                        | X         | ---                     | ---                     |
+| Date      | Day of Week                    | d                  | 0 1 ... 5 6                                          | X         | ---                     | ---                     |
+|           |                                | dd                 | Su Mo ... Fr Sa                                      | X         | X (translated)          | ---                     |
+|           |                                | ddd                | Sun Mon ... Fri Sat                                  | X         | X (translated)          | ---                     |
+|           |                                | dddd               | Sunday Monday ... Friday Saturday                    | X         | X (translated)          | ---                     |
+|           |                                | do                 | 0th 1st ... 5th 6th                                  | X         | ---                     | ---                     |
+|           | Day of Month                   | D                  | 1 2 ... 30 31                                        | X         | X                       | X                       |
+|           |                                | DD                 | 01 02 ... 30 31                                      | X         | X                       | X                       |
+|           |                                | Do                 | 1st 2nd ... 30th 31st                                | X         | --- (converted to D)    | --- (converted to D)    |
+|           | Month                          | M                  | 1 2 ... 11 12                                        | X         | X                       | X                       |
+|           |                                | MM                 | 01 02 ... 11 12                                      | X         | X                       | X                       |
+|           |                                | MMM                | Jan Feb ... Nov Dec                                  | X         | X                       | X                       |
+|           |                                | MMMM               | January February ... November December               | X         | X                       | X                       |
+|           |                                | Mo                 | 1st 2nd ... 11th 12th                                | X         | --- (converted to M)    | --- (converted to M)    |
+|           | Year                           | Y                  | 1970 1971 ... 9999 +10000 +10001                     | X         | X                       | X                       |
+|           |                                | YY                 | 70 71 ... 29 30                                      | X         | X                       | X                       |
+|           |                                | YYYY               | 1970 1971 ... 2029 2030                              | X         | X                       | X                       |
+|           |                                | YYYYYY             | -001970 -001971 ... +001907 +001971                  | X         | --- (converted to YYYY) | --- (converted to YYYY) |
+| Time      | AM/PM                          | A                  | AM PM                                                | X         | X                       | X                       |
+|           |                                | a                  | am pm                                                | X         | X                       | X                       |
+|           | Hour                           | H                  | 0 1 ... 22 23                                        | X         | X                       | X                       |
+|           |                                | HH                 | 00 01 ... 22 23                                      | X         | X                       | X                       |
+|           |                                | h                  | 1 2 ... 11 12                                        | X         | X                       | X                       |
+|           |                                | hh                 | 01 02 ... 11 12                                      | X         | X                       | X                       |
+|           |                                | k                  | 1 2 ... 23 24                                        | X         | --- (converted to H)    | --- (converted to H)    |
+|           |                                | kk                 | 01 02 ... 23 24                                      | X         | --- (converted to HH)   | --- (converted to HH)   |
+|           | Minute                         | m                  | 0 1 ... 58 59                                        | X         | X                       | X                       |
+|           |                                | mm                 | 00 01 ... 58 59                                      | X         | X                       | X                       |
+|           | Second                         | s                  | 0 1 ... 58 59                                        | X         | X                       | X                       |
+|           |                                | ss                 | 00 01 ... 58 59                                      | X         | X                       | X                       |
+|           | Fractional Second              | S                  | 0 1 ... 8 9                                          | X         | ---                     | ---                     |
+|           |                                | SS                 | 00 01 ... 98 99                                      | X         | ---                     | ---                     |
+|           |                                | SSS                | 000 001 ... 998 999                                  | X         | ---                     | ---                     |
+|           |                                | SSSS ... SSSSSSSSS | 000[0..] 001[0..] ... 998[0..] 999[0..]              | X         | ---                     | ---                     |
+|           | Time Zone                      | z or zz            | EST CST ... MST PST                                  | X         | ---                     | ---                     |
+|           |                                | Z                  | -07:00 -06:00 ... +06:00 +07:00                      | X         | ---                     | ---                     |
+|           |                                | ZZ                 | -0700 -0600 ... +0600 +0700                          | X         | ---                     | ---                     |
+| Periods   | Day of Year                    | DDD                | 1 2 ... 364 365                                      | X         | ---                     | ---                     |
+|           |                                | DDDD               | 001 002 ... 364 365                                  | X         | ---                     | ---                     |
+|           |                                | DDDo               | 1st 2nd ... 364th 365th                              | X         | ---                     | ---                     |
+| Other     | Day of Week (Locale)           | e                  | 0 1 ... 5 6                                          | X         | ---                     | ---                     |
+|           | Day of Week (ISO)              | E                  | 1 2 ... 6 7                                          | X         | ---                     | ---                     |
+|           | Quarter                        | Q                  | 1 2 3 4                                              | X         | ---                     | ---                     |
+|           |                                | Qo                 | 1st 2nd 3rd 4th                                      | X         | ---                     | ---                     |
+|           | Week of Year                   | w                  | 1 2 ... 52 53                                        | X         | ---                     | ---                     |
+|           |                                | wo                 | 1st 2nd ... 52nd 53rd                                | X         | ---                     | ---                     |
+|           |                                | ww                 | 01 02 ... 52 53                                      | X         | ---                     | ---                     |
+|           | Week of Year (ISO)             | W                  | 1 2 ... 52 53                                        | X         | ---                     | ---                     |
+|           |                                | Wo                 | 1st 2nd ... 52nd 53rd                                | X         | ---                     | ---                     |
+|           |                                | WW                 | 01 02 ... 52 53                                      | X         | ---                     | ---                     |
+|           | Era Year                       | y                  | 1 2 ... 2020 ...                                     | X         | ---                     | ---                     |
+|           |                                | yo                 | 1st 2nd … 2020th …                                   | X         | ---                     | ---                     |
+|           | Era                            | N, NN, NNN         | BC AD                                                | X         | ---                     | ---                     |
+|           |                                | NNNN               | Before Christ, Anno Domini                           | X         | ---                     | ---                     |
+|           |                                | NNNNN              | BC AD                                                | X         | ---                     | ---                     |
+|           | Week Year                      | gg                 | 70 71 ... 29 30                                      | X         | ---                     | ---                     |
+|           |                                | gggg               | 1970 1971 ... 2029 2030                              | X         | ---                     | ---                     |
+|           | Week Year (ISO)                | GG                 | 70 71 ... 29 30                                      | X         | ---                     | ---                     |
+|           |                                | GGGG               | 1970 1971 ... 2029 2030                              | X         | ---                     | ---                     |
+| Flags     | Period                         | P                  | Marks a period and not a specific time               | X         | ---                     | ---                     |
+|           | Set missing parts to beginning | tb                 | E.g. set date to 1970-01-01, if only a time is given | X         | ---                     | ---                     |
+|           | Set missing parts to now       | tn                 | E.g. set date to now, if only a time is given        | X         | ---                     | ---                     |
+|           | Keep old missing parts         | to                 | E.g. leave date as before, if only a time is given   | X         | ---                     | ---                     |
+
+X = supported, --- = not supported
+
+* If you use different configurations for datapoint-timeformat and display-timeformat, the following conversion-rules are used.
+* You can use the flags tb, tn and to inside the datapoint-timeformat to influence the behavior.
+
+    ![Glow](img/dateandtime_conversionrules.png)
+
+</details>
+
 ### <img src="img/icons/value_on.png" width="32"> Value:
 * **STATE**: *any* - any valid state to be displayed (have a look at general states-section)
 * **LEVEL**: *number* - will produce a slider in dialog
@@ -1396,6 +1485,11 @@ This device has some special predefined size- and display-settings to show a tex
 ****
     
 ## Changelog
+
+### 1.7.0 dev
+* (sbormann) Added combobox as possible option type.
+* (sbormann) Added Date and Time as new device.
+* (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
 
 ### 1.6.6 (2021-03-21)
 * (sbormann) Fix for double admin page.

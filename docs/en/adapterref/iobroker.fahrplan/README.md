@@ -215,7 +215,7 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.0.7 (2021-04-06)
 * (Gaudes) Update HAFAS client to 5.15.2 (Fix error 'invalid json response body' with OEBB profile)
 * (Gaudes) Configurable colors for delays and on time
 * (Gaudes) Prepare for WebLate translations
@@ -241,11 +241,6 @@ With +-Button new entries can be added to the table.
 * (Gaudes) Integrate SBB profile
 * (Gaudes) Leave out superflous journey per route than configured
 * (Gaudes) Fix call of helper for correct counters
-* (Gaudes) Include Dependabot updates
-
-### 1.0.2 (2021-01-12)
-* (Gaudes) Configurable Headline for HTML tables
-* (Gaudes) Fix correct deletion of unneeded objects (Sentry)
 * (Gaudes) Include Dependabot updates
 
 ## License

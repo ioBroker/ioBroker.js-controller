@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: 4ti/6LZDPAGdj+2lNyQI5outavbNiUXRuaOsAzo/SaE=
+hash: xMScfDEp8hMGPeoSdX8S0DZ9fWX9k0DpFcVmOSakMnA=
 ---
 ![Logo](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -39,6 +39,8 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 * "System / Trennen": Trennen Sie die Verbindung zum HEOS
 * "system / reconnect": Trennen und verbinden
 * "system / load_sources": Quellen neu laden
+* "System / Neustart": Starten Sie den angeschlossenen Player neu
+* "system / reboot_all": Starten Sie alle Player neu
 * "group / set_group? pid = <pid1>, <pid2>, ...": Gruppe mit der Liste der Spieler-IDs festlegen, z. "group / set_group? pid = 12345678,12345679".
 * "group / set_group? pid = <pid1>": Löschen Sie eine vorhandene Gruppe, z. "group / set_group? pid = 12345678"
 * "group / ungroup_all": Alle Gruppen löschen
@@ -124,6 +126,9 @@ Der Adapter fordert die aktuellen Wiedergabelisten und Voreinstellungen nicht au
 Alternativ können Sie das Skript von Uhula verwenden: https://forum.iobroker.net/post/498779
 
 ## Changelog
+
+### 1.7.8 (2021-02-25)
+* (withstu) add reboot
 
 ### 1.7.7 (2021-02-25)
 * (withstu) add creation of missing version state
