@@ -803,5 +803,38 @@
         "conditions": {
             "radar2": "installed"
         }
+    },
+    {
+        "title": {
+            "en": "BackItUp Adapter is the recommended backup solution",
+            "de": "BackItUp Adapter ist die empfohlene Backup-Lösung",
+            "ru": "BackItUp Adapter - рекомендуемое решение для резервного копирования.",
+            "pt": "O Adaptador BackItUp é a solução de backup recomendada",
+            "nl": "BackItUp Adapter is de aanbevolen back-upoplossing",
+            "fr": "L'adaptateur BackItUp est la solution de sauvegarde recommandée",
+            "it": "BackItUp Adapter è la soluzione di backup consigliata",
+            "es": "BackItUp Adapter es la solución de respaldo recomendada",
+            "pl": "BackItUp Adapter jest zalecanym rozwiązaniem do tworzenia kopii zapasowych",
+            "zh-cn": "BackItUp Adapter是推荐的备份解决方案"
+        },
+        "content": {
+            "en": "Backups are a very decisive factor in SmartHome systems so that no settings or data are lost in the event of problems. We recommend everyone who is not currently using Backitup to install and set up the adapter to secure their iobroker data.",
+            "de": "Backups sind ein sehr entscheidender Faktor in SmartHome-Systemen, damit bei Problemen keine Einstellungen oder Daten verloren gehen. Wir empfehlen allen, die derzeit kein Backitup verwenden, den Adapter zu installieren und einzurichten, um ihre iobroker-Daten zu sichern.",
+            "ru": "Резервное копирование является очень решающим фактором в системах SmartHome, поэтому никакие настройки или данные не будут потеряны в случае возникновения проблем. Мы рекомендуем всем, кто в настоящее время не использует Backitup, установить и настроить адаптер для защиты своих данных iobroker.",
+            "pt": "Os backups são um fator muito decisivo em sistemas SmartHome para que nenhuma configuração ou dados sejam perdidos em caso de problemas. Recomendamos a todos que não estão usando o Backitup no momento, que instalem e configurem o adaptador para proteger seus dados iobroker.",
+            "nl": "Back-ups zijn een zeer doorslaggevende factor in SmartHome-systemen zodat bij problemen geen instellingen of gegevens verloren gaan. We raden iedereen die momenteel geen gebruik maakt van Backitup aan om de adapter te installeren en in te stellen om hun iobroker-gegevens te beveiligen.",
+            "fr": "Les sauvegardes sont un facteur très décisif dans les systèmes SmartHome afin qu'aucun paramètre ou donnée ne soit perdu en cas de problème. Nous recommandons à tous ceux qui n'utilisent pas actuellement Backitup d'installer et de configurer l'adaptateur pour sécuriser leurs données iobroker.",
+            "it": "I backup sono un fattore molto decisivo nei sistemi SmartHome in modo che nessuna impostazione o dato venga perso in caso di problemi. Consigliamo a tutti coloro che non stanno attualmente utilizzando Backitup di installare e configurare l'adattatore per proteggere i propri dati iobroker.",
+            "es": "Las copias de seguridad son un factor muy decisivo en los sistemas SmartHome para que no se pierdan configuraciones ni datos en caso de problemas. Recomendamos a todos los que no estén usando Backitup actualmente que instalen y configuren el adaptador para proteger sus datos de iobroker.",
+            "pl": "Kopie zapasowe są bardzo decydującym czynnikiem w systemach SmartHome, dzięki czemu żadne ustawienia ani dane nie zostaną utracone w przypadku problemów. Wszystkim, którzy obecnie nie używają programu Backitup, zalecamy zainstalowanie i skonfigurowanie adaptera w celu zabezpieczenia danych programu iobroker.",
+            "zh-cn": "备份是SmartHome系统中非常重要的因素，因此在出现问题时不会丢失任何设置或数据。我们建议所有当前不使用Backitup的人来安装和设置适配器以保护其iobroker数据。"
+        },
+        "id": "backitupAdapter",
+        "class": "info",
+        "fa-icon": "exclamation-circle",
+        "created": "2021-04-08T00:00:00.000Z",
+        "conditions": {
+            "backitup": "!installed"
+        }
     }
 ]
