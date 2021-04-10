@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 5AqtxomN45BJZp6t+TUgHeZjCKecrFKVo2echctEGP8=
+hash: EsnAj/k5t+GnG0yC3lbNfeptFavgrkT07OATg57YxkI=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -21,7 +21,7 @@ hash: 5AqtxomN45BJZp6t+TUgHeZjCKecrFKVo2echctEGP8=
 # IoBroker.vis-inventwo
 ## Schalter Widgets für den ioBroker.vis Adapter
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Tabelle</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Liste</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Kippschalter</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
+<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center> <b>Tabelle</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>Aufführen</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center> <b>Colorslider horizontal</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center> <b>Kippschalter</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -34,32 +34,40 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/donate?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
 
+## 2.9.1
+- Fehlerbehebung
+
+## 2.9.0
+- Multi-Widget-Status kann möglich vom Widget-Typ nach Datenänderungen oder Views funktionieren
+- Optionen zum automatischen Verwendungszweck des Popups hinzugefügt
+- Fehlerbehebung
+
 ## 2.8.3
-- Bug-Fix
+- Fehlerbehebung
 
 #8. 2.8.2
-- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" Steuern ist ",
+- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" wird ",
 
 ## 2.8.1
-- Fehlerweise: Farbschieberegler RGB wird bei Dp.
+- Fehlerweise: Farbschieberegler RGB aktualisiert bei Dp.
 
 ## 2.8.0
 - Ansicht in PopUp Option für Universal- und Multi-Widget hinzugefügt
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.7.11
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.7.10
-- Problem mit Bildern im Universal- und Multi-Widget-Einstellungen
+- Problem mit Bildern im Universal und Multi Widget gehört
 - Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
@@ -72,7 +80,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.7
 - Problem mit der Bildstellung gehört
-- Problem mit dem Farbregler gehört, dass der Wert beim Loslassen nicht verkauft wurde
+- Problem mit dem Farbregler wurde, dass der Wert beim Loslassen nicht verkauft wurde
 
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget Frei
@@ -81,7 +89,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
-- Fehler beim Slider gefunden wenn ungültiger Wert im Datenpunkt steht
+- Fehler beim Slider gehört wenn ungültiger Wert im Datenpunkt steht
 - Fehlerhafte: Signalbilder wurden mit eingefärbt
 - Option um Bildfarbe zu invertieren eingezogen, um Farbfilter zu entfernen
 - Color Slider kann nun zwischen HEX, RGB und CIE gehören
@@ -90,7 +98,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 
 ## 2.7.3
-- Fehler beim mehrstaatlichen und behinderten Zuständigkeiten
+- Fehler beim mehrstaatlichen und staatlichen Zuständigkeiten
 - Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
@@ -101,7 +109,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Slider Text anmachen möglich
 
 ## 2.7.1
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.7.0
 - Neues Widget: Farbslider
@@ -124,26 +132,26 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - JSON Tabelle Spalten können per Klick sortiert werden
 
 ## 2.5.11
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.10
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.9
 - Der Prozess der Bildfarbfilterung wurde behandelt
 - Die Bildfarbe kann jetzt ein Datenpunkt sein
 
 ## 2.5.8
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.7
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.6
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.5
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.4
 - Bugfix (Status: doppeltes senden dese Wertes bei touch)
@@ -152,23 +160,23 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Grauer Kippschalter hinzugefügt
 
 ## 2.5.2
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.1
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.5.0
 - Kippschalter hinzugefügt
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.3
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.2
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.1
-- Bug-Fix
+- Fehlerbehebung
 
 ## 2.4.0
 - Randstil zur JSON-Tabelle hinzugefügt
@@ -182,7 +190,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.3.0
-- Problem gehört, bei dem Schaltflächen gleichen Werte senden
+- Problem gehört, bei dem Schaltschaltenden eigenen Werte senden
 - Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
 - Universal- und Multi-Widget-Attribut werden beim Ändern auf Widgetschauen
 
@@ -190,11 +198,11 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.2.2
-- Fehler im Multi Widget behoben: Bilder und Text wechselt nicht bei Typ-Navigation
+- Fehler im Multi Widget Rechte: Bilder und Text ändern nicht bei Typ Navigation
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
-- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
+- Fehler in der Werteliste Werden: Wert wird nicht aktualisiert
 
 ## 2.2.0
 - Datenpunktwerte werden jetzt bei allen Widgets im Editor werden
@@ -238,7 +246,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Option für den Hintergrund-Widget-Wert wurde korrigiert
 
 ### 1.3.2
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.3.1
 - Das Farbverhalten der Navigationsschaltfläche wurde geändert
@@ -266,7 +274,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.1.0
 - Slider-Widget hinzugefügt

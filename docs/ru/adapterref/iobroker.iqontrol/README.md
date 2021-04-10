@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
+hash: bHN+jsx8azmxIw+x6bGVSRl/DahVJyTbFikW91TtbG4=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -32,22 +32,22 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 ## Адаптер iqontrol для ioBroker
 Быстрое веб-приложение для визуализации.
 
-![Снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/screenshot_kueche.png)
+![Скриншот](../../../en/adapterref/iobroker.iqontrol/img/screenshot_kueche.png)
 
 \
-![Снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/screenshot_licht.png)
+![Скриншот](../../../en/adapterref/iobroker.iqontrol/img/screenshot_licht.png)
 
 \
-![Снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/screenshot_heizung.png)
+![Скриншот](../../../en/adapterref/iobroker.iqontrol/img/screenshot_heizung.png)
 
 \
-![Снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/screenshot_rauchmelder.png)
+![Скриншот](../../../en/adapterref/iobroker.iqontrol/img/screenshot_rauchmelder.png)
 
 \
-![Снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/screenshot_flot.png)
+![Скриншот](../../../en/adapterref/iobroker.iqontrol/img/screenshot_flot.png)
 
 \
-![Снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/screenshot_dslraser.jpg "& копировать; автор: dslraser")
+![Скриншот](../../../en/adapterref/iobroker.iqontrol/img/screenshot_dslraser.jpg "& копировать; автор: dslraser")
 
 Работает в любом браузере.
 Легко настроить, хотя он полностью настраиваемый и отзывчивый.
@@ -62,9 +62,9 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 
 ## Тебе нужно...
 * Nodejs 10 или выше
-* Web-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, socket.IO установлен на 'интегрированный' и 'Force Web-Sockets' отключен
+* Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, socket.IO установлен на «интегрированный», а «принудительное использование веб-сокетов» отключено.
     * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol выполнит поиск наиболее подходящего экземпляра веб-адаптера и будет использовать его для связи.
-* Для подключения через *iobroker.pro-Cloud* и админ-, и веб-адаптер должны быть настроены на http (не https)
+* Для подключения через *iobroker.pro-Cloud* как админ-, так и веб-адаптер должны быть настроены на http (не https)
 
 * Если у вас возникнут какие-либо проблемы, ознакомьтесь с разделом [устранение неполадок] (# устранение неполадок) в конце этого файла ознакомительных сведений.
 
@@ -93,7 +93,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Чтобы придать всему необычный стиль, вы можете загружать свои собственные изображения.
 
 Вы можете использовать свои изображения в качестве фоновых изображений для представлений или для устройств.
-Изображения в папке / usericons можно использовать в качестве иконок для устройств.
+Изображения в папке / usericons можно использовать как значки для устройств.
 Бесплатные встроенные демонстрационные обои взяты с сайта www.pexels.com.
 
 ### Использовать автосоздание
@@ -108,15 +108,15 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Чтобы открыть указанное представление, вы можете добавить renderView = <viewID> в качестве параметра URL.
     * `` <viewID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> ''
 * Примечание: это чувствительно к регистру!
-* Чтобы открыть указанное представление в качестве домашней страницы, вы можете добавить `` home = <viewID> '' в качестве параметра URL. Это также изменит связанный вид первой записи панели инструментов!
+* Чтобы открыть указанное представление в качестве домашней страницы, вы можете добавить `` home = <viewID> '' в качестве параметра URL. Это также изменит связанный вид первой записи на панели инструментов!
     * `` <viewID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> ''
 * Примечание: это чувствительно к регистру!
 * Чтобы открыть указанный диалог при загрузке страницы, вы можете добавить `` openDialog = <deviceID> '' в качестве URL-параметра
-    * `` <deviceID> `должен быть отформатирован как` `iqontrol. <instance-number> .Views. <view-name> .devices. <device-number> '' где` `<device-number> '' начинается с 0 (поэтому первое устройство в представлении - это устройство с номером 0)
+    * `` <deviceID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> .devices. <device-number> '' где `` <device-number> '' начинается с 0 (поэтому первое устройство в представлении - это устройство с номером 0)
 * Примечание: это чувствительно к регистру!
 * Чтобы установить или отменить возврат после настроек времени, используйте следующие параметры:
-* `` returnAfterTimeTreshold =<time in seconds> ``, чтобы установить время, по истечении которого вызывается целевой вид. Используйте `` 0 &#39;&#39;, чтобы отключить функцию возврата по истечении времени.
-* `` returnAfterTimeDestiationView = <viewID> '', чтобы установить представление, которое вызывается после порога. Если не указано, будет использоваться домашний вид.
+* `` returnAfterTimeTreshold =<time in seconds> `` для установки времени, по истечении которого вызывается целевой вид. Используйте `` 0 &#39;&#39;, чтобы отключить функцию возврата по истечении времени.
+* `` returnAfterTimeDestiationView = <viewID> '', чтобы установить представление, которое вызывается после порога. Если не указано иное, будет использоваться домашний вид.
 * Эти параметры полезны, если вы вызываете iQontrol с настенного планшета, который должен автоматически вернуться к домашнему виду после использования.
 * Чтобы загрузить страницу без панели инструментов, вы можете добавить noToolbar = true
 * Чтобы загрузить страницу без панели, вы можете добавить noPanel = true
@@ -133,8 +133,8 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
     * `` путь / к / firstloaded.png | другой путь / к / {iobrokerstate | fallback} .png``
     * Пример: `` ./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg``
 * Это загружает `` ./../ iqontrol.meta / userimages / demo / bottle.jpg '', когда вы открываете представление
-* Как только состояние javascript.0.myimage будет получено с сервера, изображение будет заменено на ./../ iqontrol.meta / userimages / demo / XXX.jpg, где XXX - это значение javascript.0.myimage.
-* Если javascript.0.myimage не имеет значения, будет использоваться резервный вариант whitestone (использование отката необязательно)
+* Как только состояние javascript.0.myimage будет получено с сервера, изображение будет заменено на ./../ iqontrol.meta / userimages / demo / XXX.jpg`, где ` XXX - это значение javascript.0.myimage.
+* Если javascript.0.myimage не имеет значения, будет использоваться резервный вариант whitestone (использование запасного варианта необязательно)
 
 ### Индикаторы прогресса
 * Возможно использование SVG-определений в сочетании с переменными вместо файлов изображений для отображения индикаторов выполнения.
@@ -153,10 +153,10 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 ## Имена устройств
 * Так же, как переменные в URL-адресах изображений, вы можете использовать переменные в именах устройств. Синтаксис почти такой же:
     * `` Текст при загрузке | Текст после загрузки {iobrokerstate | fallback} `
-* Дополнительно можно заключить iobrokerstate в квадратные скобки, тогда будет использоваться обычное значение без единицы измерения: «Текст при загрузке | Текст после загрузки {[iobrokerstate] | fallback}«
+* Дополнительно можно поместить iobrokerstate в квадратные скобки, тогда будет использоваться обычное значение без его единицы измерения: «Текст при загрузке | Текст после загрузки {[iobrokerstate] | fallback}«
     * Пример: `` Погода загружается | Погода: {javascript.0.weather | Данные о погоде не найдены} ''
 * Это показывает, что `` Погода загружается '', когда вы открываете представление
-* Как только состояние javascript.0.weather будет получено с сервера, текст будет заменен на Weather: XXX, где XXX - это значение javascript.0. .weather
+* Как только с сервера будет получено состояние javascript.0.weather, текст будет заменен на Weather: XXX, где XXX - это значение javascript.0. .weather
 * Если javascript.0.weather не имеет значения, будет использоваться резервный вариант `` Данные о погоде не найдены '' (использование резервного варианта необязательно)
 
 ## Всплывающие сообщения
@@ -166,7 +166,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Есть несколько дополнительных состояний для дальнейшей настройки отображаемого всплывающего окна (они должны быть установлены до установки точки данных сообщения):
     * `` Продолжительность '': это время в мс, в течение которого отображается сообщение; если установлено значение 0, сообщение должно быть подтверждено
     * ClickedValue и ClickedDestinationState: если пользователь щелкнет всплывающее окно, значение из ClickedValue будет отправлено в iqontrol.x.Popup.POPUP_CLICKED и, если указано, дополнительные к точке данных в ClickedDestinationState
-        * Если значение не указано, будет использовано значение true.
+        * Если значение не указано, будет использоваться true.
     * «ButtonNames»: здесь вы можете указать список кнопок, разделенных запятыми, которые будут отображаться в нижней части всплывающего окна (например, «OK, Abort»).
         * ButtonValues и ButtonDestinationStates: это списки значений, разделенных запятыми, которые будут отправлены в iqontrol.x.Popup.BUTTON_CLICKED и, если указано, дополнительно к точке данных в ButtonDestinationStates. `, если пользователь нажимает соответствующую кнопку
 * Вместо точки данных вы можете использовать команды COMMAND: renderView и COMMAND: openDialog в качестве ButtonDestinationState для визуализации представления или открытия диалогового окна.
@@ -174,21 +174,21 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Если вы используете только одно значение (вместо списка, разделенного запятыми), это значение будет использоваться для всех кнопок
 * Если вы оставите `` ButtonValues '' пустым, будет использовано имя кнопки.
 * Если вы используете только одно состояние назначения (вместо списка, разделенного запятыми), это состояние будет использоваться для всех кнопок
-        * `` ButtonCloses '': это список логических значений, разделенных запятыми (`` истина '' / `` ложь ''), которые указывают, следует ли закрывать всплывающее окно при нажатии соответствующей кнопки
+        * `` ButtonCloses '': это список логических значений, разделенных запятыми (`` истина '' / `` ложь ''), которые указывают, следует ли закрывать всплывающее окно при нажатии соответствующей кнопки.
 * В качестве альтернативы вы можете установить эти значения с помощью команды sendTo с параметрами PopupMessage, PopupDuration, PopupClickedValue и т. Д.
     * Пример: `sendTo (" iqontrol "," send ", {PopupMessage: 'Это мое сообщение', PopupDuration: 2500, PopupClickedValue: 'messageConfirmed'});` `
 * Вы также можете использовать блочно для отправки сообщений в iQontrol
 
-![Скриншот всплывающего окна](img/popup_screenshot.png) ![Всплывающее окно Blockly](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
+![Всплывающий снимок экрана](img/popup_screenshot.png) ![Всплывающее окно Blockly](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
 
 ## Виджеты
 * Каждая плитка имеет BACKGROUND_URL и точку данных BACKGROUND_HTML.
 * Здесь вы можете определить ссылку (через BACKGROUND_URL) на веб-сайт или разместить прямой HTML-код (через BACKGROUND_HTML), который будет отображаться в качестве фона плитки
 * Это дает вам возможность размещать (интерактивный) контент внутри плитки (например, часы, FLOT-диаграммы, таблицы, прогнозы погоды и т. Д.)
 * По умолчанию события мыши будут направлены на это содержимое (таким образом, вы больше не можете щелкнуть саму плитку), но вы можете отключить это с помощью параметра «Направлять события мыши на плитку, а не на содержимое BACKGROUND_VIEW / URL / HTML. "
-* iQontrol предлагает роль устройства «Виджет», которая имеет несколько предопределенных параметров, которые будут в основном использоваться при отображении веб-сайта как виджета. Но вы можете добиться того же результата с любой другой ролью, правильно изменив параметры устройств.
+* iQontrol предлагает роль устройства «Виджет», у которого есть несколько предопределенных параметров, которые будут в основном использоваться при отображении веб-сайта как виджета. Но вы можете добиться того же результата с любой другой ролью, правильно изменив параметры устройств.
 
-![Скриншот всплывающего окна](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
+![Всплывающий снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
 ### PostMessage-Communication (только для экспертов)
 * Технически содержимое BACKGROUND_VIEW / URL / HTML размещается внутри HTML-элемента, называемого iframe, который представляет собой веб-сайт внутри веб-сайта.
@@ -203,13 +203,13 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
         * `` {команда: "getWidgetStateSubscribed", stateId: <widgetStateId>} ``
 * Это заставит iQontrol отправлять значение состояния ioBroker `` iqontrol. <instance> .Widgets. <widgetStateId> '' сейчас и каждый раз, когда его значение изменяется (см. Ниже, как получить ответные сообщения)
         * `` {команда: "setWidgetDeviceState", stateId: <widgetDeviceState>, значение: <value>} ``
-* Это установит точку данных ioBroker, назначенную устройствам STATE `` <widgetDeviceState> '' (например, точку данных, назначенную для LEVEL), в значение `` <value> '' (`` <value> ` `может быть строкой, числом или логическим значением или объектом вроде` `{val: <value>, ack: true | false}` `)
+* Это установит точку данных ioBroker, которая назначена устройствам STATE `` <widgetDeviceState> '' (например, точка данных, назначенная для LEVEL), в значение `` <value> `` (`` <value> ` `может быть строкой, числом или логическим значением или объектом вроде` `{val: <value>, ack: true | false}` `)
         * `` {команда: "getWidgetDeviceState", stateId: <widgetDeviceState>} ``
 * Это приведет к тому, что iQontrol отправит значение точки данных ioBroker, которое назначено устройствам STATE `` <widgetDeviceState> '' (например, точка данных, назначенная на LEVEL; см. Ниже, как получить ответное сообщение)
         * `` {команда: "getWidgetDeviceStateSubscribed", stateId: <widgetDeviceState>} ``
-* Это приведет к тому, что iQontrol будет отправлять значение точки данных ioBroker, назначенное устройствам STATE `` <widgetDeviceState> '' (например, точка данных, назначенная LEVEL) сейчас и каждый раз, когда его значение изменяется (см. Ниже как получить ответ-сообщение)
+* Это приведет к тому, что iQontrol будет отправлять значение точки данных ioBroker, которое назначено устройствам STATE `` <widgetDeviceState> '' (например, точка данных, назначенная LEVEL) сейчас и каждый раз, когда его значение изменяется (см. Ниже как получить ответ-сообщение)
         * `` {команда: "setState", stateId: <stateId>, значение: <value>} ``
-* Это установит для состояния ioBroker `` <stateId> `` значение `` <value> `` (`` <value> `может быть строкой, числом или логическим значением или объектом типа` `{val: < значение>, подтверждение: истина | ложь} `)
+* Это установит для состояния ioBroker `` <stateId> `` значение `` <value> `` (`` <value> `может быть строкой, числом или логическим значением или объектом вроде` {val: < значение>, подтверждение: истина | ложь} `)
         * `` {команда: "getState", stateId: <stateId>} ``
 * Это заставит iQontrol отправить значение состояния ioBroker `` <stateId> '' (см. Ниже, как получить ответное сообщение)
         * `` {команда: "getStateSubscribed", stateId: <stateId>} ``
@@ -217,7 +217,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
         * `` {команда: "renderView", значение: <viewID>} ``
 * Это укажет iQontrol на рендеринг представления, где <viewID> должен быть отформатирован как iqontrol. <instance-number> .Views. <view-name> (с учетом регистра)
         * `` {команда: "openDialog", значение: <deviceID>} ``
-* Это заставит iQontrol открыть диалоговое окно, в котором `` <deviceID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> .devices. <device-number> '' где `` <device-number> '' начинается с 0 (поэтому первое устройство в представлении - это устройство с номером 0)
+* Это даст указание iQontrol открыть диалоговое окно, в котором `` <deviceID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> .devices. <device-number> '' где `` <device-number> '' начинается с 0 (поэтому первое устройство в представлении - это устройство с номером 0)
 * Чтобы получать сообщения от iQontrol, вам необходимо зарегистрировать прослушиватель событий для события «message» с помощью javascript-команды `window.addEventListener (« message », receivePostMessage, false);` `
     * Функция receivePostMessage получает объект event
 * «event.data» содержит сообщение от iqontrol, которое будет таким объектом, как:
@@ -254,12 +254,12 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
     * Соответствующая точка данных создается только тогда, если сайт-виджет добавлен на устройство как URL или BACKGROUND_URL
 * Та же концепция может использоваться для URL / HTML-State, который используется для отображения веб-сайта внутри диалогового окна устройства.
 * Чтобы создать значок для вашего виджета, поместите файл .png с тем же именем, что и у виджета, в каталог виджетов.
-* См. Ниже пример сайта-виджета:
+* См. Ниже пример веб-сайта с виджетами:
 
 <details><summary>Показать пример веб-сайта-виджета, который будет отображаться как виджет с сообщением postMessage: (<ins> нажмите, чтобы открыть</ins> )</summary>
 
 * Вы можете использовать следующий HTML-код и скопировать его в BACKGROUND_HTML-State виджета (который затем необходимо настроить как «Константа»).
-* В качестве альтернативы вы можете загрузить этот код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем также необходимо настроить как «Константа»).
+* В качестве альтернативы вы можете загрузить этот код как html-файл в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем также необходимо настроить как «Константа»).
 * Активируйте опцию «Разрешить postMessage-Communication для BACKGROUND_VIEW / URL / HTML»
 * Он продемонстрирует, как осуществляется двусторонняя связь между веб-сайтом и iQontrol.
 
@@ -403,10 +403,10 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 ### Дальнейшая настройка виджетов
 * Есть дополнительные мета-теги, которые вы можете использовать в разделе заголовка вашего сайта-виджета, чтобы настроить поведение виджета:
 * 'описание-виджета'
-* синтаксис: `` <meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
-* Контент будет отображаться при выборе виджета как URL или BACKGROUND_URL или при автосоздании виджета
+* синтаксис: &#39;&#39; <meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
+* Контент будет отображаться при выборе виджета в качестве URL-адреса или BACKGROUND_URL или при автосоздании виджета.
 * 'параметры URL-адреса виджета'
-* синтаксис: `` <meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/> ``
+* синтаксис: &#39;&#39; <meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/> ``
 * Пользователю будет предложено ввести эти параметры при выборе виджета в качестве URL или BACKGROUND_URL или при автосоздании виджета.
 * type не является обязательным и может быть text (по умолчанию), number, checkbox, color, select, multipleSelect. `,` combobox`, `historyInstance`,` datapoint` или `icon`
 * Если типом является select, multipleSelect или combobox, вам необходимо указать возможные параметры, добавив / <selectOptions>, где <selectOptions> - это строка формата `` <value1>, <caption1> / <value2>, <caption2> / ... '' (combobox - это поле выбора с возможностью ввода произвольного текста)
@@ -431,7 +431,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 				````
 
 * 'параметры-виджета'
-* синтаксис: ``<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/> ``
+* синтаксис: &#39;&#39;<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/> ``
 * См. Расширяемый раздел ниже, чтобы узнать о возможных параметрах, которые можно настроить с помощью этого метатега.
 
 <details><summary>Показать возможные параметры, которые можно настроить с помощью метатега &#39;widget-options&#39;: (<ins> нажмите, чтобы открыть</ins> )</summary>
@@ -453,7 +453,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * `` alwaysSendTrue`` (всегда отправлять true (не переключать)) - действительно только для ролевой сцены:
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
-* `` closeDialogAfterExecution '' (Закрыть диалоговое окно после выполнения) - действительно только для кнопки роли, программы и сцены:
+* `` closeDialogAfterExecution`` (Закрыть диалоговое окно после выполнения) - действительно только для кнопки роли, программы и сцены:
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * invertCt (Invert CT (использовать Kelvin вместо Mired)) - действительно только для роли Light:
@@ -467,7 +467,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: «false»
 * `` controlModeDisabledValue '' (значение CONTROL_MODE для 'disabled') - действительно только для роли Термостат:
 * По умолчанию: ""
-* `` stateClosedValue '' (значение STATE для 'closed') - действительно только для роли Window:
+* `` stateClosedValue`` (значение STATE для 'closed') - действительно только для роли Window:
 * По умолчанию: ""
 * `` stateOpenedValue`` (значение STATE для 'open') - действительно только для роли Window:
 * По умолчанию: ""
@@ -490,12 +490,12 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: «Вниз».
 * `` controlModeDisarmedValue '' (значение CONTROL_MODE для 'снято с охраны') - действительно только для роли Alarm:
 * По умолчанию: «0»
-* `coverImageReloadDelay` (Задержка перезагрузки изображения-обложки [мс]) - действительно только для роли Media:
+* `coverImageReloadDelay` (Задержка перезагрузки изображения-обложки [мс]) - действует только для роли Media:
 * Возможные значения: число от 0 до 5000
 * По умолчанию: ""
 * `statePlayValue` (значение STATE для 'play') - действительно только для роли Media:
 * По умолчанию: «играть».
-* `statePauseValue` (значение STATE для 'паузы') - действительно только для роли Media:
+* `` statePauseValue`` (значение STATE для 'паузы') - действительно только для роли Media:
 * По умолчанию: «пауза»
 * `` stateStopValue`` (значение STATE для 'stop') - действительно только для роли Media:
 * По умолчанию: «стоп»
@@ -534,7 +534,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * `` renderLinkedViewInParentInstance`` (Открыть связанное представление в родительском экземпляре, если это представление используется как BACKGROUND_VIEW):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
-* `` renderLinkedViewInParentInstanceClosesPanel`` (после открытия связанного представления в родительском экземпляре закройте панель (если это допустимо)):
+* `` renderLinkedViewInParentInstanceClosesPanel`` (после открытия связанного представления в родительском экземпляре закройте панель (если это запрещено)):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * Поведение плитки (общее):
@@ -544,7 +544,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * `` clickOnTileToggles`` (Щелкайте по переключателям плитки (вместо открытия диалогового окна))):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
-* clickOnTileOpensDialog (щелчок по плитке открывает диалоговое окно):
+* `` clickOnTileOpensDialog`` (щелчок по плитке открывает диалоговое окно):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «true» (для большинства устройств)
 * `` noZoomOnHover`` (Отключить эффект масштабирования при наведении):
@@ -564,20 +564,20 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: ""
 * tileActiveConditionValue (значение условия):
 * По умолчанию: ""
-* Поведение плитки, если устройство неактивно:
+* Tile-Behavior, если устройство неактивно:
 * `` sizeInactive`` (Размер плитки, если устройство неактивно):
-* Возможные значения: "" | "thinIfInactive shortIfInactive" | "thinIfInactive" | "thinIfInactive highIfInactive" | "thinIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | "wideIfInactive xwideIfInactive" | "wideIfInactive" xwideIfInactive "|" wideIf "xwideIfInactive" | "wideIf" xwideIfInactive "|" wideIf "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive аспект-1-1IfidthInactive "|" fullWidthIfIfInactive "|" fullWidthIfIfInactive "|" fullWidthIfIfInactive 2IfInactive "|" fullWidthIfInactive аспект-16-9IfInactive "|" fullWidthIfInactive аспект-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
+* Возможные значения: "" | "thinIfInactive shortIfInactive" | "thinIfInactive" | "thinIfInactive highIfInactive" | "УзкийIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | "wideIfInactive xwideIfInactive" | "wideIfInactive xwideIfInactive" | "wideIf" xwideIfInactive "|" wideIf "xwideIfInactive" | "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive аспект-1-1IfidthInactive "|" fullWidthIfIfInactive "|" fullWidthIfIfInactive "|" fullWidthIfIfInactive 2IfInactive "|" fullWidthIfInactive аспект-16-9IfInactive "|" fullWidthIfInactive аспект-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
 * По умолчанию: «xwideIfInactive highIfInactive»
-* `` stateHeightAdaptsContentInactive` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
+* `` stateHeightAdaptsContentInactive`` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * `` stateFillsDeviceInactive`` (размер STATE заполняет все устройство (это может мешать другому контенту), если устройство неактивно):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
-* `` stateBigFontInactive` (используйте большой шрифт для STATE, если устройство неактивно):
+* `` stateBigFontInactive` (используйте крупный шрифт для STATE, если устройство неактивно):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
-* `` bigIconInactive`` (показывать большой значок, если устройство неактивно):
+* bigIconInactive (показывать большой значок, если устройство неактивно):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * `` iconNoPointerEventsInactive`` (игнорировать события мыши для значка, если устройство неактивно):
@@ -609,7 +609,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: "false" * ``
 * Tile-Behavior, если устройство активно:
 * `` sizeActive`` (Размер плитки, если устройство активно):
-* Возможные значения: «» | «thinIfActive shortIfActive» | «thinIfActive» | «thinIfActive highIfActive» | «thinIfActive xhighIfActive» | «shortIfActive» | «shortIfActive wideIfActive» | «shortIfActive xwideIfActiveIfActive» | «shortIfActive xwideIfActiveIfActive» | «wideIfActive xwideIfActive» | "|" xhighIfActive "|" wideIfActive highIfActive "|" xwideIfActive highIfActive "|" wideIfActive xhighIfActive "|" xwideIfActive xhighIfActive "|" fullWidthIfActive аспект-1-1IfActive "|" fullWidth- 4IfActive "|" fullWidth- 4IfActive " 2IfActive "|" fullWidthIfActive аспект-16-9IfActive "|" fullWidthIfActive аспект-21-9IfActive "|" fullWidthIfActive fullHeightIfActive "|"
+* Возможные значения: «» | «thinIfActive shortIfActive» | «thinIfActive» | «thinIfActive highIfActive» | «thinIfActive xhighIfActive» | «shortIfActive» | «shortIfActive wideIfActive» | «shortIfActive xwideIfActive» | «wideIfActive» xwideIfActive | «wideIfActive» | "|" xhighIfActive "|" wideIfActive highIfActive "|" xwideIfActive highIfActive "|" wideIfActive xhighIfActive "|" xwideIfActive xhighIfActive "|" fullWidthIfActive аспект-1-1IfActive "|" fullWidthIfActive "| 2IfActive "|" fullWidthIfActive аспект-16-9IfActive "|" fullWidthIfActive аспект-21-9IfActive "|" fullWidthIfActive fullHeightIfActive "|"
 * `` stateHeightAdaptsContentActive`` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
@@ -650,7 +650,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * Поведение плитки при увеличении устройства:
-* `` sizeEnlarged`` (размер плитки, если устройство увеличено):
+* `` sizeEnlarged`` (Размер плитки, если устройство увеличено):
 * Возможные значения: "" | "узкийIfEnlarged shortIfEnlarged" | "узкийIfEnlarged" | "узкийIfEnlarged highIfEnlarged" | "узкийIfEnlarged xhighIfEnlarged" | "shortIfEnlarged" | "shortIfEnlarged wide "IfEnlarged" "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" xwideEnlarged xhighIfEnlarged 2IfEnlarged "|" fullWidthIfEnlarged аспект-16-9IfEnlarged "|" fullWidthIfEnlarged аспект-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
 * `` stateHeightAdaptsContentEnlarged` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
 * Возможные значения: «истина» | «ложь»
@@ -697,7 +697,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * `hideInfoAIfEnlarged` (Скрыть INFO_A, если устройство увеличено):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
-* `hideInfoBIfEnlarged` (скрыть INFO_B, если устройство увеличено):
+* `hideInfoBIfEnlarged` (Скрыть INFO_B, если устройство увеличено):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * `hideStateIfEnlarged` (Скрыть состояние, если устройство увеличено):
@@ -708,7 +708,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: «false»
 * Отметка времени:
 * `` addTimestampToState`` (добавить метку времени в состояние):
-* Возможные значения: "" | "SA" | "ST" | "STA" | "SE" | "SEA" | "SE." | "SE.A" | "Se" | "SeA" | "STE" | "СТЭ" | "СТЕ." | "СТЕ.А" | "СТЕ" | "СТЕА" | "Т" | "ТА" | "ТЕ" | "ЧАЙ" | "ТЕ." | "ТЕ.А" | «Te» | «TeA» | «E» | «EA» | «E.» | «EA» | «e» | «eA» | «N»
+* Возможные значения: "" | "SA" | "ST" | "STA" | "SE" | "SEA" | "SE." | "SE.A" | "Se" | "SeA" | "STE" | "СТЭ" | "СТЭ." | "СТЕ.А" | "СТЭ" | "СТЕА" | "Т" | "ТА" | "ТЕ" | "ЧАЙ" | "ТЕ." | "ТЕ.А" | «Te» | «TeA» | «E» | «EA» | «E.» | «EA» | «e» | «eA» | «N»
 * По умолчанию: «N»
 * showTimestamp (Показать отметку времени в диалоговом окне):
 * Возможные значения: "" | "да" | "нет" | "всегда" | "никогда"
@@ -719,7 +719,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: ""
 * `` batteryActiveConditionValue`` (значение условия):
 * По умолчанию: ""
-* Значок UNREACH:
+* Значок НЕДОСТАТКА:
 * `` invertUnreach`` (Инвертировать UNREACH (использовать connected вместо unreach)):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
@@ -728,7 +728,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * BACKGROUND_VIEW / URL / HTML:
-* `` backgroundURLDynamicIframeZoom` (динамическое масштабирование для BACKGROUND_VIEW / URL / HTML (это уровень масштабирования в%, который потребуется, чтобы контент поместился в одну плитку 1x1)):
+* `backgroundURLDynamicIframeZoom` (динамическое масштабирование для BACKGROUND_VIEW / URL / HTML (это уровень масштабирования в%, который потребуется, чтобы контент поместился в одну плитку 1x1)):
 * Возможные значения: число от 0,01 до 200
 * По умолчанию: ""
 * `` backgroundURLPadding`` (применить заполнение к BACKGROUND_VIEW / URL / HTML):
@@ -752,11 +752,11 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * URL / HTML:
-* `popupWidth` (Ширина [пикселей] для URL / HTML-блока):
+* `popupWidth` (Ширина [пикс] для URL / HTML-блока):
 * По умолчанию: ""
-* `popupHeight` (Высота [пикселей] для URL / HTML-блока):
+* `popupHeight` (Высота [пикселей] для URL / HTML-поля):
 * По умолчанию: ""
-* `` popupFixed`` (исправлено (размер не может быть изменен)):
+* `` popupFixed`` (исправлено (размер нельзя изменить)):
 * Возможные значения: «истина» | «ложь»
 * По умолчанию: «false»
 * `` openURLExternal`` (Открыть URL-адрес в новом окне (вместо отображения окна в диалоговом окне)):
@@ -767,28 +767,28 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * По умолчанию: «false»
 * ADDITIONAL_CONTROLS:
 * `additionalControlsSectionType` (Внешний вид ADDITIONAL_CONTROLS):
-* Возможные значения: "none" | "collapsible" | "collapsible open"
+* Возможные значения: «нет» | «разборный» | «разборно открытый»
 * По умолчанию: «разборный».
 * `additionalControlsCaption` (подпись для ADDITIONAL_CONTROLS):
 * По умолчанию: «Дополнительные элементы управления».
 * `additionalControlsHeadingType` (Внешний вид заголовков ADDITIONAL_CONTROLS):
-* Возможные значения: "none" | "collapsible" | "collapsible open"
+* Возможные значения: «нет» | «разборный» | «разборно открытый»
 * По умолчанию: «разборный».
 * ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ:
 * `additionalInfoSectionType` (Внешний вид ADDITIONAL_INFO):
-* Возможные значения: "none" | "collapsible" | "collapsible open"
+* Возможные значения: «нет» | «разборный» | «разборно открытый»
 * По умолчанию: «разборный».
 * `additionalInfoCaption` (подпись для ADDITIONAL_INFO):
 * По умолчанию: «Дополнительная информация»
 
 </details>
 
-<details><summary>Покажите пример веб-сайта-виджета, который создает карту с указанными выше настройками: (<ins> нажмите, чтобы открыть</ins> )</summary>
+<details><summary>Покажите пример сайта-виджета, который создает карту с указанными выше настройками: (<ins> нажмите, чтобы открыть</ins> )</summary>
 
-* Вы можете загрузить следующий HTML-код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем необходимо настроить как «Константа»).
+* Вы можете загрузить следующий HTML-код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем необходимо настроить как «Константа»)
 * При добавлении виджета отображается описание
 * Затем вас спросят, хотите ли вы применить содержащиеся в нем параметры
-* Три точки данных создаются для управления положением карты: iqontrol.x.Widgets.Map.Posision.latitude, .altitude и .zoom.
+* Для управления положением карты создаются три точки данных: iqontrol.x.Widgets.Map.Posision.latitude, .altitude и .zoom.
 
 ````html
 <!doctype html>
@@ -876,7 +876,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 
 <details><summary>Покажите более наглядный пример: (<ins> нажмите, чтобы открыть</ins> )</summary>
 
-* Вы можете загрузить следующий HTML-код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем необходимо настроить как «Константа»).
+* Вы можете загрузить следующий HTML-код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем необходимо настроить как «Константа»)
 * При добавлении виджета отображается описание
 * Требуется URL-параметр для вашего заголовка
 * Затем вас спросят, хотите ли вы применить содержащиеся в нем параметры
@@ -1115,7 +1115,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 Чтобы изменить роль и состояния устройства, нажмите на карандаш позади устройства. Ниже вы найдете краткое описание ролей и используемых состояний:
 
 ### Изменение конфигурации точки данных
-Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных в диалоговом окне конфигурации устройства или на вкладке объектов iobroker. Здесь вы можете:
+Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных в диалоговом окне конфигурации устройства или на вкладке объектов в iobroker. Здесь вы можете:
 
 * Установить флаг только для чтения
 * Установить инвертировать-флаг
@@ -1142,10 +1142,10 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 #### СОСТОЯНИЕ и УРОВЕНЬ
 Почти все роли имеют состояние **СОСТОЯНИЕ** и / или **УРОВЕНЬ** В большинстве случаев это основная функция устройства. Ему можно присвоить iobroker-состояния следующих типов:
 
-* *boolean* - если возможно, он будет переведен в осмысленный текст, например «включено / выключено», «открыто / закрыто» или аналогичный. Если вы щелкните значок плитки, он попытается переключить логическое значение (например, включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне будет сгенерирован переключатель.
+* *boolean* - если возможно, он будет переведен в осмысленный текст, например, «включено / выключено», «открыто / закрыто» или аналогичный. Если вы щелкните значок плитки, она попытается переключить логическое значение (например, включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне будет сгенерирован переключатель.
 * *число* - будет отображаться с соответствующей единицей измерения и генерировать ползунок в диалоговом окне
 * *строка* - текст для отображения
-* *список-значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
+* *список-значений* - будет отображаться выбранное значение. Если он не защищен от записи, он будет генерировать раскрывающееся меню в диалоговом окне.
     * Технически * список-значений * - это значение с соответствующим списком трансляций, определенное в объекте 'common.custom.iqontrol. <instance> .states', 'native.states' или 'common.states' точки данных. :
 
 ````
@@ -1161,33 +1161,33 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 * если тип 'логический', но роль не 'переключатель' или
 * если тип - строка или
 * если активирована опция «Добавить возможность ввода произвольного текста»
-* Если устройство-плитка будет отображаться как активная или неактивная, также определяется из STATE или LEVEL-Datapoint. Кроме того, вы можете свободно настроить поведение в разделе параметров «Условия для активной плитки». Вы даже можете установить другую внешнюю точку данных, которая определяет состояние плитки.
+* Если плитка устройства будет отображаться как активная или неактивная, также определяется из STATE или LEVEL-Datapoint. Кроме того, вы можете свободно настроить поведение в разделе параметров «Условия для активной плитки». Вы даже можете установить другую внешнюю точку данных, которая определяет состояние плитки.
 
 Однако не каждый тип подходит для каждой роли. Таким образом, СОСТОЯНИЕ переключателя, например, в большинстве случаев будет логическим, чтобы иметь возможность переключаться между включением и выключением. Может отображаться строка, но переключатель не будет работать.
 
 #### Дальнейшие общие положения:
-* **INFO_A** и **INFO_B** *array* - массив точек данных и значков, которые будут циклически отображаться в верхнем правом углу плитки
+* **INFO_A** и **INFO_B** *array* - массив точек данных и значков, которые будут циклически отображаться в правом верхнем углу плитки
 
     ![INFO_A и INFO_B](../../../en/adapterref/iobroker.iqontrol/img/info_a_info_b.png)
 
 * **ADDITIONAL_CONTROLS** *array* - массив точек данных, определяющих дополнительные элементы управления, которые будут отображаться внутри информационного диалога
-* **ADDITIONAL_INFO** *array* - массив точек данных, который будет отображаться внизу информационного диалога
+* **ADDITIONAL_INFO** *array* - массив точек данных, который будет отображаться в нижней части информационного диалога
 * **URL** CONSTANT или DATAPOINT *string* - этот URL будет открыт как iframe внутри диалогового окна
 * **HTML** CONSTANT или DATAPOINT *string* - эта разметка будет отображаться внутри iframe, если не указан URL-Datapoint
-* **BACKGROUND_URL** CONSTANT или DATAPOINT *string* - этот URL будет отображаться в качестве фона плитки устройства. Он размещается над фоновыми изображениями, но вы можете настроить его скрытие, если плитка активна или неактивна. Пожалуйста, ознакомьтесь с разделом, посвященным виджетам, в этом руководстве.
+* **BACKGROUND_URL** CONSTANT или DATAPOINT *string* - этот URL будет отображаться как фон плитки устройства. Он размещается над фоновыми изображениями, но вы можете настроить его скрытие, если плитка активна или неактивна. Пожалуйста, просмотрите раздел виджетов в этом руководстве.
 * **BACKGROUND_HTML** CONSTANT или DATAPOINT *string* - эта разметка будет отображаться как фон устройства-тайла, если не указан BACKGROUND_URL
 * **БАТАРЕЯ** *логическое* - если истина или *число* - когда меньше 10%, будет отображаться маленький значок разряда батареи
     * Вы можете дополнительно настроить поведение значка батареи в разделе параметров «Значок батареи пустой».
-* **ОШИБКА** *логическое* - если true, будет отображаться маленький значок восклицательного знака
+* **ОШИБКА** *boolean* - если true, будет отображаться маленький значок восклицательного знака
 * **UNREACH** *boolean* - если true, будет отображаться маленький значок беспроводной связи
-    * Поведение можно инвертировать в разделе опций «Общие» (использовать подключенный вместо недосягаемого)
-* **ENLARGE_TILE** *boolean* - если true, тайл будет увеличен. Вы можете перезаписать это, нажав кнопку увеличения / уменьшения. Но каждый раз, когда состояние ENLARGE_TILE изменяется, он снова берет на себя управление состоянием увеличения тайлов. Если роль ENLARGE_TILE - *button* то каждое изменение состояния будет переключать состояние увеличения.
+    * Поведение можно инвертировать в разделе опций «Общие» (использовать подключенное вместо недоступного)
+* **ENLARGE_TILE** *boolean* - если true, тайл будет увеличен. Вы можете перезаписать это, нажав кнопку увеличения / уменьшения. Но каждый раз, когда состояние ENLARGE_TILE изменяется, он снова берет на себя управление состоянием увеличения тайлов. Если роль ENLARGE_TILE - *кнопка* то каждое изменение состояния будет переключать состояние увеличения.
 * **BADGE** *number* или *string* - если присутствует значение, отличное от нуля / false, то значок в верхнем левом углу отображается с этим значением
   * **BADGE_COLOR** * string * - любая допустимая строка цвета html (например, «зеленый», «# 00FF00», «rgba (0,255,0,0.5)» и т. Д.), Представляющая цвет значка. . Если отсутствует или недействителен, будет использован красный цвет с прозрачностью 20%.
 
     ![Значок](../../../en/adapterref/iobroker.iqontrol/img/badge.png)
 
-* **OVERLAY_INACTIVE_COLOR** и **OVERLAY_ACTIVE_COLOR** *string* - любая допустимая строка цвета html (например, «зеленый», «# 00FF00», «rgba (0,255,0,0.5)» и т. Д.), представляет цвет наложения плитки (в зависимости от того, активен или неактивен тайл). Если действительная цветовая строка не указана, используется стандартный оверлейный цвет (который можно настроить в iQontrol-Options). Имейте в виду, что есть возможность определить прозрачность наложения в параметрах iQontrol, что повлияет на внешний вид установленного цвета наложения.
+* **OVERLAY_INACTIVE_COLOR** и **OVERLAY_ACTIVE_COLOR** *string* - любая допустимая строка цвета html (например, 'зеленый', '# 00FF00', 'rgba (0,255,0,0.5)' и т. Д.), представляет цвет наложения плитки (в зависимости от того, активен или неактивен тайл). Если действительная цветовая строка не указана, используется стандартный оверлейный цвет (который можно настроить в iQontrol-Options). Имейте в виду, что есть возможность определить прозрачность наложения в параметрах iQontrol, что повлияет на внешний вид установленного цвета наложения.
 
     ![Цвет наложения](../../../en/adapterref/iobroker.iqontrol/img/overlay_color.png)
 
@@ -1203,7 +1203,7 @@ hash: 3zxvnuRX8DfA9KrbUnkQFi8FYydG2K+1vsAsO5OIyZ4=
 
 ###<img src="img/icons/switch_on.png" width="32"> Выключатель:
 * **СОСТОЯНИЕ** *логическое* - отображение и установка состояния включения / выключения
-* **МОЩНОСТЬ** *число* - потребляемая мощность, которая будет отображаться мелким шрифтом в правом верхнем углу
+* **МОЩНОСТЬ** *число* - потребляемая мощность, которая будет отображаться маленьким шрифтом в правом верхнем углу
 
 ###<img src="img/icons/button.png" width="32"> Кнопка:
 * **СОСТОЯНИЕ** *любое* - любой желаемый тип состояния
@@ -1244,19 +1244,19 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
     * **HHSSBB для Tuya** длинная 12-значная шестнадцатеричная строка, представляющая оттенок (HH = 0000-016d [0-365]), насыщенность (SS = 0000-03e8 [0-1000]) и яркость цвета (BB = 0000-03e8 [0-1000])
 
-Имейте в виду: преобразование в альтернативное цветовое пространство выполняется внешним интерфейсом, поэтому он активен только в том случае, если где-то открыт iQontrol. Поэтому вы не можете использовать его в качестве преобразователя цветовых пространств. Чтобы избежать зацикливания, рекомендуется использовать либо исходные точки данных цветового пространства (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *либо* альтернативную точку данных цветового пространства, чтобы *заменить* эти точки данных.
+Имейте в виду: преобразование в альтернативное цветовое пространство выполняется веб-интерфейсом, поэтому он активен только в том случае, если где-то открыт iQontrol. Поэтому вы не можете использовать его в качестве преобразователя цветовых пространств. Чтобы избежать зацикливания, рекомендуется либо использовать исходные точки данных цветового пространства (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *или* альтернативную точку данных цветового пространства, чтобы *заменить* эти точки данных.
 
 * Эффект-режим:
   * **EFFECT** * value-list * - эффект для воспроизведения
 * **EFFECT_NEXT** *boolean* - если установлено значение true, будет воспроизводиться следующий эффект (как альтернатива для устройств, которые не поддерживают список значений EFFECT)
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - если установлено значение true, эффект будет увеличиваться / уменьшаться
 * Разнообразный:
-  * **МОЩНОСТЬ** * число * - потребляемая мощность, которая будет отображаться мелким шрифтом в правом верхнем углу
+  * **МОЩНОСТЬ** * число * - потребляемая мощность, которая будет отображаться маленьким шрифтом в правом верхнем углу
 
-###<img src="img/icons/fan_on.png" width="32"> Вентилятор:
+###<img src="img/icons/fan_on.png" width="32"> Поклонник:
 * **СОСТОЯНИЕ** *логическое* - отображение и установка состояния включения / выключения
 * **УРОВЕНЬ** *число* или *список значений* - скорость вентилятора
-* **МОЩНОСТЬ** *число* - потребляемая мощность, которая будет отображаться мелким шрифтом в правом верхнем углу
+* **МОЩНОСТЬ** *число* - потребляемая мощность, которая будет отображаться маленьким шрифтом в правом верхнем углу
 
 ###<img src="img/icons/radiator.png" width="32"> Термостат:
 * **SET_TEMPERATURE** *number* - заданная температура
@@ -1270,7 +1270,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 Помимо обычного термостата вы можете определить:
 
 * **PARTY_TEMPERATURE** *string* - строка в специальном формате для определения праздничного или праздничного режима домашних термостатов.
-* **BOOST_STATE** *число* - отображает оставшееся время разгона термостатов homematic
+* **BOOST_STATE** *число* - отображает оставшееся время разгона домашних термостатов
 
 ###<img src="img/icons/temperature.png" width="32"> Датчик температуры,<img src="img/icons/humidity.png" width="32"> Датчик влажности,<img src="img/icons/pressure.png" width="32"> Датчик давления:
 * **СОСТОЯНИЕ** *число* - температура или влажность, которая будет отображаться в нижней части устройства
@@ -1294,7 +1294,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **свойство связанного просмотра** открывается напрямую
 
 ###<img src="img/icons/garagedoor_closed.png" width="32"> Гаражная дверь:
-* **СОСТОЯНИЕ** *логическое* - отображать, открыта или закрыта дверь
+* **STATE** *boolean* - отображать, открыта или закрыта дверь
     * В качестве альтернативы вы можете назначить * список значений * для отображения дополнительных состояний, таких как 'наклонено'
     * Вы также можете назначить * строку * для отображения любого текста, например «3 двери открыты» или «все закрыты»
 * **TOGGLE** *boolean* - отображает кнопку «Toggle» и имеет значение true, если она нажата.
@@ -1308,8 +1308,8 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ###<img src="img/icons/blind_middle.png" width="32"> Слепой:
 * **УРОВЕНЬ** *число* - высота жалюзи в процентах
 * **НАПРАВЛЕНИЕ** *список значений* - может быть Stop, Up и Down. Значения, представляющие Стоп, Вверх, Вниз и Неизвестно, могут быть настроены.
-* **STOP** *boolean* - устанавливается в true, если кнопка остановки нажата
-* **UP** / **DOWN** *boolean* - устанавливается в true, если нажата кнопка вверх / вниз (для устройств, которые используют точки данных UP и DOWN вместо или в дополнение к LEVEL). Дополнительно вы можете определить значение с помощью точек данных **UP_SET_VALUE** / **DOWN_SET_VALUE** Если определено, это значение будет отправлено вместо истины при нажатии кнопки «Вверх» / «Вниз».
+* **STOP** *boolean* - устанавливается в true, если кнопка остановки нажата. Дополнительно вы можете определить значение через **STOP_SET_VALUE** Datapoint. Если определено, это значение будет отправлено вместо истины при нажатии кнопки Стоп.
+* **UP** / **DOWN** *boolean* - устанавливается в значение true, если нажата кнопка вверх / вниз (для устройств, которые используют точки данных UP и DOWN вместо или в дополнение к LEVEL). Дополнительно вы можете определить значение с помощью точек данных **UP_SET_VALUE** / **DOWN_SET_VALUE** Если определено, это значение будет отправлено вместо истины при нажатии кнопки «Вверх» / «Вниз».
 * **FAVORITE_POSITION** *boolean* - может использоваться для вызова любимой позиции. Если нажать кнопку «Избранное» (название кнопки можно настроить в настройках устройства), в эту точку данных будет отправлено значение «истина». Дополнительно вы можете определить значение через **FAVORITE_POSITION_SET_VALUE** Datapoint. Если определено, это значение будет отправлено вместо истины при нажатии кнопки избранного.
 * **SLATS_LEVEL** *number* - положение планок в процентах
 
@@ -1329,26 +1329,26 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **СОСТОЯНИЕ** *логическое* - при true датчик будет отображаться как сработавший
     * В качестве альтернативы вы можете назначить * список значений *, чтобы отображать дополнительные состояния, такие как 'tamolated'
     * Вы также можете назначить * строку * для отображения любого текста, например «пожар на верхнем этаже»
-* **CONTROL_MODE** *список значений* - выбрать режим работы, например «Включен» или «Снят»
-    * В параметрах устройства вы можете определить значение, которое означает снятие с охраны, чтобы можно было отобразить соответствующий значок.
+* **CONTROL_MODE** *список-значений* - выбрать режим работы, например, «Включен» или «Снят»
+    * В параметрах устройства вы можете определить значение, которое означает снятие с охраны, чтобы можно было отобразить соответствующий значок
 
 ###<img src="img/icons/battery_full.png" width="32"> Аккумулятор:
 * **СОСТОЯНИЕ** *число* - уровень заряда батареи в процентах
 * **ЗАРЯДКА** *логическое* - если true, отображается значок зарядки
-* **МОЩНОСТЬ** *число* - потребляемая мощность, которая будет отображаться мелким шрифтом в правом верхнем углу
+* **МОЩНОСТЬ** *число* - потребляемая мощность, которая будет отображаться маленьким шрифтом в правом верхнем углу
 * **НАПРЯЖЕНИЕ** *число* - напряжение, которое будет отображаться маленьким шрифтом в правом верхнем углу
 
 ###<img src="img/icons/time_alarmclock_on.png" width="32"> Дата и время:
 * **STATE** *boolean* - если true, плитка будет отображаться как активная
 * **SUBJECT** *string* - установить описание
-* **RINGING** *boolean* - если true, то отображается сигнал тревоги
+* **RINGING** *boolean* - если true, то показывается тревожный звонок
 * Имейте в виду: вы можете настроить выход и кнопку повтора через ADDITIONAL_CONTROLS
 * **TIME** **SECOND_TIME** *string* - строка с датой и / или временем или продолжительностью (вы можете указать формат в параметрах устройства) для первого и второго раза
     * SECOND_TIME ЕЩЕ НЕ ОСУЩЕСТВЛЯЕТСЯ, БУДЕТ СКОРО
 
 <details><summary>Показать возможные форматы времени: (<ins> нажмите, чтобы открыть</ins> )</summary>
 
-В параметрах устройства в разделе, посвященном конкретному устройству, вы можете установить формат времени точки данных и способ ее отображения. Вы можете использовать следующие токены:
+В параметрах устройства в разделе, относящемся к конкретному устройству, вы можете установить формат времени точки данных и способ ее отображения. Вы можете использовать следующие токены:
 
 | | | Токен | Пример | Datapoint | Дисплей | Сборщик |
 |----------:|-------------------------------:|--------------------|------------------------------------------------------|-----------|-------------------------|-------------------------|
@@ -1434,10 +1434,10 @@ X = поддерживается, --- = не поддерживается
 * **STATE** *boolean* - если установлено значение true, программа будет запущена
 
 ###<img src="img/icons/play.png" width="32"> Сцена:
-* **STATE** *boolean* - отображается, если сцена активна. В зависимости от конфигурации сцены (виртуальная группа, установленные значения для false включено или отключено), команда toggle отправит true, false, min, 0, max или 100. Существует возможность всегда отправлять true (отключение переключения) .
+* **STATE** *boolean* - отображается, если сцена активна. В зависимости от конфигурации сцены (виртуальная группа, установленные значения для false включены или отключены), команда toggle отправит true, false, min, 0, max или 100. Существует возможность всегда отправлять true (отключение переключения) .
 
 ###<img src="img/icons/media_on.png" width="32"> Медиа-плеер / пульт дистанционного управления:
-* **СОСТОЯНИЕ** *строка* - «воспроизведение», «пауза» или «стоп» или *логическое* - true для воспроизведения, false для остановки
+* **СОСТОЯНИЕ** *строка* - «воспроизведение», «пауза» или «стоп» или *логическое* - истинно для воспроизведения, ложно для остановки
     * В параметрах устройства вы можете определить значение, которое представляет воспроизведение, паузу и остановку
 * **COVER_URL** *строка* - URL-адрес изображения-обложки
 * **ИСПОЛНИТЕЛЬ, АЛЬБОМ, НАЗВАНИЕ** *строка* - самоочевидно
@@ -1451,13 +1451,13 @@ X = поддерживается, --- = не поддерживается
 
 ##### Для отображения *универсального пульта дистанционного управления* вы можете определить следующие состояния:
 * **REMOTE_NUMBER** *строка* - показывает цифровую клавиатуру и возвращает соответствующее число, если щелкнуть номер
-* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN** *строка* - показывает кнопки увеличения / уменьшения громкости и канала вверх / вниз и возвращает 'volumeUp', 'volumeDown', 'chUp' или 'chDown', если соответствующие кнопка нажата
+* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN** *string* - показывает кнопки увеличения / уменьшения громкости и канала вверх / вниз и возвращает 'volumeUp', 'volumeDown', 'chUp' или 'chDown', если соответствующие кнопка нажата
 * **REMOTE_PAD_DIRECTION, REMOTE_PAD_BACK, REMOTE_PAD_HOME, REMOTE_PAD_MENU** *строка* - показывает трекпад для навигации и возвращает
     * 'ok', если щелкнуть по середине пэда,
 * «влево», «вправо», «вверх» или «вниз», если щелкнули края площадки или смахнули площадку в соответствующем направлении, или
 * 'назад', 'домой' или 'меню *, если нажаты соответствующие кнопки
 * Имейте в виду: вы можете использовать список целевых значений (доступный через значок гаечного ключа на каждой точке данных), чтобы связать одну точку данных с несколькими точками данных, в зависимости от возвращаемого значения (см. Раздел «Изменение точек данных» выше)
-* **REMOTE_COLOR** *string* - показывает цветные кнопки и возвращает соответствующий цвет («красный», «зеленый», «желтый» или «синий»), если выбран цвет
+* **REMOTE_COLOR** *строка* - показывает цветные кнопки и возвращает соответствующий цвет («красный», «зеленый», «желтый» или «синий»), если выбран цвет
 * **REMOTE_CHANNELS** *array* - массив кнопок. Имя кнопки отправляется в соответствующий идентификатор состояния, если кнопка нажата
 * **REMOTE_ADDITIONAL_BUTTONS** *array* - массив кнопок. Имя кнопки отправляется в соответствующий идентификатор состояния, если кнопка нажата
 * **REMOTE_HIDE_REMOTE** *boolean* - если true, весь раздел удаленного управления будет скрыт (например, чтобы показать только его, если выбран действительный источник)
@@ -1470,7 +1470,7 @@ X = поддерживается, --- = не поддерживается
 * **URL** CONSTANT *string* - этот URL будет открыт
 
 ###<img src="img/icons/widget_on.png" width="32"> Виджет:
-Это устройство имеет некоторые специальные предопределенные параметры размера и отображения для отображения веб-сайта, которые можно определить с помощью **BACKGROUND_URL** в качестве виджета. С параметрами по умолчанию небольшая кнопка увеличения будет отображаться в верхнем правом углу.
+Это устройство имеет некоторые специальные предопределенные настройки размера и отображения для отображения веб-сайта, которые можно определить с помощью **BACKGROUND_URL** в качестве виджета. При использовании параметров по умолчанию в правом верхнем углу будет отображаться небольшая кнопка увеличения.
 
 * **СОСТОЯНИЕ** *любое* - СПЕЦИАЛЬНОЕ: если пусто, будет создана виртуальная точка данных, поэтому вы можете щелкнуть значок, чтобы активировать и, следовательно, увеличить размер виджета.
 
@@ -1509,6 +1509,7 @@ X = поддерживается, --- = не поддерживается
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
+* (sbormann) Added STOP_SET_VALUE for blinds.
 
 ### 1.6.6 (2021-03-21)
 * (sbormann) Fix for double admin page.

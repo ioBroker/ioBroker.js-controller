@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: POmf7zWTwhMwMfgOvU1PxjKyLCJHQO/HZ6fkGLc6pIE=
+hash: oEWcD86Zl16Rwdt2O7SMXDsuMPZ/8TseYeiFYaoESl0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -11,7 +11,7 @@ hash: POmf7zWTwhMwMfgOvU1PxjKyLCJHQO/HZ6fkGLc6pIE=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sql.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sql.svg)
 ![Тесты](https://travis-ci.org/ioBroker/ioBroker.sql.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.sql.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.sql.png?downloads=true)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/ioBroker/ioBroker.sql.svg)
 
 # IoBroker.sql
@@ -51,7 +51,7 @@ iobroker start sql
 ```
 
 ### MySQL:
-Вы можете установить mysql в системах Linux следующим образом:
+Вы можете установить mysql в Linux-системах следующим образом:
 
 ```
 apt-get install mysql-server mysql-client
@@ -71,12 +71,12 @@ FLUSH PRIVILEGES;
 
 Обратите внимание на метод аутентификации. Новый алгоритм шифрования в MySQL 8.0 пока не поддерживается `node.js`, и вы должны выбрать устаревший метод аутентификации.
 
-![Windows](../../../en/adapterref/iobroker.sql/img/WindowsMySQLinstaller.png)
+![Окна](../../../en/adapterref/iobroker.sql/img/WindowsMySQLinstaller.png)
 
 ## Структура БД
 Имя базы данных по умолчанию - «iobroker», но его можно изменить в конфигурации.
 
-### Источники Эта таблица представляет собой список экземпляров адаптера, записавших записи. (гос. из)
+### Источники Эта таблица представляет собой список экземпляров адаптера, которые записали записи. (состояние из)
 | DB | Имя в запросе |
 |------------|----------------------|
 | MS-SQL | iobroker.dbo.sources |
@@ -84,7 +84,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | источники |
 | SQLite | источники |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |-------|--------------------------------------------|-------------------------------------------|
@@ -103,7 +103,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | точки данных |
 | SQLite | точки данных |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |-------|--------------------------------------------|-------------------------------------------------|
@@ -123,20 +123,20 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_number |
 | SQLite | ts_number |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id | INTEGER | ID состояния из таблицы «Точки данных» |
 | ts | BIGINT / INTEGER | Время в мс до эпохи. Может быть преобразовано во время с помощью «новой даты (ts)» |
-| val | РЕАЛЬНЫЙ | Значение |
+| val | НАСТОЯЩИЙ | Значение |
 | подтверждение | BIT / BOOLEAN | Подтверждено: 0 - не подтверждено, 1 - подтверждено |
 | _from | INTEGER | ID источника из таблицы «Источники» |
-| q | INTEGER | Качество как число. Вы можете найти описание [Вот](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
+| q | INTEGER | Качество как число. Вы можете найти описание [здесь](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
 * Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует для ts INTEGER и всех остальных BIGINT.
 
-Пользователь может определить дополнительные к типу `number` функционал «счетчиков». Для этого создается следующая таблица:
+Пользователь может определить дополнительные к типу `number` функции «счетчиков». Для этого создается следующая таблица:
 
 | DB | Имя в запросе |
 |------------|-------------------------|
@@ -145,15 +145,15 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_counter |
 | SQLite | ts_counter |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id | INTEGER | ID состояния из таблицы «Точки данных» |
 | ts | BIGINT / INTEGER | Время в мс до эпохи. Может быть преобразовано во время с помощью «новой даты (ts)» |
-| val | РЕАЛЬНЫЙ | Значение |
+| val | НАСТОЯЩИЙ | Значение |
 
-В этой таблице хранятся значения, когда счетчик был заменен, и значение не увеличилось, но не до нуля или ниже.
+В этой таблице хранятся значения, когда счетчик был заменен, и значение не увеличивалось, но не до нуля или ниже.
 
 ### Строки
 Значения для состояний с типом «строка».
@@ -165,7 +165,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_string |
 | SQLite | ts_string |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
@@ -174,7 +174,7 @@ FLUSH PRIVILEGES;
 | val | ТЕКСТ | Значение |
 | подтверждение | BIT / BOOLEAN | Подтверждено: 0 - не подтверждено, 1 - подтверждено |
 | _from | INTEGER | ID источника из таблицы «Источники» |
-| q | INTEGER | Качество как число. Вы можете найти описание [Вот](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
+| q | INTEGER | Качество как число. Вы можете найти описание [здесь](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
 * Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует для ts INTEGER и всех остальных BIGINT.
 
@@ -188,7 +188,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_bool |
 | SQLite | ts_bool |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
@@ -197,12 +197,12 @@ FLUSH PRIVILEGES;
 | val | BIT / BOOLEAN | Значение |
 | подтверждение | BIT / BOOLEAN | Подтверждено: 0 - не подтверждено, 1 - подтверждено |
 | _from | INTEGER | ID источника из таблицы «Источники» |
-| q | INTEGER | Качество как число. Вы можете найти описание [Вот](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
+| q | INTEGER | Качество как число. Вы можете найти описание [здесь](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
 * Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует для ts INTEGER и всех остальных BIGINT.
 
 ## Пользовательские запросы
-Пользователь может выполнять пользовательские запросы к таблицам из адаптера javascript:
+Пользователь может выполнять собственные запросы к таблицам из адаптера javascript:
 
 ```
 sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-Или получить записи за последний час для ID = system.adapter.admin.0.memRss
+Или получите записи за последний час для ID = system.adapter.admin.0.memRss
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -233,7 +233,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 });
 ```
 
-*Заметка:*
+*Примечание:*
 
 В зависимости от базы данных, имя базы данных или имя базы данных + схема должны быть вставлены перед именем таблицы - см. Поля выше в разделе «Структура баз данных».
 
@@ -255,7 +255,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 * один идентификатор и массив объектов состояния: `{id: 'adapter.0.device.counter', state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3 , ts: 10239699}]} `
 * массив из нескольких идентификаторов с объектами состояния `[{id: 'adapter.0.device.counter1', state: {val: 1, ts: 10239499}, {id: 'adapter.0.device.counter2', state: {val: 2, ts: 10239599}] `
 
-Кроме того, вы можете добавить атрибут `rules: true`, чтобы активировать все правила, такие как `counter`, `changesOnly`, `de-bounce` и так далее: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
+Кроме того, вы можете добавить атрибут `rules: true` для активации всех правил, таких как `counter`, `changesOnly`, `de-bounce` и так далее: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
 ## Удалить состояние
 Если вы хотите удалить запись из базы данных, вы можете использовать встроенную системную функцию **delete**
@@ -323,7 +323,7 @@ sendTo('sql.0', 'getHistory', {
 ```
 
 ## Получить счетчик
-Пользователь может запросить значение некоторого счетчика (type = number, counter = true) за определенный период.
+Пользователь может запросить значение какого-либо счетчика (type = number, counter = true) за определенный период.
 
 ```
 var now = Date.now();
@@ -341,7 +341,7 @@ sendTo('sql.0', 'getCounter', {
 
 Если счетчик будет заменен, он тоже будет рассчитан.
 
-## Управление ведением журнала через Javascript
+## Управление журналом истории через Javascript
 Адаптер поддерживает включение и отключение ведения журнала через JavaScript, а также получение списка включенных точек данных с их настройками.
 
 ### Включить
@@ -363,12 +363,12 @@ sendTo('sql.0', 'enableHistory', {
         console.log(result.error);
     }
     if (result.success) {
-        //successfull enabled
+        //successful enabled
     }
 });
 ```
 
-### Отключить
+### Запрещать
 Сообщение требует наличия «идентификатора» точки данных.
 
 ```
@@ -408,7 +408,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Настройки соединения
 - **Тип БД** Тип БД SQL: MySQL, PostgreSQL, MS-SQL или SQLite3
-- **Хост** IP-адрес или имя хоста с SQL Server
+- **Хост** IP-адрес или имя хоста с SQL Server.
 - **Порт** порт SQL Server (оставьте поле пустым, если не уверены)
 - **Имя базы данных** имя базы данных. Iobroker по умолчанию
 - **Пользователь** имя пользователя для SQL. Должен существовать в БД.
@@ -420,7 +420,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Не создавать базу данных** активируйте эту опцию, если база данных уже создана (например, администратором) и у пользователя ioBroker недостаточно прав для создания БД.
 
 ## Настройки по умолчанию
-- **Интервал устранения отказов** не сохранять значения чаще этого интервала.
+- **Интервал устранения отказов** не сохранять значения чаще, чем этот интервал.
 - **Записывать неизмененные значения любые** дополнительно записывать значения каждые X секунд.
 - **Минимальная разница между последним значением и записью** минимальный интервал между двумя значениями.
 - **Хранение** как долго значения будут храниться в БД.

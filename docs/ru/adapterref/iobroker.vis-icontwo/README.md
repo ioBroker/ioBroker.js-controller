@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
+hash: iNGWWMrNqMrkKzoWP328Dwti9OeRtqw0YCxNTLzwhss=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -19,10 +19,10 @@ hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
 ![НПМ](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 # IoBroker.vis-icontwo
-## Icon Adapter für den ioBroker.vis Adapter
+## Адаптер иконок для адаптера ioBroker.vis
 Ein reiner Icon Adapter für die Visualisierung.
 
-![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_001.png)
+![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_001.png)
 
 Все иконы sind über den Dateimanager (auf der obersten Ebene) im vis-icontwo Ordner zu finden
 
@@ -33,17 +33,17 @@ Ein reiner Icon Adapter für die Visualisierung.
 ## Vorschau
 Eine kleine Vorschau über den Stil der Иконки:
 
-З.Б. Фары (Тейлаусваль):
+З.Б. Фары (Тейлаусвал):
 
-![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_002.png)
+![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_002.png)
 
 З.Б. Комнаты (Teilauswahl):
 
-![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_003.png)
+![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_003.png)
 
 З.Б. Устройства (Teilauswahl):
 
-![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_004.png)
+![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
 Eine vollständige Übersichtaller Icons ist hier zu finden (die Ordnerstruktur ist die gleiche, wie im Dateimanager):
 
@@ -56,11 +56,107 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 (Dieser Link führt zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Sdency] (http://resources.inventwo.com/github/icontwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Sdency] (http://resources.inventwo.com/github/icontwo/spende.png)](https://www.paypal.com/donate/?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
 
 ## Changelog
+
+### 0.60.0
+
+• Neue Icons hinzugefügt (Devices/Printer - 3D Druck Icons)
+
+### 0.50.2
+
+• Bugfix
+
+### 0.50.1
+
+• Code Optimierung und neuer Spenden-Link
+
+### 0.50.0
+
+• Neue Icons hinzugefügt (Gardinen)
+
+### 0.49.1
+
+• Bugfix
+
+### 0.49.0
+
+• Neue Icons hinzugefügt (Brands)
+
+### 0.48.0
+
+• Neue Icons hinzugefügt (Brands & Health)
+
+### 0.47.0
+
+• Neue Icons hinzugefügt (Animated Icons)
+
+### 0.46.0
+
+• Neue Icons hinzugefügt (Devices/Fountain Timer)
+
+### 0.45.0
+
+• Neue Icons hinzugefügt (Devices/Cleaner & Drinks/Wine)
+
+### 0.44.0
+
+• Neue Icons hinzugefügt (Devices/Laser)
+
+### 0.43.0
+
+• Neue Icons hinzugefügt (Backgrounds & Brands)
+
+### 0.42.0
+
+• Neue Icons hinzugefügt (Drinks_Food)
+
+### 0.41.0
+
+• Neue Icons hinzugefügt (Alarm/Motion)
+
+### 0.40.0
+
+• Neue Icons hinzugefügt (Misc/Newspaper)
+
+### 0.39.0
+
+• Neue Icons hinzugefügt (Signs)
+
+### 0.38.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.37.0
+
+• Neue Icons hinzugefügt (Lights)
+
+### 0.36.0
+
+• Neue Icons hinzugefügt (Computer)
+
+### 0.35.0
+
+• Neue Icons hinzugefügt (Lights)
+
+### 0.34.0
+
+• Neue Icons hinzugefügt (Dimmer)
+
+### 0.33.1
+
+• Bug Fix
+
+### 0.33.0
+
+• Neue Icons hinzugefügt (Maps)
+
+### 0.32.0
+
+• Neue Icons hinzugefügt (Stop)
 
 ### 0.31.0
 
@@ -280,7 +376,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 • Erstveröffentlichung
 
 ### 0.0.1
-• Die Idee ist geboren
+• Die Idee ist geboren (16.05.2020)
 
 ## License
 

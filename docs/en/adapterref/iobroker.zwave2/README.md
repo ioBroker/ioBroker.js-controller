@@ -39,6 +39,10 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.9.3 (2021-04-10)
+* Restored the old behavior for devices that report their values via the root endpoint
+* Some minor config file changes
+
 ### 1.9.2 (2021-04-05)
 Upgraded to `zwave-js` version `7.1.0`. Notable changes include:
 * Added reporting of usage statistics. For details, refer to the `node-zwave-js` documentation.
@@ -83,12 +87,6 @@ For a full list of changes, check out https://github.com/zwave-js/node-zwave-js/
 * Sleeping nodes are now immediately marked as ready when restarting from cache
 * Unsolicited reports are no longer mapped from the root endpoint to endpoint 1 if that endpoint does not support the CC
 * Tons of new and improved device configuration files
-
-### 1.8.10 (2021-02-03)
-* The startup should now be faster, especially if there are many sleeping devices
-* Fixed an issue where devices were incorrectly displayed as secure
-* Improved support for devices that use the legacy `Alarm CC`
-* Several improvements for Zooz and GE devices
 
 ## License
 

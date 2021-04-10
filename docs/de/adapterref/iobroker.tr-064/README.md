@@ -103,6 +103,9 @@ iobroker upload tr-064
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) fix crash case (Sentry IOBROKER-TR-064-2M)
+
 ### 4.2.11 (2021-03-12)
 * (Apollon77) fix id-reset detection for single calls
 

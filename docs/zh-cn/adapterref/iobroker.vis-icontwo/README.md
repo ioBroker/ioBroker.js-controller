@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
+hash: iNGWWMrNqMrkKzoWP328Dwti9OeRtqw0YCxNTLzwhss=
 ---
-![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
+![标识](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/vis-icontwo-stable.svg)
@@ -13,18 +13,18 @@ hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
 ![安装数量（最新）](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![依赖状态](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![已知漏洞](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
-![建造状态](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![建置状态](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 ＃ioBroker.vis-icontwo
 ##图标适配器来自ioBroker.vis适配器
-可视化工具图标适配器。
+视觉识别工具适配器。
 
-![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_001.png)
+![截屏](http://resources.inventwo.com/github/icontwo/Screen_001.png)
 
-艾尔·图标·德·伊迪内格（Af der Obersten Ebene）在视觉上
+艾尔·图标·德·伊迪内格（Ab der Obersten Ebene）在视觉上对图标的影响Ordner zu finden
 
 ![帕法德](http://resources.inventwo.com/github/icontwo/Pfad_001.png)
 
@@ -35,15 +35,15 @@ Eine kleine Vorschauüberden Stil der图标：
 
 Z.B.灯（Teilauswahl）：
 
-![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_002.png)
+![截屏](http://resources.inventwo.com/github/icontwo/Screen_002.png)
 
 Z.B.客房（Teilauswahl）：
 
-![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_003.png)
+![截屏](http://resources.inventwo.com/github/icontwo/Screen_003.png)
 
 Z.B.设备（Teilauswahl）：
 
-![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_004.png)
+![截屏](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
 EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur ist die gleiche，wie im Dateimanager）：
 
@@ -56,11 +56,107 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
-[![Spende]（http://resources.inventwo.com/github/icontwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Spende]（http://resources.inventwo.com/github/icontwo/spende.png）](https://www.paypal.com/donate/?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
 
 ## Changelog
+
+### 0.60.0
+
+• Neue Icons hinzugefügt (Devices/Printer - 3D Druck Icons)
+
+### 0.50.2
+
+• Bugfix
+
+### 0.50.1
+
+• Code Optimierung und neuer Spenden-Link
+
+### 0.50.0
+
+• Neue Icons hinzugefügt (Gardinen)
+
+### 0.49.1
+
+• Bugfix
+
+### 0.49.0
+
+• Neue Icons hinzugefügt (Brands)
+
+### 0.48.0
+
+• Neue Icons hinzugefügt (Brands & Health)
+
+### 0.47.0
+
+• Neue Icons hinzugefügt (Animated Icons)
+
+### 0.46.0
+
+• Neue Icons hinzugefügt (Devices/Fountain Timer)
+
+### 0.45.0
+
+• Neue Icons hinzugefügt (Devices/Cleaner & Drinks/Wine)
+
+### 0.44.0
+
+• Neue Icons hinzugefügt (Devices/Laser)
+
+### 0.43.0
+
+• Neue Icons hinzugefügt (Backgrounds & Brands)
+
+### 0.42.0
+
+• Neue Icons hinzugefügt (Drinks_Food)
+
+### 0.41.0
+
+• Neue Icons hinzugefügt (Alarm/Motion)
+
+### 0.40.0
+
+• Neue Icons hinzugefügt (Misc/Newspaper)
+
+### 0.39.0
+
+• Neue Icons hinzugefügt (Signs)
+
+### 0.38.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.37.0
+
+• Neue Icons hinzugefügt (Lights)
+
+### 0.36.0
+
+• Neue Icons hinzugefügt (Computer)
+
+### 0.35.0
+
+• Neue Icons hinzugefügt (Lights)
+
+### 0.34.0
+
+• Neue Icons hinzugefügt (Dimmer)
+
+### 0.33.1
+
+• Bug Fix
+
+### 0.33.0
+
+• Neue Icons hinzugefügt (Maps)
+
+### 0.32.0
+
+• Neue Icons hinzugefügt (Stop)
 
 ### 0.31.0
 
@@ -280,7 +376,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 • Erstveröffentlichung
 
 ### 0.0.1
-• Die Idee ist geboren
+• Die Idee ist geboren (16.05.2020)
 
 ## License
 

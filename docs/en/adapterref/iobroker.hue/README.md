@@ -57,6 +57,9 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 	### __WORK IN PROGRESS__
 -->
 
+### 3.5.5 (2021-04-07)
+* (foxriver76) fixed a bug where an error on user creation crashed the adapter instance
+
 ### 3.5.4 (2021-03-25)
 * (foxriver76) fixing several edge case crashes
 

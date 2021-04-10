@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: POmf7zWTwhMwMfgOvU1PxjKyLCJHQO/HZ6fkGLc6pIE=
+hash: oEWcD86Zl16Rwdt2O7SMXDsuMPZ/8TseYeiFYaoESl0=
 ---
-![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
+![标识](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
 ![安装数量](http://iobroker.live/badges/sql-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sql.svg)
@@ -65,11 +65,11 @@ FLUSH PRIVILEGES;
 
 如果需要，请编辑* / etc / mysql / my.cnf *以设置绑定到IP地址以进行远程连接。
 
-**警告**：iobroker用户是“ admin”。如果需要，请为iobroker用户授予有限的权利。
+**警告**：iobroker用户是“ admin”。如果需要，请为iobroker用户授予有限的权限。
 
 在“ Windows”上，可以通过安装程序轻松安装它：https://dev.mysql.com/downloads/installer/。
 
-注意身份验证方法。 `node.js`尚不支持MySQL 8.0中的新加密算法，您必须选择传统身份验证方法。
+注意身份验证方法。 `node.js`尚不支持MySQL 8.0中的新加密算法，您必须选择旧式身份验证方法。
 
 ![视窗](../../../en/adapterref/iobroker.sql/img/WindowsMySQLinstaller.png)
 
@@ -84,12 +84,12 @@ FLUSH PRIVILEGES;
 | PostgreSQL |资料|
 | SQLite |资料|
 
-结构体：
+结构：
 
-|领域类型描述 |
+|领域|类型|描述 |
 |-------|--------------------------------------------|-------------------------------------------|
-| id |整数非空主键标识（1,1）|唯一ID |
-|名称| varchar（255）/文字|实例的适配器实例， |
+| id |整数NOT NULL主键标识（1,1）|唯一ID |
+|名称| varchar（255）/文字|适配器的实例，它写了条目|
 
 *注意：* MS-SQL使用varchar（255），其他使用TEXT
 
@@ -103,11 +103,11 @@ FLUSH PRIVILEGES;
 | PostgreSQL |数据点|
 | SQLite |数据点|
 
-结构体：
+结构：
 
-|领域类型描述 |
+|领域|类型|描述 |
 |-------|--------------------------------------------|-------------------------------------------------|
-| id |整数非空主键标识（1,1）|唯一ID |
+| id |整数NOT NULL主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|变量的ID，例如hm-rpc.0.JEQ283747.1.STATE |
 |类型整数| 0-数字，1-字符串，2-布尔值|
 
@@ -123,14 +123,14 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_number |
 | SQLite | ts_number |
 
-结构体：
+结构：
 
-|领域类型描述 |
+|领域|类型|描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
 | val |真实|价值|
-| ack | BIT /布尔|确认：0-不确认，1-确认|
+| ack |比特/布尔|确认：0-不确认，1-确认|
 | _from |整数|来自“来源”表的来源ID |
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
@@ -145,9 +145,9 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_counter |
 | SQLite | ts_counter |
 
-结构体：
+结构：
 
-|领域类型描述 |
+|领域|类型|描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
@@ -165,14 +165,14 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_string |
 | SQLite | ts_string |
 
-结构体：
+结构：
 
-|领域类型描述 |
+|领域|类型|描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT |直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
 | val |文字|价值|
-| ack | BIT /布尔|确认：0-不确认，1-确认|
+| ack |比特/布尔|确认：0-不确认，1-确认|
 | _from |整数|来自“来源”表的来源ID |
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
@@ -188,14 +188,14 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_bool |
 | SQLite | ts_bool |
 
-结构体：
+结构：
 
-|领域类型描述 |
+|领域|类型|描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT |直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
-| val | BIT /布尔|价值|
-| ack | BIT /布尔|确认：0-不确认，1-确认|
+| val |比特/布尔|价值|
+| ack |比特/布尔|确认：0-不确认，1-确认|
 | _from |整数|来自“来源”表的来源ID |
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-或获取最近一小时的ID = system.adapter.admin.0.memRss的条目
+或获取过去一小时的ID = system.adapter.admin.0.memRss的条目
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -233,9 +233,9 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 });
 ```
 
-*注意：*
+*笔记：*
 
-根据数据库的不同，必须在表名称之前插入数据库名称或数据库名称+架构-请参见上方“数据库结构”下的框。
+根据数据库的不同，必须在表名之前插入数据库名或数据库名+模式-请参见上方“数据库的结构”下的框。
 
 如果您的数据库名为“ iobroker”，则示例：
 
@@ -246,7 +246,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 ## StoreState
 如果要将其他数据写入InfluxDB / SQL，则可以使用内置系统功能** storeState **。
-此功能还可用于转换来自其他历史记录适配器（如历史记录或SQL）的数据。
+此功能还可用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
 
 给定的ID不会根据ioBroker数据库进行检查，因此不需要在那里进行设置，而只能直接访问。
 
@@ -286,11 +286,11 @@ sendTo('sql.0', 'deleteRange', [
 ], result => console.log('deleted'));
 ```
 
-时间可能是自纪元或ans字符串以来的ms，可以由javascript Date对象转换。
+时间可能是毫秒（自纪元或ans字符串开始），可以由javascript Date对象转换。
 
 值将被删除，包括已定义的限制。 `ts >= start AND ts <= end`
 
-##更改状态
+##改变状态
 如果要更改数据库中条目的值，质量或确认标志，则可以使用内置系统功能** update **：
 
 ```
@@ -302,7 +302,7 @@ sendTo('sql.0', 'update', [
 
 `ts`是强制性的。状态对象中必须至少包含一个其他标志。
 
-注意`counters`。数据库中的`counters`§不会重置，您必须自己处理。
+小心`counters`。数据库中的`counters`§不会被重置，您必须自己处理。
 
 ##获取历史
 除自定义查询外，您还可以使用内置系统功能** getHistory **：
@@ -343,10 +343,10 @@ sendTo('sql.0', 'getCounter', {
 如果将更换计数器设备，则也会对其进行计算。
 
 ##通过Javascript进行历史记录记录管理
-适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
+该适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
 
-###启用
-该消息需要具有数据点的“ id”。此外，用于定义数据点特定设置的可选“选项”：
+＃＃＃ 使能够
+该消息需要具有数据点的“ id”。另外，用于定义数据点特定设置的可选“选项”：
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -364,7 +364,7 @@ sendTo('sql.0', 'enableHistory', {
         console.log(result.error);
     }
     if (result.success) {
-        //successfull enabled
+        //successful enabled
     }
 });
 ```
@@ -417,8 +417,8 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**密码确认**：只需在此处重复密码。
 -**加密**：某些数据库支持加密。
 -**实数为**：逗号后的位数。
--**允许并行请求**：允许同时向数据库发送SQL请求。
--**不创建数据库**：如果已经创建数据库（例如，由管理员创建）并且ioBroker用户没有足够的权限来创建数据库，则激活此选项。
+-**允许并行请求**：允许同时向DB发送SQL请求。
+-**请勿创建数据库**：如果已经创建了数据库（例如，由管理员创建）并且ioBroker用户没有足够的权限来创建数据库，请激活此选项。
 
 ＃＃ 默认设置
 -**反跳间隔**：请勿存储比该间隔更频繁的值。
@@ -428,7 +428,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __正在进行的工程__->
+### __进展中__->
 
 ## Changelog
 

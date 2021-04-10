@@ -70,6 +70,10 @@ This can be used for applications like *FullyBrowser*. When entering the wrong c
 to the Login Page. 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (foxrive76) fix a special case for requesting ranges only (Sentry IOBROKER-WEB-3M)
+
 ### 3.3.0 (2021-02-01)
 * (bluefox) The admin GUI was rewritten with reactJS 
 

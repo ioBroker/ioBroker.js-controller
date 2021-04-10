@@ -682,6 +682,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bydbatt/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.cameras/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.canbus/README.md
@@ -772,6 +773,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hue/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hyperion/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hyperion_ng/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ical/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.icons-addictive-flavour-png/README.md
@@ -795,6 +797,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.jeelink/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.js2fs/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.klf200/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.km200/README.md
@@ -894,6 +897,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.paw/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.pegelalarm/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.phantomjs/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.philips-air/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.pi-hole/README.md
@@ -1004,6 +1008,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.virtualpowermeter/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-3dmodel/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-bars/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-canvas-gauges/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-colorpicker/README.md
@@ -1106,6 +1111,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bydbatt/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.cameras/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.canbus/README.md
@@ -1196,6 +1202,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hue/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hyperion/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hyperion_ng/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ical/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.icons-addictive-flavour-png/README.md
@@ -1219,6 +1226,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.jeelink/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.js2fs/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.klf200/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.km200/README.md
@@ -1318,6 +1326,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.paw/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.pegelalarm/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.phantomjs/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.philips-air/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.pi-hole/README.md
@@ -1428,6 +1437,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.virtualpowermeter/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-3dmodel/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-bars/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-canvas-gauges/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-colorpicker/README.md
@@ -1530,6 +1540,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bydbatt/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.cameras/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.canbus/README.md
@@ -1620,6 +1631,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hue/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hyperion/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hyperion_ng/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ical/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.icons-addictive-flavour-png/README.md
@@ -1643,6 +1655,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.jeelink/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.js2fs/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.klf200/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.km200/README.md
@@ -1742,6 +1755,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.palazzetti/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.paw/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.pegelalarm/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.phantomjs/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.philips-air/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.pi-hole/README.md
@@ -1852,6 +1866,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.virtualpowermeter/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-3dmodel/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-bars/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-canvas-gauges/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-colorpicker/README.md
@@ -1954,6 +1969,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bydbatt/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.cameras/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.canbus/README.md
@@ -2044,6 +2060,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hs100/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hue/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hue-extended/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hyperion/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hyperion_ng/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.i2c/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ical/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.icons-addictive-flavour-png/README.md
@@ -2067,6 +2084,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.javascript/README.m
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.jeelink/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.js2fs/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.klf200/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.km200/README.md
@@ -2166,6 +2184,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.palazzetti/README.m
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.panasonic-viera/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.parser/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.paw/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.pegelalarm/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.phantomjs/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.philips-air/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.pi-hole/README.md
@@ -2276,6 +2295,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.virtualpowermeter/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-3dmodel/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-bars/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-canvas-gauges/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-colorpicker/README.md

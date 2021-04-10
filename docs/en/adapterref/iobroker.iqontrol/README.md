@@ -1289,8 +1289,8 @@ In addition to normal thermostat you can define:
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL**: *number* - height of the blind in percentage
 * **DIRECTION**: *value-list* - can be Stop, Up and Down. The values that represent Stop, Up, Down and Unknown can be configured
-* **STOP**: *boolean* - is set to true, if the stop button is pressed
-* **UP** / **DOWN**: *boolean* - is set to true, if the up / down button is pressed (for devices, that use UP and DOWN datapoints instead of or in addition to LEVEL). Additional you can define a value via the **UP_SET_VALUE** / **DOWN_SET_VALUE** Datapoints. If defined, this value will be sent instead of true, when the Up / Down button is pressed
+* **STOP**: *boolean* - is set to true, if the stop button is pressed.  Additionaly you can define a value via the **STOP_SET_VALUE** Datapoint. If defined, this value will be sent instead of true, when the Stop button is pressed
+* **UP** / **DOWN**: *boolean* - is set to true, if the up / down button is pressed (for devices, that use UP and DOWN datapoints instead of or in addition to LEVEL). Additionaly you can define a value via the **UP_SET_VALUE** / **DOWN_SET_VALUE** Datapoints. If defined, this value will be sent instead of true, when the Up / Down button is pressed
 * **FAVORITE_POSITION**: *boolean* - can be used to recall a favorite position. If the Favourite button (button caption can be configured in the device settings) is pressed, true will be sent to this datapoint. Additional you can define a value via the **FAVORITE_POSITION_SET_VALUE** Datapoint. If defined, this value will be sent instead of true, when the favorite button is pressed 
 * **SLATS_LEVEL**: *number* - position of slats in percentage
 
@@ -1490,6 +1490,7 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
+* (sbormann) Added STOP_SET_VALUE for blinds.
 
 ### 1.6.6 (2021-03-21)
 * (sbormann) Fix for double admin page.

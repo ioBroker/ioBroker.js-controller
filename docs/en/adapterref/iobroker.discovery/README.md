@@ -138,6 +138,11 @@ If not all IPs are found then please check that the iobroker user can execute /b
 -->
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)
+* (Apollon77) Fix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)
+* (Apollon77) Fix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)
+
 ### 2.6.1 (2021-02-28)
 * (JeyCee) added iot and net-tools
 * (Apollon77) Adjust and optimize UDP and UPnP discoveries

@@ -352,7 +352,7 @@ sendTo('sql.0', 'enableHistory', {
         console.log(result.error);
     }
     if (result.success) {
-        //successfull enabled
+        //successful enabled
     }
 });
 ```

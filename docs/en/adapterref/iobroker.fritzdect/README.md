@@ -150,7 +150,7 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 |**blindsclose**|boolean|x|target close| | | | | |Blinds| |
 |**blindsstop**|boolean|x|target stop| | | | | |Blinds| |
 |lastalertchgtimestamp|time|-|timestamp | | | | | |Blinds| |
-|*enpositionsset*|number|-|?? | | | | | |Blinds| |
+|*enpositionsset*|boolean|-|status configuration | | | | | |Blinds| |
 |*mode*|text|-|modus | | | | | |Blinds| |
 
 ### groups
@@ -189,7 +189,7 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 ## Changelog
 ### 2.1.14
 * operationmode and hkrmode tracking also after commands
-* extended datapoints for blinds from Rollatron
+* extended datapoints for blinds from Rollotron
 
 ### 2.1.13
 * correction at group of switches (switchtype not recognized -> simpleonoff)

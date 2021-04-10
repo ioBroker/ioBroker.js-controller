@@ -128,7 +128,11 @@ Alternative you can use the script from Uhula: https://forum.iobroker.net/post/4
 
 ## Changelog
 
-### 1.7.8 (2021-02-25)
+### 1.7.9 (2021-04-07)
+* (withstu) fix reboot
+* (withstu) add power state
+
+### 1.7.8 (2021-04-05)
 * (withstu) add reboot
 
 ### 1.7.7 (2021-02-25)

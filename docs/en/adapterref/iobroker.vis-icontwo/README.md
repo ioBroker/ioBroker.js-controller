@@ -10,7 +10,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)](https://ci.appveyor.com/project/inventwo/iobroker-vis-icontwo)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/inventwo/iobroker.vis-icontow/LICENSE)
 
-[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)](https://www.paypal.com/donate/?hosted_button_id=7W6M3TFZ4W9LW)
 
 [![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)](https://nodei.co/npm/iobroker.vis-icontwo/)
 
@@ -55,11 +55,23 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 (Dieser Link führt zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Spende](http://resources.inventwo.com/github/icontwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Spende](http://resources.inventwo.com/github/icontwo/spende.png)](https://www.paypal.com/donate/?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+### 0.60.0
+
+• Neue Icons hinzugefügt (Devices/Printer - 3D Druck Icons)
+
+### 0.50.2
+
+• Bugfix
+
+### 0.50.1
+
+• Code Optimierung und neuer Spenden-Link
 
 ### 0.50.0
 

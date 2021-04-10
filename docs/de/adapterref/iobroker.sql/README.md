@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: POmf7zWTwhMwMfgOvU1PxjKyLCJHQO/HZ6fkGLc6pIE=
+hash: oEWcD86Zl16Rwdt2O7SMXDsuMPZ/8TseYeiFYaoESl0=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -51,7 +51,7 @@ iobroker start sql
 ```
 
 ### MySQL:
-Sie können MySQL wie folgt auf Linux-Systemen installieren:
+Sie können MySQL auf Linux-Systemen wie folgt installieren:
 
 ```
 apt-get install mysql-server mysql-client
@@ -277,7 +277,7 @@ sendTo('sql.0', 'deleteAll', [
 ], result => console.log('deleted'));
 ```
 
-So löschen Sie Verlaufsdaten für einen Datenpunkt und einen Bereich:
+So löschen Sie Verlaufsdaten für einen Datenpunkt und einen bestimmten Bereich:
 
 ```
 sendTo('sql.0', 'deleteRange', [
@@ -364,7 +364,7 @@ sendTo('sql.0', 'enableHistory', {
         console.log(result.error);
     }
     if (result.success) {
-        //successfull enabled
+        //successful enabled
     }
 });
 ```
@@ -416,7 +416,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Passwort** Passwort für SQL.
 - **Passwort bestätigen** Wiederholen Sie einfach das Passwort hier.
 - **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
-- **Real runden auf** Anzahl der Stellen nach dem Komma.
+- **Real runden auf** Anzahl der Ziffern nach dem Komma.
 - **Parallele Anforderungen zulassen** Zulassen gleichzeitiger SQL-Anforderungen an die Datenbank.
 - **Datenbank nicht erstellen** Aktivieren Sie diese Option, wenn die Datenbank bereits erstellt wurde (z. B. vom Administrator) und der ioBroker-Benutzer nicht über genügend Rechte zum Erstellen einer Datenbank verfügt.
 

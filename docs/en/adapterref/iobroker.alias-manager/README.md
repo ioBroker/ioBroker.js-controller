@@ -89,6 +89,9 @@ Here you can:
 
 ## Changelog
 
+### 1.0.1 (2021-04-07)
+* (sbormann) Fixed alias read and alias write function not working, if containing quotation marks.
+
 ### 1.0.0 (2021-03-30)
 * (sbormann) Updated dependencies.
 * (sbormann) Removed bottom-border if used as tab.

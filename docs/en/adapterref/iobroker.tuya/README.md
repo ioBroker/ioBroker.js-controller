@@ -90,6 +90,9 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) More schema information added
+
 ### 3.6.0 (2021-04-02)
 * (Apollon77) Fix broken data updates because of tuyaapi change
 * (Apollon77) Optimize "json unvalid" cases by refreshing data manually differently 
