@@ -61,6 +61,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.61.0
+
+• Neue Icons hinzugefügt (Finance & Charts)
+
 ### 0.60.0
 
 • Neue Icons hinzugefügt (Devices/Printer - 3D Druck Icons)

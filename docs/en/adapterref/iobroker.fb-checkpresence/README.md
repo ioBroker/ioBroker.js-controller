@@ -111,7 +111,9 @@ If this option is checked the states for guests are created.
 If this option is checked the qr-code from guest wlan is generated. 
 
 ### Family member settings
-For a configured family member you should enter the member name, the hostname, the mac- and ip-address, a comment and if the member is enabled. A group is optional. If you leave it empty and set the compatibility flag to true the behaviour is like an older version of the adaper. In a future version you have to use the presence state from a family member. 
+For a configured family member you should enter the member name, the hostname, the mac- and ip-address, a comment and you can enable or disable the member. A group is optional. If you leave the group empty and set the compatibility flag to true the behaviour is like an older version of the adaper. In a future version you have to use the presence state from a family member. This behaviour is switched on/off with the compatibility checkbox:
+-> compatibility = true: behaviour as an older version with empty group. 
+-> compatibility = false: new behaviour. All states beneath the familymembers folder.
 For every member the adapter creates a presence state and checks if the member is present or absent. The state was changed if the presence state changed. You can also enable the filtering for a member. If the state is true the state changes immediately to true. If it is false then the value will checked after the filter time again.
 If the state is in both cases false then the state changes to false. Otherwise it does not change.
 To get the speed information in the objects you have to select fb-devices option.

@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: oiNj5I/xfp9TmfIEO61pt3H49lou5lnahVQdFWjJHiQ=
+hash: VYmc7Ban2UKbt4GPEY2mZLxw9ZZIdg/T5nLNfIXz9Eg=
 ---
 ![商标](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
-![保镖徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)
 ![安装数量](http://iobroker.live/badges/mbus-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mbus.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mbus.svg)
@@ -22,7 +21,7 @@ hash: oiNj5I/xfp9TmfIEO61pt3H49lou5lnahVQdFWjJHiQ=
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
-用于ioBroker的适配器通过TCP或串行连接到M-Bus主站，以提供所连接M-Bus设备的状态和详细信息。
+ioBroker的此适配器通过TCP或串行连接到M-Bus主站，以提供已连接M-Bus设备的状态和详细信息。
 
 ##参数说明
 ###网关IP / TCP端口
@@ -38,7 +37,7 @@ M-Bus主站/网关的串行端口和波特率。
 您可以使用主要（1-250）和次要（16个字符长）的M-Bus ID
 
 ##如何根据要求读取设备？
-在为每个设备创建的状态中，存在一个称为“ updateNow”的状态。将其设置为true时（作为带有ack = false的控制操作），设备将立即更新。如果配置了间隔，则间隔在接收到数据后重新开始。
+在为每个设备创建的状态中，存在一个称为“ updateNow”的状态。当您将其设置为true时（作为带有ack = false的控制操作），设备将立即更新。如果配置了间隔，则间隔在接收到数据后重新开始。
 
 ＃＃ 去做
 *加密的有效载荷处理（如果任何人需要）
@@ -46,9 +45,24 @@ M-Bus主站/网关的串行端口和波特率。
 ##如何报告问题和功能请求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会打断行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我什么时候在日志中看到的内容。
+最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin删了几行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我什么时候在日志中看到的内容。
 
 ## Changelog
+
+### 2.3.4 (2021-03-07)
+* (Apollon77) Send a reset to the device before reading data
+
+### 2.3.2 (2021-02-27)
+* (Apollon77) Prevent crash case(Sentry IOBROKER-MBUS-H)
+
+### 2.3.1 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MBUS-F)
+
+### 2.3.0 (2020-08-02)
+* (Apollon77) mbus library updated
+
+### 2.2.3 (2020-07-26)
+* (Apollon77) crash prevented (Sentry IOBROKER-MBUS-C)
 
 ### 2.2.2 (2020-07-23)
 * (Apollon77) crash prevented (Sentry IOBROKER-MBUS-B)

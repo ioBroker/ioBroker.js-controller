@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: 09sh7wWxdIAJsfqPHmSdx3JsHUHPMMDrmq9PZtzKgPg=
+hash: w5Wvp8cqmi7jYdq4nzNU5aCU6AKPwoCacnh/D6CUl1M=
 ---
 ![Logo](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.tuya.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/tuya-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.tuya.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tuya.svg)
@@ -22,7 +21,7 @@ ioBroker-Adapter für die Verbindung mit mehreren kleinen und billigen Wifi-Ger�
 
 Tuya-Geräte sind ESP8266MOD WiFi-Smart-Geräte von Shenzhen Xenon.
 
-Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer solchen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück.<img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
+Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer solchen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück. <img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
 
 Der Adapter funktioniert nachweislich sehr gut mit allen Geräten, die "immer über WLAN" verfügen. Geräte, die nur dann online gehen, wenn ein Ereignis vorliegt, ihre Daten senden und wieder offline gehen, werden nicht unterstützt. Dies bedeutet, dass **batteriebetriebene Geräte normalerweise NICHT funktionieren!**
 
@@ -36,14 +35,14 @@ Die aktuellen Versionen des Tuya Smart und auch der Smartlife App sind **nicht m
 * STL Smart Home App 1.1.1 (zuletzt vom September 2019)
 * Ucomen Home App (??)
 
-## Wichtige Notiz
+## Wichtiger Hinweis
 Wenn die Geräte über ihre UDP-Pakete nicht korrekt erkannt werden, können Sie die IP manuell festlegen, indem Sie das Geräteobjekt bearbeiten. Siehe https://github.com/Apollon77/ioBroker.tuya/issues/221#issuecomment-702392636
 
 ## Wie der Adapter funktioniert
 ### Grundfunktionalität
 Der Adapter überwacht das lokale Netzwerk auf UDP-Pakete von Tuya-Geräten (alte Firmware, also nur unverschlüsselt). Der ioBroker-Host, auf dem der Adapter ausgeführt wird, muss sich im selben Netzwerksegment befinden wie die Geräte, und UDP-Multicasting muss vom Router unterstützt werden!
 
-Alle erkannten Geräte werden dem Adapter hinzugefügt und als Basisfunktionalität fordert der Adapter Daten im definierten Abfrageintervall an. Ohne Synchronisation mit der jeweiligen mobilen App (siehe unten) sind KEINE weiteren Funktionen wie Echtzeit-Updates oder Controlling möglich.
+Alle erkannten Geräte werden dem Adapter hinzugefügt, und als Basisfunktionalität fordert der Adapter Daten im definierten Abfrageintervall an. Ohne eine Synchronisierung mit der jeweiligen mobilen App (siehe unten) sind KEINE weiteren Funktionen wie Echtzeit-Updates oder Controlling möglich.
 
 Neuere verschlüsselte Geräte werden NICHT angezeigt, bevor Sie eine Gerätesynchronisierung durchführen (siehe nächste ...).
 
@@ -88,6 +87,51 @@ Bitte verwenden Sie dazu GitHub-Probleme.
 Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
+
+### 3.6.1 (2021-04-11)
+* (Apollon77) More schema information added
+
+### 3.6.0 (2021-04-02)
+* (Apollon77) Fix broken data updates because of tuyaapi change
+* (Apollon77) Optimize "json unvalid" cases by refreshing data manually differently 
+* (Apollon77) More schema information added
+
+### 3.5.9 (2021-03-28)
+* (Apollon77) More schema information added
+
+### 3.5.8 (2021-03-24)
+* (Apollon77) More schema information added
+
+### 3.5.7 (2021-03-18)
+* (Apollon77) Fix crash case (Sentry IOBROKER-TUYA-P9)
+* (Apollon77) More schema information added
+
+### 3.5.6 (2021-02-09)
+* (Apollon77) More schema information added
+
+### 3.5.4 (2021-01-30)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-TUYA-MG)
+* (Apollon77) More schema information added
+
+### 3.5.3 (2021-01-13)
+* (Apollon77) More schema information added
+
+### 3.5.2 (2020-12-24)
+* (Apollon77) More schema information added
+
+### 3.5.0 (2020-12-10)
+* (Apollon77) More schema information added
+* (Apollon77) Try to decode "raw" values via base64
+
+### 3.4.3 (2020-11-29)
+* (Apollon77) More schema information added
+
+### 3.4.2 (2020-11-19)
+* (Apollon77) More schema information added
+
+### 3.4.1 (2020-11-05)
+* (Apollon77) More schema information added
+* (Apollon77) fix IP lookup via UDP
 
 ### 3.4.0 (2020-10-29)
 * (Apollon77) update tuya-api library

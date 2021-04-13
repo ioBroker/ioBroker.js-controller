@@ -34,8 +34,11 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) add MOD100 Diffuser Spray device
+
 ### 1.5.1 (2020-12-05)
-* generate an unique uuid for each connection, fixes the "Server not available"
+* (Apollon77) generate an unique uuid for each connection, fixes the "Server not available"
 
 ### 1.5.0 (2020-06-25)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)

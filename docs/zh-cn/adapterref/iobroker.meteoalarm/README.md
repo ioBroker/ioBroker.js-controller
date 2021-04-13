@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.metalarm
-hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
+hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
 ---
-![标识](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
+![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
 ![保管员徽章](https://snyk.io/test/github/jack-blackson/ioBroker.meteoalarm/badge.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meteoalarm.svg)
@@ -14,6 +14,8 @@ hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 ＃ioBroker.meteoalarm
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，其中包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
 
 ＃＃ 如何使用它
@@ -23,7 +25,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 选项2：转到http://meteoalarm.eu并选择您的地区。然后转到右上角的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
 
-![标识](../../../en/adapterref/iobroker.meteoalarm/screenshot.png)
+![商标](../../../en/adapterref/iobroker.meteoalarm/screenshot.png)
 
 ##可用字段
 |字段名称|描述|
@@ -68,7 +70,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |绿色|当前无警告。 |
 |黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视面临气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
 |橙色|天气很危险。已经预测到异常的气象现象。可能会造成损坏和事故。要非常专心和细心，并与预期的气象条件保持同步。 |
-|红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端损坏和事故危及生命和财产。 |
+|红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端损坏和事故威胁着生命和财产安全。 |
 
 ##支持的国家
 *奥地利
@@ -106,6 +108,9 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ##要实现的功能
 *一天处理多个警报
 
+## 1.1.4（2021-04-05）
+*（jack-blackson）处理ENOTFOUND错误消息，添加了Sentry
+
 ## 1.1.3（2021-03-29）
 *（jack-blackson）错误修复了适配器检查器
 
@@ -123,7 +128,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 ## 1.0.8（2019-11-15）
 *（jack-blackson）添加了波兰，摩尔多瓦，希腊，罗马尼亚
-*（jack-blackson）添加了新的数据点以获取到“天气地图”的链接
+*（jack-blackson）添加了新的数据点以获取到天气地图的链接
 
 ## 1.0.7（2019-11-13）
 *（jack-blackson）添加了捷克共和国，爱尔兰，以色列，立陶宛，拉脱维亚，黑山，马耳他，塞尔维亚，瑞典
@@ -159,7 +164,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 ### 0.4.0（2019-07-20）
 *（jack-blackson）添加了NL，NO，HR，FI，ES的数据
-*（jack-blackson）添加了Type文本，如果Level为1，Type现在为空（无警告）
+*（jack-blackson）添加了Type文本，如果Level为1，则Type为空（无警告）
 *（杰克·布莱克森）调整后的颜色
 
 ### 0.3.0（2019-07-13）

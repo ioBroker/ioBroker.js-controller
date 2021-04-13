@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: cJvtg9H09nVIVUCkFepdcrH8lcR+QaJpUbDehwf07HM=
+hash: Wf0ob83Vrele/5QNmX5h6bMft7FJTwzbQeLGTJpQN68=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/smartmeter-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.smartmeter.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.smartmeter.svg)
@@ -24,7 +23,7 @@ Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Pro
 
 *** Der Adapter benötigt NodeJS 8.x +, um zu funktionieren! ***
 
-*** Auf diesem Adapter muss git zur Installation installiert sein! ***
+*** Für die Installation dieses Gitters muss git installiert sein! ***
 
 ## Beschreibung der Parameter
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -43,7 +42,7 @@ Unterstützte Protokolle:
 * **Lokale Dateien** Liest Daten aus einer lokalen Datei
 
 ### Datenanforderungsintervall
-Anzahl der Sekunden, die auf die nächste Anforderung gewartet oder der serielle Empfang angehalten werden soll. Wert 0 kann direkt nach Abschluss einer Nachricht neu gestartet werden.
+Anzahl der Sekunden, die auf die nächste Anforderung gewartet oder der serielle Empfang angehalten werden soll, Wert 0, der direkt nach Abschluss einer Nachricht neu gestartet werden kann.
 
 Standard: ist 300 (= 5 Minuten)
 
@@ -59,7 +58,7 @@ Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus z
 
 * Modus A: keine Baudratenumschaltung, keine Bestätigungsnachricht
 * Modus B: Baudratenumschaltung, keine Bestätigungsnachricht
-* Modus C: Baudratenumschaltung und Bestätigungsnachricht erforderlich
+* Modus C: Baudratenumschaltung und Ack-Message erforderlich
 * Modus D: Keine Baudratenumschaltung, Baudrate immer 2400
 * Modus E: Baudratenumschaltung und Ack-Message erforderlich, benutzerdefinierte Protokolle, nicht korrekt unterstützt !! Kontaktieren Sie mich, wenn Sie ein solches Smartmeter haben
 
@@ -69,7 +68,7 @@ Der Adapter versucht, die Baudrate für die Datennachrichten zu bestimmen, wie i
 ## Adapter wird getestet mit ...
 ... mindestens:
 
-* Hager-eHz-Energiezähler (mehrfach, z. B. eHZ-IW8E2A5L0EK2P, EHZ363W5,)
+* Hager-eHz-Energiezähler (mehrfach, z. B. eHZ-IW8E2A5L0EK2P, EHZ363W5)
 * EMH-Energiezähler
 * EFR SmartGridHub
 * Siemens 2WR5-Lesegerät von einer Heizstation
@@ -99,6 +98,22 @@ Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendu
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.2.0 (2021-01-24)
+* (Apollon77) Add new protocolSmlInputEncoding option for SML protocol. With this also ascii or base64 based encodings (e.g. with TCP transports) are possible.
+
+### 3.1.9 (2021-01-22)
+* (Apollon77) optimize stop handling (Sentry IOBROKER-SMARTMETER-10)
+
+### 3.1.8 (2021-01-14)
+* (Apollon77) prevent last warnings with js-controller 3.2
+
+### 3.1.7 (2021-01-13)
+* (Apollon77) prevent warnings with js-controller 3.2
+* (Apollon77) update js-controller dependency to at least require js-controller 2.0.0
+
+### 3.1.6 (2020-11-15)
+* (Apollon77) update OpenSML lib to support Holley DTZ541 wrongly implemented CRC Algorithm
 
 ### 3.1.5 (2020-09-21)
 * (Apollon77) update dependencies to prevent some crash cases and optimize tcp mode

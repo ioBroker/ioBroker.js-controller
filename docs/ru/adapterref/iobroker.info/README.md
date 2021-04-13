@@ -316,9 +316,10 @@ $ sudo apt-get install smartmontools
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
-### 1.8.0 (2021-xx-xx)
+### 1.8.0 (2021-04-10)
 * (ldittmar81) Update libraries
-* (ldittmar82) Added Wifi, Docker, USB, Printer, Bluetooth and Audio infos
+* (ldittmar81) Added Wifi, Docker, USB, Printer, Bluetooth and Audio infos
+* (ldittmar81) Breaking changes: Some sytemdata objects have new names
 
 ### 1.7.15 (2021-01-13)
 * (Apollon77) fix crash case (Sentry IOBROKER-INFO-1X)

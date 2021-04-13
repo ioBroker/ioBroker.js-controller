@@ -92,6 +92,19 @@ At the beginning of the custom read script, `buffer` will be the received/curren
 The content of the `value` variable at the end of the custom read script will be used as new value for the state.  
 If `value` is `undefined`, it will be ignored. Using this you are able to filter messages in the custom read script by data parts.
 
+##### Example for a custom read script
+
+Check the first three bytes in the received buffer to match fixed values.  
+If matched, read an 16 bit signed integer value from the buffer bytes 3 and 4 and divide it by 10.
+
+```js
+if (buffer[0] === 0xC2 && buffer[1] === 0x10 && buffer[2] === 0x0F) {
+  value = buffer.readInt16BE(3) / 10;
+}
+```
+
+Cause of `value` is only set when the first three bytes matched, all other data will be ignored and won't set a new value to the state.
+
 #### Custom write script
 
 In a write script you have to modify (or replace) the `buffer` variable.
@@ -100,6 +113,19 @@ At the beginning of the custom write script, `buffer` will be the current CAN me
 `value` is set to the value of the state which should be written into the `buffer`.
 
 The content of the `buffer` variable at the end of the custom write script will be used as new data for the CAN message.
+
+##### Example for a custom write script
+
+Prepare a new buffer with fixed values.  
+Write the state value into the buffer as a signed 16 bit integer, beginning at the fifth byte in the buffer.
+
+```js
+buffer = Buffer.from([0x30, 0x00, 0xFA, 0x06, 0x7E, 0x00, 0x00]);
+buffer.writeInt16BE(value, 5);
+```
+
+The new `buffer` will then be set as the `.json` state.  
+If the *autosend* option is enabled for the message, the message will be automatically send.
 
 ## Usage in scripts
 
@@ -124,10 +150,12 @@ By writing JSON data to the `raw.send` state you are able to send CAN messages c
 
 ## Changelog
 
-### 1.1.3 (WIP)
+### 1.1.3 (2021-04-12)
 * (crycode-de) Added definition of possible state values in admin
 * (crycode-de) Added selection of the state role for each parser in admin
 * (crycode-de) Fixed display bug of floating action buttons in admin
+* (crycode-de) Export uses defaults if some config parts are not defined (e.g. if the config is from an older version)
+* (crycode-de) Fixed wrong validation if a message/parser was deleted
 
 ### 1.1.2 (2021-04-06)
 * (crycode-de) Added copy/paste function for message and parser configurations in admin
@@ -159,40 +187,7 @@ By writing JSON data to the `raw.send` state you are able to send CAN messages c
 * (VeSler) Russian admin translations
 * (crycode-de) Updated dependencies
 
-### 1.0.0-beta.6 (2021-01-11)
-* (crycode-de) Fixed object setup sequence
-* (crycode-de) Fixed issue with multiple id definition check in admin
-* (crycode-de) Added multiple id definition check in backend
-
-### 1.0.0-beta.5 (2021-01-09)
-* (crycode-de) Added Sentry error reporting in admin
-* (crycode-de) Added check for multiple times configured message IDs in admin
-* (crycode-de) Message IDs are now transformed to upper case automatically in admin
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.4 (2020-12-01)
-* (crycode-de) Ignore read value if a parser returned `undefined`
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.3 (2020-11-25)
-* (crycode-de) Fixed js-controller dependency
-* (crycode-de) Custom parsers `getStateAsync` function now uses `getForeignStateAsync` internally
-* (crycode-de) Added parses readme
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.2 (2020-11-23)
-* (crycode-de) Added Sentry error reporting
-### 1.0.0-beta.1 (2020-11-17)
-* (crycode-de) Added optional raw states.
-* (crycode-de) Added option to enable/disable rtr states.
-
-### 0.1.0-alpha.1 (2020-11-09)
-* (crycode-de) New React UI
-* (crycode-de) Support for messages with specific DLC
-* (crycode-de) Parsers read on json state change with ack=false
-
-### 0.0.1
-* (crycode-de) initial development release
+Older changelog is in CHANGELOG_OLD.md
 
 ## License
 

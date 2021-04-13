@@ -66,6 +66,7 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ## Changelog
 
 ### 1.0.0
+* (instalator) changed name objects in hdd_info [issues 51](https://github.com/instalator/ioBroker.synology/issues/51)
 * (Apollon77) BREAKING CHANGE: Please set password new in admin!
 * (Apollon77) js-controller 3.0 is now needed minimum!
 * (Apollon77 store password now encrypted)

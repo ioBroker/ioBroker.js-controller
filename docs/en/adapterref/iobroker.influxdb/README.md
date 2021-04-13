@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.influxdb.svg)](https://www.npmjs.com/package/iobroker.influxdb)
 [![Tests](http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg)](https://travis-ci.org/ioBroker/ioBroker.history)
 
-[![NPM](https://nodei.co/npm/iobroker.influxdb.png?downloads=true)](https://nodei.co/npm/iobroker.influxdb/) [![Greenkeeper badge](https://badges.greenkeeper.io/ioBroker/ioBroker.influxdb.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/iobroker.influxdb.png?downloads=true)](https://nodei.co/npm/iobroker.influxdb/)
 
 This adapter saves state history into InfluxDB.
 

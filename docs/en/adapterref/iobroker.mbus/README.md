@@ -2,8 +2,6 @@
 # ioBroker.mbus
 ======================
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)](https://greenkeeper.io/)
-
 ![Number of Installations](http://iobroker.live/badges/mbus-installed.svg) ![Number of Installations](http://iobroker.live/badges/mbus-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mbus.svg)](https://www.npmjs.com/package/iobroker.mbus)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mbus.svg)](https://www.npmjs.com/package/iobroker.mbus)
 [![Code Climate](https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)

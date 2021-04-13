@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: V5ZB2SHBuJhNZJPgjDR9iAchuHd6MUzAH6e4yJSnZOk=
+hash: DMvFhWFPYeS5t66i2pAeuERPxhK73GromMQBTBGJUmE=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -102,7 +102,8 @@ Wenn diese Option aktiviert ist, werden die Status für Gäste erstellt.
 Wenn diese Option aktiviert ist, wird der QR-Code vom Gast-WLAN generiert.
 
 ### Einstellungen für Familienmitglieder
-Für ein konfiguriertes Familienmitglied sollten Sie den Mitgliedsnamen, den Hostnamen, die Mac- und IP-Adresse, einen Kommentar und angeben, ob das Mitglied aktiviert ist. Eine Gruppe ist optional. Wenn Sie es leer lassen und das Kompatibilitätsflag auf true setzen, ähnelt das Verhalten einer älteren Version des Adapers. In einer zukünftigen Version müssen Sie den Anwesenheitsstatus eines Familienmitglieds verwenden.
+Für ein konfiguriertes Familienmitglied sollten Sie den Mitgliedsnamen, den Hostnamen, die Mac- und IP-Adresse sowie einen Kommentar eingeben und das Mitglied aktivieren oder deaktivieren. Eine Gruppe ist optional. Wenn Sie die Gruppe leer lassen und das Kompatibilitätsflag auf true setzen, ähnelt das Verhalten einer älteren Version des Adapers. In einer zukünftigen Version müssen Sie den Anwesenheitsstatus eines Familienmitglieds verwenden. Dieses Verhalten wird mit dem Kontrollkästchen Kompatibilität ein- und ausgeschaltet: -> Kompatibilität = true: Verhalten als ältere Version mit leerer Gruppe.
+-> Kompatibilität = falsch: neues Verhalten. Alle Zustände unter dem Ordner für Familienmitglieder.
 Für jedes Mitglied erstellt der Adapter einen Anwesenheitsstatus und prüft, ob das Mitglied anwesend ist oder nicht. Der Status wurde geändert, wenn sich der Anwesenheitsstatus geändert hat. Sie können auch die Filterung für ein Mitglied aktivieren. Wenn der Zustand wahr ist, ändert sich der Zustand sofort in wahr. Wenn es falsch ist, wird der Wert nach der Filterzeit erneut überprüft.
 Wenn der Status in beiden Fällen falsch ist, ändert sich der Status in falsch. Ansonsten ändert es sich nicht.
 Um die Geschwindigkeitsinformationen in den Objekten zu erhalten, müssen Sie die Option fb-Geräte auswählen.
@@ -132,7 +133,7 @@ Diese Geräte werden der Blacklist hinzugefügt.
 Für jedes Familienmitglied werden die Anwesenheit, das Kommen und Gehen sowie mehrere andere Informationen berechnet und im Mitgliedsobjekt gespeichert, wenn ein Verlaufsadapter ausgewählt ist.
 
 ### Hostnummer, aktive Geräte
-Die Anzahl der Geräte und wie viele aktiv sind, werden von der Fritzbox abgerufen.
+Die Anzahl der Geräte und wie viele aktiv sind, wird von der Fritzbox abgerufen.
 
 ## Objekte
 ### ObjektpräsenzAlle
@@ -160,7 +161,7 @@ Hier finden Sie Informationen zur Anzahl der aktiven Gäste und Tabellenobjekte 
 Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den darin enthaltenen unbekannten Geräteinformationen.
 
 ### Objekt member.present
-Hier finden Sie Informationen über die Anwesenheit eines Mitglieds am aktuellen Tag und darüber, wie lange der Status des Mitglieds seit der letzten Änderung wahr war.
+Hier finden Sie Informationen über die Anwesenheit eines Mitglieds am aktuellen Tag und darüber, wie lange der Status des Mitglieds seit der letzten Änderung gültig war.
 
 ### Objekt member.absent
 Hier finden Sie Informationen zur Abwesenheit eines Mitglieds am aktuellen Tag und wie lange der Status des Mitglieds seit der letzten Änderung falsch war.

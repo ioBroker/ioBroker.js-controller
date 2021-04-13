@@ -1,8 +1,6 @@
 ![Logo](admin/smartmeter.png)
 # ioBroker.smartmeter
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/ioBroker.smartmeter.svg)](https://greenkeeper.io/)
-
 ![Number of Installations](http://iobroker.live/badges/smartmeter-installed.svg) ![Number of Installations](http://iobroker.live/badges/smartmeter-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.smartmeter.svg)](https://www.npmjs.com/package/iobroker.smartmeter)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.smartmeter.svg)](https://www.npmjs.com/package/iobroker.smartmeter)
 [![Code Climate](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)

@@ -163,6 +163,19 @@ Here is a list of what these raw values stand for:
 |532 | "Flusen ausspülen" | Washer Dryer |
 
 ## Changelog
+
+### V4.0.13 (2021-04-12) (The toy master)
+*  (grizzelbee) Fix: [90](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/90) targetTemp addresses zones for fridges and freezers dynamically now
+
+### V4.0.12 (2021-04-12) (Promised land)
+*  (grizzelbee) Fix: [90](https://github.com/Grizzelbee/ioBroker.mielecloudservice/issues/90) targetTemp addresses zones for fridges and freezers dynamically now
+
+### V4.0.11 (2021-04-11) (Cry just a little)
+*  (grizzelbee) Fix: targetTemp min and max values are now taken from API - no constant values anymore
+
+### V4.0.10 (2021-04-10) (Another angel down)
+*  (grizzelbee) Fix: targetTemp min and max values are now taken from API - no constant values anymore
+
 ### V4.0.9 (2021-04-09) (Farewell)
 *  (grizzelbee) Fix: Errors during action execution will be shown correctly
 *  (grizzelbee) Fix: Actions will be executed correctly

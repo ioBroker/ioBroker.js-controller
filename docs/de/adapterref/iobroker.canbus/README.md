@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
+hash: BsHvCP3XTKPy/kU0CP3ByqkoVjiWxgvleJmi5vIW3nQ=
 ---
 # IoBroker.canbus
 ![Logo](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
@@ -89,6 +89,18 @@ Zu Beginn des benutzerdefinierten Leseskripts sind `buffer` die empfangenen / ak
 Der Inhalt der Variablen `value` am Ende des benutzerdefinierten Leseskripts wird als neuer Wert für den Status verwendet.
 Wenn `value` `undefined` ist, wird dies ignoriert. Auf diese Weise können Sie Nachrichten im benutzerdefinierten Leseskript nach Datenteilen filtern.
 
+##### Beispiel für ein benutzerdefiniertes Leseskript
+Überprüfen Sie die ersten drei Bytes im empfangenen Puffer auf feste Werte.
+Lesen Sie bei Übereinstimmung einen 16-Bit-Ganzzahlwert mit Vorzeichen aus den Pufferbytes 3 und 4 und teilen Sie ihn durch 10.
+
+```js
+if (buffer[0] === 0xC2 && buffer[1] === 0x10 && buffer[2] === 0x0F) {
+  value = buffer.readInt16BE(3) / 10;
+}
+```
+
+Ursache von `value` wird nur gesetzt, wenn die ersten drei Bytes übereinstimmen, alle anderen Daten werden ignoriert und setzen keinen neuen Wert auf den Status.
+
 #### Benutzerdefiniertes Schreibskript
 In einem Schreibskript müssen Sie die Variable `buffer` ändern (oder ersetzen).
 
@@ -96,6 +108,18 @@ Zu Beginn des benutzerdefinierten Schreibskripts sind `buffer` die aktuellen CAN
 `value` wird auf den Wert des Staates gesetzt, der in die `buffer` geschrieben werden soll.
 
 Der Inhalt der Variablen `buffer` am Ende des benutzerdefinierten Schreibskripts wird als neue Daten für die CAN-Nachricht verwendet.
+
+##### Beispiel für ein benutzerdefiniertes Schreibskript
+Bereiten Sie einen neuen Puffer mit festen Werten vor.
+Schreiben Sie den Statuswert als vorzeichenbehaftete 16-Bit-Ganzzahl in den Puffer, beginnend mit dem fünften Byte im Puffer.
+
+```js
+buffer = Buffer.from([0x30, 0x00, 0xFA, 0x06, 0x7E, 0x00, 0x00]);
+buffer.writeInt16BE(value, 5);
+```
+
+Die neuen `buffer` werden dann als `.json` gesetzt.
+Wenn die Option *automatisch senden* für die Nachricht aktiviert ist, wird die Nachricht automatisch gesendet.
 
 ## Verwendung in Skripten
 Sie können die Zustände `<messageId>.json` oder `<messageId>.<parserId>` in Ihren Skripten behandeln / ändern.
@@ -117,6 +141,16 @@ Durch Schreiben von JSON-Daten in den Status `raw.send` können Sie CAN-Nachrich
 `ext` und `rtr` sind optional und standardmäßig `false`.
 
 ## Changelog
+
+### 1.1.3 (2021-04-12)
+* (crycode-de) Added definition of possible state values in admin
+* (crycode-de) Added selection of the state role for each parser in admin
+* (crycode-de) Fixed display bug of floating action buttons in admin
+* (crycode-de) Export uses defaults if some config parts are not defined (e.g. if the config is from an older version)
+* (crycode-de) Fixed wrong validation if a message/parser was deleted
+
+### 1.1.2 (2021-04-06)
+* (crycode-de) Added copy/paste function for message and parser configurations in admin
 
 ### 1.1.1 (2021-04-02)
 * (crycode-de) Import bugfixes
@@ -145,40 +179,7 @@ Durch Schreiben von JSON-Daten in den Status `raw.send` können Sie CAN-Nachrich
 * (VeSler) Russian admin translations
 * (crycode-de) Updated dependencies
 
-### 1.0.0-beta.6 (2021-01-11)
-* (crycode-de) Fixed object setup sequence
-* (crycode-de) Fixed issue with multiple id definition check in admin
-* (crycode-de) Added multiple id definition check in backend
-
-### 1.0.0-beta.5 (2021-01-09)
-* (crycode-de) Added Sentry error reporting in admin
-* (crycode-de) Added check for multiple times configured message IDs in admin
-* (crycode-de) Message IDs are now transformed to upper case automatically in admin
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.4 (2020-12-01)
-* (crycode-de) Ignore read value if a parser returned `undefined`
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.3 (2020-11-25)
-* (crycode-de) Fixed js-controller dependency
-* (crycode-de) Custom parsers `getStateAsync` function now uses `getForeignStateAsync` internally
-* (crycode-de) Added parses readme
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.2 (2020-11-23)
-* (crycode-de) Added Sentry error reporting
-### 1.0.0-beta.1 (2020-11-17)
-* (crycode-de) Added optional raw states.
-* (crycode-de) Added option to enable/disable rtr states.
-
-### 0.1.0-alpha.1 (2020-11-09)
-* (crycode-de) New React UI
-* (crycode-de) Support for messages with specific DLC
-* (crycode-de) Parsers read on json state change with ack=false
-
-### 0.0.1
-* (crycode-de) initial development release
+Older changelog is in CHANGELOG_OLD.md
 
 ## License
 

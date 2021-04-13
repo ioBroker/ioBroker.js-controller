@@ -1581,6 +1581,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prevent crash case(Sentry IOBROKER-JAVASCRIPT-70)
+
 ### 5.1.4 (2021-03-23)
 * (bluefox) fixed the error with the simulation
 

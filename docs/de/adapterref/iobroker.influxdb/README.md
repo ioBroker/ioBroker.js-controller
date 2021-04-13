@@ -4,7 +4,6 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.influxdb.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.influxdb.svg
 BADGE-Tests: http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.influxdb.png?downloads=true
-BADGE-Greenkeeper badge: https://badges.greenkeeper.io/ioBroker/ioBroker.influxdb.svg
 ---
 * * *
 

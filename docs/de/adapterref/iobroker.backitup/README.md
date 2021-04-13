@@ -343,6 +343,12 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 2.1.1 (11.04.2021)
+* (simatec) Bugfix redis
+* (simatec) debug Log for Restore request added
+* (simatec) Bugfix influxdb
+* (simatec) ignore Filenames for javascript-Backup added
+
 ### 2.1.0 (24.03.2021)
 * (simatec) Admin-Tab added
 * (simatec) dependencies targz removed

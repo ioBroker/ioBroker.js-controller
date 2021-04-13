@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: D+SRUcPZBTZSG1ROflwqDxficUfm4fatrviEkRp4RUQ=
+hash: YS664LlJFQCGEbRyCmgg8011yvMup+1T6IICYbs+tSQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -11,7 +11,6 @@ hash: D+SRUcPZBTZSG1ROflwqDxficUfm4fatrviEkRp4RUQ=
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.alexa2.svg)
 ![Build-Status](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.alexa2.svg)
 
 # IoBroker.alexa2
 ** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
@@ -48,8 +47,8 @@ Alarmeinstellungen (Wecker) für jedes Gerät, falls verfügbar.
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
-| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit wahr aktivieren - Alarm mit falsch deaktivieren | wahr / falsch |
-| Zeit | Zeit für Alarm. Überschreiben Sie die Zeit für einen vorhandenen Alarm, um eine neue Zeit für diesen Alarm festzulegen. Falls ein Alarm vorhanden ist, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Für die Einstellung von | werden keine Sekunden benötigt Zeiteingabe |
+| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit true aktivieren - Alarm mit false deaktivieren | wahr / falsch |
+| Zeit | Zeit für Alarm. Überschreiben Sie die Zeit für den vorhandenen Alarm, um eine neue Zeit für diesen Alarm festzulegen. Falls ein Alarm vorhanden ist, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Für die Einstellung von | werden keine Sekunden benötigt Zeiteingabe |
 | ausgelöst | true, wenn der Alarm erreicht und ausgelöst wird. Die Uhr muss mit Amazon und iobroker synchron sein. Verwenden Sie diese Option, um eine andere Aktion auszulösen, sobald die Alarmzeit erreicht ist wahr / falsch |
 | neu | Zeit für neuen Alarm für dieses Gerät. Wenn Sie hier einen Wert eingeben, wird ein neuer Alarm erstellt Zeiteingabe (hh: mm: ss, Sekunden werden nicht benötigt) |
 
@@ -58,8 +57,8 @@ Hier finden Sie alle verbundenen oder bekannten Bluetooth-Geräte mit MAC-Adress
 
 | Staatsname | Bedeutung |
 | - | - |
-| verbunden | Zeigt den aktuellen Verbindungsstatus an und ermöglicht die Verbindung (auf true gesetzt) oder die Trennung (auf false gesetzt) |
-| ungepaart | Schaltfläche zum Trennen dieses Geräts vom Echogerät |
+| verbunden | Zeigt den aktuellen Verbindungsstatus an und erlaubt die Verbindung (auf true gesetzt) oder die Trennung (auf false gesetzt) |
+| entkoppeln | Schaltfläche zum Trennen dieses Geräts vom Echogerät |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Commands. *
 Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn Sie diese auf einem Multiroom-Gerät verwenden, werden sie unabhängig ausgeführt und *werden* auf den einzelnen Geräten nicht synchron ausgeführt!
@@ -82,13 +81,15 @@ Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn 
 | deviceStop | Beenden Sie alle Aktionen auf dem Gerät Taste |
 | Benachrichtigung | Senden Sie eine Textbenachrichtigung an den Kunden des Geräts Text |
 | Ankündigung | Ansage abspielen (wie sprechen, aber mit Bing vor dem Text) | Text |
-| ssml | Sprechen Sie SSML XML-Zeichenfolge | Text |
-| Textbefehl | Senden Sie einen Textbefehl an Alexa, derzeit nur USA! | Text |
+| ssml | Sprechen Sie die SSML-XML-Zeichenfolge | Text |
+| Textbefehl | Senden Sie einen Textbefehl an Alexa, derzeit nur an die USA! | Text |
 
 Detaillierte Informationen Sprechen und Ankündigung: Geben Sie hier ein, was Alexa sagen soll. Sie können die Lautstärke von Alexa auch anpassen, indem Sie vor Ihrem Text einen Prozentsatz angeben.
 Beispiel: 10; Alexa sagt Alexa mit 10% Volumen, während 100; Alexa 100% Volumen ist.
 Normalerweise können Sie nur 250 Zeichen pro Sprachbefehl senden. Mit dem Semikolon können Sie so viel schreiben, wie Sie möchten, solange Sie 250 Zeichen durch ein Semikolon trennen.
 Alexa wird dann den Text mit einer kleinen Pause nacheinander sprechen. Sie können das Volume auch zusammen mit mehr als 255 Blöcken verwenden, indem Sie #Volume; # Block1; # Block2, a.s.o schreiben. Ein hier festgelegtes Volume wird über einem definierten Speak-Volume verwendet.
+
+Teilweise klingt auch von https://developer.amazon.com/en-US/docs/alexa/custom-skills/ask-soundlibrary.html Arbeit. Geben Sie in speak oder ssml `<audio src="soundbank://soundlibrary/animals/amzn_sfx_bear_groan_roar_01"/>` an. Details und Diskussion bitte unter https://forum.iobroker.net/topic/27509/ssml-audio
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Info. *
 Informationen zum Alexa-Gerät
@@ -114,7 +115,7 @@ Weisen Sie Alexa direkt an, Musik oder eine Wiedergabeliste von unterstützten M
 | Meine Bibliothek | Phrase zum Spielen mit My Library | Texteingabe |
 | Meine-Bibliothek-Wiedergabeliste | Wiedergabeliste zum Spielen mit Meine Bibliothek | Texteingabe |
 | Einschalten | Phrase zum Spielen mit Tune In | Texteingabe |
-| Tune-In-Playlist | Wiedergabeliste zum Spielen mit Tune In | Texteingabe |
+| Wiedergabeliste einschalten | Wiedergabeliste zum Spielen mit Tune In | Texteingabe |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Player. *
 Gibt an, dass die Wiedergabe des Geräts gesteuert und der aktuelle Status und die Medieninformationen angezeigt werden sollen
@@ -124,23 +125,23 @@ Gibt an, dass die Wiedergabe des Geräts gesteuert und der aktuelle Status und d
 | TuneIn-Station | Textfeld zum Eingeben eines Sendernamens zum Abspielen dieser Station auf diesem Gerät. Es ist auch möglich, die Sendernummer (s123456 ...), eine Show- / Podcast-ID (p1234567 ...) oder eine Themen-ID (t123456789 ...) | einzugeben Texteingabe |
 | ContentType | Textfeld zum Einfügen des gewünschten Inhalts zur Wiedergabe auf diesem Gerät | Informationen |
 | controlForward | Taste zum Auslösen des Vorwärtsbefehls des Spielers (30s) | Taste |
-| controlNext | Taste zum Auslösen des "nächsten" Befehls des Spielers | Taste |
+| controlNext | Taste zum Auslösen des Befehls "Weiter" des Spielers | Taste |
 | controlPause | Taste zum Auslösen des Befehls "Pause" des Spielers | Taste |
 | controlPlay | Taste zum Auslösen des Befehls "Abspielen" des Spielers | Taste |
-| controlPrevious | Taste zum Auslösen des "vorherigen" Befehls des Spielers | Taste |
+| controlPrevious | Taste zum Auslösen des Befehls "Vorheriger" des Spielers | Taste |
 | controlRepeat | Taste zum Auslösen des Befehls "Wiederholen" des Spielers | wahr / falsch |
 | controlRewind | Taste zum Auslösen des Befehls "Zurückspulen" des Spielers (30s) | Taste |
-| controlShuffle | Wechseln Sie zum Aktivieren oder Deaktivieren des Zufallsmodus für Player | wahr / falsch |
+| controlShuffle | Umschalten, um den Zufallsmodus für den Spieler zu aktivieren oder zu deaktivieren wahr / falsch |
 | currentAlbum | Aktuelles Album läuft gerade | Informationen |
 | currentArtist | Aktueller Künstler spielt tatsächlich | Informationen |
 | currentState | Beim Spielen -> wahr, sonst falsch | wahr / falsch |
-| currentTitle | Aktueller Titel spielt gerade | Informationen |
+| currentTitle | Aktueller Titel, der gerade abgespielt wird | Informationen |
 | imageURL | URL zum Bild des Albums | Informationen |
 | mainArtURL | URL zum aktuellen Hauptbild | Informationen |
 | mediaLength | Länge des aktuellen Titels | Informationen |
 | mediaLengthStr | aktive Medienlänge als (HH :) MM: SS | Informationen |
-| mainProgress | verstrichene Zeit der aktiven Medien | Informationen |
-| mainProgressPercent | verstrichene aktive Medienzeit in Prozent | Informationen |
+| mainProgress | verstrichene Zeit des aktiven Mediums | Informationen |
+| mainProgressPercent | verstrichene aktive Medien in Prozent | Informationen |
 | mediaProgressStr | aktiver Medienfortschritt als (HH :) MM: SS | Informationen |
 | miniArtUrl | URL zur Kunst (mini) | Informationen |
 | stumm geschaltet | Zustand von 'MUTE' | Information, wahr / falsch, Volumen = 0 wird als stummgeschaltet betrachtet |
@@ -188,7 +189,7 @@ Ist dieses Alexa-Gerät online und mit der Amazon Cloud verbunden?
 ### Alexa2.0.Geschichte
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
-| #trigger | Schaltfläche zum Abrufen eines neuen Verlaufs (aktueller als Zeitstempel in CreationTime), der nur benötigt wird, wenn die Push-Verbindung | nicht verwendet wird Taste |
+| #trigger | Schaltfläche zum Abrufen eines neuen Verlaufs (aktueller als der Zeitstempel in CreationTime), der nur benötigt wird, wenn die Push-Verbindung | nicht verwendet wird Taste |
 | cardContent | Zusätzliche Informationen wie in Alexa-App / Echo Show | gezeigt Informationen |
 | cardJson | Zusätzliche Informationen wie in Alexa-App / Echo Show im JSON-Format | angezeigt Informationen |
 | Erstellungszeit | Datum dieses Verlaufseintrags, neue Verlaufseinträge werden nur berücksichtigt, wenn sie später als dieser Zeitstempel gelten Informationen |
@@ -206,13 +207,13 @@ Beinhaltet alle Smart-Home-Geräte, die Alexa aus Ihren Fähigkeiten kennt. Gibt
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
 
-| deleteAll | löscht alle Smart-Home-Geräte aus Alexa, genau wie die Schaltfläche in der Alexa-App | Taste | removeDevices | findet neue Smart-Home-Geräte, genau wie die Schaltfläche in der Alexa App | Taste | queryAll | fragt alle Geräte ab, die nur sichtbar sind, wenn mindestens ein Gerät Informationen abrufen kann Taste
+| deleteAll | löscht alle Smart-Home-Geräte aus Alexa, genau wie die Schaltfläche in der Alexa-App | Taste | DiscoverDevices | findet neue Smart-Home-Geräte, genau wie die Schaltfläche in der Alexa App | Taste | queryAll | fragt alle Geräte ab, die nur sichtbar sind, wenn mindestens ein Gerät Informationen abrufen kann | Taste
 
 ### Alexa.0.Smart-Home-Devices.SerialNumber. *
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
 
-| #delete | Smart-Home-Gerät aus Alexa | löschen Taste | #enabled | Ist das Smart Home-Gerät aktiv? | Information
+| #delete | Löschen Sie das Smart Home-Gerät von Alexa | Taste | #enabled | Ist das Smart Home-Gerät aktiv? | Information
 
 | #query | Daten für dieses Gerät abfragen, nur sichtbar, wenn das Smart-Home-Gerät / die Smart-Home-Fähigkeit das Abrufen von Informationen unterstützt Taste |
 | aktiv | wird für Szenen angezeigt, in denen sie aktiviert / deaktiviert werden können | wahr / falsch |
@@ -232,7 +233,7 @@ Beinhaltet alle Smart-Home-Geräte, die Alexa aus Ihren Fähigkeiten kennt. Gibt
 | colorTemperarureInKelvin | Farbtemperatur in Kelvin | Information, 1000-10000K |
 | colorTemperatureName | Farbtemperaturname wie von Alexa definiert - feste Werte | änderbar auf setzen, 0-18 |
 
-Mit #helligkeit können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName wählen Sie eine vordefinierte Farbe (0-144). Für HUE Ambient Light können Sie in #colorTemperatureName zwischen 19 Werten von 0-18 wählen. Alle Lichter können mit #powerState ein- und ausgeschaltet werden.
+Mit #helligkeit können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName können Sie eine vordefinierte Farbe auswählen (0-144). Für HUE Ambient Light können Sie in #colorTemperatureName zwischen 19 Werten von 0-18 wählen. Alle Lichter können mit #powerState ein- und ausgeschaltet werden.
 
 ### Alexa2.0.Info. *
 | Staatsname | Bedeutung | Wert |
@@ -247,7 +248,7 @@ Mit #helligkeit können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName
 * Selbstdeaktivierung, wenn Cookie / CSRF ungültig ist
 
 ## Installation
-Verwenden Sie wie gewohnt ein stabiles Repository, das neueste Repository oder die ioBroker-Optionen "Installieren" von GitHub
+Verwenden Sie wie gewohnt ein stabiles Repository, das neueste Repository oder verwenden Sie die ioBroker-Optionen "Installieren" von GitHub
 
 ## Fehlerbehebung
 ### Probleme mit der Cookie-Ermittlung per E-Mail / Passwort
@@ -266,7 +267,7 @@ Wenn Sie ein solches Captcha beantworten müssen, versuchen Sie Folgendes:
 * Möglicherweise müssen Sie sich zweimal anmelden oder ein Captcha lösen
 * Am Ende sollte "https://alexa.amazon.de/spa/index.html" als URL angezeigt werden, jedoch ohne echten Inhalt (da JS immer noch deaktiviert ist), ABER DAS IST VOLLSTÄNDIG OK !!!!
 * Versuchen Sie jetzt erneut, einen Cookie zu erhalten
-* Wenn es immer noch nicht funktioniert, wiederholen Sie den User-Agent und die Accept-Language in Ihrem Browser und verwenden Sie diese beim nächsten Versuch im Adapter
+* Wenn es immer noch nicht funktioniert, wiederholen Sie den Vorgang und überprüfen Sie den User-Agent und die Accept-Language in Ihrem Browser. Verwenden Sie diese beim nächsten Versuch im Adapter
 
 Zusätzlich muss der Accept-Language-Header (standardmäßig "de-DE") mit Ihrer Sprache / der Browsersprache / der Sprache der Amazon-Seite übereinstimmen, auf der Sie sich anmelden.
 
@@ -281,7 +282,7 @@ Wenn die automatische Cookie-Ermittlung nicht funktioniert oder Sie dem Adapter 
 * https://www.gehrig.info/alexa/Alexa.html
 * oder verwenden Sie das Shellscript von https://blog.loetzimmer.de/2017/10/amazon-alexa-hort-auf-die-shell-echo.html, um es auf Shell zu bekommen ...
 
-Beachten Sie jedoch, dass das Cookie nach einiger Zeit eine Zeitüberschreitung aufweist und der Adapter dann nicht mehr funktioniert und sich selbst deaktiviert. Sie müssen dann manuell ein neues Cookie erhalten!
+Beachten Sie jedoch, dass das Cookie nach einiger Zeit eine Zeitüberschreitung aufweist und der Adapter dann nicht mehr funktioniert und sich selbst deaktiviert. Sie müssen dann manuell einen neuen Cookie erhalten!
 
 ## Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
 Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
@@ -289,6 +290,36 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.8.1 (2021-02-09)
+* (Apollon77) Initialize volume for all devices on start
+
+### 3.8.0 (2021-02-04)
+* (Apollon77) Add configuration option to not write history entries where no command text was recognized
+
+### 3.7.1 (2021-02-03)
+* (Apollon77) add some more detected text into summary and answerText states (textCommand commands should be in history back again)
+
+### 3.7.0 (2021-02-03)
+* (Apollon77) IMPORTANT: History entries are now requested via a different data source because Amazon seems to tun off the old option. History.status is for this no longer filled, but new states were added. Only voice commands are reported ( textCommand entries not longer)
+* (Apollon77) other optimizations in communications and prevent hammering amazon with requests in error cases
+
+### 3.6.1 (2021-02-02)
+* (fbeister) Add and adjust some known devices
+* (Apollon77) Optimize object deletion
+
+### 3.6.0 (2021-01-28)
+* (Apollon77) Update Routines API because of amazon changes
+
+### 3.5.6 (2021-01-22)
+* (Apollon77) Catch error when deleting objects
+
+### 3.5.4 (2021-01-22)
+* (Apollon77) restart adapter when no initial cookie could be requested
+
+### 3.5.2 (2021-01-17)
+* (Apollon77) Prevent to write non-existing state values
+* (Apollon77) Add and adjust some known devices
 
 ### 3.5.0 (2020-12-24)
 * (Apollon77) Remove bespoken because textCommand is more flexible

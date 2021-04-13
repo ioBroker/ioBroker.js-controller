@@ -89,6 +89,9 @@ Here you can:
 
 ## Changelog
 
+### 1.0.2 (2021-04-10)
+* (sbormann) Added info texts and translations.
+
 ### 1.0.1 (2021-04-07)
 * (sbormann) Fixed alias read and alias write function not working, if containing quotation marks.
 

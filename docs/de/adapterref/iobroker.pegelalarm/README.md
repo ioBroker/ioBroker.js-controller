@@ -3,26 +3,32 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pegelalarm/README.md
 title: ioBroker.pegelalarm
-hash: bW9bgaQUBi8d2ygOZwcjf2w7YZWJeLawCblZanXPJdA=
+hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
 ---
 ![Logo](../../../en/adapterref/iobroker.pegelalarm/admin/pegelalarm.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.pegelalarm.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.pegelalarm.svg)
 ![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/pegelalarm-installed.svg)
-![Anzahl der Installationen (stabil)](http://iobroker.live/badges/pegelalarm-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/simatec/iobroker.pegelalarm.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/simatec/ioBroker.pegelalarm/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.pegelalarm.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/simatec/ioBroker.pegelalarm/master.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/pegelalarm-stable.svg)
+![NPM](https://nodei.co/npm/iobroker.pegelalarm.png?downloads=true)
 
 # IoBroker.pegelalarm
+![Testen und freigeben](https://github.com/simatec/ioBroker.pegelalarm/workflows/Test%20and%20Release/badge.svg)
+
 ## Pegelalarm-Adapter für ioBroker
-Bietet Daten von der Pegelalarm-API (v1.0)
+Bietet Daten aus der Pegelalarm-API (v1.0)
 
 Die API-Dokumentation für API 1.1 finden Sie hier https://github.com/SOBOS-GmbH/pegelalarm_public_pas_doc/wiki/Download-current-water-data
 
 ## Changelog
+
+### 1.1.7 (2021-04-10)
+* (simatec) Bugfix Adapter stop
+* (simatec) Bugfix clean old stations
 
 ### 1.1.6 (2021-04-09)
 * (simatec) Bugfix for latest Repo

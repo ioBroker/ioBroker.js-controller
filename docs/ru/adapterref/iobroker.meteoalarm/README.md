@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
+hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
 ---
 ![Логотип](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -14,6 +14,8 @@ hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
 ![НПМ](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 # IoBroker.meteoalarm
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+
 Адаптер метео сигнализации для ioBroker ---------------------------------------------- -------------------------------- Этот адаптер получает сигналы о погоде с meteoalarm.eu, включая ветер, снег, дождь. , высокая и низкая температура и т. д. Эта информация доступна на местном языке и для подробных регионов.
 
 ## Как это использовать
@@ -105,6 +107,9 @@ hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
 
 ## Возможности для реализации
 * Обработка нескольких сигналов тревоги за один день
+
+## 1.1.4 (2021-04-05)
+* (jack-blackson) Обработка сообщения об ошибке ENOTFOUND, добавлено Sentry
 
 ## 1.1.3 (29.03.2021)
 * (jack-blackson) Исправлены ошибки проверки адаптера

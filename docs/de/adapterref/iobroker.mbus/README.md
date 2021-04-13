@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: oiNj5I/xfp9TmfIEO61pt3H49lou5lnahVQdFWjJHiQ=
+hash: VYmc7Ban2UKbt4GPEY2mZLxw9ZZIdg/T5nLNfIXz9Eg=
 ---
 ![Logo](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.mbus.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/mbus-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.mbus.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mbus.svg)
@@ -49,6 +48,21 @@ Bitte verwenden Sie dazu GitHub-Probleme.
 Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
+
+### 2.3.4 (2021-03-07)
+* (Apollon77) Send a reset to the device before reading data
+
+### 2.3.2 (2021-02-27)
+* (Apollon77) Prevent crash case(Sentry IOBROKER-MBUS-H)
+
+### 2.3.1 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MBUS-F)
+
+### 2.3.0 (2020-08-02)
+* (Apollon77) mbus library updated
+
+### 2.2.3 (2020-07-26)
+* (Apollon77) crash prevented (Sentry IOBROKER-MBUS-C)
 
 ### 2.2.2 (2020-07-23)
 * (Apollon77) crash prevented (Sentry IOBROKER-MBUS-B)

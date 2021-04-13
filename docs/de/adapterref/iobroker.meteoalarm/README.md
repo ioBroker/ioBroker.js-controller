@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
+hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -14,6 +14,8 @@ hash: Tun6tuLG7BiHLo5WNGingP9KnISJ+xPuVICd34mVaCk=
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 # IoBroker.meteoalarm
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 meteoalarm Adapter für ioBroker ---------------------------------------------- -------------------------------- Dieser Adapter ruft Wetteralarme von meteoalarm.eu ab, einschließlich Wind, Schnee, Regen , hohe und niedrige Temperatur usw. Diese Informationen sind in der Landessprache und für detaillierte Regionen verfügbar.
 
 ## Wie man es benutzt
@@ -73,7 +75,7 @@ Option 2: Gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Geh
 ## Unterstützte Länder
 * Österreich
 * Kroatien
-* Tschechische Republik
+* Tschechien
 * Finnland
 * Deutschland
 * Griechenland
@@ -106,11 +108,14 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
 
+## 1.1.4 (2021-04-05)
+* (jack-blackson) ENOTFOUND-Fehlermeldung behandeln, Sentry hinzugefügt
+
 ## 1.1.3 (2021-03-29)
-* (jack-blackson) Fehler behebt die Adapterprüfung
+* (jack-blackson) Fehler behebt Adapterprüfung
 
 ## 1.1.2 (2021-03-29)
-* (jack-blackson) Bugfix für nicht funktionierende Datenaktualisierung, entfernte Link-Autogeneration aufgrund von CORS-Fehlern
+* (jack-blackson) Bugfix für nicht funktionierende Datenaktualisierung, Link-Autogeneration aufgrund von CORS-Fehlern entfernt
 
 ## 1.1.1 (2020-10-28)
 * (jack-blackson) Bugfix HTML-Daten

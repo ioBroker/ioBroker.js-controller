@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fb-checkpresence/README.md
 title: 无题
-hash: V5ZB2SHBuJhNZJPgjDR9iAchuHd6MUzAH6e4yJSnZOk=
+hash: DMvFhWFPYeS5t66i2pAeuERPxhK73GromMQBTBGJUmE=
 ---
 ![安装数量](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -34,7 +34,7 @@ hash: V5ZB2SHBuJhNZJPgjDR9iAchuHd6MUzAH6e4yJSnZOk=
 fritzbox服务通过TR-064协议使用。
 
 ### Fritzbox条件
-此处描述了来自炸弹盒的二手TR-064接口：https：//avm.de/service/schnittstellen/。
+此处描述了来自炸弹箱的二手TR-064接口：https：//avm.de/service/schnittstellen/。
 使用了以下TR-064服务和操作：
 
 *主机：1-X_AVM-DE_GetHostListPath（自2017年1月9日以来受支持）
@@ -72,7 +72,7 @@ fritzbox服务通过TR-064协议使用。
 
 ＃＃＃ 间隔
 家庭成员和Fritzbox设备的间隔时间是分开的。
-Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间的值是读取fritzbox数据的最佳间隔。家庭成员的配置时间可以从10s到600s。如果前一个周期结束，则每个新周期都会开始。
+Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间的值是读取fritzbox数据的最佳间隔。家庭成员的配置时间可以从10秒到600秒。如果前一个周期结束，则每个新周期都会开始。
 
 ###过滤时间
 如果筛选时间大于0s，则在状态更改为false时（在筛选时间之后）检查一次家庭成员的状态两次。如果状态为true，则立即设置状态。
@@ -102,7 +102,8 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 如果选中此选项，则会生成来自来宾无线局域网的二维码。
 
 ###家庭成员设置
-对于已配置的家庭成员，您应该输入成员名称，主机名，mac和ip地址，注释以及是否启用了成员。组是可选的。如果将其保留为空，并将兼容性标志设置为true，则其行为类似于旧版本的适配器。在将来的版本中，您必须使用家人的状态。
+对于已配置的家庭成员，您应该输入成员名称，主机名，mac和ip地址，注释，然后可以启用或禁用该成员。组是可选的。如果将组保留为空，并将兼容性标志设置为true，则行为类似于旧版本的适配器。在将来的版本中，您必须使用家人的状态。使用兼容性复选框打开/关闭此行为：->兼容性= true：行为与具有空组的旧版本相同。
+->兼容性=否：新行为。家庭成员文件夹下的所有州。
 适配器为每个成员创建一个状态，并检查该成员是否存在。如果状态更改，则状态也会更改。您还可以为成员启用过滤。如果状态为true，则状态立即变为true。如果为假，则将在过滤时间之后再次检查该值。
 如果两种情况下的状态均为假，则状态更改为假。否则它不会改变。
 要获得对象中的速度信息，必须选择fb-devices选项。
@@ -116,7 +117,7 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 该功能检查已使用的fritzbox功能的可用性。可用性记录为信息。如果有问题，请查看所有功能是否都设置为true。如果访问权限不正确，还将检查用户的访问权限，并将功能设置为false。
 
 ###开启/关闭访客无线局域网
-在guest虚拟机文件夹下，您可以将状态wlan设置为true或false，然后guest虚拟机wlan打开或关闭。
+在guest虚拟机文件夹下，您可以将状态wlan设置为true或false，然后guest虚拟机wlan开启或关闭。
 
 ###访客无线局域网的QR码
 来宾wlan的QR码保存在来宾文件夹中的状态wlanQR中。 QR代码可以在基本的Bool SVG小部件中可见显示。
@@ -154,13 +155,13 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 以下是有关适配器的最新更新和连接状态的信息。
 
 ###对象来宾
-下面列出了有关活动来宾和表对象（其中包含设备信息）数量的信息。
+以下列出了有关活动来宾和表对象（其中包含设备信息）数量的信息。
 
 ###对象黑名单
 以下列出了有关未知设备数量和其中包含未知设备信息的表对象的信息。
 
 ###对象member.present
-在这里，您可以找到有关当日成员在场的信息以及自上次更改以来该成员的状态为真的时间。
+在这里，您将找到有关当日成员在场的信息以及自上次更改以来该成员的状态为真多久的信息。
 
 ###对象member.absent
 在这里，您可以找到有关当日缺少成员以及该成员自上次更改以来一直处于错误状态的信息。

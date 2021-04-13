@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.canbus/README.md
 title: ioBroker.canbus
-hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
+hash: BsHvCP3XTKPy/kU0CP3ByqkoVjiWxgvleJmi5vIW3nQ=
 ---
 ![NPM版本](https://img.shields.io/npm/v/iobroker.canbus.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.canbus.svg)
@@ -13,7 +13,7 @@ hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 ![NPM](https://nodei.co/npm/iobroker.canbus.png?downloads=true)
 
 ＃ioBroker.canbus
-![标识](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
+![商标](../../../en/adapterref/iobroker.canbus/admin/canbus.png)
 
 [![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/canbus/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
@@ -83,11 +83,23 @@ hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 ####自定义阅读脚本
 在读取脚本中，您必须从`buffer`变量中读取`value`。
 
-在自定义读取脚本的开头，`buffer`将是已接收/当前的CAN消息数据（如处于`.json`状态）。
+在自定义读取脚本的开头，`buffer`将是接收到的/当前的CAN消息数据（类似于`.json`状态）。
 `value`将是`undefined`，应由脚本设置。
 
 自定义读取脚本末尾的`value`变量的内容将用作状态的新值。
 如果`value`是`undefined`，它将被忽略。使用此功能，您可以按数据部分过滤自定义读取脚本中的消息。
+
+#####自定义读取脚本的示例
+检查接收到的缓冲区中的前三个字节以匹配固定值。
+如果匹配，则从缓冲区字节3和4中读取一个16位带符号整数值，然后将其除以10。
+
+```js
+if (buffer[0] === 0xC2 && buffer[1] === 0x10 && buffer[2] === 0x0F) {
+  value = buffer.readInt16BE(3) / 10;
+}
+```
+
+`value`的原因仅在前三个字节匹配时设置，所有其他数据将被忽略并且不会为该状态设置新值。
 
 ####自定义写脚本
 在写脚本中，您必须修改（或替换）`buffer`变量。
@@ -96,6 +108,18 @@ hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 `value`设置为应写入`buffer`中的状态值。
 
 自定义写入脚本末尾的`buffer`变量的内容将用作CAN消息的新数据。
+
+#####自定义写脚本的示例
+准备一个具有固定值的新缓冲区。
+从缓冲区的第五个字节开始，将状态值作为一个带符号的16位整数写入缓冲区。
+
+```js
+buffer = Buffer.from([0x30, 0x00, 0xFA, 0x06, 0x7E, 0x00, 0x00]);
+buffer.writeInt16BE(value, 5);
+```
+
+然后将新的`buffer`设置为`.json`状态。
+如果为邮件启用了* autosend *选项，则该邮件将自动发送。
 
 ##脚本中的用法
 您可以处理/修改脚本中的`<messageId>.json`或`<messageId>.<parserId>`状态。
@@ -117,6 +141,16 @@ hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 `ext`和`rtr`是可选的，默认为`false`。
 
 ## Changelog
+
+### 1.1.3 (2021-04-12)
+* (crycode-de) Added definition of possible state values in admin
+* (crycode-de) Added selection of the state role for each parser in admin
+* (crycode-de) Fixed display bug of floating action buttons in admin
+* (crycode-de) Export uses defaults if some config parts are not defined (e.g. if the config is from an older version)
+* (crycode-de) Fixed wrong validation if a message/parser was deleted
+
+### 1.1.2 (2021-04-06)
+* (crycode-de) Added copy/paste function for message and parser configurations in admin
 
 ### 1.1.1 (2021-04-02)
 * (crycode-de) Import bugfixes
@@ -145,40 +179,7 @@ hash: TNhqtcqxCnC3Ojw4DjgFQgfaLaFzUWbUsVUcrkUFwqs=
 * (VeSler) Russian admin translations
 * (crycode-de) Updated dependencies
 
-### 1.0.0-beta.6 (2021-01-11)
-* (crycode-de) Fixed object setup sequence
-* (crycode-de) Fixed issue with multiple id definition check in admin
-* (crycode-de) Added multiple id definition check in backend
-
-### 1.0.0-beta.5 (2021-01-09)
-* (crycode-de) Added Sentry error reporting in admin
-* (crycode-de) Added check for multiple times configured message IDs in admin
-* (crycode-de) Message IDs are now transformed to upper case automatically in admin
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.4 (2020-12-01)
-* (crycode-de) Ignore read value if a parser returned `undefined`
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.3 (2020-11-25)
-* (crycode-de) Fixed js-controller dependency
-* (crycode-de) Custom parsers `getStateAsync` function now uses `getForeignStateAsync` internally
-* (crycode-de) Added parses readme
-* (crycode-de) Updated dependencies
-
-### 1.0.0-beta.2 (2020-11-23)
-* (crycode-de) Added Sentry error reporting
-### 1.0.0-beta.1 (2020-11-17)
-* (crycode-de) Added optional raw states.
-* (crycode-de) Added option to enable/disable rtr states.
-
-### 0.1.0-alpha.1 (2020-11-09)
-* (crycode-de) New React UI
-* (crycode-de) Support for messages with specific DLC
-* (crycode-de) Parsers read on json state change with ack=false
-
-### 0.0.1
-* (crycode-de) initial development release
+Older changelog is in CHANGELOG_OLD.md
 
 ## License
 

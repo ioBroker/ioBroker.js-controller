@@ -24,7 +24,7 @@ Supported models: W1200, W1070, W1080 to be...
 
 ## Changelog
 
-### 0.2.6
+### 0.2.7
  * (instalator) fix error
 ### 0.2.4
  * (instalator) change test
