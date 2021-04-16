@@ -699,6 +699,55 @@ function register(it, expect, context) {
         });
     });
 
+    // subscribeForeignStates with array
+    it(testName + 'Test subscribe foreign states with array', async () => {
+        const stateIds = [
+            `${context.adapterShortName}3.0.${gid}76`,
+            `${context.adapterShortName}3.0.${gid}77`,
+            `${context.adapterShortName}3.0.${gid}78`
+        ];
+
+        for (const id of stateIds) {
+            await context.adapter.setForeignObjectAsync(id, {
+                common: {
+                    name: 'test',
+                    type: 'number',
+                    role: 'level',
+                    min: -100,
+                    max: 100
+                },
+                native: {},
+                type: 'state'
+            });
+        }
+
+        // finally subscribe with an array
+        await context.adapter.subscribeForeignStatesAsync(stateIds);
+
+        let changesRegistered = 0;
+
+        return new Promise((resolve, reject) => {
+            context.onAdapterStateChanged = id => {
+                if (stateIds.includes(id)) {
+                    changesRegistered++;
+                } else if (id === `${context.adapterShortName}3.0.${gid}81`) {
+                // we haven't subscribed to this
+                    reject(new Error(`State ${id} has not been subscribed`));
+                }
+
+                if (changesRegistered === stateIds.length) {
+                    context.onAdapterStateChanged = null;
+                    resolve();
+                }
+            };
+
+            // set one wrong state at the beginning
+            for (const id of [`${context.adapterShortName}3.0.${gid}81`, ...stateIds]) {
+                context.states.setState(id, 10);
+            }
+        });
+    }).timeout(2000);
+
     // unsubscribeForeignStates
     it(testName + 'Test unsubscribe foreign states', function (done) {
         this.timeout(3000);
