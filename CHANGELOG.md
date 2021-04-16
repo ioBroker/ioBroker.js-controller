@@ -5,7 +5,49 @@
 -->
 
 ## 3.3.x (2021-xx-xx) Release F... WIP
-* TBD
+**BREAKING CHANGES**
+* None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
+
+**Features**
+* (bluefox) Add restartController sendToHost command
+* (foxriver76) respect adapter dependencies on "upgrade" CLI command
+
+**Optimizations and Fixes**
+* (foxriver76) correctly encrypt native attributes from instances when set via cli
+* (Apollon77) give DB a bit more time to startup for CLI
+* (foxriver76) fix logging undefined w/o meta data when deleting log files
+* (Apollon77/oweitman) prevent errors when listening for multihost messages
+* (Apollon77) make sure to await the database destroy in all places
+* (Apollon77) fix crash case when Lets encrypt config is not provided but LE is activated
+* (AlCalzone) understand .tar.gz as a valid extension for github URLs
+* (foxriver76) only renew Let's encrypt when configured that way
+* (foxriver76) if free memory reaches threshold, also add a notification
+* (bluefox) fix applyViewFunc if the name is a localized object
+* (Apollon77) optimize db initialization for fileDB and enhance error case handling
+* (Apollon77/foxriver76) several optimizations and fixes in database modules and update
+
+* (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
+
+**Developer relevant DEPRECATIONS/WARNINGS**
+* (foxriver76) added new checks for setState:
+  * if strictObjectChecks are activated we now perform additional checks 
+  * require common.type on state objects
+  * if state is read only and we get ack false -> not allowed
+  * check type of the state.val matching the common.type of the obj
+  * if it's a number we perform additional checks for min and max
+  
+**Developer relevant new Features**
+* (AlCalzone) support executing TypeScript adapters: If the adapter main file ends with ".ts" we automatically transpile the typeScript file before starting the adapter
+* (bluefox) Implement chownFile in adapter.js
+* (foxriver76) introduce common.step attribute of states and round state value if needed
+
+* (bluefox) Allow npm install to be executed with debug flag
+
+**Developer relevant Optimizations and Fixes**
+
+* general dependency updates
+* code style optimizations
+
 
 ## 3.2.16 (2021-02-01) Release Grace
 **BREAKING CHANGES**
