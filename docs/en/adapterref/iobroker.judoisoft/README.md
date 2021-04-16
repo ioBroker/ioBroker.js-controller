@@ -23,6 +23,9 @@ Settings available:
 <b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+### 1.0.7  (2021-04-14)
+* (arteck) corr psw save method
+
 ### 1.0.6  (2021-04-08)
 * (arteck) add battery 
            add installationdate

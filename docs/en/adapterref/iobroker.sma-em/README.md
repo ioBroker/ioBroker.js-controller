@@ -9,9 +9,12 @@
 
 ### Info
 This adapter reads information from SMA Energy Meter and Sunny Home Manager 2.
-It supports the SMA-EMETER-protocol-2. 
+It supports the SMA-EMETER-protocol-2.
+
 SMA Energy Meter and Sunny Home Manager 2 multicast datagrams with their energy measurement data to the network every second.
 The SMA Energy Meter Adapter receives these multicast messages and stores them as iobroker states.
+A single instance of the SMA Energy Meter Adapter detects all SMA Energy Meters and Sunny Home Managers in all connected networks.
+
 
 ![States](docs/en/img/overview.png)
 
@@ -55,6 +58,11 @@ In addition to the states in non-extended mode, the following values are availab
 -->
         
 ## Changelog
+### 0.6.4 (2021-04-14)
+* (TGuybrush) Bug fixes
+  * Prevent warnings regarding non-existent objects upon adapter instance creation and start-up under js-controller 3.2.x
+  * Improved check of SMA Energy Meter multicast messages to prevent ghost devices and warnings regarding unknown OBIS values.
+
 ### 0.6.3 (2021-03-04)
 * (TGuybrush) The adapter binds now to all external IPv4 addresses.
 

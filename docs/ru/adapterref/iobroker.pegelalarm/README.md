@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pegelalarm/README.md
 title: ioBroker.pegelalarm
-hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
+hash: FJDsZxir1lY+5t/VwRvPy//SWoJXltMwoOYRqdlU5lE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.pegelalarm/admin/pegelalarm.png)
 
@@ -23,6 +23,21 @@ hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
 Предоставляет данные из Pegelalarm-API (v1.0)
 
 Документацию по API для API 1.1 можно найти здесь https://github.com/SOBOS-GmbH/pegelalarm_public_pas_doc/wiki/Download-current-water-data
+
+**************************************************************************************************************
+
+### Что такое Sentry.io и что передается на серверы этой компании?
+Sentry.io - это сервис, позволяющий разработчикам получать информацию об ошибках в своих приложениях. Именно это и реализовано в этом адаптере.
+
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+
+**************************************************************************************************************
+
+** Если вам это нравится, рассмотрите возможность пожертвования: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
+**************************************************************************************************************
 
 ## Changelog
 

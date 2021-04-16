@@ -56,7 +56,7 @@ Backitup ist eine Backuplösung, mit der das zyklische Sichern einer IoBroker-In
 
 Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installationen auch auf Windows und Mac Installationen verwendet werden.
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Abhängigkeiten
@@ -67,7 +67,7 @@ Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installatio
     - `sudo apt-get install nfs-common`
 
 * Für die verwendung des MySql-Backups muss mysqldump auf dem System installiert sein
-    - `sudo apt-get install mysql-client`
+    - `sudo apt-get install mysql-client` oder unter Debian `sudo apt-get install default-mysql-client`
 
 * Für die verwendung des PostgreSQL-Backups muss mysqldump auf dem System installiert sein
     - [Installationsanleitung PostgreSQL](https://www.postgresql.org/download/linux/debian/)
@@ -75,7 +75,7 @@ Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installatio
 * Für die Verwendung des InfluxDB Backups muss influxd installiert sein
     - [Installationsanleitung InfluxDB](https://docs.influxdata.com/influxdb/v1.8/introduction/install/)
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Backuptypen
@@ -89,7 +89,7 @@ Dieses Backup bietet die Möglichkeit 3 verschiedene Varianten einer Homematic I
 
 ## Mysql-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.<br><br>
-Wichig hierbei ist, dass auch wenn der Mysql-Server auf einem entferten System läuft, die mysqldump auf dem ioBroker System laufen muss.<br>Für Linuxsysteme wäre der Installationsbefehl wie folgt: `sudo apt-get install mysql-client`
+Wichig hierbei ist, dass auch wenn der Mysql-Server auf einem entferten System läuft, die mysqldump auf dem ioBroker System laufen muss.<br>Für Linuxsysteme wäre der Installationsbefehl wie folgt: `sudo apt-get install mysql-client` oder unter Debian `sudo apt-get install default-mysql-client`
 
 ## Redis-Backup
 Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backup ioBroker erstellt und nach Ablauf der angegebenen Vorhaltezeit auch gelöscht. FTP oder CIFS sind für dieses Backup ebenfalls gültig sofern bei den anderen IoBroker-Backup-Typen eingestellt.<br>
@@ -142,7 +142,7 @@ Dieses separat einstellbare Backup wird sofern es aktiviert ist, bei jedem Backu
 **Des Weiteren muss in der Grafana-Weboberfläche ein Api-Key erzeugt werden, um Zugriff auf die Dashboards zu bekommen.**<br>
 Der Api-Key kann unter ***"Configuration → API Keys"*** erstellt werden.
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Speicher-Optionen
@@ -173,10 +173,12 @@ Die Angabe der IP Adresse muss für die Copy-Funktion leer bleiben.
 ## Dropbox
 Um die Sicherung in der Dropbox zu nutzen, muss ein Access Token und eine APP unter https://www.dropbox.com/developers/apps erstellt werden<br><br>
 * Schritt 1: Den Button "Create Backup" nutzen
-* Schritt 2: "Dropbox API" auswählen
+* Schritt 2: "Scoped access" auswählen
 * Schritt 3: "App folder" auswählen
-* Schritt 4: "Name your app" vergeben
-* Schritt 5: "Generated access token" Button drücken (Der Token wird in den Einstellungen von Backitup eingetragen)<br><br>
+* Schritt 4: "Name your app" vergeben und "Create App" Button wählen
+* Schritt 5: Im Tab-Reiter "Permissions" alle 4 Häckchen im Bereich "Files and folders" setzen
+* Schritt 6: Im Tab-Reiter "Settings" die "Access token expiration" auf "No expiration" stellen
+* Schritt 7: "Generated access token" Button drücken (Dieser erzeugte Token wird in den Einstellungen von Backitup eingetragen)<br><br>
 In deiner Dropbox gibt es nun einen neuen Ordner mit dem Namen "Apps"
   
 ## Google Drive
@@ -192,7 +194,7 @@ Um eine Verbindung aufbauen zu können, muss der Hostname der Cloud alle Sicherh
 Eine Verbindung mit lokaler IP-Adresse ist nicht möglich, da diese keine Lets Encrypt Zertifikate enthält.<br><br>
 > Beispiel URL: "https://example.com/remote.php/dav/files/username/"
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Verwendung
@@ -249,7 +251,7 @@ Syntax: {BackitupInstanz.history.html}
 
 Syntax: {wert: <BackitupInstanz>.oneClick.<Auslösetrigger>; wert === "true" || wert === true ? "Text während der Backuperstellung" : "Standard-Text"}
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Benachichtigungen
@@ -261,7 +263,7 @@ Syntax: {wert: <BackitupInstanz>.oneClick.<Auslösetrigger>; wert === "true" || 
    * E-Mail 
    * Whatsapp
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Restore
@@ -297,13 +299,13 @@ Eine detailierte Anleitung zum Restore mit Backitup und auch zum manuellen Resto
     - Den Befehl:“reboot“ auf der Raspberrymatic ausführen um den PI neu zu starten
     - Alternativ kann das Backup natürlich auch wie gewohnt über das Webinterface wieder hergestellt werden.
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 # Fehlersuche
     Um Fehler zu loggen, muss Backitup in unter dem IoBroker Reiter Instanzen auf Log-Stufe "debug" gestellt werden.
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 --- 
 
 # Aufgetretene Fehler / Lösungen:
@@ -338,10 +340,17 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
     ```
     Wenn ihr nicht mit dem Installerscript eure Iobroker Installation aufgesetzt habt und euer User einen anderen Namen hat, bitte in dem Befehl "iobroker" durch euren User ersetzen.
 
-[zurück](#Inhalt)
+### [zurück](#Inhalt)
 ---
 
 ## Changelog
+
+### 2.1.2 (13.04.2021)
+* (simatec) Creation of temporary folders changed
+* (simatec) Filter for redis rdb files changed
+* (simatec) automatic deletion of old influx databases added
+* (simatec) noserverino option for CIFS mount added
+* (simatec) dependencies updated
 
 ### 2.1.1 (11.04.2021)
 * (simatec) Bugfix redis

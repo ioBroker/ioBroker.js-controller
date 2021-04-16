@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
+hash: +O04SP6hiOKv4rGIc4bD9a2b9HOZ0puX9zfD4cfvY2I=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -190,7 +190,9 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 
 ![Popup-Screenshot](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
-### PostMessage-Communication (nur für Experten)
+<details><summary>Widget-Entwicklung (nur für Experten): (<ins> klick zum öffnen</ins> )</summary>
+
+### PostMessage-Communication
 * Technisch gesehen wird der Inhalt von BACKGROUND_VIEW / URL / HTML in ein HTML-Element namens iframe eingefügt, bei dem es sich um eine Website innerhalb einer Website handelt
 * Durch Aktivieren der Option "PostMessage-Kommunikation für BACKGROUND_VIEW / URL / HTML zulassen" können Sie die PostMessage-Kommunikation zwischen der Website in diesem Iframe und iQontrol selbst aktivieren
 * Um Befehle an iQontrol zu senden, können Sie den folgenden Javascript-Befehl verwenden: `` window.parent.postMessage (message, "*"); ``
@@ -490,6 +492,20 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 * Standard: "Down"
 * `` controlModeDisarmedValue`` (Wert von CONTROL_MODE für 'disarmed') - nur gültig für Rolle Alarm:
 * Standard: "0"
+* `` timeCaption`` (Beschriftung für TIME) - nur gültig für Rolle DateAndTime:
+* Standard: ""
+* `` timeFormat`` (Format der ZEIT (wie im Datenpunkt gespeichert, siehe Readme)) - nur gültig für die Rolle DateAndTime:
+* Standard: "x"
+* `` timeDisplayFormat`` (Anzeigeformat von TIME (wie es angezeigt werden soll, siehe Readme)) - nur gültig für Rolle DateAndTime:
+* Standard: "dddd, DD.MM.YYYY HH: mm: ss"
+* `` dateAndTimeTileActiveConditions`` (Kachel ist aktiv, wenn alle ausgewählten Elemente wahr sind) - nur gültig für die Rolle DateAndTime:
+* Mögliche Werte (Array): "activeIfStateActive", "activeIfTimeNotZero", "activeIfTimeInFuture", "activeIfTimeInPast"
+* Standard: "activeIfStateActive, activeIfTimeInFuture"
+* `` dateAndTimeTileActiveWhenRinging`` (Kachel ist immer aktiv, wenn RINGING aktiv ist) - nur gültig für Rolle DateAndTime:
+* Standard: true
+* `` dateAndTimeShowInState`` (In Status anzeigen) - nur gültig für Rolle DateAndTime:
+* Mögliche Werte (Array): "showStateIfInactive", "showStateIfActive", "showSubjectIfActive", "showSubjectIfInactive", "showTimeIfInactiveAndInPast", "showTimeIfInactiveAndInFuture", "showTimeIfActiveAndInPast", "showTimeIfActiveAndInFuture", "showTimeDistanceIfInactiveAndInPast", "showTimeDistanceIfInactiveAndInFuture", "showTimeDistanceIfActiveAndInPast" , "showTimeDistanceIfActiveAndInFuture"
+* Standard: "showStateIfInactive, showSubjectIfActive, showTimeDistanceIfActiveAndInFuture"
 * `` coverImageReloadDelay`` (Verzögerung beim erneuten Laden des Titelbilds [ms]) - nur gültig für die Rolle Medien:
 * Mögliche Werte: Zahl von 0 bis 5000
 * Standard: ""
@@ -1106,16 +1122,14 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 </html>
 ````
 
-</ Details>
+</ details> </ details>
 
-## Beschreibung der Rollen und zugehörigen Zustände
-Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
-Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
-Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
+## Ändern der Datenpunktkonfiguration
+Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld "Gerätekonfiguration" oder auf der Registerkarte "Objekte" von iobroker ändern.
 
-### Ändern der Datenpunktkonfiguration
-Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld "Gerätekonfiguration" oder auf der Registerkarte "Objekte" von iobroker ändern. Hier kannst du:
+![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
+
+Hier kannst du:
 
 * Readonly-Flag setzen
 * Invert-Flag setzen
@@ -1136,7 +1150,13 @@ Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymb
 * Schlüssel: `` TuneIn-Playlist: *``, Zieldatenpunkt-ID: `` alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``, Zielwert: ``* ``
 * Wenn der Benutzer "TuneIn-Playlist: Ambient" eingibt, wird der Wert "Ambient" in "alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist" geschrieben
 
-![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](img/custom_dialog.png) ![Konzept der Zielwertliste](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+        ![Konzept der Zielwertliste](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+
+## Beschreibung der Rollen und zugehörigen Zustände
+Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
+Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
+Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Allgemeine Zustände:
 #### STATE und LEVEL
@@ -1170,7 +1190,7 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
 
     ![INFO_A und INFO_B](../../../en/adapterref/iobroker.iqontrol/img/info_a_info_b.png)
 
-* **ADDITIONAL_CONTROLS** *array* - Ein Array von Datenpunkten, die zusätzliche Steuerelemente definieren, die im Info-Dialog angezeigt werden
+* **ADDITIONAL_CONTROLS** *array* - Ein Array von Datenpunkten, die zusätzliche Steuerelemente definieren, die im Info-Dialog angezeigt werden. Sie können Variablen in Namen und Beschriftungen verwenden (verwenden Sie dieselbe Syntax wie für normale Gerätenamen).
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, das am unteren Rand des Info-Dialogs angezeigt wird
 * **URL** CONSTANT oder DATAPOINT *string* - Diese URL wird als Iframe im Dialogfeld geöffnet
 * **HTML** CONSTANT oder DATAPOINT *string* - Dieses Markup wird im iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
@@ -1347,7 +1367,9 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 <details><summary>Mögliche Zeitformate anzeigen: (<ins> klick zum öffnen</ins> )</summary>
 
-In den Geräteoptionen können Sie im gerätespezifischen Bereich das Zeitformat Ihres Datenpunkts und dessen Anzeige festlegen. Sie können die folgenden Token verwenden:
+* Im benutzerdefinierten Bereich (Schraubenschlüsselsymbol) eines beliebigen Datenpunkts können Sie das Zeitformat und das Zeitanzeigeformat konfigurieren. Wenn der Datenpunkt Zeitinformationen enthält, geben diese beiden Parameter an, in welchem Format die Zeit im Datenpunkt gespeichert wird und wie iQontrols dem Benutzer die Zeit anzeigt.
+* Für das 'Datum und Uhrzeit'-Gerät können diese beiden Einstellungen auch in den Geräteoptionen im gerätespezifischen Bereich vorgenommen werden. Diese überschreiben die Einstellungen, die im benutzerdefinierten Bereich des Datenpunkts vorgenommen wurden.
+* Sie können die folgenden Token verwenden:
 
 | | | Token | Beispiel | Datenpunkt | Anzeige | Kommissionierer |
 |----------:|-------------------------------:|--------------------|------------------------------------------------------------------------------|-----------|--------------------------------------|-----------------------------|
@@ -1432,7 +1454,7 @@ In den Geräteoptionen können Sie im gerätespezifischen Bereich das Zeitformat
 | Freier Text | Freier Text in Klammern markieren | [] | [Dies ist ein Beispiel, alle Token werden ignoriert] | X | X | --- |
 
 * Wenn Sie unterschiedliche Konfigurationen für das Datenpunktzeitformat und das Anzeigezeitformat verwenden, werden die folgenden Konvertierungsregeln verwendet.
-* Sie können die Flags tb, tn und to innerhalb des Datenpunkt-Zeitformats verwenden, um das Verhalten zu beeinflussen.
+* Sie können die Flags `` tb``, `` tn`` und `` to`` innerhalb des Datenpunkt-Zeitformats verwenden, um das Verhalten zu beeinflussen.
 
     ![Glühen](../../../en/adapterref/iobroker.iqontrol/img/dateandtime_conversionrules.png)
 
@@ -1517,11 +1539,18 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 
 ## Changelog
 
-### 1.7.0 dev
+### 1.7.1 dev
+* (sbormann) Updated dependencies.
+* (sbormann) Added option to show name of INFO_A/B.
+
+### 1.7.0 (2021-04-13)
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device for dates, times and periods (durations).
+* (sbormann) Added time-format and time-display-format to custom settings of datapoints.
+* (sbormann) Added time-picker for every datapoint - including ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
 * (sbormann) Added STOP_SET_VALUE for blinds.
+* (sbormann) You can now use variables in device-names, button-captions and headings of ADDITIONAL_CONTROLS.
 
 ### 1.6.6 (2021-03-21)
 * (sbormann) Fix for double admin page.
@@ -1638,6 +1667,9 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ### 1.5.1 (2020-12-01)
 * (sbormann) Added url-paremeter noPanel.
 * (sbormann) Changed fetching-method of ioBroker Objects.
+
+<details>
+<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.
@@ -1882,9 +1914,6 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Added a few captions to admin.
 * (sbormann) Prevent pressure menu when scrolling and after opening menu.
 * (sbormann) Corrected a few translations.
-
-<details>
-<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 0.4.1 (2020-05-15)
 * (sbormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.

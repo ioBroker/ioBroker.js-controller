@@ -30,7 +30,7 @@ It is also possible to apply a filter to the log levels and also to the adapters
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
-### __WORK IN PROGRESS__
+### 0.2.10 (2021-04-15)
 * (o0shojo0o) Check log message of undefine
 
 ### 0.2.9 (2021-02-05)

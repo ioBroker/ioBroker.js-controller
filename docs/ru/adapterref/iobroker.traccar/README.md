@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.traccar/README.md
 title: ioBroker.traccar
-hash: 4nVWGxGbNBeQCj6hJ/ABxBu13GCAzzOvTMe8w5Bf3uY=
+hash: qYjqlz2cbuYN7XV38/SJfAEHX55n28skB+IEEdnLl9c=
 ---
 ![Логотип](../../../en/adapterref/iobroker.traccar/admin/traccar.png)
 
@@ -19,6 +19,13 @@ hash: 4nVWGxGbNBeQCj6hJ/ABxBu13GCAzzOvTMe8w5Bf3uY=
 ## Адаптер Traccar для ioBroker
 Этот адаптер импортирует в реальном времени позицию и расширенные данные из [Traccar](https://www.traccar.org) и делает их доступными в ioBroker.
 
+## Конфигурация
+1. Создайте новый экземпляр адаптера.
+2. Заполните URL / IP и порт с сервера Traccar.
+3. Настройте имя пользователя и пароль.
+4. Сохраните настройки.
+5. Удачи :)
+
 ## Changelog
 <!--
  https://github.com/AlCalzone/release-script#usage
@@ -28,6 +35,11 @@ hash: 4nVWGxGbNBeQCj6hJ/ABxBu13GCAzzOvTMe8w5Bf3uY=
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.0.7 (2021-03-24)
+* (o0shojo0o) bugfix special characters in password or username
+* (o0shojo0o) code refactor
+* (o0shojo0o) better handling with new device or geolocation at runtime
+
 ### 0.0.6 (2021-03-19)
 * (o0shojo0o) adjustments according to the adapter review
 

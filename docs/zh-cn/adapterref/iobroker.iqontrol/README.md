@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
+hash: +O04SP6hiOKv4rGIc4bD9a2b9HOZ0puX9zfD4cfvY2I=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -190,7 +190,9 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 
 ![弹出屏幕截图](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
-### PostMessage-Communication（仅适用于专家）
+<details><summary>小部件开发（仅适用于专家）：（<ins>滑动打开</ins>）</summary>
+
+### PostMessage-通讯
 *从技术上讲，BACKGROUND_VIEW / URL / HTML的内容放置在称为iframe的HTML元素内，该元素是网站内部的网站
 *通过启用选项“允许对Background_VIEW / URL / HTML进行postMessage-Communication”，您可以启用此iframe中的网站与iQontrol自身之间的postMessage-Communication。
 *要将命令发送到iQontrol，可以使用以下javascript命令：``window.parent.postMessage（message，“ *”）;''
@@ -205,7 +207,7 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
         *``{命令：“ setWidgetDeviceState”，stateId：<widgetDeviceState>，值：<value>}''
 *这会将设置为设备状态``<widgetDeviceState>''的ioBroker数据点（例如，分配给LEVEL的数据点）设置为值``<value>''（``<value>` `可以是字符串，数字或布尔值，也可以是诸如``{val：<value>，ack：true | false}''之类的对象）
         *``{命令：“ getWidgetDeviceState”，stateId：<widgetDeviceState>}``
-*这将导致iQontrol发送分配给设备STATE``<widgetDeviceState>''的ioBroker数据点的值（例如，分配给LEVEL的数据点；请参见下面的方法，接收应答消息）
+*这将导致iQontrol发送分配给设备STATE``<widgetDeviceState>''的ioBroker数据点的值（例如，分配给LEVEL的数据点；请参阅下面的方法，接收应答消息）
         *``{命令：“ getWidgetDeviceStateSubscribed”，stateId：<widgetDeviceState>}``
 *这将导致iQontrol现在以及每次其值更改时发送ioBroker数据点的值，该值已分配给设备STATE``<widgetDeviceState>''（例如，数据点，已分配给LEVEL）。如何接收答案消息）
         *``{命令：“ setState”，stateId：<stateId>，值：<value>}''
@@ -260,7 +262,7 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 
 *您可以使用以下HTML代码并将其复制到小部件的Background_HTML-State中（然后需要将其配置为“常量”）
 *或者，您可以将此代码作为html文件上传到/ userwidgets子目录中，并将其引用到Background_URL-State（然后还需要将其配置为“常量”）
-*激活选项“允许对Background_VIEW / URL / HTML进行postMessage通讯”
+*激活“允许对Background_VIEW / URL / HTML进行postMessage通讯”选项
 *它将演示如何完成网站与iQontrol之间的双向通信
 
 ````html
@@ -490,6 +492,20 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 *默认值：“向下”
 *``controlModeDisarmedValue``（CONTROL_MODE的值表示'已撤防'）-仅对角色Alarm有效：
 *默认值：“ 0”
+*``timeCaption``（时间的标题）-仅对角色DateAndTime有效：
+* 默认： ””
+*``timeFormat``（TIME的格式（存储在数据点中，请参见自述文件））-仅对角色DateAndTime有效：
+*默认值：“ x”
+*``timeDisplayFormat``（TIME的显示格式（应如何显示，请参见自述文件））-仅对角色DateAndTime有效：
+*默认值：“ dddd，DD.MM.YYYY HH：mm：ss”
+*``dateAndTimeTileActiveConditions``（当所有选定项都为true时，瓷砖才处于活动状态）-仅对角色DateAndTime有效：
+*可能的值（数组）：“ activeIfStateActive”，“ activeIfTimeNotZero”，“ activeIfTimeInFuture”，“ activeIfTimeInPast”
+*默认值：“ activeIfStateActive，activeIfTimeInFuture”
+*``dateAndTimeTileActiveWhenRinging``（当RINGING处于活动状态时，Tile始终处于活动状态）-仅对角色DateAndTime有效：
+*默认值：true
+*``dateAndTimeShowInState``（显示状态）-仅对角色DateAndTime有效：
+*可能的值（数组）：“ showStateIfInactive”，“ showStateIfActive”，“ showSubjectIfActive”，“ showSubjectIfInactive”，“ showTimeIfInactiveAndInPast”，“ showTimeIfInactiveAndInFuture”，“ showTimeIfActiveAndInPast”，“ showTimeIfActiveAndInFuture”，“ showTimeDistanceIfInIfInInactiveInActiveIn” ，“ showTimeDistanceIfActiveAndInFuture”
+*默认值：“ showStateIfInactive，showSubjectIfActive，showTimeDistanceIfActiveAndInFuture”
 *“ coverImageReloadDelay”（封面图像的延迟重载[ms]）-仅对角色媒体有效：
 *可能的值：0到5000之间的数字
 * 默认： ””
@@ -1106,16 +1122,14 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 </html>
 ````
 
-</ details>
+</ details> </ details>
 
-##角色和相关状态的描述
-每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的iobroker状态。
-如果使用自动创建功能，则可以从iobroker-object树中选择一个现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
-这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
-要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和已用状态的简短描述：
+##修改数据点配置
+您可以通过设备配置对话框或iobroker的objects-tab中数据点后面的扳手图标来修改数据点的配置。
 
-###修改数据点配置
-您可以通过设备配置对话框或iobroker的objects-tab中数据点后面的扳手图标来修改数据点的配置。在这里您可以：
+![CustomDialog调用](img/custom_call.png)![CustomDialog示例](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
+
+在这里您可以：
 
 *设置只读标志
 *设置反转标志
@@ -1136,7 +1150,13 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 *键：``TuneIn-Playlist：*''，目标数据点ID：``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist''，目标值：``*''
 *如果用户输入``TuneIn-Playlist：Ambient''，则将``Ambient''值写入``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist''
 
-![CustomDialog调用](img/custom_call.png)![CustomDialog示例](img/custom_dialog.png)![目标值列表的概念](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+        ![目标值列表的概念](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+
+##角色和相关状态的描述
+每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的iobroker状态。
+如果使用自动创建功能，则可以从iobroker-object树中选择一个现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
+这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
+要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和已用状态的简短描述：
 
 ###一般状态：
 ####状态和级别
@@ -1170,7 +1190,7 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 
     ![INFO_A和INFO_B](../../../en/adapterref/iobroker.iqontrol/img/info_a_info_b.png)
 
-* **ADDITIONAL_CONTROLS** *array* 数据点数组，用于定义将在信息对话框中显示的其他控制元素
+* **ADDITIONAL_CONTROLS** *array* 数据点数组，定义了将在信息对话框中显示的其他控制元素。您可以在名称和标题中使用变量（使用与普通设备名称相同的语法）
 * **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
 * **URL** 常量或DATAPOINT *字符串*-该URL将在对话框中以iframe的形式打开
 * **HTML** 常量或数据点*字符串*-如果未指定URL-Datapoint，则此标记将显示在iframe中
@@ -1208,7 +1228,7 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 ###<img src="img/icons/button.png" width="32">按钮：
 * **STATE** *任何*-任何所需的状态类型
 * **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的iobroker状态！），如果按下按钮，它将分配给STATE
-* **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的iobroker状态！）。如果已定义，则在in选项中定义的时间或100ms之后，STATE将重置为该值。
+* **OFF_SET_VALUE** 常量*字符串*-这是一个常数（不是链接的iobroker状态！）。如果已定义，则在in选项中定义的时间或100ms之后，STATE将重置为该值。
 
 ###<img src="img/icons/light_on.png" width="32">光：
 每个指示灯可能具有以下一种或两种状态：
@@ -1347,7 +1367,9 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 <details><summary>显示可能的时间格式：（<ins>滑动打开</ins>）</summary>
 
-在设备选项的特定于设备的部分下，您可以设置数据点的时间格式及其显示方式。您可以使用以下令牌：
+*在任何数据点的自定义部分（扳手图标）中，您可以配置时间格式和时间显示格式。如果数据点包含时间信息，则这两个参数指定在数据点中以哪种格式保存时间以及iQontrols如何向用户显示时间。
+*对于“日期和时间”设备，这两个设置也可以在设备特定部分内的设备选项中进行。这些将覆盖在数据点的“自定义”部分中进行的设置。
+*您可以使用以下令牌：
 
 | | |代币|例子数据点|显示|选择器|
 |----------:|-------------------------------:|--------------------|------------------------------------------------------------------------------|-----------|--------------------------------------|-----------------------------|
@@ -1432,7 +1454,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 |免费文字|在方括号中标记自由文本| [] | [这是一个示例，所有令牌都将被忽略] X | X | --- |
 
 *如果对datapoint-timeformat和display-timeformat使用不同的配置，则使用以下转换规则。
-*您可以在datapoint-timeformat内部使用标志tb，tn和to来影响行为。
+*您可以在datapoint-timeformat中使用标志``tb''，``tn''和``to''来影响行为。
 
     ![辉光](../../../en/adapterref/iobroker.iqontrol/img/dateandtime_conversionrules.png)
 
@@ -1517,11 +1539,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
-### 1.7.0 dev
+### 1.7.1 dev
+* (sbormann) Updated dependencies.
+* (sbormann) Added option to show name of INFO_A/B.
+
+### 1.7.0 (2021-04-13)
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device for dates, times and periods (durations).
+* (sbormann) Added time-format and time-display-format to custom settings of datapoints.
+* (sbormann) Added time-picker for every datapoint - including ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
 * (sbormann) Added STOP_SET_VALUE for blinds.
+* (sbormann) You can now use variables in device-names, button-captions and headings of ADDITIONAL_CONTROLS.
 
 ### 1.6.6 (2021-03-21)
 * (sbormann) Fix for double admin page.
@@ -1638,6 +1667,9 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### 1.5.1 (2020-12-01)
 * (sbormann) Added url-paremeter noPanel.
 * (sbormann) Changed fetching-method of ioBroker Objects.
+
+<details>
+<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.
@@ -1882,9 +1914,6 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * (sbormann) Added a few captions to admin.
 * (sbormann) Prevent pressure menu when scrolling and after opening menu.
 * (sbormann) Corrected a few translations.
-
-<details>
-<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 0.4.1 (2020-05-15)
 * (sbormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.

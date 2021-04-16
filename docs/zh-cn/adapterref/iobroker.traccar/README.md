@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.traccar/README.md
 title: ioBroker.traccar
-hash: 4nVWGxGbNBeQCj6hJ/ABxBu13GCAzzOvTMe8w5Bf3uY=
+hash: qYjqlz2cbuYN7XV38/SJfAEHX55n28skB+IEEdnLl9c=
 ---
-![标识](../../../en/adapterref/iobroker.traccar/admin/traccar.png)
+![商标](../../../en/adapterref/iobroker.traccar/admin/traccar.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.traccar.svg?dummy=unused)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.traccar.svg?dummy=unused)
@@ -19,6 +19,13 @@ hash: 4nVWGxGbNBeQCj6hJ/ABxBu13GCAzzOvTMe8w5Bf3uY=
 ## IoBroker的Traccar适配器
 该适配器从[特拉卡](https://www.traccar.org)实时导入位置和扩展数据，并使它们在ioBroker中可用。
 
+＃＃ 配置
+1.创建适配器的新实例
+2.填写Traccar服务器的URL / IP和端口
+3.配置用户名和密码
+4.保存设置
+5.玩得开心:)
+
 ## Changelog
 <!--
  https://github.com/AlCalzone/release-script#usage
@@ -28,6 +35,11 @@ hash: 4nVWGxGbNBeQCj6hJ/ABxBu13GCAzzOvTMe8w5Bf3uY=
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.0.7 (2021-03-24)
+* (o0shojo0o) bugfix special characters in password or username
+* (o0shojo0o) code refactor
+* (o0shojo0o) better handling with new device or geolocation at runtime
+
 ### 0.0.6 (2021-03-19)
 * (o0shojo0o) adjustments according to the adapter review
 

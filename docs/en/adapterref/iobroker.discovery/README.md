@@ -138,7 +138,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 -->
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.6.2 (2021-04-13)
 * (Apollon77) Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)
 * (Apollon77) Fix crash case in ping logic (Sentry IOBROKER-DISCOVERY-2Y)
 * (Apollon77) Fix crash case in hf-lpb100 logic (Sentry IOBROKER-DISCOVERY-34)

@@ -6,7 +6,6 @@
 ![Number of Installations (latest)](http://iobroker.live/badges/pegelalarm-installed.svg)
 [![Dependency Status](https://img.shields.io/david/simatec/iobroker.pegelalarm.svg)](https://david-dm.org/simatec/iobroker.pegelalarm)
 [![Known Vulnerabilities](https://snyk.io/test/github/simatec/ioBroker.pegelalarm/badge.svg)](https://snyk.io/test/github/simatec/ioBroker.pegelalarm)
-[![Known Vulnerabilities](https://snyk.io/test/github/simatec/ioBroker.pegelalarm/badge.svg)](https://snyk.io/test/github/simatec/ioBroker.pegelalarm)
 ![Test and Release](https://github.com/simatec/ioBroker.pegelalarm/workflows/Test%20and%20Release/badge.svg)
 [![Travis-CI](http://img.shields.io/travis/simatec/ioBroker.pegelalarm/master.svg)](https://travis-ci.org/simatec/ioBroker.pegelalarm)
 
@@ -19,6 +18,21 @@ Provides data from Pegelalarm-API (v1.0)
 
 API-Documentation for API 1.1 can be found here
 https://github.com/SOBOS-GmbH/pegelalarm_public_pas_doc/wiki/Download-current-water-data
+
+**************************************************************************************************************
+
+### What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
+
+**************************************************************************************************************
+
+**If you like it, please consider a donation:**
+  
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
+**************************************************************************************************************
 
 ## Changelog
 

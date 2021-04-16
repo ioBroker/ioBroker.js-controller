@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pegelalarm/README.md
 title: ioBroker.pegelalarm
-hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
+hash: FJDsZxir1lY+5t/VwRvPy//SWoJXltMwoOYRqdlU5lE=
 ---
 ![商标](../../../en/adapterref/iobroker.pegelalarm/admin/pegelalarm.png)
 
@@ -23,6 +23,21 @@ hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
 提供来自Pegelalarm-API（v1.0）的数据
 
 可以在这里找到API 1.1的API文档https://github.com/SOBOS-GmbH/pegelalarm_public_pas_doc/wiki/Download-current-water-data
+
+**************************************************************************************************************
+
+###什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本上不会崩溃的无错误适配器。
+
+**************************************************************************************************************
+
+**如果您愿意，请考虑捐赠：**
+
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
+**************************************************************************************************************
 
 ## Changelog
 

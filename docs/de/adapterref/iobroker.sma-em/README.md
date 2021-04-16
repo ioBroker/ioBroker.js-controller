@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: 7NwCP3kKDqTEiFrkjO1XCWvLGkZFIT7V5xbCYadAA2Q=
+hash: vIxnJU5+4gRaAdEznofPvvebwkka4SysNVbqfTkSZAU=
 ---
 ![Logo](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -17,8 +17,10 @@ hash: 7NwCP3kKDqTEiFrkjO1XCWvLGkZFIT7V5xbCYadAA2Q=
 ### Die Info
 Dieser Adapter liest Informationen von SMA Energy Meter und Sunny Home Manager 2.
 Es unterstützt das SMA-EMETER-Protokoll-2.
+
 SMA Energy Meter und Sunny Home Manager 2 Multicast-Datagramme mit ihren Energiemessdaten werden jede Sekunde an das Netzwerk gesendet.
 Der SMA Energy Meter Adapter empfängt diese Multicast-Nachrichten und speichert sie als iobroker-Status.
+Eine einzelne Instanz des SMA Energy Meter Adapters erkennt alle SMA Energy Meter und Sunny Home Manager in allen verbundenen Netzwerken.
 
 ![Zustände](../../../en/adapterref/iobroker.sma-em/docs/en/img/overview.png)
 
@@ -67,6 +69,11 @@ SMA und Sunny Home Manager sind eingetragene Marken der SMA Solar Technology AG 
 Alle anderen Marken sind Eigentum ihrer jeweiligen Inhaber.
 
 ## Changelog
+### 0.6.4 (2021-04-14)
+* (TGuybrush) Bug fixes
+  * Prevent warnings regarding non-existent objects upon adapter instance creation and start-up under js-controller 3.2.x
+  * Improved check of SMA Energy Meter multicast messages to prevent ghost devices and warnings regarding unknown OBIS values.
+
 ### 0.6.3 (2021-03-04)
 * (TGuybrush) The adapter binds now to all external IPv4 addresses.
 

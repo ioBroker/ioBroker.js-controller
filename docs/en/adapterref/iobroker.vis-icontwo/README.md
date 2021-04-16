@@ -61,6 +61,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.63.0
+
+• Neue Icons hinzugefügt (Animated Icons - Arrows, Maps, Phones & Weather)
+
+### 0.62.0
+
+• Neue Icons hinzugefügt (Animated Icons - Charts & Alarm)
+
 ### 0.61.0
 
 • Neue Icons hinzugefügt (Finance & Charts)

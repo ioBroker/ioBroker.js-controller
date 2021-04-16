@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: 7NwCP3kKDqTEiFrkjO1XCWvLGkZFIT7V5xbCYadAA2Q=
+hash: vIxnJU5+4gRaAdEznofPvvebwkka4SysNVbqfTkSZAU=
 ---
-![标识](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
+![商标](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
 ![安装数量](http://iobroker.live/badges/sma-em-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sma-em.svg)
@@ -17,8 +17,10 @@ hash: 7NwCP3kKDqTEiFrkjO1XCWvLGkZFIT7V5xbCYadAA2Q=
 ###信息
 该适配器从SMA电能表和Sunny Home Manager 2读取信息。
 它支持SMA-EMETER-protocol-2。
+
 SMA电能表和Sunny Home Manager 2每秒将其电能测量数据多播数据报到网络。
 SMA电能表适配器接收这些多播消息并将其存储为iobroker状态。
+SMA电表适配器的单个实例可检测所有连接网络中的所有SMA电表和Sunny Home Manager。
 
 ![状态](../../../en/adapterref/iobroker.sma-em/docs/en/img/overview.png)
 
@@ -37,7 +39,7 @@ SMA电能表适配器接收这些多播消息并将其存储为iobroker状态。
 -总无功功率消耗（qregard）和无功功率馈入（qsurplus）的瞬时值
 -总无功功率消耗（qregardcounter）和无功功率馈入（qsurpluscounter）的电表值
 -总视在功率消耗（瞬时）和视在功率馈入（盈余）的瞬时值
--电能表的总视在功耗（sregardcounter）和视在功率馈入（ssurpluscounter）的值
+-电能表的总视在功率消耗（sregardcounter）和视在功率馈入（s盈余计数器）
 -cosphi（功率因数）
 -电网频率（仅可用于Sunny Home Manager 2，SMA电表当前不提供任何电网频率值）
 -详细介绍了L1 / L2 / L3的各个阶段（可选）：
@@ -67,6 +69,11 @@ SMA和Sunny Home Manager是SMA Solar Technology AG <https://www.sma.de/en.html>�
 所有其他商标均为其各自所有者的财产。
 
 ## Changelog
+### 0.6.4 (2021-04-14)
+* (TGuybrush) Bug fixes
+  * Prevent warnings regarding non-existent objects upon adapter instance creation and start-up under js-controller 3.2.x
+  * Improved check of SMA Energy Meter multicast messages to prevent ghost devices and warnings regarding unknown OBIS values.
+
 ### 0.6.3 (2021-03-04)
 * (TGuybrush) The adapter binds now to all external IPv4 addresses.
 

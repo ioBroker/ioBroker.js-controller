@@ -96,9 +96,10 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.1.0 (2021-04-13)
 * (Apollon77) prevent crashes (Sentry IOBROKER-DIGITALSTROM-5)
-* (Apollon77) Fix EnergyMeterValue 
+* (Apollon77) Fix EnergyMeterValue
+* (Apollon77) further optimizations and adding new outout channel types
 
 ### 2.0.5 (2020-03-14)
 * (Apollon77) BREAKING: binaryInput are now numbers intead of booleans because it can have values other then true/false

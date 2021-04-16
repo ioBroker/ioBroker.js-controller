@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
+hash: +O04SP6hiOKv4rGIc4bD9a2b9HOZ0puX9zfD4cfvY2I=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -190,7 +190,9 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 
 ![Всплывающий снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
-### PostMessage-Communication (только для экспертов)
+<details><summary>Разработка виджетов (только для экспертов): (<ins> нажмите, чтобы открыть</ins> )</summary>
+
+### PostMessage-Communication
 * Технически содержимое BACKGROUND_VIEW / URL / HTML размещается внутри HTML-элемента, называемого iframe, который представляет собой веб-сайт внутри веб-сайта.
 * Включив опцию «Разрешить postMessage-Communication для BACKGROUND_VIEW / URL / HTML», вы можете включить postMessage-Communication между веб-сайтом внутри этого iframe и самим iQontrol.
 * Для отправки команд в iQontrol вы можете использовать следующую javascript-команду: `` window.parent.postMessage (message, "*"); ``
@@ -490,6 +492,20 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 * По умолчанию: «Вниз».
 * `` controlModeDisarmedValue '' (значение CONTROL_MODE для 'снято с охраны') - действительно только для роли Alarm:
 * По умолчанию: «0»
+* timeCaption (Заголовок для ВРЕМЕНИ) - действует только для роли DateAndTime:
+* По умолчанию: ""
+* timeFormat (Формат ВРЕМЕНИ (как хранится в точке данных, см. readme)) - действительно только для роли DateAndTime:
+* По умолчанию: «x»
+* `` timeDisplayFormat`` (Формат отображения ВРЕМЕНИ (как он должен отображаться, см. readme)) - действительно только для роли DateAndTime:
+* По умолчанию: «дддд, ДД.ММ.ГГГГ ЧЧ: мм: сс».
+* `` dateAndTimeTileActiveConditions`` (плитка активна, когда все выбранные элементы верны) - действительно только для роли DateAndTime:
+* Возможные значения (массив): «activeIfStateActive», «activeIfTimeNotZero», «activeIfTimeInFuture», «activeIfTimeInPast»
+* По умолчанию: «activeIfStateActive, activeIfTimeInFuture».
+* `` dateAndTimeTileActiveWhenRinging`` (плитка всегда активна, когда RINGING активен) - действует только для роли DateAndTime:
+* По умолчанию: true
+* `` dateAndTimeShowInState`` (Показать в состоянии) - действительно только для роли DateAndTime:
+* Возможные значения (массив): "showStateIfInactive", "showStateIfActive", "showSubjectIfActive", "showSubjectIfInactive", "showTimeIfInactiveAndInPast", "showTimeIfInactiveAndInFuture", "showTimeIfActiveAndInPast", "showTimeIfActiveAndInFuture", "showTimeDistanceIfInactiveAndInPast", "showTimeDistanceIfInactiveAndInFuture", "showTimeDistanceIfActiveAndInPast" , "showTimeDistanceIfActiveAndInFuture"
+* По умолчанию: «showStateIfInactive, showSubjectIfActive, showTimeDistanceIfActiveAndInFuture».
 * `coverImageReloadDelay` (Задержка перезагрузки изображения-обложки [мс]) - действует только для роли Media:
 * Возможные значения: число от 0 до 5000
 * По умолчанию: ""
@@ -1106,16 +1122,14 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 </html>
 ````
 
-</details>
+</details> </details>
 
-## Описание ролей и связанных состояний
-У каждого устройства есть роль, которая определяет функцию устройства. Каждая роль генерирует набор состояний, которые можно связать с соответствующим состоянием iobroker.
-Если вы используете функцию автоматического создания, вы можете выбрать существующее устройство из дерева объектов iobroker. Autocreate пытается определить роль и сопоставить как можно больше состояний.
-Это будет работать только для известных устройств. Для неизвестных устройств и для предоставления устройствам расширенных функций вы можете добавить их вручную с помощью кнопки (+) - или отредактировать устройства, созданные с помощью автосоздания.
-Чтобы изменить роль и состояния устройства, нажмите на карандаш позади устройства. Ниже вы найдете краткое описание ролей и используемых состояний:
+## Изменение конфигурации точки данных
+Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных в диалоговом окне конфигурации устройства или на вкладке объектов iobroker.
 
-### Изменение конфигурации точки данных
-Вы можете изменить конфигурацию точек данных с помощью значка гаечного ключа за точкой данных в диалоговом окне конфигурации устройства или на вкладке объектов iobroker. Здесь вы можете:
+![Вызов CustomDialog](img/custom_call.png) ![Пример CustomDialog](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
+
+Здесь вы можете:
 
 * Установить флаг только для чтения
 * Установить инвертировать-флаг
@@ -1136,7 +1150,13 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 * Ключ: `` TuneIn-Playlist: *'', Target-Datapoint ID: `` alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist '', целевое значение: ``* ''
 * Если пользователь вводит TuneIn-Playlist: Ambient, значение Ambient будет записано в alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist.
 
-![Вызов CustomDialog](img/custom_call.png) ![Пример CustomDialog](img/custom_dialog.png) ![Концепция списка целевых значений](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+        ![Концепция списка целевых значений](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+
+## Описание ролей и связанных состояний
+У каждого устройства есть роль, которая определяет функцию устройства. Каждая роль генерирует набор состояний, которые можно связать с соответствующим состоянием iobroker.
+Если вы используете функцию автоматического создания, вы можете выбрать существующее устройство из дерева объектов iobroker. Autocreate пытается определить роль и сопоставить как можно больше состояний.
+Это будет работать только для известных устройств. Для неизвестных устройств и для предоставления устройствам расширенных функций вы можете добавить их вручную с помощью кнопки (+) - или отредактировать устройства, созданные с помощью автосоздания.
+Чтобы изменить роль и состояния устройства, нажмите на карандаш позади устройства. Ниже вы найдете краткое описание ролей и используемых состояний:
 
 ### Общие положения:
 #### СОСТОЯНИЕ и УРОВЕНЬ
@@ -1170,11 +1190,11 @@ hash: Hn7Z9QjzqTW/c0qfFpf6MCseek2ZapY1HbHVpJ9zmwE=
 
     ![INFO_A и INFO_B](../../../en/adapterref/iobroker.iqontrol/img/info_a_info_b.png)
 
-* **ADDITIONAL_CONTROLS** *array* - массив точек данных, определяющих дополнительные элементы управления, которые будут отображаться внутри информационного диалога
+* **ADDITIONAL_CONTROLS** *array* - массив точек данных, определяющих дополнительные элементы управления, которые будут отображаться внутри информационного диалога. Вы можете использовать переменные внутри имен и заголовков (используйте тот же синтаксис, что и для обычных имен устройств)
 * **ADDITIONAL_INFO** *array* - массив точек данных, который будет отображаться внизу информационного диалога
 * **URL** CONSTANT или DATAPOINT *string* - этот URL будет открыт как iframe внутри диалогового окна
 * **HTML** CONSTANT или DATAPOINT *string* - эта разметка будет отображаться внутри iframe, если не указан URL-Datapoint
-* **BACKGROUND_URL** CONSTANT или DATAPOINT *string* - этот URL будет отображаться как фон плитки устройства. Он размещается над фоновыми изображениями, но вы можете настроить его скрытие, если плитка активна или неактивна. Пожалуйста, ознакомьтесь с разделом виджетов в этом руководстве.
+* **BACKGROUND_URL** CONSTANT или DATAPOINT *string* - этот URL будет отображаться как фон плитки устройства. Он размещается над фоновыми изображениями, но вы можете настроить его скрытие, если плитка активна или неактивна. Пожалуйста, ознакомьтесь с разделом, посвященным виджетам, в этом руководстве.
 * **BACKGROUND_HTML** CONSTANT или DATAPOINT *string* - эта разметка будет отображаться как фон устройства-тайла, если не указан BACKGROUND_URL
 * **БАТАРЕЯ** *логическое* - если истина или *число* - когда меньше 10%, будет отображаться маленький значок разряда батареи
     * Вы можете дополнительно настроить поведение значка батареи в разделе параметров «Значок батареи пустой».
@@ -1347,7 +1367,9 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 <details><summary>Показать возможные форматы времени: (<ins> нажмите, чтобы открыть</ins> )</summary>
 
-В параметрах устройства в разделе, посвященном конкретному устройству, вы можете установить формат времени точки данных и способ ее отображения. Вы можете использовать следующие токены:
+* В пользовательском разделе (значок гаечного ключа) любой точки данных вы можете настроить формат времени и формат отображения времени. Если точка данных содержит информацию о времени, эти два параметра указывают, в каком формате время сохраняется в точке данных и как iQontrols отображает время пользователю.
+* Для устройства «Дата и время» эти две настройки также можно выполнить в параметрах устройства в разделе, посвященном конкретному устройству. Это перезапишет настройки, сделанные в пользовательском разделе точки данных.
+* Вы можете использовать следующие токены:
 
 | | | Токен | Пример | Datapoint | Дисплей | Сборщик |
 |----------:|-------------------------------:|--------------------|------------------------------------------------------------------------------|-----------|--------------------------------------|-----------------------------|
@@ -1494,7 +1516,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Поиск проблемы
-* Убедитесь, что вы выполнили требования раздела "Вам нужно ..." вверху этой страницы.
+* Убедитесь, что вы выполнили раздел "Вам нужно ..." вверху этой страницы.
 * Если после обновления что-то не работает должным образом, попробуйте выполнить следующие действия:
     * Начать загрузку адаптера:
 
@@ -1517,11 +1539,18 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
-### 1.7.0 dev
+### 1.7.1 dev
+* (sbormann) Updated dependencies.
+* (sbormann) Added option to show name of INFO_A/B.
+
+### 1.7.0 (2021-04-13)
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device for dates, times and periods (durations).
+* (sbormann) Added time-format and time-display-format to custom settings of datapoints.
+* (sbormann) Added time-picker for every datapoint - including ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
 * (sbormann) Added STOP_SET_VALUE for blinds.
+* (sbormann) You can now use variables in device-names, button-captions and headings of ADDITIONAL_CONTROLS.
 
 ### 1.6.6 (2021-03-21)
 * (sbormann) Fix for double admin page.
@@ -1638,6 +1667,9 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### 1.5.1 (2020-12-01)
 * (sbormann) Added url-paremeter noPanel.
 * (sbormann) Changed fetching-method of ioBroker Objects.
+
+<details>
+<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.
@@ -1882,9 +1914,6 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * (sbormann) Added a few captions to admin.
 * (sbormann) Prevent pressure menu when scrolling and after opening menu.
 * (sbormann) Corrected a few translations.
-
-<details>
-<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 0.4.1 (2020-05-15)
 * (sbormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.

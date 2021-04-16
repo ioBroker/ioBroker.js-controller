@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pegelalarm/README.md
 title: ioBroker.pegelalarm
-hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
+hash: FJDsZxir1lY+5t/VwRvPy//SWoJXltMwoOYRqdlU5lE=
 ---
 ![Logo](../../../en/adapterref/iobroker.pegelalarm/admin/pegelalarm.png)
 
@@ -23,6 +23,21 @@ hash: KZ58Jq0Vk56nYphvpjaeXTMMiFcHQu9Pqc/hO6/cmqo=
 Bietet Daten aus der Pegelalarm-API (v1.0)
 
 Die API-Dokumentation für API 1.1 finden Sie hier https://github.com/SOBOS-GmbH/pegelalarm_public_pas_doc/wiki/Download-current-water-data
+
+**************************************************************************************************************
+
+### Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
+Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
+**************************************************************************************************************
+
+** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
+
+**************************************************************************************************************
 
 ## Changelog
 

@@ -26,6 +26,9 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Add done calls to some nodes
+
 ### 2.2.0 (2021-03-07)
 * (Apollon77/mickym2) Correct readonly flags. IMPORTANT: Notw Readonly works as it should be. If you worked around the issue before please adjust your nodes!
 * (Apollon77) Fix using wildcards inside the id

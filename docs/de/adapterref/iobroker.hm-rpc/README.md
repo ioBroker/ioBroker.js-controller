@@ -196,8 +196,9 @@ Auszug:
 	### __WORK IN PROGRESS__
 -->
 
-__WORK IN PROGRESS__
+### 1.14.36 (2021-04-14)
 * (foxriver76) error handling improved when deleting obsolete devices/channels
+* (foxriver76) if no message id provided on `sendTo`, we do not send `undefined` params anymore (fixes #318)
 
 ### 1.14.35 (2021-02-13)
 * (foxriver76) virtual devices now support ping, so use it, else it can be that instance won't register at CCU again (fixes #308)

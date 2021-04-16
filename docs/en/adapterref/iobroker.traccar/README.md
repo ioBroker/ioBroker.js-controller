@@ -14,6 +14,14 @@
 
 This adapter imports in real time the position and the extended data from [Traccar](https://www.traccar.org) and makes them available in ioBroker.
 
+## Configuration
+
+1. Create a new instance of the adapter
+2. Fill the URL/IP and port from Traccar server
+3. Configur username and password
+4. Save the settings
+5. Have fun :) 
+
 ## Changelog
 <!--
  https://github.com/AlCalzone/release-script#usage
