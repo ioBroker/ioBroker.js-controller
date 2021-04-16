@@ -2,7 +2,9 @@
   "common": {
     "name": "test",
     "version": "0.1.0",
-    "title": "test Adapter",
+    "titleLang": {
+      "en": "test Adapter"
+    },
     "desc": {
       "en": "This adapter connect",
       "de": "This adapter connect",
@@ -44,16 +46,10 @@
       {
         "js-controller": ">=0.9.0"
       }
-    ],
-    "config": {
-      "width ": 1224,
-      "height": 520
-    }
+    ]
   },
   "native": {
     "paramA": "",
     "paramB": ""
-  },
-  "_id": "system.adapter.test",
-  "type": "adapter"
+  }
 }

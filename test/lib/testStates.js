@@ -833,6 +833,33 @@ function register(it, expect, context) {
         return Promise.resolve();
     });
 
+    it(testName + 'Should round to next 5', async () => {
+        // we test the step attribute here
+        await context.adapter.setObjectAsync(`${gid}step`, {
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100,
+                step: 5
+            },
+            native: {},
+            type: 'state'
+        });
+
+        // now the state should be rounded
+        await context.adapter.setStateAsync(`${gid}step`, 13, true);
+
+        let state = await context.adapter.getStateAsync(`${gid}step`);
+        expect(state.val).to.equal(15);
+
+        // now with a negative value
+        await context.adapter.setStateAsync(`${gid}step`, -18, true);
+
+        state = await context.adapter.getStateAsync(`${gid}step`);
+        expect(state.val).to.equal(-20);
+    });
     // getHistory - cannot be tested
 }
 
