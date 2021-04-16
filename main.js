@@ -963,7 +963,7 @@ function checkHost(callback) {
                         objects.delObject(oldId, () =>
                             // delete all hosts states
                             objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) =>
-                                delObjects(doc.rows, () => callback && callback())));
+                                delObjects(doc && Array.isArray(doc.rows) ? doc.rows : null, () => callback && callback())));
                     });
                 }
             });
@@ -1950,7 +1950,7 @@ async function processMessage(msg) {
                         // Check if repositories exists
                         if (!err && repos && repos.native && repos.native.repositories) {
                             let updateRepo = false;
-                            if (typeof msg.message === 'object') {
+                            if (tools.isObject(msg.message)) {
                                 updateRepo  = msg.message.update;
                                 msg.message = msg.message.repo;
                             }
