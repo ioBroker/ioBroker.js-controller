@@ -16,5 +16,14 @@
     "details": "Docker image",
     "picture": "docker.png",
     "info": "https://smarthome.buanet.de/docker/container-images/iobroker/"
+  },
+  {
+    "file": "ioBroker_Image_RPi_v1.0.0_latest.zip",
+    "linux": "Raspberry OS",
+    "date": "20210415",
+    "device": "Raspberry Pi",
+    "details": "Raspberry OS Image with ioBroker",
+    "picture": "Pi4.png",
+    "info": "https://forum.iobroker.net/topic/41520/test-image-raspberry-pi-os-v1-0-0"
   }
 ]
