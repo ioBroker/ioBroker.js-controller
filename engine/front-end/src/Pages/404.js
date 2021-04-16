@@ -8,7 +8,6 @@ https://codepen.io/robinselmer/pen/vJjbOZ
 */
 
 import I18n from '../i18n';
-// import Footer from '../Footer';
 
 const styles = theme => ({
     content: Object.assign({background: 'black', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0}, theme.content),
@@ -78,31 +77,25 @@ const styles = theme => ({
             content: '"> "'
         }
     },
-    errorcode: {
+    errorCode: {
         color: 'white'
     }
 });
 
 class Page404 extends Component {
-
     render() {
-        // <p className={this.props.classes.output}>Please try <a href="#1">this link</a> or <a href="#2">this link</a></p>
-
-        return [
-            (<div className={this.props.classes.content}>
-                <div className={this.props.classes.root}>
-                    <div className={this.props.classes.overlay}>
-                        <div className={this.props.classes.terminal}>
-                            <h1>Error<span className={this.props.classes.errorcode}>404</span></h1>
-                            <p className={this.props.classes.output}>
-                                {I18n.t('The page you are looking for')}</p>
-                            <p className={this.props.classes.output}>{I18n.t('Good luck')}</p>
-                        </div>
+        return <div className={this.props.classes.content}>
+            <div className={this.props.classes.root}>
+                <div className={this.props.classes.overlay}>
+                    <div className={this.props.classes.terminal}>
+                        <h1>Error<span className={this.props.classes.errorCode}>404</span></h1>
+                        <p className={this.props.classes.output}>
+                            {I18n.t('The page you are looking for')}</p>
+                        <p className={this.props.classes.output}>{I18n.t('Good luck')}</p>
                     </div>
                 </div>
-            </div>),
-            //(<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)
-        ];
+            </div>
+        </div>;
     }
 }
 

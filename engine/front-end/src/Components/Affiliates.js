@@ -86,9 +86,11 @@ class Affiliates extends Component {
     }
 
     renderExplanation() {
-        if (!this.state.explanation) return;
+        if (!this.state.explanation) {
+            return;
+        }
 
-        return (<Dialog
+        return <Dialog
             open={true}
             onClose={() => this.setState({explanation: false})}
         >
@@ -101,39 +103,42 @@ class Affiliates extends Component {
             <DialogActions>
                 <Button onClick={() => this.setState({explanation: false})} color="primary" autoFocus>Ok</Button>
             </DialogActions>
-        </Dialog>)
+        </Dialog>;
     }
 
     renderOne(one) {
-        return (<div key={one.text} className={this.props.classes.mainDiv}>
-            {one.date ? (<div className={this.props.classes.date}>{I18n.t('Last edit')}: {one.date}</div>) : null}
-            {one.title ? (<div className={this.props.classes.title}>{one.title}</div>) : null}
-            {one.img ? (<div className={this.props.classes.imgDiv}><img className={this.props.classes.img} src={one.img} alt="product"/></div>) : null}
-            {one.text ? (<div className={this.props.classes.text}>{one.text}</div>) : null}
+        return <div key={one.text} className={this.props.classes.mainDiv}>
+            {one.date ? <div className={this.props.classes.date}>{I18n.t('Last edit')}: {one.date}</div> : null}
+            {one.title ? <div className={this.props.classes.title}>{one.title}</div> : null}
+            {one.img ? <div className={this.props.classes.imgDiv}><img className={this.props.classes.img} src={one.img} alt="product"/></div> : null}
+            {one.text ? <div className={this.props.classes.text}>{one.text}</div> : null}
             <div className={this.props.classes.buttonDiv}>
                 <Button className={this.props.classes.button} onClick={() => Utils.openLink(one.link)} color="secondary">{I18n.t('to Shop')} *</Button>
                 <div className={this.props.classes.partnerLink}>{I18n.t('* partner link')}</div>
             </div>
             <IconButton title={I18n.t('Explanation')} onClick={() => this.setState({explanation: true})} className={this.props.classes.question}><IconQuestion/></IconButton>
             {this.renderExplanation()}
-        </div>);
+        </div>;
     }
 
     renderExpands() {
         if (this.props.data.length > 1) {
-            return (<Accordion key="expansion" className={this.props.classes.morePanel}>
+            return <Accordion key="expansion" className={this.props.classes.morePanel}>
                 <AccordionSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.moreSummary}} expandIcon={<IconExpandMore />}>{I18n.t('More devices')}</AccordionSummary>
                 <AccordionActions className={this.props.classes.moreDetails}>
                     {this.props.data.filter((a, i) => i > 0).map(a => this.renderOne(a))}
                 </AccordionActions>
-            </Accordion>)
+            </Accordion>;
         } else {
             return null;
         }
     }
 
     render() {
-        return [this.renderOne(this.props.data[0]), this.renderExpands()];
+        return [
+            this.renderOne(this.props.data[0]),
+            this.renderExpands()
+        ];
     }
 }
 

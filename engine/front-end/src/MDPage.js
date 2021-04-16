@@ -8,6 +8,8 @@ import {MdArrowBack as IconMenuOpened} from 'react-icons/md';
 import Markdown from './Markdown';
 import Footer from './Footer';
 import Adapters from './Pages/Adapters';
+import Affiliates from './Components/Affiliates';
+import Editor from './Pages/Editor';
 
 const styles = theme => ({
     content: theme.content,
@@ -67,16 +69,18 @@ class MDPage extends Component {
         }
 
         if (this.props.mobile) {
-            return (<div key="closeMenu"
-                         className={this.props.classes.menuOpenCloseButton + ' ' + this.props.classes.menuOpenCloseButtonMobile}
-                         style={{left: 0}}
-                         onClick={() => this.props.onMenuOpenClose()}>
+            return <div
+                key="closeMenu"
+                className={this.props.classes.menuOpenCloseButton + ' ' + this.props.classes.menuOpenCloseButtonMobile}
+                style={{left: 0}}
+                onClick={() => this.props.onMenuOpenClose()}
+            >
                 <IconMenuClosed />
-            </div>);
+            </div>;
         } else {
-            return (<div key="closeMenu" className={this.props.classes.menuOpenCloseButton + ' ' + (this.props.mobile ? this.props.classes.menuOpenCloseButtonMobile : '')} style={{left: this.props.menuOpened ? this.props.menuWidth + 3 : 0}} onClick={() => this.props.onMenuOpenClose()}>
-                {this.props.menuOpened ? (<IconMenuOpened />) : (<IconMenuClosed />)}
-            </div>);
+            return <div key="closeMenu" className={this.props.classes.menuOpenCloseButton + ' ' + (this.props.mobile ? this.props.classes.menuOpenCloseButtonMobile : '')} style={{left: this.props.menuOpened ? this.props.menuWidth + 3 : 0}} onClick={() => this.props.onMenuOpenClose()}>
+                {this.props.menuOpened ? <IconMenuOpened /> : <IconMenuClosed />}
+            </div>;
         }
     }
 
@@ -95,9 +99,9 @@ class MDPage extends Component {
     render() {
         return [
             this.renderOpenCloseButton(),
-            (<div key="mdpage" className={this.props.classes.content + ' ' + (!this.props.mobile && !this.props.menuOpened ? this.props.classes.contentMenuClosed : '')} ref={this.contentRef}>
+            <div key="mdpage" className={this.props.classes.content + ' ' + (!this.props.mobile && !this.props.menuOpened ? this.props.classes.contentMenuClosed : '')} ref={this.contentRef}>
                 {this.props.path === 'adapters.md' || this.props.path === 'adapters' ?
-                    (<Adapters path={this.props.path}
+                    <Adapters path={this.props.path}
                          language={this.props.language}
                          theme={this.props.theme}
                          contentWidth={this.props.contentWidth}
@@ -110,9 +114,11 @@ class MDPage extends Component {
                              }
                          }}
                          onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
-                    />)
+                    />
                     :
-                    (<Markdown path={this.props.path}
+                    <Markdown path={this.props.path}
+                         editor={Editor}
+                         affiliates={Affiliates}
                          language={this.props.language}
                          theme={this.props.theme}
                          mobile={this.props.mobile}
@@ -120,9 +126,9 @@ class MDPage extends Component {
                          onEditMode={this.onEditMode.bind(this)}
                          editEnabled={true}
                          onNavigate={(language, tab, page, chapter) => this.onNavigate(language, tab, page, chapter)}
-                    />)}
-            </div>),
-            !this.props.editMode ? (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>) : null
+                    />}
+            </div>,
+            !this.props.editMode ? <Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/> : null
         ];
     }
 }

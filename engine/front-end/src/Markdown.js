@@ -29,8 +29,6 @@ import Loader from './Components/Loader';
 import I18n from './i18n';
 import Utils from './Utils';
 import Page404 from './Pages/404';
-import Editor from './Pages/Editor';
-import Affiliates from './Components/Affiliates';
 
 const styles = theme => ({
     root: {
@@ -672,17 +670,19 @@ class Markdown extends Router {
     }
 
     renderAffiliates() {
-        if (!this.state.affiliate) {
+        if (!this.state.affiliate || !this.props.affiliates) {
             return null;
         }
 
-        return (<Affiliates
+        const Affiliates = this.props.affiliates;
+
+        return <Affiliates
             key="affiliates"
             language={this.props.language}
             mobile={this.props.mobile}
             theme={this.props.theme}
             data={this.state.affiliate}
-        />);
+        />;
     }
 
     onToggleContentButton() {
@@ -896,7 +896,8 @@ class Markdown extends Router {
         if (this.state.notFound) {
             return <Page404 className={this.props.classes.root} language={this.props.language}/>;
         }
-        if (this.props.editMode) {
+        if (this.props.editMode && this.props.editor) {
+            const Editor = this.props.editor;
             return <Editor
                 language={this.props.language}
                 mobile={this.props.mobile}
@@ -983,6 +984,8 @@ Markdown.propTypes = {
     editMode: PropTypes.bool,
     onEditMode: PropTypes.func,
     editEnabled:  PropTypes.bool,
+    affiliates: PropTypes.object,
+    editor: PropTypes.object,
 };
 
 export default withStyles(styles)(Markdown);

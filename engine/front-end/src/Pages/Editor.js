@@ -108,9 +108,11 @@ class Editor extends Component {
     }
 
     renderInstructions() {
-        if (!this.state.showInstructions) return;
+        if (!this.state.showInstructions) {
+            return;
+        }
 
-        return (<Dialog
+        return <Dialog
             key="instructions"
             open={true}
             onClose={() => this.setState({showInstructions: false})}
@@ -134,11 +136,11 @@ class Editor extends Component {
                     this.openGithub();
                 }} color="primary" autoFocus>{I18n.t('Ok')}</Button>
             </DialogActions>
-        </Dialog>);
+        </Dialog>;
     }
 
     renderEditor() {
-        return (<div className={this.props.classes.editor}>
+        return <div className={this.props.classes.editor}>
             <div className={this.props.classes.buttonTab}>
                 <Button
                     className={this.props.classes.copyButton + ' ' + (this.state.changed ? this.props.classes.copyButtonChanged : '')}
@@ -162,12 +164,12 @@ class Editor extends Component {
                 </Button>
             </div>
 
-            {this.state.code ? (<MonacoEditor
+            {this.state.code ? <MonacoEditor
                 onChange={text => this.setState({text, changed: text !== this.state.code})}
                 theme={this.props.theme}
                 readOnly={false}
                 code={this.state.code || ''}
-            />) : (<CircularProgress className={this.props.classes.progress} />)}
+            /> : <CircularProgress className={this.props.classes.progress} />}
 
             <Snackbar
                 anchorOrigin={{vertical: 'top', horizontal: 'right'}}
@@ -186,26 +188,27 @@ class Editor extends Component {
                     </IconButton>,
                 ]}
             />
-        </div>);
+        </div>;
     }
 
     renderDoc() {
         if (!this.state.code) {
-            return (<CircularProgress className={this.props.classes.progress} />);
+            return <CircularProgress className={this.props.classes.progress} />;
         }
-        return (<div className={this.props.classes.doc}>
+        return <div className={this.props.classes.doc}>
             <Markdown
                 mobile={this.props.mobile}
                 language={this.props.language}
                 text={this.state.text || ' '}
                 theme={this.props.theme}
                 path={this.props.path}
-            /></div>)
+            />
+        </div>;
     }
 
     render() {
         return [
-            (<SplitterLayout
+            <SplitterLayout
                 key="splitterLayout"
                 vertical={false}
                 primaryMinSize={10}
@@ -222,7 +225,7 @@ class Editor extends Component {
             >
                 {this.renderEditor()}
                 {this.renderDoc()}
-            </SplitterLayout>),
+            </SplitterLayout>,
             this.renderInstructions()
         ];
     }
