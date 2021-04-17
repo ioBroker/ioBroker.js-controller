@@ -454,7 +454,7 @@ function register(it, expect, context) {
         // try to delete non-active repo
         err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local1'], {});
         expect(err).to.be.not.ok;
-    }).timeout(6000);
+    }).timeout(10000);
 
     // license
     it(testName + 'license', async () => {
@@ -500,7 +500,7 @@ function register(it, expect, context) {
     it(testName + 'info', async () => {
         const err = await cli.processCommandAsync(context.objects, context.states, 'info', [], {});
         expect(err).to.be.not.ok;
-    }).timeout(6000);
+    }).timeout(10000);
 }
 
 module.exports.register = register;
