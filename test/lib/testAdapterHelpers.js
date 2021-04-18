@@ -91,10 +91,10 @@ function register(it, expect, context) {
             // promisify always provides a callback, so that doesn't need to be tested
 
             // User doesn't exist
-            () => context.adapter.checkPasswordAsync('claus', '1234').should.eventually.equal([ false, 'system.user.claus' ]),
+            () => context.adapter.checkPasswordAsync('claus', '1234').should.eventually.deep.equal([ false, 'system.user.claus' ]),
 
             // Wrong password
-            () => context.adapter.checkPasswordAsync('admin', '1234').should.eventually.equal([ false, 'system.user.admin' ])
+            () => context.adapter.checkPasswordAsync('admin', '1234').should.eventually.deep.equal([ false, 'system.user.admin' ])
         ];
 
         return promiseSequence(tests);
