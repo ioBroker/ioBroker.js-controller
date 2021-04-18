@@ -10,7 +10,7 @@ lastChanged: "11.08.2019"
 Widgets ('Gerät, Ding') sind in diesem Zusammenhang Anzeigeelemente, die auf verschiedene Weisen
 Zahlen, Texte, Bilder oder Diagramme darstellen und Interaktionsmöglichkeiten bieten.
 
-## **ioBroker.vis Widgets**
+## ioBroker.vis Widgets
 
 Für die Visualisierung in ioBroker mit vis gibt es verschiedene Widget-Sätze.
 
