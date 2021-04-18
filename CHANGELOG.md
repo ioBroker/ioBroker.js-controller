@@ -7,6 +7,7 @@
 ## 3.3.x (2021-xx-xx) Release H... WIP
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
+* Users that use the experimental jsonl database classes need to manually update the jsonl packages 
 
 **Features**
 * (bluefox) Add restartController sendToHost command
@@ -35,6 +36,7 @@
   * if state is read only and we get ack false -> not allowed
   * check type of the state.val matching the common.type of the obj
   * if it's a number we perform additional checks for min and max
+* (bluefox) checkPassword(Async) is now returning two parameters in callback/resolve (first is boolean if password/user are valid, second is the final internal username in form system.user.xxx)
   
 **Developer relevant new Features**
 * (AlCalzone) support executing TypeScript adapters: If the adapter main file ends with ".ts" we automatically transpile the typeScript file before starting the adapter
