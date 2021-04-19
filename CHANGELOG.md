@@ -10,6 +10,7 @@
 * Users that use the experimental jsonl database classes need to manually update the jsonl packages 
 
 **Features**
+* (foxriver76) start instances ordered by their defined tiers (details see https://github.com/ioBroker/ioBroker.js-controller#tiers-start-instances-in-an-ordered-manner)
 * (bluefox) Add restartController sendToHost command
 * (foxriver76) respect adapter dependencies on "upgrade" CLI command
 
