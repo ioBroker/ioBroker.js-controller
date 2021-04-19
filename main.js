@@ -2562,7 +2562,7 @@ async function processMessage(msg) {
         }
 
         case 'restartController': {
-            const restart = require('./lib/restart').restart;
+            const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
             setTimeout(() => restart(), 200); // let the answer to be sent
             break;
