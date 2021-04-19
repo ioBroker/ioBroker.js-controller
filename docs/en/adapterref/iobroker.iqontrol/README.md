@@ -1520,7 +1520,8 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
-### 1.7.1 dev
+### 1.7.1 (2021-04-18)
+* (sbormann) Fix to work with Admin v5.0.3 (renaming files and folders will only work with the upcoming next admin-update).
 * (sbormann) Updated dependencies.
 * (sbormann) Added option to show name of INFO_A/B.
 

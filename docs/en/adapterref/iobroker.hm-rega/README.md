@@ -113,6 +113,9 @@ Finally, the variables created in the CCU are listed
 	### __WORK IN PROGRESS__
 -->
 
+### 3.0.19 (2021-04-16)
+* (foxriver76) fix for custom webinterface port (addresses #117)
+
 ### 3.0.18 (2021-04-05)
 * (foxriver76) local link now respects port and protocol
 

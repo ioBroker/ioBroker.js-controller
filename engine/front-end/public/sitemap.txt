@@ -797,7 +797,6 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.jeelink/README.md
-https://doc.iobroker.net/#de/adapters/adapterref/iobroker.js2fs/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.klf200/README.md
@@ -1228,7 +1227,6 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.jeelink/README.md
-https://doc.iobroker.net/#en/adapters/adapterref/iobroker.js2fs/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.klf200/README.md
@@ -1659,7 +1657,6 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.jeelink/README.md
-https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.js2fs/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.klf200/README.md
@@ -2090,7 +2087,6 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.jeelink/README.md
-https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.js2fs/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.judoisoft/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.kecontact/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.klf200/README.md

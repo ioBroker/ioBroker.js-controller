@@ -74,6 +74,12 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 5.0.4 (2021-04-18)
+* (bluefox) Admin5: Fixed many bugs
+
+### 5.0.3 (2021-04-17)
+* (bluefox) Admin5: Many new features implemented
+
 ### 5.0.2 (2020-12-26)
 * (bluefox) Merged the changes from admin4
 
@@ -82,25 +88,6 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 
 ### 4.2.1 (2021-01-12)
 * (Apollon77) Also allow pre-prelease versions for dependency checks
-
-### 4.2.0 (2021-01-08)
-* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
-
-### 4.1.13 (2021-01-08)
-* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
-
-### 4.1.12 (2020-12-12)
-* (bluefox) Corrected the error with empty names in enums
-
-### 4.1.11 (2020-11-22)
-* (theimo1221) Prevent Duplicate Event Handling on Dropdown Checkboxes
-* (paul53) fix Objects dialog
-
-### 4.1.10 (2020-10-08)
-* (bluefox) Corrected the icons of the custom tabs. 
-
-### 4.1.8 (2020-09-03)
-* (bluefox) Fixed editing of the objects with % sign in the ID.
 
 ## License
 

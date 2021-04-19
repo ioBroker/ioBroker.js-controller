@@ -212,6 +212,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.3.2 (2021-04-18)
+* (ericsboro) vis translation to russian
+* (René) see issue #231: bug fix detect heating period
+
 ### 2.3.1 (2021-04-05)
 * (René) some optimisations for vis translation
 

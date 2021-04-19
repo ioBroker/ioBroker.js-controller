@@ -242,8 +242,14 @@ The supported commands are:
 - Widget at the time without function
 
 ## Changelog
-### 3.0.0 WORK IN PROZESS...
- * full rewrite 
+### 3.1.1 (18.4.2021)
+ * Full rewrite
+ * Fix map bug with multiple vacuums
+ * fix performance Problems
+ * better conntection to vacuum
+ * fix bug in ReloadMap button
+ * Show Goto and Zone States ti find places
+ * and many more...
 ### 2.2.5 (2021-04-02)
 * added S7 Support
 * bugfixes for S5 Max and others

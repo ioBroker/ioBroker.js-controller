@@ -30,6 +30,9 @@ Wetterabhängige automatische Steuerung der Gartenbewässerung
 
 ## Changelog
 
+### 0.1.3 (18.4.2021)
+* (Dirk-Peter-md) Schaltabstand zwischen den Ventilen eingebaut, main.js aufgeteilt
+
 ### 0.1.2 (30.12.2020)
 * (Dirk-Peter-md) Beschreibung von SprinkleControl überarbeitet
 
@@ -47,7 +50,7 @@ Wetterabhängige automatische Steuerung der Gartenbewässerung
 * (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
 
 ### 0.0.9 (28.08.2020)
-* (Dirk-Peter-md) integration des Adapters "Das Wetter" <Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage> zur Regenvorhersage (siehe Doku)
+* (Dirk-Peter-md) integration des Adapters "Das Wetter“ <Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage> zur Regenvorhersage (siehe Doku)
 
 ### 0.0.8 (17.08.2020)
 * (Dirk-Peter-md) adapter.unload: (setTimeout > 1s) >>> delete
@@ -79,7 +82,7 @@ Wetterabhängige automatische Steuerung der Gartenbewässerung
 ## License
 MIT License
 
-Copyright (c) 2019 - 2020 Dirk-Peter-md
+Copyright (c) 2021 Dirk Peter <dirk.peter@freenet.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

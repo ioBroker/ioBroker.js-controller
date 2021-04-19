@@ -61,6 +61,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.64.0
+
+• Neue Icons hinzugefügt (Brands & Computer)
+
 ### 0.63.0
 
 • Neue Icons hinzugefügt (Animated Icons - Arrows, Maps, Phones & Weather)

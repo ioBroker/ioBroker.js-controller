@@ -290,6 +290,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.8.2 (2021-04-19)
+* (Apollon77) Adjust automatic Cookie Refresh interval from 7 to 4 days
+
 ### 3.8.1 (2021-02-09)
 * (Apollon77) Initialize volume for all devices on start
 

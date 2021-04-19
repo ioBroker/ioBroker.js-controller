@@ -361,6 +361,9 @@ der Tastenkombination "STRG + F".
 	### __WORK IN PROGRESS__
 -->
 
+### 0.7.7 (2021-04-18)
+* (foxriver76) do not log rest server logging on levels above debug, so it can be activated when needed
+
 ### 0.7.6 (2021-03-29)
 * (foxriver76) added `requests` package as pip dev
 * (foxriver76) added logging for rest server

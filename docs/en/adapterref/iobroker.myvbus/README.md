@@ -57,8 +57,8 @@ This adapter connects ioBroker to various VBus-based devices using resol-vbus, a
 * (grizzelbee) Fix: removed default password from config to ensure it's encrypted on first config
 * (grizzelbee) Fix: removed Force-ReInit
 * (grizzelbee) Fix: sensor maintenance indicators are booleans now
-* (grizzelbee) New: added new activity indicator states for each relay
-* (pdbjjens) Fix: avoid warnings from latest js-controller 3.2.x
+* (grizzelbee) New: added activity indicator states for relays
+* (pdbjjens) Fix: Prevent warnings regarding non-existent objects upon adapter instance creation and start-up with js-controller 3.2.x
 * (pdbjjens) Fix: updated dependencies and vulnerabilities
 
 ### 0.0.6

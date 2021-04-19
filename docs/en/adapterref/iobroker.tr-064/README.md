@@ -96,7 +96,8 @@ iobroker upload tr-064
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 4.2.12 (2021-04-16)
+* (Apollon77) prevent html template for calllists to be overwritten by default one
 * (Apollon77) fix crash case (Sentry IOBROKER-TR-064-2M)
 
 ### 4.2.11 (2021-03-12)

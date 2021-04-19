@@ -271,6 +271,9 @@ Important: The user is in charge of connecting the correct data points to the wi
 
 ## Changelog
 
+### 1.2.5 (2021-04-17)
+* (Apollon77) Fix pot crash case (Sentry IOBROKER-S7-16)
+
 ### 1.2.4 (2021-02-22)
 * (Apollon77) Make sure data are of correct type (Sentry IOBROKER-S7-K)
 
