@@ -428,8 +428,26 @@ All other hosts are configured to connect to this master host.
 
 For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?page_id=3068&lang=de
 
+### TIERS: Start instances in an ordered manner
+**Feature status:** Technology preview (since 3.3.0)
+
+Starting from js-controller 3.3.0 you can define the `common.tier` attribute in the io-package.json.
+Lower TIERS will start before higher TIERS. Currently, 3 TIER levels are supported.
+Note, that the admin adapter as the central control platform will always be started first.
+
+#### TIER 1
+Logic and scripting engines, which should be able to act as fast as possible 
+to work with states delivered by higher TIER adapters.
+
+#### TIER 2
+Adapters which deliver data from external APIs, which are important and can change at any time
+
+#### TIER 3
+Adapters which are not time critical like Visualization, Backup adapters and adapters whose information do 
+not necessarily need to be up-to-date. These are often `schedule` adapters, whose information is always a bit delayed.
+
 ### Object and State Aliases
-**Feature status:** Technology preview (since 2.0.0)
+**Feature status:** stable (since 2.0.0)
 
 **Feature Flag for detection: ALIAS, ALIAS_SEPARATE_READ_WRITE_ID**
 
@@ -816,7 +834,7 @@ The preferred way to use it (also because of backward compatibility reasons) is:
 
 ```js
 if (adapter.supportsFeature && adapter.supportsFeature('NAME')) {
-    ...
+    // ...
 }
 ```
 
@@ -836,7 +854,7 @@ To check if certain adapter methods itself are existing please simply check for 
 
 ```js
 if (adapter.getObjectView) {
-    ...
+    // ...
 }
 ```
 
@@ -844,7 +862,7 @@ or
 
 ```js
 if (typeof adapter.getObjectView === 'function') {
-    ...
+    // ...
 }
 ```
 
