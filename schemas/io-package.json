@@ -632,6 +632,13 @@
                 "wwwDontUpload": {
                     "description": "Do not upload the www directory into DB. Used only for admin.",
                     "type": "boolean"
+                },
+                "tier": {
+                    "description": "Lower tiers are started before higher tiers instances, TIER 1: LOGIC, TIER 2: APIs & other data, TIER 3: not fastly needed data, like BackItUp, Visualization, etc.",
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 3,
+                    "default": 3
                 }
             }
         },
