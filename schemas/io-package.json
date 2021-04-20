@@ -56,6 +56,10 @@
                         "Javascript/Node.js"
                     ]
                 },
+                "title": {
+                    "type": "string",
+                    "deprecationMessage": "For admin version >= 5 this property is no longer required"
+                },
                 "titleLang": {
                     "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
                     "$ref": "#/definitions/multilingual"
@@ -84,7 +88,7 @@
                     "description": "Url of the ReadMe file",
                     "type": "string"
                 },
-                "adminUiType": {
+                "adminUI": {
                     "description": "Type of the admin UI",
                     "type": "object",
                     "additionalProperties": false,
@@ -468,12 +472,12 @@
                     "type": "boolean"
                 },
                 "materialize": {
-                    "deprecationMessage": "For admin version >= 5 please use adminUiType",
+                    "deprecationMessage": "For admin version >= 5 please use the property 'adminUI'",
                     "description": "If adapter supports > admin3 (materialize style)",
                     "type": "boolean"
                 },
                 "materializeTab": {
-                    "deprecationMessage": "For admin version >= 5 please use adminUiType",
+                    "deprecationMessage": "For admin version >= 5 please use the property 'adminUI'",
                     "description": "If adapter supports > admin3 for tab (materialize style)",
                     "type": "boolean"
                 },
