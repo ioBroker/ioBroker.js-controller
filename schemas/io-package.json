@@ -57,6 +57,7 @@
                     ]
                 },
                 "title": {
+                    "description": "Longer name of adapter",
                     "type": "string",
                     "deprecationMessage": "For admin version >= 5 this property is no longer required"
                 },
