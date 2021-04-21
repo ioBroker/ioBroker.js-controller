@@ -148,6 +148,9 @@
                 "host": {
                     "map": "function(doc) { if (doc.type === 'host') emit(doc._id, doc) }"
                 },
+                "*": {
+                    "map": "function(doc) { emit(doc._id, doc) }"
+                },
                 "adapter": {
                     "map": "function(doc) { if (doc.type === 'adapter') emit(doc._id, doc) }"
                 },
