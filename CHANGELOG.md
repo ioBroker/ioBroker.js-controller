@@ -13,7 +13,7 @@
 * (foxriver76) start instances ordered by their defined tiers (details see https://github.com/ioBroker/ioBroker.js-controller#tiers-start-instances-in-an-ordered-manner)
 * (foxriver76) respect adapter dependencies on "upgrade" CLI command
 * (Apollon77) Create a backitup instance on initial installation
-* (Apollon77) Also allow "iobroker url iobroker.adaptername@version" as command
+* (Apollon77) Also allow "iobroker url iobroker.adaptername[@version]" as command
 
 **Optimizations and Fixes**
 * (foxriver76) correctly encrypt native attributes from instances when set via cli
