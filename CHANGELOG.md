@@ -6,7 +6,7 @@
 
 ## 3.3.x (2021-xx-xx) Release H... WIP
 **BREAKING CHANGES**
-* None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 7.10.0 or npm 6!! in the first tests, but officially not yet supported because we do not have enough results)
+* None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * Users that use the experimental jsonl database classes need to manually update the jsonl packages 
 
 **Features**
