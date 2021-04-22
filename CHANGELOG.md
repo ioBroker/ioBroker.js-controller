@@ -6,12 +6,11 @@
 
 ## 3.3.x (2021-xx-xx) Release H... WIP
 **BREAKING CHANGES**
-* None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
+* None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 7.10.0 or npm 6!! in the first tests, but officially not yet supported because we do not have enough results)
 * Users that use the experimental jsonl database classes need to manually update the jsonl packages 
 
 **Features**
 * (foxriver76) start instances ordered by their defined tiers (details see https://github.com/ioBroker/ioBroker.js-controller#tiers-start-instances-in-an-ordered-manner)
-* (bluefox) Add restartController sendToHost command
 * (foxriver76) respect adapter dependencies on "upgrade" CLI command
 
 **Optimizations and Fixes**
@@ -26,6 +25,7 @@
 * (foxriver76) if free memory reaches threshold, also add a notification
 * (bluefox) fix applyViewFunc if the name is a localized object
 * (Apollon77) optimize db initialization for fileDB and enhance error case handling
+* (bluefox/Apollon77) make sure all object types are deleted on recursive object deletion
 * (Apollon77/foxriver76) several optimizations and fixes in database modules and update
 
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
@@ -43,7 +43,7 @@
 * (AlCalzone) support executing TypeScript adapters: If the adapter main file ends with ".ts" we automatically transpile the typeScript file before starting the adapter
 * (bluefox) Implement chownFile in adapter.js
 * (foxriver76) introduce common.step attribute of states and round state value if needed
-
+* (bluefox) Add restartController sendToHost command
 * (bluefox) Allow npm install to be executed with debug flag
 
 **Developer relevant Optimizations and Fixes**
