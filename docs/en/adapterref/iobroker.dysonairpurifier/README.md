@@ -27,7 +27,8 @@ Fan-Icon in Logo created by [Freepik](https://www.flaticon.com/de/autoren/freepi
 * Dyson Pure Cool Link Desk (DP01, ProductType 469)
 * Dyson Pure Cool Desk, 2018 model (DP04, ProductType 520)
 * Dyson Pure Hot+Cool Link (HP02, ProductType 455)
-* 2018 Dyson Pure Hot+Cool (HP04, ProductType 527)
+* Dyson Pure Hot+Cool, 2018 model (HP04, ProductType 527)
+* Dyson Pure Hot+Cool (HP07, ProductType 527E)
 * Dyson Pure Humidify+Cool (PH01, ProductType 358)
 
 ## Features
@@ -52,7 +53,7 @@ Connects your Dyson fans, fan heaters, air purifiers, and air humidifiers to ioB
 
 #### Using npm
 
-Run ```npm install ioBroker.dysonairpurifier``` on your ioBroker installation to grab the latest version of this adapter from the npm repository.
+Run ```npm install iobroker.dysonairpurifier``` on your ioBroker installation to grab the latest version of this adapter from the npm repository.
 
 #### Alternative: Using GitHub URL
 
@@ -107,25 +108,32 @@ Which is what the dyson app does also.
 
 ## Changelog
 
-### 0.8.1 (2021-02-19) (Fall into the flames)
+### V0.8.2 (2021-04-09) (Still breathing)
+* (grizzelbee) Fix: [#80](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/80) fixed npm install hint in documentation
+* (grizzelbee) Fix: [#82](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/82) fixed common.dataSource type with type >poll<
+* (grizzelbee) Fix: [#95](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/95) Added new heater model type 527E
+* (grizzelbee) Fix: [#94](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/94) Fixed dustIndex
+
+
+### V0.8.1 (2021-02-19) (Fall into the flames)
 * (grizzelbee) New: added icons to each fan type in device tree
 * (grizzelbee) New: Showing Filter type correctly - not as code anymore
 * (grizzelbee) Upd: updated dependencies
 
-### 0.8.0 (2021-02-18) (Beyond the mirror)
+### V0.8.0 (2021-02-18) (Beyond the mirror)
 * (grizzelbee) New: Log as info if account is active on login; else log as warning. 
 * (grizzelbee) New: [#21](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/21) Improvement for humidifier support
 * (grizzelbee) Fix: [#67](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/67) Adapter sometimes wrote objects instead of values.
 
-### 0.7.5 (2021-02-12) (I won't surrender)
+### V0.7.5 (2021-02-12) (I won't surrender)
 * (grizzelbee) Fix: [#65](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/65) Adapter get online again after changes to dyson cloud API login procedure.
 * (grizzelbee) New: Adapter reconnects with new host address when it gets changed manually
 
-### 0.7.4 (2021-02-10) (Human)
+### V0.7.4 (2021-02-10) (Human)
 * (grizzelbee) Fix: fixed adapter traffic light for info.connection
 * (grizzelbee) Fix: Minor fixes
 
-### 0.7.3 (2021-02-10) (When angels fall)
+### V0.7.3 (2021-02-10) (When angels fall)
 * (theimo1221) Fix: [#59](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/59) added default country
 * (theimo1221) New: added function to mask password to dyson-utils.js
 * (grizzelbee) New: extended config test and error logging
@@ -136,11 +144,11 @@ Which is what the dyson app does also.
 * (grizzelbee) Upd: creating all data points with await 
 
 
-### 0.7.2 (2021-02-10) (Songs of love and death)
+### V0.7.2 (2021-02-10) (Songs of love and death)
 * (grizzelbee) Fix: [#59](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/59) Fixed bug while loading/saving config which led to wrong values displayed for country and temperature unit
 * (grizzelbee) Upd: switched "Skipping unknown ..." message from info to debug 
 
-### 0.7.1 (2021-02-06) (Horizons)
+### V0.7.1 (2021-02-06) (Horizons)
 * (grizzelbee) New: When no host address is given - adapter tries to connect via default hostname of the device
 * (grizzelbee) Fix: [#13](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/13) Filterlifetime is now correctly displayed in hours and percent for devices supporting this
 * (grizzelbee) Fix: [#48](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/48) Fixed countrycodes for UK and USA
@@ -155,7 +163,7 @@ Which is what the dyson app does also.
 * (grizzelbee) Upd: [#9](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/9) Added some more dyson codes for heaters and humidifiers
 
 
-### 0.7.0 (2021-01-08) (Afraid of the dark)
+### V0.7.0 (2021-01-08) (Afraid of the dark)
 * (jpwenzel)   New: Removing crypto from package dependency list (using Node.js provided version)
 * (jpwenzel)   New: Introducing unit tests
 * (jpwenzel)   New: At least NodeJs 10.0.0 is required
@@ -175,24 +183,24 @@ Which is what the dyson app does also.
 * (grizzelbee) Fix: calling setState in callback of set/createObject now
 * (grizzelbee) Fix: ensuring to clear all timeouts in onUnload-function
 
-### 0.6.0 (2020-10-29) (Rage before the storm)
+### V0.6.0 (2020-10-29) (Rage before the storm)
 * (grizzelbee) New: [#17](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/17) - Added online-indicator for each device
 * (grizzelbee) New: [#19](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/19) - Extended Password length from 15 characters to 32
 * (grizzelbee) New: [#20](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/20) - Improved errorhandling on http communication with Dyson API
 * (grizzelbee) Fix: Fixed typo within data field anchorpoint - please delete the old ancorpoint manually.
 * (grizzelbee) Fix: [#13](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/13) - Filter life value is now displayed in percent not in hours
 
-### 0.5.1 (2020-10-27) (Heart of the hurricance)
+### V0.5.1 (2020-10-27) (Heart of the hurricance)
 * (grizzelbee) Fix: Added missing clearTimeout
 
-### 0.5.0 (2020-10-27) (Heart of the hurricance)
+### V0.5.0 (2020-10-27) (Heart of the hurricance)
 * (grizzelbee) New: Editable data fields have now appropiate value lists
 * (grizzelbee) New: Added more country codes
 * (grizzelbee) New: Target temperature of heater can now be set - **in the configured unit!**
 * (grizzelbee) Fix: [#13](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/13) - Filter life value is now displayed in percent not in hours
 * (grizzelbee) Fix: [#6](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/6) - Changing the fanspeed does now fully work.  
 
-### 0.4.1 (2020-10-16) (unbroken)
+### V0.4.1 (2020-10-16) (unbroken)
 * (grizzelbee) New: [#8](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/8) - Documented ProductTypes for better overview and user experience in ReadMe
 * (grizzelbee) New: [#9](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/9) - Added some Hot&Cool specific datafields
 * (grizzelbee) New: Logging of from devices, when shutting down the adapter
@@ -202,8 +210,7 @@ Which is what the dyson app does also.
 * (grizzelbee) Fix: [#12](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/12) - Fixed Dyson API login by completely securing via HTTPS.
 * (grizzelbee) Fix: Updated some descriptions in config
   
-### 0.4.0 (2020-09-29)
-
+### V0.4.0 (2020-09-29)
 * (grizzelbee) New: devices are now **controllable**
 * (grizzelbee) New: state-change-messages are processed correctly now
 * (grizzelbee) Fix: Added missing °-Sign to temperature unit
@@ -211,8 +218,7 @@ Which is what the dyson app does also.
 * (grizzelbee) Fix: NO2 and VOC Indices should work now
 * (grizzelbee) Fix: Fixed build errors
 
-### 0.3.0 (2020-09-27) - first version worth giving it a try
-
+### V0.3.0 (2020-09-27) - first version worth giving it a try
 * (grizzelbee) New: Messages received via Web-API and MQTT getting processed
 * (grizzelbee) New: datapoints getting created and populated
 * (grizzelbee) New: Added config item for desired temperature unit (Kelvin, Fahrenheit, Celsius)
@@ -220,16 +226,14 @@ Which is what the dyson app does also.
 * (grizzelbee) New: Hostaddress/IP is editable / configurable
 * (grizzelbee) New: calculate quality indexes for PM2.5, PM10, VOC and NO2 according to Dyson App
 
-### 0.2.0 (2020-09-22) - not working! Do not install/use
-
+### V0.2.0 (2020-09-22) - not working! Do not install/use
 * (grizzelbee) New: Login to Dyson API works
 * (grizzelbee) New: Login to Dyson AirPurifier (2018 Dyson Pure Cool Tower [TP04]) works
 * (grizzelbee) New: mqtt-Login to [TP04] works
 * (grizzelbee) New: mqtt-request from [TP04] works
 * (grizzelbee) New: mqtt-request to [TP04] is responding
 
-### 0.1.0 (2020-09-04) - not working! Do not install/use
-
+### V0.1.0 (2020-09-04) - not working! Do not install/use
 * (grizzelbee) first development body (non functional)
 
 ## Explanation of Dyson API data (message payload)

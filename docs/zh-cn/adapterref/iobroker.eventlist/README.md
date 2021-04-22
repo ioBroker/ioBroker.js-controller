@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
+hash: ywraCHe0HMT0583wHjYdV78lyHfLS1pss3mUMXaxF2w=
 ---
 ![商标](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -23,7 +23,7 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 
 此外，您可以通过电报或WhatsApp发送事件。
 
-![清单](../../../en/adapterref/iobroker.eventlist/img/list.png)
+![列表](../../../en/adapterref/iobroker.eventlist/img/list.png)
 
 ![PDF格式](../../../en/adapterref/iobroker.eventlist/img/pdf.png)
 
@@ -35,7 +35,7 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 
 用例：
 
--例如只有没有人在家时，门磁才能发送消息。否则，有关开门的事件将仅收集在事件列表中。
+-例如仅当没有人在家时，门磁才可以发送消息。否则，仅在事件列表中收集有关开门的事件。
 
 ##可能的演讲
 ###在“管理员”标签中
@@ -44,7 +44,7 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 ###网站
 事件列表可以显示在`http://<IP>:8082/eventlist/index.html`下。 （对于大于0的实例：`http://<IP>:8082/eventlist/index.html?X`，其中X是实例编号）
 
-### Vis小部件
+### Vis窗口小部件
 事件列表可以显示为可视化小部件。
 
 ### PDF生成
@@ -53,14 +53,14 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 如果将模式放在其中，则文档标题可以包含生成日期：`Event list on {{YYYY MM DD}}`。
 时间格式的确切描述可以在这里找到：https://momentjs.com/docs/#/displaying/format/
 
-可通过将`true`写入`eventlist.0.triggerPDF`中来触发PDF的生成。
+可以通过将`true`写入`eventlist.0.triggerPDF`中来触发PDF的生成。
 
 可以通过以下方式访问PDF文件：
 
--网络：http：// <IP>：8082 / eventlist / eventlist / report.pdf`（对于大于0的实例：http：// <IP>：8082 / eventlist / eventlist / report-X.pdf），其中X是实例编号）
+-网络：http：// <IP>：8082 / eventlist / eventlist / report.pdf`（对于大于0的实例：http：// <IP>：8082 / eventlist / eventlist / report-X.pdf，其中X是实例编号）
 -管理员：“ http：// <IP>：8081 / files / eventlist / report.pdf”（对于大于0的实例：“ http：// <IP>：8081 / files / eventlist / report-X.pdf”，其中X是实例编号）
 
-**图标无法显示为PDF。**
+**无法在PDF中显示图标。**
 
 ##消息框
 用户可以通过javascript将自定义事件添加到列表中：
@@ -83,7 +83,7 @@ setState('eventlist.0.insert', 'My custom text');
 setState('eventlist.0.insert', {event: 'My custom text %s', val: 5});
 ```
 
-用户可以为特定的ID请求格式化的JSON列表。当然，必须在`eventlist`中启用该ID。
+用户可以请求格式化的JSON列表以获取特定ID。当然，必须在`eventlist`中启用该ID。
 
 ```
 // add custom event to event list
@@ -128,11 +128,11 @@ sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
 -％s-值（状态更改为％s =>状态更改为5），
 -％u-单位（状态更改为％s％u =>状态更改为5％），
 -％n-名称（“％n将状态更改为％s” =>“设备A的状态更改为5”），
--％t-时间（`％t上的状态已更改状态=>'Sep Fr，16:32:00'的状态已更改状态）
+-％t-时间（`状态更改状态为％t` =>`状态更改状态为Sep Fr，16：32：00`），
 -％r-相对时间（“状态已更改状态％r” =>“状态已更改状态5秒前”），
--％d-持续时间（“状态处于％d的先前状态=>“状态处于先前的状态5s”），
+-％d-持续时间（“状态处于％d的先前状态=>”状态处于5s的先前状态），
 -％g-值差（“状态已更改为％g％” =>“状态已更改为1％”），
--％o-值差异（状态从％o更改为％o =>状态在1％上更改）
+-％o-值差（状态从％o更改为％o =>状态在1％上更改）
 
 ##网络中多个实例的使用
 例如。您可以显示实例2的特定列表，例如`http://IP:8082/eventlist/index.htmlindex.html?2`。
@@ -150,6 +150,9 @@ sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
 ### __正在进行的工程__->
 
 ## Changelog
+### 0.4.3 (2021-04-19)
+* (bluefox) Added the support of Admin5
+
 ### 0.4.2 (2020-12-05)
 * (bluefox) Added possibility to add multiple states
 * (bluefox) Moved the duration to previous state

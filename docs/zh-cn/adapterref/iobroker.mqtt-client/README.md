@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mqtt-client/README.md
 title: ioBroker.mqtt-客户端
-hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
+hash: GV9yQNtkLUyfuDFH9uo5frFCfqrBm6d4DIke/mXo0NA=
 ---
 ![商标](../../../en/adapterref/iobroker.mqtt-client/admin/mqtt-client.png)
 
@@ -17,16 +17,16 @@ hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
 ![适配器](../../../en/adapterref/iobroker.mqtt-client/img/settings.png)
 
 ###关于连接主题和消息
-每次客户端连接或重新连接到服务器时，都会将```on connect message```发布到```on connect topic```中。
+每次客户端连接或重新连接到服务器时，```on connect message```都会发布到```on connect topic```中。
 
 ###最后将主题和消息
-每次客户端连接或重新连接到服务器时，都会将```last will message```发布到```last will topic```中。
+每次客户端连接或重新连接到服务器时，```last will message```都会发布到```last will topic```中。
 当客户端断开连接时，服务器将存储此消息并将其发送给其订阅者。
 
 ###订阅
 以逗号分隔的现有状态未涵盖的主题列表。
 收到的消息将转换为适配器名称空间（例如mqtt.0）内的状态并进行订阅。
-您可以在创建所有状态之后删除主题。
+创建所有状态后，您可以删除主题。
 
 ###发布前缀
 发布时，此主题将附加在所有主题之前。
@@ -37,7 +37,7 @@ hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
 默认为空（无前缀）。
 
 ##状态设定
-![州](../../../en/adapterref/iobroker.mqtt-client/img/dialog.png)
+![状态](../../../en/adapterref/iobroker.mqtt-client/img/dialog.png)
 
 ###已启用
 启用或禁用此状态的mqtt-client功能。
@@ -48,30 +48,47 @@ hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
 默认值：状态ID转换为mqtt主题。
 
 ###发布
-*```enable```状态将被发布
+*```enable''状态将被发布
 *仅更改状态将仅在其值更改时发布
 *```as object```整个状态将作为对象发布
 *```qos```参见<http://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels>
-*```保留```参见<http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages>
+*```retain''`参见<http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages>
 
-###订阅
-*```enable```主题将被订阅并且状态将被相应地更新
+＃＃＃ 订阅
+*```enable''主题将被订阅并且状态将被相应地更新
 *```仅更改''状态只会在值更改时写入
-*`as as object`消息将被解释为对象
+*```as object```消息将被解释为对象
 *```qos```参见<http://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels>
-*状态更新时的``ack''会相应地设置ack标志
+*状态中的```ack''`更新了ack标志将被相应地设置
 
-＃＃＃＃ 注意
+＃＃＃＃ 笔记
 *当ack设置为true时，它将覆盖对象ack，请参见“作为对象”
-*防止消息循环，如果同时启用了发布和订阅，则“仅更改”始终处于订阅状态
+*以防止消息循环，如果同时启用了发布和订阅，则“仅更改”始终处于订阅状态
 
 ＃＃ 去做
 *测试前缀
 *无需干净的会话即可连接/重新连接
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
+
 ## Changelog
+### 1.3.2 (2021-04-19)
+* (bluefox) Added support of admin5
+
+### 1.3.1 (2020-03-17)
+* (bluefox) mqtt package moved back to 2.x
+
+### 1.3.0 (2020-03-11)
+* (bluefox) mqtt package was updated
+* (bluefox) Fixed the error with "custom" view
+
+### 1.2.1 (2019-10-17)
+* (algar42) Fix adapter restarting
+* (algar42) Fix mqtt issues
+
 ### 1.2.0 (2019-10-14)
-* (bluefox) Used MQTT 5.0
 * (bluefox) Support of js-controller 2.0 was added
 
 ### 1.1.1 (2018-01-30)
@@ -111,7 +128,7 @@ hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 Pmant
+Copyright (c) 2016-2020 Pmant
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

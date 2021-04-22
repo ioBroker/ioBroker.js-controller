@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
+hash: ywraCHe0HMT0583wHjYdV78lyHfLS1pss3mUMXaxF2w=
 ---
 ![Logo](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.eventlist.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.eventlist.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/eventlist-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/eventlist-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/eventlist-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/bluefox/iobroker.eventlist.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/bluefox/ioBroker.eventlist/badge.svg)
@@ -150,6 +150,9 @@ Der generierte Bericht wird zum Beispiel 0 in `eventlist/report.pdf` gespeichert
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.4.3 (2021-04-19)
+* (bluefox) Added the support of Admin5
+
 ### 0.4.2 (2020-12-05)
 * (bluefox) Added possibility to add multiple states
 * (bluefox) Moved the duration to previous state

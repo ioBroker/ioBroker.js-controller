@@ -245,8 +245,13 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 });
 ```
 
-
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## Changelog
+### 1.9.5 (2021-04-19)
+* (bluefox) Added the support of Admin5
 
 ### 1.9.4 (2021-01-17)
 * (Apollon77) Optimize stop handling
@@ -418,7 +423,7 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2020 bluefox, apollon77
+Copyright (c) 2015-2021 bluefox, apollon77
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

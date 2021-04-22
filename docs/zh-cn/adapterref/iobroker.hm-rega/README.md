@@ -113,6 +113,9 @@ CCU和信息文件夹包含网关的基本信息。
 	### __WORK IN PROGRESS__
 -->
 
+### 3.0.20 (2021-04-20)
+* (foxriver76) admin/controller has a bug still requiring `common.title` (fixes #133)
+
 ### 3.0.19 (2021-04-16)
 * (foxriver76) fix for custom webinterface port (addresses #117)
 

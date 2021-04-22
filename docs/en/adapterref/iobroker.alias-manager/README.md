@@ -89,6 +89,9 @@ Here you can:
 
 ## Changelog
 
+### 1.1.0 (2021-04-20)
+* (sbormann) Added compatibility to new react-ui of admin-adapter.
+
 ### 1.0.2 (2021-04-10)
 * (sbormann) Added info texts and translations.
 

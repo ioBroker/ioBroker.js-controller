@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mqtt-client/README.md
 title: ioBroker.mqtt-client
-hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
+hash: GV9yQNtkLUyfuDFH9uo5frFCfqrBm6d4DIke/mXo0NA=
 ---
 ![Logo](../../../en/adapterref/iobroker.mqtt-client/admin/mqtt-client.png)
 
@@ -16,25 +16,25 @@ hash: Pzk8b4sE1sQWx5/ZxhB0IfeKVmWlkQhNhNzV5CyWOzI=
 ## Adaptereinstellungen
 ![Adapter](../../../en/adapterref/iobroker.mqtt-client/img/settings.png)
 
-### Beim Verbinden von Thema und Nachricht
-Die ```on connect message``` werden jedes Mal im ```on connect topic``` veröffentlicht, wenn der Client eine Verbindung zum Server herstellt oder eine neue Verbindung herstellt.
+### Zum Thema und Nachricht verbinden
+Die ```on connect message``` werden jedes Mal, wenn der Client eine Verbindung zum Server herstellt oder eine Verbindung zum Server herstellt, in den ```on connect topic``` veröffentlicht.
 
-### Letztes Thema und Nachricht
-Die ```last will message``` werden jedes Mal im ```last will topic``` veröffentlicht, wenn der Client eine Verbindung zum Server herstellt oder eine neue Verbindung herstellt.
+### Last will Thema und Nachricht
+Die ```last will message``` werden jedes Mal, wenn der Client eine Verbindung zum Server herstellt oder eine Verbindung zum Server herstellt, in den ```last will topic``` veröffentlicht.
 Der Server speichert diese Nachricht und sendet sie an seine Abonnenten, wenn der Client die Verbindung trennt.
 
-### Abos
-Kommagetrennte Liste von Themen, die nicht von bestehenden Staaten abgedeckt werden.
-Empfangene Nachrichten werden in Status innerhalb des Adapter-Namespaces (z. B. mqtt.0) konvertiert und abonniert.
+### Abonnements
+Durch Kommas getrennte Liste von Themen, die nicht von bestehenden Staaten abgedeckt werden.
+Empfangene Nachrichten werden in Zustände innerhalb des Adapternamensraums (z. B. mqtt.0) konvertiert und abonniert.
 Sie können Themen entfernen, nachdem alle Status erstellt wurden.
 
-### Präfix veröffentlichen
+### Veröffentlichungspräfix
 Bei der Veröffentlichung wird dies allen Themen vorangestellt.
-Standard ist leer (kein Präfix).
+Die Standardeinstellung ist leer (kein Präfix).
 
-### Präfix abonnieren
+### Abonnementpräfix
 Beim Abonnieren wird dies allen Themen vorangestellt.
-Standard ist leer (kein Präfix).
+Die Standardeinstellung ist leer (kein Präfix).
 
 ## Statuseinstellungen
 ![Zustand](../../../en/adapterref/iobroker.mqtt-client/img/dialog.png)
@@ -48,30 +48,47 @@ Das Thema, für das dieser Status veröffentlicht und abonniert wurde.
 Standard: Status-ID in ein mqtt-Thema konvertiert.
 
 ### Veröffentlichen
-* `` `enable``` state wird veröffentlicht
-* `` `change only``` state wird nur veröffentlicht, wenn sich sein Wert ändert
+* `` `enable``` wird veröffentlicht
+* `` `Nur Änderungen``` Status wird nur veröffentlicht, wenn sich sein Wert ändert
 * `` `als Objekt``` Der gesamte Status wird als Objekt veröffentlicht
 * `` `qos``` siehe <http://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels>
-* Siehe <http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages>
+* `` `behalten``` siehe <http://www.hivemq.com/blog/mqtt-essentials-part-8-retained-messages>
 
 ### Abonnieren
-* `` `enable``` wird abonniert und der Status entsprechend aktualisiert
-* `` `change only``` state wird nur geschrieben, wenn sich der Wert ändert
+* `` `enable``` Thema wird abonniert und der Status wird entsprechend aktualisiert
+* `` `Nur Änderungen``` Status wird nur geschrieben, wenn sich der Wert geändert hat
 * `` `als Objekt``` Nachrichten werden als Objekte interpretiert
 * `` `qos``` siehe <http://www.hivemq.com/blog/mqtt-essentials-part-6-mqtt-quality-of-service-levels>
-* `` `ack``` on state updates das ack flag wird entsprechend gesetzt
+* `` `ack``` bei Statusaktualisierungen wird das ack-Flag entsprechend gesetzt
 
 #### Hinweis
-* Wenn ack auf true gesetzt ist, überschreibt es Objekte ack, siehe `` as object```
-* um Nachrichtenschleifen zu vermeiden, wenn sowohl Publizieren als auch Abonnieren aktiviert sind `` Nur Änderungen``` ist immer zum Abonnieren aktiviert
+* Wenn ack auf true gesetzt ist, werden Objekte ack überschrieben, siehe `` `as object```
+* Um Nachrichtenschleifen zu vermeiden, wenn sowohl Veröffentlichen als auch Abonnieren aktiviert sind, ist "Nur Änderungen" immer zum Abonnieren aktiviert
 
 ## MACHEN
 * Testpräfixe
-* Connect / Reconnect ohne saubere Sitzung
+* Verbinden / erneutes Verbinden ohne saubere Sitzung
+
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.3.2 (2021-04-19)
+* (bluefox) Added support of admin5
+
+### 1.3.1 (2020-03-17)
+* (bluefox) mqtt package moved back to 2.x
+
+### 1.3.0 (2020-03-11)
+* (bluefox) mqtt package was updated
+* (bluefox) Fixed the error with "custom" view
+
+### 1.2.1 (2019-10-17)
+* (algar42) Fix adapter restarting
+* (algar42) Fix mqtt issues
+
 ### 1.2.0 (2019-10-14)
-* (bluefox) Used MQTT 5.0
 * (bluefox) Support of js-controller 2.0 was added
 
 ### 1.1.1 (2018-01-30)
@@ -111,7 +128,7 @@ Standard: Status-ID in ein mqtt-Thema konvertiert.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 Pmant
+Copyright (c) 2016-2020 Pmant
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

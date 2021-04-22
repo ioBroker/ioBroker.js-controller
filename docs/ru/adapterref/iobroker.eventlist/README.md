@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
+hash: ywraCHe0HMT0583wHjYdV78lyHfLS1pss3mUMXaxF2w=
 ---
 ![Логотип](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -13,13 +13,13 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 ![Количество установок (стабильно)](http://iobroker.live/badges/eventlist-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/bluefox/iobroker.eventlist.svg)
 ![Известные уязвимости](https://snyk.io/test/github/bluefox/ioBroker.eventlist/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)
 
 # IoBroker.eventlist
 ## Адаптер Event-List для ioBroker
 Позволяет определить состояния, которые необходимо регистрировать в списке событий.
 
-Список может быть отображен в админке, веб, vis, сохранен как PDF, материал (еще не реализован).
+Список может быть показан в админке, веб, vis, сохранен как PDF, материал (еще не реализован).
 
 Кроме того, вы можете отправлять события через Telegram или WhatsApp.
 
@@ -35,7 +35,7 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 
 Пример использования:
 
-- Например, датчик двери может отправлять сообщения, только если никого нет дома. В противном случае события об открытии дверей будут собираться только в списке событий.
+- Например. датчик двери может отправлять сообщения, только если никого нет дома. В противном случае события об открытии дверей будут собираться только в списке событий.
 
 ## Возможные презентации
 ### В Admin как вкладка
@@ -53,17 +53,17 @@ hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 Заголовок документа может состоять из даты создания, если вы поместите в него шаблон: `Event list on {{YYYY MM DD}}`.
 Точное описание формата времени можно найти здесь: https://momentjs.com/docs/#/displaying/format/
 
-Генерацию PDF можно запустить, записав `true` в `eventlist.0.triggerPDF`.
+Создание PDF-файла можно запустить, записав `true` в `eventlist.0.triggerPDF`.
 
 Доступ к файлу PDF можно получить через:
 
 - web: `http:// <IP>: 8082 / eventlist / eventlist / report.pdf` (для экземпляров> 0:` http: // <IP>: 8082 / eventlist / eventlist / report-X.pdf`, где X - номер экземпляра)
 - admin: `http:// <IP>: 8081 / files / eventlist / report.pdf` (для экземпляров> 0:` http: // <IP>: 8081 / files / eventlist / report-X.pdf`, где X - номер экземпляра)
 
-** Значки не могли отображаться в PDF. **
+** Значки не могут быть отображены в PDF. **
 
 ## Окно сообщения
-Пользователь может добавлять собственные события в список с помощью javascript:
+Пользователь может добавлять собственные события в список через javascript:
 
 ```
 // add custom event to event list
@@ -128,14 +128,14 @@ sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
 - %s  - значение (`Состояние изменено на% s` =>` Состояние изменено на 5`),
 -% u - unit (`Состояние изменено на %s % u` =>` Состояние изменено на 5% `),
 -% n - имя (`% n изменено состояние на %s ` =>` Устройство A изменило состояние на 5`),
--% t - время (`Состояние изменилось на% t` =>` Состояние изменилось состояние в сен Fr, 16: 32: 00`),
+-% t - время (`Состояние изменено на% t` =>` Состояние изменено на сентябрь Пт, 16: 32: 00`),
 -% r - относительное время (`Состояние изменилось состояние% r` =>` Состояние изменилось 5 секунд назад`),
 -% d - продолжительность (`State was in previous state for% d` =>` State was in previous state for 5s`),
 -% g - разница значений (`Состояние было изменено на% g%` => `Состояние было изменено на 1%`),
 -% o - разница значений (`Состояние изменено значение с% o на%` => `Состояние было изменено на 1%`)
 
 ## Использование нескольких экземпляров в сети
-Например. вы можете отобразить конкретный список, например 2, например `http://IP:8082/eventlist/index.htmlindex.html?2`.
+Например. вы можете показать конкретный список, например 2, например `http://IP:8082/eventlist/index.htmlindex.html?2`.
 
 Сгенерированный отчет будет сохранен, например, 0 в `eventlist/report.pdf`, но, например, 1 в `eventlist/report-1.pdf`.
 
@@ -150,6 +150,9 @@ sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.4.3 (2021-04-19)
+* (bluefox) Added the support of Admin5
+
 ### 0.4.2 (2020-12-05)
 * (bluefox) Added possibility to add multiple states
 * (bluefox) Moved the duration to previous state

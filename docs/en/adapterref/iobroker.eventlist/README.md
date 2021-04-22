@@ -15,7 +15,7 @@ Allows to define the states that must be logged in event list.
 
 The list can be shown in admin, web, vis, saved as PDF, material (not yet implemented).
 
-Additionally you can send events via Telegram or WhatsApp.
+Additionally, you can send events via Telegram or WhatsApp.
 
 ![List](img/list.png)
 
@@ -140,6 +140,9 @@ The generated report will be stored for instance 0 in `eventlist/report.pdf`, bu
 -->
 
 ## Changelog
+### 0.4.3 (2021-04-19)
+* (bluefox) Added the support of Admin5
+
 ### 0.4.2 (2020-12-05)
 * (bluefox) Added possibility to add multiple states
 * (bluefox) Moved the duration to previous state

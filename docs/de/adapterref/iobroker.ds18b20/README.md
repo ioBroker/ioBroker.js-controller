@@ -222,6 +222,9 @@ Anweisungen zur Einrichtung sind in der Adapterkonfiguration zu finden.
 
 ## Changelog
 
+### 1.4.1 (2021-04-20)
+* (crycode-de) Fixed bug if multiple remote sensors are used
+
 ### 1.4.0 (2021-02-21)
 * (crycode-de) Support for remote sensors using an own tiny daemon and encrypted TCP sockets
 * (crycode-de) Set `q` flag to `0x81` (general problem by sensor) if a sensor reported a `null` value

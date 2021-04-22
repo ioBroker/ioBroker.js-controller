@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.zwave2/README.md
 title: ioBroker.zwave2
-hash: 2uuGJ31fJ0ME2V3pOopBkWGfYyiOBQ5GSYngapKRVYo=
+hash: pFVHu19SUzQKPAYVMpHE3EKVsRvwEfyB0JZgKbmka8E=
 ---
 ![商标](../../../en/adapterref/iobroker.zwave2/admin/zwave2.svg)
 
@@ -14,17 +14,17 @@ hash: 2uuGJ31fJ0ME2V3pOopBkWGfYyiOBQ5GSYngapKRVYo=
 ![语言等级：JavaScript](https://img.shields.io/lgtm/grade/javascript/g/AlCalzone/ioBroker.zwave2.svg?logo=lgtm&logoWidth=18)
 
 ＃ioBroker.zwave2
-![测试与发布](https://github.com/AlCalzone/iobroker.zwave2/workflows/Test%20and%20Release/badge.svg)
+![测试与发布](https://github.com/AlCalzone/iobroker.zwave2/workflows/Test%20and%20Release/badge.svg)[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/zwave2/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 <h2 align="center">ioBroker的Z-Wave。但是更好。</h3>
 
 Z-Wave 2是用于ioBroker的全新Z-Wave实现。它基于[`zwave-js`](https://github.com/AlCalzone/node-zwave-js)，它是为您的利益而写的。
 
-除非[ioBroker.zwave](https://github.com/ioBroker/ioBroker.zwave/)，它不需要`OpenZWave`。这意味着安装和更新速度很快，无需编译静态库和其他复杂步骤。
+除非[ioBroker.zwave](https://github.com/ioBroker/ioBroker.zwave/)，它不需要`OpenZWave`。这意味着安装和更新速度很快，并且不需要编译静态库和其他复杂的步骤。
 
-此外，有些设备只是无法在原始适配器中使用，例如Fibaro卷帘门3。
+此外，某些设备在原始适配器中无法正常工作，例如Fibaro卷帘门3。
 
-在整个开发过程中，始终牢记在ioBroker中易于使用。例如，某些设备重用配置参数来配置许多不同的东西。在此适配器中，它们中的大多数都分为单独的状态，不需要复杂的数学运算：
+在整个开发过程中，始终牢记在ioBroker中易于使用。例如，某些设备重用配置参数来配置许多不同的东西。在此适配器中，它们中的大多数都分为单独的状态，并且不需要复杂的数学运算：
 
 | ioBroker.zwave2中的配置参数| vs | ioBroker.zwave中的配置参数|
 | ![]（docs / de / images / config-params.png）| vs | ！[](../../../en/adapterref/iobroker.zwave2/docs/de/images/config-params-legacy.png) |
@@ -44,52 +44,60 @@ Z-Wave 2是用于ioBroker的全新Z-Wave实现。它基于[`zwave-js`](https://g
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 1.9.3 (2021-04-10)
+* Restored the old behavior for devices that report their values via the root endpoint
+* Some minor config file changes
 
-### 1.7.3 (2020-10-03)
-* Fixed two crashes during the `Notification CC` interview
+### 1.9.2 (2021-04-05)
+Upgraded to `zwave-js` version `7.1.0`. Notable changes include:
+* Added reporting of usage statistics. For details, refer to the `node-zwave-js` documentation.
+* Better support for 700-series Z-Wave sticks
+* Notification values are no longer auto-reset to idle after 5 minutes by default. This behavior can now be enabled per device if necessary.
+* Several stability improvements
 
-### 1.7.2 (2020-10-01)
-* Added an option to improve the compatibility with legacy switches. If this option is enabled, `targetValue` (Binary and Multilevel Switch) will be overwritten with `currentValue` whenever `currentValue` is updated.
-* When healing the network, the progress should now show up immediately
-* Fixed two crash sources
-* Several improvements to `Notification CC`
-  * The interview now detects whether a node is push or pull
-  * Push nodes now have their supporting values set to idle if no value is yet known
-  * Pull nodes are now auto-refreshed every 6 hours and on wakeup
-* Including secure devices now fails if the device takes too long to respond (as required by the specifications)
+For a full list of changes, check out https://github.com/zwave-js/node-zwave-js/blob/master/CHANGELOG.md
 
-### 1.7.1 (2020-09-29)
-* Added two options to increase the driver timeouts and/or send attempts. This should allow increasing the network stability at the cost of decreased responsiveness.
-* Added support for `User Code CC V2`
-* Fix: Nodes are no longer marked as dead or asleep if they acknowledge a message but don't respond to it
+### 1.9.0 (2021-03-16)
+* Upgraded to `zwave-js` version 7
+* Nodes with a completed interview are no longer queried for all their values when restarting. As a result the adapter is now ready much much faster after a restart, but you'll see many yellow values until the devices have sent updated data.
+* The device list in the configuration dialog now displays a better type for the devices, for example `Wall Controller` instead of `Routing Slave`
+* Network heal no longer times out early in large networks
+* Fixed a crash: `supportedCCs is not iterable`. If this happens to you, re-interview affected devices.
+* Relaxed the checks when a report gets mapped from the root endpoint to higher endpoints
+* Some encrypted messages that were previously dropped are now accepted
+* Prevent the interview of sleeping nodes to get stuck until a re-interview under certain circumstances
+* After a restart, sleeping nodes have their status correctly determined even if they weren't interviewed completely before
+* Notification variables are now auto-idled after 5 minutes as it was intended, not after 5 hours
+* The `deltaTime` and `previousValue` values for the Meter CC are now hidden
+* Fixed a crash that could happen after node inclusion
+* Tons of new and improved device configuration files
 
-### 1.7.0 (2020-09-25)
-* The `quality` parameter is now set for state updates when reading (potentially stale) values from the cache
-* Changed the serialport setting field to use autocomplete instead of a dropdown, added a tip how to use serial-over-tcp connections
-* The adapter will now attempt to restart if starting the driver fails
-* Upgraded `zwave-js` to version 5.0.0. This includes many changes including the following:
-  * The driver has been completely rewritten with state machines for a well-defined program flow and better testability. This should solve issues where communication may get stuck for unknown reasons.
-  * All interview messages now automatically have a lower priority than most other messages, e.g. the ones created by user interaction. This should make the network feel much more responsive while an interview process is active.
-  * Improved performance of reading from the Value DB
-  * A node is no longer marked as dead or asleep if it fails to respond to a `Configuration CC::Get` request. This can happen if the parameter is not supported.
-  * The interview for sensor-type CCs is now skipped if a timeout occurs waiting for a response. Previously the whole interview was aborted.
-  * If a node that is known to be included securely does not respond to the `Security CC` interview, it is no longer assumed to be non-secure
-  * If a node that is assumed to be included non-securely sends secure commands, it is now marked as secure and the interview will be restarted
-  * Added a configuration file for `ABUS CFA3010`.
-  * Added a configuration file for `Everspring AC301`
-  * Removed parameter #5 from `Aeon Labs ZW130` because it doesn't seem to be supported in any firmware version
-  * In addition to real serial ports, serial-over-tcp connections (e.g. by using `ser2net`) are now supported. Use these `ser2net` settings to host a serial port: `<external-port>:raw:0:<path-to-serial>:115200 8DATABITS NONE 1STOPBIT`
-  * Fixed a crash that could occur when assembling a partial message while the driver is not ready yet.
+### 1.8.12 (2021-02-23)
+* Implemented `Scene Actuator Configuration CC` and `Scene Controller Configuration CC`
+* Fixed an issue where sleeping nodes could block the send queue when it is not yet known whether they support `Wake Up CC`
+* Fixed a crash that could happen while logging a message while the driver is not ready yet
+* Fixed a crash that could happen while trying to bootstrap a device that does not respond after inclusion
+* The state value in `Thermostat Fan Mode CC` is now readonly
+* Configuration parameters may now have a unit
+* Tons of new and improved device configuration files
+* Unsolicited reports are no longer incorrectly mapped to all endpoints
 
-### 1.6.3 (2020-09-04)
-* Further performance optimization
-* Improved compatibility with devices that send invalid `Multi Channel CC` commands
+### 1.8.11 (2021-02-14)
+* Implemented `Thermostat Fan Mode CC` and `Thermostat Fan State CC`
+* Fixed several sources of crashes
+* Fixed incorrect detection of secure nodes
+* Certain `.hex` firmware files are now parsed correctly
+* Added support for `.bin` firmware files
+* Avoid an infinite interview loop when devices don't advertise the end of the parameter list correctly
+* Sleeping nodes are now immediately marked as ready when restarting from cache
+* Unsolicited reports are no longer mapped from the root endpoint to endpoint 1 if that endpoint does not support the CC
+* Tons of new and improved device configuration files
 
 ## License
 
 MIT License
 
-Copyright (c) 2019-2020 AlCalzone
+Copyright (c) 2019-2021 AlCalzone
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

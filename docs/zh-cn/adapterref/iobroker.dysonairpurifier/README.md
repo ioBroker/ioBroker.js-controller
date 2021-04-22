@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.dysonairpurifier/README.md
 title: ioBroker.dysonAirPurifier
-hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
+hash: s1zJIIEJa9uBBcgsAcVnaaBMO6CxukCwj8/He7bfINo=
 ---
 ![安装数量（最新）](http://iobroker.live/badges/dysonairpurifier-installed.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.dysonairpurifier.svg)
@@ -21,7 +21,7 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 ##戴森空气净化器和风扇的ioBroker适配器
 该适配器将ioBroker连接到各种戴森空气净化器。
 
-由[Freepik]（https://www.flaticon.com/de/autoren/freepik）来自[www.flaticon.com](https://www.flaticon.com/de/)创建的徽标中的风扇图标。
+由[Freepik]（https://www.flaticon.com/de/autoren/freepik）来自[www.flaticon.com](https://www.flaticon.com/de/)创建的徽标中的Fan-Icon。
 
 ###支持的设备
 *戴森Pure Cool Link塔（TP02，产品类型475）
@@ -29,7 +29,8 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 *戴森Pure Cool Link办公桌（DP01，产品类型469）
 * Dyson Pure Cool Desk，2018型号（DP04，ProductType 520）
 * Dyson Pure Hot + Cool Link（HP02，产品类型455）
-* 2018戴森Pure Hot + Cool（HP04，产品类型527）
+* Dyson Pure Hot + Cool，2018年型号（HP04，ProductType 527）
+*戴森Pure Hot + Cool（HP07，产品类型527E）
 *戴森Pure Humidify + Cool（PH01，产品类型358）
 
 ＃＃ 特征
@@ -49,12 +50,12 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 
 ###适配器安装
 ####使用npm
-在ioBroker安装上运行```npm install ioBroker.dysonairpurifier```，以从npm存储库中获取此适配器的最新版本。
+在ioBroker安装上运行```npm install iobroker.dysonairpurifier```，以从npm存储库中获取此适配器的最新版本。
 
 ####替代方法：使用GitHub URL
 通过将ioBroker管理员UI指向GitHub上的最新稳定版本进行安装：<https://github.com/Grizzelbee/ioBroker.dysonairpurifier/tarball/master/>
 
-您也可以使用此方法安装较早的发行版（通过指向版本标记，例如，URL中的§§JJJJ_0_0§§而不是```master```§），但是通常首选最新版本。
+您也可以使用此方法安装较早的发行版（通过指向版本标记，例如，URL中的```v0.6.0```而不是```master```），但是通常最好使用最新版本。
 
 ###需要配置数据
 * Dyson帐户用户名
@@ -126,7 +127,7 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 | nmod |夜间模式|开启，关闭| |
 |儿子|振荡|开启，关闭| |
 | osal |振荡角度下界| 0005-355 | °（度）|
-| osau | OscillationAngle上边界| 0005-355 | °（度）|
+| osau |振荡角度上边界| 0005-355 | °（度）|
 | oscs |振荡活动|开，关，空闲| |
 | ancp |摆角| CUST，0180 |°（度）|
 | qtar |空气质量指标| 0001 =好，0002 =正常，0003 =差，0004 =非常差| |
@@ -207,29 +208,36 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 | tmpm |开尔文的温度？ | 0000-5000 | |
 
 ＃＃ 法律声明
-戴森，纯净，纯净，凉爽和其他均为[戴森有限公司](https://www.dyson.com)的商标或注册商标。所有其他商标均为其各自所有者的财产。
+戴森，纯净，纯净和凉爽等是[戴森有限公司](https://www.dyson.com)的商标或注册商标。所有其他商标均为其各自所有者的财产。
 
 ## Changelog
 
-### 0.8.1 (2021-02-19) (Fall into the flames)
+### V0.8.2 (2021-04-09) (Still breathing)
+* (grizzelbee) Fix: [#80](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/80) fixed npm install hint in documentation
+* (grizzelbee) Fix: [#82](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/82) fixed common.dataSource type with type >poll<
+* (grizzelbee) Fix: [#95](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/95) Added new heater model type 527E
+* (grizzelbee) Fix: [#94](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/94) Fixed dustIndex
+
+
+### V0.8.1 (2021-02-19) (Fall into the flames)
 * (grizzelbee) New: added icons to each fan type in device tree
 * (grizzelbee) New: Showing Filter type correctly - not as code anymore
 * (grizzelbee) Upd: updated dependencies
 
-### 0.8.0 (2021-02-18) (Beyond the mirror)
+### V0.8.0 (2021-02-18) (Beyond the mirror)
 * (grizzelbee) New: Log as info if account is active on login; else log as warning. 
 * (grizzelbee) New: [#21](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/21) Improvement for humidifier support
 * (grizzelbee) Fix: [#67](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/67) Adapter sometimes wrote objects instead of values.
 
-### 0.7.5 (2021-02-12) (I won't surrender)
+### V0.7.5 (2021-02-12) (I won't surrender)
 * (grizzelbee) Fix: [#65](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/65) Adapter get online again after changes to dyson cloud API login procedure.
 * (grizzelbee) New: Adapter reconnects with new host address when it gets changed manually
 
-### 0.7.4 (2021-02-10) (Human)
+### V0.7.4 (2021-02-10) (Human)
 * (grizzelbee) Fix: fixed adapter traffic light for info.connection
 * (grizzelbee) Fix: Minor fixes
 
-### 0.7.3 (2021-02-10) (When angels fall)
+### V0.7.3 (2021-02-10) (When angels fall)
 * (theimo1221) Fix: [#59](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/59) added default country
 * (theimo1221) New: added function to mask password to dyson-utils.js
 * (grizzelbee) New: extended config test and error logging
@@ -240,11 +248,11 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 * (grizzelbee) Upd: creating all data points with await 
 
 
-### 0.7.2 (2021-02-10) (Songs of love and death)
+### V0.7.2 (2021-02-10) (Songs of love and death)
 * (grizzelbee) Fix: [#59](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/59) Fixed bug while loading/saving config which led to wrong values displayed for country and temperature unit
 * (grizzelbee) Upd: switched "Skipping unknown ..." message from info to debug 
 
-### 0.7.1 (2021-02-06) (Horizons)
+### V0.7.1 (2021-02-06) (Horizons)
 * (grizzelbee) New: When no host address is given - adapter tries to connect via default hostname of the device
 * (grizzelbee) Fix: [#13](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/13) Filterlifetime is now correctly displayed in hours and percent for devices supporting this
 * (grizzelbee) Fix: [#48](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/48) Fixed countrycodes for UK and USA
@@ -259,7 +267,7 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 * (grizzelbee) Upd: [#9](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/9) Added some more dyson codes for heaters and humidifiers
 
 
-### 0.7.0 (2021-01-08) (Afraid of the dark)
+### V0.7.0 (2021-01-08) (Afraid of the dark)
 * (jpwenzel)   New: Removing crypto from package dependency list (using Node.js provided version)
 * (jpwenzel)   New: Introducing unit tests
 * (jpwenzel)   New: At least NodeJs 10.0.0 is required
@@ -279,24 +287,24 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 * (grizzelbee) Fix: calling setState in callback of set/createObject now
 * (grizzelbee) Fix: ensuring to clear all timeouts in onUnload-function
 
-### 0.6.0 (2020-10-29) (Rage before the storm)
+### V0.6.0 (2020-10-29) (Rage before the storm)
 * (grizzelbee) New: [#17](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/17) - Added online-indicator for each device
 * (grizzelbee) New: [#19](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/19) - Extended Password length from 15 characters to 32
 * (grizzelbee) New: [#20](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/20) - Improved errorhandling on http communication with Dyson API
 * (grizzelbee) Fix: Fixed typo within data field anchorpoint - please delete the old ancorpoint manually.
 * (grizzelbee) Fix: [#13](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/13) - Filter life value is now displayed in percent not in hours
 
-### 0.5.1 (2020-10-27) (Heart of the hurricance)
+### V0.5.1 (2020-10-27) (Heart of the hurricance)
 * (grizzelbee) Fix: Added missing clearTimeout
 
-### 0.5.0 (2020-10-27) (Heart of the hurricance)
+### V0.5.0 (2020-10-27) (Heart of the hurricance)
 * (grizzelbee) New: Editable data fields have now appropiate value lists
 * (grizzelbee) New: Added more country codes
 * (grizzelbee) New: Target temperature of heater can now be set - **in the configured unit!**
 * (grizzelbee) Fix: [#13](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/13) - Filter life value is now displayed in percent not in hours
 * (grizzelbee) Fix: [#6](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/6) - Changing the fanspeed does now fully work.  
 
-### 0.4.1 (2020-10-16) (unbroken)
+### V0.4.1 (2020-10-16) (unbroken)
 * (grizzelbee) New: [#8](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/8) - Documented ProductTypes for better overview and user experience in ReadMe
 * (grizzelbee) New: [#9](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/9) - Added some Hot&Cool specific datafields
 * (grizzelbee) New: Logging of from devices, when shutting down the adapter
@@ -306,8 +314,7 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 * (grizzelbee) Fix: [#12](https://github.com/Grizzelbee/ioBroker.dysonairpurifier/issues/12) - Fixed Dyson API login by completely securing via HTTPS.
 * (grizzelbee) Fix: Updated some descriptions in config
   
-### 0.4.0 (2020-09-29)
-
+### V0.4.0 (2020-09-29)
 * (grizzelbee) New: devices are now **controllable**
 * (grizzelbee) New: state-change-messages are processed correctly now
 * (grizzelbee) Fix: Added missing °-Sign to temperature unit
@@ -315,8 +322,7 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 * (grizzelbee) Fix: NO2 and VOC Indices should work now
 * (grizzelbee) Fix: Fixed build errors
 
-### 0.3.0 (2020-09-27) - first version worth giving it a try
-
+### V0.3.0 (2020-09-27) - first version worth giving it a try
 * (grizzelbee) New: Messages received via Web-API and MQTT getting processed
 * (grizzelbee) New: datapoints getting created and populated
 * (grizzelbee) New: Added config item for desired temperature unit (Kelvin, Fahrenheit, Celsius)
@@ -324,16 +330,14 @@ hash: px4zk/3wJAeS3V3CIdF2pOm2GTLOP3JGncSlp+uWIX4=
 * (grizzelbee) New: Hostaddress/IP is editable / configurable
 * (grizzelbee) New: calculate quality indexes for PM2.5, PM10, VOC and NO2 according to Dyson App
 
-### 0.2.0 (2020-09-22) - not working! Do not install/use
-
+### V0.2.0 (2020-09-22) - not working! Do not install/use
 * (grizzelbee) New: Login to Dyson API works
 * (grizzelbee) New: Login to Dyson AirPurifier (2018 Dyson Pure Cool Tower [TP04]) works
 * (grizzelbee) New: mqtt-Login to [TP04] works
 * (grizzelbee) New: mqtt-request from [TP04] works
 * (grizzelbee) New: mqtt-request to [TP04] is responding
 
-### 0.1.0 (2020-09-04) - not working! Do not install/use
-
+### V0.1.0 (2020-09-04) - not working! Do not install/use
 * (grizzelbee) first development body (non functional)
 
 ## License

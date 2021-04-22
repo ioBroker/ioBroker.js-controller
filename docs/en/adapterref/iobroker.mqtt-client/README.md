@@ -62,7 +62,15 @@ default: state-ID converted to a mqtt topic.
 * test prefixes
 * connect/reconnect without clean session
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 1.3.2 (2021-04-19)
+* (bluefox) Added support of admin5
+
 ### 1.3.1 (2020-03-17)
 * (bluefox) mqtt package moved back to 2.x
 

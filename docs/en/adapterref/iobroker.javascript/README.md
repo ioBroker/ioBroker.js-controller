@@ -23,7 +23,7 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [schedule](#schedule)
         - [Time schedule](#time-schedule)
         - [Astro-function](#astro--function)
-    - [getSchedules](#egtschedules)
+    - [getSchedules](#getschedules)
     - [clearSchedule](#clearschedule)
     - [getAttr](#getattr)
     - [getAstroDate](#getastrodate)

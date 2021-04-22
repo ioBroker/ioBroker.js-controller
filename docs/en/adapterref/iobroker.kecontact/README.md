@@ -129,7 +129,7 @@ An extra checkbox is used to specified whether wallbox power is included (in thi
 
 ## License
 
-Copyright 2020 UncleSamSwiss
+Copyright (c) 2020-2021 UncleSamSwiss
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

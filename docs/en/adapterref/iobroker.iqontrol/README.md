@@ -1121,7 +1121,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 </details>
 
 ## Modifying Datapoint Configuration
-You can modify the configuration of datapoints via the wrench-icon behind a datapoint in the device-configuration dialog or in objects-tab of iobroker. 
+You can modify the configuration of datapoints via the wrench-icon (or rather gear-icon in new react-ui) behind a datapoint in the device-configuration dialog or in objects-tab of iobroker. 
 
 ![CustomDialog Call](img/custom_call.png)
 ![CustomDialog Example](img/custom_dialog.png)
@@ -1168,7 +1168,7 @@ Almost all roles have a **STATE**- and/or a **LEVEL**-state. In most cases this 
             ...
         }
         ````
-    * You can create your own value list by modifying the datapoint (wrench-icon behind the datapoint in the objects-tab of iobroker, see above)
+    * You can create your own value list by modifying the datapoint (wrench-icon, or rather gear-icon in new react-ui, behind the datapoint in the objects-tab of iobroker, see above)
 	* iQontrol will display a defined valueList as a drop down field in the dialog under the following circumstances:
 	    * if type is 'numbers' and the valueList has exact as many entries, as steps between min- and max of the datapoint or
 		* if type is 'boolean', but role is not 'switch' or
@@ -1350,7 +1350,7 @@ In addition to normal thermostat you can define:
 <details>
 <summary>Show possible time formats: (<ins>klick to open</ins>)</summary>
 
-* In the custom-section (wrench-icon) of any datapoint you can configure time-format and time-display-format. If the datapoint contains time informations, these two parameters specify in which format the time is saved in the datapoint and how iQontrols displays the time to the user.
+* In the custom-section (wrench-icon or rather gear-icon in new react-ui) of any datapoint you can configure time-format and time-display-format. If the datapoint contains time informations, these two parameters specify in which format the time is saved in the datapoint and how iQontrols displays the time to the user.
 * For the 'Date and Time'-Device these two settings can also be made in the device options inside the device-specific section. These will overwrite the settings made in the custom-section of the datapoint.
 * You can use the following tokens:
 
@@ -1472,7 +1472,7 @@ In addition to normal thermostat you can define:
     * 'ok' if the middle of the pad is clicked, 
 	* 'left', 'right', 'up' or 'down', if the edges of the pad are clicked or the pad is swiped in the corresponding direction or
 	* 'back', 'home' or 'menu*, if the corresponding buttons are clicked
-	* Keep in mind: You can use the Target-Value-List (accessible via the wrench-icon of each datapoint) to link from one datapoint to multiple datapoints, depending on the returned value (see Modifying Datapoints section above)
+	* Keep in mind: You can use the Target-Value-List (accessible via the wrench-icon, or rather gear-icon in new react ui, of each datapoint) to link from one datapoint to multiple datapoints, depending on the returned value (see Modifying Datapoints section above)
 * **REMOTE_COLOR**: *string* - shows colored buttons an returns the corresponding color ('red', 'green', 'yellow' or 'blue'), if a color is clicked
 * **REMOTE_CHANNELS**: *array* - an array of buttons. The name of the button is sent to the corresponding state-id, if the button is clicked
 * **REMOTE_ADDITIONAL_BUTTONS**: *array* - an array of buttons. The name of the button is sent to the corresponding state-id, if the button is clicked
@@ -1520,6 +1520,11 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
+### 1.7.2 
+* (sbormann) Added compatibility to new react-ui of admin-adapter.
+* (sbormann) Changed background-images in autocreate views function.
+* (sbormann) Internal definition and handling of device options changed.
+
 ### 1.7.1 (2021-04-18)
 * (sbormann) Fix to work with Admin v5.0.3 (renaming files and folders will only work with the upcoming next admin-update).
 * (sbormann) Updated dependencies.
@@ -1529,7 +1534,7 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device for dates, times and periods (durations).
 * (sbormann) Added time-format and time-display-format to custom settings of datapoints.
-* (sbormann) Added time-picker for every datapoint - including ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
+* (sbormann) Added time-picker for every STATE datapoint and ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
 * (sbormann) Added STOP_SET_VALUE for blinds.
 * (sbormann) You can now use variables in device-names, button-captions and headings of ADDITIONAL_CONTROLS.

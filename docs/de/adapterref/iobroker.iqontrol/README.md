@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: +O04SP6hiOKv4rGIc4bD9a2b9HOZ0puX9zfD4cfvY2I=
+hash: z2CLff5+JHeNSkpLYgTumR1uUWdNIjxR2hTZAylv7Gs=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -94,7 +94,7 @@ Der erste Symbolleisteneintrag ist Ihre 'Home-View', mit der beim Start geladen 
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Bilder im Ordner '/ usericons' können als Symbole für Geräte verwendet werden.
-Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
+Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 
 ### Verwenden Sie Autocreate
 * Auf der Registerkarte "Ansichten" finden Sie eine Schaltfläche "Ansichten automatisch erstellen"
@@ -184,7 +184,7 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 ## Widgets
 * Jede Kachel hat einen BACKGROUND_URL- und einen BACKGROUND_HTML-Datenpunkt
 * Hier können Sie einen Link (über BACKGROUND_URL) zu einer Website definieren oder direkten HTML-Code (über BACKGROUND_HTML) platzieren, der als Hintergrund der Kachel angezeigt wird
-* Dies gibt Ihnen die Möglichkeit, (interaktive) Inhalte in eine Kachel zu platzieren (wie Uhren, FLOT-Diagramme, Tabellen, Wettervorhersagen usw.)
+* Dies gibt Ihnen die Möglichkeit, (interaktive) Inhalte in eine Kachel zu platzieren (wie Uhren, FLOT-Charts, Tabellen, Wettervorhersagen usw.)
 * Standardmäßig werden Mausereignisse auf diesen Inhalt gerichtet (daher können Sie nicht mehr auf die Kachel selbst klicken). Sie können dies jedoch mit der Option "Direkte Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_VIEW / URL / HTML" deaktivieren ""
 * iQontrol bietet eine Geräterolle "Widget" mit einigen vordefinierten Optionen, die hauptsächlich verwendet werden, wenn eine Website als Widget angezeigt wird. Sie können jedoch mit jeder anderen Rolle das gleiche Ergebnis erzielen, indem Sie die Geräteoptionen ordnungsgemäß ändern.
 
@@ -218,7 +218,7 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 * Dadurch sendet iQontrol den Wert des ioBroker-Status "<stateId>" jetzt und jedes Mal, wenn sich sein Wert ändert (siehe unten, wie die Antwortnachrichten empfangen werden).
         * `` {Befehl: "renderView", Wert: <viewID>} ``
 * Dadurch wird iQontrol angewiesen, eine Ansicht zu rendern, in der `` <viewID> `` wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert werden muss (Groß- und Kleinschreibung beachten)
-        * `` {Befehl: "openDialog", Wert: <GerätID>} ``
+        * `` {Befehl: "openDialog", Wert: <Geräte-ID>} ``
 * Dadurch wird iQontrol angewiesen, ein Dialogfeld zu öffnen, in dem "Geräte-ID" wie "iqontrol. <Instanznummer>. Ansichten. <Ansichtsname>. Geräte. <Geräte-Nummer>" formatiert werden muss Dabei beginnt `` <Geräte-Nummer> `` bei 0 (das erste Gerät in einer Ansicht ist also Gerätenummer 0).
 * Um Nachrichten von iQontrol zu empfangen, müssen Sie einen Ereignis-Listener für das Ereignis "message" mit dem Javascript-Befehl `` window.addEventListener ("message", receivePostMessage, false); `` registrieren
     * Die Funktion `` receivePostMessage`` empfängt das Objekt `` event``
@@ -254,7 +254,7 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 * Syntax: ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
 * Sie können den Datenpunkt weiter konfigurieren, indem Sie die Attribute Datentyp (der auf Zeichenfolge, Zahl oder Boolescher Wert festgelegt werden kann), Datenrolle, Datenname, Datenmin, Datenmaximum, Datendef. Und Dateneinheit verwenden
     * Der entsprechende Datenpunkt wird erst dann erstellt, wenn die Widget-Website einem Gerät als URL oder BACKGROUND_URL hinzugefügt wird
-* Das gleiche Konzept kann für die URL / den HTML-Status verwendet werden, mit dem eine Website im Dialogfeld eines Geräts angezeigt wird
+* Das gleiche Konzept kann für den URL / HTML-Status verwendet werden, mit dem eine Website im Dialogfeld eines Geräts angezeigt wird
 * Um ein Symbol für Ihr Widget zu erstellen, platzieren Sie eine PNG-Datei mit demselben Dateinamen wie das Widget im Widgets-Verzeichnis
 * Ein Beispiel für eine Widget-Website finden Sie weiter unten:
 
@@ -471,7 +471,7 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 * Standard: ""
 * `` stateClosedValue`` (Wert von STATE für 'geschlossen') - nur gültig für Rollenfenster:
 * Standard: ""
-* `` stateOpenedValue`` (Wert von STATE für 'opens') - nur gültig für Rollenfenster:
+* `` stateOpenedValue`` (Wert von STATE für 'opens') - nur gültig für das Rollenfenster:
 * Standard: ""
 * `` stateTiltedValue`` (Wert von STATE für 'tilted') - nur gültig für Rollenfenster:
 * Standard: ""
@@ -569,7 +569,7 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 * `` iconNoZoomOnHover`` (Deaktiviert den Zoomeffekt beim Hover für das Symbol):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` hideDeviceName`` (Gerätename ausblenden):
+* `` hideDeviceName`` (Gerätenamen ausblenden):
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
 * Bedingungen für eine aktive Kachel:
@@ -1125,7 +1125,7 @@ Die kostenlos eingebauten Demo-Hintergründe stammen von www.pexels.com.
 </ details> </ details>
 
 ## Ändern der Datenpunktkonfiguration
-Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld "Gerätekonfiguration" oder auf der Registerkarte "Objekte" von iobroker ändern.
+Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol (oder besser gesagt das Zahnradsymbol in der neuen Reaktions-Benutzeroberfläche) hinter einem Datenpunkt im Gerätekonfigurationsdialog oder auf der Registerkarte "Objekte" von iobroker ändern.
 
 ![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
 
@@ -1155,7 +1155,7 @@ Hier kannst du:
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die durch automatische Erstellung erstellten Geräte bearbeiten.
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Allgemeine Zustände:
@@ -1175,9 +1175,9 @@ Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In
 }
 ````
 
-    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol hinter dem Datenpunkt auf der Registerkarte "Objekte" von iobroker, siehe oben).
+    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol bzw. Zahnradsymbol in der neuen Reaktions-Benutzeroberfläche hinter dem Datenpunkt auf der Registerkarte "Objekte" von iobroker, siehe oben).
 * iQontrol zeigt unter folgenden Umständen eine definierte Werteliste als Dropdown-Feld im Dialogfeld an:
-* Wenn der Typ 'Zahlen' ist und die Werteliste genau so viele Einträge enthält wie Schritte zwischen min- und max des Datenpunkts oder
+* Wenn der Typ 'Zahlen' ist und die Werteliste genau so viele Einträge enthält, wie Schritte zwischen min- und max des Datenpunkts oder
 * Wenn der Typ 'boolean' ist, die Rolle jedoch nicht 'switch' oder ist
 * wenn der Typ 'string' oder ist
 * wenn "Option zur Eingabe von Freitext hinzufügen" aktiviert ist
@@ -1243,7 +1243,7 @@ Optional können Sie folgende Zustände definieren:
   * **SÄTTIGUNG** * Zahl * - Sättigung des Lichts (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
-  * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
+  * **CT** * Nummer * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
   * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (wenn Sie einen LEVEL-Status und keine farbigen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird).
 * Alternative Farbräume:
   * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
@@ -1253,7 +1253,7 @@ Optional können Sie folgende Zustände definieren:
     * **RGB** / **# RGB** Anstelle von HUE, SATURATION und COLOR_BRIGHTNESS können Sie das RGB-Format (hex) verwenden, optional mit dem führenden '#'
     * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit dem führenden '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex) verwenden , WW = warmweiß, CW = kaltweiß), optional mit führendem '#'
-    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von Farbton können Sie auch das RGB-Format (nur Farbton) (hex) verwenden, optional mit dem führenden '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
+    * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB-Format (nur Farbton) (hex) verwenden, optional mit dem führenden '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
     * **Farbton für Milight** Dies ist der Farbtonwert für Milight-Geräte (v5), wobei ein anderer Ausgangspunkt im Farbton-Farbkreis verwendet wird:
 
 ````
@@ -1284,7 +1284,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
 * **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Modus des Thermostats
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
-* **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
+* **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
 ###<img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
@@ -1335,22 +1335,22 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ###<img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ###<img src="img/icons/flood_on.png" width="32"> Hochwassersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Flood in Upper Floor" anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ###<img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsmodus wie "Bewaffnet" und "Entwaffnet" auswählen
-    * In den Geräteoptionen können Sie den Wert definieren, der deaktiviert darstellt, sodass das Symbol für die Darstellung angezeigt werden kann
+    * In den Geräteoptionen können Sie den Wert definieren, der die Deaktivierung darstellt, sodass das Darstellungssymbol angezeigt werden kann
 
 ###<img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
@@ -1367,7 +1367,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 <details><summary>Mögliche Zeitformate anzeigen: (<ins> klick zum öffnen</ins> )</summary>
 
-* Im benutzerdefinierten Bereich (Schraubenschlüsselsymbol) eines beliebigen Datenpunkts können Sie das Zeitformat und das Zeitanzeigeformat konfigurieren. Wenn der Datenpunkt Zeitinformationen enthält, geben diese beiden Parameter an, in welchem Format die Zeit im Datenpunkt gespeichert wird und wie iQontrols dem Benutzer die Zeit anzeigt.
+* Im benutzerdefinierten Bereich (Schraubenschlüsselsymbol oder besser Zahnradsymbol in neuer Reaktionsoberfläche) eines beliebigen Datenpunkts können Sie das Zeitformat und das Zeitanzeigeformat konfigurieren. Wenn der Datenpunkt Zeitinformationen enthält, geben diese beiden Parameter an, in welchem Format die Zeit im Datenpunkt gespeichert wird und wie iQontrols dem Benutzer die Zeit anzeigt.
 * Für das 'Datum und Uhrzeit'-Gerät können diese beiden Einstellungen auch in den Geräteoptionen im gerätespezifischen Bereich vorgenommen werden. Diese überschreiben die Einstellungen, die im benutzerdefinierten Bereich des Datenpunkts vorgenommen wurden.
 * Sie können die folgenden Token verwenden:
 
@@ -1389,7 +1389,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 | | | MMMM | Januar Februar ... November Dezember | X | X | X |
 | | | Mo | 1. 2. ... 11. 12. | X | --- (umgerechnet in M) | --- (umgerechnet in M) |
 | | Jahr | Y | 1970 1971 ... 9999 +10000 +10001 | X | X | X |
-| | | JJ | 70 71 ... 29 30 | X | X | X |
+| | | YY | 70 71 ... 29 30 | X | X | X |
 | | | JJJJ | 1970 1971 ... 2029 2030 | X | X | X |
 | | | JJJJJJ | -001970 -001971 ... +001907 +001971 | X | --- (konvertiert zu JJJJ) | --- (konvertiert zu JJJJ) |
 | Zeit | AM / PM | A | AM PM | X | X | X |
@@ -1479,7 +1479,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
 * **REPEAT** *Boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
-* **DAUER, ABGELAUFEN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
+* **DAUER, VERLAUFEN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
 * **VOLUME** *number* - für Lautstärkeregler
 * **QUELLE, PLAYLIST** *Werteliste* - Auswahlmenü anzeigen, um eine Quelle oder einen Titel aus der Wiedergabeliste auszuwählen
 
@@ -1490,7 +1490,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
     * 'ok' wenn die Mitte des Pads angeklickt wird,
 * 'left', 'right', 'up' oder 'down', wenn auf die Kanten des Pads geklickt oder das Pad in die entsprechende Richtung gewischt wird oder
 * 'Zurück', 'Startseite' oder 'Menü *, wenn die entsprechenden Schaltflächen angeklickt werden
-* Beachten Sie: Sie können die Zielwertliste (über das Schraubenschlüsselsymbol jedes Datenpunkts zugänglich) verwenden, um abhängig vom zurückgegebenen Wert eine Verknüpfung von einem Datenpunkt zu mehreren Datenpunkten herzustellen (siehe Abschnitt Ändern von Datenpunkten oben).
+* Beachten Sie: Sie können die Zielwertliste (zugänglich über das Schraubenschlüsselsymbol oder besser gesagt das Zahnradsymbol in der neuen Reaktions-Benutzeroberfläche jedes Datenpunkts) verwenden, um abhängig vom zurückgegebenen Wert eine Verknüpfung von einem Datenpunkt zu mehreren Datenpunkten herzustellen (Siehe Abschnitt Ändern von Datenpunkten oben)
 * **REMOTE_COLOR** *string* - zeigt farbige Schaltflächen an und gibt die entsprechende Farbe zurück ('rot', 'grün', 'gelb' oder 'blau'), wenn auf eine Farbe geklickt wird
 * **REMOTE_CHANNELS** *array* - ein Array von Schaltflächen. Der Name der Schaltfläche wird an die entsprechende Status-ID gesendet, wenn auf die Schaltfläche geklickt wird
 * **REMOTE_ADDITIONAL_BUTTONS** *array* - ein Array von Schaltflächen. Der Name der Schaltfläche wird an die entsprechende Status-ID gesendet, wenn auf die Schaltfläche geklickt wird
@@ -1539,7 +1539,13 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 
 ## Changelog
 
-### 1.7.1 dev
+### 1.7.2 
+* (sbormann) Added compatibility to new react-ui of admin-adapter.
+* (sbormann) Changed background-images in autocreate views function.
+* (sbormann) Internal definition and handling of device options changed.
+
+### 1.7.1 (2021-04-18)
+* (sbormann) Fix to work with Admin v5.0.3 (renaming files and folders will only work with the upcoming next admin-update).
 * (sbormann) Updated dependencies.
 * (sbormann) Added option to show name of INFO_A/B.
 
@@ -1547,7 +1553,7 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Added combobox as possible option type.
 * (sbormann) Added Date and Time as new device for dates, times and periods (durations).
 * (sbormann) Added time-format and time-display-format to custom settings of datapoints.
-* (sbormann) Added time-picker for every datapoint - including ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
+* (sbormann) Added time-picker for every STATE datapoint and ADDITIONAL_CONTROLS - of role value.time, value.date, value.datetime, level.timer and level.timer.sleep.
 * (sbormann) Enhanced blind to better show opening and closing, even if level is 0 or 100.
 * (sbormann) Added STOP_SET_VALUE for blinds.
 * (sbormann) You can now use variables in device-names, button-captions and headings of ADDITIONAL_CONTROLS.

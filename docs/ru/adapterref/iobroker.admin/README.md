@@ -170,6 +170,12 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 5.0.6 (2021-04-20)
+* (bluefox) Admin5: Fixed many bugs
+
+### 5.0.5 (2021-04-20)
+* (bluefox) Admin5: Fixed many bugs
+
 ### 5.0.4 (2021-04-18)
 * (bluefox) Admin5: Fixed many bugs
 
@@ -178,12 +184,6 @@ IP-адрес с которого доступен драйвер (поддер�
 
 ### 5.0.2 (2020-12-26)
 * (bluefox) Merged the changes from admin4
-
-### 5.0.0 (2020-09_23)
-* (bluefox) The tile view implemented for the file browser
-
-### 4.2.1 (2021-01-12)
-* (Apollon77) Also allow pre-prelease versions for dependency checks
 
 ## License
 
