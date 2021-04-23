@@ -1,16 +1,15 @@
 ---
 title:       "Markdown"
-lastChanged: "14.09.2018"
+lastChanged: "23.04.2021"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/community/docmarkdown.md"
 ---
 
 # Markdown: Syntax
 
-?> Damit die Dokumentation von ioBroker schnell erstellbar und leicht
-lesbar ist, wurde Markdown als vereinfachte Auszeichnungssprache
-gewählt. Die folgende Anleitung hilft, den Syntax und die
-Möglichkeiten von Markdown kennenzulernen und in großartige
-Dokumente umzusetzen.
+?> Damit die Dokumentation von ioBroker schnell erstellbar und leicht lesbar ist,  
+wurde Markdown als vereinfachte Auszeichnungssprache gewählt. Die folgende  
+Anleitung hilft, den Syntax und die Möglichkeiten von Markdown kennenzulernen und  
+in großartige Dokumente umzusetzen.
 
 Technisch werden vom Dokumentationssystem nur die folgenden Features unterstützt:
 
@@ -23,56 +22,48 @@ Technisch werden vom Dokumentationssystem nur die folgenden Features unterstütz
 - Bold text
 - Italic text
 
-<div id="overview"></div>
+
 ## Übersicht
 
-<div id="philosophy"></div>
 ### Philosopie
 
-Markdown wurde mit den Grundgedanken konzipiert, so einfach lesbar und
-schreibbar wie möglich zu sein.
+Markdown wurde mit den Grundgedanken konzipiert, so einfach lesbar und schreibbar  
+wie möglich zu sein.
 
-Lesbarkeit ist hierbei das oberste Ziel. Ein Markdown-formatiertes
-Dokument sollte in seiner Grundform veröffentlicht werden können, ohne
-den Anschein zu erwecken, es sei mit Tags oder Formatierungsbefehlen
-versehen (wie es bei HTML der Fall ist).
+Lesbarkeit ist hierbei das oberste Ziel. Ein Markdown-formatiertes Dokument sollte  
+in seiner Grundform veröffentlicht werden können, ohne den Anschein zu erwecken,  
+es sei mit Tags oder Formatierungsbefehlen versehen (wie es bei HTML der Fall ist).
 
-Dementsprechend besteht Markdowns Syntax nur aus Zeichen, die mit
-Bedacht so gewählt wurden, dass ihr Aussehen ihrer Bedeutung entspricht.
-Zum Beispiel sehen Sternchen um ein Wort tatsächlich wie eine
-\*Betonung\* aus. Listen in Markdown sehen aus wie Listen. Sogar
-Zitat-Blöcke sehen wie zitierte Textpassagen aus, wie man sie aus eMails
-kennt.
+Dementsprechend besteht Markdowns Syntax nur aus Zeichen, die mit Bedacht so  
+gewählt wurden, dass ihr Aussehen ihrer Bedeutung entspricht. Zum Beispiel sehen  
+Sternchen um ein Wort tatsächlich wie eine \*Betonung\* aus. Listen in Markdown  
+sehen aus wie Listen. Sogar Zitat-Blöcke sehen wie zitierte Textpassagen aus,  
+wie man sie aus eMails kennt.
 
 
-<div id="html"></div>
 ### Inline-HTML
 
-Markdowns Syntax hat eine Bestimmung: Benutzt zu werden um für das Web
-zu *schreiben*.
+Markdowns Syntax hat eine Bestimmung: Benutzt zu werden um für das Web zu *schreiben*.
 
-Markdown ist kein Ersatz für HTML, nicht einmal Ansatzweise. Der Umfang
-der Syntax ist sehr klein und entspricht nur einem geringen Teil aller
-HTML-Tags. Es ist nicht die Absicht von Markdown, das Einfügen von
-HTML-Tags zu erleichtern. HTML ist bereits einfach genug. Die Idee
-hinter Markdown ist es, Text so einfach wie möglich zu lesen, zu
-schreiben und zu bearbeiten. HTML ist ein *Publikations-Format*;
-Markdown ist ein *Schreib-Format*. Daher berücksichtigt seine Syntax nur
-Inhalte, die mit purem Text zu vermitteln sind.
+Markdown ist kein Ersatz für HTML, nicht einmal Ansatzweise. Der Umfang der Syntax  
+ist sehr klein und entspricht nur einem geringen Teil aller HTML-Tags. Es ist  
+nicht die Absicht von Markdown, das Einfügen von HTML-Tags zu erleichtern. HTML  
+ist bereits einfach genug. Die Idee hinter Markdown ist es, Text so einfach wie  
+möglich zu lesen, zu schreiben und zu bearbeiten. HTML ist ein *Publikations-Format*;  
+Markdown ist ein *Schreib-Format*. Daher berücksichtigt seine Syntax nur Inhalte,  
+die mit purem Text zu vermitteln sind.
 
-Für jede Formatierung, die nicht mit Markdown machbar ist, kann einfach
-HTML verwendet werden. Es ist nicht nötig, HTML zu markieren um es vom
-Rest abzugrenzen. Es wird einfach in den Text geschrieben.
+Für jede Formatierung, die nicht mit Markdown machbar ist, kann einfach HTML  
+verwendet werden. Es ist nicht nötig, HTML zu markieren um es vom Rest abzugrenzen.  
+Es wird einfach in den Text geschrieben.
 
-Die einzige Beschränkung sind Block-Elemente wie z.B. `<div>`,
-`<table>`, `<pre>`, `<p>` und so weiter. Sie müssen vom umgebenden
-Inhalt durch leere Zeilen getrennt sein, außerdem sollten die Start- und
-End-Tags nicht mit Leerzeichen oder Tabs eingerückt sein. Markdown ist
-intelligent genug um keine zusätzlichen (ungewollten) `<p>`-Tags um
-HTML-Blöcke zu setzen.
+Die einzige Beschränkung sind Block-Elemente wie z.B. `<div>`, `<table>`, `<pre>`,  
+`<p>` und so weiter. Sie müssen vom umgebenden Inhalt durch leere Zeilen getrennt  
+sein, außerdem sollten die Start- und End-Tags nicht mit Leerzeichen oder Tabs  
+eingerückt sein. Markdown ist intelligent genug um keine zusätzlichen (ungewollten)  
+`<p>`-Tags um HTML-Blöcke zu setzen.
 
-So baut man zum Beispiel eine HTML-Tabelle in einen Markdown-Artikel
-ein:
+So baut man zum Beispiel eine HTML-Tabelle in einen Markdown-Artikel ein:
 
     Dies ist ein normaler Absatz.
 
@@ -84,167 +75,149 @@ ein:
 
     Dies ist noch ein normaler Absatz.
 
-Es ist zu beachten, dass Markdowns Syntax innerhalb von HTML-Blöcken
-nicht interpretiert wird. Es kann zum Beispiel keine *Betonung*
-innerhalb von HTML-Blöcken benutzt werden.
+Es ist zu beachten, dass Markdowns Syntax innerhalb von HTML-Blöcken nicht  
+interpretiert wird. Es kann zum Beispiel keine *Betonung* innerhalb von HTML-  
+Blöcken benutzt werden.
 
-Inline-HTML-Tags wie z.B. `<span>`, `<cite>`, oder `<del>` können
-überall in einen Markdown-Absatz, Listenpunkt oder einer Kopfzeile
-verwendet werden. HTML-Tags können sogar statt der entsprechenden
-Markdown-Formatierung verwendet werden. Es ist kein Problem, statt
-Markdows Syntax für Links oder Grafiken einfach `<a>` oder `<img>` zu
-verwenden.
+Inline-HTML-Tags wie z.B. `<span>`, `<cite>`, oder `<del>` können überall in  
+einen Markdown-Absatz, Listenpunkt oder einer Kopfzeile verwendet werden.  
+HTML-Tags können sogar statt der entsprechenden Markdown-Formatierung verwendet  
+werden. Es ist kein Problem, statt Markdows Syntax für Links oder Grafiken  
+einfach `<a>` oder `<img>` zu verwenden.
 
-Im Gegensatz zu Block-Tags *wird* die Markdown-Syntax innerhalb
-von Inline-Tags interpretiert.
+Im Gegensatz zu Block-Tags *wird* die Markdown-Syntax innerhalb von Inline-Tags  
+interpretiert.
 
-<a id="autoescape"></a>
+
 ### Automatische Maskierung besonderer Zeichen
 
-In HTML gibt es zwei Zeichen, die einer besonderen Behandlung bedürfen:
-`<` und `&`. Die linke spitze Klammer wird verwendet um HTML-Tags zu
-öffnen, das kaufmännische Und wird verwendet um benannte Zeichen
-(Entities) zu beschreiben. Wenn diese Zeichen in HTML-Dokumenten als
-"sie selbst" verwendet werden sollen, müssen sie als Entities maskiert
-werden, also als `&lt;` und `&amp;`.
+In HTML gibt es zwei Zeichen, die einer besonderen Behandlung bedürfen: `<` und `&`.  
+Die linke spitze Klammer wird verwendet um HTML-Tags zu öffnen, das kaufmännische  
+Und wird verwendet um benannte Zeichen (Entities) zu beschreiben. Wenn diese  
+Zeichen in HTML-Dokumenten als "sie selbst" verwendet werden sollen, müssen sie  
+als Entities maskiert werden, also als `&lt;` und `&amp;`.
 
-Das kaufmännische Und ist besonders unpraktisch für Web-Entwickler. Will
-man über "AT&T" schreiben, muss man "`AT&amp;T`" schreiben. Das
-kaufmännische Und muss sogar in URLs maskiert werden. In einem Link zur
-Seite
+Das kaufmännische Und ist besonders unpraktisch für Web-Entwickler. Will man über  
+"AT&T" schreiben, muss man "`AT&amp;T`" schreiben. Das kaufmännische Und muss sogar  
+in URLs maskiert werden. In einem Link zur Seite
 
-    `http://images.google.com/images?num=30&q=larry+bird`
+`http://images.google.com/images?num=30&q=larry+bird`
 
 muss die URL wie folgt kodiert werden:
 
-    `http://images.google.com/images?num=30&amp;q=larry+bird`
+`http://images.google.com/images?num=30&amp;q=larry+bird`
 
-Dies ist einfach zu vergessen und vermutlich der beliebteste Fehler bei
-der Validierung von ansonsten wohlgeformten HTML-Dokumenten.
+Dies ist einfach zu vergessen und vermutlich der beliebteste Fehler bei der Validierung  
+von ansonsten wohlgeformten HTML-Dokumenten.
 
-Markdown erlaubt es, diese Zeichen ganz normal zu benutzen. Es regelt
-die Kodierung selbst. Wenn ein Kaufmanns-Und in einem Entity verwendet
-wird, wird es nicht kodiert, sonst zu `&amp;` umgewandelt.
+Markdown erlaubt es, diese Zeichen ganz normal zu benutzen. Es regelt die Kodierung  
+selbst. Wenn ein Kaufmanns-Und in einem Entity verwendet wird, wird es nicht kodiert,  
+sonst zu `&amp;` umgewandelt.
 
-Wenn man also zum Beispiel ein Copyright-Symbol eingeben will, kann man
-einfach
+Wenn man also zum Beispiel ein Copyright-Symbol eingeben will, kann man einfach
 
-    &copy;
+`&copy;`
 
 schreiben, und Markdown wird dies nicht modifizieren. Aber aus
 
-    AT&T
+`AT&T`
 
 wird Markdown
 
-    AT&amp;T
+`AT&amp;T`
 
-machen. Da Markdown Inline HTML unterstützt, werden spitze Klammern im
-entsprechenden Fall ganz normal als HTML behandelt. Nur aus Sachen wie
+machen. Da Markdown Inline HTML unterstützt, werden spitze Klammern im entsprechenden  
+Fall ganz normal als HTML behandelt. Nur aus Sachen wie
 
-    4 < 5
+`4 < 5`
 
 wird Markdown
 
-    4 &lt; 5
+`4 &lt; 5`
 
-machen. In Code- oder Span-Blöcken werden spitze Klammern und das
-kaufmännische Und jedoch *immer* kodiert. Dies vereinfacht das Schreiben
-über HTML in Markdown (Im Gegensatz zu rohem HTML, wo es meist ein
-Alptraum ist, jedes `<` und `&` zu kodieren).
+machen. In Code- oder Span-Blöcken werden spitze Klammern und das kaufmännische  
+Und jedoch *immer* kodiert. Dies vereinfacht das Schreiben über HTML in Markdown  
+(Im Gegensatz zu rohem HTML, wo es meist ein Alptraum ist, jedes `<` und `&` zu kodieren).
 
-
-
-* * *
-
-
-<div id="block"></div>
 
 ## Block-Elemente
 
-
-<a id="p"></a>
 ### Absätze und Zeilenumbrüche
-Ein Absatz besteht einfach aus einer oder aus mehreren Zeilen von Text,
-abgetrennt durch eine oder mehrere leere Zeilen. (Eine leere Zeile ist
-jede Zeile die *aussieht* wie eine leere Zeile -- eine Zeile die nichts
-anderes enthält als Leerzeichen und Tabs wird als leer behandelt.)
-Normale Absätze sollten nicht mit Leerzeichen oder Tabs eingerückt sein.
+Ein Absatz besteht einfach aus einer oder aus mehreren Zeilen von Text, abgetrennt  
+durch eine oder mehrere leere Zeilen. (Eine leere Zeile ist jede Zeile die *aussieht*  
+wie eine leere Zeile -- eine Zeile die nichts anderes enthält als Leerzeichen und  
+Tabs wird als leer behandelt.) Normale Absätze sollten nicht mit Leerzeichen oder  
+Tabs eingerückt sein.
 
-Die "eine oder mehrere Zeilen"-Regel impliziert eine Sache: Markdown
-unterstützt Absätze mit "harten Umbrüchen". Dies ist ein großer
-Unterschied zu den meisten anderen Text-zu-HTML-Formatierern (inklusive
-der "Convert Line Breaks" Option von Movable Type), die jeden
-Zeilenumbruch in einem Absatz als `<br />` formatieren.
+Die "eine oder mehrere Zeilen"-Regel impliziert eine Sache: Markdown unterstützt  
+Absätze mit "harten Umbrüchen". Dies ist ein großer Unterschied zu den meisten  
+anderen Text-zu-HTML-Formatierern (inklusive der "Convert Line Breaks" Option von  
+Movable Type), die jeden Zeilenumbruch in einem Absatz als `<br />` formatieren.
 
-Wenn man ein `<br />` als Umbruch haben *will*, kann man die Zeile
-einfach mit zwei oder mehr Leerzeichen beenden.
+Wenn man ein `<br />` als Umbruch haben *will*, kann man die Zeile einfach mit  
+zwei oder mehr Leerzeichen beenden.
 
-Dies ist zwar ein kleiner Mehraufwand um ein `<br />` zu erzeugen, aber
-eine einfache "jeder Zeilenumbruch ist ein `<br />`" Regel würde in
-Markdown nicht funktionieren.
+Dies ist zwar ein kleiner Mehraufwand um ein `<br />` zu erzeugen, aber eine einfache  
+"jeder Zeilenumbruch ist ein `<br />`" Regel würde in Markdown nicht funktionieren.
 
-Markdowns Email-artige [Zitate][bq] und [Listen-Einträge][l] mit
-mehreren Absätzen funktionieren am Besten - und sehen besser aus -- wenn
-sie mit Zeilenumbrüchen formatiert werden.
+Markdowns Email-artige [Zitate][bq] und [Listen-Einträge][l] mit mehreren Absätzen  
+funktionieren am Besten - und sehen besser aus -- wenn sie mit Zeilenumbrüchen  
+formatiert werden.
 
   [bq]: #blockquote
   [l]:  #list
 
 
-
-<a id="header"></a>
 ### Kopfzeilen
-Markdown hier unterstützt nur eine Art von Kopfzeilen-Formatierung: atx.
+Markdown hier unterstützt nur eine Art von Kopfzeilen-Formatierung: atx.  
+Atx-artige Kopfzeilen verwenden 1-6 Rauten-Zeichen am Anfang der Zeile, entsprechend  
+den Ebenen 1-6. Zum Beispiel:
 
-Atx-artige Kopfzeilen verwenden 1-6 Rauten-Zeichen am Anfang der Zeile,
-entsprechend den Ebenen 1-6. Zum Beispiel:
+`# Dies ist ein H1`
 
-    # Dies ist ein H1
+`## Dies ist ein H2`
 
-    ## Dies ist ein H2
+`###### Dies ist ein H6`
 
-    ###### Dies ist ein H6
 
-<a id="blockquote"></a>
 ### Zitate
 
-Markdown verwendet - wie E-Mails - das Zeichen `>` für Zitat-Blöcke.
-Wenn man Erfahrung mit Zitaten in E-Mails hat, weiß man auch wie man
-Zitate in Markdown erstellt. Es sieht am Besten aus wenn man den Text
-pro Zeile umbricht und ein `>` vor jede Zeile setzt:
+Markdown verwendet - wie E-Mails - das Zeichen `>` für Zitat-Blöcke. Wenn man  
+Erfahrung mit Zitaten in E-Mails hat, weiß man auch wie man Zitate in Markdown  
+erstellt. Es sieht am Besten aus wenn man den Text pro Zeile umbricht und ein  
+`>` vor jede Zeile setzt:
 
-    > Dies ist ein Zitat mit zwei Absätzen. Lorem ipsum dolor sit amet,
-    > consectetuer adipiscing elit. Aliquam hendrerit mi posuere
-    > lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet
-    > vitae, risus.
-    >
-    > Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-    > Suspendisse id sem consectetuer libero luctus adipiscing.
+   `> Dies ist ein Zitat mit zwei Absätzen. Lorem ipsum dolor sit amet,`
+   `> consectetuer adipiscing elit. Aliquam hendrerit mi posuere`
+   `> lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet`
+   `> vitae, risus.`
+   `>`
+   `> Donec sit amet nisl. Aliquam semper ipsum sit amet velit.`
+   `> Suspendisse id sem consectetuer libero luctus adipiscing.`
 
-Markdown erlaubt aber auch faul zu sein und das `>` nur auf der ersten
-Zeile eines hart umgebrochenen Absatzes zu verwenden:
+Markdown erlaubt aber auch faul zu sein und das `>` nur auf der ersten Zeile eines  
+hart umgebrochenen Absatzes zu verwenden:
 
-    > Dies ist ein Zitat mit zwei Absätzen. Lorem ipsum dolor sit amet,
-    consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-    Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae,
-    risus.
+   `> Dies ist ein Zitat mit zwei Absätzen. Lorem ipsum dolor sit amet,`
+    `consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.`
+    `Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae,`
+    `risus.`
 
-    > Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-    Suspendisse id sem consectetuer libero luctus adipiscing.
+   `> Donec sit amet nisl. Aliquam semper ipsum sit amet velit.`
+    `Suspendisse id sem consectetuer libero luctus adipiscing.`
 
 
-Zitate können verschachtelt werden (also Zitat in einem Zitat) indem man
-mehr `>` verwendet:
+Zitate können verschachtelt werden (also Zitat in einem Zitat) indem man mehr `>`  
+verwendet:
 
-    > Dies ist die erste Zitat-Ebene.
-    >
-    > > Dies ist ein verschachteltes Zitat.
-    >
-    > Zurück auf der ersten Ebene.
+`    > Dies ist die erste Zitat-Ebene.`
+`    >`
+`    > > Dies ist ein verschachteltes Zitat.`
+`    >`
+`    > Zurück auf der ersten Ebene.`
 
-Zitate können andere Markdown-Elemente enthalten, darunter Kopfzeilen,
-Listen und Code-Blöcke:
+Zitate können andere Markdown-Elemente enthalten, darunter Kopfzeilen, Listen und  
+Code-Blöcke:
 
 	> ## Dies ist eine Überschrift.
 	>
