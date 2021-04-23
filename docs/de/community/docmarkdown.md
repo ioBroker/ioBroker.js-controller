@@ -160,7 +160,7 @@ zwei oder mehr Leerzeichen beenden.
 Dies ist zwar ein kleiner Mehraufwand um ein `<br />` zu erzeugen, aber eine einfache  
 "jeder Zeilenumbruch ist ein `<br />`" Regel würde in Markdown nicht funktionieren.
 
-Markdowns Email-artige [Zitate][bq] und [Listen-Einträge][l] mit mehreren Absätzen  
+Markdowns Email-artige [Zitate](#zitate) und [Listen-Einträge](#listen) mit mehreren Absätzen  
 funktionieren am Besten - und sehen besser aus -- wenn sie mit Zeilenumbrüchen  
 formatiert werden.
 
@@ -234,7 +234,6 @@ aus dem Menü `Text` den Punkt `Increase Quote Level` wählen.
 
 
 
-<a id="list"></a>
 ### Listen
 
 Markdown unterstützt sortierte (nummerierte) und unsortierte Listen
