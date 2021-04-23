@@ -1,6 +1,6 @@
 ---
 title:       "Aufbau der Doku"
-lastChanged: "29.03.2019"
+lastChanged: "23.04.2021"
 ---
 
 **Diese Dokumentation ist die zentrale Referenz für alle ioBroker-Anwender:**
@@ -8,9 +8,9 @@ lastChanged: "29.03.2019"
 # Verwendung der Doku
 
 ## Seitenstruktur
-Diese Seite ist in einem ***responsiven Design*** erstellt worden. Dies bedeutet, dass sie je nach
-Auflösung der Anzeige des Lesegeräts (PC/Tablet/Handy) anders dargestellt wird um eine optimale
-Lesbarkeit zu ermöglichen.
+Diese Seite ist in einem ***responsiven Design*** erstellt worden. Dies bedeutet,  
+dass sie je nach Auflösung der Anzeige des Lesegeräts (PC/Tablet/Handy) anders  
+dargestellt wird um eine optimale Lesbarkeit zu ermöglichen.
 
 So werden bei niedrigen (effektiven) Auflösungen auch teilweise Bedienelemente versteckt um
 Platz für die Hauptfenster zu schaffen.
@@ -77,16 +77,16 @@ Dieses Feld bedarf keiner Erklärung. Bitte ausgiebig verwenden!
 ---
 
 
-* Für Einsteiger empfehlen wir, zuerst einige Grundlagen über ioBroker nachzulesen. 
-Dazu mehr im Kapitel [Einführung](#Einführung).
-* Auf der [Download](../../download)-Seite gibt es vorbereitete Images für verschiedene Systeme. 
-Dort stehen auch detaillierte Installationsanweisungen für einige Hardwareplattformen bereit.
-* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz][../../adapters].
-* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik][../logic] beschrieben.
+* Für Einsteiger empfehlen wir, zuerst einige Grundlagen über ioBroker nachzulesen.  
+Dazu mehr im Kapitel [Grundlagen](https://www.iobroker.net/#de/documentation/basics/README.md).  
+* Auf der [Download](https://www.iobroker.net/#de/download)-Seite gibt es vorbereitete Images für verschiedene Systeme.  
+Dort stehen auch detaillierte Installationsanweisungen für einige Hardwareplattformen bereit.  
+* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz](https://www.iobroker.net/#de/adapters).  
+* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik & Automatisierung](https://www.iobroker.net/#de/documentation/logic/examples.md) beschrieben.  
 
-Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich][].
+Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich](https://www.iobroker.net/#de/documentation/dev/adapterdev.md).
 
-Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei][], die Dokumentation zu verbessern!
+Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei](https://www.iobroker.net/#de/documentation/community/doc.md), die Dokumentation zu verbessern!
 
 
 
