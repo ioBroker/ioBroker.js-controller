@@ -4,17 +4,17 @@
       "title": {
         "en": "welcome",
         "de": "Willkommen",
-        "ru": "добро пожаловать",
+        "ru": "Добро пожаловать",
         "zh-cn": "欢迎"
       },
       "content": "README.md",
       "pages": {
-        "Structure of the docu": {
+        "Structure of the documentation": {
           "title": {
-            "en": "Structure of the docu",
+            "en": "Structure of the documentation",
             "de": "Aufbau der Doku",
-            "ru": "Структура документа",
-            "zh-cn": "文件的结构"
+            "ru": "Структура документации",
+            "zh-cn": "文件结构"
           },
           "content": "intro/README.md"
         }
@@ -761,8 +761,8 @@
               "title": {
                 "en": "Markdown",
                 "de": "Markdown",
-                "ru": "уценка",
-                "zh-cn": "降价"
+                "ru": "Уценка",
+                "zh-cn": "降价促销"
               },
               "content": "community/docmarkdown.md"
             }

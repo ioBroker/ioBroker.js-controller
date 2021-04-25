@@ -3,18 +3,17 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
+hash: 5iNCBlSzyWs/t91v7Ie04Ag2rsNq8nXT9tXBisGyGr0=
 ---
 ![Logo](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/meross-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.meross.svg)
-![Travis-CI](http://img.shields.io/travis/Apollon77/ioBroker.meross/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.meross?branch=master&svg=true)
-![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 # IoBroker.meross
+![Testen und freigeben](https://github.com/Apollon77/iobroker.meross/workflows/Test%20and%20Release/badge.svg) [![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/meross/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Beschreibung
@@ -37,6 +36,15 @@ Bitte verwenden Sie dazu GitHub-Probleme.
 Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
+
+### 1.6.1 (2021-04-23)
+* (Apollon77) prevent crash case (Sentry IOBROKER-MEROSS-Z)
+
+### 1.6.0 (2021-04-18)
+* (Apollon77) add MOD100 Diffuser Spray device
+
+### 1.5.1 (2020-12-05)
+* (Apollon77) generate an unique uuid for each connection, fixes the "Server not available"
 
 ### 1.5.0 (2020-06-25)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)

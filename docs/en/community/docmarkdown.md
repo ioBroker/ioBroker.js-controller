@@ -1,18 +1,18 @@
 ---
 title: Markdown
-lastChanged: 14.09.2018
+lastChanged: 23.04.2021
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/community/docmarkdown.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: nHQJvm435hzSoVxk8r0edx7VWed2QP55UFCl+8JsTW4=
+hash: 9qginu+6BT6Cm5JzwTYlJJ+LmFCjpyS0LVuttJtXxqc=
 ---
-# Markdown: Syntax
-?> To make ioBroker documentation easy to create and read, Markdown was chosen as a simplified markup language. The following guide will help you understand the syntax and possibilities of Markdown and translate it into great documents.
+# Markdown: syntax
+?> To make ioBroker's documentation quick and easy to read, Markdown was chosen as the simplified markup language. The following guide will help you learn the syntax and capabilities of Markdown and translate them into great documents.
 
-Technically, the documentation system supports only the following features:
+Technically, the documentation system only supports the following features:
 
-- Headers
-- Tables
+- headers
+- tables
 - Inline HTML
 - Lists
 - Left
@@ -20,154 +20,135 @@ Technically, the documentation system supports only the following features:
 - Bold text
 - Italic text
 
-<div id="overview"></div>
-
 ## Overview
-<div id="philosophy"></div>
-
 ### Philosophy
 Markdown was designed with the basic idea of being as easy to read and write as possible.
 
-Legibility is the ultimate goal here. A Markdown-formatted document should be able to be published in its basic form without appearing to be tagged or formatted (as is the case with HTML).
+Readability is the top priority here. A Markdown-formatted document should be able to be published in its basic form without appearing to be tagged or formatted (as is the case with HTML).
 
-Accordingly, Markdown's syntax consists only of characters that have been chosen wisely so that their appearance corresponds to their meaning.
-For example, asterisks around a word actually look like an \ *stress \* Lists in Markdown look like lists. Even quotation blocks look like quoted passages, as they are known from emails.
-
-<div id="html"></div>
+Accordingly, Markdown's syntax consists only of characters carefully chosen to match their meaning. For example, asterisks around a word actually look like an \ *accent \* Lists in Markdown look like lists. Even quotation blocks look like quoted text passages, as you know them from emails.
 
 ### Inline HTML
-Markdown's syntax has one purpose: being used to *write* to the web.
+Markdown's syntax has one purpose: to be used to *write* for the web.
 
-Markdown is not a substitute for HTML, not even ansatzweise. The scope of the syntax is very small and only a small part of all HTML tags. It is not Markdown's intention to facilitate the insertion of HTML tags. HTML is already easy enough. The idea behind Markdown is to read, write, and edit text as easily as possible. HTML is a *publication format* Markdown is a *write format* Therefore, its syntax only takes into account content that can be conveyed with plain text.
+Markdown is not a substitute for HTML, even remotely. The scope of the syntax is very small and corresponds to only a small part of all HTML tags. Markdown does not intend to make HTML tagging easier. HTML is simple enough as it is. The idea behind Markdown is to make text as easy to read, write, and edit as possible. HTML is a *publication format* Markdown is a *writing format* Therefore, its syntax only takes into account content that can be conveyed using pure text.
 
-For any formatting that is not feasible with Markdown, simply HTML can be used. It is not necessary to mark HTML to distinguish it from the rest. It is simply written in the text.
+Any formatting that is not feasible with Markdown can simply be used HTML. There is no need to mark HTML to separate it from the rest.
+It is simply written in the text.
 
-The only restriction is block elements such as e.g. `<div>`, `<table>`, `<pre>`, `<p>` and so on. They must be separated from the surrounding content by empty lines, and the start and end tags should not be indented with spaces or tabs. Markdown is smart enough not to place any additional (unwanted) `<p>` tags around HTML blocks.
+The only restriction are block elements such as `<div>`, `<table>`, `<pre>`, `<p>` and so on. They must be separated from the surrounding content by blank lines, and the start and end tags should not be indented with spaces or tabs. Markdown is intelligent enough not to set any additional (unwanted) `<p>` tags around HTML blocks.
 
-For example, build an HTML table into a Markdown article:
+For example, to include an HTML table in a Markdown article:
 
-    This is a normal paragraph.
+    This is a normal paragraph.
 
-<table><tr><td> foo </td></tr></table>
+<table><tr><td>Foo</td></tr></table>
 
-    This is still a normal paragraph.
+    This is still a normal paragraph.
 
-It should be noted that Markdown's syntax is not interpreted within HTML blocks. For example, no *emphasis* within HTML blocks can be used.
+It should be noted that Markdown's syntax is not interpreted within HTML blocks. For example, *emphasis* cannot be used within HTML blocks.
 
-Inline HTML tags such as `<span>`, `<cite>`, or `<del>` can be used anywhere in a markdown paragraph, bullet or header. HTML tags can even be used instead of the appropriate markdown formatting. It is no problem to use instead of Markdows syntax for links or graphics just `<a>` or `<img>`.
+Inline HTML tags such as `<span>`, `<cite>`, or `<del>` can be used anywhere in a markdown paragraph, list item or header.
+HTML tags can even be used in place of the appropriate Markdown formatting. It is no problem to simply use `<a>` or `<img>` instead of Markdow's syntax for links or graphics.
 
-Unlike block tags ** the markdown syntax is interpreted within inline tags.
-
-<a id="autoescape"></a>
+In contrast to block tags, the Markdown syntax is interpreted within inline tags.
 
 ### Automatic masking of special characters
-In HTML, there are two characters that require special treatment: `<` and `&`. The left angle bracket is used to open HTML tags, the ampersand and is used to describe named characters (entities). If these characters are to be used in HTML documents as "themselves", they must be masked as entities, that is, as `&lt;` and `&amp;`.
+There are two characters in HTML that require special treatment: `<` and `&`.
+The left angle bracket is used to open HTML tags, the ampersand is used to describe named characters (entities). If these characters are to be used as "themselves" in HTML documents, they must be masked as entities, i.e. as `&lt;` and `&amp;`.
 
-The mercantile and is especially impractical for web developers. If you want to write about "AT & T", you have to write "`AT&amp;T`". The mercantile and even needs to be masked in URLs. In a link to the page
+The ampersand is particularly impractical for web developers. If you want to write about "AT&T" you have to write "`AT&amp;T`". The ampersand even has to be masked in URLs. In a link to the page
 
-    `http://images.google.com/images?num=30&q=larry+bird`
+`http://images.google.com/images?num=30&q=larry+bird`
 
 the URL must be encoded as follows:
 
-    `http://images.google.com/images?num=30&amp;q=larry+bird`
+`http://images.google.com/images?num=30&amp;q=larry+bird`
 
-This is easy to forget, and probably the most popular mistake in validating otherwise well-formed HTML documents.
+This is easy to forget and is probably the most popular mistake when validating otherwise well-formed HTML documents.
 
-Markdown allows you to use these characters as normal. It controls the coding itself. If a merchant-and is used in an entity, it is not coded, otherwise converted to `&amp;`.
+Markdown allows these characters to be used normally. It regulates the coding itself. If an ampersand is used in an entity, it is not coded, otherwise it is converted to `&amp;`.
 
-So if you want to enter a copyright symbol, for example, you can easily
+So if you want to enter a copyright symbol, for example, you can simply
 
-    & Copy;
+`&copy;`
 
-write, and Markdown will not modify that. But out
+write, and Markdown won't modify this. But off
 
-    AT & T
+`AT&T`
 
-will Markdown
+becomes markdown
 
-    AT &amp; T
+`AT&amp;T`
 
-do. Because Markdown Inline supports HTML, angle brackets are normally treated as HTML in the corresponding case. Only from things like
+do. Since Markdown supports inline HTML, angle brackets are treated as HTML in the appropriate case. Just for things like
 
-    4 <5
+`4 < 5`
 
-will Markdown
+becomes markdown
 
-    4 &lt; 5
+`4 &lt; 5`
 
-do. In code or span blocks, angle brackets and ampersand are *always* coded. This simplifies writing via HTML in Markdown (unlike raw HTML, where it is usually a nightmare to encode each `<` and `&`).
-
-* * *
-
-<div id="block"></div>
+do. However, angle brackets and the ampersand are *always* coded in code or span blocks. This simplifies writing over HTML in Markdown (as opposed to raw HTML, where it is mostly a nightmare to encode every `<` and `&`).
 
 ## Block elements
-<a id="p"></a>
+### Paragraphs and line breaks
+A paragraph is simply one or more lines of text separated by one or more blank lines. (A blank line is any line that *looks* like a blank line - a line that contains nothing but spaces and tabs is treated as blank.) Normal paragraphs should not be indented with spaces or tabs.
 
-### Paragraphs and Line Breaks A paragraph is simply one or more lines of text separated by one or more blank lines. (A blank line is any line that looks *like* a blank line - a line that contains nothing but spaces and tabs are treated as empty.) Normal paragraphs should not be indented with spaces or tabs.
-The "one or more lines" rule implies one thing: Markdown supports paragraphs with "hard upheavals". This is very different from most other text-to-HTML formatters (including the Movable Type Convert Line Breaks option), which format each line break in a paragraph as `<br />`.
+The "one or more line" rule implies one thing: Markdown supports "hard break" paragraphs. This is very different from most other text-to-HTML formatters (including Movable Type's "Convert Line Breaks" option), which format every line break in a paragraph as `<br />`.
 
-If you *want* to have a `<br />` as break, you can simply end the line with two or more spaces.
+If you *want* to have a `<br />` as a break, you can simply end the line with two or more spaces.
 
-Although this is a small overhead to create a `<br />`, a simple "any newline is a `<br />`" rule would not work in Markdown.
+This is a little extra work to generate a `<br />`, but a simple "every line break is a `<br />`" rule would not work in Markdown.
 
-Markdown's email-style [quotes] [bq] and [list-entries] [l] works best - and looks better - when formatted with newlines.
+Markdown's email-like, multi-paragraph [Quotations] (#quotes) and [list entries](#listen) work best - and look better - when formatted with line breaks.
 
 [bq]: #blockquote
 
 [l]:  #list
 
-<a id="header"></a>
+### Headers
+Markdown here only supports one type of header formatting: atx.
+Atx-like headers use 1-6 hash signs at the beginning of the line, corresponding to levels 1-6. For example:
 
-### Headers Markdown here only supports one kind of header formatting: atx.
-Atx-like headers use 1-6 diamond characters at the beginning of the line, corresponding to levels 1-6. For example:
+`# Dies ist ein H1`
 
-    # This is a H1
-    ## This is an H2
-    ###### This is an H6
-<a id="blockquote"></a>
+`## Dies ist ein H2`
+
+`###### Dies ist ein H6`
 
 ### Quotes
-Markdown uses - like emails - the character `>` for quote blocks.
-If you have experience with quotes in emails, you also know how to create quotes in Markdown. It looks best if you wrap the text per line and put a `>` in front of each line:
+Markdown uses - like e-mails - the character `>` for quote blocks. If you have experience with quotes in email, you will also know how to create quotes in Markdown. It looks best if you wrap the text per line and put a `>` in front of each line:
 
-> This is a quote with two paragraphs. Lorem ipsum dolor sit amet,> consectetuer adipiscing elit. Aliquam hendrerit mi posuere> lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet> vitae, risus.
->> Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-> Suspendisse id sem consectetuer libero luctus adipiscing.
+`> Dies ist ein Zitat mit zwei Absätzen. Lorem ipsum dolor sit amet,` `> consectetuer adipiscing elit. Aliquam hendrerit mi posuere` `> lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet` `> vitae, risus.` `>` `> Donec sit amet nisl. Aliquam semper ipsum sit amet velit.` `> Suspendisse id sem consectetuer libero luctus adipiscing.`
 
-Markdown also allows you to be lazy and to use `>` only on the first line of a hard-wrapped paragraph:
+Markdown also allows you to be lazy and only use the `>` on the first line of a hard-broken paragraph:
 
-> This is a quote with two paragraphs. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
-Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+`> Dies ist ein Zitat mit zwei Absätzen. Lorem ipsum dolor sit amet,` `consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.` `Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae,` `risus.`
 
-> Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-Suspendisse id sem consectetuer libero luctus adipiscing.
+`> Donec sit amet nisl. Aliquam semper ipsum sit amet velit.` `Suspendisse id sem consectetuer libero luctus adipiscing.`
 
-Quotes can be nested (ie quote in a quote) by using more `>`:
+Quotations can be nested (i.e. quotation in a quotation) by using more `>`:
 
-> This is the first quote level.
->>> This is a nested quote.
->> Back to the first level.
+`    > Dies ist die erste Zitat-Ebene.` `    >` `    > > Dies ist ein verschachteltes Zitat.` `    >` `    > Zurück auf der ersten Ebene.`
 
-Quotes can include other markdown elements, including headers, lists, and code blocks:
+Quotes can contain other Markdown elements, including headers, lists, and blocks of code:
 
-> ## This is a headline.
->> 1. This is the first bullet point.
-> 2. This is the second bullet point.
->> Here is some example code:>> return shell_exec ("echo $ input | $ Markdown_script");
+> ## This is a heading.
+>> 1. This is the first item in the list.
+> 2. This is the second item in the list.
+>> Here is some sample code:>> return shell_exec ("echo $ input | $ Markdown_script");
 
-Any sensible text editor should make e-mail citation easy. In BBEdit, for example, you can make a selection and select the item `Increase Quote Level` from the menu `Text`.
-
-<a id="list"></a>
+Any reasonable text editor should make e-mail-style quoting easy. In BBEdit, for example, you can make a selection and choose `Increase Quote Level` from the menu `Text`.
 
 ### Lists
-Markdown supports sorted (numbered) and unsorted lists.
+Markdown supports sorted (numbered) and unsorted lists (bulleted lists).
 
-Unsorted lists use asterisks, plus and hyphens - interchangeable - as list markers:
+Unsorted lists use asterisks, pluses and hyphens - interchangeably - as list markers:
 
-    * Red
-    * Green
-    * Blue
+    * Red
+    * Green
+    * Blue
 
 is equal to:
 
@@ -175,164 +156,164 @@ is equal to:
 
 And:
 
-    - red
-    - Green
-    - Blue
+    - red
+    - green
+    - blue
 
-Sorted lists use numbers with the following point:
+Sorted lists use numbers followed by a period:
 
-    1st dog
-    2. Cat
-    3. Mouse
+    1st dog
+    2nd cat
+    3. Mouse
 
-It is important to understand that the numbers themselves have no effect on the output of Markdown. Markdown creates the following HTML code from the last list:
+It is important to understand that the numbers themselves have no effect on the output of Markdown. Markdown creates the following HTML from the last list:
 
-<ol><li> dog </li><li> cat </li><li> mouse </li></ol>
+<ol><li>dog</li><li> cat</li><li> mouse</li></ol>
 
-If you write the list instead:
+If you instead write the list like this:
 
-    1st dog
-    1st cat
-    1st mouse
+    1st dog
+    1st cat
+    1. Mouse
 
 Or even:
 
-    3rd dog
-    1st cat
-    8. Mouse
+    3rd dog
+    1st cat
+    8. Mouse
 
-Still, the same list comes out every time. If desired, one can number his lists by hand correctly. But if you want to be lazy, you can confidently use the same number.
+still the same list comes out every time. If desired, you can number your lists correctly by hand. But if you want to be lazy, you can always use the same number.
 
-However, you should also start the list with the number 1. In the future, Markdown may want to set a starting digit for the first list entry.
+However, you should start the list with number 1 even then. In the future, Markdown may want to set a starting number for the first entry in the list.
 
-List entries usually begin at the left edge of the document, but they can be indented up to three spaces to the right.
-List markers must be separated by one or more spaces or a tab from the following text.
+List entries usually start at the left edge of the document, but they can be indented up to three spaces to the right.
+List markers must be separated from the following text with one or more spaces or a tab.
 
-To format lists nicely, the individual entries can be further indented, as here:
+In order to format lists nicely, the individual entries can be indented, like here:
 
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-
-Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
-
-    * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-
-        Suspendisse id sem consectetuer libero luctus adipiscing.
-
-The following example generates the same code but is less tidy:
-
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+    * Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
 
 Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
 
-    * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+    * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
 
-    Suspendisse id sem consectetuer libero luctus adipiscing.
+        Suspendisse id sem consectetuer libero luctus adipiscing.
+
+The following example generates the same code, but is less tidy:
+
+    * Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+
+    * Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+
+    Suspendisse id sem consectetuer libero luctus adipiscing.
 
 If list entries are separated by blank lines, Markdown will wrap the list entries with `<p>` and `</p>`.
 
-For example, this will:
+For example this will be:
 
-    * Warsteiner
-    * King
+    * Warsteiner
+    * King
 
 to
 
-<ul><li> Warsteiner </li><li> king </li></ul>
+<ul><li>Warsteiner</li><li> king</li></ul>
 
 But this:
 
-    * Warsteiner
+    * Warsteiner
 
-    * King
+    * King
 
 becomes
 
-<ul><li><p> Warsteiner </p></li><li><p> king </p></li></ul>
+<ul><li><p>Warsteiner</p></li><li><p> king</p></li></ul>
 
-List items can consist of multiple paragraphs. Each following paragraph in a bullet must be indented with at least 4 spaces or a tab:
+List items can consist of several paragraphs. Each following paragraph in a list item must be indented with at least 4 spaces or a tab:
 
-    1. This is a bullet point with two paragraphs. Lorem ipsum dolor
+    1. This is a bullet point with two paragraphs. Lorem ipsum dolor
 
 sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.
 
 Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus. Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
 
-    2. Suspendisse id sem consectetuer libero luctus adipiscing.
+    2. Suspendisse id sem consectetuer libero luctus adipiscing.
 
-It looks good if each line of the following paragraph is indented, but again Markdown allows the lazy one to indent only the first line:
+It looks fine with every line of the following paragraph indented, but again, Markdown allows the lazy to indent only the first line:
 
-    * This is a bullet point with two paragraphs
+    * This is a list item with two paragraphs
 
-This is the second paragraph in this list item. Only the first line must be indented. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+This is the second paragraph in this list item. Only the first line needs to be indented. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
 
-    * Another point in the same list.
+    * Another item on the same list.
 
-To use a quote in a bullet, the quote must be indented:
+To use a quote in a list item, the quote must be indented:
 
-    * A bullet with a quote:
+    * A list item with a quote:
 
 > This is a quote> In a list.
 
-To use a block of code in a bullet it must be indented *twice* - 8 spaces or two tabs:
+To use a code block in a list item, it must be indented *twice* - 8 spaces or two tabs:
 
-    * A list item with code example:
+    * A list item with a code example:
 
-            <insert code here>
+            <insert code here>
 
-It is possible to unintentionally create lists by e.g.
+It is possible to accidentally create lists by e.g.
 the following writes:
 
-    1986. What a wonderful year.
+    1986. What a wonderful year.
 
-In other words, the sequence *number-point-space* at the beginning of a line. To avoid this problem, the point can be masked by backslash:
+In other words: The sequence *number-period-space* at the beginning of a line. To avoid this problem, the point can be masked with a backslash:
 
-    1986 \. What a wonderful year.
+    1986 \. What a wonderful year.
 
-<h3 id="precode"> Code blocks </h3>
+<h3 id="precode">Blocks of code</h3>
 
-Preformatted code blocks are used to write over program or markup source code. Instead of forming normal paragraphs, the lines in a code block are interpreted as found. Markdown includes code blocks with the tags `<pre>` and `<code>`.
+Preformatted code blocks are used to write over program or markup source code. Instead of forming normal paragraphs, the lines in a code block are interpreted as found. Markdown includes blocks of code with the tags `<pre>` and `<code>`.
 
-To create a code block in Markdown, simply indent each line of the block with at least 4 leverage or a tab. From the following input ...
+To create a block of code in Markdown, simply indent each line of the block with at least 4 spaces or a tab. From the following input ...
 
-    This is a normal paragraph.
+    This is a normal paragraph.
 
-        This is a code block.
+        This is a block of code.
 
-... does Markdown the following:
+... Markdown does the following:
 
-<p> This is a normal paragraph. </p>
+<p>This is a normal paragraph.</p>
 
 <pre><code>Dies ist ein Code-Block.
 </code></pre>
 
-A level of indentation - 4 spaces or 1 tab - are removed from each indent line. The following, for example ...
+One level of indentation - 4 spaces or 1 tab - is removed from each line of indentation. For example ...
 
-    An example in AppleScript:
+    An example in AppleScript:
 
 tell application "Foo" beep end tell
 
 ...becomes
 
-<p> An example in AppleScript: </p>
+<p>An example in AppleScript:</p>
 
 <pre><code>tell application "Foo" beep end tell </code></pre>
 
-A code block ends at the first line that is not indented (or at the end of the document).
+A block of code ends on the first line that is not indented (or at the end of the document).
 
-In a code block, the ampersand (`&`) and angle brackets (`<` and `>`) are automatically converted into HTML entities. This greatly facilitates the incorporation of HTML pieces - simply copy HTML into the document, indent, and Markdown does the coding of the ampersand and angle brackets. For example:
+In a code block, the ampersand (`&`) and angle brackets (`<` and `>`) are automatically converted into HTML entities. This makes the integration of HTML pieces a lot easier - just copy the HTML into the document, indent it and Markdown does the coding of the ampersand and angle brackets. For example:
 
-<div class="footer"> © 2004 Foo Corporation </div>
+<div class="footer">© 2004 Foo Corporation</div>
 
 becomes:
 
 <pre><code>&lt;div class="footer"&gt; &amp;copy; 2004 Foo Corporation &lt;/div&gt; </code></pre>
 
-Normal markdown syntax is not processed in code blocks. That
-Asterisks are just asterisks in a block of code, not the signal to emphasize the text. The consequence is that it's easy to talk about Markdown in Markdown *.
+Normal Markdown syntax is not processed in code blocks. I.e.
+Asterisks are just asterisks in a block of code and are not a signal to highlight the text. The consequence is that it's easy to talk *about* Markdown in Markdown.
 
 <a id="hr"></a>
 
-### Horizontal lines The tag for horizontal lines (`<hr />`) can be generated by writing 3 or more hyphens or asterisks on one line only. Spaces between the characters are also allowed. All the following examples would generate a horizontal line:
+### Horizontal Lines The day for horizontal lines (`<hr />`) can be generated by writing 3 or more hyphens or asterisks alone on one line. Spaces between characters are also allowed. All of the following examples would generate a horizontal line:
     * * *
 
     ***
@@ -351,35 +332,35 @@ Asterisks are just asterisks in a block of code, not the signal to emphasize the
 <a id="link"></a>
 
 ### Left
-Markdown supports two types of links: *Inline* and *References*
+Markdown supports two types of links: *inline* and *references*
 
 In both styles, the link text is marked with [square brackets].
 
-To create an inline link write normal parentheses just behind the closing square bracket. In these brackets, the URL is written to be linked together with an *optional* title for the link in quotation marks. Examples:
+To create an inline link, you write normal brackets directly after the closing square bracket. The URL to be linked to is written in these brackets together with an *optional* title for the link in quotation marks. Examples:
 
 This is [an example](http://example.com/ "Der Linktitel") for an inline link.
 
-    [This link](http://example.net/) has no title attribute.
+    [This link](http://example.net/) has no title attribute.
 
-It becomes:
+This becomes:
 
-<p> This is <a href="http://example.com/" title="title">an example</a> of an inline link. </p>
+<p>This is <a href="http://example.com/" title="title">an example</a> of an inline link.</p>
 
-<p> <a href="http://example.net/">This link</a> has no title attribute. </p>
+<p><a href="http://example.net/">This link</a> has no title attribute.</p>
 
 If you want to refer to content on the same server, you can use relative paths:
 
-    Further information can be found on the page [About me](/about/).
+    On the page [About me](/about/) there is more information.
 
-Reference links use a second set of square brackets in which an arbitrary identifier for the link is written:
+Reference links use a second set of square brackets in which any identifier for the link is written:
 
-    This is [an example] [id] for a reference link.
+    This is [an example] [id] for a reference link.
 
-You can also insert a space between the parentheses as you wish:
+If desired, a space can also be inserted between the brackets:
 
-    This is [an example] [id] for a reference link.
+    This is [an example] [id] for a reference link.
 
-Then, somewhere in the document, the link is defined on a separate line as follows:
+Then, somewhere in the document, the link is defined on its own line as follows:
 
 [id]: http://example.com/  "Optionalen Titel hier eintragen"
 
@@ -387,14 +368,14 @@ So:
 
 * Square brackets containing the link identifier (optionally with
 
-    indented with up to three spaces);
+    indented with up to three spaces);
 
 * followed by a colon;
 * followed by one or more spaces (or tabs);
 * followed by the URL for the link;
 * optionally followed by the text for the title attribute of the link,
 
-    wrapped in parentheses, single or double quotes.
+    wrapped in brackets, single or double quotes.
 
 The following three definitions are identical:
 
@@ -404,27 +385,27 @@ The following three definitions are identical:
 
 [foo]: http://example.com/  (Optionaler Titel)
 
-** Note: ** There is a known bug in Markdown 1.0.1 that hinders the function of single quotes as a separator for link titles.
+** Note: ** There is a known bug in Markdown 1.0.1 that hinders the function of single quotation marks as separators for link titles.
 
 The link URL can optionally be packed in angle brackets:
 
 [id]: <http://example.com/>  "Optionaler Titel hier"
 
-The title attribute can also be set to the next line and indented with more spaces or tabs. This looks better with long URLs:
+The title attribute can also be placed on the next line and indented with more spaces or tabs. This looks better with long urls:
 
 [id]: http://example.com/langer/pfad/zu/seite
 
-        "Optional title here"
+        "Optional title here"
 
-Link definitions are only used to create links while Markdown processes the document and are removed from the document before the HTML is output.
+Link definitions are only used to create links while Markdown is processing the document and are removed from the document before the HTML is output.
 
-The identifiers for link definitions may consist of letters, numbers, spaces, and punctuation marks. They are *independent* of uppercase and lowercase:
+The identifier for link definitions may consist of letters, numbers, spaces and punctuation marks. They are *independent* of upper and lower case:
 
-[Link text] [a] [link text] [A]
+[Link-Text] [a] [Link-Text] [A]
 
 The two link definitions are equivalent.
 
-The *implied link identifier* allows you to omit the link identifier. In this case, the link text is used as the identifier. An empty set of square brackets is simply added to the link text:
+The *implied link identifier* allows the link identifier to be omitted. In this case the link text is used as an identifier. An empty set of square brackets is simply appended to the link text:
 
 [Google] []
 
@@ -432,7 +413,7 @@ Then the link is defined:
 
 [Google]: http://google.com/
 
-Since link identifiers may contain spaces, this abbreviation even works for multiple words in the link text:
+Since link identifiers can contain spaces, this abbreviation even works for several words in the link text:
 
 Visit [Daring Fireball] [] for more information.
 
@@ -440,11 +421,11 @@ Then the link is defined:
 
 [Daring Fireball]: http://daringfireball.net/
 
-Link definitions can be made anywhere in the Markdown document. In general, it is a good idea to make them according to the paragraph in which they are used. But they can also be listed as footnotes together at the end of the document.
+Link definitions can be made anywhere in the Markdown document. In general, it is a good idea to do them after the paragraph in which they are used. However, like footnotes, they can all be listed together at the end of the document.
 
 A small example:
 
-I get 10 times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3].
+I get ten times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3].
 
 [1]: http://google.com/        "Google"
 
@@ -452,9 +433,9 @@ I get 10 times more traffic from [Google] [1] than from [Yahoo] [2] or [MSN] [3]
 
 [3]: http://search.msn.com/    "MSN Search"
 
-The abbreviation of the implied link identifier can also be used to write:
+With the abbreviation above the implied link identifier you can also write the following:
 
-I get 10 times more traffic from [Google] [] than from [Yahoo] [] or [MSN] [].
+I get ten times more traffic from [Google] [] than from [Yahoo] [] or [MSN] [].
 
 [google]: http://google.com/       "Google"
 
@@ -462,100 +443,100 @@ I get 10 times more traffic from [Google] [] than from [Yahoo] [] or [MSN] [].
 
 [msn]: http://search.msn.com/      "MSN Search"
 
-Both examples would produce the following HTML code:
+Both examples would result in the following HTML code:
 
-<p> I get ten times more traffic from <a href="http://google.com/" title="Google">Google</a> than from <a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a> or <a href="http://search.msn.com/" title="MSN Search">MSN</a> . </p>
+<p>I get ten times more traffic from <a href="http://google.com/" title="Google">Google</a> than from <a href="http://search.yahoo.com/" title="Yahoo Search">Yahoo</a> or <a href="http://search.msn.com/" title="MSN Search">MSN</a> .</p>
 
 For comparison, the same paragraph follows using Markdown's inline links:
 
-I get 10 times more traffic from [Google](http://google.com/ "Google") than from [Yahoo](http://search.yahoo.com/ "Yahoo Search") or [MSN](http://search.msn.com/ "MSN Search").
+I get ten times more traffic from [Google](http://google.com/ "Google") than from [Yahoo](http://search.yahoo.com/ "Yahoo Search") or [MSN](http://search.msn.com/ "MSN Search").
 
-The idea behind reference links is not that they are easier to write. The idea is that they make documents much more readable. The example paragraph is only 80 characters long with reference links, with reference links it is a full 181 characters long; as HTML, it is 239 characters, more markup than content.
+The idea behind reference links is not that they are easier to write. The idea is that they make documents far more readable. The example paragraph is only 80 characters long with reference links, and 181 characters long with reference links; 239 characters as HTML, more markup than content.
 
-With Markdown's reference links, the source document is more like the final output format, as shown in the browser. The ability to extract metadata for markup from the paragraph allows links to be integrated into the text without slowing down the flow of text.
+With Markdown's reference links, the source document looks more like the final output format as shown in the browser. With the ability to extract metadata for markup from the paragraph, links can be integrated into the text without slowing down the flow of the text.
 
 <a id="em"></a>
 
-### Emphasis Markdown treats asterisks (`*`) and underscores (`_`) as indicators for emphasis. Text packed in individual `*` or `_` is enclosed with the HTML tag `<em>`, duplicate `*` or `_` are marked with the tag `<strong>` , Following text for example:
-    *Single stars*
+### Emphasis Markdown treats asterisks (`*`) and underscores (`_`) as indicators of emphasis. Text packed into individual `*` or `_` is enclosed with the HTML tag `<em>`, double `*` or `_` are marked with the tag `<strong>` . The following text, for example:
+    *Single asterisk*
 
-    _Single underscores_
+    _Single underscores_
 
-    ** double stars **
+  **Double asterisks**
 
-    __Double underscores__
+    __ double underscores__
 
-Will spend:
+Will output the following:
 
-<em>Single stars</em>
+<em>Single asterisks</em>
 
-<em>Individual underscores</em>
+<em>Single underscores</em>
 
 <strong>Double asterisks</strong>
 
 <strong>Double underscores</strong>
 
-The style can be chosen arbitrarily. The only limitation is that the same character must be used to open and close an emphasis area.
+The style can be chosen arbitrarily. The only limitation is that the same symbol must be used to open and close a stress area.
 
-Emphasis can be used in the midst of a word:
+Stress can be used in the middle of a word:
 
-  Mr. *god* sacrament
+  Lord *god* sacrament
 
-But when a `*` or `_` is surrounded by spaces, it is treated like a simple asterisk or a simple underscore.
+But if a `*` or `_` is surrounded by spaces, it is treated like a simple asterisk or underscore.
 
-To write an asterisk or underscore at a point where it would be understood as an accent, it can be masked with a backslash:
+To write an asterisk or an underscore in a place where it would be understood as an emphasis, it can be masked with a backslash:
 
-  \ *This text is surrounded by asterisks \*
+  \ *This text is surrounded by asterisks. \*
 
 <a id="code"></a>
 
-### Code To mark a code area, it is enclosed with backtick characters (`` `` `). Unlike a code block, a code area formats code within a normal paragraph:
-    Use the `printf()` function to output text.
+### Code To mark a code area, it is enclosed with backtick characters (`` ` ` ''). In contrast to a code block, a code area formats code within a normal paragraph:
+    Use the function `printf()` to output text.
 
 Becomes:
 
-<p> Use the <code>printf()</code> function to <code>printf()</code> text. </p>
+<p>Use the function <code>printf()</code> to output text.</p>
 
-If a backtick is to be displayed in the code area, then several backticks before and after the code area can be used:
+If a backtick is to be displayed in the code area, several backticks can be used before and after the code area:
 
-    ``Irgendwo hier (`) is a backtick hidden```
+    `` `Irgendwo hier (`) a backtick is hidden. ''
 
 This becomes:
 
 <p><code>irgendwo hier (`) ist ein Backtick versteckt.</code></p>
 
-The backtick delimiters around a range of code may include spaces - one after the opening one, one before the closing backtick. This allows the use of backticks within the code area also at the beginning or end:
+The backtick separators around a code area can contain spaces - one after the opening backtick, one before the closing backtick. This enables backticks to be used within the code area, even at the beginning or end:
 
-A single back tick in a code area: `` `` `
+A single backtick in a code area: `` ` ` ''
 
-A backtick enclosed string in a code area: `` `foo` ``
+A backtick-enclosed string in a code area: `` `foo` ``
 
 becomes:
 
-<p> A single back tick in a code area: <code>`</code> </p>
+<p>A single backtick in a code area: <code>`</code></p>
 
-<p> A backtick enclosed string in a code area: <code>`foo`</code> </p>
+<p>A backtick-enclosed string in a code area: <code>`foo`</code></p>
 
-In code areas, the commercial and angle brackets are coded as HTML Entitiy.
+In code areas, the ampersand and angle brackets are encoded as an HTML entity.
 
-    Nobody uses `<blink>` tags.
+    Nobody uses `<blink>` tags.
 
 This becomes:
 
-<p> Nobody uses <code>&lt;blink&gt;</code> tags. </p>
+<p>Nobody uses <code>&lt;blink&gt;</code> tags.</p>
 
-Also works like this:
+The following also works:
 
-    `&#8212;` is the decimal coded equivalent of `&mdash;`.
+    `&#8212;` is the decimally coded equivalent of `&mdash;`.
 
-This is going to happen
+This is going to
 
-<p> <code>&amp;#8212;</code> is the decimal coded equivalent of <code>&amp;mdash;</code> , </p>
+<p><code>&amp;#8212;</code> is the decimally encoded equivalent of <code>&amp;mdash;</code> .</p>
 
 <a id="img"></a>
 
-Admittedly, it is quite difficult to find a "natural" syntax for embedding graphics in text.
-Markdown uses a syntax similar to the style of links. This allows two types: inline and reference.
+### Graphics Admittedly, it is quite difficult to find a "natural" syntax for including graphics in text.
+Markdown uses a syntax that is designed to be similar to the style of links. This allows two types: inline and reference.
 
 The inline syntax looks like this:
 
@@ -565,24 +546,24 @@ The inline syntax looks like this:
 
 So:
 
-* An exclamation point: `!`;
-* followed by a set of square brackets showing the value of the
+* An exclamation mark: `!`;
+* followed by a set of square brackets denoting the value of the
 
-    `alt` Attributes for the graphic included;
+    Contain `alt` attributes for the graphic;
 
-* followed by parentheses indicating the URL or path to the graphic
+* followed by round brackets indicating the URL or the path to the graphic
 
-and the value of an optional `title` attribute, packed in quotes.
+as well as the value of an optional `title` attribute, wrapped in quotation marks.
 
-Image references in reference style look like this:
+Reference-style image references look like this:
 
-    ! [Alternative text] [id]
+    ! [Alternative text] [id]
 
-"id" is the name of a defined image reference here. Image references are defined with the same syntax as link references:
+"id" is the name of a defined picture reference. Image references are defined with the same syntax as link references:
 
 [id]: url/zur/grafik  "Optionales title-Attribut"
 
-Currently, Markdown does not have syntax for specifying the size of a graphic. Should this be necessary, the normal HTML tag `<img>` can be used.
+Currently, Markdown has no syntax for specifying the size of a graphic. If this is necessary, the normal HTML tag `<img>` can be used.
 
 * * *
 
@@ -592,35 +573,35 @@ Currently, Markdown does not have syntax for specifying the size of a graphic. S
 <a id="backslash"></a>
 
 ### Backslash masking
-Markdown makes it possible to use backslash masking to write characters that otherwise have a meaning in Markdown's syntax.
+Markdown allows backslash masking to be used to write characters that otherwise have a specific meaning in Markdown's syntax.
 For example, if you want to surround a word with asterisks (instead of the HTML tag `<em>`), you can put backslashes in front of the asterisks:
 
   \ *Surrounded by asterisks \*
 
-Markdown provides this facility for the following characters:
+Markdown offers this possibility for the following characters:
 
-Backslash Backtick
+\ Backslash `Backtick
 
-    * Asterisk
+    * Asterisk
 
-_ Underline {} Curly braces [] Square brackets () Round brackets
+_ Underscore {} curly brackets [] square brackets () round brackets
 
-# Rhombus + plus sign
-    - minus sign (hyphen)
+# Hash + plus sign
+    - minus sign (hyphen)
 
-, Point ! exclamation mark
+. Point ! Exclamation mark
 
 * * *
 
 <a id="lizenz"></a>
 
 ### License
-This work is licensed under a Creative Commons Attribution-ShareAlike (BY-SA) 4.0 International License] [by-sa].
+This work is licensed under a [Creative Commons Attribution - Share Alike (BY-SA) 4.0 International License] [by-sa].
 
 [by-sa]: http://creativecommons.org/licenses/by-sa/4.0/deed.de
 
-?> This is a translation of [original syntax documentation] [osd] by [John Grubers] [jg] [Markdown] [md]. This translation refers to the status of 15.12.2013 (Markdown Version 1.0.1). No guarantee is given for the correctness of the translation. If there are errors in the translation, please send a short message to <lasar@liepins.net>.
-Any other kind of feedback is welcome too. *
+?> This is a translation of the [original syntax documentation] [osd] by [John Grubers] [jg] [Markdown] [md]. This translation refers to the status of December 15, 2013 (Markdown Version 1.0.1). No guarantee is given for the correctness of the translation. If there are errors in the translation, please send a short message to <lasar@liepins.net>.
+Any other kind of feedback is also welcome. *
 
 [jg]: http://daringfireball.net/
 

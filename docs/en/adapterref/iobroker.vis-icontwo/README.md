@@ -61,6 +61,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.65.0
+
+• Neue Icons hinzugefügt (Player)
+
 ### 0.64.0
 
 • Neue Icons hinzugefügt (Brands & Computer)

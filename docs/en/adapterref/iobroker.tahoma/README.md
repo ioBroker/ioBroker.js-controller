@@ -9,6 +9,9 @@
 [![Build Status](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)](https://travis-ci.org/StrathCole/ioBroker.tahoma)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/StrathCole/iobroker.tahoma/blob/master/LICENSE)
 
+# NOT MAINTAINED CURRENTLY !!!
+
+
 # ioBroker.tahoma
 
 An ioBroker adapter for Somfy Tahoma. This project has no affiliation with Somfy. Initially based on the script taken from https://forum.iobroker.net/post/336001.

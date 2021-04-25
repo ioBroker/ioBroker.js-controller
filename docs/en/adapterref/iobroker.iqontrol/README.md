@@ -1520,8 +1520,9 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
-### 1.7.2 
-* (sbormann) Added compatibility to new react-ui of admin-adapter.
+### 1.7.2 dev
+* (sbormann) Added compatibility to new react-ui of admin-adapter (value-list and target-value-list in custom dialog are still incompatible and have to be fixed).
+* (sbormann) Fixed uploading of larger files.
 * (sbormann) Changed background-images in autocreate views function.
 * (sbormann) Internal definition and handling of device options changed.
 

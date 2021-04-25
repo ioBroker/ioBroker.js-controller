@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
+hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -37,11 +37,25 @@ Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
 - [zone Clean] (# zoneclean)
     - [Zimmer] (# Zimmer)
     - [Timer] (# Timer)
-    - [Eigene Befehle] (# send-your-own-Befehle)
+    - [Eigene Befehle] (# Sende deine eigenen Befehle)
     - [sendTo hook] (# send-custom-befehle-with-sendto)
 - [Widget] (# Widget)
 - [Bugs] (# Bugs)
 - [Changelog] (# changelog)
+
+## Unterstützte Geräte und Funktionen
+| Gerät | Grundlegende Steuerung | Geschichte | Zimmer | Karte |
+|:------------------    |:-------------------:      |:-------------------:  |:-------------------:|:-------------------:|
+| viomi.vacuum.v6 | : heavy_check_mark: | : x: |: x: | : x: |
+| viomi.vacuum.v7 | : heavy_check_mark: | : x: |: x: | : x: |
+| viomi.vacuum.v8 | : heavy_check_mark: | : x: |: x: | : x: |
+| rockrobo.vacuum.v1 | : heavy_check_mark: | : heavy_check_mark: |: x: |: heavy_check_mark: |
+| roborock.vacuum.s4 | : heavy_check_mark: | : heavy_check_mark: |: heavy_check_mark: |: heavy_check_mark: |
+| roborock.vacuum.s5 | : heavy_check_mark: | : heavy_check_mark: |: heavy_check_mark: |: heavy_check_mark: |
+| roborock.vacuum.s5e | : heavy_check_mark: | : heavy_check_mark: |: heavy_check_mark: |: heavy_check_mark: |
+| roborock.vacuum.m1s | : heavy_check_mark: | : heavy_check_mark: |: heavy_check_mark: |: heavy_check_mark: |
+| roborock.vacuum.a10 | : heavy_check_mark: | : heavy_check_mark: |: heavy_check_mark: |: heavy_check_mark: |
+| roborock.vacuum.a15 | : heavy_check_mark: | : heavy_check_mark: |: heavy_check_mark: |: heavy_check_mark: |
 
 ## Bekannte Fehler
 ### Fehler bei der Installation
@@ -49,9 +63,7 @@ wenn Ihre Installation fehlerhaft ausgeführt wird. Das Canvas-Paket konnte nich
 
 `` npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Beenden Sie den Status 1``
 
-Bitte installieren Sie Canvas und die Bibliotheken manuell mit:
-
-`` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ``
+Bitte installieren Sie canvas und die Bibliotheken manuell mit: `` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ``
 
 `` sudo npm install canvas --unsafe-perm = true ``
 
@@ -253,6 +265,17 @@ Die unterstützten Befehle sind:
 - Widget zu der Zeit ohne Funktion
 
 ## Changelog
+### 3.1.1 (18.4.2021)
+ * Full rewrite
+ * Fix map bug with multiple vacuums
+ * fix performance Problems
+ * better conntection to vacuum
+ * fix bug in ReloadMap button
+ * Show Goto and Zone States ti find places
+ * and many more...
+### 2.2.5 (2021-04-02)
+* added S7 Support
+* bugfixes for S5 Max and others
 ### 2.2.4 (2020-09-15)
 * (dirkhe) add config for send Pause Before Home
 ### 2.2.3 (2020-08-20)

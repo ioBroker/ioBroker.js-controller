@@ -76,6 +76,12 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
+### 5.0.8 (2021-04-24)
+* (bluefox) Admin5: Implemented rating with comments
+
+### 5.0.7 (2021-04-23)
+* (bluefox) Admin5: Fixed many bugs
+
 ### 5.0.6 (2021-04-20)
 * (bluefox) Admin5: Fixed many bugs
 
@@ -84,12 +90,6 @@ lettering of the log appears in red.
 
 ### 5.0.4 (2021-04-18)
 * (bluefox) Admin5: Fixed many bugs
-
-### 5.0.3 (2021-04-17)
-* (bluefox) Admin5: Many new features implemented
-
-### 5.0.2 (2020-12-26)
-* (bluefox) Merged the changes from admin4
 
 ## License
 

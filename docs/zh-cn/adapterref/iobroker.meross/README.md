@@ -3,21 +3,20 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
+hash: 5iNCBlSzyWs/t91v7Ie04Ag2rsNq8nXT9tXBisGyGr0=
 ---
 ![商标](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
 ![安装数量](http://iobroker.live/badges/meross-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.meross.svg)
-![特拉维斯](http://img.shields.io/travis/Apollon77/ioBroker.meross/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.meross?branch=master&svg=true)
-![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 ＃ioBroker.meross
+![测试与发布](https://github.com/Apollon77/iobroker.meross/workflows/Test%20and%20Release/badge.svg)[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/meross/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
-##说明
+＃＃ 描述
 该适配器允许通过连接到Meross云服务器来控制Meross设备。
 
 您需要提供您的Cloud登录凭据。适配器连接到您的云帐户，并通过MQTT订阅所有设备数据。因此，设备需要连接到其云。当前，尚无本地控制设备的方法。
@@ -29,14 +28,23 @@ hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
 * mss310
 * MSS620欧盟/英国
 
-如果有更多设备可用（或无法运行），请通过打开GitHub问题进行报告。
+如果有更多设备可用（或不能运行），请通过打开GitHub问题进行报告。
 
 ##如何报告问题和功能请求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会打断行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我什么时候在日志中看到的内容。
 
 ## Changelog
+
+### 1.6.1 (2021-04-23)
+* (Apollon77) prevent crash case (Sentry IOBROKER-MEROSS-Z)
+
+### 1.6.0 (2021-04-18)
+* (Apollon77) add MOD100 Diffuser Spray device
+
+### 1.5.1 (2020-12-05)
+* (Apollon77) generate an unique uuid for each connection, fixes the "Server not available"
 
 ### 1.5.0 (2020-06-25)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)

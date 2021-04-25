@@ -140,6 +140,10 @@ CCU / Homematic поддерживает различные типы устро�
 	### __WORK IN PROGRESS__
 -->
 
+### 1.14.37 (2021-04-23)
+* (foxriver76) added tier, is now 2
+* (foxriver76) added missing images (closes #319)
+
 ### 1.14.36 (2021-04-14)
 * (foxriver76) error handling improved when deleting obsolete devices/channels
 * (foxriver76) if no message id provided on `sendTo`, we do not send `undefined` params anymore (fixes #318)

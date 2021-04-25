@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
+hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
 ---
-![标识](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
+![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
@@ -43,15 +43,27 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 -[bug]（＃bugs）
 -[变更日志]（＃changelog）
 
+##支持的设备和功能
+|设备|基本控制|历史|房间|地图|
+|:------------------    |:-------------------:      |:-------------------:  |:-------------------:|:-------------------:|
+| viomi.vacuum.v6 | ：heavy_check_mark：| ：x：|：x：| ：x：|
+| viomi.vacuum.v7 | ：heavy_check_mark：| ：x：|：x：| ：x：|
+| viomi.vacuum.v8 | ：heavy_check_mark：| ：x：|：x：| ：x：|
+| rockrobo.vacuum.v1 | ：heavy_check_mark：| ：heavy_check_mark：|：x：|：heavy_check_mark：|
+| roborock.vacuum.s4 | ：heavy_check_mark：| ：heavy_check_mark：|：heavy_check_mark：|：heavy_check_mark：|
+| roborock.vacuum.s5 | ：heavy_check_mark：| ：heavy_check_mark：|：heavy_check_mark：|：heavy_check_mark：|
+| roborock.vacuum.s5e | ：heavy_check_mark：| ：heavy_check_mark：|：heavy_check_mark：|：heavy_check_mark：|
+| roborock.vacuum.m1s | ：heavy_check_mark：| ：heavy_check_mark：|：heavy_check_mark：|：heavy_check_mark：|
+| roborock.vacuum.a10 | ：heavy_check_mark：| ：heavy_check_mark：|：heavy_check_mark：|：heavy_check_mark：|
+| roborock.vacuum.a15 | ：heavy_check_mark：| ：heavy_check_mark：|：heavy_check_mark：|：heavy_check_mark：|
+
 ##已知错误
 ###安装错误
 如果您的安装运行错误。画布包无法安装
 
 ``npm ERR！ canvas@2.6.1安装：node-pre-gyp install --fallback-to-build npm ERR！退出状态1``
 
-请使用以下步骤手动安装canvas和libs：
-
-``sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev``
+请使用以下命令手动安装canvas和libs：``sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev''
 
 ``sudo npm install canvas --unsafe-perm = true''
 
@@ -70,7 +82,7 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 -自己的端口，只能由第二个机器人更改
 -查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
 
-####对Alexa的控制
+####控制Alexa
 在配置中添加alexa状态被激活，这里的hack被设置为附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回主页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
 
 ####使用开始按钮恢复暂停的区域清洁
@@ -92,7 +104,7 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 -要使用地图，您必须在配置中选择valetudo或原始地图
 -请求间隔必须大于1000毫秒，这是更新html映射的间隔
 -地图间隔必须超过5000毫秒，此间隔会更新png地图文件（您可以将其用于Telegram或vis或其他任何东西）
--在那里可以为地图示例选择颜色：
+-颜色在那里，您可以为地图示例选择颜色：
 
 ```
 - #2211FF
@@ -112,7 +124,7 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 
 第二种方法是使用src img小部件集成png文件。但是html视图速度更快，就像实时视图一样。
 
-＃＃ 功能
+＃＃ 职能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
 不幸的是，无法查询卡的位置和位置，这可以随吸力的变化而变化。永远是最后一张吸卡，以及在应用程序中用作基础。
@@ -162,7 +174,7 @@ xVal, yval
 ####计时器
 一旦吸尘器支持房间功能（见上文），就可以创建计时器，然后触发相应的房间通道或确定其mapIndexes。
 计时器可以直接通过房间和/或房间通道触发。
-计时器本身是通过config区域创建的，但随后成为数据点。在那里，每个计时器都可以被激活/禁用或跳过一次。也可以直接启动。 ioBroker计时器的优点是可以在VIS中显示和使用它们，并且您可以使机器人与互联网断开连接，因为该应用程序的计时器是从中国触发的。
+计时器本身是通过config区域创建的，但随后成为数据点。在那里，每个计时器都可以被激活/禁用或跳过一次。也可以直接启动。 ioBroker计时器的优点是它们可以在VIS中显示和使用，并且您可以使机器人与互联网断开连接，因为该应用程序的计时器是从中国触发的。
 
 ###发送您自己的命令
 注意：此功能只能由专家使用，因为错误的命令可能会损坏吸盘
@@ -224,7 +236,7 @@ sendTo("mihome-vacuum.0",
 |清洁机器人周围的一小块区域| `cleanSpot`| -无-| |
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
-|检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
+|检查耗材（刷子等）的状态| `getConsumableStatus`| -无-| |
 |重置耗材（刷子等）的状态| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
 |获取所有以前的清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
@@ -238,9 +250,9 @@ sendTo("mihome-vacuum.0",
 |检索当前风扇速度| `getFanSpeed`| -无-| |
 |设置新风扇速度| `setFanSpeed`| `fanSpeed`| `fanSpeed`是1到100之间的数字|
 |启动遥控器功能| `startRemoteControl`| -无-| |
-|发出用于远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须按顺序排列，持续时间以ms为单位|
+|发出用于远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须是连续的，持续时间以ms为单位|
 |结束遥控器功能| `stopRemoteControl`| -无-| |
-|无尘室| `cleanRooms`| `rooms`| `rooms`是一个逗号分隔的字符串，带有enum.rooms.XXX |
+|无尘室| `cleanRooms`| `rooms`| `rooms`是逗号分隔的字符串，带有enum.rooms.XXX |
 |清洁段| `cleanSegments`| `rooms`| `rooms`是一个具有mapIndex的数组或逗号分隔的具有mapIndex |
 |清洁区| `cleanZone`| `coordinates`| `coordinates`是一个带有坐标和计数的字符串，请参见[zoneClean](#zoneClean)|
 |清洁区| `cleanZone` | `坐标`| `coordinates` ist一个带有坐标和计数的字符串，请参见[zoneClean]（＃zoneClean）|
@@ -253,6 +265,17 @@ sendTo("mihome-vacuum.0",
 -当时没有功能的小部件
 
 ## Changelog
+### 3.1.1 (18.4.2021)
+ * Full rewrite
+ * Fix map bug with multiple vacuums
+ * fix performance Problems
+ * better conntection to vacuum
+ * fix bug in ReloadMap button
+ * Show Goto and Zone States ti find places
+ * and many more...
+### 2.2.5 (2021-04-02)
+* added S7 Support
+* bugfixes for S5 Max and others
 ### 2.2.4 (2020-09-15)
 * (dirkhe) add config for send Pause Before Home
 ### 2.2.3 (2020-08-20)

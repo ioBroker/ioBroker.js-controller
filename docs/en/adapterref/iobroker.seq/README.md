@@ -1,4 +1,5 @@
 ![Logo](admin/seq.png)
+
 # ioBroker.seq
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.seq.svg?dummy=unused)](https://www.npmjs.com/package/iobroker.seq)
@@ -22,79 +23,104 @@ It is also possible to apply a filter to the log levels and also to the adapters
 4. Save the settings
 
 ## Changelog
+
 <!--
  https://github.com/AlCalzone/release-script#usage
     npm run release minor -- --all 0.9.8 -> 0.10.0
     npm run release patch -- --all 0.9.8 -> 0.9.9
-    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0  
+    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### **WORK IN PROGRESS**
+
+- (o0shojo0o) Add adapter to TIER 1
+
 ### 0.2.10 (2021-04-15)
-* (o0shojo0o) Check log message of undefine
+
+- (o0shojo0o) Check log message of undefine
 
 ### 0.2.9 (2021-02-05)
-* (o0shojo0o) Bugfix 'Cannot read property common of null'
+
+- (o0shojo0o) Bugfix 'Cannot read property common of null'
 
 ### 0.2.8 (2021-01-30)
-* (o0shojo0o) Bugfix NullPointerException
+
+- (o0shojo0o) Bugfix NullPointerException
 
 ### 0.2.7 (2021-01-24)
-* (o0shojo0o) Add overview card 
+
+- (o0shojo0o) Add overview card
 
 ### 0.2.6 (2021-01-21)
-* (bluefox) Refactoring
-* (bluefox) Better translations
+
+- (bluefox) Refactoring
+- (bluefox) Better translations
 
 ### 0.2.5 (2021-01-20)
-* (o0shojo0o) no real change only the description for the admin
+
+- (o0shojo0o) no real change only the description for the admin
 
 ### 0.2.4 (2021-01-16)
-* (o0shojo0o) bugfix display of the filter options
-* (o0shojo0o) bugfix display of template parameters
-* (o0shojo0o) add parameter logging Arch
-* (o0shojo0o) add parameter logging JsController
-* (o0shojo0o) add parameter logging Node
-* (o0shojo0o) add parameter logging Platform
-* (o0shojo0o) add parameter logging SourceVersion
+
+- (o0shojo0o) bugfix display of the filter options
+- (o0shojo0o) bugfix display of template parameters
+- (o0shojo0o) add parameter logging Arch
+- (o0shojo0o) add parameter logging JsController
+- (o0shojo0o) add parameter logging Node
+- (o0shojo0o) add parameter logging Platform
+- (o0shojo0o) add parameter logging SourceVersion
 
 ### 0.2.3 (2021-01-15)
-* (o0shojo0o) if the server address ends with "/", this must be removed. …
+
+- (o0shojo0o) if the server address ends with "/", this must be removed. …
 
 ### 0.2.2 (2021-01-10)
-* (o0shojo0o) handle uncomplete log message
+
+- (o0shojo0o) handle uncomplete log message
 
 ### 0.2.1 (2020-10-01)
-* (o0shojo0o) added forgetting native...
+
+- (o0shojo0o) added forgetting native...
 
 ### 0.2.0 (2020-10-01)
-* (o0shojo0o) optional selective logging on adapter basis
+
+- (o0shojo0o) optional selective logging on adapter basis
 
 ### 0.1.0 (2020-09-26)
-* (o0shojo0o) API key is no longer not displayed in clear text 
-* (o0shojo0o) API key is now stored encrypted
-  * ***Attention: The API key will be lost and must be set again!***
-* (o0shojo0o) higher dependencies of the js-controller (>=3.1.0)
+
+- (o0shojo0o) API key is no longer not displayed in clear text
+- (o0shojo0o) API key is now stored encrypted
+  - **_Attention: The API key will be lost and must be set again!_**
+- (o0shojo0o) higher dependencies of the js-controller (>=3.1.0)
 
 ### 0.0.5 (2020-09-23)
-* (o0shojo0o) add param SystemName for display in Seq
+
+- (o0shojo0o) add param SystemName for display in Seq
 
 ### 0.0.4 (2020-09-23)
-* (o0shojo0o) bugfix at the server address check  
+
+- (o0shojo0o) bugfix at the server address check
 
 ### 0.0.3 (2020-09-22)
-* (o0shojo0o) fix minimum js.controller version
+
+- (o0shojo0o) fix minimum js.controller version
 
 ### 0.0.2 (2020-09-17)
-* (o0shojo0o) new release for npm...
+
+- (o0shojo0o) new release for npm...
 
 ### 0.0.2-beta.0 (2020-09-16)
-* (o0shojo0o) initial release
+
+- (o0shojo0o) initial release
 
 ### 0.0.1
-* (o0shojo0o) initial push
+
+- (o0shojo0o) initial push
 
 ## License
+
 MIT License
 
 Copyright (c) 2021 Dennis Rathjen <info@bastelbunker.de>

@@ -1,13 +1,13 @@
 ![Logo](admin/meross-logo.png)
 # ioBroker.meross
 
-![Number of Installations](http://iobroker.live/badges/meross-installed.svg) ![Number of Installations](http://iobroker.live/badges/meross-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.meross.svg)](https://www.npmjs.com/package/iobroker.meross)
+![Number of Installations](http://iobroker.live/badges/meross-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/meross-stable.svg)
+[![NPM version](http://img.shields.io/npm/v/iobroker.meross.svg)](https://www.npmjs.com/package/iobroker.meross)
+
+![Test and Release](https://github.com/Apollon77/iobroker.meross/workflows/Test%20and%20Release/badge.svg)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/meross/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.meross.svg)](https://www.npmjs.com/package/iobroker.meross)
-
-**Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/Apollon77/ioBroker.meross/master.svg)](https://travis-ci.org/Apollon77/ioBroker.meross)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.meross?branch=master&svg=true)](https://ci.appveyor.com/project/Apollon77/ioBroker-daikin/)
-
-[![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)](https://nodei.co/npm/iobroker.meross/)
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
@@ -33,6 +33,9 @@ Please use GitHub issues for this.
 Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column Log level). Then please get the logfile from disk (subdirectory "log" in ioBroker installation directory and not from Admin because Admin cuts the lines). If you do not like providing it in GitHub issue you can also send it to me via email (iobroker@fischer-ka.de). Please add a reference to the relevant GitHub issue AND also describe what I see in the log at which time.
 
 ## Changelog
+
+### 1.6.1 (2021-04-23)
+* (Apollon77) prevent crash case (Sentry IOBROKER-MEROSS-Z)
 
 ### 1.6.0 (2021-04-18)
 * (Apollon77) add MOD100 Diffuser Spray device

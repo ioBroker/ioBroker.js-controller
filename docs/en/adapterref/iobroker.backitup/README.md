@@ -345,6 +345,13 @@ Here is a list of the problems that have occurred so far and their solutions, if
 
 ## Changelog
 
+### 2.1.3 (22.04.2021)
+* (simatec) Admin-Tab changed
+* (simatec) Javascript Restore changed
+* (simatec) Redesign Admin-Tab
+* (simatec) Redesign Config
+* (simatec) Preparation for admin 5
+
 ### 2.1.2 (13.04.2021)
 * (simatec) Creation of temporary folders changed
 * (simatec) Filter for redis rdb files changed

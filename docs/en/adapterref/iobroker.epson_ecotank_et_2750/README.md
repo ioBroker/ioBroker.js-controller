@@ -11,7 +11,9 @@
 This adapter read tank level and other information from [EPSON EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750) and store in ioBroker.
 
 [EPSON EcoTank ET-4750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) is also supported (tested by [Homoran](https://forum.iobroker.net/user/homoran))  
-[EPSON EcoTank ET-2721](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) is also supported (tested by [mikepiko](https://github.com/mikepiko))
+[EPSON EcoTank ET-3750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-3750) is also supported (tested by [christofkac](https://github.com/christofkac))  
+[EPSON EcoTank ET-2721](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2721) is also supported (tested by [mikepiko](https://github.com/mikepiko))  
+
 
 ## Configuration
 

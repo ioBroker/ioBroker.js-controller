@@ -2,54 +2,60 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tahoma/README.md
-title: ioBroker.tahoma
-hash: iU4VTquXT8wLOTsxI8XsBIZpHUdUgfekYjMGvx+s2XU=
+title: НЕ ОБСЛУЖИВАЕТСЯ В НАСТОЯЩЕЕ ВРЕМЯ !!!
+hash: O8jue3Vsog/1wlwxiQ4xFu6UGjUptJA7NZEfwi+kqQo=
 ---
-![логотип](../../../en/adapterref/iobroker.tahoma/admin/tahoma.png)
+![Логотип](../../../en/adapterref/iobroker.tahoma/admin/tahoma.png)
 
 ![Количество установок](http://iobroker.live/badges/tahoma-installed.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.tahoma.svg)
-![NPM](https://nodei.co/npm/iobroker.tahoma.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.tahoma.png?downloads=true)
+![Стабильный](http://iobroker.live/badges/tahoma-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.tahoma.svg)
 ![Статус сборки](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
+# В НАСТОЯЩЕЕ ВРЕМЯ НЕ ПОДДЕРЖИВАЕТСЯ !!!
 # IoBroker.tahoma
-Адаптер ioBroker для Somfy Tahoma. Этот проект не имеет никакого отношения к Somfy. Первоначально на основе сценария, взятого из https://forum.iobroker.net/post/336001.
+Адаптер ioBroker для Somfy Tahoma. Этот проект не имеет отношения к Somfy. Изначально на основе скрипта, взятого с https://forum.iobroker.net/post/336001.
 
 Адаптер подключается к API конечного пользователя Tahomalink и управляет устройствами, настроенными через Tahoma Box (и, скорее всего, Connexoon).
-Адаптер еще не полностью укомплектован, но он должен поддерживать большинство действий для управления жалюзи и ставнями и т. Д.
+Адаптер еще не является полнофункциональным, но он должен поддерживать большинство действий по управлению жалюзи, ставнями и т. Д.
 
-Свертывание некоторых состояний, созданных адаптером.
+Выполнение некоторых состояний, созданных адаптером.
 
 ## Tahoma.X.location
-Состояние в этом дереве содержит личную информацию пользователя, такую как город, адрес улицы и долгота / широта.
+Состояние в этом дереве содержит личную информацию пользователя, такую как город, почтовый адрес и долгота / широта.
 
 ## Tahoma.X.devices. *. deviceURL
 Это состояние содержит URL-адрес устройства, который используется Tahoma для идентификации устройства.
 
 ## Tahoma.X.devices. *. команды
-Эти состояния содержат команды кнопок для управления устройствами. Большинство устройств будут поддерживать такие команды, как `close` и `open`, но также и некоторые другие.
-Некоторые из команд имеют `:slow` в конце, если они поддерживаются устройством. Использование этих включает низкоскоростной или так называемый бесшумный режим.
+Эти состояния содержат команды кнопок для управления устройствами. Большинство устройств будут поддерживать такие команды, как `close` и `open`, а также некоторые другие.
+Некоторые команды имеют в конце `:slow`, если они поддерживаются устройством. Их использование включает низкую скорость или так называемый бесшумный режим.
 
-## Tahoma.X.devices. *. Состояния
-Эти состояния содержат текущее состояние устройств следующим образом. Все настройки, отмеченные `[**]`, могут редактироваться для управления поведением устройства / отправки команд.
-В некоторых состояниях в конце есть `:slow`, если это поддерживается устройством. Их установка включает низкую скорость или так называемый бесшумный режим.
+## Tahoma.X.devices. *. состояния
+Эти состояния содержат текущий статус устройств следующим образом. Все настройки, отмеченные `[**]`, доступны для редактирования для управления поведением устройства / отправки команд.
+В некоторых штатах в конце есть `:slow`, если они поддерживаются устройством. Их установка включает низкую скорость или так называемый бесшумный режим.
 
-`[**] tahoma.X.devices.*.states.core:DeploymentState` - Предоставляет информацию о текущем развертывании и управляет им. 100 означает полностью развернутый, 0 не развернут. Не все устройства имеют это значение, некоторые вместо этого имеют `ClosureState`.
-`[**] tahoma.X.devices.*.states.core:TargetDeploymentState` - см. `tahoma.X.devices.*.states.core:DeploymentState` `[**] tahoma.X.devices.*.states.coreClosureState` - Предоставляет информацию о состоянии текущего закрытия и контролирует его. 100 означает полностью закрыт, 0 открыт. Не все устройства имеют это значение, некоторые вместо этого имеют `DeploymentState`.
-`[**] tahoma.X.devices.*.states.core:TargetClosureState` - См. `tahoma.X.devices.*.states.core:ClosureState` `[**] tahoma.X.devices.*.states.core:OrientationState` - Предоставляет информацию об ориентации (например, для жалюзи) планок и контролирует ее. Не все устройства предлагают это значение.
-`[**] tahoma.X.devices.*.states.core:TargetOrientationState` - См. `tahoma.X.devices.*.states.core:OrientationState` `tahoma.X.devices.*.states.core:NameState` - Содержит текущее название устройства.
-`tahoma.X.devices.*.states.core:OpenClosedState` - Содержит `closed`, если устройство закрыто на 100% или развернуто на 0%, а `open` в противном случае.
-`tahoma.X.devices.*.states.core:PriorityLockTimerState` - Если датчик заблокировал устройство, это указано здесь, e. грамм. датчик ветра, блокирующий тент.
-`tahoma.X.devices.*.states.core:RSSILevelState` - Текущее качество сигнала устройства.
-`tahoma.X.devices.*.states.core:StatusState` - `available`, если устройство доступно в данный момент.
-`tahoma.X.devices.*.states.io:PriorityLockLevelState` - См. `tahoma.X.devices.*.states.core:PriorityLockTimerState` `tahoma.X.devices.*.states.io:PriorityLockOriginatorState` - См. `tahoma.X.devices.*.states.core:PriorityLockTimerState` `tahoma.X.devices.*.states.moving` - Укажите, движется ли устройство в данный момент. `0 = stopped`, `1 = up/undeploy`, `2 = down/deploy`, `3 = unknown direction`
+`[**] tahoma.X.devices.*.states.core:DeploymentState` - предоставляет информацию и контролирует состояние текущего развертывания. 100 означает полностью развернутый, 0 - не развернутый. Не все устройства имеют это значение, у некоторых вместо него есть `ClosureState`.
+`[**] tahoma.X.devices.*.states.core:TargetDeploymentState` - см. `tahoma.X.devices.*.states.core:DeploymentState` `[**] tahoma.X.devices.*.states.coreClosureState` - Предоставляет информацию и контролирует состояние текущего закрытия. 100 означает полностью закрыто, 0 открыто. Не все устройства имеют это значение, у некоторых вместо него есть `DeploymentState`.
+`[**] tahoma.X.devices.*.states.core:TargetClosureState` - См. `tahoma.X.devices.*.states.core:ClosureState` `[**] tahoma.X.devices.*.states.core:OrientationState` - Предоставляет информацию и контролирует ориентацию (например, жалюзи) ламелей. Не все устройства обладают такой ценностью.
+`[**] tahoma.X.devices.*.states.core:TargetOrientationState` - см. `tahoma.X.devices.*.states.core:OrientationState` `tahoma.X.devices.*.states.core:NameState` - содержит текущее имя устройства.
+`tahoma.X.devices.*.states.core:OpenClosedState` - содержит `closed`, если устройство закрыто на 100% или 0% развернуто, и `open` в противном случае.
+`tahoma.X.devices.*.states.core:PriorityLockTimerState` - Если датчик заблокировал устройство, это указано здесь, например. грамм. датчик ветра, блокирующий тент.
+`tahoma.X.devices.*.states.core:RSSILevelState` - текущее качество сигнала устройства.
+`tahoma.X.devices.*.states.core:StatusState` - `available`, если устройство в настоящее время доступно.
+`tahoma.X.devices.*.states.io:PriorityLockLevelState` - см. `tahoma.X.devices.*.states.core:PriorityLockTimerState` `tahoma.X.devices.*.states.io:PriorityLockOriginatorState` - см. `tahoma.X.devices.*.states.core:PriorityLockTimerState` `tahoma.X.devices.*.states.moving` - указывает, движется ли устройство в данный момент. `0 = stopped`, `1 = up/undeploy`, `2 = down/deploy`, `3 = unknown direction`
 
 ## Пожертвовать
 [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.3.3
+
+-  Removed credentials from log on error and debug
 
 ### 0.3.2
 

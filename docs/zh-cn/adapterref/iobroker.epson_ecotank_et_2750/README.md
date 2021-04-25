@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: 8hEnYUGXM2t/Yic/vCydD+FKLvO4qRyNHe2Os4AAV4I=
+hash: 62VGAIljde3mHVVgX1Uh3BHOv4WZ1HkjtZZF457WKJs=
 ---
-![标识](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
+![商标](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
 ![安装数量](https://iobroker.live/badges/epson_ecotank_et_2750-stable.svg?dummy=unused)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.epson_ecotank_et_2750.svg?dummy=unused)
@@ -16,7 +16,7 @@ hash: 8hEnYUGXM2t/Yic/vCydD+FKLvO4qRyNHe2Os4AAV4I=
 ##用于ioBroker的EPSON EcoTank ET-2750适配器
 该适配器从[爱普生EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750)中读取水箱液位和其他信息，并存储在ioBroker中。
 
-[还支持EPSON EcoTank ET-4750]（https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750）（由[Homoran测试]](https://forum.iobroker.net/user/homoran)）[还支持EPSON EcoTank ET-2721]（https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750）（由[mikepiko测试](https://github.com/mikepiko)）
+[还支持EPSON EcoTank ET-4750]（https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750）（由[Homoran测试]](https://forum.iobroker.net/user/homoran)）[还支持EPSON EcoTank ET-3750]（https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-3750）（由[christofkac测试](https://github.com/christofkac)）[还支持EPSON EcoTank ET-2721]（https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2721）（由[mikepiko测试](https://github.com/mikepiko)）
 
 ＃＃ 配置
 1.创建适配器的新实例

@@ -2640,6 +2640,7 @@ return 'your result';
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (foxriver76) add adapter to TIER 1
 * (Apollon77) Prevent crash case(Sentry IOBROKER-JAVASCRIPT-70)
 
 ### 5.1.4 (2021-03-23)

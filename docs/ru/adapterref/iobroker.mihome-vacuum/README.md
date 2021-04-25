@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-вакуумный адаптер
-hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
+hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -40,8 +40,22 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
     - [Собственные команды] (# отправь свои собственные команды)
     - [sendTo hook] (# send-custom-commands-with-sendto)
 - [виджет] (# виджет)
-- [ошибки] (# ошибки)
+- [ошибки] (# ошибок)
 - [Список изменений] (# список изменений)
+
+## Поддерживаемые устройства и функции
+| Устройство | Базовое управление | история | комнаты | карта |
+|:------------------    |:-------------------:      |:-------------------:  |:-------------------:|:-------------------:|
+| viomi.vacuum.v6 | : heavy_check_mark: | : x: |: x: | : x: |
+| viomi.vacuum.v7 | : heavy_check_mark: | : x: |: x: | : x: |
+| viomi.vacuum.v8 | : heavy_check_mark: | : x: |: x: | : x: |
+| rockrobo.vacuum.v1 | : heavy_check_mark: | : Heavy_check_mark: |: x: |: Heavy_check_mark: |
+| roborock.vacuum.s4 | : heavy_check_mark: | : Heavy_check_mark: |: Heavy_check_mark: |: Heavy_check_mark: |
+| roborock.vacuum.s5 | : heavy_check_mark: | : Heavy_check_mark: |: Heavy_check_mark: |: Heavy_check_mark: |
+| roborock.vacuum.s5e | : heavy_check_mark: | : Heavy_check_mark: |: Heavy_check_mark: |: Heavy_check_mark: |
+| roborock.vacuum.m1s | : heavy_check_mark: | : Heavy_check_mark: |: Heavy_check_mark: |: Heavy_check_mark: |
+| roborock.vacuum.a10 | : heavy_check_mark: | : Heavy_check_mark: |: Heavy_check_mark: |: Heavy_check_mark: |
+| roborock.vacuum.a15 | : heavy_check_mark: | : Heavy_check_mark: |: Heavy_check_mark: |: Heavy_check_mark: |
 
 ## Известные ошибки
 ### Ошибка при установке
@@ -49,9 +63,7 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 
 `` npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Статус выхода 1 ''
 
-Пожалуйста, установите холст и библиотеки вручную с помощью:
-
-`` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ''
+Пожалуйста, установите холст и библиотеки вручную с помощью: `` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ''
 
 `` sudo npm установить холст --unsafe-perm = true ''
 
@@ -85,7 +97,7 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 ## Конфигурация карты
 Есть два способа получить карту. Первые получают карту из облака. Для этого вам необходимо войти в систему и выбрать нужного робота из списка.
 
-Второй способ - карта от valetudo (только локальная связь). Для этого вам необходимо выполнить рут и установить valetudo на свое устройство. Vatudo вы можете использовать [Valetudo RE] (https://github.com/rand256/valetudo) или нормальный [Valetudo](https://github.com/Hypfer/Valetudo)
+Второй способ - карта от valetudo (только локальная связь). Для этого вам необходимо выполнить рутинг и установить valetudo на свое устройство. Vatudo вы можете использовать [Valetudo RE] (https://github.com/rand256/valetudo) или нормальный [Valetudo](https://github.com/Hypfer/Valetudo)
 
 ![Конфиг](../../../en/adapterref/iobroker.mihome-vacuum/admin/valetudo_conf.png)
 
@@ -110,7 +122,7 @@ hash: GvbASigswFnJMbqtKX535uGQGOZXggicr/b7RY8VXpI=
 [{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
-Второй способ - использовать виджет src img для интеграции файла png. но просмотр html быстрее, он похож на просмотр в реальном времени.
+Второй способ - использовать виджет src img для интеграции файла png. но просмотр в формате html быстрее, как в режиме реального времени.
 
 ## Функции
 ### Команды S50 (второе поколение)
@@ -171,7 +183,7 @@ xVal, yval
 Под объектом «mihome-Vacuum.X.control.X_send_command» вы можете отправлять роботу свои собственные команды.
 Структура объекта должна выглядеть следующим образом: метод; [параметры]
 
-В объекте «mihome-vacuum.X.control.X_get_response» ответ вводится роботом после отправки. Если параметры были запрошены, они отображаются здесь в формате JSON. Если была отправлена только одна команда, робот отвечает только «0».
+Под объектом «mihome-vacuum.X.control.X_get_response» ответ вводится роботом после отправки. Если параметры были запрошены, они отображаются здесь в формате JSON. Если была отправлена только одна команда, робот отвечает только «0».
 
 Поддерживаются следующие методы и параметры:
 
@@ -188,9 +200,9 @@ xVal, yval
 | app_rc_start | | Запустите Romote Control |
 | app_rc_end | | Завершить дистанционное управление |
 
-| app_rc_move | [{"seqnum": '0-1000', "velocity": VALUE1, "omega": VALUE2, "duration": VALUE3}] | Переехать. Порядковый номер должен быть непрерывным, VALUE1 (скорость) = -0,3-0,3, VALUE2 (вращение) = -3,1-3,1, VALUE3 (продолжительность)
+| app_rc_move | [{"seqnum": '0-1000', "velocity": VALUE1, "omega": VALUE2, "duration": VALUE3}] | Двигаться. Порядковый номер должен быть непрерывным, VALUE1 (скорость) = -0,3-0,3, VALUE2 (вращение) = -3,1-3,1, VALUE3 (продолжительность)
 
-дополнительные методы и параметры можно найти здесь ([Связь](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)).
+дополнительные методы и параметры можно найти здесь ([Ссылка на сайт](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)).
 
 ### Отправка пользовательских команд с помощью sendTo
 Вы также можете отправлять эти настраиваемые команды с других адаптеров с помощью `sendTo`. Использование с `method_id` и `params`, как определено выше:
@@ -227,7 +239,7 @@ sendTo("mihome-vacuum.0",
 | Проверить состояние расходных материалов (щетки и т. Д.) | `getConsumableStatus` | - нет - | |
 | Сбросить статус расходных материалов (щетки и т. Д.) | `resetConsumables` | `consumable` | Строка: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
 | Получите сводку всех предыдущих процессов очистки | `getCleaningSummary` | - нет - | |
-| Получите подробное описание предыдущего процесса очистки | `getCleaningRecord` | `recordId` | |
+| Получите подробный отчет о предыдущем процессе очистки | `getCleaningRecord` | `recordId` | |
 | Получить карту | `getMap` | - нет - | Неизвестно, что делать с результатом |
 | Получить текущий статус робота | `getStatus` | - нет - | |
 | Получить серийный номер робота | `getSerialNumber` | - нет - | |
@@ -241,7 +253,7 @@ sendTo("mihome-vacuum.0",
 | Выдать команду перемещения для дистанционного управления | `move` | `velocity`, `angularVelocity`, `duration`, `sequenceNumber` | Порядковый номер должен указываться последовательно, Продолжительность в мс |
 | Завершить функцию дистанционного управления | `stopRemoteControl` | - нет - | |
 | чистая комната / комнаты | `cleanRooms` | `rooms` | `rooms` - это строка, разделенная запятыми, с enum.rooms.XXX |
-| чистый сегмент | `cleanSegments` | `rooms` | `rooms` - это массив с mapIndex или строкой, разделенной запятыми, с mapIndex |
+| чистый сегмент | `cleanSegments` | `rooms` | `rooms` - это массив с mapIndex или строкой, разделенной запятыми с mapIndex |
 | чистая зона | `cleanZone` | `coordinates` | `coordinates` - это строка с координатами и счетчиком, см. [zoneClean](#zoneClean) |
 | чистая зона | `cleanZone` | `координаты` | `координаты` - это строка с координатами и количеством, см. [zoneClean] (# zoneClean) |
 
@@ -253,6 +265,17 @@ sendTo("mihome-vacuum.0",
 - Виджет в то время без функции
 
 ## Changelog
+### 3.1.1 (18.4.2021)
+ * Full rewrite
+ * Fix map bug with multiple vacuums
+ * fix performance Problems
+ * better conntection to vacuum
+ * fix bug in ReloadMap button
+ * Show Goto and Zone States ti find places
+ * and many more...
+### 2.2.5 (2021-04-02)
+* added S7 Support
+* bugfixes for S5 Max and others
 ### 2.2.4 (2020-09-15)
 * (dirkhe) add config for send Pause Before Home
 ### 2.2.3 (2020-08-20)

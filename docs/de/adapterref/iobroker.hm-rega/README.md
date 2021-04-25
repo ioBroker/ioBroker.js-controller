@@ -150,6 +150,9 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 	### __WORK IN PROGRESS__
 -->
 
+### 3.0.21 (2021-04-24)
+* (foxriver76) bring back io-package json readme attribute, admin does not fall back to docs as expected (fixes #135)
+
 ### 3.0.20 (2021-04-20)
 * (foxriver76) admin/controller has a bug still requiring `common.title` (fixes #133)
 

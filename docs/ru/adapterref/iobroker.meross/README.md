@@ -3,18 +3,17 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
+hash: 5iNCBlSzyWs/t91v7Ie04Ag2rsNq8nXT9tXBisGyGr0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
 ![Количество установок](http://iobroker.live/badges/meross-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.meross.svg)
-![Трэвис-Си](http://img.shields.io/travis/Apollon77/ioBroker.meross/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.meross?branch=master&svg=true)
-![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 # IoBroker.meross
+![Тестирование и выпуск](https://github.com/Apollon77/iobroker.meross/workflows/Test%20and%20Release/badge.svg) [![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/meross/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Описание
@@ -32,11 +31,20 @@ hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
 Если работают другие устройства (или нет), сообщите о них, открыв проблему на GitHub.
 
 ## Как сообщить о проблемах и запросах функций
-Пожалуйста, используйте для этого GitHub issues.
+Пожалуйста, используйте для этого проблемы GitHub.
 
 Лучше всего установить адаптер в режим журнала отладки (Экземпляры -> Экспертный режим -> Уровень журнала столбцов). Затем получите файл журнала с диска (подкаталог "log" в установочном каталоге ioBroker, а не из Admin, потому что Admin сокращает строки). Если вам не нравится предоставлять его в выпуске GitHub, вы также можете отправить его мне по электронной почте (iobroker@fischer-ka.de). Добавьте ссылку на соответствующую проблему GitHub И также опишите, что я вижу в журнале и в какое время.
 
 ## Changelog
+
+### 1.6.1 (2021-04-23)
+* (Apollon77) prevent crash case (Sentry IOBROKER-MEROSS-Z)
+
+### 1.6.0 (2021-04-18)
+* (Apollon77) add MOD100 Diffuser Spray device
+
+### 1.5.1 (2020-12-05)
+* (Apollon77) generate an unique uuid for each connection, fixes the "Server not available"
 
 ### 1.5.0 (2020-06-25)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)

@@ -128,6 +128,9 @@ Alternative you can use the script from Uhula: https://forum.iobroker.net/post/4
 
 ## Changelog
 
+### 1.8.0 (2021-04-24)
+* (withstu) add reboot on failure configuration
+
 ### 1.7.9 (2021-04-07)
 * (withstu) fix reboot
 * (withstu) add power state

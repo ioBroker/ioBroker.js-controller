@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: 8hEnYUGXM2t/Yic/vCydD+FKLvO4qRyNHe2Os4AAV4I=
+hash: 62VGAIljde3mHVVgX1Uh3BHOv4WZ1HkjtZZF457WKJs=
 ---
 ![Логотип](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
@@ -16,7 +16,7 @@ hash: 8hEnYUGXM2t/Yic/vCydD+FKLvO4qRyNHe2Os4AAV4I=
 ## Адаптер EPSON EcoTank ET-2750 для ioBroker
 Этот адаптер считывает уровень в резервуаре и другую информацию из [EPSON EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750) и сохраняет в ioBroker.
 
-[EPSON EcoTank ET-4750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) также поддерживается (проверено [Homoran](https://forum.iobroker.net/user/homoran)) [EPSON EcoTank ET-2721] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) также поддерживается (проверено [mikepiko](https://github.com/mikepiko))
+[EPSON EcoTank ET-4750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-4750) также поддерживается (проверено [Homoran](https://forum.iobroker.net/user/homoran)) [EPSON EcoTank ET-3750] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-3750) также поддерживается (проверено [christofkac](https://github.com/christofkac)) [EPSON EcoTank ET-2721] (https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2721) также поддерживается (проверено [mikepiko](https://github.com/mikepiko))
 
 ## Конфигурация
 1. Создайте новый экземпляр адаптера.

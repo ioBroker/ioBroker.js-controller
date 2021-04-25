@@ -2,25 +2,27 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tahoma/README.md
-title: ioBroker.tahoma
-hash: iU4VTquXT8wLOTsxI8XsBIZpHUdUgfekYjMGvx+s2XU=
+title: NICHT AKTUELL GEWARTET !!!
+hash: O8jue3Vsog/1wlwxiQ4xFu6UGjUptJA7NZEfwi+kqQo=
 ---
 ![Logo](../../../en/adapterref/iobroker.tahoma/admin/tahoma.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/tahoma-installed.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tahoma.svg)
 ![NPM](https://nodei.co/npm/iobroker.tahoma.png?downloads=true)
+![Stabil](http://iobroker.live/badges/tahoma-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.tahoma.svg)
 ![Build-Status](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
+# NICHT AKTUELL GEWARTET !!!
 # IoBroker.tahoma
-Ein ioBroker-Adapter für Somfy Tahoma. Dieses Projekt ist nicht mit Somfy verbunden. Zunächst basierend auf dem Skript aus https://forum.iobroker.net/post/336001.
+Ein ioBroker-Adapter für Somfy Tahoma. Dieses Projekt ist nicht mit Somfy verbunden. Zunächst basierend auf dem Skript von https://forum.iobroker.net/post/336001.
 
-Der Adapter stellt eine Verbindung zur Tahomalink-Endbenutzer-API her und steuert die Geräte, die über Tahoma Box (und höchstwahrscheinlich Connexoon) eingerichtet wurden.
+Der Adapter stellt eine Verbindung zur Tahomalink-Endbenutzer-API her und steuert die über Tahoma Box (und höchstwahrscheinlich Connexoon) eingerichteten Geräte.
 Der Adapter ist noch nicht vollständig ausgestattet, sollte jedoch die meisten Aktionen zur Steuerung von Jalousien und Rollläden usw. unterstützen.
 
-Folgen Sie einigen der vom Adapter erstellten Zustände.
+Nach einigen der vom Adapter erstellten Zustände.
 
 ## Tahoma.X.location
 Der Status in diesem Baum enthält die persönlichen Informationen des Benutzers wie Stadt, Straße und Längen- / Breitengrad.
@@ -34,7 +36,7 @@ Einige der Befehle haben am Ende einen `:slow`, wenn dies vom Gerät unterstütz
 
 ## Tahoma.X.devices. *. Staaten
 Diese Zustände enthalten den aktuellen Status der Geräte wie folgt. Alle mit `[**]` gekennzeichneten Einstellungen können bearbeitet werden, um das Verhalten / die Sendebefehle des Geräts zu steuern.
-Einige Staaten haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wird. Wenn Sie diese einstellen, wird eine niedrige Geschwindigkeit oder ein sogenannter Silent-Modus aktiviert.
+Einige Staaten haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wird. Durch Einstellen dieser Werte wird der langsame oder sogenannte Silent-Modus aktiviert.
 
 `[**] tahoma.X.devices.*.states.core:DeploymentState` - Enthält Informationen zum aktuellen Bereitstellungsstatus und steuert diesen. 100 bedeutet vollständig bereitgestellt, 0 ist nicht bereitgestellt. Nicht alle Geräte haben diesen Wert, einige haben stattdessen `ClosureState`.
 `[**] tahoma.X.devices.*.states.core:TargetDeploymentState` - Siehe `tahoma.X.devices.*.states.core:DeploymentState` `[**] tahoma.X.devices.*.states.coreClosureState` - Bietet Informationen über den aktuellen Stand der Schließung und steuert diesen. 100 bedeutet vollständig geschlossen, 0 ist offen. Nicht alle Geräte haben diesen Wert, einige haben stattdessen `DeploymentState`.
@@ -50,6 +52,10 @@ Einige Staaten haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wi
 [![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.3.3
+
+-  Removed credentials from log on error and debug
 
 ### 0.3.2
 
