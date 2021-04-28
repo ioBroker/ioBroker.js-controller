@@ -3,17 +3,17 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint-Adapter
-hash: DXSNlH6ml8kVGnfNW5ZpU7AAy3X8gjqNfmneHLJ5A9w=
+hash: ijuFp8aNeY4Hy2i0Nl5rlSZyjDVdk8LiQwte36/U8hw=
 ---
 ![Logo](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hmip-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.hmip.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hmip.svg)
-![Build-Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
 
 # IoBroker HomeMatic IP Cloud AccessPoint-Adapter
+![Testen und freigeben](https://github.com/Apollon77/iobroker.hmip/workflows/Test%20and%20Release/badge.svg) [![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/hmip/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Beschreibung
@@ -56,6 +56,32 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.11.0 (2021-04-25)
+* (Apollon77) Implement CARBON_DIOXIDE_SENSOR_CHANNEL
+
+### 1.10.0 (2021-04-12)
+* (Apollon77) Implement TEMPERATURE_SENSOR_2_EXTERNAL_DELTA_CHANNEL, DOOR_LOCK_CHANNEL and ACCESS_AUTHORIZATION_CHANNEL
+
+### 1.9.0 (2021-02-16)
+* (Apollon77) Round temperature values to nearest 0.5 degrees
+* (Apollon77) Only send values to HMIP when changed (reduce traffic!)
+* (Apollon77) Add debouncing to setPointTemperature changes (means value is sent out when "stable" for 5s!) (reduce traffic!)
+* (Apollon77) Add throttling to other change requests (means other changes are blocked for 1s) (reduce traffic!)
+* (Apollon77) Implement ANALOG_ROOM_CONTROL_CHANNEL (Sentry IOBROKER-HMIP-1X)
+
+### 1.7.2 (2021-02-09)
+* (Apollon77) Try to detect websocket connection failures start over
+
+### 1.7.0 (2021-01-26)
+* (Apollon77) add Heating Absence Permanent state and functionality
+* (Apollon77) add support for MULTI_MODE_INPUT_BLIND_CHANNEL
+
+### 1.6.2 (2021-01-21)
+* (Apollon77) Add check when HMIP domain could not be determined.
+
+### 1.6.1 (2021-01-12)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-HMIP-1N)
 
 ### 1.6.0 (2020-12-24)
 * Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!

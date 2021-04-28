@@ -3,25 +3,25 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint адаптер
-hash: DXSNlH6ml8kVGnfNW5ZpU7AAy3X8gjqNfmneHLJ5A9w=
+hash: ijuFp8aNeY4Hy2i0Nl5rlSZyjDVdk8LiQwte36/U8hw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
 ![Количество установок](http://iobroker.live/badges/hmip-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.hmip.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.hmip.svg)
-![Статус сборки](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
 
 # IoBroker HomeMatic IP Cloud AccessPoint Adapter
+![Тестирование и выпуск](https://github.com/Apollon77/iobroker.hmip/workflows/Test%20and%20Release/badge.svg) [![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/hmip/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Описание
 Этот адаптер позволяет обмениваться данными с HomematicIP CloudAccessPoint через Rest API из Homematic IP Cloud.
 
-** Важное примечание: ** Пожалуйста, ограничьте количество запросов на управление до минимума, потому что EQ-3 начал блокировать IP-адреса, когда вы делаете слишком много!
+** Важное примечание: ** Пожалуйста, ограничьте запросы управления до минимума, потому что EQ-3 начал блокировать IP-адреса, когда вы делаете слишком много!
 
-## Установка
+## Монтаж
 Этому адаптеру требуется node-js версии> = 8.6.
 
 Вот пошаговое видео по установке на YouTube https://youtu.be/kXWfJRUYJIA
@@ -46,7 +46,7 @@ hash: DXSNlH6ml8kVGnfNW5ZpU7AAy3X8gjqNfmneHLJ5A9w=
 ## Настройки
 * введите свой SGTIN (на задней панели точки доступа) и PIN-код (если установлен ранее) и подтвердите данные, нажав синюю светодиодную кнопку. Это создаст токен аутентификации.
 
-## Благодаря
+## Спасибо
 в coreGreenberet за его библиотеку python (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Обсуждение на форуме ioBroker
@@ -56,6 +56,32 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.11.0 (2021-04-25)
+* (Apollon77) Implement CARBON_DIOXIDE_SENSOR_CHANNEL
+
+### 1.10.0 (2021-04-12)
+* (Apollon77) Implement TEMPERATURE_SENSOR_2_EXTERNAL_DELTA_CHANNEL, DOOR_LOCK_CHANNEL and ACCESS_AUTHORIZATION_CHANNEL
+
+### 1.9.0 (2021-02-16)
+* (Apollon77) Round temperature values to nearest 0.5 degrees
+* (Apollon77) Only send values to HMIP when changed (reduce traffic!)
+* (Apollon77) Add debouncing to setPointTemperature changes (means value is sent out when "stable" for 5s!) (reduce traffic!)
+* (Apollon77) Add throttling to other change requests (means other changes are blocked for 1s) (reduce traffic!)
+* (Apollon77) Implement ANALOG_ROOM_CONTROL_CHANNEL (Sentry IOBROKER-HMIP-1X)
+
+### 1.7.2 (2021-02-09)
+* (Apollon77) Try to detect websocket connection failures start over
+
+### 1.7.0 (2021-01-26)
+* (Apollon77) add Heating Absence Permanent state and functionality
+* (Apollon77) add support for MULTI_MODE_INPUT_BLIND_CHANNEL
+
+### 1.6.2 (2021-01-21)
+* (Apollon77) Add check when HMIP domain could not be determined.
+
+### 1.6.1 (2021-01-12)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-HMIP-1N)
 
 ### 1.6.0 (2020-12-24)
 * Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!

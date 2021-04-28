@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.traccar/README.md
 title: ioBroker.traccar
-hash: qYjqlz2cbuYN7XV38/SJfAEHX55n28skB+IEEdnLl9c=
+hash: nDtYHo4BmL4rrD9Q2TJ8bFQ9F0cOdn1j8AhquEFChNA=
 ---
 ![Logo](../../../en/adapterref/iobroker.traccar/admin/traccar.png)
 
@@ -16,6 +16,8 @@ hash: qYjqlz2cbuYN7XV38/SJfAEHX55n28skB+IEEdnLl9c=
 ![NPM](https://nodei.co/npm/iobroker.traccar.png?downloads=true)
 
 # IoBroker.traccar
+[![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/traccar/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ## Traccar-Adapter für ioBroker
 Dieser Adapter importiert in Echtzeit die Position und die erweiterten Daten aus [Traccar](https://www.traccar.org) und stellt sie in ioBroker zur Verfügung.
 

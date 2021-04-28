@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.onkyo/README.md
 title: ioBroker.onkyo
-hash: MpXZSwTFF5f/P60KcItTJnhUQ5VltWiiShnaZGKJ7rM=
+hash: 0UrlqHs+CqpyKdo8oX1S7jFJE940wg34/Nco0GC6/nE=
 ---
 ![Logo](../../../en/adapterref/iobroker.onkyo/admin/onkyo.png)
 
@@ -15,21 +15,21 @@ hash: MpXZSwTFF5f/P60KcItTJnhUQ5VltWiiShnaZGKJ7rM=
 
 # IoBroker.onkyo
 ### Großes Update!
-Kümmern Sie sich um dieses wichtige Update. Ab 2.0 gibt es Strukturänderungen! Wenn Sie auf diese Version aktualisieren, müssen Sie die Variablen in einem anderen Adapter wie VIS oder Javascript ändern! Die neue Version unterstützt Materialien und Cover Arts. Die Medienobjekte unterstützen Player-Widgets wie Sonso oder Winamp.
+Kümmere dich um dieses wichtige Update. Ab 2.0 gibt es Strukturänderungen! Wenn Sie auf diese Version aktualisieren, müssen Sie die Variablen in einem anderen Adapter wie VIS oder Javascript ändern! Die neue Version unterstützt Materialien und Cover Arts. Die Medienobjekte unterstützen Player-Widgets wie Sonso oder Winamp.
 ![VIS](../../../en/adapterref/iobroker.onkyo/admin/player.png)
 
-Dieser Adapter ermöglicht die Steuerung von AVRs von Onkyo und Pioneer mithilfe des EISCP-Protokolls.
+Dieser Adapter ermöglicht die Steuerung von Onkyo- und Pioneer-AVRs mithilfe des EISCP-Protokolls.
 
-Es verwendet node-eiscp: https://github.com/tillbaks/node-eiscp
+Es verwendet Node-Eiscp: https://github.com/tillbaks/node-eiscp
 
-Für das Senden von Befehlen gibt es einen speziellen Status "RAW". Schreibt in diesen Zustand, werden nur RAW-Befehle wie die bekannten EISCP-Excel-Dateien ausgelöst. Beispiel eines EISCP-RAW-Befehls in Form von "PWR01".
+Zum Senden von Befehlen gibt es einen speziellen Status "RAW". Schreibvorgänge in diesen Zustand lösen nur RAW-Befehle wie die bekannten EISCP-Excel-Dateien aus. Als Beispiel für einen EISCP-RAW-Befehl in Form von "PWR01".
 
-Ein anderer spezieller Zustand, der vom Adapter aufrechterhalten wird, ist "verbunden". Es ist ein boolescher Wert, der angibt, ob node-eiscp aktuell mit einem Empfänger verbunden ist.
+Ein weiterer vom Adapter beibehaltener Sonderzustand ist "verbunden". Es ist ein Boolescher Wert, der anzeigt, ob Node-Eiscp derzeit mit einem Empfänger verbunden ist.
 
-Beispiel für eine VIS-Ansicht ![VIS](../../../en/adapterref/iobroker.onkyo/admin/onkyo-vis.png)
+Beispiel einer VIS-Ansicht ![VIS](../../../en/adapterref/iobroker.onkyo/admin/onkyo-vis.png)
 
 ## Getestete Empfänger
-Onkyo
+### Onkyo
 * TX-NR 525
 * TX-NR 626
 * TX-NR 727
@@ -38,7 +38,18 @@ Onkyo
 * VXS-S520D
 * VSX-1131
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 2.0.5 (2021-04-27)
+* (Diginix) fixed some object properties
+* (bluefox) Added the support of compact mode
+
+### 2.0.3   
+* (Eisbaeeer) now support zone3   
+
 ### 2.0.2
 * (Eisbaeeer) fix double .js 
 
@@ -134,3 +145,7 @@ Onkyo
 
 ### 0.0.1
 * (owagner) initial version
+
+## License
+The MIT License (MIT)
+Copyright (c) 2019 Eisbaeeer <eisbaeeer@gmail.com>, owagner

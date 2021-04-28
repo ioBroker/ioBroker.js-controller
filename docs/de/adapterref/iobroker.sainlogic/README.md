@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sainlogic/README.md
 title: ioBroker.sainlogic
-hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
+hash: QrCSyE3CkizDub2b0JY8jn+X0en6MGC4k/2nGQun4Jw=
 ---
 ![Logo](../../../en/adapterref/iobroker.sainlogic/admin/sainlogic.png)
 
@@ -29,6 +29,8 @@ Bekannte Arbeitsgeräte:
 1. Froggit WH400SE
 1. Froggit DP1500
 1. Sainlogic WS3500 (nur Listener-Modus)
+1. WH51 Feuchtigkeitssensor
+1. Ecowitt GW1000
 
 ## Verwendung
 Der Adapter unterstützt zwei Modi zum Anzeigen von Daten Ihrer Wetterstation.
@@ -58,7 +60,7 @@ Wählen Sie in der Instanzkonfiguration die Registerkarte 'Listener' und stellen
 - Pfad: Geben Sie denselben Pfad wie in der WS View-App ein
 - URL weiterleiten: Wenn Sie die empfangenen Daten an einen anderen Verbraucher weiterleiten möchten, können Sie eine zusätzliche Adresse angeben. Z.B. Möglicherweise erhalten Sie Daten im WU-Format und möchten diese dennoch an WeatherUnderground weiterleiten.
 
-Sparen.
+Speichern.
 Der Listener startet und wartet auf eingehende Verbindungen. Basierend auf Ihrem Intervall sollte im Protokoll die Meldung "Listener hat Update erhalten: ..." mit den Daten angezeigt werden.
 
 ### Scheduler-Modus:
@@ -72,7 +74,7 @@ Wählen Sie in der Instanzkonfiguration die Registerkarte 'Scheduler' und stelle
 - Port: Geben Sie den Port ein, zu dem eine Verbindung hergestellt werden soll (Standard ist 45000).
 - Intervall: Geben Sie ein Intervall in Sekunden ein (ich würde mindestens 10 Sekunden empfehlen, um das System oder das Netzwerk nicht zu überlasten).
 
-Sparen.
+Speichern.
 
 Der Schheduler startet nach der ersten Intervallzeit und stellt eine Verbindung zur Wetterstation her. Im Protokoll sollte die Meldung "Scheduler zieht nach neuen Daten" angezeigt werden. Wenn Sie den Protokollmodus auf Debuggen einstellen, werden auch die empfangenen Datenzeichenfolgen angezeigt.
 
@@ -82,6 +84,10 @@ Credits gehen an: Lemuba, StrathCole, Glasfaser, Latzi: für unermüdliches Test
 ## Changelog
 
 Latest version
+
+#### 0.7.1 Fixes mapping for soilbat values
+
+#### 0.7.0 #64 added soilmoisture devices
 
 #### 0.6.6 Adressed github issue #53 - warning on non existing object
 

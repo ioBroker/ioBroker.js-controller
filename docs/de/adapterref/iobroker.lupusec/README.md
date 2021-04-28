@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: anR9zxamafrIIqE6Si3MJY0h+ENio71ITSX/n51kcak=
+hash: RkJlLivDEycjdJDEz9gFDSlJkpCWz1M9pvz8BO2xREY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -34,7 +34,7 @@ Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter 
 Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie nach Möglichkeit https (empfohlen).
 Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren möchten), wählen Sie einen Benutzer mit Schreibzugriff aus.
 ![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png) Wenn Sie Überwachungskameras an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie diese in ioBroker bereitstellen. Der Lupusec-Adapter findet alle Lupusec-Kameras selbst. Sie müssen eine Adresse (Ihre ioBroker IP-Adresse oder 0.0.0.0) und einen Port eingeben, um später eine Verbindung zu den Cams herstellen zu können.
-![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png) Wenn Sie Ihren Nuki-Türöffner an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie ihn auch von ioBroker aus verwenden. Im Administratormenü der ioBroker-Instanz können Sie Ihren Lupusec-Türsensor eingeben, der an der Nuki-Tür angebracht ist. Wenn Sie jetzt die Tür öffnen, an der der Nuki montiert ist, haben Sie den zusätzlichen Status "Tür geöffnet" statt nur "entriegelt". Wenn Sie keinen Lupusec-Türsensor an der Nuki-Tür haben, sehen Sie nur die Zustände "gesperrt" oder "gesperrt".
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png) Wenn Sie Ihren Nuki-Türöffner an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie ihn auch von ioBroker aus verwenden. Im Administratormenü der ioBroker-Instanz können Sie Ihren Lupusec-Türsensor eingeben, der an der Nuki-Tür angebracht ist. Wenn Sie jetzt die Tür öffnen, an der der Nuki montiert ist, haben Sie den zusätzlichen Status "Tür geöffnet" statt nur "entriegelt". Wenn Sie keinen Lupusec-Türsensor an der Nuki-Tür haben, werden nur die Zustände "gesperrt" oder "gesperrt" angezeigt.
 ![admin_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_nuki.png)
 
 Standardmäßig werden alle Lupusec-Geräte auf der Registerkarte ioBroker-Objekt angezeigt.
@@ -75,7 +75,8 @@ Voll unterstützt und individuell angepasst sind folgende Geräte:
   - Szenarioschalter V2 (Typ 81)
   - Stoßsensor (Typ 93)
   - Rauchmelder V2 (Typ 14)
-  - Inwall Relais mit Dimmer V3 (Typ 66)
+  - Inwall-Relais mit Dimmer V3 (Typ 66)
+  - Tastatur Outdoor V2 (Typ 17)
 
 Die beiden Zustände apple_home_a1 und lupusec.0.status.apple_home_a2 für den Apple Homekit-Adapter yahka werden unterstützt. Sie können zusätzlich zu den Lupusec-Zuständen das Alarmsystem für die Bereiche 1 und 2 ein- und ausschalten.
 
@@ -87,7 +88,7 @@ ioBroker bietet Ihnen dieselben Statusobjekte wie in der Lupusec-App.
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_status.png)
 
 ### Lupusec-Geräte
-Alle unterstützten Lupsec-Sensoren und -Geräte finden Sie unter "Geräte". Wenn ein Gerät fehlt, kontaktieren Sie mich bitte.
+Sie finden alle unterstützten Lupsec-Sensoren und -Geräte unter "Geräte". Wenn ein Gerät fehlt, kontaktieren Sie mich bitte.
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices.png) Detailansicht eines Sensors oder Geräts. In diesem Beispiel sehen Sie den CO-Sensor. Bei einem CO-Alarm ändert sich der Status 'alarm_status_ex' in true und der Status 'alarm_status' in 'CO'.
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
@@ -137,7 +138,13 @@ Folgende Dinge sind für die Zukunft geplant:
 
 ## Changelog
 
-### 1.3.3-beta-2 (17.02.2021)
+### 1.3.5 (24.04.2021)
+* (Stübi) Add device keypad outdoor v2
+
+### 1.3.4 (01.03.2021)
+* (Stübi) Bugfixing
+
+### 1.3.3 (17.02.2021)
 * (Stübi) Bugfixing
 * (Stübi) Send SMS with SMS gateway or SIM card
 

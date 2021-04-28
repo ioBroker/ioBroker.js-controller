@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.seq/README.md
 title: ioBroker.seq
-hash: FFrC6IRLsrx1nXUqUGwz8e2x+OCkD64sZFKugKPu508=
+hash: GWOm6qik6DBmClBZTVf0rDvxim11t2phQTWTJ97SKFk=
 ---
 ![Логотип](../../../en/adapterref/iobroker.seq/admin/seq.png)
 
@@ -15,6 +15,8 @@ hash: FFrC6IRLsrx1nXUqUGwz8e2x+OCkD64sZFKugKPu508=
 ![НПМ](https://nodei.co/npm/iobroker.seq.png?downloads=true)
 
 # IoBroker.seq
+[![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/seq/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ## Адаптер Seq для ioBroker
 Этот адаптер позволяет вам поместить ваш логин ioBroker в систему [Seq](https://datalust.co/seq).
 Также можно применить фильтр к уровням журнала, а также к адаптерам.

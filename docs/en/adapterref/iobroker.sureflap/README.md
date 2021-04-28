@@ -84,6 +84,9 @@ The picture of the cat flap, hub and smartphone app is provided free to use from
 
 ## Changelog
 
+### 1.0.5 (2021-04-25)
+* (Sickboy78) fixed bug in case pets didn't have a position (e.g. no flaps, only feeder in use)
+
 ### 1.0.4 (2021-03-07)
 * (Sickboy78) added state curfew_active for pet flap devices
 * (Sickboy78) fixed normalization of device names

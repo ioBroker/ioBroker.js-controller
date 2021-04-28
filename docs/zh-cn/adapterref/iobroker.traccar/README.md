@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.traccar/README.md
 title: ioBroker.traccar
-hash: qYjqlz2cbuYN7XV38/SJfAEHX55n28skB+IEEdnLl9c=
+hash: nDtYHo4BmL4rrD9Q2TJ8bFQ9F0cOdn1j8AhquEFChNA=
 ---
 ![商标](../../../en/adapterref/iobroker.traccar/admin/traccar.png)
 
@@ -16,8 +16,10 @@ hash: qYjqlz2cbuYN7XV38/SJfAEHX55n28skB+IEEdnLl9c=
 ![NPM](https://nodei.co/npm/iobroker.traccar.png?downloads=true)
 
 ＃ioBroker.traccar
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/traccar/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ## IoBroker的Traccar适配器
-该适配器从[特拉卡](https://www.traccar.org)实时导入位置和扩展数据，并使它们在ioBroker中可用。
+该适配器实时从[特拉卡](https://www.traccar.org)导入位置和扩展数据，并使它们在ioBroker中可用。
 
 ＃＃ 配置
 1.创建适配器的新实例

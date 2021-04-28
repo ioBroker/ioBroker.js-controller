@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
+hash: FaIquw6p8eo5suLeCkr2ZUWN7jvpSLsSD+qTVlLGozU=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -37,7 +37,7 @@ Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
 - [zone Clean] (# zoneclean)
     - [Zimmer] (# Zimmer)
     - [Timer] (# Timer)
-    - [Eigene Befehle] (# Sende deine eigenen Befehle)
+    - [Eigene Befehle] (# send-your-own-Befehle)
     - [sendTo hook] (# send-custom-befehle-with-sendto)
 - [Widget] (# Widget)
 - [Bugs] (# Bugs)
@@ -83,7 +83,7 @@ Bitte folgen Sie den Anweisungen im Link:
 - Abfrageintervall Die Zeit in ms, in der die Statuswerte des Roboters abgerufen werden (sollte nicht <10000 sein).
 
 #### Kontrolle über Alexa
-In der Konfiguration wird der Status "Alexa hinzufügen" aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
+In der Konfiguration wird der Status alexa hinzufügen aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
 
 #### Setzen Sie die angehaltene Zonenreinigung mit der Starttaste fort
 Wenn diese Option aktiviert ist, setzt das Vakuum die Zonenreinigung fort, wenn der Status "Start" auf "true" gesetzt wird, wenn er während einer laufenden Zonenreinigung angehalten wurde.
@@ -115,14 +115,29 @@ Der zweite Weg ist die Karte von Valetudo (nur lokale Verbindung). Dafür müsse
 
 - Roboter dort können Sie verschiedene Roboter oder andere Fahrzeuge für die Karte auswählen
 
-### Karten-Widget
-Um die Karte anzuzeigen, können Sie ein normales HTML-Widget verwenden, z.
+### Kartennutzung
+Die Karte wird entweder als base64-raw oder als PNG gespeichert.
+
+Sie finden das Kartenbild an folgenden Datenpunkten:
+
+- base64: `` `mihome-vakuum.0.cleanmap.map64```
+- PNG: `` `mihome-vakuum.0.cleanmap.mapURL```
+
+Sie können beide Bilder als Bildquelle im gewünschten VIS verwenden. Im HTML-Stil können Sie das Bild folgendermaßen verwenden:
+
+```<img src="mihome-vacuum.0.cleanmap.map64">```
+
+Mit zusätzlichen Stil-Tags können Sie die Größe des Kartenstils ändern und / oder formatieren.
+
+Um die Karte in ```jarvis``` zu verwenden, verwenden Sie einfach einen der Datenpunkte als URL des DisplayImage-Widgets. Dort können Sie die Größe des Bildes oder des gesamten Widgets ändern. Im Falle des reaktionsschnellen Designs von jarvis wird die Größe der Karte im Falle der Anzeigegröße geändert.
+
+Um die Karte in ```ioBroker VIS``` anzuzeigen, können Sie ein normales HTML-Widget verwenden, z.
 
 ```
 [{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
-Die zweite Möglichkeit besteht darin, ein src img-Widget zu verwenden, um die PNG-Datei zu integrieren. Aber die HTML-Ansicht ist schneller, es ist wie eine Live-Ansicht.
+Die Verwendung der base64-Karte ist schneller und zeigt die Position des Roboters in der Nähe in Echtzeit an.
 
 ## Funktionen
 ### Befehle des S50 (zweite Generation)
@@ -168,8 +183,8 @@ Beispiel:
 #### Räume
 neuerer Staubsauger mit der neuesten Home App unterstützt die Definition von Räumen, siehe [Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
-Jeder Raum in der aktuellen Karte verfügt über einen Index, der dann über die App dem Raum zugewiesen wird. Vom Roboter erhalten wir nur eine Zuordnung mit Raumnummer und Index. Der Adapter fragt diese Räume bei jedem Start des Adapters ab und erstellt für jeden Raum einen Kanal, der dann den aktuellen Raumindex kennt. Das gleiche passiert manuell mit der Schaltfläche loadRooms. Dieser Kanal kann dann den ioBroker-Räumen zugewiesen werden. Wenn die Taste roomClean gedrückt wird, wird der Index der Karte ermittelt und an den Roboter gesendet, damit dieser diesen Raum absaugen kann. Zuvor ist die Lüfterleistung auf Einzelraumabsaugung eingestellt. Wenn Sie noch nicht die Möglichkeit haben, die Räume in der App zu benennen, besteht auch die Möglichkeit, einen solchen Kanal manuell durch Angabe des Kartenindex zu erstellen. Es ist auch möglich, Zonenkoordinaten anstelle von mapIndex hinzuzufügen.
-Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie diesem Datenpunkt die ioBroker-Räume zuweisen und dann die Taste drücken.
+Jeder Raum in der aktuellen Karte verfügt über einen Index, der dann über die App dem Raum zugewiesen wird. Vom Roboter erhalten wir nur eine Zuordnung mit Raumnummer und Index. Der Adapter fragt diese Räume bei jedem Start des Adapters ab und erstellt für jeden Raum einen Kanal, der dann den aktuellen Raumindex kennt. Das gleiche passiert manuell mit der Schaltfläche loadRooms. Dieser Kanal kann dann den ioBroker-Räumen zugewiesen werden. Wenn die Taste roomClean gedrückt wird, wird der Index der Karte ermittelt und an den Roboter gesendet, damit dieser diesen Raum staubsaugen kann. Zuvor ist die Lüfterleistung auf Einzelraumabsaugung eingestellt. Wenn Sie noch nicht die Möglichkeit haben, die Räume in der App zu benennen, besteht auch die Möglichkeit, einen solchen Kanal manuell durch Angabe des Kartenindex zu erstellen. Es ist auch möglich, Zonenkoordinaten anstelle von mapIndex hinzuzufügen.
+Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie die ioBroker-Räume diesem Datenpunkt zuweisen und dann die Taste drücken.
 
 #### Timer
 Sobald der Staubsauger die Raumfunktion unterstützt (siehe oben), können auch Timer erstellt werden, die dann die entsprechenden Raumkanäle auslösen oder deren mapIndexes ermitteln.
@@ -190,7 +205,7 @@ Die folgenden Methoden und Parameter werden unterstützt:
 | Methode | params | Beschreibung |
 |-----------      |-------                                                              |-------------------                                                                                     |
 | get_timer | | Gibt den eingestellten Timer zurück. Einstellen der Saugzeiten BSp. 12 Uhr 30 in 5 Tagen |
-| set_timer | [["TIME_IN_MS", ["30 12 * * 1,2,3,4,5", ["start_clean", ""]]]] | Timer aktivieren / deaktivieren |
+| set_timer | [["TIME_IN_MS", ["30 12 * * 1,2,3,4,5", ["start_clean", ""]]] | Timer aktivieren / deaktivieren |
 | upd_timer | ["1481997713308", "Ein / Aus"] | |
 | | | Rettet die Zeiten des Do Not Distrube |
 | get_dnd_timer | | DND-Zeiten löschen |

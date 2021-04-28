@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: 62VGAIljde3mHVVgX1Uh3BHOv4WZ1HkjtZZF457WKJs=
+hash: YX2Z6JsVsZZ5p5sZMstIBUYXR3qsGHQ8PXZTo4xo0Gs=
 ---
 ![Логотип](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
@@ -13,6 +13,8 @@ hash: 62VGAIljde3mHVVgX1Uh3BHOv4WZ1HkjtZZF457WKJs=
 ![НПМ](https://nodei.co/npm/iobroker.epson_ecotank_et_2750.png?downloads=true)
 
 # IoBroker.epson_ecotank_et_2750
+[![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/epson_ecotank_et_2750/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ## Адаптер EPSON EcoTank ET-2750 для ioBroker
 Этот адаптер считывает уровень в резервуаре и другую информацию из [EPSON EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750) и сохраняет в ioBroker.
 

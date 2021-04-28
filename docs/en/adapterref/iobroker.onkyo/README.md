@@ -36,10 +36,18 @@ Example of VIS view
 * VXS-S520D  
 * VSX-1131   
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## ChangeLog   
+### 2.0.5 (2021-04-27)
+* (Diginix) fixed some object properties
+* (bluefox) Added the support of compact mode
 
 ### 2.0.3   
 * (Eisbaeeer) now support zone3   
+
 ### 2.0.2
 * (Eisbaeeer) fix double .js 
 

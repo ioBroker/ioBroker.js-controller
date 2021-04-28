@@ -7,6 +7,7 @@
 ![Number of Installations (stable)](https://iobroker.live/badges/traccar-stable.svg?dummy=unused)
 [![Dependency Status](https://img.shields.io/david/o0shojo0o/iobroker.traccar.svg?dummy=unused)](https://david-dm.org/o0shojo0o/iobroker.traccar)
 [![Known Vulnerabilities](https://snyk.io/test/github/o0shojo0o/ioBroker.traccar/badge.svg?dummy=unused)](https://snyk.io/test/github/o0shojo0o/ioBroker.traccar)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/traccar/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 [![NPM](https://nodei.co/npm/iobroker.traccar.png?downloads=true)](https://nodei.co/npm/iobroker.traccar/)
 

@@ -24,6 +24,7 @@ BADGE-NPM: https://nodei.co/npm/iobroker.backitup.png?downloads=true
 # Inhalt
 * [Grundlegendes](#grundlegendes)
 * [Abhängigkeiten](#abhängkeiten)
+* [Benutzung und Bedienung](#Benutzung-und-Bedienung)
 * [Backuptypen](#Backuptypen)
 	* [ioBroker Backup](#ioBroker-Backup)
 	* [CCU Backup (Homematic)](#CCU-Backup-(Homematic))
@@ -74,6 +75,19 @@ Der Adapter ist für Multiplattformen geeignet und kann  neben Linux-Installatio
 
 * Für die Verwendung des InfluxDB Backups muss influxd installiert sein
     - [Installationsanleitung InfluxDB](https://docs.influxdata.com/influxdb/v1.8/introduction/install/)
+
+### [zurück](#Inhalt)
+---
+
+# Benutzung und Bedienung
+Backitup kann in den Adapter-Instanzen konfiguriert werden. Dort stehen alle folgenden Einstellungsmöglichkeiten zur Verfügung.<br><br>
+Für die tägliche Arbeit und Bedienung von Backitup steht im Admin-Tab ein Reiter zur Verfügung.<br>
+Ist dieser Reiter im Tab-Menü der Admin-Oberfläche aktiv, kann Backitup direkt über den Reiter in der linken Tab-Leiste des iobrokers bedient werden.<br><br>
+Dort stehen Informationen zu den erstellten Backups zur Verfügung, es können Backups erstellt werden und es besteht die Möglichkeit einen Restore des Backups auszuführen.
+
+![adminTab](img/adminTab.png)
+![adminTabRestore](img/adminTabRestore.png)
+![adminTabInfo](img/adminTabInfo.png)
 
 ### [zurück](#Inhalt)
 ---
@@ -172,7 +186,7 @@ Die Angabe der IP Adresse muss für die Copy-Funktion leer bleiben.
   
 ## Dropbox
 Um die Sicherung in der Dropbox zu nutzen, muss ein Access Token und eine APP unter https://www.dropbox.com/developers/apps erstellt werden<br><br>
-* Schritt 1: Den Button "Create Backup" nutzen
+* Schritt 1: Den Button "Create App" nutzen
 * Schritt 2: "Scoped access" auswählen
 * Schritt 3: "App folder" auswählen
 * Schritt 4: "Name your app" vergeben und "Create App" Button wählen
@@ -331,7 +345,7 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
     iobroker fix
     sudo reboot
     ```
-8.  Solltet Ihr eine Fehlermeldung beim erstellen der Redis Datenbank bekommen, prüft bitte, ob euer User iobroker die Rechte hat und ob er in der User-Gruppe Redis vorhanden ist.
+7.  Solltet Ihr eine Fehlermeldung beim erstellen der Redis Datenbank bekommen, prüft bitte, ob euer User iobroker die Rechte hat und ob er in der User-Gruppe Redis vorhanden ist.
     Wenn dies nicht der Fall ist, könnt ihr das mit folgenden Befehl in der Konsole beheben.
     
     ```
@@ -340,10 +354,16 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
     ```
     Wenn ihr nicht mit dem Installerscript eure Iobroker Installation aufgesetzt habt und euer User einen anderen Namen hat, bitte in dem Befehl "iobroker" durch euren User ersetzen.
 
+8.  Wenn eine Fritzbox als NAS mit einer Firmware >= 7.21 verwendet wird, sollten in Backitup die SMB-Einstellungen auf "3.1.1" eingestellt und die Option "noserverino" aktiviert werden.
+
 ### [zurück](#Inhalt)
 ---
 
 ## Changelog
+
+### 2.1.4 (26.04.2021)
+* (simatec) Redesign Restore GUI
+* (simatec) small GUI Bugfix
 
 ### 2.1.3 (22.04.2021)
 * (simatec) Admin-Tab changed

@@ -113,14 +113,28 @@ Second way is the map from valetudo (only local connection). Therefor you have t
 ```
 - robots there you can select differt robots or other vehicles for the map 
 
-### Map Widget
-To display th map you can use a normal html Widget e.g:
+### Map Usage
+The map is stored either as base64-raw or as PNG.
+
+You can find the map image in the following data points:
+- base64: ```mihome-vacuum.0.cleanmap.map64```
+- PNG: ```mihome-vacuum.0.cleanmap.mapURL```
+
+You can use both images as image source in the VIS you want. In HTML-style you can use the image in this way:
+
+```<img src="mihome-vacuum.0.cleanmap.map64">```
+
+With additional style-tags you can resize and/or format the map style.
+
+To use the map in ```jarvis``` just use one of the datapoints as URL of the DisplayImage-Widget. There you can resize the image or the whole widget. In case of the responsive design of jarvis the Map will resize in case of the display size.
+
+To display the map in ```ioBroker VIS``` you can use a normal html Widget e.g:
 
 ```
 [{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
-Second way is to use a src img widget to integrate the png file. but the html view is faster, its like a live view.
+The use of the base64-map is faster and will display the position of the robot nearby in realtime.
 
 ## Functions
 ### Commands of the S50 (second generation)

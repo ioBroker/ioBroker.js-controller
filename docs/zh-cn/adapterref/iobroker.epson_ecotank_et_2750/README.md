@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: 62VGAIljde3mHVVgX1Uh3BHOv4WZ1HkjtZZF457WKJs=
+hash: YX2Z6JsVsZZ5p5sZMstIBUYXR3qsGHQ8PXZTo4xo0Gs=
 ---
 ![商标](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
@@ -13,6 +13,8 @@ hash: 62VGAIljde3mHVVgX1Uh3BHOv4WZ1HkjtZZF457WKJs=
 ![NPM](https://nodei.co/npm/iobroker.epson_ecotank_et_2750.png?downloads=true)
 
 ＃ioBroker.epson_ecotank_et_2750
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/epson_ecotank_et_2750/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ##用于ioBroker的EPSON EcoTank ET-2750适配器
 该适配器从[爱普生EcoTank ET-2750](https://www.epson.de/products/printers/inkjet-printers/for-home/ecotank-et-2750)中读取水箱液位和其他信息，并存储在ioBroker中。
 

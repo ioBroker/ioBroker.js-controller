@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.seq/README.md
 title: ioBroker.seq
-hash: FFrC6IRLsrx1nXUqUGwz8e2x+OCkD64sZFKugKPu508=
+hash: GWOm6qik6DBmClBZTVf0rDvxim11t2phQTWTJ97SKFk=
 ---
 ![Logo](../../../en/adapterref/iobroker.seq/admin/seq.png)
 
@@ -15,6 +15,8 @@ hash: FFrC6IRLsrx1nXUqUGwz8e2x+OCkD64sZFKugKPu508=
 ![NPM](https://nodei.co/npm/iobroker.seq.png?downloads=true)
 
 # IoBroker.seq
+[![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/seq/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ## Seq Adapter für ioBroker
 Mit diesem Adapter können Sie Ihr ioBroker-Protokoll in das System von [Seq](https://datalust.co/seq) verschieben.
 Es ist auch möglich, einen Filter auf die Protokollebenen und auch auf die Adapter anzuwenden.

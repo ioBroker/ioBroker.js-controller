@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: EsnAj/k5t+GnG0yC3lbNfeptFavgrkT07OATg57YxkI=
+hash: eOIPkl4N+yA5CbB877TXJ3xsQof+XFlZNAqMp9xoL9o=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,16 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/donate?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
+
+## 2.9.4
+- Исправлена ошибка
+
+## 2.9.3
+- Fehler mit PopUp behoben: Klick zum schließen wurde direkt nach Öffnen registriert und Klick löste Buttons hinter dem PopUp aus
+- Zustände wurden bei Посмотреть в PopUp nicht richtig angezeigt
+
+## 2.9.2
+- Проблема с Datenpunkt zum Schließen des Popups behoben. АЧТУНГ! Der Datenpunkt muss erneut ausgewählt werden
 
 ## 2.9.1
 - Исправлена ошибка
@@ -234,7 +244,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.3.6
 - Добавлена опция установки состояния для навигации.
-- Исправлена проблема с точками данных без конфигурации.
+- Исправлена проблема с точками данных без конфига.
 
 ### 1.3.5
 - Добавлена частота обновления таблицы

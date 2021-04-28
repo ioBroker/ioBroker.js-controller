@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
+hash: FaIquw6p8eo5suLeCkr2ZUWN7jvpSLsSD+qTVlLGozU=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -40,7 +40,7 @@ hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
     -[个人命令]（＃send-your-own-commands）
     -[sendTo挂钩]（＃send-custom-commands-with-sendto）
 -[小工具]（＃widget）
--[bug]（＃bugs）
+-[错误]（＃bugs）
 -[变更日志]（＃changelog）
 
 ##支持的设备和功能
@@ -63,7 +63,7 @@ hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
 
 ``npm ERR！ canvas@2.6.1安装：node-pre-gyp install --fallback-to-build npm ERR！退出状态1``
 
-请使用以下命令手动安装canvas和libs：``sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev''
+请使用以下命令手动安装canvas和libs：``sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev``
 
 ``sudo npm install canvas --unsafe-perm = true''
 
@@ -82,11 +82,11 @@ hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
 -自己的端口，只能由第二个机器人更改
 -查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
 
-####控制Alexa
-在配置中添加alexa状态被激活，这里的hack被设置为附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回主页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
+####对Alexa的控制
+在配置中，添加alexa状态在此处被激活，一个hack被设置为附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回首页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
 
 ####使用开始按钮恢复暂停的区域清洁
-启用此选项后，如果在运行区域清洁期间暂停了“开始”状态，则Vacuum将恢复区域清洁。
+启用此选项后，如果在运行区域清洁期间暂停了“启动”状态，则Vacuum将恢复区域清洁。
 如果禁用此选项，则在发送启动命令时，真空吸尘器将开始新的“常规清洁”，即使在运行区域清洁期间暂停了真空吸尘器。
 
 -实验性：使用复选框“发送自己的命令”创建对象，通过这些对象，您可以向机器人发送和接收自己的命令。
@@ -115,20 +115,35 @@ hash: jgdNxfABFtQ+BGnw/Tb9ftp6aXkA/qjfHobhXoqS8nY=
 
 -那里的机器人，您可以为地图选择其他机器人或其他车辆
 
-###地图小工具
-要显示地图，您可以使用普通的html窗口小部件，例如：
+###地图用法
+映射存储为base64-raw或PNG。
+
+您可以在以下数据点中找到地图图像：
+
+-base64：```mihome-vacuum.0.cleanmap.map64`''
+-PNG：```mihome-vacuum.0.cleanmap.mapURL```
+
+您可以在所需的VIS中将这两个图像都用作图像源。在HTML样式中，您可以通过以下方式使用图片：
+
+```<img src="mihome-vacuum.0.cleanmap.map64">```
+
+使用其他样式标签，您可以调整地图样式的大小和/或设置其格式。
+
+要在```jarvis```中使用该映射，只需使用数据点之一作为DisplayImage-Widget的URL。在那里您可以调整图像或整个窗口小部件的大小。如果使用jarvis的响应式设计，则根据显示尺寸调整地图的大小。
+
+要在```ioBroker VIS```中显示地图，您可以使用普通的html窗口小部件，例如：
 
 ```
 [{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
-第二种方法是使用src img小部件集成png文件。但是html视图速度更快，就像实时视图一样。
+使用base64-map的速度更快，并且可以实时显示附近机器人的位置。
 
 ＃＃ 职能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
-不幸的是，无法查询卡的位置和位置，这可以随吸力的变化而变化。永远是最后一张吸卡，以及在应用程序中用作基础。
-如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地方或对该区域进行清理。
+不幸的是，无法查询卡的位置和位置，这可以随吸力的变化而变化。永远是最后一张吸卡以及在应用程序中用作基础。
+如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地点或对该区域进行清理。
 
 ＃＃＃＃ 去
 为了将真空吸尘器驱动到一个点，必须按以下方式填充“ goTo”对象：
@@ -153,7 +168,7 @@ xVal, yval
 ```
 
 其中x和y是矩形区域的坐标，并“计数”清洁操作。
-您还可以一次吸引多个区域：
+您还可以一次吸收多个区域：
 
 ```
 [X1, y1, x2, x2, count], [x3, y3, x4, x4, count2]
@@ -166,15 +181,15 @@ xVal, yval
 ```
 
 ####房间
-具有最新Home App的更新的吸尘器支持房间的定义，请参阅[视频](https://www.youtube.com/watch?v=vEiUZzoXfPg)
+具有最新Home App的较新的吸尘器支持房间的定义，请参阅[视频](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
-当前地图中的每个房间都有一个索引，然后从应用程序将其分配给该房间。从机器人中，我们仅获得带有房间号和索引的映射。适配器每次启动时都会查询这些房间，并为每个房间创建一个通道，然后知道当前房间索引。使用按钮loadRooms手动进行相同的操作。然后可以将此通道分配给ioBroker房间。如果按下了按钮roomClean，则确定卡的索引并将其发送到机械手，以便随后可以清洁该空间。在此之前，将FAN电源设置为单室抽吸。如果您尚无法在应用程序中命名房间，则还可以通过指定地图索引来手动创建此类通道。也可以添加区域坐标而不是mapIndex。
-如果要自发清洁多个房间，可以通过multiRoomClean来实现，方法是将ioBroker房间分配给该数据点，然后按按钮。
+当前地图中的每个房间都有一个索引，然后从应用程序将其分配给该房间。从机器人中，我们仅获得带有房间号和索引的映射。适配器每次启动时都会查询这些房间，并为每个房间创建一个通道，然后知道当前房间索引。使用按钮loadRooms手动进行相同的操作。然后可以将此频道分配给ioBroker房间。如果按下了按钮roomClean，则确定卡的索引并将其发送到机械手，以便随后可以清洁该空间。在此之前，将FAN电源设置为单室抽吸。如果您尚无法在应用程序中命名房间，则还可以通过指定地图索引来手动创建此类通道。也可以添加区域坐标而不是mapIndex。
+如果要自发清洁多个房间，可以通过将ioBroker房间分配给该数据点，然后按按钮，通过multiRoomClean进行操作。
 
 ####计时器
-一旦吸尘器支持房间功能（见上文），就可以创建计时器，然后触发相应的房间通道或确定其mapIndexes。
+吸尘器一旦支持房间功能（见上文），就可以创建计时器，然后触发相应的房间通道或确定其mapIndexes。
 计时器可以直接通过房间和/或房间通道触发。
-计时器本身是通过config区域创建的，但随后成为数据点。在那里，每个计时器都可以被激活/禁用或跳过一次。也可以直接启动。 ioBroker计时器的优点是它们可以在VIS中显示和使用，并且您可以使机器人与互联网断开连接，因为该应用程序的计时器是从中国触发的。
+计时器本身是通过config区域创建的，但随后成为数据点。在那里，每个计时器都可以被激活/关闭或跳过一次。也可以直接启动。 ioBroker计时器的优点是它们可以在VIS中显示和使用，并且您可以使机器人与互联网断开连接，因为该应用程序的计时器是从中国触发的。
 
 ###发送您自己的命令
 注意：此功能只能由专家使用，因为错误的命令可能会损坏吸盘
@@ -190,11 +205,11 @@ xVal, yval
 |方法参数| Beschreibung |
 |-----------      |-------                                                              |-------------------                                                                                     |
 | get_timer | |返回设置的计时器设置吸气时间BSp。 5天12时30分|
-| set_timer | [[“” TIME_IN_MS“，[” 30 12 * * 1,2,3,4,5“，[” start_clean“，”“]]]] | |启用/禁用计时器|
+| set_timer | [[“” TIME_IN_MS“，[” 30 12 * * 1,2,3,4,5“，[” start_clean“，”“]]]] | |启用/禁用计时器 |
 | upd_timer | [“ 1481997713308”，“打开/关闭”] | |
 | | |拯救“请勿打扰”的时代 |
 | get_dnd_timer | |删除免打扰时间|
-| close_dnd_timer | |免打扰设置h，min，h，min |
+| close_dnd_timer | | DND设置h，min，h，min |
 | set_dnd_timer | [22,0,8,0] | |
 |                 |                                                                     |                                                                                                        |
 | app_rc_start | |启动远程控制|
@@ -228,7 +243,7 @@ sendTo("mihome-vacuum.0",
 
 支持的命令是：
 
-|说明| `commandName`|必填参数|备注|
+|描述`commandName`|必填参数|备注|
 |开始清洁过程| `startVacuuming`| -无-| |
 |停止清洁过程| `stopVacuuming`| -无-| |
 |暂停清洁过程| `pause`| -无-| |
@@ -236,9 +251,9 @@ sendTo("mihome-vacuum.0",
 |清洁机器人周围的一小块区域| `cleanSpot`| -无-| |
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
-|检查耗材（刷子等）的状态| `getConsumableStatus`| -无-| |
+|检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
 |重置耗材（刷子等）的状态| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
-|获取所有以前的清洁过程的摘要| `getCleaningSummary`| -无-| |
+|获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
 |获取地图| `getMap`| -无-|未知如何处理结果|
 |获取机器人的当前状态| `getStatus`| -无-| |
@@ -250,11 +265,11 @@ sendTo("mihome-vacuum.0",
 |检索当前风扇速度| `getFanSpeed`| -无-| |
 |设置新风扇速度| `setFanSpeed`| `fanSpeed`| `fanSpeed`是1到100之间的数字|
 |启动遥控器功能| `startRemoteControl`| -无-| |
-|发出用于远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须是连续的，持续时间以ms为单位|
+|发出用于远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须按顺序排列，持续时间以ms为单位|
 |结束遥控器功能| `stopRemoteControl`| -无-| |
 |无尘室| `cleanRooms`| `rooms`| `rooms`是逗号分隔的字符串，带有enum.rooms.XXX |
-|清洁段| `cleanSegments`| `rooms`| `rooms`是一个具有mapIndex的数组或逗号分隔的具有mapIndex |
-|清洁区| `cleanZone`| `coordinates`| `coordinates`是一个带有坐标和计数的字符串，请参见[zoneClean](#zoneClean)|
+|清洁段| `cleanSegments`| `rooms`| `rooms`是具有mapIndex或逗号分隔的String与mapIndex |的字符串的数组。 |
+|清洁区| `cleanZone`| `coordinates`| `coordinates`是一个具有坐标和计数的字符串，请参见[zoneClean](#zoneClean)|
 |清洁区| `cleanZone` | `坐标`| `coordinates` ist一个带有坐标和计数的字符串，请参见[zoneClean]（＃zoneClean）|
 
 ##小部件

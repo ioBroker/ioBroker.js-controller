@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: EsnAj/k5t+GnG0yC3lbNfeptFavgrkT07OATg57YxkI=
+hash: eOIPkl4N+yA5CbB877TXJ3xsQof+XFlZNAqMp9xoL9o=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -34,13 +34,23 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende
+Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link wird zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/donate?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
+
+## 2.9.4
+- Fehlerbehebung
+
+## 2.9.3
+- Fehler bei der PopUp-Wiedergabe: Klick zum Schließen wurde direkt nach der Überwachung und Klick-Verweigerungsknöpfe hinter dem PopUp aus
+- unterscheidet sich bei Ansicht in PopUp nicht richtig gehört
+
+## 2.9.2
+- Problem mit Datenpunkt zum Verantwortlichen des Popups Frei. ACHTUNG! Der Datenpunkt muss geändert werden
 
 ## 2.9.1
 - Fehlerbehebung
@@ -67,7 +77,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlerbehebung
 
 ## 2.7.10
-- Problem mit Bildern im Universal und Multi Widget gehört
+- Problem mit Bildern im Universal- und Multi-Widget-Einstellungen
 - Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
@@ -89,7 +99,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.5
 - JSON Tabelle farbliche Schwellenwerte für Zahlen
-- Fehler beim Slider gehört wenn ungültiger Wert im Datenpunkt steht
+- Fehler beim Slider gefunden wenn ungültiger Wert im Datenpunkt steht
 - Fehlerhafte: Signalbilder wurden mit eingefärbt
 - Option um Bildfarbe zu invertieren eingezogen, um Farbfilter zu entfernen
 - Color Slider kann nun zwischen HEX, RGB und CIE gehören
@@ -98,7 +108,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 
 ## 2.7.3
-- Fehler beim mehrstaatlichen und staatlichen Zuständigkeiten
+- Fehler beim Multi-State und Steuern Zuständigkeiten
 - Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
@@ -280,7 +290,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Slider-Widget hinzugefügt
 - Option zum Spiegeln des Bildes hinzugefügt
 - Neue Symbole hinzugefügt
-- Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
+- Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
 - Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt

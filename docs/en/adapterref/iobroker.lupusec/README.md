@@ -72,6 +72,7 @@ Fully supported and individually adapted are following devices:
   - Shock sensor (Type 93)
   - Smoke detector V2 (Type 14)
   - Inwall relay with dimmer V3 (Type 66)
+  - Keypad Outdoor V2 (Type 17)
 
 The two states apple_home_a1 and lupusec.0.status.apple_home_a2 for the Apple Homekit adapter yahka supported. You can turn in addition to the lupusec states the alarm system for area 1 and 2 on and off.  
 
@@ -126,6 +127,9 @@ sudo chmod u+s `which ping`
 ``` 
 
 ## Changelog
+
+### 1.3.5 (24.04.2021)
+* (Stübi) Add device keypad outdoor v2
 
 ### 1.3.4 (01.03.2021)
 * (Stübi) Bugfixing

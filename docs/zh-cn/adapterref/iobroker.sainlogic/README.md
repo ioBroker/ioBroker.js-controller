@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sainlogic/README.md
 title: ioBroker.sainlogic
-hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
+hash: QrCSyE3CkizDub2b0JY8jn+X0en6MGC4k/2nGQun4Jw=
 ---
-![标识](../../../en/adapterref/iobroker.sainlogic/admin/sainlogic.png)
+![商标](../../../en/adapterref/iobroker.sainlogic/admin/sainlogic.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sainlogic.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sainlogic.svg)
@@ -20,7 +20,7 @@ hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
 从基于Sainlogic的气象站读取数据
 
 ##支持的设备
-基本上，任何与sainlogic硬件一起工作的设备，固件通常报告为“ EasyWeather Vx.x.x）”。
+基本上任何使用sainlogic硬件的设备，固件通常报告为“ EasyWeather Vx.x.x）”。
 
 已知的工作设备：
 
@@ -29,11 +29,13 @@ hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
 1. Froggit WH400SE
 1. Froggit DP1500
 1. Sainlogic WS3500（仅侦听器模式）
+1. WH51湿度传感器
+1. Ecowitt GW1000
 
 ＃＃ 用法
 适配器支持两种模式以显示气象站的数据。
 
-如果从气象站交付，则在侦听器模式下，适配器确实支持其他传感器。当前支持的温度和湿度。如果您还有其他传感器，请提出github问题并发布您的数据字符串，因为这有助于我扩展功能。
+在侦听器模式下，适配器从气象站提供时确实支持其他传感器。当前支持的温度和湿度。如果您还有其他传感器，请提出github问题并发布您的数据字符串，因为这有助于我扩展功能。
 
 ###侦听器模式：
 使用最新的固件版本，气象站支持将数据发送到自定义服务器。该适配器将充当此类服务器。设置需要两个步骤：
@@ -53,8 +55,8 @@ hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
 在实例配置中，选择选项卡“侦听器”并进行以下设置：
 
 -有效：正确
--IP：选择IOBroker的IP，气象站将能够连接到该IP（默认值为0.0.0.0，以允许所有IP），如果您有多个网络，则这主要是相关的，否则默认值将起作用
--端口：输入与WS View应用程序中相同的端口
+-IP：选择IOBroker的IP，气象站将能够连接到该IP（默认值为0.0.0.0，以允许所有IP），如果您有多个网络，则这主要与之相关，否则默认值将起作用
+-端口：输入与WS View应用程序相同的端口
 -路径：输入与WS View应用程序中相同的路径
 -转发URL：如果要将接收到的数据转发给其他使用者，则可以指定其他地址。例如。您可能会收到WU格式的数据，但仍然希望将其转发给WeatherUnderground。
 
@@ -70,18 +72,22 @@ hash: oZy344kV1gK0Lo1OUjQkqEk5OkhMReMwWGYf6OSxkLc=
 -有效：正确
 -IP：选择气象站的IP，请确保IP是固定的且不会更改
 -端口：输入要连接的端口（默认为45000）
--时间间隔：输入时间间隔（以秒为单位）（我建议至少10秒，以免系统或网络过载）
+-间隔：输入间隔（以秒为单位）（我建议至少10秒，以免系统或网络过载）
 
 保存。
 
-在第一个间隔时间之后，调度程序将启动并连接到气象站。您应该在日志中看到类似“计划程序提取新数据”的消息。如果将日志模式设置为调试，则还将看到收到的数据字符串。
+在第一个间隔时间之后，调度程序将启动并连接到气象站。您应该在日志中看到类似“计划程序提取新数据”的消息。如果将日志模式设置为调试，您还将看到收到的数据字符串。
 
 ##学分
-感谢：lemuba，StrathCole，Glasfaser，Latzi：对我的bug进行了不懈的测试:) Lisa的[在标题中转换风向的代码](https://www.programmieraufgaben.ch/aufgabe/windrichtung-bestimmen/ibbn2e7d)
+致谢：lemuba，StrathCole，Glasfaser，Latzi：不断测试我的错误：） Lisa的[在标题中转换风向的代码](https://www.programmieraufgaben.ch/aufgabe/windrichtung-bestimmen/ibbn2e7d)
 
 ## Changelog
 
 Latest version
+
+#### 0.7.1 Fixes mapping for soilbat values
+
+#### 0.7.0 #64 added soilmoisture devices
 
 #### 0.6.6 Adressed github issue #53 - warning on non existing object
 

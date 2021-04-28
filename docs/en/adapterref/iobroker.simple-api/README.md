@@ -553,6 +553,9 @@ If no data source was specified or the noHistory parameter is passed, then only 
 -->
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Also URL-Decode the path parts like state ids
+
 ### 2.5.3 (2021-01-25)
 * (Apollon77) Make sure that delayed answers are not crashing (Sentry IOBROKER-SIMPLE-API-Z)
 

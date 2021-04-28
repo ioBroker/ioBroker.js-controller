@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.seq/README.md
 title: ioBroker.seq
-hash: FFrC6IRLsrx1nXUqUGwz8e2x+OCkD64sZFKugKPu508=
+hash: GWOm6qik6DBmClBZTVf0rDvxim11t2phQTWTJ97SKFk=
 ---
 ![商标](../../../en/adapterref/iobroker.seq/admin/seq.png)
 
@@ -15,6 +15,8 @@ hash: FFrC6IRLsrx1nXUqUGwz8e2x+OCkD64sZFKugKPu508=
 ![NPM](https://nodei.co/npm/iobroker.seq.png?downloads=true)
 
 ＃ioBroker.seq
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/seq/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ## IoBroker的Seq适配器
 该适配器使您可以将ioBroker日志推送到[序号](https://datalust.co/seq)的系统中。
 也可以将过滤器应用于日志级别以及适配器。
