@@ -836,5 +836,38 @@
         "conditions": {
             "backitup": "!installed"
         }
+    },
+    {
+        "title": {
+            "en": "Get ready for v2.0.0 of Z-Wave 2: Use aliases!",
+            "de": "Vorbereitung auf v2.0.0 von Z-Wave 2: Alias-Funktion verwenden!",
+            "ru": "Будьте готовы к v2.0.0 Z-Wave 2: используйте псевдонимы!",
+            "pt": "Prepare-se para a v2.0.0 do Z-Wave 2: Use apelidos!",
+            "nl": "Maak je klaar voor v2.0.0 van Z-Wave 2: gebruik aliassen!",
+            "fr": "Préparez-vous pour la v2.0.0 de Z-Wave 2: utilisez des alias!",
+            "it": "Preparati per la v2.0.0 di Z-Wave 2: usa gli alias!",
+            "es": "Prepárese para la v2.0.0 de Z-Wave 2: ¡use alias!",
+            "pl": "Przygotuj się na wersję 2.0.0 Z-Wave 2: używaj aliasów!",
+            "zh-cn": "准备好使用Z-Wave 2的v2.0.0：使用别名！"
+        },
+        "content": {
+            "en": "Version 2.0.0 of the Z-Wave 2 adapter will be released in the near future. \n\nThis version is going to include a change which necessary to accomodate the many devices that misuse endpoints. Unfortunately, the state IDs of those devices will change.\n\nPrepare now and use ioBroker's alias function instead of referencing state IDs directly in scripts and visualiations. This means you will be able to change all IDs in one central location once v2.0.0 is released.",
+            "de": "Die Version 2.0.0 des Z-Wave 2-Adapters wird in naher Zukunft veröffentlicht.\n\nDiese Version wird eine Änderung enthalten, die erforderlich ist, um den vielen Geräte gerecht zu werden, die Endpunkte inkorrekt implementieren. Leider werden sich dadurch die Datenpunkt-IDs dieser Geräte ändern.\n\nUm sich jetzt schon vorzubereiten, bitte die Alias-Funktion von ioBroker nutzen, anstatt die IDs direkt in Skripten und Visualisierungen zu referenzieren. Mit der Alias-Funktion können alle IDs an einem zentralen Ort aktualisiert werden, sobald Version 2.0 veröffentlicht ist.",
+            "ru": "Версия 2.0.0 адаптера Z-Wave 2 будет выпущена в ближайшее время.\n\nЭта версия будет включать изменение, необходимое для поддержки многих устройств, которые неправильно используют конечные точки. К сожалению, идентификаторы состояния этих устройств изменятся.\n\nПодготовьтесь и используйте функцию псевдонима ioBroker вместо ссылки на идентификаторы состояния непосредственно в сценариях и визуализациях. Это означает, что вы сможете изменить все идентификаторы в одном центральном месте после выпуска версии 2.0.0.",
+            "pt": "A versão 2.0.0 do adaptador Z-Wave 2 será lançada em um futuro próximo.\n\nEsta versão irá incluir uma alteração necessária para acomodar os muitos dispositivos que usam mal os terminais. Infelizmente, os IDs de estado desses dispositivos mudarão.\n\nPrepare-se agora e use a função de alias do ioBroker em vez de fazer referência aos IDs de estado diretamente em scripts e visualizações. Isso significa que você poderá alterar todos os IDs em um local central assim que a v2.0.0 for lançada.",
+            "nl": "Versie 2.0.0 van de Z-Wave 2-adapter zal in de nabije toekomst worden uitgebracht.\n\nDeze versie zal een wijziging bevatten die nodig is om tegemoet te komen aan de vele apparaten die eindpunten misbruiken. Helaas zullen de status-ID's van die apparaten veranderen.\n\n Bereid je nu voor en gebruik de aliasfunctie van ioBroker in plaats van rechtstreeks naar status-ID's te verwijzen in scripts en visualisaties. Dit betekent dat u alle ID's op één centrale locatie kunt wijzigen zodra v2.0.0 is uitgebracht.",
+            "fr": "La version 2.0.0 de l'adaptateur Z-Wave 2 sortira prochainement.\n\nCette version va inclure un changement nécessaire pour prendre en charge les nombreux périphériques qui abusent des terminaux. Malheureusement, les identifiants d'état de ces périphériques changeront.\n\nPréparez-vous maintenant et utilisez la fonction d'alias d'ioBroker au lieu de référencer directement les identifiants d'état dans les scripts et les visualisations. Cela signifie que vous pourrez modifier tous les identifiants dans un emplacement central une fois la version 2.0.0 publiée.",
+            "it": "La versione 2.0.0 dell'adattatore Z-Wave 2 verrà rilasciata nel prossimo futuro.\n\nQuesta versione includerà una modifica necessaria per accogliere i molti dispositivi che utilizzano in modo improprio gli endpoint. Sfortunatamente, gli ID di stato di questi dispositivi cambieranno.\n\nPreparare ora e utilizzare la funzione alias di ioBroker invece di fare riferimento agli ID di stato direttamente negli script e nelle visualizzazioni. Ciò significa che sarai in grado di modificare tutti gli ID in un'unica posizione centrale una volta rilasciata la v2.0.0.",
+            "es": "La versión 2.0.0 del adaptador Z-Wave 2 se lanzará próximamente.\n\nEsta versión incluirá un cambio que es necesario para adaptarse a los muchos dispositivos que hacen un mal uso de los terminales. Desafortunadamente, las ID de estado de esos dispositivos cambiarán.\n\nPrepárese ahora y use la función de alias de ioBroker en lugar de hacer referencia a las ID de estado directamente en scripts y visualizaciones. Esto significa que podrá cambiar todas las ID en una ubicación central una vez que se publique v2.0.0.",
+            "pl": "Wersja 2.0.0 adaptera Z-Wave 2 zostanie wydana w najbliższej przyszłości.\n\nTa wersja będzie zawierała zmianę niezbędną do dostosowania się do wielu urządzeń, które niewłaściwie używają punktów końcowych. Niestety, identyfikatory stanu tych urządzeń ulegną zmianie.\n\nPrzygotuj się teraz i użyj funkcji aliasu ioBroker zamiast odwoływać się do identyfikatorów stanu bezpośrednio w skryptach i wizualizacjach. Oznacza to, że po wydaniu wersji 2.0.0 będzie można zmienić wszystkie identyfikatory w jednym centralnym miejscu.",
+            "zh-cn": "Z-Wave 2适配器的2.0.0版将在不久的将来发布。\n\n此版本将包含一项更改，以适应许多滥用端点的设备。不幸的是，这些设备的状态ID将会更改。\n \n立即准备使用ioBroker的别名功能，而不是直接在脚本和可视化视图中引用状态ID。这意味着一旦发布v2.0.0，您就可以在一个中央位置更改所有ID。"
+        },
+        "id": "zwave2-v2-alias",
+        "class": "info",
+        "fa-icon": "wrench",
+        "created": "2021-04-29T01:00:00.000Z",
+        "conditions": {
+            "zwave2": "smaller(2.0.0)"
+        }
     }
 ]
