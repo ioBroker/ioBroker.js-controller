@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.1 (2021-04-29)
 * see CHANGELOG.md
 
 ## 3.3.x (2021-04-29) Release Hannah WIP
