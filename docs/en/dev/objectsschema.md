@@ -213,7 +213,7 @@ attributes:
 * `common.read`   (boolean, mandatory) - true if state is readable
 * `common.write`  (boolean, mandatory) - true if state is writable
 * `common.role`   (string,  mandatory) - role of the state (used in user interfaces to indicate which widget to choose, see below)
-* `common.states` (optional) attribute of type number with the object of possible states `{'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}`
+* `common.states` (optional) attribute of type number with the object of possible states `{'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}` or (supported up from admin5) an states array, like `['Start', 'Flight', 'Land']`
 * `common.workingID` (string, optional) - if this state has helper state WORKING. Here must be written the full name or just the last part if the first parts are the same with actual. Used for HM.LEVEL and normally has value "WORKING"
 * `common.custom` (optional) - the structure with custom settings for specific adapters. Like `{"influxdb.0": {"enabled": true, "alias": "name"}}`. `enabled` attribute is required and if it is not true, the whole attribute will be deleted.
 
