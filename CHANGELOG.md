@@ -4,7 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.3.x (2021-xx-xx) Release H... WIP
+## __WORK IN PROGRESS__
+* see CHANGELOG.md
+
+## 3.3.x (2021-04-29) Release Hannah WIP
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * Users that use the experimental jsonl database classes need to manually update the jsonl packages 
