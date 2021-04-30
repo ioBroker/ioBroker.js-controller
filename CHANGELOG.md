@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.3 (2021-04-30)
 * (AlCalzone) Fix restart logic for linux systems to prevent processes started aside systemd
 * (bluefox) Add new system config values to set a default loglevel for new created instances
 * (bluefox) Do not delete objects recursively that have dontDelete flag

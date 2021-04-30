@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.2",
+        "version": "3.3.3",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.3": {
+                "en": "Fix restart logic for linux systems to prevent processes started aside systemd\nAdd new system config values to set a default loglevel for new created instances\nDo not delete objects recursively that have dontDelete flag",
+                "de": "Korrektur der Neustartlogik für Linux-Systeme, um zu verhindern, dass Prozesse neben systemd gestartet werden\nFügen Sie neue Systemkonfigurationswerte hinzu, um eine Standard-Google-Ebene für neu erstellte Instanzen festzulegen\nLöschen Sie keine Objekte rekursiv, die das Flag dontDelete haben",
+                "ru": "Исправить логику перезапуска для систем Linux, чтобы предотвратить запуск процессов вне systemd\nДобавьте новые значения конфигурации системы, чтобы установить уровень ведения журнала по умолчанию для новых созданных экземпляров.\nНе удалять рекурсивно объекты с флагом dontDelete",
+                "pt": "Corrigir a lógica de reinicialização para sistemas Linux para evitar que processos iniciados fora do systemd\nAdicione novos valores de configuração do sistema para definir um nível de log padrão para novas instâncias criadas\nNão exclua objetos recursivamente que tenham sinalizador dontDelete",
+                "nl": "Herstartlogica voor Linux-systemen repareren om te voorkomen dat processen opzij worden gezet systemd\nVoeg nieuwe systeemconfiguratiewaarden toe om een standaardlogniveau in te stellen voor nieuw gemaakte instanties\nVerwijder geen objecten recursief met de vlag dontDelete",
+                "fr": "Correction de la logique de redémarrage des systèmes Linux pour empêcher le démarrage des processus de côté Systemd\nAjouter de nouvelles valeurs de configuration système pour définir un niveau de journalisation par défaut pour les nouvelles instances créées\nNe supprimez pas les objets de manière récursive avec l'indicateur dontDelete",
+                "it": "Correggere la logica di riavvio per i sistemi Linux per impedire l'avvio di processi da parte di systemd\nAggiungi nuovi valori di configurazione del sistema per impostare un loglevel predefinito per le nuove istanze create\nNon eliminare in modo ricorsivo gli oggetti che hanno il flag dontDelete",
+                "es": "Arregle la lógica de reinicio para los sistemas Linux para evitar que los procesos se inicien aparte de systemd\nAgregue nuevos valores de configuración del sistema para establecer un nivel de registro predeterminado para las nuevas instancias creadas\nNo elimine objetos de forma recursiva que tengan el indicador dontDelete",
+                "pl": "Napraw logikę restartu dla systemów linux, aby zapobiec uruchamianiu procesów poza systemd\nDodaj nowe wartości konfiguracyjne systemu, aby ustawić domyślny poziom dla nowo tworzonych instancji\nNie usuwaj rekursywnie obiektów, które mają flagę dontDelete",
+                "zh-cn": "修复Linux系统的重启逻辑，以防止进程在systemd之外启动\n添加新的系统配置值以为新创建的实例设置默认日志级别\n不要递归删除具有dontDelete标志的对象"
+            },
             "3.3.2": {
                 "en": "\"upgrade self\" CLI command should not start controller because we require it to bestopped before (will be effective for all upgrades from 3.3.2 to higher versions only)\nfix \"iobroker upgrade\" call that crashed when no updates were available\nadjust some state wrote checks (type array needs to provide a string, ack-only-sets are allowed again)",
                 "de": "Der CLI-Befehl \"upgrade self\" sollte den Controller nicht starten, da er zuvor beendet werden muss (gilt nur für alle Upgrades von 3.3.2 auf höhere Versionen).\nBehebung des Aufrufs \"iobroker upgrade\", der abstürzte, wenn keine Updates verfügbar waren\nPassen Sie einige Statusschreibprüfungen an (Typarray muss eine Zeichenfolge bereitstellen, Nur-Bestätigungssätze sind wieder zulässig)",
