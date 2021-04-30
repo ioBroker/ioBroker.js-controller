@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.1",
+        "version": "3.3.2",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.2": {
+                "en": "\"upgrade self\" CLI command should not start controller because we require it to bestopped before (will be effective for all upgrades from 3.3.2 to higher versions only)\nfix \"iobroker upgrade\" call that crashed when no updates were available\nadjust some state wrote checks (type array needs to provide a string, ack-only-sets are allowed again)",
+                "de": "Der CLI-Befehl \"upgrade self\" sollte den Controller nicht starten, da er zuvor beendet werden muss (gilt nur für alle Upgrades von 3.3.2 auf höhere Versionen).\nBehebung des Aufrufs \"iobroker upgrade\", der abstürzte, wenn keine Updates verfügbar waren\nPassen Sie einige Statusschreibprüfungen an (Typarray muss eine Zeichenfolge bereitstellen, Nur-Bestätigungssätze sind wieder zulässig)",
+                "ru": "Команда CLI \"upgrade self\" не должна запускать контроллер, потому что мы требуем, чтобы он был запущен раньше (будет действовать только для всех обновлений с 3.3.2 до более поздних версий)\nисправить вызов \"iobroker upgrade\", который вылетал из-за отсутствия обновлений\nнастроить некоторые проверки состояния (массив типов должен содержать строку, снова разрешены только наборы подтверждений)",
+                "pt": "O comando CLI \"upgrade self\" não deve iniciar o controlador porque exigimos que ele seja executado antes (será eficaz para todas as atualizações de 3.3.2 para versões superiores apenas)\nconsertar a chamada de \"atualização do iobroker\" que travava quando não havia atualizações disponíveis\najustar algumas verificações de gravação de estado (array de tipo precisa fornecer uma string, conjuntos somente de ack são permitidos novamente)",
+                "nl": "\"upgrade self\" CLI-opdracht mag de controller niet starten omdat we vereisen dat deze eerder moet worden gestopt (zal alleen van kracht zijn voor alle upgrades van 3.3.2 naar hogere versies)\nrepareer \"iobroker upgrade\" -aanroep die crashte toen er geen updates beschikbaar waren\npas enkele state-writecontroles aan (type array moet een string bevatten, ack-only-sets zijn weer toegestaan)",
+                "fr": "La commande CLI \"upgrade self\" ne doit pas démarrer le contrôleur car nous en avons besoin avant (ne sera efficace que pour toutes les mises à niveau de la 3.3.2 vers les versions supérieures)\ncorrection de l'appel \"iobroker upgrade\" qui se bloquait lorsqu'aucune mise à jour n'était disponible\najuster certaines vérifications de l'état écrit (le tableau de type doit fournir une chaîne, les ensembles d'ack uniquement sont à nouveau autorisés)",
+                "it": "Il comando CLI \"upgrade self\" non dovrebbe avviare il controller perché è necessario che venga interrotto prima (sarà valido solo per tutti gli aggiornamenti dalla 3.3.2 alle versioni successive)\ncorrezione della chiamata \"aggiornamento iobroker\" che si bloccava quando non erano disponibili aggiornamenti\nregolare alcuni controlli di stato scritti (il tipo array deve fornire una stringa, i set solo ack sono consentiti di nuovo)",
+                "es": "El comando CLI \"upgrade self\" no debería iniciar el controlador porque es necesario que se detenga antes (solo será efectivo para todas las actualizaciones de 3.3.2 a versiones superiores)\nCorregir la llamada \"actualización de iobroker\" que fallaba cuando no había actualizaciones disponibles.\najustar algunos cheques escritos por el estado (la matriz de tipos debe proporcionar una cadena, los conjuntos de solo ack se permiten nuevamente)",
+                "pl": "Polecenie CLI \"upgrade self\" nie powinno uruchamiać kontrolera, ponieważ wymagamy, aby zostało wcześniej zakończone (będzie skuteczne dla wszystkich aktualizacji z 3.3.2 tylko do wyższych wersji)\nnaprawiono wywołanie „iobroker upgrade”, które ulegało awarii, gdy nie były dostępne żadne aktualizacje\ndostosuj niektóre testy stanu (typ tablica musi dostarczyć ciąg, zestawy tylko potwierdzeń są ponownie dozwolone)",
+                "zh-cn": "“ upgrade self” CLI命令不应启动控制器，因为我们要求先停止控制器（仅对从3.3.2到更高版本的所有升级有效）\n修复没有可用更新时崩溃的“ iobroker升级”呼叫\n调整一些状态写的检查（类型数组需要提供一个字符串，允许再次使用ack-only-sets）"
+            },
             "3.3.1": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",

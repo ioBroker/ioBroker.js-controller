@@ -4,8 +4,8 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
-* (Apollon77) "upgrade self" CLI command should not start controller because we require it to bestopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
+## 3.3.2 (2021-04-30)
+* (Apollon77) "upgrade self" CLI command should not start controller because we require it to be stopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
 * (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
 * (foxriver76) adjust some state wrote checks (type array needs to provide a string, ack-only-sets are allowed again)
 
