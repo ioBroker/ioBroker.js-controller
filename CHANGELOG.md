@@ -4,10 +4,15 @@
 	## __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Apollon77) "upgrade self" CLI command should not start controller because we require it to bestopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
+* (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
+* (foxriver76) adjust some state wrote checks (type array needs to provide a string, ack-only-sets are allowed again)
+
 ## 3.3.1 (2021-04-29) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
-* Users that use the experimental jsonl database classes need to manually update the jsonl packages 
+* The experimental jsonl db libraries are now included in js-controller directly too
 
 **Features**
 * (foxriver76) start instances ordered by their defined tiers (details see https://github.com/ioBroker/ioBroker.js-controller#tiers-start-instances-in-an-ordered-manner)
