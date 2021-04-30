@@ -7,6 +7,7 @@
 ## __WORK IN PROGRESS__
 * (AlCalzone) Fix restart logic for linux systems to prevent processes started aside systemd
 * (bluefox) Add new system config values to set a default loglevel for new created instances
+* (bluefox) Do not delete objects recursively that have dontDelete flag
 
 ## 3.3.2 (2021-04-30)
 * (Apollon77) "upgrade self" CLI command should not start controller because we require it to be stopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
