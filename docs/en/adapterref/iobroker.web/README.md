@@ -59,17 +59,19 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 });
 ```
 
-<!--
-	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
--->
-
 ## "Basic Authentication" option
 Allows Login via Basic Authentication by sending `401` Unauthorized with a `WWW-Authenticate` header.
 This can be used for applications like *FullyBrowser*. When entering the wrong credentials once, you will be redirected 
 to the Login Page. 
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 3.4.1 (2021-04-30)
+* (bluefox) Added support of admin5
 
 ### 3.4.0 (2021-04-12)
 * IMPORTANT: js-controller 3.1 is now needed at least

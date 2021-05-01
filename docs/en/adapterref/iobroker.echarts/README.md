@@ -75,6 +75,9 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.4.14 (2021-04-29)
+* (bluefox) Fixed reorder of presets
+
 ### 0.4.13 (2021-03-27)
 * (bluefox) Tried to sort the time series before displaying it 
 

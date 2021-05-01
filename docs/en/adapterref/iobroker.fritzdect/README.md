@@ -190,6 +190,7 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 ### 2.1.14
 * operationmode and hkrmode tracking also after commands
 * extended datapoints for blinds from Rollotron
+* presence=0 was detected but not written to the datapoint, now corrected (skipping the updated is not affected)
 
 ### 2.1.13
 * correction at group of switches (switchtype not recognized -> simpleonoff)

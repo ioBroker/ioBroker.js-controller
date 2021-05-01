@@ -529,6 +529,9 @@ If a state is not documented (or only partially documented) and you know what it
    *Read-only text, which designates the serial number of wallbox [0..3].*
 
 ## Changelog
+### 1.1.1 (NoBl)
+* Object attributes are updated to what they are expected to be: unit, description, datatype (this will break anything that still relies on datapoints being STRING that aren't meant to be string)
+
 ### 1.1.0 (NoBl)
 * Updated to current adapter template
 * Integrated GitHub Testing and auto npm publishing

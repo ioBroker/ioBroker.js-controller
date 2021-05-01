@@ -1,4 +1,5 @@
 ![Logo](admin/traccar.png)
+
 # ioBroker.traccar
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.traccar.svg?dummy=unused)](https://www.npmjs.com/package/iobroker.traccar)
@@ -21,43 +22,58 @@ This adapter imports in real time the position and the extended data from [Tracc
 2. Fill the URL/IP and port from Traccar server
 3. Configur username and password
 4. Save the settings
-5. Have fun :) 
+5. Have fun :)
 
 ## Changelog
+
 <!--
  https://github.com/AlCalzone/release-script#usage
     npm run release minor -- --all 0.9.8 -> 0.10.0
     npm run release patch -- --all 0.9.8 -> 0.9.9
-    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0  
+    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0
 	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
+	### **WORK IN PROGRESS**
 -->
+
+### 0.0.8 (2021-04-30)
+
+-   (o0shojo0o) bugfix wrong value type
+-   (Weblate) german language update
+
 ### 0.0.7 (2021-03-24)
-* (o0shojo0o) bugfix special characters in password or username
-* (o0shojo0o) code refactor
-* (o0shojo0o) better handling with new device or geolocation at runtime
+
+-   (o0shojo0o) bugfix special characters in password or username
+-   (o0shojo0o) code refactor
+-   (o0shojo0o) better handling with new device or geolocation at runtime
 
 ### 0.0.6 (2021-03-19)
-* (o0shojo0o) adjustments according to the adapter review
+
+-   (o0shojo0o) adjustments according to the adapter review
 
 ### 0.0.5 (2021-03-08)
-* (o0shojo0o) add [release-script](https://github.com/AlCalzone/release-script)
+
+-   (o0shojo0o) add [release-script](https://github.com/AlCalzone/release-script)
 
 ### 0.0.4
-* (o0shojo0o) add datapoint address (https://www.traccar.org/reverse-geocoding/)
+
+-   (o0shojo0o) add datapoint address (https://www.traccar.org/reverse-geocoding/)
 
 ### 0.0.3
-* (o0shojo0o) workaround for unclean geofences in the database 
+
+-   (o0shojo0o) workaround for unclean geofences in the database
 
 ### 0.0.2
-* (o0shojo0o) add websocket connection
-* (o0shojo0o) add position url
-* (o0shojo0o) add dynamic datapoints for attributes  
+
+-   (o0shojo0o) add websocket connection
+-   (o0shojo0o) add position url
+-   (o0shojo0o) add dynamic datapoints for attributes
 
 ### 0.0.1
-* (braindead1) initial release
+
+-   (braindead1) initial release
 
 ## License
+
 MIT License
 
 Copyright (c) 2021 Dennis Rathjen <info@bastelbunker.de>

@@ -13,7 +13,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.melcloud.png?downloads=true)](https://nodei.co/npm/iobroker.melcloud/)
 
-**Tests:** [![Build Status](https://travis-ci.com/Black-Thunder/ioBroker.melcloud.svg?branch=master)](https://travis-ci.com/Black-Thunder/ioBroker.melcloud)
+**Tests:** [![Test](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg)](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml)
 
 ## melcloud adapter for ioBroker
 
@@ -31,6 +31,10 @@ Documentation:
 	### __WORK IN PROGRESS__
 -->
 
+### 1.1.2 (2021-04-30)
+* (Black-Thunder) added compability with js-controller >= v3.3.1
+* (Black-Thunder) updated dependencies
+
 ### 1.1.1 (2021-01-10)
 **Attention: With this version you must reenter your password in the adapter settings and save again! Otherwise login will fail.**
 * (Black-Thunder) fix: correctly use auto decryption handling for password 
@@ -39,7 +43,7 @@ Documentation:
 ### 1.1.0 (2021-01-08)
 * (Black-Thunder) new functionality: retrieve power consumption reports
 * (Black-Thunder) adapter connection state now correctly set accordingly to the cloud connection
-* (Black-Thunder) added release-script and Dependabot, updated dependecies
+* (Black-Thunder) added release-script and Dependabot, updated dependencies
 
 ### 1.0.6 28.06.2020
 * (Black-Thunder) implemented queue mechanism for sending requests to cloud

@@ -36,6 +36,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.2.0 (2021-04-29)
+* (simatec) Redesign Gui
+
 ### 1.1.7 (2021-04-10)
 * (simatec) Bugfix Adapter stop
 * (simatec) Bugfix clean old stations

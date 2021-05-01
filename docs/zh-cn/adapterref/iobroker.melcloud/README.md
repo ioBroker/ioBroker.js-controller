@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.melcloud/README.md
 title: ioBroker.melcloud
-hash: TRuKhvP3NMiptXm3E2ONVYniqWnOYX2YFWm9NNNaOjc=
+hash: EIieXsZU4LLaCACIfcV05V9RuOyLt/jjXcaeG6HhsMg=
 ---
 ![商标](../../../en/adapterref/iobroker.melcloud/admin/melcloud.png)
 
@@ -15,10 +15,10 @@ hash: TRuKhvP3NMiptXm3E2ONVYniqWnOYX2YFWm9NNNaOjc=
 ![已知漏洞](https://snyk.io/test/github/Black-Thunder/ioBroker.melcloud/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.melcloud.png?downloads=true)
 
-*图标由[Freepik]（https://www.flaticon.com/authors/freepik）来自[www.flaticon.com](https://www.flaticon.com/")制成*
+*由[Freepik]（https://www.flaticon.com/authors/freepik）来自[www.flaticon.com](https://www.flaticon.com/")制成的图标*
 
 ＃ioBroker.melcloud
-**测试：** [![构建状态]（https://travis-ci.com/Black-Thunder/ioBroker.melcloud.svg?branch=master）](https://travis-ci.com/Black-Thunder/ioBroker.melcloud)
+**测试：** [![测试]（https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg）](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml)
 
 ## IoBroker的melcloud适配器
 该适配器通过MELCloud（https://www.melcloud.com/）将三菱空调系统集成到ioBroker中。
@@ -35,6 +35,10 @@ hash: TRuKhvP3NMiptXm3E2ONVYniqWnOYX2YFWm9NNNaOjc=
 	### __WORK IN PROGRESS__
 -->
 
+### 1.1.2 (2021-04-30)
+* (Black-Thunder) added compability with js-controller >= v3.3.1
+* (Black-Thunder) updated dependencies
+
 ### 1.1.1 (2021-01-10)
 **Attention: With this version you must reenter your password in the adapter settings and save again! Otherwise login will fail.**
 * (Black-Thunder) fix: correctly use auto decryption handling for password 
@@ -43,7 +47,7 @@ hash: TRuKhvP3NMiptXm3E2ONVYniqWnOYX2YFWm9NNNaOjc=
 ### 1.1.0 (2021-01-08)
 * (Black-Thunder) new functionality: retrieve power consumption reports
 * (Black-Thunder) adapter connection state now correctly set accordingly to the cloud connection
-* (Black-Thunder) added release-script and Dependabot, updated dependecies
+* (Black-Thunder) added release-script and Dependabot, updated dependencies
 
 ### 1.0.6 28.06.2020
 * (Black-Thunder) implemented queue mechanism for sending requests to cloud

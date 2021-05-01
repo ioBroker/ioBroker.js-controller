@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.divera247/README.md
 title: 第247章
-hash: JjgBOR1CmUpmMJgMG123gCGZca7XbSGcKClNlpMf7HQ=
+hash: jNUIs0WuW0c8Li2RkhyJ6QwyNNP+DCU8W1H/sEhRHyk=
 ---
-![标识](../../../en/adapterref/iobroker.divera247/admin/divera247_long.png)
+![商标](../../../en/adapterref/iobroker.divera247/admin/divera247_long.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.divera247.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.divera247.svg)
@@ -25,18 +25,28 @@ hash: JjgBOR1CmUpmMJgMG123gCGZca7XbSGcKClNlpMf7HQ=
 为了充分利用此适配器，您的组织必须订阅Divera 24/7服务的“警报”计划
 
 ##配置此适配器
-您必须将组织的“ Divera 24/7” API密钥输入此适配器。
+您必须从组织到此适配器输入“ Divera 24/7” API密钥。
 要查找API密钥，请转到官方的[Divera 24/7网站](https://www.divera247.com/)并导航至管理->设置->接口-> API。在这里，您可以在“授权”区域中找到令牌。
 
-此外，您可以将警报限制为特定用户。
-为此，您必须在该适配器的管理页面中输入Divera用户ID。多个用户ID可以用逗号（，）指定。
-要找出用户ID，请转到官方的[Divera 24/7网站](https://www.divera247.com/)并导航至用户个人资料->设置->调试->“ Aktuelle ID”。
+此外，您可以将警报限制为特定用户或警报组。
+为此，您必须在此适配器的管理页面中输入Divera用户ID或警报组号。可以指定多个用户ID和/或警报组编号，并用逗号（，）分隔。
+该适配器首先检查userID，因为它会检查组。第一次点击将触发警报并更新所有状态。当前无法将userID和警报组结合使用。
+要查找自己的用户ID，请转到官方的[Divera 24/7网站](https://www.divera247.com/)并导航至用户配置文件->设置->调试->“ Aktuelle ID”。
 
 要订阅“所有警报”，只需将相关字段留空即可。
 
-还请选择一个更新间隔来调用API服务器。建议30秒。最小为10秒。
+此外，请选择一个更新间隔以调用API服务器。建议30秒。最小为10秒。
 
 ## Changelog
+
+### 0.1.2
+* (TKnpl) added alarmed vehicles datapoint
+
+### 0.1.1
+* (TKnpl) small changes - wording
+
+### 0.1.0
+* (TKnpl) added possibility to specify alarm groups
 
 ### 0.0.10
 * (TKnpl) bug in info.connection fixed and handling of user ids expanded

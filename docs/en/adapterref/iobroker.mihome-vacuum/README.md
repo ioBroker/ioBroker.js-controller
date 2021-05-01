@@ -268,6 +268,13 @@ The supported commands are:
 - Widget at the time without function
 
 ## Changelog
+### 3.1.2 (30.04.2021)
+* try fix map error
+* Map64 chnaged. now without img tags
+* add Multimap support (get romms and map when map is changed)
+* select Multimaps
+* fix error eith zone coordinates
+
 ### 3.1.1 (18.4.2021)
  * Full rewrite
  * Fix map bug with multiple vacuums

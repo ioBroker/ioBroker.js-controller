@@ -361,6 +361,10 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 2.1.5 (29.04.2021)
+* (simatec) Bugfix AdminTab
+* (simatec) small Bugfix
+
 ### 2.1.4 (26.04.2021)
 * (simatec) Redesign Restore GUI
 * (simatec) small GUI Bugfix

@@ -549,6 +549,9 @@ Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was d
    *Nur lesbarer Text, die die Seriennummern der evtl. vorhandenen Wallboxen 0-3 angibt.*
 
 ## Changelog
+### 1.1.1 (NoBl)
+* Object attributes are updated to what they are expected to be: unit, description, datatype (this will break anything that still relies on datapoints being STRING that aren't meant to be string)
+
 ### 1.1.0 (NoBl)
 * Updated to current adapter template
 * Integrated GitHub Testing and auto npm publishing

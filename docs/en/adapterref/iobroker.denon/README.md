@@ -1,3 +1,9 @@
+---
+BADGE-Number of Installations: http://iobroker.live/badges/denon-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.denon.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.denon.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.denon.png?downloads=true
+---
 ![Logo](/admin/denon.png)
 # ioBroker.denon
 ===========================

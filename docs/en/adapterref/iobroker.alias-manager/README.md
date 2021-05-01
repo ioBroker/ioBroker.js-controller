@@ -89,6 +89,10 @@ Here you can:
 
 ## Changelog
 
+### 1.1.1 dev
+* (sbormann) Some design-adjustments for react-ui.
+* (sbormann) Keep track of ioBroker object changes.
+
 ### 1.1.0 (2021-04-20)
 * (sbormann) Added compatibility to new react-ui of admin-adapter.
 

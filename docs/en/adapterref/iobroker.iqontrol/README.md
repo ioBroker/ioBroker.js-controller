@@ -1520,6 +1520,14 @@ This device has some special predefined size- and display-settings to show a tex
     
 ## Changelog
 
+### 1.8.1 dev
+* (sbormann) Some design-adjustments for react-ui.
+* (sbormann) Keep track of ioBroker object changes in admin.
+* (sbormann) Fixed crash if active view has no devices.
+
+### 1.8.0 (2021-04-29)
+* (sbormann) Some design-adjustments for react-ui.
+
 ### 1.7.3 (2021-04-27)
 * (sbormann) Fixed admin-tab for react.
 
@@ -1529,7 +1537,7 @@ This device has some special predefined size- and display-settings to show a tex
 * (sbormann) Changed background-images in autocreate views function.
 * (sbormann) Internal definition and handling of device options changed.
 * (sbormann) The directories /usericons, /usersymbols and /userwidgets are now automatically created, if not existant.
-* (sbormann) Some design-adjustments for react.
+* (sbormann) Some design-adjustments for react-ui.
 
 ### 1.7.1 (2021-04-18)
 * (sbormann) Fix to work with Admin v5.0.3 (renaming files and folders will only work with the upcoming next admin-update).

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis/README.md
 title: Визуализация
-hash: FNj0GFQMdP+2EQnt3r9YurmvL4m/NY9Iy4yigkqRIUs=
+hash: 0/WhX+8/BEES00UkNOAlQGpMkGBAUjWmKW1ywEDjUKg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -112,6 +112,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 * `language` - может быть` de`, `en` или` ru`.
 * `instance` - экземпляр браузера
 * `login` - если вход требуется или нет (например, чтобы показать / скрыть кнопку выхода)
+* `local_ *` - если имя состояния начинается с `local_`, оно не будет передано ioBroker, но обновит все виджеты, которые зависят от этого состояния. (Локальная переменная для текущего сеанса браузера)
 
 Примечание: чтобы использовать ":" в вычислениях (например, в строковой формуле), используйте вместо этого "::".
 
@@ -140,7 +141,7 @@ Vis создает 3 переменные:
 Команды:
 
 * `alert` - показать окно с предупреждением в vis. "control.data" имеет следующий формат: "сообщение; заголовок; значок jquery". Заголовок и значок jquery необязательны. Названия значков можно найти [здесь] (http://jqueryui.com/themeroller/). Чтобы отобразить значок ui-icon-info, напишите `` Message ;; info``.
-* `changeView` - переключиться на желаемый вид. "control.data" должно иметь имя представления. Вы также можете указать название проекта как «проект / представление». Проект по умолчанию - "главный".
+* `changeView` - переключиться на желаемый вид. "control.data" должно иметь имя представления. Вы также можете указать название проекта как «проект / представление». Проект по умолчанию - «главный».
 * `refresh` - перезагрузить vis, например, после изменения проекта для перезагрузки во всех браузерах.
 * `reload` - то же, что и обновление.
 * `dialog` - Показать диалоговое окно. Диалог должен существовать на просмотре. Один из:
@@ -199,13 +200,18 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 
 Обратите внимание, что эти настройки действительны только для повторного подключения, а не для первого подключения.
 
-![Тьма](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
+![Темный](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
 
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 1.3.9 (2021-04-29)
+* (agav99) Added support of local browser variables
+* (Scrounger) Bug fix for null & NaN values in width and height
+* (bluefox) Added support for admin5
+
 ### 1.3.8 (2021-03-03)
 * (bluefox) fix play sounds on iOS Safari an android
 * (Scrounger) visEditInspect: format dimension added

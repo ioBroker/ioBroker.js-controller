@@ -286,6 +286,9 @@ The channel consists of read-only states of type `number`, providing information
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.2 (2021-04-30)
+* (foxriver76) we fixed some type issues (fixes #58)
+
 ### 1.7.1 (2021-03-19)
 * (foxriver76) do not log warnings on inverter endpoint if battery does not support it (closes #55)
 

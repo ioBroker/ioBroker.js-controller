@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.divera247/README.md
 title: ioBroker.divera247
-hash: JjgBOR1CmUpmMJgMG123gCGZca7XbSGcKClNlpMf7HQ=
+hash: jNUIs0WuW0c8Li2RkhyJ6QwyNNP+DCU8W1H/sEhRHyk=
 ---
 ![Logo](../../../en/adapterref/iobroker.divera247/admin/divera247_long.png)
 
@@ -25,18 +25,28 @@ Adapter für den Alarmierungsdienst "Divera 24/7"
 Für die vollständige Verwendbarkeit dieses Adapters muss Ihre Organisation den "Alarm" -Plan der Divera 24/7-Dienste abonnieren
 
 ## Konfiguration dieses Adapters
-Sie müssen den API-Schlüssel "Divera 24/7" Ihrer Organisation für diesen Adapter eingeben.
-Um den API-Schlüssel herauszufinden, gehen Sie zu den offiziellen [Divera 24/7 Webseite](https://www.divera247.com/) und navigieren Sie zu Administration -> Einstellungen -> Schnittstellen -> API. Hier finden Sie das Token im Bereich "Autorisierung".
+Sie müssen den API-Schlüssel "Divera 24/7" von Ihrer Organisation in diesen Adapter eingeben.
+Um den API-Schlüssel herauszufinden, gehen Sie zu den offiziellen [Divera 24/7 Website](https://www.divera247.com/) und navigieren Sie zu Administration -> Einstellungen -> Schnittstellen -> API. Hier finden Sie das Token im Bereich "Autorisierung".
 
-Darüber hinaus können Sie die Alarme auf bestimmte Benutzer beschränken.
-Dazu müssen Sie die Divera-Benutzer-IDs auf der Admin-Seite dieses Adapters eingeben. Mehrere Benutzer-IDs können durch Komma (,) angegeben werden.
-Um die Benutzer-ID herauszufinden, gehen Sie zu den offiziellen [Divera 24/7 Webseite](https://www.divera247.com/) und navigieren Sie zu Benutzerprofil -> Einstellungen -> Debug -> "Aktuelle ID".
+Darüber hinaus können Sie die Alarme auf bestimmte Benutzer oder Alarmgruppen beschränken.
+Dazu müssen Sie die Divera-Benutzer-IDs oder die Alarmgruppennummer auf der Administrationsseite dieses Adapters eingeben. Mehrere Benutzer-IDs und / oder Alarmgruppennummern können durch Komma (,) getrennt angegeben werden.
+Dieser Adapter überprüft zuerst die Benutzer-IDs, bevor er die Gruppen überprüft. Der erste Treffer löst den Alarm aus und aktualisiert alle Zustände. Eine Kombination aus Benutzer-ID und Alarmgruppe ist derzeit nicht möglich.
+Um die eigene Benutzer-ID herauszufinden, gehen Sie zu den offiziellen [Divera 24/7 Website](https://www.divera247.com/) und navigieren Sie zu Benutzerprofil -> Einstellungen -> Debug -> "Aktuelle ID".
 
 Um **alle Alarme** zu abonnieren, lassen Sie einfach das entsprechende Feld leer.
 
-Bitte wählen Sie auch ein Aktualisierungsintervall für den Aufruf des API-Servers. 30 Sekunden werden empfohlen. Das Minimum beträgt 10 Sekunden.
+Wählen Sie außerdem ein Aktualisierungsintervall für den Aufruf des API-Servers. 30 Sekunden werden empfohlen. Das Minimum beträgt 10 Sekunden.
 
 ## Changelog
+
+### 0.1.2
+* (TKnpl) added alarmed vehicles datapoint
+
+### 0.1.1
+* (TKnpl) small changes - wording
+
+### 0.1.0
+* (TKnpl) added possibility to specify alarm groups
 
 ### 0.0.10
 * (TKnpl) bug in info.connection fixed and handling of user ids expanded

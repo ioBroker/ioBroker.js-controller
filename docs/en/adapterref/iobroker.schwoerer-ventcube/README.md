@@ -33,15 +33,15 @@ Depending on the building-specific Ventcube setup not all parameters that can be
 All parameters mentioned in the specification referenced below were added to the adapter and can be accessed via ***Advanced Functions*** option that is configurable during adapter deployment. Enabling this option will cause the adapter to periodically retrieve data for 100+ parameters, of which most might not be used in common households. Test scope was limited to ***Basic Functions*** (enabled by default).
 
 The following default config-values likely will need to be changed during adapter deployment for it to connect to Ventcube properly:
-| Parameter   | Default Value | **Should be** | Explanation |
-|-------------|---------------|---------------|-------------|
-| `Server`    | localhost | ***HERMES-LT*** or ***local network IP of Ventcube*** | Default value is used for tests and definitely needs to be changed! |
-| `Port`      | 10502 | ***502*** | Default value is used for tests and definitely needs to be changed! |
-| `Interval`  | 30 | 30 | After how many seconds should metrics be refreshed from server |
-| `Request Timeout` | 5000 | 5000 | How many milliseconds to wait until requests to Ventcube time out |
-| `Reconnection Attempts` | 10 | 10 | In case connection is lost to Ventcube, how many times a reconnect should be attempted |
-| `Delay between reconnection attempts` | 10000 | 10000 | How long to wait between reconnection attempts (in milliseconds) |
-| `Advanced Functions` | &#10003; | | While basic functions might be sufficient if Ventcube is just used for air ventilation, advanced functions should be activated if heating/cooling functions, or system metrics (error codes, fan details) are needed. |
+| Parameter                             | Default Value | **Should be**                                         | Explanation |
+|---------------------------------------|---------------|-------------------------------------------------------|-------------|
+| `Server`                              | localhost     | ***HERMES-LT*** or ***local network IP of Ventcube*** | Default value is used for tests and definitely needs to be changed! |
+| `Port`                                | 10502         | ***502***                                             | Default value is used for tests and definitely needs to be changed! |
+| `Interval`                            | 30            | 30                                                    | After how many seconds should metrics be refreshed from server |
+| `Request Timeout`                     | 5000          | 5000                                                  | How many milliseconds to wait until requests to Ventcube time out |
+| `Reconnection Attempts`               | 10            | 10                                                    | In case connection is lost to Ventcube, how many times a reconnect should be attempted |
+| `Delay between reconnection attempts` | 10000         | 10000                                                 | How long to wait between reconnection attempts (in milliseconds) |
+| `Advanced Functions`                  | &#10003;      |                                                       | While basic functions might be sufficient if Ventcube is just used for air ventilation, advanced functions should be activated if heating/cooling functions, or system metrics (error codes, fan details) are needed. |
 
 #### Interesting functions (to start with)
 - ***Betriebsart***, changeable

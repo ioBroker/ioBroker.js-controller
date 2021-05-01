@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: eOIPkl4N+yA5CbB877TXJ3xsQof+XFlZNAqMp9xoL9o=
+hash: jKA1xFtVrrm1yWFJ2OH73uJ5LlJiHWRoEkexZWAU6KE=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -36,21 +36,24 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link wird zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/donate?hosted_button_id=7W6M3TFZ4W9LW)
 
 ---
 
+## 2.9.5
+- Fehlerbehebung
+
 ## 2.9.4
 - Fehlerbehebung
 
 ## 2.9.3
-- Fehler bei der PopUp-Wiedergabe: Klick zum Schließen wurde direkt nach der Überwachung und Klick-Verweigerungsknöpfe hinter dem PopUp aus
-- unterscheidet sich bei Ansicht in PopUp nicht richtig gehört
+- Fehler bei der PopUp-Wiedergabe: Klick zum Schließen wurde direkt nach der Überwachung und Klick-Verweigerungstasten hinter dem PopUp aus
+- wird gleich bei Ansicht in PopUp nicht richtig behandelt
 
 ## 2.9.2
-- Problem mit Datenpunkt zum Verantwortlichen des Popups Frei. ACHTUNG! Der Datenpunkt muss geändert werden
+- Problem mit Datenpunkt zum Verantwortlichen des Popups. ACHTUNG! Der Datenpunkt muss geändert werden
 
 ## 2.9.1
 - Fehlerbehebung
@@ -60,14 +63,14 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Optionen zum automatischen Verwendungszweck des Popups hinzugefügt
 - Fehlerbehebung
 
-## 2.8.3
+#8. 2.8.3
 - Fehlerbehebung
 
 #8. 2.8.2
-- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" wird ",
+- Problem mit Colorslider gehört: Wert wird nicht in Datenpunktzahlen, wenn "Wert bei Freigabe Steuern" Steuern ist ",
 
 ## 2.8.1
-- Fehlerweise: Farbschieberegler RGB aktualisiert bei Dp.
+- Fehlerhafte: Farbschieberegler RGB aktualisiert bei Dp.
 
 ## 2.8.0
 - Ansicht in PopUp Option für Universal- und Multi-Widget hinzugefügt
@@ -77,7 +80,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlerbehebung
 
 ## 2.7.10
-- Problem mit Bildern im Universal- und Multi-Widget-Einstellungen
+- Problem mit Bildern im Universal und Multi Widget Messen
 - Problem mit Bildwechesl im Universal und Multi Widget versucht
 
 ## 2.7.9
@@ -90,7 +93,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.7.7
 - Problem mit der Bildstellung gehört
-- Problem mit dem Farbregler wurde, dass der Wert beim Loslassen nicht verkauft wurde
+- Problem mit dem Farbregler gehört, dass der Wert beim Loslassen nicht verkauft wurde
 
 ## 2.7.6
 - Problem mit Symbolfarbe für Navi-Widget Frei
@@ -108,7 +111,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 
 ## 2.7.3
-- Fehler beim Multi-State und Steuern Zuständigkeiten
+- Fehler beim mehrstaatlichen und behinderten Zuständigkeiten
 - Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
@@ -200,7 +203,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.3.0
-- Problem gehört, bei dem Schaltschaltenden eigenen Werte senden
+- Problem gehört, bei dem Schaltflächen gleichen Werte senden
 - Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
 - Universal- und Multi-Widget-Attribut werden beim Ändern auf Widgetschauen
 
@@ -211,8 +214,8 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler im Multi Widget Rechte: Bilder und Text ändern nicht bei Typ Navigation
 
 ## 2.2.1
-- Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
-- Fehler in der Werteliste Werden: Wert wird nicht aktualisiert
+- Fehler in der JSON-Tabelle wird angezeigt, wenn kein Problemiges vorhanden ist
+- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
 
 ## 2.2.0
 - Datenpunktwerte werden jetzt bei allen Widgets im Editor werden
@@ -290,7 +293,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Slider-Widget hinzugefügt
 - Option zum Spiegeln des Bildes hinzugefügt
 - Neue Symbole hinzugefügt
-- Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
+- Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
 - Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt

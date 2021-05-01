@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.melcloud/README.md
 title: ioBroker.melcloud
-hash: TRuKhvP3NMiptXm3E2ONVYniqWnOYX2YFWm9NNNaOjc=
+hash: EIieXsZU4LLaCACIfcV05V9RuOyLt/jjXcaeG6HhsMg=
 ---
 ![Logo](../../../en/adapterref/iobroker.melcloud/admin/melcloud.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.melcloud.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.melcloud.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/melcloud-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/melcloud-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/melcloud-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Black-Thunder/iobroker.melcloud.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/Black-Thunder/ioBroker.melcloud/badge.svg)
@@ -18,7 +18,7 @@ hash: TRuKhvP3NMiptXm3E2ONVYniqWnOYX2YFWm9NNNaOjc=
 *Symbol erstellt von [Freepik] (https://www.flaticon.com/authors/freepik) von [www.flaticon.com](https://www.flaticon.com/")*
 
 # IoBroker.melcloud
-** Tests: ** [![Build Status] (https://travis-ci.com/Black-Thunder/ioBroker.melcloud.svg?branch=master)](https://travis-ci.com/Black-Thunder/ioBroker.melcloud)
+** Tests: ** [![Test] (https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg)](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml)
 
 ## Melcloud-Adapter für ioBroker
 Dieser Adapter integriert Mitsubishi-Klimaanlagen über MELCloud (https://www.melcloud.com/) in ioBroker.
@@ -35,6 +35,10 @@ Dokumentation:
 	### __WORK IN PROGRESS__
 -->
 
+### 1.1.2 (2021-04-30)
+* (Black-Thunder) added compability with js-controller >= v3.3.1
+* (Black-Thunder) updated dependencies
+
 ### 1.1.1 (2021-01-10)
 **Attention: With this version you must reenter your password in the adapter settings and save again! Otherwise login will fail.**
 * (Black-Thunder) fix: correctly use auto decryption handling for password 
@@ -43,7 +47,7 @@ Dokumentation:
 ### 1.1.0 (2021-01-08)
 * (Black-Thunder) new functionality: retrieve power consumption reports
 * (Black-Thunder) adapter connection state now correctly set accordingly to the cloud connection
-* (Black-Thunder) added release-script and Dependabot, updated dependecies
+* (Black-Thunder) added release-script and Dependabot, updated dependencies
 
 ### 1.0.6 28.06.2020
 * (Black-Thunder) implemented queue mechanism for sending requests to cloud

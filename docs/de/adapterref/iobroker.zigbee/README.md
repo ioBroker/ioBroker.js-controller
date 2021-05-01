@@ -35,6 +35,13 @@ Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mi
 
 ## Changelog
 
+### 1.5.3 (2021-04-30)
+* (arteck) Fix for js-controller 3.3.*
+
+### 1.5.2 (2021-04-29)
+* (asgothian) Groups on dashboard
+
+
 ### 1.5.1 (2021-04-14)
 * (kirovilya) Dashboard
 * (asgothian) Groups (reworked)

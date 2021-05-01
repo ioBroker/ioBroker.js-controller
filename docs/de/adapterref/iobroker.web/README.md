@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: CdIj955L1zu2HVxws/1QoD0VWQqXAJrLhpzEZiVyhPQ=
+hash: cmyhSPUcwEz1iT5OdupfqQ7rtrelYjXPf5Mm/RTK5A0=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -18,7 +18,7 @@ Webserver auf der Basis von Node.js und Express zum Lesen der Dateien aus ioBrok
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
-## Web-Sockets optimieren
+## Optimieren von Web-Sockets
 Auf einigen Web-Sockets-Clients gibt es Leistungsprobleme bei der Kommunikation.
 Manchmal ist dieses Problem auf einen Fallback der Socket.io-Kommunikation bei einem langen Abfragemechanismus zurückzuführen.
 Sie können die Option *Web-Sockets erzwingen* so einstellen, dass nur der Transport von Web-Sockets erzwungen wird.
@@ -64,14 +64,23 @@ createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
 });
 ```
 
-<! - Platzhalter für die nächste Version (am Zeilenanfang):
-
-### __WORK IN PROGRESS__ ->
 ## Option "Basisauthentifizierung"
 Ermöglicht die Anmeldung über die Standardauthentifizierung durch Senden von `401` Nicht autorisiert mit einem `WWW-Authenticate`-Header.
 Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal die falschen Anmeldeinformationen eingeben, werden Sie zur Anmeldeseite weitergeleitet.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 3.4.1 (2021-04-30)
+* (bluefox) Added support of admin5
+
+### 3.4.0 (2021-04-12)
+* IMPORTANT: js-controller 3.1 is now needed at least
+* (foxrive76) fix a special case for requesting ranges only (Sentry IOBROKER-WEB-3M)
+* (Apollon77) automatically decrypt secrets for web-extensions
+
 ### 3.3.0 (2021-02-01)
 * (bluefox) The admin GUI was rewritten with reactJS 
 

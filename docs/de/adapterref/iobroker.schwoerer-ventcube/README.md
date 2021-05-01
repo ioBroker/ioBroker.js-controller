@@ -3,17 +3,16 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.schwoerer-ventcube/README.md
 title: ioBroker.schwoerer-ventcube
-hash: h1L4E7+APHdLKCuaLMoZsUVbr5OMFSlueVozYaasX7Q=
+hash: ooQd7u6nAw3NV7A4xcAwWg32vY9GzGvOivxyM/aXzcQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.schwoerer-ventcube/admin/schwoerer-ventcube.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.schwoerer-ventcube.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.schwoerer-ventcube.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Excodibur/iobroker.schwoerer-ventcube.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/schwoerer-ventcube-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/schwoerer-ventcube-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/schwoerer-ventcube-stable.svg)
 ![Sprachklasse: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Excodibur/ioBroker.schwoerer-ventcube.svg?logo=lgtm&logoWidth=18)
-![Travis-CI](http://img.shields.io/travis/excodibur/ioBroker.schwoerer-ventcube/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.schwoerer-ventcube.png?downloads=true)
 
 # IoBroker.schwoerer-ventcube
@@ -22,7 +21,7 @@ hash: h1L4E7+APHdLKCuaLMoZsUVbr5OMFSlueVozYaasX7Q=
 ## Schwoerer-ventcube adapter für ioBroker
 Adapter für Schwoererhaus Ventcube System. Weitere Informationen zu Ventcube Fresh finden Sie in [Hier](https://www.bauinfocenter.de/lueftung/lueftungsanlagen/).
 
-** Haftungsausschluss **: Dieser Adapter wird von der Firma [Schwoererhaus KG](https://www.schwoererhaus.de/), die das Ventcube-System vertreibt, weder entwickelt noch offiziell unterstützt. Anweisungen sollten sorgfältig und auf eigenes Risiko befolgt werden.
+** Haftungsausschluss **: Dieser Adapter wird von der Firma [Schwoererhaus KG](https://www.schwoererhaus.de/), die das Ventcube-System vertreibt, weder entwickelt noch offiziell unterstützt. Anweisungen sollten mit Sorgfalt und auf eigenes Risiko befolgt werden.
 
 ### Voraussetzungen
 Um auf die Netzwerkschnittstelle von Ventcube zugreifen zu können, müssen folgende (bekannte) Voraussetzungen erfüllt sein:
@@ -52,7 +51,7 @@ Die folgenden Standardkonfigurationswerte müssen wahrscheinlich während der Ad
 
 #### Interessante Funktionen (zunächst)
 - ***Betriebsart*** , veränderbar
-- ***Stoßlüftung*** (30 Minuten Luftstoß der Stufe 4), austauschbar
+- ***Stoßlüftung*** , 30 Minuten Luftstoß der Stufe 4), austauschbar
 - ***Ist Temp Raum 1*** (Temperatur im Haus)
 - ***T10 Außentemperatur***
 
@@ -66,7 +65,7 @@ Der ioBroker-Adapter wurde erfolgreich getestet mit:
 ## License
 MIT License
 
-Copyright (c) 2020 Excodibur <excodibur@posteo.de>
+Copyright (c) 2020 Excodibur <non@existant.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

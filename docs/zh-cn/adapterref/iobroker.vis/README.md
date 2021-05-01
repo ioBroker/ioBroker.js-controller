@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis/README.md
 title: 可视化
-hash: FNj0GFQMdP+2EQnt3r9YurmvL4m/NY9Iy4yigkqRIUs=
+hash: 0/WhX+8/BEES00UkNOAlQGpMkGBAUjWmKW1ywEDjUKg=
 ---
-![标识](../../../en/adapterref/iobroker.vis/admin/vis.png)
+![商标](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
 ![安装数量](http://iobroker.live/badges/vis-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis.svg)
@@ -25,7 +25,7 @@ ioBroker平台的Web可视化。
 但是还有另一种选择如何将窗口小部件的* any *属性绑定到某个ObjectID。
 
 只需写入属性```{object.id}```§中，它将绑定到该对象的值（不在编辑模式下）。
-如果您使用特殊格式，甚至可以使用它进行一些简单的操作，例如乘法或格式化。
+如果您使用特殊格式，甚至可以对其进行一些简单的操作，例如乘法或格式化。
 彭定康的格式如下：
 
 ```
@@ -83,7 +83,7 @@ Last change: {objectRed.lc;date(hh:mm)}
 Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(h*h + w*w))}
 ```
 
-`{h:height;w:width;h*w}`将被解释为以下功能：
+`{h:height;w:width;h*w}`将被解释为功能：
 
 ```
 value = (function () {
@@ -112,6 +112,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 *`language`-可以是`de`，`en`或`ru`。
 *`instance`-浏览器实例
 *`login`-是否需要登录（例如显示/隐藏注销按钮）
+*`local_ *`-如果状态名称是从`local_`开始的，则不会将其报告给ioBroker，而是会更新所有依赖此状态的窗口小部件。 （当前浏览器会话的局部变量）
 
 注意：要在计算中使用“：”（例如，在字符串公式中），请改用“ ::”。
 
@@ -126,7 +127,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 为了那个原因。
 
 ##过滤器
-要在一个视图上可视化窗口小部件的总数，可以使用过滤器减少视图上同时显示的窗口小部件的数量。
+要在一个视图上可视化所有小部件的数量，可以使用过滤器减少视图上同时显示的小部件的数量。
 
 每个窗口小部件都有一个字段`filter`。如果您将其设置为某个值，例如`light`，因此您可以使用其他小部件`(bars - filters, filter - dropdown)`来控制哪个过滤器实际处于活动状态。
 
@@ -175,11 +176,11 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ```
 
 ＃＃ 默认视图
-您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，可以显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
+您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，用于向您显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
 
 此外，您可以定义是否必须将此视图用作此分辨率的默认视图。
 
-因此，每次调用`index.html`（不包含`#viewName`）时，都将打开最适合此分辨率视图的视图。
+因此，每次调用`index.html`（不包含`#viewName`）时，都会打开最适合此分辨率视图的视图。
 如果只有一个视图带有*“ Default” *标志，那么将独立于屏幕分辨率或方向打开此视图。
 
 例如。您可以创建两个视图“ Landscape-Mobile”和“ Portrait-Mobile”，并且当您更改方向或屏幕尺寸时，这两个视图将自动切换。
@@ -206,6 +207,11 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ### __正在进行的工程__->
 
 ## Changelog
+### 1.3.9 (2021-04-29)
+* (agav99) Added support of local browser variables
+* (Scrounger) Bug fix for null & NaN values in width and height
+* (bluefox) Added support for admin5
+
 ### 1.3.8 (2021-03-03)
 * (bluefox) fix play sounds on iOS Safari an android
 * (Scrounger) visEditInspect: format dimension added

@@ -57,6 +57,13 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 	### __WORK IN PROGRESS__
 -->
 
+### 3.5.10 (2021-04-30)
+* (foxriver76) we removed the common.max from lightlevel, was 17,000 but can be much higher
+* (foxriver76) we added common.type for states where the attribute was missing
+
+### 3.5.9 (2021-04-30)
+* (foxriver76) start this adapter in TIER 2
+
 ### 3.5.8 (2021-04-17)
 * (foxriver76) minor changes
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis/README.md
 title: Visualisierung
-hash: FNj0GFQMdP+2EQnt3r9YurmvL4m/NY9Iy4yigkqRIUs=
+hash: 0/WhX+8/BEES00UkNOAlQGpMkGBAUjWmKW1ywEDjUKg=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -16,7 +16,7 @@ hash: FNj0GFQMdP+2EQnt3r9YurmvL4m/NY9Iy4yigkqRIUs=
 WEB-Visualisierung für die ioBroker-Plattform.
 
 ## Installation & Dokumentation
-![Demo-Schnittstelle](img/user0.png) ![Demo-Schnittstelle](../../../en/adapterref/iobroker.vis/img/user7.png)
+![Demo-Oberfläche](img/user0.png) ![Demo-Oberfläche](../../../en/adapterref/iobroker.vis/img/user7.png)
 
 [Online-Demos](https://iobroker.click/)
 
@@ -112,6 +112,7 @@ Es gibt verschiedene interne Bindungen, um zusätzliche Informationen in Ansicht
 * `language` - kann` de`, `en` oder` ru` sein.
 * `instance` - Browserinstanz
 * `login` - ob ein Login erforderlich ist oder nicht (z. B. um die Abmeldeschaltfläche anzuzeigen / auszublenden)
+* `local_ *` - Wenn der Statusname von `local_` aus gestartet wird, wird er nicht an ioBroker gemeldet, sondern aktualisiert alle Widgets, die von diesem Status abhängen. (Lokale Variable für aktuelle Browsersitzung)
 
 Hinweis: Um ":" in Berechnungen (z. B. in der Zeichenfolgenformel) zu verwenden, verwenden Sie stattdessen "::".
 
@@ -135,13 +136,13 @@ Vis erstellt 3 Variablen:
 
 - `control.instance` - Hier sollte die Browserinstanz geschrieben werden oder FFFFFFFF, wenn jeder Browser gesteuert werden muss.
 - `control.data` - Parameter für den Befehl. Siehe spezifische Befehlsbeschreibung.
-- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen die "Instanz" und "Daten" mit Daten vorbereitet werden.
+- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen "Instanz" und "Daten" mit Daten vorbereitet werden.
 
 Befehle:
 
 * `alert` - Alarmfenster im Vis anzeigen. "control.data" hat das folgende Format "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
 * `changeView` - wechselt zur gewünschten Ansicht. "control.data" muss den Namen view haben. Sie können den Projektnamen auch als "Projekt / Ansicht" angeben. Das Standardprojekt ist "main".
-* `refresh` - lädt das vis neu, beispielsweise nachdem das Projekt geändert wurde, um es in allen Browsern neu zu laden.
+* `refresh` - lädt das vis neu, zum Beispiel nachdem das Projekt geändert wurde, um es in allen Browsern neu zu laden.
 * `reload` - wie aktualisieren.
 * `dialog` - Dialogfenster anzeigen. Der Dialog muss in der Ansicht vorhanden sein. Einer von:
 
@@ -179,7 +180,7 @@ Sie können für jede Ansicht die gewünschte Auflösung definieren (Menü => Ex
 
 Darüber hinaus können Sie festlegen, ob diese Ansicht als Standard für diese Auflösung verwendet werden muss.
 
-Jedes Mal, wenn die `index.html` (ohne `#viewName`) aufgerufen werden, wird die für diese Auflösungsansicht am besten geeignete Ansicht geöffnet.
+Jedes Mal, wenn die `index.html` (ohne `#viewName`) aufgerufen werden, wird die für diese Auflösungsansicht am besten geeignete geöffnet.
 Wenn nur eine Ansicht das Flag *"Standard"* hat, wird diese Ansicht unabhängig von der Bildschirmauflösung oder -ausrichtung geöffnet.
 
 Z.B. Sie können zwei Ansichten "Landscape-Mobile" und "Portrait-Mobile" erstellen. Diese beiden Ansichten werden automatisch umgeschaltet, wenn Sie die Ausrichtung oder Bildschirmgröße ändern.
@@ -206,6 +207,11 @@ Beachten Sie, dass diese Einstellungen nur für die erneute Verbindung und nicht
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.3.9 (2021-04-29)
+* (agav99) Added support of local browser variables
+* (Scrounger) Bug fix for null & NaN values in width and height
+* (bluefox) Added support for admin5
+
 ### 1.3.8 (2021-03-03)
 * (bluefox) fix play sounds on iOS Safari an android
 * (Scrounger) visEditInspect: format dimension added
