@@ -453,7 +453,31 @@
                     "type": "object",
                     "patternProperties": {
                         ".+": {
-                            "type": "string"
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "properties": {
+                                        "link": {
+                                            "type": "string"
+                                        },
+                                        "color": {
+                                            "type": "string"
+                                        },
+                                        "pro": {
+                                            "type": "boolean"
+                                        },
+                                        "icon": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "link"
+                                    ]
+                                }
+                            ]
                         }
                     }
                 },
