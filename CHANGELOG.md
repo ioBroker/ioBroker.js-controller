@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.5 (2021-05-01)
 * (foxriver76/Apollon77) Change loglevel for setState mismatch notifies to "info"
 * (foxriver76) optimize setState checks to handle Object and mixed correct
 

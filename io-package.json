@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.4",
+        "version": "3.3.5",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.5": {
+                "en": "(foxriver76/Apollon77) Change loglevel for setState mismatch notifies to \"info\"\noptimize setState checks to handle Object and mixed correct",
+                "de": "(foxriver76 / Apollon77) Ändern Sie loglevel für setState Mismatch-Benachrichtigungen in \"info\".\nOptimieren Sie die setState-Prüfungen, um das Objekt zu verarbeiten und korrekt zu mischen",
+                "ru": "(foxriver76 / Apollon77) Изменить уровень журнала для уведомления о несоответствии setState на \"info\"\nоптимизировать проверки setState для обработки объекта и смешанного корректного",
+                "pt": "(foxriver76 / Apollon77) Alterar nível de log para notificações de incompatibilidade setState para \"info\"\notimizar as verificações de setState para lidar com Object e misturado corretamente",
+                "nl": "(foxriver76 / Apollon77) Loglevel wijzigen voor setState mismatch meldt naar \"info\"\noptimaliseer setState-controles om Object en gemengd correct af te handelen",
+                "fr": "(foxriver76 / Apollon77) Modifier le niveau de journalisation pour l'inadéquation setState notifie à \"info\"\noptimiser les vérifications de setState pour gérer Object et le mixage correct",
+                "it": "(foxriver76 / Apollon77) Modifica loglevel per le notifiche di mancata corrispondenza setState a \"info\"\nottimizzare i controlli setState per gestire Object e mixed correct",
+                "es": "(foxriver76 / Apollon77) Cambiar el nivel de registro para la falta de coincidencia de setState notifica a \"información\"\noptimizar las comprobaciones de setState para manejar Object y mezclar correctamente",
+                "pl": "(foxriver76 / Apollon77) Zmiana loglevel dla niezgodności setState powiadamia o „info”\noptymalizuj kontrole setState, aby obsłużyć poprawnie obiekt i mieszać",
+                "zh-cn": "（foxriver76 / Apollon77）更改setState不匹配的日志级别通知给“ info”\n优化setState检查以处理对象并正确混合"
+            },
             "3.3.4": {
                 "en": "Fix restart logic for linux systems to prevent processes started aside systemd\nAdd new system config values to set a default loglevel for new created instances\nDo not delete objects recursively that have dontDelete flag",
                 "de": "Korrektur der Neustartlogik für Linux-Systeme, um zu verhindern, dass Prozesse neben systemd gestartet werden\nFügen Sie neue Systemkonfigurationswerte hinzu, um eine Standard-Google-Ebene für neu erstellte Instanzen festzulegen\nLöschen Sie keine Objekte rekursiv, die das Flag dontDelete haben",
