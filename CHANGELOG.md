@@ -4,6 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76/Apollon77) Change loglevel for setState mismatch notifies to "info"
+* (foxriver76) optimize setState checks to handle Object and mixed correct
+
 ## 3.3.4 (2021-04-30)
 * (AlCalzone) Fix restart logic for linux systems to prevent processes started aside systemd
 * (bluefox) Add new system config values to set a default loglevel for new created instances
