@@ -23,8 +23,8 @@ Menüs:
 
 ![Seiten-Menüs](media/Seite_numbers.png)
 
-
-**1.) Hauptmenü**
+---
+####1.) Hauptmenü
 
 Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der  
 Seite sichtbar, das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet.  
@@ -35,9 +35,9 @@ Dann  muss es durch Anklicken des Burger-Icons geöffnet werden:
 Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr  
 Platz für den Inhalt zu machen.
 
-
-**2.) Doku-Menü**
-Dieses Menü ist am PC üblicherweise sichtbar, wird bei niedrigen Auflösungen 
+---
+####2.) Doku-Menü
+Dieses Menü ist am PC üblicherweise sichtbar, wird bei niedrigen Auflösungen  
 ausgeblendet. Dann  muss es durch Anklicken des Burger-Icons geöffnet werden:
 
 ![Doku-Menü](media/Dokumenu.png)
@@ -49,7 +49,8 @@ Menüpunkte angezeigt.
 Über das Icon mit dem Pfeil kann das Menü wieder versteckt werden um mehr Platz  
 für den Inhalt zu machen.
 
-**3.) Themenmenü**
+---
+####3.) Themenmenü
 
 In diesem Menü werden die Haupt-Themen des angewählten Artikels angezeigt um  
 schneller zu einem gesuchten Punkt navigieren zu können.
@@ -59,7 +60,7 @@ schneller zu einem gesuchten Punkt navigieren zu können.
 Über das Icon mit dem **X** kann das Menü wieder versteckt werden.
 
 ### Weitere Bedienelemente
-**4.) Sprachauswahl**
+####4.) Sprachauswahl
 
 Die Website ist mehrsprachig angelegt. Nach und nach werden weitere Sprachen  
 hinzugefügt. Einige werden zuerst automatisch generiert, native Speaker sind  
@@ -72,7 +73,7 @@ An dem Weltkugel-Icon kann die gewünschte Sprache ausgewählt werden.
 Diese Sprachliste wird bei Bedarf erweitert.
 
 
-**5.) Suche**
+####5.) Suche
 
 Dieses Feld bedarf keiner Erklärung. Bitte ausgiebig verwenden!
 
@@ -98,4 +99,4 @@ Dokumentation zu verbessern!
 [Adapter-Referenz]: https://www.iobroker.net/#de/adapters
 [Logik & Automatisierung]: https://www.iobroker.net/#de/documentation/logic/examples.md
 [Developer Bereich]: https://www.iobroker.net/#de/documentation/dev/adapterdev.md
-[helfen Sie uns dabei]: https://www.iobroker.net/#de/documentation/community/doc.md
+[helfen Sie uns dabei]: hhttps://forum.iobroker.net/viewtopic.php?f=8&t=16933
