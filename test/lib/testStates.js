@@ -853,6 +853,8 @@ function register(it, expect, context) {
         });
     });
 
+    /**
+     TODO: Reactivate with next controller (02.05.2021)
     it(testName + 'Should decline undefined state value', async () => {
         // set state to 1
         await context.adapter.setStateAsync(`${gid}undefinedState`, 1);
@@ -870,6 +872,7 @@ function register(it, expect, context) {
             }
         }
     });
+     */
 
     it(testName + 'Should also set object id', async () => {
         // set state with device, channel, state
