@@ -112,6 +112,7 @@ function testAdapter(options) {
     }
 
     // TODO: This is unused:
+    // eslint-disable-next-line no-unused-vars
     function checkValueOfState(id, value, cb, counter) {
         counter = counter || 0;
         if (counter > 20) {
