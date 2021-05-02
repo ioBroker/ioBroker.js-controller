@@ -107,7 +107,7 @@ zur freien Verfügung.
    Es gibt keinen vertraglich festgelegten Support!
 
 [Grundlagen]: https://www.iobroker.net/#de/documentation/basics/README.md
-[Adaptern]: https://www.iobroker.net/#de/adapters
+[Adaptern]: http://download.iobroker.net/list.html
 [hier zu finden]: https://www.iobroker.net/docu/
 [im Forum]: https://forum.iobroker.net/viewtopic.php?f=8&t=16933
 [GitHub]: https://github.com/ioBroker
