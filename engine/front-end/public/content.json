@@ -27,16 +27,8 @@
         "ru": "Основы",
         "zh-cn": "基础概念"
       },
-      "pages": {
-        "modularity": {
-          "title": {
-            "en": "modularity",
-            "de": "Modularität",
-            "ru": "модульность",
-            "zh-cn": "模块化"
-          },
-          "content": "basics/README.md"
-        },
+      "content": "basics/README.md",
+	  "pages": {
         "architecture": {
           "title": {
             "en": "architecture",
@@ -174,15 +166,6 @@
             "zh-cn": "手动安装"
           },
           "pages": {
-            "installation": {
-              "title": {
-                "en": "installation",
-                "de": "Installation",
-                "ru": "установка",
-                "zh-cn": "安装"
-              },
-              "content": "install/windows.md"
-            },
             "Linux": {
               "title": {
                 "en": "Linux",
@@ -191,6 +174,15 @@
                 "zh-cn": "的Linux"
               },
               "content": "install/linux.md"
+            },
+            "Windows": {
+              "title": {
+                "en": "Windows",
+                "de": "Windows",
+                "ru": "установка",
+                "zh-cn": "安装"
+              },
+              "content": "install/windows.md"
             },
             "OS X": {
               "title": {
