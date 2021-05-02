@@ -38,11 +38,11 @@
           },
           "content": "basics/architecture.md"
         },
-        "Adapter and controller": {
+        "adapter and instances": {
           "title": {
-            "en": "Adapter and controller",
-            "de": "Adapter und Controller",
-            "ru": "Адаптер и контроллер",
+            "en": "adapter and instances",
+            "de": "Adapter und Instanzen",
+            "ru": "Адаптер и экземплярам",
             "zh-cn": "适配器和控制器"
           },
           "content": "basics/adapter.md"
@@ -91,6 +91,15 @@
             "zh-cn": "卷"
           },
           "content": "basics/roles.md"
+        },
+		"glossary": {
+          "title": {
+            "en": "glossary",
+            "de": "Begriffserklärungen",
+            "ru": "глоссарий",
+            "zh-cn": "詞彙表"
+          },
+          "content": "basics/glossary.md"
         }
       }
     },
