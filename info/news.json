@@ -869,5 +869,39 @@
         "conditions": {
             "zwave2": "smaller(2.0.0)"
         }
+    },
+    {
+        "title": {
+            "en": "WARNING: \"Device-Reminder\" update : Special procedure after update to versions as of 1.2.x",
+            "de": "WARNUNG: \"Device-Reminder\" -Update: Spezielles Vorgehen nach dem Update auf Versionen ab 1.2.x. nötig",
+            "ru": "ВНИМАНИЕ: Обновление \"Device-Reminder\": особая процедура после обновления до версий, начиная с 1.2.x",
+            "pt": "AVISO: Atualização \"Device-Reminder\": procedimento especial após a atualização para versões a partir de 1.2.x",
+            "nl": "WAARSCHUWING: \"Device-Reminder\" update: Speciale procedure na update naar versies vanaf 1.2.x",
+            "fr": "AVERTISSEMENT: mise à jour \"Device-Reminder\": procédure spéciale après mise à jour vers les versions à partir de 1.2.x",
+            "it": "ATTENZIONE: aggiornamento \"Device-Reminder\": procedura speciale dopo l'aggiornamento alle versioni a partire dalla 1.2.x",
+            "es": "ADVERTENCIA: Actualización \"Device-Reminder\": procedimiento especial después de la actualización a versiones a partir de 1.2.x",
+            "pl": "OSTRZEŻENIE: Aktualizacja „Przypomnienia o urządzeniu”: specjalna procedura po aktualizacji do wersji od 1.2.x.",
+            "zh-cn": "警告：“设备提醒”更新：更新到1.2.x以上的版本后的特殊步骤"
+        },
+        "content": {
+            "en": "When updating to version 1.2.x it is mandatory to open the instance setting and click on \"Save and close\"! Everything else is in the popup in the device-reminder instance UI",
+            "de": "Beim Update auf Version 1.2.x müssen Sie unbedingt die Instanzeinstellung öffnen und auf \"Speichern und schließen\" klicken! Alles weitere steht im Popup in der Benutzeroberfläche der device-reminder-Instanz",
+            "ru": "При обновлении до версии 1.2.x обязательно открыть настройки экземпляра и нажать «Сохранить и закрыть»! Все остальное находится во всплывающем окне пользовательского интерфейса экземпляра устройства-напоминания.",
+            "pt": "Ao atualizar para a versão 1.2.x é obrigatório abrir a configuração da instância e clicar em \"Salvar e fechar\"! Todo o resto está no pop-up na IU da instância do lembrete do dispositivo",
+            "nl": "Bij het updaten naar versie 1.2.x is het verplicht om de instantie-instelling te openen en op \"Opslaan en sluiten\" te klikken! Al het andere staat in de pop-up in de gebruikersinterface van de apparaatherinnering",
+            "fr": "Lors de la mise à jour vers la version 1.2.x, il est obligatoire d'ouvrir le paramètre d'instance et de cliquer sur \"Enregistrer et fermer\"! Tout le reste est dans la fenêtre contextuelle de l'interface utilisateur de l'instance de rappel d'appareil",
+            "it": "Quando si aggiorna alla versione 1.2.x è obbligatorio aprire le impostazioni dell'istanza e fare clic su \"Salva e chiudi\"! Tutto il resto è nel popup dell'interfaccia utente dell'istanza di promemoria dispositivo",
+            "es": "Al actualizar a la versión 1.2.x, es obligatorio abrir la configuración de la instancia y hacer clic en \"Guardar y cerrar\". Todo lo demás está en la ventana emergente en la interfaz de usuario de la instancia de recordatorio de dispositivo",
+            "pl": "W przypadku aktualizacji do wersji 1.2.x obowiązkowe jest otwarcie ustawienia instancji i kliknięcie przycisku „Zapisz i zamknij”! Cała reszta znajduje się w wyskakującym okienku w interfejsie użytkownika wystąpienia przypomnienia o urządzeniu",
+            "zh-cn": "更新到版本1.2.x时，必须打开实例设置，然后单击“保存并关闭”！其他所有内容都在设备提醒实例用户界面的弹出窗口中"
+        },
+        "id": "device-reminder-update-1-2-x",
+        "class": "warn",
+        "fa-icon": "exclamation-triangle",
+        "created": "2021-05-02T01:00:00.000Z",
+        "repo": "latest",
+        "conditions": {
+            "device-reminder": "smaller(1.2.1)"
+        }
     }
 ]
