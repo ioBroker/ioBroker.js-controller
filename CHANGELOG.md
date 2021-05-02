@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.6 (2021-05-02)
 * (foxriver76) Fix some set state checks and logging
 * (Apollon77/Stabilostick) Try fix restart on Windows
 

@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.5",
+        "version": "3.3.6",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.6": {
+                "en": "Fix some set state checks and logging\n(Apollon77/Stabilostick) Try fix restart on Windows",
+                "de": "Korrigieren Sie einige Statusprüfungen und Protokollierungen\n(Apollon77 / Stabilostick) Versuchen Sie, den Neustart unter Windows zu korrigieren",
+                "ru": "Исправьте некоторые установленные проверки состояния и ведение журнала\n(Apollon77 / Stabilostick) Попробуйте исправить перезагрузку в Windows",
+                "pt": "Corrija algumas verificações de estado definido e registro\n(Apollon77 / Stabilostick) Tente corrigir reiniciar no Windows",
+                "nl": "Herstel enkele statuscontroles en logboekregistratie\n(Apollon77 / Stabilostick) Probeer opnieuw opstarten op Windows te repareren",
+                "fr": "Correction de certaines vérifications d'état et de la journalisation\n(Apollon77 / Stabilostick) Essayez le redémarrage du correctif sous Windows",
+                "it": "Correggere alcuni controlli e registrazioni dello stato\n(Apollon77 / Stabilostick) Prova a correggere il riavvio su Windows",
+                "es": "Arreglar algunas comprobaciones y registros de estado establecidos\n(Apollon77 / Stabilostick) Intente arreglar el reinicio en Windows",
+                "pl": "Napraw niektóre ustawione kontrole stanu i rejestrowanie\n(Apollon77 / Stabilostick) Spróbuj naprawić ponowne uruchomienie w systemie Windows",
+                "zh-cn": "修复一些设置状态检查和日志记录\n（Apollon77 / Stabilostick）尝试在Windows上重新启动修复"
+            },
             "3.3.5": {
                 "en": "(foxriver76/Apollon77) Change loglevel for setState mismatch notifies to \"info\"\noptimize setState checks to handle Object and mixed correct",
                 "de": "(foxriver76 / Apollon77) Ändern Sie loglevel für setState Mismatch-Benachrichtigungen in \"info\".\nOptimieren Sie die setState-Prüfungen, um das Objekt zu verarbeiten und korrekt zu mischen",
