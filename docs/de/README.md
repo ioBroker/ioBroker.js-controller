@@ -1,14 +1,14 @@
 ---
 title:       "Willkommen"
-lastChanged: "29.03.2019"
+lastChanged: "02.05.2020"
 ---
 # Willkommen bei ioBroker
-!> **Hinweis für Einsteiger**
+!> **Hinweis für Einsteiger**  
     Sollten beim Lesen dieser ersten Worte schon zu viele unbekannten Begriffe  
     verwendet worden sein, werden diese nochmals auf der [nächsten Seite](https://www.iobroker.net/#de/documentation/basics/README.md) ausführlich erklärt.
 
-ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne 
-ioBroker Insellösungen bleiben würden, in einem Gesamtsystem zu integrieren. 
+ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne  
+ioBroker Insellösungen bleiben würden, in einem Gesamtsystem zu integrieren.  
 
 ioBroker ist daher ***die*** Integrationsplattform für das Internet der Dinge.
 
