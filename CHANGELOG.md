@@ -4,6 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) Fix some set state checks and logging
+* (Apollon77/Stabilostick) Try fix restart on Windows
+
 ## 3.3.5 (2021-05-01)
 * (foxriver76/Apollon77) Change loglevel for setState mismatch notifies to "info"
 * (foxriver76) optimize setState checks to handle Object and mixed correct
@@ -52,7 +56,7 @@
   * require common.type on state objects
   * if state is read only and we get ack false -> not allowed
   * check type of the state.val matching the common.type of the obj
-  * if it's a number we perform additional checks for min and max
+  * if it's a number and min/max is defined on object we perform additional checks for min and max
 * (bluefox) checkPassword(Async) is now returning two parameters in callback/resolve (first is boolean if password/user are valid, second is the final internal username in form system.user.xxx)
   
 **Developer relevant new Features**
