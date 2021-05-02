@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.7 (2021-05-02)
 * (foxriver76) Adjust another set state check
 
 ## 3.3.6 (2021-05-02)

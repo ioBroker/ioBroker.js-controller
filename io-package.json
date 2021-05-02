@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.6",
+        "version": "3.3.7",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.7": {
+                "en": "Adjust another set state check",
+                "de": "Passen Sie eine weitere Statusprüfung an",
+                "ru": "Настроить еще одну установленную проверку состояния",
+                "pt": "Ajustar outra verificação de estado definido",
+                "nl": "Pas een andere insteltoestandcontrole aan",
+                "fr": "Ajuster une autre vérification de l'état d'ensemble",
+                "it": "Regola un altro controllo dello stato impostato",
+                "es": "Ajustar otra verificación de estado establecida",
+                "pl": "Dostosuj kolejną kontrolę stanu zestawu",
+                "zh-cn": "调整另一个设置状态检查"
+            },
             "3.3.6": {
                 "en": "Fix some set state checks and logging\n(Apollon77/Stabilostick) Try fix restart on Windows",
                 "de": "Korrigieren Sie einige Statusprüfungen und Protokollierungen\n(Apollon77 / Stabilostick) Versuchen Sie, den Neustart unter Windows zu korrigieren",
