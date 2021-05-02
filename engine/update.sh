@@ -1,7 +1,7 @@
 cd /opt/doc-auto
 /usr/bin/git checkout .
 /usr/bin/git pull
-cp /opt/configBackup.js /opt/doc-auto/engine/config.js
+cp /opt/configBackup.json /opt/doc-auto/engine/config.json
 cp engine/update.sh ../updateSite.sh
 chmod 744 ../updateSite.sh
 cd engine/
