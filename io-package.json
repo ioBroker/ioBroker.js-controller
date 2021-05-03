@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.7",
+        "version": "3.3.8",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.8": {
+                "en": "(Apollon77/foxriver76) Optimize Database storage behaviour for file database\nchange default behaviour of cli update command -> only list installed, allow --all as parameter to see all again",
+                "de": "(Apollon77 / foxriver76) Optimieren Sie das Datenbankspeicherverhalten für die Dateidatenbank\nÄndern Sie das Standardverhalten des Befehls cli update -> nur Liste installiert, lassen Sie --all als Parameter zu, um alle wieder anzuzeigen",
+                "ru": "(Apollon77 / foxriver76) Оптимизация поведения хранилища базы данных для файловой базы данных\nизменить поведение команды cli update по умолчанию -> установлен только список, разрешить --all в качестве параметра, чтобы снова увидеть все",
+                "pt": "(Apollon77 / foxriver76) Otimize o comportamento de armazenamento do banco de dados para o banco de dados de arquivos\nmude o comportamento padrão do comando cli update -> apenas lista instalada, permita --all como parâmetro para ver tudo novamente",
+                "nl": "(Apollon77 / foxriver76) Optimaliseer het database-opslaggedrag voor de bestandsdatabase\nverander standaard gedrag van cli update commando -> alleen lijst geïnstalleerd, sta --all toe als parameter om alles opnieuw te zien",
+                "fr": "(Apollon77 / foxriver76) Optimiser le comportement de stockage de la base de données pour la base de données de fichiers\nmodifier le comportement par défaut de la commande de mise à jour cli -> seule liste installée, autoriser --all comme paramètre pour tout voir à nouveau",
+                "it": "(Apollon77 / foxriver76) Ottimizza il comportamento di archiviazione del database per il database di file\ncambia il comportamento predefinito del comando cli update -> solo l'elenco installato, consenti --all come parametro per vedere tutto di nuovo",
+                "es": "(Apollon77 / foxriver76) Optimizar el comportamiento de almacenamiento de la base de datos para la base de datos de archivos\ncambiar el comportamiento predeterminado del comando de actualización cli -> solo lista instalada, permitir --todo como parámetro para ver todo de nuevo",
+                "pl": "(Apollon77 / foxriver76) Zoptymalizuj zachowanie przechowywania bazy danych dla bazy danych plików\nzmień domyślne zachowanie polecenia cli update -> tylko lista zainstalowana, pozwól --all jako parametr, aby zobaczyć wszystko ponownie",
+                "zh-cn": "（Apollon77 / foxriver76）优化文件数据库的数据库存储行为\n更改cli update命令的默认行为->仅安装列表，允许--all作为参数再次查看全部"
+            },
             "3.3.7": {
                 "en": "Adjust another set state check",
                 "de": "Passen Sie eine weitere Statusprüfung an",
