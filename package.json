@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@alcalzone/esbuild-register": "^2.5.1-1",
+    "@alcalzone/pak": "^0.6.0",
     "@iobroker/db-objects-file": "~1.2.7",
     "@iobroker/db-objects-jsonl": "~1.2.7",
     "@iobroker/db-objects-redis": "~1.2.7",
