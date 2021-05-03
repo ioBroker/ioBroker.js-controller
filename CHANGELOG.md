@@ -4,6 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (Apollon77/foxriver76) Optimize Database storage behaviour for file database
+* (foxriver76) change default behaviour of cli update command -> only list installed, allow --all as parameter to see all again
+
 ## 3.3.7 (2021-05-02)
 * (foxriver76) Adjust another set state check
 
