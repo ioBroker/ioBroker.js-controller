@@ -7,52 +7,52 @@ lastChanged: "02.05.2021"
 
 
 ## Seitenstruktur
-Diese Seite ist in einem ***responsiven Design*** erstellt worden. Dies  
-bedeutet, dass sie je nach Auflösung der Anzeige des Lesegeräts (PC/Tablet/Handy)  
-für optimale Lesbarkeit anders dargestellt wird.  
+Diese Seite ist in einem ***responsiven Design*** erstellt worden. Dies 
+bedeutet, dass sie je nach Auflösung der Anzeige des Lesegeräts (PC/Tablet/Handy) 
+für optimale Lesbarkeit anders dargestellt wird. 
 
-So werden bei niedrigen (effektiven) Auflösungen auch teilweise Bedienelemente  
-versteckt um Platz für die Hauptfenster zu schaffen.  
+So werden bei niedrigen (effektiven) Auflösungen auch teilweise Bedienelemente 
+versteckt um Platz für die Hauptfenster zu schaffen. 
 
-Daher kann es durchaus sein, dass die aktuelle Darstellung von den Screenshots  
-abweicht.  
+Daher kann es durchaus sein, dass die aktuelle Darstellung von den Screenshots 
+abweicht. 
 
 ### Verschiedene Menüs
-Um eine größtmögliche Übersicht zu erhalten gibt es insgesamt drei verschiedene  
-Menüs:  
+Um eine größtmögliche Übersicht zu erhalten gibt es insgesamt drei verschiedene 
+Menüs: 
 
 ![Seiten-Menüs](media/Seite_numbers.png)
 
 ---
 ####1.) Hauptmenü
 
-Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der  
-Seite sichtbar, das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet.  
+Die Hauptpunkte dieses Menüs sind am PC üblicherweise in der Titelleiste der 
+Seite sichtbar, das gesamte Menü wird bei niedrigen Auflösungen ausgeblendet. 
 Dann  muss es durch Anklicken des Burger-Icons geöffnet werden:
 
 ![Seiten-Menü](media/Hauptmenu.png)
 
-Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr  
+Nach Anklicken eines Menüpunktes schließt sich das Menü automatisch um mehr 
 Platz für den Inhalt zu machen.
 
 ---
 ####2.) Doku-Menü
-Dieses Menü ist am PC üblicherweise sichtbar, wird bei niedrigen Auflösungen  
+Dieses Menü ist am PC üblicherweise sichtbar, wird bei niedrigen Auflösungen 
 ausgeblendet. Dann  muss es durch Anklicken des Burger-Icons geöffnet werden:
 
 ![Doku-Menü](media/Dokumenu.png)
 
-In der obersten Zeile befindet sich ein Filterfeld. Durch Eingabe eines Begriffs  
-wird der gesamte Menübaum nach diesem Begriff gefiltert und nur noch passende  
+In der obersten Zeile befindet sich ein Filterfeld. Durch Eingabe eines Begriffs 
+wird der gesamte Menübaum nach diesem Begriff gefiltert und nur noch passende 
 Menüpunkte angezeigt.
 
-Über das Icon mit dem Pfeil kann das Menü wieder versteckt werden um mehr Platz  
+Über das Icon mit dem Pfeil kann das Menü wieder versteckt werden um mehr Platz 
 für den Inhalt zu machen.
 
 ---
 ####3.) Themenmenü
 
-In diesem Menü werden die Haupt-Themen des angewählten Artikels angezeigt um  
+In diesem Menü werden die Haupt-Themen des angewählten Artikels angezeigt um 
 schneller zu einem gesuchten Punkt navigieren zu können.
 
 ![Themen-Menü](media/Themenmenu.png)
@@ -62,8 +62,8 @@ schneller zu einem gesuchten Punkt navigieren zu können.
 ### Weitere Bedienelemente
 ####4.) Sprachauswahl
 
-Die Website ist mehrsprachig angelegt. Nach und nach werden weitere Sprachen  
-hinzugefügt. Einige werden zuerst automatisch generiert, native Speaker sind  
+Die Website ist mehrsprachig angelegt. Nach und nach werden weitere Sprachen 
+hinzugefügt. Einige werden zuerst automatisch generiert, native Speaker sind 
 eingeladen die Texte zu verbessern.
 
 An dem Weltkugel-Icon kann die gewünschte Sprache ausgewählt werden.
@@ -80,18 +80,18 @@ Dieses Feld bedarf keiner Erklärung. Bitte ausgiebig verwenden!
 ---
 
 
-* Für Einsteiger empfehlen wir, zuerst einige Grundlagen über ioBroker nachzulesen.  
-Dazu mehr im Kapitel [Grundlagen].  
-* Auf der [Download]-Seite gibt es vorbereitete Images für verschiedene Systeme.  
-Dort stehen auch detaillierte Installationsanweisungen für einige Hardwareplattformen bereit.  
-* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz].  
-* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik & Automatisierung] beschrieben.  
+* Für Einsteiger empfehlen wir, zuerst einige Grundlagen über ioBroker nachzulesen. 
+Dazu mehr im Kapitel [Grundlagen][]. 
+* Auf der [Download][]-Seite gibt es vorbereitete Images für verschiedene Systeme. 
+Dort stehen auch detaillierte Installationsanweisungen für einige Hardwareplattformen bereit. 
+* Informationen zu allen Adaptern bietet die zentrale [Adapter-Referenz][]. 
+* Die Erstellung von Steuerungsregeln wird im Abschnitt [Logik & Automatisierung][] beschrieben. 
 
-Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von  
-ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich].  
+Für jede helfende Hand sind wir dankbar. Falls Sie zur Weiterentwicklung von 
+ioBroker betragen möchten, finden Sie Informationen im [Developer Bereich][]. 
 
-Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass  
-etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei], die  
+Diese Dokumentation wird stetig erweitert. Wenn Sie der Meinung sind, dass 
+etwas fehlt oder besser beschrieben werden sollte, [helfen Sie uns dabei][], die 
 Dokumentation zu verbessern!
 
 [Grundlagen]: https://www.iobroker.net/#de/documentation/basics/README.md
