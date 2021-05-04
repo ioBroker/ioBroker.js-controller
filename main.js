@@ -3229,26 +3229,29 @@ async function startInstance(id, wakeUp) {
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
-    // workaround for old vis.
+    // workaround for old vis
     if (instance.common.onlyWWW && name === 'vis') {
         instance.common.onlyWWW = false;
     }
 
+    // www-only adapters have no start file
+    if (instance.common.onlyWWW) {
+        logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
+        return;
+    }
+
+    /** @type {string | undefined} */
     let adapterMainFile;
-    try {
-        adapterMainFile = await tools.resolveAdapterMainFile(name);
-    } catch {
-        // The main file was not found or doesn't exist. Doesn't matter for extensions.
-        // TODO: explain why it does not matter!
-        if (instance.common.mode !== 'extension') {
-            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir, 'www'))) {
-                logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
-            } else {
-                logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
-            }
+    // Web extensions have a separate field for the main file. We don't need to search it in that case
+    if (instance.common.mode !== 'extension') {
+        try {
+            adapterMainFile = await tools.resolveAdapterMainFile(name);
+        } catch {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
             return;
         }
     }
+
     procs[id].downloadRetry = 0;
 
     // read node.js engine requirements
