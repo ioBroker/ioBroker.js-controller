@@ -130,6 +130,8 @@ sudo chmod u+s `which ping`
 
 ### 1.3.5 (24.04.2021)
 * (Stübi) Add device keypad outdoor v2
+* (Stübi) Add log file state. Important time of Lupusec Alarm system and ioBroker have to be synchrony
+* (Stübi) Workaround dropdown list with admin in react mode (wrong type)
 
 ### 1.3.4 (01.03.2021)
 * (Stübi) Bugfixing

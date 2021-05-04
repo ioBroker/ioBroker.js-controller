@@ -194,6 +194,10 @@ show();
 
 ## Changelog
 
+### 1.3.0
+
+* (klein0r) Encrypt sensitive information
+
 ### 1.2.1
 
 * (klein0r) Extended regex for My Data (DIY)

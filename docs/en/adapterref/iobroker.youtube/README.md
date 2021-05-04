@@ -26,6 +26,10 @@ To get an API-Key you have to go to [console.developers.google.com](https://cons
 
 ## Changelog
 
+### 1.1.0
+
+* (klein0r) Encrypt sensitive information
+
 ### 1.0.3
 
 * (klein0r) Remove forbidden chars from state

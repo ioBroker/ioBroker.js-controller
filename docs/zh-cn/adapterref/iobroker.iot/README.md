@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
+hash: RPZLbAhefWe0dN9Y6h+0qu9Ba1TiO9thmROCEbuQWGw=
 ---
-![标识](../../../en/adapterref/iobroker.iot/admin/iot.png)
+![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
 ![安装数量](http://iobroker.live/badges/iot-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.iot.svg)
@@ -25,7 +25,7 @@ hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
 
 ![介绍](../../../en/adapterref/iobroker.iot/img/intro.png)
 
-＃＃＃ 语言
+＃＃＃ 语
 如果选择“默认”语言，则不会翻译设备和枚举的智能名称。如果指定了某种语言，则所有已知名称都将翻译成该语言。
 出于演示目的，可以在多种语言之间快速切换。
 
@@ -54,7 +54,7 @@ hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
 -命令：“将灯光设置为40％”。适配器将记住* dimmer *的该值，将其设置为“ dimmer”并打开* switch *。
 -命令：“关灯”。适配器会将* dimmer *设置为0％，并关闭* switch *。
 -命令：“开灯”。 *调光器* => 40％，*开关* =>开。
--命令：“将灯光设置为20％”。 *调光器* => 20％，*开关* =>关。调光器的值低于* OFF电平*，因此不会被记住。
+-命令：“将灯光设置为20％”。 *调光器* => 20％，*开关* => OFF。调光器的值低于* OFF级别*，因此不会记住该值。
 -命令：“开灯”。 *调光器* => 40％，*开关* =>开。
 
 ###由ON
@@ -98,9 +98,9 @@ Alexa, lock the "lock name"
 必须满足以下条件才能在自动生成的列表中获取状态：
 
 -状态必须处于某些“功能”枚举中。
--如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“级别*”，例如level.dimmer）。
+-如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
 
-可能是通道在“功能”中，但未声明其自身。
+可能是该通道位于“功能”中，但未声明其自身。
 
 -状态必须是可写的：common.write = true
 -状态调光器必须具有common.type作为'number'
@@ -114,7 +114,7 @@ Alexa, lock the "lock name"
 
 如果状态具有common.smartName，则将忽略所有规则。在这种情况下，将仅使用智能名称。
 
-如果* common.smartName *为** false **，则状态或枚举将不包括在列表生成中。
+如果* common.smartName *为** false **，则状态或枚举将不包含在列表生成中。
 
 通过配置对话框，可以轻松删除单个状态并将其添加到虚拟组或作为单个设备。
 ![配置](../../../en/adapterref/iobroker.iot/img/configuration.png)
@@ -125,34 +125,28 @@ Alexa, lock the "lock name"
 要创建自己的组，用户可以安装“场景”适配器或在Javascript适配器中创建“脚本”。
 
 ###替换
-您可以指定字符串，可以在设备名称中自动替换它们。例如如果将替换设置为：
+您可以指定字符串，可以在设备名称中自动替换它们。例如如果将替换设置为：`.STATE,.LEVEL`，则将从名称中删除所有的“ .STATE”和“ .LEVEL”。注意空格。
+如果将设置`.STATE, .LEVEL`，则将替换“ .STATE”和“ .LEVEL”，而不是“ .LEVEL”。
 
-```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
-If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
-
-## Helper states
-- **smart.lastObjectID**: This state will be set if only one device was controlled by home skill (alexa, google home).
-- **smart.lastFunction**: Function name (if exists) for which last command was executed.
-- **smart.lastRoom**:     Room name (if exists) for which last command was executed.
-- **smart.lastCommand**:  Last executed command. Command can be: true(ON), false(OFF), number(%), -X(decrease at x), +X(increase at X)
-- **smart.lastResponse**: Textual response on command. It can be sent to some text2speech (sayit) engine.
+##助手状态
+-** smart.lastObjectID **：如果只有一项设备由家庭技巧（alexa，google home）控制，则将设置此状态。
+-** smart.lastFunction **：最后执行命令的功能名称（如果存在）。
+-** smart.lastRoom **：执行上一个命令的房间名称（如果存在）。
+-** smart.lastCommand **：最后执行的命令。命令可以是：true（ON），false（OFF），number（％），-X（在x处减小），+ X（在X处增大）
+-** smart.lastResponse **：对命令的文本响应。可以将其发送到某些text2speech（sayit）引擎。
 
 ## IFTTT
-[instructions](doc/ifttt.md)
+[指示](doc/ifttt.md)
 
-## Services
-There is a possibility to send messages to cloud adapter.
-If you call ```[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>``` und value as payload.
+＃＃ 服务
+可以将消息发送到云适配器。
+如果您将`[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>`und值称为有效负载。
 
-```
+`curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>`
 
-curl --data“ myString” https://service.iobroker.in/v1/iotService?service=custom_ <NAME>＆key = <XXX>＆user = <USER_EMAIL>
+或者
 
-```
-
-or
-
-```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
+`[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString`
 
 如果您在设置中将“服务白名单”字段设置为名称* custom_test *，并使用“ custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
 
@@ -162,30 +156,30 @@ or
 
 仅当设置了IFTTT密钥时，才允许使用IFTTT服务。
 
-保留名称为“ ifttt”，“ text2command”，“ simpleApi”，“ swagger”。必须在没有```"custom_"```前缀的情况下使用它们。
+保留名称为`ifttt`，`text2command`§，`simpleApi`，`swagger`。必须在没有`custom_`前缀的情况下使用它们。
 
-### Text2command
-您可以在白名单中写入“ text2command”，您可以将POST请求发送到```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>```以将数据写入* text2command.X.text *变量。
+###`text2command`
+您可以在白名单中写入“ text2command”，可以将POST请求发送到`https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>`以将数据写入* text2command.X.text *变量。
 
-您也可以使用GET方法```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>```
+您也可以使用GET方法`https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>`
 
-可以通过“使用text2command实例”选项在设置中定义“ X”。
+可以通过“使用text2command实例”选项在设置中定义`X`。
 
 ##自定义技能
 定制技能的答案可以通过两种方式处理：
 
--text2command
--JavaScript
+-`text2command`
+-`javascript`
 
-### Text2command
-如果在配置对话框中定义了* text2command *实例，则问题将发送到该实例。
+###`text2command`
+如果在配置对话框中定义了`text2command`实例，则问题将发送到该实例。
 
-必须配置* text2command *，以解析期望的短语并给出答案。
+必须配置`text2command`，以便解析期望的短语并给出答案。
 
-### Javascript
+###`Javascript`
 有可能直接使用脚本处理问题。如果未选择* text2command *实例，则默认情况下将其激活。
 
-如果定义了* text2command *实例，那么该实例必须提供答案，而来自* script *的答案将被忽略。
+如果定义了`text2command`实例，则此实例必须提供答案，并且来自* script *的答案将被忽略。
 
 适配器将在两种状态下提供具有不同详细信息级别的详细信息
 
@@ -195,7 +189,7 @@ or
   * **意图**包含查询的类型。当前可能的值是“ askDevice”，“ controlDevice”，“ actionStart”，“ actionEnd”，“ askWhen”，“ askWhere”，“ askWho”
  * **deviceId** 含一个设备ID，用于标识由Amazon交付的请求发送到的设备，如果未提供，则为空字符串
  * **sessionId** 含Skill会话的sessionId，如果亚马逊说了多个命令，则应该相同，如果未提供，则为空字符串
- * **userId** 含来自设备所有者（或稍后与该技能进行交互的用户）的AmazonId，由Amazon提供，如果未提供，则为空字符串
+ * **userId** 含由设备所有者（或后来与该技能进行交互的用户）来自亚马逊的用户ID，如果未提供，则为空字符串
 
  有关如何检测单词以及Alexa自定义技能区分哪些类型的查询的更多详细信息，请检查https://forum.iobroker.net/viewtopic.php?f=37&t=17452。
 
@@ -208,9 +202,9 @@ or
 * **responseText** 要包含要返回亚马逊的文本
 *** shouldEndSession **是一个布尔值，用于控制在说出响应后会话是否将关闭或保持打开状态以接受其他语音输入。
 
-**通过消息返回结果到物联网实例**
+**通过消息将结果返回到物联网实例**
 
-物联网实例还接受名称为“ alexaCustomResponse”的消息，其中包含键“ response”，该对象可以包含键** responseText **和** shouldEndSession **，如上所述。
+物联网实例还接受名称为“ alexaCustomResponse”的消息，其中包含键“ response”，并且对象可以包含键** responseText **和** shouldEndSession **，如上所述。
 物联网实例将不会对消息做出任何响应！
 
 **使用文字的脚本示例**
@@ -272,6 +266,9 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ### __正在进行的工程__->
 
 ## Changelog
+### 1.8.16 (2021-03-13)
+* (bluefox) fixed the blind functionality in alisa
+
 ### 1.8.15 (2021-03-12)
 * (bluefox) implemented the sensor functionality in alisa
 

@@ -137,6 +137,8 @@ If not all IPs are found then please check that the iobroker user can execute /b
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 2.6.3 (2021-05-03)
+* (bluefox) Added support of Admin5 
 
 ### 2.6.2 (2021-04-13)
 * (Apollon77) Fix crash case in mihome discovery (Sentry IOBROKER-DISCOVERY-30)
@@ -306,7 +308,7 @@ If not all IPs are found then please check that the iobroker user can execute /b
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020, Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2021, Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.melcloud/README.md
 title: ioBroker.melcloud
-hash: EIieXsZU4LLaCACIfcV05V9RuOyLt/jjXcaeG6HhsMg=
+hash: wY1Lx3VCzhsH26JWm83tQOR8uVP8AlXh37D+dWNaTeY=
 ---
 ![商标](../../../en/adapterref/iobroker.melcloud/admin/melcloud.png)
 
@@ -18,7 +18,7 @@ hash: EIieXsZU4LLaCACIfcV05V9RuOyLt/jjXcaeG6HhsMg=
 *由[Freepik]（https://www.flaticon.com/authors/freepik）来自[www.flaticon.com](https://www.flaticon.com/")制成的图标*
 
 ＃ioBroker.melcloud
-**测试：** [![测试]（https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg）](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml)
+[![测试]（https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg）]（https://github.com/Black-Thunder/ioBroker.melcloud/actions /workflows/test.yml）[！[Reviewdog]（https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/code-quality.yml/badge.svg）](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/code-quality.yml)
 
 ## IoBroker的melcloud适配器
 该适配器通过MELCloud（https://www.melcloud.com/）将三菱空调系统集成到ioBroker中。

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
+hash: RPZLbAhefWe0dN9Y6h+0qu9Ba1TiO9thmROCEbuQWGw=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -54,7 +54,7 @@ Beispiel:
 - Befehl: "Licht auf 40% einstellen". Der Adapter speichert diesen Wert für *Dimmer* stellt ihn auf "Dimmer" und schaltet den *Schalter* ein.
 - Befehl: "Licht ausschalten". Der Adapter stellt den *Dimmer* auf 0% und schaltet den *Schalter* aus.
 - Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => ON.
-- Befehl: "Licht auf 20% einstellen". *Dimmer* => 20%, *Schalter* => AUS. Der Wert für Dimmer wird nicht gespeichert, da er unter *OFF-Pegel* liegt.
+- Befehl: "Licht auf 20% einstellen". *Dimmer* => 20%, *Schalter* => AUS. Der Wert für den Dimmer wird nicht gespeichert, da er unter *AUS* liegt.
 - Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => ON.
 
 ### Von ON
@@ -64,7 +64,7 @@ Sie können das Verhalten des ON-Befehls für den Nummernstatus auswählen. Der 
 Für jeden Befehl wird die Textantwort generiert. Hier können Sie die Objekt-ID definieren, in die dieser Text geschrieben werden muss. Z.B. *sayit.0.tts.text*
 
 ### Farben
-Momentan unterstützt nur Englisch Alexa die Farbsteuerung.
+Momentan unterstützt nur Englisch Alexa die Farbkontrolle.
 Der Kanal muss 4 Zustände mit folgenden Rollen haben:
 
 - level.color.saturation (erforderlich für die Erkennung des Kanals),
@@ -125,34 +125,28 @@ Wenn die Gruppe mehr als einen Status hat, muss die Gruppe über die Namen der A
 Um eigene Gruppen zu erstellen, kann der Benutzer den Adapter "Szenen" installieren oder "Skript" im Javascript-Adapter erstellen.
 
 ### Ersetzt
-Sie können Zeichenfolgen angeben, die automatisch in den Gerätenamen ersetzt werden können. Z.B. Wenn Sie Ersetzungen festlegen auf:
+Sie können Zeichenfolgen angeben, die automatisch in den Gerätenamen ersetzt werden können. Z.B. Wenn Sie Ersetzungen auf setzen: `.STATE,.LEVEL`, werden alle ".STATE" und ".LEVEL" aus den Namen gelöscht. Seien Sie vorsichtig mit Leerzeichen.
+Wenn Sie `.STATE, .LEVEL` einstellen, werden ".STATE" und ".LEVEL" ersetzt und nicht ".LEVEL".
 
-```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
-If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
-
-## Helper states
-- **smart.lastObjectID**: This state will be set if only one device was controlled by home skill (alexa, google home).
-- **smart.lastFunction**: Function name (if exists) for which last command was executed.
-- **smart.lastRoom**:     Room name (if exists) for which last command was executed.
-- **smart.lastCommand**:  Last executed command. Command can be: true(ON), false(OFF), number(%), -X(decrease at x), +X(increase at X)
-- **smart.lastResponse**: Textual response on command. It can be sent to some text2speech (sayit) engine.
+## Hilfszustände
+- **smart.lastObjectID** Dieser Status wird festgelegt, wenn nur ein Gerät von Home Skill (Alexa, Google Home) gesteuert wurde.
+- **smart.lastFunction** Funktionsname (falls vorhanden), für den der letzte Befehl ausgeführt wurde.
+- **smart.lastRoom** Raumname (falls vorhanden), für den der letzte Befehl ausgeführt wurde.
+- **smart.lastCommand** Zuletzt ausgeführter Befehl. Der Befehl kann sein: wahr (EIN), falsch (AUS), Zahl (%), -X (Abnahme bei x), + X (Zunahme bei X)
+- **smart.lastResponse** Textantwort auf Befehl. Es kann an eine text2speech (sayit) Engine gesendet werden.
 
 ## IFTTT
-[instructions](doc/ifttt.md)
+[Anleitung](doc/ifttt.md)
 
-## Services
-There is a possibility to send messages to cloud adapter.
-If you call ```[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>``` und value as payload.
+## Dienstleistungen
+Es besteht die Möglichkeit, Nachrichten an den Cloud-Adapter zu senden.
+Wenn Sie `[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>` und Wert als Nutzlast aufrufen.
 
-```
+`curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>`
 
-curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user= <USER_EMAIL>
+oder
 
-```
-
-or
-
-```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
+`[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString`
 
 Wenn Sie in den Einstellungen im Feld "Weiße Liste für Dienste" den Namen *custom_test* festlegen und mit "custom_test" als Dienstnamen aufrufen, wird der Status **cloud.0.services.custom_test** auf *myString gesetzt*
 
@@ -162,30 +156,30 @@ Hier finden Sie Anweisungen zur Verwendung mit [Tasker](doc/tasker.md).
 
 Der IFTTT-Dienst ist nur zulässig, wenn der IFTTT-Schlüssel festgelegt ist.
 
-Reservierte Namen sind "ifttt", "text2command", "simpleApi", "swagger". Diese müssen ohne das Präfix ```"custom_"``` verwendet werden.
+Reservierte Namen sind `ifttt`, `text2command`, `simpleApi`, `swagger`. Diese müssen ohne das Präfix `custom_` verwendet werden.
 
-### Text2command
-Sie können "text2command" in eine weiße Liste schreiben. Sie können eine POST-Anfrage an ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>``` senden, um Daten in die Variable *text2command.X.text* zu schreiben.
+### `text2command`
+Sie können "text2command" in eine weiße Liste schreiben. Sie können eine POST-Anfrage an `https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>` senden, um Daten in die Variable *text2command.X.text* zu schreiben.
 
-Sie können auch die GET-Methode verwenden
+Sie können auch die GET-Methode verwenden `https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>`
 
-"X" kann in den Einstellungen mit der Option "text2command-Instanz verwenden" definiert werden.
+`X` können in den Einstellungen mit der Option "text2command instance" verwenden definiert werden.
 
 ## Benutzerdefinierte Fertigkeit
 Die Antworten für benutzerdefinierte Fertigkeiten können auf zwei Arten verarbeitet werden:
 
-- text2command
-- Javascript
+- `text2command`
+- "Javascript"
 
-### Text2command
-Wenn im Konfigurationsdialog die Instanz *text2command* definiert ist, wird die Frage an die Instanz gesendet.
+### `text2command`
+Wenn im Konfigurationsdialog die Instanz `text2command` definiert ist, wird die Frage an die Instanz gesendet.
 
-* text2command * muss so konfiguriert sein, dass die erwartete Phrase analysiert und die Antwort zurückgegeben wird.
+`text2command` müssen so konfiguriert sein, dass die erwartete Phrase analysiert und die Antwort zurückgegeben wird.
 
-### Javascript
+### `Javascript`
 Es besteht die Möglichkeit, die Frage direkt mit dem Skript zu bearbeiten. Es ist standardmäßig aktiviert, wenn keine *text2command* -Instanz ausgewählt ist.
 
-Wenn die Instanz *text2command* definiert ist, muss diese Instanz die Antwort bereitstellen, und die Antwort von *script* wird ignoriert.
+Wenn die Instanz `text2command` definiert ist, muss diese Instanz die Antwort liefern, und die Antwort von *script* wird ignoriert.
 
 Der Adapter liefert die Details in zwei Zuständen mit unterschiedlicher Detailstufe
 
@@ -272,6 +266,9 @@ Folgende Typen werden unterstützt:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.8.16 (2021-03-13)
+* (bluefox) fixed the blind functionality in alisa
+
 ### 1.8.15 (2021-03-12)
 * (bluefox) implemented the sensor functionality in alisa
 

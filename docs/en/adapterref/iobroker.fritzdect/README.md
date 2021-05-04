@@ -187,6 +187,10 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+### 2.1.15
+* correction in timestamp as date/string
+* several version bumps
+
 ### 2.1.14
 * operationmode and hkrmode tracking also after commands
 * extended datapoints for blinds from Rollotron

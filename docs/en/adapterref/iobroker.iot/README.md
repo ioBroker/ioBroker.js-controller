@@ -117,8 +117,8 @@ To create own groups the user can install "scenes" adapter or create "script" in
 
 ### Replaces
 You can specify strings, that could be automatically replaced in the devices names. E. g. if you set replaces to:
-```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
-If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
+`.STATE,.LEVEL`, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
+If you will set `.STATE, .LEVEL`, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
 
 ## Helper states
 - **smart.lastObjectID**: This state will be set if only one device was controlled by home skill (alexa, google home).
@@ -132,15 +132,13 @@ If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced
 
 ## Services
 There is a possibility to send messages to cloud adapter.
-If you call ```[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>``` und value as payload.
+If you call `[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>` und value as payload.
 
-```
-curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>
-```
+`curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>`
 
 or
 
-```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
+`[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString`
 
 If you set in the settings the field "White list for services" the name *custom_test*, and call with "custom_test" as the service name, the state **cloud.0.services.custom_test** will be set to *myString*.
 
@@ -150,29 +148,29 @@ Here you can find instructions how to use it with [tasker](doc/tasker.md).
 
 IFTTT service is allowed only if IFTTT key is set.
 
-Reserved names are "ifttt", "text2command", "simpleApi", "swagger". These must be used without the ```"custom_"``` prefix.
+Reserved names are `ifttt`, `text2command`, `simpleApi`, `swagger`. These must be used without the `custom_` prefix.
 
-### text2command
-You may write "text2command" in white list, you can send POST request to ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>``` to write data into *text2command.X.text* variable.
+### `text2command`
+You may write "text2command" in white list, you can send POST request to `https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>` to write data into *text2command.X.text* variable.
 
-You can use GET method too ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>```
+You can use GET method too `https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>`
 
-"X" can be defined in settings by the "Use text2command instance" option.
+`X` can be defined in settings by the "Use text2command instance" option.
 
 ## Custom skill
 The answers for custom skill can be processed in two ways:
-- text2command
-- javascript
+- `text2command`
+- `javascript`
 
-### text2command
-if *text2command* instance is defined in the configuration dialog, so the question will be sent to the instance.
+### `text2command`
+if `text2command` instance is defined in the configuration dialog, so the question will be sent to the instance.
 
-*text2command* must be configured that the expected phrase will be parsed and the answer will be given back.
+`text2command` must be configured that the expected phrase will be parsed and the answer will be given back.
 
-### Javascript
+### `Javascript`
 There is a possibility to process the question directly with script. It is activated by default if no *text2command* instance is selected.
 
-If *text2command* instance is defined, so this instance must provide the answer and the answer from *script* will be ignored.
+If `text2command` instance is defined, so this instance must provide the answer and the answer from *script* will be ignored.
 
 The adapter will provide the details in two states with different detail level
 * **smart.lastCommand** contains the received text including an info on type of query (intent). Example: "askDevice Status Rasenmäher"

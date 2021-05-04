@@ -19,6 +19,9 @@ At least Node 10.X.X is needed and js-controller 2.0.0 or above is required
 	### __WORK IN PROGRESS__
 -->
 
+### 1.3.3 (2021-05-02)
+* (foxriver76) we fixed some incorrect types
+
 ### 1.3.2 (2021-03-26)
 * (foxriver76) status of vms is now a string instead of incorrectly a button
 

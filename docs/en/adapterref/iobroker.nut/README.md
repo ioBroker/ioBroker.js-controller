@@ -81,6 +81,13 @@ directory) to try it out on the commandline. Call the scripts using "node filena
 * docs for webpage
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### __WORK IN PROGRESS__
+* (foxriver76) we fixed the state value type set to `battery.charge`
 
 ### 1.4.3 (2021-02-04)
 * (Apollon77) Enhance the port check

@@ -347,6 +347,9 @@ Der Kanal besteht aus schreibgeschützten Zuständen vom Typ `number`, die Infor
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.3 (2021-05-01)
+* (foxriver76) we now update objects if attributes are updated, but preserve common.name attribute
+
 ### 1.7.2 (2021-04-30)
 * (foxriver76) we fixed some type issues (fixes #58)
 

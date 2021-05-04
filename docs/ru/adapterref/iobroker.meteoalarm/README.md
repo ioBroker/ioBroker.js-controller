@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
+hash: W7B0P7++h+ffZsqBivQS+nC9dJ8mA30Rph2P8A63ANo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -108,6 +108,9 @@ hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
 ## Возможности для реализации
 * Обработка нескольких сигналов тревоги за один день
 
+## 1.1.5 (2021-05-02)
+* (jack-blackson) Исправление ошибок JS-Controller 3.3.1, обработка ошибок не определен язык
+
 ## 1.1.4 (2021-04-05)
 * (jack-blackson) Обработка сообщения об ошибке ENOTFOUND, добавлено Sentry
 
@@ -169,7 +172,7 @@ hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
 
 ### 0.3.0 (13.07.2019)
 * (jack-blackson) Добавлен HTML-виджет
-* (jack-blackson) Значок исправления ошибки
+* (Джек-Блэксон) Значок исправления ошибки
 
 ### 0.2.0 (12.07.2019)
 * (jack-blackson) Добавлены данные "Завтра"

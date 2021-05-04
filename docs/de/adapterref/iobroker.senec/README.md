@@ -96,6 +96,41 @@ Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was d
 
    *Nur lesbarer boolscher Wert, welcher true ist, wenn die Verbindung zwischen ioBroker und Senec.Home hergestellt ist.*
    
+#### Channel: _calc
+Dieser Kanal enthält berechnete Werte. Aktuell sind dies Tageswerte zu bestimmten Datenpunkten.
+
+* xxx.refDay
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Änderbare Zahl, die angibt, für welchen Tag des Jahres die Tagesdaten gelten.*
+   
+* xxx.refValue
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Änderbare Zahl, die angibt, was der Referenzwert zur Berechnung des aktuellen Tageswerts ist.*
+   
+* xxx.today
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Änderbare Zahl, die den aktuellen Tageswert des entspr. Datenpunkts repräsentiert.*
+   
+* xxx.yesterday
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Änderbare Zahl, die den Vortageswert des entspr. Datenpunkts repräsentiert.*
+   
 #### Channel: BMS
 
 * BL[0-3]
@@ -549,6 +584,10 @@ Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was d
    *Nur lesbarer Text, die die Seriennummern der evtl. vorhandenen Wallboxen 0-3 angibt.*
 
 ## Changelog
+### 1.2.0 (NoBl)
+* Added datapoints for: PM1OBJ1, PM1OBJ2, EG_CONTROL, RTC, PM1, TEMPMEASURE, DEBUG, SOCKETS, CASC, WALLBOX, CONNX50, STECA (please report wrong / missing units).
+* Adapter now calculates day-values for: STATISTIC.LIVE_GRID_EXPORT, STATISTIC.LIVE_GRID_IMPORT, STATISTIC.LIVE_HOUSE_CONS, STATISTIC.LIVE_PV_GEN, STATISTIC.LIVE_BAT_CHARGE_MASTER, STATISTIC.LIVE_BAT_DISCHARGE_MASTER. Calculated values can be found below the "_calc." datapoint. Information about daily values was removed from the API by SENEC in the past. So here we go again ...
+
 ### 1.1.1 (NoBl)
 * Object attributes are updated to what they are expected to be: unit, description, datatype (this will break anything that still relies on datapoints being STRING that aren't meant to be string)
 

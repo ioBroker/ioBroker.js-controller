@@ -899,6 +899,12 @@ und info.connection. Zusätzlich werden die folgenden States für jede Zone 2-12
 	### __WORK IN PROGRESS__
 -->
 
+### 1.10.6 (2021-05-03)
+* (foxriver76) we fixed some more types
+
+### 1.10.5 (2021-05-02)
+* (foxriver76) we fixed some datapoints having wrong types or wrong state values set (fixes #130)
+
 ### 1.10.4 (2021-02-20)
 * (foxriver76) if an older model (e.g. AVR 3808) just sends `NSE`, we do not set displayContent state anymore (fixes #112)
 

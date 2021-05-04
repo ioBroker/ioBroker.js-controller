@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.omron-fins/README.md
 title: ioBroker.omron-fins
-hash: 2sC8Aky+it6FQTQefZSB4XF6rpGDRrL+ujz0ny27Uog=
+hash: C6+WSTKgHSrkPim8raQuThxjy5jHkWNqoo4afVq6R74=
 ---
 ![Логотип](../../../en/adapterref/iobroker.omron-fins/admin/omron-fins.png)
 
@@ -26,18 +26,24 @@ https://github.com/TheBam1990/ioBroker.omron-fins/blob/master/Readmede.md
 
 ## Руководство пользователя (на английском языке)
 Настройте IP-адрес ПЛК на вкладке основных настроек.
-Порт является стандартным и, как правило, не требует настройки.
-Значение опроса указывается в мс и указывает на циклический запрос значений.
+Порт является стандартным и обычно не требует настройки.
+Значение опроса указывается в мсек и указывает на циклический запрос значений.
 
 Выбираемые переменные вводятся на вкладке «Устройства». Просто добавьте новую с помощью знака «+» и затем назначьте произвольно выбираемое имя. Назовите каждую переменную индивидуально, а не сразу.
-В области «Переменная» введите переменную, которую нужно выбрать для входных или выходных переменных CB0: 00, CB0: 01, CB100: 00 и т. Д. Всегда используйте двоеточия для их разделения. W31: 00 и т.д. также работает для флагов. Значения D1 и т. Д. также можно получить.
-На вкладке типа выберите тип переменной, хранящейся в ПЛК.
+В области «Переменная» введите переменную, которую нужно выбрать для входных или выходных переменных CB0: 00, CB0: 01, CB100: 00 и т. Д. Всегда используйте двоеточия для их разделения. W31: 00 и т. Д. Также работает для флагов. Значения D1 и т. Д. также можно получить.
+На вкладке «Тип» выберите тип переменной, хранящейся в ПЛК.
 
 ## Changelog
 <!--
  Placeholder for the next version (at the beginning of the line):
  ### __WORK IN PROGRESS__ ( - falls nicht benötigt löschen sonst klammern entfernen und nach dem - dein text schreiben )
 -->
+### 0.0.2 (2021-03-05)
+* (Thebam) Änderungen im Abrufen Verbesserung des Intervall
+
+### 0.0.1 (2021-02-22)
+* (Thebam) Update Abhängigkeiten 
+
 ### 0.0.1-7 (2021-02-08)
 * (Thebam) NPM Aktualisiert
 

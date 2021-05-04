@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.omron-fins/README.md
 title: ioBroker.omron-Flossen
-hash: 2sC8Aky+it6FQTQefZSB4XF6rpGDRrL+ujz0ny27Uog=
+hash: C6+WSTKgHSrkPim8raQuThxjy5jHkWNqoo4afVq6R74=
 ---
 ![Logo](../../../en/adapterref/iobroker.omron-fins/admin/omron-fins.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.omron-fins.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.omron-fins.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/omron-fins-installed.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/omron-fins-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/omron-fins-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/thebam1990/iobroker.omron-fins.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/thebam1990/ioBroker.omron-fins/badge.svg)
@@ -38,6 +38,12 @@ Wählen Sie auf der Registerkarte Typ den Variablentyp aus, der in der SPS gespe
  Placeholder for the next version (at the beginning of the line):
  ### __WORK IN PROGRESS__ ( - falls nicht benötigt löschen sonst klammern entfernen und nach dem - dein text schreiben )
 -->
+### 0.0.2 (2021-03-05)
+* (Thebam) Änderungen im Abrufen Verbesserung des Intervall
+
+### 0.0.1 (2021-02-22)
+* (Thebam) Update Abhängigkeiten 
+
 ### 0.0.1-7 (2021-02-08)
 * (Thebam) NPM Aktualisiert
 

@@ -23,6 +23,10 @@ Connects your Vallox Air Ventilation system into your ioBroker home automation.
 
 ## Changelog
 
+### 1.1.3
+* Fixed wrong datatype (number instead of boolean) in profile entries *_ENABLED [#33](https://github.com/hacki11/ioBroker.valloxmv/issues/33).
+* Fixed setting connection info without ack value.
+
 ### 1.1.2
 * Fixed wrong datatype (string) in temperature states instead of numbers
 

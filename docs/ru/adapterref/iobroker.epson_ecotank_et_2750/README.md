@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.epson_ecotank_et_2750/README.md
 title: ioBroker.epson_ecotank_et_2750
-hash: YX2Z6JsVsZZ5p5sZMstIBUYXR3qsGHQ8PXZTo4xo0Gs=
+hash: sMVzlTihy9ysKVgQVZZUYunBRCD+Fcv0WL750HstFeY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.epson_ecotank_et_2750/admin/epson_ecotank_et_2750.png)
 
@@ -27,26 +27,35 @@ hash: YX2Z6JsVsZZ5p5sZMstIBUYXR3qsGHQ8PXZTo4xo0Gs=
 4. Сохраните настройки.
 
 ## Changelog
+
 <!--
  https://github.com/AlCalzone/release-script#usage
     npm run release minor -- --all 0.9.8 -> 0.10.0
     npm run release patch -- --all 0.9.8 -> 0.9.9
-    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0  
+    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0
 	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
+	### **WORK IN PROGRESS**
 -->
+
+### 0.0.5 (2021-05-01)
+
+-   (o0shojo0o) fix js-controller 3.3.x warnings
+
 ### 0.0.4 (2021-02-01)
-* (o0shojo0o) bugfix first_print_date for 4750
-* (o0shojo0o) code cleaning and refactoring
+
+-   (o0shojo0o) bugfix first_print_date for 4750
+-   (o0shojo0o) code cleaning and refactoring
 
 ### 0.0.3 (2021-01-14)
-* (o0shojo0o) add compact mode
-* (o0shojo0o) all necessary changes for EPSON EcoTank ET-2750
-* (o0shojo0o) new tree structure
-* (o0shojo0o) replacing the request with axios npm module
+
+-   (o0shojo0o) add compact mode
+-   (o0shojo0o) all necessary changes for EPSON EcoTank ET-2750
+-   (o0shojo0o) new tree structure
+-   (o0shojo0o) replacing the request with axios npm module
 
 ### 0.0.1 (2021-01-03)
-* (o0shojo0o) forked from iobroker.epson_stylus_px830 0.2.1
+
+-   (o0shojo0o) forked from iobroker.epson_stylus_px830 0.2.1
 
 ## License
 
@@ -73,6 +82,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ---
-*Dank an die Erfinder des Basisskripts zum Parsen der Daten, Idittmar und MistyReblaus aus dem [Homematic-Forum](http://homematic-forum.de/forum/viewtopic.php?f=31&t=25140).* :+1: 
 
-*Dank an pix und rr0v1 für die Vorlage
+_Dank an die Erfinder des Basisskripts zum Parsen der Daten, Idittmar und MistyReblaus aus dem [Homematic-Forum](http://homematic-forum.de/forum/viewtopic.php?f=31&t=25140)._ :+1:
+
+\*Dank an pix und rr0v1 für die Vorlage

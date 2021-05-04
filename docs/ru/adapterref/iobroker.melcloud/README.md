@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.melcloud/README.md
 title: ioBroker.melcloud
-hash: EIieXsZU4LLaCACIfcV05V9RuOyLt/jjXcaeG6HhsMg=
+hash: wY1Lx3VCzhsH26JWm83tQOR8uVP8AlXh37D+dWNaTeY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.melcloud/admin/melcloud.png)
 
@@ -18,7 +18,7 @@ hash: EIieXsZU4LLaCACIfcV05V9RuOyLt/jjXcaeG6HhsMg=
 *Иконка сделана [Freepik] (https://www.flaticon.com/authors/freepik) с [www.flaticon.com](https://www.flaticon.com/")*
 
 # IoBroker.melcloud
-** Тесты: ** [![Тест] (https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg)](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml)
+[![Тест] (https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/test.yml/badge.svg)] (https://github.com/Black-Thunder/ioBroker.melcloud/actions /workflows/test.yml) [! [Reviewdog] (https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/code-quality.yml/badge.svg)](https://github.com/Black-Thunder/ioBroker.melcloud/actions/workflows/code-quality.yml)
 
 ## Адаптер melcloud для ioBroker
 Этот адаптер интегрирует системы кондиционирования воздуха Mitsubishi через MELCloud (https://www.melcloud.com/) в ioBroker.

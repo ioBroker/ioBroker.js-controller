@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
+hash: luSshPXawVP0dind2uFKzaaic/fGolnl/iOJ0QeZgbI=
 ---
 ![Логотип](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
@@ -14,12 +14,14 @@ hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.octoprint.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.octoprint/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.octoprint.svg)
-![NPM](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)
 
 # IoBroker.octoprint
 Адаптер для подключения OctoPrint к ioBroker
 
-## Особенности
+Протестировано с OctoPrint 1.6.0
+
+## Функции
 ### Информация
 - Получить информацию о версии
 - Получить информацию о принтере
@@ -31,15 +33,39 @@ hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
 - Установить температуру кровати
 
 ### Команды
-- Принтер: подключение, отключение и домой
+- Принтер: подключите, отключите и вернитесь домой
 - Задание: запуск, отмена, перезапуск
 - SD-карта: инициализация, обновление, выпуск
 - Пользовательские команды принтера
 - Системные команды
-- Jog X, Y и Z оси
+- Перемещение по осям X, Y и Z
 - Выберите файл или распечатайте его
 
 ## Changelog
+
+### 1.1.0
+
+* (klein0r) Encrypt sensitive information
+
+### 1.0.10
+
+* (klein0r) Fixed printjob state format issues
+
+### 1.0.9
+
+* (klein0r) nodejs 12 required
+
+### 1.0.8
+
+* (klein0r) Avoid constant refresh of file list
+
+### 1.0.7
+
+* (klein0r) Fixed async object creation
+
+### 1.0.6
+
+* (foxriver76) Avoid spamming the same error again and again
 
 ### 1.0.5
 
@@ -96,7 +122,7 @@ hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

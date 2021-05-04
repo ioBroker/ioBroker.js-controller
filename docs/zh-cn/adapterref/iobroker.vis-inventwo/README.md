@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: jKA1xFtVrrm1yWFJ2OH73uJ5LlJiHWRoEkexZWAU6KE=
+hash: x+BNm4J8571YbbEE8vai1GfImzPAJPNZES/K793B8+M=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -42,6 +42,12 @@ hash: jKA1xFtVrrm1yWFJ2OH73uJ5LlJiHWRoEkexZWAU6KE=
 
 ---
 
+## 2.9.7
+-错误修正
+
+## 2.9.6
+-错误修正
+
 ## 2.9.5
 -错误修正
 
@@ -70,7 +76,7 @@ hash: jKA1xFtVrrm1yWFJ2OH73uJ5LlJiHWRoEkexZWAU6KE=
 -问题解决者Colorslider behoben：在Datenpunkt gesetzt中的“ Wert bei Freigabe aktualisieren”，“
 
 ## 2.8.1
--Fehler behoben：彩色滑块RGB aktualisiert bei DpÄnderungnicht（WICHTIG：Datenpunktemüssenneuausgewähltwerden！）
+-Fehler behoben：DpÄnderungnicht彩色滑条RGB（WICHTIG：Datenpunktemüssenneuausgewähltwerden！）
 
 ## 2.8.0
 -在通用选项和多小部件中查看弹出菜单选项
@@ -98,7 +104,7 @@ hash: jKA1xFtVrrm1yWFJ2OH73uJ5LlJiHWRoEkexZWAU6KE=
 ## 2.7.6
 -Navi-Widget behoben问题解答
 -问题与解决方案
--问题MIT单选按钮和小部件和日期更新Zahlen behobenn
+-问题麻痹单选按钮和小部件和日期更新Zahlen behobenn
 
 ## 2.7.5
 -JSON Tabelle farbliche SchwellenwertefürZahlen
@@ -116,7 +122,7 @@ hash: jKA1xFtVrrm1yWFJ2OH73uJ5LlJiHWRoEkexZWAU6KE=
 
 ## 2.7.2
 -Fehler在Radiobutton mit Bildfarbe behoben中
--费勒·贝霍本（Fehler behoben）：多贝特（Doppeltes klicken）北州立大学
+-费勒·贝霍本（Fehler behoben）：多贝特·克里金（Doppeltes klicken）北州立大学
 -HovereffektfürButtons游戏
 -问题解答
 -滑块文本anhängenmöglich

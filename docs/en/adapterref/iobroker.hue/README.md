@@ -57,6 +57,19 @@ In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfigurie
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (foxriver76) protect the user token from access by foreign adapters
+
+### 3.5.13 (2021-05-03)
+* (foxriver76) we fixed some more types
+
+### 3.5.12 (2021-05-02)
+* (foxriver76) we give skipped switches common.type 'mixed' instead of none
+* (foxriver76) we have corrected the min max of color temperature (empirically found)
+
+### 3.5.11 (2021-05-02)
+* (foxriver76) we now update objects if type has changed
+
 ### 3.5.10 (2021-04-30)
 * (foxriver76) we removed the common.max from lightlevel, was 17,000 but can be much higher
 * (foxriver76) we added common.type for states where the attribute was missing

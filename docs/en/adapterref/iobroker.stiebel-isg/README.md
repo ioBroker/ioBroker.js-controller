@@ -1,14 +1,17 @@
-# ioBroker.stiebel-isg ![Logo](admin/stiebel-isg.png)
+![Logo](admin/stiebel-isg.png)
+# ioBroker.stiebel-isg
 
-![Number of Installations](http://iobroker.live/badges/stiebel-isg-installed.svg) ![Number of Installations](http://iobroker.live/badges/stiebel-isg-stable.svg)
-
-=================
-
-[![Build Status](https://api.travis-ci.org/unltdnetworx/ioBroker.stiebel-isg.svg?branch=master)](https://travis-ci.org/unltdnetworx/ioBroker.stiebel-isg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.stiebel-isg.svg)](https://www.npmjs.com/package/iobroker.stiebel-isg)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.stiebel-isg.svg)](https://www.npmjs.com/package/iobroker.stiebel-isg)
+![Number of Installations (latest)](https://iobroker.live/badges/stiebel-isg-installed.svg)
+![Number of Installations (stable)](https://iobroker.live/badges/stiebel-isg-stable.svg)
+[![Dependency Status](https://img.shields.io/david/unltdnetworx/iobroker.stiebel-isg.svg)](https://david-dm.org/unltdnetworx/iobroker.stiebel-isg)
 
 [![NPM](https://nodei.co/npm/iobroker.stiebel-isg.png?downloads=true)](https://nodei.co/npm/iobroker.stiebel-isg/)
+
+**Tests:** ![Test and Release](https://github.com/unltdnetworx/ioBroker.stiebel-isg/workflows/Test%20and%20Release/badge.svg)
+
+## stiebel-isg adapter for ioBroker
 
 This adapter is a ment to read values from stiebel-eltron/tecalor internet service gateways (ISG) and control the device.
 
@@ -32,6 +35,10 @@ Kaffee spendieren/serve a coffee
 * stiebel-eltron/tecalor internet service gateway (ISG)
 
 ## Changelog
+
+### 1.7.0
+
+* new adapter structure, bugfixes for new js-controller
 
 ### 1.6.0
 
@@ -62,8 +69,7 @@ Kaffee spendieren/serve a coffee
 * support for further heatingtyp WPL25A
 
 ## License
-
-The MIT License (MIT)
+MIT License
 
 Copyright (c) 2018-2021 Michael Schuster <development@unltd-networx.de>
 
@@ -74,13 +80,13 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

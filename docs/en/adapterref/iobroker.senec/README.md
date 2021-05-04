@@ -45,7 +45,7 @@ In addition to the adapter installation you have to add an instance of the adapt
 ### Configuration 
 ![Main Settings](media/mainSettings.png "Main Settings")
 
-| Feld         | Beschreibung |                                                                       
+| Field         | Description |                                                                       
 |:-------------|:-------------|
 |SENEC System    |Type in the IP-address of your SENEC system (FQDN is also possible if you have a working local DNS).|
 |Polling Interval High Priority Data|You can change the polling interval for high priority data (how often the Adapter reads from your Senec System), too. (Default: 10 seconds)|
@@ -74,6 +74,41 @@ If a state is not documented (or only partially documented) and you know what it
     |boolean|R|
 
    *Read-only boolean which is true if the adapter is connected to the senec system.*
+   
+#### Channel: _calc
+This channel contains calculated values. Currently these are day values for specific data points.
+
+* xxx.refDay
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Modifiable number indicating which day of the year the day data applies to.
+   
+* xxx.refValue
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Modifiable number indicating what the reference value is for calculating the current day value.*
+   
+* xxx.today
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Modifiable number representing the current day value of the corresponding datapoint.
+   
+* xxx.yesterday
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|W|
+
+   *Modifiable number representing the previous day's value of the corresponding datapoint.
    
 #### Channel: BMS
 
@@ -529,6 +564,10 @@ If a state is not documented (or only partially documented) and you know what it
    *Read-only text, which designates the serial number of wallbox [0..3].*
 
 ## Changelog
+### 1.2.0 (NoBl)
+* Added datapoints for: PM1OBJ1, PM1OBJ2, EG_CONTROL, RTC, PM1, TEMPMEASURE, DEBUG, SOCKETS, CASC, WALLBOX, CONNX50, STECA (please report wrong / missing units).
+* Adapter now calculates day-values for: STATISTIC.LIVE_GRID_EXPORT, STATISTIC.LIVE_GRID_IMPORT, STATISTIC.LIVE_HOUSE_CONS, STATISTIC.LIVE_PV_GEN, STATISTIC.LIVE_BAT_CHARGE_MASTER, STATISTIC.LIVE_BAT_DISCHARGE_MASTER. Calculated values can be found below the "_calc." datapoint. Information about daily values was removed from the API by SENEC in the past. So here we go again ...
+
 ### 1.1.1 (NoBl)
 * Object attributes are updated to what they are expected to be: unit, description, datatype (this will break anything that still relies on datapoints being STRING that aren't meant to be string)
 

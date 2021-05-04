@@ -71,6 +71,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ### 4.0.8-beta1 (2021-05-06)
 * (Stübi) - Online Status
+* (Stübi) - Temperature greater min/max - Issue #370
 
 ### 4.0.7 (2021-02-07)
 * (Stübi) - fixing the wrong identifier name from green to blue - Issue #334

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
+hash: W7B0P7++h+ffZsqBivQS+nC9dJ8mA30Rph2P8A63ANo=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -61,7 +61,7 @@ Option 2: Gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Geh
 | 9 | Lawine |
 | 10 | Regen |
 | 11 | Unbekannt |
-| 12 | Hochwasser |
+| 12 | Flut |
 | 13 | Regenflut |
 
 ## Alarmstufen
@@ -108,11 +108,14 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
 
+## 1.1.5 (2021-05-02)
+* (jack-blackson) Bugfix JS-Controller 3.3.1 Fehler, Fehlerbehandlung keine Sprache definiert
+
 ## 1.1.4 (2021-04-05)
 * (jack-blackson) ENOTFOUND-Fehlermeldung behandeln, Sentry hinzugefügt
 
 ## 1.1.3 (2021-03-29)
-* (jack-blackson) Fehler behebt Adapterprüfung
+* (jack-blackson) Fehler behebt die Adapterprüfung
 
 ## 1.1.2 (2021-03-29)
 * (jack-blackson) Bugfix für nicht funktionierende Datenaktualisierung, Link-Autogeneration aufgrund von CORS-Fehlern entfernt

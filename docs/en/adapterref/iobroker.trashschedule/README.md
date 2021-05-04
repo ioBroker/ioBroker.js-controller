@@ -203,6 +203,10 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ## Changelog
 
+### 1.1.3
+
+* (klein0r) Fixed weekday state type (string -> number)
+
 ### 1.1.2
 
 * (klein0r) Nodejs 12 required

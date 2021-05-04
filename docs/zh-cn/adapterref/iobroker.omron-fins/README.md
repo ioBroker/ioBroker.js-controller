@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.omron-fins/README.md
 title: ioBroker.omron鳍
-hash: 2sC8Aky+it6FQTQefZSB4XF6rpGDRrL+ujz0ny27Uog=
+hash: C6+WSTKgHSrkPim8raQuThxjy5jHkWNqoo4afVq6R74=
 ---
-![标识](../../../en/adapterref/iobroker.omron-fins/admin/omron-fins.png)
+![商标](../../../en/adapterref/iobroker.omron-fins/admin/omron-fins.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.omron-fins.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.omron-fins.svg)
@@ -30,14 +30,20 @@ https://github.com/TheBam1990/ioBroker.omron-fins/blob/master/Readmede.md
 轮询值以毫秒为单位指定，并指示对值的周期性查询。
 
 要拾取的变量在设备选项卡中输入。只需用+添加一个新变量，然后分配一个可自由选择的名称。请分别命名每个变量，而不要立即命名。
-在“变量”区域中，输入要获取的输入或输出变量CB0：00，CB0：01 CB100：00等的变量。请始终使用冒号分隔它们。 W31：00等也适用于标志。 D1值等也可以获取。
-在类型选项卡中，选择存储在PLC中的变量类型。
+在“变量”区域中，输入要获取的输入或输出变量CB0：00，CB0：01 CB100：00等的变量。请始终使用冒号将它们分开。 W31：00等也适用于标志。 D1值等也可以获取。
+在类型选项卡中，选择变量类型，因为它存储在PLC中。
 
 ## Changelog
 <!--
  Placeholder for the next version (at the beginning of the line):
  ### __WORK IN PROGRESS__ ( - falls nicht benötigt löschen sonst klammern entfernen und nach dem - dein text schreiben )
 -->
+### 0.0.2 (2021-03-05)
+* (Thebam) Änderungen im Abrufen Verbesserung des Intervall
+
+### 0.0.1 (2021-02-22)
+* (Thebam) Update Abhängigkeiten 
+
 ### 0.0.1-7 (2021-02-08)
 * (Thebam) NPM Aktualisiert
 

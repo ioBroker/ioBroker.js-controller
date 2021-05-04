@@ -89,9 +89,13 @@ Here you can:
 
 ## Changelog
 
-### 1.1.1 dev
+### 1.2.1 dev
+* (sbormann) Added treeview.
+
+### 1.2.0 (2021-05-02)
 * (sbormann) Some design-adjustments for react-ui.
 * (sbormann) Keep track of ioBroker object changes.
+* (sbormann) Added handling of common.custom and common.states.
 
 ### 1.1.0 (2021-04-20)
 * (sbormann) Added compatibility to new react-ui of admin-adapter.

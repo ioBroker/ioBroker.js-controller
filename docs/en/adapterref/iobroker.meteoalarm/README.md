@@ -107,6 +107,8 @@ If you don't find your country, please create an issue on github, and I will be 
 
 
 ## Changelog
+## 1.1.5 (2021-05-02)
+* (jack-blackson) Bugfix JS-Controller 3.3.1 errors, error handling no language defined
 ## 1.1.4 (2021-04-05)
 * (jack-blackson) Handle ENOTFOUND error message, added Sentry
 ## 1.1.3 (2021-03-29)

@@ -64,6 +64,12 @@ Remark: This feature is limited to the subnet of the ioBroker host.
 
 ## Changelog
 
+### 0.1.4
+* fixes for js-controller 3.3
+
+### 0.1.3
+* fixes for js-controller 3.3
+
 ### 0.1.2
 * added device discovery to configuration page
 * start discovery if it is not started and stop it afterwards

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.metalarm
-hash: 5r1EeYWX2DEHpsOfUO5W1lvGr+skPSVd8FaJeSvFp5I=
+hash: W7B0P7++h+ffZsqBivQS+nC9dJ8mA30Rph2P8A63ANo=
 ---
 ![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -108,6 +108,9 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ##要实现的功能
 *一天处理多个警报
 
+## 1.1.5（2021-05-02）
+*（jack-blackson）Bugfix JS-Controller 3.3.1错误，错误处理未定义语言
+
 ## 1.1.4（2021-04-05）
 *（jack-blackson）处理ENOTFOUND错误消息，添加了Sentry
 
@@ -128,7 +131,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 ## 1.0.8（2019-11-15）
 *（jack-blackson）添加了波兰，摩尔多瓦，希腊，罗马尼亚
-*（jack-blackson）添加了新的数据点以获取到天气地图的链接
+*（jack-blackson）添加了新的数据点以获取到“天气地图”的链接
 
 ## 1.0.7（2019-11-13）
 *（jack-blackson）添加了捷克共和国，爱尔兰，以色列，立陶宛，拉脱维亚，黑山，马耳他，塞尔维亚，瑞典
@@ -178,7 +181,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 *（杰克·布莱克森）初始版本
 
 ##学分
-图标中的钟声由Freepik从www.flaticon.com设计
+钟声由Freepik从www.flaticon.com设计
 
 ## Changelog
 

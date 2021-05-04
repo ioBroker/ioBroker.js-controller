@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iot/README.md
 title: IoT-адаптер ioBroker
-hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
+hash: RPZLbAhefWe0dN9Y6h+0qu9Ba1TiO9thmROCEbuQWGw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -36,7 +36,7 @@ hash: UF7UgBuUvLba83nF42yJ6BaRQFJkKDSPsT7NJhMnwp4=
 - если true: "Функциональная комната", например «Диммерная гостиная»
 
 ### Соедините слова с
-Вы можете определить слово, которое будет помещено между функцией и комнатой. Например. «В» и «Диммер в гостиной» будет «Диммер в гостиной».
+Вы можете определить слово, которое будет помещено между функцией и помещением. Например. «В» и «Диммер в гостиной» будет «Диммер в гостиной».
 
 Но делать это не рекомендуется, поскольку механизм распознавания должен проанализировать еще одно слово, и это может привести к недоразумениям.
 
@@ -124,34 +124,28 @@ Alexa, lock the "lock name"
 Для создания собственных групп пользователь может установить адаптер «сцены» или создать «скрипт» в адаптере Javascript.
 
 ### Заменяет
-Вы можете указать строки, которые могут автоматически заменяться в именах устройств. E. g. если вы установите заменяет на:
+Вы можете указать строки, которые могут автоматически заменяться в именах устройств. E. g. если вы установите заменяет на: `.STATE,.LEVEL`, все ".STATE" и ".LEVEL" будут удалены из имен. Будьте осторожны с пробелами.
+Если вы установите `.STATE, .LEVEL`, то вместо «.LEVEL» будут заменены «.STATE» и «.LEVEL».
 
-```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
-If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
-
-## Helper states
-- **smart.lastObjectID**: This state will be set if only one device was controlled by home skill (alexa, google home).
-- **smart.lastFunction**: Function name (if exists) for which last command was executed.
-- **smart.lastRoom**:     Room name (if exists) for which last command was executed.
-- **smart.lastCommand**:  Last executed command. Command can be: true(ON), false(OFF), number(%), -X(decrease at x), +X(increase at X)
-- **smart.lastResponse**: Textual response on command. It can be sent to some text2speech (sayit) engine.
+## Состояния помощника
+- **smart.lastObjectID** это состояние будет установлено, если только одно устройство контролировалось домашним навыком (alexa, google home).
+- **smart.lastFunction** имя функции (если существует), для которой была выполнена последняя команда.
+- **smart.lastRoom** имя комнаты (если существует), для которой была выполнена последняя команда.
+- **smart.lastCommand** последняя выполненная команда. Команда может быть: истина (ВКЛ), ложь (ВЫКЛ), число (%), -X (уменьшение на x), + X (увеличение на X)
+- **smart.lastResponse** текстовый ответ на команду. Его можно отправить на какой-нибудь движок text2speech (sayit).
 
 ## IFTTT
-[instructions](doc/ifttt.md)
+[инструкции](doc/ifttt.md)
 
-## Services
-There is a possibility to send messages to cloud adapter.
-If you call ```[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>``` und value as payload.
+## Услуги
+Есть возможность отправлять сообщения в облачный адаптер.
+Если вы вызываете `[POST]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>` и значение в качестве полезной нагрузки.
 
-```
+`curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>`
 
-curl --data "myString" https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user= <USER_EMAIL>
+или же
 
-```
-
-or
-
-```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
+`[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString`
 
 Если в настройках указать в поле «Белый список для сервисов» имя *custom_test* а вызов с «custom_test» в качестве имени сервиса, то состояние **cloud.0.services.custom_test** будет установлено в *myString*
 
@@ -161,30 +155,30 @@ or
 
 Услуга IFTTT разрешена, только если установлен ключ IFTTT.
 
-Зарезервированные имена: ifttt, text2command, simpleApi, swagger. Они должны использоваться без префикса ```"custom_"```.
+Зарезервированные имена: `ifttt`, `text2command`, `simpleApi`, `swagger`. Они должны использоваться без префикса `custom_`.
 
-### Text2command
-Вы можете написать «text2command» в белом списке, вы можете отправить запрос POST на ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>``` для записи данных в переменную *text2command.X.text*
+### `text2command`
+Вы можете написать «text2command» в белом списке, вы можете отправить запрос POST на `https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>` для записи данных в переменную *text2command.X.text*
 
-Вы также можете использовать метод GET ```https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>```
+Вы также можете использовать метод GET `https://service.iobroker.in/v1/iotService?service=text2command&key=<user-app-key>&user=<USER_EMAIL>&data=<MY COMMAND>`
 
-«X» можно определить в настройках с помощью опции «Использовать экземпляр text2command».
+`X` можно определить в настройках с помощью опции «Использовать экземпляр text2command».
 
 ## Пользовательский навык
 Ответы на индивидуальный навык можно обработать двумя способами:
 
-- text2command
-- javascript
+- `text2command`
+- `javascript`
 
-### Text2command
-если экземпляр *text2command* определен в диалоговом окне конфигурации, то вопрос будет отправлен экземпляру.
+### `text2command`
+если экземпляр `text2command` определен в диалоговом окне конфигурации, то вопрос будет отправлен экземпляру.
 
-* text2command * должен быть настроен так, что ожидаемая фраза будет проанализирована, и ответ будет возвращен.
+`text2command` должен быть настроен так, чтобы ожидаемая фраза была проанализирована, и ответ был возвращен.
 
-### Javascript
+### `Javascript`
 Есть возможность обработать вопрос напрямую скриптом. Он активируется по умолчанию, если не выбран экземпляр *text2command*
 
-Если определен экземпляр *text2command* этот экземпляр должен предоставить ответ, а ответ от *script* будет проигнорирован.
+Если определен экземпляр `text2command`, этот экземпляр должен предоставить ответ, а ответ от *script* будет проигнорирован.
 
 Адаптер предоставит детали в двух состояниях с разным уровнем детализации.
 
@@ -271,6 +265,9 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 1.8.16 (2021-03-13)
+* (bluefox) fixed the blind functionality in alisa
+
 ### 1.8.15 (2021-03-12)
 * (bluefox) implemented the sensor functionality in alisa
 

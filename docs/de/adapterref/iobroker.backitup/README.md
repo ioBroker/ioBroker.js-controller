@@ -361,6 +361,11 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 2.1.6 (01.05.2021)
+* (simatec) Bugfix for js-controller 3.3.x
+* (simatec) small Bugfix Dropbox Log
+* (simatec) small Bugfix for History Config reading
+
 ### 2.1.5 (29.04.2021)
 * (simatec) Bugfix AdminTab
 * (simatec) small Bugfix
