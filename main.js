@@ -2237,7 +2237,14 @@ async function processMessage(msg) {
                             count++;
                         }
                     }
+
+                    let location = path.normalize(__dirname + '/../');
+                    if (path.basename(location) === 'node_modules') {
+                        location = path.normalize(__dirname + '/../../');
+                    }
+
                     data['Active instances'] = count;
+                    data.location = location;
 
                     sendTo(msg.from, msg.command, data, msg.callback);
                 });
@@ -2251,6 +2258,11 @@ async function processMessage(msg) {
                 // same as getHostInfo, but faster because delivers less information
                 // node.js --version
                 // uptime
+                let location = path.normalize(__dirname + '/../');
+                if (path.basename(location) === 'node_modules') {
+                    location = path.normalize(__dirname + '/../../');
+                }
+
                 const cpus = os.cpus();
                 const data = {
                     Platform:        os.platform(),
@@ -2261,7 +2273,8 @@ async function processMessage(msg) {
                     Model:           cpus[0].model,
                     RAM:             os.totalmem(),
                     'System uptime': Math.round(os.uptime()),
-                    'Node.js':       process.version
+                    'Node.js':       process.version,
+                    location
                 };
 
                 if (data.Platform === 'win32') {
