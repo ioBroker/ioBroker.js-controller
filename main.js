@@ -2577,7 +2577,7 @@ async function processMessage(msg) {
         case 'restartController': {
             const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
-            setTimeout(() => restart(stop), 200); // let the answer to be sent
+            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer to be sent
             break;
         }
     }
