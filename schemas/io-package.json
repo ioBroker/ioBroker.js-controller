@@ -380,6 +380,7 @@
                     "description": "Type of connection to device",
                     "type": "string",
                     "enum": [
+                        "none",
                         "local",
                         "cloud"
                     ]
@@ -396,6 +397,7 @@
                     "description": "How the data will be received from device",
                     "type": "string",
                     "enum": [
+                        "none",
                         "poll",
                         "push",
                         "assumption"
