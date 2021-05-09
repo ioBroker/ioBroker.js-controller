@@ -150,4 +150,5 @@ jobs:
           export SENTRY_PROJECT=iobroker-js-controller
           export SENTRY_VERSION=iobroker.js-controller@${{ steps.extract_release.outputs.VERSION }}
           sentry-cli releases new $SENTRY_VERSION
+          sentry-cli releases set-commits $SENTRY_VERSION --auto
           sentry-cli releases finalize $SENTRY_VERSION
