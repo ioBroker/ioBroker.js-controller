@@ -39,7 +39,6 @@
     "jszip": "^3.7.0",
     "loadavg-windows": "^1.1.1",
     "mime": "^2.5.2",
-    "ncp": "^2.0.0",
     "node-forge": "^0.10.0",
     "node-schedule": "^2.0.0",
     "node.extend": "^2.0.2",
