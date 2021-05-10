@@ -4,12 +4,17 @@
 	## __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (foxriver76) make sure adapters are added only once to upgrade queue if it has no dependencies
+* (Apollon77) Optimize Database save handling on write
+* (Apollon77) Optimize restart logic
+* (foxriver76) optimize cli help
+* (AlCalzone) Optimize search for adapter start file to also respect main property from package.json
+* (bluefox) Add location of ioBroker as information to getHostInfo
+
 ## 3.3.8 (2021-05-03)
 * (Apollon77/foxriver76) Optimize Database storage behaviour for file database
 * (foxriver76) change default behaviour of cli update command -> only list installed, allow --all as parameter to see all again
-* (AlCalzone) Optimize search for adapter start file to also respect main property from package.json
-* (bluefox) Add location of ioBroker as information to getHostInfo
-* (Apollon77) Optimize restart behavior again
 
 ## 3.3.7 (2021-05-02)
 * (foxriver76) Adjust another set state check
