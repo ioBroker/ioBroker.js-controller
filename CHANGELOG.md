@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+## __WORK IN PROGRESS__
 * (foxriver76) make sure adapters are added only once to upgrade queue if it has no dependencies
 * (Apollon77) Optimize Database save handling on write
 * (Apollon77) Optimize restart logic
