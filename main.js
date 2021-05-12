@@ -2203,8 +2203,8 @@ async function processMessage(msg) {
                         .on('data', chunk => text += chunk.toString())
                         .on('end', () => {  // done
                             const lines = text.split('\n');
-                            lines.shift();
-                            lines.push(stats.size);
+                            lines.shift(); // remove first line of the file as it could be not full
+                            lines.push(stats.size); // place as last line the current size of log
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
                         .on('error', () => // done
