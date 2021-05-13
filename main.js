@@ -1935,8 +1935,8 @@ async function processMessage(msg) {
         case 'getRepository':
             if (msg.callback && msg.from) {
                 objects.getObject('system.config', async (err, systemConfig) => {
-                    // Collect statistics
-                    if (systemConfig && systemConfig.common && systemConfig.common.diag) {
+                    // Collect statistics (only if license has been confirmed - user agreed)
+                    if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed) {
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             tools.sendDiagInfo(obj);
