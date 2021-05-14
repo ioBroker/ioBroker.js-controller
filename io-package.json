@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.9",
+        "version": "3.3.10",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.10": {
+                "en": "only send diagnose data if license and diag dialog has been confirmed on new installations",
+                "de": "Senden Sie Diagnosedaten nur, wenn der Lizenz- und Diag-Dialog bei Neuinstallationen bestätigt wurde",
+                "ru": "отправлять данные диагностики только в том случае, если лицензия и диалоговое окно диагностики были подтверждены на новых установках",
+                "pt": "só envia dados de diagnóstico se a licença e o diálogo de diagnóstico foram confirmados em novas instalações",
+                "nl": "Stuur alleen diagnosegegevens als de licentie en het diag-dialoogvenster zijn bevestigd bij nieuwe installaties",
+                "fr": "envoyer uniquement les données de diagnostic si la licence et la boîte de dialogue de diagnostic ont été confirmées sur les nouvelles installations",
+                "it": "inviare i dati di diagnosi solo se la licenza e la finestra di dialogo sono state confermate nelle nuove installazioni",
+                "es": "enviar datos de diagnóstico solo si la licencia y el cuadro de diálogo de diagnóstico se han confirmado en nuevas instalaciones",
+                "pl": "wysyłaj dane diagnostyczne tylko wtedy, gdy licencja i okno dialogowe diagnostyki zostały potwierdzone w nowych instalacjach",
+                "zh-cn": "仅在新安装中已确认许可证和诊断对话框的情况下，才发送诊断数据"
+            },
             "3.3.9": {
                 "en": "make sure adapters are added only once to upgrade queue if it has no dependencies\nOptimize Database save handling on write\nOptimize restart logic\noptimize cli help\nOptimize search for adapter start file to also respect main property from package.json\nAdd location of ioBroker as information to getHostInfo",
                 "de": "Stellen Sie sicher, dass Adapter nur einmal hinzugefügt werden, um die Warteschlange zu aktualisieren, wenn keine Abhängigkeiten bestehen\nOptimieren Sie die Behandlung zum Speichern von Datenbanken beim Schreiben\nOptimieren Sie die Neustartlogik\nCLI-Hilfe optimieren\nOptimieren Sie die Suche nach der Adapterstartdatei, um auch die Haupteigenschaft von package.json zu berücksichtigen\nFügen Sie den Speicherort von ioBroker als Information zu getHostInfo hinzu",
