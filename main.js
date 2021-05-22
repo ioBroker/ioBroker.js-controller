@@ -1939,10 +1939,12 @@ async function processMessage(msg) {
                     if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed) {
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
-                            tools.sendDiagInfo(obj);
+                            // if user selected 'none' we will have null here and do not want to send it
+                            if (obj) {
+                                tools.sendDiagInfo(obj);
+                            }
                         } catch (err) {
                             logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
-                            tools.sendDiagInfo(null);
                         }
                     }
 
