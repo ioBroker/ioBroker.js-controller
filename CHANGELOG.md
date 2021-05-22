@@ -11,6 +11,7 @@
 * (bluefox) add _design/custom to the controller objects to make sure it is always provided
 * (foxriver76) fixed a bug which lead to an infinite loop if the repo was invalid and no cached sources available 
 * (foxriver76) check host existence before adding instance
+* (Apollon77) Check that password is provided when multihost discovery server should be started in secure mode
 
 ## 3.3.10 (2021-05-14)
 * (foxriver76) only send diagnose data if license and diag dialog has been confirmed on new installations
