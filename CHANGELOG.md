@@ -4,6 +4,26 @@
 	## __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (Apollon77) initialize new default ACLs in any case, only controller sets it for all objects
+* (foxriver76) do not send null as diag info in error cases or if user has selected none
+* (foxriver76) revive config.dataDir if deleted via bug in admin5 config editor
+* (bluefox) add _design/custom to the controller objects to make sure it is always provided
+* (foxriver76) fixed a bug which lead to an infinite loop if the repo was invalid and no cached sources available 
+* (foxriver76) check host existence before adding instance
+* (Apollon77) Check that password is provided when multihost discovery server should be started in secure mode
+
+## 3.3.10 (2021-05-14)
+* (foxriver76) only send diagnose data if license and diag dialog has been confirmed on new installations
+
+## 3.3.9 (2021-05-12)
+* (foxriver76) make sure adapters are added only once to upgrade queue if it has no dependencies
+* (Apollon77) Optimize Database save handling on write
+* (Apollon77) Optimize restart logic
+* (foxriver76) optimize cli help
+* (AlCalzone) Optimize search for adapter start file to also respect main property from package.json
+* (bluefox) Add location of ioBroker as information to getHostInfo
+
 ## 3.3.8 (2021-05-03)
 * (Apollon77/foxriver76) Optimize Database storage behaviour for file database
 * (foxriver76) change default behaviour of cli update command -> only list installed, allow --all as parameter to see all again

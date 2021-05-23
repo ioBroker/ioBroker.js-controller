@@ -191,20 +191,24 @@ function startMultihost(__config) {
         }
 
         if (_config.multihostService.secure) {
-            objects.getObject('system.config', (err, obj) => {
-                if (obj && obj.native && obj.native.secret) {
-                    if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
-                        // if old encryption was used, we need to decrypt in old fashion
-                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                            _startMultihost(_config, secret));
+            if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
+                objects.getObject('system.config', (err, obj) => {
+                    if (obj && obj.native && obj.native.secret) {
+                        if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
+                            // if old encryption was used, we need to decrypt in old fashion
+                            tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                                _startMultihost(_config, secret));
+                        } else {
+                            const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
+                            _startMultihost(_config, secret);
+                        }
                     } else {
-                        const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
-                        _startMultihost(_config, secret);
+                        logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                     }
-                } else {
-                    logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
-                }
-            });
+                });
+            } else {
+                logger.error(`${hostLogPrefix} Cannot start multihost discovery server: secure mode was configured, but no secret was set. Please check the configuration!`);
+            }
         } else {
             _startMultihost(_config, false);
         }
@@ -1935,14 +1939,16 @@ async function processMessage(msg) {
         case 'getRepository':
             if (msg.callback && msg.from) {
                 objects.getObject('system.config', async (err, systemConfig) => {
-                    // Collect statistics
-                    if (systemConfig && systemConfig.common && systemConfig.common.diag) {
+                    // Collect statistics (only if license has been confirmed - user agreed)
+                    if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed) {
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
-                            tools.sendDiagInfo(obj);
+                            // if user selected 'none' we will have null here and do not want to send it
+                            if (obj) {
+                                tools.sendDiagInfo(obj);
+                            }
                         } catch (err) {
                             logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
-                            tools.sendDiagInfo(null);
                         }
                     }
 
@@ -2203,8 +2209,8 @@ async function processMessage(msg) {
                         .on('data', chunk => text += chunk.toString())
                         .on('end', () => {  // done
                             const lines = text.split('\n');
-                            lines.shift();
-                            lines.push(stats.size);
+                            lines.shift(); // remove first line of the file as it could be not full
+                            lines.push(stats.size); // place as last line the current size of log
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
                         .on('error', () => // done
@@ -2577,7 +2583,7 @@ async function processMessage(msg) {
         case 'restartController': {
             const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
-            setTimeout(() => restart(), 200); // let the answer to be sent
+            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer to be sent
             break;
         }
     }
@@ -3216,7 +3222,6 @@ async function startInstance(id, wakeUp) {
             });
     }
 
-    let fileName = instance.common.main || 'main.js';
     const adapterDir = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
@@ -3243,26 +3248,29 @@ async function startInstance(id, wakeUp) {
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
-    let fileNameFull = path.join(adapterDir, fileName);
-
-    // workaround for old vis.
+    // workaround for old vis
     if (instance.common.onlyWWW && name === 'vis') {
         instance.common.onlyWWW = false;
     }
 
-    if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
-        fileName = name + '.js';
-        fileNameFull = path.join(adapterDir, fileName);
-        if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
-            // If not just www files
-            if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir, 'www'))) {
-                logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
-            } else {
-                logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
-            }
+    // www-only adapters have no start file
+    if (instance.common.onlyWWW) {
+        logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
+        return;
+    }
+
+    /** @type {string | undefined} */
+    let adapterMainFile;
+    // Web extensions have a separate field for the main file. We don't need to search it in that case
+    if (instance.common.mode !== 'extension') {
+        try {
+            adapterMainFile = await tools.resolveAdapterMainFile(name);
+        } catch {
+            logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
             return;
         }
     }
+
     procs[id].downloadRetry = 0;
 
     // read node.js engine requirements
@@ -3578,8 +3586,8 @@ async function startInstance(id, wakeUp) {
                     }
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
-                            procs[id].process = cp.fork(fileNameFull, args, {
-                                execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                            procs[id].process = cp.fork(adapterMainFile, args, {
+                                execArgv: tools.getDefaultNodeArgs(adapterMainFile),
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
                                 windowsHide: true,
                                 cwd: adapterDir
@@ -3646,19 +3654,19 @@ async function startInstance(id, wakeUp) {
                         states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
                             const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
                             const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
-                            if (fileNameFull) {
+                            if (adapterMainFile) {
                                 try {
                                     decache = decache || require('decache');
-                                    decache(fileNameFull);
+                                    decache(adapterMainFile);
 
                                     // Prior to requiring the main file make sure that the esbuild require hook was loaded
                                     // if this is a TypeScript adapter
-                                    if (fileNameFull.endsWith('.ts')) {
+                                    if (adapterMainFile.endsWith('.ts')) {
                                         require('esbuild-register');
                                     }
 
                                     procs[id].process = {
-                                        logic: require(fileNameFull)({
+                                        logic: require(adapterMainFile)({
                                             logLevel,
                                             compactInstance: _instance,
                                             compact: true
@@ -3871,7 +3879,7 @@ async function startInstance(id, wakeUp) {
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, () => {
                 // queue up, but only if not already queued
                 scheduledInstances[id] = {
-                    fileNameFull,
+                    fileNameFull: adapterMainFile,
                     adapterDir,
                     wakeUp
                 };
@@ -3882,8 +3890,8 @@ async function startInstance(id, wakeUp) {
             //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 try {
-                    procs[id].process = cp.fork(fileNameFull, args, {
-                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                    procs[id].process = cp.fork(adapterMainFile, args, {
+                        execArgv: tools.getDefaultNodeArgs(adapterMainFile),
                         windowsHide: true,
                         cwd: adapterDir
                     });
