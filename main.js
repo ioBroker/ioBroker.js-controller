@@ -3662,7 +3662,7 @@ async function startInstance(id, wakeUp) {
                                     // Prior to requiring the main file make sure that the esbuild require hook was loaded
                                     // if this is a TypeScript adapter
                                     if (adapterMainFile.endsWith('.ts')) {
-                                        require('esbuild-register');
+                                        require('@alcalzone/esbuild-register');
                                     }
 
                                     procs[id].process = {
