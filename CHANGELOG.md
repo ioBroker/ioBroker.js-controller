@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.11 (2021-05-23)
 * (Apollon77) initialize new default ACLs in any case, only controller sets it for all objects
 * (foxriver76) do not send null as diag info in error cases or if user has selected none
 * (foxriver76) revive config.dataDir if deleted via bug in admin5 config editor
