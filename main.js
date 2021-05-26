@@ -2269,11 +2269,11 @@ async function processMessage(msg) {
         case 'getLogFiles':
             if (msg.callback && msg.from) {
                 const config = getConfig();
-                let result = {list: []};
+                const result = {list: []};
                 // detect file log
                 if (config && config.log && config.log.transport) {
                     for (const transport in config.log.transport) {
-                        if (config.log.transport.hasOwnProperty(transport) && config.log.transport[transport].type === 'file') {
+                        if (config.log.transport[transport] && config.log.transport[transport].type === 'file') {
                             let filename = config.log.transport[transport].filename || 'log/';
                             const parts = filename.replace(/\\/g, '/').split('/');
                             parts.pop();
@@ -2308,7 +2308,7 @@ async function processMessage(msg) {
                                     } catch (e) {
                                         // push unchecked
                                         // result.list.push('log/' + transport + '/' + files[f]);
-                                        logger.error(`${hostLogPrefix} cannot check file: ${filename}/${files[f]}`);
+                                        logger.error(`${hostLogPrefix} cannot check file: ${filename}/${files[f]} - ${e}`);
                                     }
                                 }
                             }
