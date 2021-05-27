@@ -21,9 +21,12 @@ const appName = getAppName().toLowerCase();
 let objects;
 let states;
 
-if (!fs.existsSync(rootDir + 'tmp')) {
-    fs.mkdirSync(rootDir + 'tmp');
+// remove the temp dir, because content of data/files etc is created and checked for existence in some tests
+if (fs.existsSync(`${rootDir}tmp`)) {
+    fs.rmdirSync(`${rootDir}tmp`, {recursive: true});
 }
+
+fs.mkdirSync(`${rootDir}tmp`);
 
 function startController(options, callback) {
     if (!options) {
