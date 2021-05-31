@@ -2223,6 +2223,105 @@ async function processMessage(msg) {
             }
             break;
 
+        case 'getLogFile':
+            if (msg.callback && msg.from && msg.message) {
+                const config = getConfig();
+                if (config && config.log && config.log.transport && config.log.transport[msg.message.transport]) {
+                    let filename = config.log.transport[msg.message.transport].filename || 'log/';
+                    const parts = filename.replace(/\\/g, '/').split('/');
+                    parts.pop();
+                    filename = parts.join('/');
+
+                    if (filename[0] !== '/' && !filename.match(/^\W:/)) {
+                        const parts = ['..', '..', '..', '..'];
+                        do {
+                            parts.pop();
+                            const _filename = path.normalize(__dirname + '/' + parts.join('/') + '/') + filename;
+                            if (fs.existsSync(_filename)) {
+                                filename = _filename;
+                                break;
+                            }
+                        } while (parts.length);
+                    }
+
+                    if (fs.existsSync(filename)) {
+                        try {
+                            const file = path.join(filename, msg.message.filename);
+                            const stat = fs.lstatSync(file);
+
+                            const data = fs.readFileSync(file);
+                            sendTo(msg.from, msg.command, {data, gz: msg.message.filename.toLowerCase().endsWith('.gz'), size: stat.size}, msg.callback);
+
+                        } catch (e) {
+                            sendTo(msg.from, msg.command, {error: 'Cannot read file: ' + e}, msg.callback);
+                        }
+                    } else {
+                        sendTo(msg.from, msg.command, {error: 'Cannot find file'}, msg.callback);
+                    }
+                } else {
+                    sendTo(msg.from, msg.command, {error: 'invalid config'}, msg.callback);
+                }
+            } else {
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+            }
+            break;
+
+        case 'getLogFiles':
+            if (msg.callback && msg.from) {
+                const config = getConfig();
+                const result = {list: []};
+                // detect file log
+                if (config && config.log && config.log.transport) {
+                    for (const transport in config.log.transport) {
+                        if (config.log.transport[transport] && config.log.transport[transport].type === 'file') {
+                            let filename = config.log.transport[transport].filename || 'log/';
+                            const parts = filename.replace(/\\/g, '/').split('/');
+                            parts.pop();
+                            filename = parts.join('/');
+
+                            if (filename[0] !== '/' && !filename.match(/^\W:/)) {
+                                const parts = ['..', '..', '..', '..'];
+                                do {
+                                    parts.pop();
+                                    const _filename = path.normalize(__dirname + '/' + parts.join('/') + '/') + filename;
+                                    if (fs.existsSync(_filename)) {
+                                        filename = _filename;
+                                        break;
+                                    }
+                                } while (parts.length);
+                            }
+
+                            if (fs.existsSync(filename)) {
+                                const files = fs.readdirSync(filename);
+
+                                for (let f = 0; f < files.length; f++) {
+                                    try {
+                                        if (!files[f].endsWith('-audit.json')) {
+                                            const stat = fs.lstatSync(filename + '/' + files[f]);
+                                            if (!stat.isDirectory()) {
+                                                result.list.push({
+                                                    fileName: `log/${hostname}/${transport}/${files[f]}`,
+                                                    size: stat.size
+                                                });
+                                            }
+                                        }
+                                    } catch (e) {
+                                        // push unchecked
+                                        // result.list.push('log/' + transport + '/' + files[f]);
+                                        logger.error(`${hostLogPrefix} cannot check file: ${filename}/${files[f]} - ${e}`);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                sendTo(msg.from, msg.command, result, msg.callback);
+            } else {
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+            }
+            break;
+
         case 'getHostInfo':
             if (msg.callback && msg.from) {
                 // installed adapters
@@ -4492,12 +4591,12 @@ function init(compactGroupId) {
                     }
                 }
             } catch (e) {
-                console.error('Cannot create "' + __dirname + '/../../package.json": ' + e);
+                console.error(`Cannot create "${__dirname}/../../package.json": ${e}`);
             }
         }
 
     } else {
-        logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
+        logger.info(`${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`);
     }
 
     let packageJson;
@@ -4520,7 +4619,7 @@ function init(compactGroupId) {
             logger.error(`${hostLogPrefix} ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`);
             logger.error(`${hostLogPrefix} Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten`);
 
-            console.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
+            console.error(`ioBroker requires Node.js in version ${packageJson.engines.node}, you have ${process.version}`);
             console.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
 
             process.exit(EXIT_CODES.INVALID_NODE_VERSION);
