@@ -873,6 +873,60 @@ function register(it, expect, context) {
             });
         });
     });
+
+    it(testName + 'should respect alias read id on getForeignStates', async () => {
+        // set our alias read obj
+        await context.adapter.setForeignObjectAsync(`${gid}readGetStates`, {
+            common: {
+                name: 'Test ID read',
+                type: 'number',
+                role: 'state',
+                def: 5,
+                min: -10,
+                max: 10
+            },
+            native: {},
+            type: 'state'
+        });
+
+        await context.adapter.setForeignObjectAsync(`${gid}writeGetStates`, {
+            common: {
+                name: 'Test ID read',
+                type: 'number',
+                role: 'state',
+                min: -10,
+                max: 10,
+                def: 10
+            },
+            native: {},
+            type: 'state'
+        });
+
+        // set write object
+        await context.adapter.setForeignObjectAsync(`${gAliasID}aliasReadWriteGetStates`, {
+            common: {
+                name: 'Test Alias R/W',
+                type: 'number',
+                role: 'state',
+                min: -10,
+                max: 10,
+                alias: {
+                    id: {
+                        read: `${gid}readGetStates`,
+                        write: `${gid}writeGetStates`
+                    }
+                }
+            },
+            native: {},
+            type: 'state'
+        });
+
+        // now perform getStates with pattern
+        const states = await context.adapter.getForeignStatesAsync(`${gAliasID}aliasReadWriteGetStates*`);
+
+        // read def is 5
+        expect(states[`${gAliasID}aliasReadWriteGetStates`].val).to.be.equal(5);
+    });
 }
 
 module.exports.register = register;
