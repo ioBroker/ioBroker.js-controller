@@ -61,7 +61,7 @@
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.6.1",
     "@types/semver": "^7.3.6",
-    "@types/yargs": "^16.0.3",
+    "@types/yargs": "^17.0.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "get-spdx-license-ids": "^2.1.0",
