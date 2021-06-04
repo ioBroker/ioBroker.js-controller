@@ -5,7 +5,7 @@
 'use strict';
 
 // check if tmp directory exists
-const fs            = require('fs');
+const fs            = require('fs-extra');
 const path          = require('path');
 const rootDir       = path.normalize(__dirname + '/../../');
 //const pkg           = require(rootDir + 'package.json');
@@ -21,12 +21,14 @@ const appName = getAppName().toLowerCase();
 let objects;
 let states;
 
+/*
 // remove the temp dir, because content of data/files etc is created and checked for existence in some tests
 if (fs.existsSync(`${rootDir}tmp`)) {
     fs.rmdirSync(`${rootDir}tmp`, {recursive: true});
 }
-
 fs.mkdirSync(`${rootDir}tmp`);
+*/
+fs.emptyDirSync(`${rootDir}tmp`);
 
 function startController(options, callback) {
     if (!options) {
