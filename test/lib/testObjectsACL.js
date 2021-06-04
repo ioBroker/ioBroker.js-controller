@@ -191,6 +191,29 @@ function register(it, expect, context) {
         expect(obj.acl.owner).to.be.equal('system.user.governor');
         expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
     }).timeout(1000);
+
+    it(textName + 'default acl from system.config is used when user is admin and can be modified on the fly', async () => {
+        const objects = context.objects;
+
+        // get the system.config to save the acl
+        const config = await objects.getObjectAsync('system.config');
+
+        config.common.defaultNewAcl = {
+            'object': 1636,
+            'state': 1636,
+            'file': 1636,
+            'owner': 'system.user.notGovernor',
+            'ownerGroup': 'system.group.notSenatorGroup'
+        };
+
+        // we change the acl during runtime - it has to be applied on next setObject
+        await objects.setObjectAsync('system.config', config);
+
+        await objects.setObjectAsync('test.aclAdminChange', {type: 'state'}, {user: 'system.user.admin'});
+        const obj = await objects.getObjectAsync('test.aclAdminChange');
+        expect(obj.acl.owner).to.be.equal('system.user.notGovernor');
+        expect(obj.acl.ownerGroup).to.be.equal('system.group.notSenatorGroup');
+    }).timeout(1000);
 }
 
 module.exports.register = register;
