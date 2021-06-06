@@ -21,13 +21,7 @@ const appName = getAppName().toLowerCase();
 let objects;
 let states;
 
-/*
-// remove the temp dir, because content of data/files etc is created and checked for existence in some tests
-if (fs.existsSync(`${rootDir}tmp`)) {
-    fs.rmdirSync(`${rootDir}tmp`, {recursive: true});
-}
-fs.mkdirSync(`${rootDir}tmp`);
-*/
+// ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
 fs.emptyDirSync(`${rootDir}tmp`);
 
 function startController(options, callback) {
@@ -173,7 +167,7 @@ async function stopController(cb) {
     }
 }
 
-if (typeof module !== 'undefined' && module.parent) {
+if (require.main !== module) {
     module.exports.startController  = startController;
     module.exports.stopController   = stopController;
     module.exports.appName          = appName;
