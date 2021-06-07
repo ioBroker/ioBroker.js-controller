@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.11",
+        "version": "3.3.12",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.12": {
+                "en": "Make sure getStates uses write attribute of aliases instead of read\nAdd messages to read logs\nprevent crash in disconnect cases on startup\nallow defaultNewAcl updates on the fly",
+                "de": "Stellen Sie sicher, dass getStates das Write-Attribut von Aliasen anstelle von read verwendet\nFügen Sie Nachrichten hinzu, um Protokolle zu lesen\nAbsturz in Verbindungsabbrüchen beim Start verhindern\nerlauben Sie defaultNewAcl-Updates im laufenden Betrieb",
+                "ru": "Убедитесь, что getStates использует атрибут записи псевдонимов вместо чтения\nДобавить сообщения для чтения журналов\nпредотвращение сбоев в случаях отключения при запуске\nразрешить обновление defaultNewAcl на лету",
+                "pt": "Certifique-se de que getStates usa o atributo de gravação de aliases em vez de leitura\nAdicionar mensagens para ler registros\nevitar travamento em casos de desconexão na inicialização\npermitir atualizações defaultNewAcl em tempo real",
+                "nl": "Zorg ervoor dat getStates het schrijfkenmerk van aliassen gebruikt in plaats van lezen\nVoeg berichten toe om logs te lezen\nvoorkomen crash in gevallen van verbroken verbinding bij opstarten\nsta standaard updates van NewAcl direct toe",
+                "fr": "Assurez-vous que getStates utilise l'attribut d'écriture des alias au lieu de lire\nAjouter des messages pour lire les journaux\néviter les plantages dans les cas de déconnexion au démarrage\nautoriser les mises à jour par défautNewAcl à la volée",
+                "it": "Assicurati che getStates utilizzi l'attributo di scrittura degli alias invece di leggere\nAggiungi messaggi per leggere i log\nprevenire arresti anomali nei casi di disconnessione all'avvio\nconsentire gli aggiornamenti predefinitiNewAcl al volo",
+                "es": "Asegúrese de que getStates use el atributo de escritura de alias en lugar de leer\nAgregar mensajes para leer registros\nevitar bloqueos en casos de desconexión en el inicio\npermitir actualizaciones predeterminadasNewAcl sobre la marcha",
+                "pl": "Upewnij się, że getStates używa atrybutu write aliasów zamiast read\nDodaj wiadomości, aby przeczytać dzienniki\nzapobiegaj awariom w przypadkach rozłączania podczas uruchamiania\nzezwalaj na aktualizacje defaultNewAcl w locie",
+                "zh-cn": "确保 getStates 使用别名的写入属性而不是读取\n添加消息以读取日志\n防止在启动时断开连接的情况下崩溃\n允许动态更新 defaultNewAcl"
+            },
             "3.3.11": {
                 "en": "initialize new default ACLs in any case, only controller sets it for all objects\ndo not send null as diag info in error cases or if user has selected none\nrevive config.dataDir if deleted via bug in admin5 config editor\nadd _design/custom to the controller objects to make sure it is always provided\nfixed a bug which lead to an infinite loop if the repo was invalid and no cached sources available \ncheck host existence before adding instance\nCheck that password is provided when multihost discovery server should be started in secure mode\nFix issues with typescript adapter feature",
                 "de": "Initialisieren Sie in jedem Fall neue Standard-ACLs. Nur der Controller legt sie für alle Objekte fest\nSenden Sie in Fehlerfällen oder wenn der Benutzer keine ausgewählt hat, keine Null als Diag-Info\nBeleben Sie config.dataDir wieder, wenn es über einen Fehler im Konfigurationseditor von admin5 gelöscht wurde\nFügen Sie den Controller-Objekten _design / custom hinzu, um sicherzustellen, dass es immer bereitgestellt wird\nEs wurde ein Fehler behoben, der zu einer Endlosschleife führte, wenn das Repo ungültig war und keine zwischengespeicherten Quellen verfügbar waren\nÜberprüfen Sie die Host-Existenz, bevor Sie eine Instanz hinzufügen\nÜberprüfen Sie, ob das Kennwort angegeben ist, wenn der Multihost-Erkennungsserver im sicheren Modus gestartet werden soll\nBehebung von Problemen mit der Typoskript-Adapterfunktion",
