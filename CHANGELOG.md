@@ -4,6 +4,12 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) Make sure getStates uses write attribute of aliases instead of read
+* (bluefox) Add messages to read logs
+* (Apollon77) prevent crash in disconnect cases on startup
+* (foxriver76) allow defaultNewAcl updates on the fly
+
 ## 3.3.11 (2021-05-23)
 * (Apollon77) initialize new default ACLs in any case, only controller sets it for all objects
 * (foxriver76) do not send null as diag info in error cases or if user has selected none
