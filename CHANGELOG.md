@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (Apollon77) Do not install info adapter by default
+
 ## 3.3.12 (2021-06-07)
 * (foxriver76) Make sure getStates uses write attribute of aliases instead of read
 * (bluefox) Add messages to read logs
