@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.12",
+        "version": "3.3.13",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.13": {
+                "en": "Do not install info adapter by default",
+                "de": "Info-Adapter nicht standardmäßig installieren",
+                "ru": "Не устанавливать информационный адаптер по умолчанию",
+                "pt": "Não instale o adaptador de informação por padrão",
+                "nl": "Installeer de info-adapter niet standaard",
+                "fr": "Ne pas installer l'adaptateur d'informations par défaut",
+                "it": "Non installare l'adattatore informazioni per impostazione predefinita",
+                "es": "No instale el adaptador de información de forma predeterminada",
+                "pl": "Nie instaluj domyślnie adaptera informacji",
+                "zh-cn": "默认情况下不安装信息适配器"
+            },
             "3.3.12": {
                 "en": "Make sure getStates uses write attribute of aliases instead of read\nAdd messages to read logs\nprevent crash in disconnect cases on startup\nallow defaultNewAcl updates on the fly",
                 "de": "Stellen Sie sicher, dass getStates das Write-Attribut von Aliasen anstelle von read verwendet\nFügen Sie Nachrichten hinzu, um Protokolle zu lesen\nAbsturz in Verbindungsabbrüchen beim Start verhindern\nerlauben Sie defaultNewAcl-Updates im laufenden Betrieb",

@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.13 (2021-06-19)
 * (Apollon77) Do not install info adapter by default
 
 ## 3.3.12 (2021-06-07)
