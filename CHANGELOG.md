@@ -4,6 +4,12 @@
 	## __WORK IN PROGRESS__
 -->
 
+## 3.4.0 (2021-xx-xx) Release I...
+**BREAKING CHANGES**
+* Support for Node.js 10 is droppedf! Supported are nodejs 12.x and 14.x and 16.x (Node.js 16.x is  working WHEN USED WITH npm 6!!... still in testing phase)
+
+* WORK IN PROGRESS - Use at own risk!
+
 ## 3.3.13 (2021-06-19) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
