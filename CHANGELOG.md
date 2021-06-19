@@ -4,65 +4,12 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.3.13 (2021-06-19)
-* (Apollon77) Do not install info adapter by default
-
-## 3.3.12 (2021-06-07)
-* (foxriver76) Make sure getStates uses write attribute of aliases instead of read
-* (bluefox) Add messages to read logs
-* (Apollon77) prevent crash in disconnect cases on startup
-* (foxriver76) allow defaultNewAcl updates on the fly
-
-## 3.3.11 (2021-05-23)
-* (Apollon77) initialize new default ACLs in any case, only controller sets it for all objects
-* (foxriver76) do not send null as diag info in error cases or if user has selected none
-* (foxriver76) revive config.dataDir if deleted via bug in admin5 config editor
-* (bluefox) add _design/custom to the controller objects to make sure it is always provided
-* (foxriver76) fixed a bug which lead to an infinite loop if the repo was invalid and no cached sources available 
-* (foxriver76) check host existence before adding instance
-* (Apollon77) Check that password is provided when multihost discovery server should be started in secure mode
-* (AlCalzone) Fix issues with typescript adapter feature
-
-## 3.3.10 (2021-05-14)
-* (foxriver76) only send diagnose data if license and diag dialog has been confirmed on new installations
-
-## 3.3.9 (2021-05-12)
-* (foxriver76) make sure adapters are added only once to upgrade queue if it has no dependencies
-* (Apollon77) Optimize Database save handling on write
-* (Apollon77) Optimize restart logic
-* (foxriver76) optimize cli help
-* (AlCalzone) Optimize search for adapter start file to also respect main property from package.json
-* (bluefox) Add location of ioBroker as information to getHostInfo
-
-## 3.3.8 (2021-05-03)
-* (Apollon77/foxriver76) Optimize Database storage behaviour for file database
-* (foxriver76) change default behaviour of cli update command -> only list installed, allow --all as parameter to see all again
-
-## 3.3.7 (2021-05-02)
-* (foxriver76) Adjust another set state check
-
-## 3.3.6 (2021-05-02)
-* (foxriver76) Fix some set state checks and logging
-* (Apollon77/Stabilostick) Try fix restart on Windows
-
-## 3.3.5 (2021-05-01)
-* (foxriver76/Apollon77) Change loglevel for setState mismatch notifies to "info"
-* (foxriver76) optimize setState checks to handle Object and mixed correct
-
-## 3.3.4 (2021-04-30)
-* (AlCalzone) Fix restart logic for linux systems to prevent processes started aside systemd
-* (bluefox) Add new system config values to set a default loglevel for new created instances
-* (bluefox) Do not delete objects recursively that have dontDelete flag
-
-## 3.3.2 (2021-04-30)
-* (Apollon77) "upgrade self" CLI command should not start controller because we require it to be stopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
-* (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
-* (foxriver76) adjust some state wrote checks (type array needs to provide a string, ack-only-sets are allowed again)
-
-## 3.3.1 (2021-04-29) Release Hannah
+## 3.3.13 (2021-06-19) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * The experimental jsonl db libraries are now included in js-controller directly too
+* (Apollon77) Do not install info adapter by default
+* (foxriver76) change default behaviour of cli update command -> only list installed, allow --all as parameter to see all again
 
 **Features**
 * (foxriver76) start instances ordered by their defined tiers (details see https://github.com/ioBroker/ioBroker.js-controller#tiers-start-instances-in-an-ordered-manner)
@@ -84,6 +31,27 @@
 * (Apollon77) optimize db initialization for fileDB and enhance error case handling
 * (bluefox/Apollon77) make sure all object types are deleted on recursive object deletion
 * (Apollon77/foxriver76) several optimizations and fixes in database modules and update
+* (foxriver76) Make sure getStates uses write attribute of aliases instead of read
+* (Apollon77) prevent crash in disconnect cases on startup
+* (foxriver76) allow defaultNewAcl updates on the fly
+* (Apollon77) initialize new default ACLs in any case, only controller sets it for all objects
+* (foxriver76) do not send null as diag info in error cases or if user has selected none
+* (foxriver76) revive config.dataDir if deleted via bug in admin5 config editor
+* (foxriver76) fixed a bug which lead to an infinite loop if the repo was invalid and no cached sources available
+* (foxriver76) check host existence before adding instance
+* (Apollon77) Check that password is provided when multihost discovery server should be started in secure mode
+* (foxriver76) only send diagnose data if license and diag dialog has been confirmed on new installations
+* (foxriver76) make sure adapters are added only once to upgrade queue if it has no dependencies
+* (Apollon77) Optimize Database save handling on write
+* (Apollon77) Optimize restart logic
+* (foxriver76) optimize cli help
+* (AlCalzone) Optimize search for adapter start file to also respect main property from package.json
+* (Apollon77/foxriver76) Optimize Database storage behaviour for file database
+* (Apollon77/Stabilostick) Try fix restart on Windows
+* (bluefox) Do not delete objects recursively that have dontDelete flag
+* (AlCalzone) Fix restart logic for linux systems to prevent processes started aside systemd
+* (Apollon77) "upgrade self" CLI command should not start controller because we require it to be stopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
+* (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
 
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
@@ -95,19 +63,22 @@
   * check type of the state.val matching the common.type of the obj
   * if it's a number and min/max is defined on object we perform additional checks for min and max
 * (bluefox) checkPassword(Async) is now returning two parameters in callback/resolve (first is boolean if password/user are valid, second is the final internal username in form system.user.xxx)
-  
+* (bluefox) add _design/custom to the controller objects - this should deprecate the own custom view over time, please update if relevant!
+
 **Developer relevant new Features**
 * (AlCalzone) support executing TypeScript adapters: If the adapter main file ends with ".ts" we automatically transpile the typeScript file before starting the adapter
 * (bluefox) Implement chownFile in adapter.js
 * (foxriver76) introduce common.step attribute of states and round state value if needed
 * (bluefox) Add restartController sendToHost command
 * (bluefox) Allow npm install to be executed with debug flag
+* (bluefox) Add messages to read logs
+* (bluefox) Add location of ioBroker as information to getHostInfo
+* (bluefox) Add new system config values to set a default loglevel for new created instances
 
 **Developer relevant Optimizations and Fixes**
 
 * general dependency updates
 * code style optimizations
-
 
 ## 3.2.16 (2021-02-01) Release Grace
 **BREAKING CHANGES**
