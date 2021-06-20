@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver/Apollon77) fix invalid logging in package manager
+
 ## 3.3.13 (2021-06-19) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
