@@ -1599,7 +1599,7 @@ function setMeta() {
 
     obj = {
         _id:       id + '.zip',
-        type:      'channel',
+        type:      'folder',
         common: {
             name:  'ZIP files',
             desc:  'Files for download'
