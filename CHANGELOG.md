@@ -4,10 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.3.14 (2021-06-20)
-* (foxriver/Apollon77) fix invalid logging in package manager
-
-## 3.3.13 (2021-06-19) Release Hannah
+## 3.3.14 (2021-06-20) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * The experimental jsonl db libraries are now included in js-controller directly too
@@ -55,6 +52,7 @@
 * (AlCalzone) Fix restart logic for linux systems to prevent processes started aside systemd
 * (Apollon77) "upgrade self" CLI command should not start controller because we require it to be stopped before (will be effective for all upgrades from 3.3.2 to higher versions only)
 * (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
+* (foxriver/Apollon77) fix invalid logging in package manager
 
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
