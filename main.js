@@ -53,8 +53,8 @@ let isDaemon                = false;
 let callbackId              = 1;
 let callbacks               = {};
 const hostname              = tools.getHostName();
-let hostObjectPrefix        = 'system.host.' + hostname;
-let hostLogPrefix           = 'host.' + hostname;
+let hostObjectPrefix        = `system.host.${hostname}`;
+let hostLogPrefix           = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
 const logList               = [];
 let detectIpsCount          = 0;
@@ -178,7 +178,7 @@ function startMultihost(__config) {
                 });
                 return;
             } catch (e) {
-                logger.warn(`${hostLogPrefix} Cannot stop multihost discovery server: ${e}`);
+                logger.warn(`${hostLogPrefix} Cannot stop multihost discovery server: ${e.message}`);
             }
         }
 
@@ -402,7 +402,7 @@ function createStates(onConnect) {
                         console.log('Wake up ' + id + ' ' + JSON.stringify(state));
                         startInstance(subscribe[id][i], true);
                     } else {
-                        logger.warn(hostLogPrefix + ' controller Adapter subscribed on ' + id + ' does not exist!');
+                        logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
                 }
             } else
@@ -418,12 +418,12 @@ function createStates(onConnect) {
                             logger.transports[transport].level = state.val;
                         }
                     }
-                    logger.info(hostLogPrefix + ' Loglevel changed from "' + currentLevel + '" to "' + state.val + '"');
+                    logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
                     currentLevel = state.val;
                 } else if (state.val && state.val !== currentLevel) {
-                    logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
+                    logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
-                states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
+                states.setState(`${hostObjectPrefix}.logLevel`, {val: currentLevel, ack: true, from: hostObjectPrefix});
             } else
             if (id.startsWith(hostObjectPrefix + '.plugins.') && id.endsWith('.enabled')) {
                 if (!config || !config.log || !state || state.ack) {
@@ -834,8 +834,8 @@ function changeHost(objs, oldHostname, newHostname, callback) {
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
             const obj = row.value;
             obj.common.host = newHostname;
-            logger.info(hostLogPrefix + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
-            obj.from = 'system.host.' + tools.getHostName();
+            logger.info(`${hostLogPrefix} Reassign instance ${obj._id.substring('system.adapter.'.length)} from ${oldHostname} to ${newHostname}`);
+            obj.from = `system.host.${tools.getHostName()}`;
             obj.ts = Date.now();
 
             objects.setObject(obj._id, obj, (/* err */) =>
@@ -955,7 +955,7 @@ function checkHost(callback) {
                 if (err && err.message.startsWith('Cannot find ')) {
                     typeof callback === 'function' && callback();
                 } else if (!doc.rows || doc.rows.length === 0) {
-                    logger.info(hostLogPrefix + ' no instances found');
+                    logger.info(`${hostLogPrefix} no instances found`);
                     // no instances found
                     typeof callback === 'function' && callback();
                 } else {
@@ -1617,6 +1617,21 @@ function setMeta() {
             read:   true,
             write:  true,
             desc:   'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
+            role:   'state'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
+    obj = {
+        _id:    id + '.nodeVersion',
+        type:   'state',
+        common: {
+            name:   'Controller - nodejs version',
+            type:   'string',
+            read:   true,
+            write:  true,
+            desc:   'Nodejs version of the host process.',
             role:   'state'
         },
         native: {}
@@ -4666,8 +4681,11 @@ function init(compactGroupId) {
             states.subscribe('system.adapter.*.alive');
 
             // set current Loglevel and subscribe for changes
-            states.setState(hostObjectPrefix + '.logLevel', {val: config.log.level, ack: true, from: hostObjectPrefix});
-            states.subscribe(hostObjectPrefix + '.logLevel');
+            states.setState(`${hostObjectPrefix}.logLevel`, {val: config.log.level, ack: true, from: hostObjectPrefix});
+            states.subscribe(`${hostObjectPrefix}.logLevel`);
+
+            // set current node version
+            states.setState(`${hostObjectPrefix}.nodeVersion`, {val: process.version.replace(/^v/, ''), ack: true, from: hostObjectPrefix});
 
             // Read current state of all log subscribers
             states.getKeys('*.logging', (err, keys) => {
