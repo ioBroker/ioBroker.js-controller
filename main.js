@@ -10,6 +10,7 @@
  */
 'use strict';
 
+const cpPromise = require('promisify-child-process');
 const schedule        = require('node-schedule');
 const os              = require('os');
 const fs              = require('fs-extra');
@@ -24,6 +25,7 @@ const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
+
 let pluginHandler;
 let notificationHandler;
 
@@ -1627,11 +1629,11 @@ function setMeta() {
         _id:    id + '.nodeVersion',
         type:   'state',
         common: {
-            name:   'Controller - nodejs version',
+            name:   'Controller - Node.js version',
             type:   'string',
             read:   true,
-            write:  true,
-            desc:   'Nodejs version of the host process.',
+            write:  false,
+            desc:   'Node.js version of the host process.',
             role:   'state'
         },
         native: {}
@@ -4665,7 +4667,7 @@ function init(compactGroupId) {
         objects.subscribe('system.adapter.*');
 
         // create states object
-        createStates( () => {
+        createStates( async () => {
             // Subscribe for connection state of all instances
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
@@ -4684,8 +4686,28 @@ function init(compactGroupId) {
             states.setState(`${hostObjectPrefix}.logLevel`, {val: config.log.level, ack: true, from: hostObjectPrefix});
             states.subscribe(`${hostObjectPrefix}.logLevel`);
 
-            // set current node version
-            states.setState(`${hostObjectPrefix}.nodeVersion`, {val: process.version.replace(/^v/, ''), ack: true, from: hostObjectPrefix});
+            try {
+                const nodeVersion = process.version.replace(/^v/, '');
+                const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
+
+                if (prevNodeVersionState && prevNodeVersionState.val !== nodeVersion) {
+                    // detected a change in the nodejs version
+                    logger.info(`${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`);
+                    if (os.platform() === 'linux') {
+                        // ensure capabilities are set
+                        await cpPromise.exec(`sudo setcap cap_net_admin,cap_net_bind_service,cap_net_raw+eip ${process.execPath}`);
+                    }
+                }
+
+                // set current node version
+                states.setState(`${hostObjectPrefix}.nodeVersion`, {
+                    val: nodeVersion,
+                    ack: true,
+                    from: hostObjectPrefix
+                });
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Error on node version check routine: ${e.message}`);
+            }
 
             // Read current state of all log subscribers
             states.getKeys('*.logging', (err, keys) => {
