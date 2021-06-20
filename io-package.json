@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.13",
+        "version": "3.3.14",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.14": {
+                "en": "(foxriver/Apollon77) fix invalid logging in package manager",
+                "de": "(foxriver/Apollon77) Ungültige Protokollierung im Paketmanager behoben",
+                "ru": "(foxriver / Apollon77) исправить недопустимый вход в диспетчер пакетов",
+                "pt": "(foxriver / Apollon77) corrigir log inválido no gerenciador de pacotes",
+                "nl": "(foxriver/Apollon77) herstel ongeldige logboekregistratie in pakketbeheerder",
+                "fr": "(foxriver/Apollon77) corrige la connexion non valide dans le gestionnaire de paquets",
+                "it": "(foxriver/Apollon77) corregge la registrazione non valida nel gestore pacchetti",
+                "es": "(foxriver / Apollon77) corrige el inicio de sesión no válido en el administrador de paquetes",
+                "pl": "(foxriver/Apollon77) naprawiono nieprawidłowe logowanie w menedżerze pakietów",
+                "zh-cn": "(foxriver/Apollon77) 修复包管理器中的无效登录"
+            },
             "3.3.13": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",

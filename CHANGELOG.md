@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.14 (2021-06-20)
 * (foxriver/Apollon77) fix invalid logging in package manager
 
 ## 3.3.13 (2021-06-19) Release Hannah
