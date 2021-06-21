@@ -80,7 +80,7 @@ function register(it, expect, context) {
         } catch {
             //ok
         }
-    }).timeout(20000);
+    }).timeout(40000);
 
     // user get
     it(testName + 'user get', async () => {
