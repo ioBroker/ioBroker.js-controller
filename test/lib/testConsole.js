@@ -492,11 +492,13 @@ function register(it, expect, context) {
         let res;
         // check setup
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" setup`);
-        expect(res.stderr).to.be.not.ok;
+        // Sentry info is on stderr so check exit code here
+        expect(res.code).to.be.equal(0);
 
         // check setup first
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" setup first`);
-        expect(res.stderr).to.be.not.ok;
+        // Sentry info is on stderr so check exit code here
+        expect(res.code).to.be.equal(0);
     }).timeout(20000);
 
     // setup custom
@@ -606,37 +608,59 @@ function register(it, expect, context) {
 
     // repo
     it(testName + 'repo', async () => {
-        let err;
+        let res;
         // add non existing repo
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['add', 'local', 'some/path'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo add local some/path`);
+        expect(res.stderr).to.be.not.ok;
+
         // set new repo as active
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'local'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set local`);
+        expect(res.stderr).to.be.not.ok;
+
         // try to delete active repo
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // set active repo to default
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'stable'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set stable`);
+        expect(res.stderr).to.be.not.ok;
+
         // delete non-active repo
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local`);
+        expect(res.stderr).to.be.not.ok;
+
         // add and set as active new repo, but with too less parameters
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['addset', 'local1'], {});
-        expect(err).to.be.ok;
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['addset', 'local1', 'some/path'], {});
-        expect(err).to.be.not.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
+        // delete non-active repo
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" addset local1 some/path`);
+        expect(res.stderr).to.be.not.ok;
+
         // try to add new repo with existing name
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['add', 'local1', 'some/path1'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo add local1 some/path1`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // set active repo to default
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'stable'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set stable`);
+        expect(res.stderr).to.be.not.ok;
+
         // try to delete non-active repo
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local1'], {});
-        expect(err).to.be.not.ok;
-    }).timeout(10000);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local1`);
+        expect(res.stderr).to.be.not.ok;
+    }).timeout(20000);
 
     // license
     it(testName + 'license', async () => {
@@ -647,13 +671,23 @@ function register(it, expect, context) {
         const fs = require('fs');
         fs.writeFileSync(licenseFile, licenseText);
 
+        let res;
+
         // expect warning about license
-        let err;
-        err = await cli.processCommandAsync(context.objects, context.states, 'license', [], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" license`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // expect warning about invalid license
-        err = await cli.processCommandAsync(context.objects, context.states, 'license', ['invalidLicense'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" license invalidLicense`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
 
         await context.objects.setObjectAsync('system.adapter.vis.0', {
             common: {
@@ -665,23 +699,23 @@ function register(it, expect, context) {
             type: 'instance'
         });
         // license must be taken
-        err = await cli.processCommandAsync(context.objects, context.states, 'license', [licenseFile], {});
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" license ${licenseFile}`);
         fs.unlinkSync(licenseFile);
-        expect(err).to.be.not.ok;
+        expect(res.stderr).to.be.not.ok;
         let obj = await context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj.native.license).to.be.equal(licenseText);
 
         // license must be taken
-        err = await cli.processCommandAsync(context.objects, context.states, 'license', [licenseText], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" license ${licenseText}`);
+        expect(res.stderr).to.be.not.ok;
         obj = await context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj.native.license).to.be.equal(licenseText);
-    });
+    }).timeout(20000);
 
     // info
     it(testName + 'info', async () => {
-        const err = await cli.processCommandAsync(context.objects, context.states, 'info', [], {});
-        expect(err).to.be.not.ok;
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" info`);
+        expect(res.stderr).to.be.not.ok;
     }).timeout(10000);
 }
 

@@ -41,7 +41,7 @@ function startController(options, callback) {
     iobrokerJSON.objects.host = options.objects.host || '127.0.0.1';
     iobrokerJSON.objects.redisNamespace = options.objects.redisNamespace || '';
     iobrokerJSON.states.type = options.states.type || 'file';
-    iobrokerJSON.states.port = (options.states.port === undefined) ? 19001 : options.objects.port;
+    iobrokerJSON.states.port = (options.states.port === undefined) ? 19000 : options.states.port;
     iobrokerJSON.states.host = options.states.host || '127.0.0.1';
     fs.writeJSONSync(path.join(rootDir, 'data', 'iobroker.json'), iobrokerJSON, {spaces: 2});
 
