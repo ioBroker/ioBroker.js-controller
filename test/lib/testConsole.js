@@ -39,36 +39,36 @@ function register(it, expect, context) {
     it(testName + 'user passwd', async () => {
         let res;
 
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} passwd admin --password ${context.appName.toLowerCase()}`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`);
         expect(res.stderr).to.be.not.ok;
 
         // check password
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user check admin --password ${context.appName.toLowerCase()}`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`);
         expect(res.stderr).to.be.not.ok;
         // negative check
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user check admin --password ${`${context.appName.toLowerCase()}2`}`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
         // set new password
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user passwd admin --password ${`${context.appName.toLowerCase()}1`}`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`);
         expect(res.stderr).to.be.not.ok;
         // check new Password
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user check admin --password ${`${context.appName.toLowerCase()}1`}`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`);
         expect(res.stderr).to.be.not.ok;
 
         // set password back
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user passwd admin --password ${`${context.appName.toLowerCase()}`}`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`);
         expect(res.stderr).to.be.not.ok;
         // check password
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user check admin --password ${`${context.appName.toLowerCase()}`}`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`);
         expect(res.stderr).to.be.not.ok;
 
         // set password for non existing user
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -76,7 +76,7 @@ function register(it, expect, context) {
 
         // check password for non existing user
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user check uuuser --password ${`${context.appName.toLowerCase()}1`}`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`);
             expect(true, 'should throw').to.be.false;
         } catch {
             //ok
@@ -87,7 +87,7 @@ function register(it, expect, context) {
     it(testName + 'user get', async () => {
         // check if no args set
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -95,17 +95,17 @@ function register(it, expect, context) {
 
         // no user defined
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user get`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user get`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
         // check admin
-        const res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user get admin`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user get admin`);
         expect(res.stderr).to.be.not.ok;
         // check invalid user
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user get aaa`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user get aaa`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -117,7 +117,7 @@ function register(it, expect, context) {
         let res;
         // check if no args set
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user add`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -125,19 +125,19 @@ function register(it, expect, context) {
 
         // add admin not allowed
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user add admin --password aaa`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add admin --password aaa`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // add user
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user add newUser --password user --ingroup user`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`);
         expect(res.stderr).to.be.not.ok;
 
         // add existing user not allowed
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user add newUser --password user`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add newUser --password user`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -145,14 +145,14 @@ function register(it, expect, context) {
 
         // add with invalid group
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user add user1 --password bbb --ingroup invalid`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add user1 --password bbb --ingroup invalid`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // check adduser
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} adduser user2 --password user --ingroup user`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" adduser user2 --password user --ingroup user`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(20000);
 
@@ -161,28 +161,28 @@ function register(it, expect, context) {
         let res;
 
         // add second user
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user add user1 --password bbb --ingroup user`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add user1 --password bbb --ingroup user`);
         expect(res.stderr).to.be.not.ok;
 
         // check if no args set
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user enable`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user enable`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // enable admin
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user enable admin`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user enable admin`);
         expect(res.stderr).to.be.not.ok;
 
         // test short command
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user e admin`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user e admin`);
         expect(res.stderr).to.be.not.ok;
 
         // check invalid user
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user enable aaa`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user enable aaa`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -190,18 +190,18 @@ function register(it, expect, context) {
 
         // admin cannot be disabled
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user disable admin`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user disable admin`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // user can be disabled
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user disable user1`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user disable user1`);
         expect(res.stderr).to.be.not.ok;
 
         // user can be disabled
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user get user1`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user get user1`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(20000);
 
@@ -210,31 +210,31 @@ function register(it, expect, context) {
         let res;
         // check if no args set
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user del`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user del`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
         // delete admin not allowed
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user del admin`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user del admin`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
         // delete user
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} user del user`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user del user`);
         expect(res.stderr).to.be.not.ok;
 
         // delete invalid user
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} user del user`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user del user`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
         // check userdel
-        res = await cpPromise.exec(`${process.execPath} ${iobExecutable} userdel user2`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" userdel user2`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(20000);
 
@@ -242,7 +242,7 @@ function register(it, expect, context) {
     it(testName + 'group add', async () => {
         // check if no args set
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group add`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group add`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -250,19 +250,19 @@ function register(it, expect, context) {
 
         // add administrator not allowed
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group add administrator`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group add administrator`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // add user
-        const res = await cpPromise.exec(`${process.execPath} ${iobExecutable} group add users`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group add users`);
         expect(res.stderr).to.be.not.ok;
 
         // add existing user not allowed
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group add users`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group add users`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -273,7 +273,7 @@ function register(it, expect, context) {
     it(testName + 'group del', async () => {
         // check if no args set
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group del`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group del`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -281,19 +281,19 @@ function register(it, expect, context) {
 
         // delete admin not allowed
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group del administrator`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group del administrator`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // delete users
-        const res = await cpPromise.exec(`${process.execPath} ${iobExecutable} group del users`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group del users`);
         expect(res.stderr).to.be.not.ok;
 
         // delete invalid group
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group del users`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group del users`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -305,19 +305,19 @@ function register(it, expect, context) {
         // check if no args set
         // no user defined
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group list`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group list`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // check admin
-        const res = await cpPromise.exec(`${process.execPath} ${iobExecutable} group list administrator`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group list administrator`);
         expect(res.stderr).to.be.not.ok;
 
         // check invalid user
         try {
-            await cpPromise.exec(`${process.execPath} ${iobExecutable} group list aaa`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group list aaa`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -326,86 +326,146 @@ function register(it, expect, context) {
 
     // group get
     it(testName + 'group get', async () => {
-        let err;
         // check if no args set
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', [], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // no user defined
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['get'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group get`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // check admin
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['get', 'administrator'], {});
-        expect(err).to.be.not.ok;
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group get administrator`);
+        expect(res.stderr).to.be.not.ok;
+
         // check invalid user
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['get', 'aaaa'], {});
-        expect(err).to.be.ok;
-    });
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group get aaa`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+    }).timeout(20000);
 
     // group disable / enable
     it(testName + 'group disable/enable', async () => {
-        let err;
+        let res;
         // add second group
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['add', 'group1'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group add group1`);
+        expect(res.stderr).to.be.not.ok;
+
         // check if no args set
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['enable'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group enable`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // enable administrator
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['enable', 'administrator'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group enable administrator`);
+        expect(res.stderr).to.be.not.ok;
+
         // test short command
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['e', 'administrator'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group e administrator`);
+        expect(res.stderr).to.be.not.ok;
+
         // check invalid group
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['enable', 'aaa'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group enable aaa`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // administrator cannot be disabled
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['disable', 'administrator'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group disable administrator`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // group can be disabled
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['disable', 'group1'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group disable group1`);
+        expect(res.stderr).to.be.not.ok;
+
         // group can be disabled
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['get', 'group1'], {});
-        expect(err).to.be.not.ok;
-    });
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group get group1`);
+        expect(res.stderr).to.be.not.ok;
+    }).timeout(20000);
 
     // group useradd
     it(testName + 'group useradd', async () => {
-        let err;
+        let res;
+
         // add non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group useradd group1 user4`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // add user for tests
-        err = await cli.processCommandAsync(context.objects, context.states, 'user', ['add', 'user4'], { ingroup: 'user', password: 'bbb' });
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add user4 --ingroup user --password bbb`);
+        expect(res.stderr).to.be.not.ok;
+
         // add normal user to normal group
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['useradd', 'group1', 'user4'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group useradd group1 user4`);
+        expect(res.stderr).to.be.not.ok;
+
         // admin yet added
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['useradd', 'administrator', 'admin'], {});
-        expect(err).to.be.not.ok;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group useradd administrator admin`);
+        expect(res.stderr).to.be.not.ok;
+
         // add to invalid group
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['useradd', 'group5', 'admin'], {});
-        expect(err).to.be.ok;
-    });
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group useradd group5 admin`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+    }).timeout(20000);
 
     // group userdel
     it(testName + 'group userdel', async () => {
-        let err;
         // delete non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['userdel', 'group1', 'user5'], {});
-        expect(err).to.be.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group userdel group1 user5`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // remove normal user from normal group
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['userdel', 'group1', 'user4'], {});
-        expect(err).to.be.not.ok;
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group userdel group1 user4`);
+        expect(res.stderr).to.be.not.ok;
+
         // admin not allowed
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['userdel', 'administrator', 'admin'], {});
-        expect(err).to.be.not.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group userdel administrator admin`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+
         // remove from invalid group
-        err = await cli.processCommandAsync(context.objects, context.states, 'group', ['userdel', 'group5', 'admin'], {});
-        expect(err).to.be.ok;
-    });
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group userdel group5 admin`);
+            expect(true, 'should throw').to.be.false;
+        } catch {
+            // ok
+        }
+    }).timeout(20000);
 
     // start adapter
     // stop adapter
@@ -414,13 +474,14 @@ function register(it, expect, context) {
 
     // status
     it(testName + 'status', async () => {
-        let err;
-        // delete non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'status', [], {});
-        expect(err).to.be.not.ok;
-        // remove normal user from normal group
-        err = await cli.processCommandAsync(context.objects, context.states, 'isrun', [], {});
-        expect(err).to.be.not.ok;
+        let res;
+        // check status
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" status`);
+        expect(res.stderr).to.be.not.ok;
+
+        // check isrun
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" isrun`);
+        expect(res.stderr).to.be.not.ok;
     });
     // restart adapter
     // restart ??
@@ -428,13 +489,14 @@ function register(it, expect, context) {
     // update
     // setup
     it(testName + 'setup', async () => {
-        let err;
-        // delete non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'setup', [], {});
-        expect(err).to.be.not.ok;
-        // remove normal user from normal group
-        err = await cli.processCommandAsync(context.objects, context.states, 'setup', ['first'], {});
-        expect(err).to.be.not.ok;
+        let res;
+        // check setup
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" setup`);
+        expect(res.stderr).to.be.not.ok;
+
+        // check setup first
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" setup first`);
+        expect(res.stderr).to.be.not.ok;
     }).timeout(20000);
 
     // setup custom
@@ -453,12 +515,14 @@ function register(it, expect, context) {
     // message
     // update
     it(testName + 'update', async () => {
-        let err;
-        // delete non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'update', [], {});
-        expect(err).to.be.not.ok;
-        err = await cli.processCommandAsync(context.objects, context.states, 'update', ['http://download.iobroker.net/sources-dist.json'], {});
-        expect(err).to.be.not.ok;
+        let res;
+        // check update
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
+        expect(res.stderr).to.be.not.ok;
+
+        // check update with repo url
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update http://download.iobroker.net/sources-dist.json`);
+        expect(res.stderr).to.be.not.ok;
     }).timeout(40000);
 
     // upgrade
@@ -481,9 +545,9 @@ function register(it, expect, context) {
             }
         }
 
-        let err;
-        err = await cli.processCommandAsync(context.objects, context.states, 'backup', [], {});
-        expect(err).to.be.not.ok;
+        let res;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" backup`);
+        expect(res.stderr).to.be.not.ok;
         files = fs.readdirSync(dir);
         // check 2017_03_09-13_48_33_backupioBroker.tar.gz
         //let found = false;
@@ -500,9 +564,9 @@ function register(it, expect, context) {
         //expect(found).to.be.true;
 
         const name = Math.round(Math.random() * 10000).toString();
-        err = await cli.processCommandAsync(context.objects, context.states, 'backup', [name], {});
-        expect(err).to.be.not.ok;
-        expect(require('fs').existsSync(getBackupDir() + name + '.tar.gz')).to.be.true;
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" backup ${name}`);
+        expect(res.stderr).to.be.not.ok;
+        expect(require('fs').existsSync(`${getBackupDir() + name}.tar.gz`)).to.be.true;
     }).timeout(20000);
 
     // list l
@@ -518,25 +582,27 @@ function register(it, expect, context) {
 
     // id uuid
     it(testName + 'uuid', async () => {
-        let err;
-        // delete non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'uuid', [], {});
-        expect(err).to.be.not.ok;
-        // remove normal user from normal group
-        err = await cli.processCommandAsync(context.objects, context.states, 'id', [], {});
-        expect(err).to.be.not.ok;
-    });
+        let res;
+        // uuid
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" uuid`);
+        expect(res.stderr).to.be.not.ok;
+
+        // id
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" id`);
+        expect(res.stderr).to.be.not.ok;
+    }).timeout(20000);
 
     // v version
     it(testName + 'version', async () => {
-        let err;
-        // delete non existing user
-        err = await cli.processCommandAsync(context.objects, context.states, 'version', [], {});
-        expect(err).to.be.not.ok;
-        // remove normal user from normal group
-        err = await cli.processCommandAsync(context.objects, context.states, 'v', [], {});
-        expect(err).to.be.not.ok;
-    });
+        let res;
+        // version
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" version`);
+        expect(res.stderr).to.be.not.ok;
+
+        // short
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" v`);
+        expect(res.stderr).to.be.not.ok;
+    }).timeout(20000);
 
     // repo
     it(testName + 'repo', async () => {
