@@ -670,7 +670,7 @@ function register(it, expect, context) {
         // try to delete non-active repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local1`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(40000);
 
     // license
     it(testName + 'license', async () => {
