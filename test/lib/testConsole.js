@@ -33,7 +33,6 @@ function getBackupDir() {
 
 function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' console: ';
-    const cli    = require('../../lib/setup.js');
 
     // passwd, user passwd, user check
     it(testName + 'user passwd', async () => {
@@ -474,15 +473,26 @@ function register(it, expect, context) {
 
     // status
     it(testName + 'status', async () => {
-        let res;
         // check status
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" status`);
-        expect(res.stderr).to.be.not.ok;
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" status`);
+            expect(true, 'should throw').to.be.false;
+        } catch (e) {
+            // due to exit code 100 (controller not running) it throws
+            expect(e.code).to.be.equal(100);
+            expect(e.stdout.includes('ioBroker is not running on this host')).to.be.true;
+        }
 
         // check isrun
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" isrun`);
-        expect(res.stderr).to.be.not.ok;
-    });
+        try {
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" isrun`);
+            expect(true, 'should throw').to.be.false;
+        } catch (e) {
+            // due to exit code 100 (controller not running) it throws
+            expect(e.code).to.be.equal(100);
+            expect(e.stdout.includes('ioBroker is not running on this host')).to.be.true;
+        }
+    }).timeout(20000);
     // restart adapter
     // restart ??
 
@@ -635,14 +645,14 @@ function register(it, expect, context) {
 
         // add and set as active new repo, but with too less parameters
         try {
-            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local`);
+            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo addset local1`);
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // delete non-active repo
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" addset local1 some/path`);
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo addset local1 some/path`);
         expect(res.stderr).to.be.not.ok;
 
         // try to add new repo with existing name
