@@ -34,6 +34,16 @@ function startController(options, callback) {
 
     console.log('startController...');
 
+    // adjust db for the cli
+    const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', 'iobroker.json'));
+    iobrokerJSON.objects.type = options.objects.type || 'file';
+    iobrokerJSON.objects.port = (options.objects.port === undefined) ? 19001 : options.objects.port;
+    iobrokerJSON.objects.host = options.objects.host || '127.0.0.1';
+    iobrokerJSON.states.type = options.states.type || 'file';
+    iobrokerJSON.states.port = (options.states.port === undefined) ? 19001 : options.objects.port;
+    iobrokerJSON.states.host = options.states.host || '127.0.0.1';
+    fs.writeJSONSync(path.join(rootDir, 'data', 'iobroker.json'), iobrokerJSON, {spaces: 2});
+
     const settingsObjects = {
         connection: {
             type:               options.objects.type || 'file',
