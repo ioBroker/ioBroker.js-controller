@@ -10,7 +10,6 @@
  */
 'use strict';
 
-const cpPromise = require('promisify-child-process');
 const schedule        = require('node-schedule');
 const os              = require('os');
 const fs              = require('fs-extra');
@@ -4695,12 +4694,12 @@ function init(compactGroupId) {
                     logger.info(`${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`);
                     if (os.platform() === 'linux') {
                         // ensure capabilities are set
-                        await cpPromise.exec(`sudo setcap cap_net_admin,cap_net_bind_service,cap_net_raw+eip ${process.execPath}`);
+                        await tools.setNodeCapabilities(['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'], true, true, true);
                     }
                 }
 
                 // set current node version
-                states.setState(`${hostObjectPrefix}.nodeVersion`, {
+                await states.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
                     val: nodeVersion,
                     ack: true,
                     from: hostObjectPrefix
