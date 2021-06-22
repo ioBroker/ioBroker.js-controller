@@ -51,7 +51,7 @@
     "tar": "^6.1.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5",
-    "yargs": "^16.2.0"
+    "yargs": "^17.0.1"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^2.0.0",
