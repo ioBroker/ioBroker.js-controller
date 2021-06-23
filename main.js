@@ -4694,7 +4694,7 @@ function init(compactGroupId) {
                     logger.info(`${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`);
                     if (os.platform() === 'linux') {
                         // ensure capabilities are set
-                        await tools.setNodeCapabilities(['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'], true, true, true);
+                        await tools.setExecutableCapabilities(process.execPath, ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'], true, true, true);
                     }
                 }
 
