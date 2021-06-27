@@ -980,6 +980,10 @@
             "type": "string"
           }
         },
+        "restartSchedule": {
+          "description": "CRON schedule to restart mode daemon adapters",
+          "type": "string"
+        },
         "schedule": {
           "description": "CRON schedule if adapter runs in mode schedule",
           "type": "string"
