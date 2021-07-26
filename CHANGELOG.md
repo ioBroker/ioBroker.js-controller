@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) avoid deleting too many meta objects starting with the same name as adapter
+
 ## 3.3.14 (2021-06-20) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
