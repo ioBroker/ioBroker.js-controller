@@ -29,7 +29,7 @@
     "@iobroker/plugin-sentry": "~1.1.10",
     "chokidar": "^3.5.2",
     "daemonize2": "^0.4.2",
-    "debug": "^4.3.1",
+    "debug": "^4.3.2",
     "decache": "^4.6.0",
     "deep-clone": "^3.0.3",
     "event-stream": "^4.0.1",
