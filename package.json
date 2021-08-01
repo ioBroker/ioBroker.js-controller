@@ -56,7 +56,7 @@
   "devDependencies": {
     "@alcalzone/release-script": "^2.1.0",
     "@types/event-stream": "^3.3.34",
-    "@types/fs-extra": "^9.0.11",
+    "@types/fs-extra": "^9.0.12",
     "@types/iobroker": "^3.3.0",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.5",
