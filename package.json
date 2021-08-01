@@ -60,7 +60,7 @@
     "@types/iobroker": "^3.3.4",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.5",
-    "@types/semver": "^7.3.6",
+    "@types/semver": "^7.3.8",
     "@types/yargs": "^17.0.2",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
