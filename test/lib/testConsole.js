@@ -563,7 +563,7 @@ function register(it, expect, context) {
         files = fs.readdirSync(dir);
         // check 2017_03_09-13_48_33_backupioBroker.tar.gz
         //let found = false;
-        console.log('Check ' + dir);
+        console.log(`Check ${dir}`);
         for (let f = files.length - 1; f > 0; f--) {
             console.log('Detect ' + dir + files[f]);
             if (files[f].match(/_backupioBroker\.tar\.gz$/)) {
