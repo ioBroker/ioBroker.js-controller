@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.0",
+        "version": "4.0.0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.13": {
+                "en": "see CHANGELOG.md",
+                "de": "siehe CHANGELOG.md",
+                "ru": "см. CHANGELOG.md",
+                "pt": "veja CHANGELOG.md",
+                "nl": "zie CHANGELOG.md",
+                "fr": "voir CHANGELOG.md",
+                "it": "vedi CHANGELOG.md",
+                "es": "ver CHANGELOG.md",
+                "pl": "zobacz CHANGELOG.md",
+                "zh-cn": "看到CHANGELOG.md"
+            },
             "3.2.16": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",
@@ -187,6 +199,9 @@
                 },
                 "config": {
                     "map": "function(doc) { if (doc.type === 'config') emit(doc.common.name, doc) }"
+                },
+                "custom": {
+                    "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
                 }
             },
             "acl": {
@@ -196,9 +211,19 @@
             }
         },
         {
+            "_id": "_design/custom",
+            "language": "javascript",
+            "views": {
+                "state": {
+                    "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
+                }
+            }
+        },
+        {
             "_id": "system.group.administrator",
             "type": "group",
             "common": {
+                "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPGcgZmlsbD0iY3VycmVudENvbG9yIj4NCiAgICAgICAgPHBhdGggZD0iTTQsMTh2LTAuNjVjMC0wLjM0LDAuMTYtMC42NiwwLjQxLTAuODFDNi4xLDE1LjUzLDguMDMsMTUsMTAsMTVjMC4wMywwLDAuMDUsMCwwLjA4LDAuMDFjMC4xLTAuNywwLjMtMS4zNywwLjU5LTEuOTggQzEwLjQ1LDEzLjAxLDEwLjIzLDEzLDEwLDEzYy0yLjQyLDAtNC42OCwwLjY3LTYuNjEsMS44MkMyLjUxLDE1LjM0LDIsMTYuMzIsMiwxNy4zNVYyMGg5LjI2Yy0wLjQyLTAuNi0wLjc1LTEuMjgtMC45Ny0ySDR6Ii8+DQogICAgICAgIDxwYXRoIGQ9Ik0xMCwxMmMyLjIxLDAsNC0xLjc5LDQtNHMtMS43OS00LTQtNEM3Ljc5LDQsNiw1Ljc5LDYsOFM3Ljc5LDEyLDEwLDEyeiBNMTAsNmMxLjEsMCwyLDAuOSwyLDJzLTAuOSwyLTIsMiBjLTEuMSwwLTItMC45LTItMlM4LjksNiwxMCw2eiIvPg0KICAgICAgICA8cGF0aCBkPSJNMjAuNzUsMTZjMC0wLjIyLTAuMDMtMC40Mi0wLjA2LTAuNjNsMS4xNC0xLjAxbC0xLTEuNzNsLTEuNDUsMC40OWMtMC4zMi0wLjI3LTAuNjgtMC40OC0xLjA4LTAuNjNMMTgsMTFoLTJsLTAuMywxLjQ5IGMtMC40LDAuMTUtMC43NiwwLjM2LTEuMDgsMC42M2wtMS40NS0wLjQ5bC0xLDEuNzNsMS4xNCwxLjAxYy0wLjAzLDAuMjEtMC4wNiwwLjQxLTAuMDYsMC42M3MwLjAzLDAuNDIsMC4wNiwwLjYzbC0xLjE0LDEuMDEgbDEsMS43M2wxLjQ1LTAuNDljMC4zMiwwLjI3LDAuNjgsMC40OCwxLjA4LDAuNjNMMTYsMjFoMmwwLjMtMS40OWMwLjQtMC4xNSwwLjc2LTAuMzYsMS4wOC0wLjYzbDEuNDUsMC40OWwxLTEuNzNsLTEuMTQtMS4wMSBDMjAuNzIsMTYuNDIsMjAuNzUsMTYuMjIsMjAuNzUsMTZ6IE0xNywxOGMtMS4xLDAtMi0wLjktMi0yczAuOS0yLDItMnMyLDAuOSwyLDJTMTguMSwxOCwxNywxOHoiLz4NCiAgICA8L2c+DQo8L3N2Zz4=",
                 "name": {
                     "en": "Administrator",
                     "de": "Administrator",
@@ -272,6 +297,7 @@
             "_id": "system.group.user",
             "type": "group",
             "common": {
+                "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgNmMxLjEgMCAyIC45IDIgMnMtLjkgMi0yIDItMi0uOS0yLTIgLjktMiAyLTJtMCAxMGMyLjcgMCA1LjggMS4yOSA2IDJINmMuMjMtLjcyIDMuMzEtMiA2LTJtMC0xMkM5Ljc5IDQgOCA1Ljc5IDggOHMxLjc5IDQgNCA0IDQtMS43OSA0LTQtMS43OS00LTQtNHptMCAxMGMtMi42NyAwLTggMS4zNC04IDR2MmgxNnYtMmMwLTIuNjYtNS4zMy00LTgtNHoiLz4NCjwvc3ZnPg==",
                 "name": {
                     "en": "User",
                     "de": "Benutzer",
@@ -344,7 +370,7 @@
         {
             "_id": "enum.rooms",
             "common": {
-                "icon": "home",
+                "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgNS42OWw1IDQuNVYxOGgtMnYtNkg5djZIN3YtNy44MWw1LTQuNU0xMiAzTDIgMTJoM3Y4aDZ2LTZoMnY2aDZ2LThoM0wxMiAzeiIvPg0KPC9zdmc+",
                 "name": {
                     "en": "Rooms",
                     "de": "Räume",
@@ -382,7 +408,7 @@
         {
             "_id": "enum.functions",
             "common": {
-                "icon": "lightbulb_outline",
+                "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNOSAyMWMwIC41NS40NSAxIDEgMWg0Yy41NSAwIDEtLjQ1IDEtMXYtMUg5djF6bTMtMTlDOC4xNCAyIDUgNS4xNCA1IDljMCAyLjM4IDEuMTkgNC40NyAzIDUuNzRWMTdjMCAuNTUuNDUgMSAxIDFoNmMuNTUgMCAxLS40NSAxLTF2LTIuMjZjMS44MS0xLjI3IDMtMy4zNiAzLTUuNzQgMC0zLjg2LTMuMTQtNy03LTd6bTIuODUgMTEuMWwtLjg1LjZWMTZoLTR2LTIuM2wtLjg1LS42QzcuOCAxMi4xNiA3IDEwLjYzIDcgOWMwLTIuNzYgMi4yNC01IDUtNXM1IDIuMjQgNSA1YzAgMS42My0uOCAzLjE2LTIuMTUgNC4xeiIvPg0KPC9zdmc+",
                 "name": {
                     "en": "Functions",
                     "de": "Funktionen",
@@ -445,6 +471,8 @@
                 "isFloatComma": true,
                 "licenseConfirmed": false,
                 "defaultHistory": "",
+                "expertMode": false,
+                "defaultLogLevel": "info",
                 "activeRepo": "default",
                 "diag": "extended",
                 "tabs": [
@@ -517,6 +545,7 @@
             "_id": "system.certificates",
             "type": "config",
             "common": {
+                "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgMUwzIDV2NmMwIDUuNTUgMy44NCAxMC43NCA5IDEyIDUuMTYtMS4yNiA5LTYuNDUgOS0xMlY1bC05LTR6bTAgMTAuOTloN2MtLjUzIDQuMTItMy4yOCA3Ljc5LTcgOC45NFYxMkg1VjYuM2w3LTMuMTF2OC44eiIvPg0KPC9zdmc+",
                 "name": {
                     "en": "System certificates",
                     "de": "Systemzertifikate",
@@ -571,6 +600,7 @@
             "_id": "0_userdata.0",
             "type": "meta",
             "common": {
+                "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPGcgZmlsbD0iY3VycmVudENvbG9yIj4NCiAgICAgICAgPHBhdGggZD0iTTE5LDV2MTRINVY1SDE5IE0xOSwzSDVDMy45LDMsMywzLjksMyw1djE0YzAsMS4xLDAuOSwyLDIsMmgxNGMxLjEsMCwyLTAuOSwyLTJWNUMyMSwzLjksMjAuMSwzLDE5LDNMMTksM3oiLz4NCiAgICAgICAgPHBhdGggZD0iTTE0LDE3SDd2LTJoN1YxN3ogTTE3LDEzSDd2LTJoMTBWMTN6IE0xNyw5SDdWN2gxMFY5eiIvPg0KICAgIDwvZz4NCjwvc3ZnPg==",
                 "name": {
                     "en": "User objects and files root folder",
                     "de": "Stammordner für Benutzerobjekte und Dateien",

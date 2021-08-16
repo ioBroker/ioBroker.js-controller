@@ -24,7 +24,7 @@
     },
     "objects" : {
         "type": "file",
-        "typeComment": "Possible values: 'file' - [port 9001], redis - [port 6379], couch - [port 5984].",
+        "typeComment": "Possible values: 'file' - [port 9001], redis - [port 6379 or 26379 for sentinel].",
         "host": "127.0.0.1",
         "port": 9001,
         "noFileCache": false,

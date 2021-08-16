@@ -853,23 +853,26 @@ function register(it, expect, context) {
         });
     });
 
+    /**
+     TODO: Reactivate with next controller (02.05.2021)
     it(testName + 'Should decline undefined state value', async () => {
         // set state to 1
         await context.adapter.setStateAsync(`${gid}undefinedState`, 1);
         try {
             // we set state to undefined
             await context.adapter.setStateAsync(`${gid}undefinedState`, undefined);
+            expect(1).to.be.equal(2, 'Should have thrown');
         } catch (e) {
             if (e.message.includes('undefined is not a valid state value')) {
                 // correct error -> now check that we have old state
                 const state = await context.adapter.getStateAsync(`${gid}undefinedState`);
                 expect(state.val).to.equal(1);
-                return Promise.resolve();
             } else {
-                return Promise.reject(new Error(e.message));
+                throw new Error(e.message);
             }
         }
     });
+     */
 
     it(testName + 'Should also set object id', async () => {
         // set state with device, channel, state

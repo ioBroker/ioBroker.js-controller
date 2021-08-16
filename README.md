@@ -1,20 +1,19 @@
 ![Logo](lib/img/iobroker.png)
 # ioBroker.js-controller
 
+![Number of Installations](http://iobroker.live/badges/js-controller-installed.svg)
+![Number of Installations](http://iobroker.live/badges/js-controller-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
-[![Tests](http://img.shields.io/travis/ioBroker/ioBroker.js-controller/master.svg)](https://travis-ci.org/ioBroker/ioBroker.js-controller)
-[![stable](http://iobroker.live/badges/js-controller-stable.svg)](http://iobroker.live/badges/js-controller-stable.svg)
-[![installed](http://iobroker.live/badges/js-controller-installed.svg)](http://iobroker.live/badges/js-controller-installed.svg)
 
-[![NPM](https://nodei.co/npm/iobroker.js-controller.png?downloads=true)](https://nodei.co/npm/iobroker.js-controller/)
+![Test and Release](https://github.com/ioBroker/iobroker.js-controller/workflows/CI/badge.svg)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.js-controller.svg)](https://www.npmjs.com/package/iobroker.js-controller)
 
 The ioBroker.js-controller is the heart of any ioBroker installation. The controller is owning the central configuration of the ioBroker installation and controls and monitors all adapter processes for the current host.
 
 **Please check the js-controller compatibility information below which version runs on your Node.js version**
 
 ## Compatibility
-* js-controller 3.x works with Node.js 10.x, 12.x and probably 14.x (first tests look good)
+* js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
 * js-controller 2.x works with Node.js 8.x, 10.x , 12.x and probably 14.x (untested)
 * js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
 
@@ -772,7 +771,7 @@ TODO: Link to Adapter Development docs
 #### Automatically Encrypt/Decrypt configuration fields
 **Feature status:** Stable, since js-controller 3.0
 
-Since js-controller 3.0 the adapter developer can define an array or fieldnames in io-package.json as common.encryptedNative to define which fields should be automatically encrypted before being stored by Admin and decrypted when the adapter process starts.
+Since js-controller 3.0 the adapter developer can define an array or fieldnames in io-package.json as encryptedNative to define which fields should be automatically encrypted before being stored by Admin and decrypted when the adapter process starts.
 The values are not decrypted when the object itself is read!
 
 With this change and the Admin support for this soon the adapter developer do not need to struggle around with encryption or decryption of adapter values and can simply configure this.
@@ -815,7 +814,7 @@ There are tow types of adapter dependencies that can be defined in io-package.js
 With common.dependencies in io-package.json you can define if an adapter needs to be present on the same host and optionally in which version.
 This is mainly used to define the needed "js-controller" version for yor adapter and can also be relevant e.g. for web extension adapters (adapters that can be plugged in into the web adapter, so the code needs to be on the same host).
 
-**common.globalDependencies for Same Host dependencies**
+**common.globalDependencies for dependencies on any Host**
 With common.globalDependencies in io-package.json and starting with js-controller 3.0 you can define a global dependency that will be checked over all hosts. Irrelevant where on the system the referenced adapter is installed it needs to match the version and at least one instance needs to exist.
 This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin. 
 
