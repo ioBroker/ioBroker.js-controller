@@ -58,7 +58,7 @@
     "@types/event-stream": "^3.3.34",
     "@types/fs-extra": "^9.0.12",
     "@types/iobroker": "^3.3.4",
-    "@types/mocha": "^8.2.2",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^16.4.10",
     "@types/semver": "^7.3.8",
     "@types/yargs": "^17.0.2",
