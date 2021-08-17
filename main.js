@@ -4694,7 +4694,9 @@ function init(compactGroupId) {
                     logger.info(`${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`);
                     if (os.platform() === 'linux') {
                         // ensure capabilities are set
-                        await tools.setExecutableCapabilities(process.execPath, ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'], true, true, true);
+                        const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
+                        await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
+                        logger.info(`${hostLogPrefix} Successfully updated capabilities "${capabilities.join(', ')}" for ${process.execPath}`);
                     }
                 }
 
@@ -4705,7 +4707,7 @@ function init(compactGroupId) {
                     from: hostObjectPrefix
                 });
             } catch (e) {
-                logger.warn(`${hostLogPrefix} Error on node version check routine: ${e.message}`);
+                logger.warn(`${hostLogPrefix} Error while trying to update capabilities after detecting new Node.js version: ${e.message}`);
             }
 
             // Read current state of all log subscribers
