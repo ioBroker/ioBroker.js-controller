@@ -771,7 +771,7 @@ TODO: Link to Adapter Development docs
 #### Automatically Encrypt/Decrypt configuration fields
 **Feature status:** Stable, since js-controller 3.0
 
-Since js-controller 3.0 the adapter developer can define an array or fieldnames in io-package.json as common.encryptedNative to define which fields should be automatically encrypted before being stored by Admin and decrypted when the adapter process starts.
+Since js-controller 3.0 the adapter developer can define an array or fieldnames in io-package.json as encryptedNative to define which fields should be automatically encrypted before being stored by Admin and decrypted when the adapter process starts.
 The values are not decrypted when the object itself is read!
 
 With this change and the Admin support for this soon the adapter developer do not need to struggle around with encryption or decryption of adapter values and can simply configure this.
@@ -814,7 +814,7 @@ There are tow types of adapter dependencies that can be defined in io-package.js
 With common.dependencies in io-package.json you can define if an adapter needs to be present on the same host and optionally in which version.
 This is mainly used to define the needed "js-controller" version for yor adapter and can also be relevant e.g. for web extension adapters (adapters that can be plugged in into the web adapter, so the code needs to be on the same host).
 
-**common.globalDependencies for Same Host dependencies**
+**common.globalDependencies for dependencies on any Host**
 With common.globalDependencies in io-package.json and starting with js-controller 3.0 you can define a global dependency that will be checked over all hosts. Irrelevant where on the system the referenced adapter is installed it needs to match the version and at least one instance needs to exist.
 This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin. 
 

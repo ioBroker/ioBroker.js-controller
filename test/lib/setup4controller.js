@@ -5,7 +5,7 @@
 'use strict';
 
 // check if tmp directory exists
-const fs            = require('fs');
+const fs            = require('fs-extra');
 const path          = require('path');
 const rootDir       = path.normalize(__dirname + '/../../');
 //const pkg           = require(rootDir + 'package.json');
@@ -21,9 +21,8 @@ const appName = getAppName().toLowerCase();
 let objects;
 let states;
 
-if (!fs.existsSync(rootDir + 'tmp')) {
-    fs.mkdirSync(rootDir + 'tmp');
-}
+// ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
+fs.emptyDirSync(`${rootDir}tmp`);
 
 function startController(options, callback) {
     if (!options) {
@@ -34,6 +33,17 @@ function startController(options, callback) {
     let isStatesConnected;
 
     console.log('startController...');
+
+    // adjust db for the cli tests
+    const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', 'iobroker.json'));
+    iobrokerJSON.objects.type = options.objects.type || 'file';
+    iobrokerJSON.objects.port = (options.objects.port === undefined) ? 19001 : options.objects.port;
+    iobrokerJSON.objects.host = options.objects.host || '127.0.0.1';
+    iobrokerJSON.objects.redisNamespace = options.objects.redisNamespace || '';
+    iobrokerJSON.states.type = options.states.type || 'file';
+    iobrokerJSON.states.port = (options.states.port === undefined) ? 19000 : options.states.port;
+    iobrokerJSON.states.host = options.states.host || '127.0.0.1';
+    fs.writeJSONSync(path.join(rootDir, 'data', 'iobroker.json'), iobrokerJSON, {spaces: 2});
 
     const settingsObjects = {
         connection: {
@@ -168,7 +178,7 @@ async function stopController(cb) {
     }
 }
 
-if (typeof module !== 'undefined' && module.parent) {
+if (require.main !== module) {
     module.exports.startController  = startController;
     module.exports.stopController   = stopController;
     module.exports.appName          = appName;
