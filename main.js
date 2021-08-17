@@ -24,6 +24,7 @@ const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
+
 let pluginHandler;
 let notificationHandler;
 
@@ -53,8 +54,8 @@ let isDaemon                = false;
 let callbackId              = 1;
 let callbacks               = {};
 const hostname              = tools.getHostName();
-let hostObjectPrefix        = 'system.host.' + hostname;
-let hostLogPrefix           = 'host.' + hostname;
+let hostObjectPrefix        = `system.host.${hostname}`;
+let hostLogPrefix           = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
 const logList               = [];
 let detectIpsCount          = 0;
@@ -178,7 +179,7 @@ function startMultihost(__config) {
                 });
                 return;
             } catch (e) {
-                logger.warn(`${hostLogPrefix} Cannot stop multihost discovery server: ${e}`);
+                logger.warn(`${hostLogPrefix} Cannot stop multihost discovery server: ${e.message}`);
             }
         }
 
@@ -402,7 +403,7 @@ function createStates(onConnect) {
                         console.log('Wake up ' + id + ' ' + JSON.stringify(state));
                         startInstance(subscribe[id][i], true);
                     } else {
-                        logger.warn(hostLogPrefix + ' controller Adapter subscribed on ' + id + ' does not exist!');
+                        logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
                 }
             } else
@@ -418,12 +419,12 @@ function createStates(onConnect) {
                             logger.transports[transport].level = state.val;
                         }
                     }
-                    logger.info(hostLogPrefix + ' Loglevel changed from "' + currentLevel + '" to "' + state.val + '"');
+                    logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
                     currentLevel = state.val;
                 } else if (state.val && state.val !== currentLevel) {
-                    logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
+                    logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
-                states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
+                states.setState(`${hostObjectPrefix}.logLevel`, {val: currentLevel, ack: true, from: hostObjectPrefix});
             } else
             if (id.startsWith(hostObjectPrefix + '.plugins.') && id.endsWith('.enabled')) {
                 if (!config || !config.log || !state || state.ack) {
@@ -834,8 +835,8 @@ function changeHost(objs, oldHostname, newHostname, callback) {
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
             const obj = row.value;
             obj.common.host = newHostname;
-            logger.info(hostLogPrefix + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
-            obj.from = 'system.host.' + tools.getHostName();
+            logger.info(`${hostLogPrefix} Reassign instance ${obj._id.substring('system.adapter.'.length)} from ${oldHostname} to ${newHostname}`);
+            obj.from = `system.host.${tools.getHostName()}`;
             obj.ts = Date.now();
 
             objects.setObject(obj._id, obj, (/* err */) =>
@@ -955,7 +956,7 @@ function checkHost(callback) {
                 if (err && err.message.startsWith('Cannot find ')) {
                     typeof callback === 'function' && callback();
                 } else if (!doc.rows || doc.rows.length === 0) {
-                    logger.info(hostLogPrefix + ' no instances found');
+                    logger.info(`${hostLogPrefix} no instances found`);
                     // no instances found
                     typeof callback === 'function' && callback();
                 } else {
@@ -1617,6 +1618,21 @@ function setMeta() {
             read:   true,
             write:  true,
             desc:   'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
+            role:   'state'
+        },
+        native: {}
+    };
+    tasks.push(obj);
+
+    obj = {
+        _id:    id + '.nodeVersion',
+        type:   'state',
+        common: {
+            name:   'Controller - Node.js version',
+            type:   'string',
+            read:   true,
+            write:  false,
+            desc:   'Node.js version of the host process.',
             role:   'state'
         },
         native: {}
@@ -4650,7 +4666,7 @@ function init(compactGroupId) {
         objects.subscribe('system.adapter.*');
 
         // create states object
-        createStates( () => {
+        createStates( async () => {
             // Subscribe for connection state of all instances
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
@@ -4666,8 +4682,33 @@ function init(compactGroupId) {
             states.subscribe('system.adapter.*.alive');
 
             // set current Loglevel and subscribe for changes
-            states.setState(hostObjectPrefix + '.logLevel', {val: config.log.level, ack: true, from: hostObjectPrefix});
-            states.subscribe(hostObjectPrefix + '.logLevel');
+            states.setState(`${hostObjectPrefix}.logLevel`, {val: config.log.level, ack: true, from: hostObjectPrefix});
+            states.subscribe(`${hostObjectPrefix}.logLevel`);
+
+            try {
+                const nodeVersion = process.version.replace(/^v/, '');
+                const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
+
+                if (prevNodeVersionState && prevNodeVersionState.val !== nodeVersion) {
+                    // detected a change in the nodejs version
+                    logger.info(`${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`);
+                    if (os.platform() === 'linux') {
+                        // ensure capabilities are set
+                        const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
+                        await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
+                        logger.info(`${hostLogPrefix} Successfully updated capabilities "${capabilities.join(', ')}" for ${process.execPath}`);
+                    }
+                }
+
+                // set current node version
+                await states.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
+                    val: nodeVersion,
+                    ack: true,
+                    from: hostObjectPrefix
+                });
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Error while trying to update capabilities after detecting new Node.js version: ${e.message}`);
+            }
 
             // Read current state of all log subscribers
             states.getKeys('*.logging', (err, keys) => {
