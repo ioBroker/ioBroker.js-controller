@@ -2561,7 +2561,7 @@ async function processMessage(msg) {
         case 'rebuildAdapter':
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
-                installQueue.push({id: msg.message.id, rebuild: true, rebuildViaInstall: msg.message.rebuildViaInstall});
+                installQueue.push({id: msg.message.id, rebuild: true});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
 
@@ -3087,9 +3087,8 @@ function installAdapters() {
             }
         } else {
             installArgs.push(commandScope);
-            installArgs.push(name);
-            if (task.rebuildViaInstall) {
-                installArgs.push('--install');
+            if (!task.rebuild) {
+                installArgs.push(name);
             }
         }
         logger.info(`${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')}`);
@@ -3595,10 +3594,7 @@ async function startInstance(id, wakeUp) {
                                 logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
-                                    message: {
-                                        id: instance._id,
-                                        rebuildViaInstall: procs[id].rebuildCounter > 1
-                                    }
+                                    message: { id: instance._id }
                                 };
                                 if (!compactGroupController) { // execute directly
                                     processMessage(msg);
