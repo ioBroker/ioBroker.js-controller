@@ -940,9 +940,8 @@ function delObjects(objs, callback) {
 function checkHost(callback) {
     const objectData = objects.getStatus();
     // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController || !objectData.server) {
-        callback && callback();
-        return;
+    if ((compactGroupController || !objectData.server) && config.system.compact) {
+        return callback && callback();
     }
     objects.getObjectView('system', 'host', {}, (_err, doc) => {
         if (!_err && doc && doc.rows &&
@@ -967,7 +966,7 @@ function checkHost(callback) {
                         // delete host object
                         objects.delObject(oldId, () =>
                             // delete all hosts states
-                            objects.getObjectView('system', 'state', {startkey: 'system.host.' + oldHostname + '.', endkey: 'system.host.' + oldHostname + '.\u9999', include_docs: true}, (_err, doc) =>
+                            objects.getObjectView('system', 'state', {startkey: `system.host.${oldHostname}.`, endkey: `system.host.${oldHostname}.\u9999`, include_docs: true}, (_err, doc) =>
                                 delObjects(doc && Array.isArray(doc.rows) ? doc.rows : null, () => callback && callback())));
                     });
                 }
@@ -4777,15 +4776,15 @@ function init(compactGroupId) {
         uncaughtExceptionCount++;
         if (typeof err === 'object') {
             if (err.errno === 'EADDRINUSE') {
-                logger.error(hostLogPrefix + ' Another instance is running or some application uses port!');
-                logger.error(hostLogPrefix + ' uncaught exception: ' + err.message);
+                logger.error(`${hostLogPrefix} Another instance is running or some application uses port!`);
+                logger.error(`${hostLogPrefix} uncaught exception: ${err.message}`);
             } else {
-                logger.error(hostLogPrefix + ' uncaught exception: ' + err.message);
-                logger.error(hostLogPrefix + ' ' + err.stack);
+                logger.error(`${hostLogPrefix} uncaught exception: ${err.message}`);
+                logger.error(`${hostLogPrefix} ${err.stack}`);
             }
         } else {
-            logger.error(hostLogPrefix + ' uncaught exception: ' + err);
-            logger.error(hostLogPrefix + ' ' + err.stack);
+            logger.error(`${hostLogPrefix} uncaught exception: ${err}`);
+            logger.error(`${hostLogPrefix} ${err.stack}`);
         }
         stop(false);
         // Restart itself
