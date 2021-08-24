@@ -2559,8 +2559,7 @@ async function processMessage(msg) {
         }
 
         case 'rebuildAdapter':
-            // We rebuild globally in the root directory. For this reason there should be only one rebuild task in the queue
-            if (!installQueue.some(entry => entry.rebuild)) {
+            if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
                 installQueue.push({id: msg.message.id, rebuild: true});
                 // start install queue if not started
@@ -2570,7 +2569,7 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
                 }
             } else {
-                logger.info(`${hostLogPrefix} has a rebuild task pending, not adding another one into the queue`);
+                logger.info(`${hostLogPrefix} ${msg.message.id} still in installQueue, rebuild will be done with install`);
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, {result: 'pending'}, msg.callback);
                 }
