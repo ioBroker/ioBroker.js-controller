@@ -79,7 +79,7 @@ let isStopping              = null;
 let allInstancesStopped     = true;
 let stopTimeout             = 10000;
 let uncaughtExceptionCount  = 0;
-const installQueue          = [];
+let installQueue          = [];
 let started                 = false;
 let inputCount              = 0;
 let outputCount             = 0;
@@ -2559,7 +2559,7 @@ async function processMessage(msg) {
         case 'rebuildAdapter':
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
-                installQueue.push({id: msg.message.id, rebuild: true, rebuildViaInstall: msg.message.rebuildViaInstall});
+                installQueue.push({id: msg.message.id, rebuild: true});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
 
@@ -3085,9 +3085,8 @@ function installAdapters() {
             }
         } else {
             installArgs.push(commandScope);
-            installArgs.push(name);
-            if (task.rebuildViaInstall) {
-                installArgs.push('--install');
+            if (!task.rebuild) {
+                installArgs.push(name);
             }
         }
         logger.info(`${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')}`);
@@ -3111,24 +3110,40 @@ function installAdapters() {
 
             child.on('exit', exitCode => {
                 logger.info(`${hostLogPrefix} ${tools.appName} npm-${commandScope}: exit ${exitCode}`);
-                installQueue.shift();
                 if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
                     task.inProgress = false;
-                    installQueue.push(task); // We add at the end again to try three times
-                } else if (procs[task.id]) {
-                    procs[task.id].needsRebuild = false;
-                    if (!task.disabled) {
-                        if (!procs[task.id].config.common.enabled) {
-                            logger.info(`${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`);
-                            states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
-                        } else if (task.rebuild) {
-                            // on rebuild we send a restart signal via object change to also reach compact group processes
-                            objects.extendObject(task.id, {});
-                        } else {
-                            startInstance(task.id, task.wakeUp);
+                    // Move task to the end of the queue to try again (up to 3 times)
+                    installQueue.shift();
+                    installQueue.push(task);
+                } else {
+                    const finishTask = task => {
+                        if (procs[task.id]) {
+                            procs[task.id].needsRebuild = false;
+                            if (!task.disabled) {
+                                if (!procs[task.id].config.common.enabled) {
+                                    logger.info(`${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`);
+                                    states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
+                                } else if (task.rebuild) {
+                                    // on rebuild we send a restart signal via object change to also reach compact group processes
+                                    objects.extendObject(task.id, {});
+                                } else {
+                                    startInstance(task.id, task.wakeUp);
+                                }
+                            } else {
+                                logger.debug(`${hostLogPrefix} ${tools.appName} ${commandScope} successful but the instance is disabled`);
+                            }
                         }
+                    };
+                    if (task.rebuild) {
+                        // This was a rebuild - find all tasks that required a rebuild and "finish" them (including the current one)
+                        // Since we rebuild globally now, they should all be done too.
+                        const rebuildTasks = installQueue.filter(t => t.rebuild);
+                        // Remove all rebuild tasks from the queue
+                        installQueue = installQueue.filter(t => !t.rebuild);
+                        rebuildTasks.forEach(t => finishTask(t));
                     } else {
-                        logger.debug(`${hostLogPrefix} ${tools.appName} ${commandScope} successful but the instance is disabled`);
+                        installQueue.shift();
+                        finishTask(task);
                     }
                 }
 
@@ -3593,10 +3608,7 @@ async function startInstance(id, wakeUp) {
                                 logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
-                                    message: {
-                                        id: instance._id,
-                                        rebuildViaInstall: procs[id].rebuildCounter > 1
-                                    }
+                                    message: { id: instance._id }
                                 };
                                 if (!compactGroupController) { // execute directly
                                     processMessage(msg);

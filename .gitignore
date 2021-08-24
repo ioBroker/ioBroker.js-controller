@@ -27,3 +27,4 @@ lib/objects/lua
 /test/redis-sentinel/*.config
 /lib/.greenlockrc
 /.greenlockrc
+/.dev-server
