@@ -4552,7 +4552,7 @@ function init(compactGroupId) {
     }
 
     try {
-        logger = require('./lib/logger.js')(config.log);
+        logger = require('@iobroker/js-controller-common').logger(config.log);
     } catch (e) {
         if (e.code === 'EACCES_LOG') {
             // We could not access logging directory - e.g. because of restored backup
@@ -4568,7 +4568,7 @@ function init(compactGroupId) {
 
             // fix this run
             config.log.transport['file1'].filename = fixedLogPath;
-            logger = require('./lib/logger.js')(config.log);
+            logger = require('@iobroker/js-controller-common').logger(config.log);
 
             logger.warn(`${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`);
         } else {
