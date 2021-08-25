@@ -1,6 +1,6 @@
-# File objects DB base classes for ioBroker
-The Library contains the Database classes for File based objects database client and server.
+# Adapter class for ioBroker
+The Library contains the Adapter class of ioBroker.
 
 ## License
 Apache 2.0
-Copyright 2018-2020 bluefox <dogafox@gmail.com>  
+Copyright 2018-2021 bluefox <dogafox@gmail.com>  
