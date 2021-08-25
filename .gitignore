@@ -6,7 +6,7 @@ node_modules
 /adapter/email
 /adapter/sonos
 /adapter/admin
-/data
+**/data
 /npm-debug.log
 **/tmp
 **/log

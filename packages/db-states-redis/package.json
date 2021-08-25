@@ -1,0 +1,32 @@
+{
+  "name": "@iobroker/db-states-redis",
+  "version": "1.2.7",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "@iobroker/db-base": "file:../db-base",
+    "ioredis": "^4.27.6"
+  },
+  "keywords": [
+    "ioBroker",
+    "redis",
+    "redundancy"
+  ],
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <iobroker@fischer-ka.de>",
+    "foxriver76"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.objects-redis"
+  },
+  "scripts": {},
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}

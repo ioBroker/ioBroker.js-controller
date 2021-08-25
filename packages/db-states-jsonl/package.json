@@ -1,0 +1,34 @@
+{
+  "name": "@iobroker/db-states-jsonl",
+  "version": "1.2.7",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "@alcalzone/jsonl-db": "^2.1.0",
+    "@iobroker/db-base": "file:../db-base",
+    "@iobroker/db-states-file": "file:../db-states-file",
+    "@iobroker/db-states-redis": "file:../db-states-redis"
+  },
+  "keywords": [
+    "ioBroker",
+    "redis",
+    "redundancy"
+  ],
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <iobroker@fischer-ka.de>",
+    "foxriver76"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.objects-redis"
+  },
+  "scripts": {},
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
+}
