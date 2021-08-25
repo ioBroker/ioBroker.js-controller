@@ -12,9 +12,9 @@
 /** @class */
 function Install(options) {
 
-    const EXIT_CODES = require('../exitCodes');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
     const fs = require('fs-extra');
-    const tools = require('../tools.js');
+    const { tools } = require('@iobroker/js-controller-common');
     const hostname = tools.getHostName();
     const path = require('path');
     const semver = require('semver');

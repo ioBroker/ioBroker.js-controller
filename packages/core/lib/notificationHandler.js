@@ -5,7 +5,7 @@
  */
 
 const fs = require('fs-extra');
-const tools = require('./tools');
+const { tools } = require('@iobroker/js-controller-common');
 const path = require('path');
 
 class NotificationHandler {

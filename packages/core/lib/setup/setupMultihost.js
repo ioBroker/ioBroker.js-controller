@@ -12,7 +12,7 @@
 /** @class */
 function Multihost(options) {
     const fs         = require('fs-extra');
-    const tools      = require('../tools.js');
+    const { tools } = require('@iobroker/js-controller-common');
     const configName = tools.getConfigFileName();
     const that       = this;
 

@@ -11,7 +11,7 @@
 
 /** @class */
 function Users(options) {
-    const tools = require('../tools');
+    const { tools } = require('@iobroker/js-controller-common');
 
     const that  = this;
 

@@ -25,9 +25,9 @@ function List(options) {
         throw new Error('Invalid arguments: processExit is missing');
     }
 
-    const tools             = require('../tools');
+    const { tools } = require('@iobroker/js-controller-common');
     const fs                = require('fs-extra');
-    const EXIT_CODES        = require('../exitCodes');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
     this.config = fs.readJSONSync(tools.getConfigFileName());
 

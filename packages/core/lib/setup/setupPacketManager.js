@@ -2,7 +2,7 @@
 
 // TODO: how to pass sudo requirement for apt-get?
 
-const { execAsync } = require('../tools');
+const { execAsync } = require('@iobroker/js-controller-common').tools;
 
 const LOG_LEVELS = {
     'silly': 4,

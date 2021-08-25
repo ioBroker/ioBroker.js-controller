@@ -13,7 +13,7 @@ const debug = require('debug')('iobroker:cli');
 /** @class */
 function Upgrade(options) {
     const fs = require('fs-extra');
-    const tools = require('../tools.js');
+    const { tools } = require('@iobroker/js-controller-common');
 
     options = options || {};
 

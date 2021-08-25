@@ -12,9 +12,9 @@
 /** @class */
 function VisDebug(options) {
     const fs         = require('fs-extra');
-    const tools      = require('../tools');
+    const { tools } = require('@iobroker/js-controller-common');
     const path       = require('path');
-    const EXIT_CODES = require('../exitCodes');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
     // allow use without new operator
     if (!(this instanceof VisDebug)) {

@@ -16,12 +16,12 @@ const fs              = require('fs-extra');
 const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
-const tools           = require('./lib/tools');
+const { tools } = require('@iobroker/js-controller-common');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
-const EXIT_CODES      = require('./lib/exitCodes');
+const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
 

@@ -14,7 +14,7 @@ const VENDOR_FILE = '/etc/iob-vendor.json';
 /** @class */
 function Vendor(options) {
     const fs        = require('fs-extra');
-    const tools     = require('../tools');
+    const { tools } = require('@iobroker/js-controller-common');
     const deepClone = require('deep-clone');
     const { isDeepStrictEqual } = require('util');
 
