@@ -10,6 +10,9 @@
     "deep-clone": "^3.0.3",
     "@iobroker/js-controller-common": "~1.0.0"
   },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.12"
+  },
   "keywords": [
     "ioBroker"
   ],

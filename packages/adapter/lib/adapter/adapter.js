@@ -5489,9 +5489,8 @@ function Adapter(options) {
                         differ = true;
                     } else if (state.ts !== undefined && state.ts !== oldState.ts) {
                         differ = true;
-                    } else
+                    } else if (state.c !== undefined && state.c !== oldState.c) {
                         // if comment changed
-                    if (state.c !== undefined && state.c !== oldState.c) {
                         differ = true;
                     } else if (state.expire !== undefined && state.expire !== oldState.expire) {
                         differ = true;
@@ -5668,9 +5667,8 @@ function Adapter(options) {
                     this.logRedirect(state ? state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     options.logTransporter && this.processLog && this.processLog(state);
-                } else
+                } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                     // If this is messagebox
-                if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                     const obj = state;
                     if (obj) {
                         // If callback stored for this request
@@ -5726,9 +5724,8 @@ function Adapter(options) {
                             }
                         }
                     }
-                } else
+                } else if (this.adapterReady && this.aliases[id]) {
                     // If adapter is ready and for this ID exist some alias links
-                if (this.adapterReady && this.aliases[id]) {
                     this.aliases[id].targets.forEach(target => {
                         const aState = state ? tools.formatAliasValue(this.aliases[id].source, target, JSON.parse(JSON.stringify(state)), logger, this.namespaceLog) : null;
                         const targetId = target.id.read === 'string' ? target.id.read : target.id;
