@@ -16,11 +16,11 @@
 // TODO need info about progress of stopping
 
 const fs                    = require('fs-extra');
-const tools                 = require('./tools.js');
-const cli                   = require('./cli/index.js');
-const EXIT_CODES            = require('./exitCodes');
-const {enumHosts}           = require('./cli/cliTools');
-const deepClone             = require('deep-clone');
+const { tools } = require('@iobroker/js-controller-common');
+const cli = require('@iobroker/js-controller-cli');
+const { EXIT_CODES } = require('@iobroker/js-controller-common');
+const { enumHosts } = require('@iobroker/js-controller-cli').tools;
+const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
 

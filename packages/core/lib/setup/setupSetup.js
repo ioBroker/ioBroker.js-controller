@@ -16,10 +16,10 @@ const COLOR_GREEN  = '\x1b[32m';
 
 /** @class */
 function Setup(options) {
-    const EXIT_CODES  = require('../exitCodes');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
     const fs          = require('fs-extra');
     const path        = require('path');
-    const tools       = require('../tools.js');
+    const { tools } = require('@iobroker/js-controller-common');
     const Backup      = require('./setupBackup');
     const deepClone   = require('deep-clone');
     const pluginInfos = require('./pluginInfos');

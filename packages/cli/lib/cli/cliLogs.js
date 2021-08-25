@@ -1,12 +1,12 @@
 'use strict';
 // const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
-const { getConfigFileName } = require('../tools');
+const { getConfigFileName } = require('@iobroker/js-controller-common').tools;
 const chokidar = require('chokidar');
 const fs = require('fs-extra');
 const os = require('os');
 const es = require('event-stream');
-const tools = require('../tools');
+const { tools } = require('@iobroker/js-controller-common');
 
 /** Command ioBroker state ... */
 module.exports = class CLILogs extends CLICommand {

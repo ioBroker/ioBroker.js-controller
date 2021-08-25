@@ -9,11 +9,11 @@
 
 'use strict';
 const fs = require('fs-extra');
-const tools = require('../tools');
+const { tools } = require('@iobroker/js-controller-common');
 const pathLib = require('path');
 const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
-const EXIT_CODES = require('../exitCodes');
+const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
 // We cannot use relative paths for the backup locations, as they used by both
 // require, which resolves relative paths from __dirname

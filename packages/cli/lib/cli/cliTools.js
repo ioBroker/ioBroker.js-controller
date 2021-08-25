@@ -1,5 +1,5 @@
 'use strict';
-const tools = require('../tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 
 /**
  *

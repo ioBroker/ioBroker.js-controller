@@ -1,5 +1,5 @@
 'use strict';
-const tools = require('../tools');
+const { tools } = require('@iobroker/js-controller-common');
 
 const errorMessages = Object.freeze({
     stateNotFound: (

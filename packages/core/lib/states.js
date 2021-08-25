@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs-extra');
-const { getConfigFileName } = require('./tools');
+const { getConfigFileName } = require('@iobroker/js-controller-common').tools;
 
 const config = fs.readJSONSync(getConfigFileName());
 if (!config.states) {

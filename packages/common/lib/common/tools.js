@@ -183,7 +183,7 @@ function decryptPhrase(password, data, callback) {
 
 function getAppName() {
     const parts = __dirname.replace(/\\/g, '/').split('/');
-    return parts[parts.length - 4].split('.')[0];
+    return parts[parts.length - 5].split('.')[0];
 }
 
 function rmdirRecursiveSync(path) {
@@ -1638,19 +1638,19 @@ function getHostInfo(objects, callback) {
 // All paths are returned always relative to /node_modules/' + module.exports.appName + '.js-controller
 // the result has always "/" as last symbol
 function getDefaultDataDir() {
-    //var dataDir = __dirname.replace(/\\/g, '/');
-    //dataDir = dataDir.split('/');
+    if (fs.existsSync(__dirname + '/../../../../packages/core')) {
+        // dev install
+        return './data/';
+    }
 
     const appName = module.exports.appName.toLowerCase();
+
     // if debugging with npm5
     if (fs.existsSync(__dirname + '/../../node_modules/' + appName + '.js-controller')) {
         return '../' + appName + '-data/';
-    } else // If installed with npm
-    if (!fs.existsSync(__dirname + '/../../../packages/core')) {
-        return '../../' + appName + '-data/';
     } else {
-        // for dev purposes
-        return './data/';
+        // If installed with npm
+        return '../../' + appName + '-data/';
     }
 }
 
@@ -1665,6 +1665,18 @@ function getConfigFileName() {
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
+    if (fs.existsSync(__dirname + '/../../../../packages/core')) {
+        // dev install -> Remove /lib
+        configDir.splice(configDir.length - 3, 3);
+        configDir = configDir.join('/');
+        configDir += '/core'; // go inside core dir
+        if (fs.existsSync(configDir + '/conf/' + appName + '.json')) {
+            return configDir + '/conf/' + appName + '.json';
+        } else {
+            return configDir + '/data/' + appName + '.json';
+        }
+    }
+
     // if debugging with npm5
     if (fs.existsSync(__dirname + '/../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
         fs.existsSync(__dirname + '/../../node_modules/' + appName + '.js-controller')) {
@@ -1672,21 +1684,12 @@ function getConfigFileName() {
         configDir.splice(configDir.length - 2, 2);
         configDir = configDir.join('/');
         return configDir + '/' + appName + '-data/' + appName + '.json';
-    } else if (!fs.existsSync(__dirname + '/../../../packages/core')) {
+    } else {
         // If installed with npm
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
         return configDir + '/' + appName + '-data/' + appName + '.json';
-    } else {
-        // Remove /lib
-        configDir.splice(configDir.length - 1, 1);
-        configDir = configDir.join('/');
-        if (fs.existsSync(__dirname + '/../conf/' + appName + '.json')) {
-            return configDir + '/conf/' + appName + '.json';
-        } else {
-            return configDir + '/data/' + appName + '.json';
-        }
     }
 }
 

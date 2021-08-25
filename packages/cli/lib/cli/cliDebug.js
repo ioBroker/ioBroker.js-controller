@@ -2,7 +2,7 @@
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const CLITools = require('./cliTools');
-const tools = require('../tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 const child_process = require('child_process');
 
 /** Command ioBroker debug ... */

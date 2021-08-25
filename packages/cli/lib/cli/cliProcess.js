@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
-const tools = require('../tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 const deepClone = require('deep-clone');
-const EXIT_CODES = require(path.join('..', 'exitCodes.js'));
+const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
 const { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances} = require('./cliTools.js');
 

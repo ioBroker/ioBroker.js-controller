@@ -25,7 +25,7 @@ function getControllerDir() {
         for (const pkg of possibilities) {
             try {
                 const possiblePath = path.join(checkPath, pkg);
-                if (fs.existsSync(path.join(possiblePath, 'lib/tools.js'))) {
+                if (fs.existsSync(path.join(possiblePath, 'iob.bat'))) {
                     return possiblePath;
                 }
             } catch {
@@ -45,7 +45,7 @@ function getControllerDir() {
 
 const controllerDir = getControllerDir() || __dirname;
 
-module.exports = require(path.join(controllerDir , 'lib/tools.js'));
+module.exports = require('@iobroker/js-controller-common').tools;
 module.exports.getControllerDir = () => controllerDir;
 
 /**

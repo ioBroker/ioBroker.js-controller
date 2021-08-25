@@ -2,7 +2,7 @@
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const { formatValue } = require('./cliTools');
-const tools = require('../tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 
 /** Command iobroker object ... */
 module.exports = class CLIObjects extends CLICommand {

@@ -1,5 +1,5 @@
 'use strict';
-const tools             = require('../tools');
+const { tools } = require('@iobroker/js-controller-common');
 const CLI               = require('./messages.js');
 const CLICommand        = require('./cliCommand.js');
 const {formatValue}     = require('./cliTools');

@@ -2,7 +2,7 @@
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const {enumHosts, enumObjects, getObjectFrom, enumInstances} = require('./cliTools');
-const tools = require('../tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 const os = require('os');
 const fs = require('fs-extra');
 
