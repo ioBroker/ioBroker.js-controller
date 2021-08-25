@@ -71,10 +71,10 @@ jobs:
       - name: Redis Socket/Sentinel Tests (Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-          sudo chmod ogu+x test/redis-socket/setup-socket.sh
-          sudo chmod ogu+x test/redis-sentinel/*.sh
-          test/redis-socket/setup-socket.sh
-          cd test/redis-sentinel
+          sudo chmod ogu+x packages/core/test/redis-socket/setup-socket.sh
+          sudo chmod ogu+x packages/core/test/redis-sentinel/*.sh
+          packages/core/test/redis-socket/setup-socket.sh
+          cd packages/core/test/redis-sentinel
           ./test-sentinel.sh
 
   # Deploys the final package to NPM when a versioned tag was pushed
