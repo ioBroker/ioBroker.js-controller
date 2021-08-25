@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "/home/moritz/workspaces/ioBroker.js-controller/packages/core/log/iobroker-audit.json",
+    "files": [
+        {
+            "date": 1629876481696,
+            "name": "/home/moritz/workspaces/ioBroker.js-controller/packages/core/log/iobroker.2021-08-25.log",
+            "hash": "b8c7cb29f7fb392e0f5c42877ea558bc"
+        }
+    ]
+}

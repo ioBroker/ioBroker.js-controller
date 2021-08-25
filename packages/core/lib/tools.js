@@ -184,7 +184,7 @@ function decryptPhrase(password, data, callback) {
 
 function getAppName() {
     const parts = __dirname.replace(/\\/g, '/').split('/');
-    return parts[parts.length - 2].split('.')[0];
+    return parts[parts.length - 4].split('.')[0];
 }
 
 function rmdirRecursiveSync(path) {
@@ -1638,7 +1638,7 @@ function getDefaultDataDir() {
     } else {
         //dataDir.splice(dataDir.length - 1, 1);
         //dataDir = dataDir.join('/');
-        return './data/';
+        return './../../data/';
     }
 }
 
@@ -1675,7 +1675,7 @@ function getConfigFileName() {
         if (fs.existsSync(__dirname + '/../conf/' + appName + '.json')) {
             return configDir + '/conf/' + appName + '.json';
         } else {
-            return configDir + '/data/' + appName + '.json';
+            return configDir + '/../../data/' + appName + '.json';
         }
     }
 }

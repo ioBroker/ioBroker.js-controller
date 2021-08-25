@@ -1,0 +1,9 @@
+2021-08-25 09:28:01.774  - [32minfo[39m: test.0 (COMPACT) starting. Version 0.1.0 in /home/moritz/workspaces/ioBroker.js-controller/packages/core/test/lib/, node: v12.22.5, js-controller: 1.0.0
+2021-08-25 09:28:02.877  - [33mwarn[39m: test.0 (COMPACT) Try to decode id not from this adapter
+2021-08-25 09:28:02.935  - [31merror[39m: test.0 (COMPACT) setObject myTestObjectNoType mandatory property type missing!
+2021-08-25 09:28:02.998  - [33mwarn[39m: test.0 (COMPACT) Object system.adapter.tesla.0 is invalid: obj.type has to exist
+2021-08-25 09:28:02.998  - [33mwarn[39m: test.0 (COMPACT) This object will not be created in future versions. Please report this to the developer.
+2021-08-25 09:28:03.003  - [33mwarn[39m: test.0 (COMPACT) Object system.adapter.test.0 is invalid: obj.type has to exist
+2021-08-25 09:28:03.003  - [33mwarn[39m: test.0 (COMPACT) This object will not be created in future versions. Please report this to the developer.
+2021-08-25 09:28:03.065  - [33mwarn[39m: test.0 (COMPACT) setObject myTestObject (type=state) property common.role missing!
+2021-08-25 09:28:03.065  - [33mwarn[39m: test.0 (COMPACT) setObject myTestObject (type=state) property common.type missing!

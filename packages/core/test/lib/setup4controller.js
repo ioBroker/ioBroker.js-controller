@@ -7,7 +7,7 @@
 // check if tmp directory exists
 const fs            = require('fs-extra');
 const path          = require('path');
-const rootDir       = path.normalize(__dirname + '/../../');
+const rootDir       = path.normalize(__dirname + '/../../../../');
 //const pkg           = require(rootDir + 'package.json');
 //const debug         = typeof v8debug === 'object';
 
@@ -35,7 +35,7 @@ function startController(options, callback) {
     console.log('startController...');
 
     // adjust db for the cli tests
-    const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', 'iobroker.json'));
+    const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', appName + '.json'));
     iobrokerJSON.objects.type = options.objects.type || 'file';
     iobrokerJSON.objects.port = (options.objects.port === undefined) ? 19001 : options.objects.port;
     iobrokerJSON.objects.host = options.objects.host || '127.0.0.1';
@@ -43,7 +43,7 @@ function startController(options, callback) {
     iobrokerJSON.states.type = options.states.type || 'file';
     iobrokerJSON.states.port = (options.states.port === undefined) ? 19000 : options.states.port;
     iobrokerJSON.states.host = options.states.host || '127.0.0.1';
-    fs.writeJSONSync(path.join(rootDir, 'data', 'iobroker.json'), iobrokerJSON, {spaces: 2});
+    fs.writeJSONSync(path.join(rootDir, 'data', appName + '.json'), iobrokerJSON, {spaces: 2});
 
     const settingsObjects = {
         connection: {
