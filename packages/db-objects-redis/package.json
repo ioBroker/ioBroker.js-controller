@@ -10,8 +10,6 @@
     "ioredis": "^4.27.6",
     "node.extend": "^2.0.2"
   },
-  "devDependencies": {
-  },
   "keywords": [
     "ioBroker",
     "redis",

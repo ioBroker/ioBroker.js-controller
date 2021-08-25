@@ -11,9 +11,6 @@
     "respjs": "^4.2.0",
     "@iobroker/js-controller-common": "file:../common"
   },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.12"
-  },
   "keywords": [
     "ioBroker",
     "redis",

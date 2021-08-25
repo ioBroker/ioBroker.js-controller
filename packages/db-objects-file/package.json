@@ -11,9 +11,6 @@
     "fs-extra": "^10.0.0",
     "node.extend": "^2.0.2"
   },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.12"
-  },
   "keywords": [
     "ioBroker",
     "redis",

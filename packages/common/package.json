@@ -20,9 +20,6 @@
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.12"
-  },
   "keywords": [
     "ioBroker"
   ],
