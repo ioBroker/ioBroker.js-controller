@@ -1,10 +1,7 @@
-const path = require('path');
-const fs = require('fs');
 const { tools } = require('@iobroker/js-controller-common')
 
-const controllerDir = tools.getControllerDir() || __dirname;
-
 module.exports = tools;
+const controllerDir = tools.getControllerDir() || __dirname;
 module.exports.getControllerDir = () => controllerDir;
 
 /**

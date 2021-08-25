@@ -9,7 +9,7 @@ const DailyRotateFile  = require('winston-daily-rotate-file');
 const fs               = require('fs');
 const path             = require('path');
 const os               = require('os');
-const { tools } = require('@iobroker/js-controller-common');
+const tools  = require('./tools');
 const hostname         = tools.getHostName();
 const Transport        = require('winston-transport');
 const {LEVEL}          = require('triple-beam');
@@ -182,10 +182,12 @@ const logger = function (level, files, noStdout, prefix) {
                     if (transport.filename.match(/^\w:\/|^\//)) {
                         transport.filename = path.normalize(transport.filename);
                     } else {
-                        let _path = path.normalize(`${__dirname}${isNpm ? '/../../../' : '/../'}${transport.filename}`);
+                        const _path = path.normalize(`${tools.getControllerDir()}${isNpm ? '/../../' : '/'}${transport.filename}`);
+                        /*
                         if (_path.indexOf('js-controller') !== -1 && isNpm) {
                             _path = path.normalize(`${__dirname}/../../${transport.filename}`);
                         }
+                         */
 
                         transport.filename = _path;
                     }

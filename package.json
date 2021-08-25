@@ -2,7 +2,6 @@
   "name": "iobroker.js-controller-mono",
   "private": true,
   "dependencies": {
-    "iobroker.js-controller": "file:packages/controller",
     "@iobroker/db-base": "file:packages/db-base",
     "@iobroker/db-objects-file": "file:packages/db-objects-file",
     "@iobroker/db-objects-jsonl": "file:packages/db-objects-jsonl",
@@ -10,9 +9,12 @@
     "@iobroker/db-states-file": "file:packages/db-states-file",
     "@iobroker/db-states-jsonl": "file:packages/db-states-jsonl",
     "@iobroker/db-states-redis": "file:packages/db-states-redis",
-    "@iobroker/js-controller-common": "file:packages/common",
+    "@iobroker/js-controller-adapter": "file:packages/adapter",
     "@iobroker/js-controller-cli": "file:packages/cli",
-    "@iobroker/js-controller-adapter": "file:packages/adapter"
+    "@iobroker/js-controller-common": "file:packages/common",
+    "iobroker.admin": "5.1.23",
+    "iobroker.denon": "1.11.2",
+    "iobroker.js-controller": "file:packages/controller"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^2.0.0",

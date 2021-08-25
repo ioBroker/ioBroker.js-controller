@@ -1,3 +1,1 @@
-module.exports = {
-    Adapter: require('./lib/adapter/adapter')
-};
+module.exports = require('./lib/adapter/adapter')
