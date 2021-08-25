@@ -11,8 +11,7 @@ if (!config.objects) {
 try {
     const path = require.resolve(`@iobroker/db-objects-${config.objects.type}`);
     module.exports = require(path).Client;
-} catch (e) {
-    console.log(e)
+} catch {
     console.error(`Installation broken or unknown objects type: ${config.objects.type} configured.`);
     process.exit(101);
 }

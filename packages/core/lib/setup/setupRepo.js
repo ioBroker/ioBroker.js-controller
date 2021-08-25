@@ -2,8 +2,8 @@
 
 /** @class */
 function Repo(options) {
-    const EXIT_CODES = require('../exitCodes');
-    const tools      = require('../tools.js');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
+    const { tools } = require('@iobroker/js-controller-common');
     const extend     = require('node.extend');
     const ioPackage  = require('../../io-package.json');
     const version    = ioPackage.common.version;
