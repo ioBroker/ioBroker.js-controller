@@ -836,6 +836,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
         }
 
         const configFileName = tools.getConfigFileName();
+
         // only change config if non existing - else setup custom has to be used
         if (!fs.existsSync(configFileName)) {
             isCreated = true;

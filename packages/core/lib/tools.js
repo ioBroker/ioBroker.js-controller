@@ -1,15 +1,15 @@
 'use strict';
 
-const fs        = require('fs-extra');
-const path      = require('path');
-const semver    = require('semver');
-const os        = require('os');
-const forge     = require('node-forge');
+const fs = require('fs-extra');
+const path = require('path');
+const semver = require('semver');
+const os = require('os');
+const forge = require('node-forge');
 const deepClone = require('deep-clone');
 const cpPromise = require('promisify-child-process');
-const { createInterface } = require('readline');
-const { PassThrough } = require('stream');
-const { detectPackageManager } = require('@alcalzone/pak');
+const {createInterface} = require('readline');
+const {PassThrough} = require('stream');
+const {detectPackageManager} = require('@alcalzone/pak');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -59,8 +59,7 @@ function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
                 } else {
                     console.log(`Attribute ${attr} ignored by copying`);
                 }
-            } else
-            if (oldObj[attr] === '__delete__' && !isNonEdit) {
+            } else if (oldObj[attr] === '__delete__' && !isNonEdit) {
                 if (newObj[attr] !== undefined) {
                     delete newObj[attr];
                 }
@@ -230,11 +229,11 @@ function findPath(path, url) {
     if (!url) {
         return '';
     }
-    if (url.substring(0, 'http://'.length)  === 'http://' ||
+    if (url.substring(0, 'http://'.length) === 'http://' ||
         url.substring(0, 'https://'.length) === 'https://') {
         return url;
     } else {
-        if (path.substring(0, 'http://'.length)  === 'http://' ||
+        if (path.substring(0, 'http://'.length) === 'http://' ||
             path.substring(0, 'https://'.length) === 'https://') {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
@@ -248,9 +247,9 @@ function findPath(path, url) {
 }
 
 function getMac(callback) {
-    const macRegex  = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/ig;
+    const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/ig;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
-    const command   = (process.platform.indexOf('win') === 0) ? 'getmac' : 'ifconfig || ip link';
+    const command = (process.platform.indexOf('win') === 0) ? 'getmac' : 'ifconfig || ip link';
 
     require('child_process').exec(command, {windowsHide: true}, (err, stdout, _stderr) => {
         if (err) {
@@ -351,10 +350,10 @@ function createUuid(_objects, callback) {
                 _objects.setObject('system.user.admin', {
                     type: 'user',
                     common: {
-                        name:      'admin',
-                        password:   res,
+                        name: 'admin',
+                        password: res,
                         dontDelete: true,
-                        enabled:    true
+                        enabled: true
                     },
                     ts: new Date().getTime(),
                     from: 'system.host.' + getHostName() + '.tools',
@@ -429,7 +428,11 @@ function getFile(urlOrPath, fileName, callback) {
         urlOrPath.substring(0, 'https://'.length) === 'https://') {
         const tmpFile = __dirname + '/../tmp/' + (fileName || Math.floor(Math.random() * 0xFFFFFFE) + '.zip');
         // Add some information to user-agent, like chrome, IE and Firefox do
-        request({url: urlOrPath, gzip: true, headers: {'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}`}}).on('error', error => {
+        request({
+            url: urlOrPath,
+            gzip: true,
+            headers: {'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}`}
+        }).on('error', error => {
             console.log('Cannot download "' + tmpFile + '": ' + error);
             if (callback) {
                 callback(tmpFile);
@@ -445,8 +448,7 @@ function getFile(urlOrPath, fileName, callback) {
             if (callback) {
                 callback(urlOrPath);
             }
-        } else
-        if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+        } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
             if (callback) {
                 callback(__dirname + '/../' + urlOrPath);
             }
@@ -476,8 +478,7 @@ function getJson(urlOrPath, agent, callback) {
         if (callback) {
             callback(urlOrPath);
         }
-    } else
-    if (!urlOrPath) {
+    } else if (!urlOrPath) {
         console.log('Empty url!');
         if (callback) {
             callback(null);
@@ -485,7 +486,12 @@ function getJson(urlOrPath, agent, callback) {
     } else {
         if (urlOrPath.substring(0, 'http://'.length) === 'http://' ||
             urlOrPath.substring(0, 'https://'.length) === 'https://') {
-            request({url: urlOrPath, timeout: 10000, gzip: true, headers: {'User-Agent': agent}}, (error, response, body) => {
+            request({
+                url: urlOrPath,
+                timeout: 10000,
+                gzip: true,
+                headers: {'User-Agent': agent}
+            }, (error, response, body) => {
                 if (error || !body || response.statusCode !== 200) {
                     console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
                     if (callback) {
@@ -524,8 +530,7 @@ function getJson(urlOrPath, agent, callback) {
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else
-            if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(__dirname + '/../' + urlOrPath);
                 } catch (e) {
@@ -572,29 +577,29 @@ function scanDirectory(dirName, list, regExp) {
         }
         for (let i = 0; i < dirs.length; i++) {
             try {
-                const fullPath   = path.join(dirName, dirs[i]);
+                const fullPath = path.join(dirName, dirs[i]);
                 const fileIoName = path.join(fullPath, 'io-package.json');
-                const fileName   = path.join(fullPath, 'package.json');
+                const fileName = path.join(fullPath, 'package.json');
                 if (regExp.test(dirs[i]) && fs.existsSync(fileIoName)) {
                     const ioPackage = fs.readJSONSync(fileIoName);
-                    const package_  = fs.existsSync(fileName)
+                    const package_ = fs.existsSync(fileName)
                         ? fs.readJSONSync(fileName)
                         : {};
                     const localIcon = (ioPackage.common.icon ? `/adapter/${dirs[i].substring(module.exports.appName.length + 1)}/${ioPackage.common.icon}` : '');
                     //noinspection JSUnresolvedVariable
                     list[ioPackage.common.name] = {
                         controller: ioPackage.common.controller || false,
-                        version:    ioPackage.common.version,
-                        icon:       ioPackage.common.extIcon || localIcon,
+                        version: ioPackage.common.version,
+                        icon: ioPackage.common.extIcon || localIcon,
                         localIcon,
-                        title:      ioPackage.common.title, // deprecated 2021.04.18 BF
-                        titleLang:  ioPackage.common.titleLang,
-                        desc:       ioPackage.common.desc,
-                        platform:   ioPackage.common.platform,
-                        keywords:   ioPackage.common.keywords,
-                        readme:     ioPackage.common.readme,
-                        type:       ioPackage.common.type,
-                        license:    ioPackage.common.license ? ioPackage.common.license : ((package_.licenses && package_.licenses.length) ? package_.licenses[0].type : ''),
+                        title: ioPackage.common.title, // deprecated 2021.04.18 BF
+                        titleLang: ioPackage.common.titleLang,
+                        desc: ioPackage.common.desc,
+                        platform: ioPackage.common.platform,
+                        keywords: ioPackage.common.keywords,
+                        readme: ioPackage.common.readme,
+                        type: ioPackage.common.type,
+                        license: ioPackage.common.license ? ioPackage.common.license : ((package_.licenses && package_.licenses.length) ? package_.licenses[0].type : ''),
                         licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
                     };
                 }
@@ -620,8 +625,8 @@ function getInstalledInfo(hostRunningVersion) {
     } catch (e) {
         console.error(`Cannot get installed host information: ${e.message}`);
     }
-    const package_  = fs.existsSync(path.join(fullPath, 'package.json')) ? fs.readJSONSync(path.join(fullPath, 'package.json')) : {};
-    const regExp    = new RegExp(`^${module.exports.appName}\\.`, 'i');
+    const package_ = fs.existsSync(path.join(fullPath, 'package.json')) ? fs.readJSONSync(path.join(fullPath, 'package.json')) : {};
+    const regExp = new RegExp(`^${module.exports.appName}\\.`, 'i');
 
     if (ioPackage) {
         result[ioPackage.common.name] = {
@@ -639,7 +644,7 @@ function getInstalledInfo(hostRunningVersion) {
             licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
         };
     }
-    scanDirectory(path.join(__dirname, '../node_modules'),    result, regExp);
+    scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
     scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
 
     if (
@@ -694,7 +699,7 @@ function getIoPack(sources, name, callback) {
             setImmediate(() => {
                 getJson(packUrl, pack => {
                     const version = sources[name].version;
-                    const type    = sources[name].type;
+                    const type = sources[name].type;
                     // If installed from git or something else
                     // js-controller is exception, because can be installed from npm and from git
                     if (sources[name].url && name !== 'js-controller') {
@@ -706,8 +711,8 @@ function getIoPack(sources, name, callback) {
                                 sources[name].type = type;
                             }
                             if (pack && pack.licenses && pack.licenses.length) {
-                                if (!sources[name].license)    {
-                                    sources[name].license    = pack.licenses[0].type;
+                                if (!sources[name].license) {
+                                    sources[name].license = pack.licenses[0].type;
                                 }
                                 if (!sources[name].licenseUrl) {
                                     sources[name].licenseUrl = pack.licenses[0].url;
@@ -722,8 +727,8 @@ function getIoPack(sources, name, callback) {
                         if (ioPack && ioPack.common) {
                             sources[name] = extend(true, sources[name], ioPack.common);
                             if (pack && pack.licenses && pack.licenses.length) {
-                                if (!sources[name].license)    {
-                                    sources[name].license    = pack.licenses[0].type;
+                                if (!sources[name].license) {
+                                    sources[name].license = pack.licenses[0].type;
                                 }
                                 if (!sources[name].licenseUrl) {
                                     sources[name].licenseUrl = pack.licenses[0].url;
@@ -742,7 +747,7 @@ function getIoPack(sources, name, callback) {
                                 callback(sources, name);
                             }
                         } else {
-                            if (sources[name].meta.substring(0, 'http://'.length)  === 'http://' ||
+                            if (sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
                                 sources[name].meta.substring(0, 'https://'.length) === 'https://') {
                                 //installed from npm
                                 getNpmVersion(name, (_err, version) => {
@@ -801,8 +806,8 @@ function _getRepositoryFile(sources, path, callback) {
         }
 
         sources[name].processed = true;
-        if (sources[name].url)  {
-            sources[name].url  = findPath(path, sources[name].url);
+        if (sources[name].url) {
+            sources[name].url = findPath(path, sources[name].url);
         }
         if (sources[name].meta) {
             sources[name].meta = findPath(path, sources[name].meta);
@@ -912,7 +917,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
  */
 function getRepositoryFile(urlOrPath, additionalInfo, callback) {
     let sources = {};
-    let path =    '';
+    let path = '';
 
     if (typeof additionalInfo === 'function') {
         callback = additionalInfo;
@@ -925,7 +930,7 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
 
     if (urlOrPath) {
         const parts = urlOrPath.split('/');
-        path  = parts.splice(0, parts.length - 1).join('/') + '/';
+        path = parts.splice(0, parts.length - 1).join('/') + '/';
     }
 
     // If object was read
@@ -933,8 +938,7 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
         if (typeof callback === 'function') {
             callback(null, urlOrPath);
         }
-    } else
-    if (!urlOrPath) {
+    } else if (!urlOrPath) {
         try {
             sources = fs.readJSONSync(getDefaultDataDir() + 'sources.json');
         } catch {
@@ -1002,11 +1006,11 @@ function sendDiagInfo(obj, callback) {
 
     console.log(`Send diag info: ${JSON.stringify(obj)}`);
     request.post({
-        url:    'http://download.' + module.exports.appName + '.net/diag.php',
+        url: 'http://download.' + module.exports.appName + '.net/diag.php',
         method: 'POST',
         gzip: true,
         headers: {'content-type': 'application/x-www-form-urlencoded'},
-        body:    'data=' + JSON.stringify(obj),
+        body: 'data=' + JSON.stringify(obj),
         timeout: 2000
     }, (_err, _response, _body) => {
         /*if (err || !body || response.statusCode !== 200) {
@@ -1058,7 +1062,8 @@ function getAdapterDir(adapter) {
             try {
                 adapterPath = require.resolve(possibility);
                 break;
-            } catch { /* not found */ }
+            } catch { /* not found */
+            }
         }
     }
 
@@ -1163,7 +1168,7 @@ async function installNodeModule(npmUrl, options = {}) {
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             // If a cwd was provided, use it
-            ? { cwd: options.cwd }
+            ? {cwd: options.cwd}
             // Otherwise find the ioBroker root dir
             : {
                 cwd: __dirname,
@@ -1212,7 +1217,7 @@ async function uninstallNodeModule(packageName, options = {}) {
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             // If a cwd was provided, use it
-            ? { cwd: options.cwd }
+            ? {cwd: options.cwd}
             // Otherwise find the ioBroker root dir
             : {
                 cwd: __dirname,
@@ -1255,7 +1260,7 @@ async function rebuildNodeModules(options = {}) {
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             // If a cwd was provided, use it
-            ? { cwd: options.cwd }
+            ? {cwd: options.cwd}
             // Otherwise find the ioBroker root dir
             : {
                 cwd: __dirname,
@@ -1316,7 +1321,10 @@ function getDiskInfo(platform, callback) {
                 // Z:       116649795584  148368257024
                 const disk = __dirname.substring(0, 2).toUpperCase();
 
-                exec('wmic logicaldisk get size,freespace,caption', {encoding: 'utf8', windowsHide: true}, (error, stdout) => {//, stderr) {
+                exec('wmic logicaldisk get size,freespace,caption', {
+                    encoding: 'utf8',
+                    windowsHide: true
+                }, (error, stdout) => {//, stderr) {
                     if (stdout) {
                         const lines = stdout.split('\n');
                         const line = lines.find(line => {
@@ -1325,7 +1333,10 @@ function getDiskInfo(platform, callback) {
                         });
                         if (line) {
                             const parts = line.split(/\s+/);
-                            return callback && callback(error, {'Disk size': parseInt(parts[2]), 'Disk free': parseInt(parts[1])});
+                            return callback && callback(error, {
+                                'Disk size': parseInt(parts[2]),
+                                'Disk free': parseInt(parts[1])
+                            });
                         }
                     }
                     callback && callback(error, null);
@@ -1337,7 +1348,10 @@ function getDiskInfo(platform, callback) {
                     try {
                         if (stdout) {
                             const parts = stdout.split('\n')[1].split(/\s+/);
-                            return callback && callback(error, {'Disk size': parseInt(parts[1]) * 1024, 'Disk free': parseInt(parts[3]) * 1024});
+                            return callback && callback(error, {
+                                'Disk size': parseInt(parts[1]) * 1024,
+                                'Disk free': parseInt(parts[3]) * 1024
+                            });
                         }
                     } catch {
                         // continue regardless of error
@@ -1440,7 +1454,7 @@ function generateDefaultCertificates() {
     // https://github.com/digitalbazaar/forge
     forge.options.usePureJavaScript = false;
     const pki = forge.pki;
-    const keys = pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
+    const keys = pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
     const cert = pki.createCertificate();
 
     cert.publicKey = keys.publicKey;
@@ -1450,15 +1464,15 @@ function generateDefaultCertificates() {
     cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 
     const subAttrs = [
-        { name: 'commonName', value: getHostName() },
-        { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' }
+        {name: 'commonName', value: getHostName()},
+        {name: 'organizationName', value: 'ioBroker GmbH'},
+        {shortName: 'OU', value: 'iobroker'}
     ];
 
     const issAttrs = [
-        { name: 'commonName', value: 'iobroker' },
-        { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' }
+        {name: 'commonName', value: 'iobroker'},
+        {name: 'organizationName', value: 'ioBroker GmbH'},
+        {shortName: 'OU', value: 'iobroker'}
     ];
 
     cert.setSubject(subAttrs);
@@ -1521,10 +1535,10 @@ function generateDefaultCertificates() {
 }
 
 function makeid(length) {
-    let result           = '';
-    const characters       = 'abcdef0123456789';
+    let result = '';
+    const characters = 'abcdef0123456789';
     const charactersLength = characters.length;
-    for ( let i = 0; i < length; i++ ) {
+    for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
@@ -1561,21 +1575,20 @@ function getHostInfo(objects, callback) {
 
     const cpus = os.cpus();
     const data = {
-        Platform:     os.platform(),
-        os:           process.platform,
+        Platform: os.platform(),
+        os: process.platform,
         Architecture: os.arch(),
-        CPUs:         cpus && Array.isArray(cpus) ? cpus.length : null,
-        Speed:        cpus && Array.isArray(cpus) ? cpus[0].speed : null,
-        Model:        cpus && Array.isArray(cpus) ? cpus[0].model : null,
-        RAM:          os.totalmem(),
+        CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
+        Speed: cpus && Array.isArray(cpus) ? cpus[0].speed : null,
+        Model: cpus && Array.isArray(cpus) ? cpus[0].model : null,
+        RAM: os.totalmem(),
         'System uptime': Math.round(os.uptime()),
-        'Node.js':    process.version
+        'Node.js': process.version
     };
 
     if (data.Platform === 'win32') {
         data.Platform = 'Windows';
-    } else
-    if (data.Platform === 'darwin') {
+    } else if (data.Platform === 'darwin') {
         data.Platform = 'OSX';
     }
 
@@ -1633,11 +1646,10 @@ function getDefaultDataDir() {
     if (fs.existsSync(__dirname + '/../../node_modules/' + appName + '.js-controller')) {
         return '../' + appName + '-data/';
     } else // If installed with npm
-    if (fs.existsSync(__dirname + '/../../../node_modules/' + appName + '.js-controller')) {
+    if (!fs.existsSync(__dirname + '/../../../packages/core')) {
         return '../../' + appName + '-data/';
     } else {
-        //dataDir.splice(dataDir.length - 1, 1);
-        //dataDir = dataDir.join('/');
+        // for dev purposes
         return './data/';
     }
 }
@@ -1653,19 +1665,17 @@ function getConfigFileName() {
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
-    // If installed with npm
-    if (fs.existsSync(__dirname + '/../../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
-        fs.existsSync(__dirname + '/../../../node_modules/' + appName + '.js-controller')) {
-        // remove /node_modules/' + appName + '.js-controller/lib
-        configDir.splice(configDir.length - 3, 3);
-        configDir = configDir.join('/');
-        return configDir + '/' + appName + '-data/' + appName + '.json';
-    } else
     // if debugging with npm5
     if (fs.existsSync(__dirname + '/../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
         fs.existsSync(__dirname + '/../../node_modules/' + appName + '.js-controller')) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 2, 2);
+        configDir = configDir.join('/');
+        return configDir + '/' + appName + '-data/' + appName + '.json';
+    } else if (!fs.existsSync(__dirname + '/../../../packages/core')) {
+        // If installed with npm
+        // remove /node_modules/' + appName + '.js-controller/lib
+        configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
         return configDir + '/' + appName + '-data/' + appName + '.json';
     } else {
@@ -1806,13 +1816,20 @@ function _setQualityForStates(states, keys, quality, cb) {
     if (!keys || !states || !keys.length) {
         cb();
     } else {
-        states.setState(keys.shift(), {ack: null, q: quality}, () => setImmediate(_setQualityForStates, states, keys, quality, cb));
+        states.setState(keys.shift(), {
+            ack: null,
+            q: quality
+        }, () => setImmediate(_setQualityForStates, states, keys, quality, cb));
     }
 }
 
 function setQualityForInstance(objects, states, namespace, q) {
     return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'state', {startkey: namespace + '.', endkey: namespace + '.\u9999', include_docs: false}, (err, _states) => {
+        objects.getObjectView('system', 'state', {
+            startkey: namespace + '.',
+            endkey: namespace + '.\u9999',
+            include_docs: false
+        }, (err, _states) => {
             if (err) {
                 reject(err);
             } else {
@@ -1904,6 +1921,7 @@ function appendStackTrace(str) {
  * @template T
  * @typedef {{new (...args: any[]): T}} ES6Class<T>
  */
+
 /**
  * @template T
  * @typedef {{new (...args: any[]): T; (...args: any[]): T; prototype: Function}} Class<T>
@@ -1946,7 +1964,7 @@ function wrapES6Class(Class) {
  */
 function encryptLegacy(key, value) {
     let result = '';
-    for(let i = 0; i < value.length; i++) {
+    for (let i = 0; i < value.length; i++) {
         result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
     }
     return result;
@@ -1960,7 +1978,7 @@ function encryptLegacy(key, value) {
  */
 function decryptLegacy(key, value) {
     let result = '';
-    for(let i = 0; i < value.length; i++) {
+    for (let i = 0; i < value.length; i++) {
         result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
     }
     return result;
@@ -2348,7 +2366,10 @@ function getInstances(adapter, objects, withObjects, callback) {
         withObjects = false;
     }
 
-    objects.getObjectList({startkey: 'system.adapter.' + adapter + '.', endkey: 'system.adapter.' + adapter + '.\u9999'}, (err, arr) => {
+    objects.getObjectList({
+        startkey: 'system.adapter.' + adapter + '.',
+        endkey: 'system.adapter.' + adapter + '.\u9999'
+    }, (err, arr) => {
         const instances = [];
         if (!err && arr && arr.rows) {
             for (let i = 0; i < arr.rows.length; i++) {
@@ -2422,7 +2443,7 @@ function execAsync(command, execOptions) {
         encoding: 'utf8'
     };
     // @ts-ignore We set the encoding, so stdout/stdrr must be a string
-    return cpPromise.exec(command, { ...defaultOptions, ...execOptions });
+    return cpPromise.exec(command, {...defaultOptions, ...execOptions});
 }
 
 /**
@@ -2789,12 +2810,12 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
 
     if (createWakeup) {
         objs.push({
-            _id:    `${id}.wakeup`,
-            type:   'state',
+            _id: `${id}.wakeup`,
+            type: 'state',
             common: {
                 name: `${namespace}.wakeup`,
-                read:   true,
-                write:  true,
+                read: true,
+                write: true,
                 type: 'boolean',
                 role: 'adapter.wakeup'
             },
@@ -2808,10 +2829,13 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
 function getLogger(log) {
     if (!log) {
         log = {
-            silly: function (_msg) {/*console.log(msg);*/},
-            debug: function (_msg) {/*console.log(msg);*/},
-            info:  function (_msg) {/*console.log(msg);*/},
-            warn:  function (msg) {
+            silly: function (_msg) {/*console.log(msg);*/
+            },
+            debug: function (_msg) {/*console.log(msg);*/
+            },
+            info: function (_msg) {/*console.log(msg);*/
+            },
+            warn: function (msg) {
                 console.log(msg);
             },
             error: function (msg) {
@@ -2898,7 +2922,7 @@ function isLocalStatesDbServer(dbType, host, checkIfLocalOnly) {
  * @param {string} [logPrefix] - prefix for logging
  * @return {Promise<object[]>}
  */
-async function getInstancesOrderedByStartPrio(objects, logger, logPrefix='') {
+async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
     const instances = {'1': [], '2': [], '3': [], 'admin': []};
     const allowedTiers = [1, 2, 3];
 
