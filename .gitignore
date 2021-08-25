@@ -8,8 +8,8 @@ node_modules
 /adapter/admin
 /data
 /npm-debug.log
-/tmp
-/log
+**/tmp
+**/log
 pids.txt
 backups
 cache
