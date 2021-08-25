@@ -20,11 +20,11 @@
   "contributors": [
     "bluefox <dogafox@gmail.com>",
     "Apollon77 <iobroker@fischer-ka.de>",
-    "foxriver76"
+    "foxriver76 <moritz.heusinger@gmail.com>"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.objects-redis"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-objects-file"
   },
   "scripts": {},
   "main": "index.js",
