@@ -13,7 +13,7 @@ const rootDir       = path.normalize(__dirname + '/../../../../');
 
 function getAppName() {
     const parts = __dirname.replace(/\\/g, '/').split('/');
-    return parts[parts.length - 3].split('.')[0];
+    return parts[parts.length - 5].split('.')[0];
 }
 
 const appName = getAppName().toLowerCase();
