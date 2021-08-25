@@ -28,7 +28,7 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
         return require('https').createServer(certificates, app);
     }
 
-    const tools = require('./tools');
+    const { tools } = require('@iobroker/js-controller-common');
     const fs = require('fs-extra');
     let leDir;
 

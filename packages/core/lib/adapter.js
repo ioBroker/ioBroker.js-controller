@@ -25,10 +25,10 @@ const extend            = require('node.extend');
 const util              = require('util');
 const os                = require('os');
 const EventEmitter      = require('events').EventEmitter;
-const tools             = require('./tools');
+const { tools } = require('@iobroker/js-controller-common');
 const pidUsage          = require('pidusage');
 const deepClone         = require('deep-clone');
-const EXIT_CODES        = require('./exitCodes');
+const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const {PluginHandler}   = require('@iobroker/plugin-base');
 const controllerVersion = require('../package.json').version;
 

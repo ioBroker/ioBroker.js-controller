@@ -1,7 +1,7 @@
 'use strict';
 
 let JSZip;
-const tools = require('./tools');
+const { tools } = require('@iobroker/js-controller-common');
 
 function _getAllFilesInDir(objects, id, name, options, callback, result) {
     result = result || [];

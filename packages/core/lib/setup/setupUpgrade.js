@@ -37,7 +37,7 @@ function Upgrade(options) {
     let tty;
 
     const hostname = tools.getHostName();
-    const EXIT_CODES = require('../exitCodes');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
     const Upload = require('./setupUpload.js');
     const upload = new Upload(options);

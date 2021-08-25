@@ -10,7 +10,7 @@
 'use strict';
 
 const dgram  = require('dgram');
-const tools  = require('./tools');
+const { tools } = require('@iobroker/js-controller-common');
 let crypto = null;
 const port   = 50005;
 const MULTICAST_ADDR = '239.255.255.250';

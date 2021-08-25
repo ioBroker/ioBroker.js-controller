@@ -26,7 +26,7 @@ function Users(options) {
 
     const objects     = options.objects;
     const processExit = options.processExit;
-    const EXIT_CODES  = require('../exitCodes');
+    const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
     this.addUser = function (user, pw, callback) {
         // user id's should be case insensitive
