@@ -1,0 +1,58 @@
+{
+  "system.adapter.test.upload" : {
+    "val" : 0,
+    "ack" : false,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  },
+  "system.adapter.test.0.alive" : {
+    "val" : null,
+    "ack" : false,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  },
+  "system.adapter.test.0.connected" : {
+    "val" : null,
+    "ack" : true,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  },
+  "system.adapter.test.0.memRss" : {
+    "val" : 0,
+    "ack" : true,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  },
+  "system.adapter.test.0.memHeapTotal" : {
+    "val" : 0,
+    "ack" : true,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  },
+  "system.adapter.test.0.memHeapUsed" : {
+    "val" : 0,
+    "ack" : true,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  },
+  "system.adapter.test.0.uptime" : {
+    "val" : 0,
+    "ack" : true,
+    "ts" : 0,
+    "q" : 0,
+    "from" : "system.adapter.test.0",
+    "lc" : 0
+  }
+}

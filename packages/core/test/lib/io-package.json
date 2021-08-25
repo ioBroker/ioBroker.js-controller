@@ -1,0 +1,55 @@
+{
+  "common": {
+    "name": "test",
+    "version": "0.1.0",
+    "titleLang": {
+      "en": "test Adapter"
+    },
+    "desc": {
+      "en": "This adapter connect",
+      "de": "This adapter connect",
+      "ru": "This adapter connect"
+    },
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "loglevel": "info",
+    "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
+    "icon": "test.png",
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
+    "type": "communication",
+    "preserveSettings": "smartName",
+    "enabled": false,
+    "messagebox": true,
+    "stopBeforeUpdate": true,
+    "news": {
+      "0.6.2": {
+        "en": "add option Place function in names first",
+        "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
+        "ru": "Добавлена опция: Имена функций в начале"
+      },
+      "0.6.1": {
+        "en": "fix reconnect",
+        "de": "Korrigiere Wiederverbindung",
+        "ru": "Исправлено распознавание дисконнекта"
+      }
+    },
+    "authors": [
+      "bluefox <dogafox@gmail.com>"
+    ],
+    "keywords": [
+      "web",
+      "test",
+      "communication"
+    ],
+    "dependencies": [
+      {
+        "js-controller": ">=0.9.0"
+      }
+    ]
+  },
+  "native": {
+    "paramA": "",
+    "paramB": ""
+  }
+}
