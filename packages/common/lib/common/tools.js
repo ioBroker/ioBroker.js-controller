@@ -617,13 +617,7 @@ function scanDirectory(dirName, list, regExp) {
  */
 function getInstalledInfo(hostRunningVersion) {
     const result = {};
-    let fullPath;
-    if (__dirname.includes('packages/common')) {
-        // we are in a test environment
-        fullPath = path.join(__dirname, '..', '..', '..', 'core');
-    } else {
-        fullPath = path.join(__dirname, '..', '..', '..', 'iobroker.js-controller');
-    }
+    const fullPath = getControllerDir();
 
     // Get info about host
     let ioPackage;
@@ -1642,10 +1636,56 @@ function getHostInfo(objects, callback) {
     });
 }
 
+/**
+ * Finds the controller root directory
+ * @returns {string}
+ */
+function getControllerDir() {
+    const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
+    for (const pkg of possibilities) {
+        try {
+            // package.json is guaranteed to be in the module root folder
+            // so once that is resolved, take the dirname and we're done
+            const possiblePath = require.resolve(`${pkg}/package.json`);
+            if (fs.existsSync(possiblePath)) {
+                return path.dirname(possiblePath);
+            }
+        } catch {
+            /* not found */
+        }
+    }
+
+    // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
+    // Thus we check for falsyness, which includes failing on an empty path
+    let checkPath = path.join(__dirname, '../..');
+    // Also check in the current check dir (along with iobroker.js-controller subdirs)
+    possibilities.unshift('');
+    while (true) {
+        for (const pkg of possibilities) {
+            try {
+                const possiblePath = path.join(checkPath, pkg);
+                if (fs.existsSync(path.join(possiblePath, 'iob.bat'))) {
+                    return possiblePath;
+                }
+            } catch {
+                // not found, continue with next possiblity
+            }
+        }
+
+        // Controller not found here - go to the parent dir
+        const newPath = path.dirname(checkPath);
+        if (newPath === checkPath) {
+            // We already reached the root dir, abort
+            break;
+        }
+        checkPath = newPath;
+    }
+}
+
 // All paths are returned always relative to /node_modules/' + module.exports.appName + '.js-controller
 // the result has always "/" as last symbol
 function getDefaultDataDir() {
-    if (fs.existsSync(__dirname + '/../../../../packages/core')) {
+    if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
         // dev install
         return './data/';
     }
@@ -1672,11 +1712,11 @@ function getConfigFileName() {
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
-    if (fs.existsSync(__dirname + '/../../../../packages/core')) {
+    if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
         // dev install -> Remove /lib
         configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
-        configDir += '/core'; // go inside core dir
+        configDir += '/controller'; // go inside controller dir
         if (fs.existsSync(configDir + '/conf/' + appName + '.json')) {
             return configDir + '/conf/' + appName + '.json';
         } else {
@@ -3079,6 +3119,7 @@ module.exports = {
     parseGithubPathname,
     removePreservedProperties,
     FORBIDDEN_CHARS,
+    getControllerDir,
     getLogger,
     objectsDbHasServer,
     isLocalObjectsDbServer,

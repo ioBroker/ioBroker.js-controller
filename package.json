@@ -2,7 +2,7 @@
   "name": "iobroker.js-controller-mono",
   "private": true,
   "dependencies": {
-    "iobroker.js-controller": "file:packages/core",
+    "iobroker.js-controller": "file:packages/controller",
     "@iobroker/db-base": "file:packages/db-base",
     "@iobroker/db-objects-file": "file:packages/db-objects-file",
     "@iobroker/db-objects-jsonl": "file:packages/db-objects-jsonl",
@@ -11,7 +11,8 @@
     "@iobroker/db-states-jsonl": "file:packages/db-states-jsonl",
     "@iobroker/db-states-redis": "file:packages/db-states-redis",
     "@iobroker/js-controller-common": "file:packages/common",
-    "@iobroker/js-controller-cli": "file:packages/cli"
+    "@iobroker/js-controller-cli": "file:packages/cli",
+    "@iobroker/js-controller-adapter": "file:packages/adapter"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^2.0.0",
@@ -27,9 +28,9 @@
     "version": "release-script --lerna",
     "postversion": "git push && git push --tags",
     "lint": "eslint \"packages/*/*.js\" \"packages/*/lib/**/*.js\"",
-    "test": "mocha packages/core/test --exit",
-    "test-jsonl": "mocha packages/core/test/jsonl/ --exit",
-    "test-redis-socket": "mocha packages/core/test/redis-socket/ --exit",
-    "test-redis-sentinel": "mocha packages/core/test/redis-sentinel/ --exit"
+    "test": "mocha packages/controller/test --exit",
+    "test-jsonl": "mocha packages/controller/test/jsonl/ --exit",
+    "test-redis-socket": "mocha packages/controller/test/redis-socket/ --exit",
+    "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/ --exit"
   }
 }

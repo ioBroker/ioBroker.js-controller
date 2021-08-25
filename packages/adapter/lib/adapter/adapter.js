@@ -30,7 +30,7 @@ const pidUsage          = require('pidusage');
 const deepClone         = require('deep-clone');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const {PluginHandler}   = require('@iobroker/plugin-base');
-const controllerVersion = require('../package.json').version;
+const controllerVersion = require(tools.getControllerDir() + '/package.json').version;
 
 const { password } = require('@iobroker/js-controller-common');
 

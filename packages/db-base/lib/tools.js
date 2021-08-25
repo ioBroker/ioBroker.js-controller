@@ -1,51 +1,10 @@
 const path = require('path');
 const fs = require('fs');
+const { tools } = require('@iobroker/js-controller-common')
 
-function getControllerDir() {
-    const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
-    for (const pkg of possibilities) {
-        try {
-            // package.json is guaranteed to be in the module root folder
-            // so once that is resolved, take the dirname and we're done
-            const possiblePath = require.resolve(`${pkg}/package.json`);
-            if (fs.existsSync(possiblePath)) {
-                return path.dirname(possiblePath);
-            }
-        } catch {
-            /* not found */
-        }
-    }
+const controllerDir = tools.getControllerDir() || __dirname;
 
-    // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
-    // Thus we check for falsyness, which includes failing on an empty path
-    let checkPath = path.join(__dirname, '../..');
-    // Also check in the current check dir (along with iobroker.js-controller subdirs)
-    possibilities.unshift('');
-    while (true) {
-        for (const pkg of possibilities) {
-            try {
-                const possiblePath = path.join(checkPath, pkg);
-                if (fs.existsSync(path.join(possiblePath, 'iob.bat'))) {
-                    return possiblePath;
-                }
-            } catch {
-                // not found, continue with next possiblity
-            }
-        }
-
-        // Controller not found here - go to the parent dir
-        const newPath = path.dirname(checkPath);
-        if (newPath === checkPath) {
-            // We already reached the root dir, abort
-            break;
-        }
-        checkPath = newPath;
-    }
-}
-
-const controllerDir = getControllerDir() || __dirname;
-
-module.exports = require('@iobroker/js-controller-common').tools;
+module.exports = tools;
 module.exports.getControllerDir = () => controllerDir;
 
 /**

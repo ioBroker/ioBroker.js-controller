@@ -30,6 +30,7 @@
     "@iobroker/db-states-redis": "file:../db-states-redis",
     "@iobroker/js-controller-cli": "file:../cli",
     "@iobroker/js-controller-common": "file:../common",
+    "@iobroker/js-controller-adapter": "file:../adapter",
     "chokidar": "^3.5.2",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.2",

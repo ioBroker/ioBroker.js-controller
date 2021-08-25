@@ -10,7 +10,7 @@ const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances} = require('./cliTools.js');
 
 // The root of this project. Change this when moving code to another directory
-const rootDir = path.join(__dirname, '../../../core');
+const rootDir = tools.getControllerDir();
 const killAllScriptPath = path.join(rootDir, 'killall.sh');
 
 module.exports = class CLIProcess extends CLICommand {
