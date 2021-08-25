@@ -7,7 +7,7 @@
 // check if tmp directory exists
 const fs            = require('fs-extra');
 const path          = require('path');
-const rootDir       = path.normalize(__dirname + '/../../../../');
+const rootDir       = path.normalize(__dirname + '/../../');
 //const pkg           = require(rootDir + 'package.json');
 //const debug         = typeof v8debug === 'object';
 

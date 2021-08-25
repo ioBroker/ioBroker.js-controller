@@ -1638,7 +1638,7 @@ function getDefaultDataDir() {
     } else {
         //dataDir.splice(dataDir.length - 1, 1);
         //dataDir = dataDir.join('/');
-        return './../../data/';
+        return './data/';
     }
 }
 
@@ -1675,7 +1675,7 @@ function getConfigFileName() {
         if (fs.existsSync(__dirname + '/../conf/' + appName + '.json')) {
             return configDir + '/conf/' + appName + '.json';
         } else {
-            return configDir + '/../../data/' + appName + '.json';
+            return configDir + '/data/' + appName + '.json';
         }
     }
 }
