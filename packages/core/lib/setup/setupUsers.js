@@ -70,7 +70,7 @@ function Users(options) {
                 }
                 return;
             }
-            const password = require('../password');
+            const { password } = require('@iobroker/js-controller-common');
 
             password(pw).hash(null, null, (err, res) => {
                 if (err) {
@@ -97,7 +97,7 @@ function Users(options) {
                 }
                 return;
             }
-            const password = require('../password');
+            const { password } = require('@iobroker/js-controller-common');
 
             password(pw).check(obj.common.password, (err, res) =>
                 typeof callback === 'function' && callback(err, res));

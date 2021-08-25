@@ -32,7 +32,7 @@ const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const {PluginHandler}   = require('@iobroker/plugin-base');
 const controllerVersion = require('../package.json').version;
 
-const password          = require('./password');
+const { password } = require('@iobroker/js-controller-common');
 
 const { FORBIDDEN_CHARS } = tools;
 const DEFAULT_SECRET    = 'Zgfr56gFe87jJOM';

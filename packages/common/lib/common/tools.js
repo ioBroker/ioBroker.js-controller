@@ -617,7 +617,14 @@ function scanDirectory(dirName, list, regExp) {
  */
 function getInstalledInfo(hostRunningVersion) {
     const result = {};
-    const fullPath = path.join(__dirname, '..');
+    let fullPath;
+    if (__dirname.includes('packages/common')) {
+        // we are in a test environment
+        fullPath = path.join(__dirname, '..', '..', '..', 'core');
+    } else {
+        fullPath = path.join(__dirname, '..', '..', '..', 'iobroker.js-controller');
+    }
+
     // Get info about host
     let ioPackage;
     try {
