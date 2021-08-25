@@ -19,26 +19,26 @@
 //   noNamespace:           return short names of objects and states in objectChange and in stateChange
 //   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without an corresponding existing object
 
-const net               = require('net');
-const fs                = require('fs-extra');
-const extend            = require('node.extend');
-const util              = require('util');
-const os                = require('os');
-const EventEmitter      = require('events').EventEmitter;
-const { tools } = require('@iobroker/js-controller-common');
-const pidUsage          = require('pidusage');
-const deepClone         = require('deep-clone');
-const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const {PluginHandler}   = require('@iobroker/plugin-base');
+const net = require('net');
+const fs = require('fs-extra');
+const extend = require('node.extend');
+const util = require('util');
+const os = require('os');
+const EventEmitter = require('events').EventEmitter;
+const {tools} = require('@iobroker/js-controller-common');
+const pidUsage = require('pidusage');
+const deepClone = require('deep-clone');
+const {EXIT_CODES} = require('@iobroker/js-controller-common');
+const {PluginHandler} = require('@iobroker/plugin-base');
 const controllerVersion = require(tools.getControllerDir() + '/package.json').version;
 
-const { password } = require('@iobroker/js-controller-common');
+const {password} = require('@iobroker/js-controller-common');
 
-const { FORBIDDEN_CHARS } = tools;
-const DEFAULT_SECRET    = 'Zgfr56gFe87jJOM';
+const {FORBIDDEN_CHARS} = tools;
+const DEFAULT_SECRET = 'Zgfr56gFe87jJOM';
 const ALIAS_STARTS_WITH = 'alias.';
 
-const SYSTEM_ADMIN_USER  = 'system.user.admin';
+const SYSTEM_ADMIN_USER = 'system.user.admin';
 const SYSTEM_ADMIN_GROUP = 'system.group.administrator';
 const QUALITY_SUBS_INITIAL = 0x20;
 
@@ -56,19 +56,19 @@ const supportedFeatures = [
 
 //const ACCESS_EVERY_EXEC  = 0x1;
 const ACCESS_EVERY_WRITE = 0x2;
-const ACCESS_EVERY_READ  = 0x4;
+const ACCESS_EVERY_READ = 0x4;
 //const ACCESS_EVERY_RW    = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ;
 //const ACCESS_EVERY_ALL   = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ | ACCESS_EVERY_EXEC;
 
 //const ACCESS_GROUP_EXEC  = 0x10;
 const ACCESS_GROUP_WRITE = 0x20;
-const ACCESS_GROUP_READ  = 0x40;
+const ACCESS_GROUP_READ = 0x40;
 //const ACCESS_GROUP_RW    = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ;
 //const ACCESS_GROUP_ALL   = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ | ACCESS_GROUP_EXEC;
 
 //const ACCESS_USER_EXEC   = 0x100;
-const ACCESS_USER_WRITE  = 0x200;
-const ACCESS_USER_READ   = 0x400;
+const ACCESS_USER_WRITE = 0x200;
+const ACCESS_USER_READ = 0x400;
 //const ACCESS_USER_RW     = ACCESS_USER_WRITE | ACCESS_USER_READ;
 //const ACCESS_USER_ALL    = ACCESS_USER_WRITE | ACCESS_USER_READ | ACCESS_USER_EXEC;
 
@@ -79,7 +79,7 @@ const ACCESS_USER_READ   = 0x400;
 // const ACCESS_DELETE      = 'delete';
 // const ACCESS_CREATE      = 'create';
 
-const ERROR_PERMISSION   = 'permissionError';
+const ERROR_PERMISSION = 'permissionError';
 
 /**
  * Look up the error description for an error code
@@ -109,22 +109,27 @@ class Log {
         this.logger = logger;
         this.silly = this.silly.bind(this);
         this.debug = this.debug.bind(this);
-        this.info  = this.info.bind(this);
+        this.info = this.info.bind(this);
         this.error = this.error.bind(this);
-        this.warn  = this.warn.bind(this);
+        this.warn = this.warn.bind(this);
     }
+
     silly(msg) {
         this.logger.silly(this.namespaceLog + ' ' + msg);
     }
+
     debug(msg) {
         this.logger.debug(this.namespaceLog + ' ' + msg);
     }
+
     info(msg) {
         this.logger.info(this.namespaceLog + ' ' + msg);
     }
+
     error(msg) {
         this.logger.error(this.namespaceLog + ' ' + msg);
     }
+
     warn(msg) {
         this.logger.warn(this.namespaceLog + ' ' + msg);
     }
@@ -146,7 +151,7 @@ function Adapter(options) {
     }
 
     /** @type {Record<string, any>} */
-    let config              = null;
+    let config = null;
     let defaultObjs;
     const configFileName = tools.getConfigFileName();
 
@@ -180,8 +185,8 @@ function Adapter(options) {
     this.startedInCompactMode = options.compact;
     const regUser = /^system\.user\./;
     const regGroup = /^system\.group\./;
-    let   firstConnection = true;
-    let   systemSecret    = null;
+    let firstConnection = true;
+    let systemSecret = null;
 
     let reportInterval;
 
@@ -223,13 +228,13 @@ function Adapter(options) {
                 config.forceIfDisabled = true;
             } else if (process.argv[a] === '--debug') {
                 config.forceIfDisabled = true;
-                config.consoleOutput   = true;
+                config.consoleOutput = true;
                 if (config.log.level !== 'silly') {
                     config.log.level = 'debug';
                     this.overwriteLogLevel = true;
                 }
             } else if (process.argv[a] === '--console') {
-                config.consoleOutput   = true;
+                config.consoleOutput = true;
             } else if (parseInt(process.argv[a], 10).toString() === process.argv[a]) {
                 config.instance = parseInt(process.argv[a], 10);
             }
@@ -262,11 +267,11 @@ function Adapter(options) {
         if (objects) {
             return tools.maybeCallbackWithError(cb, null, objects);
         }
-        _index  = _index  || 0;
+        _index = _index || 0;
         _result = _result || [];
         _errors = _errors || [];
 
-        while(!keys[_index] && _index < keys.length) {
+        while (!keys[_index] && _index < keys.length) {
             _index++;
         }
 
@@ -365,12 +370,12 @@ function Adapter(options) {
         //           .../appName.js-controller/adapter/adapter
         const appName = tools.appName.toLowerCase();
 
-        if (fs.existsSync(controllerDir  + '/node_modules/' + appName + '.' + options.name)) {
+        if (fs.existsSync(controllerDir + '/node_modules/' + appName + '.' + options.name)) {
             // js-controllers node_modules folder
-            this.adapterDir = controllerDir +  '/node_modules/' + appName + '.' + options.name;
-        } else if (fs.existsSync(controllerDir  + '/../' + appName + '.' + options.name)) {
+            this.adapterDir = controllerDir + '/node_modules/' + appName + '.' + options.name;
+        } else if (fs.existsSync(controllerDir + '/../' + appName + '.' + options.name)) {
             // same hierarchy as js-controller
-            this.adapterDir = controllerDir  + '/../' + appName + '.' + options.name;
+            this.adapterDir = controllerDir + '/../' + appName + '.' + options.name;
         } else if (fs.existsSync(controllerDir + '/../../node_modules/' + appName + '.' + options.name)) {
             // testing environment - root folder of monorepo
             this.adapterDir = controllerDir + '/../../node_modules/' + appName + '.' + options.name;
@@ -380,44 +385,43 @@ function Adapter(options) {
         }
     }
 
-
-        // remove "lib"
-        /*
-        this.adapterDir.pop();
-        const jsc = this.adapterDir.pop();
-        if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') && this.adapterDir.pop() === 'node_modules') {
-            // js-controller is installed as npm
-            const appName = tools.appName.toLowerCase();
-            this.adapterDir = this.adapterDir.join('/');
-            if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.' + options.name)) {
-                this.adapterDir += '/node_modules/' + appName + '.' + options.name;
-            } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
-                this.adapterDir += '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name;
-            } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/adapter/' + options.name)) {
-                this.adapterDir += '/node_modules/' + appName + '.js-controller/adapter/' + options.name;
-            } else if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
-                this.adapterDir += '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name;
-            } else {
-                logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
-                this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-            }
+    // remove "lib"
+    /*
+    this.adapterDir.pop();
+    const jsc = this.adapterDir.pop();
+    if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') && this.adapterDir.pop() === 'node_modules') {
+        // js-controller is installed as npm
+        const appName = tools.appName.toLowerCase();
+        this.adapterDir = this.adapterDir.join('/');
+        if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.' + options.name)) {
+            this.adapterDir += '/node_modules/' + appName + '.' + options.name;
+        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
+            this.adapterDir += '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name;
+        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/adapter/' + options.name)) {
+            this.adapterDir += '/node_modules/' + appName + '.js-controller/adapter/' + options.name;
+        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
+            this.adapterDir += '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name;
         } else {
-            this.adapterDir = __dirname.replace(/\\/g, '/');
-            // remove "/lib"
-            this.adapterDir = this.adapterDir.substring(0, this.adapterDir.length - 4);
-            if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.' + options.name)) {
-                this.adapterDir += '/node_modules/' + tools.appName + '.' + options.name;
-            } else if (fs.existsSync(this.adapterDir + '/../node_modules/' + tools.appName + '.' + options.name)) {
-                const parts = this.adapterDir.split('/');
-                parts.pop();
-                this.adapterDir = parts.join('/') + '/node_modules/' + tools.appName + '.' + options.name;
-            } else {
-                logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
-                this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-            }
+            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
+            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
+        }
+    } else {
+        this.adapterDir = __dirname.replace(/\\/g, '/');
+        // remove "/lib"
+        this.adapterDir = this.adapterDir.substring(0, this.adapterDir.length - 4);
+        if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.' + options.name)) {
+            this.adapterDir += '/node_modules/' + tools.appName + '.' + options.name;
+        } else if (fs.existsSync(this.adapterDir + '/../node_modules/' + tools.appName + '.' + options.name)) {
+            const parts = this.adapterDir.split('/');
+            parts.pop();
+            this.adapterDir = parts.join('/') + '/node_modules/' + tools.appName + '.' + options.name;
+        } else {
+            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
+            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
     }
-     */
+}
+ */
 
     if (fs.existsSync(this.adapterDir + '/package.json')) {
         this.pack = fs.readJSONSync(this.adapterDir + '/package.json');
@@ -454,7 +458,7 @@ function Adapter(options) {
             throw new Error(`Unknown states type: ${config.states.type}: ${err.message}`);
         }
     } else {
-        States  = require('./states');
+        States = require('./states');
     }
 
     let Objects;
@@ -469,7 +473,7 @@ function Adapter(options) {
     }
 
     const ifaces = os.networkInterfaces();
-    const ipArr  = [];
+    const ipArr = [];
     for (const dev in ifaces) {
         if (!Object.prototype.hasOwnProperty.call(ifaces, dev)) {
             continue;
@@ -478,28 +482,28 @@ function Adapter(options) {
         ifaces[dev].forEach(details => !details.internal && ipArr.push(details.address));
     }
 
-    const instance = parseInt(options.compactInstance  !== undefined ? options.compactInstance : ((options.instance !== undefined) ? options.instance : (config.instance || 0)), 10);
+    const instance = parseInt(options.compactInstance !== undefined ? options.compactInstance : ((options.instance !== undefined) ? options.instance : (config.instance || 0)), 10);
 
-    this.name            = options.name;
-    this.namespace       = options.name + '.' + instance;
-    this.namespaceLog    = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ' (' + process.pid + ')');
+    this.name = options.name;
+    this.namespace = options.name + '.' + instance;
+    this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ' (' + process.pid + ')');
     this._namespaceRegExp = new RegExp('^' + (this.namespace + '.').replace(/\./g, '\\.')); // cache the regex object 'adapter.0.'
 
     /** The cache of users */
-    this.users           = {};
+    this.users = {};
     /** The cache of usernames */
-    this.usernames       = {};
+    this.usernames = {};
     /** The cache of user groups */
-    this.groups          = {};
-    this.defaultHistory  = null;
+    this.groups = {};
+    this.defaultHistory = null;
     /** An array of instances, that support auto subscribe */
-    this.autoSubscribe   = null;
-    this.inputCount      = 0;
-    this.outputCount     = 0;
+    this.autoSubscribe = null;
+    this.inputCount = 0;
+    this.outputCount = 0;
     /** A RegExp to test for forbidden chars in object IDs */
     this.FORBIDDEN_CHARS = FORBIDDEN_CHARS;
     /** Whether the adapter has already terminated */
-    this.terminated      = false;
+    this.terminated = false;
 
     let callbackId = 1;
     this.getPortRunning = null;
@@ -596,7 +600,7 @@ function Adapter(options) {
         this.getPortRunning = {port, host, callback};
         const server = net.createServer();
         try {
-            server.listen({port, host},(/* err */) => {
+            server.listen({port, host}, (/* err */) => {
                 server.once('close', () => {
                     return tools.maybeCallback(callback, port);
                 });
@@ -737,7 +741,7 @@ function Adapter(options) {
     this.setPassword = async (user, pw, options, callback) => {
         if (typeof options === 'function') {
             callback = options;
-            options  = null;
+            options = null;
         }
 
         if (user && !regUser.test(user)) {
@@ -819,7 +823,7 @@ function Adapter(options) {
 
         if (typeof options === 'function') {
             callback = options;
-            options  = null;
+            options = null;
         }
 
         if (user && !regUser.test(user)) {
@@ -968,7 +972,7 @@ function Adapter(options) {
 
         if (typeof options === 'function') {
             callback = options;
-            options  = null;
+            options = null;
         }
 
         if (user && !regUser.test(user)) {
@@ -1018,37 +1022,37 @@ function Adapter(options) {
                         if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
                             acl = {
                                 file: {
-                                    read:       true,
-                                    write:      true,
-                                    'delete':   true,
-                                    create:     true,
-                                    list:       true
+                                    read: true,
+                                    write: true,
+                                    'delete': true,
+                                    create: true,
+                                    list: true
                                 },
                                 object: {
-                                    read:       true,
-                                    write:      true,
-                                    'delete':   true,
-                                    list:       true
+                                    read: true,
+                                    write: true,
+                                    'delete': true,
+                                    list: true
                                 },
                                 state: {
-                                    read:       true,
-                                    write:      true,
-                                    'delete':   true,
-                                    create:     true,
-                                    list:       true
+                                    read: true,
+                                    write: true,
+                                    'delete': true,
+                                    create: true,
+                                    list: true
                                 },
                                 user: user,
-                                users:  {
-                                    read:       true,
-                                    write:      true,
-                                    create:     true,
-                                    'delete':   true,
-                                    list:       true
+                                users: {
+                                    read: true,
+                                    write: true,
+                                    create: true,
+                                    'delete': true,
+                                    list: true
                                 },
                                 other: {
-                                    execute:    true,
-                                    http:       true,
-                                    sendto:     true
+                                    execute: true,
+                                    http: true,
+                                    sendto: true
                                 },
                                 groups: acl.groups
                             };
@@ -1144,7 +1148,7 @@ function Adapter(options) {
             callback = chainedName;
             chainedName = null;
         }
-        publicName  = publicName  || this.config.certPublic;
+        publicName = publicName || this.config.certPublic;
         privateName = privateName || this.config.certPrivate;
         chainedName = chainedName || this.config.certChained;
 
@@ -1173,7 +1177,7 @@ function Adapter(options) {
                 }
 
                 return tools.maybeCallbackWithError(callback, null, {
-                    key:  readFileCertificate(obj.native.certificates[privateName]),
+                    key: readFileCertificate(obj.native.certificates[privateName]),
                     cert: readFileCertificate(obj.native.certificates[publicName]),
                     ca
                 }, obj.native.letsEncrypt);
@@ -1472,12 +1476,10 @@ function Adapter(options) {
                     if (!config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
                         logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' needs to be stopped because not correctly started in compact mode');
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                    } else
-                    if (!config.forceIfDisabled && !config.isInstall && !this.startedInCompactMode && killRes && killRes.from && killRes.from.startsWith('system.host.') && killRes.ack && !isNaN(killRes.val) && killRes.val !== process.pid) {
+                    } else if (!config.forceIfDisabled && !config.isInstall && !this.startedInCompactMode && killRes && killRes.from && killRes.from.startsWith('system.host.') && killRes.ack && !isNaN(killRes.val) && killRes.val !== process.pid) {
                         logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid process id scenario ' + killRes.val + ' vs. own ID ' + process.pid + '. Stopping');
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                    } else
-                    if (!config.isInstall && resAlive && resAlive.val === true && resAlive.ack && !config.forceIfDisabled) {
+                    } else if (!config.isInstall && resAlive && resAlive.val === true && resAlive.ack && !config.forceIfDisabled) {
                         logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' already running');
                         this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
@@ -1831,7 +1833,7 @@ function Adapter(options) {
                 id = '';
             }
 
-            let result  = '';
+            let result = '';
             // If id is an object
             if (tools.isObject(id)) {
                 // Add namespace + device + channel
@@ -1957,7 +1959,7 @@ function Adapter(options) {
             }
 
             if (Object.prototype.hasOwnProperty.call(obj, 'type')) {
-                if (!Object.prototype.hasOwnProperty.call(obj,'native')) {
+                if (!Object.prototype.hasOwnProperty.call(obj, 'native')) {
                     logger.warn(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property native missing!');
                     obj.native = {};
                 }
@@ -2000,7 +2002,7 @@ function Adapter(options) {
 
                 obj.from = obj.from || ('system.adapter.' + this.namespace);
                 obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                obj.ts   = obj.ts   || Date.now();
+                obj.ts = obj.ts || Date.now();
 
                 setObjectWithDefaultValue(id, obj, options, callback);
             } else {
@@ -2228,7 +2230,7 @@ function Adapter(options) {
 
                 obj.from = obj.from || (`system.adapter.${this.namespace}`);
                 obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                obj.ts   = obj.ts   || Date.now();
+                obj.ts = obj.ts || Date.now();
 
                 obj = extend(true, oldObj, obj);
 
@@ -2236,7 +2238,7 @@ function Adapter(options) {
             } else {
                 obj.from = obj.from || (`system.adapter.${this.namespace}`);
                 obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                obj.ts   = obj.ts   || Date.now();
+                obj.ts = obj.ts || Date.now();
 
                 if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
                     if (obj.common && Object.prototype.hasOwnProperty.call(obj.common, 'custom') && obj.common.custom !== null && !tools.isObject(obj.common.custom)) {
@@ -2275,7 +2277,11 @@ function Adapter(options) {
                         }
                         if (!currentStateObj) {
                             try {
-                                await this.setForeignStateAsync(id, {val: defState, q: QUALITY_SUBS_INITIAL, ack: true});
+                                await this.setForeignStateAsync(id, {
+                                    val: defState,
+                                    q: QUALITY_SUBS_INITIAL,
+                                    ack: true
+                                });
                             } catch (e) {
                                 logger.info(`${this.namespaceLog} Default value for state "${id}" could not be set: ${e.message}`);
                             }
@@ -2328,7 +2334,7 @@ function Adapter(options) {
 
             obj.from = obj.from || 'system.adapter.' + this.namespace;
             obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-            obj.ts   = obj.ts   || Date.now();
+            obj.ts = obj.ts || Date.now();
 
             if (id) {
                 const mId = id.replace(FORBIDDEN_CHARS, '_');
@@ -2456,7 +2462,7 @@ function Adapter(options) {
 
                 obj.from = obj.from || (`system.adapter.${this.namespace}`);
                 obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                obj.ts   = obj.ts   || Date.now();
+                obj.ts = obj.ts || Date.now();
 
                 obj = extend(true, oldObj, obj);
 
@@ -2464,7 +2470,7 @@ function Adapter(options) {
             } else {
                 obj.from = obj.from || (`system.adapter.${this.namespace}`);
                 obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                obj.ts   = obj.ts   || Date.now();
+                obj.ts = obj.ts || Date.now();
 
                 if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
                     if (obj.common && Object.prototype.hasOwnProperty.call(obj.common, 'custom') && obj.common.custom !== null && !tools.isObject(obj.common.custom)) {
@@ -2501,7 +2507,11 @@ function Adapter(options) {
                             }
                             if (!currentStateObj) {
                                 try {
-                                    await this.setForeignStateAsync(id, {val: defState, q: QUALITY_SUBS_INITIAL, ack: true});
+                                    await this.setForeignStateAsync(id, {
+                                        val: defState,
+                                        q: QUALITY_SUBS_INITIAL,
+                                        ack: true
+                                    });
                                 } catch (e) {
                                     logger.info(`${this.namespaceLog} Default value for state "${id}" could not be set: ${e.message}`);
                                 }
@@ -2711,7 +2721,10 @@ function Adapter(options) {
             }
             const result = {};
 
-            adapterObjects.getObjectView('system', 'enum', {startkey: _enum + '.', endkey: _enum + '.\u9999'}, options, (err, res) => {
+            adapterObjects.getObjectView('system', 'enum', {
+                startkey: _enum + '.',
+                endkey: _enum + '.\u9999'
+            }, options, (err, res) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -2775,11 +2788,11 @@ function Adapter(options) {
         this.getEnums = (_enumList, options, callback) => {
             if (typeof _enumList === 'function') {
                 callback = _enumList;
-                _enumList  = null;
+                _enumList = null;
             }
             if (typeof options === 'function') {
                 callback = options;
-                options  = null;
+                options = null;
             }
             if (!adapterObjects) {
                 this.log.info('getEnums not processed because Objects database not connected');
@@ -2815,7 +2828,10 @@ function Adapter(options) {
                     });
             } else {
                 // Read all enums
-                adapterObjects.getObjectView('system', 'enum', {startkey: 'enum.', endkey: 'enum.\u9999'}, options, (err, res) => {
+                adapterObjects.getObjectView('system', 'enum', {
+                    startkey: 'enum.',
+                    endkey: 'enum.\u9999'
+                }, options, (err, res) => {
                     // be aware, that res.rows[x].id is the name of enum!
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
@@ -2896,18 +2912,18 @@ function Adapter(options) {
             if (pattern && pattern !== '*') {
                 params = {
                     startkey: pattern.replace(/\*/g, ''),
-                    endkey:   pattern.replace(/\*/g, '\u9999')
+                    endkey: pattern.replace(/\*/g, '\u9999')
                 };
             }
             if (typeof enums === 'function') {
                 callback = enums;
                 enums = null;
             }
-            if (typeof type  === 'function') {
+            if (typeof type === 'function') {
                 callback = type;
                 type = null;
             }
-            if (typeof type  === 'object') {
+            if (typeof type === 'object') {
                 options = type;
                 type = null;
             }
@@ -3171,7 +3187,10 @@ function Adapter(options) {
             if (options && options.recursive) {
                 // read object itself
                 adapterObjects.getObject(id, options, (err, obj) => {
-                    const tasks = obj && (!obj.common || !obj.common.dontDelete) ? [{id, state: obj.type === 'state'}] : [];
+                    const tasks = obj && (!obj.common || !obj.common.dontDelete) ? [{
+                        id,
+                        state: obj.type === 'state'
+                    }] : [];
                     const selector = {startkey: id + '.', endkey: id + '.\u9999'};
                     // read all underlying states
                     adapterObjects.getObjectList(selector, options, (err, res) => {
@@ -3512,7 +3531,7 @@ function Adapter(options) {
 
         this._DCS2ID = (device, channel, stateOrPoint) => {
             let id = '';
-            if (device)  {
+            if (device) {
                 id += device;
             }
             if (channel) {
@@ -3520,7 +3539,7 @@ function Adapter(options) {
             }
 
             if (stateOrPoint !== true && stateOrPoint !== false) {
-                if (stateOrPoint)   {
+                if (stateOrPoint) {
                     id += (id ? '.' : '') + stateOrPoint;
                 }
             } else if (stateOrPoint === true && id) {
@@ -3553,9 +3572,9 @@ function Adapter(options) {
             _native = _native || {};
 
             this.setObjectNotExists(deviceName, {
-                type:     'device',
-                common:   common,
-                native:   _native
+                type: 'device',
+                common: common,
+                native: _native
             }, options, callback);
         };
         /**
@@ -3597,15 +3616,15 @@ function Adapter(options) {
             if (parentDevice) {
                 parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
-            channelName  = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
-            channelName  = this._DCS2ID(parentDevice, channelName);
+            channelName = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+            channelName = this._DCS2ID(parentDevice, channelName);
 
             _native = _native || {};
 
             const obj = {
-                type:     'channel',
-                common:   common,
-                native:   _native
+                type: 'channel',
+                common: common,
+                native: _native
             };
 
             this.setObjectNotExists(channelName, obj, options, callback);
@@ -3638,10 +3657,10 @@ function Adapter(options) {
             let common = {};
             if (typeof roleOrCommon === 'string') {
                 common = {
-                    read:  true,
+                    read: true,
                     write: false,
-                    name:  '',
-                    role:  roleOrCommon
+                    name: '',
+                    role: roleOrCommon
                 };
             } else if (typeof roleOrCommon === 'object') {
                 common = roleOrCommon;
@@ -3650,7 +3669,7 @@ function Adapter(options) {
             common.name = common.name || stateName;
             _native = _native || {};
 
-            common.read  = (common.read  === undefined) ? true  : common.read;
+            common.read = (common.read === undefined) ? true : common.read;
             common.write = (common.write === undefined) ? false : common.write;
 
             if (!common.role) {
@@ -3658,8 +3677,8 @@ function Adapter(options) {
                 return;
             }
 
-            if (parentDevice)  {
-                parentDevice  = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+            if (parentDevice) {
+                parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
             if (parentChannel) {
                 parentChannel = parentChannel.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
@@ -3725,9 +3744,9 @@ function Adapter(options) {
             }
 
             this.setObjectNotExists(id, {
-                type:     'state',
-                common:   common,
-                native:   _native
+                type: 'state',
+                common: common,
+                native: _native
             }, options, err => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
@@ -3790,7 +3809,10 @@ function Adapter(options) {
                 deviceName = this.namespace + '.' + deviceName;
             }
 
-            adapterObjects.getObjectView('system', 'device', {startkey: deviceName, endkey: deviceName}, options, (err, res) => {
+            adapterObjects.getObjectView('system', 'device', {
+                startkey: deviceName,
+                endkey: deviceName
+            }, options, (err, res) => {
                 if (err || !res || !res.rows) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -3810,7 +3832,10 @@ function Adapter(options) {
                             let _cnt = 0;
                             _cnt++;
                             // read channels of device
-                            adapterObjects.getObjectView('system', 'channel', {startkey: deviceName + '.', endkey: deviceName + '.\u9999'}, options, (err, res) => {
+                            adapterObjects.getObjectView('system', 'channel', {
+                                startkey: deviceName + '.',
+                                endkey: deviceName + '.\u9999'
+                            }, options, (err, res) => {
                                 _cnt--;
                                 if (err || !res || !res.rows) {
                                     return tools.maybeCallbackWithError(callback, err);
@@ -3836,7 +3861,10 @@ function Adapter(options) {
                             });
                             // read states of the device...
                             _cnt++;
-                            adapterObjects.getObjectView('system', 'state', {startkey: deviceName + '.', endkey: deviceName + '.\u9999'}, options, (err, res) => {
+                            adapterObjects.getObjectView('system', 'state', {
+                                startkey: deviceName + '.',
+                                endkey: deviceName + '.\u9999'
+                            }, options, (err, res) => {
                                 _cnt--;
                                 if (err || !res || !res.rows) {
                                     return tools.maybeCallbackWithError(callback, err);
@@ -3994,7 +4022,10 @@ function Adapter(options) {
                 enumName = 'enum.';
             }
 
-            adapterObjects.getObjectView('system', 'enum', {startkey: enumName, endkey: enumName + '\u9999'}, options, async (err, res) => {
+            adapterObjects.getObjectView('system', 'enum', {
+                startkey: enumName,
+                endkey: enumName + '\u9999'
+            }, options, async (err, res) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -4042,8 +4073,8 @@ function Adapter(options) {
                 channelName = parentDevice;
                 parentDevice = '';
             } else if (parentDevice && typeof channelName === 'function') {
-                callback     = channelName;
-                channelName  = parentDevice;
+                callback = channelName;
+                channelName = parentDevice;
                 parentDevice = '';
             }
             if (!adapterObjects) {
@@ -4055,7 +4086,7 @@ function Adapter(options) {
                 parentDevice = '';
             }
             const _parentDevice = parentDevice;
-            const _channelName  = channelName;
+            const _channelName = channelName;
 
             if (parentDevice) {
                 if (this._namespaceRegExp.test(parentDevice)) {
@@ -4073,11 +4104,14 @@ function Adapter(options) {
             channelName = channelName || '';
             channelName = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            channelName  = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
+            channelName = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
 
             logger.info(this.namespaceLog + ' Delete channel ' + channelName);
 
-            adapterObjects.getObjectView('system', 'channel', {startkey: channelName, endkey: channelName}, options, (err, res) => {
+            adapterObjects.getObjectView('system', 'channel', {
+                startkey: channelName,
+                endkey: channelName
+            }, options, (err, res) => {
                 if (err || !res || !res.rows) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -4091,7 +4125,10 @@ function Adapter(options) {
                             return tools.maybeCallbackWithError(callback, err);
                         }
                         if (!--cnt) {
-                            adapterObjects.getObjectView('system', 'state', {startkey: channelName + '.', endkey: channelName + '.\u9999'}, options, (err, res) => {
+                            adapterObjects.getObjectView('system', 'state', {
+                                startkey: channelName + '.',
+                                endkey: channelName + '.\u9999'
+                            }, options, (err, res) => {
                                 if (err || !res || !res.rows) {
                                     return tools.maybeCallbackWithError(callback, err);
                                 }
@@ -4128,37 +4165,36 @@ function Adapter(options) {
 
         this.deleteState = (parentDevice, parentChannel, stateName, options, callback) => {
             if (typeof parentChannel === 'function' && stateName === undefined) {
-                stateName     = parentDevice;
-                callback      = parentChannel;
+                stateName = parentDevice;
+                callback = parentChannel;
                 parentChannel = '';
-                parentDevice  = '';
-            } else
-            if (parentChannel === undefined && stateName === undefined) {
-                stateName     = parentDevice;
-                parentDevice  = '';
+                parentDevice = '';
+            } else if (parentChannel === undefined && stateName === undefined) {
+                stateName = parentDevice;
+                parentDevice = '';
                 parentChannel = '';
             } else {
                 if (typeof options === 'function') {
                     callback = options;
-                    options  = null;
+                    options = null;
                 }
                 if (typeof stateName === 'function') {
-                    callback      = stateName;
-                    stateName     = parentChannel;
+                    callback = stateName;
+                    stateName = parentChannel;
                     parentChannel = parentDevice;
-                    parentDevice  = '';
+                    parentDevice = '';
                 }
                 if (typeof parentChannel === 'function') {
-                    callback      = parentChannel;
-                    stateName     = parentDevice;
+                    callback = parentChannel;
+                    stateName = parentDevice;
                     parentChannel = '';
-                    parentDevice  = '';
+                    parentDevice = '';
                 }
                 if (typeof parentChannel === 'function') {
-                    callback      = parentChannel;
-                    stateName     = parentDevice;
+                    callback = parentChannel;
+                    stateName = parentDevice;
                     parentChannel = '';
-                    parentDevice  = '';
+                    parentDevice = '';
                 }
             }
 
@@ -4217,7 +4253,10 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
-            adapterObjects.getObjectView('system', 'device', {startkey: this.namespace + '.', endkey: this.namespace + '.\u9999'}, options, (err, obj) => {
+            adapterObjects.getObjectView('system', 'device', {
+                startkey: this.namespace + '.',
+                endkey: this.namespace + '.\u9999'
+            }, options, (err, obj) => {
                 if (err || !obj || !obj.rows || !obj.rows.length) {
                     return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
                 }
@@ -4256,9 +4295,12 @@ function Adapter(options) {
                 parentDevice = parentDevice.substring(this.namespace.length + 1);
             }
 
-            parentDevice  = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+            parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             parentDevice = this.namespace + (parentDevice ? ('.' + parentDevice) : '');
-            adapterObjects.getObjectView('system', 'channel', {startkey: parentDevice + '.', endkey: parentDevice + '.\u9999'}, options, (err, obj) => {
+            adapterObjects.getObjectView('system', 'channel', {
+                startkey: parentDevice + '.',
+                endkey: parentDevice + '.\u9999'
+            }, options, (err, obj) => {
                 if (err || !obj || !obj.rows || !obj.rows.length) {
                     return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
                 }
@@ -4307,7 +4349,7 @@ function Adapter(options) {
                     parentDevice = parentDevice.substring(this.namespace.length + 1);
                 }
 
-                parentDevice  = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+                parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
 
             if (!parentChannel) {
@@ -4324,7 +4366,10 @@ function Adapter(options) {
 
             const id = this.namespace + '.' + this._DCS2ID(parentDevice, parentChannel, true);
 
-            adapterObjects.getObjectView('system', 'state', {startkey: id, endkey: id + '\u9999'}, options, (err, obj) => {
+            adapterObjects.getObjectView('system', 'state', {
+                startkey: id,
+                endkey: id + '\u9999'
+            }, options, (err, obj) => {
                 if (err || !obj || !obj.rows || !obj.rows.length) {
                     return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
                 }
@@ -4364,7 +4409,7 @@ function Adapter(options) {
                     parentDevice = parentDevice.substring(this.namespace.length + 1);
                 }
 
-                parentDevice  = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+                parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
 
             if (parentChannel) {
@@ -4464,7 +4509,7 @@ function Adapter(options) {
                     parentDevice = parentDevice.substring(this.namespace.length + 1);
                 }
 
-                parentDevice  = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+                parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
 
             if (parentChannel) {
@@ -4489,7 +4534,11 @@ function Adapter(options) {
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            const objId = this._fixId({device: parentDevice, channel: parentChannel, state: stateName}, false/*, 'state'*/);
+            const objId = this._fixId({
+                device: parentDevice,
+                channel: parentChannel,
+                state: stateName
+            }, false/*, 'state'*/);
 
             if (enumName) {
                 enumName = 'enum.' + enumName + '.';
@@ -4497,7 +4546,10 @@ function Adapter(options) {
                 enumName = 'enum.';
             }
 
-            adapterObjects.getObjectView('system', 'enum', {startkey: enumName, endkey: enumName + '\u9999'}, options,  async (err, res) => {
+            adapterObjects.getObjectView('system', 'enum', {
+                startkey: enumName,
+                endkey: enumName + '\u9999'
+            }, options, async (err, res) => {
                 if (err || !res || !res.rows) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
@@ -4866,7 +4918,7 @@ function Adapter(options) {
             try {
                 const exists = await adapterObjects.fileExists(_adapter, filename, options);
                 callback(null, exists);
-            } catch(e) {
+            } catch (e) {
                 callback(e);
             }
         };
@@ -4877,7 +4929,7 @@ function Adapter(options) {
 
         this.formatValue = (value, decimals, _format) => {
             if (typeof decimals !== 'number') {
-                _format  = decimals;
+                _format = decimals;
                 decimals = 2;
             }
 
@@ -4891,10 +4943,10 @@ function Adapter(options) {
 
         this.formatDate = (dateObj, isDuration, _format) => {
             if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
-                isDuration  = true;
+                isDuration = true;
             }
             if (typeof isDuration !== 'boolean') {
-                _format    = isDuration;
+                _format = isDuration;
                 isDuration = false;
             }
 
@@ -4928,7 +4980,7 @@ function Adapter(options) {
             }
 
             const validFormatChars = 'YJГMМDTДhSчmмsс';
-            let s      = '';
+            let s = '';
             let result = '';
 
             const put = s => {
@@ -5044,7 +5096,7 @@ function Adapter(options) {
     const getUserGroups = (options, callback) => {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
-            options.acl    = this.users[options.user].acl;
+            options.acl = this.users[options.user].acl;
             return tools.maybeCallback(callback, options);
         }
         options.groups = [];
@@ -5069,7 +5121,10 @@ function Adapter(options) {
                     }
 
                     // read all groups for this user
-                    this.users[options.user] = {groups: options.groups, acl: (userAcl.common && userAcl.common.acl) || {}};
+                    this.users[options.user] = {
+                        groups: options.groups,
+                        acl: (userAcl.common && userAcl.common.acl) || {}
+                    };
                     getGroups(options.groups, () => {
                         // combine all rights
                         const user = this.users[options.user];
@@ -5082,82 +5137,82 @@ function Adapter(options) {
 
                             if (group.common.acl && group.common.acl.file) {
                                 if (!user.acl || !user.acl.file) {
-                                    user.acl      = user.acl || {};
+                                    user.acl = user.acl || {};
                                     user.acl.file = user.acl.file || {};
 
-                                    user.acl.file.create    = group.common.acl.file.create;
-                                    user.acl.file.read      = group.common.acl.file.read;
-                                    user.acl.file.write     = group.common.acl.file.write;
+                                    user.acl.file.create = group.common.acl.file.create;
+                                    user.acl.file.read = group.common.acl.file.read;
+                                    user.acl.file.write = group.common.acl.file.write;
                                     user.acl.file['delete'] = group.common.acl.file['delete'];
-                                    user.acl.file.list      = group.common.acl.file.list;
+                                    user.acl.file.list = group.common.acl.file.list;
                                 } else {
-                                    user.acl.file.create    = user.acl.file.create    || group.common.acl.file.create;
-                                    user.acl.file.read      = user.acl.file.read      || group.common.acl.file.read;
-                                    user.acl.file.write     = user.acl.file.write     || group.common.acl.file.write;
+                                    user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
+                                    user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
+                                    user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
                                     user.acl.file['delete'] = user.acl.file['delete'] || group.common.acl.file['delete'];
-                                    user.acl.file.list      = user.acl.file.list      || group.common.acl.file.list;
+                                    user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
                                 }
                             }
 
                             if (group.common.acl && group.common.acl.object) {
                                 if (!user.acl || !user.acl.object) {
-                                    user.acl        = user.acl || {};
+                                    user.acl = user.acl || {};
                                     user.acl.object = user.acl.object || {};
 
-                                    user.acl.object.create    = group.common.acl.object.create;
-                                    user.acl.object.read      = group.common.acl.object.read;
-                                    user.acl.object.write     = group.common.acl.object.write;
+                                    user.acl.object.create = group.common.acl.object.create;
+                                    user.acl.object.read = group.common.acl.object.read;
+                                    user.acl.object.write = group.common.acl.object.write;
                                     user.acl.object['delete'] = group.common.acl.object['delete'];
-                                    user.acl.object.list      = group.common.acl.object.list;
+                                    user.acl.object.list = group.common.acl.object.list;
                                 } else {
-                                    user.acl.object.create    = user.acl.object.create    || group.common.acl.object.create;
-                                    user.acl.object.read      = user.acl.object.read      || group.common.acl.object.read;
-                                    user.acl.object.write     = user.acl.object.write     || group.common.acl.object.write;
+                                    user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
+                                    user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
+                                    user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
                                     user.acl.object['delete'] = user.acl.object['delete'] || group.common.acl.object['delete'];
-                                    user.acl.object.list      = user.acl.object.list      || group.common.acl.object.list;
+                                    user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
                                 }
                             }
 
                             if (group.common.acl && group.common.acl.users) {
                                 if (!user.acl || !user.acl.users) {
-                                    user.acl       = user.acl || {};
+                                    user.acl = user.acl || {};
                                     user.acl.users = user.acl.users || {};
 
-                                    user.acl.users.create    = group.common.acl.users.create;
-                                    user.acl.users.read      = group.common.acl.users.read;
-                                    user.acl.users.write     = group.common.acl.users.write;
+                                    user.acl.users.create = group.common.acl.users.create;
+                                    user.acl.users.read = group.common.acl.users.read;
+                                    user.acl.users.write = group.common.acl.users.write;
                                     user.acl.users['delete'] = group.common.acl.users['delete'];
-                                    user.acl.users.list      = group.common.acl.users.list;
+                                    user.acl.users.list = group.common.acl.users.list;
 
                                 } else {
-                                    user.acl.users.create    = user.acl.users.create    || group.common.acl.users.create;
-                                    user.acl.users.read      = user.acl.users.read      || group.common.acl.users.read;
-                                    user.acl.users.write     = user.acl.users.write     || group.common.acl.users.write;
+                                    user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
+                                    user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
+                                    user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
                                     user.acl.users['delete'] = user.acl.users['delete'] || group.common.acl.users['delete'];
-                                    user.acl.users.list      = user.acl.users.list      || group.common.acl.users.list;
+                                    user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
                                 }
                             }
                             if (group.common.acl && group.common.acl.state) {
                                 if (!user.acl || !user.acl.state) {
-                                    user.acl       = user.acl || {};
+                                    user.acl = user.acl || {};
                                     user.acl.state = user.acl.state || {};
 
-                                    user.acl.state.create    = group.common.acl.state.create;
-                                    user.acl.state.read      = group.common.acl.state.read;
-                                    user.acl.state.write     = group.common.acl.state.write;
+                                    user.acl.state.create = group.common.acl.state.create;
+                                    user.acl.state.read = group.common.acl.state.read;
+                                    user.acl.state.write = group.common.acl.state.write;
                                     user.acl.state['delete'] = group.common.acl.state['delete'];
-                                    user.acl.state.list      = group.common.acl.state.list;
+                                    user.acl.state.list = group.common.acl.state.list;
 
                                 } else {
-                                    user.acl.state.create    = user.acl.state.create    || group.common.acl.state.create;
-                                    user.acl.state.read      = user.acl.state.read      || group.common.acl.state.read;
-                                    user.acl.state.write     = user.acl.state.write     || group.common.acl.state.write;
+                                    user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
+                                    user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
+                                    user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
                                     user.acl.state['delete'] = user.acl.state['delete'] || group.common.acl.state['delete'];
-                                    user.acl.state.list      = user.acl.state.list      || group.common.acl.state.list;
+                                    user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
                                 }
                             }
                         }
-                        options.acl    = user.acl;
+                        options.acl = user.acl;
                         return tools.maybeCallback(callback, options);
                     });
                 });
@@ -5200,12 +5255,10 @@ function Adapter(options) {
                         if (command === 'delState' && !options.acl.state['delete']) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
-                        } else
-                        if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state.write) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
-                        } else
-                        if (!(obj.acl.state & ACCESS_USER_WRITE)) {
+                        } else if (!(obj.acl.state & ACCESS_USER_WRITE)) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         }
@@ -5222,12 +5275,10 @@ function Adapter(options) {
                         if (command === 'delState' && !options.acl.state['delete']) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
-                        } else
-                        if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state.write) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
-                        } else
-                        if (!(obj.acl.state & ACCESS_GROUP_WRITE)) {
+                        } else if (!(obj.acl.state & ACCESS_GROUP_WRITE)) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         }
@@ -5244,8 +5295,7 @@ function Adapter(options) {
                         if (command === 'delState' && !options.acl.state['delete']) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
-                        } else
-                        if (command === 'setState' && !options.acl.state.write) {
+                        } else if (command === 'setState' && !options.acl.state.write) {
                             logger.warn(`${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`);
                             return false;
                         } else if (!(obj.acl.state & ACCESS_EVERY_WRITE)) {
@@ -5380,7 +5430,10 @@ function Adapter(options) {
                 // if no default history set
                 if (!this.defaultHistory) {
                     // read all adapters
-                    adapterObjects.getObjectView('system', 'instance', {startkey: '', endkey: '\u9999'}, (err, _obj) => {
+                    adapterObjects.getObjectView('system', 'instance', {
+                        startkey: '',
+                        endkey: '\u9999'
+                    }, (err, _obj) => {
                         if (_obj && _obj.rows) {
                             for (let i = 0; i < _obj.rows.length; i++) {
                                 if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
@@ -5428,30 +5481,23 @@ function Adapter(options) {
                     let differ = false;
                     if (!oldState) {
                         differ = true;
-                    } else
-                    if (state.val !== oldState.val) {
+                    } else if (state.val !== oldState.val) {
+                        differ = true;
+                    } else if (state.ack !== undefined && state.ack !== oldState.ack) {
+                        differ = true;
+                    } else if (state.q !== undefined && state.q !== oldState.q) {
+                        differ = true;
+                    } else if (state.ts !== undefined && state.ts !== oldState.ts) {
                         differ = true;
                     } else
-                    if (state.ack !== undefined && state.ack !== oldState.ack) {
-                        differ = true;
-                    } else
-                    if (state.q !== undefined && state.q !== oldState.q) {
-                        differ = true;
-                    } else
-                    if (state.ts !== undefined && state.ts !== oldState.ts) {
-                        differ = true;
-                    } else
-                    // if comment changed
+                        // if comment changed
                     if (state.c !== undefined && state.c !== oldState.c) {
                         differ = true;
-                    } else
-                    if (state.expire !== undefined && state.expire !== oldState.expire) {
+                    } else if (state.expire !== undefined && state.expire !== oldState.expire) {
                         differ = true;
-                    } else
-                    if (state.from !== undefined && state.from !== oldState.from) {
+                    } else if (state.from !== undefined && state.from !== oldState.from) {
                         differ = true;
-                    } else
-                    if (state.user !== undefined && state.user !== oldState.user) {
+                    } else if (state.user !== undefined && state.user !== oldState.user) {
                         differ = true;
                     }
 
@@ -5490,7 +5536,7 @@ function Adapter(options) {
 
         // Internal object, but some special adapters want to access it anyway.
         adapterStates = new States({
-            namespace:  this.namespaceLog,
+            namespace: this.namespaceLog,
             connection: config.states,
             connected: async _statesInstance => {
                 logger.debug(this.namespaceLog + ' statesDB connected');
@@ -5620,19 +5666,18 @@ function Adapter(options) {
                     const instance = id.substring(0, id.length - '.logging'.length);
                     logger && logger.debug(this.namespaceLog + ' ' + instance + ': logging ' + (state ? state.val : false));
                     this.logRedirect(state ? state.val : false, instance);
-                } else
-                if (id === `log.system.adapter.${this.namespace}`) {
+                } else if (id === `log.system.adapter.${this.namespace}`) {
                     options.logTransporter && this.processLog && this.processLog(state);
                 } else
-                // If this is messagebox
+                    // If this is messagebox
                 if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                     const obj = state;
                     if (obj) {
                         // If callback stored for this request
-                        if (obj.callback     &&
+                        if (obj.callback &&
                             obj.callback.ack &&
-                            obj.callback.id  &&
-                            this.callbacks   &&
+                            obj.callback.id &&
+                            this.callbacks &&
                             this.callbacks['_' + obj.callback.id]) {
                             // Call callback function
                             if (this.callbacks['_' + obj.callback.id].cb) {
@@ -5655,8 +5700,7 @@ function Adapter(options) {
                             this.emit('message', obj);
                         }
                     }
-                } else
-                if (id.startsWith('system.adapter.' + this.namespace + '.plugins.') && id.endsWith('.enabled')) {
+                } else if (id.startsWith('system.adapter.' + this.namespace + '.plugins.') && id.endsWith('.enabled')) {
                     if (!state || state.ack) {
                         return;
                     }
@@ -5683,7 +5727,7 @@ function Adapter(options) {
                         }
                     }
                 } else
-                // If adapter is ready and for this ID exist some alias links
+                    // If adapter is ready and for this ID exist some alias links
                 if (this.adapterReady && this.aliases[id]) {
                     this.aliases[id].targets.forEach(target => {
                         const aState = state ? tools.formatAliasValue(this.aliases[id].source, target, JSON.parse(JSON.stringify(state)), logger, this.namespaceLog) : null;
@@ -5911,7 +5955,10 @@ function Adapter(options) {
                 }
 
                 // Send to all hosts
-                adapterObjects.getObjectList({startkey: 'system.host.', endkey: `system.host.\u9999`}, null, async (err, res) => {
+                adapterObjects.getObjectList({
+                    startkey: 'system.host.',
+                    endkey: `system.host.\u9999`
+                }, null, async (err, res) => {
                     if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
                         return;
                     }
@@ -5940,9 +5987,9 @@ function Adapter(options) {
 
                         obj.callback = {
                             message,
-                            id:      callbackId++,
-                            ack:     false,
-                            time:    Date.now()
+                            id: callbackId++,
+                            ack: false,
+                            time: Date.now()
                         };
                         if (callbackId >= 0xFFFFFFFF) {
                             callbackId = 1;
@@ -5950,7 +5997,7 @@ function Adapter(options) {
                         this.callbacks = this.callbacks || {};
                         this.callbacks['_' + obj.callback.id] = {cb: callback};
                     } else {
-                        obj.callback     = callback;
+                        obj.callback = callback;
                         obj.callback.ack = true;
                     }
                 }
@@ -6011,15 +6058,15 @@ function Adapter(options) {
                 Everything else is forbidden
             */
             const optionalProperties = {
-                val:    'any',
-                ack:    'boolean',
-                ts:     'number',
-                q:      'number',
-                from:   'string',
-                c:      'string',
+                val: 'any',
+                ack: 'boolean',
+                ts: 'number',
+                q: 'number',
+                from: 'string',
+                c: 'string',
                 expire: 'number',
-                lc:     'number',
-                user:   'string'
+                lc: 'number',
+                user: 'string'
             };
             // Are there any forbidden properties?
             const forbiddenProperties = Object.keys(obj).filter(k => !optionalProperties[k]);
@@ -6078,8 +6125,8 @@ function Adapter(options) {
         this.setState = async (id, state, ack, options, callback) => {
             if (typeof state === 'object' && typeof ack !== 'boolean') {
                 callback = options;
-                options  = ack;
-                ack      = undefined;
+                options = ack;
+                ack = undefined;
             }
             if (typeof options === 'function') {
                 callback = options;
@@ -6266,8 +6313,8 @@ function Adapter(options) {
         this.setStateChanged = (id, state, ack, options, callback) => {
             if (typeof state === 'object' && typeof ack !== 'boolean') {
                 callback = options;
-                options  = ack;
-                ack      = undefined;
+                options = ack;
+                ack = undefined;
             }
             if (typeof options === 'function') {
                 callback = options;
@@ -6593,7 +6640,7 @@ function Adapter(options) {
         this.setForeignStateChanged = (id, state, ack, options, callback) => {
             if (typeof state === 'object' && typeof ack !== 'boolean') {
                 callback = options;
-                options  = ack;
+                options = ack;
                 ack = undefined;
             }
 
@@ -7203,14 +7250,14 @@ function Adapter(options) {
 
                 // read aliases objects
                 this._getObjectsByArray(aIds, targetObjs, options, (errors, targetObjs) => {
-                    const srcIds  = [];
+                    const srcIds = [];
                     // replace aliases ID with targets
                     targetObjs.forEach((obj, i) => {
                         if (obj && obj.common && obj.common.alias) {
                             // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
                             const aliasId = obj.common.alias.id && typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
 
-                            keys[i]   = aliasId || null;
+                            keys[i] = aliasId || null;
                             srcIds[i] = keys[i];
                         }
                     });
@@ -7291,7 +7338,7 @@ function Adapter(options) {
                 if (pattern && pattern !== '*') {
                     params = {
                         startkey: pattern.replace(/\*/g, ''),
-                        endkey:   pattern.replace(/\*/g, '\u9999')
+                        endkey: pattern.replace(/\*/g, '\u9999')
                     };
                 }
                 let originalChecked = undefined;
@@ -7371,11 +7418,11 @@ function Adapter(options) {
 
                 const targetEntry = {
                     alias: JSON.parse(JSON.stringify(aliasObj.common.alias)),
-                    id:    aliasObj._id,
+                    id: aliasObj._id,
                     pattern,
-                    type:  aliasObj.common.type,
-                    max:   aliasObj.common.max,
-                    min:   aliasObj.common.min,
+                    type: aliasObj.common.type,
+                    max: aliasObj.common.max,
+                    min: aliasObj.common.min,
                     unit: aliasObj.common.unit
                 };
 
@@ -7388,9 +7435,9 @@ function Adapter(options) {
                                 if (!this.aliases[sourceObj._id]) {
                                     logger.error(`${this.namespaceLog} Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(sourceObj)}`);
                                 } else {
-                                    this.aliases[sourceObj._id].source      = {};
-                                    this.aliases[sourceObj._id].source.min  = sourceObj.common.min;
-                                    this.aliases[sourceObj._id].source.max  = sourceObj.common.max;
+                                    this.aliases[sourceObj._id].source = {};
+                                    this.aliases[sourceObj._id].source.min = sourceObj.common.min;
+                                    this.aliases[sourceObj._id].source.max = sourceObj.common.max;
                                     this.aliases[sourceObj._id].source.type = sourceObj.common.type;
                                     this.aliases[sourceObj._id].source.unit = sourceObj.common.unit;
                                 }
@@ -7517,7 +7564,7 @@ function Adapter(options) {
                 for (let aliasPattern of pattern) {
                     aliasPattern = aliasPattern instanceof RegExp ? JSON.stringify(aliasPattern) : aliasPattern;
                     if (typeof aliasPattern === 'string' && (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*'))
-                            && !this.aliasPatterns.includes(aliasPattern)) {
+                        && !this.aliasPatterns.includes(aliasPattern)) {
                         // its a new alias conform pattern to store
                         this.aliasPatterns.push(aliasPattern);
                     }
@@ -7987,8 +8034,7 @@ function Adapter(options) {
             checkStates(id, options, 'setState', (err, obj) => {
                 if (!err && !obj) {
                     return tools.maybeCallbackWithError(callback, 'Object does not exist');
-                } else
-                if (!err && !obj.binary) {
+                } else if (!err && !obj.binary) {
                     obj.binary = true;
 
                     if (!adapterObjects) {
@@ -8202,7 +8248,7 @@ function Adapter(options) {
 
     // debug function to find error with stop logging
     const checkLogging = () => {
-        let logs  = [];
+        let logs = [];
         // LogList
         logs.push('Actual Loglist - ' + JSON.stringify(this.logList));
 
@@ -8360,7 +8406,11 @@ function Adapter(options) {
                                 this.logOffTimer = null;
                                 logger.debug(this.namespaceLog + ' Change log subscriber state: FALSE');
                                 this.outputCount++;
-                                adapterStates.setState('system.adapter.' + this.namespace + '.logging', {val: false, ack: true, from: 'system.adapter.' + this.namespace});
+                                adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
+                                    val: false,
+                                    ack: true,
+                                    from: 'system.adapter.' + this.namespace
+                                });
                             }, 10000);
                         } else {
                             if (this.logOffTimer) {
@@ -8369,7 +8419,11 @@ function Adapter(options) {
                             } else {
                                 logger.debug(this.namespaceLog + ' Change log subscriber state: true');
                                 this.outputCount++;
-                                adapterStates.setState('system.adapter.' + this.namespace + '.logging', {val: true, ack: true, from: 'system.adapter.' + this.namespace});
+                                adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
+                                    val: true,
+                                    ack: true,
+                                    from: 'system.adapter.' + this.namespace
+                                });
                             }
                         }
                     }
@@ -8413,7 +8467,12 @@ function Adapter(options) {
                             this.outputCount += 2;
                             adapterStates.setState(id + '.alive', {val: true, ack: true, expire: 30, from: id});
                             let done = false;
-                            adapterStates.setState(id + '.connected', {val: true, ack: true, expire: 30, from: id}, () => {
+                            adapterStates.setState(id + '.connected', {
+                                val: true,
+                                ack: true,
+                                expire: 30,
+                                from: id
+                            }, () => {
                                 if (!done) {
                                     done = true;
                                     this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
@@ -8446,11 +8505,14 @@ function Adapter(options) {
                             return;
                         }
                         name = tmp[1];
-                        instance =  parseInt(tmp[2]) || 0;
+                        instance = parseInt(tmp[2]) || 0;
                     } else {
                         name = options.name;
                         instance = 0;
-                        adapterConfig = adapterConfig || {common: {mode: 'once', name: name, protectedNative: []}, native: {}};
+                        adapterConfig = adapterConfig || {
+                            common: {mode: 'once', name: name, protectedNative: []},
+                            native: {}
+                        };
                     }
 
                     if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
@@ -8470,7 +8532,7 @@ function Adapter(options) {
                     }
 
                     this.config = adapterConfig.native;
-                    this.host   = adapterConfig.common.host;
+                    this.host = adapterConfig.common.host;
                     this.common = adapterConfig.common;
 
                     if (adapterConfig.common.mode === 'subscribe' ||
@@ -8642,7 +8704,12 @@ function Adapter(options) {
             return;
         }
         const id = 'system.adapter.' + this.namespace;
-        adapterStates.setState(id + '.alive', {val: true, ack: true, expire: Math.floor(config.system.statisticsInterval / 1000) + 10, from: id});
+        adapterStates.setState(id + '.alive', {
+            val: true,
+            ack: true,
+            expire: Math.floor(config.system.statisticsInterval / 1000) + 10,
+            from: id
+        });
         this.outputCount++;
         if (this.connected) {
             adapterStates.setState(id + '.connected', {val: true, ack: true, expire: 30, from: id});
@@ -8662,7 +8729,11 @@ function Adapter(options) {
             pidUsage(process.pid, (err, stats) => {
                 // sometimes adapter is stopped, but this is still running
                 if (!err && this && adapterStates && adapterStates.setState && stats) {
-                    adapterStates.setState(id + '.cpu', {ack: true, from: id, val: Math.round(100 * parseFloat(stats.cpu)) / 100});
+                    adapterStates.setState(id + '.cpu', {
+                        ack: true,
+                        from: id,
+                        val: Math.round(100 * parseFloat(stats.cpu)) / 100
+                    });
                     adapterStates.setState(id + '.cputime', {ack: true, from: id, val: stats.ctime / 1000});
                     this.outputCount += 2;
                 }
@@ -8700,7 +8771,7 @@ function Adapter(options) {
         adapterStates.setState(id + '.uptime', {val: parseInt(process.uptime().toFixed(), 10), ack: true, from: id});
         adapterStates.setState(id + '.inputCount', {val: this.inputCount, ack: true, from: id});
         adapterStates.setState(id + '.outputCount', {val: this.outputCount, ack: true, from: id});
-        this.inputCount  = 0;
+        this.inputCount = 0;
         this.outputCount = 0;
     };
 

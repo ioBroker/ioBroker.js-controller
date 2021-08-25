@@ -1,4 +1,4 @@
-const { tools } = require('@iobroker/js-controller-common')
+const { tools } = require('@iobroker/js-controller-common');
 
 module.exports = tools;
 const controllerDir = tools.getControllerDir() || __dirname;
