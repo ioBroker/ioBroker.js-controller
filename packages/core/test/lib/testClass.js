@@ -1,8 +1,7 @@
 // Warning! This test should only be run on NodeJS 6+
 
 'use strict';
-
-const wrapES6Class = require('../../lib/tools').wrapES6Class;
+const { wrapES6Class } = require('@iobroker/js-controller-common').tools;
 
 class TestClass {
 

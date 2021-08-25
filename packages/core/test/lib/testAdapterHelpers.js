@@ -4,7 +4,7 @@
 /* jshint expr:true */
 'use strict';
 
-const promiseSequence = require('../../lib/tools').promiseSequence;
+const { promiseSequence } = require('@iobroker/js-controller-common').tools;
 const { spy } = require('sinon');
 const chai = require('chai');
 const sinonChai = require('sinon-chai');

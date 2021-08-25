@@ -3,7 +3,7 @@
 /* jslint node:true */
 /* jshint expr:true */
 'use strict';
-const tools = require('../../lib/tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 const path = require('path');
 const cpPromise = require('promisify-child-process');
 const iobExecutable = path.join(__dirname, '..', '..', 'iobroker.js');

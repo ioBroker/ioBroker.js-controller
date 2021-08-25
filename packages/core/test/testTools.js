@@ -1,7 +1,7 @@
 'use strict';
 
 const { expect } = require('chai');
-const { FORBIDDEN_CHARS } = require('../lib/tools');
+const { FORBIDDEN_CHARS } = require('@iobroker/js-controller-common').tools;
 
 describe('test tools.js helpers', () => {
     it('FORBIDDEN_CHARS', () => {

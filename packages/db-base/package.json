@@ -9,7 +9,7 @@
     "fs-extra": "^10.0.0",
     "node.extend": "^2.0.2",
     "respjs": "^4.2.0",
-    "@iobroker/js-controller-common": "~1.0.0"
+    "@iobroker/js-controller-common": "file:../common"
   },
   "keywords": [
     "ioBroker",
