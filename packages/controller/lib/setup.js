@@ -521,7 +521,7 @@ async function processCommand(command, args, params, callback) {
                         createInitialInstances()
                             .then(() => new Promise(resolve => {
                                 // Creates a fresh certificate
-                                const Cert = require('./cli/cliCert');
+                                const Cert = require('@iobroker/js-controller-cli').command.cert;
                                 // Create a new instance of the cert command,
                                 // but use the resolve method as a callback
                                 const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
