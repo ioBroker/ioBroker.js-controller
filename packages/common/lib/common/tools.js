@@ -2940,7 +2940,7 @@ function statesDbHasServer(dbType) {
     try {
         const path = require.resolve(`@iobroker/db-states-${dbType}`);
         return !!require(path).Server;
-    } catch (e) {
+    } catch {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
     }
 }
