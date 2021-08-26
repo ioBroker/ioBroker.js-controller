@@ -132,7 +132,7 @@ const logger = function (level, files, noStdout, prefix) {
     files = files || [];
 
     // indicator which is used to determine the log dir for developing, where it should be inside the repository
-    const isNpm = __dirname.replace(/\\/g, '/').toLowerCase().includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`);
+    const isNpm = !__dirname.replace(/\\/g, '/').toLowerCase().includes(tools.appName.toLowerCase() + `.js-controller/packages/`);
 
     if (typeof level === 'object') {
         userOptions = deepClone(level);
