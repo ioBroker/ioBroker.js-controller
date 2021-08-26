@@ -10,7 +10,7 @@
     "greenlock-express": "^4.0.3",
     "le-acme-core": "^2.1.4",
     "le-challenge-fs": "^2.0.9",
-    "le-sni-auto": "^2.1.9",
+    "le-sni-auto": "^2.1.9"
   },
   "bin": {
     "iobroker": "./iobroker.js"
