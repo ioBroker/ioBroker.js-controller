@@ -4,6 +4,7 @@ const path = require('path');
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const { tools } = require('@iobroker/js-controller-common');
+const dbTools = require('@iobroker/js-controller-common-db');
 const deepClone = require('deep-clone');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
@@ -206,7 +207,7 @@ module.exports = class CLIProcess extends CLICommand {
                     const alive = hostAlive ? hostAlive.val : false;
                     CLI.success.controllerStatus(alive);
                     console.log();
-                    if (!tools.isLocalStatesDbServer(config.states.type, config.states.host) && !tools.isLocalObjectsDbServer(config.objects.type, config.objects.host)) {
+                    if (!dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host)) {
                         CLI.success.systemStatus(!isOffline);
                     }
 

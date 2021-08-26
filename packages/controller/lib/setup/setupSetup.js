@@ -20,6 +20,7 @@ function Setup(options) {
     const fs          = require('fs-extra');
     const path        = require('path');
     const { tools } = require('@iobroker/js-controller-common');
+    const dbTools = require('@iobroker/js-controller-common-db');
     const Backup      = require('./setupBackup');
     const deepClone   = require('deep-clone');
     const pluginInfos = require('./pluginInfos');
@@ -299,15 +300,15 @@ function Setup(options) {
      */
     function migrateObjects(newConfig, oldConfig, rl, callback) {
         // allow migration if one of the db types changed or host changed of redis
-        const oldStatesHasServer = tools.statesDbHasServer(oldConfig.states.type);
-        const oldObjectsHasServer = tools.statesDbHasServer(oldConfig.objects.type);
-        const newStatesHasServer = tools.statesDbHasServer(newConfig.states.type);
-        const newObjectsHasServer = tools.statesDbHasServer(newConfig.objects.type);
+        const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
+        const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
+        const newStatesHasServer = dbTools.statesDbHasServer(newConfig.states.type);
+        const newObjectsHasServer = dbTools.statesDbHasServer(newConfig.objects.type);
 
-        const oldStatesLocalServer = tools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
-        const oldObjectsLocalServer = tools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
-        const newStatesLocalServer = tools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
-        const newObjectsLocalServer = tools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
+        const oldStatesLocalServer = dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
+        const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
+        const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
+        const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
         if (oldConfig &&
             (
                 (oldConfig.states.type !== newConfig.states.type || oldConfig.objects.type !== newConfig.objects.type) ||
@@ -716,7 +717,7 @@ function Setup(options) {
         let dir;
         let hname;
 
-        if (tools.isLocalStatesDbServer(stype, shost) || tools.isLocalObjectsDbServer(otype, ohost)) {
+        if (dbTools.isLocalStatesDbServer(stype, shost) || dbTools.isLocalObjectsDbServer(otype, ohost)) {
             dir = rl.question('Data directory (file), default[' + tools.getDefaultDataDir() + ']: ', {
                 defaultInput: tools.getDefaultDataDir()
             });

@@ -23,6 +23,7 @@ const { enumHosts } = require('@iobroker/js-controller-cli').tools;
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
+const dbTools = require('@iobroker/js-controller-common-db');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -2087,7 +2088,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'checklog': {
             dbConnect(params, (objects, states, isOffline, objectType) => {
-                if (isOffline && tools.objectsDbHasServer(objectType)) {
+                if (isOffline && dbTools.objectsDbHasServer(objectType)) {
                     console.log(tools.appName + ' is not running');
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
@@ -2661,7 +2662,7 @@ function dbConnect(onlyCheck, params, callback) {
                 await objects.destroy();
                 objects = null;
             }
-            if (tools.objectsDbHasServer(config.objects.type)) {
+            if (dbTools.objectsDbHasServer(config.objects.type)) {
                 // Just open in memory DB itself
                 Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
                 objects = new Objects({
@@ -2696,7 +2697,7 @@ function dbConnect(onlyCheck, params, callback) {
                 await states.destroy();
                 states = null;
             }
-            if (tools.statesDbHasServer(config.states.type)) {
+            if (dbTools.statesDbHasServer(config.states.type)) {
                 // Just open in memory DB itself
                 States = require(`@iobroker/db-states-${config.states.type}`).Server;
                 states = new States({

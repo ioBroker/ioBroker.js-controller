@@ -11,6 +11,7 @@
 'use strict';
 const dgram          = require('dgram');
 const { tools } = require('@iobroker/js-controller-common');
+const dbTools = require('@iobroker/js-controller-common-db');
 const PORT           = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
@@ -123,7 +124,7 @@ function MHServer(hostname, logger, config, info, ips, secret) {
                                 states:   config.states,
                                 info:     info,
                                 hostname: hostname,
-                                slave:    !tools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
+                                slave:    !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
                                 result:   'ok'
                             }, rinfo);
                         }
@@ -139,7 +140,7 @@ function MHServer(hostname, logger, config, info, ips, secret) {
                         states:   config.states,
                         info:     info,
                         hostname: hostname,
-                        slave:    !tools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
+                        slave:    !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
                         result:   'ok'
                     }, rinfo);
                 } else {

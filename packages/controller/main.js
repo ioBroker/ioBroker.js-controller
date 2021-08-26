@@ -17,6 +17,7 @@ const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
 const { tools } = require('@iobroker/js-controller-common');
+const dbTools = require('@iobroker/js-controller-common-db');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
@@ -183,10 +184,10 @@ function startMultihost(__config) {
             }
         }
 
-        if (!_config.objects.host || tools.isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true)) {
+        if (!_config.objects.host || dbTools.isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true)) {
             logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`);
             return false;
-        } else if (!_config.states.host || tools.isLocalObjectsDbServer(_config.states.type, _config.states.host, true)) {
+        } else if (!_config.states.host || dbTools.isLocalObjectsDbServer(_config.states.type, _config.states.host, true)) {
             logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`);
             return false;
         }
@@ -4527,14 +4528,14 @@ function init(compactGroupId) {
 
     // Get "objects" object
     // If "file" and on the local machine
-    if (tools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
+    if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
         Objects = require('./lib/objects');
     }
 
     // Get "states" object
-    if (tools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
+    if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
         States  = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
         States  = require('./lib/states');

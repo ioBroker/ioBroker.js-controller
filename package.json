@@ -12,6 +12,7 @@
     "@iobroker/js-controller-adapter": "file:packages/adapter",
     "@iobroker/js-controller-cli": "file:packages/cli",
     "@iobroker/js-controller-common": "file:packages/common",
+    "@iobroker/js-controller-common-db": "file:packages/common-db",
     "iobroker.admin": "5.1.23",
     "iobroker.denon": "1.11.2",
     "iobroker.js-controller": "file:packages/controller"

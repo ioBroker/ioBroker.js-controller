@@ -13,6 +13,7 @@
 function Multihost(options) {
     const fs         = require('fs-extra');
     const { tools } = require('@iobroker/js-controller-common');
+    const dbTools = require('@iobroker/js-controller-common-db');
     const configName = tools.getConfigFileName();
     const that       = this;
 
@@ -69,7 +70,7 @@ function Multihost(options) {
     function showMHState(config, changed, callback) {
         if (config.multihostService.enabled) {
             let warningShown = false;
-            if (tools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
+            if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
                 console.log('Changing objects server to accept connections on all IP addresses.');
                 config.objects.host = '0.0.0.0';
                 changed = true;
@@ -80,7 +81,7 @@ function Multihost(options) {
                 warningShown = true;
                 console.log('Please check the binding of the configured ' + config.objects.type + ' server to allow remote connections.');
             }
-            if (tools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
+            if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
                 console.log('Changing states server to accept connections on all IP addresses.');
                 config.states.host = '0.0.0.0';
                 changed = true;
@@ -235,7 +236,7 @@ function Multihost(options) {
                 const config = getConfig();
                 config.objects = oObjects;
                 config.states  = oStates;
-                if (tools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true) || tools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
+                if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true) || dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
                     callback('IP Address of the remote host is 127.0.0.1. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.');
                 } else {
                     if (config.states.host === '0.0.0.0') { // TODO: why we set the remote IP only when the local config allows full connectivity?
