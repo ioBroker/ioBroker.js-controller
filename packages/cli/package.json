@@ -8,7 +8,10 @@
     "fs-extra": "^10.0.0",
     "event-stream": "^4.0.1",
     "deep-clone": "^3.0.3",
-    "@iobroker/js-controller-common": "file:../common"
+    "@iobroker/js-controller-common": "file:../common",
+    "chokidar": "^3.5.2",
+    "daemonize2": "^0.4.2",
+    "debug": "^4.3.2"
   },
   "keywords": [
     "ioBroker"

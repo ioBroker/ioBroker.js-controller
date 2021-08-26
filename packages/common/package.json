@@ -11,6 +11,7 @@
   "dependencies": {
     "fs-extra": "^10.0.0",
     "semver": "^7.3.5",
+    "node.extend": "^2.0.2",
     "node-forge": "^0.10.0",
     "deep-clone": "^3.0.3",
     "promisify-child-process": "^4.1.1",
@@ -18,7 +19,8 @@
     "event-stream": "^4.0.1",
     "@alcalzone/pak": "^0.6.0",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.5"
+    "winston-daily-rotate-file": "^4.5.5",
+    "request": "^2.88.2"
   },
   "keywords": [
     "ioBroker"
