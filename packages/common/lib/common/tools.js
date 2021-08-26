@@ -1728,13 +1728,13 @@ function getConfigFileName() {
     if (fs.existsSync(__dirname + '/../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
         fs.existsSync(__dirname + '/../../node_modules/' + appName + '.js-controller')) {
         // remove /node_modules/' + appName + '.js-controller/lib
-        configDir.splice(configDir.length - 2, 2);
+        configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
         return configDir + '/' + appName + '-data/' + appName + '.json';
     } else {
         // If installed with npm
         // remove /node_modules/' + appName + '.js-controller/lib
-        configDir.splice(configDir.length - 3, 3);
+        configDir.splice(configDir.length - 4, 4);
         configDir = configDir.join('/');
         return configDir + '/' + appName + '-data/' + appName + '.json';
     }
@@ -2940,7 +2940,7 @@ function statesDbHasServer(dbType) {
     try {
         const path = require.resolve(`@iobroker/db-states-${dbType}`);
         return !!require(path).Server;
-    } catch {
+    } catch (e) {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
     }
 }

@@ -9,6 +9,12 @@
     "winston-syslog": "^2.4.4"
   },
   "dependencies": {
+    "@iobroker/db-objects-file": "file:../db-objects-file",
+    "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
+    "@iobroker/db-objects-redis": "file:../db-objects-redis",
+    "@iobroker/db-states-file": "file:../db-states-file",
+    "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
+    "@iobroker/db-states-redis": "file:../db-states-redis",
     "fs-extra": "^10.0.0",
     "semver": "^7.3.5",
     "node.extend": "^2.0.2",
