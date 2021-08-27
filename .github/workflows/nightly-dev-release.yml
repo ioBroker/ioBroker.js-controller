@@ -81,7 +81,7 @@ jobs:
         npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
         npm whoami
 
-        npx lerna version ${VERSION} --exact --allow-branch * --ignore-scripts --no-commit-hooks --yes
+        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes
         npx lerna publish from-package --yes --dist-tag dev
 
     - name: Create Github Release
