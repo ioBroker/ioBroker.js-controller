@@ -2,7 +2,7 @@
   "packages": [
     "packages/*"
   ],
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.1-20210830-d9828cd3",
   "//": "Set up some command options",
   "command": {
     "//": "Running a script should show the output while it is generated",
@@ -13,7 +13,8 @@
       "//": "This is required for the release-script",
       "allowBranch": [
         "master",
-        "release-*"
+        "release-*",
+        "mono"
       ],
       "ignoreChanges": [
         "*.md"
