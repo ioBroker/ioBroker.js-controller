@@ -1,0 +1,96 @@
+0 silly argv {
+0 silly argv   _: [ 'version' ],
+0 silly argv   exact: true,
+0 silly argv   'ignore-scripts': true,
+0 silly argv   ignoreScripts: true,
+0 silly argv   'commit-hooks': false,
+0 silly argv   commitHooks: false,
+0 silly argv   yes: true,
+0 silly argv   y: true,
+0 silly argv   'allow-branch': [ 'mono' ],
+0 silly argv   allowBranch: [ 'mono' ],
+0 silly argv   lernaVersion: '4.0.0',
+0 silly argv   '$0': 'node_modules/.bin/lerna',
+0 silly argv   bump: '4.0.0-alpha.2-20210830-d7e31ee8'
+0 silly argv }
+1 notice cli v4.0.0
+2 verbose rootPath /home/moritz/workspaces/ioBroker.js-controller
+3 info current version 4.0.0-alpha.0
+4 silly isAnythingCommitted
+5 verbose isAnythingCommitted 1
+6 silly getCurrentBranch
+7 verbose currentBranch mono
+8 silly hasTags
+9 verbose hasTags true
+10 silly git-describe.sync "d7e31ee8" => {"refCount":"4207","sha":"d7e31ee8","isDirty":false}
+11 info Assuming all packages changed
+12 verbose updated @iobroker/js-controller-adapter
+13 verbose updated @iobroker/js-controller-cli
+14 verbose updated @iobroker/js-controller-common-db
+15 verbose updated @iobroker/js-controller-common
+16 verbose updated iobroker.js-controller
+17 verbose updated @iobroker/db-base
+18 verbose updated @iobroker/db-objects-file
+19 verbose updated @iobroker/db-objects-jsonl
+20 verbose updated @iobroker/db-objects-redis
+21 verbose updated @iobroker/db-states-file
+22 verbose updated @iobroker/db-states-jsonl
+23 verbose updated @iobroker/db-states-redis
+24 warn version Skipping working tree validation, proceed at your own risk
+25 info auto-confirmed
+26 info execute Skipping git push
+27 info execute Skipping releases
+28 verbose lifecycle "preversion" ignored in "iobroker.js-controller-mono"
+29 verbose lifecycle "preversion" ignored in "@iobroker/js-controller-common"
+30 verbose lifecycle "version" ignored in "@iobroker/js-controller-common"
+31 verbose lifecycle "preversion" ignored in "@iobroker/db-base"
+32 verbose lifecycle "version" ignored in "@iobroker/db-base"
+33 verbose lifecycle "preversion" ignored in "@iobroker/db-objects-redis"
+34 verbose lifecycle "preversion" ignored in "@iobroker/db-states-redis"
+35 verbose lifecycle "version" ignored in "@iobroker/db-objects-redis"
+36 verbose lifecycle "preversion" ignored in "@iobroker/db-objects-file"
+37 verbose lifecycle "version" ignored in "@iobroker/db-states-redis"
+38 verbose lifecycle "preversion" ignored in "@iobroker/db-states-file"
+39 verbose lifecycle "version" ignored in "@iobroker/db-states-file"
+40 verbose lifecycle "preversion" ignored in "@iobroker/db-states-jsonl"
+41 verbose lifecycle "version" ignored in "@iobroker/db-objects-file"
+42 verbose lifecycle "preversion" ignored in "@iobroker/db-objects-jsonl"
+43 verbose lifecycle "version" ignored in "@iobroker/db-states-jsonl"
+44 verbose lifecycle "version" ignored in "@iobroker/db-objects-jsonl"
+45 verbose lifecycle "preversion" ignored in "@iobroker/js-controller-adapter"
+46 verbose lifecycle "preversion" ignored in "@iobroker/js-controller-common-db"
+47 verbose lifecycle "version" ignored in "@iobroker/js-controller-adapter"
+48 verbose lifecycle "version" ignored in "@iobroker/js-controller-common-db"
+49 verbose lifecycle "preversion" ignored in "@iobroker/js-controller-cli"
+50 verbose lifecycle "version" ignored in "@iobroker/js-controller-cli"
+51 verbose lifecycle "preversion" ignored in "iobroker.js-controller"
+52 verbose lifecycle "version" ignored in "iobroker.js-controller"
+53 verbose lifecycle "version" ignored in "iobroker.js-controller-mono"
+54 silly gitAdd [
+54 silly gitAdd   'packages/common/package.json',
+54 silly gitAdd   'packages/db-base/package.json',
+54 silly gitAdd   'packages/db-objects-redis/package.json',
+54 silly gitAdd   'packages/db-states-redis/package.json',
+54 silly gitAdd   'packages/db-states-file/package.json',
+54 silly gitAdd   'packages/db-objects-file/package.json',
+54 silly gitAdd   'packages/db-states-jsonl/package.json',
+54 silly gitAdd   'packages/db-objects-jsonl/package.json',
+54 silly gitAdd   'packages/adapter/package.json',
+54 silly gitAdd   'packages/common-db/package.json',
+54 silly gitAdd   'packages/cli/package.json',
+54 silly gitAdd   'packages/controller/package.json',
+54 silly gitAdd   'lerna.json'
+54 silly gitAdd ]
+55 silly gitCommit v4.0.0-alpha.2-20210830-d7e31ee8
+56 verbose git [ 'commit', '--no-verify', '--amend', '--no-edit' ]
+57 silly gitTag v4.0.0-alpha.2-20210830-d7e31ee8
+58 verbose git [
+58 verbose git   'tag',
+58 verbose git   'v4.0.0-alpha.2-20210830-d7e31ee8',
+58 verbose git   '-m',
+58 verbose git   'v4.0.0-alpha.2-20210830-d7e31ee8'
+58 verbose git ]
+59 error Error: Command failed with exit code 128: git tag v4.0.0-alpha.2-20210830-d7e31ee8 -m v4.0.0-alpha.2-20210830-d7e31ee8
+59 error fatal: Tag 'v4.0.0-alpha.2-20210830-d7e31ee8' existiert bereits
+59 error     at makeError (/home/moritz/workspaces/ioBroker.js-controller/node_modules/execa/lib/error.js:60:11)
+59 error     at handlePromise (/home/moritz/workspaces/ioBroker.js-controller/node_modules/execa/index.js:118:26)

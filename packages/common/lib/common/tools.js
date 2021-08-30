@@ -183,7 +183,13 @@ function decryptPhrase(password, data, callback) {
 
 function getAppName() {
     const parts = __dirname.replace(/\\/g, '/').split('/');
-    return parts[parts.length - 5].split('.')[0];
+
+    if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
+        // dev install
+        return parts[parts.length - 5].split('.')[0];
+    }
+
+    return parts[parts.length - 6].split('.')[0];
 }
 
 function rmdirRecursiveSync(path) {
