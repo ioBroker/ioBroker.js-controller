@@ -834,7 +834,7 @@ function changeHost(objs, oldHostname, newHostname, callback) {
         if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
             const obj = row.value;
             obj.common.host = newHostname;
-            logger.info(hostLogPrefix + ' Reassign instance ' + obj._id.substring('system.adapter.'.length) + ' from ' + oldHostname + ' to ' + newHostname);
+            logger.info(`${hostLogPrefix} Reassign instance ${obj._id.substring('system.adapter.'.length)} from ${oldHostname} to ${newHostname}`);
             obj.from = 'system.host.' + tools.getHostName();
             obj.ts = Date.now();
 
@@ -856,7 +856,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         try {
             subs = JSON.parse(state.val);
         } catch {
-            logger.error(hostLogPrefix + ' Cannot parse subscribes: ' + state.val);
+            logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
             return typeof callback === 'function' && setImmediate(() => callback());
         }
         let modified = false;
@@ -939,10 +939,10 @@ function delObjects(objs, callback) {
 function checkHost(callback) {
     const objectData = objects.getStatus();
     // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController || !objectData.server) {
-        callback && callback();
-        return;
+    if (compactGroupController) {
+        return callback && callback();
     }
+
     objects.getObjectView('system', 'host', {}, (_err, doc) => {
         if (!_err && doc && doc.rows &&
             doc.rows.length === 1 &&
@@ -961,7 +961,7 @@ function checkHost(callback) {
                 } else {
                     // reassign all instances
                     changeHost(doc.rows, oldHostname, hostname, () => {
-                        logger.info(hostLogPrefix + ' Delete host ' + oldId);
+                        logger.info(`${hostLogPrefix} Delete host ${oldId}`);
 
                         // delete host object
                         objects.delObject(oldId, () =>
