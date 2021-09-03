@@ -190,7 +190,8 @@ function getAppName() {
     }
 
     // find @orga folder
-    return parts[parts.length - 5].replace('@', '');
+    return parts[parts.length - 4].replace('@', '');
+
 }
 
 function rmdirRecursiveSync(path) {
