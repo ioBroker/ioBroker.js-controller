@@ -1739,8 +1739,8 @@ function getConfigFileName() {
         return configDir + '/' + appName + '-data/' + appName + '.json';
     } else {
         // If installed with npm
-        // remove /node_modules/' + appName + '.js-controller/lib
-        configDir.splice(configDir.length - 4, 4);
+        // remove node_modules/iobroker.js-controller/node_modules/@' + appName + '.js-controller-common/lib/common
+        configDir.splice(configDir.length - 5, 5);
         configDir = configDir.join('/');
         return configDir + '/' + appName + '-data/' + appName + '.json';
     }
