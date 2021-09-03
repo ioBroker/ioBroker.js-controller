@@ -1737,8 +1737,7 @@ function getConfigFileName() {
         configDir.splice(configDir.length - 7, 7);
         configDir = configDir.join('/');
     } else {
-        // If installed with npm
-        // remove node_modules/@iobroker/js-controller-common/lib/common
+        // If installed with npm -> remove node_modules/@iobroker/js-controller-common/lib/common
         configDir.splice(configDir.length - 5, 5);
         configDir = configDir.join('/');
     }
