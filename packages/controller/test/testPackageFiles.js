@@ -6,6 +6,7 @@
 
 const expect = require('chai').expect;
 const fs     = require('fs');
+const semverDiff = require('semver/functions/diff');
 
 describe('Test package.json and io-package.json', () => {
     it('Test package files', done => {
@@ -23,7 +24,12 @@ describe('Test package.json and io-package.json', () => {
         expect(ioPackage.common.version, 'ERROR: Version number in io-package.json needs to exist').to.exist;
         expect(npmPackage.version, 'ERROR: Version number in package.json needs to exist').to.exist;
 
-        expect(ioPackage.common.version, 'ERROR: Version numbers in package.json and io-package.json needs to match').to.be.equal(npmPackage.version);
+        const versionDiff = semverDiff(ioPackage.common.version, npmPackage.version;
+
+        // we don't put prereleases into io-pack so they are allowed to differ here
+        if (versionDiff && versionDiff !== 'prerelease') {
+            expect(ioPackage.common.version, 'ERROR: Version numbers in package.json and io-package.json needs to match').to.be.equal(npmPackage.version);
+        }
 
         if (!ioPackage.common.news || !ioPackage.common.news[ioPackage.common.version]) {
             console.log('WARNING: No news entry for current version exists in io-package.json, no rollback in Admin possible!');
