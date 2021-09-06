@@ -24,7 +24,7 @@ describe('Test package.json and io-package.json', () => {
         expect(ioPackage.common.version, 'ERROR: Version number in io-package.json needs to exist').to.exist;
         expect(npmPackage.version, 'ERROR: Version number in package.json needs to exist').to.exist;
 
-        const versionDiff = semverDiff(ioPackage.common.version, npmPackage.version;
+        const versionDiff = semverDiff(ioPackage.common.version, npmPackage.version);
 
         // we don't put prereleases into io-pack so they are allowed to differ here
         if (versionDiff && versionDiff !== 'prerelease') {
