@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "4.0.0",
+        "version": "2.0.0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",

@@ -16,6 +16,8 @@
     "iobroker.js-controller": "file:packages/controller"
   },
   "devDependencies": {
+    "fs-extra": "^10.0.0",
+    "semver": "^7.3.5",
     "@alcalzone/release-script": "^2.0.0",
     "@types/fs-extra": "^9.0.11",
     "lerna": "^4.0.0",
@@ -40,7 +42,7 @@
   "scripts": {
     "prerelease": "lerna bootstrap && release-script --lerna-check",
     "release": "lerna version --no-commit-hooks",
-    "version": "release-script --lerna",
+    "version": "node increase-io-pack.js && release-script --lerna",
     "postversion": "git push && git push --tags",
     "lint": "eslint \"packages/*/*.js\" \"packages/*/lib/**/*.js\"",
     "test": "mocha packages/controller/test --exit",
