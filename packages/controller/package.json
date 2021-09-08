@@ -99,5 +99,17 @@
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
   "main": "main.js",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "conf/",
+    "lib/",
+    "_service_iobroker.bat",
+    "compactgroupController.js",
+    "controller.js",
+    "io-package.json",
+    "iob.bat",
+    "iobroker.bat",
+    "iobroker.js",
+    "main.js"
+  ]
 }

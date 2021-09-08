@@ -42,5 +42,9 @@
   "license": "MIT",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "files": [
+    "lib/",
+    "index.js"
+  ]
 }
