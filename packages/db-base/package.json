@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/db-base",
-  "version": "4.0.0-alpha.6-20210908-7ef2f01b",
+  "version": "4.0.0-alpha.7-20210908-26fd46db",
   "engines": {
     "node": ">=12.0.0"
   },
