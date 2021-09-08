@@ -2,5 +2,5 @@
 The Library contains the Controller class of ioBroker and is the main part, which is executed.
 
 ## License
-Apache 2.0
+MIT
 Copyright 2018-2021 bluefox <dogafox@gmail.com>  
