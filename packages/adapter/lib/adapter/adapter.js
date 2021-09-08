@@ -24,13 +24,14 @@ const fs = require('fs-extra');
 const extend = require('node.extend');
 const util = require('util');
 const os = require('os');
+const path = require('path');
 const EventEmitter = require('events').EventEmitter;
 const {tools} = require('@iobroker/js-controller-common');
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
 const {EXIT_CODES} = require('@iobroker/js-controller-common');
 const {PluginHandler} = require('@iobroker/plugin-base');
-const controllerVersion = require(tools.getControllerDir() + '/package.json').version;
+const controllerVersion = require(path.join(__dirname, '..', '..', 'package.json').version;
 
 const {password} = require('@iobroker/js-controller-common');
 
