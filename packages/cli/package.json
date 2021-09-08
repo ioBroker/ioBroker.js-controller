@@ -1,0 +1,40 @@
+{
+  "name": "@iobroker/js-controller-cli",
+  "version": "4.0.0-alpha.6-20210908-7ef2f01b",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "@iobroker/js-controller-common": "file:../common",
+    "@iobroker/js-controller-common-db": "file:../common-db",
+    "chokidar": "^3.5.2",
+    "daemonize2": "^0.4.2",
+    "debug": "^4.3.2",
+    "deep-clone": "^3.0.3",
+    "event-stream": "^4.0.1",
+    "fs-extra": "^10.0.0"
+  },
+  "keywords": [
+    "ioBroker"
+  ],
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <iobroker@fischer-ka.de>",
+    "foxriver76 <moritz.heusinger@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/cli"
+  },
+  "scripts": {},
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "lib/",
+    "index.js"
+  ]
+}

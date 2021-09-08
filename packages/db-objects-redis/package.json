@@ -1,0 +1,38 @@
+{
+  "name": "@iobroker/db-objects-redis",
+  "version": "4.0.0-alpha.6-20210908-7ef2f01b",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "@iobroker/db-base": "file:../db-base",
+    "deep-clone": "^3.0.3",
+    "ioredis": "^4.27.6",
+    "node.extend": "^2.0.2"
+  },
+  "keywords": [
+    "ioBroker",
+    "redis",
+    "redundancy"
+  ],
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <iobroker@fischer-ka.de>",
+    "foxriver76 <moritz.heusinger@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-objects-redis"
+  },
+  "scripts": {},
+  "main": "index.js",
+  "license": "Apache 2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "lib/",
+    "index.js"
+  ]
+}

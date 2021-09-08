@@ -1,4 +1,4 @@
-![Logo](lib/img/iobroker.png)
+![Logo](packages/controller/lib/img/iobroker.png)
 # ioBroker.js-controller
 
 ![Number of Installations](http://iobroker.live/badges/js-controller-installed.svg)

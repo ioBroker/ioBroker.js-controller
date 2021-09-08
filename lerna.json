@@ -1,0 +1,26 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "version": "4.0.0-alpha.6-20210908-7ef2f01b",
+  "//": "Set up some command options",
+  "command": {
+    "//": "Running a script should show the output while it is generated",
+    "run": {
+      "stream": true
+    },
+    "version": {
+      "//": "This is required for the release-script",
+      "allowBranch": [
+        "master",
+        "release-*"
+      ],
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "amend": true,
+      "push": false,
+      "exact": true
+    }
+  }
+}
