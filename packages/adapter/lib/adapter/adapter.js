@@ -24,7 +24,6 @@ const fs = require('fs-extra');
 const extend = require('node.extend');
 const util = require('util');
 const os = require('os');
-const path = require('path');
 const EventEmitter = require('events').EventEmitter;
 const {tools} = require('@iobroker/js-controller-common');
 const pidUsage = require('pidusage');
@@ -32,7 +31,7 @@ const deepClone = require('deep-clone');
 const {EXIT_CODES} = require('@iobroker/js-controller-common');
 const {PluginHandler} = require('@iobroker/plugin-base');
 // local version is always same as controller version, since lerna exact: true is used
-const controllerVersion = require(path.join(__dirname, '..', '..', 'package.json')).version;
+const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
 const {password} = require('@iobroker/js-controller-common');
 
