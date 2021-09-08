@@ -22,7 +22,7 @@ const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
-const { EXIT_CODES } = require('@iobroker/js-controller-common');
+const { EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
 
@@ -119,9 +119,9 @@ function getConfig() {
     if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
             isDaemon = true;
-            logger = require('./lib/logger')('info', [tools.appName], true);
+            logger = toolsLogger('info', [tools.appName], true);
         } else {
-            logger = require('./lib/logger')('info', [tools.appName]);
+            logger = toolsLogger('info', [tools.appName]);
         }
         logger.error(`${hostLogPrefix} conf/${tools.appName}.json missing - call node ${tools.appName}.js setup`);
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
@@ -4553,7 +4553,7 @@ function init(compactGroupId) {
     }
 
     try {
-        logger = require('@iobroker/js-controller-common').logger(config.log);
+        logger = toolsLogger.logger(config.log);
     } catch (e) {
         if (e.code === 'EACCES_LOG') {
             // We could not access logging directory - e.g. because of restored backup
@@ -4569,7 +4569,7 @@ function init(compactGroupId) {
 
             // fix this run
             config.log.transport['file1'].filename = fixedLogPath;
-            logger = require('@iobroker/js-controller-common').logger(config.log);
+            logger = toolsLogger.logger(config.log);
 
             logger.warn(`${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`);
         } else {

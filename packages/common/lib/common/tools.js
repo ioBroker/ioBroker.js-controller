@@ -1975,45 +1975,6 @@ function appendStackTrace(str) {
 }
 
 /**
- * @template T
- * @typedef {{new (...args: any[]): T}} ES6Class<T>
- */
-
-/**
- * @template T
- * @typedef {{new (...args: any[]): T; (...args: any[]): T; prototype: Function}} Class<T>
- */
-
-/**
- * Wraps an ES6 class so it can be called from legacy code without the new keyword.
- * Usage e.g.:
- * ```js
- // filename: foo.js
- class Foo {
-     constructor() { this.bar = 1; }
- }
- module.exports = wrapES6Class(Foo);
-
- // filename: index.js
- const Foo = require("./foo");
- var x = new Foo(); // works!
- var y = Foo(); // works too!
- ```
- * @template T
- * @param {ES6Class<T>} Class
- * @returns {Class<T>}
- */
-function wrapES6Class(Class) {
-    const _Class = function _Class() {
-        const args = sliceArgs(arguments);
-        return new (Function.prototype.bind.apply(Class, [null].concat(args)))();
-    };
-    _Class.prototype = Class.prototype;
-    // @ts-ignore
-    return _Class;
-}
-
-/**
  * Encrypt the password/value with given key
  * @param {string} key - Secret key
  * @param {string} value - value to encrypt
@@ -3043,7 +3004,6 @@ module.exports = {
     checkNonEditable,
     copyAttributes,
     getDiskInfo,
-    wrapES6Class,
     setQualityForInstance,
     appendStackTrace,
     captureStackTrace,
