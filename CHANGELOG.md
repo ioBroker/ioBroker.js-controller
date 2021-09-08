@@ -10,7 +10,7 @@
 
 * WORK IN PROGRESS - Use at own risk!
 
-## 3.3.15 (2021-07-26) Release Hannah
+## 3.3.16 (2021-07-26) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * The experimental jsonl db libraries are now included in js-controller directly too
@@ -72,6 +72,7 @@
   * if it's a number and min/max is defined on object we perform additional checks for min and max
 * (bluefox) checkPassword(Async) is now returning two parameters in callback/resolve (first is boolean if password/user are valid, second is the final internal username in form system.user.xxx)
 * (bluefox) add _design/custom to the controller objects - this should deprecate the own custom view over time, please update if relevant!
+* (bluefox) Adjust generation of installation UUID
 
 **Developer relevant new Features**
 * (AlCalzone) support executing TypeScript adapters: If the adapter main file ends with ".ts" we automatically transpile the typeScript file before starting the adapter
