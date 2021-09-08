@@ -363,24 +363,10 @@ function Adapter(options) {
     if (options.dirname) {
         this.adapterDir = options.dirname.replace(/\\/g, '/');
     } else {
-        //this.adapterDir = __dirname.replace(/\\/g, '/').split('/');
-        const controllerDir = tools.getControllerDir();
-        // it can be .../node_modules/appName.js-controller/node_modules/appName.adapter
-        //           .../appName.js-controller/node_modules/appName.adapter (shouldn't be possible with new method)
-        //           .../appName.js-controller/adapter/adapter
-        const appName = tools.appName.toLowerCase();
+        this.adapterDir = tools.getAdapterDir(options.name);
 
-        if (fs.existsSync(controllerDir + '/node_modules/' + appName + '.' + options.name)) {
-            // js-controllers node_modules folder
-            this.adapterDir = controllerDir + '/node_modules/' + appName + '.' + options.name;
-        } else if (fs.existsSync(controllerDir + '/../' + appName + '.' + options.name)) {
-            // same hierarchy as js-controller
-            this.adapterDir = controllerDir + '/../' + appName + '.' + options.name;
-        } else if (fs.existsSync(controllerDir + '/../../node_modules/' + appName + '.' + options.name)) {
-            // testing environment - root folder of monorepo
-            this.adapterDir = controllerDir + '/../../node_modules/' + appName + '.' + options.name;
-        } else {
-            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
+        if (!this.adapterDir) {
+            logger.error(`${this.namespaceLog} Cannot find directory of adapter ${options.name}`);
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
     }

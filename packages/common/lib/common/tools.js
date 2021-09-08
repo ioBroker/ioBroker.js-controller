@@ -1064,14 +1064,15 @@ function getAdapterDir(adapter) {
     /** @type {string} */
     let adapterPath;
     for (const possibility of possibilities) {
-        // special case to not read adapters from js-controller/node_module/adapter adn check first in parent directory
+        // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
         if (fs.existsSync(`${__dirname}/../../${possibility}`)) {
             adapterPath = `${__dirname}/../../${possibility}`;
         } else {
             try {
                 adapterPath = require.resolve(possibility);
                 break;
-            } catch { /* not found */
+            } catch {
+                // not found
             }
         }
     }
