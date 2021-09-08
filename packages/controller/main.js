@@ -16,13 +16,12 @@ const fs              = require('fs-extra');
 const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
-const { tools } = require('@iobroker/js-controller-common');
 const dbTools = require('@iobroker/js-controller-common-db');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
-const { EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
+const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
 
@@ -4553,7 +4552,7 @@ function init(compactGroupId) {
     }
 
     try {
-        logger = toolsLogger.logger(config.log);
+        logger = toolsLogger(config.log);
     } catch (e) {
         if (e.code === 'EACCES_LOG') {
             // We could not access logging directory - e.g. because of restored backup
