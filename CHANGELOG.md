@@ -10,7 +10,7 @@
 
 * WORK IN PROGRESS - Use at own risk!
 
-## 3.3.16 (2021-07-26) Release Hannah
+## 3.3.17 (2021-07-26 - 2021-09-09) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * The experimental jsonl db libraries are now included in js-controller directly too
