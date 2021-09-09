@@ -4,8 +4,8 @@
 /* jshint expr:true */
 'use strict';
 
-function register(/*it, expect, context*/) {
-
+function register(it, expect, context) {
+    const testName = `${context.name} ${context.adapterShortName} files: `;
     // chmodFile
     // readDir
     // unlink
@@ -15,6 +15,24 @@ function register(/*it, expect, context*/) {
     // writeFile
 
     // setBinaryState
+    it(testName + 'setBinaryState', async () => {
+        const objId = `${context.adapter.namespace}.testSetBinaryState`;
+        // create an object of type file first
+        await context.adapter.setForeignObjectAsync(objId, {
+            type: 'state',
+            common: {
+                name: objId,
+                read: true,
+                write: true,
+                type: 'file'
+            },
+            native: {}
+        });
+
+        // now we write a binary state
+        await context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
+    });
+
     // getBinaryState
 }
 
