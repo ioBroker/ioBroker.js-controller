@@ -442,7 +442,7 @@ async function processCommand(command, args, params, callback) {
             break;
 
         case 'update': {
-            Objects     = rrequire('@iobroker/js-controller-common-db').objects();
+            Objects     = require('@iobroker/js-controller-common-db').getObjectsObject();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
@@ -581,7 +581,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'url': {
-            Objects =       require('@iobroker/js-controller-common-db').objects();
+            Objects =       require('@iobroker/js-controller-common-db').getObjectsObject();
 
             let url  =      args[0];
             const name =      args[1];
@@ -612,7 +612,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'info': {
-            Objects =       require('@iobroker/js-controller-common-db').objects();
+            Objects =       require('@iobroker/js-controller-common-db').getObjectsObject();
             dbConnect(params, objects => {
                 tools.getHostInfo(objects, (err, data) => {
                     if (err) {
@@ -644,7 +644,7 @@ async function processCommand(command, args, params, callback) {
         case 'add':
         case 'install':
         case 'i': {
-            Objects =       require('@iobroker/js-controller-common-db').objects();
+            Objects =       require('@iobroker/js-controller-common-db').getObjectsObject();
 
             let name =      args[0];
             let instance =  args[1];
@@ -757,7 +757,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'upload':
         case 'u': {
-            Objects     = require('@iobroker/js-controller-common-db').objects();
+            Objects     = require('@iobroker/js-controller-common-db').getObjectsObject();
             const name    = args[0];
             const subTree = args[1];
             if (name) {
@@ -931,7 +931,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'upgrade': {
-            Objects = require('@iobroker/js-controller-common-db').objects();
+            Objects = require('@iobroker/js-controller-common-db').getObjectsObject();
 
             let adapter = cli.tools.normalizeAdapterName(args[0]);
             let repoUrl = args[1];
@@ -2110,7 +2110,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'repo': {
-            Objects =       require('@iobroker/js-controller-common-db').objects();
+            Objects =       require('@iobroker/js-controller-common-db').getObjectsObject();
             let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset"
             const repoName       = args[1]; // Repo url or name
             let repoUrl          = args[2]; // Repo url or name
@@ -2635,7 +2635,6 @@ function dbConnect(onlyCheck, params, callback) {
     params = params || {};
 
     const config = fs.readJSONSync(tools.getConfigFileName());
-    console.log(tools.getConfigFileName())
 
     if (objects && states) {
         return void callback(objects, states, false, config.objects.type, config);
@@ -2644,8 +2643,8 @@ function dbConnect(onlyCheck, params, callback) {
     config.states  = config.states  || {type: 'file'};
     config.objects = config.objects || {type: 'file'};
 
-    Objects = require('@iobroker/js-controller-common-db').objects(); // Objects DB Client object
-    States  = require('@iobroker/js-controller-common-db').states(); // States DB Client object
+    Objects = require('@iobroker/js-controller-common-db').getObjectsObject(); // Objects DB Client object
+    States  = require('@iobroker/js-controller-common-db').getStatesObject(); // States DB Client object
 
     // Give to controller 2 seconds for connection
     let isObjectConnected = false;

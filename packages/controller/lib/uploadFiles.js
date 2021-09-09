@@ -22,7 +22,7 @@ const yargs = require('yargs')
 
 const fs =      require('fs');
 const mime =    require('mime');
-const Objects = require('@iobroker/js-controller-common-db').objects();
+const Objects = require('@iobroker/js-controller-common-db').getObjectsObject();
 const { tools } = require('@iobroker/js-controller-common');
 
 let files = [];

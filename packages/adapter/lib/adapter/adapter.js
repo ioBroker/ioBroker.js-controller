@@ -445,7 +445,7 @@ function Adapter(options) {
             throw new Error(`Unknown states type: ${config.states.type}: ${err.message}`);
         }
     } else {
-        States = require('@iobroker/js-controller-common-db').states();
+        States = require('@iobroker/js-controller-common-db').getStatesObject();
     }
 
     let Objects;
@@ -456,7 +456,7 @@ function Adapter(options) {
             throw new Error(`Unknown objects type: ${config.objects.type}: ${err.message}`);
         }
     } else {
-        Objects = require('@iobroker/js-controller-common-db').objects();
+        Objects = require('@iobroker/js-controller-common-db').getObjectsObject();
     }
 
     const ifaces = os.networkInterfaces();

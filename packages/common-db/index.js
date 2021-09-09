@@ -1,5 +1,5 @@
 module.exports = {
     tools: require('./lib/common/tools'),
-    states: require('./lib/common/states'),
-    objects: require('./lib/common/objects')
+    getStatesObject: require('./lib/common/states'),
+    getObjectsObject: require('./lib/common/objects')
 };
