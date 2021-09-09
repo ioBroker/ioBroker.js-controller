@@ -459,15 +459,15 @@ function createUuid(_objects, callback) {
                 // if COMMON invalid docker uuid
                 if (PROBLEM_UUIDS.find(u => u === obj.native.uuid)) {
                     // Read vis license
-                    _objects.getObject('system.adapter.vis.0', (err, obj) => {
-                        if (!obj || !obj.native || !obj.native.license) {
+                    _objects.getObject('system.adapter.vis.0', (err, licObj) => {
+                        if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
                             updateUuid('',  _objects, _uuid => resolve(_uuid));
                         } else {
                             // decode obj.native.license
                             let data;
                             try {
-                                data = jwt.decode(obj.native.license);
+                                data = jwt.decode(licObj.native.license);
                             } catch {
                                 data = null;
                             }
