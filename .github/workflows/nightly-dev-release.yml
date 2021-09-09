@@ -32,7 +32,7 @@ jobs:
         # Detect changes using git
         # ===============================
 
-        LAST_TAG=$(git describe --abbrev=0)
+        LAST_TAG=$(git describe --abbrev=0 --tags)
         echo "Checking for changes since last tag $LAST_TAG"
 
         # Figure out if anything changed in the package directories
