@@ -4,7 +4,7 @@ const path = require('path');
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const { tools } = require('@iobroker/js-controller-common');
-const dbTools = require('@iobroker/js-controller-common-db');
+const dbTools = require('@iobroker/js-controller-common-db').tools;
 const deepClone = require('deep-clone');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
