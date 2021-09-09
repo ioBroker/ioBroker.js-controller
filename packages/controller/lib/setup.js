@@ -23,7 +23,7 @@ const { enumHosts } = require('@iobroker/js-controller-cli').tools;
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
-const dbTools = require('@iobroker/js-controller-common-db');
+const dbTools = require('@iobroker/js-controller-common-db').tools;
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -402,9 +402,9 @@ async function processCommand(command, args, params, callback) {
         callback = processExit;
     }
 
-    /** @type {import('./cli/cliCommand').CLICommandContext} */
+    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandContext} */
     const commandContext = {dbConnect, callback, showHelp};
-    /** @type {import('./cli/cliCommand').CLICommandOptions} */
+    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandOptions} */
     const commandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
     debug(`args: ${args}`);
@@ -2644,8 +2644,8 @@ function dbConnect(onlyCheck, params, callback) {
     config.states  = config.states  || {type: 'file'};
     config.objects = config.objects || {type: 'file'};
 
-    Objects = require('./objects'); // Objects DB Client object
-    States  = require('./states'); // States DB Client object
+    Objects = require('@iobroker/js-controller-common-db').objects; // Objects DB Client object
+    States  = require('@iobroker/js-controller-common-db').states; // States DB Client object
 
     // Give to controller 2 seconds for connection
     let isObjectConnected = false;
