@@ -4530,14 +4530,14 @@ function init(compactGroupId) {
     if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
-        Objects = require('./lib/objects');
+        Objects = require('@iobroker/js-controller-common-db').objects();
     }
 
     // Get "states" object
     if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
         States  = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
-        States  = require('./lib/states');
+        States  = require('@iobroker/js-controller-common-db').states();
     }
 
     // Detect if outputs to console are forced. By default they are disabled and redirected to log file
