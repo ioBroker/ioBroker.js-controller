@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.15",
+        "version": "3.3.16",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.16": {
+                "en": "Adjust generation of installation UUID",
+                "de": "Generierung der Installations-UUID anpassen",
+                "ru": "Настроить генерацию UUID установки",
+                "pt": "Ajuste a geração do UUID de instalação",
+                "nl": "Aanpassen generatie van installatie UUID",
+                "fr": "Ajuster la génération de l'UUID d'installation",
+                "it": "Regola la generazione dell'UUID di installazione",
+                "es": "Ajustar generación de UUID de instalación",
+                "pl": "Dostosuj generowanie UUID instalacji",
+                "zh-cn": "调整安装 UUID 的生成"
+            },
             "3.3.15": {
                 "en": "avoid deleting too many meta objects starting with the same name as adapter",
                 "de": "Vermeiden Sie das Löschen von zu vielen Metaobjekten, die mit dem gleichen Namen wie der Adapter beginnen",

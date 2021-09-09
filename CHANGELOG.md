@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## 3.3.16 (2021-09-08)
+* (Bluefox) Adjust generation of installation UUID
+
 ## 3.3.15 (2021-07-26)
 * (foxriver76) avoid deleting too many meta objects starting with the same name as adapter
 
