@@ -2973,17 +2973,17 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
 
     if (!doc.rows || doc.rows.length === 0) {
         logger.info(`${logPrefix}no instances found`);
-    }
-
-    for (const row of doc.rows) {
-        if (row && row.value) {
-            if (row.value._id.startsWith('system.adapter.admin')) {
-                instances.admin.push(row.value);
-            } else if (row.value.common && allowedTiers.includes(parseInt(row.value.common.tier))) {
-                instances[row.value.common.tier].push(row.value);
-            } else {
-                // no valid tier so put it in the last one
-                instances['3'].push(row.value);
+    } else {
+        for (const row of doc.rows) {
+            if (row && row.value) {
+                if (row.value._id.startsWith('system.adapter.admin')) {
+                    instances.admin.push(row.value);
+                } else if (row.value.common && allowedTiers.includes(parseInt(row.value.common.tier))) {
+                    instances[row.value.common.tier].push(row.value);
+                } else {
+                    // no valid tier so put it in the last one
+                    instances['3'].push(row.value);
+                }
             }
         }
     }
