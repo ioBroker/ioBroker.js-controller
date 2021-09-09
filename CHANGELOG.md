@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (bluefox) Fix edge case for UUID generation
+
 ## 3.3.16 (2021-09-08)
 * (Bluefox) Adjust generation of installation UUID
 
