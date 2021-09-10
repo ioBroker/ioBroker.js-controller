@@ -33,7 +33,7 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         const jsonlOptions = {
             autoCompress: {
                 sizeFactor: 2,
-                sizeFactorMinimumSize: 1000
+                sizeFactorMinimumSize: 25000
             },
             ignoreReadErrors: true,
             throttleFS: {
