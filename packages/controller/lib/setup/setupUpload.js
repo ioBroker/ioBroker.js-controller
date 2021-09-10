@@ -601,7 +601,8 @@ function Upload(options) {
             return target;
         }
         for (const attr of Object.keys(additional)) {
-            if (attr === 'title' || attr === 'schedule' || attr === 'restartSchedule' || attr === 'mode' || attr === 'loglevel' || attr === 'enabled' || attr === 'custom') {
+            // preserve these attributes, except, they werde undefined before
+            if (attr === 'title' || attr === 'titleLang' || attr === 'schedule' || attr === 'restartSchedule' || attr === 'mode' || attr === 'loglevel' || attr === 'enabled' || attr === 'custom') {
                 if (target[attr] === undefined) {
                     target[attr] = additional[attr];
                 }
