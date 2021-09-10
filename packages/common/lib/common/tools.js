@@ -288,25 +288,24 @@ function getMac(callback) {
     });
 }
 
-// Is docker environment
+/**
+ * Checks if we are running inside a docker container
+ * @returns {boolean}
+ */
 function isDocker() {
-    let _isDocker = false;
     try {
         fs.statSync('/.dockerenv');
-        _isDocker = true;
+        return true;
     } catch {
         // ignore error
     }
-
-    let _isDockerGroup = false;
 
     try {
-        _isDockerGroup = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
+        // check docker group
+        return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
-        // ignore error
+        return false;
     }
-
-    return _isDocker || _isDockerGroup;
 }
 
 // Build unique uuid based on MAC address if possible
