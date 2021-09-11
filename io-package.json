@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.17",
+        "version": "3.3.18",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.18": {
+                "en": "Fix another edge case for UUID generation",
+                "de": "Beheben Sie einen weiteren Randfall für die UUID-Generierung",
+                "ru": "Исправить еще один крайний случай для генерации UUID",
+                "pt": "Corrigir outro caso extremo para a geração de UUID",
+                "nl": "Een andere edge-case repareren voor UUID-generatie",
+                "fr": "Correction d'un autre cas de bord pour la génération d'UUID",
+                "it": "Risolvi un altro caso limite per la generazione di UUID",
+                "es": "Arregle otro caso de borde para la generación de UUID",
+                "pl": "Napraw inny przypadek brzegowy do generowania UUID",
+                "zh-cn": "修复 UUID 生成的另一个边缘情况"
+            },
             "3.3.17": {
                 "en": "Fix edge case for UUID generation",
                 "de": "Edge-Case für UUID-Generierung behoben",

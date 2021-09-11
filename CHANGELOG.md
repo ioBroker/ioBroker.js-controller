@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.18 (2021-09-11)
 * (bluefox) Fix another edge case for UUID generation
 
 ## 3.3.17 (2021-09-09)
