@@ -368,7 +368,8 @@ function uuid(givenMac, callback) {
 }
 
 function updateUuid(newUuid, _objects, callback) {
-    uuid(newUuid, _uuid => {
+    uuid('', _uuid => {
+        _uuid = newUuid || _uuid;
         // Add vendor prefix to UUID
         if (fs.existsSync(VENDOR_FILE)) {
             try {
@@ -476,9 +477,7 @@ function createUuid(_objects, callback) {
                                 updateUuid('', _objects, __uuid => resolve(__uuid));
                             } else {
                                 if (data.uuid !== obj.native.uuid) {
-                                    updateUuid('', _objects, _uuid => resolve(_uuid));
-                                } else if (data.correct) {
-                                    updateUuid(data.uuid, _objects, _uuid => resolve(_uuid));
+                                    updateUuid(data.correct ? data.uuid : '', _objects, _uuid => resolve(_uuid));
                                 } else {
                                     // Show error
                                     console.warn(`Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`);
