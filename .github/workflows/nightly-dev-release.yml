@@ -56,7 +56,6 @@ jobs:
       if: steps.changes.outputs.result == 'ok'
       run: npm ci
 
-    # TODO: DO we need to do anything else before the tests?
     - name: Test
       if: steps.changes.outputs.result == 'ok'
       run: npm test
@@ -88,6 +87,9 @@ jobs:
       run: |
         npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
         npm whoami
+
+        git config --global user.email "moritz.heusinger@gmail.com"
+        git config --global user.name "Github Action"
 
         npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes
         npx lerna publish from-package --yes --dist-tag dev
