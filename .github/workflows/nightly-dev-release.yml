@@ -72,13 +72,29 @@ jobs:
           const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
           const sha = require("child_process").execSync("git rev-parse --short HEAD").toString("utf8").trim();
 
-          // Figure out the next version
-          const newVersion = `${semver.inc(
-            require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version,
-            "prerelease",
-          )}-${dateStr}-${sha}`;
+          const prevVersion = require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
 
-          return newVersion;
+          let prevVersionModified = `${semver.major(prevVersion)}.${semver.minor(prevVersion)}.${semver.patch(prevVersion)}`;
+          const prereleaseVersion = semver.prerelease(prevVersion);
+
+          // package should currently contain either a major.minor.patch version or a major.minor.patch-prerelease nightly
+          // if no prerelease we have null, otherwise an array
+          if (Array.isArray(prereleaseVersion) && prereleaseVersion.length === 3) {
+              // get the old prerelease w/o sha and date
+              prevVersionModified += `-${prereleaseVersion[0]}.${prereleaseVersion[1].split('-')[0]}`;
+          } else if (!prereleaseVersion) {
+              // no-prerelease yet increase patch and add alpha for first prerelease
+              prevVersionModified = semver.inc(prevVersionModified, 'patch');
+          } else {
+              prevVersionModified += `-${prereleaseVersion.join('.')}`;
+              console.warn(`Unknown version format for js-controller prereleases: ${prevVersion}`);
+          }
+
+          // Figure out the next version
+          return `${semver.inc(
+              prevVersionModified,
+              "prerelease",
+          )}-${dateStr}-${sha}`;
 
     - name: Bump version and publish
       if: steps.changes.outputs.result == 'ok'
