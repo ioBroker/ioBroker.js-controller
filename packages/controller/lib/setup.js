@@ -790,7 +790,7 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             upload.uploadFile(name, subTree, (err, newName) => {
-                                !err && console.log('File "' + name + '" is successfully saved under ' + newName);
+                                !err && console.log(`File "${name}" is successfully saved under ${newName}`);
                                 return void callback(err ? EXIT_CODES.CANNOT_UPLOAD_DATA : undefined);
                             });
                         } else {
