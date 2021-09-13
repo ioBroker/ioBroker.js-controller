@@ -78,15 +78,15 @@ jobs:
           const prereleaseIdentifier = parsed.prerelease[0] || "alpha";
 
           for (let i = 1; i < parsed.prerelease.length; i++) {
-          	const part = parsed.prerelease[i];
-          	if (typeof part === "number") {
+            const part = parsed.prerelease[i];
+            if (typeof part === "number") {
               continue;
             }
-          	// Parse stuff like `8-20210909-001a711c` back to `8`
-          	const numeric = parseInt(part);
-          	if (!Number.isNaN(numeric)) {
-          	  parsed.prerelease[i] = numeric;
-          	}
+            // Parse stuff like `8-20210909-001a711c` back to `8`
+            const numeric = parseInt(part);
+            if (!Number.isNaN(numeric)) {
+              parsed.prerelease[i] = numeric;
+            }
           }
 
           // Figure out the next version
