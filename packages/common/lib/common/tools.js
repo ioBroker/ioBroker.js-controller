@@ -457,7 +457,7 @@ function createUuid(_objects, callback) {
                 ];
 
                 // if COMMON invalid docker uuid
-                if (PROBLEM_UUIDS.find(u => u === obj.native.uuid)) {
+                if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
                     // Read vis license
                     _objects.getObject('system.adapter.vis.0', (err, licObj) => {
                         if (!licObj || !licObj.native || !licObj.native.license) {
