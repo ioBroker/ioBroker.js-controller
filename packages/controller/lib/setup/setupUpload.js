@@ -476,8 +476,11 @@ function Upload(options) {
         }
 
         let cfg;
-        if (fs.existsSync(adapterDir + '/io-package.json')) {
-            cfg = require(adapterDir + '/io-package.json');
+        try {
+            cfg = require(`${adapterDir}/io-package.json`);
+        } catch (e) {
+            // file not parsable or does not exist
+            console.error(`Could not read io-package.json: ${e.message}`);
         }
 
         if (!fs.existsSync(dir)) {
