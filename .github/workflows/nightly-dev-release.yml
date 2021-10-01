@@ -63,7 +63,7 @@ jobs:
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
-      uses: actions/github-script@v4
+      uses: actions/github-script@v5
       with:
         script: |
           const semver = require("semver");
