@@ -18,7 +18,7 @@
   "devDependencies": {
     "fs-extra": "^10.0.0",
     "semver": "^7.3.5",
-    "@alcalzone/release-script": "^2.2.1",
+    "@alcalzone/release-script": "^3.4.0",
     "@types/fs-extra": "^9.0.11",
     "lerna": "^4.0.0",
     "@types/event-stream": "^3.3.34",
