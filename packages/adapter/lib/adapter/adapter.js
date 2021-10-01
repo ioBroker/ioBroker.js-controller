@@ -1369,10 +1369,11 @@ function Adapter(options) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        const options = {preserve: {common: ['name']}};
+        // preserve attributes on instance creation
+        const options = {preserve: {common: ['name'], native: true}};
 
         try {
-            await this.extendForeignObject(task._id, task, options);
+            await this.extendForeignObjectAsync(task._id, task, options);
         } catch {
             // ignore
         }
@@ -1393,7 +1394,7 @@ function Adapter(options) {
         }
     };
 
-    const createInstancesObjects = (instanceObj, callback) => {
+    const createInstancesObjects = async (instanceObj, callback) => {
         let objs;
 
         if (instanceObj && instanceObj.common && !instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
@@ -1403,10 +1404,10 @@ function Adapter(options) {
         }
 
         if (instanceObj && instanceObj.instanceObjects) {
-            instanceObj.instanceObjects.forEach(async obj => {
+            for (const obj of instanceObj.instanceObjects) {
                 if (!obj._id.startsWith(this.namespace)) {
                     // instanceObjects are normally defined without namespace prefix
-                    obj._id = (obj._id === '') ? this.namespace : this.namespace + '.' + obj._id;
+                    obj._id = (obj._id === '') ? this.namespace : `${this.namespace}.${obj._id}`;
                 }
 
                 if (obj && (obj._id || obj.type === 'meta')) {
@@ -1443,9 +1444,9 @@ function Adapter(options) {
 
                     objs.push(obj);
                 } else {
-                    logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid instance object: ' + JSON.stringify(obj));
+                    logger.error(`${this.namespaceLog} ${options.name}.${instance} invalid instance object: ${JSON.stringify(obj)}`);
                 }
-            });
+            }
         }
 
         extendObjects(objs, callback);
