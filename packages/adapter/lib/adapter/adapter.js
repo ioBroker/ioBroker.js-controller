@@ -1770,15 +1770,18 @@ function Adapter(options) {
 
                     if (state.val !== null) {
                         // now check if type is correct, null is always allowed
-                        // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
-                        // array, object, file, json need to be string
-                        if (!(obj.common.type === 'mixed' && typeof state.val !== 'object' ||
+                        if (obj.common.type === 'file') {
+                            // file has to be set with setBinaryState
+                            logger.warn(`${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because it's object is of type "file"`);
+                        } else if (!(obj.common.type === 'mixed' && typeof state.val !== 'object' ||
                             obj.common.type !== 'object' && obj.common.type === typeof state.val ||
                             obj.common.type === 'array' && typeof state.val === 'string' ||
                             obj.common.type === 'json' && typeof state.val === 'string' ||
                             obj.common.type === 'file' && typeof state.val === 'string' ||
                             obj.common.type === 'object' && typeof state.val === 'string')
                         ) {
+                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
+                            // array, object, json need to be string
                             if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
                                 logger.info(`${this.namespaceLog} State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`);
                             } else {
@@ -7992,7 +7995,7 @@ function Adapter(options) {
          * @param {ioBroker.ErrorCallback} [callback]
          *
          */
-        this.setBinaryState = (id, binary, options, callback) => {
+        this.setBinaryState = async (id, binary, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
@@ -8002,6 +8005,32 @@ function Adapter(options) {
                 validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
+            }
+
+            if (this.performStrictObjectChecks) {
+                // obj needs to exist and has to be of type "file" - custom check for binary state
+                try {
+                    if (!adapterObjects) {
+                        this.log.info('setBinaryState not processed because Objects database not connected');
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    const obj = await adapterObjects.getObjectAsync(id);
+
+                    // at first check object existence
+                    if (!obj) {
+                        logger.warn(`${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`);
+                    }
+
+                    // for a state object we require common.type to exist
+                    if (obj.common && obj.common.type) {
+                        if (obj.common.type !== 'file') {
+                            logger.info(`${this.namespaceLog} Binary state object has to be type "file" but is "${obj.common.type}"`);
+                        }
+                    }
+                } catch (e) {
+                    logger.warn(`${this.namespaceLog} Could not perform strict object check of binary state ${id}: ${e.message}`);
+                }
             }
 
             if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
