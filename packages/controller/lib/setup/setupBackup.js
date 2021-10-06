@@ -649,36 +649,38 @@ class BackupRestore {
 
     restoreAfterStop(restartOnFinish, callback) {
         // Open file
-        let data = fs.readFileSync(tmpDir + '/backup/backup.json', 'utf8');
+        let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
         data = data.replace(/\$\$__hostname__\$\$/g, hostname);
-        fs.writeFileSync(tmpDir + '/backup/backup_.json', data);
+        fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
         let restore;
         try {
             restore = JSON.parse(data);
         } catch (e) {
-            console.error('Cannot parse "' + tmpDir + '/backup/backup_.json": ' + e);
+            console.error(`Cannot parse "${tmpDir}/backup/backup_.json": ${e.message}`);
             if (callback) {
                 callback(31);
             }
         }
 
         // stop all adapters
-        console.log('host.' + hostname + ' Clear all objects and states...');
+        console.log(`host.${hostname} Clear all objects and states...`);
         this.cleanDatabase(false, () => {
-            console.log('host.' + hostname + ' done.');
+            console.log(`host.${hostname} done.`);
             // upload all data into DB
-            // restore ioBorker.json
-            if (restore.config) {
+            // restore iobroker.json
+            if (restore.config && restore.config.system) {
+                // it has the old hostname, we need to replace with the new one
+                restore.config.system.hostname = hostname;
                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(restore.config, null, 2));
             }
 
             const sList = Object.keys(restore.states);
 
             this._setStateHelper(sList, restore.states, () => {
-                console.log(sList.length + ' states restored.');
+                console.log(`${sList.length} states restored.`);
                 this._setObjHelper(restore.objects, () => {
-                    console.log(restore.objects.length + ' objects restored.');
+                    console.log(`${restore.objects.length} objects restored.`);
                     // Required for upload adapter
                     this.mime = this.mime || require('mime');
                     // Load user files into DB
@@ -894,7 +896,7 @@ class BackupRestore {
             backups.sort((a, b) => b > a ? 1 : (b === a ? 0 : -1));
             if (backups.length) {
                 backups.forEach((backup, i) =>
-                    console.log(backup + ' or ' + backup.replace('_backup' + tools.appName + '.tar.gz', '') + ' or ' + i));
+                    console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`));
             } else {
                 console.warn('No backups found');
             }
@@ -918,10 +920,10 @@ class BackupRestore {
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     backups.forEach((backup, i) =>
-                        console.log(backup + ' or ' + backup.replace('_backup' + tools.appName + '.tar.gz', '') + ' or ' + i));
+                        console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`));
                 } // endIf
             } else {
-                console.log('host.' + hostname + ' Using backup file ' + name);
+                console.log(`host.${hostname} Using backup file ${name}`);
             }
         }
 
@@ -950,11 +952,11 @@ class BackupRestore {
             cwd: tmpDir
         }, err => {
             if (err) {
-                console.error('host.' + hostname + ' Cannot extract from file "' + name + '"');
+                console.error(`host.${hostname} Cannot extract from file "${name}"`);
                 return this.processExit(9);
             }
-            if (!fs.existsSync(tmpDir + '/backup/backup.json')) {
-                console.error('host.' + hostname + ' Cannot find extracted file from file "' + tmpDir + '/backup/backup.json"');
+            if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
+                console.error(`host.${hostname} Cannot find extracted file from file "${tmpDir}/backup/backup.json"`);
                 return this.processExit(9);
             }
             // Stop controller
@@ -968,7 +970,7 @@ class BackupRestore {
             daemon.on('error', (/* error */) => this.restoreAfterStop(false, callback));
             daemon.on('stopped', () => this.restoreAfterStop(true, callback));
             daemon.on('notrunning', () => {
-                console.log('host.' + hostname + ' OK.');
+                console.log(`host.${hostname} OK.`);
                 this.restoreAfterStop(false, callback);
             });
 

@@ -1015,7 +1015,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, (_obj, _stat, isNotRun) => {
 
                 if (!isNotRun) {
-                    console.error('Stop ' + tools.appName + ' first!');
+                    console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                 }
 
