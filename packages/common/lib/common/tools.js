@@ -15,6 +15,7 @@ const {detectPackageManager} = require('@alcalzone/pak');
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
 let request;
+let axios;
 let extend;
 let password;
 let npmVersion;
@@ -729,7 +730,15 @@ function getInstalledInfo(hostRunningVersion) {
     }
     scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
     scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
-
+    if (fs.existsSync(path.join(__dirname, '../../../node_modules'))) {
+        scanDirectory(path.join(__dirname, '../../../node_modules'), result, regExp);
+    }
+    if (fs.existsSync(path.join(__dirname, '../../../../node_modules'))) {
+        scanDirectory(path.join(__dirname, '../../../../node_modules'), result, regExp);
+    }
+    if (fs.existsSync(path.join(__dirname, '../../../../../node_modules'))) {
+        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
+    }
     if (
         fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
         fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName}.js-controller`))
@@ -876,7 +885,7 @@ function _getRepositoryFile(sources, path, callback) {
                     }
                 }
                 if (callback) {
-                    callback('Timeout by read all package.json (' + count + ') seconds', sources);
+                    callback(`Timeout by read all package.json (${count}) seconds`, sources);
                 }
                 callback = null;
             }
@@ -924,6 +933,7 @@ function _getRepositoryFile(sources, path, callback) {
             return;
         }
     }
+
     // all packages are processed
     if (sources._helper) {
         let err;
@@ -993,7 +1003,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
  *
  * @alias getRepositoryFile
  * @memberof tools
- * @param {string} urlOrPath URL stargin with http:// or https:// or local file link
+ * @param {string} urlOrPath URL starting with http:// or https:// or local file link
  * @param {object} additionalInfo destination object
  * @param {function} callback function (err, sources, actualHash) { }
  *
@@ -1084,6 +1094,60 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
     }
 }
 
+/**
+ * Read on repository
+ *
+ * @alias getRepositoryFileAsync
+ * @memberof tools
+ * @param {string} url URL starting with http:// or https:// or local file link
+ * @param {string} hash actual hash
+ * @param {boolean} force Force repository update despite on hash
+ * @param {object} _actualRepo Actual repository
+ *
+ */
+async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
+    let _hash;
+    if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
+        axios = axios || require('axios');
+        _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+        if (hash === _hash.hash) {
+            return _actualRepo;
+        }
+    }
+
+    let data;
+
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        axios = axios || require('axios');
+        if (!_hash) {
+            _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+        }
+
+        if (_actualRepo && hash && _hash.hash === hash) {
+            data = _actualRepo;
+        } else {
+            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../package.json').version}`;
+            data = await axios({
+                url,
+                timeout: 10000,
+                headers: { 'User-Agent': agent }
+            });
+        }
+    } else {
+        if (fs.existsSync(url)) {
+            try {
+                data = JSON.parse(fs.readFileSync(url).toString('utf8'));
+            } catch (e) {
+                throw new Error(`Error: Cannot read or parse file "${url}": ${e}`);
+            }
+        } else {
+            throw new Error(`Error: Cannot find file "${url}"`);
+        }
+    }
+
+    return {json: data, changed: hash !== _hash.hash, hash: _hash.hash};
+}
+
 function sendDiagInfo(obj, callback) {
     request = request || require('request');
 
@@ -1141,6 +1205,14 @@ function getAdapterDir(adapter) {
         // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
         if (fs.existsSync(`${__dirname}/../../${possibility}`)) {
             adapterPath = `${__dirname}/../../${possibility}`;
+        } else if (fs.existsSync(`${__dirname}/../../../${possibility}`)) {
+            adapterPath = `${__dirname}/../../../${possibility}`;
+        } else if (fs.existsSync(`${__dirname}/../../../../${possibility}`)) {
+            adapterPath = `${__dirname}/../../../../${possibility}`;
+        } else if (fs.existsSync(`${__dirname}/../../../../../${possibility}`)) {
+            adapterPath = `${__dirname}/../../../../../${possibility}`;
+        } else if (fs.existsSync(`${__dirname}/../../../../../node_modules/${possibility}`)) {
+            adapterPath = `${__dirname}/../../../../../node_modules/${possibility}`;
         } else {
             try {
                 adapterPath = require.resolve(possibility);
@@ -1679,17 +1751,18 @@ function getHostInfo(objects, callback) {
     let task = 0;
     task++;
     objects.getObject('system.config', (_err, systemConfig) => {
-        objects.getObject('system.repositories', (err, repos) => {
+        objects.getObject('system.repositories', (err, systemRepos) => {
             // Check if repositories exists
-            if (!err && repos && repos.native && repos.native.repositories) {
-                const repo = repos.native.repositories[systemConfig.common.activeRepo];
-                if (repo && repo.json) {
-                    data['adapters count'] = Object.keys(repo.json).length;
-                }
+            let allRepos = {};
+            if (!err && systemRepos && systemRepos.native && systemRepos.native.repositories) {
+                const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
+                repos
+                    .filter(repo => systemRepos.native.repositories[repo].json && systemRepos.native.repositories[repo].json)
+                    .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
+
+                data['adapters count'] = Object.keys(allRepos).length;
             }
-            if (!--task) {
-                callback(err, data);
-            }
+            !--task && callback(err, data);
         });
     });
 
@@ -3058,6 +3131,7 @@ module.exports = {
     getJson,
     getInstancesOrderedByStartPrio,
     getRepositoryFile,
+    getRepositoryFileAsync,
     getSystemNpmVersion,
     installNodeModule,
     uninstallNodeModule,

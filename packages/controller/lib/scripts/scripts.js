@@ -25,7 +25,7 @@ function httpsGet(link, callback) {
     });
 }
 
-const stableURL = 'https://raw.githubusercontent.com/' + tools.appName + '/' + tools.appName + '.repositories/master/sources-dist-stable.json';
+const stableURL = `https://raw.githubusercontent.com/${tools.appName}/${tools.appName}.repositories/master/sources-dist-stable.json`;
 
 function updateVersion(name, callback, _sources) {
     if (!_sources) {
@@ -41,7 +41,7 @@ function updateVersion(name, callback, _sources) {
     child.stderr.pipe(process.stdout);
     child.on('exit', function (code /* , signal */) {
         if (code) {
-            console.error('host.' + tools.getHostName() + ' Cannot get version of  ' +  tools.appName + '.' + name + ': ' + code);
+            console.error(`host.${tools.getHostName()} Cannot get version of  ${tools.appName}.${name}: ${code}`);
             callback(code, _sources, name, null);
         } else {
             _sources[name].version = result;

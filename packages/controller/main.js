@@ -1958,76 +1958,75 @@ async function processMessage(msg) {
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             // if user selected 'none' we will have null here and do not want to send it
-                            if (obj) {
-                                tools.sendDiagInfo(obj);
-                            }
+                            obj && tools.sendDiagInfo(obj);
                         } catch (err) {
                             logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
                         }
                     }
 
-                    objects.getObject('system.repositories', (err, repos) => {
-                        // Check if repositories exists
-                        if (!err && repos && repos.native && repos.native.repositories) {
-                            let updateRepo = false;
-                            if (tools.isObject(msg.message)) {
-                                updateRepo  = msg.message.update;
-                                msg.message = msg.message.repo;
-                            }
+                    const globalRepo = {};
 
-                            const active = msg.message || systemConfig.common.activeRepo;
+                    const systemRepos = await objects.getObjectAsync('system.repositories');
 
-                            if (repos.native.repositories[active]) {
+                    // Check if repositories exists
+                    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+                        let updateRepo = false;
+                        if (tools.isObject(msg.message)) {
+                            updateRepo  = msg.message.update;
+                            msg.message = msg.message.repo;
+                        }
 
-                                if (typeof repos.native.repositories[active] === 'string') {
-                                    repos.native.repositories[active] = {
-                                        link: repos.native.repositories[active],
+                        let active = msg.message || systemConfig.common.activeRepo;
+
+                        if (!Array.isArray(active)) {
+                            active = [active];
+                        }
+
+                        let changed = false;
+
+                        for (let r = 0; r < active.length; r++) {
+                            const repo = active[r];
+                            if (systemRepos.native.repositories[repo]) {
+                                if (typeof systemRepos.native.repositories[repo] === 'string') {
+                                    systemRepos.native.repositories[repo] = {
+                                        link: systemRepos.native.repositories[repo],
                                         json: null
                                     };
+                                    changed = true;
                                 }
 
                                 // If repo is not yet loaded
-                                if (!repos.native.repositories[active].json || updateRepo) {
-                                    logger.info(`${hostLogPrefix} Updating repository "${active}" under "${repos.native.repositories[active].link}"`);
-                                    // Load it
-                                    tools.getRepositoryFile(repos.native.repositories[active].link, {
-                                        hash: repos.native.repositories[active].hash,
-                                        sources: repos.native.repositories[active].json,
-                                        controller: version,
-                                        node: process.version,
-                                        name: tools.appName
-                                    }, (err, sources, sourcesHash) => {
-                                        if (err) {
-                                            logger.warn(hostLogPrefix + ' warning: ' + err);
+                                if (!systemRepos.native.repositories[repo].json || updateRepo) {
+                                    logger.info(`${hostLogPrefix} Updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
+                                    try {
+                                        const result = await tools.getRepositoryFileAsync(
+                                            systemRepos.native.repositories[repo].link,
+                                            systemRepos.native.repositories[repo].hash,
+                                            updateRepo,
+                                            systemRepos.native.repositories[repo].json
+                                        );
+
+                                        if (result && result.json && result.changed) {
+                                            systemRepos.native.repositories[repo].json = result.json;
+                                            systemRepos.native.repositories[repo].hash = result.hash || '';
+                                            changed = true;
                                         }
-                                        if (!sources || !Object.keys(sources).length) {
-                                            logger.warn(hostLogPrefix + ' warning: empty repo received!');
-                                            if (repos.native.repositories[active].json) {
-                                                // We have already repo, give it back
-                                                sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
-                                            } else {
-                                                sendTo(msg.from, msg.command, null, msg.callback);
-                                            }
-                                        } else {
-                                            repos.native.repositories[active].json = sources;
-                                            repos.native.repositories[active].hash = sourcesHash || '';
-                                            sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
-                                            repos.from = 'system.host.' + tools.getHostName();
-                                            repos.ts = Date.now();
-                                            // Store uploaded repo
-                                            objects.setObject('system.repositories', repos);
-                                        }
-                                    });
-                                } else {
-                                    // We have already repo, give it back
-                                    sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+                                    } catch (e) {
+                                        logger.error(`${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e}`);
+                                    }
+                                }
+
+                                if (systemRepos.native.repositories[repo].json) {
+                                    Object.assign(globalRepo, systemRepos.native.repositories[repo].json);
                                 }
                             } else {
-                                logger.warn(`${hostLogPrefix} Requested repository "${active}" does not exist in config.`);
-                                sendTo(msg.from, msg.command, null, msg.callback);
+                                logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
                             }
                         }
-                    });
+                        changed && (await objects.setObjectAsync('system.repositories', systemRepos));
+                    }
+
+                    sendTo(msg.from, msg.command, globalRepo, msg.callback);
                 });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -3355,10 +3354,10 @@ async function startInstance(id, wakeUp) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({
-            id: id,
+            id,
             version: instance.common.installedVersion || instance.common.version,
             installedFrom: instance.common.installedFrom,
-            wakeUp: wakeUp
+            wakeUp
         });
         // start install queue if not started
         if (installQueue.length === 1) {
