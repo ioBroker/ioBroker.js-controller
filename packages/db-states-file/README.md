@@ -1,6 +1,70 @@
 # File DB states classes for ioBroker
 The Library contains the Database classes for File based states database client and server.
 
+# Redis simulator
+The states db client is always a redis client, but if the databse type is file, it will communicate with a built-in redis simulator instead of a real redis db.
+Currently, the following commands are supported by the simulator for states db:
+
+## Overview
+| Command      | State of integration |
+| ----------- | ----------- |
+| info      | partial       |
+| quit      | full       |
+| publish      | full       |
+| mget      | full       |
+| get      | full       |
+| set      | full       |
+| setex      | full       |
+| del      | full       |
+| keys      | full       |
+| psubscribe      | full       |
+| punsubscribe      | full       |
+| subscribe      | dummy       |
+| config      | dummy       |
+| client      | partial       |
+
+## info
+Returns infomration about the simulator.
+
+## quit
+This will close the connection.
+
+## publish
+On publish the server will publish to all clients who have subscribed to the states, just like redis does.
+
+## mget
+`mget` is used to receive multiple states from the server.
+
+## get
+`get` is used to receive a single state from the server.
+
+## set
+`set` is used to set a state to the database.
+
+## setex
+`setex` is used to set a state to the database which automatically expires after a given time.
+
+## del
+`del` deletes a given state from the db.
+
+## keys
+It returns all matching keys.
+
+## psubscribe
+Subscribes for a pattern to receive state changes.
+
+## punsubscribe
+Unsubscribes a pattern to no longer receive state changes.
+
+## subscribe
+Just a dummy needed to acknowledge expiring keys.
+
+## config
+Mainly a dummy, just sends a positive response if `notify-keyspace-events` request received.
+
+## client
+Is used to handle `setname` and `getname` requests. `setname` is used to change the logging namespace. On `getname` the server will respond with the current connection name, which has been set via `getname`.
+
 ## License
 The MIT License (MIT)
 

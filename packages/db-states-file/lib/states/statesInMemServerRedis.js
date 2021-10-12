@@ -163,7 +163,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             infoString += '# CPU\r\n';
             infoString += '# Cluster\r\n';
             infoString += '# Keyspace\r\n';
-            infoString += 'db0:keys=' + Object.keys(this.dataset).length + ',expires=' + (Object.keys(this.stateExpires).length + Object.keys(this.sessionExpires).length) + ',avg_ttl=98633637897';
+            infoString += `db0:keys=${Object.keys(this.dataset).length},expires=${Object.keys(this.stateExpires).length + Object.keys(this.sessionExpires).length},avg_ttl=98633637897`;
             handler.sendBulk(responseId, infoString);
         });
 

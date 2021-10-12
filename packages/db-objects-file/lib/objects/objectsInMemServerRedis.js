@@ -661,7 +661,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
         });
 
-        handler.on('error', err => this.log.warn(`${namespaceLog} Redis states: ${err}`));
+        handler.on('error', err => this.log.warn(`${namespaceLog} Redis objects: ${err}`));
     }
 
     /**
