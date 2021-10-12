@@ -2,7 +2,7 @@
 The Library contains the Database classes for File based states database client and server.
 
 # Redis simulator
-The states db client is always a redis client, but if the databse type is file, it will communicate with a built-in redis simulator instead of a real redis db.
+The states db client is always a redis client, but if the database type is file, it will communicate with a built-in redis simulator instead of a real redis db.
 Currently, the following commands are supported by the simulator for states db:
 
 ## Overview
