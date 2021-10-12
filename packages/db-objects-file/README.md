@@ -1,11 +1,15 @@
 # File objects DB base classes for ioBroker
 The Library contains the Database classes for File based objects database client and server.
 
-# Redis simulator
+## Redis simulator
 The objects db client is always a redis client, but if the database type is file, it will communicate with a built-in redis simulator instead of a real redis db.
+
+In the js-controller we use [ioredis](https://github.com/luin/ioredis), the library supports all redis commands by simply calling them on the client instance, like `redis.set("foo", "bar")`. 
+For an explanation of the commands in native redis, we refer to the [redis documentation](https://redis.io/commands).
+
 Currently, the following commands are supported by the simulator for objects db:
 
-## Overview: Objects db and general functionalities
+### Overview: Objects db and general functionalities
 | Command      | State of integration |
 | ----------- | ----------- |
 | quit      | full       |
@@ -24,7 +28,7 @@ Currently, the following commands are supported by the simulator for objects db:
 | config      | dummy       |
 | client      | partial       |
 
-## Overview: File db specific
+### Overview: File db specific
 | Command      | State of integration |
 | ----------- | ----------- |
 | mget      | full       |
@@ -36,52 +40,52 @@ Currently, the following commands are supported by the simulator for objects db:
 | scan      | full       |
 | keys      | full       |
 
-## quit
+### quit
 This will close the connection.
 
-## script
+### script
 When receiving a script, the server mocks the methods `load` and `exists`, load will store a `func`or `design` script in memory. On an `exists` request, the server will return all known scripts.
 
-## evalsha
+### evalsha
 Evalsha can be used to execute a stored script.
 
-## publish
+### publish
 On publish the server will publish to all clients who have subscribed to the objects, just like redis does.
 
-## mget
+### mget
 `mget` is used to receive multiple objects/files from the server.
 
-## get
+### get
 `get` is used to receive a single object/file from the server.
 
-## set
+### set
 `set` is used to set an object/file to the database.
 
-## rename
+### rename
 `rename` allows renaming a `file`.
 
-## del
+### del
 `del` deletes a given object/file from the db.
 
-## exists
+### exists
 `exists` checks if a given object/file exists in the database.
 
-## scan
+### scan
 `scan` is just like `keys` and returns all matching keys, but addtionally it returns the counter (always 0) to satisfy the redis client.
 
-## keys
+### keys
 It returns all matching keys.
 
-## psubscribe
+### psubscribe
 Subscribes for a pattern to receive object changes.
 
-## punsubscribe
+### punsubscribe
 Unsubscribes a pattern to no longer receive object changes.
 
-## config
+### config
 Mainly a dummy, just sends a positive response if `lua-time-limit` change received.
 
-## client
+### client
 Is used to handle `setname` and `getname` requests. `setname` is used to change the logging namespace. On `getname` the server will respond with the current connection name, which has been set via `getname`.
 
 ## License
