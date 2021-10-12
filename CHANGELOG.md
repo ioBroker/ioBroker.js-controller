@@ -7,7 +7,7 @@
 ## 4.0.0 (2021-xx-xx) Release I...
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x and 14.x and 16.x (Node.js 16.x is working WHEN USED WITH npm 6!!... still in testing phase)
-
+* CLI command `iob update --updateable` changed to `iob update --updatable`
 * WORK IN PROGRESS - Use at own risk!
 
 ## 3.3.18 (2021-07-26 - 2021-09-11) Release Hannah
