@@ -1,7 +1,6 @@
 'use strict';
 
-const {tools} = require('@iobroker/js-controller-common');
-const fs = require("fs");
+const fs = require('fs');
 
 /** @class */
 function Repo(options) {
@@ -171,7 +170,7 @@ function Repo(options) {
             console.log('Used repository: ' + repoUrl);
 
             if (typeof repoUrl !== 'object') {
-                repoUrl = [repoUrl]
+                repoUrl = [repoUrl];
             }
             const allSources = {};
 

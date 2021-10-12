@@ -1737,7 +1737,7 @@ async function processCommand(command, args, params, callback) {
             const json = {
                 name: tools.appName,
                 engines: {
-                    node: '>=10'
+                    node: '>=12'
                 },
                 optionalDependencies: {
                 },
