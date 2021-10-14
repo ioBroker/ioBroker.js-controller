@@ -526,14 +526,10 @@ function register(it, expect, context) {
 
     // message
     // update
-    it(testName + 'update', async () => {
+    it.only(testName + 'update', async () => {
         let res;
         // check update
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
-        expect(res.stderr).to.be.not.ok;
-
-        // check update with repo url
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update http://download.iobroker.net/sources-dist.json`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(40000);
 
