@@ -1757,7 +1757,7 @@ function getHostInfo(objects, callback) {
             if (!err && systemRepos && systemRepos.native && systemRepos.native.repositories) {
                 const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
                 repos
-                    .filter(repo => systemRepos.native.repositories[repo].json && systemRepos.native.repositories[repo].json)
+                    .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
                     .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
 
                 data['adapters count'] = Object.keys(allRepos).length;
