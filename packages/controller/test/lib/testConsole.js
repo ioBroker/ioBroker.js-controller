@@ -526,7 +526,7 @@ function register(it, expect, context) {
 
     // message
     // update
-    it.only(testName + 'update', async () => {
+    it(testName + 'update', async () => {
         let res;
         // check update
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
