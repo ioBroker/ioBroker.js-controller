@@ -198,7 +198,7 @@ function Repo(options) {
 
             showRepoResult(null, allSources);
         }
-    }
+    };
 
     function writeUpdateInfo(instances, num, list, callback) {
         if (!instances || !instances.length) {
