@@ -2489,7 +2489,7 @@ async function getRepository(repoName, params) {
     }
 
     const systemRepos = await objects.getObjectAsync('system.repositories');
-    let allSources = {};
+    const allSources = {};
     let changed = false;
     let anyFound = false;
     for (let r = 0; r < repoName.length; r++) {

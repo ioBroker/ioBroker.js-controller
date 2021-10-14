@@ -1753,7 +1753,7 @@ function getHostInfo(objects, callback) {
     objects.getObject('system.config', (_err, systemConfig) => {
         objects.getObject('system.repositories', (err, systemRepos) => {
             // Check if repositories exists
-            let allRepos = {};
+            const allRepos = {};
             if (!err && systemRepos && systemRepos.native && systemRepos.native.repositories) {
                 const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
                 repos

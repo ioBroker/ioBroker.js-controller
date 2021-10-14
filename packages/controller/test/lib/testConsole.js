@@ -527,9 +527,8 @@ function register(it, expect, context) {
     // message
     // update
     it(testName + 'update', async () => {
-        let res;
         // check update
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(40000);
 
