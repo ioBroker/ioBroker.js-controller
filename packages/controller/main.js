@@ -592,7 +592,7 @@ function createObjects(onConnect) {
                 return;
             }
             try {
-                logger.debug(hostLogPrefix + ' object change ' + id + ' (from: ' + (obj ? obj.from : null) + ')');
+                logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
                 // known adapter
                 if (procs[id]) {
                     // if adapter deleted
@@ -608,13 +608,13 @@ function createObjects(onConnect) {
                         procs[id].config.common.host    = null;
                         procs[id].config.deleted        = true;
                         delete hostAdapter[id];
-                        logger.info(hostLogPrefix + ' object deleted ' + id);
+                        logger.info(`${hostLogPrefix} object deleted ${id}`);
                     } else {
                         if (procs[id].config.common.enabled  && !obj.common.enabled) {
-                            logger.info(hostLogPrefix + ' "' + id + '" disabled');
+                            logger.info(`${hostLogPrefix} "${id}" disabled`);
                         }
                         if (!procs[id].config.common.enabled &&  obj.common.enabled) {
-                            logger.info(hostLogPrefix + ' "' + id + '" enabled');
+                            logger.info(`${hostLogPrefix} "${id}" enabled`);
                             procs[id].downloadRetry = 0;
                         }
 
@@ -698,7 +698,7 @@ function createObjects(onConnect) {
                 }
             } catch (err) {
                 if (!compactGroupController || (obj && obj.common && obj.common.runAsCompactMode && obj.common.compactGroup === compactGroup)) {
-                    logger.error(hostLogPrefix + ' cannot process: ' + id + ': ' + err + ' / ' + err.stack);
+                    logger.error(`${hostLogPrefix} cannot process: ${id}: ${err} / ${err.stack}`);
                 }
             }
         }
@@ -773,7 +773,7 @@ function reportStatus() {
                 outputCount++;
             }
         } catch (err) {
-            logger.error(hostLogPrefix + ' Cannot read /proc/meminfo: ' + err);
+            logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
         }
     }
 
@@ -781,7 +781,7 @@ function reportStatus() {
         lastDiskSizeCheck = Date.now();
         tools.getDiskInfo(os.platform(), (err, info) => {
             if (err) {
-                logger.error(hostLogPrefix + ' Cannot read disk size: ' + err);
+                logger.error(`${hostLogPrefix} Cannot read disk size: ${err}`);
             }
             try {
                 if (info) {
@@ -790,7 +790,7 @@ function reportStatus() {
                     outputCount+=2;
                 }
             } catch (e) {
-                logger.error(hostLogPrefix + ' Cannot read disk information: ' + e);
+                logger.error(`${hostLogPrefix} Cannot read disk information: ${e}`);
             }
         });
     }
@@ -858,7 +858,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         try {
             subs = JSON.parse(state.val);
         } catch {
-            logger.error(hostLogPrefix + ' Cannot parse subscribes: ' + state.val);
+            logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
             return typeof callback === 'function' && setImmediate(() => callback());
         }
         let modified = false;
@@ -914,7 +914,7 @@ function delObjects(objs, callback) {
     } else {
         const row = objs.shift();
         if (row && row.id) {
-            logger.info(hostLogPrefix + ' Delete state "' + row.id + '"');
+            logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
             if (row.value && row.value.type === 'state') {
                 states.delState(row.id, (/* err */) =>
                     objects.delObject(row.id, (/* err */) =>
@@ -961,7 +961,7 @@ function checkHost(callback) {
                 } else {
                     // reassign all instances
                     changeHost(doc.rows, oldHostname, hostname, () => {
-                        logger.info(hostLogPrefix + ' Delete host ' + oldId);
+                        logger.info(`${hostLogPrefix} Delete host ${oldId}`);
 
                         // delete host object
                         objects.delObject(oldId, () =>
@@ -1296,7 +1296,7 @@ function setMeta() {
             newObj.ts = Date.now();
             objects.setObject(id, newObj, err => {
                 if (err) {
-                    logger.error(hostLogPrefix + ' Cannot write host object:' + err);
+                    logger.error(`${hostLogPrefix} Cannot write host object:${err}`);
                 } else {
                     setIPs(newObj.common.address);
                 }
@@ -1730,10 +1730,10 @@ function setMeta() {
             // create UUID if not exist
             if (!compactGroupController) {
                 tools.createUuid(objects, uuid => {
-                    uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
+                    uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
 
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                        logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
+                        logger && logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
                         try {
                             let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
                             startScript = JSON.parse(startScript);
@@ -1742,7 +1742,7 @@ function setMeta() {
                                 const Vendor = require('./lib/setup/setupVendor');
                                 const vendor = new Vendor({objects});
 
-                                logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
+                                logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                                 vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
                                     .then(() => {
                                         logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
