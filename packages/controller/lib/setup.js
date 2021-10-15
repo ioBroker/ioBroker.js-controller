@@ -1080,7 +1080,7 @@ async function processCommand(command, args, params, callback) {
         case 'l':
         case 'list': {
             dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
-                const List = require('./setup/setupList.js');
+                const {setupList: List} = require('@iobroker/js-controller-cli');
                 const list = new List({
                     states:      states,
                     objects:     objects,
@@ -1121,7 +1121,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1154,7 +1154,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states:      states,
                                     objects:     objects,
@@ -1202,7 +1202,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1236,7 +1236,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states:      states,
                                     objects:     objects,
@@ -1294,7 +1294,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1328,7 +1328,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states:      states,
                                     objects:     objects,
@@ -1394,7 +1394,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1430,7 +1430,7 @@ async function processCommand(command, args, params, callback) {
                         } else {
                             // call here list
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states: states,
                                     objects: objects,
