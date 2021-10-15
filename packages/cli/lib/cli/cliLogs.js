@@ -36,7 +36,7 @@ module.exports = class CLILogs extends CLICommand {
         };
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
-        const logger = require('../logger')(config.log);
+        const logger = require('@iobroker/js-controller-common/lib/common/logger')(config.log);
         let fileName = logger.getFileName();
         if (fileName) {
             let lines = fs.readFileSync(fileName).toString('utf-8').split('\n');
@@ -111,7 +111,7 @@ module.exports = class CLILogs extends CLICommand {
      */
     isTodaysLogfile(path) {
         const YYYYMMDDDate = new Date().toJSON().slice(0, 10);
-        return path.indexOf(YYYYMMDDDate) > -1;
+        return path.includes(YYYYMMDDDate);
     }
 
     /**
@@ -123,7 +123,7 @@ module.exports = class CLILogs extends CLICommand {
     streamChange(path, start, options) {
         const input = fs.createReadStream(path, {
             encoding: 'utf8',
-            start: start,
+            start,
             autoClose: true
         });
         if (options.adapterName) {
@@ -131,7 +131,7 @@ module.exports = class CLILogs extends CLICommand {
             input
                 .pipe(es.split())
                 // @ts-ignore
-                .pipe(es.filterSync(line => line.indexOf(options.adapterName) > -1))
+                .pipe(es.filterSync(line => line.includes(options.adapterName)))
                 .pipe(es.mapSync(line => line + os.EOL))
                 .pipe(process.stdout)
             ;

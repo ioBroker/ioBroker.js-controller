@@ -1037,7 +1037,7 @@ async function collectDiagInfo(type) {
             objectsType:    config.objects.type // redis or file
         };
         if (type === 'extended' || type === 'no-city') {
-            const cpus     = os.cpus();
+            const cpus   = os.cpus();
 
             diag.country = systemConfig.common.country;
             diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
