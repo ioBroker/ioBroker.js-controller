@@ -288,25 +288,24 @@ function getMac(callback) {
     });
 }
 
-// Is docker environment
+/**
+ * Checks if we are running inside a docker container
+ * @returns {boolean}
+ */
 function isDocker() {
-    let _isDocker = false;
     try {
         fs.statSync('/.dockerenv');
-        _isDocker = true;
+        return true;
     } catch {
         // ignore error
     }
-
-    let _isDockerGroup = false;
 
     try {
-        _isDockerGroup = fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
+        // check docker group
+        return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
-        // ignore error
+        return false;
     }
-
-    return _isDocker || _isDockerGroup;
 }
 
 // Build unique uuid based on MAC address if possible
@@ -369,7 +368,8 @@ function uuid(givenMac, callback) {
 }
 
 function updateUuid(newUuid, _objects, callback) {
-    uuid(newUuid, _uuid => {
+    uuid('', _uuid => {
+        _uuid = newUuid || _uuid;
         // Add vendor prefix to UUID
         if (fs.existsSync(VENDOR_FILE)) {
             try {
@@ -457,17 +457,17 @@ function createUuid(_objects, callback) {
                 ];
 
                 // if COMMON invalid docker uuid
-                if (PROBLEM_UUIDS.find(u => u === obj.native.uuid)) {
+                if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
                     // Read vis license
-                    _objects.getObject('system.adapter.vis.0', (err, obj) => {
-                        if (!obj || !obj.native || !obj.native.license) {
+                    _objects.getObject('system.adapter.vis.0', (err, licObj) => {
+                        if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
                             updateUuid('',  _objects, _uuid => resolve(_uuid));
                         } else {
                             // decode obj.native.license
                             let data;
                             try {
-                                data = jwt.decode(obj.native.license);
+                                data = jwt.decode(licObj.native.license);
                             } catch {
                                 data = null;
                             }
@@ -477,9 +477,7 @@ function createUuid(_objects, callback) {
                                 updateUuid('', _objects, __uuid => resolve(__uuid));
                             } else {
                                 if (data.uuid !== obj.native.uuid) {
-                                    updateUuid('', _objects, _uuid => resolve(_uuid));
-                                } else if (data.correct) {
-                                    updateUuid(data.uuid, _objects, _uuid => resolve(_uuid));
+                                    updateUuid(data.correct ? data.uuid : '', _objects, _uuid => resolve(_uuid));
                                 } else {
                                     // Show error
                                     console.warn(`Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`);

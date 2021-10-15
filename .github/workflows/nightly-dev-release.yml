@@ -20,7 +20,7 @@ jobs:
         fetch-depth: 0 # Fetch the history, or this action won't work
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.4.0
+      uses: actions/setup-node@v2.4.1
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
@@ -44,11 +44,18 @@ jobs:
           echo "::set-output name=result::ok"
         fi
 
+    - name: Prepare installation
+      if: steps.changes.outputs.result == 'ok'
+      run: |
+        sudo add-apt-repository ppa:chris-lea/redis-server -y
+        sudo apt-get update -q
+        sudo apt-get install redis-server redis-sentinel -y
+        sudo systemctl start redis-server
+
     - name: Install dependencies
       if: steps.changes.outputs.result == 'ok'
       run: npm ci
 
-    # TODO: DO we need to do anything else before the tests?
     - name: Test
       if: steps.changes.outputs.result == 'ok'
       run: npm test
@@ -80,6 +87,9 @@ jobs:
       run: |
         npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
         npm whoami
+
+        git config --global user.email "moritz.heusinger@gmail.com"
+        git config --global user.name "Github Action"
 
         npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes
         npx lerna publish from-package --yes --dist-tag dev

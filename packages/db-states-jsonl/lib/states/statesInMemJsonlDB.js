@@ -55,8 +55,8 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
         const jsonlOptions = {
             autoCompress: {
-                sizeFactor: 2,
-                sizeFactorMinimumSize: 1000
+                sizeFactor: 10,
+                sizeFactorMinimumSize: 50000
             },
             ignoreReadErrors: true,
             throttleFS: {

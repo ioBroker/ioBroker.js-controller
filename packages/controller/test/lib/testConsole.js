@@ -32,7 +32,7 @@ function getBackupDir() {
 }
 
 function register(it, expect, context) {
-    const testName = context.name + ' ' + context.adapterShortName + ' console: ';
+    const testName = `${context.name} ${context.adapterShortName} console: `;
 
     // passwd, user passwd, user check
     it(testName + 'user passwd', async () => {

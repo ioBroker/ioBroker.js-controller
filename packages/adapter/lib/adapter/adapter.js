@@ -8014,43 +8014,49 @@ function Adapter(options) {
                 options = options || {};
                 options.user = SYSTEM_ADMIN_USER;
             }
-            // always read according object to set the binary flag
-            checkStates(id, options, 'setState', (err, obj) => {
-                if (!err && !obj) {
-                    return tools.maybeCallbackWithError(callback, 'Object does not exist');
-                } else if (!err && !obj.binary) {
-                    obj.binary = true;
 
-                    if (!adapterObjects) {
-                        this.log.info('setBinaryState not processed because Objects database not connected');
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
+            if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+                // always read according object to set the binary flag
+                checkStates(id, options, 'setState', (err, obj) => {
+                    if (!err && !obj) {
+                        return tools.maybeCallbackWithError(callback, 'Object does not exist');
+                    } else if (!err && !obj.binary) {
+                        obj.binary = true;
 
-                    adapterObjects.setObject(id, obj, err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                                this.log.info('setBinaryState not processed because States database not connected');
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            this.outputCount++;
-                            adapterStates.setBinaryState(id, binary, callback);
+                        if (!adapterObjects) {
+                            this.log.info('setBinaryState not processed because Objects database not connected');
+                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
-                    });
-                } else if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                        this.log.info('setBinaryState not processed because States database not connected');
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
 
-                    this.outputCount++;
-                    adapterStates.setBinaryState(id, binary, callback);
-                }
-            });
+                        adapterObjects.setObject(id, obj, err => {
+                            if (err) {
+                                return tools.maybeCallbackWithError(callback, err);
+                            } else {
+                                if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
+                                    this.log.info('setBinaryState not processed because States database not connected');
+                                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                                }
+
+                                this.outputCount++;
+                                adapterStates.setBinaryState(id, binary, callback);
+                            }
+                        });
+                    } else if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else {
+                        if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
+                            this.log.info('setBinaryState not processed because States database not connected');
+                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        }
+
+                        this.outputCount++;
+                        adapterStates.setBinaryState(id, binary, callback);
+                    }
+                });
+            } else {
+                this.outputCount++;
+                adapterStates.setBinaryState(id, binary, callback);
+            }
         };
         /**
          * Promise-version of Adapter.setBinaryState
