@@ -730,15 +730,20 @@ function getInstalledInfo(hostRunningVersion) {
     }
     scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
     scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
-    if (fs.existsSync(path.join(__dirname, '../../../node_modules'))) {
-        scanDirectory(path.join(__dirname, '../../../node_modules'), result, regExp);
+
+    // Scan following directories only in development mode
+    if (process.env.DEV) {
+        if (fs.existsSync(path.join(__dirname, '../../../node_modules'))) {
+            scanDirectory(path.join(__dirname, '../../../node_modules'), result, regExp);
+        }
+        if (fs.existsSync(path.join(__dirname, '../../../../node_modules'))) {
+            scanDirectory(path.join(__dirname, '../../../../node_modules'), result, regExp);
+        }
+        if (fs.existsSync(path.join(__dirname, '../../../../../node_modules'))) {
+            scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
+        }
     }
-    if (fs.existsSync(path.join(__dirname, '../../../../node_modules'))) {
-        scanDirectory(path.join(__dirname, '../../../../node_modules'), result, regExp);
-    }
-    if (fs.existsSync(path.join(__dirname, '../../../../../node_modules'))) {
-        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
-    }
+
     if (
         fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
         fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName}.js-controller`))
@@ -963,7 +968,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
         let json = null;
         request({url: urlOrPath, timeout: 10000, gzip: true}, (error, response, body) => {
             if (error || !body || response.statusCode !== 200) {
-                console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
             } else {
                 try {
                     json = JSON.parse(body);
@@ -1110,7 +1115,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         axios = axios || require('axios');
         _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
-        if (hash === _hash.hash) {
+        if (_hash && _hash.data && hash === _hash.data.hash) {
             return _actualRepo;
         }
     }
@@ -1123,15 +1128,16 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
             _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
         }
 
-        if (_actualRepo && hash && _hash.hash === hash) {
+        if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
-            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../package.json').version}`;
+            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../../package.json').version}`;
             data = await axios({
                 url,
                 timeout: 10000,
                 headers: { 'User-Agent': agent }
             });
+            data = data.data;
         }
     } else {
         if (fs.existsSync(url)) {
@@ -1145,33 +1151,27 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
         }
     }
 
-    return {json: data, changed: hash !== _hash.hash, hash: _hash.hash};
+    return {json: data, changed: _hash && _hash.data ? hash !== _hash.data.hash : true, hash: _hash && _hash.data ? _hash.data.hash : ''};
 }
 
 function sendDiagInfo(obj, callback) {
     request = request || require('request');
 
     console.log(`Send diag info: ${JSON.stringify(obj)}`);
-    request.post({
-        url: 'http://download.' + module.exports.appName + '.net/diag.php',
-        method: 'POST',
-        gzip: true,
-        headers: {'content-type': 'application/x-www-form-urlencoded'},
-        body: 'data=' + JSON.stringify(obj),
-        timeout: 2000
-    }, (_err, _response, _body) => {
-        /*if (err || !body || response.statusCode !== 200) {
+    axios = axios || require('axios');
+    const params = new URLSearchParams();
+    params.append('data', JSON.stringify(obj));
+    const config = {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        timeout: 4000
+    }
 
-        }*/
-        if (typeof callback === 'function') {
-            callback();
-        }
-    }).on('error', error => {
-        console.log('Cannot send diag info: ' + error.message);
-        if (typeof callback === 'function') {
-            callback(error);
-        }
-    });
+    return axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
+        .then(() => typeof callback === 'function' && callback())
+        .catch(error => {
+            console.log(`Cannot send diag info: ${error.message}`);
+            typeof callback === 'function' && callback(error);
+        });
 }
 
 /**
@@ -1205,21 +1205,30 @@ function getAdapterDir(adapter) {
         // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
         if (fs.existsSync(`${__dirname}/../../${possibility}`)) {
             adapterPath = `${__dirname}/../../${possibility}`;
-        } else if (fs.existsSync(`${__dirname}/../../../${possibility}`)) {
-            adapterPath = `${__dirname}/../../../${possibility}`;
-        } else if (fs.existsSync(`${__dirname}/../../../../${possibility}`)) {
-            adapterPath = `${__dirname}/../../../../${possibility}`;
-        } else if (fs.existsSync(`${__dirname}/../../../../../${possibility}`)) {
-            adapterPath = `${__dirname}/../../../../../${possibility}`;
-        } else if (fs.existsSync(`${__dirname}/../../../../../node_modules/${possibility}`)) {
-            adapterPath = `${__dirname}/../../../../../node_modules/${possibility}`;
-        } else {
+        }
+
+        // used only for development purposes
+        if (!adapterPath && process.env.DEV) {
+            if (fs.existsSync(`${__dirname}/../../../${possibility}`)) {
+                adapterPath = `${__dirname}/../../../${possibility}`;
+            } else if (fs.existsSync(`${__dirname}/../../../../${possibility}`)) {
+                adapterPath = `${__dirname}/../../../../${possibility}`;
+            } else if (fs.existsSync(`${__dirname}/../../../../../${possibility}`)) {
+                adapterPath = `${__dirname}/../../../../../${possibility}`;
+            } else if (fs.existsSync(`${__dirname}/../../../../../node_modules/${possibility}`)) {
+                adapterPath = `${__dirname}/../../../../../node_modules/${possibility}`;
+            }
+        }
+
+        if (!adapterPath) {
             try {
                 adapterPath = require.resolve(possibility);
-                break;
             } catch {
                 // not found
             }
+        }
+        if (adapterPath) {
+            break;
         }
     }
 
@@ -1873,16 +1882,16 @@ function getConfigFileName() {
         configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
         configDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(configDir + '/conf/' + appName + '.json')) {
-            return configDir + '/conf/' + appName + '.json';
+        if (fs.existsSync(`${configDir}/conf/${appName}.json`)) {
+            return `${configDir}/conf/${appName}.json`;
         } else {
-            return configDir + '/data/' + appName + '.json';
+            return `${configDir}/data/${appName}.json`;
         }
     }
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
-    if (fs.existsSync(__dirname + '/../../../../../../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
-        fs.existsSync(__dirname + '/../../../../../../../node_modules/' + appName + '.js-controller')) {
+    if (fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName}.js-controller`)) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 7, 7);
         configDir = configDir.join('/');
@@ -1892,7 +1901,7 @@ function getConfigFileName() {
         configDir = configDir.join('/');
     }
 
-    return configDir + '/' + appName + '-data/' + appName + '.json';
+    return `${configDir}/${appName}-data/${appName}.json`;
 }
 
 /**

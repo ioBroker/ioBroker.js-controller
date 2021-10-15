@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2020 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2021 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -93,6 +93,7 @@ const scheduledInstances    = {};
 const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
 const VENDOR_FILE           = '/etc/iob-vendor.json';
 let updateIPsTimer          = null;
+let lastDiagSend            = null;
 
 const uploadTasks           = [];
 
@@ -1954,11 +1955,14 @@ async function processMessage(msg) {
             if (msg.callback && msg.from) {
                 objects.getObject('system.config', async (err, systemConfig) => {
                     // Collect statistics (only if license has been confirmed - user agreed)
-                    if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed) {
+                    if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed &&
+                        (!lastDiagSend || Date.now() - lastDiagSend > 30000) // prevent sending of diagnostics by multiple admin instances
+                    ) {
+                        lastDiagSend = Date.now();
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             // if user selected 'none' we will have null here and do not want to send it
-                            obj && tools.sendDiagInfo(obj);
+                            obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
                         } catch (err) {
                             logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
                         }
@@ -1999,18 +2003,36 @@ async function processMessage(msg) {
                                 if (!systemRepos.native.repositories[repo].json || updateRepo) {
                                     logger.info(`${hostLogPrefix} Updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
                                     try {
-                                        const result = await tools.getRepositoryFileAsync(
-                                            systemRepos.native.repositories[repo].link,
-                                            systemRepos.native.repositories[repo].hash,
-                                            updateRepo,
-                                            systemRepos.native.repositories[repo].json
-                                        );
+                                        let result;
+                                        // prevent the request of repos by multiple admin adapters at start
+                                        if (systemRepos.native.repositories[repo].json &&
+                                            systemRepos.native.repositories[repo].time &&
+                                            systemRepos.native.repositories[repo].hash &&
+                                            Date.now() - new Date(systemRepos.native.repositories[repo].time).getTime() < 30000
+                                        ) {
+                                            result = systemRepos.native.repositories[repo];
+                                        } else {
+                                            result = await tools.getRepositoryFileAsync(
+                                                systemRepos.native.repositories[repo].link,
+                                                systemRepos.native.repositories[repo].hash,
+                                                updateRepo,
+                                                systemRepos.native.repositories[repo].json
+                                            );
+                                        }
 
+                                        // If repo was really changed
                                         if (result && result.json && result.changed) {
                                             systemRepos.native.repositories[repo].json = result.json;
                                             systemRepos.native.repositories[repo].hash = result.hash || '';
+                                            systemRepos.native.repositories[repo].time = new Date().toISOString();
                                             changed = true;
                                         }
+                                        // Make sure, that time is stored too to prevent the frequent access to repo server
+                                        if (!systemRepos.native.repositories[repo].time) {
+                                            systemRepos.native.repositories[repo].time = new Date().toISOString();
+                                            changed = true;
+                                        }
+
                                     } catch (e) {
                                         logger.error(`${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e}`);
                                     }
