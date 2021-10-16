@@ -2473,7 +2473,7 @@ function getAllInstances(adapters, objects, callback) {
         if (adapters[i].indexOf('.') === -1) {
             getInstances(adapters[i], objects, false, (err, inst) => {
                 for (let j = 0; j < inst.length; j++) {
-                    if (instances.indexOf(inst[j]) === -1) {
+                    if (!instances.includes(inst[j])) {
                         instances.push(inst[j]);
                     }
                 }
@@ -2514,25 +2514,39 @@ function getInstances(adapter, objects, withObjects, callback) {
         withObjects = false;
     }
 
-    objects.getObjectList({
+    return getInstancesAsync(adapter, objects, withObjects)
+        .then(instances => callback(null, instances))
+        .catch(error => callback(error));
+}
+
+/**
+ * get async all instances of one adapter
+ *
+ * @alias getInstancesAsync
+ * @param {string }adapter name of the adapter
+ * @param {object }objects objects DB
+ * @param {boolean} withObjects return objects instead of only ids
+ */
+async function getInstancesAsync(adapter, objects, withObjects) {
+    const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
-    }, (err, arr) => {
-        const instances = [];
-        if (!err && arr && arr.rows) {
-            for (let i = 0; i < arr.rows.length; i++) {
-                if (arr.rows[i].value.type !== 'instance') {
-                    continue;
-                }
-                if (withObjects) {
-                    instances.push(arr.rows[i].value);
-                } else {
-                    instances.push(arr.rows[i].value._id);
-                }
+    });
+    const instances = [];
+    if (arr && arr.rows) {
+        for (let i = 0; i < arr.rows.length; i++) {
+            if (arr.rows[i].value.type !== 'instance') {
+                continue;
+            }
+            if (withObjects) {
+                instances.push(arr.rows[i].value);
+            } else {
+                instances.push(arr.rows[i].value._id);
             }
         }
-        callback(null, instances);
-    });
+    }
+
+    return instances;
 }
 
 /**
@@ -3098,6 +3112,7 @@ module.exports = {
     generateDefaultCertificates,
     getAdapterDir,
     getInstances,
+    getInstancesAsync,
     getAllInstances,
     getAllInstancesAsync,
     getCertificateInfo,
