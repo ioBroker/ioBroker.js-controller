@@ -1753,7 +1753,7 @@ async function getHostInfo(objects, callback) {
             data['NPM'] = 'v' + (version || ' ---');
             npmVersion = version;
         } catch (e) {
-            // ignore
+            console.error('Cannot get NPM version: ' + e);
         }
     } else {
         data['NPM'] = npmVersion;
@@ -1764,8 +1764,8 @@ async function getHostInfo(objects, callback) {
             Object.assign(data, info);
         }
     } catch (e) {
-        // ignore
-    }
+        console.error('Cannot get disk information: ' + e);
+   }
     callback && callback(data);
 
     return data;
