@@ -1152,7 +1152,7 @@ function sendDiagInfo(obj, callback) {
     const config = {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         timeout: 4000
-    }
+    };
 
     return axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
         .then(() => typeof callback === 'function' && callback())
@@ -1255,7 +1255,7 @@ function getSystemNpmVersion(callback) {
         .split(path.delimiter)
         .filter(dir => {
             dir = dir.toLowerCase();
-            return !(dir.indexOf('iobroker') > -1 && dir.indexOf(path.join('node_modules', '.bin')) > -1);
+            return !dir.includes('iobroker') || !dir.includes(path.join('node_modules', '.bin'));
         })
         .join(path.delimiter);
     try {
@@ -1287,6 +1287,8 @@ function getSystemNpmVersion(callback) {
         }
     }
 }
+
+const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
 /**
  * @typedef {object} InstallNodeModuleOptions
@@ -1503,6 +1505,8 @@ function getDiskInfo(platform, callback) {
     }
 }
 
+const getDiskInfoAsync = promisify(getDiskInfo);
+
 /**
  * Returns information about a certificate
  *
@@ -1693,14 +1697,13 @@ function makeid(length) {
  * @alias getHostInfo
  * @memberof Tools
  * @param {object} objects
- * @param {function} callback return result
  *        <pre><code>
  *            function (err, result) {
  *              adapter.log.debug('Info about host: ' + JSON.stringify(result, null, 2);
  *            }
  *        </code></pre>
  */
-function getHostInfo(objects, callback) {
+async function getHostInfo(objects, callback) {
     const os = require('os');
 
     if (diskusage !== false) {
@@ -1730,48 +1733,42 @@ function getHostInfo(objects, callback) {
         data.Platform = 'OSX';
     }
 
-    let task = 0;
-    task++;
-    objects.getObject('system.config', (_err, systemConfig) => {
-        objects.getObject('system.repositories', (err, systemRepos) => {
-            // Check if repositories exists
-            const allRepos = {};
-            if (!err && systemRepos && systemRepos.native && systemRepos.native.repositories) {
-                const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
-                repos
-                    .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
-                    .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
+    const systemConfig = await objects.getObjectAsync('system.config');
+    const systemRepos = await objects.getObjectAsync('system.repositories');
 
-                data['adapters count'] = Object.keys(allRepos).length;
-            }
-            !--task && callback(err, data);
-        });
-    });
+    // Check if repositories exists
+    const allRepos = {};
+    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+        const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
+        repos
+            .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
+            .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
+
+        data['adapters count'] = Object.keys(allRepos).length;
+    }
 
     if (!npmVersion) {
-        task++;
-        getSystemNpmVersion((err, version) => {
+        try {
+            const version = await getSystemNpmVersionAsync();
             data['NPM'] = 'v' + (version || ' ---');
             npmVersion = version;
-            if (!--task) {
-                callback(err, data);
-            }
-        });
+        } catch (e) {
+            // ignore
+        }
     } else {
         data['NPM'] = npmVersion;
-        if (!task) {
-            callback(null, data);
-        }
     }
-    task++;
-    getDiskInfo(data.Platform, (err, info) => {
+    try {
+        const info = await getDiskInfoAsync(data.Platform);
         if (info) {
             Object.assign(data, info);
         }
-        if (!--task) {
-            callback(err, data);
-        }
-    });
+    } catch (e) {
+        // ignore
+    }
+    callback && callback(data);
+
+    return data;
 }
 
 /**

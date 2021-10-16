@@ -264,10 +264,10 @@ gulp.task('jsdoc', done => {
 // Creates symlinks in node_modules for all packages found in "./packages" directory
 // WARNING: this task can be only started as Administrator (for Windows)
 gulp.task('dev', done => {
-   // check if node_modules exists
+    // check if node_modules exists
     const root = path.normalize(__dirname + '/../node_modules');
     if (fs.existsSync(__dirname + '/../node_modules')) {
-       !fs.existsSync(__dirname + '/../node_modules/@iobroker') && fs.mkdirSync(__dirname + '/../node_modules/@iobroker');
+        !fs.existsSync(__dirname + '/../node_modules/@iobroker') && fs.mkdirSync(__dirname + '/../node_modules/@iobroker');
     }
     const packages = fs.readdirSync(__dirname + '/packages');
     packages.forEach(_package => {
@@ -281,13 +281,13 @@ gulp.task('dev', done => {
                     // delete whole directory
                     fs.rmSync(`${root}/${packName}`, { recursive: true, force: true });
                     // create symlink
-                    const relativePath = path.relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`).replace(/^\.\.[\/\\]/, '');
+                    const relativePath = path.relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`).replace(/^\.\.[/\\]/, '');
                     console.log(`Create symlink to "${root}/${packName}" => ${relativePath}`);
                     fs.symlinkSync(relativePath, `${root}/${packName}`, 'dir');
                 }
             } else {
                 // create symlink
-                const relativePath = path.relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`).replace(/^\.\.[\/\\]/, '');
+                const relativePath = path.relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`).replace(/^\.\.[/\\]/, '');
                 console.log(`Create symlink to "${root}/${packName}" => ${relativePath}`);
                 fs.symlinkSync(relativePath, `${root}/${packName}`, 'dir');
             }
