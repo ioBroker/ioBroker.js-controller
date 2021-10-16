@@ -728,21 +728,9 @@ function getInstalledInfo(hostRunningVersion) {
             licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
         };
     }
+
     scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
     scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
-
-    // Scan following directories only in development mode
-    if (process.env.DEV) {
-        if (fs.existsSync(path.join(__dirname, '../../../node_modules'))) {
-            scanDirectory(path.join(__dirname, '../../../node_modules'), result, regExp);
-        }
-        if (fs.existsSync(path.join(__dirname, '../../../../node_modules'))) {
-            scanDirectory(path.join(__dirname, '../../../../node_modules'), result, regExp);
-        }
-        if (fs.existsSync(path.join(__dirname, '../../../../../node_modules'))) {
-            scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
-        }
-    }
 
     if (
         fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
@@ -1205,22 +1193,7 @@ function getAdapterDir(adapter) {
         // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
         if (fs.existsSync(`${__dirname}/../../${possibility}`)) {
             adapterPath = `${__dirname}/../../${possibility}`;
-        }
-
-        // used only for development purposes
-        if (!adapterPath && process.env.DEV) {
-            if (fs.existsSync(`${__dirname}/../../../${possibility}`)) {
-                adapterPath = `${__dirname}/../../../${possibility}`;
-            } else if (fs.existsSync(`${__dirname}/../../../../${possibility}`)) {
-                adapterPath = `${__dirname}/../../../../${possibility}`;
-            } else if (fs.existsSync(`${__dirname}/../../../../../${possibility}`)) {
-                adapterPath = `${__dirname}/../../../../../${possibility}`;
-            } else if (fs.existsSync(`${__dirname}/../../../../../node_modules/${possibility}`)) {
-                adapterPath = `${__dirname}/../../../../../node_modules/${possibility}`;
-            }
-        }
-
-        if (!adapterPath) {
+        } else {
             try {
                 adapterPath = require.resolve(possibility);
             } catch {

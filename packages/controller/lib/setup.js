@@ -15,7 +15,7 @@
 
 // TODO need info about progress of stopping
 
-const fs                    = require('fs-extra');
+const fs = require('fs-extra');
 const { tools } = require('@iobroker/js-controller-common');
 const cli = require('@iobroker/js-controller-cli');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
