@@ -2364,30 +2364,32 @@ async function processMessage(msg) {
                 // node.js --version
                 // npm --version
                 // uptime
-                tools.getHostInfo(objects, (err, data) => {
-                    if (err) {
+                tools.getHostInfo(objects)
+                    .catch(err => {
                         logger.error(`${hostLogPrefix} cannot get getHostInfo: ${err}`);
-                    }
-                    data = data || {};
-                    data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
-                    // add information about running instances
-                    let count = 0;
-                    for (const id of Object.keys(procs)) {
-                        if (procs[id].process) {
-                            count++;
+                        return null;
+                    })
+                    .then(data => {
+                        data = data || {};
+                        data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
+                        // add information about running instances
+                        let count = 0;
+                        for (const id of Object.keys(procs)) {
+                            if (procs[id].process) {
+                                count++;
+                            }
                         }
-                    }
 
-                    let location = path.normalize(__dirname + '/../');
-                    if (path.basename(location) === 'node_modules') {
-                        location = path.normalize(__dirname + '/../../');
-                    }
+                        let location = path.normalize(__dirname + '/../');
+                        if (path.basename(location) === 'node_modules') {
+                            location = path.normalize(__dirname + '/../../');
+                        }
 
-                    data['Active instances'] = count;
-                    data.location = location;
+                        data['Active instances'] = count;
+                        data.location = location;
 
-                    sendTo(msg.from, msg.command, data, msg.callback);
-                });
+                        sendTo(msg.from, msg.command, data, msg.callback);
+                    });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }

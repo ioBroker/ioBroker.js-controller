@@ -24,6 +24,7 @@ const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
 const dbTools = require('@iobroker/js-controller-common-db');
+const formatters = require("./formatters");
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -614,14 +615,9 @@ async function processCommand(command, args, params, callback) {
 
         case 'info': {
             Objects =       require('./objects');
-            dbConnect(params, objects => {
-                tools.getHostInfo(objects, (err, data) => {
-                    if (err) {
-                        console.error('Cannot read host info: '+ err);
-                        if (!data) {
-                            return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
-                        }
-                    }
+            dbConnect(params, async objects => {
+                try {
+                    const data = await tools.getHostInfo(objects);
                     const formatters = require('./formatters');
                     const formatInfo = {
                         'Uptime':        formatters.formatSeconds,
@@ -635,8 +631,13 @@ async function processCommand(command, args, params, callback) {
                     for (const attr of Object.keys(data)) {
                         console.log(`${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''}`);
                     }
-                    return void callback();
-                });
+
+                } catch (err) {
+                    console.error('Cannot read host info: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
+                    return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
+                }
+
+                return void callback();
             });
             break;
         }
