@@ -19,11 +19,11 @@
 
     <h1 class="page-title">Source: adapter.js</h1>
 
-    
 
 
 
-    
+
+
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>
@@ -639,7 +639,7 @@ function Adapter(options) {
             if (that.log) that.log.warn('Reconnection to DB.');
             return;
         }
-        
+
         that.inited = true;
 
         // auto oObjects
@@ -677,7 +677,7 @@ function Adapter(options) {
 
     function autoSubscribeOn(cb) {
         if (!that.autoSubscribe) {
-            // collect all 
+            // collect all
             that.objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, options, function (err, res) {
                 if (res &amp;&amp; res.rows) {
                     that.autoSubscribe = [];
@@ -698,7 +698,7 @@ function Adapter(options) {
             cb();
         }
     }
-    
+
     function initObjects(cb) {
         that.objects = new Objects({
             connection: config.objects,
@@ -785,7 +785,7 @@ function Adapter(options) {
         });
 
         that._namespaceRegExp = new RegExp('^' + that.namespace);       // chache the regex object 'adapter.0'
-        
+
         that._fixId = function _fixId(id) {
             var result  = '';
             // If id is an object
@@ -2805,7 +2805,7 @@ function Adapter(options) {
             connection: config.states,
             connected: function () {
                 logger.debug(that.namespace + ' statesDB connected');
-                
+
                 if (options.subscribable) {
                     that.states.subscribe('system.adapter.' + that.namespace + '.subscribes');
                     that.states.getState('system.adapter.' + that.namespace + '.subscribes', function (err, state) {
@@ -2851,9 +2851,9 @@ function Adapter(options) {
                         subs = {};
                     }
                     for (var p in subs) {
-                        subs[p].regex = pattern2RegEx(p); 
+                        subs[p].regex = pattern2RegEx(p);
                     }
-                    
+
                     that.patterns = subs;
                     if (typeof options.subscribesChange === 'function') {
                         options.subscribesChange(state);
@@ -2862,7 +2862,7 @@ function Adapter(options) {
                     }
                     return;
                 }
-                
+
                 // Clear cache if accidentally got the message about change (Will work for admin and javascript)
                 if (id.match(/^system\.user\./) || id.match(/^system\.group\./)) {
                     that.users = [];
@@ -2893,7 +2893,7 @@ function Adapter(options) {
                                 delete that.callbacks['_' + obj.callback.id];
                             }
                             // delete too old callbacks IDs, like garbage collector
-                            var now = (new Date()).getTime();
+                            var now = Date.now();
                             for (var _id in that.callbacks) {
                                 if (now - that.callbacks[_id].time > 3600000) delete that.callbacks[_id];
                             }
@@ -3009,14 +3009,14 @@ function Adapter(options) {
                             message: message,
                             id:      callbackId++,
                             ack:     false,
-                            time:    (new Date()).getTime()
+                            time:    Date.now()
                         };
                         if (callbackId >= 0xFFFFFFFF) callbackId = 1;
                         if (!that.callbacks) that.callbacks = {};
                         that.callbacks['_' + obj.callback.id] = {cb: callback};
 
                         // delete too old callbacks IDs
-                        var now = (new Date()).getTime();
+                        var now = Date.now();
                         for (var _id in that.callbacks) {
                             if (now - that.callbacks[_id].time > 3600000) delete that.callbacks[_id];
                         }
@@ -3084,7 +3084,7 @@ function Adapter(options) {
                             message: message,
                             id:      callbackId++,
                             ack:     false,
-                            time:    (new Date()).getTime()
+                            time:    Date.now()
                         };
                         if (callbackId >= 0xFFFFFFFF) callbackId = 1;
                         if (!that.callbacks) that.callbacks = {};
@@ -3441,9 +3441,9 @@ function Adapter(options) {
         // normally only foreign history has interest, so there is no getHistory and getForeignHistory
         that.getHistory = function getHistory(id, options, callback) {
             options = options || {};
-            options.end = options.end || (new Date()).getTime() + 5000000;
+            options.end = options.end || Date.now() + 5000000;
             if (!options.count &amp;&amp; !options.start) {
-                options.start = options.start || (new Date()).getTime() - 604800000; // - 1 week
+                options.start = options.start || Date.now() - 604800000; // - 1 week
             }
 
             if (!options.instance) {
@@ -3691,14 +3691,14 @@ function Adapter(options) {
                         });
                     }
                 }
-                
+
                 that.states.subscribe(pattern, options);
             })
         };
 
         that.unsubscribeForeignStates = function unsubscribeForeignStates(pattern, options) {
             if (!pattern) pattern = '*';
-            
+
             if (that.autoSubscribe) {
                 for (var s = 0; s &lt; that.autoSubscribe.length; s++) {
                     if (pattern === '*' || pattern.substring(0, that.autoSubscribe[s].length + 1) === that.autoSubscribe[s] + '.') {
@@ -3730,7 +3730,7 @@ function Adapter(options) {
                     }
                 }
             }
-            
+
             that.states.unsubscribe(pattern, options);
         };
 
@@ -3950,7 +3950,7 @@ function Adapter(options) {
         logger.on('logging', function (transport, level, msg, meta) {
             if (transport.name !== tools.appName) return;
 
-            var message = {message: msg, severity: level, from: that.namespace, ts: (new Date()).getTime()};
+            var message = {message: msg, severity: level, from: that.namespace, ts: Date.now()};
             if (options.logTransporter) {
                 that.emit('log', message);
             }

@@ -1,7 +1,7 @@
 /**
  *      Upload adapter files into DB
  *
- *      Copyright 2013-2020 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -16,6 +16,7 @@ function Upload(options) {
     const hostname  = tools.getHostName();
     const deepClone = require('deep-clone');
     const { isDeepStrictEqual } = require('util');
+    const axios     = require('axios');
 
     options = options || {};
 
@@ -26,8 +27,8 @@ function Upload(options) {
         throw new Error('Invalid arguments: objects is missing');
     }
 
-    const states      = options.states;
-    const objects     = options.objects;
+    const states  = options.states;
+    const objects = options.objects;
 
     let callbacks;
     let callbackId = 1;
@@ -35,30 +36,25 @@ function Upload(options) {
     // attName = file.split('/' + tools.appName + '.');
     const regApp = new RegExp('/' + tools.appName.replace(/\./g, '\\.') + '\\.', 'i');
 
-    function checkHostsIfAlive(hosts, callback, _result) {
-        _result = _result || [];
-        if (!hosts || !hosts.length) {
-            callback(_result);
-        } else {
-            const host = hosts.shift();
-            states.getState(host + '.alive', (err, state) => {
+    async function checkHostsIfAlive(hosts) {
+        const result = [];
+        if (hosts) {
+            for (let h = 0; h < hosts.length; h++) {
+                const host = hosts[h];
+                const state = states.getStateAsync(host + '.alive');
                 if (state && state.val) {
-                    _result.push(host);
+                    result.push(host);
                 }
-                setImmediate(checkHostsIfAlive, hosts, callback, _result);
-            });
+            }
         }
+        return result;
     }
 
-    function getHosts(onlyAlive, callback) {
-        if (typeof onlyAlive === 'function') {
-            callback = onlyAlive;
-            onlyAlive = false;
-        }
-
-        objects.getObjectList({startkey: 'system.host.', endkey: 'system.host.\u9999'}, (err, arr) => {
-            const hosts = [];
-            if (!err && arr && arr.rows) {
+    async function getHosts(onlyAlive) {
+        const hosts = [];
+        try {
+            const arr = await objects.getObjectListAsync({startkey: 'system.host.', endkey: 'system.host.\u9999'});
+            if (arr && arr.rows) {
                 for (let i = 0; i < arr.rows.length; i++) {
                     if (arr.rows[i].value.type !== 'host') {
                         continue;
@@ -66,16 +62,19 @@ function Upload(options) {
                     hosts.push(arr.rows[i].value._id);
                 }
             }
-            if (onlyAlive) {
-                checkHostsIfAlive(hosts, callback);
-            } else {
-                callback(hosts);
-            }
-        });
+        } catch (e) {
+            // ignore
+        }
+
+        if (onlyAlive) {
+            return await checkHostsIfAlive(hosts);
+        } else {
+            return hosts;
+        }
     }
 
     // Check if some adapters must be restarted and restart them
-    function checkRestartOther(adapter, callback) {
+    async function checkRestartOther(adapter) {
         const adapterDir = tools.getAdapterDir(adapter);
         try {
             const adapterConf = fs.readJSONSync(adapterDir + '/io-package.json');
@@ -89,75 +88,43 @@ function Upload(options) {
                 }
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
-                    tools.getAllInstances(adapterConf.common.restartAdapters, objects, (err, instances) => {
-                        if (!instances || !instances.length) {
-                            if (callback) {
-                                callback();
-                                callback = null;
-                            }
-                        } else {
-                            let instancesCount = instances.length;
-                            for (let r = 0; r < instances.length; r++) {
-                                objects.getObject(instances[r], (err, obj) => {
-                                    // if instance is enabled
-                                    if (!err && obj && obj.common.enabled) {
+                    const instances = await tools.getAllInstancesAsync(adapterConf.common.restartAdapters);
+                    if (instances && !instances.length) {
+                        for (let r = 0; r < instances.length; r++) {
+                            try {
+                                const obj = await objects.getObjectAsync(instances[r]);
+                                // if instance is enabled
+                                if (obj && obj.common && obj.common.enabled) {
+                                    obj.common.enabled = false; // disable instance
 
-                                        obj.common.enabled = false; // disable instance
+                                    obj.from = `system.host.${tools.getHostName()}.cli`;
+                                    obj.ts = Date.now();
 
-                                        obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                                        obj.ts = Date.now();
+                                    await objects.setObjectAsync(obj._id);
 
-                                        objects.setObject(obj._id, obj, err => {
-                                            if (!err) {
+                                    obj.common.enabled = true; // enable instance
+                                    obj.ts = Date.now();
 
-                                                obj.common.enabled = true; // enable instance
-
-                                                obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                                                obj.ts = Date.now();
-
-                                                objects.setObject(obj._id, obj, _err => {
-                                                    console.log('Adapter "' + obj._id + '" restarted.');
-                                                    if (!--instancesCount && callback) {
-                                                        callback();
-                                                        callback = null;
-                                                    }
-                                                });
-                                            } else {
-                                                console.error('Cannot restart adapter "' + obj._id + '": ' + err);
-                                                if (!--instancesCount && callback) {
-                                                    callback();
-                                                    callback = null;
-                                                }
-                                            }
-                                        });
-                                    } else if (!--instancesCount && callback) {
-                                        callback();
-                                        callback = null;
-                                    }
-                                });
+                                    await objects.setObjectAsync(obj._id, obj);
+                                    console.log(`Adapter "${obj._id}" restarted.`);
+                                }
+                            } catch (err) {
+                                console.error(`Cannot restart adapter "${instances[r]}": ${err}`);
                             }
                         }
-                    });
-                } else if (callback) {
-                    callback();
-                    callback = null;
+                    }
                 }
-            } else if (callback) {
-                callback();
-                callback = null;
             }
         } catch (e) {
-            console.error('Cannot parse ' + adapterDir + '/io-package.json:' + e);
-            if (callback) {
-                callback();
-                callback = null;
-            }
+            console.error(`Cannot parse ${adapterDir}/io-package.json: ${e}`);
         }
     }
 
+    const sendToHostFromCliAsync = tools.promisifyNoError(sendToHostFromCli);
+
     function sendToHostFromCli(host, command, message, callback) {
         const time = Date.now();
-        const from = 'system.host.' + hostname + '_cli_' + time;
+        const from = `system.host.${hostname}_cli_${time}`;
 
         const timeout = setTimeout(() => {
             callback && callback();
@@ -202,57 +169,71 @@ function Upload(options) {
     }
 
     this.uploadAdapterFull = (adapters, callback) => {
+        tools.showDeprecatedMessage('setupUpload.uploadAdapterFull');
         if (!adapters || !adapters.length) {
-            if (callback) {
-                callback();
-            }
-            return;
+            return callback && callback();
         }
+        return this.uploadAdapterFullAsync(adapters)
+            .then(() => callback && callback())
+            .catch(err => callback && callback(err));
+    };
 
-        getHosts(true, liveHosts => {
-            const adapter = adapters.pop();
+    this.uploadAdapterFullAsync = async adapters => {
+        if (adapters && adapters.length) {
+            const liveHosts = await getHosts(true);
+            for (let a = 0; a < adapters.length; a++) {
+                const adapter = adapters[a];
 
-            // Find the host which has this adapter
-            tools.getInstances(adapter, objects, true, (err, objects) => {
+                // Find the host which has this adapter
+                const instances = await tools.getInstancesAsync(adapter, objects, true);
                 // try to find instance on this host
-                let instance = objects.find(obj => obj && obj.common && obj.common.host === hostname);
+                let instance = instances.find(obj => obj && obj.common && obj.common.host === hostname);
 
                 // try to find enabled instance on live host
-                instance = instance || objects.find(obj => obj && obj.common && obj.common.enabled && liveHosts.indexOf(obj.common.host) !== -1);
+                instance = instance || instances.find(obj => obj && obj.common && obj.common.enabled && liveHosts.includes(obj.common.host));
 
                 // try to find any instance
-                instance = instance || objects.find(obj => obj && obj.common && liveHosts.indexOf(obj.common.host) !== -1);
+                instance = instance || instances.find(obj => obj && obj.common && liveHosts.includes(obj.common.host));
 
                 if (instance && instance.common.host !== hostname) {
-                    console.log('Send upload command to host "' + instance.common.host + '"... ');
+                    console.log(`Send upload command to host "${instance.common.host}"... `);
                     // send upload message to the host
-                    sendToHostFromCli(instance.common.host, 'upload', adapter, response => {
-                        !response && console.error('No answer from ' + instance.common.host);
-                        response && console.log('Upload result: ' + response.result);
-                        setImmediate(() => this.uploadAdapterFull(adapters, callback));
-                    });
+                    const response = await sendToHostFromCliAsync(instance.common.host, 'upload', adapter);
+                    if (response) {
+                        console.log('Upload result: ' + response.result);
+                    } else {
+                        console.error('No answer from ' + instance.common.host);
+                    }
                 } else {
                     if (!instance) {
                         // no one alive instance found
                         const adapterDir = tools.getAdapterDir(adapter);
                         if (!fs.existsSync(adapterDir)) {
                             console.warn(`No alive host found which has the adapter ${adapter} installed! No upload possible. Skipped.`);
-                            return setImmediate(() => this.uploadAdapterFull(adapters, callback));
+                            continue;
                         }
                     }
 
                     // try to upload on this host. It will print an error if the adapter directory not found
-                    this.uploadAdapter(adapter, true, true, () =>
-                        this.upgradeAdapterObjects(adapter, () =>
-                            this.uploadAdapter(adapter, false, true, () =>
-                                setImmediate(() => this.uploadAdapterFull(adapters, callback)))));
+                    await this.uploadAdapter(adapter, true, true);
+                    await this.upgradeAdapterObjects(adapter);
+                    await this.uploadAdapter(adapter, false, true);
                 }
-            });
-        });
+            }
+        }
     };
 
     this.uploadFile = (source, target, callback) => {
-        const request = require('request');
+        tools.showDeprecatedMessage('setupUpload.uploadFile');
+        if (!adapters || !adapters.length) {
+            return callback && callback();
+        }
+        return this.uploadFileAsync(source, target)
+            .then(path => callback && callback(null, path))
+            .catch(err => callback && callback(err));
+    };
+
+    this.uploadFileAsync = async (source, target) => {
         target = target.replace(/\\/g, '/');
         source = source.replace(/\\/g, '/');
         if (target[0] === '/') {
@@ -261,7 +242,7 @@ function Upload(options) {
         if (target[target.length - 1] === '/') {
             let name = source.split('/').pop();
             name = name.split('?')[0];
-            if (name.indexOf('.') === -1) {
+            if (!name.includes('.')) {
                 name = 'index.html';
             }
             target += name;
@@ -272,130 +253,115 @@ function Upload(options) {
         target = parts.join('/');
 
         if (source.match(/^http:\/\/|^https:\/\//)) {
-            request(source, (error, response, body) => {
-                if (!error && response.statusCode === 200) {
-                    objects.writeFile(adapter, target, body, err => {
-                        if (err) {
-                            console.error(err);
-                        }
-                        if (typeof callback === 'function') {
-                            callback(err, adapter + '/' + target);
-                        }
-                    });
+            try {
+                const result = await axios(source, {responseType: 'arraybuffer', validateStatus: status => status === 200});
+                if (result && result.data) {
+                    await objects.writeFileAsync(adapter, target, result.data);
                 } else {
-                    console.error('Cannot get URL: ' + error || response.statusCode);
-                    if (typeof callback === 'function') {
-                        callback(error || response.statusCode, adapter + '/' + target);
-                    }
+                    console.error(`Empty response from URL "${source}"`);
+                    throw new Error(`Empty response from URL "${source}"`);
                 }
-            });
+            } catch (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    error = error.response.data || error.response.status;
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    error = error.request;
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    error = error.message || error;
+                }
+                console.error(`Cannot get URL "${source}": ${error}`);
+                throw new Error(error);
+            }
         } else {
             try {
-                objects.writeFile(adapter, target, fs.readFileSync(source), err => {
-                    if (err) {
-                        console.error(err);
-                    }
-                    if (typeof callback === 'function') {
-                        callback(err, adapter + '/' + target);
-                    }
-                });
+                await objects.writeFileAsync(adapter, target, fs.readFileSync(source));
             } catch (err) {
-                console.error('Cannot read file "' + source + '": ' + err);
-                if (typeof callback === 'function') {
-                    callback(err, adapter + '/' + target);
+                console.error(`Cannot read file "${source}": ${err}`);
+                throw new Error(err);
+            }
+        }
+
+        return adapter + '/' + target;
+    };
+
+    async function eraseFiles(files, logger) {
+        if (!files || !files.length) {
+            for (let f = 0; f < files.length; f++) {
+                const file = files[f];
+                try {
+                    await objects.unlinkSync(file.adapter, file.path);
+                } catch (err) {
+                    logger.error(`Cannot delete file "${file.path}": ${err}`);
                 }
             }
         }
-    };
-
-    function eraseFiles(files, logger, callback) {
-        if (!files || !files.length) {
-            callback && callback();
-        } else {
-            const file = files.shift();
-            objects.unlink(file.adapter, file.path, err => {
-                err && logger.error('Cannot delete file "' + file.path + '": ' + err);
-                setImmediate(eraseFiles, files, logger, callback);
-            });
-        }
     }
 
-    function eraseFolder(isErase, adapter, path, logger, callback, _files, _dirs) {
-        if (!isErase) {
-            callback && callback();
-        } else {
-            _files = _files || [];
-            _dirs = _dirs || [];
+    async function eraseFolder(isErase, adapter, path, logger) {
+        let _files = [];
+        let _dirs = [];
+        if (isErase) {
+            const files = await objects.readDirAsync(adapter, path);
 
-            objects.readDir(adapter, path, null, (err, files) => {
-                let count = 0;
-                if (!err) {
-                    for (let f = 0; f < files.length; f++) {
-                        if (files[f].file === '.' || files[f].file === '..') {
-                            continue;
-                        }
-                        if (files[f].isDir) {
-                            if (!_dirs.find(e => e.path === path + files[f].file)) {
-                                _dirs.push({adapter: adapter, path: path + files[f].file});
-                            }
-                            count++;
-                            setImmediate(eraseFolder, true, adapter, path + files[f].file + '/', logger, () =>
-                                !--count && callback && callback(_files, _dirs),
-                            _files, _dirs);
-                        } else if (!_files.find(e => e.path === path + files[f].file)) {
-                            _files.push({adapter: adapter, path: path + files[f].file});
-                        }
+            if (files && files.length) {
+                for (let f = 0; f < files.length; f++) {
+                    if (files[f].file === '.' || files[f].file === '..') {
+                        continue;
                     }
-                    if (!count && callback) {
-                        callback(_files, _dirs);
+                    const newPath = path + files[f].file;
+                    if (files[f].isDir) {
+                        if (!_dirs.find(e => e.path === newPath)) {
+                            _dirs.push({adapter, path: newPath});
+                        }
+                        const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
+                        _files = _files.concat(result.files);
+                        _dirs = _dirs.concat(result.dirs);
+                    } else if (!_files.find(e => e.path === newPath)) {
+                        _files.push({adapter, path: newPath});
                     }
-                } else {
-                    // logger.error('Cannot read directory: ' + err);
-                    callback(_files, _dirs);
                 }
-            });
+            }
         }
+
+        return {filesToDelete: _files, dirs: _dirs};
     }
 
     let lastProgressUpdate = Date.now();
 
-    function upload(adapter, isAdmin, files, id, rev, logger, callback, _maxFiles) {
-        _maxFiles = _maxFiles || files.length;
+    async function upload(adapter, isAdmin, files, id, rev, logger) {
+        const uploadID = `system.adapter.${adapter}.upload`;
 
-        if (!files.length) {
-            if (!isAdmin) {
-                states.setState('system.adapter.' + adapter + '.upload', {val: 0, ack: true}, () =>
-                    typeof callback === 'function' && callback(adapter));
-            } else {
-                typeof callback === 'function' && callback(adapter);
-            }
-        } else {
-            const file = files.pop();
+        await states.setStateAsync(uploadID, {val: 0, ack: true});
 
+        for (let f = 0; f < files.length; f++) {
+            const file = files[f];
             // do not upload '.gitignore' files. Todo: add other exceptions
             if (file === '.gitignore') {
-                return upload(adapter, isAdmin, files, id, rev, logger, callback, _maxFiles);
+                continue;
             }
 
             const mimeType = mime.getType ? mime.getType(file) : mime.lookup(file);
             let attName;
             attName = file.split(regApp);
-            if (attName.length === 1) {
-                // try to find anyway if adapter is not lower case
-                const pos = file.toLowerCase().indexOf(tools.appName.toLowerCase());
-                if (pos !== -1) {
-                    attName = ['', file.substring(tools.appName.length + 2)];
-                }
+            // try to find anyway if adapter is not lower case
+            if (attName.length === 1 && file.toLowerCase().includes(tools.appName.toLowerCase())) {
+                attName = ['', file.substring(tools.appName.length + 2)];
             }
 
             attName = attName.pop();
             attName = attName.split('/').slice(2).join('/');
             if (files.length > 100) {
-                !(files.length % 50) && logger.log(`upload [${files.length}] ${id} ${file} ${attName} ${mimeType}`);
+                !(files.length % 50) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             } else if (files.length > 20) {
-                !(files.length % 10) && logger.log(`upload [${files.length}] ${id} ${file} ${attName} ${mimeType}`);
+                !(files.length % 10) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             } else {
-                logger.log(`upload [${files.length}] ${id} ${file} ${attName} ${mimeType}`);
+                logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             }
 
             // Update upload indicator
@@ -403,23 +369,29 @@ function Upload(options) {
                 const now = Date.now();
                 if (now - lastProgressUpdate > 1000) {
                     lastProgressUpdate = now;
-                    states.setState('system.adapter.' + adapter + '.upload', {val: Math.round(1000 * (_maxFiles - files.length) / _maxFiles) / 10, ack: true});
+                    await states.setStateAsync(uploadID, {val: Math.round(1000 * (files.length - f) / files.length) / 10, ack: true});
                 }
             }
 
-            fs.createReadStream(file).pipe(
-                objects.insert(id, attName, null, mimeType, {rev: rev}, (err, res) => {
-                    if (err) {
-                        console.log(err);
-                        typeof callback === 'function' && callback(adapter);
-                    }
-                    if (res) {
-                        rev = res.rev;
-                    }
-                    setTimeout(() => upload(adapter, isAdmin, files, id, rev, logger, callback, _maxFiles), 50);
-                })
+            await new Promise(resolve =>
+                fs.createReadStream(file).pipe(
+                    objects.insert(id, attName, null, mimeType, {rev: rev}, (err, res) => {
+                        err && console.log(err);
+                        if (res) {
+                            rev = res.rev;
+                        }
+                        resolve();
+                    })
+                )
             );
         }
+
+        // Set upload progress to 0;
+        if (!isAdmin && files.length) {
+            await states.setStateAsync(uploadID, {val: 0, ack: true});
+        }
+
+        return adapter;
     }
 
     // Read synchronous all files recursively from local directory
@@ -447,10 +419,7 @@ function Upload(options) {
     }
 
     this.uploadAdapter = (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
-        const id = adapter + (isAdmin ? '.admin' : '');
-        const adapterDir = tools.getAdapterDir(adapter);
-        let dir = adapterDir ? adapterDir + (isAdmin ? '/admin' : '/www') : '';
-
+        tools.showDeprecatedMessage('setupUpload.uploadAdapter');
         if (tools.isObject(subTree)) {
             callback = logger;
             logger = subTree;
@@ -465,6 +434,16 @@ function Upload(options) {
             callback = logger;
             logger = null;
         }
+        return this.uploadAdapterAsync(adapter, isAdmin, forceUpload, subTree, logger)
+            .then(path => callback && callback(adapter))
+            .catch(err => callback && callback(err));
+    };
+
+    this.uploadAdapterAsync = async (adapter, isAdmin, forceUpload, subTree, logger) => {
+        const id = adapter + (isAdmin ? '.admin' : '');
+        const adapterDir = tools.getAdapterDir(adapter);
+        let dir = adapterDir ? adapterDir + (isAdmin ? '/admin' : '/www') : '';
+
         logger = logger || console;
 
         if (subTree && dir) {
@@ -472,7 +451,7 @@ function Upload(options) {
         }
         if (!fs.existsSync(adapterDir)) {
             console.log(`INFO: Directory "${adapterDir || (`for ${adapter}${isAdmin ? '.admin' : ''}`)}" was not found! Nothing was uploaded or deleted.`);
-            return typeof callback === 'function' && callback(adapter);
+            return adapter;
         }
 
         let cfg;
@@ -482,114 +461,113 @@ function Upload(options) {
 
         if (!fs.existsSync(dir)) {
             // www folder have not all adapters. So show warning only for admin folder
-            (isAdmin || (cfg && cfg.common && cfg.common.onlyWWW)) && console.log(`INFO: Directory "${dir || ('for ' + adapter + (isAdmin ? '.admin' : ''))}" was not found! Nothing was uploaded or deleted.`);
+            (isAdmin || (cfg && cfg.common && cfg.common.onlyWWW)) &&
+                console.log(`INFO: Directory "${dir || (`for ${adapter}${isAdmin ? '.admin' : ''}`)}" was not found! Nothing was uploaded or deleted.`);
+
             if (isAdmin) {
-                return typeof callback === 'function' && callback(adapter);
+                return adapter;
             } else {
-                return checkRestartOther(adapter, () => typeof callback === 'function' && callback(adapter));
+                await checkRestartOther(adapter);
+                return adapter;
             }
         }
 
         // check for common.wwwDontUpload (required for legacy adapters and admin)
         if (!isAdmin && cfg && cfg.common && cfg.common.wwwDontUpload) {
-            return typeof callback === 'function' && callback(adapter);
+            return adapter;
         }
 
         // Create "upload progress" object if not exists
         if (!isAdmin) {
-            objects.getObject('system.adapter.' + adapter + '.upload', (err, obj) => {
-                if (err || !obj) {
-                    objects.setObject('system.adapter.' + adapter + '.upload', {
-                        _id:   'system.adapter.' + adapter + '.upload',
-                        type:   'state',
-                        common: {
-                            name: adapter + '.upload',
-                            type: 'number',
-                            role: 'indicator.state',
-                            unit: '%',
-                            min: 0,
-                            max: 100,
-                            def:  0,
-                            desc: 'Upload process indicator'
-                        },
-                        from: 'system.host.' + tools.getHostName() + '.cli',
-                        ts: Date.now(),
-                        native: {}
-                    });
-                }
-            });
+            let obj;
+            const uploadID = 'system.adapter.' + adapter + '.upload';
+            try {
+                obj = await objects.getObjectAsync(uploadID);
+            } catch (err) {
+                // ignore
+            }
+            if (!obj) {
+                await objects.setObjectAsync(uploadID, {
+                    _id:   uploadID,
+                    type:   'state',
+                    common: {
+                        name: adapter + '.upload',
+                        type: 'number',
+                        role: 'indicator.state',
+                        unit: '%',
+                        min: 0,
+                        max: 100,
+                        def:  0,
+                        desc: 'Upload process indicator'
+                    },
+                    from: `system.host.${tools.getHostName()}.cli`,
+                    ts: Date.now(),
+                    native: {}
+                });
+            }
             // Set indicator to 0
-            states.setState('system.adapter.' + adapter + '.upload', 0, true);
+            await states.setStateAsync(uploadID, 0, true);
         }
 
         mime = mime || require('mime');
 
-        eraseFolder(cfg && cfg.common && cfg.common.eraseOnUpload, isAdmin ? adapter + '.admin' : adapter, '/', logger, (filesToDelete, _dirs) => {
-            if (filesToDelete) {
-                // directories should be deleted automatically
-                //files = files.concat(dirs);
-            } else {
-                filesToDelete = [];
-            }
-
-            objects.getObject(id, (err, res) => {
-                // Read all names with subtrees from local directory
-                const files = walk(dir);
-                if (err || !res) {
-                    // delete old files, before upload of new
-                    eraseFiles(filesToDelete, logger, () => {
-                        objects.setObject(id, {
-                            type: 'meta',
-                            common: {
-                                name: id.split('.').pop(),
-                                type: isAdmin ? 'admin' : 'www'
-                            },
-                            from: 'system.host.' + tools.getHostName() + '.cli',
-                            ts: Date.now(),
-                            native: {}
-                        }, (err, res) => {
-                            if (!isAdmin) {
-                                checkRestartOther(adapter, () =>
-                                    setTimeout(() => upload(adapter, isAdmin, files, id, res && res.rev, logger, callback), 25));
-                            } else {
-                                upload(adapter, isAdmin, files, id, res && res.rev, logger, callback);
-                            }
-                        });
-                    });
-                } else {
-                    if (!forceUpload) {
-                        typeof callback === 'function' && callback(adapter);
-                    } else {
-                        // delete old files, before upload of new
-                        eraseFiles(filesToDelete, logger, () => {
-                            if (!isAdmin) {
-                                checkRestartOther(adapter, () =>
-                                    setTimeout(() => upload(adapter, isAdmin, files, id, res && res.rev, logger, callback), 25));
-                            } else {
-                                upload(adapter, isAdmin, files, id, res && res.rev, logger, callback);
-                            }
-                        });
-                    }
-                }
+        let {filesToDelete} = await eraseFolder(cfg && cfg.common && cfg.common.eraseOnUpload, isAdmin ? adapter + '.admin' : adapter, '/', logger);
+        if (filesToDelete) {
+            // directories should be deleted automatically
+            //files = files.concat(dirs);
+        } else {
+            filesToDelete = [];
+        }
+        let result;
+        try {
+            result = await objects.getObjectAsync(id);
+        } catch (err) {
+            // ignore
+        }
+        // Read all names with subtrees from local directory
+        const files = walk(dir);
+        if (!result) {
+            // delete old files, before upload of new
+            await eraseFiles(filesToDelete, logger);
+            await objects.setObjectAsync(id, {
+                type: 'meta',
+                common: {
+                    name: id.split('.').pop(),
+                    type: isAdmin ? 'admin' : 'www'
+                },
+                from: 'system.host.' + tools.getHostName() + '.cli',
+                ts: Date.now(),
+                native: {}
             });
-        });
+            forceUpload = true;
+        }
+
+        if (forceUpload) {
+            if (!isAdmin) {
+                await checkRestartOther(adapter);
+                await new Promise(resolve => setTimeout(() => resolve(), 25));
+                await upload(adapter, isAdmin, files, id, result && result.rev, logger);
+            } else {
+                await upload(adapter, isAdmin, files, id, result && result.rev, logger);
+            }
+        }
+        return adapter;
     };
 
     function extendNative(target, additional) {
-        if (!tools.isObject(additional)) {
-            return target;
-        }
-        for (const attr of Object.keys(additional)) {
-            if (target[attr] === undefined) {
-                target[attr] = additional[attr];
-            } else if (typeof additional[attr] === 'object' && !(additional[attr] instanceof Array)) {
-                try {
-                    target[attr] = target[attr] || {};
-                } catch {
-                    console.warn(`Cannot update attribute ${attr} of native`);
-                }
-                if (typeof target[attr] === 'object' && target[attr] !== null) {
-                    extendNative(target[attr], additional[attr]);
+        if (tools.isObject(additional)) {
+            for (const attr of Object.keys(additional)) {
+                if (target[attr] === undefined) {
+                    target[attr] = additional[attr];
+                } else if (typeof additional[attr] === 'object' && !(additional[attr] instanceof Array)) {
+                    try {
+                        target[attr] = target[attr] || {};
+                    } catch {
+                        console.warn(`Cannot update attribute ${attr} of native`);
+                    }
+                    if (typeof target[attr] === 'object' && target[attr] !== null) {
+                        extendNative(target[attr], additional[attr]);
+                    }
                 }
             }
         }
@@ -597,125 +575,114 @@ function Upload(options) {
     }
 
     function extendCommon(target, additional, instance) {
-        if (!tools.isObject(additional)) {
-            return target;
-        }
-        for (const attr of Object.keys(additional)) {
-            if (attr === 'title' || attr === 'schedule' || attr === 'restartSchedule' || attr === 'mode' || attr === 'loglevel' || attr === 'enabled' || attr === 'custom') {
-                if (target[attr] === undefined) {
-                    target[attr] = additional[attr];
-                }
-            } else if (typeof additional[attr] !== 'object' || (additional[attr] instanceof Array)) {
-                try {
-                    target[attr] = additional[attr];
-
-                    // dataFolder can have wildcards
-                    if (attr === 'dataFolder' && target.dataFolder && target.dataFolder.indexOf('%INSTANCE%') !== -1) {
-                        target.dataFolder = target.dataFolder.replace(/%INSTANCE%/g, instance);
+        if (tools.isObject(additional)) {
+            for (const attr of Object.keys(additional)) {
+                if (attr === 'title' || attr === 'schedule' || attr === 'restartSchedule' || attr === 'mode' || attr === 'loglevel' || attr === 'enabled' || attr === 'custom') {
+                    if (target[attr] === undefined) {
+                        target[attr] = additional[attr];
                     }
-                } catch {
-                    console.warn(`Cannot update attribute ${attr} of common`);
-                }
-            } else {
-                target[attr] = target[attr] || {};
-                if (typeof target[attr] !== 'object') {
-                    target[attr] = {}; // here we clean the simple value with object
-                }
+                } else if (typeof additional[attr] !== 'object' || (additional[attr] instanceof Array)) {
+                    try {
+                        target[attr] = additional[attr];
 
-                extendCommon(target[attr], additional[attr], instance);
+                        // dataFolder can have wildcards
+                        if (attr === 'dataFolder' && target.dataFolder && target.dataFolder.includes('%INSTANCE%')) {
+                            target.dataFolder = target.dataFolder.replace(/%INSTANCE%/g, instance);
+                        }
+                    } catch {
+                        console.warn(`Cannot update attribute ${attr} of common`);
+                    }
+                } else {
+                    target[attr] = target[attr] || {};
+                    if (typeof target[attr] !== 'object') {
+                        target[attr] = {}; // here we clean the simple value with object
+                    }
+
+                    extendCommon(target[attr], additional[attr], instance);
+                }
             }
         }
         return target;
     }
 
-    this._upgradeAdapterObjectsHelper = (name, iopack, hostname, logger, callback) => {
+    this._upgradeAdapterObjectsHelper = async (name, ioPack, hostname, logger) => {
         // Update all instances of this host
-        objects.getObjectView('system', 'instance', {startkey: `system.adapter.${name}.`, endkey: `system.adapter.${name}.\u9999`}, null, (err, res) => {
-            let counter = 0;
+        const res = await objects.getObjectView('system', 'instance', {startkey: `system.adapter.${name}.`, endkey: `system.adapter.${name}.\u9999`});
 
-            if (res) {
-                for (let i = 0; i < res.rows.length; i++) {
-                    if (res.rows[i].value.common.host === hostname) {
-                        counter++;
-                        objects.getObject(res.rows[i].id, (err, _obj) => {
-                            const newObject = deepClone(_obj);
+        if (res) {
+            for (let i = 0; i < res.rows.length; i++) {
+                if (res.rows[i].value.common.host === hostname) {
+                    const _obj = await objects.getObjectAsync(res.rows[i].id)
+                    const newObject = deepClone(_obj);
 
-                            // all common settings should be taken from new one
-                            newObject.common = extendCommon(newObject.common, iopack.common, newObject._id.split('.').pop());
-                            newObject.native = extendNative(newObject.native, iopack.native);
-                            // protected/encryptedNative and notifications also need to be updated
-                            newObject.protectedNative = iopack.protectedNative || [];
-                            newObject.encryptedNative = iopack.encryptedNative || [];
-                            newObject.notifications = iopack.notifications || [];
-                            // update instanceObjects and objects
-                            newObject.instanceObjects = iopack.instanceObjects || [];
-                            newObject.objects = iopack.objects || [];
+                    // all common settings should be taken from new one
+                    newObject.common = extendCommon(newObject.common, ioPack.common, newObject._id.split('.').pop());
+                    newObject.native = extendNative(newObject.native, ioPack.native);
 
-                            newObject.common.version          = iopack.common.version;
-                            newObject.common.installedVersion = iopack.common.version;
-                            newObject.common.installedFrom    = iopack.common.installedFrom;
-                            if (!iopack.common.compact && newObject.common.compact) {
-                                newObject.common.compact = iopack.common.compact;
-                            }
+                    // protected/encryptedNative and notifications also need to be updated
+                    newObject.protectedNative         = ioPack.protectedNative || [];
+                    newObject.encryptedNative         = ioPack.encryptedNative || [];
+                    newObject.notifications           = ioPack.notifications   || [];
+                    // update instanceObjects and objects
+                    newObject.instanceObjects         = ioPack.instanceObjects || [];
+                    newObject.objects                 = ioPack.objects         || [];
 
-                            // Compare objects to reduce restarts of instances
-                            if (!isDeepStrictEqual(newObject, _obj)) {
-                                logger.log(`Update "${newObject._id}"`);
+                    newObject.common.version          = ioPack.common.version;
+                    newObject.common.installedVersion = ioPack.common.version;
+                    newObject.common.installedFrom    = ioPack.common.installedFrom;
 
-                                newObject.from = 'system.host.' + tools.getHostName() + '.cli';
-                                newObject.ts = Date.now();
+                    if (!ioPack.common.compact && newObject.common.compact) {
+                        newObject.common.compact = ioPack.common.compact;
+                    }
 
-                                objects.setObject(newObject._id, newObject, () => {
-                                    if (newObject.common.def !== undefined && newObject.common.def !== null) {
-                                        states.getState(newObject._id, (err, state) => {
-                                            if (!state) {
-                                                states.setState(newObject._id, {
-                                                    val: newObject.common.def,
-                                                    ack: true,
-                                                    q: 0x40 // substitute value from device or adapter
-                                                }, () => {
-                                                    !--counter && callback && callback(name);
-                                                });
-                                            } else {
-                                                !--counter && callback && callback(name);
-                                            }
-                                        });
-                                    } else {
-                                        !--counter && callback && callback(name);
-                                    }
+                    // Compare objects to reduce restarts of instances
+                    if (!isDeepStrictEqual(newObject, _obj)) {
+                        logger.log(`Update "${newObject._id}"`);
+
+                        newObject.from = `system.host.${tools.getHostName()}.cli`;
+                        newObject.ts = Date.now();
+
+                        await objects.setObjectAsync(newObject._id, newObject);
+
+                        if (newObject.common.def !== undefined && newObject.common.def !== null) {
+                            // set default state value
+                            const state = await states.getStateAsync(newObject._id);
+                            if (!state) {
+                                await states.setStateAsync(newObject._id, {
+                                    val: newObject.common.def,
+                                    ack: true,
+                                    q: 0x40 // substitute value from device or adapter
                                 });
-                            } else {
-                                !--counter && callback && callback(name);
                             }
-                        });
+                        }
                     }
                 }
             }
+        }
 
-            // updates only "_design/system" and co "_design/*"
-            if (iopack.objects && typeof iopack.objects === 'object') {
-                for (const _id of Object.keys(iopack.objects)) {
-                    if (name === 'js-controller' && !_id.startsWith('_design/')) {
-                        continue;
-                    }
+        // updates only "_design/system" and co "_design/*"
+        if (ioPack.objects && typeof ioPack.objects === 'object') {
+            for (const _id of Object.keys(ioPack.objects)) {
+                if (name === 'js-controller' && !_id.startsWith('_design/')) {
+                    continue;
+                }
 
-                    counter++;
+                ioPack.objects[_id].from = `system.host.${hostname}.cli`;
+                ioPack.objects[_id].ts = Date.now();
 
-                    iopack.objects[_id].from = `system.host.${hostname}.cli`;
-                    iopack.objects[_id].ts = Date.now();
-
-                    objects.setObject(iopack.objects[_id]._id, iopack.objects[_id], err => {
-                        err && logger.error(`Cannot update object: ${err}`);
-                        !--counter && callback && callback(name);
-                    });
+                try {
+                    await objects.setObjectAsync(ioPack.objects[_id]._id, ioPack.objects[_id]);
+                } catch (err) {
+                    logger.error(`Cannot update object: ${err}`);
                 }
             }
+        }
 
-            !counter && callback && callback(name);
-        });
+        return name;
     };
 
     this.upgradeAdapterObjects = (name, iopack, logger, callback) => {
+        tools.showDeprecatedMessage('setupUpload.upgradeAdapterObjects');
         if (typeof iopack === 'function') {
             callback = iopack;
             iopack = null;
@@ -729,63 +696,67 @@ function Upload(options) {
             callback = logger;
             logger = null;
         }
+        return this.upgradeAdapterObjectsAsync(name, iopack, logger)
+            .then(() => callback && callback(name))
+            .catch(err => {
+                logger.error('Cannot upgrade Adapter Objects: ' + err);
+                callback && callback();
+            });
+    };
 
+    this.upgradeAdapterObjectsAsync = async (name, ioPack, logger) => {
         logger = logger || console;
 
         const adapterDir = tools.getAdapterDir(name);
-        let iopackFile;
+        let ioPackFile;
         try {
-            iopackFile = fs.readJSONSync(adapterDir + '/io-package.json');
+            ioPackFile = fs.readJSONSync(adapterDir + '/io-package.json');
         } catch {
             if (adapterDir) {
                 logger.error('Cannot find io-package.json in ' + adapterDir);
             } else {
                 logger.error(`Cannot find io-package.json for "${name}"`);
             }
-            iopackFile = null;
+            ioPackFile = null;
         }
-        iopack = iopack || iopackFile;
+        ioPack = ioPack || ioPackFile;
 
-        if (!iopack) {
-            callback(name);
-        } else {
+        if (ioPack) {
             // Always update installed From from File on disk if exists and set
-            if (iopackFile && iopackFile.common && iopackFile.common.installedFrom) {
-                iopack.common = iopack.common || {};
-                iopack.common.installedFrom = iopackFile.common.installedFrom;
+            if (ioPackFile && ioPackFile.common && ioPackFile.common.installedFrom) {
+                ioPack.common = ioPack.common || {};
+                ioPack.common.installedFrom = ioPackFile.common.installedFrom;
             }
-            objects.getObject('system.adapter.' + name, (err, obj) => {
-                if (err || !obj) {
-                    // Not existing? Why ever ... we recreate
-                    obj = {};
-                }
-                obj.common = iopack.common || {};
-                obj.native = iopack.native || {};
-                // protected/encryptedNative and notifications also need to be updated
-                obj.protectedNative = iopack.protectedNative || [];
-                obj.encryptedNative = iopack.encryptedNative || [];
-                obj.notifications = iopack.notifications || [];
-                // update instanceObjects and objects
-                obj.instanceObjects = iopack.instanceObjects || [];
-                obj.objects = iopack.objects || [];
+            // Not existing? Why ever ... we recreate
+            const obj = (await objects.getObject('system.adapter.' + name)) || {};
+            obj.common = ioPack.common || {};
+            obj.native = ioPack.native || {};
+            // protected/encryptedNative and notifications also need to be updated
+            obj.protectedNative = ioPack.protectedNative || [];
+            obj.encryptedNative = ioPack.encryptedNative || [];
+            obj.notifications = ioPack.notifications || [];
+            // update instanceObjects and objects
+            obj.instanceObjects = ioPack.instanceObjects || [];
+            obj.objects = ioPack.objects || [];
 
-                obj.type   = 'adapter';
+            obj.type   = 'adapter';
 
-                obj.common.installedVersion = iopack.common.version;
+            obj.common.installedVersion = ioPack.common.version;
 
-                if (obj.common.news) {
-                    delete obj.common.news; // remove this information as it could be big, but it will be taken from repo
-                }
+            if (obj.common.news) {
+                delete obj.common.news; // remove this information as it could be big, but it will be taken from repo
+            }
 
-                const hostname = tools.getHostName();
+            const hostname = tools.getHostName();
 
-                obj.from = `system.host.${hostname}.cli`;
-                obj.ts = Date.now();
+            obj.from = `system.host.${hostname}.cli`;
+            obj.ts = Date.now();
 
-                objects.setObject('system.adapter.' + name, obj, () =>
-                    this._upgradeAdapterObjectsHelper(name, iopack, hostname, logger, callback));
-            });
+            await objects.setObjectAsync('system.adapter.' + name, obj);
+            await this._upgradeAdapterObjectsHelper(name, ioPack, hostname, logger);
         }
+
+        return name;
     };
 }
 

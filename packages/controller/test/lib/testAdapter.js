@@ -162,7 +162,7 @@ function testAdapter(options) {
                 // eslint-disable-next-line no-undef
                 id:      sendToID++, // TODO: sendToID is undefined!
                 ack:     false,
-                time:    (new Date()).getTime()
+                time:    Date.now()
             }
         });
     }
