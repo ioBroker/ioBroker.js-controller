@@ -9,8 +9,6 @@
 
 'use strict';
 
-const {tools, EXIT_CODES} = require("@iobroker/js-controller-common");
-
 /** @class */
 function Install(options) {
 
@@ -129,7 +127,7 @@ function Install(options) {
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
                 const result = await getRepository(repoUrl, params);
-                repoUrl = result.json;
+                repoUrl = result;
             } catch (err) {
                 return processExit(err);
             }
@@ -206,18 +204,18 @@ function Install(options) {
                 // Install node modules
                 await this._npmInstallWithCheck(`${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`, options, debug);
                 await enableAdapters(stoppedList, true);
-                return [];
+                return packetName;
             } else
             if (url && url.match(tarballRegex)) {
                 // Install node modules
                 await this._npmInstallWithCheck(url, options, debug);
                 await enableAdapters(stoppedList, true);
-                return [];
+                return packetName;
             }  else
             // Adapter
             if (!url) {
                 console.warn(`host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName}.js-controller`);
-                return [];
+                return packetName;
             }
         }
 

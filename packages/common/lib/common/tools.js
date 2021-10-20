@@ -649,6 +649,59 @@ function getJson(urlOrPath, agent, callback) {
     }
 }
 
+async function getJsonAsync(urlOrPath, agent) {
+    agent = agent || '';
+
+    axios = axios || require('axios');
+    let sources = {};
+    // If object was read
+    if (urlOrPath && typeof urlOrPath === 'object') {
+        return urlOrPath;
+    } else if (!urlOrPath) {
+        console.log('Empty url!');
+        return null;
+    } else {
+        if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
+            try {
+                const result = await axios(urlOrPath, {timeout: 10000, headers: {'User-Agent': agent}, validateStatus: status => status !== 200});
+                return result.data;
+            } catch (error) {
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error}`);
+                return null;
+            }
+        } else {
+            if (fs.existsSync(urlOrPath)) {
+                try {
+                    sources = fs.readJSONSync(urlOrPath);
+                } catch (e) {
+                    console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+                try {
+                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                } catch (e) {
+                    console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+                try {
+                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                } catch (e) {
+                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else {
+                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
+                return null;
+            }
+        }
+    }
+}
+
 function scanDirectory(dirName, list, regExp) {
     if (fs.existsSync(dirName)) {
         let dirs;
@@ -1102,7 +1155,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         axios = axios || require('axios');
-        _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+        _hash = await axios(url.replace(/\.json$/, '-hash.json'), {timeout: 10000});
         if (_hash && _hash.data && hash === _hash.data.hash) {
             return _actualRepo;
         }
@@ -1113,15 +1166,14 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     if (url.startsWith('http://') || url.startsWith('https://')) {
         axios = axios || require('axios');
         if (!_hash) {
-            _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+            _hash = await axios(url.replace(/\.json$/, '-hash.json'), {timeout: 10000});
         }
 
         if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../../package.json').version}`;
-            data = await axios({
-                url,
+            data = await axios(url, {
                 timeout: 10000,
                 headers: { 'User-Agent': agent }
             });
@@ -2454,48 +2506,45 @@ function validateGeneralObjectProperties(obj, extend) {
  * @param {function} callback callback to be executed
  */
 function getAllInstances(adapters, objects, callback) {
+    showDeprecatedMessage('tools.getAllInstances');
+
+    return getAllInstancesAsync(adapters, objects)
+        .then(instances => callback(null, instances))
+        .catch(err => callback(err));
+}
+
+/**
+ * get all instances of all adapters in the list
+ *
+ * @alias getAllInstancesAsync
+ * @memberof tools
+ * @param {string[]} adapters list of adapter names to get instances for
+ * @param {object} objects class redis objects
+ * @returns {string[]} - array of IDs
+ */
+async function getAllInstancesAsync(adapters, objects) {
     const instances = [];
-    let count = 0;
-    for (let k = 0; k < adapters.length; k++) {
-        if (!adapters[k]) {
-            continue;
-        }
-        if (!adapters[k].includes('.')) {
-            count++;
-        }
-    }
+
     for (let i = 0; i < adapters.length; i++) {
         if (!adapters[i]) {
             continue;
         }
         if (!adapters[i].includes('.')) {
-            getInstances(adapters[i], objects, false, (err, inst) => {
-                for (let j = 0; j < inst.length; j++) {
-                    if (!instances.includes(inst[j])) {
-                        instances.push(inst[j]);
-                    }
+            const inst = await getInstancesAsync(adapters[i], objects);
+            for (let j = 0; j < inst.length; j++) {
+                if (!instances.includes(inst[j])) {
+                    instances.push(inst[j]);
                 }
-                if (!--count && callback) {
-                    callback(null, instances);
-                    callback = null;
-                }
-            });
+            }
         } else {
             if (!instances.includes(adapters[i])) {
                 instances.push(adapters[i]);
             }
         }
     }
-    if (!count && callback) {
-        callback(null, instances);
-        callback = null;
-    }
-}
 
-/**
- * Promise-version of getAllInstances
- */
-const getAllInstancesAsync = promisify(getAllInstances);
+    return instances;
+}
 
 /**
  * get all instances of one adapter
@@ -2524,13 +2573,16 @@ function getInstances(adapter, objects, withObjects, callback) {
  * @param {string }adapter name of the adapter
  * @param {object }objects objects DB
  * @param {boolean} withObjects return objects instead of only ids
+ * @returns {object[]} - array of IDs or object. It depends on argument withObjects
  */
-async function getInstancesAsync(adapter, objects, withObjects) {
+async function getInstancesAsync(adapter, objects, withObjects = false) {
     const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
     });
+
     const instances = [];
+
     if (arr && arr.rows) {
         for (let i = 0; i < arr.rows.length; i++) {
             if (arr.rows[i].value.type !== 'instance') {
@@ -3129,6 +3181,7 @@ module.exports = {
     getInstanceIndicatorObjects,
     getIoPack,
     getJson,
+    getJsonAsync,
     getInstancesOrderedByStartPrio,
     getRepositoryFile,
     getRepositoryFileAsync,

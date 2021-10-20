@@ -1,7 +1,7 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2020 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -17,13 +17,13 @@ const COLOR_GREEN  = '\x1b[32m';
 /** @class */
 function Setup(options) {
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
-    const fs          = require('fs-extra');
-    const path        = require('path');
-    const { tools } = require('@iobroker/js-controller-common');
-    const dbTools = require('@iobroker/js-controller-common-db');
-    const Backup      = require('./setupBackup');
-    const deepClone   = require('deep-clone');
-    const pluginInfos = require('./pluginInfos');
+    const fs             = require('fs-extra');
+    const path           = require('path');
+    const { tools }      = require('@iobroker/js-controller-common');
+    const dbTools        = require('@iobroker/js-controller-common-db');
+    const Backup         = require('./setupBackup');
+    const deepClone      = require('deep-clone');
+    const pluginInfos    = require('./pluginInfos');
 
     options = options || {};
 

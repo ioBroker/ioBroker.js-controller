@@ -1,7 +1,7 @@
 /**
  *      Check license
  *
- *      Copyright 2013-2020 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -41,44 +41,45 @@ function License(options) {
         return objects.getObjectListAsync({
             startkey: 'system.adapter.' + adapter + '.',
             endkey:   'system.adapter.' + adapter + '.\u9999'
-        }, {checked: true}).then(arr => {
-            const promises = [];
-            if (arr && arr.rows && arr.rows.length) {
-                for (let g = 0; g < arr.rows.length; g++) {
-                    const obj = arr.rows[g].value;
-                    if (obj && obj.type === 'instance') {
-                        obj.native = obj.native || {};
-                        obj.native.license = file;
-                        promises.push(objects.setObjectAsync(obj._id, obj).then(() => {
-                            console.log(`Instance "${obj._id}" updated`);
-                        }).catch(err => {
-                            console.error(`Cannot update "${obj._id}": ${err}`);
-                        }));
-                    }
-                }
-            }
-            if (!promises.length) {
-                console.warn(`no instances of ${adapter} found`);
+        }, {checked: true})
+            .then(arr => {
+                const promises = [];
                 if (arr && arr.rows && arr.rows.length) {
                     for (let g = 0; g < arr.rows.length; g++) {
                         const obj = arr.rows[g].value;
-                        if (obj && obj.type === 'adapter') {
+                        if (obj && obj.type === 'instance') {
                             obj.native = obj.native || {};
                             obj.native.license = file;
                             promises.push(objects.setObjectAsync(obj._id, obj).then(() => {
-                                console.log(`Adapter "${obj._id}" updated`);
+                                console.log(`Instance "${obj._id}" updated`);
                             }).catch(err => {
                                 console.error(`Cannot update "${obj._id}": ${err}`);
                             }));
                         }
                     }
                 }
-            }
-            if (!promises.length) {
-                console.error(`no installations of ${adapter} found`);
-            }
-            return Promise.all(promises);
-        });
+                if (!promises.length) {
+                    console.warn(`no instances of ${adapter} found`);
+                    if (arr && arr.rows && arr.rows.length) {
+                        for (let g = 0; g < arr.rows.length; g++) {
+                            const obj = arr.rows[g].value;
+                            if (obj && obj.type === 'adapter') {
+                                obj.native = obj.native || {};
+                                obj.native.license = file;
+                                promises.push(objects.setObjectAsync(obj._id, obj).then(() => {
+                                    console.log(`Adapter "${obj._id}" updated`);
+                                }).catch(err => {
+                                    console.error(`Cannot update "${obj._id}": ${err}`);
+                                }));
+                            }
+                        }
+                    }
+                }
+                if (!promises.length) {
+                    console.error(`no installations of ${adapter} found`);
+                }
+                return Promise.all(promises);
+            });
     };
 
     return this;

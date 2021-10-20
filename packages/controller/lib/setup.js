@@ -861,12 +861,12 @@ async function processCommand(command, args, params, callback) {
                         objects,
                         states,
                         getRepository,
-                        processExit:   callback,
+                        processExit: callback,
                         params
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstance(adapter, instance);
+                    await install.deleteInstanceAsync(adapter, instance);
                     callback();
                 });
             } else {
@@ -876,11 +876,11 @@ async function processCommand(command, args, params, callback) {
                         objects,
                         states,
                         getRepository,
-                        processExit:   callback,
+                        processExit: callback,
                         params
                     });
                     console.log(`Delete adapter "${adapter}"`);
-                    const [, resultCode] = await install.deleteAdapter(adapter);
+                    const resultCode = await install.deleteAdapterAsync(adapter);
                     callback(resultCode);
                 });
             }
@@ -957,20 +957,27 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 if (adapter) {
-                    if (adapter === 'self') {
-                        states.getState(`system.host.${tools.getHostName()}.alive`, (err, hostAlive) =>
-                            upgrade.upgradeController('', params.force || params.f, hostAlive && hostAlive.val, callback));
-                    } else {
-                        upgrade.upgradeAdapter('', adapter, params.force || params.f, params.y || params.yes, false, callback);
+                    try {
+                        if (adapter === 'self') {
+                            const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
+                            await upgrade.upgradeControllerAsync('', params.force || params.f, hostAlive && hostAlive.val);
+                        } else {
+                            await upgrade.upgradeAdapterAsync('', adapter, params.force || params.f, params.y || params.yes, false);
+                        }
+                        return void callback();
+                    } catch (e) {
+                        console.error(e);
+                        return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 } else {
                     // upgrade all
                     try {
                         const links = await getRepository();
-                        if (!links || !links.json) {
+                        if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                        upgrade.upgradeAdapterHelper(links.json, Object.keys(links.json).sort(), false, params.y || params.yes, callback);
+                        await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
+                        return void callback();
                     } catch (e) {
                         console.error(e);
                         return void callback(EXIT_CODES.INVALID_REPO);
@@ -2457,6 +2464,7 @@ function unsetup(params, callback) {
         });
     });
 }
+
 function restartController(callback) {
     const spawn = require('child_process').spawn;
 
