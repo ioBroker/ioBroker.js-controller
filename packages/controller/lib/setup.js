@@ -3,7 +3,7 @@
  *
  *  ioBroker Command Line Interface (CLI)
  *
- *  7'2014-2020 bluefox <dogafox@gmail.com>
+ *  7'2014-2021 bluefox <dogafox@gmail.com>
  *         2014 hobbyquaker <hq@ccu.io>
  *
  */
@@ -499,7 +499,7 @@ async function processCommand(command, args, params, callback) {
                                 objects,
                                 states,
                                 getRepository,
-                                processExit:   callback,
+                                processExit: callback,
                                 params
                             });
                             // In order to loop the instance creation, we need a promisified version of the method
@@ -535,7 +535,7 @@ async function processCommand(command, args, params, callback) {
                         // Rename repositories
                         const Repo = require('./setup/setupRepo.js');
                         const repo = new Repo({
-                            objects:     objects,
+                            objects,
                             states:      states
                         });
 
@@ -604,7 +604,7 @@ async function processCommand(command, args, params, callback) {
                     objects,
                     states,
                     getRepository,
-                    processExit:   callback,
+                    processExit: callback,
                     params
                 });
 
@@ -759,10 +759,7 @@ async function processCommand(command, args, params, callback) {
             if (name) {
                 dbConnect(params, async () => {
                     const Upload = require('./setup/setupUpload.js');
-                    const upload = new Upload({
-                        states,
-                        objects
-                    });
+                    const upload = new Upload({states, objects});
 
                     if (name === 'all') {
                         const objs = objects.getObjectListAsnyc({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
@@ -1020,11 +1017,11 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 const backup = new Backup({
-                    states:            states,
-                    objects:           objects,
-                    cleanDatabase:     cleanDatabase,
-                    restartController: restartController,
-                    processExit:       callback
+                    states,
+                    objects,
+                    cleanDatabase,
+                    restartController,
+                    processExit: callback
                 });
 
                 backup.restoreBackup(args[0], () => {
@@ -1041,11 +1038,11 @@ async function processCommand(command, args, params, callback) {
 
             dbConnect(params, () => {
                 const backup = new Backup({
-                    states:            states,
-                    objects:           objects,
-                    cleanDatabase:     cleanDatabase,
-                    restartController: restartController,
-                    processExit:       callback
+                    states,
+                    objects,
+                    cleanDatabase,
+                    restartController,
+                    processExit: callback
                 });
 
                 backup.createBackup(name, filePath => {
@@ -1061,11 +1058,11 @@ async function processCommand(command, args, params, callback) {
             const Backup = require('./setup/setupBackup.js');
             dbConnect(params, () => {
                 const backup = new Backup({
-                    states:            states,
-                    objects:           objects,
-                    cleanDatabase:     cleanDatabase,
-                    restartController: restartController,
-                    processExit:       callback
+                    states,
+                    objects,
+                    cleanDatabase,
+                    restartController,
+                    processExit: callback
                 });
 
                 backup.validateBackup(name).then(() => {
@@ -1083,10 +1080,10 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
                 const List = require('./setup/setupList.js');
                 const list = new List({
-                    states:      states,
-                    objects:     objects,
+                    states,
+                    objects,
                     processExit: callback,
-                    config:      config
+                    config
                 });
                 list.list(args[0], args[1], params);
             });
@@ -1124,8 +1121,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const List = require('./setup/setupList.js');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1157,8 +1154,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const List = require('./setup/setupList.js');
                                 const list = new List({
-                                    states:      states,
-                                    objects:     objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 for (let i = 0; i < processed.length; i++) {
@@ -1205,8 +1202,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const List = require('./setup/setupList.js');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1239,8 +1236,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const List = require('./setup/setupList.js');
                                 const list = new List({
-                                    states:      states,
-                                    objects:     objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1297,8 +1294,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const List = require('./setup/setupList.js');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1331,8 +1328,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const List = require('./setup/setupList.js');
                                 const list = new List({
-                                    states:      states,
-                                    objects:     objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1397,8 +1394,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const List = require('./setup/setupList.js');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1433,8 +1430,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const List = require('./setup/setupList.js');
                                 const list = new List({
-                                    states: states,
-                                    objects: objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1461,7 +1458,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects:     objects,
+                    objects,
                     processExit: callback
                 });
                 const password = params.password;
@@ -1568,7 +1565,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects:     objects,
+                    objects,
                     processExit: callback
                 });
 
@@ -1681,7 +1678,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects: objects,
+                    objects,
                     processExit: callback
                 });
                 users.addUserPrompt(user, group, password, err => {
@@ -1703,7 +1700,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects:     objects,
+                    objects,
                     processExit: callback
                 });
                 users.setUserPassword(user, password, err => {
@@ -1728,7 +1725,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects: objects,
+                    objects,
                     processExit: callback
                 });
                 users.delUser(user, err => {
@@ -2765,9 +2762,8 @@ function dbConnect(onlyCheck, params, callback) {
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline => {
-                    callback(objects, states, isOffline, config.objects.type, config);
-                });
+                checkSystemOffline(onlyCheck, isOffline =>
+                    callback(objects, states, isOffline, config.objects.type, config));
             }
         }
     });
@@ -2788,9 +2784,8 @@ function dbConnect(onlyCheck, params, callback) {
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline => {
-                    callback(objects, states, isOffline, config.objects.type, config);
-                });
+                checkSystemOffline(onlyCheck, isOffline =>
+                    callback(objects, states, isOffline, config.objects.type, config));
             }
         },
         change: (id, state) => states.onChange && states.onChange(id, state)
