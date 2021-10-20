@@ -9,6 +9,8 @@
 
 'use strict';
 
+const {tools, EXIT_CODES} = require("@iobroker/js-controller-common");
+
 /** @class */
 function Install(options) {
 
@@ -103,6 +105,7 @@ function Install(options) {
             }
         }
     }
+
     this.downloadPacket = function (repoUrl, packetName, options, stoppedList, callback) {
         tools.showDeprecatedMessage('setupInstall.downloadPacket');
         if (typeof stoppedList === 'function') {
@@ -110,12 +113,9 @@ function Install(options) {
             stoppedList = null;
         }
         return this.downloadPacketAsync(repoUrl, packetName, options, stoppedList)
-            .then(stoppedList => {
+            .then(() => {
                 if (typeof callback === 'function') {
-                    callback(async _callback => {
-                        await enableAdapters(stoppedList, true);
-                        typeof _callback === 'function' && _callback();
-                    }, packetName);
+                    callback(async _callback => typeof _callback === 'function' && _callback(), packetName);
                 }
             });
     }
@@ -205,12 +205,14 @@ function Install(options) {
             if (!url && packetName !== 'example') {
                 // Install node modules
                 await this._npmInstallWithCheck(`${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`, options, debug);
-                return stoppedList;
+                await enableAdapters(stoppedList, true);
+                return [];
             } else
             if (url && url.match(tarballRegex)) {
                 // Install node modules
                 await this._npmInstallWithCheck(url, options, debug);
-                return stoppedList;
+                await enableAdapters(stoppedList, true);
+                return [];
             }  else
             // Adapter
             if (!url) {
@@ -429,25 +431,6 @@ function Install(options) {
         }
     }
 
-    async function setObjects(objs) {
-        if (objs && objs.length) {
-            for (let i = 0; i < objs.length; i++) {
-                const obj = objs[i];
-                obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                obj.ts = Date.now();
-
-                try {
-                    await objects.extendObjectAsync(obj._id, obj);
-                } catch (err) {
-                    console.error('host.' + hostname + ' error setObject ' + obj._id + ' ' + err);
-                    return EXIT_CODES.CANNOT_SET_OBJECT;
-                }
-
-                console.log('host.' + hostname + ' object ' + obj._id + ' created/updated');
-            }
-        }
-    }
-
     this._uploadStaticObjects = async function (adapter, adapterConf) {
         if (!adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
@@ -485,7 +468,22 @@ function Install(options) {
             native: adapterConf.native
         });
 
-        await setObjects(adapter, objs);
+        if (objs && objs.length) {
+            for (let i = 0; i < objs.length; i++) {
+                const obj = objs[i];
+                obj.from = `system.host.${tools.getHostName()}.cli`;
+                obj.ts = Date.now();
+
+                try {
+                    await objects.extendObjectAsync(obj._id, obj);
+                } catch (err) {
+                    console.error(`host.${hostname} error setObject ${obj._id} ${err}`);
+                    return EXIT_CODES.CANNOT_SET_OBJECT;
+                }
+
+                console.log(`host.${hostname} object ${obj._id} created/updated`);
+            }
+        }
     };
 
     this.installAdapter = (adapter, repoUrl, callback) => {
@@ -516,9 +514,8 @@ function Install(options) {
             }
             _installCount++;
 
-            const stoppedList = await this.downloadPacket(repoUrl, fullName, null);
+            await this.downloadPacketAsync(repoUrl, fullName);
             await this.installAdapterAsync(adapter, null, _installCount);
-            await enableAdapters(stoppedList, true);
             return adapter;
         }
         let adapterConf;
@@ -635,7 +632,7 @@ function Install(options) {
         let doc = await objects.getObjectAsync('system.adapter.' + adapter);
         // Adapter is not installed - install it now
         if (!doc || !doc.common.installedVersion) {
-            await this.installAdapter(adapter);
+            await this.installAdapterAsync(adapter);
             doc = await objects.getObjectAsync('system.adapter.' + adapter);
         }
 
@@ -833,7 +830,7 @@ function Install(options) {
         }
 
         // sets the default states if any given
-        for (let d = 0; d < defStates.length; i++) {
+        for (let d = 0; d < defStates.length; d++) {
             const defState = defStates[d];
             defState.ack = true;
             defState.from = `system.host.${tools.getHostName()}.cli`;
@@ -1188,9 +1185,9 @@ function Install(options) {
      */
     this._deleteAdapterStates = async stateIDs => {
         if (stateIDs.length > 1000) {
-            console.log('host.' + hostname + ' Deleting ' + stateIDs.length + ' state(s). Be patient...');
+            console.log(`host.${hostname} Deleting ${stateIDs.length} state(s). Be patient...`);
         } else if (stateIDs.length) {
-            console.log('host.' + hostname + ' Deleting ' + stateIDs.length + ' state(s).');
+            console.log(`host.${hostname} Deleting ${stateIDs.length} state(s).`);
         }
 
         while (stateIDs.length > 0) {
@@ -1212,9 +1209,9 @@ function Install(options) {
      */
     this._deleteAdapterObjects = async objIDs => {
         if (objIDs.length > 1000) {
-            console.log('host.' + hostname + ' Deleting ' + objIDs.length + ' object(s). Be patient...');
+            console.log(`host.${hostname} Deleting ${objIDs.length} object(s). Be patient...`);
         } else if (objIDs.length) {
-            console.log('host.' + hostname + ' Deleting ' + objIDs.length + ' object(s).');
+            console.log(`host.${hostname} Deleting ${objIDs.length} object(s).`);
         }
 
         while (objIDs.length > 0) {

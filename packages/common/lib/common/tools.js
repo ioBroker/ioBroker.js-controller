@@ -2450,6 +2450,7 @@ function validateGeneralObjectProperties(obj, extend) {
  * @alias getAllInstances
  * @memberof tools
  * @param {string[]} adapters list of adapter names to get instances for
+ * @param {object} objects class redis objects
  * @param {function} callback callback to be executed
  */
 function getAllInstances(adapters, objects, callback) {
@@ -2459,7 +2460,7 @@ function getAllInstances(adapters, objects, callback) {
         if (!adapters[k]) {
             continue;
         }
-        if (adapters[k].indexOf('.') === -1) {
+        if (!adapters[k].includes('.')) {
             count++;
         }
     }
@@ -2467,7 +2468,7 @@ function getAllInstances(adapters, objects, callback) {
         if (!adapters[i]) {
             continue;
         }
-        if (adapters[i].indexOf('.') === -1) {
+        if (!adapters[i].includes('.')) {
             getInstances(adapters[i], objects, false, (err, inst) => {
                 for (let j = 0; j < inst.length; j++) {
                     if (!instances.includes(inst[j])) {
@@ -2480,7 +2481,7 @@ function getAllInstances(adapters, objects, callback) {
                 }
             });
         } else {
-            if (instances.indexOf(adapters[i]) === -1) {
+            if (!instances.includes(adapters[i])) {
                 instances.push(adapters[i]);
             }
         }

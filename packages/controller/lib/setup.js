@@ -698,7 +698,7 @@ async function processCommand(command, args, params, callback) {
                     objects,
                     states,
                     getRepository,
-                    processExit:   callback,
+                    processExit: callback,
                     params
                 });
 
@@ -718,20 +718,14 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (!fs.existsSync(adapterDir)) {
-                    install.downloadPacket(repoUrl, installName, null, enableAdapterCallback => {
-                        install.installAdapter(installName, repoUrl, () => {
-                            enableAdapterCallback(() => {
-                                if (command !== 'install' && command !== 'i') {
-                                    install.createInstance(name, params, callback);
-                                } else {
-                                    return void callback();
-                                }
-                            });
-                        });
-                    });
+                    await install.downloadPacketAsync(repoUrl, installName);
+                    await install.installAdapterAsync(installName, repoUrl);
+                    await install.createInstance(name, params, callback);
+                    return void callback();
                 } else {
                     if (command !== 'install' && command !== 'i') {
-                        install.createInstance(name, params, callback);
+                        await install.createInstanceAsync(name, params);
+                        return void callback();
                     } else {
                         console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
                         return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
@@ -763,42 +757,52 @@ async function processCommand(command, args, params, callback) {
             const name    = args[0];
             const subTree = args[1];
             if (name) {
-                dbConnect(params, () => {
+                dbConnect(params, async () => {
                     const Upload = require('./setup/setupUpload.js');
                     const upload = new Upload({
-                        states:      states,
-                        objects:     objects
+                        states,
+                        objects
                     });
 
                     if (name === 'all') {
-                        objects.getObjectList({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (_err, objs) => {
-                            const adapters = [];
-                            for (let i = 0; i < objs.rows.length; i++) {
-                                if (objs.rows[i].value.type !== 'adapter') {
-                                    continue;
-                                }
-                                adapters.push(objs.rows[i].value.common.name);
+                        const objs = objects.getObjectListAsnyc({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
+                        const adapters = [];
+                        for (let i = 0; i < objs.rows.length; i++) {
+                            if (objs.rows[i].value.type !== 'adapter') {
+                                continue;
                             }
+                            adapters.push(objs.rows[i].value.common.name);
+                        }
 
-                            upload.uploadAdapterFull(adapters, callback);
-                        });
+                        await upload.uploadAdapterFullAsync(adapters);
+                        callback();
                     } else {
                         // if upload of file
-                        if (name.indexOf('.') !== -1) {
+                        if (name.includes('.')) {
                             if (!subTree) {
-                                console.log('Please specify target name, like:\n ' + tools.appName + ' upload /file/picture.png /vis.0/main/img/picture.png');
+                                console.log(`Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis.0/main/img/picture.png`);
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             }
 
-                            upload.uploadFile(name, subTree, (err, newName) => {
-                                !err && console.log('File "' + name + '" is successfully saved under ' + newName);
-                                return void callback(err ? EXIT_CODES.CANNOT_UPLOAD_DATA : undefined);
-                            });
+                            try {
+                                const newName = await upload.uploadFileAsync(name, subTree);
+                                console.log(`File "${name}" is successfully saved under ${newName}`);
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot upload file "${name}": ${err}`);
+                                return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                            }
                         } else {
-                            if (subTree) {
-                                upload.uploadAdapter(name, false, true, subTree, callback);
-                            } else {
-                                upload.uploadAdapterFull([name], callback);
+                            try {
+                                if (subTree) {
+                                    await upload.uploadAdapterAsync(name, false, true, subTree);
+                                } else {
+                                    await upload.uploadAdapterFullAsync([name]);
+                                }
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot upload files "${name}": ${err}`);
+                                return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
                             }
                         }
                     }

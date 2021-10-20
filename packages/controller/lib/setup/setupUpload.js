@@ -88,7 +88,7 @@ function Upload(options) {
                 }
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
-                    const instances = await tools.getAllInstancesAsync(adapterConf.common.restartAdapters);
+                    const instances = await tools.getAllInstancesAsync(adapterConf.common.restartAdapters, objects);
                     if (instances && !instances.length) {
                         for (let r = 0; r < instances.length; r++) {
                             try {
@@ -215,9 +215,9 @@ function Upload(options) {
                     }
 
                     // try to upload on this host. It will print an error if the adapter directory not found
-                    await this.uploadAdapter(adapter, true, true);
-                    await this.upgradeAdapterObjects(adapter);
-                    await this.uploadAdapter(adapter, false, true);
+                    await this.uploadAdapterAsync(adapter, true, true);
+                    await this.upgradeAdapterObjectsAsync(adapter);
+                    await this.uploadAdapterAsync(adapter, false, true);
                 }
             }
         }
@@ -356,10 +356,10 @@ function Upload(options) {
 
             attName = attName.pop();
             attName = attName.split('/').slice(2).join('/');
-            if (files.length > 100) {
-                !(files.length % 50) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
-            } else if (files.length > 20) {
-                !(files.length % 10) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+            if (files.length - f > 100) {
+                (!f || !((files.length - f - 1) % 50)) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+            } else if (files.length - f - 1 > 20) {
+                (!f || !((files.length - f - 1) % 10)) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             } else {
                 logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             }
