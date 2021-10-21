@@ -762,17 +762,22 @@ async function processCommand(command, args, params, callback) {
                     const upload = new Upload({states, objects});
 
                     if (name === 'all') {
-                        const objs = objects.getObjectListAsnyc({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
-                        const adapters = [];
-                        for (let i = 0; i < objs.rows.length; i++) {
-                            if (objs.rows[i].value.type !== 'adapter') {
-                                continue;
+                        try {
+                            const objs = objects.getObjectListAsnyc({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
+                            const adapters = [];
+                            for (let i = 0; i < objs.rows.length; i++) {
+                                if (objs.rows[i].value.type !== 'adapter') {
+                                    continue;
+                                }
+                                adapters.push(objs.rows[i].value.common.name);
                             }
-                            adapters.push(objs.rows[i].value.common.name);
-                        }
 
-                        await upload.uploadAdapterFullAsync(adapters);
-                        callback();
+                            await upload.uploadAdapterFullAsync(adapters);
+                            callback();
+                        } catch (err) {
+                            console.error(`Cannot upload all adapters: ${err}`);
+                            return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                        }
                     } else {
                         // if upload of file
                         if (name.includes('.')) {
