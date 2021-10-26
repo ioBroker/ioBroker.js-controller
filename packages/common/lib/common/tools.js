@@ -1768,7 +1768,7 @@ async function getHostInfo(objects, callback) {
 
     const cpus = os.cpus();
     const data = {
-        Platform: os.platform(),
+        Platform: isDocker() ? 'docker' : os.platform(),
         os: process.platform,
         Architecture: os.arch(),
         CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
