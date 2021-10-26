@@ -13,7 +13,20 @@
     "@iobroker/js-controller-cli": "file:packages/cli",
     "@iobroker/js-controller-common": "file:packages/common",
     "@iobroker/js-controller-common-db": "file:packages/common-db",
-    "iobroker.js-controller": "file:packages/controller"
+    "iobroker.alexa2": "3.9.0",
+    "iobroker.alias-manager": "1.2.2",
+    "iobroker.backitup": "2.1.11",
+    "iobroker.daswetter": "3.0.7",
+    "iobroker.flot": "1.10.2",
+    "iobroker.heatingcontrol": "2.3.2",
+    "iobroker.hm-rpc": "1.14.41",
+    "iobroker.influxdb": "1.9.5",
+    "iobroker.iogo": "0.6.6",
+    "iobroker.js-controller": "file:packages/controller",
+    "iobroker.material": "1.0.3",
+    "iobroker.yr": "2.0.3",
+    "iobroker.zigbee": "1.5.5",
+    "iobroker.zwave2": "1.10.0"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0",

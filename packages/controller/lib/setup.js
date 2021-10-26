@@ -24,6 +24,7 @@ const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
 const dbTools = require('@iobroker/js-controller-common-db');
+const {spawn} = require("child_process");
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -1001,7 +1002,7 @@ async function processCommand(command, args, params, callback) {
                     cleanDatabase(true, count => {
                         console.log('Deleted ' + count + ' states');
                         restartController(() => {
-                            console.log('Restarting ' + tools.appName + '...');
+                            console.log(`Restarting ${tools.appName}...`);
                             return void callback();
                         });
                     });
@@ -1023,8 +1024,8 @@ async function processCommand(command, args, params, callback) {
                 const backup = new Backup({
                     states,
                     objects,
-                    cleanDatabase,
-                    restartController,
+                    cleanDatabaseAsync,
+                    restartControllerAsync,
                     processExit: callback
                 });
 
@@ -1040,19 +1041,23 @@ async function processCommand(command, args, params, callback) {
             const name = args[0];
             const Backup = require('./setup/setupBackup.js');
 
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const backup = new Backup({
                     states,
                     objects,
-                    cleanDatabase,
-                    restartController,
+                    cleanDatabaseAsync,
+                    restartControllerAsync,
                     processExit: callback
                 });
 
-                backup.createBackup(name, filePath => {
+                try {
+                    const filePath = await backup.createBackupAsync(name);
                     console.log('Backup created: ' + filePath);
                     return void callback(EXIT_CODES.NO_ERROR);
-                });
+                } catch (err) {
+                    console.log('Cannot create backup: ' + err);
+                    return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+                }
             });
             break;
         }
@@ -1064,21 +1069,24 @@ async function processCommand(command, args, params, callback) {
                 const backup = new Backup({
                     states,
                     objects,
-                    cleanDatabase,
-                    restartController,
+                    cleanDatabaseAsync,
+                    restartControllerAsync,
                     processExit: callback
                 });
 
-                backup.validateBackup(name).then(() => {
-                    console.log('Backup OK');
-                    processExit(0);
-                }).catch(e => {
-                    console.log(`Backup check failed: ${e.message}`);
-                    processExit(1);
-                });
+                backup.validateBackup(name)
+                    .then(() => {
+                        console.log('Backup OK');
+                        processExit(0);
+                    })
+                    .catch(e => {
+                        console.log(`Backup check failed: ${e.message}`);
+                        processExit(1);
+                    });
             });
             break;
         }
+
         case 'l':
         case 'list': {
             dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
@@ -2359,78 +2367,75 @@ async function processExit(exitCode) {
     }, 1000);
 }
 
-function delObjects(ids, callback) {
-    if (!ids || !ids.length) {
-        return void callback();
-    } else {
-        const id = ids.shift();
-        objects.delObject(id, err => {
-            if (err &&
-                id !== 'system.group.user' &&
-                id !== 'system.group.administrator' &&
-                id !== 'system.user.admin'
-            ) {
-                console.warn(`[Not critical] Cannot delete object ${id}: ${JSON.stringify(err)}`);
+const EXCEPTIONS = [
+    '0_userdata.0',
+    'alias.0',
+    'enum.functions',
+    'enum.rooms',
+    'system.config',
+    'system.group.administrator',
+    'system.group.user',
+    'system.repositories',
+    'system.user.admin',
+];
+
+async function delObjects(ids) {
+    if (ids && ids.length) {
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
+            if (!EXCEPTIONS.includes(id)) {
+                try {
+                    await objects.delObjectAsync(id);
+                } catch (err) {
+                    console.warn(`[Not critical] Cannot delete object ${id}: ${JSON.stringify(err)}`);
+                }
             }
-            setImmediate(delObjects, ids, callback);
-        });
+        }
     }
+}
+
+async function delStates() {
+    const keys = await states.getKeys('*');
+    if (keys) {
+        console.log(`clean ${keys.length} states...`);
+        for (let i = 0; i < keys.length; i++) {
+            await states.delState(keys[i]);
+        }
+    }
+    return keys ? keys.length : 0;
 }
 
 function cleanDatabase(isDeleteDb, callback) {
-    let taskCnt = 0;
-
     if (isDeleteDb) {
-        objects.destroyDB(() => {
-
+        objects.destroyDB(async () => {
             // Clean up states
-            states.getKeys('*', (_err, obj) => {
-                const delState = [];
-                let i;
-                if (obj) {
-                    for (i = 0; i < obj.length; i++) {
-                        delState.push(obj[i]);
-                    }
-                }
-                taskCnt = 0;
-                for (i = 0; i < obj.length; i++) {
-                    taskCnt++;
-                    states.delState(delState[i], () => !(--taskCnt) && callback && callback(obj.length));
-                }
-            });
+            const keysCount = await delStates();
+
+            if (callback) {
+                return void callback(keysCount);
+            }
         });
     } else {
         // Clean only objects, not the views
-        objects.getObjectList({startkey: '\u0000', endkey: '\u9999'}, (err, res) => {
+        objects.getObjectList({startkey: '\u0000', endkey: '\u9999'}, async (err, res) => {
             let ids = [];
             if (!err && res.rows.length) {
-                console.log('clean ' + res.rows.length + ' objects...');
+                console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
             }
-            delObjects(ids, () => {
-                // Clean up states
-                states.getKeys('*', (_err, obj) => {
-                    const delState = [];
-                    let i;
-                    if (obj) {
-                        for (i = 0; i < obj.length; i++) {
-                            delState.push(obj[i]);
-                        }
-                    }
-                    taskCnt = 0;
-                    console.log('clean ' + obj.length + ' states...');
-                    for (i = 0; i < obj.length; i++) {
-                        taskCnt++;
-                        states.delState(delState[i], () => !(--taskCnt) && callback && callback(obj.length));
-                    }
-                    if (!taskCnt && callback) {
-                        return void callback(obj.length);
-                    }
-                });
-            });
+            await delObjects(ids);
+            // Clean up states
+            const keysCount = await delStates();
+
+            if (callback) {
+                return void callback(keysCount);
+            }
         });
     }
 }
+
+const cleanDatabaseAsync = tools.promisifyNoError(cleanDatabase)
+
 function unsetup(params, callback) {
     dbConnect(params, () => {
         objects.delObject('system.meta.uuid', err => {
@@ -2485,6 +2490,9 @@ function restartController(callback) {
         processExit();
     }
 }
+
+const restartControllerAsync = tools.promisifyNoError(restartController);
+
 
 async function getRepository(repoName, params) {
     params = params || {};
