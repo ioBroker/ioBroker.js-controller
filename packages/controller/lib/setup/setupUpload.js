@@ -19,10 +19,10 @@ function Upload(options) {
 
     options = options || {};
 
-    if (!options.states)      {
+    if (!options.states) {
         throw new Error('Invalid arguments: states is missing');
     }
-    if (!options.objects)     {
+    if (!options.objects) {
         throw new Error('Invalid arguments: objects is missing');
     }
 
@@ -224,11 +224,11 @@ function Upload(options) {
                 instance = instance || objects.find(obj => obj && obj.common && liveHosts.indexOf(obj.common.host) !== -1);
 
                 if (instance && instance.common.host !== hostname) {
-                    console.log('Send upload command to host "' + instance.common.host + '"... ');
+                    console.log(`Send upload command to host "${instance.common.host}"... `);
                     // send upload message to the host
                     sendToHostFromCli(instance.common.host, 'upload', adapter, response => {
-                        !response && console.error('No answer from ' + instance.common.host);
-                        response && console.log('Upload result: ' + response.result);
+                        !response && console.error(`No answer from ${instance.common.host}`);
+                        response && console.log(`Upload result: ${response.result}`);
                         setImmediate(() => this.uploadAdapterFull(adapters, callback));
                     });
                 } else {
@@ -455,8 +455,7 @@ function Upload(options) {
             callback = logger;
             logger = subTree;
             subTree = null;
-        } else
-        if (typeof subTree === 'function') {
+        } else if (typeof subTree === 'function') {
             callback = subTree;
             subTree = null;
             logger = null;
@@ -738,7 +737,7 @@ function Upload(options) {
             iopackFile = fs.readJSONSync(adapterDir + '/io-package.json');
         } catch {
             if (adapterDir) {
-                logger.error('Cannot find io-package.json in ' + adapterDir);
+                logger.error(`Cannot find io-package.json in ${adapterDir}`);
             } else {
                 logger.error(`Cannot find io-package.json for "${name}"`);
             }
@@ -746,7 +745,8 @@ function Upload(options) {
         }
         iopack = iopack || iopackFile;
 
-        if (!iopack) {
+        if (!iopack || iopack.common && iopack.common.controller) {
+            // if no iopack found or someone passed the controller
             callback(name);
         } else {
             // Always update installed From from File on disk if exists and set
@@ -754,7 +754,7 @@ function Upload(options) {
                 iopack.common = iopack.common || {};
                 iopack.common.installedFrom = iopackFile.common.installedFrom;
             }
-            objects.getObject('system.adapter.' + name, (err, obj) => {
+            objects.getObject(`system.adapter.${name}`, (err, obj) => {
                 if (err || !obj) {
                     // Not existing? Why ever ... we recreate
                     obj = {};

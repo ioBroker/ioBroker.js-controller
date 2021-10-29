@@ -489,7 +489,6 @@ async function processCommand(command, args, params, callback) {
 
                 setup.setup(async (isFirst, _isRedis) => {
                     if (isFirst) {
-
                         // Creates all instances that are needed on a fresh installation
                         const createInitialInstances = async () => {
                             const Install = require('./setup/setupInstall.js');
@@ -542,6 +541,13 @@ async function processCommand(command, args, params, callback) {
                             await repo.rename('latest', 'beta', 'http://download.iobroker.net/sources-dist-latest.json');
                         } catch (e) {
                             console.warn(e.message);
+                        }
+
+                        // there has been a bug that user can uplaod js-controller
+                        try {
+                            await objects.delObjectAsync('system.adapter.js-controller');
+                        } catch {
+                            // ignore
                         }
 
                         try {
@@ -789,7 +795,7 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             upload.uploadFile(name, subTree, (err, newName) => {
-                                !err && console.log('File "' + name + '" is successfully saved under ' + newName);
+                                !err && console.log(`File "${name}" is successfully saved under ${newName}`);
                                 return void callback(err ? EXIT_CODES.CANNOT_UPLOAD_DATA : undefined);
                             });
                         } else {
