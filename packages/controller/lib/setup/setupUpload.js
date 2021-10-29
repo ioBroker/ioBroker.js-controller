@@ -446,7 +446,7 @@ function Upload(options) {
         return _results;
     }
 
-    this.uploadAdapter = (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
+    this.uploadAdapter = async (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
         const id = adapter + (isAdmin ? '.admin' : '');
         const adapterDir = tools.getAdapterDir(adapter);
         let dir = adapterDir ? adapterDir + (isAdmin ? '/admin' : '/www') : '';
@@ -475,8 +475,11 @@ function Upload(options) {
         }
 
         let cfg;
-        if (fs.existsSync(adapterDir + '/io-package.json')) {
-            cfg = require(adapterDir + '/io-package.json');
+        try {
+            cfg = await fs.readJSON(`${adapterDir}/io-package.json`);
+        } catch (e) {
+            // file not parsable or does not exist
+            console.error(`Could not read io-package.json: ${e.message}`);
         }
 
         if (!fs.existsSync(dir)) {
@@ -499,8 +502,8 @@ function Upload(options) {
             objects.getObject('system.adapter.' + adapter + '.upload', (err, obj) => {
                 if (err || !obj) {
                     objects.setObject('system.adapter.' + adapter + '.upload', {
-                        _id:   'system.adapter.' + adapter + '.upload',
-                        type:   'state',
+                        _id: 'system.adapter.' + adapter + '.upload',
+                        type: 'state',
                         common: {
                             name: adapter + '.upload',
                             type: 'number',
@@ -508,7 +511,7 @@ function Upload(options) {
                             unit: '%',
                             min: 0,
                             max: 100,
-                            def:  0,
+                            def: 0,
                             desc: 'Upload process indicator'
                         },
                         from: 'system.host.' + tools.getHostName() + '.cli',
