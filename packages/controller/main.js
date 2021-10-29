@@ -16,7 +16,7 @@ const fs              = require('fs-extra');
 const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
-const dbTools = require('@iobroker/js-controller-common-db');
+const {tools: dbTools} = require('@iobroker/js-controller-common-db');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
@@ -4530,14 +4530,14 @@ function init(compactGroupId) {
     if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
-        Objects = require('./lib/objects');
+        Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
     }
 
     // Get "states" object
     if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
         States  = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
-        States  = require('./lib/states');
+        States  = require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default they are disabled and redirected to log file
