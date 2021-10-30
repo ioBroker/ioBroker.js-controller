@@ -4,6 +4,7 @@
         "node": true
     },
     "extends": "eslint:recommended",
+    "ignorePatterns": ["**/doc"],
     "rules": {
         "indent": [
             "error",
