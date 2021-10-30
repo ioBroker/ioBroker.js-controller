@@ -1773,7 +1773,7 @@ function Adapter(options) {
                         // now check if type is correct, null is always allowed
                         if (obj.common.type === 'file') {
                             // file has to be set with setBinaryState
-                            logger.warn(`${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because it's object is of type "file"`);
+                            logger.warn(`${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`);
                         } else if (!(obj.common.type === 'mixed' && typeof state.val !== 'object' ||
                             obj.common.type !== 'object' && obj.common.type === typeof state.val ||
                             obj.common.type === 'array' && typeof state.val === 'string' ||
