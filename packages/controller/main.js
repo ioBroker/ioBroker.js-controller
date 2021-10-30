@@ -1206,16 +1206,12 @@ async function extendObjects(tasks) {
 
         try {
             await objects.extendObjectAsync(task._id, task);
+            // if extend throws we don't want to set corresponding state
+            if (state) {
+                await states.setStateAsync(task._id, state);
+            }
         } catch {
             // ignore
-        }
-
-        if (state) {
-            try {
-                await states.setStateAsync(task._id, state);
-            } catch {
-                // ignore
-            }
         }
     }
 }
