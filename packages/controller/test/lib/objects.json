@@ -25,11 +25,11 @@
         },
         "native": {
             "repositories": {
-                "default": {
+                "stable": {
                     "link": "http://download.iobroker.net/sources-dist.json",
                     "json": null
                 },
-                "latest": {
+                "beta": {
                     "link": "http://download.iobroker.net/sources-dist-latest.json",
                     "json": null
                 },
