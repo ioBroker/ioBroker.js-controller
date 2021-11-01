@@ -63,7 +63,7 @@ jobs:
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
-      uses: actions/github-script@v4
+      uses: actions/github-script@v5
       with:
         script: |
           const semver = require("semver");
@@ -72,13 +72,25 @@ jobs:
           const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
           const sha = require("child_process").execSync("git rev-parse --short HEAD").toString("utf8").trim();
 
-          // Figure out the next version
-          const newVersion = `${semver.inc(
-            require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version,
-            "prerelease",
-          )}-${dateStr}-${sha}`;
+          const prevVersion = require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
 
-          return newVersion;
+          const parsed = semver.parse(prevVersion);
+          const prereleaseIdentifier = parsed.prerelease[0] || "alpha";
+
+          for (let i = 1; i < parsed.prerelease.length; i++) {
+            const part = parsed.prerelease[i];
+            if (typeof part === "number") {
+              continue;
+            }
+            // Parse stuff like `8-20210909-001a711c` back to `8`
+            const numeric = parseInt(part);
+            if (!Number.isNaN(numeric)) {
+              parsed.prerelease[i] = numeric;
+            }
+          }
+
+          // Figure out the next version
+          return `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
 
     - name: Bump version and publish
       if: steps.changes.outputs.result == 'ok'

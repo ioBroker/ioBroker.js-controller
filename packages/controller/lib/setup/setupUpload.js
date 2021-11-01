@@ -418,14 +418,13 @@ function Upload(options) {
         return _results;
     }
 
-    this.uploadAdapter = (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
+    this.uploadAdapter = async (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
         tools.showDeprecatedMessage('setupUpload.uploadAdapter');
         if (tools.isObject(subTree)) {
             callback = logger;
             logger = subTree;
             subTree = null;
-        } else
-        if (typeof subTree === 'function') {
+        } else if (typeof subTree === 'function') {
             callback = subTree;
             subTree = null;
             logger = null;
@@ -455,8 +454,11 @@ function Upload(options) {
         }
 
         let cfg;
-        if (fs.existsSync(adapterDir + '/io-package.json')) {
-            cfg = require(adapterDir + '/io-package.json');
+        try {
+            cfg = await fs.readJSON(`${adapterDir}/io-package.json`);
+        } catch (e) {
+            // file not parsable or does not exist
+            console.error(`Could not read io-package.json: ${e.message}`);
         }
 
         if (!fs.existsSync(dir)) {
@@ -713,7 +715,7 @@ function Upload(options) {
             ioPackFile = fs.readJSONSync(adapterDir + '/io-package.json');
         } catch {
             if (adapterDir) {
-                logger.error('Cannot find io-package.json in ' + adapterDir);
+                logger.error(`Cannot find io-package.json in ${adapterDir}`);
             } else {
                 logger.error(`Cannot find io-package.json for "${name}"`);
             }
