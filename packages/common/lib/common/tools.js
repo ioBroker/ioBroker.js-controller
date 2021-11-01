@@ -1819,7 +1819,7 @@ function getConfigFileName() {
         configDir = configDir.join('/');
     }
 
-    return configDir + '/' + appName + '-data/' + appName + '.json';
+    return `${configDir}/${appName}-data/${appName}.json`;
 }
 
 /**

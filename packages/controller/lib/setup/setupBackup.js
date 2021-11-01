@@ -220,7 +220,7 @@ class BackupRestore {
      * @param {boolean} noConfig - do not store configs
      * @param {() => void} callback -  callback function
      */
-    createBackup(name, noConfig, callback) {
+    async createBackup(name, noConfig, callback) {
         if (typeof noConfig === 'function') {
             callback = noConfig;
             noConfig = false;
@@ -230,12 +230,12 @@ class BackupRestore {
 
         if (!name) {
             const d = new Date();
-            name = d.getFullYear()                   + '_' +
+            name = d.getFullYear() + '_' +
                 ('0' + (d.getMonth() + 1)).slice(-2) + '_' +
-                ('0' + d.getDate()       ).slice(-2) + '-' +
-                ('0' + d.getHours()      ).slice(-2) + '_' +
-                ('0' + d.getMinutes()    ).slice(-2) + '_' +
-                ('0' + d.getSeconds()    ).slice(-2) + '_backup' + tools.appName;
+                ('0' + d.getDate()).slice(-2) + '-' +
+                ('0' + d.getHours()).slice(-2) + '_' +
+                ('0' + d.getMinutes()).slice(-2) + '_' +
+                ('0' + d.getSeconds()).slice(-2) + '_backup' + tools.appName;
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -254,155 +254,175 @@ class BackupRestore {
             }
         }
 
-        this.objects.getObjectList({include_docs: true}, (err, res) => {
-            const result = {objects: null, states: {}};
-            if (!noConfig) {
-                result.config = null;
-            }
-            if (err) {
-                console.error(`host.${hostname} Cannot get objects: ${err}`);
-            } else {
-                result.objects = res.rows;
-            }
+        const result = {objects: null, states: {}};
 
-            if (!noConfig && fs.existsSync(tools.getConfigFileName())) {
-                result.config = fs.readJSONSync(tools.getConfigFileName());
-            }
+        const hostname = tools.getHostName();
 
-            this.states.getKeys('*', (err, keys) => {
-                /*for (const i = keys.length - 1; i >= 0; i--) {
+        try {
+            const res = await this.objects.getObjectListAsync({include_docs: true});
+            res.objects = res.rows;
+        } catch (e) {
+            console.error(`host.${hostname} Cannot get objects: ${e.message}`);
+        }
+
+        if (!noConfig) {
+            result.config = null;
+        }
+
+        if (!noConfig && fs.existsSync(tools.getConfigFileName())) {
+            result.config = fs.readJSONSync(tools.getConfigFileName());
+        }
+
+        const r = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
+
+        try {
+            const keys = await this.states.getKeysAsync('*');
+            /*for (const i = keys.length - 1; i >= 0; i--) {
                     if (keys[i].match(/^messagebox\./) || keys[i].match(/^log\./)) {
                     keys.splice(i, 1);
                 }
                 }*/
 
-                // NOTE for all "replace" with $$$$ ... result will be just $$
-                this.states.getStates(keys, async (err, obj) => {
-                    const hostname = tools.getHostName();
-                    const r = new RegExp('^system\\.host\\.' + hostname + '\\.(\\w+)$');
+            // NOTE for all "replace" with $$$$ ... result will be just $$
+            const obj = await this.states.getStatesAsync(keys);
 
-                    for (let i = 0; i < keys.length; i++) {
-                        if (!obj[i]) {
-                            continue;
-                        }
-                        if (obj[i].from === `system.host.${hostname}` || r.test(obj[i].from)) {
-                            obj[i].from.replace(`system.host.${hostname}`, 'system.host.$$$$__hostname__$$$$');
-                        }
-                        if (r.test(keys[i])) {
-                            keys[i] = keys[i].replace(hostname, '$$$$__hostname__$$$$');
-                        }
-                        result.states[keys[i]] = obj[i];
+            // read iobroker.json
+            let isCustomHostname;
+
+            try {
+                const config = await fs.readJSON(tools.getConfigFileName());
+                // if a hostname is configured
+                isCustomHostname = !!config.system.hostname;
+            } catch (e) {
+                console.error(`host.${hostname} Cannot read config file: ${e.message}`);
+            }
+
+            for (let i = 0; i < keys.length; i++) {
+                if (!obj[i]) {
+                    continue;
+                }
+
+                if (!isCustomHostname) {
+                    // if its a default hostname, we will have a new default after restore and need to replace
+                    if (obj[i].from === `system.host.${hostname}` || r.test(obj[i].from)) {
+                        obj[i].from.replace(`system.host.${hostname}`, 'system.host.$$$$__hostname__$$$$');
                     }
-                    console.log(`host.${hostname} ${keys.length} states saved`);
-
-                    if (!fs.existsSync(bkpDir)) {
-                        fs.mkdirSync(bkpDir);
+                    if (r.test(keys[i])) {
+                        keys[i] = keys[i].replace(hostname, '$$$$__hostname__$$$$');
                     }
-                    if (!fs.existsSync(tmpDir)) {
-                        fs.mkdirSync(tmpDir);
+                }
+                result.states[keys[i]] = obj[i];
+            }
+            console.log(`host.${hostname} ${keys.length} states saved`);
+        } catch (e) {
+            console.error(`host.${hostname} Cannot get states: ${e.message}`);
+        }
+
+        if (!fs.existsSync(bkpDir)) {
+            fs.mkdirSync(bkpDir);
+        }
+        if (!fs.existsSync(tmpDir)) {
+            fs.mkdirSync(tmpDir);
+        }
+
+        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+        if (!fs.existsSync(`${tmpDir}/backup`)) {
+            fs.mkdirSync(`${tmpDir}/backup`);
+        }
+        if (!fs.existsSync(`${tmpDir}/backup/files`)) {
+            fs.mkdirSync(`${tmpDir}/backup/files`);
+        }
+
+        // try to find user files
+        for (let j = 0; j < result.objects.length; j++) {
+            if (!result.objects[j] || !result.objects[j].value || !result.objects[j].value._id || !result.objects[j].value.common) {
+                continue;
+            }
+            //if (result.objects[j].doc) delete result.objects[j].doc;
+            if (result.objects[j].value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
+                result.objects[j].value.common.host === hostname) {
+                result.objects[j].value.common.host = '$$__hostname__$$';
+                if (result.objects[j].doc) {
+                    result.objects[j].doc.common.host = '$$__hostname__$$';
+                }
+            } else if (r.test(result.objects[j].value._id)) {
+                result.objects[j].value._id = result.objects[j].value._id.replace(hostname, '$$$$__hostname__$$$$');
+                result.objects[j].id = result.objects[j].value._id;
+                if (result.objects[j].doc) {
+                    result.objects[j].doc._id = result.objects[j].value._id;
+                }
+            } else if (result.objects[j].value._id === 'system.host.' + hostname) {
+                result.objects[j].value._id = 'system.host.$$__hostname__$$';
+                result.objects[j].value.common.name = result.objects[j].value._id;
+                result.objects[j].value.common.hostname = '$$__hostname__$$';
+                if (result.objects[j].value.native && result.objects[j].value.native.os) {
+                    result.objects[j].value.native.os.hostname = '$$__hostname__$$';
+                }
+                result.objects[j].id = result.objects[j].value._id;
+                if (result.objects[j].doc) {
+                    result.objects[j].doc._id = result.objects[j].value._id;
+                    result.objects[j].doc.common.name = result.objects[j].value._id;
+                    result.objects[j].doc.common.hostname = '$$__hostname__$$';
+                    if (result.objects[j].doc.native && result.objects[j].value.native.os) {
+                        result.objects[j].doc.native.os.hostname = '$$__hostname__$$';
                     }
+                }
+            }
 
-                    await this._removeFolderRecursive(`${tmpDir}/backup/`);
-                    if (!fs.existsSync(`${tmpDir}/backup`)) {
-                        fs.mkdirSync(`${tmpDir}/backup`);
-                    }
-                    if (!fs.existsSync(`${tmpDir}/backup/files`)) {
-                        fs.mkdirSync(`${tmpDir}/backup/files`);
-                    }
+            // Read all files
+            if (result.objects[j].value.type === 'meta' &&
+                result.objects[j].value.common &&
+                result.objects[j].value.common.type === 'meta.user'
+            ) {
+                // do not process "xxx.0. " and "xxx.0."
+                if (result.objects[j].id.trim() === result.objects[j].id &&
+                    result.objects[j].id[result.objects[j].id.length - 1] !== '.') {
+                    promises.push(new Promise(resolve =>
+                        this.copyDir(result.objects[j].id, '', `${tmpDir}/backup/files/${result.objects[j].id}`, resolve)));
+                }
+            }
 
-                    // try to find user files
-                    for (let j = 0; j < result.objects.length; j++) {
-                        if (!result.objects[j] || !result.objects[j].value || !result.objects[j].value._id || !result.objects[j].value.common) {
-                            continue;
-                        }
-                        //if (result.objects[j].doc) delete result.objects[j].doc;
-                        if (result.objects[j].value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
-                                result.objects[j].value.common.host === hostname) {
-                            result.objects[j].value.common.host = '$$__hostname__$$';
-                            if (result.objects[j].doc) {
-                                result.objects[j].doc.common.host = '$$__hostname__$$';
-                            }
-                        } else if (r.test(result.objects[j].value._id)) {
-                            result.objects[j].value._id = result.objects[j].value._id.replace(hostname, '$$$$__hostname__$$$$');
-                            result.objects[j].id = result.objects[j].value._id;
-                            if (result.objects[j].doc) {
-                                result.objects[j].doc._id = result.objects[j].value._id;
-                            }
-                        } else if (result.objects[j].value._id === 'system.host.' + hostname) {
-                            result.objects[j].value._id = 'system.host.$$__hostname__$$';
-                            result.objects[j].value.common.name = result.objects[j].value._id;
-                            result.objects[j].value.common.hostname = '$$__hostname__$$';
-                            if (result.objects[j].value.native && result.objects[j].value.native.os) {
-                                result.objects[j].value.native.os.hostname = '$$__hostname__$$';
-                            }
-                            result.objects[j].id = result.objects[j].value._id;
-                            if (result.objects[j].doc) {
-                                result.objects[j].doc._id = result.objects[j].value._id;
-                                result.objects[j].doc.common.name = result.objects[j].value._id;
-                                result.objects[j].doc.common.hostname = '$$__hostname__$$';
-                                if (result.objects[j].doc.native && result.objects[j].value.native.os) {
-                                    result.objects[j].doc.native.os.hostname = '$$__hostname__$$';
-                                }
-                            }
-                        }
+            // Read all files
+            if (result.objects[j].value.type === 'instance' &&
+                result.objects[j].value.common &&
+                result.objects[j].value.common.dataFolder) {
+                let path = result.objects[j].value.common.dataFolder;
 
-                        // Read all files
-                        if (result.objects[j].value.type === 'meta' &&
-                                result.objects[j].value.common &&
-                                result.objects[j].value.common.type === 'meta.user'
-                        ) {
-                            // do not process "xxx.0. " and "xxx.0."
-                            if (result.objects[j].id.trim() === result.objects[j].id &&
-                                    result.objects[j].id[result.objects[j].id.length - 1] !== '.') {
-                                promises.push(new Promise(resolve =>
-                                    this.copyDir(result.objects[j].id, '', `${tmpDir}/backup/files/${result.objects[j].id}`, resolve)));
-                            }
-                        }
+                if (path[0] !== '/' && !path.match(/^\w:/)) {
+                    path = pathLib.join(this.configDir, path);
+                }
 
-                        // Read all files
-                        if (result.objects[j].value.type === 'instance' &&
-                                result.objects[j].value.common &&
-                                result.objects[j].value.common.dataFolder) {
-                            let path = result.objects[j].value.common.dataFolder;
+                if (fs.existsSync(path)) {
+                    this.copyFolderRecursiveSync(path, `${tmpDir}/backup`);
+                }
+            }
+        }
 
-                            if (path[0] !== '/' && !path.match(/^\w:/)) {
-                                path = pathLib.join(this.configDir, path);
-                            }
+        // special case: copy vis vis-common-user.css file
+        promises.push(new Promise(resolve => this.objects.readFile('vis', 'css/vis-common-user.css', (err, data) => {
+            if (data) {
+                const dir = `${tmpDir}/backup/files/`;
+                !fs.existsSync(`${dir}vis`) && fs.mkdirSync(`${dir}vis`);
+                !fs.existsSync(`${dir}vis/css`) && fs.mkdirSync(`${dir}vis/css`);
 
-                            if (fs.existsSync(path)) {
-                                this.copyFolderRecursiveSync(path, `${tmpDir}/backup`);
-                            }
-                        }
-                    }
+                fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data);
+            }
+            resolve();
+        })));
 
-                    // special case: copy vis vis-common-user.css file
-                    promises.push(new Promise(resolve => this.objects.readFile('vis', 'css/vis-common-user.css', (err, data) => {
-                        if (data) {
-                            const dir = `${tmpDir}/backup/files/`;
-                            !fs.existsSync(`${dir}vis`) && fs.mkdirSync(`${dir}vis`);
-                            !fs.existsSync(`${dir}vis/css`) && fs.mkdirSync(`${dir}vis/css`);
+        console.log(`host.${hostname} ${result.objects.length} objects saved`);
 
-                            fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data);
-                        }
-                        resolve();
-                    })));
+        fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
 
-                    console.log(`host.${hostname} ${result.objects.length} objects saved`);
-
-                    fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
-
-                    try {
-                        await Promise.all(promises);
-                        await this.validateBackupAfterCreation();
-                        this.packBackup(name, callback);
-                    } catch (e) {
-                        console.error(`host.${hostname} Backup not created: ${e.message}`);
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
-                        return void this.processExit(26);
-                    }
-                });
-            });
-        });
+        try {
+            await Promise.all(promises);
+            await this.validateBackupAfterCreation();
+            this.packBackup(name, callback);
+        } catch (e) {
+            console.error(`host.${hostname} Backup not created: ${e.message}`);
+            await this._removeFolderRecursive(`${tmpDir}/backup/`);
+            return void this.processExit(26);
+        }
     }
 
     //--------------------------------------- RESTORE ---------------------------------------------------
@@ -563,8 +583,8 @@ class BackupRestore {
                             console.error('Wrong');
                         }
                         const adapterDir = tools.getAdapterDir(adapterName);
-                        if (fs.existsSync(adapterDir + '/io-package.json')) {
-                            pkg = fs.readJSONSync(adapterDir + '/io-package.json');
+                        if (fs.existsSync(`${adapterDir}/io-package.json`)) {
+                            pkg = fs.readJSONSync(`${adapterDir}/io-package.json`);
                         }
 
                         if (pkg && pkg.objects && pkg.objects.length) {
@@ -599,12 +619,12 @@ class BackupRestore {
         const files = fs.readdirSync(root + path);
         let count = files.length;
         for (let i = 0; i < files.length; i++) {
-            const stat = fs.statSync(root + path + '/' + files[i]);
+            const stat = fs.statSync(`${root + path}/${files[i]}`);
             if (stat.isDirectory()) {
                 called = true;
-                this.uploadUserFiles(root, path + '/' + files[i], err => {
+                this.uploadUserFiles(root, `${path}/${files[i]}`, err => {
                     if (err) {
-                        console.error('Error: ' + err);
+                        console.error(`Error: ${err}`);
                     }
                     if (!--count) {
                         return tools.maybeCallback(callback);
@@ -615,11 +635,11 @@ class BackupRestore {
                 let adapter = parts.splice(0, 2);
                 adapter = adapter[1];
                 const _path = parts.join('/') + '/' + files[i];
-                console.log('host.' + hostname + ' Upload user file "' + adapter + '/' + _path);
+                console.log(`host.${hostname} Upload user file "${adapter}/${_path}`);
                 called = true;
                 this.objects.writeFile(adapter, _path, fs.readFileSync(root + path + '/' + files[i]), null, err => {
                     if (err) {
-                        console.error('Error: ' + err);
+                        console.error(`Error: ${err}`);
                     }
                     if (!--count) {
                         return tools.maybeCallback(callback);
@@ -651,6 +671,7 @@ class BackupRestore {
         // Open file
         let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
+        // replace all hostnames of instances etc with the new host
         data = data.replace(/\$\$__hostname__\$\$/g, hostname);
         fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
         let restore;
@@ -669,9 +690,7 @@ class BackupRestore {
             console.log(`host.${hostname} done.`);
             // upload all data into DB
             // restore iobroker.json
-            if (restore.config && restore.config.system) {
-                // it has the old hostname, we need to replace with the new one
-                restore.config.system.hostname = hostname;
+            if (restore.config) {
                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(restore.config, null, 2));
             }
 
@@ -688,7 +707,7 @@ class BackupRestore {
                         //  reload objects of adapters
                         this.reloadAdaptersObjects(() => {
                             // Reload host objects
-                            const packageIO = fs.readJSONSync(__dirname + '/../../io-package.json');
+                            const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
                             this.reloadAdapterObject(packageIO ? packageIO.objects : null, () => {
                                 // copy all files into iob-data
                                 this.copyBackupedFiles(pathLib.join(tmpDir, 'backup'), () => {
