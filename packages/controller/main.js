@@ -1816,16 +1816,28 @@ function sendTo(objName, command, message, callback) {
     states.pushMessage(objName, obj);
 }
 
-function getVersionFromHost(hostId, callback) {
-    states.getState(hostId + '.alive', (err, state) => {
-        if (state && state.val)  {
-            sendTo(hostId, 'getVersion', null, ioPack =>
-                typeof callback === 'function' && setImmediate(callback, ioPack));
-        } else {
-            logger.warn(hostLogPrefix + ' "' + hostId + '" is offline');
-            typeof callback === 'function' && setImmediate(callback, null, hostId);
-        }
-    });
+async function getVersionFromHost(hostId) {
+    const state = await states.getState(hostId + '.alive');
+    if (state && state.val)  {
+        return new Promise(resolve => {
+            let timeout = setTimeout(() => {
+                timeout = null;
+                logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
+                resolve(null);
+            }, 5000);
+
+            sendTo(hostId, 'getVersion', null, ioPack => {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    resolve(ioPack);
+                }
+            });
+        });
+    } else {
+        logger.warn(`${hostLogPrefix} "${hostId}" is offline`);
+        return null;
+    }
 }
 /**
  Helper function that serialize deletion of states
@@ -2058,12 +2070,9 @@ async function processMessage(msg) {
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView('system', 'host', {}, (err, doc) => {
+                objects.getObjectView('system', 'host', {}, async (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
-                    let infoCount = 0;
-                    let timeout = null;
-
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (let i = 0; i < doc.rows.length; i++) {
@@ -2083,36 +2092,16 @@ async function processMessage(msg) {
                                     result.hosts[hostname] = {};
                                 }
                             } else {
-                                infoCount++;
-                                getVersionFromHost(doc.rows[i].id, (ioPack, id) => {
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                        result.hosts[ioPack.host].controller = true;
-                                    }
-
-                                    if (!--infoCount) {
-                                        if (timeout) {
-                                            clearTimeout(timeout);
-                                            timeout = null;
-                                            sendTo(msg.from, msg.command, result, msg.callback);
-                                        } else {
-                                            logger.warn(`${hostLogPrefix} too delayed answer for ${ioPack ? ioPack.host : id}`);
-                                        }
-                                    }
-                                });
+                                const ioPack = await getVersionFromHost(doc.rows[i].id);
+                                if (ioPack) {
+                                    result.hosts[ioPack.host] = ioPack;
+                                    result.hosts[ioPack.host].controller = true;
+                                }
                             }
                         }
                     }
-                    if (!infoCount) {
-                        sendTo(msg.from, msg.command, result, msg.callback);
-                    } else {
-                        // Start timeout and send answer in 5 seconds if some hosts are offline
-                        timeout = setTimeout(() => {
-                            logger.warn(`${hostLogPrefix} some hosts are offline`);
-                            timeout = null;
-                            sendTo(msg.from, msg.command, result, msg.callback);
-                        }, 5000);
-                    }
+
+                    sendTo(msg.from, msg.command, result, msg.callback);
                 });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
