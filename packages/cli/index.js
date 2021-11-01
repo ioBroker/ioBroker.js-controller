@@ -14,5 +14,6 @@ module.exports = {
         compact: require('./lib/cli/cliCompact.js'),
         debug:    require('./lib/cli/cliDebug.js'),
         plugin: require('./lib/cli/cliPlugin.js')
-    }
+    },
+    setupList: require('./lib/setup/setupList')
 };

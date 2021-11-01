@@ -445,7 +445,7 @@ function Adapter(options) {
             throw new Error(`Unknown states type: ${config.states.type}: ${err.message}`);
         }
     } else {
-        States = require('./states');
+        States = require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
     let Objects;
@@ -456,7 +456,7 @@ function Adapter(options) {
             throw new Error(`Unknown objects type: ${config.objects.type}: ${err.message}`);
         }
     } else {
-        Objects = require('./objects');
+        Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
     }
 
     const ifaces = os.networkInterfaces();
@@ -1369,10 +1369,11 @@ function Adapter(options) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        const options = {preserve: {common: ['name']}};
+        // preserve attributes on instance creation
+        const options = {preserve: {common: ['name'], native: true}};
 
         try {
-            await this.extendForeignObject(task._id, task, options);
+            await this.extendForeignObjectAsync(task._id, task, options);
         } catch {
             // ignore
         }
@@ -1393,7 +1394,7 @@ function Adapter(options) {
         }
     };
 
-    const createInstancesObjects = (instanceObj, callback) => {
+    const createInstancesObjects = async (instanceObj, callback) => {
         let objs;
 
         if (instanceObj && instanceObj.common && !instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
@@ -1403,10 +1404,10 @@ function Adapter(options) {
         }
 
         if (instanceObj && instanceObj.instanceObjects) {
-            instanceObj.instanceObjects.forEach(async obj => {
+            for (const obj of instanceObj.instanceObjects) {
                 if (!obj._id.startsWith(this.namespace)) {
                     // instanceObjects are normally defined without namespace prefix
-                    obj._id = (obj._id === '') ? this.namespace : this.namespace + '.' + obj._id;
+                    obj._id = (obj._id === '') ? this.namespace : `${this.namespace}.${obj._id}`;
                 }
 
                 if (obj && (obj._id || obj.type === 'meta')) {
@@ -1443,9 +1444,9 @@ function Adapter(options) {
 
                     objs.push(obj);
                 } else {
-                    logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid instance object: ' + JSON.stringify(obj));
+                    logger.error(`${this.namespaceLog} ${options.name}.${instance} invalid instance object: ${JSON.stringify(obj)}`);
                 }
-            });
+            }
         }
 
         extendObjects(objs, callback);
@@ -1770,15 +1771,18 @@ function Adapter(options) {
 
                     if (state.val !== null) {
                         // now check if type is correct, null is always allowed
-                        // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
-                        // array, object, file, json need to be string
-                        if (!(obj.common.type === 'mixed' && typeof state.val !== 'object' ||
+                        if (obj.common.type === 'file') {
+                            // file has to be set with setBinaryState
+                            logger.warn(`${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`);
+                        } else if (!(obj.common.type === 'mixed' && typeof state.val !== 'object' ||
                             obj.common.type !== 'object' && obj.common.type === typeof state.val ||
                             obj.common.type === 'array' && typeof state.val === 'string' ||
                             obj.common.type === 'json' && typeof state.val === 'string' ||
                             obj.common.type === 'file' && typeof state.val === 'string' ||
                             obj.common.type === 'object' && typeof state.val === 'string')
                         ) {
+                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
+                            // array, object, json need to be string
                             if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
                                 logger.info(`${this.namespaceLog} State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`);
                             } else {
@@ -7992,7 +7996,7 @@ function Adapter(options) {
          * @param {ioBroker.ErrorCallback} [callback]
          *
          */
-        this.setBinaryState = (id, binary, options, callback) => {
+        this.setBinaryState = async (id, binary, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
@@ -8002,6 +8006,32 @@ function Adapter(options) {
                 validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
+            }
+
+            if (this.performStrictObjectChecks) {
+                // obj needs to exist and has to be of type "file" - custom check for binary state
+                try {
+                    if (!adapterObjects) {
+                        this.log.info('setBinaryState not processed because Objects database not connected');
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    const obj = await adapterObjects.getObjectAsync(id);
+
+                    // at first check object existence
+                    if (!obj) {
+                        logger.warn(`${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`);
+                    }
+
+                    // for a state object we require common.type to exist
+                    if (obj.common && obj.common.type) {
+                        if (obj.common.type !== 'file') {
+                            logger.info(`${this.namespaceLog} Binary state object has to be type "file" but is "${obj.common.type}"`);
+                        }
+                    }
+                } catch (e) {
+                    logger.warn(`${this.namespaceLog} Could not perform strict object check of binary state ${id}: ${e.message}`);
+                }
             }
 
             if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
