@@ -22,8 +22,7 @@ const { enumHosts } = require('@iobroker/js-controller-cli').tools;
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
-const dbTools = require('@iobroker/js-controller-common-db');
-const {spawn} = require("child_process");
+const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require('@iobroker/js-controller-common-db');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
