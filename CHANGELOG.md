@@ -138,7 +138,7 @@
 * (foxriver76) use instanceObjects from system.adapter.* object instead from io-package.json
 * (foxriver76) notify of errors on readFileCertificates to show permission problems etc.
 * (foxriver76) multihost discovery now logs ignored messages on debug and also logs the senders address
-* (foxriver76) sync up created objects on instance start and instance creation by using helper function in tools.js, e.g. .loglevel was missing on instance creation
+* (foxriver76) sync up created objects on instance start and instance creation by using helper function in tools.ts, e.g. .loglevel was missing on instance creation
 * (bluefox) Package-Manager: Filter empty packets out to suppress error message
 * (foxriver76) rename repository names for new installations and on updates to beta/stable
 * (foxriver76) rewrite collectDiagInfo to Promises and fix minor issue with it
@@ -187,7 +187,7 @@
 * (AlCalzone) fix callback definitions in adapter.js, We have signatures for (almost) everything in @types/iobroker and we should use them
 * (AlCalzone) move from Promises to async/await in some places, use a single readyPromise instead of an array
 * (foxriver76) migrated ci tests to github actions
-* (foxriver76) resolve adapter main file as tools.js method
+* (foxriver76) resolve adapter main file as tools.ts method
 * (foxriver76) optimize extendObject with def value
 * (AlCalzone) Handle existing, but undefined properties in validateSetStateObjectArgument
 * (foxriver76) also escape + char on regex, it's not forbidden
@@ -253,7 +253,7 @@
 ## 3.0.19 (2020-04-26) Release Elena
 * (Apollon77) make sure to correctly create empty logfile on "delLogs" (Sentry IOBROKER-JS-CONTROLLER-Q) 
 * (foxriver76) make callback consistent when client has closed connection (Sentry IOBROKER-JS-CONTROLLER-R)
-* (foxriver76) add missing Error for DB closed, which was used but undefined in tools.js
+* (foxriver76) add missing Error for DB closed, which was used but undefined in tools.ts
 * (foxriver76) if buffer is of type object and not a buffer object log a warning - also bufferFrom null will also result in an error, prevent it (Sentry IOBROKER-JS-CONTROLLER-S)
 * (foxriver76) in edge cases def can be an object, we also support this on extend*Object*
 * (foxriver76) make sure stacktrace is there on validateId

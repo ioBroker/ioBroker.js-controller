@@ -31,13 +31,13 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/common"
   },
   "scripts": {},
-  "main": "index.js",
+  "main": "build/index.js",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "lib/",
-    "index.js"
+    "build/lib/",
+    "build/index.js"
   ]
 }

@@ -1,13 +1,16 @@
 'use strict';
 
-const { tools } = require('@iobroker/js-controller-common');
+// we currently have no typings so ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import * as tools from '@iobroker/js-controller-common';
 
 /**
  * Allows to find out if a given states dbType offers a server or not
- * @param dbType {string} database type
- * @returns {boolean} true if a server class is available
+ * @param dbType database type
+ * @returns true if a server class is available
  */
-function statesDbHasServer(dbType) {
+export function statesDbHasServer(dbType: string): boolean {
     try {
         const path = require.resolve(`@iobroker/db-states-${dbType}`);
         return !!require(path).Server;
@@ -18,12 +21,12 @@ function statesDbHasServer(dbType) {
 
 /**
  * Allows to find out if a given objects dbType offers a server which runs on this host and listens (locally or globally/by IP)
- * @param dbType {string} database type
- * @param host {string} configured db host
- * @param [checkIfLocalOnly=false] {boolean} optional if try the method checks if the server listens to local connections only; else also external connection options are checked
- * @returns {boolean} true if a server listens on this host (locally or globally/by IP)
+ * @param dbType database type
+ * @param host configured db host
+ * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
+ * @returns true if a server listens on this host (locally or globally/by IP)
  */
-function isLocalObjectsDbServer(dbType, host, checkIfLocalOnly) {
+export function isLocalObjectsDbServer(dbType: string, host:string, checkIfLocalOnly=false): boolean {
     const ownIps = tools.findIPs();
     if (!objectsDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
@@ -37,12 +40,12 @@ function isLocalObjectsDbServer(dbType, host, checkIfLocalOnly) {
 
 /**
  * Allows to find out if a given states dbType offers a server which runs on this host and listens (locally or globally/by IP)
- * @param dbType {string} database type
- * @param host {string} configured db host
- * @param [checkIfLocalOnly=false] {boolean} if try the method checks if the server listens to local connections only; else also external connection options are checked
- * @returns {boolean} true if a server listens on this host (locally or globally/by IP)
+ * @param dbType database type
+ * @param host configured db host
+ * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
+ * @returns true if a server listens on this host (locally or globally/by IP)
  */
-function isLocalStatesDbServer(dbType, host, checkIfLocalOnly) {
+export function isLocalStatesDbServer(dbType: string, host: string, checkIfLocalOnly=false): boolean {
     const ownIps = tools.findIPs();
     if (!statesDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
@@ -56,10 +59,10 @@ function isLocalStatesDbServer(dbType, host, checkIfLocalOnly) {
 
 /**
  * Allows to find out if a given objects dbType offers a server or not
- * @param dbType {string} database type
- * @returns {boolean} true if a server class is available
+ * @param dbType database type
+ * @returns true if a server class is available
  */
-function objectsDbHasServer(dbType) {
+export function objectsDbHasServer(dbType: string): boolean {
     try {
         const path = require.resolve(`@iobroker/db-objects-${dbType}`);
         return !!require(path).Server;
@@ -67,10 +70,3 @@ function objectsDbHasServer(dbType) {
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
 }
-
-module.exports = {
-    objectsDbHasServer,
-    isLocalObjectsDbServer,
-    isLocalStatesDbServer,
-    statesDbHasServer
-};
