@@ -49,9 +49,6 @@
   "scripts": {
     "build:ts": "tsc -b packages/*/tsconfig.build.json",
     "build": "npm run build:ts",
-    "prerelease": "lerna bootstrap && release-script --lerna-check",
-    "version": "node increase-io-pack.js && release-script --lerna",
-    "postversion": "git push && git push --tags",
     "release": "release-script",
     "lint": "eslint \"packages/*/*.js\" \"packages/*/lib/**/*.js\"",
     "test": "mocha packages/controller/test --exit",
