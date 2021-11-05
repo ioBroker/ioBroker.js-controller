@@ -1,6 +1,3 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
 'use strict';
 
 // This is file, that makes all communication with controller. All options are optional except name.
@@ -982,12 +979,12 @@ function Adapter(options) {
         let acl = {user: user};
         if (user === SYSTEM_ADMIN_USER) {
             acl.groups = [SYSTEM_ADMIN_GROUP];
-            for (const c of Object.keys(commandsPermissions)) {
-                if (!commandsPermissions[c].type) {
+            for (const commandPermission of Object.values(commandsPermissions)) {
+                if (!commandPermission.type) {
                     continue;
                 }
-                acl[commandsPermissions[c].type] = acl[commandsPermissions[c].type] || {};
-                acl[commandsPermissions[c].type][commandsPermissions[c].operation] = true;
+                acl[commandPermission.type] = acl[commandPermission.type] || {};
+                acl[commandPermission.type][commandPermission.operation] = true;
             }
 
             return tools.maybeCallback(callback, acl);
@@ -1061,9 +1058,9 @@ function Adapter(options) {
                                 }
                             }
                         } catch (e) {
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + e);
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(gAcl));
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(acl));
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${e.message}`);
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${JSON.stringify(gAcl)}`);
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${JSON.stringify(acl)}`);
                         }
                     }
                 }
@@ -1613,9 +1610,7 @@ function Adapter(options) {
                     // if this.aliases is empty, or no target found its a new alias
                     let isNewAlias = true;
 
-                    for (const sourceId of Object.keys(this.aliases)) {
-                        const alias = this.aliases[sourceId];
-
+                    for (const [sourceId, alias] of Object.entries(this.aliases)) {
                         const targetAlias = alias.targets.find(entry => entry.id === id);
 
                         // Find entry for this alias
@@ -7756,9 +7751,9 @@ function Adapter(options) {
             this.aliasPatterns = this.aliasPatterns.filter(pattern => pattern !== aliasPattern);
 
             if (aliasPattern) {
-                for (const sourceId of Object.keys(this.aliases)) {
-                    for (let i = this.aliases[sourceId].targets.length - 1; i >= 0; i--) {
-                        if (this.aliases[sourceId].targets[i].pattern === aliasPattern) {
+                for (const [sourceId, alias] of Object.entries(this.aliases)) {
+                    for (let i = alias.targets.length - 1; i >= 0; i--) {
+                        if (alias.targets[i].pattern === aliasPattern) {
                             promises.push(new Promise(resolve => this._removeAliasSubscribe(sourceId, i, resolve)));
                         }
                     }
