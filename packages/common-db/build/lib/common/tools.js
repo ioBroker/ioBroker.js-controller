@@ -12,8 +12,8 @@ const js_controller_common_1 = require("@iobroker/js-controller-common");
  */
 function statesDbHasServer(dbType) {
     try {
-        const path = require.resolve(`@iobroker/db-states-${dbType}`);
-        return !!require(path).Server;
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        return !!require(`@iobroker/db-states-${dbType}`).Server;
     }
     catch (_a) {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
@@ -65,8 +65,8 @@ exports.isLocalStatesDbServer = isLocalStatesDbServer;
  */
 function objectsDbHasServer(dbType) {
     try {
-        const path = require.resolve(`@iobroker/db-objects-${dbType}`);
-        return !!require(path).Server;
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        return !!require(`@iobroker/db-objects-${dbType}`).Server;
     }
     catch (_a) {
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);

@@ -12,8 +12,8 @@ export function getObjectsConstructor() {
     }
 
     try {
-        const path = require.resolve(`@iobroker/db-objects-${config.objects.type}`);
-        return require(path).Client;
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        return require(`@iobroker/db-objects-${config.objects.type}`).Client;
     } catch {
         console.error(`Installation broken or unknown objects type: ${config.objects.type} configured.`);
         process.exit(101);

@@ -11,8 +11,8 @@ function getStatesConstructor() {
         config.states = { type: 'file' };
     }
     try {
-        const path = require.resolve(`@iobroker/db-states-${config.states.type}`);
-        return require(path).Client;
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        return require(`@iobroker/db-states-${config.states.type}`).Client;
     }
     catch (_a) {
         console.error(`Installation broken or unknown states type: ${config.states.type} configured.`);

@@ -12,8 +12,8 @@ export function getStatesConstructor () {
     }
 
     try {
-        const path = require.resolve(`@iobroker/db-states-${config.states.type}`);
-        return require(path).Client;
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        return require(`@iobroker/db-states-${config.states.type}`).Client;
     } catch {
         console.error(`Installation broken or unknown states type: ${config.states.type} configured.`);
         process.exit(101);
