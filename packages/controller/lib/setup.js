@@ -12,7 +12,6 @@
 /* jshint strict:false */
 /* jslint node: true */
 'use strict';
-
 // TODO need info about progress of stopping
 
 const fs                    = require('fs-extra');
@@ -23,7 +22,7 @@ const { enumHosts } = require('@iobroker/js-controller-cli').tools;
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
-const dbTools = require('@iobroker/js-controller-common-db');
+const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require('@iobroker/js-controller-common-db');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -402,9 +401,9 @@ async function processCommand(command, args, params, callback) {
         callback = processExit;
     }
 
-    /** @type {import('./cli/cliCommand').CLICommandContext} */
+    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandContext} */
     const commandContext = {dbConnect, callback, showHelp};
-    /** @type {import('./cli/cliCommand').CLICommandOptions} */
+    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandOptions} */
     const commandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
     debug(`args: ${args}`);
@@ -443,7 +442,7 @@ async function processCommand(command, args, params, callback) {
             break;
 
         case 'update': {
-            Objects     = require('./objects');
+            Objects     = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
@@ -490,7 +489,6 @@ async function processCommand(command, args, params, callback) {
 
                 setup.setup(async (isFirst, _isRedis) => {
                     if (isFirst) {
-
                         // Creates all instances that are needed on a fresh installation
                         const createInitialInstances = async () => {
                             const Install = require('./setup/setupInstall.js');
@@ -545,6 +543,13 @@ async function processCommand(command, args, params, callback) {
                             console.warn(e.message);
                         }
 
+                        // there has been a bug that user can uplaod js-controller
+                        try {
+                            await objects.delObjectAsync('system.adapter.js-controller');
+                        } catch {
+                            // ignore
+                        }
+
                         try {
                             const configFile = tools.getConfigFileName();
 
@@ -582,7 +587,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'url': {
-            Objects =       require('./objects');
+            Objects =       getObjectsConstructor();
 
             let url  =      args[0];
             const name =      args[1];
@@ -613,7 +618,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'info': {
-            Objects =       require('./objects');
+            Objects =       getObjectsConstructor();
             dbConnect(params, objects => {
                 tools.getHostInfo(objects, (err, data) => {
                     if (err) {
@@ -645,7 +650,7 @@ async function processCommand(command, args, params, callback) {
         case 'add':
         case 'install':
         case 'i': {
-            Objects =       require('./objects');
+            Objects =       getObjectsConstructor();
 
             let name =      args[0];
             let instance =  args[1];
@@ -758,7 +763,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'upload':
         case 'u': {
-            Objects     = require('./objects');
+            Objects     = getObjectsConstructor();
             const name    = args[0];
             const subTree = args[1];
             if (name) {
@@ -790,7 +795,7 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             upload.uploadFile(name, subTree, (err, newName) => {
-                                !err && console.log('File "' + name + '" is successfully saved under ' + newName);
+                                !err && console.log(`File "${name}" is successfully saved under ${newName}`);
                                 return void callback(err ? EXIT_CODES.CANNOT_UPLOAD_DATA : undefined);
                             });
                         } else {
@@ -932,7 +937,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'upgrade': {
-            Objects = require('./objects');
+            Objects = getObjectsConstructor();
 
             let adapter = cli.tools.normalizeAdapterName(args[0]);
             let repoUrl = args[1];
@@ -1081,7 +1086,7 @@ async function processCommand(command, args, params, callback) {
         case 'l':
         case 'list': {
             dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
-                const List = require('./setup/setupList.js');
+                const {setupList: List} = require('@iobroker/js-controller-cli');
                 const list = new List({
                     states:      states,
                     objects:     objects,
@@ -1122,7 +1127,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1155,7 +1160,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states:      states,
                                     objects:     objects,
@@ -1203,7 +1208,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1237,7 +1242,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states:      states,
                                     objects:     objects,
@@ -1295,7 +1300,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1329,7 +1334,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states:      states,
                                     objects:     objects,
@@ -1395,7 +1400,7 @@ async function processCommand(command, args, params, callback) {
                                         files.push({id: _id, processed: processed});
                                     }
                                     if (!--count) {
-                                        const List = require('./setup/setupList.js');
+                                        const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states:      states,
                                             objects:     objects,
@@ -1431,7 +1436,7 @@ async function processCommand(command, args, params, callback) {
                         } else {
                             // call here list
                             if (processed) {
-                                const List = require('./setup/setupList.js');
+                                const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states: states,
                                     objects: objects,
@@ -2111,7 +2116,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'repo': {
-            Objects =       require('./objects');
+            Objects =       getObjectsConstructor();
             let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset"
             const repoName       = args[1]; // Repo url or name
             let repoUrl          = args[2]; // Repo url or name
@@ -2562,11 +2567,9 @@ async function resetDbConnect(_callback) {
         states = null;
     }
     if (Objects) {
-        delete require.cache[require.resolve(__dirname + '/objects')];
         Objects = null;
     }
     if (States) {
-        delete require.cache[require.resolve(__dirname + '/states')];
         States = null;
     }
 }
@@ -2644,8 +2647,8 @@ function dbConnect(onlyCheck, params, callback) {
     config.states  = config.states  || {type: 'file'};
     config.objects = config.objects || {type: 'file'};
 
-    Objects = require('./objects'); // Objects DB Client object
-    States  = require('./states'); // States DB Client object
+    Objects = getObjectsConstructor(); // Objects DB Client object
+    States  = getStatesConstructor(); // States DB Client object
 
     // Give to controller 2 seconds for connection
     let isObjectConnected = false;

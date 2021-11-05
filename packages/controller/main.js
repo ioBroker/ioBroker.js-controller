@@ -16,7 +16,7 @@ const fs              = require('fs-extra');
 const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
-const dbTools = require('@iobroker/js-controller-common-db');
+const {tools: dbTools} = require('@iobroker/js-controller-common-db');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
@@ -1099,7 +1099,7 @@ async function collectDiagInfo(type) {
             const visUtils = require('./lib/vis/states');
             try {
                 return new Promise(resolve => {
-                    visUtils(objects, null, 0, null, (err, points) => {
+                    visUtils(objects, null, 0, null, async (err, points) => {
                         let total = null;
                         const tasks = [];
                         if (points && points.length) {
@@ -1129,7 +1129,8 @@ async function collectDiagInfo(type) {
                             diag.vis = total;
                         }
 
-                        extendObjects(tasks, () => resolve(diag));
+                        await extendObjects(tasks);
+                        resolve(diag);
                     });
                 });
             } catch (e) {
@@ -1191,22 +1192,28 @@ function setIPs(ipList) {
     }
 }
 
-function extendObjects(tasks, callback) {
-    if (!tasks || !tasks.length) {
-        return typeof callback === 'function' && callback();
-    }
-    const task = tasks.shift();
-    const state = task.state;
-    if (state !== undefined) {
-        delete task.state;
-    }
-    objects.extendObject(task._id, task, () => {
-        if (state) {
-            states.setState(task._id, state, () => setImmediate(extendObjects, tasks, callback));
-        } else {
-            setImmediate(extendObjects, tasks, callback);
+/**
+ * Extends objects, optionally you can provide a state at each task (does not throw)
+ * @param {Record<string, any>[]} tasks
+ * @returns {Promise<void>}
+ */
+async function extendObjects(tasks) {
+    for (const task of tasks) {
+        const state = task.state;
+        if (state !== undefined) {
+            delete task.state;
         }
-    });
+
+        try {
+            await objects.extendObjectAsync(task._id, task);
+            // if extend throws we don't want to set corresponding state
+            if (state) {
+                await states.setStateAsync(task._id, state);
+            }
+        } catch {
+            // ignore
+        }
+    }
 }
 
 function setMeta() {
@@ -1637,6 +1644,24 @@ function setMeta() {
     };
     tasks.push(obj);
 
+    obj = {
+        _id:       `${id}.pid`,
+        type:      'state',
+        common: {
+            name:  'Controller - Process ID',
+            type:  'number',
+            read:  true,
+            write: false,
+            role:  'value'
+        },
+        native: {},
+        state: {
+            val: process.pid,
+            ack: true
+        }
+    };
+    tasks.push(obj);
+
     config.system.checkDiskInterval  = (config.system.checkDiskInterval !== 0) ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
 
     if (config.system.checkDiskInterval) {
@@ -1691,7 +1716,7 @@ function setMeta() {
     }
 
     // delete obsolete states and create new ones
-    objects.getObjectView('system', 'state', {startkey: hostObjectPrefix + '.', endkey: hostObjectPrefix + '.\u9999', include_docs: true}, (err, doc) => {
+    objects.getObjectView('system', 'state', {startkey: `${hostObjectPrefix}.`, endkey: `${hostObjectPrefix}.\u9999`, include_docs: true}, async (err, doc) => {
         if (err) {
             logger && logger.error(`${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err}`);
         } else if (doc.rows) {
@@ -1725,52 +1750,51 @@ function setMeta() {
                     logger && logger.info(hostLogPrefix + ' Some obsolete host states deleted.'));
             }
         }
-        extendObjects(tasks, () => {
-            // create UUID if not exist
-            if (!compactGroupController) {
-                tools.createUuid(objects, uuid => {
-                    uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
+        await extendObjects(tasks);
+        // create UUID if not exist
+        if (!compactGroupController) {
+            tools.createUuid(objects, uuid => {
+                uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
 
-                    if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                        logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
+                if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                    logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
+                    try {
+                        let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
+                        startScript = JSON.parse(startScript);
+
+                        if (startScript.password) {
+                            const Vendor = require('./lib/setup/setupVendor');
+                            const vendor = new Vendor({objects});
+
+                            logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
+                            vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
+                                .then(() => {
+                                    logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
+                                    try {
+                                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                    } catch (e) {
+                                        logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                    }
+                                }).catch(err => {
+                                    logger && logger.error(`${hostLogPrefix} Cannot update vendor information: ${err.message}`);
+                                    try {
+                                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                    } catch (e) {
+                                        logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                    }
+                                });
+                        }
+                    } catch (e) {
+                        logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         try {
-                            let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
-                            startScript = JSON.parse(startScript);
-
-                            if (startScript.password) {
-                                const Vendor = require('./lib/setup/setupVendor');
-                                const vendor = new Vendor({objects});
-
-                                logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
-                                vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
-                                    .then(() => {
-                                        logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
-                                        try {
-                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        } catch (e) {
-                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                                        }
-                                    }).catch(err => {
-                                        logger && logger.error(`${hostLogPrefix} Cannot update vendor information: ${err.message}`);
-                                        try {
-                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        } catch (e) {
-                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                                        }
-                                    });
-                            }
+                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                         } catch (e) {
-                            logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                            try {
-                                fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                            } catch (e) {
-                                logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                            }
+                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         }
                     }
-                });
-            }
-        });
+                }
+            });
+        }
     });
 
 }
@@ -4452,6 +4476,7 @@ function stop(force, callback) {
         outputCount++;
         try {
             await states.setStateAsync(hostObjectPrefix + '.alive', {val: false, ack: true, from: hostObjectPrefix});
+            await states.setStateAsync(hostObjectPrefix + '.pid', {val: null, ack: true, from: hostObjectPrefix});
         } catch {
             // ignore
         }
@@ -4530,14 +4555,14 @@ function init(compactGroupId) {
     if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
-        Objects = require('./lib/objects');
+        Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
     }
 
     // Get "states" object
     if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
         States  = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
-        States  = require('./lib/states');
+        States  = require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default they are disabled and redirected to log file

@@ -4,6 +4,7 @@ module.exports = {
         'node': true
     },
     'extends': 'eslint:recommended',
+    'ignorePatterns': ['**/doc', '**/build'],
     'rules': {
         'indent': [
             'error',

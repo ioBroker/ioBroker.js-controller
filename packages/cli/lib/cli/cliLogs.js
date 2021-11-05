@@ -36,7 +36,7 @@ module.exports = class CLILogs extends CLICommand {
         };
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
-        const logger = require('../logger')(config.log);
+        const logger = require('@iobroker/js-controller-common').logger(config.log);
         let fileName = logger.getFileName();
         if (fileName) {
             let lines = fs.readFileSync(fileName).toString('utf-8').split('\n');
