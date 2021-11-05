@@ -7903,60 +7903,6 @@ function Adapter(options) {
             return tools.encrypt(secretVal, value);
         };
 
-        this.pushFifo = (id, state, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('pushFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.pushFifo(id, state, callback);
-        };
-
-        this.trimFifo = (id, start, end, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('trimFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.trimFifo(id, start, end, callback);
-        };
-
-        this.getFifoRange = (id, start, end, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getFifoRange not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.getFifoRange(id, start, end, callback);
-        };
-
-        this.getFifo = (id, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.getFifo(id, callback);
-        };
-
-        this.lenFifo = (id, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('lenFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.lenFifo(id, callback);
-        };
-
-        this.subscribeFifo = (pattern, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('subscribeFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.subscribeFifo(pattern);
-        };
-
         this.getSession = (id, callback) => {
             if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
                 this.log.info('getSession not processed because States database not connected');
