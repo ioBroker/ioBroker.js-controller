@@ -260,7 +260,7 @@ class BackupRestore {
 
         try {
             const res = await this.objects.getObjectListAsync({include_docs: true});
-            res.objects = res.rows;
+            result.objects = res.rows;
         } catch (e) {
             console.error(`host.${hostname} Cannot get objects: ${e.message}`);
         }

@@ -655,10 +655,6 @@ class StateRedisClient {
     }
 
     async getStates(keys, callback, dontModify) {
-        if (typeof callback !== 'function') {
-            this.log.warn(`${this.namespace} redis getStates no callback`);
-            return;
-        }
         if (!keys || !Array.isArray(keys)) {
             return tools.maybeCallbackWithError(callback, 'no keys', null);
         }
