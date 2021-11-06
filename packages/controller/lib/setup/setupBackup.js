@@ -276,7 +276,7 @@ class BackupRestore {
         const r = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
 
         try {
-            const keys = await this.states.getKeysAsync('*');
+            const keys = await this.states.getKeys('*');
             /*for (const i = keys.length - 1; i >= 0; i--) {
                     if (keys[i].match(/^messagebox\./) || keys[i].match(/^log\./)) {
                     keys.splice(i, 1);
@@ -284,7 +284,7 @@ class BackupRestore {
                 }*/
 
             // NOTE for all "replace" with $$$$ ... result will be just $$
-            const obj = await this.states.getStatesAsync(keys);
+            const obj = await this.states.getStates(keys);
 
             // read iobroker.json
             let isCustomHostname;
