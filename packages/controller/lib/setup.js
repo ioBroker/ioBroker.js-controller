@@ -2104,11 +2104,11 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'repo': {
-            Objects =       getObjectsConstructor();
-            let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset"
+            Objects = getObjectsConstructor();
+            let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
             const repoName       = args[1]; // Repo url or name
             let repoUrl          = args[2]; // Repo url or name
-            if (repoUrlOrCommand !== 'add' && repoUrlOrCommand !== 'del' && repoUrlOrCommand !== 'set' && repoUrlOrCommand !== 'show' && repoUrlOrCommand !== 'addset') {
+            if (repoUrlOrCommand !== 'add' && repoUrlOrCommand !== 'del' && repoUrlOrCommand !== 'set' && repoUrlOrCommand !== 'show' && repoUrlOrCommand !== 'addset' && repoUrlOrCommand !== 'unset') {
                 repoUrl = repoUrlOrCommand;
                 repoUrlOrCommand = 'show';
             }
@@ -2116,13 +2116,13 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
-                    objects:     _objects,
-                    states:      _states
+                    objects: _objects,
+                    states:  _states
                 });
 
                 if (repoUrlOrCommand === 'show') {
                     repo.showRepoStatus(callback);
-                } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset') {
+                } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
                         return void callback();
@@ -2143,12 +2143,12 @@ async function processCommand(command, args, params, callback) {
                                                     console.error(err);
                                                     return void callback(EXIT_CODES.INVALID_REPO);
                                                 } else {
-                                                    console.log('Repository "' + repoName + '" set as active: "' + repoUrl + '"');
+                                                    console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
                                                     repo.showRepoStatus(callback);
                                                 }
                                             });
                                         } else {
-                                            console.log('Repository "' + repoName + '" added as "' + repoUrl + '"');
+                                            console.log(`Repository "${repoName}" added as "${repoUrl}"`);
                                             repo.showRepoStatus(callback);
                                         }
                                     }
@@ -2161,7 +2161,7 @@ async function processCommand(command, args, params, callback) {
                                     console.error(err);
                                     return void callback(EXIT_CODES.INVALID_REPO);
                                 } else {
-                                    console.log('Repository "' + repoName + '" set as active.');
+                                    console.log(`Repository "${repoName}" set as active.`);
                                     repo.showRepoStatus(callback);
                                 }
                             });
@@ -2171,7 +2171,17 @@ async function processCommand(command, args, params, callback) {
                                     console.error(err);
                                     return void callback(EXIT_CODES.INVALID_REPO);
                                 } else {
-                                    console.log('Repository "' + repoName + '" deleted.');
+                                    console.log(`Repository "${repoName}" deleted.`);
+                                    repo.showRepoStatus(callback);
+                                }
+                            });
+                        }  else if (repoUrlOrCommand === 'unset') {
+                            repo.setInactive(repoName, err => {
+                                if (err) {
+                                    console.error(err);
+                                    return void callback(EXIT_CODES.INVALID_REPO);
+                                } else {
+                                    console.log(`Repository "${repoName}" deactivated.`);
                                     repo.showRepoStatus(callback);
                                 }
                             });
