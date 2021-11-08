@@ -31,7 +31,9 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/common"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json"
+  },
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "license": "MIT",
