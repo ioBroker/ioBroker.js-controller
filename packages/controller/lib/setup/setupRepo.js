@@ -167,11 +167,13 @@ function Repo(options) {
         } else {
             repoUrl = repoUrl || systemConfig.common.activeRepo;
 
-            console.log('Used repository: ' + repoUrl);
 
             if (typeof repoUrl !== 'object') {
                 repoUrl = [repoUrl];
             }
+
+            console.log('Used repository(ies): ' + repoUrl.join(', '));
+
             const allSources = {};
 
             for (let r = 0; r < repoUrl.length; r++) {
@@ -189,7 +191,7 @@ function Repo(options) {
                     const sources = await updateRepo(repo, flags.force || flags.f, systemConfig, systemRepos);
                     sources && Object.assign(allSources, sources);
                 } else {
-                    console.error(`Error: unknown repository is active - "${repo}"`);
+                    console.error(`Error: unknown repository is active - "${repo}". Known: ${Object.keys(systemRepos.native.repositories).join(', ')}`);
                 }
             }
 
@@ -251,10 +253,16 @@ function Repo(options) {
             } else {
                 if (obj.native.repositories) {
                     Object.keys(obj.native.repositories).forEach(r =>
-                        console.log(`${r.padEnd(12)}: ${obj.native.repositories[r].link}`));
+                        console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`));
 
                     objects.getObject('system.config', (err, obj) => {
-                        obj && console.log('\nActive repo: ' + obj.common.activeRepo);
+                        if (obj && obj.common) {
+                            let activeRepo = obj.common.activeRepo;
+                            if (typeof activeRepo === 'string') {
+                                activeRepo = [activeRepo];
+                            }
+                            console.log(`\nActive repo(s): ${activeRepo.join(', ')}`);
+                        }
                         callback();
                     });
                 } else {
@@ -293,7 +301,8 @@ function Repo(options) {
             if (err) {
                 callback && callback(err);
             } else {
-                if (obj.common.activeRepo === repoName) {
+                if ((obj.common.activeRepo && typeof obj.common.activeRepo === 'string' && obj.common.activeRepo === repoName) ||
+                    (obj.common.activeRepo && typeof obj.common.activeRepo === 'object' && obj.common.activeRepo.includes(repoName))) {
                     callback && callback(`Cannot delete active repository: ${repoName}`);
                 } else {
                     objects.getObject('system.repositories', (err, obj) => {
@@ -320,24 +329,51 @@ function Repo(options) {
     this.setActive = function (repoName, callback) {
         objects.getObject('system.repositories', (err, obj) => {
             if (err) {
-                callback && callback(err);
-            } else
-            if (!obj) {
-                obj = defaultSystemRepo;
+                return callback && callback(err);
+            } else {
+                obj = obj || defaultSystemRepo;
             }
             if (!obj.native.repositories[repoName]) {
-                callback && callback('Repository "' + repoName + '" not found.');
+                callback && callback(`Repository "${repoName}" not found.`);
             } else {
                 objects.getObject('system.config', (err, obj) => {
                     if (err) {
                         callback && callback(err);
                     } else {
-                        obj.common.activeRepo = repoName;
-                        obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                        obj.ts = Date.now();
-                        objects.setObject('system.config', obj, callback);
+                        if (typeof obj.common.activeRepo === 'string') {
+                            obj.common.activeRepo = [obj.common.activeRepo];
+                        }
+                        if (!obj.common.activeRepo.includes(repoName)) {
+                            obj.common.activeRepo.push(repoName);
+                            obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                            obj.ts = Date.now();
+                            objects.setObject('system.config', obj, callback);
+                        } else {
+                            callback && callback();
+                        }
                     }
                 });
+            }
+        });
+    };
+
+    this.setInactive = function (repoName, callback) {
+        objects.getObject('system.config', (err, obj) => {
+            if (err) {
+                callback && callback(err);
+            } else {
+                if (typeof obj.common.activeRepo === 'string') {
+                    obj.common.activeRepo = [obj.common.activeRepo];
+                }
+                const pos = obj.common.activeRepo.indexOf(repoName);
+                if (pos !== -1) {
+                    obj.common.activeRepo.splice(pos, 1);
+                    obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                    obj.ts = Date.now();
+                    objects.setObject('system.config', obj, callback);
+                } else {
+                    callback && callback();
+                }
             }
         });
     };
@@ -374,14 +410,21 @@ function Repo(options) {
                 }
 
                 // if we changed the name of the activeRepo, we should set newName as active repo
-                if (sysConfigObj && sysConfigObj.common && sysConfigObj.common.activeRepo === oldName) {
-                    sysConfigObj.common.activeRepo = newName;
+                if (sysConfigObj && sysConfigObj.common &&
+                    ((typeof sysConfigObj.common.activeRepo === 'string' && sysConfigObj.common.activeRepo === oldName) ||
+                     (typeof sysConfigObj.common.activeRepo === 'object' && sysConfigObj.common.activeRepo.includes(oldName)))
+                ) {
+                    if (typeof sysConfigObj.common.activeRepo === 'string') {
+                        sysConfigObj.common.activeRepo = [sysConfigObj.common.activeRepo];
+                    }
+                    const pos = sysConfigObj.common.activeRepo.indexOf(oldName);
+                    sysConfigObj.common.activeRepo.splice(pos, 1, newName);
+
                     try {
                         await objects.setObjectAsync('system.config', sysConfigObj);
                     } catch (e) {
                         throw new Error(`Could not set "${newName}" as active repository: ${e}`);
                     }
-
                 }
             }
         }
