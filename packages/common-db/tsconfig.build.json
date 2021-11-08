@@ -4,8 +4,7 @@
   "compilerOptions": {
     "allowJs": false,
     "checkJs": false,
-    "noEmit": false,
-    "declaration": true
+    "noEmit": false
   },
   "include": [
     "src/**/*.ts"

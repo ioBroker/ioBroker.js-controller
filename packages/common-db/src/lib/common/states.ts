@@ -1,6 +1,7 @@
 'use strict';
 
 import * as fs from 'fs-extra';
+// @ts-expect-error no typings yet
 import {tools} from '@iobroker/js-controller-common';
 
 export function getStatesConstructor(): any {

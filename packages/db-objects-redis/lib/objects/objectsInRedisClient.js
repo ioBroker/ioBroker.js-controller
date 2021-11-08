@@ -3210,7 +3210,7 @@ class ObjectsInRedisClient {
             } catch {
                 //ignore
             }
-            // eslint-disable-next-line no-unused-vars
+
             const _emit_ = (id, obj) => {
                 result.rows.push({id: id, value: obj});
             };

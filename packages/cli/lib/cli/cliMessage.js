@@ -19,7 +19,6 @@ module.exports = class CLIMessage extends CLICommand {
     execute(args) {
         const { callback, dbConnect, showHelp } = this.options;
         /** @type {[string, string, any?]} */
-        // eslint-disable-next-line prefer-const
         let [adapter, command, message] = (args);
         if (adapter === null || adapter === undefined) {
             CLI.error.requiredArgumentMissing('adapter');

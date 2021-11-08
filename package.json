@@ -21,6 +21,7 @@
     "@alcalzone/release-script-plugin-lerna": "~3.4.1",
     "@alcalzone/release-script-plugin-license": "~3.4.1",
     "@alcalzone/release-script-plugin-manual-review": "~3.4.1",
+    "@tsconfig/node12": "^1.0.9",
     "@types/event-stream": "^3.3.34",
     "@types/fs-extra": "^9.0.13",
     "@types/iobroker": "^3.3.4",
@@ -28,6 +29,8 @@
     "@types/node": "^16.11.6",
     "@types/semver": "^7.3.9",
     "@types/yargs": "^17.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.3.0",
+    "@typescript-eslint/parser": "^5.3.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "eslint": "^7.32.0",
@@ -42,9 +45,7 @@
     "semver": "^7.3.5",
     "sinon": "^11.1.2",
     "sinon-chai": "^3.7.0",
-    "typescript": "^4.4.4",
-    "@typescript-eslint/parser": "^5.3.0",
-    "@typescript-eslint/eslint-plugin": "^5.3.0"
+    "typescript": "^4.4.4"
   },
   "scripts": {
     "build:ts": "tsc -b packages/*/tsconfig.build.json",
