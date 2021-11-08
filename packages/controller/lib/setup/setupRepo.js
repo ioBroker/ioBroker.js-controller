@@ -167,7 +167,6 @@ function Repo(options) {
         } else {
             repoUrl = repoUrl || systemConfig.common.activeRepo;
 
-
             if (typeof repoUrl !== 'object') {
                 repoUrl = [repoUrl];
             }
