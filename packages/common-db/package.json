@@ -33,12 +33,14 @@
   },
   "scripts": {},
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
     "build/lib/",
-    "build/index.js"
+    "build/index.js",
+    "build/index.d.ts"
   ]
 }

@@ -1,11 +1,9 @@
 'use strict';
 
 import * as fs from 'fs-extra';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import {tools} from '@iobroker/js-controller-common';
 
-export function getStatesConstructor () {
+export function getStatesConstructor(): any {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.states) {
         config.states = {type: 'file'};
