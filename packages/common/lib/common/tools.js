@@ -1765,7 +1765,7 @@ async function getHostInfo(objects, callback) {
         }
     } catch (e) {
         console.error('Cannot get disk information: ' + e);
-   }
+    }
     callback && callback(data);
 
     return data;

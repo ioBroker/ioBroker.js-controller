@@ -1200,17 +1200,17 @@ function setIPs(ipList) {
  */
 async function extendObjects(tasks) {
     for (const task of tasks) {
-    const state = task.state;
-    if (state !== undefined) {
-        delete task.state;
-    }
+        const state = task.state;
+        if (state !== undefined) {
+            delete task.state;
+        }
 
         try {
             await objects.extendObjectAsync(task._id, task);
             // if extend throws we don't want to set corresponding state
-        if (state) {
+            if (state) {
                 await states.setStateAsync(task._id, state);
-        }
+            }
         } catch {
             // ignore
         }
@@ -1752,52 +1752,51 @@ function setMeta() {
             }
         }
         await extendObjects(tasks);
-            // create UUID if not exist
-            if (!compactGroupController) {
-                tools.createUuid(objects, uuid => {
-                    uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
+        // create UUID if not exist
+        if (!compactGroupController) {
+            tools.createUuid(objects, uuid => {
+                uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
 
-                    if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                        logger && logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+                if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                    logger && logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+                    try {
+                        let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
+                        startScript = JSON.parse(startScript);
+
+                        if (startScript.password) {
+                            const Vendor = require('./lib/setup/setupVendor');
+                            const vendor = new Vendor({objects});
+
+                            logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
+                            vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
+                                .then(() => {
+                                    logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
+                                    try {
+                                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                    } catch (e) {
+                                        logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                    }
+                                }).catch(err => {
+                                    logger && logger.error(`${hostLogPrefix} Cannot update vendor information: ${err.message}`);
+                                    try {
+                                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                    } catch (e) {
+                                        logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                                    }
+                                });
+                        }
+                    } catch (e) {
+                        logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         try {
-                            let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
-                            startScript = JSON.parse(startScript);
-
-                            if (startScript.password) {
-                                const Vendor = require('./lib/setup/setupVendor');
-                                const vendor = new Vendor({objects});
-
-                                logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
-                                vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
-                                    .then(() => {
-                                        logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
-                                        try {
-                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        } catch (e) {
-                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                                        }
-                                    }).catch(err => {
-                                        logger && logger.error(`${hostLogPrefix} Cannot update vendor information: ${err.message}`);
-                                        try {
-                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        } catch (e) {
-                                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                                        }
-                                    });
-                            }
+                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                         } catch (e) {
-                            logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                            try {
-                                fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                            } catch (e) {
-                                logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                            }
+                            logger && logger.error(`${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                         }
                     }
-                });
-            }
-        });
-
+                }
+            });
+        }
+    });
 }
 
 // Subscribe on message queue
