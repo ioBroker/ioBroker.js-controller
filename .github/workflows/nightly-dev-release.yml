@@ -55,6 +55,10 @@ jobs:
       if: steps.changes.outputs.result == 'ok'
       run: npm ci
 
+    - name: Build TS files
+      if: steps.changes.outputs.result == 'ok'
+      run: npm run build
+
     - name: Test
       if: steps.changes.outputs.result == 'ok'
       run: npm test

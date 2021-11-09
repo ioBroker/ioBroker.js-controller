@@ -27,4 +27,4 @@ node_modules
 /.dev-server
 ioB
 ioBroker
-.tsbuildinfo
+*.tsbuildinfo
