@@ -3099,12 +3099,6 @@ function Adapter(options) {
          *        </code></pre>
          */
         this.delObject = (id, options, callback) => {
-            try {
-                validateId(id, false, null);
-            } catch (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
-
             // delObject does the same as delForeignObject, but fixes the ID first
             id = this._fixId(id);
             this.delForeignObject(id, options, callback);
@@ -6723,112 +6717,9 @@ function Adapter(options) {
          *        See possible attributes of the state in @setState explanation
          */
         this.getState = (id, options, callback) => {
-            if (typeof options === 'function') {
-                callback = options;
-                options = {};
-            }
-
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getState not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            if (!adapterObjects) {
-                this.log.info('getState not processed because Objects database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            try {
-                validateId(id, false, null);
-            } catch (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
-
+            // get state does the same as getForeignState but fixes the id first
             id = this._fixId(id, false);
-
-            if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-                checkStates(id, options, 'getState', err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        if (id.startsWith(ALIAS_STARTS_WITH)) {
-                            adapterObjects.getObject(id, options, (err, obj) => {
-                                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                                    // alias id can be string or can have attribute id.read
-                                    const aliasId = typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
-
-                                    // validate here because we use objects/states db directly
-                                    try {
-                                        validateId(aliasId, true, null);
-                                    } catch (e) {
-                                        logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                                        return tools.maybeCallbackWithError(callback, `Error validating alias id of ${id}: ${e.message}`);
-                                    }
-
-                                    if (this.oStates && this.oStates[aliasId]) {
-                                        adapterObjects.getObject(aliasId, (err, sourceObj) => {
-                                            const state = deepClone(this.oStates[aliasId]);
-                                            return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                        });
-                                    } else {
-                                        adapterObjects.getObject(aliasId, (err, sourceObj) => {
-                                            adapterStates.getState(aliasId, (err, state) => {
-                                                return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                            });
-                                        });
-                                    }
-                                } else {
-                                    logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 6`}`);
-                                    return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                                }
-                            });
-                        } else {
-                            if (this.oStates && this.oStates[id]) {
-                                return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                            } else {
-                                adapterStates.getState(id, callback);
-                            }
-                        }
-                    }
-                });
-            } else {
-                if (id.startsWith(ALIAS_STARTS_WITH)) {
-                    adapterObjects.getObject(id, options, (err, obj) => {
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // alias id can be string or can have attribute id.read
-                            const aliasId = typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
-
-                            // validate here because we use objects/states db directly
-                            try {
-                                validateId(aliasId, true, null);
-                            } catch (e) {
-                                logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                                return tools.maybeCallbackWithError(callback, `Error validating alias id of ${id}: ${e.message}`);
-                            }
-
-                            adapterObjects.getObject(aliasId, options, (err, sourceObj) => {
-                                if (this.oStates && this.oStates[aliasId]) {
-                                    const state = deepClone(this.oStates[aliasId]);
-                                    return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                } else {
-                                    adapterStates.getState(aliasId, (err, state) => {
-                                        return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                    });
-                                }
-                            });
-                        } else {
-                            logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 7`}`);
-                            return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                        }
-                    });
-                } else {
-                    if (this.oStates && this.oStates[id]) {
-                        return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                    } else {
-                        adapterStates.getState(id, callback);
-                    }
-                }
-            }
+            return this.getForeignState(id, options, callback);
         };
         /**
          * Promise-version of Adapter.getState
@@ -7901,60 +7792,6 @@ function Adapter(options) {
                 secretVal = systemSecret;
             }
             return tools.encrypt(secretVal, value);
-        };
-
-        this.pushFifo = (id, state, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('pushFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.pushFifo(id, state, callback);
-        };
-
-        this.trimFifo = (id, start, end, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('trimFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.trimFifo(id, start, end, callback);
-        };
-
-        this.getFifoRange = (id, start, end, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getFifoRange not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.getFifoRange(id, start, end, callback);
-        };
-
-        this.getFifo = (id, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.getFifo(id, callback);
-        };
-
-        this.lenFifo = (id, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('lenFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.lenFifo(id, callback);
-        };
-
-        this.subscribeFifo = (pattern, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('subscribeFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.subscribeFifo(pattern);
         };
 
         this.getSession = (id, callback) => {
