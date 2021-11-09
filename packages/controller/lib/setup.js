@@ -1486,7 +1486,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" created (Group: ' + group.replace('system.group.', '') + ')');
+                            console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
                             return void callback();
                         }
                     });
@@ -1496,7 +1496,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" deleted');
+                            console.log(`User "${user}" deleted`);
                             return void callback();
                         }
                     });
@@ -1506,7 +1506,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Password for user "' + user + '" matches.');
+                            console.log(`Password for user "${user}" matches.`);
                             return void callback();
                         }
                     });
@@ -1516,7 +1516,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Password for "' + user + '" was successfully set.');
+                            console.log(`Password for "${user}" was successfully set.`);
                             return void callback();
                         }
                     });
@@ -1526,7 +1526,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" was successfully enabled.');
+                            console.log(`User "${user}" was successfully enabled.`);
                             return void callback();
                         }
                     });
@@ -1536,7 +1536,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" was successfully disabled.');
+                            console.log(`User "${user}" was successfully disabled.`);
                             return void callback();
                         }
                     });
@@ -1546,7 +1546,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" is ' + (isEnabled ? 'enabled' : 'disabled'));
+                            console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
                             return void callback();
                         }
                     });
@@ -1571,11 +1571,11 @@ async function processCommand(command, args, params, callback) {
                 user  = user.substring('system.user.'.length);
             }
             if (!command) {
-                console.warn('Unknown command "' + command + '". Available commands are: add, del, passwd, enable, disable, list, get');
+                console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (!group) {
-                console.warn('Please define group name: group ' + command + ' groupName');
+                console.warn(`Please define group name: group ${command} groupName`);
                 return callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
             }
             dbConnect(params, () => {
@@ -1629,7 +1629,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + group + '" deleted');
+                            console.log(`User "${group}" deleted`);
                             return void callback();
                         }
                     });
@@ -1639,7 +1639,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" is ' + (isEnabled ? 'enabled' : 'disabled') + ' and has following members:');
+                            console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`);
                             if (list) {
                                 for (let i = 0; i < list.length; i++) {
                                     console.log(list[i].substring('system.user.'.length));
@@ -1654,7 +1654,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" was successfully enabled.');
+                            console.log(`Group "${group}" was successfully enabled.`);
                             return void callback();
                         }
                     });
@@ -1664,7 +1664,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" was successfully disabled.');
+                            console.log(`Group "${group}" was successfully disabled.`);
                             return void callback();
                         }
                     });
@@ -1674,12 +1674,12 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" is ' + (isEnabled ? 'enabled' : 'disabled'));
+                            console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'}`);
                             return void callback();
                         }
                     });
                 } else {
-                    console.warn('Unknown command "' + command + '". Available commands are: add, del, passwd, enable, disable, list, get');
+                    console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
@@ -1702,7 +1702,7 @@ async function processCommand(command, args, params, callback) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     } else {
-                        console.log('User "' + user + '" created (Group: ' + group.replace('system.group.', '') + ')');
+                        console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
                         return void callback();
                     }
                 });
@@ -1724,7 +1724,7 @@ async function processCommand(command, args, params, callback) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     } else {
-                        console.log('Password for "' + user + '" was successfully set.');
+                        console.log(`Password for "${user}" was successfully set.`);
                         return void callback();
                     }
                 });
@@ -1749,7 +1749,7 @@ async function processCommand(command, args, params, callback) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     } else {
-                        console.log('User "' + user + '" deleted');
+                        console.log(`User "${user}" deleted`);
                         return void callback();
                     }
                 });
@@ -1802,7 +1802,7 @@ async function processCommand(command, args, params, callback) {
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
             if (instance.indexOf('.') === -1) {
-                console.warn('please specify instance, like "' + instance + '.0"');
+                console.warn(`please specify instance, like "${instance}.0"`);
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
             dbConnect(params, () => {
@@ -1826,19 +1826,19 @@ async function processCommand(command, args, params, callback) {
                                 if (attr.indexOf('.') !== -1) {
                                     const parts = attr.split('.');
                                     if (!obj.native[parts[0]] || obj.native[parts[0]][parts[1]] === undefined) {
-                                        console.warn('Adapter "' + instance + '" has no setting "'  + attr + '".');
+                                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
                                     } else {
                                         changed = true;
                                         obj.native[parts[0]][parts[1]] = val;
-                                        console.log('New ' + attr + ' for "' + instance + '" is: ' + val);
+                                        console.log(`New ${attr} for "${instance}" is: ${val}`);
                                     }
                                 } else {
                                     if (obj.native[attr] === undefined) {
-                                        console.warn('Adapter "' + instance + '" has no setting "'  + attr + '".');
+                                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
                                     } else {
                                         changed = true;
                                         obj.native[attr] = val;
-                                        console.log('New ' + attr + ' for "' + instance + '" is: ' + val);
+                                        console.log(`New ${attr} for "${instance}" is: ${val}`);
                                     }
                                 }
                                 a++;
@@ -1848,7 +1848,7 @@ async function processCommand(command, args, params, callback) {
                             obj.from = 'system.host.' + tools.getHostName() + '.cli';
                             obj.ts = new Date().getTime();
                             objects.setObject('system.adapter.' + instance, obj, () => {
-                                console.log('Instance settings for "' + instance + '" are changed.');
+                                console.log(`Instance settings for "${instance}" are changed.`);
                                 return void callback();
                             });
                         } else {
