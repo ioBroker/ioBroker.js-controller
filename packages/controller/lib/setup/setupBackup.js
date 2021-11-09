@@ -132,7 +132,7 @@ class BackupRestore {
         parts.pop();// remove data or appName-data
         parts.pop();
 
-        return parts.join('/') + '/backups/';
+        return pathLib.normalize(parts.join('/') + '/backups/');
     }
 
     copyFileSync(source, target) {
@@ -254,7 +254,7 @@ class BackupRestore {
         }
         const result = {objects: null, states: {}};
         try {
-            const res = await this.objects.getObjectListAsync({include_docs: true});
+            const res = await this.objects.getObjectList({include_docs: true});
             result.objects = res.rows;
         } catch (err) {
             console.error(`host.${hostname} Cannot get objects: ${err}`);
@@ -377,13 +377,17 @@ class BackupRestore {
         }
 
         // special case: copy vis vis-common-user.css file
-        const data = await this.objects.readFileAsync('vis', 'css/vis-common-user.css');
-        if (data) {
-            const dir = `${tmpDir}/backup/files/`;
-            !fs.existsSync(`${dir}vis`) && fs.mkdirSync(`${dir}vis`);
-            !fs.existsSync(`${dir}vis/css`) && fs.mkdirSync(`${dir}vis/css`);
+        try {
+            const data = await this.objects.readFileAsync('vis', 'css/vis-common-user.css');
+            if (data) {
+                const dir = `${tmpDir}/backup/files/`;
+                !fs.existsSync(`${dir}vis`) && fs.mkdirSync(`${dir}vis`);
+                !fs.existsSync(`${dir}vis/css`) && fs.mkdirSync(`${dir}vis/css`);
 
-            fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data.data !== undefined ? data.data : data);
+                fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data.data !== undefined ? data.data : data);
+            }
+        } catch {
+            // do not process 'css/vis-common-user.css'
         }
 
         console.log(`host.${hostname} ${result.objects.length} objects saved`);

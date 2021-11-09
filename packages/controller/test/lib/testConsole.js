@@ -612,7 +612,7 @@ function register(it, expect, context) {
     }).timeout(20000);
 
     // repo
-    it.only(testName + 'repo', async () => {
+    it(testName + 'repo', async () => {
         let res;
         // add non existing repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo add local some/path`);
