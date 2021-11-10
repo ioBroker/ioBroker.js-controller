@@ -2920,7 +2920,7 @@ function initInstances() {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info(hostLogPrefix + ' instance "' + id + '" was not started, because already running.');
+                    logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
                     continue;
                 }
 
@@ -3324,11 +3324,11 @@ function startScheduledInstance(callback) {
                 skipped = true;
             }
         } else {
-            logger.warn(hostLogPrefix + ' instance ' + instance._id + ' does not started, because just executed');
+            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
             skipped = true;
         }
     } else {
-        logger.error(hostLogPrefix + ' scheduleJob: Task deleted (' + id + ')');
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
         skipped = true;
     }
 
@@ -4013,7 +4013,7 @@ async function startInstance(id, wakeUp) {
                 }
 
             } else {
-                !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' ' + (procs[id].stopping ? 'still' : 'already') + ' running with pid ' + procs[id].process.pid);
+                !wakeUp && procs[id] && logger.warn(`${hostLogPrefix} instance ${instance._id} ${procs[id].stopping ? 'still' : 'already'} running with pid ${procs[id].process.pid}`);
                 if (procs[id].stopping) {
                     delete procs[id].stopping;
                 }
@@ -4022,11 +4022,11 @@ async function startInstance(id, wakeUp) {
 
         case 'schedule':
             if (compactGroupController) {
-                logger.debug(hostLogPrefix + ' ' + instance._id + ' schedule is not started by compact group controller');
+                logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
                 break;
             }
             if (!instance.common.schedule) {
-                logger.error(hostLogPrefix + ' ' + instance._id + ' schedule attribute missing');
+                logger.error(`${hostLogPrefix} ${instance._id} schedule attribute missing`);
                 break;
             }
 
