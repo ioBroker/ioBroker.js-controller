@@ -37,7 +37,7 @@
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.7.0",
     "loadavg-windows": "^1.1.1",
-    "mime": "^2.5.2",
+    "mime": "^3.0.0",
     "node-schedule": "^2.0.0",
     "node.extend": "^2.0.2",
     "pidusage": "^2.0.21",
@@ -46,9 +46,9 @@
     "readline-sync": "^1.4.10",
     "request": "^2.88.2",
     "semver": "^7.3.5",
-    "tar": "^6.1.2",
-    "yargs": "^17.0.1",
-    "axios": "^0.22.0"
+    "tar": "^6.1.11",
+    "yargs": "^17.2.1",
+    "axios": "^0.24.0"
   },
   "homepage": "https://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
