@@ -444,16 +444,15 @@ async function processCommand(command, args, params, callback) {
         case 'update': {
             Objects     = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
-            dbConnect(params, (_objects, _states) => {
+            dbConnect(params, async (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects:     _objects,
                     states:      _states
                 });
 
-                repo.showRepo(repoUrl, params)
-                    .then(() =>
-                        setTimeout(callback, 2000));
+                await repo.showRepo(repoUrl, params);
+                setTimeout(callback, 1000);
             });
             break;
         }
@@ -2133,7 +2132,7 @@ async function processCommand(command, args, params, callback) {
                 repoUrlOrCommand = 'show';
             }
 
-            dbConnect(params, (_objects, _states) => {
+            dbConnect(params, async (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects: _objects,
@@ -2141,7 +2140,7 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 if (repoUrlOrCommand === 'show') {
-                    repo.showRepoStatus(callback);
+                    await repo.showRepoStatus(callback);
                 } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
@@ -2152,59 +2151,53 @@ async function processCommand(command, args, params, callback) {
                                 console.warn(`Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`);
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
-                                repo.add(repoName, repoUrl, err => {
-                                    if (err) {
-                                        console.error(err);
-                                        return void callback(EXIT_CODES.INVALID_REPO);
-                                    } else {
-                                        if (repoUrlOrCommand === 'addset') {
-                                            repo.setActive(repoName, err => {
-                                                if (err) {
-                                                    console.error(err);
-                                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                                } else {
-                                                    console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
-                                                    repo.showRepoStatus(callback);
-                                                }
-                                            });
+                                const err = repo.add(repoName, repoUrl);
+                                if (err) {
+                                    console.error(err);
+                                    return void callback(EXIT_CODES.INVALID_REPO);
+                                } else {
+                                    if (repoUrlOrCommand === 'addset') {
+                                        const err1 = await repo.setActive(repoName);
+                                        if (err1) {
+                                            console.error(err1);
+                                            return void callback(EXIT_CODES.INVALID_REPO);
                                         } else {
-                                            console.log(`Repository "${repoName}" added as "${repoUrl}"`);
-                                            repo.showRepoStatus(callback);
+                                            console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
+                                            await repo.showRepoStatus(callback);
                                         }
+                                    } else {
+                                        console.log(`Repository "${repoName}" added as "${repoUrl}"`);
+                                        await repo.showRepoStatus(callback);
                                     }
-                                });
-
+                                }
                             }
                         } else if (repoUrlOrCommand === 'set') {
-                            repo.setActive(repoName, err => {
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
-                                    console.log(`Repository "${repoName}" set as active.`);
-                                    repo.showRepoStatus(callback);
-                                }
-                            });
+                            const err = repo.setActive(repoName);
+                            if (err) {
+                                console.error(err);
+                                return void callback(EXIT_CODES.INVALID_REPO);
+                            } else {
+                                console.log(`Repository "${repoName}" set as active.`);
+                                await repo.showRepoStatus(callback);
+                            }
                         } else if (repoUrlOrCommand === 'del') {
-                            repo.del(repoName, err => {
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
-                                    console.log(`Repository "${repoName}" deleted.`);
-                                    repo.showRepoStatus(callback);
-                                }
-                            });
+                            const err = repo.del(repoName);
+                            if (err) {
+                                console.error(err);
+                                return void callback(EXIT_CODES.INVALID_REPO);
+                            } else {
+                                console.log(`Repository "${repoName}" deleted.`);
+                                await repo.showRepoStatus(callback);
+                            }
                         }  else if (repoUrlOrCommand === 'unset') {
-                            repo.setInactive(repoName, err => {
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
-                                    console.log(`Repository "${repoName}" deactivated.`);
-                                    repo.showRepoStatus(callback);
-                                }
-                            });
+                            const err = await repo.setInactive(repoName)
+                            if (err) {
+                                console.error(err);
+                                return void callback(EXIT_CODES.INVALID_REPO);
+                            } else {
+                                console.log(`Repository "${repoName}" deactivated.`);
+                                await repo.showRepoStatus(callback);
+                            }
                         } else {
                             console.warn('Unknown repo command: ' + repoUrlOrCommand);
                             return void callback(EXIT_CODES.INVALID_ARGUMENTS);
@@ -2225,9 +2218,9 @@ async function processCommand(command, args, params, callback) {
                 dbConnect(params, () => {
                     const Multihost = require('./setup/setupMultihost.js');
                     const mh = new Multihost({
-                        params:      params,
+                        params,
                         processExit: callback,
-                        objects:     objects
+                        objects
                     });
 
                     if (cmd === 's' || cmd === 'status') {
@@ -2290,9 +2283,7 @@ async function processCommand(command, args, params, callback) {
             } else {
                 dbConnect(params, () => {
                     const Vendor = require('./setup/setupVendor');
-                    const vendor = new Vendor({
-                        objects:     objects
-                    });
+                    const vendor = new Vendor({objects});
                     vendor.checkVendor(file, password).then(() => {
                         console.log(`Synchronised vendor information.`);
                         return void callback();
@@ -2329,18 +2320,17 @@ async function processCommand(command, args, params, callback) {
                 console.warn(`Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, () => {
+                dbConnect(params, async () => {
                     const License = require('./setup/setupLicense');
-                    const license = new License({
-                        objects:     objects
-                    });
-                    license.setLicense(file).then(type => {
+                    const license = new License({objects});
+                    try {
+                        const type = await license.setLicense(file);
                         console.log(`License ${type} updated.`);
                         return void callback();
-                    }).catch(err => {
+                    } catch (err) {
                         console.error(`Cannot update license: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
-                    });
+                    }
                 });
             }
             break;

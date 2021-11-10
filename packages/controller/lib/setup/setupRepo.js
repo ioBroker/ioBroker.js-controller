@@ -1,6 +1,5 @@
 'use strict';
 
-const fs = require('fs');
 
 /** @class */
 function Repo(options) {
@@ -9,6 +8,7 @@ function Repo(options) {
     const axios      = require('axios');
     const ioPackage  = require('../../io-package.json');
     const version    = ioPackage.common.version;
+    const fs         = require('fs');
 
     const defaultSystemRepo = {
         common: {
@@ -195,24 +195,13 @@ function Repo(options) {
             }
 
             // update variables of every admin instance
-            await new Promise(resolve => updateInfo(allSources, () => resolve()));
+            await updateInfo(allSources);
 
             showRepoResult(null, allSources);
         }
     };
 
-    function writeUpdateInfo(instances, num, list, callback) {
-        if (!instances || !instances.length) {
-            return callback && callback();
-        } else {
-            const id = instances.pop();
-            states.setState(id + '.info.updatesNumber', num, true);
-            states.setState(id + '.info.updatesList', list, true);
-            setImmediate(writeUpdateInfo, instances, num, list, callback);
-        }
-    }
-
-    function updateInfo(sources, callback) {
+    async function updateInfo(sources) {
         const installed = tools.getInstalledInfo();
         const list  = [];
 
@@ -227,154 +216,117 @@ function Repo(options) {
             }
         });
 
-        objects.getObjectView('system', 'instance', {startkey: 'system.adapter.admin', endkey: 'system.adapter.admin\u9999'}, null, (err, objs) => {
-            const instances = [];
+        const objs = await objects.getObjectViewAsync('system', 'instance', {startkey: 'system.adapter.admin', endkey: 'system.adapter.admin\u9999'});
 
-            err && console.error(err);
+        err && console.error(err);
 
-            if (objs && objs.rows && objs.rows.length) {
-                for (let t = 0; t < objs.rows.length; t++) {
-                    if (objs.rows[t] && objs.rows[t].value && objs.rows[t].value.common && objs.rows[t].value.type === 'instance') {
-                        instances.push(objs.rows[t].id);
-                    }
+        if (objs && objs.rows && objs.rows.length) {
+            const listStr = list.join(', ');
+            for (let t = 0; t < objs.rows.length; t++) {
+                if (objs.rows[t] && objs.rows[t].value && objs.rows[t].value.common && objs.rows[t].value.type === 'instance') {
+                    await states.setStateAsync(objs.rows[t].id + '.info.updatesNumber', list.length, true);
+                    await states.setStateAsync(objs.rows[t].id + '.info.updatesList', listStr, true);
                 }
             }
-
-            writeUpdateInfo(instances, list.length, list.join(', '), callback);
-        });
+        }
     }
 
-    this.showRepoStatus = function (callback) {
-        objects.getObject('system.repositories', (err, obj) => {
-            if (err || !obj) {
-                console.error('Cannot get list: ' + err);
-                callback(EXIT_CODES.CANNOT_GET_REPO_LIST);
-            } else {
-                if (obj.native.repositories) {
-                    Object.keys(obj.native.repositories).forEach(r =>
-                        console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`));
-
-                    objects.getObject('system.config', (err, obj) => {
-                        if (obj && obj.common) {
-                            let activeRepo = obj.common.activeRepo;
-                            if (typeof activeRepo === 'string') {
-                                activeRepo = [activeRepo];
-                            }
-                            console.log(`\nActive repo(s): ${activeRepo.join(', ')}`);
-                        }
-                        callback();
-                    });
-                } else {
-                    console.error('Cannot get list: ' + err);
-                    callback(EXIT_CODES.CANNOT_GET_REPO_LIST);
-                }
-            }
-        });
-    };
-
-    this.add = function (repoName, repoUrl, callback) {
-        objects.getObject('system.repositories', (err, obj) => {
-            if (err) {
-                callback && callback(err);
-            } else
+    this.showRepoStatus = async function () {
+        try {
+            const obj = objects.getObjectAsync('system.repositories');
             if (!obj) {
-                obj = defaultSystemRepo;
-            }
+                console.error('List is empty');
+                return EXIT_CODES.CANNOT_GET_REPO_LIST;
+            } else
+            if (obj.native.repositories) {
+                Object.keys(obj.native.repositories).forEach(r =>
+                    console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`));
 
-            if (obj.native.repositories[repoName]) {
-                callback && callback(`Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`);
-            } else {
-                obj.native.repositories[repoName] = {
-                    link: repoUrl,
-                    json: null
-                };
-                obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                obj.ts = Date.now();
-                objects.setObject('system.repositories', obj, callback);
-            }
-        });
-    };
-
-    this.del = function (repoName, callback) {
-        objects.getObject('system.config', (err, obj) => {
-            if (err) {
-                callback && callback(err);
-            } else {
-                if ((obj.common.activeRepo && typeof obj.common.activeRepo === 'string' && obj.common.activeRepo === repoName) ||
-                    (obj.common.activeRepo && typeof obj.common.activeRepo === 'object' && obj.common.activeRepo.includes(repoName))) {
-                    callback && callback(`Cannot delete active repository: ${repoName}`);
-                } else {
-                    objects.getObject('system.repositories', (err, obj) => {
-                        if (err) {
-                            callback && callback(err);
-                        } else if (!obj) {
-                            callback && callback();
-                        } else {
-                            if (!obj.native.repositories[repoName]) {
-                                callback && callback(`Repository "${repoName}" not found.`);
-                            } else {
-                                delete obj.native.repositories[repoName];
-                                obj.from = `system.host.${tools.getHostName()}.cli`;
-                                obj.ts = Date.now();
-                                objects.setObject('system.repositories', obj, callback);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    };
-
-    this.setActive = function (repoName, callback) {
-        objects.getObject('system.repositories', (err, obj) => {
-            if (err) {
-                return callback && callback(err);
-            } else {
-                obj = obj || defaultSystemRepo;
-            }
-            if (!obj.native.repositories[repoName]) {
-                callback && callback(`Repository "${repoName}" not found.`);
-            } else {
-                objects.getObject('system.config', (err, obj) => {
-                    if (err) {
-                        callback && callback(err);
-                    } else {
-                        if (typeof obj.common.activeRepo === 'string') {
-                            obj.common.activeRepo = [obj.common.activeRepo];
-                        }
-                        if (!obj.common.activeRepo.includes(repoName)) {
-                            obj.common.activeRepo.push(repoName);
-                            obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                            obj.ts = Date.now();
-                            objects.setObject('system.config', obj, callback);
-                        } else {
-                            callback && callback();
-                        }
+                const objCfg = objects.getObjectAsync('system.config');
+                if (objCfg && objCfg.common) {
+                    let activeRepo = objCfg.common.activeRepo;
+                    if (typeof activeRepo === 'string') {
+                        activeRepo = [activeRepo];
                     }
-                });
+                    console.log(`\nActive repo(s): ${activeRepo.join(', ')}`);
+                }
+            } else {
+                console.error('List is empty');
+                return EXIT_CODES.CANNOT_GET_REPO_LIST;
             }
-        });
+        } catch (err)  {
+            console.error('Cannot get list: ' + err);
+            return EXIT_CODES.CANNOT_GET_REPO_LIST;
+        }
     };
 
-    this.setInactive = function (repoName, callback) {
-        objects.getObject('system.config', (err, obj) => {
-            if (err) {
-                callback && callback(err);
-            } else {
-                if (typeof obj.common.activeRepo === 'string') {
-                    obj.common.activeRepo = [obj.common.activeRepo];
-                }
-                const pos = obj.common.activeRepo.indexOf(repoName);
-                if (pos !== -1) {
-                    obj.common.activeRepo.splice(pos, 1);
-                    obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                    obj.ts = Date.now();
-                    objects.setObject('system.config', obj, callback);
+    this.add = async function (repoName, repoUrl) {
+        let obj = objects.getObjectAsync('system.repositories');
+        obj = obj || defaultSystemRepo;
+
+        if (obj.native.repositories[repoName]) {
+            return `Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`;
+        } else {
+            obj.native.repositories[repoName] = {
+                link: repoUrl,
+                json: null
+            };
+            obj.from = 'system.host.' + tools.getHostName() + '.cli';
+            obj.ts = Date.now();
+            await objects.setObjectAsync('system.repositories', obj);
+        }
+    };
+
+    this.del = async function (repoName) {
+        const obj = await objects.getObjectAsync('system.config');
+        if ((obj.common.activeRepo && typeof obj.common.activeRepo === 'string' && obj.common.activeRepo === repoName) ||
+            (obj.common.activeRepo && typeof obj.common.activeRepo === 'object' && obj.common.activeRepo.includes(repoName))) {
+            return `Cannot delete active repository: ${repoName}`;
+        } else {
+            const repoObj = objects.getObjectAsync('system.repositories');
+            if (repoObj) {
+                if (!repoObj.native.repositories[repoName]) {
+                    return `Repository "${repoName}" not found.`;
                 } else {
-                    callback && callback();
+                    delete repoObj.native.repositories[repoName];
+                    repoObj.from = `system.host.${tools.getHostName()}.cli`;
+                    repoObj.ts = Date.now();
+                    await objects.setObjectAsync('system.repositories', repoObj);
                 }
             }
-        });
+        }
+    };
+
+    this.setActive = async function (repoName) {
+        const obj = (await objects.getObjectAsync('system.repositories')) || defaultSystemRepo;
+        if (!obj.native.repositories[repoName]) {
+            return `Repository "${repoName}" not found.`;
+        } else {
+            const confObj = objects.getObjectAsync('system.config');
+            if (typeof confObj.common.activeRepo === 'string') {
+                confObj.common.activeRepo = [confObj.common.activeRepo];
+            }
+            if (!confObj.common.activeRepo.includes(repoName)) {
+                confObj.common.activeRepo.push(repoName);
+                confObj.from = 'system.host.' + tools.getHostName() + '.cli';
+                confObj.ts = Date.now();
+                await objects.setObjectAsync('system.config', confObj);
+            }
+        }
+    };
+
+    this.setInactive = async function (repoName) {
+        const confObj = objects.getObjectAsync('system.config');
+        if (typeof confObj.common.activeRepo === 'string') {
+            confObj.common.activeRepo = [confObj.common.activeRepo];
+        }
+        const pos = confObj.common.activeRepo.indexOf(repoName);
+        if (pos !== -1) {
+            confObj.common.activeRepo.splice(pos, 1);
+            confObj.from = 'system.host.' + tools.getHostName() + '.cli';
+            confObj.ts = Date.now();
+            objects.setObjectAsync('system.config', confObj);
+        }
     };
 
     /**
