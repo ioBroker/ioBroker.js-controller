@@ -14,7 +14,7 @@
 'use strict';
 // TODO need info about progress of stopping
 
-const fs                    = require('fs-extra');
+const fs = require('fs-extra');
 const { tools } = require('@iobroker/js-controller-common');
 const cli = require('@iobroker/js-controller-cli');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
@@ -134,8 +134,8 @@ function initYargs() {
             }
         })
         .command('update [<repositoryUrl>]', 'Update repository and list adapters', {
-            updateable: {
-                describe: 'Only show updateable adapters',
+            updatable: {
+                describe: 'Only show updatable adapters',
                 alias: 'u',
                 type: 'boolean'
             },
@@ -451,9 +451,9 @@ async function processCommand(command, args, params, callback) {
                     states:      _states
                 });
 
-                repo.showRepo(repoUrl, params, () => {
-                    setTimeout(callback, 2000);
-                });
+                repo.showRepo(repoUrl, params)
+                    .then(() =>
+                        setTimeout(callback, 2000));
             });
             break;
         }
@@ -619,14 +619,9 @@ async function processCommand(command, args, params, callback) {
 
         case 'info': {
             Objects =       getObjectsConstructor();
-            dbConnect(params, objects => {
-                tools.getHostInfo(objects, (err, data) => {
-                    if (err) {
-                        console.error('Cannot read host info: '+ err);
-                        if (!data) {
-                            return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
-                        }
-                    }
+            dbConnect(params, async objects => {
+                try {
+                    const data = await tools.getHostInfo(objects);
                     const formatters = require('./formatters');
                     const formatInfo = {
                         'Uptime':        formatters.formatSeconds,
@@ -640,8 +635,13 @@ async function processCommand(command, args, params, callback) {
                     for (const attr of Object.keys(data)) {
                         console.log(`${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''}`);
                     }
-                    return void callback();
-                });
+
+                } catch (err) {
+                    console.error('Cannot read host info: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
+                    return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
+                }
+
+                return void callback();
             });
             break;
         }
@@ -940,53 +940,41 @@ async function processCommand(command, args, params, callback) {
             Objects = getObjectsConstructor();
 
             let adapter = cli.tools.normalizeAdapterName(args[0]);
-            let repoUrl = args[1];
-
-            if (adapter && !repoUrl && adapter.indexOf('/') !== -1) {
-                repoUrl = adapter;
-                adapter = null;
-            }
 
             if (adapter === 'all') {
                 adapter = null;
             }
 
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const Upgrade = require('./setup/setupUpgrade.js');
                 const upgrade = new Upgrade({
                     objects,
                     states,
                     getRepository,
                     params,
-                    processExit:       callback,
+                    processExit: callback,
                     restartController
                 });
 
                 if (adapter) {
                     if (adapter === 'self') {
                         states.getState(`system.host.${tools.getHostName()}.alive`, (err, hostAlive) =>
-                            upgrade.upgradeController(repoUrl, params.force || params.f, hostAlive && hostAlive.val, callback));
+                            upgrade.upgradeController('', params.force || params.f, hostAlive && hostAlive.val, callback));
                     } else {
-                        upgrade.upgradeAdapter(repoUrl, adapter, params.force || params.f, params.y || params.yes, false, callback);
+                        upgrade.upgradeAdapter('', adapter, params.force || params.f, params.y || params.yes, false, callback);
                     }
                 } else {
                     // upgrade all
-                    getRepository(repoUrl, (err, links) => {
-                        const result = [];
-                        for (const name of Object.keys(links)) {
-                            result.push(name);
-                        }
-                        if (err) {
-                            console.log(err);
-                        }
-                        if (links) {
-                            result.sort();
-                            upgrade.upgradeAdapterHelper(links, result, false, params.y || params.yes, callback);
-                        } else {
-                            // No information
+                    try {
+                        const links = await getRepository();
+                        if (!links || !links.json) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                    });
+                        upgrade.upgradeAdapterHelper(links.json, Object.keys(links.json).sort(), false, params.y || params.yes, callback);
+                    } catch (e) {
+                        console.error(e);
+                        return void callback(EXIT_CODES.INVALID_REPO);
+                    }
                 }
             });
             break;
@@ -1754,7 +1742,7 @@ async function processCommand(command, args, params, callback) {
             const json = {
                 name: tools.appName,
                 engines: {
-                    node: '>=6'
+                    node: '>=12'
                 },
                 optionalDependencies: {
                 },
@@ -2116,11 +2104,11 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'repo': {
-            Objects =       getObjectsConstructor();
-            let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset"
+            Objects = getObjectsConstructor();
+            let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
             const repoName       = args[1]; // Repo url or name
             let repoUrl          = args[2]; // Repo url or name
-            if (repoUrlOrCommand !== 'add' && repoUrlOrCommand !== 'del' && repoUrlOrCommand !== 'set' && repoUrlOrCommand !== 'show' && repoUrlOrCommand !== 'addset') {
+            if (repoUrlOrCommand !== 'add' && repoUrlOrCommand !== 'del' && repoUrlOrCommand !== 'set' && repoUrlOrCommand !== 'show' && repoUrlOrCommand !== 'addset' && repoUrlOrCommand !== 'unset') {
                 repoUrl = repoUrlOrCommand;
                 repoUrlOrCommand = 'show';
             }
@@ -2128,13 +2116,13 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
-                    objects:     _objects,
-                    states:      _states
+                    objects: _objects,
+                    states:  _states
                 });
 
                 if (repoUrlOrCommand === 'show') {
                     repo.showRepoStatus(callback);
-                } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset') {
+                } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
                         return void callback();
@@ -2155,12 +2143,12 @@ async function processCommand(command, args, params, callback) {
                                                     console.error(err);
                                                     return void callback(EXIT_CODES.INVALID_REPO);
                                                 } else {
-                                                    console.log('Repository "' + repoName + '" set as active: "' + repoUrl + '"');
+                                                    console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
                                                     repo.showRepoStatus(callback);
                                                 }
                                             });
                                         } else {
-                                            console.log('Repository "' + repoName + '" added as "' + repoUrl + '"');
+                                            console.log(`Repository "${repoName}" added as "${repoUrl}"`);
                                             repo.showRepoStatus(callback);
                                         }
                                     }
@@ -2173,7 +2161,7 @@ async function processCommand(command, args, params, callback) {
                                     console.error(err);
                                     return void callback(EXIT_CODES.INVALID_REPO);
                                 } else {
-                                    console.log('Repository "' + repoName + '" set as active.');
+                                    console.log(`Repository "${repoName}" set as active.`);
                                     repo.showRepoStatus(callback);
                                 }
                             });
@@ -2183,7 +2171,17 @@ async function processCommand(command, args, params, callback) {
                                     console.error(err);
                                     return void callback(EXIT_CODES.INVALID_REPO);
                                 } else {
-                                    console.log('Repository "' + repoName + '" deleted.');
+                                    console.log(`Repository "${repoName}" deleted.`);
+                                    repo.showRepoStatus(callback);
+                                }
+                            });
+                        }  else if (repoUrlOrCommand === 'unset') {
+                            repo.setInactive(repoName, err => {
+                                if (err) {
+                                    console.error(err);
+                                    return void callback(EXIT_CODES.INVALID_REPO);
+                                } else {
+                                    console.log(`Repository "${repoName}" deactivated.`);
                                     repo.showRepoStatus(callback);
                                 }
                             });
@@ -2489,71 +2487,64 @@ function restartController(callback) {
     }
 }
 
-function getRepository(repoUrl, params, callback) {
-    if (typeof params === 'function') {
-        callback = params;
-        params = {};
-    }
+async function getRepository(repoName, params) {
     params = params || {};
 
-    if (!repoUrl || typeof repoUrl !== 'object') {
-        if (!objects) {
-            dbConnect(params, () => getRepository(repoUrl, params, callback));
-        } else {
-            // try to read repository
-            objects.getObject('system.config', (_err, systemConfig) => {
-                objects.getObject('system.repositories', (err, repos) => {
-                    // Check if repositories exists
-                    if (!err && repos && repos.native && repos.native.repositories) {
-                        const active = systemConfig.common.activeRepo;
+    if (!objects) {
+        await dbConnectAsync(params);
+    }
 
-                        if (repos.native.repositories[active]) {
-                            if (typeof repos.native.repositories[active] === 'string') {
-                                repos.native.repositories[active] = {
-                                    link: repos.native.repositories[active],
-                                    json: null
-                                };
-                            }
+    if (!repoName) {
+        const systemConfig = await objects.getObjectAsync('system.config');
+        repoName = systemConfig.common.activeRepo;
+    }
 
-                            // If repo is not yet loaded
-                            if (!repos.native.repositories[active].json) {
-                                console.log(`Update repository "${active}" under "${repos.native.repositories[active].link}"`);
-                                // Load it
-                                tools.getRepositoryFile(repos.native.repositories[active].link, {
-                                    hash: repos.native.repositories[active].hash,
-                                    sources: repos.native.repositories[active].json,
-                                    controller: require('../io-package.json').common.version,
-                                    node: process.version,
-                                    name: tools.appName
-                                }, (_err, sources, sourcesHash) => {
-                                    if (_err && !sources) {
-                                        callback(_err, sources);
-                                    } else {
-                                        repos.native.repositories[active].json = sources;
-                                        repos.native.repositories[active].hash = sourcesHash;
-                                        repos.from = `system.host.${tools.getHostName()}.cli`;
-                                        repos.ts = new Date().getTime();
-                                        // Store uploaded repo
-                                        objects.setObject('system.repositories', repos, () => void callback(null, sources));
-                                    }
-                                });
-                            } else {
-                                // We have already repo, give it back
-                                return void callback(null, repos.native.repositories[active].json);
-                            }
-                        } else {
-                            console.log('Requested repository "' + active + '" does not exist in config.');
-                            return void callback(EXIT_CODES.INVALID_REPO);
-                        }
-                    } else {
-                        console.log('No repositories defined.');
-                        return void callback(EXIT_CODES.INVALID_REPO);
-                    }
-                });
-            });
+    if (!Array.isArray(repoName)) {
+        repoName = [repoName];
+    }
+
+    const systemRepos = await objects.getObjectAsync('system.repositories');
+    const allSources = {};
+    let changed = false;
+    let anyFound = false;
+    for (let r = 0; r < repoName.length; r++) {
+        const repo = repoName[r];
+        if (systemRepos.native.repositories[repo]) {
+            if (typeof systemRepos.native.repositories[repo] === 'string') {
+                systemRepos.native.repositories[repo] = {
+                    link: systemRepos.native.repositories[repo],
+                    json: null
+                };
+                changed = true;
+            }
+
+            // If repo is not yet loaded
+            if (!systemRepos.native.repositories[repo].json) {
+                console.log(`Update repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
+                const data = await tools.getRepositoryFileAsync(systemRepos.native.repositories[repo].link);
+                systemRepos.native.repositories[repo].json = data.json;
+                systemRepos.native.repositories[repo].hash = data.hash;
+                systemRepos.from = `system.host.${tools.getHostName()}.cli`;
+                systemRepos.ts = new Date().getTime();
+                changed = true;
+            }
+
+            if (systemRepos.native.repositories[repo].json) {
+                Object.assign(allSources, systemRepos.native.repositories[repo].json);
+                anyFound = true;
+            }
         }
+
+        if (changed) {
+            await objects.setObjectAsync('system.repositories', systemRepos);
+        }
+    }
+
+    if (!anyFound) {
+        console.log('No repositories defined.');
+        throw new Error(EXIT_CODES.INVALID_REPO);
     } else {
-        return void callback(null, repoUrl);
+        return allSources;
     }
 }
 
@@ -2685,7 +2676,7 @@ function dbConnect(onlyCheck, params, callback) {
                     }
                 });
             } else {
-                console.log('No connection to objects ' + config.objects.host + ':' + config.objects.port + '[' + config.objects.type + ']');
+                console.log(`No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`);
                 if (onlyCheck) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
@@ -2804,6 +2795,16 @@ function dbConnect(onlyCheck, params, callback) {
         },
         change: (id, state) => states.onChange && states.onChange(id, state)
     });
+}
+
+/**
+ * Connects to the DB or tests the connection. The response has the following structure:
+ * `{objects: any, states: any, isOffline?: boolean, objectsDBType?: string, config}`
+ */
+function dbConnectAsync(onlyCheck, params) {
+    return new Promise((resolve, reject) =>
+        dbConnect(onlyCheck, params, (err, objects, states, isOffline, objectsDBType, config) =>
+            err ? reject(err) : resolve({objects, states, isOffline, objectsDBType, config})));
 }
 
 module.exports.execute = function () {

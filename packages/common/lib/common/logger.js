@@ -4,16 +4,16 @@
 /* jslint esversion: 6 */
 'use strict';
 
-const winston          = require('winston');
-const DailyRotateFile  = require('winston-daily-rotate-file');
-const fs               = require('fs');
-const path             = require('path');
-const os               = require('os');
-const tools  = require('./tools');
-const hostname         = tools.getHostName();
-const Transport        = require('winston-transport');
-const {LEVEL}          = require('triple-beam');
-const deepClone        = require('deep-clone');
+const winston         = require('winston');
+const DailyRotateFile = require('winston-daily-rotate-file');
+const fs              = require('fs');
+const path            = require('path');
+const os              = require('os');
+const tools           = require('./tools');
+const hostname        = tools.getHostName();
+const Transport       = require('winston-transport');
+const {LEVEL}         = require('triple-beam');
+const deepClone       = require('deep-clone');
 
 let SysLog;
 try {

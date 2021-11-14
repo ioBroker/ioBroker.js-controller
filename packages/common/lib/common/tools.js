@@ -15,6 +15,7 @@ const {detectPackageManager} = require('@alcalzone/pak');
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
 let request;
+let axios;
 let extend;
 let password;
 let npmVersion;
@@ -727,6 +728,7 @@ function getInstalledInfo(hostRunningVersion) {
             licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
         };
     }
+
     scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
     scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
 
@@ -876,7 +878,7 @@ function _getRepositoryFile(sources, path, callback) {
                     }
                 }
                 if (callback) {
-                    callback('Timeout by read all package.json (' + count + ') seconds', sources);
+                    callback(`Timeout by read all package.json (${count}) seconds`, sources);
                 }
                 callback = null;
             }
@@ -924,6 +926,7 @@ function _getRepositoryFile(sources, path, callback) {
             return;
         }
     }
+
     // all packages are processed
     if (sources._helper) {
         let err;
@@ -953,7 +956,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
         let json = null;
         request({url: urlOrPath, timeout: 10000, gzip: true}, (error, response, body) => {
             if (error || !body || response.statusCode !== 200) {
-                console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
             } else {
                 try {
                     json = JSON.parse(body);
@@ -993,7 +996,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
  *
  * @alias getRepositoryFile
  * @memberof tools
- * @param {string} urlOrPath URL stargin with http:// or https:// or local file link
+ * @param {string} urlOrPath URL starting with http:// or https:// or local file link
  * @param {object} additionalInfo destination object
  * @param {function} callback function (err, sources, actualHash) { }
  *
@@ -1084,30 +1087,79 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
     }
 }
 
+/**
+ * Read on repository
+ *
+ * @alias getRepositoryFileAsync
+ * @memberof tools
+ * @param {string} url URL starting with http:// or https:// or local file link
+ * @param {string} hash actual hash
+ * @param {boolean} force Force repository update despite on hash
+ * @param {object} _actualRepo Actual repository
+ *
+ */
+async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
+    let _hash;
+    if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
+        axios = axios || require('axios');
+        _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+        if (_hash && _hash.data && hash === _hash.data.hash) {
+            return _actualRepo;
+        }
+    }
+
+    let data;
+
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        axios = axios || require('axios');
+        if (!_hash) {
+            _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+        }
+
+        if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
+            data = _actualRepo;
+        } else {
+            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../../package.json').version}`;
+            data = await axios({
+                url,
+                timeout: 10000,
+                headers: { 'User-Agent': agent }
+            });
+            data = data.data;
+        }
+    } else {
+        if (fs.existsSync(url)) {
+            try {
+                data = JSON.parse(fs.readFileSync(url).toString('utf8'));
+            } catch (e) {
+                throw new Error(`Error: Cannot read or parse file "${url}": ${e}`);
+            }
+        } else {
+            throw new Error(`Error: Cannot find file "${url}"`);
+        }
+    }
+
+    return {json: data, changed: _hash && _hash.data ? hash !== _hash.data.hash : true, hash: _hash && _hash.data ? _hash.data.hash : ''};
+}
+
 function sendDiagInfo(obj, callback) {
     request = request || require('request');
 
     console.log(`Send diag info: ${JSON.stringify(obj)}`);
-    request.post({
-        url: 'http://download.' + module.exports.appName + '.net/diag.php',
-        method: 'POST',
-        gzip: true,
-        headers: {'content-type': 'application/x-www-form-urlencoded'},
-        body: 'data=' + JSON.stringify(obj),
-        timeout: 2000
-    }, (_err, _response, _body) => {
-        /*if (err || !body || response.statusCode !== 200) {
+    axios = axios || require('axios');
+    const params = new URLSearchParams();
+    params.append('data', JSON.stringify(obj));
+    const config = {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        timeout: 4000
+    };
 
-        }*/
-        if (typeof callback === 'function') {
-            callback();
-        }
-    }).on('error', error => {
-        console.log('Cannot send diag info: ' + error.message);
-        if (typeof callback === 'function') {
-            callback(error);
-        }
-    });
+    return axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
+        .then(() => typeof callback === 'function' && callback())
+        .catch(error => {
+            console.log(`Cannot send diag info: ${error.message}`);
+            typeof callback === 'function' && callback(error);
+        });
 }
 
 /**
@@ -1144,10 +1196,12 @@ function getAdapterDir(adapter) {
         } else {
             try {
                 adapterPath = require.resolve(possibility);
-                break;
             } catch {
                 // not found
             }
+        }
+        if (adapterPath) {
+            break;
         }
     }
 
@@ -1201,7 +1255,7 @@ function getSystemNpmVersion(callback) {
         .split(path.delimiter)
         .filter(dir => {
             dir = dir.toLowerCase();
-            return !(dir.indexOf('iobroker') > -1 && dir.indexOf(path.join('node_modules', '.bin')) > -1);
+            return !dir.includes('iobroker') || !dir.includes(path.join('node_modules', '.bin'));
         })
         .join(path.delimiter);
     try {
@@ -1233,6 +1287,8 @@ function getSystemNpmVersion(callback) {
         }
     }
 }
+
+const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
 /**
  * @typedef {object} InstallNodeModuleOptions
@@ -1449,6 +1505,8 @@ function getDiskInfo(platform, callback) {
     }
 }
 
+const getDiskInfoAsync = promisify(getDiskInfo);
+
 /**
  * Returns information about a certificate
  *
@@ -1639,14 +1697,13 @@ function makeid(length) {
  * @alias getHostInfo
  * @memberof Tools
  * @param {object} objects
- * @param {function} callback return result
  *        <pre><code>
  *            function (err, result) {
  *              adapter.log.debug('Info about host: ' + JSON.stringify(result, null, 2);
  *            }
  *        </code></pre>
  */
-function getHostInfo(objects, callback) {
+async function getHostInfo(objects, callback) {
     const os = require('os');
 
     if (diskusage !== false) {
@@ -1676,47 +1733,42 @@ function getHostInfo(objects, callback) {
         data.Platform = 'OSX';
     }
 
-    let task = 0;
-    task++;
-    objects.getObject('system.config', (_err, systemConfig) => {
-        objects.getObject('system.repositories', (err, repos) => {
-            // Check if repositories exists
-            if (!err && repos && repos.native && repos.native.repositories) {
-                const repo = repos.native.repositories[systemConfig.common.activeRepo];
-                if (repo && repo.json) {
-                    data['adapters count'] = Object.keys(repo.json).length;
-                }
-            }
-            if (!--task) {
-                callback(err, data);
-            }
-        });
-    });
+    const systemConfig = await objects.getObjectAsync('system.config');
+    const systemRepos = await objects.getObjectAsync('system.repositories');
+
+    // Check if repositories exists
+    const allRepos = {};
+    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+        const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
+        repos
+            .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
+            .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
+
+        data['adapters count'] = Object.keys(allRepos).length;
+    }
 
     if (!npmVersion) {
-        task++;
-        getSystemNpmVersion((err, version) => {
+        try {
+            const version = await getSystemNpmVersionAsync();
             data['NPM'] = 'v' + (version || ' ---');
             npmVersion = version;
-            if (!--task) {
-                callback(err, data);
-            }
-        });
+        } catch (e) {
+            console.error('Cannot get NPM version: ' + e);
+        }
     } else {
         data['NPM'] = npmVersion;
-        if (!task) {
-            callback(null, data);
-        }
     }
-    task++;
-    getDiskInfo(data.Platform, (err, info) => {
+    try {
+        const info = await getDiskInfoAsync(data.Platform);
         if (info) {
             Object.assign(data, info);
         }
-        if (!--task) {
-            callback(err, data);
-        }
-    });
+    } catch (e) {
+        console.error('Cannot get disk information: ' + e);
+    }
+    callback && callback(data);
+
+    return data;
 }
 
 /**
@@ -1800,16 +1852,16 @@ function getConfigFileName() {
         configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
         configDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(configDir + '/conf/' + appName + '.json')) {
-            return configDir + '/conf/' + appName + '.json';
+        if (fs.existsSync(`${configDir}/conf/${appName}.json`)) {
+            return `${configDir}/conf/${appName}.json`;
         } else {
-            return configDir + '/data/' + appName + '.json';
+            return `${configDir}/data/${appName}.json`;
         }
     }
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
-    if (fs.existsSync(__dirname + '/../../../../../../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
-        fs.existsSync(__dirname + '/../../../../../../../node_modules/' + appName + '.js-controller')) {
+    if (fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName}.js-controller`)) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 7, 7);
         configDir = configDir.join('/');
@@ -1819,7 +1871,7 @@ function getConfigFileName() {
         configDir = configDir.join('/');
     }
 
-    return configDir + '/' + appName + '-data/' + appName + '.json';
+    return `${configDir}/${appName}-data/${appName}.json`;
 }
 
 /**
@@ -2418,7 +2470,7 @@ function getAllInstances(adapters, objects, callback) {
         if (adapters[i].indexOf('.') === -1) {
             getInstances(adapters[i], objects, false, (err, inst) => {
                 for (let j = 0; j < inst.length; j++) {
-                    if (instances.indexOf(inst[j]) === -1) {
+                    if (!instances.includes(inst[j])) {
                         instances.push(inst[j]);
                     }
                 }
@@ -2459,25 +2511,39 @@ function getInstances(adapter, objects, withObjects, callback) {
         withObjects = false;
     }
 
-    objects.getObjectList({
+    return getInstancesAsync(adapter, objects, withObjects)
+        .then(instances => callback(null, instances))
+        .catch(error => callback(error));
+}
+
+/**
+ * get async all instances of one adapter
+ *
+ * @alias getInstancesAsync
+ * @param {string }adapter name of the adapter
+ * @param {object }objects objects DB
+ * @param {boolean} withObjects return objects instead of only ids
+ */
+async function getInstancesAsync(adapter, objects, withObjects) {
+    const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
-    }, (err, arr) => {
-        const instances = [];
-        if (!err && arr && arr.rows) {
-            for (let i = 0; i < arr.rows.length; i++) {
-                if (arr.rows[i].value.type !== 'instance') {
-                    continue;
-                }
-                if (withObjects) {
-                    instances.push(arr.rows[i].value);
-                } else {
-                    instances.push(arr.rows[i].value._id);
-                }
+    });
+    const instances = [];
+    if (arr && arr.rows) {
+        for (let i = 0; i < arr.rows.length; i++) {
+            if (arr.rows[i].value.type !== 'instance') {
+                continue;
+            }
+            if (withObjects) {
+                instances.push(arr.rows[i].value);
+            } else {
+                instances.push(arr.rows[i].value._id);
             }
         }
-        callback(null, instances);
-    });
+    }
+
+    return instances;
 }
 
 /**
@@ -3043,6 +3109,7 @@ module.exports = {
     generateDefaultCertificates,
     getAdapterDir,
     getInstances,
+    getInstancesAsync,
     getAllInstances,
     getAllInstancesAsync,
     getCertificateInfo,
@@ -3058,6 +3125,7 @@ module.exports = {
     getJson,
     getInstancesOrderedByStartPrio,
     getRepositoryFile,
+    getRepositoryFileAsync,
     getSystemNpmVersion,
     installNodeModule,
     uninstallNodeModule,

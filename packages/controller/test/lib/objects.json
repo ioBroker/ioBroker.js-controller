@@ -60,7 +60,7 @@
             "dateFormat": "DD.MM.YYYY",
             "isFloatComma": true,
             "licenseConfirmed": false,
-            "activeRepo": "default",
+            "activeRepo": ["stable"],
             "diag": "extended",
             "defaultHistory": "",
             "defaultNewAcl": {
