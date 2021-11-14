@@ -98,20 +98,15 @@ function Install(options) {
                     common: {
                         enabled: isEnable
                     },
-                    from: 'system.host.' + tools.getHostName() + '.cli',
+                    from: `system.host.${tools.getHostName()}.cli`,
                     ts: ts
                 };
-                console.log('host.' + hostname + ' Adapter "' + adapters[i]._id + '" is ' + (isEnable ? 'started' : 'stopped.'));
-                objects.extendObject(adapters[i]._id, updatedObj, () => {
-                    if (!--count) {
-                        callback();
-                    }
-                });
+                console.log(`host.${hostname} Adapter "${adapters[i]._id}" is ${isEnable ? 'started' : 'stopped.'}`);
+                objects.extendObject(adapters[i]._id, updatedObj, () =>
+                    !--count && callback());
             }
         }
-        if (!count) {
-            callback();
-        }
+        !count && callback();
     }
 
     this.downloadPacket = function (repoUrl, packetName, options, stoppedList, callback) {
@@ -126,13 +121,10 @@ function Install(options) {
         }
 
         if (!repoUrl || typeof repoUrl !== 'object') {
-            return getRepository(repoUrl, params, (err, sources) => {
-                if (err) {
-                    processExit(err);
-                } else {
-                    this.downloadPacket(sources, packetName, options, stoppedList, callback);
-                }
-            });
+            return getRepository(repoUrl, params)
+                .then(result =>
+                    this.downloadPacket(result.json, packetName, options, stoppedList, callback))
+                .catch(err => processExit(err));
         }
 
         let debug = false;
@@ -177,7 +169,8 @@ function Install(options) {
                         }
                     }
                 }
-                enableAdapters(stoppedList, false, () => that.downloadPacket(sources, packetName + '@' + version, options, stoppedList, callback));
+                enableAdapters(stoppedList, false, () =>
+                    that.downloadPacket(sources, packetName + '@' + version, options, stoppedList, callback));
             });
         }
 
@@ -202,19 +195,15 @@ function Install(options) {
 
             if (!url && packetName !== 'example') {
                 // Install node modules
-                that.npmInstallWithCheck(`${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`, options, debug, () => {
+                return that.npmInstallWithCheck(`${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`, options, debug, () =>
                     // command succeeded
-                    typeof callback === 'function' && callback(_callback => enableAdapters(stoppedList, true, _callback), packetName);
-                });
-                return;
+                    typeof callback === 'function' && callback(_callback => enableAdapters(stoppedList, true, _callback), packetName));
             }
             if (url && url.match(tarballRegex)) {
                 // Install node modules
-                that.npmInstallWithCheck(url, options, debug, () => {
+                return that.npmInstallWithCheck(url, options, debug, () =>
                     // command succeeded
-                    typeof callback === 'function' && callback(_callback => enableAdapters(stoppedList, true, _callback), packetName);
-                });
-                return;
+                    typeof callback === 'function' && callback(_callback => enableAdapters(stoppedList, true, _callback), packetName));
             }
             // Adapter
             if (!url) {

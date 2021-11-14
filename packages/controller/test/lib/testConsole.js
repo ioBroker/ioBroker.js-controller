@@ -527,13 +527,8 @@ function register(it, expect, context) {
     // message
     // update
     it(testName + 'update', async () => {
-        let res;
         // check update
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
-        expect(res.stderr).to.be.not.ok;
-
-        // check update with repo url
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update http://download.iobroker.net/sources-dist.json`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(40000);
 
@@ -639,6 +634,10 @@ function register(it, expect, context) {
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set stable`);
         expect(res.stderr).to.be.not.ok;
 
+        // remove local from active repos
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo unset local`);
+        expect(res.stderr).to.be.not.ok;
+
         // delete non-active repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local`);
         expect(res.stderr).to.be.not.ok;
@@ -651,7 +650,7 @@ function register(it, expect, context) {
             // ok
         }
 
-        // delete non-active repo
+        // add and set as active new repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo addset local1 some/path`);
         expect(res.stderr).to.be.not.ok;
 
@@ -662,6 +661,9 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
+
+        // remove local1 from active repos
+        await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo unset local1`);
 
         // set active repo to default
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set stable`);

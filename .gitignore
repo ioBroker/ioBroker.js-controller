@@ -28,3 +28,4 @@ node_modules
 ioB
 ioBroker
 *.tsbuildinfo
+/packages/controller/ioBroker.pid

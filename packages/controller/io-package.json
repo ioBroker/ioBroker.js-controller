@@ -473,7 +473,7 @@
         "defaultHistory": "",
         "expertMode": false,
         "defaultLogLevel": "info",
-        "activeRepo": "default",
+        "activeRepo": ["stable"],
         "diag": "extended",
         "tabs": [
           "tab-intro",

@@ -265,14 +265,10 @@ function Upgrade(options) {
      */
     this.upgradeAdapter = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll, callback) {
         if (!repoUrl || typeof repoUrl !== 'object') {
-            getRepository(repoUrl, params, (err, sources) => {
-                if (err) {
-                    processExit(err);
-                } else {
-                    this.upgradeAdapter(sources, adapter, forceDowngrade, autoConfirm, upgradeAll, callback);
-                }
-            });
-            return;
+            return getRepository(repoUrl, params)
+                .then(result =>
+                    this.upgradeAdapter(result.json,  adapter, forceDowngrade, autoConfirm, upgradeAll, callback))
+                .catch(err => processExit(err));
         }
 
         const finishUpgrade = (name, iopack, callback) => {
@@ -478,9 +474,7 @@ function Upgrade(options) {
             if (!forceDowngrade && (repoUrl[adapter].version === ioInstalled.common.version ||
                 tools.upToDate(repoUrl[adapter].version, ioInstalled.common.version))) {
                 console.log(`Adapter "${adapter}"${(adapter.length < 15) ? new Array(15 - adapter.length).join(' ') : ''} is up to date.`);
-                if (callback) {
-                    callback();
-                }
+                callback && callback();
             } else {
                 const targetVersion = version || repoUrl[adapter].version;
                 try {
@@ -502,10 +496,7 @@ function Upgrade(options) {
             tools.getJson(repoUrl[adapter].meta, async ioPack => {
                 if (!ioPack) {
                     console.error(`Cannot parse file${repoUrl[adapter].meta}`);
-                    if (callback) {
-                        callback();
-                    }
-                    return;
+                    return callback && callback();
                 }
 
                 if (!forceDowngrade) {
@@ -520,9 +511,7 @@ function Upgrade(options) {
                 if (!version && (ioPack.common.version === ioInstalled.common.version ||
                     (!forceDowngrade && tools.upToDate(ioPack.common.version, ioInstalled.common.version)))) {
                     console.log(`Adapter "${adapter}"${(adapter.length < 15) ? new Array(15 - adapter.length).join(' ') : ''} is up to date.`);
-                    if (callback) {
-                        callback();
-                    }
+                    callback && callback();
                 } else {
                     // Get the adapter from web site
                     const targetVersion = version || ioPack.common.version;
@@ -535,9 +524,8 @@ function Upgrade(options) {
                         console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                     }
                     console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
-                    install.downloadPacket(sources, `${adapter}@${targetVersion}`, null, (enableAdapterCallback, name, ioPack) => {
-                        finishUpgrade(name, ioPack, () => enableAdapterCallback(callback));
-                    });
+                    install.downloadPacket(sources, `${adapter}@${targetVersion}`, null, (enableAdapterCallback, name, ioPack) =>
+                        finishUpgrade(name, ioPack, () => enableAdapterCallback(callback)));
                 }
             });
         } else {
@@ -553,14 +541,11 @@ function Upgrade(options) {
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${version}`);
                 // Get the adapter from web site
-                install.downloadPacket(sources, `${adapter}@${version}`, null, (enableAdapterCallback, name, ioPack) => {
-                    finishUpgrade(name, ioPack, () => enableAdapterCallback(callback));
-                });
+                install.downloadPacket(sources, `${adapter}@${version}`, null, (enableAdapterCallback, name, ioPack) =>
+                    finishUpgrade(name, ioPack, () => enableAdapterCallback(callback)));
             } else {
                 console.error(`Unable to get version for "${adapter}".`);
-                if (callback) {
-                    callback();
-                }
+                callback && callback();
             }
         }
     };
@@ -571,64 +556,48 @@ function Upgrade(options) {
             controllerRunning = false;
         }
         if (!repoUrl || typeof repoUrl !== 'object') {
-            getRepository(repoUrl, params, (err, sources) => {
-                if (!sources) {
-                    console.warn(`Cannot get repository under "${repoUrl}"`);
-                    if (callback) {
-                        callback(err);
+            return getRepository(repoUrl, params)
+                .then(result => {
+                    if (!result || !result.json) {
+                        console.warn(`Cannot get repository under "${repoUrl}"`);
+                        callback && callback();
+                    } else {
+                        this.upgradeController(result.json, forceDowngrade, controllerRunning, callback);
                     }
-                } else {
-                    this.upgradeController(sources, forceDowngrade, controllerRunning, callback);
-                }
-            });
-            return;
+                })
+                .catch(err => processExit(err));
         }
 
         const installed = fs.readJSONSync(`${__dirname}/../../io-package.json`);
         if (!installed || !installed.common || !installed.common.version) {
-            console.error(`Host "${hostname}"${(hostname.length < 15) ? new Array(15 - hostname.length).join(' ') : ''} is not installed.`);
-            if (callback) {
-                callback();
-            }
-            return;
+            console.error(`Host "${hostname}"${(hostname.length < 15) ? ''.padStart(15 - hostname.length) : ''} is not installed.`);
+            return callback && callback();
         }
         if (!repoUrl[installed.common.name]) {
             // no info for controller
             console.error(`Cannot find this controller "${installed.common.name}" in repository.`);
-
-            if (callback) {
-                callback();
-            }
-            return;
+            return callback && callback();
         }
 
         if (repoUrl[installed.common.name].version) {
             if (!forceDowngrade && (repoUrl[installed.common.name].version === installed.common.version ||
                 tools.upToDate(repoUrl[installed.common.name].version, installed.common.version))) {
                 console.log(`Host    "${hostname}"${(hostname.length < 15) ? new Array(15 - hostname.length).join(' ') : ''} is up to date.`);
-                if (callback) {
-                    callback();
-                }
+                callback && callback();
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
-                if (typeof callback === 'function') {
-                    callback();
-                }
+                typeof callback === 'function' && callback();
             } else {
                 console.log(`Update ${installed.common.name} from @${installed.common.version} to @${repoUrl[installed.common.name].version}`);
                 // Get the controller from web site
-                install.downloadPacket(repoUrl, `${installed.common.name}@${repoUrl[installed.common.name].version}`, null, (enableAdapterCallback, _name) => {
-                    enableAdapterCallback(callback);
-                });
+                install.downloadPacket(repoUrl, `${installed.common.name}@${repoUrl[installed.common.name].version}`, null, (enableAdapterCallback, _name) =>
+                    enableAdapterCallback(callback));
             }
         } else {
             tools.getJson(repoUrl[installed.common.name].meta, ioPack => {
                 if ((!ioPack || !ioPack.common) && !forceDowngrade) {
                     console.warn(`Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`);
-                    if (callback) {
-                        callback();
-                    }
-                    return;
+                    return typeof callback === 'function' && callback();
                 }
                 let version = (ioPack && ioPack.common) ? ioPack.common.version : '';
                 if (version) {
@@ -638,21 +607,16 @@ function Upgrade(options) {
                 if ((ioPack && ioPack.common && ioPack.common.version === installed.common.version) ||
                     (!forceDowngrade && ioPack && ioPack.common && tools.upToDate(ioPack.common.version, installed.common.version))) {
                     console.log(`Host    "${hostname}"${(hostname.length < 15) ? new Array(15 - hostname.length).join(' ') : ''} is up to date.`);
-                    if (callback) {
-                        callback();
-                    }
+                    callback && callback();
                 } else if (controllerRunning) {
                     console.warn(`Controller is running. Please stop ioBroker first.`);
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
+                    typeof callback === 'function' && callback();
                 } else {
                     const name = (ioPack && ioPack.common && ioPack.common.name) ? ioPack.common.name : installed.common.name;
                     console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                     // Get the controller from web site
-                    install.downloadPacket(repoUrl, name + version, null, (enableAdapterCallback, _name) => {
-                        enableAdapterCallback(callback);
-                    });
+                    install.downloadPacket(repoUrl, name + version, null, (enableAdapterCallback, _name) =>
+                        enableAdapterCallback(callback));
                 }
             });
         }

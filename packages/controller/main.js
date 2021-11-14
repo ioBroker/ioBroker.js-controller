@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2020 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2021 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -93,6 +93,7 @@ const scheduledInstances    = {};
 const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
 const VENDOR_FILE           = '/etc/iob-vendor.json';
 let updateIPsTimer          = null;
+let lastDiagSend            = null;
 
 const uploadTasks           = [];
 
@@ -591,7 +592,7 @@ function createObjects(onConnect) {
                 return;
             }
             try {
-                logger.debug(hostLogPrefix + ' object change ' + id + ' (from: ' + (obj ? obj.from : null) + ')');
+                logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
                 // known adapter
                 if (procs[id]) {
                     // if adapter deleted
@@ -607,13 +608,13 @@ function createObjects(onConnect) {
                         procs[id].config.common.host    = null;
                         procs[id].config.deleted        = true;
                         delete hostAdapter[id];
-                        logger.info(hostLogPrefix + ' object deleted ' + id);
+                        logger.info(`${hostLogPrefix} object deleted ${id}`);
                     } else {
                         if (procs[id].config.common.enabled  && !obj.common.enabled) {
-                            logger.info(hostLogPrefix + ' "' + id + '" disabled');
+                            logger.info(`${hostLogPrefix} "${id}" disabled`);
                         }
                         if (!procs[id].config.common.enabled &&  obj.common.enabled) {
-                            logger.info(hostLogPrefix + ' "' + id + '" enabled');
+                            logger.info(`${hostLogPrefix} "${id}" enabled`);
                             procs[id].downloadRetry = 0;
                         }
 
@@ -697,7 +698,7 @@ function createObjects(onConnect) {
                 }
             } catch (err) {
                 if (!compactGroupController || (obj && obj.common && obj.common.runAsCompactMode && obj.common.compactGroup === compactGroup)) {
-                    logger.error(hostLogPrefix + ' cannot process: ' + id + ': ' + err + ' / ' + err.stack);
+                    logger.error(`${hostLogPrefix} cannot process: ${id}: ${err} / ${err.stack}`);
                 }
             }
         }
@@ -772,7 +773,7 @@ function reportStatus() {
                 outputCount++;
             }
         } catch (err) {
-            logger.error(hostLogPrefix + ' Cannot read /proc/meminfo: ' + err);
+            logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
         }
     }
 
@@ -780,7 +781,7 @@ function reportStatus() {
         lastDiskSizeCheck = Date.now();
         tools.getDiskInfo(os.platform(), (err, info) => {
             if (err) {
-                logger.error(hostLogPrefix + ' Cannot read disk size: ' + err);
+                logger.error(`${hostLogPrefix} Cannot read disk size: ${err}`);
             }
             try {
                 if (info) {
@@ -789,7 +790,7 @@ function reportStatus() {
                     outputCount+=2;
                 }
             } catch (e) {
-                logger.error(hostLogPrefix + ' Cannot read disk information: ' + e);
+                logger.error(`${hostLogPrefix} Cannot read disk information: ${e}`);
             }
         });
     }
@@ -857,7 +858,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         try {
             subs = JSON.parse(state.val);
         } catch {
-            logger.error(hostLogPrefix + ' Cannot parse subscribes: ' + state.val);
+            logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
             return typeof callback === 'function' && setImmediate(() => callback());
         }
         let modified = false;
@@ -913,7 +914,7 @@ function delObjects(objs, callback) {
     } else {
         const row = objs.shift();
         if (row && row.id) {
-            logger.info(hostLogPrefix + ' Delete state "' + row.id + '"');
+            logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
             if (row.value && row.value.type === 'state') {
                 states.delState(row.id, (/* err */) =>
                     objects.delObject(row.id, (/* err */) =>
@@ -960,7 +961,7 @@ function checkHost(callback) {
                 } else {
                     // reassign all instances
                     changeHost(doc.rows, oldHostname, hostname, () => {
-                        logger.info(hostLogPrefix + ' Delete host ' + oldId);
+                        logger.info(`${hostLogPrefix} Delete host ${oldId}`);
 
                         // delete host object
                         objects.delObject(oldId, () =>
@@ -1036,7 +1037,7 @@ async function collectDiagInfo(type) {
             objectsType:    config.objects.type // redis or file
         };
         if (type === 'extended' || type === 'no-city') {
-            const cpus     = os.cpus();
+            const cpus   = os.cpus();
 
             diag.country = systemConfig.common.country;
             diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
@@ -1302,7 +1303,7 @@ function setMeta() {
             newObj.ts = Date.now();
             objects.setObject(id, newObj, err => {
                 if (err) {
-                    logger.error(hostLogPrefix + ' Cannot write host object:' + err);
+                    logger.error(`${hostLogPrefix} Cannot write host object:${err}`);
                 } else {
                     setIPs(newObj.common.address);
                 }
@@ -1754,10 +1755,10 @@ function setMeta() {
         // create UUID if not exist
         if (!compactGroupController) {
             tools.createUuid(objects, uuid => {
-                uuid && logger && logger.info(hostLogPrefix + ' Created UUID: ' + uuid);
+                uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
 
                 if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                    logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
+                    logger && logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
                     try {
                         let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
                         startScript = JSON.parse(startScript);
@@ -1766,7 +1767,7 @@ function setMeta() {
                             const Vendor = require('./lib/setup/setupVendor');
                             const vendor = new Vendor({objects});
 
-                            logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
+                            logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
                                 .then(() => {
                                     logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
@@ -1796,7 +1797,6 @@ function setMeta() {
             });
         }
     });
-
 }
 
 // Subscribe on message queue
@@ -1978,80 +1978,100 @@ async function processMessage(msg) {
             if (msg.callback && msg.from) {
                 objects.getObject('system.config', async (err, systemConfig) => {
                     // Collect statistics (only if license has been confirmed - user agreed)
-                    if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed) {
+                    if (systemConfig && systemConfig.common && systemConfig.common.diag && systemConfig.common.licenseConfirmed &&
+                        (!lastDiagSend || Date.now() - lastDiagSend > 30000) // prevent sending of diagnostics by multiple admin instances
+                    ) {
+                        lastDiagSend = Date.now();
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             // if user selected 'none' we will have null here and do not want to send it
-                            if (obj) {
-                                tools.sendDiagInfo(obj);
-                            }
+                            obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
                         } catch (err) {
                             logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
                         }
                     }
 
-                    objects.getObject('system.repositories', (err, repos) => {
-                        // Check if repositories exists
-                        if (!err && repos && repos.native && repos.native.repositories) {
-                            let updateRepo = false;
-                            if (tools.isObject(msg.message)) {
-                                updateRepo  = msg.message.update;
-                                msg.message = msg.message.repo;
-                            }
+                    const globalRepo = {};
 
-                            const active = msg.message || systemConfig.common.activeRepo;
+                    const systemRepos = await objects.getObjectAsync('system.repositories');
 
-                            if (repos.native.repositories[active]) {
+                    // Check if repositories exists
+                    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+                        let updateRepo = false;
+                        if (tools.isObject(msg.message)) {
+                            updateRepo  = msg.message.update;
+                            msg.message = msg.message.repo;
+                        }
 
-                                if (typeof repos.native.repositories[active] === 'string') {
-                                    repos.native.repositories[active] = {
-                                        link: repos.native.repositories[active],
+                        let active = msg.message || systemConfig.common.activeRepo;
+
+                        if (!Array.isArray(active)) {
+                            active = [active];
+                        }
+
+                        let changed = false;
+
+                        for (let r = 0; r < active.length; r++) {
+                            const repo = active[r];
+                            if (systemRepos.native.repositories[repo]) {
+                                if (typeof systemRepos.native.repositories[repo] === 'string') {
+                                    systemRepos.native.repositories[repo] = {
+                                        link: systemRepos.native.repositories[repo],
                                         json: null
                                     };
+                                    changed = true;
                                 }
 
                                 // If repo is not yet loaded
-                                if (!repos.native.repositories[active].json || updateRepo) {
-                                    logger.info(`${hostLogPrefix} Updating repository "${active}" under "${repos.native.repositories[active].link}"`);
-                                    // Load it
-                                    tools.getRepositoryFile(repos.native.repositories[active].link, {
-                                        hash: repos.native.repositories[active].hash,
-                                        sources: repos.native.repositories[active].json,
-                                        controller: version,
-                                        node: process.version,
-                                        name: tools.appName
-                                    }, (err, sources, sourcesHash) => {
-                                        if (err) {
-                                            logger.warn(hostLogPrefix + ' warning: ' + err);
-                                        }
-                                        if (!sources || !Object.keys(sources).length) {
-                                            logger.warn(hostLogPrefix + ' warning: empty repo received!');
-                                            if (repos.native.repositories[active].json) {
-                                                // We have already repo, give it back
-                                                sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
-                                            } else {
-                                                sendTo(msg.from, msg.command, null, msg.callback);
-                                            }
+                                if (!systemRepos.native.repositories[repo].json || updateRepo) {
+                                    logger.info(`${hostLogPrefix} Updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
+                                    try {
+                                        let result;
+                                        // prevent the request of repos by multiple admin adapters at start
+                                        if (systemRepos.native.repositories[repo].json &&
+                                            systemRepos.native.repositories[repo].time &&
+                                            systemRepos.native.repositories[repo].hash &&
+                                            Date.now() - new Date(systemRepos.native.repositories[repo].time).getTime() < 30000
+                                        ) {
+                                            result = systemRepos.native.repositories[repo];
                                         } else {
-                                            repos.native.repositories[active].json = sources;
-                                            repos.native.repositories[active].hash = sourcesHash || '';
-                                            sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
-                                            repos.from = 'system.host.' + tools.getHostName();
-                                            repos.ts = Date.now();
-                                            // Store uploaded repo
-                                            objects.setObject('system.repositories', repos);
+                                            result = await tools.getRepositoryFileAsync(
+                                                systemRepos.native.repositories[repo].link,
+                                                systemRepos.native.repositories[repo].hash,
+                                                updateRepo,
+                                                systemRepos.native.repositories[repo].json
+                                            );
                                         }
-                                    });
-                                } else {
-                                    // We have already repo, give it back
-                                    sendTo(msg.from, msg.command, repos.native.repositories[active].json, msg.callback);
+
+                                        // If repo was really changed
+                                        if (result && result.json && result.changed) {
+                                            systemRepos.native.repositories[repo].json = result.json;
+                                            systemRepos.native.repositories[repo].hash = result.hash || '';
+                                            systemRepos.native.repositories[repo].time = new Date().toISOString();
+                                            changed = true;
+                                        }
+                                        // Make sure, that time is stored too to prevent the frequent access to repo server
+                                        if (!systemRepos.native.repositories[repo].time) {
+                                            systemRepos.native.repositories[repo].time = new Date().toISOString();
+                                            changed = true;
+                                        }
+
+                                    } catch (e) {
+                                        logger.error(`${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e}`);
+                                    }
+                                }
+
+                                if (systemRepos.native.repositories[repo].json) {
+                                    Object.assign(globalRepo, systemRepos.native.repositories[repo].json);
                                 }
                             } else {
-                                logger.warn(`${hostLogPrefix} Requested repository "${active}" does not exist in config.`);
-                                sendTo(msg.from, msg.command, null, msg.callback);
+                                logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
                             }
                         }
-                    });
+                        changed && (await objects.setObjectAsync('system.repositories', systemRepos));
+                    }
+
+                    sendTo(msg.from, msg.command, globalRepo, msg.callback);
                 });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -2367,30 +2387,32 @@ async function processMessage(msg) {
                 // node.js --version
                 // npm --version
                 // uptime
-                tools.getHostInfo(objects, (err, data) => {
-                    if (err) {
+                tools.getHostInfo(objects)
+                    .catch(err => {
                         logger.error(`${hostLogPrefix} cannot get getHostInfo: ${err}`);
-                    }
-                    data = data || {};
-                    data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
-                    // add information about running instances
-                    let count = 0;
-                    for (const id of Object.keys(procs)) {
-                        if (procs[id].process) {
-                            count++;
+                        return null;
+                    })
+                    .then(data => {
+                        data = data || {};
+                        data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
+                        // add information about running instances
+                        let count = 0;
+                        for (const id of Object.keys(procs)) {
+                            if (procs[id].process) {
+                                count++;
+                            }
                         }
-                    }
 
-                    let location = path.normalize(__dirname + '/../');
-                    if (path.basename(location) === 'node_modules') {
-                        location = path.normalize(__dirname + '/../../');
-                    }
+                        let location = path.normalize(__dirname + '/../');
+                        if (path.basename(location) === 'node_modules') {
+                            location = path.normalize(__dirname + '/../../');
+                        }
 
-                    data['Active instances'] = count;
-                    data.location = location;
+                        data['Active instances'] = count;
+                        data.location = location;
 
-                    sendTo(msg.from, msg.command, data, msg.callback);
-                });
+                        sendTo(msg.from, msg.command, data, msg.callback);
+                    });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -3379,10 +3401,10 @@ async function startInstance(id, wakeUp) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({
-            id: id,
+            id,
             version: instance.common.installedVersion || instance.common.version,
             installedFrom: instance.common.installedFrom,
-            wakeUp: wakeUp
+            wakeUp
         });
         // start install queue if not started
         if (installQueue.length === 1) {

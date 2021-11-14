@@ -1,6 +1,3 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
 'use strict';
 
 // This is file, that makes all communication with controller. All options are optional except name.
@@ -194,9 +191,6 @@ function Adapter(options) {
     this.logList = [];
     this.aliases = {};
     this.aliasPatterns = [];
-
-    // TODO: Remove this backward compatibility shim in the future
-    this.objects = {};
 
     this.eventLoopLags = [];
     this.overwriteLogLevel = false;
@@ -465,7 +459,6 @@ function Adapter(options) {
         if (!Object.prototype.hasOwnProperty.call(ifaces, dev)) {
             continue;
         }
-        /*jshint loopfunc:true */
         ifaces[dev].forEach(details => !details.internal && ipArr.push(details.address));
     }
 
@@ -986,12 +979,12 @@ function Adapter(options) {
         let acl = {user: user};
         if (user === SYSTEM_ADMIN_USER) {
             acl.groups = [SYSTEM_ADMIN_GROUP];
-            for (const c of Object.keys(commandsPermissions)) {
-                if (!commandsPermissions[c].type) {
+            for (const commandPermission of Object.values(commandsPermissions)) {
+                if (!commandPermission.type) {
                     continue;
                 }
-                acl[commandsPermissions[c].type] = acl[commandsPermissions[c].type] || {};
-                acl[commandsPermissions[c].type][commandsPermissions[c].operation] = true;
+                acl[commandPermission.type] = acl[commandPermission.type] || {};
+                acl[commandPermission.type][commandPermission.operation] = true;
             }
 
             return tools.maybeCallback(callback, acl);
@@ -1065,9 +1058,9 @@ function Adapter(options) {
                                 }
                             }
                         } catch (e) {
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + e);
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(gAcl));
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(acl));
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${e.message}`);
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${JSON.stringify(gAcl)}`);
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${JSON.stringify(acl)}`);
                         }
                     }
                 }
@@ -1617,9 +1610,7 @@ function Adapter(options) {
                     // if this.aliases is empty, or no target found its a new alias
                     let isNewAlias = true;
 
-                    Object.keys(this.aliases).forEach(sourceId => {
-                        const alias = this.aliases[sourceId];
-
+                    for (const [sourceId, alias] of Object.entries(this.aliases)) {
                         const targetAlias = alias.targets.find(entry => entry.id === id);
 
                         // Find entry for this alias
@@ -1653,7 +1644,7 @@ function Adapter(options) {
                                 this._removeAliasSubscribe(sourceId, targetAlias);
                             }
                         }
-                    });
+                    }
 
                     // it's a new alias, we add it to our subscription
                     if (isNewAlias) {
@@ -1703,7 +1694,7 @@ function Adapter(options) {
                 }
 
                 if (!id) {
-                    logger.error(`${this.namespaceLog} change ID is empty:  ${JSON.stringify(obj)}`);
+                    logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
                     return;
                 }
 
@@ -2605,12 +2596,6 @@ function Adapter(options) {
          */
         this.getObjectViewAsync = tools.promisify(this.getObjectView, this);
 
-        // TODO: remove this backward compatibility shim in the future
-        this.objects.getObjectView = (design, search, params, options, callback) => {
-            this.log.warn('adapter.objects.getObjectView is deprecated, and will be removed in the future. Please use adapter.getObjectView/Async. Report this to Developer!');
-            return this.getObjectView(design, search, params, options, callback);
-        };
-
         /**
          * Read object list from DB.
          *
@@ -2655,12 +2640,6 @@ function Adapter(options) {
          * Promise-version of Adapter.getObjectList
          */
         this.getObjectListAsync = tools.promisify(this.getObjectList, this);
-
-        // TODO: remove this backward compatibility shim in the future
-        this.objects.getObjectList = (params, options, callback) => {
-            this.log.warn('adapter.objects.getObjectList is deprecated, and will be removed in the future. Please use adapter.getObjectList/Async. Report this to Developer!');
-            adapterObjects.getObjectList(params, options, callback);
-        };
 
         /**
          * Get the enum tree.
@@ -3099,12 +3078,6 @@ function Adapter(options) {
          *        </code></pre>
          */
         this.delObject = (id, options, callback) => {
-            try {
-                validateId(id, false, null);
-            } catch (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
-
             // delObject does the same as delForeignObject, but fixes the ID first
             id = this._fixId(id);
             this.delForeignObject(id, options, callback);
@@ -6723,112 +6696,9 @@ function Adapter(options) {
          *        See possible attributes of the state in @setState explanation
          */
         this.getState = (id, options, callback) => {
-            if (typeof options === 'function') {
-                callback = options;
-                options = {};
-            }
-
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getState not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            if (!adapterObjects) {
-                this.log.info('getState not processed because Objects database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            try {
-                validateId(id, false, null);
-            } catch (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
-
+            // get state does the same as getForeignState but fixes the id first
             id = this._fixId(id, false);
-
-            if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-                checkStates(id, options, 'getState', err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        if (id.startsWith(ALIAS_STARTS_WITH)) {
-                            adapterObjects.getObject(id, options, (err, obj) => {
-                                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                                    // alias id can be string or can have attribute id.read
-                                    const aliasId = typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
-
-                                    // validate here because we use objects/states db directly
-                                    try {
-                                        validateId(aliasId, true, null);
-                                    } catch (e) {
-                                        logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                                        return tools.maybeCallbackWithError(callback, `Error validating alias id of ${id}: ${e.message}`);
-                                    }
-
-                                    if (this.oStates && this.oStates[aliasId]) {
-                                        adapterObjects.getObject(aliasId, (err, sourceObj) => {
-                                            const state = deepClone(this.oStates[aliasId]);
-                                            return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                        });
-                                    } else {
-                                        adapterObjects.getObject(aliasId, (err, sourceObj) => {
-                                            adapterStates.getState(aliasId, (err, state) => {
-                                                return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                            });
-                                        });
-                                    }
-                                } else {
-                                    logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 6`}`);
-                                    return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                                }
-                            });
-                        } else {
-                            if (this.oStates && this.oStates[id]) {
-                                return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                            } else {
-                                adapterStates.getState(id, callback);
-                            }
-                        }
-                    }
-                });
-            } else {
-                if (id.startsWith(ALIAS_STARTS_WITH)) {
-                    adapterObjects.getObject(id, options, (err, obj) => {
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // alias id can be string or can have attribute id.read
-                            const aliasId = typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
-
-                            // validate here because we use objects/states db directly
-                            try {
-                                validateId(aliasId, true, null);
-                            } catch (e) {
-                                logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                                return tools.maybeCallbackWithError(callback, `Error validating alias id of ${id}: ${e.message}`);
-                            }
-
-                            adapterObjects.getObject(aliasId, options, (err, sourceObj) => {
-                                if (this.oStates && this.oStates[aliasId]) {
-                                    const state = deepClone(this.oStates[aliasId]);
-                                    return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                } else {
-                                    adapterStates.getState(aliasId, (err, state) => {
-                                        return tools.maybeCallbackWithError(callback, err, tools.formatAliasValue(sourceObj && sourceObj.common, obj.common, state, logger, this.namespaceLog));
-                                    });
-                                }
-                            });
-                        } else {
-                            logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 7`}`);
-                            return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                        }
-                    });
-                } else {
-                    if (this.oStates && this.oStates[id]) {
-                        return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                    } else {
-                        adapterStates.getState(id, callback);
-                    }
-                }
-            }
+            return this.getForeignState(id, options, callback);
         };
         /**
          * Promise-version of Adapter.getState
@@ -7602,14 +7472,14 @@ function Adapter(options) {
                             this.aliasPatterns.push(aliasPattern);
                         }
 
-                        Object.keys(objs).forEach(id => {
+                        for (const id of Object.keys(objs)) {
                             // If alias
                             if (id.startsWith(ALIAS_STARTS_WITH)) {
                                 const aliasObj = objs[id];
                                 promises.push(new Promise(resolve =>
                                     this._addAliasSubscribe(aliasObj, aliasPattern, resolve)));
                             }
-                        });
+                        }
 
                         try {
                             await Promise.all(promises);
@@ -7693,7 +7563,7 @@ function Adapter(options) {
          * @param {object} [options] optional argument to describe the user context
          * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
          */
-        this.unsubscribeForeignStates = (pattern, options, callback) => {
+        this.unsubscribeForeignStates = async (pattern, options, callback) => {
             pattern = pattern || '*';
 
             if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
@@ -7772,23 +7642,22 @@ function Adapter(options) {
             this.aliasPatterns = this.aliasPatterns.filter(pattern => pattern !== aliasPattern);
 
             if (aliasPattern) {
-                Object.keys(this.aliases).forEach(sourceId => {
-                    for (let i = this.aliases[sourceId].targets.length - 1; i >= 0; i--) {
-                        if (this.aliases[sourceId].targets[i].pattern === aliasPattern) {
+                for (const [sourceId, alias] of Object.entries(this.aliases)) {
+                    for (let i = alias.targets.length - 1; i >= 0; i--) {
+                        if (alias.targets[i].pattern === aliasPattern) {
                             promises.push(new Promise(resolve => this._removeAliasSubscribe(sourceId, i, resolve)));
                         }
                     }
-                });
+                }
             }
 
-            Promise.all(promises).then(() => {
-                // if no alias subscribed any longer, remove subscription
-                if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
-                    this._aliasObjectsSubscribed = false;
-                    adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
-                }
-                return tools.maybeCallback(callback);
-            });
+            await Promise.all(promises);
+            // if no alias subscribed any longer, remove subscription
+            if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
+                this._aliasObjectsSubscribed = false;
+                adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
+            }
+            return tools.maybeCallback(callback);
         };
         /**
          * Promise-version of Adapter.unsubscribeForeignStates
@@ -7901,60 +7770,6 @@ function Adapter(options) {
                 secretVal = systemSecret;
             }
             return tools.encrypt(secretVal, value);
-        };
-
-        this.pushFifo = (id, state, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('pushFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.pushFifo(id, state, callback);
-        };
-
-        this.trimFifo = (id, start, end, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('trimFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.trimFifo(id, start, end, callback);
-        };
-
-        this.getFifoRange = (id, start, end, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getFifoRange not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.getFifoRange(id, start, end, callback);
-        };
-
-        this.getFifo = (id, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('getFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.getFifo(id, callback);
-        };
-
-        this.lenFifo = (id, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('lenFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.lenFifo(id, callback);
-        };
-
-        this.subscribeFifo = (pattern, callback) => {
-            if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('subscribeFifo not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            adapterStates.subscribeFifo(pattern);
         };
 
         this.getSession = (id, callback) => {
