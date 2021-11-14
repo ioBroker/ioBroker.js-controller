@@ -264,7 +264,7 @@ function testAdapter(options) {
             expect(context.adapter.name).to.be.equal(context.adapterShortName);
             expect(context.adapter.instance).to.be.equal(0);
             expect(context.adapter.states).to.be.undefined;
-            expect(context.adapter.objects).to.be.ok; // TODO remove after deprecating objects mock
+            expect(context.adapter.objects).to.be.undefined;
             expect(context.adapter.log).to.be.ok;
             expect(context.adapter.log.info).to.be.a('function');
             expect(context.adapter.log.debug).to.be.a('function');
