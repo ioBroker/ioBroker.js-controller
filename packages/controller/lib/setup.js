@@ -1,4 +1,3 @@
-/* eslint-disable no-inner-declarations */
 /**
  *
  *  ioBroker Command Line Interface (CLI)
