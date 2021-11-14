@@ -22,7 +22,8 @@
   },
   "include": [
     "packages/**/*.js",
-    "packages/**/src/*.ts"
+    "packages/**/src/*.ts",
+    "packages/controller/io-package.json"
   ],
   "exclude": [
     "packages/**/build"
