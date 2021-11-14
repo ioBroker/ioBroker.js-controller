@@ -1,6 +1,3 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
 'use strict';
 
 // This is file, that makes all communication with controller. All options are optional except name.
@@ -194,9 +191,6 @@ function Adapter(options) {
     this.logList = [];
     this.aliases = {};
     this.aliasPatterns = [];
-
-    // TODO: Remove this backward compatibility shim in the future
-    this.objects = {};
 
     this.eventLoopLags = [];
     this.overwriteLogLevel = false;
@@ -465,7 +459,6 @@ function Adapter(options) {
         if (!Object.prototype.hasOwnProperty.call(ifaces, dev)) {
             continue;
         }
-        /*jshint loopfunc:true */
         ifaces[dev].forEach(details => !details.internal && ipArr.push(details.address));
     }
 
@@ -986,12 +979,12 @@ function Adapter(options) {
         let acl = {user: user};
         if (user === SYSTEM_ADMIN_USER) {
             acl.groups = [SYSTEM_ADMIN_GROUP];
-            for (const c of Object.keys(commandsPermissions)) {
-                if (!commandsPermissions[c].type) {
+            for (const commandPermission of Object.values(commandsPermissions)) {
+                if (!commandPermission.type) {
                     continue;
                 }
-                acl[commandsPermissions[c].type] = acl[commandsPermissions[c].type] || {};
-                acl[commandsPermissions[c].type][commandsPermissions[c].operation] = true;
+                acl[commandPermission.type] = acl[commandPermission.type] || {};
+                acl[commandPermission.type][commandPermission.operation] = true;
             }
 
             return tools.maybeCallback(callback, acl);
@@ -1065,9 +1058,9 @@ function Adapter(options) {
                                 }
                             }
                         } catch (e) {
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + e);
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(gAcl));
-                            logger.error(this.namespaceLog + ' Cannot set acl: ' + JSON.stringify(acl));
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${e.message}`);
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${JSON.stringify(gAcl)}`);
+                            logger.error(`${this.namespaceLog} Cannot set acl: ${JSON.stringify(acl)}`);
                         }
                     }
                 }
@@ -1617,9 +1610,7 @@ function Adapter(options) {
                     // if this.aliases is empty, or no target found its a new alias
                     let isNewAlias = true;
 
-                    Object.keys(this.aliases).forEach(sourceId => {
-                        const alias = this.aliases[sourceId];
-
+                    for (const [sourceId, alias] of Object.entries(this.aliases)) {
                         const targetAlias = alias.targets.find(entry => entry.id === id);
 
                         // Find entry for this alias
@@ -1653,7 +1644,7 @@ function Adapter(options) {
                                 this._removeAliasSubscribe(sourceId, targetAlias);
                             }
                         }
-                    });
+                    }
 
                     // it's a new alias, we add it to our subscription
                     if (isNewAlias) {
@@ -1703,7 +1694,7 @@ function Adapter(options) {
                 }
 
                 if (!id) {
-                    logger.error(`${this.namespaceLog} change ID is empty:  ${JSON.stringify(obj)}`);
+                    logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
                     return;
                 }
 
@@ -2605,12 +2596,6 @@ function Adapter(options) {
          */
         this.getObjectViewAsync = tools.promisify(this.getObjectView, this);
 
-        // TODO: remove this backward compatibility shim in the future
-        this.objects.getObjectView = (design, search, params, options, callback) => {
-            this.log.warn('adapter.objects.getObjectView is deprecated, and will be removed in the future. Please use adapter.getObjectView/Async. Report this to Developer!');
-            return this.getObjectView(design, search, params, options, callback);
-        };
-
         /**
          * Read object list from DB.
          *
@@ -2655,12 +2640,6 @@ function Adapter(options) {
          * Promise-version of Adapter.getObjectList
          */
         this.getObjectListAsync = tools.promisify(this.getObjectList, this);
-
-        // TODO: remove this backward compatibility shim in the future
-        this.objects.getObjectList = (params, options, callback) => {
-            this.log.warn('adapter.objects.getObjectList is deprecated, and will be removed in the future. Please use adapter.getObjectList/Async. Report this to Developer!');
-            adapterObjects.getObjectList(params, options, callback);
-        };
 
         /**
          * Get the enum tree.
@@ -7493,14 +7472,14 @@ function Adapter(options) {
                             this.aliasPatterns.push(aliasPattern);
                         }
 
-                        Object.keys(objs).forEach(id => {
+                        for (const id of Object.keys(objs)) {
                             // If alias
                             if (id.startsWith(ALIAS_STARTS_WITH)) {
                                 const aliasObj = objs[id];
                                 promises.push(new Promise(resolve =>
                                     this._addAliasSubscribe(aliasObj, aliasPattern, resolve)));
                             }
-                        });
+                        }
 
                         try {
                             await Promise.all(promises);
@@ -7584,7 +7563,7 @@ function Adapter(options) {
          * @param {object} [options] optional argument to describe the user context
          * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
          */
-        this.unsubscribeForeignStates = (pattern, options, callback) => {
+        this.unsubscribeForeignStates = async (pattern, options, callback) => {
             pattern = pattern || '*';
 
             if (!adapterStates) { // if states is no longer existing, we do not need to unsubscribe
@@ -7663,23 +7642,22 @@ function Adapter(options) {
             this.aliasPatterns = this.aliasPatterns.filter(pattern => pattern !== aliasPattern);
 
             if (aliasPattern) {
-                Object.keys(this.aliases).forEach(sourceId => {
-                    for (let i = this.aliases[sourceId].targets.length - 1; i >= 0; i--) {
-                        if (this.aliases[sourceId].targets[i].pattern === aliasPattern) {
+                for (const [sourceId, alias] of Object.entries(this.aliases)) {
+                    for (let i = alias.targets.length - 1; i >= 0; i--) {
+                        if (alias.targets[i].pattern === aliasPattern) {
                             promises.push(new Promise(resolve => this._removeAliasSubscribe(sourceId, i, resolve)));
                         }
                     }
-                });
+                }
             }
 
-            Promise.all(promises).then(() => {
-                // if no alias subscribed any longer, remove subscription
-                if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
-                    this._aliasObjectsSubscribed = false;
-                    adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
-                }
-                return tools.maybeCallback(callback);
-            });
+            await Promise.all(promises);
+            // if no alias subscribed any longer, remove subscription
+            if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
+                this._aliasObjectsSubscribed = false;
+                adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
+            }
+            return tools.maybeCallback(callback);
         };
         /**
          * Promise-version of Adapter.unsubscribeForeignStates

@@ -578,8 +578,20 @@ function Upload(options) {
 
     function extendCommon(target, additional, instance) {
         if (tools.isObject(additional)) {
+
+        const preserveAttributes = [
+            'title',
+            'schedule',
+            'restartSchedule',
+            'mode',
+            'loglevel',
+            'enabled',
+            'custom'
+        ];
+
             for (const attr of Object.keys(additional)) {
-                if (attr === 'title' || attr === 'schedule' || attr === 'restartSchedule' || attr === 'mode' || attr === 'loglevel' || attr === 'enabled' || attr === 'custom') {
+            // preserve these attributes, except, they werde undefined before and preserve titleLang if current titleLang is of type string (changed by user)
+            if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
                     if (target[attr] === undefined) {
                         target[attr] = additional[attr];
                     }

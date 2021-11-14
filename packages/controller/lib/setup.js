@@ -978,7 +978,7 @@ async function processCommand(command, args, params, callback) {
                     // upgrade all
                     try {
                         const links = await getRepository();
-                        if (!links) {
+                        if (!links || !links.json) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
                         await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
@@ -2187,7 +2187,8 @@ async function processCommand(command, args, params, callback) {
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             } else {
                                 console.log(`Repository "${repoName}" deleted.`);
-                                await repo.showRepoStatus(callback);
+                                await repo.showRepoStatus();
+                                return void callback();
                             }
                         }  else if (repoUrlOrCommand === 'unset') {
                             const err = await repo.setInactive(repoName)
@@ -2196,7 +2197,8 @@ async function processCommand(command, args, params, callback) {
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             } else {
                                 console.log(`Repository "${repoName}" deactivated.`);
-                                await repo.showRepoStatus(callback);
+                                await repo.showRepoStatus();
+                                return void callback();
                             }
                         } else {
                             console.warn('Unknown repo command: ' + repoUrlOrCommand);

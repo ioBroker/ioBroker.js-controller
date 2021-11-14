@@ -1155,7 +1155,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         axios = axios || require('axios');
-        _hash = await axios(url.replace(/\.json$/, '-hash.json'), {timeout: 10000});
+        _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
         if (_hash && _hash.data && hash === _hash.data.hash) {
             return _actualRepo;
         }
@@ -1166,14 +1166,15 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     if (url.startsWith('http://') || url.startsWith('https://')) {
         axios = axios || require('axios');
         if (!_hash) {
-            _hash = await axios(url.replace(/\.json$/, '-hash.json'), {timeout: 10000});
+            _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
         }
 
         if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../../package.json').version}`;
-            data = await axios(url, {
+            data = await axios({
+                url,
                 timeout: 10000,
                 headers: { 'User-Agent': agent }
             });
@@ -2314,7 +2315,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
             const func = new Function('val', 'type', 'min', 'max', 'sType', 'sMin', 'sMax', 'return ' + targetObj.alias.read);
             state.val = func(state.val, targetObj.type, targetObj.min, targetObj.max, sourceObj.type, sourceObj.min, sourceObj.max);
         } catch (e) {
-            logger.error(`${logNamespace}Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e}`);
+            logger.error(`${logNamespace}Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`);
             return null;
         }
     }
@@ -2325,7 +2326,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
             const func = new Function('val', 'type', 'min', 'max', 'tType', 'tMin', 'tMax', 'return ' + sourceObj.alias.write);
             state.val = func(state.val, sourceObj.type, sourceObj.min, sourceObj.max, targetObj.type, targetObj.min, targetObj.max);
         } catch (e) {
-            logger.error(`${logNamespace}Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e}`);
+            logger.error(`${logNamespace}Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`);
             return null;
         }
     }
@@ -2532,7 +2533,7 @@ async function getAllInstancesAsync(adapters, objects) {
         if (!adapters[i].includes('.')) {
             const inst = await getInstancesAsync(adapters[i], objects);
             for (let j = 0; j < inst.length; j++) {
-                if (!instances.includes(inst[j])) {
+                    if (!instances.includes(inst[j])) {
                     instances.push(inst[j]);
                 }
             }
@@ -2573,16 +2574,13 @@ function getInstances(adapter, objects, withObjects, callback) {
  * @param {string }adapter name of the adapter
  * @param {object }objects objects DB
  * @param {boolean} withObjects return objects instead of only ids
- * @returns {object[]} - array of IDs or object. It depends on argument withObjects
  */
-async function getInstancesAsync(adapter, objects, withObjects = false) {
+async function getInstancesAsync(adapter, objects, withObjects) {
     const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
     });
-
     const instances = [];
-
     if (arr && arr.rows) {
         for (let i = 0; i < arr.rows.length; i++) {
             if (arr.rows[i].value.type !== 'instance') {
