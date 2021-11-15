@@ -571,7 +571,7 @@ function Upgrade(options) {
                 await install.downloadPacketAsync(repoUrl, `${installed.common.name}@${repoUrl[installed.common.name].version}`);
             }
         } else {
-            const ioPack = tools.getJsonAsync(repoUrl[installed.common.name].meta);
+            const ioPack = await tools.getJsonAsync(repoUrl[installed.common.name].meta);
             if ((!ioPack || !ioPack.common) && !forceDowngrade) {
                 return console.warn(`Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`);
             }
