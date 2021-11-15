@@ -266,7 +266,7 @@ function Repo(options) {
         obj = obj || defaultSystemRepo;
 
         if (obj.native.repositories[repoName]) {
-            throw new Error(`Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`;)
+            throw new Error(`Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`);
         } else {
             obj.native.repositories[repoName] = {
                 link: repoUrl,
