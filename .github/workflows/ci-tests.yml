@@ -57,6 +57,9 @@ jobs:
       - name: Install js-controller
         run: npm i
 
+      - name: Build TS files
+        run: npm run build
+
       - name: Execute Standard Tests
         run: npm test
 
@@ -137,7 +140,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release v${{ steps.extract_release.outputs.VERSION }}
           draft: false
-          # Prerelease versions create prereleases on Github
+          # Prerelease versions create prereleases on GitHub
           prerelease: ${{ contains(steps.extract_release.outputs.VERSION, '-') }}
           body: ${{ steps.extract_release.outputs.BODY }}
 

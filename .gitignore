@@ -27,4 +27,5 @@ node_modules
 /.dev-server
 ioB
 ioBroker
+*.tsbuildinfo
 /packages/controller/ioBroker.pid

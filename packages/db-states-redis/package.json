@@ -1,12 +1,12 @@
 {
   "name": "@iobroker/db-states-redis",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.9-20211115-5dac659e",
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
     "@iobroker/db-base": "file:../db-base",
-    "ioredis": "^4.27.6"
+    "ioredis": "^4.28.0"
   },
   "keywords": [
     "ioBroker",

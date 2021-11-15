@@ -137,7 +137,6 @@ function testAdapter(options) {
                 }
             } else {
                 setTimeout(function () {
-                    // eslint-disable-next-line no-unused-vars
                     checkValueOfState(id, value, cb, counter + 1);
                 }, 500);
             }
