@@ -649,6 +649,12 @@ function getJson(urlOrPath, agent, callback) {
     }
 }
 
+/**
+ * Return content of the json file. Download it or read directly
+ * @param {string|object} urlOrPath URL where the json file could be found
+ * @param {string} agent optional agent identifier like "Windows Chrome 12.56"
+ * @returns {object} json object
+ */
 async function getJsonAsync(urlOrPath, agent) {
     agent = agent || '';
 
@@ -791,6 +797,7 @@ function getInstalledInfo(hostRunningVersion) {
     ) {
         scanDirectory(path.join(__dirname, '../..'), result, regExp);
     }
+
     return result;
 }
 
