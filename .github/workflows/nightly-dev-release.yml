@@ -68,6 +68,7 @@ jobs:
       id: version
       uses: actions/github-script@v5
       with:
+        result-encoding: string
         script: |
           const semver = require("semver");
           const now = new Date();
