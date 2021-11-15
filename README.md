@@ -30,7 +30,7 @@ To upgrade your Node.js version and ioBroker please follow https://forum.iobroke
 ----------------------------------------------------------------------
 
 ## Usage
-Example hwo to install on a Debian based system:
+Example how to install on a Debian based system:
 ```
 curl -sLf https://iobroker.net/install.sh | bash -
 ```
@@ -135,7 +135,7 @@ If you want to disable the error reporting you can do this by setting the state 
 ### Notification System
 **Feature status:** Technology preview since js-controller 3.2.0
 
-The notification system in ioBroker allows setting, detect and store notifications per Host and allows to query the details.
+The notification system in ioBroker allows setting, detecting and storing notifications per Host and allows to query the details.
 
 Notifications need to be defined in the io-package.json of the adapter in the key "notifications". Notifications are grouped in "scopes" and contain "categories" of different notification types. Notifications can contain a regex for automatic detection in strings or adapter exception texts.
 The definition also contain localized names and descriptions that can be used to display it to the users.
@@ -182,7 +182,7 @@ All three are optional and can be a string or null/undefined if ommited.
 #### Log levels
 **Feature status:** stable
 
-The js-controller and each adapter has defined its own log level. By default, `info` is used. The following log-levels can be used:
+The js-controller and each adapter has defined its own log level. By default, `info` is used. The following log levels can be used:
 * silly (most logging)
 * debug
 * info
@@ -209,7 +209,7 @@ The log level can be changed dynamically for adapter-instance and host (main con
 
 The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured log level and can afterwards be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
 
-This possibility allows to debug adapters better also during runtime.
+This possibility allows to debug adapters better and during runtime.
 
 #### File based logging
 **Feature status:** stable
@@ -511,7 +511,7 @@ The following fields are allowed in the alias structure:
     * `alias.id.write` contains the ID of the object which will be set when alias is written
     * `alias.id.read` contains the ID of the object which will be mirrored to the alias object/state   
 * `alias.read` can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
-* `alias.write` can optionally contain a write-script (will be evaluated) to calculate the target value if the alias value is changed
+* `alias.write` can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed
 
 Note, that alias states will be automatically scaled if the following conditions match:
 

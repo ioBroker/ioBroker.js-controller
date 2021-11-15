@@ -2135,8 +2135,13 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 if (repoUrlOrCommand === 'show') {
-                    await repo.showRepoStatus();
-                    return void callback();
+                    try {
+                        await repo.showRepoStatus();
+                        return void callback();
+                    } catch (err) {
+                        console.error(err);
+                        return void callback(EXIT_CODES.INVALID_REPO);
+                    }
                 } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
@@ -2147,57 +2152,53 @@ async function processCommand(command, args, params, callback) {
                                 console.warn(`Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`);
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
-                                const err = await repo.add(repoName, repoUrl);
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
+                                try {
+                                    await repo.add(repoName, repoUrl);
+
                                     if (repoUrlOrCommand === 'addset') {
-                                        const err1 = await repo.setActive(repoName);
-                                        if (err1) {
-                                            console.error(err1);
-                                            return void callback(EXIT_CODES.INVALID_REPO);
-                                        } else {
-                                            console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
-                                            await repo.showRepoStatus();
-                                            return void callback();
-                                        }
+                                        await repo.setActive(repoName);
+                                        console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
+                                        await repo.showRepoStatus();
+                                        return void callback();
                                     } else {
                                         console.log(`Repository "${repoName}" added as "${repoUrl}"`);
                                         await repo.showRepoStatus();
                                         return void callback();
                                     }
+                                } catch (err) {
+                                    console.error(err);
+                                    return void callback(EXIT_CODES.INVALID_REPO);
                                 }
                             }
                         } else if (repoUrlOrCommand === 'set') {
-                            const err = await repo.setActive(repoName);
-                            if (err) {
-                                console.error(err);
-                                return void callback(EXIT_CODES.INVALID_REPO);
-                            } else {
+                            try {
+                                await repo.setActive(repoName);
                                 console.log(`Repository "${repoName}" set as active.`);
                                 await repo.showRepoStatus();
                                 return void callback();
-                            }
-                        } else if (repoUrlOrCommand === 'del') {
-                            const err = await repo.del(repoName);
-                            if (err) {
+                            } catch (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.INVALID_REPO);
-                            } else {
+                            }
+                        } else if (repoUrlOrCommand === 'del') {
+                            try {
+                                await repo.del(repoName);
                                 console.log(`Repository "${repoName}" deleted.`);
                                 await repo.showRepoStatus();
                                 return void callback();
-                            }
-                        }  else if (repoUrlOrCommand === 'unset') {
-                            const err = await repo.setInactive(repoName);
-                            if (err) {
+                            } catch (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.INVALID_REPO);
-                            } else {
+                            }
+                        }  else if (repoUrlOrCommand === 'unset') {
+                            try {
+                                await repo.setInactive(repoName);
                                 console.log(`Repository "${repoName}" deactivated.`);
                                 await repo.showRepoStatus();
                                 return void callback();
+                            } catch (err) {
+                                console.error(err);
+                                return void callback(EXIT_CODES.INVALID_REPO);
                             }
                         } else {
                             console.warn('Unknown repo command: ' + repoUrlOrCommand);

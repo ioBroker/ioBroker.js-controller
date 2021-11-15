@@ -193,8 +193,12 @@ function Repo(options) {
                 }
             }
 
-            // update variables of every admin instance
-            await updateInfo(allSources);
+            try {
+                // update variables of every admin instance
+                await updateInfo(allSources);
+            } catch {
+                // not important if fails
+            }
 
             showRepoResult(null, allSources);
         }
@@ -262,7 +266,7 @@ function Repo(options) {
         obj = obj || defaultSystemRepo;
 
         if (obj.native.repositories[repoName]) {
-            return `Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`;
+            throw new Error(`Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`;)
         } else {
             obj.native.repositories[repoName] = {
                 link: repoUrl,
@@ -278,12 +282,12 @@ function Repo(options) {
         const obj = await objects.getObjectAsync('system.config');
         if ((obj.common.activeRepo && typeof obj.common.activeRepo === 'string' && obj.common.activeRepo === repoName) ||
             (obj.common.activeRepo && typeof obj.common.activeRepo === 'object' && obj.common.activeRepo.includes(repoName))) {
-            return `Cannot delete active repository: ${repoName}`;
+            throw new Error(`Cannot delete active repository: ${repoName}`);
         } else {
             const repoObj = await objects.getObjectAsync('system.repositories');
             if (repoObj) {
                 if (!repoObj.native.repositories[repoName]) {
-                    return `Repository "${repoName}" not found.`;
+                    throw new Error(`Repository "${repoName}" not found.`);
                 } else {
                     delete repoObj.native.repositories[repoName];
                     repoObj.from = `system.host.${tools.getHostName()}.cli`;
@@ -295,9 +299,11 @@ function Repo(options) {
     };
 
     this.setActive = async function (repoName) {
-        const obj = (await objects.getObjectAsync('system.repositories')) || defaultSystemRepo;
+        let obj = await objects.getObjectAsync('system.repositories');
+        obj = obj || defaultSystemRepo;
+
         if (!obj.native.repositories[repoName]) {
-            return `Repository "${repoName}" not found.`;
+            throw new Error(`Repository "${repoName}" not found.`);
         } else {
             const confObj = await objects.getObjectAsync('system.config');
             if (typeof confObj.common.activeRepo === 'string') {
