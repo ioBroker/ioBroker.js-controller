@@ -585,13 +585,13 @@ function Install(options) {
                 return;
             }
 
-            return (await new Promise(resolve => {
+            return new Promise(resolve => {
                 cmd += `"${fileFullName}" --install`;
                 console.log(`host.${hostname} command: ${cmd}`);
                 const child = exec(cmd, {windowsHide: true});
                 tools.pipeLinewise(child.stderr, process.stdout);
                 child.on('exit', () => resolve(adapter));
-            }));
+            });
         }
     }
 

@@ -2152,7 +2152,7 @@ async function processCommand(command, args, params, callback) {
                                 console.warn(`Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`);
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
-                                const err = repo.add(repoName, repoUrl);
+                                const err = await repo.add(repoName, repoUrl);
                                 if (err) {
                                     console.error(err);
                                     return void callback(EXIT_CODES.INVALID_REPO);
@@ -2175,7 +2175,7 @@ async function processCommand(command, args, params, callback) {
                                 }
                             }
                         } else if (repoUrlOrCommand === 'set') {
-                            const err = repo.setActive(repoName);
+                            const err = await repo.setActive(repoName);
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.INVALID_REPO);
@@ -2185,7 +2185,7 @@ async function processCommand(command, args, params, callback) {
                                 return void callback();
                             }
                         } else if (repoUrlOrCommand === 'del') {
-                            const err = repo.del(repoName);
+                            const err = await repo.del(repoName);
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.INVALID_REPO);

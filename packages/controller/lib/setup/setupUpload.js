@@ -68,7 +68,7 @@ function Upload(options) {
         }
 
         if (onlyAlive) {
-            return await checkHostsIfAlive(hosts);
+            return checkHostsIfAlive(hosts);
         } else {
             return hosts;
         }
@@ -524,7 +524,7 @@ function Upload(options) {
         let result;
         try {
             result = await objects.getObjectAsync(id);
-        } catch (err) {
+        } catch {
             // ignore
         }
         // Read all names with subtrees from local directory
@@ -590,8 +590,8 @@ function Upload(options) {
             ];
 
             for (const attr of Object.keys(additional)) {
-            // preserve these attributes, except, they werde undefined before and preserve titleLang if current titleLang is of type string (changed by user)
-            if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
+                // preserve these attributes, except, they werde undefined before and preserve titleLang if current titleLang is of type string (changed by user)
+                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
                     if (target[attr] === undefined) {
                         target[attr] = additional[attr];
                     }
