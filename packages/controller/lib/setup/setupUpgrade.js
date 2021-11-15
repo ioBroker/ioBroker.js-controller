@@ -8,7 +8,6 @@
  */
 
 'use strict';
-const {tools} = require("@iobroker/js-controller-common");
 const debug = require('debug')('iobroker:cli');
 
 /** @class */

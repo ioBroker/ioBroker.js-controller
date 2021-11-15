@@ -563,7 +563,6 @@ class BackupRestore {
 
     async _uploadUserFiles(root, path) {
         path = path || '';
-        let called = false;
         if (!fs.existsSync(root)) {
             return;
         }
@@ -571,7 +570,6 @@ class BackupRestore {
         for (let i = 0; i < files.length; i++) {
             const stat = fs.statSync(root + path + '/' + files[i]);
             if (stat.isDirectory()) {
-                called = true;
                 try {
                     await this._uploadUserFiles(root, path + '/' + files[i]);
                 } catch (err) {
@@ -583,7 +581,6 @@ class BackupRestore {
                 adapter = adapter[1];
                 const _path = parts.join('/') + '/' + files[i];
                 console.log(`host.${hostname} Upload user file "${adapter}/${_path}`);
-                called = true;
                 try {
                     await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(root + path + '/' + files[i]));
                 } catch (err) {

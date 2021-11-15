@@ -2533,7 +2533,7 @@ async function getAllInstancesAsync(adapters, objects) {
         if (!adapters[i].includes('.')) {
             const inst = await getInstancesAsync(adapters[i], objects);
             for (let j = 0; j < inst.length; j++) {
-                    if (!instances.includes(inst[j])) {
+                if (!instances.includes(inst[j])) {
                     instances.push(inst[j]);
                 }
             }

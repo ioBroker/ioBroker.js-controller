@@ -2140,7 +2140,8 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 if (repoUrlOrCommand === 'show') {
-                    await repo.showRepoStatus(callback);
+                    await repo.showRepoStatus();
+                    return void callback();
                 } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
@@ -2163,11 +2164,13 @@ async function processCommand(command, args, params, callback) {
                                             return void callback(EXIT_CODES.INVALID_REPO);
                                         } else {
                                             console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
-                                            await repo.showRepoStatus(callback);
+                                            await repo.showRepoStatus();
+                                            return void callback();
                                         }
                                     } else {
                                         console.log(`Repository "${repoName}" added as "${repoUrl}"`);
-                                        await repo.showRepoStatus(callback);
+                                        await repo.showRepoStatus();
+                                        return void callback();
                                     }
                                 }
                             }
@@ -2178,7 +2181,8 @@ async function processCommand(command, args, params, callback) {
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             } else {
                                 console.log(`Repository "${repoName}" set as active.`);
-                                await repo.showRepoStatus(callback);
+                                await repo.showRepoStatus();
+                                return void callback();
                             }
                         } else if (repoUrlOrCommand === 'del') {
                             const err = repo.del(repoName);
@@ -2191,7 +2195,7 @@ async function processCommand(command, args, params, callback) {
                                 return void callback();
                             }
                         }  else if (repoUrlOrCommand === 'unset') {
-                            const err = await repo.setInactive(repoName)
+                            const err = await repo.setInactive(repoName);
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.INVALID_REPO);
@@ -2382,7 +2386,7 @@ const EXCEPTIONS = [
     'system.group.administrator',
     'system.group.user',
     'system.repositories',
-    'system.user.admin',
+    'system.user.admin'
 ];
 
 async function delObjects(ids) {
@@ -2440,7 +2444,7 @@ function cleanDatabase(isDeleteDb, callback) {
     }
 }
 
-const cleanDatabaseAsync = tools.promisifyNoError(cleanDatabase)
+const cleanDatabaseAsync = tools.promisifyNoError(cleanDatabase);
 
 function unsetup(params, callback) {
     dbConnect(params, () => {
@@ -2498,7 +2502,6 @@ function restartController(callback) {
 }
 
 const restartControllerAsync = tools.promisifyNoError(restartController);
-
 
 async function getRepository(repoName, params) {
     params = params || {};

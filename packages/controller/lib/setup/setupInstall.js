@@ -113,10 +113,10 @@ function Install(options) {
         return this.downloadPacketAsync(repoUrl, packetName, options, stoppedList)
             .then(() => {
                 if (typeof callback === 'function') {
-                    callback(async _callback => typeof _callback === 'function' && _callback(), packetName);
+                    callback(_callback => typeof _callback === 'function' && _callback(), packetName);
                 }
             });
-    }
+    };
 
     this.downloadPacketAsync = async function (repoUrl, packetName, options, stoppedList) {
         let url;
@@ -427,7 +427,7 @@ function Install(options) {
                 }
             }
         }
-    }
+    };
 
     this._uploadStaticObjects = async function (adapter, adapterConf) {
         if (!adapterConf) {
@@ -572,7 +572,7 @@ function Install(options) {
         return adapter;
     };
 
-    async function callInstallOfAdapter(adapter, config, callback) {
+    async function callInstallOfAdapter(adapter, config) {
         if (config.common.install) {
             // Install node modules
             const {exec} = require('child_process');
@@ -585,13 +585,13 @@ function Install(options) {
                 return;
             }
 
-            return await new Promise(resolve => {
+            return (await new Promise(resolve => {
                 cmd += `"${fileFullName}" --install`;
                 console.log(`host.${hostname} command: ${cmd}`);
                 const child = exec(cmd, {windowsHide: true});
                 tools.pipeLinewise(child.stderr, process.stdout);
                 child.on('exit', () => resolve(adapter));
-            });
+            }));
         }
     }
 
@@ -1042,10 +1042,11 @@ function Install(options) {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            let doc = getObjectViewAsync('system', 'state', {
+            let doc = await getObjectViewAsync('system', 'state', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
+
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1061,10 +1062,11 @@ function Install(options) {
                 }
             }
 
-            doc = getObjectViewAsync('system', 'state', {
+            doc = await getObjectViewAsync('system', 'state', {
                 startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
+
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1080,7 +1082,7 @@ function Install(options) {
                 }
             }
         } catch (e) {
-            e !== tools.ERRORS.ERROR_NOT_FOUND && e.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error('host.' + hostname + ' error: ' + e.message);
+            e !== tools.ERRORS.ERROR_NOT_FOUND && e.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${e.message}`);
         }
     };
 
@@ -1096,7 +1098,7 @@ function Install(options) {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            const doc = getObjectListAsync({include_docs: true});
+            const doc = await getObjectListAsync({include_docs: true});
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1111,7 +1113,7 @@ function Install(options) {
                 }
             }
         } catch (e) {
-            e !== tools.ERRORS.ERROR_NOT_FOUND && e.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error('host.' + hostname + ' error: ' + e.message);
+            e !== tools.ERRORS.ERROR_NOT_FOUND && e.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${e.message}`);
         }
     };
 
@@ -1134,7 +1136,7 @@ function Install(options) {
                     const newStates = ids
                         .filter(id => !knownStateIDs.includes(id));
                     knownStateIDs.push.apply(knownStateIDs, newStates);
-                    if (newStates.length > 0) {
+                    if (newStates.length) {
                         console.log(`host.${hostname} Counted ${newStates.length} states (${pattern}) from states`);
                     }
                 }

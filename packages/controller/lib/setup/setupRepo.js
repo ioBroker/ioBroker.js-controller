@@ -1,6 +1,5 @@
 'use strict';
 
-
 /** @class */
 function Repo(options) {
     const { EXIT_CODES } = require('@iobroker/js-controller-common');

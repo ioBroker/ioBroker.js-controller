@@ -41,7 +41,7 @@ function Upload(options) {
         if (hosts) {
             for (let h = 0; h < hosts.length; h++) {
                 const host = hosts[h];
-                const state = states.getStateAsync(host + '.alive');
+                const state = await states.getStateAsync(host + '.alive');
                 if (state && state.val) {
                     result.push(host);
                 }
@@ -64,6 +64,7 @@ function Upload(options) {
             }
         } catch (e) {
             // ignore
+            console.warn('Cannot read hosts: ' + e);
         }
 
         if (onlyAlive) {
@@ -225,9 +226,7 @@ function Upload(options) {
 
     this.uploadFile = (source, target, callback) => {
         tools.showDeprecatedMessage('setupUpload.uploadFile');
-        if (!adapters || !adapters.length) {
-            return callback && callback();
-        }
+
         return this.uploadFileAsync(source, target)
             .then(path => callback && callback(null, path))
             .catch(err => callback && callback(err));
@@ -262,21 +261,22 @@ function Upload(options) {
                     throw new Error(`Empty response from URL "${source}"`);
                 }
             } catch (error) {
+                let result;
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    error = error.response.data || error.response.status;
+                    result = error.response.data || error.response.status;
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    error = error.request;
+                    result = error.request;
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    error = error.message || error;
+                    result = error.message || error;
                 }
-                console.error(`Cannot get URL "${source}": ${error}`);
-                throw new Error(error);
+                console.error(`Cannot get URL "${source}": ${result}`);
+                throw new Error(result);
             }
         } else {
             try {
@@ -418,7 +418,7 @@ function Upload(options) {
         return _results;
     }
 
-    this.uploadAdapter = async (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
+    this.uploadAdapter = (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
         tools.showDeprecatedMessage('setupUpload.uploadAdapter');
         if (tools.isObject(subTree)) {
             callback = logger;
@@ -433,8 +433,9 @@ function Upload(options) {
             callback = logger;
             logger = null;
         }
+
         return this.uploadAdapterAsync(adapter, isAdmin, forceUpload, subTree, logger)
-            .then(path => callback && callback(adapter))
+            .then(() => callback && callback(adapter))
             .catch(err => callback && callback(err));
     };
 
@@ -485,7 +486,7 @@ function Upload(options) {
             const uploadID = 'system.adapter.' + adapter + '.upload';
             try {
                 obj = await objects.getObjectAsync(uploadID);
-            } catch (err) {
+            } catch {
                 // ignore
             }
             if (!obj) {
@@ -578,16 +579,15 @@ function Upload(options) {
 
     function extendCommon(target, additional, instance) {
         if (tools.isObject(additional)) {
-
-        const preserveAttributes = [
-            'title',
-            'schedule',
-            'restartSchedule',
-            'mode',
-            'loglevel',
-            'enabled',
-            'custom'
-        ];
+            const preserveAttributes = [
+                'title',
+                'schedule',
+                'restartSchedule',
+                'mode',
+                'loglevel',
+                'enabled',
+                'custom'
+            ];
 
             for (const attr of Object.keys(additional)) {
             // preserve these attributes, except, they werde undefined before and preserve titleLang if current titleLang is of type string (changed by user)
@@ -626,7 +626,7 @@ function Upload(options) {
         if (res) {
             for (let i = 0; i < res.rows.length; i++) {
                 if (res.rows[i].value.common.host === hostname) {
-                    const _obj = await objects.getObjectAsync(res.rows[i].id)
+                    const _obj = await objects.getObjectAsync(res.rows[i].id);
                     const newObject = deepClone(_obj);
 
                     // all common settings should be taken from new one
