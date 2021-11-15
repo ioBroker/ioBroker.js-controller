@@ -529,10 +529,7 @@ async function processCommand(command, args, params, callback) {
                         // else we update existing stuff (this is executed on installation)
                         // Rename repositories
                         const Repo = require('./setup/setupRepo.js');
-                        const repo = new Repo({
-                            objects,
-                            states:      states
-                        });
+                        const repo = new Repo({objects, states});
 
                         try {
                             await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
@@ -765,7 +762,7 @@ async function processCommand(command, args, params, callback) {
 
                     if (name === 'all') {
                         try {
-                            const objs = objects.getObjectListAsnyc({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
+                            const objs = await objects.getObjectListAsync({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
                             const adapters = [];
                             for (let i = 0; i < objs.rows.length; i++) {
                                 if (objs.rows[i].value.type !== 'adapter') {
@@ -1067,7 +1064,7 @@ async function processCommand(command, args, params, callback) {
         case 'validate': {
             const name = args[0];
             const Backup = require('./setup/setupBackup.js');
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const backup = new Backup({
                     states,
                     objects,
@@ -1076,15 +1073,14 @@ async function processCommand(command, args, params, callback) {
                     processExit: callback
                 });
 
-                backup.validateBackup(name)
-                    .then(() => {
-                        console.log('Backup OK');
-                        processExit(0);
-                    })
-                    .catch(e => {
-                        console.log(`Backup check failed: ${e.message}`);
-                        processExit(1);
-                    });
+                try {
+                    await backup.validateBackup(name);
+                    console.log('Backup OK');
+                    processExit(0);
+                } catch (e) {
+                    console.log(`Backup check failed: ${e.message}`);
+                    processExit(1);
+                }
             });
             break;
         }
@@ -2286,16 +2282,18 @@ async function processCommand(command, args, params, callback) {
                 console.warn(`Please specify the path to the vendor file to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, () => {
+                dbConnect(params, async () => {
                     const Vendor = require('./setup/setupVendor');
                     const vendor = new Vendor({objects});
-                    vendor.checkVendor(file, password).then(() => {
+
+                    try {
+                        await vendor.checkVendor(file, password);
                         console.log(`Synchronised vendor information.`);
                         return void callback();
-                    }).catch(err => {
+                    } catch (err) {
                         console.error(`Cannot update vendor information: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
-                    });
+                    }
                 });
             }
             break;
