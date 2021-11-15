@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "4.0.0-alpha.8",
+  "version": "4.0.0-alpha.9-20211115-5dac659e",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -29,6 +29,7 @@
     "@iobroker/js-controller-common-db": "file:../common-db",
     "@iobroker/plugin-base": "~1.2.1",
     "@iobroker/plugin-sentry": "~1.1.10",
+    "axios": "^0.24.0",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.2",
     "decache": "^4.6.0",
@@ -47,8 +48,7 @@
     "request": "^2.88.2",
     "semver": "^7.3.5",
     "tar": "^6.1.11",
-    "yargs": "^17.2.1",
-    "axios": "^0.24.0"
+    "yargs": "^17.2.1"
   },
   "homepage": "https://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
