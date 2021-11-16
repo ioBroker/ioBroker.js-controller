@@ -2,7 +2,7 @@
   "packages": [
     "packages/*"
   ],
-  "version": "4.0.0-alpha.9-20211115-5dac659e",
+  "version": "4.0.0-alpha.10-20211116-cb8ad50a",
   "//": "Set up some command options",
   "command": {
     "//": "Running a script should show the output while it is generated",
