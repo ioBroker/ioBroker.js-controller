@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) we fixed a crash due to multilingual instance objects
+
 ## 3.3.18 (2021-09-11)
 * (bluefox) Fix another edge case for UUID generation
 
