@@ -1,69 +1,82 @@
 module.exports = {
-    'env': {
-        'es6': true,
-        'node': true
+    env: {
+        es6: true,
+        node: true
     },
-    'extends': 'eslint:recommended',
-    'ignorePatterns': ['**/doc', '**/build'],
-    'reportUnusedDisableDirectives': true,
-    'rules': {
-        'indent': [
+    extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+    plugins: [],
+    ignorePatterns: ['**/doc', '**/build'],
+    reportUnusedDisableDirectives: true,
+    rules: {
+        indent: [
             'error',
             4,
             {
-                'SwitchCase': 1
+                SwitchCase: 1
             }
         ],
-        'curly': 'error',
+        'array-element-newline': [
+            'error',
+            {
+                ArrayExpression: 'consistent',
+                ArrayPattern: { minItems: 3 }
+            }
+        ],
+        curly: 'error',
         'brace-style': 'error',
         'arrow-parens': ['error', 'as-needed'],
         'no-console': 'off',
-        'no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'caughtErrors': 'all' }],
+        'no-unused-vars': [
+            'error',
+            { argsIgnorePattern: '^_', caughtErrors: 'all' }
+        ],
         'no-useless-escape': 'warn',
         'no-constant-condition': 'off',
-        'no-multiple-empty-lines': ['error', { 'max': 1, 'maxEOF': 1 }],
+        'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
         'no-var': 'error',
         'prefer-const': 'error',
         'no-throw-literal': 'error',
         'prefer-promise-reject-errors': 'error',
         'require-await': 'error',
         'no-return-await': 'error',
-        'eqeqeq': ['error', 'always'],
-        'quotes': [
+        eqeqeq: ['error', 'always'],
+        quotes: [
             'error',
             'single',
             {
-                'avoidEscape': true,
-                'allowTemplateLiterals': true
+                avoidEscape: true,
+                allowTemplateLiterals: true
             }
         ],
-        'semi': [
+        semi: ['error', 'always'],
+        'comma-dangle': [
             'error',
-            'always'
+            {
+                arrays: 'never',
+                objects: 'never',
+                imports: 'never',
+                exports: 'never',
+                functions: 'ignore'
+            }
         ],
-        'comma-dangle': ['error', {
-            'arrays': 'never',
-            'objects': 'never',
-            'imports': 'never',
-            'exports': 'never',
-            'functions': 'ignore'
-        }],
-        'no-trailing-spaces': 'error'
+        'no-trailing-spaces': 'error',
+        'prettier/prettier': 'error'
     },
-    'parserOptions': {
-        'ecmaVersion': 2019
+    parserOptions: {
+        ecmaVersion: 2019
     },
-    'overrides': [ // we need ts parser for ts files
+    overrides: [
+        // we need ts parser for ts files
         {
-            'parser': '@typescript-eslint/parser',
-            'parserOptions': {
-                'ecmaVersion': 2019,
-                'sourceType': 'module',
-                'project': './tsconfig.json'
+            parser: '@typescript-eslint/parser',
+            parserOptions: {
+                ecmaVersion: 2019,
+                sourceType: 'module',
+                project: './tsconfig.json'
             },
-            'files': ['**/*.ts', '**/*.tsx'],
-            'extends': ['plugin:@typescript-eslint/recommended'],
-            'rules': {
+            files: ['**/*.ts', '**/*.tsx'],
+            extends: ['plugin:@typescript-eslint/recommended'],
+            rules: {
                 '@typescript-eslint/no-parameter-properties': 'off',
                 '@typescript-eslint/no-explicit-any': 'off',
                 '@typescript-eslint/no-use-before-define': [
