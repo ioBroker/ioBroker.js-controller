@@ -60,7 +60,9 @@ module.exports = {
             }
         ],
         'no-trailing-spaces': 'error',
-        'prettier/prettier': 'error'
+        'prettier/prettier': 'error',
+        'no-nested-ternary': 'error',
+        'no-unneeded-ternary': 'error'
     },
     parserOptions: {
         ecmaVersion: 2019
