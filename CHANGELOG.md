@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.19 (2021-11-17)
 * (foxriver76) we fixed a crash due to multilingual instance objects
 
 ## 3.3.18 (2021-09-11)

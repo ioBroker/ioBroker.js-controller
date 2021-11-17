@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.18",
+        "version": "3.3.19",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.19": {
+                "en": "we fixed a crash due to multilingual instance objects",
+                "de": "wir haben einen Absturz aufgrund mehrsprachiger Instanzobjekte behoben",
+                "ru": "мы исправили сбой из-за многоязычных экземпляров объектов",
+                "pt": "corrigimos uma falha devido a objetos multilingues de instância",
+                "nl": "we hebben een crash verholpen vanwege meertalige instantieobjecten",
+                "fr": "nous avons corrigé un plantage dû à des objets d'instance multilingues",
+                "it": "abbiamo risolto un arresto anomalo dovuto a oggetti istanza multilingue",
+                "es": "arreglamos un bloqueo debido a objetos de instancia multilingües",
+                "pl": "naprawiliśmy awarię z powodu wielojęzycznych obiektów instancji",
+                "zh-cn": "我们修复了由于多语言实例对象导致的崩溃"
+            },
             "3.3.18": {
                 "en": "Fix another edge case for UUID generation",
                 "de": "Beheben Sie einen weiteren Randfall für die UUID-Generierung",
