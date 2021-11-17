@@ -11,7 +11,7 @@
 * CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore, as it does not used
 * WORK IN PROGRESS - Use at own risk!
 
-## 3.3.18 (2021-07-26 - 2021-09-11) Release Hannah
+## 3.3.19 (2021-07-26 - 2021-11-17) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * The experimental jsonl db libraries are now included in js-controller directly too
@@ -61,7 +61,9 @@
 * (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
 * (foxriver/Apollon77) fix invalid logging in package manager
 * (foxriver76) avoid deleting too many meta objects starting with the same name as adapter
-  
+* (foxriver76) we fixed a crash due to multilingual instance objects
+* (bluefox) Fix compact group host check
+
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
