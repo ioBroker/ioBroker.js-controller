@@ -5432,8 +5432,8 @@ function Adapter(options) {
                 if (!this.defaultHistory) {
                     // read all adapters
                     adapterObjects.getObjectView('system', 'instance', {
-                        startkey: '',
-                        endkey: '\u9999'
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
                     }, (err, _obj) => {
                         if (_obj && _obj.rows) {
                             for (let i = 0; i < _obj.rows.length; i++) {
@@ -5822,7 +5822,7 @@ function Adapter(options) {
                 return;
             }
 
-            if (!instanceName.match(/^system\.adapter\./)) {
+            if (!instanceName.startsWith('system.adapter.')) {
                 instanceName = 'system.adapter.' + instanceName;
             }
 
