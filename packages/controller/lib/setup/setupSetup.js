@@ -531,7 +531,7 @@ function Setup(options) {
         if (Array.isArray(originalConfig.states.host)) {
             console.log('  - Sentinel-Master-Name: ' + (originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster'));
         }
-        if (tools.objectsDbHasServer(originalConfig.objects.type) || tools.statesDbHasServer(originalConfig.states.type)) {
+        if (dbTools.objectsDbHasServer(originalConfig.objects.type) || dbTools.statesDbHasServer(originalConfig.states.type)) {
             console.log('- Data Directory: ' + tools.getDefaultDataDir());
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
@@ -680,7 +680,7 @@ function Setup(options) {
         }
 
         let defaultStatesPort = (stype === originalConfig.states.type && shost === originalConfig.states.host) ? originalConfig.states.port : sp;
-        if (stype === otype && !tools.statesDbHasServer(stype) && shost === ohost) {
+        if (stype === otype && !dbTools.statesDbHasServer(stype) && shost === ohost) {
             defaultStatesPort = oport;
         }
         const userStatePort = rl.question('Port of states DB (' + stype + '), default[' + (Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort) + ']: ', {
