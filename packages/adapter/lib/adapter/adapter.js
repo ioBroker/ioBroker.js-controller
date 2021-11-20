@@ -2591,7 +2591,7 @@ function Adapter(options) {
 
             params = params || {};
 
-            if (design === 'system' && !params.startkey.length && !params.endkey.length) {
+            if (design === 'system' && !params.startkey && !params.endkey) {
                 switch (search) {
                     case 'host':
                         params.startkey = 'system.host.';
