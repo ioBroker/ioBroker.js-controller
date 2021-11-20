@@ -2589,6 +2589,43 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
+            params = params || {};
+
+            if (design === 'system' && !params.startkey.length && !params.endkey.length) {
+                switch (search) {
+                    case 'host':
+                        params.startkey = 'system.host.';
+                        params.endKey = 'system.host.\u9999';
+                        break;
+                    case 'adapter':
+                    case 'instance':
+                    case 'instanceStats':
+                        params.startkey = 'system.adapter.';
+                        params.endKey = 'system.adapter.\u9999';
+                        break;
+                    case 'enum':
+                        params.startkey = 'enum.';
+                        params.endKey = 'enum.\u9999';
+                        break;
+                    case 'script':
+                        params.startkey = 'script.';
+                        params.endKey = 'script.\u9999';
+                        break;
+                    case 'group':
+                        params.startkey = 'system.group.';
+                        params.endKey = 'system.group.\u9999';
+                        break;
+                    case 'user':
+                        params.startkey = 'system.user.';
+                        params.endKey = 'system.user.\u9999';
+                        break;
+                    case 'config':
+                        params.startkey = 'system.';
+                        params.endKey = 'system.\u9999';
+                        break;
+                }
+            }
+
             return adapterObjects.getObjectView(design, search, params, options, callback);
         };
         /**
@@ -2686,7 +2723,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
-            if (!_enum.match('^enum.')) {
+            if (!_enum.startsWith('enum.')) {
                 _enum = 'enum.' + _enum;
             }
             const result = {};

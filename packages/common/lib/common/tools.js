@@ -2322,7 +2322,10 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
  */
 function removeIdFromAllEnums(objects, id) {
     return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'enum', {startkey: '', endkey: '\u9999'}, (err, res) => {
+        objects.getObjectView('system', 'enum', {
+            startkey: 'enum.',
+            endkey: 'enum.\u9999'
+        }, (err, res) => {
             if (err) {
                 reject(err);
             } else {
@@ -3026,7 +3029,10 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
 
     let doc = {};
     try {
-        doc = await objects.getObjectViewAsync('system', 'instance');
+        doc = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: 'system.adapter.',
+            endkey: 'system.adapter.\u9999'
+        });
     } catch (e) {
         if (e.message.startsWith('Cannot find ')) {
             logger.error(`${logPrefix}_design/system missing - call node ${getAppName()}.js setup`);

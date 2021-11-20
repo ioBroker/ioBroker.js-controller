@@ -183,7 +183,10 @@ function Upgrade(options) {
         // Get all installed adapters
         let objs;
         try {
-            objs = await objects.getObjectViewAsync('system', 'instance', {}, null);
+            objs = await objects.getObjectViewAsync('system', 'instance', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            }, null);
         } catch (e) {
             return Promise.reject(e);
         }
