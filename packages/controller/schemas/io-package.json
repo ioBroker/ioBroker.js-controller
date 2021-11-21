@@ -1171,7 +1171,9 @@
                   "$ref": "#/definitions/multilingual"
                 },
                 "severity": {
-                  "type": "string"
+                  "type": "string",
+                  "enum": ["info", "notify", "alert"],
+                  "description": "`info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both"
                 },
                 "description": {
                   "$ref": "#/definitions/multilingual"

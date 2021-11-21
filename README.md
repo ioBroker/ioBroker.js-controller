@@ -151,7 +151,7 @@ The definition also contain localized names and descriptions that can be used to
 Registered notifications are stored per host and can be requested via messages to the host. They are also stored when the controller stops and loaded on next start.
 Additionally, a summary of the stored categories per scope with a number of stored notifications and the last added timestamp is available in the state `system.host.hostname.notifications.scopeid` as a JSON.
 
-The js-controller defines in it's io-package the system scope together with all details. You can use this as an example and the JSON schema will help you validate your notifications.
+The js-controller defines in its io-package the system scope together with all details. You can use this as an example and the JSON schema will help you validate your notifications.
 
 ```json
 {
