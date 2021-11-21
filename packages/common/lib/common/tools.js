@@ -2409,6 +2409,9 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
         throw new Error(`obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`);
+    } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
+        // for some types, name needs to be a unique string
+        throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
     if (obj.common.type !== undefined) {
