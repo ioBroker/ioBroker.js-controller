@@ -8,13 +8,17 @@ local keys = result[2]
 local argStart = KEYS[1] .. KEYS[2]
 local argEnd = KEYS[1] .. KEYS[3]
 local type = KEYS[4]
+local checkStr = string.format("%q:%q", "type", type)
+local skipCheck = not (type == "channel" or type == "device" or type == "folder")
 -- function(doc) { if (doc.type === "chart") emit(doc._id, doc); }
 for _, key in ipairs(keys) do
     if (key >= argStart and key < argEnd) then
         local obj = redis.call("get", key)
-        local success, decoded = pcall(cjson.decode, obj)
-        if (success and decoded.type == type) then
-            rep[#rep + 1] = obj
+        if (skipCheck or obj:find(checkStr) ~= nil) then
+            local success, decoded = pcall(cjson.decode, obj)
+            if (success and decoded.type == type) then
+                rep[#rep + 1] = obj
+            end
         end
     end
 end
