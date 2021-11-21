@@ -367,7 +367,10 @@ function Install(options) {
 
         let cnt = 0;
         // Get all installed adapters
-        objects.getObjectView('system', 'instance', {}, null, (err, objs) => {
+        objects.getObjectView('system', 'instance', {
+            startkey: 'system.adapter.',
+            endkey: 'system.adapter.\u9999'
+        }, null, (err, objs) => {
             err && console.error(err);
 
             if (objs && objs.rows && objs.rows.length) {
