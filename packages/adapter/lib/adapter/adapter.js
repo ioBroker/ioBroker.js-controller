@@ -2591,7 +2591,9 @@ function Adapter(options) {
 
             params = params || {};
 
-            if (design === 'system' && !params.startkey && !params.endkey) {
+            // Limit search ranges for system views to the relevant namespaces
+            // to prevent too wide searches where the objects never will be
+            if (design === 'system') {
                 switch (search) {
                     case 'host':
                         params.startkey = 'system.host.';
