@@ -91,8 +91,8 @@ function Repo(options) {
             if (fs.existsSync(urlOrPath)) {
                 try {
                     data = JSON.parse(fs.readFileSync(urlOrPath).toString('utf8'));
-                } catch (e) {
-                    console.error(`Error: Cannot read or parse file "${urlOrPath}": ${e}`);
+                } catch (err) {
+                    console.error(`Error: Cannot read or parse file "${urlOrPath}": ${err.message || err}`);
                 }
             } else {
                 console.error(`Error: Cannot find file "${urlOrPath}"`);
@@ -346,8 +346,8 @@ function Repo(options) {
         try {
             sysConfigObj = await objects.getObjectAsync('system.config');
             repoObj = await objects.getObjectAsync('system.repositories');
-        } catch (e) {
-            throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${e}`);
+        } catch (err) {
+            throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message || err}`);
         }
 
         if (repoObj && repoObj.native && repoObj.native.repositories) {
@@ -359,8 +359,8 @@ function Repo(options) {
                 try {
                     await objects.setObjectAsync('system.repositories', repoObj);
                     console.log(`Renamed repository "${oldName} to "${newName}"`);
-                } catch (e) {
-                    throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${e}`);
+                } catch (err) {
+                    throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message || err}`);
                 }
 
                 // if we changed the name of the activeRepo, we should set newName as active repo
@@ -376,8 +376,8 @@ function Repo(options) {
 
                     try {
                         await objects.setObjectAsync('system.config', sysConfigObj);
-                    } catch (e) {
-                        throw new Error(`Could not set "${newName}" as active repository: ${e}`);
+                    } catch (err) {
+                        throw new Error(`Could not set "${newName}" as active repository: ${err.message || err}`);
                     }
                 }
             }

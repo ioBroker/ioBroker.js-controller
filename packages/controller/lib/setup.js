@@ -534,8 +534,8 @@ async function processCommand(command, args, params, callback) {
                         try {
                             await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
                             await repo.rename('latest', 'beta', 'http://download.iobroker.net/sources-dist-latest.json');
-                        } catch (e) {
-                            console.warn(e.message);
+                        } catch (err) {
+                            console.warn(`Cannot rename: ${err.message || err}`);
                         }
 
                         // there has been a bug that user can uplaod js-controller
@@ -571,7 +571,7 @@ async function processCommand(command, args, params, callback) {
                                 console.log('ioBroker configuration updated');
                             }
                         } catch(err) {
-                            console.log('Could not update ioBroker configuration: ' + err.message);
+                            console.log(`Could not update ioBroker configuration: ${err.message || err}`);
                         }
 
                         return void callback();
@@ -706,8 +706,8 @@ async function processCommand(command, args, params, callback) {
                     let obj;
                     try {
                         obj = await objects.getObjectAsync(`system.host.${params.host}`);
-                    } catch (e) {
-                        console.warn(`Could not check existence of host "${params.host}": ${e.message}`);
+                    } catch (err) {
+                        console.warn(`Could not check existence of host "${params.host}": ${err.message || err}`);
                     }
 
                     if (!obj) {
@@ -774,7 +774,7 @@ async function processCommand(command, args, params, callback) {
                             await upload.uploadAdapterFullAsync(adapters);
                             callback();
                         } catch (err) {
-                            console.error(`Cannot upload all adapters: ${err}`);
+                            console.error(`Cannot upload all adapters: ${err.message || err}`);
                             return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
                         }
                     } else {
@@ -966,8 +966,8 @@ async function processCommand(command, args, params, callback) {
                             await upgrade.upgradeAdapterAsync('', adapter, params.force || params.f, params.y || params.yes, false);
                         }
                         return void callback();
-                    } catch (e) {
-                        console.error(e);
+                    } catch (err) {
+                        console.error(`Cannot upgrade: ${err.message || err}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 } else {
@@ -979,8 +979,8 @@ async function processCommand(command, args, params, callback) {
                         }
                         await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
                         return void callback();
-                    } catch (e) {
-                        console.error(e);
+                    } catch (err) {
+                        console.error(`Cannot upgrade: ${err.message || err}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 }
@@ -1077,8 +1077,8 @@ async function processCommand(command, args, params, callback) {
                     await backup.validateBackup(name);
                     console.log('Backup OK');
                     processExit(0);
-                } catch (e) {
-                    console.log(`Backup check failed: ${e.message}`);
+                } catch (err) {
+                    console.log(`Backup check failed: ${err.message || err}`);
                     processExit(1);
                 }
             });
@@ -2028,8 +2028,8 @@ async function processCommand(command, args, params, callback) {
                                 console.log('Successfully created "meta.user" directory');
                             }
                         }
-                    } catch (e) {
-                        console.warn(`Could not create directory "meta.user": ${e.message}`);
+                    } catch (err) {
+                        console.warn(`Could not create directory "meta.user": ${err.message || err}`);
                     }
 
                     try {
@@ -2042,7 +2042,7 @@ async function processCommand(command, args, params, callback) {
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
                     } catch (err) {
-                        console.error(`Error on sync: ${err.message}. Partial content might have been synced.`);
+                        console.error(`Error on sync: ${err.message || err}. Partial content might have been synced.`);
                         return void callback(EXIT_CODES.CANNOT_SYNC_FILES);
                     }
                 } else {
@@ -2292,7 +2292,7 @@ async function processCommand(command, args, params, callback) {
                         console.log(`Synchronised vendor information.`);
                         return void callback();
                     } catch (err) {
-                        console.error(`Cannot update vendor information: ${err.message}`);
+                        console.error(`Cannot update vendor information: ${err.message || err}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
                     }
                 });
@@ -2332,7 +2332,7 @@ async function processCommand(command, args, params, callback) {
                         console.log(`License ${type} updated.`);
                         return void callback();
                     } catch (err) {
-                        console.error(`Cannot update license: ${err.message}`);
+                        console.error(`Cannot update license: ${err.message || err}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
                     }
                 });

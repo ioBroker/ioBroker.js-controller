@@ -182,8 +182,8 @@ function Upgrade(options) {
         let objs;
         try {
             objs = await objects.getObjectViewAsync('system', 'instance', {}, null);
-        } catch (e) {
-            return Promise.reject(e);
+        } catch (err) {
+            return Promise.reject(err);
         }
 
         if (objs && objs.rows && objs.rows.length) {
@@ -448,8 +448,8 @@ function Upgrade(options) {
             if (!forceDowngrade) {
                 try {
                     await checkDependencies(repoUrl[adapter].dependencies, repoUrl[adapter].globalDependencies);
-                } catch (e) {
-                    return console.error(e.message);
+                } catch (err) {
+                    return console.error(`Cannot check dependencies: ${err.message || err}`);
                 }
             }
 
@@ -481,8 +481,8 @@ function Upgrade(options) {
             if (!forceDowngrade) {
                 try {
                     await checkDependencies(ioPack.common && ioPack.common.dependencies, ioPack.common && ioPack.common.globalDependencies);
-                } catch (e) {
-                    return console.error(e.message);
+                } catch (err) {
+                    return console.error(`Cannot check dependencies: ${err.message || err}`);
                 }
             }
 

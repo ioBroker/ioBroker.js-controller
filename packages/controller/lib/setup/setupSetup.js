@@ -150,8 +150,8 @@ function Setup(options) {
                         console.log('Successfully created "meta.user" directory');
                     }
                 }
-            } catch (e) {
-                console.warn(`Could not create directory "meta.user": ${e.message}`);
+            } catch (err) {
+                console.warn(`Could not create directory "meta.user": ${err.message || err}`);
             }
 
             try {
@@ -773,8 +773,8 @@ function Setup(options) {
                 if (fs.existsSync(__dirname + '/../../reinstall.js')) {
                     fs.writeFileSync(__dirname + '/../../../../reinstall.js', fs.readFileSync(__dirname + '/../../reinstall.js'));
                 }
-            } catch (e) {
-                console.warn('Cannot write file. Not critical: ' + e.message);
+            } catch (err) {
+                console.warn(`Cannot write file. Not critical: ${err.message || err}`);
             }
         }
         // Delete files for other OS
@@ -805,8 +805,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     if (!fs.existsSync(__dirname + '/../../../../' + tools.appName)) {
                         fs.writeFileSync(__dirname + '/../../../../' + tools.appName, startFile, {mode: 492 /* 0754 */});
                     }
-                } catch (e) {
-                    console.warn('Cannot write file. Not critical: ' + e);
+                } catch (err) {
+                    console.warn(`Cannot write file. Not critical: ${err.message || err}`);
                 }
             }
         }
@@ -823,8 +823,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 } else {
                     try {
                         fs.unlinkSync(otherInstallDirs[t]);
-                    } catch (e) {
-                        console.warn('Cannot delete file. Not critical: ' + e.message);
+                    } catch (err) {
+                        console.warn(`Cannot delete file. Not critical: ${err.message || err}`);
                     }
                 }
             }
@@ -894,8 +894,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.mkdirSync(__dirname + '/../../log');
                     }
                 }
-            } catch (e) {
-                console.log(`Non-critical error: ${e.message}`);
+            } catch (err) {
+                console.log(`Non-critical error: ${err.message || err}`);
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
@@ -907,8 +907,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, {spaces: 2});
                 }
-            } catch (e) {
-                console.warn(`Cannot check config file: ${e.message}`);
+            } catch (err) {
+                console.warn(`Cannot check config file: ${err.message || err}`);
             }
 
             setupObjects(() => callback && callback(), true);

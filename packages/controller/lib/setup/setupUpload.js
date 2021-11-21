@@ -62,9 +62,9 @@ function Upload(options) {
                     hosts.push(arr.rows[i].value._id);
                 }
             }
-        } catch (e) {
+        } catch (err) {
             // ignore
-            console.warn('Cannot read hosts: ' + e);
+            console.warn(`Cannot read hosts: ${err.message || err}`);
         }
 
         if (onlyAlive) {
@@ -110,14 +110,14 @@ function Upload(options) {
                                     console.log(`Adapter "${obj._id}" restarted.`);
                                 }
                             } catch (err) {
-                                console.error(`Cannot restart adapter "${instances[r]}": ${err}`);
+                                console.error(`Cannot restart adapter "${instances[r]}": ${err.message || err}`);
                             }
                         }
                     }
                 }
             }
-        } catch (e) {
-            console.error(`Cannot parse ${adapterDir}/io-package.json: ${e}`);
+        } catch (err) {
+            console.error(`Cannot parse ${adapterDir}/io-package.json: ${err.message || err}`);
         }
     }
 
@@ -182,9 +182,7 @@ function Upload(options) {
     this.uploadAdapterFullAsync = async adapters => {
         if (adapters && adapters.length) {
             const liveHosts = await getHosts(true);
-            for (let a = 0; a < adapters.length; a++) {
-                const adapter = adapters[a];
-
+            for (const adapter of adapters) {
                 // Find the host which has this adapter
                 const instances = await tools.getInstancesAsync(adapter, objects, true);
                 // try to find instance on this host
@@ -260,20 +258,20 @@ function Upload(options) {
                     console.error(`Empty response from URL "${source}"`);
                     throw new Error(`Empty response from URL "${source}"`);
                 }
-            } catch (error) {
+            } catch (err) {
                 let result;
-                if (error.response) {
+                if (err.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    result = error.response.data || error.response.status;
-                } else if (error.request) {
+                    result = err.response.data || err.response.status;
+                } else if (err.request) {
                     // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // `err.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    result = error.request;
+                    result = err.request;
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    result = error.message || error;
+                    result = err.message || err;
                 }
                 console.error(`Cannot get URL "${source}": ${result}`);
                 throw new Error(result);
@@ -282,8 +280,8 @@ function Upload(options) {
             try {
                 await objects.writeFileAsync(adapter, target, fs.readFileSync(source));
             } catch (err) {
-                console.error(`Cannot read file "${source}": ${err}`);
-                throw new Error(err);
+                console.error(`Cannot read file "${source}": ${err.message || err}`);
+                throw err;
             }
         }
 
@@ -457,9 +455,9 @@ function Upload(options) {
         let cfg;
         try {
             cfg = await fs.readJSON(`${adapterDir}/io-package.json`);
-        } catch (e) {
+        } catch (err) {
             // file not parsable or does not exist
-            console.error(`Could not read io-package.json: ${e.message}`);
+            console.error(`Could not read io-package.json: ${err.message || err}`);
         }
 
         if (!fs.existsSync(dir)) {
@@ -742,7 +740,8 @@ function Upload(options) {
                 ioPack.common.installedFrom = ioPackFile.common.installedFrom;
             }
             // Not existing? Why ever ... we recreate
-            const obj = (await objects.getObject('system.adapter.' + name)) || {};
+            let obj = await objects.getObject('system.adapter.' + name);
+            obj = obj || {};
             obj.common = ioPack.common || {};
             obj.native = ioPack.native || {};
             // protected/encryptedNative and notifications also need to be updated

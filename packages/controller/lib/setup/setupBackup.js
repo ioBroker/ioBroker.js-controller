@@ -68,8 +68,8 @@ class BackupRestore {
                     fs.writeFileSync(destPath, data);
                 }
             }
-        } catch (e) {
-            console.log(`Can not copy File ${id}${srcPath} to ${destPath}: ${e}`);
+        } catch (err) {
+            console.log(`Can not copy File ${id}${srcPath} to ${destPath}: ${err.message || err}`);
         }
     }
 
@@ -198,8 +198,8 @@ class BackupRestore {
 
             try {
                 tar.create({gzip: true, cwd: `${tmpDir}/`}, ['backup']).pipe(f);
-            } catch (e) {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${e.message}`);
+            } catch (err) {
+                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message || err}`);
                 return this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
             }
         });
@@ -397,8 +397,8 @@ class BackupRestore {
         try {
             this._validateBackupAfterCreation();
             return await this._packBackup(name);
-        } catch (e) {
-            console.error(`host.${hostname} Backup not created: ${e.message}`);
+        } catch (err) {
+            console.error(`host.${hostname} Backup not created: ${err.message || err}`);
             await this._removeFolderRecursive(`${tmpDir}/backup/`);
             return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
         }
@@ -417,8 +417,8 @@ class BackupRestore {
         for (let i = 0; i < statesList.length; i++) {
             try {
                 await this.states.setRawState(statesList[i], stateObjects[statesList[i]]);
-            } catch (e) {
-                console.log(`host.${hostname} Could not set value for state ${statesList[i]}: ${e.message}`);
+            } catch (err) {
+                console.log(`host.${hostname} Could not set value for state ${statesList[i]}: ${err.message || err}`);
             }
             if (i % 200 === 0) {
                 console.log(`host.${hostname} Processed ${i}/${statesList.length} states`);
@@ -451,8 +451,8 @@ class BackupRestore {
 
             try {
                 await this.objects.setObjectAsync(_objects[i].id, _objects[i].doc);
-            } catch (e) {
-                console.warn(`host.${hostname} Cannot restore ${_objects[i].id}: ${e}`);
+            } catch (err) {
+                console.warn(`host.${hostname} Cannot restore ${_objects[i].id}: ${err.message || err}`);
             }
 
             if (i % 200 === 0) {
@@ -614,8 +614,8 @@ class BackupRestore {
         let restore;
         try {
             restore = JSON.parse(data);
-        } catch (e) {
-            console.error(`Cannot parse "${tmpDir}/backup/backup_.json": ${e}`);
+        } catch (err) {
+            console.error(`Cannot parse "${tmpDir}/backup/backup_.json": ${err.message || err}`);
             return EXIT_CODES.CANNOT_RESTORE_BACKUP;
         }
 
@@ -684,8 +684,8 @@ class BackupRestore {
         // we check all other json files, we assume them as optional, because user created files may be no valid json
         try {
             this._checkDirectory(`${tmpDir}/backup/files`);
-        } catch (e) {
-            console.warn(`host.${hostname} One or more optional files are corrupted: ${e.message}`);
+        } catch (err) {
+            console.warn(`host.${hostname} One or more optional files are corrupted: ${err.message || err}`);
             console.warn(`host.${hostname} Please ensure that self-created JSON files are valid`);
         }
     } // endValidateBackupAfterCreation
@@ -771,8 +771,8 @@ class BackupRestore {
                 let backupJSON;
                 try {
                     backupJSON = require(`${tmpDir}/backup/backup.json`);
-                } catch (e) {
-                    console.error(`host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${e}`);
+                } catch (err) {
+                    console.error(`host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message || err}`);
                     await this._removeFolderRecursive(`${tmpDir}/backup/`);
                     return void this.processExit(26);
                 }
@@ -789,8 +789,8 @@ class BackupRestore {
                     this._checkDirectory(`${tmpDir}/backup/files`, true);
                     await this._removeFolderRecursive(`${tmpDir}/backup/`);
                     resolve();
-                } catch (e) {
-                    console.error(`host.${hostname} Backup corrupted: ${e.message}`);
+                } catch (err) {
+                    console.error(`host.${hostname} Backup corrupted: ${err.message || err}`);
                     return void this.processExit(26);
                 }
             });
