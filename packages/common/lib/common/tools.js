@@ -2330,8 +2330,8 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
             endkey: 'enum.\u9999'
         });
         if (res && res.rows) {
-            for (let t = 0; t < res.rows.length; t++) {
-                allEnums[res.rows[t].id] = res.rows[t].value;
+            for (const row of res.rows) {
+                allEnums[row.id] = row.value;
             }
         }
     }
