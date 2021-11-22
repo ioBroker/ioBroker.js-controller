@@ -1694,7 +1694,7 @@ function Adapter(options) {
                 if (id.startsWith('enum.')) {
                     if (!obj) {
                         delete this.enums[id];
-                    } else if (obj && obj.type === 'enum') {
+                    } else if (obj.type === 'enum') {
                         this.enums[id] = obj;
                     }
                 }
