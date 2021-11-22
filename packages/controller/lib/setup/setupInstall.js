@@ -1237,7 +1237,7 @@ function Install(options) {
         return this.deleteAdapterAsync(adapter)
             .then(resultCode => callback && callback(adapter, resultCode))
             .catch(err => {
-                console.error('Cannot delete adapter: ' ${err.message || err});
+                console.error(`Cannot delete adapter: ${err.message || err}`);
                 callback && callback(adapter, 1);
             });
     };
