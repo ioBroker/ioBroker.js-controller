@@ -169,16 +169,6 @@ function Upload(options) {
         });
     }
 
-    this.uploadAdapterFull = (adapters, callback) => {
-        tools.showDeprecatedMessage('setupUpload.uploadAdapterFull');
-        if (!adapters || !adapters.length) {
-            return callback && callback();
-        }
-        return this.uploadAdapterFullAsync(adapters)
-            .then(() => callback && callback())
-            .catch(err => callback && callback(err));
-    };
-
     this.uploadAdapterFullAsync = async adapters => {
         if (adapters && adapters.length) {
             const liveHosts = await getHosts(true);
@@ -619,7 +609,7 @@ function Upload(options) {
 
     this._upgradeAdapterObjectsHelper = async (name, ioPack, hostname, logger) => {
         // Update all instances of this host
-        const res = await objects.getObjectView('system', 'instance', {startkey: `system.adapter.${name}.`, endkey: `system.adapter.${name}.\u9999`});
+        const res = await objects.getObjectViewAsync('system', 'instance', {startkey: `system.adapter.${name}.`, endkey: `system.adapter.${name}.\u9999`});
 
         if (res) {
             for (let i = 0; i < res.rows.length; i++) {
@@ -693,22 +683,22 @@ function Upload(options) {
         return name;
     };
 
-    this.upgradeAdapterObjects = (name, iopack, logger, callback) => {
+    this.upgradeAdapterObjects = (name, ioPack, logger, callback) => {
         tools.showDeprecatedMessage('setupUpload.upgradeAdapterObjects');
-        if (typeof iopack === 'function') {
-            callback = iopack;
-            iopack = null;
+        if (typeof ioPack === 'function') {
+            callback = ioPack;
+            ioPack = null;
         } else
-        if (typeof iopack === 'object' && typeof iopack.warn === 'function' && typeof iopack.error === 'function') {
+        if (typeof ioPack === 'object' && typeof ioPack.warn === 'function' && typeof ioPack.error === 'function') {
             callback = logger;
-            logger = iopack;
-            iopack = null;
+            logger = ioPack;
+            ioPack = null;
         }
         if (typeof logger === 'function') {
             callback = logger;
             logger = null;
         }
-        return this.upgradeAdapterObjectsAsync(name, iopack, logger)
+        return this.upgradeAdapterObjectsAsync(name, ioPack, logger)
             .then(() => callback && callback(name))
             .catch(err => {
                 logger.error('Cannot upgrade Adapter Objects: ' + err);

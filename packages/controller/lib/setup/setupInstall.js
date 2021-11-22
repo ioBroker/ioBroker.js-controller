@@ -57,27 +57,9 @@ function Install(options) {
 
     let packetManager;
 
-    // TODO: promisify States and Objects at some point
+    // TODO: promisify States at some point
     /** @type {(stateId: string) => Promise<void>} */
     const delStateAsync = tools.promisify(states.delState, states);
-
-    /** @type {(objId: string) => Promise<void>} */
-    const delObjectAsync = tools.promisify(objects.delObject, objects);
-
-    /** @type {(id: string, name: string) => Promise<void>} */
-    const unlinkAsync = tools.promisify(objects.unlink, objects);
-
-    /** @type {(design: string, search: string, params: any, options?: any) => Promise<{rows: {id: string, value: any}[]}>} */
-    const getObjectViewAsync = tools.promisify(objects.getObjectView, objects);
-
-    /** @type {(params: any | null) => Promise<{rows: {id: string, value: any}[]}>} */
-    const getObjectListAsync = tools.promisify(objects.getObjectList, objects);
-
-    /** @type {(objId: string) => Promise<any>} */
-    const getObjectAsync = tools.promisify(objects.getObject, objects);
-
-    /** @type {(objId: string, newObj: any) => Promise<void>} */
-    const setObjectAsync = tools.promisify(objects.setObject, objects);
 
     /** @type {(pattern: string) => Promise<string[]>} */
     const getKeysAsync = tools.promisify(states.getKeys, states);
@@ -642,7 +624,7 @@ function Install(options) {
         await upload.uploadAdapterAsync(adapter, true, false);
         await upload.uploadAdapterAsync(adapter, false, false);
 
-        const res = await objects.getObjectView('system', 'instance', {
+        const res = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.' + adapter + '.',
             endkey: 'system.adapter.' + adapter + '.\u9999'
         });
@@ -859,7 +841,7 @@ function Install(options) {
      * Enumerate all instances of an adapter
      * @type {(knownObjIDs: string[], notDeleted: any[], adapter: string, instance?: string) => Promise<void>}
      */
-    this._enumerateAdapterInstances = (knownObjIDs, notDeleted, adapter, instance) => {
+    this._enumerateAdapterInstances = async (knownObjIDs, notDeleted, adapter, instance) => {
         if (!notDeleted) {
             notDeleted = [];
         }
@@ -872,10 +854,12 @@ function Install(options) {
             ? new RegExp(`^system\\.adapter\\.${adapter}\\.${instance}$`)
             : new RegExp(`^system\\.adapter\\.${adapter}\\.\\d+$`);
 
-        return getObjectViewAsync('system', 'instance', {
-            startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
-            endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
-        }, null).then(doc => {
+        try {
+            const doc = await objects.getObjectView('system', 'instance', {
+                startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
+                endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+            });
+
             // add non-duplicates to the list (only for this host)
             const newObjIDs = doc.rows
                 // only the ones with an ID that matches the pattern
@@ -895,13 +879,15 @@ function Install(options) {
                 .map(row => row.value._id)
                 .filter(id => knownObjIDs.indexOf(id) === -1)
             ;
+
             knownObjIDs.push.apply(knownObjIDs, newObjIDs);
 
             if (newObjIDs.length > 0) {
                 console.log(`host.${hostname} Counted ${newObjIDs.length} instances of ${adapter}${instance !== undefined ? `.${instance}` : ''}`);
             }
-        }).catch(err =>
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`));
+        } catch (err) {
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+        }
     };
 
     /**
@@ -910,7 +896,7 @@ function Install(options) {
      */
     this._enumerateAdapterMeta = async function (knownObjIDs, adapter, metaFilesToDelete) {
         try {
-            const doc = await getObjectViewAsync('system', 'meta', {
+            const doc = await objects.getObjectViewAsync('system', 'meta', {
                 startkey: `${adapter}.`,
                 endkey: `${adapter}.\u9999`
             });
@@ -946,7 +932,7 @@ function Install(options) {
         // This does not really enumerate the adapters, but finds the adapter object
         // if it exists and adds it to the list
         try {
-            const obj = await getObjectAsync(`system.adapter.${adapter}`);
+            const obj = await objects.getObjectAsync(`system.adapter.${adapter}`);
             if (obj) {
                 if (obj.common && obj.common.nondeletable) {
                     // If the adapter is non-deletable, mark it as not installed
@@ -954,7 +940,7 @@ function Install(options) {
                     obj.installedVersion = '';
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = Date.now();
-                    await setObjectAsync(obj._id, obj);
+                    await objects.setObjectAsync(obj._id, obj);
 
                     return EXIT_CODES.CANNOT_DELETE_NON_DELETABLE;
                 } else {
@@ -980,7 +966,7 @@ function Install(options) {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            const doc = await getObjectViewAsync('system', 'device', {
+            const doc = await objects.getObjectViewAsync('system', 'device', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
@@ -1012,7 +998,7 @@ function Install(options) {
     this._enumerateAdapterChannels = async (knownObjIDs, adapter, instance) => {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         try {
-            const doc = await getObjectViewAsync('system', 'channel', {
+            const doc = await objects.getObjectViewAsync('system', 'channel', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
@@ -1046,7 +1032,7 @@ function Install(options) {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            let doc = await getObjectViewAsync('system', 'state', {
+            let doc = await objects.getObjectViewAsync('system', 'state', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
@@ -1066,7 +1052,7 @@ function Install(options) {
                 }
             }
 
-            doc = await getObjectViewAsync('system', 'state', {
+            doc = await objects.getObjectViewAsync('system', 'state', {
                 startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
@@ -1102,7 +1088,7 @@ function Install(options) {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            const doc = await getObjectListAsync({include_docs: true});
+            const doc = await objects.getObjectListAsync({include_docs: true});
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
@@ -1169,7 +1155,7 @@ function Install(options) {
         for (const file of filesToDelete) {
             const id = typeof file === 'object' ? file.id : file;
             try {
-                await unlinkAsync(id, file.name || '');
+                await objects.unlinkAsync(id, file.name || '');
                 console.log(`host.${hostname} file ${id + (file.name ? `/${file.name}` : '')} deleted`);
             } catch (err) {
                 err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete ${id} files folder: ${err.message || err}`);
@@ -1178,7 +1164,7 @@ function Install(options) {
 
         for (const objId of [adapter, `${adapter}.admin`]) {
             try {
-                await delObjectAsync(objId);
+                await objects.delObjectAsync(objId);
                 console.log(`host.${hostname} object ${objId} deleted`);
             } catch (err) {
                 err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message || err}`);
@@ -1228,7 +1214,7 @@ function Install(options) {
             // try to delete the current object
             try {
                 const id = objIDs.pop();
-                await delObjectAsync(id);
+                await objects.delObjectAsync(id);
                 await tools.removeIdFromAllEnums(objects, id);
             } catch (err) {
                 err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message || err}`);
@@ -1274,7 +1260,7 @@ function Install(options) {
                             const instances = await tools.getAllInstancesAsync(ioPack.common.restartAdapters, objects);
                             if (instances && instances.length) {
                                 for (const instance of instances) {
-                                    const obj = await getObjectAsync(instance);
+                                    const obj = await objects.getObjectAsync(instance);
                                     // if instance is enabled
                                     if (obj && obj.common && obj.common.enabled) {
                                         try {
@@ -1282,14 +1268,14 @@ function Install(options) {
                                             obj.from = `system.host.${tools.getHostName()}.cli`;
                                             obj.ts = Date.now();
 
-                                            await setObjectAsync(obj._id, obj);
+                                            await objects.setObjectAsync(obj._id, obj);
 
                                             obj.common.enabled = true; // enable instance
 
                                             obj.from = `system.host.${tools.getHostName()}.cli`;
                                             obj.ts = Date.now();
 
-                                            await setObjectAsync(obj._id, obj);
+                                            await objects.setObjectAsync(obj._id, obj);
                                             console.log(`Adapter "${obj._id}" restarted.`);
                                         } catch (err) {
                                             console.error(`Cannot restart adapter "${obj._id}": ${err.message || err}`);
@@ -1394,7 +1380,9 @@ function Install(options) {
                 let obj;
                 for (const id of ids) {
                     if (Object.prototype.hasOwnProperty.call(row.value, id)) {
-                        obj = obj || (await objects.getObjectAsync(row.id));
+                        if (!obj) {
+                            obj = await objects.getObjectAsync(row.id);
+                        }
                         obj.common.custom[id] = null;
                     }
                 }
