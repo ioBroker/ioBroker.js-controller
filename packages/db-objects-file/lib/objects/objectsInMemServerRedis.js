@@ -604,6 +604,24 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             return this._handleScanOrKeys(handler, data[0], responseId);
         });
 
+        // commands for redis SETS, just dummies
+        handler.on('sadd', (data, responseId) => {
+            return void handler.sendInteger(responseId, 1);
+        });
+
+        handler.on('srem', (data, responseId) => {
+            return void handler.sendInteger(responseId, 1);
+        });
+
+        handler.on('sscan', (data, responseId) => {
+            // for file DB it does the same as scan
+            if (!data || data.length < 3) {
+                return void handler.sendArray(responseId, ['0', []]);
+            }
+
+            return this._handleScanOrKeys(handler, data[2], responseId, true);
+        });
+
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
         handler.on('psubscribe', (data, responseId) => {
             const {id, namespace} = this._normalizeId(data[0]);
