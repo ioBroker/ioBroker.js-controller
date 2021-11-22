@@ -3216,13 +3216,10 @@ function Adapter(options) {
                 adapterObjects.getObject(id, options, async (err, obj) => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
-                    } else if (!obj) {
-                        // obj non existing we can return right now
-                        return tools.maybeCallback(callback);
-                    } else {
+                    } else if (obj) {
                         // do not allow deletion of objects with dontDelete flag
                         if (obj.common && obj.common.dontDelete) {
-                            return tools.maybeCallbackWithError(callback, 'not deletable');
+                            return tools.maybeCallbackWithError(callback, new Error('not deletable'));
                         }
 
                         try {
@@ -3247,6 +3244,7 @@ function Adapter(options) {
                             return tools.maybeCallbackWithError(callback, e);
                         }
                     }
+                    return tools.maybeCallback(callback);
                 });
             }
         };
