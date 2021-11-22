@@ -113,7 +113,7 @@ function register(it, expect, context) {
         }));
     }).timeout(1000);
 
-    it(textName + 'invalid user name must be checked', () => {
+    it(textName + 'invalid user name must be checked #1', () => {
         const objects = context.objects;
         return objects.getObject(secretId, {user: 'admin'}).then(_obj => {
             expect(1).to.be.equal('Never happens');
@@ -123,7 +123,7 @@ function register(it, expect, context) {
         });
     }).timeout(1000);
 
-    it(textName + 'invalid user name must be checked', () => {
+    it(textName + 'invalid user name must be checked #2', () => {
         const objects = context.objects;
         return objects.getObject(secretId, {user: 'system.user.admin1'}).then(_obj => {
             expect(1).to.be.equal('Never happens');

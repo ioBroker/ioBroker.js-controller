@@ -2262,7 +2262,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
             const func = new Function('val', 'type', 'min', 'max', 'sType', 'sMin', 'sMax', 'return ' + targetObj.alias.read);
             state.val = func(state.val, targetObj.type, targetObj.min, targetObj.max, sourceObj.type, sourceObj.min, sourceObj.max);
         } catch (e) {
-            logger.error(`${logNamespace}Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`);
+            logger.error(`${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`);
             return null;
         }
     }
@@ -2273,7 +2273,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
             const func = new Function('val', 'type', 'min', 'max', 'tType', 'tMin', 'tMax', 'return ' + sourceObj.alias.write);
             state.val = func(state.val, sourceObj.type, sourceObj.min, sourceObj.max, targetObj.type, targetObj.min, targetObj.max);
         } catch (e) {
-            logger.error(`${logNamespace}Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`);
+            logger.error(`${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`);
             return null;
         }
     }
@@ -2317,35 +2317,43 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
  * @memberof tools
  * @param {object} objects object to access objects db
  * @param {string} id the object id which will be deleted from enums
- * @returns {Promise}
+ * @param {object} [allEnums] objects with all enums to use - if not provided all enums will be queried
+ * @returns {Promise} All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  *
  */
-function removeIdFromAllEnums(objects, id) {
-    return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'enum', {
+async function removeIdFromAllEnums(objects, id, allEnums) {
+
+    if (!allEnums) {
+        allEnums = {};
+        const res = await objects.getObjectViewAsync('system', 'enum', {
             startkey: 'enum.',
             endkey: 'enum.\u9999'
-        }, (err, res) => {
-            if (err) {
-                reject(err);
-            } else {
-                const promises = [];
-                for (const obj of res.rows) {
-                    const idx = obj.value && obj.value.common && obj.value.common.members ? obj.value.common.members.indexOf(id) : -1;
-                    if (idx !== -1) {
-                        // the id is in the enum now we have to remove it
-                        obj.value.common.members.splice(idx, 1);
-                        promises.push(new Promise(resolve => {
-                            objects.setObject(obj.value._id, obj.value, err => {
-                                err ? reject(err) : resolve();
-                            });
-                        }));
-                    } // endIf
-                } // endFor
-                Promise.all(promises).then(resolve);
-            } // endElse
         });
-    });
+        if (res && res.rows) {
+            for (const row of res.rows) {
+                allEnums[row.id] = row.value;
+            }
+        }
+    }
+
+    let error = null;
+    for (const [enumId, enumObj] of Object.entries(allEnums)) {
+        const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
+        if (idx !== -1) {
+            // the id is in the enum now we have to remove it
+            enumObj.common.members.splice(idx, 1);
+            try {
+                await objects.setObjectAsync(enumId, enumObj);
+            } catch (err) {
+                if (!error) {
+                    error = err;
+                }
+            }
+        }
+    }
+    if (error) {
+        throw error;
+    }
 }
 
 /**
