@@ -810,10 +810,10 @@ class ObjectsInRedisClient {
      */
     async objectExists(id, options) {
         if (!this.client) {
-            return Promise.reject(new Error(utils.ERRORS.ERROR_DB_CLOSED));
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
-            return Promise.reject(new Error(`invalid id ${JSON.stringify(id)}`));
+            throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
 
         try {
@@ -3867,6 +3867,37 @@ class ObjectsInRedisClient {
                 resolve(Array.from(new Set(uniqueKeys)));
             });
         });
+    }
+
+    /**
+     * Checks if a given set exists
+     * @param {string} id - id of the set
+     * @private
+     * @return {Promise<boolean>}
+     */
+    async setExists(id) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const exists = await this.client.exists(this.setNamespace + id);
+        return !!exists;
+    }
+
+    /**
+     * Adds a new member to a given set id
+     * @param {string} setId - id of the redis SET
+     * @param {string} member - id to add to the set
+     * @return {Promise<boolean>}
+     */
+    async addToSet(setId, member) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // 1 if added else 0 (mostly always part of the set)
+        const added =  await this.client.sadd(this.setNamespace + setId, this.objNamespace + member);
+        return !!added;
     }
 }
 

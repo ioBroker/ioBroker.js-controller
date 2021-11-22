@@ -13,14 +13,14 @@
 /* jshint strict:false */
 /* jslint node: true */
 'use strict';
-const net    = require('net');
-const fs     = require('fs-extra');
-const path   = require('path');
+const net = require('net');
+const fs = require('fs-extra');
+const path = require('path');
 const crypto = require('crypto');
-const utils  = require('@iobroker/db-objects-redis').objectsUtils;
-const tools  = require('@iobroker/db-base').tools;
+const utils = require('@iobroker/db-objects-redis').objectsUtils;
+const tools = require('@iobroker/db-base').tools;
 
-const RedisHandler          = require('@iobroker/db-base').redisHandler;
+const RedisHandler = require('@iobroker/db-base').redisHandler;
 const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
 
 // settings = {
@@ -57,12 +57,13 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         super(settings);
 
         this.serverConnections = {};
-        this.namespaceObjects    = (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') + '.';
-        this.namespaceFile       = this.namespaceObjects + 'f.';
-        this.namespaceObj        = this.namespaceObjects + 'o.';
+        this.namespaceObjects = (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') + '.';
+        this.namespaceFile = this.namespaceObjects + 'f.';
+        this.namespaceObj = this.namespaceObjects + 'o.';
+        this.namespaceSet = this.namespaceObjects + 's.';
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
-        this.namespaceFileLen    = this.namespaceFile.length;
-        this.namespaceObjLen     = this.namespaceObj.length;
+        this.namespaceFileLen = this.namespaceFile.length;
+        this.namespaceObjLen = this.namespaceObj.length;
 
         this.knownScripts = {};
 
@@ -98,7 +99,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         if (Array.isArray(idWithNamespace)) {
             const ids = [];
             idWithNamespace.forEach(el => {
-                const {id, namespace} = this._normalizeId(el);
+                const { id, namespace } = this._normalizeId(el);
                 ids.push(id);
                 ns = namespace; // we ignore the pot. case from arrays with different namespaces
             });
@@ -136,7 +137,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 }
             }
         }
-        return {id, namespace: ns, name, isMeta};
+        return { id, namespace: ns, name, isMeta };
     }
 
     /**
@@ -159,7 +160,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
             const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
             const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
-            client.sendArray(null,['pmessage', sendPattern, sendId, objString]);
+            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
             return 1;
         }
         return 0;
@@ -243,13 +244,13 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         search = scriptSearch[1];
                     }
 
-                    this.knownScripts[scriptChecksum] = {design: design, search: search};
+                    this.knownScripts[scriptChecksum] = { design: design, search: search };
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(`${namespaceLog} Register View LUA Script: ${scriptChecksum} = ${JSON.stringify(this.knownScripts[scriptChecksum])}`);
                     }
                     handler.sendBulk(responseId, scriptChecksum);
                 } else if (scriptFunc && scriptFunc[1]) {
-                    this.knownScripts[scriptChecksum] = {func: scriptFunc[1]};
+                    this.knownScripts[scriptChecksum] = { func: scriptFunc[1] };
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(`${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(this.knownScripts[scriptChecksum])}`);
                     }
@@ -294,7 +295,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendArray(responseId, res);
                 }
             } else if (this.knownScripts[data[0]].func && data.length > 4) {
-                const scriptFunc = {map: this.knownScripts[data[0]].func.replace('%1', data[5])};
+                const scriptFunc = { map: this.knownScripts[data[0]].func.replace('%1', data[5]) };
                 if (this.settings.connection.enhancedLogging) {
                     this.log.silly(`${namespaceLog} Script transformed into _applyView: func=${scriptFunc.map}`);
                 }
@@ -313,7 +314,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "PUBLISH" request
         handler.on('publish', (data, responseId) => {
-            const {id, namespace} = this._normalizeId(data[0]);
+            const { id, namespace } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) { // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
@@ -327,12 +328,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             if (!data || !data.length) {
                 return void handler.sendArray(responseId, []);
             }
-            const {namespace, isMeta} = this._normalizeId(data[0]);
+            const { namespace, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 const keys = [];
                 data.forEach(dataId => {
-                    const {id, namespace} = this._normalizeId(dataId);
+                    const { id, namespace } = this._normalizeId(dataId);
                     if (namespace !== this.namespaceObj) {
                         keys.push(null);
                         this.log.warn(`${namespaceLog} Got MGET request for non Object-ID in Objects-ID chunk for ${namespace} / ${dataId}`);
@@ -353,7 +354,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 if (isMeta) {
                     const response = [];
                     data.forEach(dataId => {
-                        const {id, namespace, name} = this._normalizeId(dataId);
+                        const { id, namespace, name } = this._normalizeId(dataId);
                         if (namespace !== this.namespaceFile) {
                             response.push(null);
                             this.log.warn(`${namespaceLog} Got MGET request for non File ID in File-ID chunk for ${dataId}`);
@@ -389,7 +390,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "GET" requests
         handler.on('get', (data, responseId) => {
-            const {id, namespace, name, isMeta} = this._normalizeId(data[0]);
+            const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 const result = this._getObject(id);
@@ -458,7 +459,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "SET" requests
         handler.on('set', (data, responseId) => {
-            const {id, namespace, name, isMeta} = this._normalizeId(data[0]);
+            const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 try {
@@ -529,7 +530,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "DEL" request for state and session namespace
         handler.on('del', (data, responseId) => {
-            const {id, namespace, name, isMeta} = this._normalizeId(data[0]);
+            const { id, namespace, name, isMeta } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 try {
@@ -563,7 +564,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
 
             // Note: we only simulate single key existence check
-            const {id, namespace, name} = this._normalizeId(data[0]);
+            const { id, namespace, name } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 let exists;
@@ -581,6 +582,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     return void handler.sendError(responseId, e);
                 }
                 handler.sendInteger(responseId, exists ? 1 : 0);
+            } else if (namespace === this.namespaceSet) {
+                // we are not using sets in simulator, so just say it exists
+                return void handler.sendInteger(responseId, 1);
             } else {
                 handler.sendError(responseId, new Error(`EXISTS-UNSUPPORTED for namespace ${namespace}`));
             }
@@ -624,7 +628,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
         handler.on('psubscribe', (data, responseId) => {
-            const {id, namespace} = this._normalizeId(data[0]);
+            const { id, namespace } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
@@ -636,7 +640,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "UNSUBSCRIBE" request for state, log and session namespace
         handler.on('punsubscribe', (data, responseId) => {
-            const {id, namespace} = this._normalizeId(data[0]);
+            const { id, namespace } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 this._unsubscribeConfigForClient(handler, id);
@@ -726,11 +730,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * @private
      */
     _handleScanOrKeys(handler, pattern, responseId, isScan = false) {
-        const {id, namespace, name, isMeta} = this._normalizeId(pattern);
+        const { id, namespace, name, isMeta } = this._normalizeId(pattern);
 
         let response = [];
         if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
-            response =  this._getKeys(id).map(val => this.namespaceObj + val);
+            response = this._getKeys(id).map(val => this.namespaceObj + val);
             // if scan, we send the cursor as first argument
             if (namespace !== this.namespaceObjects) { // When it was not the full DB namespace send out response
                 return void handler.sendArray(responseId, isScan ? ['0', response] : response);

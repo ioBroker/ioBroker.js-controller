@@ -224,10 +224,32 @@ function Setup(options) {
     }
 
     function setupObjects(callback, checkCertificateOnly) {
-        dbConnect(params, (_objects, _states) => {
+        dbConnect(params, async (_objects, _states) => {
             objects = _objects;
             states = _states;
             const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+
+            // in all casses we need to migrate existing objects to sets if not existing
+            try {
+                const setExists = await objects.setExists('object.type.state');
+
+                if (!setExists) {
+                    let noMigrated = 0;
+                    // objects are not migrated to sets yet - so get all
+                    const objs  = await objects.getObjectList({startkey: '', endkey: '\u9999'});
+                    for (const obj of objs.rows) {
+                        const migrated = await objects.addToSet(`object.type.${obj.value.type}`, obj.id);
+                        noMigrated += migrated;
+                    }
+
+                    if (noMigrated) {
+                        console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                    }
+                }
+            } catch (e) {
+                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
+            }
+
             if (checkCertificateOnly) {
                 let certObj;
                 if (iopkg && iopkg.objects) {
@@ -238,6 +260,7 @@ function Setup(options) {
                         }
                     }
                 }
+
                 if (certObj) {
                     objects.getObject('system.certificates', (err, obj) => {
                         if (obj && obj.native && obj.native.certificates && obj.native.certificates.defaultPublic !== undefined) {
@@ -590,7 +613,7 @@ function Setup(options) {
         }
 
         const defaultObjectsPort = (otype === originalConfig.objects.type && ohost === originalConfig.objects.host) ? originalConfig.objects.port : op;
-        const userObjPort = rl.question('Port of objects DB(' + otype + '), default[' + (Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort) + ']: ', {
+        const userObjPort = rl.question(`Port of objects DB(${otype}), default[${Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort}]: `, {
             defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
             limit: /^[0-9, ]+$/
         });
@@ -600,14 +623,14 @@ function Setup(options) {
             oport.forEach((port, idx) => {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
-                    console.log(COLOR_RED + 'Invalid objects port: ' + oport[idx] + COLOR_RESET);
+                    console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
                     return void callback(23);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
-                console.log(COLOR_RED + 'Invalid objects port: ' + oport + COLOR_RESET);
+                console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
                 return void callback(23);
             }
         }
@@ -615,7 +638,7 @@ function Setup(options) {
         let oSentinelName = null;
         if (oSentinel) {
             const defaultSentinelName = originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster';
-            oSentinelName = rl.question('Objects Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
+            oSentinelName = rl.question(`Objects Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
         }
@@ -628,7 +651,7 @@ function Setup(options) {
             // ignore, unchanged
         }
 
-        let stype = rl.question('Type of states DB [(f)file, (r)edis, ...], default [' + defaultStatesType + ']: ', {
+        let stype = rl.question(`Type of states DB [(f)file, (r)edis, ...], default [${defaultStatesType}]: `, {
             defaultInput: defaultStatesType
         });
         stype = stype.toLowerCase();
@@ -693,14 +716,14 @@ function Setup(options) {
             sport.forEach((port, idx) => {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
-                    console.log(COLOR_RED + 'Invalid states port: ' + sport[idx] + COLOR_RESET);
+                    console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
                     return void callback(23);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
-                console.log(COLOR_RED + 'Invalid states port: ' + sport + COLOR_RESET);
+                console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
                 return void callback(23);
             }
         }
@@ -717,7 +740,7 @@ function Setup(options) {
         let hname;
 
         if (dbTools.isLocalStatesDbServer(stype, shost) || dbTools.isLocalObjectsDbServer(otype, ohost)) {
-            dir = rl.question('Data directory (file), default[' + tools.getDefaultDataDir() + ']: ', {
+            dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
                 defaultInput: tools.getDefaultDataDir()
             });
 
@@ -725,13 +748,13 @@ function Setup(options) {
                 defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
             });
         } else {
-            hname = rl.question('Host name of this machine [' + require('os').hostname() + ']: ', {
+            hname = rl.question(`Host name of this machine [${require('os').hostname()}]: `, {
                 defaultInput: ''
             });
         }
 
         if (hname.match(/\s/)) {
-            console.log(COLOR_RED + 'Invalid host name: ' + hname + COLOR_RESET);
+            console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
             return void callback(23);
         }
 
@@ -774,7 +797,7 @@ function Setup(options) {
                     fs.writeFileSync(__dirname + '/../../../../reinstall.js', fs.readFileSync(__dirname + '/../../reinstall.js'));
                 }
             } catch (e) {
-                console.warn('Cannot write file. Not critical: ' + e.message);
+                console.warn(`Cannot write file. Not critical: ${e.message}`);
             }
         }
         // Delete files for other OS
@@ -806,7 +829,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.writeFileSync(__dirname + '/../../../../' + tools.appName, startFile, {mode: 492 /* 0754 */});
                     }
                 } catch (e) {
-                    console.warn('Cannot write file. Not critical: ' + e);
+                    console.warn(`Cannot write file. Not critical: ${e}`);
                 }
             }
         }
@@ -824,7 +847,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     try {
                         fs.unlinkSync(otherInstallDirs[t]);
                     } catch (e) {
-                        console.warn('Cannot delete file. Not critical: ' + e.message);
+                        console.warn(`Cannot delete file. Not critical: ${e.message}`);
                     }
                 }
             }
