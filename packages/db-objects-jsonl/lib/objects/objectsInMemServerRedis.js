@@ -60,6 +60,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         this.namespaceObjects    = (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') + '.';
         this.namespaceFile       = this.namespaceObjects + 'f.';
         this.namespaceObj        = this.namespaceObjects + 'o.';
+        this.namespaceSet = this.namespaceObjects + 's.';
+        this.namespaceSetLen = this.namespaceSet.length;
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen    = this.namespaceFile.length;
         this.namespaceObjLen     = this.namespaceObj.length;
@@ -111,6 +113,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     idx = this.namespaceObjLen;
                 } else if (idWithNamespace.startsWith(this.namespaceFile)) {
                     idx = this.namespaceFileLen;
+                } else if (idWithNamespace.startsWith(this.namespaceSet)) {
+                    idx = this.namespaceSetLen;
                 }
                 if (idx !== -1) {
                     ns = idWithNamespace.substr(0, idx);
@@ -581,6 +585,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     return void handler.sendError(responseId, e);
                 }
                 handler.sendInteger(responseId, exists ? 1 : 0);
+            } else if (namespace === this.namespaceSet) {
+                // we are not using sets in simulator, so just say it exists
+                return void handler.sendInteger(responseId, 1);
             } else {
                 handler.sendError(responseId, new Error(`EXISTS-UNSUPPORTED for namespace ${namespace}`));
             }

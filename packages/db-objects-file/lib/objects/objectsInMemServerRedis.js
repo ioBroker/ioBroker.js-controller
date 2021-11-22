@@ -61,6 +61,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         this.namespaceFile = this.namespaceObjects + 'f.';
         this.namespaceObj = this.namespaceObjects + 'o.';
         this.namespaceSet = this.namespaceObjects + 's.';
+        this.namespaceSetLen = this.namespaceSet.length;
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
@@ -112,7 +113,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     idx = this.namespaceObjLen;
                 } else if (idWithNamespace.startsWith(this.namespaceFile)) {
                     idx = this.namespaceFileLen;
+                } else if (idWithNamespace.startsWith(this.namespaceSet)) {
+                    idx = this.namespaceSetLen;
                 }
+
                 if (idx !== -1) {
                     ns = idWithNamespace.substr(0, idx);
                     id = idWithNamespace.substr(idx);
