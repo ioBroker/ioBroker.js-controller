@@ -614,12 +614,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         });
 
         handler.on('sscan', (data, responseId) => {
-            // for file DB it does the same as scan
-            if (!data || data.length < 3) {
+            // for file DB it does the same as scan but data looks different
+            if (!data || data.length < 4) {
                 return void handler.sendArray(responseId, ['0', []]);
             }
 
-            return this._handleScanOrKeys(handler, data[2], responseId, true);
+            return this._handleScanOrKeys(handler, data[3], responseId, true);
         });
 
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
