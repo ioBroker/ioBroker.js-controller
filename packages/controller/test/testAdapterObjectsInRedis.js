@@ -31,7 +31,7 @@ const objectsConfig = {
     noFileCache:    true,
     connectTimeout: 2000,
     onChange: (id, _obj) => {
-        console.log('object changed. ' + id);
+        console.log(`object changed. ${id}`);
     }
 };
 
