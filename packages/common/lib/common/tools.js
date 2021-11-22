@@ -2337,13 +2337,13 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
     }
 
     let error = null;
-    for (const enumId of Object.keys(allEnums)) {
-        const idx = allEnums[enumId].common.members ? allEnums[enumId].common.members.indexOf(id) : -1;
+    for (const [enumId, enum] of Object.entries(allEnums)) {
+        const idx = enum.common.members ? enum.common.members.indexOf(id) : -1;
         if (idx !== -1) {
             // the id is in the enum now we have to remove it
-            allEnums[enumId].common.members.splice(idx, 1);
+            enum.common.members.splice(idx, 1);
             try {
-                await objects.setObjectAsync(enumId, allEnums[enumId]);
+                await objects.setObjectAsync(enumId, enum);
             } catch (err) {
                 if (!error) {
                     error = err;
