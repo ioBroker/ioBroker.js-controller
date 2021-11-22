@@ -943,7 +943,10 @@ function checkHost(callback) {
     if (compactGroupController) {
         return callback && callback();
     }
-    objects.getObjectView('system', 'host', {}, (_err, doc) => {
+    objects.getObjectView('system', 'host', {
+        startkey: 'system.host.',
+        endkey: 'system.host.\u9999'
+    }, (_err, doc) => {
         if (!_err && doc && doc.rows &&
             doc.rows.length === 1 &&
             doc.rows[0].value.common.name !== hostname) {
@@ -951,7 +954,10 @@ function checkHost(callback) {
             const oldId  = doc.rows[0].value._id;
 
             // find out all instances and rewrite it to actual hostname
-            objects.getObjectView('system', 'instance', {}, (err, doc) => {
+            objects.getObjectView('system', 'instance', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            }, (err, doc) => {
                 if (err && err.message.startsWith('Cannot find ')) {
                     typeof callback === 'function' && callback();
                 } else if (!doc.rows || doc.rows.length === 0) {
@@ -1018,7 +1024,10 @@ async function collectDiagInfo(type) {
         err = null;
 
         try {
-            doc = await objects.getObjectViewAsync('system', 'host', {});
+            doc = await objects.getObjectViewAsync('system', 'host', {
+                startkey: 'system.host.',
+                endkey: 'system.host.\u9999'
+            });
         } catch (e) {
             err = e;
         }
@@ -1077,7 +1086,10 @@ async function collectDiagInfo(type) {
         err = null;
 
         try {
-            doc = await objects.getObjectViewAsync('system', 'adapter', {});
+            doc = await objects.getObjectViewAsync('system', 'adapter', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            });
         } catch (e) {
             err = e;
         }
@@ -2093,7 +2105,10 @@ async function processMessage(msg) {
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView('system', 'host', {}, async (err, doc) => {
+                objects.getObjectView('system', 'host', {
+                    startkey: 'system.host.',
+                    endkey: 'system.host.\u9999'
+                }, (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     if (doc && doc.rows.length) {
