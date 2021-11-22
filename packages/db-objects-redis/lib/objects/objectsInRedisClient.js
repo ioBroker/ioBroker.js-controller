@@ -2936,7 +2936,7 @@ class ObjectsInRedisClient {
 
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.filter, 5, this.objNamespace, params.startkey, params.endkey, m[1], cursor]);
+                    objs = await this.client.evalsha([this.scripts.filter, 5, this.objNamespace, params.startkey, params.endkey, `${this.setNamespace}object.type.${m[1]}`, cursor]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                 }
