@@ -181,8 +181,6 @@ function Adapter(options) {
 
     config = options.config || config;
     this.startedInCompactMode = options.compact;
-    const regUser = /^system\.user\./;
-    const regGroup = /^system\.group\./;
     let firstConnection = true;
     let systemSecret = null;
 
@@ -191,6 +189,7 @@ function Adapter(options) {
     this.logList = [];
     this.aliases = {};
     this.aliasPatterns = [];
+    this.enums = {};
 
     this.eventLoopLags = [];
     this.overwriteLogLevel = false;
@@ -644,7 +643,7 @@ function Adapter(options) {
             throw new Error('checkPassword: no callback');
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -724,7 +723,7 @@ function Adapter(options) {
             options = null;
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -806,7 +805,7 @@ function Adapter(options) {
             options = null;
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -827,7 +826,7 @@ function Adapter(options) {
             }
         }
 
-        if (group && !regGroup.test(group)) {
+        if (group && !group.startsWith('system.group.')) {
             group = 'system.group.' + group;
         }
         this.getForeignObject(user, options, (err, obj) => {
@@ -955,7 +954,7 @@ function Adapter(options) {
             options = null;
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -1522,7 +1521,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.objects,
             logger: logger,
-            connected: () => {
+            connected: async () => {
                 this.connected = true;
                 if (initializeTimeout) {
                     clearTimeout(initializeTimeout);
@@ -1531,6 +1530,10 @@ function Adapter(options) {
 
                 // subscribe to user changes
                 adapterObjects.subscribe('system.user.*');
+
+                // get all enums and register for enum changes
+                this.enums = await this.getEnumsAsync();
+                adapterObjects.subscribe('enum.*');
 
                 // Read dateformat if using of formatDate is announced
                 if (options.useFormatDate) {
@@ -1682,10 +1685,18 @@ function Adapter(options) {
                 }
 
                 // Clear cache if got the message about change (Will work for admin and javascript - TODO: maybe always subscribe?)
-                if (id.match(/^system\.user\./) || id.match(/^system\.group\./)) {
+                if (id.startsWith('system.user.') || id.startsWith('system.group.')) {
                     this.users = {};
                     this.groups = {};
                     this.usernames = {};
+                }
+
+                if (id.startsWith('enum.')) {
+                    if (!obj) {
+                        delete this.enums[id];
+                    } else if (obj && obj.type === 'enum') {
+                        this.enums[id] = obj;
+                    }
                 }
             },
             changeUser: (id, obj) => { // User level object changes
@@ -3131,26 +3142,23 @@ function Adapter(options) {
                 return tools.maybeCallback(cb);
             } else {
                 const task = tasks.shift();
-                adapterObjects.delObject(task.id, options, err => {
+                adapterObjects.delObject(task.id, options, async err => {
                     if (err) {
                         return tools.maybeCallbackWithError(cb, err);
-                    } else if (!task.state) {
-                        // if not a state, we dont have to delete state
-                        tools.removeIdFromAllEnums(adapterObjects, task.id).then(() => setImmediate(_deleteObjects, tasks, options, cb))
-                            .catch(e => {
-                                this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
-                                setImmediate(_deleteObjects, tasks, options, cb);
-                            });
-                    } else {
-                        this.delForeignState(task.id, options, err => {
-                            err && this.log.warn(`Could not remove state of ${task.id}`);
-                            tools.removeIdFromAllEnums(adapterObjects, task.id).then(() => setImmediate(_deleteObjects, tasks, options, cb))
-                                .catch(e => {
-                                    this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
-                                    setImmediate(_deleteObjects, tasks, options, cb);
-                                });
-                        });
                     }
+                    if (task.state) {
+                        try {
+                            await this.delForeignStateAsync(task.id, options);
+                        } catch (e) {
+                            this.log.warn(`Could not remove state of ${task.id}: ${e.message}`);
+                        }
+                    }
+                    try {
+                        await tools.removeIdFromAllEnums(adapterObjects, task.id, this.enums);
+                    } catch (e) {
+                        this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
+                    }
+                    setImmediate(_deleteObjects, tasks, options, cb);
                 });
             }
         };
@@ -3205,7 +3213,7 @@ function Adapter(options) {
                     });
                 });
             } else {
-                adapterObjects.getObject(id, options, (err, obj) => {
+                adapterObjects.getObject(id, options, async (err, obj) => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else if (!obj) {
@@ -3213,42 +3221,30 @@ function Adapter(options) {
                         return tools.maybeCallback(callback);
                     } else {
                         // do not allow deletion of objects with dontDelete flag
-                        if (!obj.common || !obj.common.dontDelete) {
-                            adapterObjects.delObject(obj._id, options, err => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else if (obj.type !== 'state') {
-                                    tools.removeIdFromAllEnums(adapterObjects, id)
-                                        .then(() => {
-                                            return tools.maybeCallback(callback);
-                                        })
-                                        .catch(e => {
-                                            return tools.maybeCallbackWithError(callback, e);
-                                        });
-                                } else {
-                                    if (obj.binary) {
-                                        this.delBinaryState(id, options, () =>
-                                            tools.removeIdFromAllEnums(adapterObjects, id)
-                                                .then(() => {
-                                                    return tools.maybeCallback(callback);
-                                                })
-                                                .catch(e => {
-                                                    return tools.maybeCallbackWithError(callback, e);
-                                                }));
-                                    } else {
-                                        this.delForeignState(id, options, () =>
-                                            tools.removeIdFromAllEnums(adapterObjects, id)
-                                                .then(() => {
-                                                    return tools.maybeCallback(callback);
-                                                })
-                                                .catch(e => {
-                                                    return tools.maybeCallbackWithError(callback, e);
-                                                }));
-                                    }
-                                }
-                            });
-                        } else {
+                        if (obj.common && obj.common.dontDelete) {
                             return tools.maybeCallbackWithError(callback, 'not deletable');
+                        }
+
+                        try {
+                            await adapterObjects.delObject(obj._id, options);
+                        } catch (err) {
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
+                        if (obj.type === 'state') {
+                            try {
+                                if (obj.binary) {
+                                    await this.delBinaryStateAsync(id, options);
+                                } else {
+                                    await this.delForeignStateAsync(id, options);
+                                }
+                            } catch {
+                                // Ignore
+                            }
+                        }
+                        try {
+                            await tools.removeIdFromAllEnums(adapterObjects, id, this.enums);
+                        } catch (e) {
+                            return tools.maybeCallbackWithError(callback, e);
                         }
                     }
                 });
