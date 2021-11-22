@@ -2108,7 +2108,7 @@ async function processMessage(msg) {
                 objects.getObjectView('system', 'host', {
                     startkey: 'system.host.',
                     endkey: 'system.host.\u9999'
-                }, (err, doc) => {
+                }, async (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
                     if (doc && doc.rows.length) {

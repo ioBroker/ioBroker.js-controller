@@ -363,11 +363,10 @@ function Install(options) {
         const allDeps = {...deps, ...globalDeps};
 
         // Get all installed adapters
-        objects.getObjectView('system', 'instance', {
+        const objs = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
             endkey: 'system.adapter.\u9999'
-        }, null, (err, objs) => {
-            err && console.error(err);
+        });
 
         if (objs && objs.rows && objs.rows.length) {
             for (const dName in allDeps) {
