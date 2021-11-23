@@ -1252,16 +1252,7 @@ function Install(options) {
         if (objIDs.length > 1) {
             try {
                 // cache all enums, else it will be slow to delete many objects
-                const res = await objects.getObjectViewAsync('system', 'enum', {
-                    startkey: 'enum.',
-                    endkey: 'enum.\u9999'
-                });
-                if (res && res.rows) {
-                    allEnums = {};
-                    for (const row of res.rows) {
-                        allEnums[row.id] = row.value;
-                    }
-                }
+                allEnums = await tools.getAllEnums(objects);
             } catch (e) {
                 console.error(`host.${hostname}: Could not cache enums: ${e.message}`);
             }
