@@ -2344,6 +2344,7 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
             enumObj.common.members.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
+                allEnums[enumId] = enumObj;
             } catch (err) {
                 if (!error) {
                     error = err;
