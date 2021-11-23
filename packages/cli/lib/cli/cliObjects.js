@@ -352,9 +352,9 @@ module.exports = class CLIObjects extends CLICommand {
 
             try {
                 // cache all enums, else it will be slow to delete many objects
-                allEnums = tools.getAllEnums(objects);
+                allEnums = await tools.getAllEnums(objects);
             } catch (e) {
-                console.error(`Could not cache enums: ${e.message}`);
+                console.error(`Could not retrieve all enums: ${e.message}`);
             }
 
             for (const id of ids) {

@@ -1254,7 +1254,7 @@ function Install(options) {
                 // cache all enums, else it will be slow to delete many objects
                 allEnums = await tools.getAllEnums(objects);
             } catch (e) {
-                console.error(`host.${hostname}: Could not cache enums: ${e.message}`);
+                console.error(`host.${hostname}: Could not retrieve all enums: ${e.message}`);
             }
         }
 
