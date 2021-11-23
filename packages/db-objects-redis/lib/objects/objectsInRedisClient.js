@@ -2065,7 +2065,10 @@ class ObjectsInRedisClient {
                 try {
                     await this.client.set(id, message);
                     // add the object to the set
-                    await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+                    if (obj.type) {
+                        // e.g. _design/ has no type
+                        await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+                    }
                     await this.client.publish(id, message);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
@@ -2742,7 +2745,10 @@ class ObjectsInRedisClient {
             const message = JSON.stringify(obj);
 
             await this.client.set(this.objNamespace + id, message);
-            await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+            if (obj.type) {
+                // e.g. _design/ has no type
+                await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+            }
 
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
             // object updated -> if type changed to meta -> cache
@@ -2832,7 +2838,10 @@ class ObjectsInRedisClient {
         } else {
             try {
                 await this.client.del(this.objNamespace + id);
-                await this.client.srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id);
+                if (oldObj.type) {
+                    // e.g. _design/ has no type
+                    await this.client.srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id);
+                }
                 // object has been deleted -> remove from cached meta if there
                 if (this.existingMetaObjects[id]) {
                     this.existingMetaObjects[id] = false;
@@ -3550,7 +3559,15 @@ class ObjectsInRedisClient {
 
         try {
             await this.client.set(this.objNamespace + id, message);
-            await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+            if (obj.type && (!oldObj || (oldObj && oldObj.type !== obj.type))) {
+                // obj.type needs to exist and oldObj had different type, else it's already in set
+                await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+            }
+
+            if (oldObj && oldObj.type && oldObj.type !== obj.type) {
+                // we need to remove from old set if it differs
+                await this.client.srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id);
+            }
 
             // extended -> if its now type meta and currently marked as not -> cache
             if (this.existingMetaObjects[id] === false && oldObj && oldObj.type === 'meta') {

@@ -238,8 +238,11 @@ function Setup(options) {
                     // objects are not migrated to sets yet - so get all
                     const objs  = await objects.getObjectList({startkey: '', endkey: '\u9999'});
                     for (const obj of objs.rows) {
-                        const migrated = await objects.addToSet(`object.type.${obj.value.type}`, obj.id);
-                        noMigrated += migrated;
+                        if (obj.value.type) {
+                            // e.g. _design/.. has no type
+                            const migrated = await objects.addToSet(`object.type.${obj.value.type}`, obj.id);
+                            noMigrated += migrated;
+                        }
                     }
 
                     if (noMigrated) {
