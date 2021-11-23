@@ -2063,11 +2063,16 @@ class ObjectsInRedisClient {
                 const obj = objs.shift();
                 const message = JSON.stringify(obj);
                 try {
-                    await this.client.set(id, message);
-                    // add the object to the set
                     if (obj.type) {
                         // e.g. _design/ has no type
-                        await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+                        // add the object to the set + set object atomic
+                        await this.client.multi()
+                            .set(id, message)
+                            .sadd(`${this.setNamespace}object.type.${obj.type}`, id)
+                            .exec();
+                    } else {
+                        // only set
+                        await this.client.set(id, message);
                     }
                     await this.client.publish(id, message);
                 } catch (e) {
@@ -2744,10 +2749,16 @@ class ObjectsInRedisClient {
         try {
             const message = JSON.stringify(obj);
 
-            await this.client.set(this.objNamespace + id, message);
             if (obj.type) {
                 // e.g. _design/ has no type
-                await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
+                // add the object to the set + set object atomic
+                await this.client.multi()
+                    .set(this.objNamespace + id, message)
+                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                    .exec();
+            } else {
+                // only set
+                await this.client.set(this.objNamespace + id, message);
             }
 
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
@@ -2837,11 +2848,18 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
         } else {
             try {
-                await this.client.del(this.objNamespace + id);
                 if (oldObj.type) {
                     // e.g. _design/ has no type
-                    await this.client.srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id);
+                    // del the object from the set + del object atomic
+                    await this.client.multi()
+                        .del(this.objNamespace + id)
+                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                        .exec();
+                } else {
+                    // only del
+                    await this.client.del(this.objNamespace + id);
                 }
+
                 // object has been deleted -> remove from cached meta if there
                 if (this.existingMetaObjects[id]) {
                     this.existingMetaObjects[id] = false;
@@ -3558,15 +3576,28 @@ class ObjectsInRedisClient {
         const message = JSON.stringify(oldObj);
 
         try {
-            await this.client.set(this.objNamespace + id, message);
-            if (obj.type && (!oldObj || (oldObj && oldObj.type !== obj.type))) {
-                // obj.type needs to exist and oldObj had different type, else it's already in set
-                await this.client.sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id);
-            }
-
-            if (oldObj && oldObj.type && oldObj.type !== obj.type) {
-                // we need to remove from old set if it differs
-                await this.client.srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id);
+            if (obj.type && (!oldObj || !oldObj.type)) {
+                // new object or oldObj had no type -> add to set + set object
+                await this.client.multi()
+                    .set(this.objNamespace + id, message)
+                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                    .exec();
+            } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
+                // the old obj had a type which differs from the new type -> rem old, add new
+                await this.client.multi()
+                    .set(this.objNamespace + id, message)
+                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                    .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                    .exec();
+            } else if (oldObj && oldObj.type && !obj.type) {
+                // the oldObj had a type, the new one has no -> rem
+                await this.client.multi()
+                    .set(this.objNamespace + id, message)
+                    .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                    .exec();
+            } else {
+                // just set type is equal
+                await this.client.set(this.objNamespace + id, message);
             }
 
             // extended -> if its now type meta and currently marked as not -> cache
