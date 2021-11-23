@@ -802,7 +802,7 @@ async function processCommand(command, args, params, callback) {
                                 }
                                 return void callback();
                             } catch (err) {
-                                console.error(`Cannot upload files "${name}": ${err}`);
+                                console.error(`Cannot upload files "${name}": ${err.message}`);
                                 return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
                             }
                         }
