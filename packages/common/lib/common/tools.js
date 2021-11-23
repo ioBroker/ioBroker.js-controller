@@ -2324,16 +2324,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
 async function removeIdFromAllEnums(objects, id, allEnums) {
 
     if (!allEnums) {
-        allEnums = {};
-        const res = await objects.getObjectViewAsync('system', 'enum', {
-            startkey: 'enum.',
-            endkey: 'enum.\u9999'
-        });
-        if (res && res.rows) {
-            for (const row of res.rows) {
-                allEnums[row.id] = row.value;
-            }
-        }
+        allEnums = await this.getAllEnums(objects);
     }
 
     let error = null;
@@ -2502,6 +2493,27 @@ function getAllInstances(adapters, objects, callback) {
         callback(null, instances);
         callback = null;
     }
+}
+
+/**
+ * Get all existing enums
+ *
+ * @param {object} objects - objects db
+ * @returns {Promise<{}>}
+ */
+async function getAllEnums(objects) {
+    const allEnums = {};
+    const res = await objects.getObjectViewAsync('system', 'enum', {
+        startkey: 'enum.',
+        endkey: 'enum.\u9999'
+    });
+    if (res && res.rows) {
+        for (const row of res.rows) {
+            allEnums[row.id] = row.value;
+        }
+    }
+
+    return allEnums;
 }
 
 /**
@@ -3181,6 +3193,7 @@ module.exports = {
     FORBIDDEN_CHARS,
     getControllerDir,
     getLogger,
+    getAllEnums,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,

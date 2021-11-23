@@ -348,10 +348,19 @@ module.exports = class CLIObjects extends CLICommand {
         if (!ids || !ids.length) {
             return tools.maybeCallback(callback);
         } else {
+            let allEnums;
+
+            try {
+                // cache all enums, else it will be slow to delete many objects
+                allEnums = await tools.getAllEnums(objects);
+            } catch (e) {
+                console.error(`Could not retrieve all enums: ${e.message}`);
+            }
+
             for (const id of ids) {
                 try {
                     await objects.delObjectAsync(id);
-                    await tools.removeIdFromAllEnums(objects, id);
+                    await tools.removeIdFromAllEnums(objects, id, allEnums);
                 } catch (e) {
                     console.warn(`Could not delete object or remove "${id}" from enums: ${e.message}`);
                 }

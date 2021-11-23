@@ -1247,6 +1247,17 @@ function Install(options) {
             console.log('host.' + hostname + ' Deleting ' + objIDs.length + ' object(s).');
         }
 
+        let allEnums;
+
+        if (objIDs.length > 1) {
+            try {
+                // cache all enums, else it will be slow to delete many objects
+                allEnums = await tools.getAllEnums(objects);
+            } catch (e) {
+                console.error(`host.${hostname}: Could not retrieve all enums: ${e.message}`);
+            }
+        }
+
         while (objIDs.length > 0) {
             if (objIDs.length % 200 === 0) {
                 // write progress report
@@ -1256,7 +1267,7 @@ function Install(options) {
             try {
                 const id = objIDs.pop();
                 await delObjectAsync(id);
-                await tools.removeIdFromAllEnums(objects, id);
+                await tools.removeIdFromAllEnums(objects, id, allEnums);
             } catch (e) {
                 e !== tools.ERRORS.ERROR_NOT_FOUND && e.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error('host.' + hostname + ' error: ' + e);
             }
