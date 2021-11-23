@@ -797,6 +797,13 @@ function getInstalledInfo(hostRunningVersion) {
     ) {
         scanDirectory(path.join(__dirname, '../..'), result, regExp);
     }
+    // Warning! Do not checkin this code
+    if (
+        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
+        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName}.js-controller`))
+    ) {
+        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
+    }
 
     return result;
 }
