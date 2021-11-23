@@ -2749,12 +2749,24 @@ class ObjectsInRedisClient {
         try {
             const message = JSON.stringify(obj);
 
-            if (obj.type) {
-                // e.g. _design/ has no type
-                // add the object to the set + set object atomic
+            if (obj.type && (!oldObj || !oldObj.type)) {
+                // new object or oldObj had no type -> add to set + set object
                 await this.client.multi()
                     .set(this.objNamespace + id, message)
                     .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                    .exec();
+            } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
+                // the old obj had a type which differs from the new type -> rem old, add new
+                await this.client.multi()
+                    .set(this.objNamespace + id, message)
+                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                    .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                    .exec();
+            } else if (oldObj && oldObj.type && !obj.type) {
+                // the oldObj had a type, the new one has no -> rem
+                await this.client.multi()
+                    .set(this.objNamespace + id, message)
+                    .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
                     .exec();
             } else {
                 // only set
@@ -3518,6 +3530,8 @@ class ObjectsInRedisClient {
             delete oldObj.common.custom;
         }
 
+        // we need to check if type has changed
+        const oldType = oldObj.type;
         oldObj = extend(true, oldObj, obj);
         oldObj._id = id;
 
@@ -3576,20 +3590,21 @@ class ObjectsInRedisClient {
         const message = JSON.stringify(oldObj);
 
         try {
-            if (obj.type && (!oldObj || !oldObj.type)) {
+            // what is called oldObj is acutally the obj we set, because it has been extended
+            if (oldObj.type && !oldType) {
                 // new object or oldObj had no type -> add to set + set object
                 await this.client.multi()
                     .set(this.objNamespace + id, message)
                     .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
                     .exec();
-            } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
+            } else if (oldObj.type && oldType && oldObj.type !== oldType) {
                 // the old obj had a type which differs from the new type -> rem old, add new
                 await this.client.multi()
                     .set(this.objNamespace + id, message)
                     .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
                     .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
                     .exec();
-            } else if (oldObj && oldObj.type && !obj.type) {
+            } else if (oldType && !oldObj.type) {
                 // the oldObj had a type, the new one has no -> rem
                 await this.client.multi()
                     .set(this.objNamespace + id, message)
