@@ -790,7 +790,7 @@ async function processCommand(command, args, params, callback) {
                                 console.log(`File "${name}" is successfully saved under ${newName}`);
                                 return void callback();
                             } catch (err) {
-                                console.error(`Cannot upload file "${name}": ${err}`);
+                                console.error(`Cannot upload file "${name}": ${err.message}`);
                                 return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
                             }
                         } else {
