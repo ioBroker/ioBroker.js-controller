@@ -3008,9 +3008,9 @@ class ObjectsInRedisClient {
                 }
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.script, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([this.scripts.script, 5, this.objNamespace, params.startkey, params.endkey, cursor, `${this.setNamespace}object.type.script`]);
                 } catch (e) {
-                    this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
+                    this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
@@ -3050,7 +3050,7 @@ class ObjectsInRedisClient {
 
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.programs, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([this.scripts.programs, 5, `${this.objNamespace}hm-rega.`, params.startkey, params.endkey, cursor, `${this.setNamespace}object.type.channel`]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                 }
@@ -3092,7 +3092,7 @@ class ObjectsInRedisClient {
 
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.variables, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([this.scripts.variables, 5, `${this.objNamespace}hm-rega.`, params.startkey, params.endkey, cursor, `${this.setNamespace}object.type.state`]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view ${e.message}`);
                 }
@@ -3133,7 +3133,7 @@ class ObjectsInRedisClient {
                 }
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.custom, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([this.scripts.custom, 5, this.objNamespace, params.startkey, params.endkey, cursor, `${this.setNamespace}object.type.state`]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                 }
