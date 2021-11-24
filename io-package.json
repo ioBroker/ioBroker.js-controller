@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.3.19",
+        "version": "3.3.20",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.3.20": {
+                "en": "Fixed the multihost functionality",
+                "de": "Die Multihost-Funktionalität behoben",
+                "ru": "Исправлена работа с несколькими хостами.",
+                "pt": "Corrigida a funcionalidade multihost",
+                "nl": "De multihost-functionaliteit opgelost",
+                "fr": "Correction de la fonctionnalité multi-hôte",
+                "it": "Risolto il problema con la funzionalità multihost",
+                "es": "Se corrigió la funcionalidad de host múltiple.",
+                "pl": "Naprawiono funkcjonalność multihost",
+                "zh-cn": "修复了多主机功能"
+            },
             "3.3.19": {
                 "en": "we fixed a crash due to multilingual instance objects",
                 "de": "wir haben einen Absturz aufgrund mehrsprachiger Instanzobjekte behoben",

@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 3.3.20 (2021-11-24)
 * (Apollon77) Fixed the multihost functionality
 
 ## 3.3.19 (2021-11-17)
