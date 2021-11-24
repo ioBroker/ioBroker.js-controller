@@ -2445,6 +2445,7 @@ function unsetup(params, callback) {
                     obj.common.licenseConfirmed = false;
                     obj.common.language = '';
                     // allow with parameter --keepsecret to not delete the secret
+                    // This is very specific use case for vendors and must not be described in documentation
                     if (!params.keepsecret) {
                         obj.native && delete obj.native.secret;
                     }
