@@ -159,7 +159,9 @@ function _startMultihost(_config, secret) {
  * @returns {boolean|void}
  */
 function startMultihost(__config) {
-    if (compactGroupController) {
+    const objectData = objects.getStatus();
+    // only main host controller needs to check/fix the host assignments from the instances
+    if (compactGroupController || !objectData.server) {
         return;
     }
 
