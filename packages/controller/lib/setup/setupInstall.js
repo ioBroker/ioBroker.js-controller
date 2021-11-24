@@ -109,7 +109,7 @@ function Install(options) {
         !count && callback();
     }
 
-    this.downloadPacket = function (repoUrl, packetName, options, stoppedList, callback) {
+    this.downloadPacket = async function (repoUrl, packetName, options, stoppedList, callback) {
         let url;
         if (!options || typeof options !== 'object') {
             options = {};
@@ -121,10 +121,12 @@ function Install(options) {
         }
 
         if (!repoUrl || typeof repoUrl !== 'object') {
-            return getRepository(repoUrl, params)
-                .then(result =>
-                    this.downloadPacket(result.json, packetName, options, stoppedList, callback))
-                .catch(err => processExit(err));
+            try {
+                const res = await getRepository(repoUrl, params);
+                return this.downloadPacket(res, packetName, options, stoppedList, callback);
+            } catch (e) {
+                return processExit(e);
+            }
         }
 
         let debug = false;
