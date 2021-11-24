@@ -3,6 +3,8 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (Apollon77) Fixed the multihost functionality
 
 ## 3.3.19 (2021-11-17)
 * (foxriver76) we fixed a crash due to multilingual instance objects
