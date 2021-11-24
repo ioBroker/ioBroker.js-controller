@@ -2330,7 +2330,7 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
             enumObj.common.members.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
-                // update cache directly too to prevent race conditions when sending many delete in a short time
+                // update cache directly to prevent race conditions when sending many delete in a short time
                 allEnums[enumId] = enumObj;
             } catch (err) {
                 if (!error) {

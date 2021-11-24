@@ -568,7 +568,6 @@ function Upgrade(options) {
                     return callback && callback();
                 } else {
                     return this.upgradeController(res, forceDowngrade, controllerRunning, callback);
-
                 }
             } catch (e) {
                 return processExit(e);
