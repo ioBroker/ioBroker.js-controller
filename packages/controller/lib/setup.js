@@ -2444,7 +2444,10 @@ function unsetup(params, callback) {
                 if (obj.common.licenseConfirmed || obj.common.language || (obj.native && obj.native.secret)) {
                     obj.common.licenseConfirmed = false;
                     obj.common.language = '';
-                    obj.native && delete obj.native.secret;
+                    // allow with parameter --keepsecret to not delete the secret
+                    if (!params.keepsecret) {
+                        obj.native && delete obj.native.secret;
+                    }
 
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = new Date().getTime();
