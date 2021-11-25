@@ -8416,8 +8416,12 @@ function Adapter(options) {
 
                         if (options.instance === undefined) {
                             this.version = (this.pack && this.pack.version) ? this.pack.version : ((this.ioPack && this.ioPack.common) ? this.ioPack.common.version : 'unknown');
+                            // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                            const isNpmVersion = !this.ioPack || !this.ioPack.common ||
+                                typeof this.ioPack.common.installedFrom !== 'string' ||
+                                this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
 
-                            logger.info(`${this.namespaceLog} starting. Version ${this.version} in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
+                            logger.info(`${this.namespaceLog} starting. Version ${this.version} ${!isNpmVersion ? '(non-npm) ' : ''}in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
                             config.system = config.system || {};
                             config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
                             if (!config.isInstall) {
