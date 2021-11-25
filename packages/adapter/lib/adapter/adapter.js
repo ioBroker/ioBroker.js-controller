@@ -508,7 +508,7 @@ function Adapter(options) {
         const type = typeof id;
 
         if (!isForeignId && type === 'number') {
-            logger.warn(`${this.namespaceLog} The id "${id}" has an invalid type!: Expected "string" or "object", received "number".`);
+            logger.warn(`${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`);
             logger.warn(`${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`);
         } else if (type !== 'string' && !tools.isObject(id)) {
             throw new Error(`The id "${id}" has an invalid type! Expected "string" or "object", received "${type}".`);
@@ -2924,6 +2924,10 @@ function Adapter(options) {
          *        </code></pre>
          */
         this.getForeignObjects = (pattern, type, enums, options, callback) => {
+            if (typeof pattern !== 'string') {
+                return tools.maybeCallbackWithError(callback, new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`));
+            }
+
             if (typeof options === 'function') {
                 callback = options;
                 options = null;
@@ -4058,7 +4062,7 @@ function Adapter(options) {
             }
 
             if (!obj || obj.type !== 'channel') {
-                // it's not a device, so return but no error
+                // it's not a channel, so return but no error
                 return tools.maybeCallback(callback);
             }
 
