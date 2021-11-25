@@ -12,10 +12,7 @@ local argEnd = KEYS[1] .. KEYS[3]
 for _, key in ipairs(keys) do
     if (key >= argStart and key < argEnd) then
         local obj = redis.call("get", key)
-        local success, decoded = pcall(cjson.decode, obj)
-        if (success) then
-            rep[#rep + 1] = obj
-        end
+        rep[#rep + 1] = obj
     end
 end
 return { rep, cursor }
