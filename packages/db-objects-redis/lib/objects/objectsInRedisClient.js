@@ -3911,39 +3911,13 @@ class ObjectsInRedisClient {
      * Get all keys matching a pattern using redis SCAN command, duplicates are filtered out
      *
      * @param {string} pattern - pattern to match, e. g. io.hm-rpc.0*
-     * @param {number} count - count argument used by redis SCAN, default is 500
+     * @param {number} count - count argument used by redis SCAN, default is 250
      * @return {Promise<string[]>}
      * @private
      */
     _getKeysViaScan(pattern, count = 250) {
         return new Promise(resolve => {
             const stream = this.client.scanStream({match: pattern, count: count});
-            let uniqueKeys = [];
-
-            stream.on('data', resultKeys => {
-                // append result keys to uniqueKeys without duplicates
-                uniqueKeys = [...uniqueKeys, ...resultKeys];
-            });
-
-            stream.on('end', () => {
-                // return without duplicates
-                resolve(Array.from(new Set(uniqueKeys)));
-            });
-        });
-    }
-
-    /**
-     * Get all keys matching from a Set via pattern using redis SSCAN command, duplicates are filtered out
-     *
-     * @param {string} pattern - pattern to match, e.g. io.hm-rpc.0*
-     * @param {string} key - key of the Set
-     * @param {number} count - count argument used by redis SCAN, default is 500
-     * @return {Promise<string[]>}
-     * @private
-     */
-    _getKeysViaSScan(pattern, key, count = 250) {
-        return new Promise(resolve => {
-            const stream = this.client.sscanStream(key, {match: pattern, count: count});
             let uniqueKeys = [];
 
             stream.on('data', resultKeys => {
