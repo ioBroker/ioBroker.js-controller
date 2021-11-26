@@ -10,8 +10,7 @@ local argEnd = KEYS[1] .. KEYS[3]
 -- function(doc) { if (doc.type === "chart") emit(doc._id, doc); }
 for _, key in ipairs(keys) do
     if (key >= argStart and key < argEnd) then
-        local obj = redis.call("get", key)
-        rep[#rep + 1] = obj
+        rep[#rep + 1] = redis.call("get", key)
     end
 end
 return { rep, cursor }

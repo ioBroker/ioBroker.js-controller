@@ -11,8 +11,7 @@ local argEnd = KEYS[1] .. KEYS[3]
 --      if (doc.type === "script" && doc.common.engineType.match(/^[jJ]ava[sS]cript|^[cC]offee[sS]cript|^[tT]ype[sS]cript|^Blockly/)) emit(doc.common.name, doc); }
 for _, key in ipairs(keys) do
     if (key >= argStart and key < argEnd) then
-        local obj = redis.call("get", key)
-        rep[#rep + 1] = obj
+        rep[#rep + 1] = redis.call("get", key)
     end
 end
 return { rep, cursor }
