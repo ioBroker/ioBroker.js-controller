@@ -160,7 +160,7 @@ function _startMultihost(_config, secret) {
  * @param {object} __config - the iobroker config object
  * @returns {boolean|void}
  */
-function startMultihost(__config) {
+async function startMultihost(__config) {
     if (compactGroupController) {
         return;
     }
@@ -194,20 +194,31 @@ function startMultihost(__config) {
 
         if (_config.multihostService.secure) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
-                objects.getObject('system.config', (err, obj) => {
-                    if (obj && obj.native && obj.native.secret) {
-                        if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
-                            // if old encryption was used, we need to decrypt in old fashion
-                            tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                                _startMultihost(_config, secret));
-                        } else {
+                let obj, errText;
+                try {
+                    obj = await objects.getObjectAsync('system.config');
+                } catch (e) {
+                    // will log error below
+                    errText = e.message;
+                }
+
+                if (obj && obj.native && obj.native.secret) {
+                    if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
+                        // if old encryption was used, we need to decrypt in old fashion
+                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                            _startMultihost(_config, secret));
+                    } else {
+                        try {
+                            // it can throw in edge cases #1474, we need further investigation
                             const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
                             _startMultihost(_config, secret);
+                        } catch (e) {
+                            logger.error(`${hostLogPrefix} Cannot decrypt password for multihost discovery server: ${e.message}`);
                         }
-                    } else {
-                        logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                     }
-                });
+                } else {
+                    logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err: ${errText})`);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Cannot start multihost discovery server: secure mode was configured, but no secret was set. Please check the configuration!`);
             }
@@ -227,7 +238,7 @@ function startMultihost(__config) {
                         const configFile = tools.getConfigFileName();
                         await fs.writeFile(configFile, JSON.stringify(_config, null, 2));
                     } catch (e) {
-                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                     }
                 }
                 mhTimer = null;
@@ -240,7 +251,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
         }
         return false;
     }
