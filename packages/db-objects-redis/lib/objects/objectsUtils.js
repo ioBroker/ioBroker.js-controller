@@ -580,7 +580,7 @@ function checkObjectRights(objects, id, object, options, flag, callback) {
     }
 
     // if user or group objects
-    if (id.startsWith(userStartsWith) || id.startsWith(groupStartsWith)) {
+    if (typeof id === 'string' && (id.startsWith(userStartsWith) || id.startsWith(groupStartsWith))) {
         // If user may write
         if (flag === ACCESS_WRITE && !options.acl.users.write) {// write
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
