@@ -1446,7 +1446,7 @@ async function processCommand(command, args, params, callback) {
             const command = args[0] || '';
             let user    = args[1] || '';
 
-            if (user && user.match(/^system\.user\./)) {
+            if (user && user.startsWith('system.user.')) {
                 user = user.substring('system.user.'.length);
             }
 
@@ -1543,11 +1543,11 @@ async function processCommand(command, args, params, callback) {
             let group   = args[1] || '';
             let user    = args[2] || '';
 
-            if (group && group.match(/^system\.group\./)) {
+            if (group && group.startsWith('system.group.')) {
                 group = group.substring('system.group.'.length);
             }
-            if (user  && user.match(/^system\.user\./))   {
-                user  = user.substring('system.user.'.length);
+            if (user && user.startsWith('system.user.')) {
+                user = user.substring('system.user.'.length);
             }
             if (!command) {
                 console.warn('Unknown command "' + command + '". Available commands are: add, del, passwd, enable, disable, list, get');
@@ -1789,7 +1789,7 @@ async function processCommand(command, args, params, callback) {
                     if (!err && obj) {
                         let changed = false;
                         for (let a = 0; a < process.argv.length; a++) {
-                            if (process.argv[a].match(/^--/) && process.argv[a + 1] && !process.argv[a + 1].match(/^--/)) {
+                            if (process.argv[a].startsWith('--') && process.argv[a + 1] && !process.argv[a + 1].startsWith('--')) {
                                 const attr = process.argv[a].substring(2);
                                 /** @type {number | string | boolean} */
                                 let val = process.argv[a + 1];
@@ -1851,7 +1851,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'visdebug': {
             let widgetset = args[0];
-            if (widgetset && widgetset.match('/^vis-/')) {
+            if (widgetset && widgetset.startsWith('vis-')) {
                 widgetset = widgetset.substring(4);
             }
 

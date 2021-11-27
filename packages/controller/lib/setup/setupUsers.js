@@ -154,11 +154,11 @@ function Users(options) {
 
     this.addUserToGroup = function (user, group, callback) {
         let _user = user.replace(/\s/g, '_').toLowerCase();
-        if (!group.match(/^system\.group\./)) {
-            group = 'system.group.' + group;
+        if (!group.startsWith('system.group.')) {
+            group = `system.group.${group}`;
         }
-        if (!_user.match(/^system\.user\./)) {
-            _user = 'system.user.' + _user;
+        if (!_user.startsWith('system.user.')) {
+            _user = `system.user.${_user}`;
         }
 
         objects.getObject(_user, (err, obj) => {
@@ -342,7 +342,7 @@ function Users(options) {
             typeof callback === 'function' && callback('Please define user name, like: "enable username"');
             return;
         }
-        if (user.match(/^system\.user\./)) {
+        if (user.startsWith('system.user.')) {
             user = user.substring('system.user.'.length);
         }
 
@@ -468,7 +468,7 @@ function Users(options) {
             typeof callback === 'function' && callback('Please define group name, like: "enable groupname"');
             return;
         }
-        if (group.match(/^system\.group\./)) {
+        if (group.startsWith('system.group.')) {
             group = group.substring('system.group.'.length);
         }
 

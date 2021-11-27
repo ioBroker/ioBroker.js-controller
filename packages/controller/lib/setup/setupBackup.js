@@ -278,7 +278,7 @@ class BackupRestore {
         try {
             const keys = await this.states.getKeys('*');
             /*for (const i = keys.length - 1; i >= 0; i--) {
-                    if (keys[i].match(/^messagebox\./) || keys[i].match(/^log\./)) {
+                    if (keys[i].startsWith('messagebox.') || keys[i].startsWith('log.')) {
                     keys.splice(i, 1);
                 }
                 }*/
@@ -462,9 +462,9 @@ class BackupRestore {
             // Disable all adapters.
             if (!this.dbMigration
                 && _objects[i].id
-                && _objects[i].id.match(/^system\.adapter\./)
-                && !_objects[i].id.match(/^system\.adapter\.admin\./)
-                && !_objects[i].id.match(/^system\.adapter\.backitup\./)) {
+                && _objects[i].id.startsWith('system.adapter.')
+                && !_objects[i].id.startsWith('system.adapter.admin.')
+                && !_objects[i].id.startsWith('system.adapter.backitup.')) {
                 if (_objects[i].doc.common && _objects[i].doc.common.enabled) {
                     _objects[i].doc.common.enabled = false;
                 }
