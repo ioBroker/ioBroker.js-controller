@@ -3,6 +3,10 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+## __WORK IN PROGRESS__
+* (foxriver76) we now fixed the multihost functionality in the correct spot
+
 ## 3.3.20 (2021-11-24)
 * (Apollon77) Fixed the multihost functionality
 

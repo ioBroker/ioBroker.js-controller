@@ -159,9 +159,7 @@ function _startMultihost(_config, secret) {
  * @returns {boolean|void}
  */
 function startMultihost(__config) {
-    const objectData = objects.getStatus();
-    // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController || !objectData.server) {
+    if (compactGroupController) {
         return;
     }
 
@@ -939,8 +937,10 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
-    // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController) {
+    const objectData = objects.getStatus();
+    // only file master host controller needs to check/fix the host assignments from the instances
+    // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
+    if (compactGroupController || !objectData.server) {
         return callback && callback();
     }
 
