@@ -966,10 +966,10 @@ async function processCommand(command, args, params, callback) {
                     // upgrade all
                     try {
                         const links = await getRepository();
-                        if (!links || !links.json) {
+                        if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                        upgrade.upgradeAdapterHelper(links.json, Object.keys(links.json).sort(), false, params.y || params.yes, callback);
+                        upgrade.upgradeAdapterHelper(links, Object.keys(links).sort(), false, params.y || params.yes, callback);
                     } catch (e) {
                         console.error(e);
                         return void callback(EXIT_CODES.INVALID_REPO);

@@ -268,10 +268,12 @@ function Upgrade(options) {
      */
     this.upgradeAdapter = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll, callback) {
         if (!repoUrl || typeof repoUrl !== 'object') {
-            return getRepository(repoUrl, params)
-                .then(result =>
-                    this.upgradeAdapter(result.json,  adapter, forceDowngrade, autoConfirm, upgradeAll, callback))
-                .catch(err => processExit(err));
+            try {
+                const res = await getRepository(repoUrl, params);
+                return this.upgradeAdapter(res, adapter, forceDowngrade, autoConfirm, upgradeAll, callback);
+            } catch (e) {
+                return processExit(e);
+            }
         }
 
         const finishUpgrade = (name, iopack, callback) => {
@@ -553,22 +555,23 @@ function Upgrade(options) {
         }
     };
 
-    this.upgradeController = function (repoUrl, forceDowngrade, controllerRunning, callback) {
+    this.upgradeController = async function (repoUrl, forceDowngrade, controllerRunning, callback) {
         if (typeof controllerRunning === 'function') {
             callback = controllerRunning;
             controllerRunning = false;
         }
         if (!repoUrl || typeof repoUrl !== 'object') {
-            return getRepository(repoUrl, params)
-                .then(result => {
-                    if (!result || !result.json) {
-                        console.warn(`Cannot get repository under "${repoUrl}"`);
-                        callback && callback();
-                    } else {
-                        this.upgradeController(result.json, forceDowngrade, controllerRunning, callback);
-                    }
-                })
-                .catch(err => processExit(err));
+            try {
+                const res = await getRepository(repoUrl, params);
+                if (!res) {
+                    console.warn(`Cannot get repository under "${repoUrl}"`);
+                    return callback && callback();
+                } else {
+                    return this.upgradeController(res, forceDowngrade, controllerRunning, callback);
+                }
+            } catch (e) {
+                return processExit(e);
+            }
         }
 
         const installed = fs.readJSONSync(`${__dirname}/../../io-package.json`);

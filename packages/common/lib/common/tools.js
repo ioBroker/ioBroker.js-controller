@@ -729,15 +729,10 @@ function getInstalledInfo(hostRunningVersion) {
         };
     }
 
-    scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
-    scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
+    // we scan the sub node modules of controller and same hierarchy as controller
+    scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
+    scanDirectory(path.join(fullPath, '..' ), result, regExp);
 
-    if (
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName}.js-controller`))
-    ) {
-        scanDirectory(path.join(__dirname, '../..'), result, regExp);
-    }
     return result;
 }
 
@@ -2335,7 +2330,7 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
             enumObj.common.members.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
-                // update cache directly too to prevent race conditions when sending many delete in a short time
+                // update cache directly to prevent race conditions when sending many delete in a short time
                 allEnums[enumId] = enumObj;
             } catch (err) {
                 if (!error) {
