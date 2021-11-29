@@ -329,7 +329,7 @@ function createStates(onConnect) {
                 return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
             }
             // If some log transporter activated or deactivated
-            if (id.match(/.logging$/)) {
+            if (id.endsWith('.logging')) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
             } else
             // If this is messagebox, only the main controller is handling the host messages
@@ -3552,7 +3552,7 @@ async function startInstance(id, wakeUp) {
             subscribe[procs[id].subscribe] = [id];
 
             // Subscribe on changes
-            if (procs[id].subscribe.match(/^messagebox\./)) {
+            if (procs[id].subscribe.startsWith('messagebox.')) {
                 states.subscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
             } else {
                 states.subscribe(procs[id].subscribe);
@@ -4180,7 +4180,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
@@ -4347,7 +4347,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);

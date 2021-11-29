@@ -16,8 +16,8 @@ const path        = require('path');
 const deepClone   = require('deep-clone');
 const tools       = require('@iobroker/db-base').tools;
 
-const regUser     = /^system\.user\./;
-const regGroup    = /^system\.group\./;
+const userStartsWith     = 'system.user.';
+const groupStartsWith    = 'system.group.';
 const regCheckId  = /[*?[\]]|\$%\$/;
 
 const SYSTEM_ADMIN_USER  = 'system.user.admin';
@@ -332,7 +332,7 @@ function getDefaultAdminRights(acl, _isState) {
 }
 
 function getUserGroup(objects, user, callback) {
-    if (!user || typeof user !== 'string' || !user.match(regUser)) {
+    if (!user || typeof user !== 'string' || !user.startsWith(userStartsWith)) {
         console.log(`invalid user name: ${user}`);
         user = JSON.stringify(user);
         // deep copy
@@ -580,7 +580,7 @@ function checkObjectRights(objects, id, object, options, flag, callback) {
     }
 
     // if user or group objects
-    if (regUser.test(id) || regGroup.test(id)) {
+    if (typeof id === 'string' && (id.startsWith(userStartsWith) || id.startsWith(groupStartsWith))) {
         // If user may write
         if (flag === ACCESS_WRITE && !options.acl.users.write) {// write
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);

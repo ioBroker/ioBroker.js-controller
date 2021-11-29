@@ -162,7 +162,7 @@ module.exports = class CLIProcess extends CLICommand {
         const daemon = setupDaemonize();
         // On non-Windows OSes start KILLALL script
         // to make sure nothing keeps running
-        if (!require('os').platform().match(/^win/)) {
+        if (!require('os').platform().startsWith('win')) {
             daemon.on('stopped', () => {
                 let data = '';
                 if (fs.existsSync(killAllScriptPath)) {

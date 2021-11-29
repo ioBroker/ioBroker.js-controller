@@ -3860,7 +3860,7 @@ function Adapter(options) {
 
             const objId = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
 
-            if (addTo.match(/^enum\./)) {
+            if (addTo.startsWith('enum.')) {
                 adapterObjects.getObject(addTo, options, (err, obj) => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
@@ -3877,7 +3877,7 @@ function Adapter(options) {
                     }
                 });
             } else {
-                if (enumName.match(/^enum\./)) {
+                if (enumName.startsWith('enum.')) {
                     enumName = enumName.substring(5);
                 }
 
@@ -4351,7 +4351,7 @@ function Adapter(options) {
 
             const objId = this._fixId({device: parentDevice, channel: parentChannel, state: stateName});
 
-            if (addTo.match(/^enum\./)) {
+            if (addTo.startsWith('enum.')) {
                 adapterObjects.getObject(addTo, options, (err, obj) => {
                     if (err || !obj) {
                         return tools.maybeCallbackWithError(callback, err || tools.ERRORS.ERROR_NOT_FOUND);
@@ -4368,7 +4368,7 @@ function Adapter(options) {
                     }
                 });
             } else {
-                if (enumName.match(/^enum\./)) {
+                if (enumName.startsWith('enum.')) {
                     enumName = enumName.substring(5);
                 }
 
@@ -5576,7 +5576,7 @@ function Adapter(options) {
                 }
 
                 // If someone want to have log messages
-                if (this.logList && id.match(/\.logging$/)) {
+                if (this.logList && id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
                     logger && logger.debug(this.namespaceLog + ' ' + instance + ': logging ' + (state ? state.val : false));
                     this.logRedirect(state ? state.val : false, instance);

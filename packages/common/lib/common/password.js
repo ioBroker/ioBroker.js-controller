@@ -47,7 +47,7 @@ const password = pw => {
             // version 0.10 has no 'sha256' and this option must be ignored
             if (version === null) {
                 version = process.version.replace('v', '');
-                version = !version.match(/^0\.10\./);
+                version = !version.startsWith('0.10.');
             }
 
             if (version) {
