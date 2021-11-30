@@ -8421,7 +8421,8 @@ function Adapter(options) {
                                 typeof this.ioPack.common.installedFrom !== 'string' ||
                                 this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
 
-                            logger.info(`${this.namespaceLog} starting. Version ${this.version} ${!isNpmVersion ? '(non-npm) ' : ''}in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
+                            logger.info(`${this.namespaceLog} starting. Version ${this.version} ${!isNpmVersion ?
+                                `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''}in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
                             config.system = config.system || {};
                             config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
                             if (!config.isInstall) {
