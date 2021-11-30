@@ -2053,7 +2053,7 @@ class ObjectsInRedisClient {
 
     async _objectHelper(keys, objs, callback) {
         if (!keys || !keys.length) {
-            typeof callback === 'function' && callback();
+            return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
                 return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);

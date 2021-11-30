@@ -5729,11 +5729,10 @@ function Adapter(options) {
                 message = command;
                 command = 'send';
             }
-            const obj = {command: command, message: message, from: 'system.adapter.' + this.namespace};
+            const obj = {command: command, message: message, from: `system.adapter.${this.namespace}`};
 
             if (typeof instanceName !== 'string' || !instanceName) {
-                typeof callback === 'function' && setImmediate(() => callback('No instanceName provided or not a string'));
-                return;
+                return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
             }
 
             if (!instanceName.startsWith('system.adapter.')) {
