@@ -508,7 +508,7 @@ function Adapter(options) {
         const type = typeof id;
 
         if (!isForeignId && type === 'number') {
-            logger.warn(`${this.namespaceLog} The id "${id}" has an invalid type!: Expected "string" or "object", received "number".`);
+            logger.warn(`${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`);
             logger.warn(`${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`);
         } else if (type !== 'string' && !tools.isObject(id)) {
             throw new Error(`The id "${id}" has an invalid type! Expected "string" or "object", received "${type}".`);
@@ -2924,6 +2924,10 @@ function Adapter(options) {
          *        </code></pre>
          */
         this.getForeignObjects = (pattern, type, enums, options, callback) => {
+            if (typeof pattern !== 'string') {
+                return tools.maybeCallbackWithError(callback, new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`));
+            }
+
             if (typeof options === 'function') {
                 callback = options;
                 options = null;
@@ -4058,7 +4062,7 @@ function Adapter(options) {
             }
 
             if (!obj || obj.type !== 'channel') {
-                // it's not a device, so return but no error
+                // it's not a channel, so return but no error
                 return tools.maybeCallback(callback);
             }
 
@@ -8412,8 +8416,13 @@ function Adapter(options) {
 
                         if (options.instance === undefined) {
                             this.version = (this.pack && this.pack.version) ? this.pack.version : ((this.ioPack && this.ioPack.common) ? this.ioPack.common.version : 'unknown');
+                            // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                            const isNpmVersion = !this.ioPack || !this.ioPack.common ||
+                                typeof this.ioPack.common.installedFrom !== 'string' ||
+                                this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
 
-                            logger.info(`${this.namespaceLog} starting. Version ${this.version} in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
+                            logger.info(`${this.namespaceLog} starting. Version ${this.version} ${!isNpmVersion ?
+                                `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''}in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
                             config.system = config.system || {};
                             config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
                             if (!config.isInstall) {
