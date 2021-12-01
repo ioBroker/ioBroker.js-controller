@@ -39,7 +39,7 @@
     "jszip": "^3.7.0",
     "loadavg-windows": "^1.1.1",
     "mime": "^3.0.0",
-    "node-schedule": "^2.0.0",
+    "node-schedule": "^2.1.0",
     "node.extend": "^2.0.2",
     "pidusage": "^3.0.0",
     "promisify-child-process": "^4.1.1",
