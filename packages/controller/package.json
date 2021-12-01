@@ -31,7 +31,7 @@
     "@iobroker/plugin-sentry": "~1.1.10",
     "axios": "^0.24.0",
     "daemonize2": "^0.4.2",
-    "debug": "^4.3.2",
+    "debug": "^4.3.3",
     "decache": "^4.6.0",
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.0.0",
