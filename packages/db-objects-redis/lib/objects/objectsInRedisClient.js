@@ -3948,19 +3948,26 @@ class ObjectsInRedisClient {
     }
 
     /**
-     * Adds a new member to a given set id
-     * @param {string} setId - id of the redis SET
-     * @param {string} member - id to add to the set
-     * @return {Promise<boolean>}
+     * Migrate all objects to sets
+     * @return {Promise<number>}
      */
-    async addToSet(setId, member) {
+    async migrateToSets() {
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
 
-        // 1 if added else 0 (mostly always part of the set)
-        const added =  await this.client.sadd(this.setNamespace + setId, this.objNamespace + member);
-        return !!added;
+        let noMigrated = 0;
+        // get all objs without using view
+        const objs  = await this.getObjectList({startkey: '', endkey: '\u9999'});
+        for (const obj of objs.rows) {
+            if (obj.value.type) {
+                // e.g. _design/.. has no type
+                // 1 if added else 0 (mostly always part of the set)
+                const migrated = await this.client.sadd(`${this.setNamespace}object.type.${obj.value.type}`, this.objNamespace + obj.id);
+                noMigrated += migrated;
+            }
+        }
+        return noMigrated;
     }
 }
 

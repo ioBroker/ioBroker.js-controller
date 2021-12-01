@@ -229,25 +229,12 @@ function Setup(options) {
             states = _states;
             const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
 
-            // in all casses we need to migrate existing objects to sets if not existing
+            // in all casses we need to ensure that existing objects are migrated to sets
             try {
-                const setExists = await objects.setExists('object.type.state');
+                const noMigrated = await objects.migrateToSets();
 
-                if (!setExists) {
-                    let noMigrated = 0;
-                    // objects are not migrated to sets yet - so get all
-                    const objs  = await objects.getObjectList({startkey: '', endkey: '\u9999'});
-                    for (const obj of objs.rows) {
-                        if (obj.value.type) {
-                            // e.g. _design/.. has no type
-                            const migrated = await objects.addToSet(`object.type.${obj.value.type}`, obj.id);
-                            noMigrated += migrated;
-                        }
-                    }
-
-                    if (noMigrated) {
-                        console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
-                    }
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
                 }
             } catch (e) {
                 console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);

@@ -431,11 +431,10 @@ class BackupRestore {
      *
      * @param {string[]} statesList - list of state ids
      * @param {object[]} stateObjects - list of state objects
-     * @param {() => void} callback
      * @return {Promise<void>}
      * @private
      */
-    async _setStateHelper(statesList, stateObjects, callback) {
+    async _setStateHelper(statesList, stateObjects) {
         for (let i = 0; i < statesList.length; i++) {
             try {
                 await this.states.setRawState(statesList[i], stateObjects[statesList[i]]);
@@ -446,18 +445,16 @@ class BackupRestore {
                 console.log(`host.${hostname} Processed ${i}/${statesList.length} states`);
             }
         }
-        return tools.maybeCallback(callback);
     }
 
     /**
      * Sets all objects to the db and disables all adapters
      *
      * @param {object[]} _objects - array of all objects to be set
-     * @param {() => void} callback - callback function
      * @return {Promise<void>}
      * @private
      */
-    async _setObjHelper(_objects, callback) {
+    async _setObjHelper(_objects) {
         for (let i = 0; i < _objects.length; i++) {
             // Disable all adapters.
             if (!this.dbMigration
@@ -483,7 +480,6 @@ class BackupRestore {
                 console.log(`host.${hostname} Processed ${i}/${_objects.length} objects`);
             }
         }
-        return tools.maybeCallback(callback);
     }
 
     /**
@@ -686,7 +682,7 @@ class BackupRestore {
 
         // stop all adapters
         console.log(`host.${hostname} Clear all objects and states...`);
-        this.cleanDatabase(false, () => {
+        this.cleanDatabase(false, async () => {
             console.log(`host.${hostname} done.`);
             // upload all data into DB
             // restore iobroker.json
@@ -696,30 +692,40 @@ class BackupRestore {
 
             const sList = Object.keys(restore.states);
 
-            this._setStateHelper(sList, restore.states, () => {
-                console.log(`${sList.length} states restored.`);
-                this._setObjHelper(restore.objects, () => {
-                    console.log(`${restore.objects.length} objects restored.`);
-                    // Required for upload adapter
-                    this.mime = this.mime || require('mime');
-                    // Load user files into DB
-                    this.uploadUserFiles(tmpDir + '/backup/files', () => {
-                        //  reload objects of adapters
-                        this.reloadAdaptersObjects(() => {
-                            // Reload host objects
-                            const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
-                            this.reloadAdapterObject(packageIO ? packageIO.objects : null, () => {
-                                // copy all files into iob-data
-                                this.copyBackupedFiles(pathLib.join(tmpDir, 'backup'), () => {
-                                    if (restartOnFinish) {
-                                        this.restartController(callback);
-                                    } else {
-                                        if (callback) {
-                                            callback();
-                                        }
-                                    }
-                                });
-                            });
+            await this._setStateHelper(sList, restore.states);
+            console.log(`${sList.length} states restored.`);
+            await this._setObjHelper(restore.objects);
+            console.log(`${restore.objects.length} objects restored.`);
+
+            // now objects are restored, ensure sets are
+            try {
+                const noMigrated = await this.objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                }
+            } catch (e) {
+                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
+            }
+
+            // Required for upload adapter
+            this.mime = this.mime || require('mime');
+            // Load user files into DB
+            this.uploadUserFiles(tmpDir + '/backup/files', () => {
+                //  reload objects of adapters
+                this.reloadAdaptersObjects(() => {
+                    // Reload host objects
+                    const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+                    this.reloadAdapterObject(packageIO ? packageIO.objects : null, () => {
+                        // copy all files into iob-data
+                        this.copyBackupedFiles(pathLib.join(tmpDir, 'backup'), () => {
+                            if (restartOnFinish) {
+                                this.restartController(callback);
+                            } else {
+                                if (callback) {
+                                    callback();
+                                }
+                            }
                         });
                     });
                 });
