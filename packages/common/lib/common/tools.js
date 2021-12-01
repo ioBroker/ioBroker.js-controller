@@ -2415,7 +2415,7 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
-            throw new Error(`obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`);
+            throw new Error(`obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`);
         }
 
         if (obj.type === 'state') {
