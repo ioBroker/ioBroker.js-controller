@@ -697,17 +697,6 @@ class BackupRestore {
             await this._setObjHelper(restore.objects);
             console.log(`${restore.objects.length} objects restored.`);
 
-            // now objects are restored, ensure sets are
-            try {
-                const noMigrated = await this.objects.migrateToSets();
-
-                if (noMigrated) {
-                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
-                }
-            } catch (e) {
-                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
-            }
-
             // Required for upload adapter
             this.mime = this.mime || require('mime');
             // Load user files into DB
