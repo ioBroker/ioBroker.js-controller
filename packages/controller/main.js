@@ -3686,7 +3686,8 @@ async function startInstance(id, wakeUp) {
                             procs[id].rebuildCounter = procs[id].rebuildCounter || 0;
                             procs[id].rebuildCounter++;
                             if (procs[id].rebuildCounter < 4) {
-                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
+                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild ${procs[id].rebuildPath
+                                    ? `of ${procs[id].rebuildPath} ` : ''}and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
                                     message: { id: instance._id}
@@ -3825,14 +3826,23 @@ async function startInstance(id, wakeUp) {
                                 return;
                             }
                             const text = data.toString();
+
                             // show for debug
                             console.error(text);
                             if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild') || text.includes('Cannot find module')) {
-                                // extract rebuild path - it is always between the two only single quotes
-                                const matches = text.match(/'.+'/g);
-                                if (matches && matches.length === 1 && path.isAbsolute(matches[0])) {
-                                    // we have found a module which needs rebuild
-                                    procs[id].rebuildPath = matches[0];
+                                // only try this at first rebuild
+                                if (!procs[id].rebuildCounter) {
+                                    // extract rebuild path - it is always between the only two single quotes
+                                    const matches = text.match(/'.+'/g);
+
+                                    if (matches && matches.length === 1) {
+                                        // remove the quotes
+                                        const rebuildPath = matches[0].replace(/'/g, '');
+                                        if (path.isAbsolute(rebuildPath)) {
+                                            // we have found a module which needs rebuild
+                                            procs[id].rebuildPath = rebuildPath;
+                                        }
+                                    }
                                 }
                                 procs[id].needsRebuild = true;
                             }
