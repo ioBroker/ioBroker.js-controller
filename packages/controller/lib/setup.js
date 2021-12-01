@@ -750,14 +750,14 @@ async function processCommand(command, args, params, callback) {
 
             if (commandOptions.path) {
                 if (path.isAbsolute(commandOptions.path)) {
-                    options.path = commandOptions.path;
+                    options.cwd = commandOptions.path;
                 } else {
                     console.log('Path argument needs to be an absolute path!');
                     return processExit(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             }
 
-            console.log(`Rebuilding native modules...`);
+            console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
             const result = await tools.rebuildNodeModules(options);
 
             if (result.success) {
