@@ -3696,8 +3696,6 @@ async function startInstance(id, wakeUp) {
                                 if (procs[id].rebuildPath) {
                                     msg.message.path = procs[id].rebuildPath;
                                     delete procs[id].rebuildPath;
-                                    // this is the first try, because path still there, next time try to install
-                                    procs[id].installBeforeRebuild = true;
                                 }
 
                                 if (!compactGroupController) { // execute directly
