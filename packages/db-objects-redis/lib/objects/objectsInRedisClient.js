@@ -527,8 +527,8 @@ class ObjectsInRedisClient {
     getFileId(id, name, isMeta) {
         name = this.normalizeFilename(name);
         // e.g. ekey.admin and admin/ekey.png
-        if (id.match(/\.admin$/)) {
-            if (name.match(/^admin\//)) {
+        if (id.endsWith('.admin')) {
+            if (name.startsWith('admin/')) {
                 name = name.replace(/^admin\//, '');
             } else
             // e.g. ekey.admin and iobroker.ekey/admin/ekey.png
@@ -997,7 +997,7 @@ class ObjectsInRedisClient {
         keys = keys
             .sort()
             .filter(key => {
-                if (key.match(/\$%\$meta$/)) {
+                if (key.endsWith('$%$meta')) {
                     const parts = key.substr(start, key.length - end).split('/');
                     if (parts.length === deepLevel) {
                         return !key.includes('/_data.json$%$') && key !== '_data.json'; // sort out "virtual" files that are used to mark directories
@@ -1193,7 +1193,7 @@ class ObjectsInRedisClient {
 
             keys = keys
                 .sort()
-                .filter(key => key.match(/\$%\$meta$/));
+                .filter(key => key.endsWith('$%$meta'));
 
             if (!keys.length) {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
@@ -1386,7 +1386,7 @@ class ObjectsInRedisClient {
 
             keys = keys
                 .sort()
-                .filter(key => key.match(/\$%\$meta$/));
+                .filter(key => key.endsWith('$%$meta'));
 
             if (!keys.length) {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
@@ -1583,7 +1583,7 @@ class ObjectsInRedisClient {
 
         keys = keys
             .sort()
-            .filter(key => key.match(/\$%\$meta$/));
+            .filter(key => key.endsWith('$%$meta'));
 
         // Check permissions
         let metas;
@@ -1783,7 +1783,7 @@ class ObjectsInRedisClient {
 
         keys = keys
             .sort()
-            .filter(key => key.match(/\$%\$meta$/));
+            .filter(key => key.endsWith('$%$meta'));
 
         // Check permissions
         let objs;

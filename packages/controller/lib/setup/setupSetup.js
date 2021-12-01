@@ -804,7 +804,7 @@ function Setup(options) {
             }
         }
         // Delete files for other OS
-        if (platform.match(/^win/)) {
+        if (platform.startsWith('win')) {
             otherInstallDirs.push(__dirname + '/../../' + tools.appName);
             otherInstallDirs.push(__dirname + '/../../' + tools.appName.substring(0, 3));
             otherInstallDirs.push(__dirname + '/../../killall.sh');

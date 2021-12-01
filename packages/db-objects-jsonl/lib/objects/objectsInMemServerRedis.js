@@ -178,8 +178,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      */
     getFileId(id, name, isMeta) {
         // e.g. ekey.admin and admin/ekey.png
-        if (id.match(/\.admin$/)) {
-            if (name.match(/^admin\//)) {
+        if (id.endsWith('.admin')) {
+            if (name.startsWith('admin/')) {
                 name = name.replace(/^admin\//, '');
             } else
             // e.g. ekey.admin and iobroker.ekey/admin/ekey.png

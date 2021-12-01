@@ -160,7 +160,7 @@ function _startMultihost(_config, secret) {
  * @param {object} __config - the iobroker config object
  * @returns {boolean|void}
  */
-function startMultihost(__config) {
+async function startMultihost(__config) {
     if (compactGroupController) {
         return;
     }
@@ -194,20 +194,31 @@ function startMultihost(__config) {
 
         if (_config.multihostService.secure) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
-                objects.getObject('system.config', (err, obj) => {
-                    if (obj && obj.native && obj.native.secret) {
-                        if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
-                            // if old encryption was used, we need to decrypt in old fashion
-                            tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                                _startMultihost(_config, secret));
-                        } else {
+                let obj, errText;
+                try {
+                    obj = await objects.getObjectAsync('system.config');
+                } catch (e) {
+                    // will log error below
+                    errText = e.message;
+                }
+
+                if (obj && obj.native && obj.native.secret) {
+                    if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
+                        // if old encryption was used, we need to decrypt in old fashion
+                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                            _startMultihost(_config, secret));
+                    } else {
+                        try {
+                            // it can throw in edge cases #1474, we need further investigation
                             const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
                             _startMultihost(_config, secret);
+                        } catch (e) {
+                            logger.error(`${hostLogPrefix} Cannot decrypt password for multihost discovery server: ${e.message}`);
                         }
-                    } else {
-                        logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                     }
-                });
+                } else {
+                    logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err: ${errText})`);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Cannot start multihost discovery server: secure mode was configured, but no secret was set. Please check the configuration!`);
             }
@@ -227,7 +238,7 @@ function startMultihost(__config) {
                         const configFile = tools.getConfigFileName();
                         await fs.writeFile(configFile, JSON.stringify(_config, null, 2));
                     } catch (e) {
-                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                     }
                 }
                 mhTimer = null;
@@ -240,7 +251,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
         }
         return false;
     }
@@ -318,7 +329,7 @@ function createStates(onConnect) {
                 return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
             }
             // If some log transporter activated or deactivated
-            if (id.match(/.logging$/)) {
+            if (id.endsWith('.logging')) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
             } else
             // If this is messagebox, only the main controller is handling the host messages
@@ -939,8 +950,10 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
-    // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController) {
+    const objectData = objects.getStatus();
+    // only file master host controller needs to check/fix the host assignments from the instances
+    // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
+    if (compactGroupController || !objectData.server) {
         return callback && callback();
     }
     objects.getObjectView('system', 'host', {
@@ -3539,7 +3552,7 @@ async function startInstance(id, wakeUp) {
             subscribe[procs[id].subscribe] = [id];
 
             // Subscribe on changes
-            if (procs[id].subscribe.match(/^messagebox\./)) {
+            if (procs[id].subscribe.startsWith('messagebox.')) {
                 states.subscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
             } else {
                 states.subscribe(procs[id].subscribe);
@@ -4167,7 +4180,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
@@ -4334,7 +4347,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);

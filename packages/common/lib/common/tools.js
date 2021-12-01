@@ -729,15 +729,10 @@ function getInstalledInfo(hostRunningVersion) {
         };
     }
 
-    scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
-    scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
+    // we scan the sub node modules of controller and same hierarchy as controller
+    scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
+    scanDirectory(path.join(fullPath, '..' ), result, regExp);
 
-    if (
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName}.js-controller`))
-    ) {
-        scanDirectory(path.join(__dirname, '../..'), result, regExp);
-    }
     return result;
 }
 
@@ -2324,16 +2319,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
 async function removeIdFromAllEnums(objects, id, allEnums) {
 
     if (!allEnums) {
-        allEnums = {};
-        const res = await objects.getObjectViewAsync('system', 'enum', {
-            startkey: 'enum.',
-            endkey: 'enum.\u9999'
-        });
-        if (res && res.rows) {
-            for (const row of res.rows) {
-                allEnums[row.id] = row.value;
-            }
-        }
+        allEnums = await this.getAllEnums(objects);
     }
 
     let error = null;
@@ -2344,6 +2330,8 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
             enumObj.common.members.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
+                // update cache directly to prevent race conditions when sending many delete in a short time
+                allEnums[enumId] = enumObj;
             } catch (err) {
                 if (!error) {
                     error = err;
@@ -2420,6 +2408,9 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
         throw new Error(`obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`);
+    } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
+        // for some types, name needs to be a unique string
+        throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
     if (obj.common.type !== undefined) {
@@ -2500,6 +2491,27 @@ function getAllInstances(adapters, objects, callback) {
         callback(null, instances);
         callback = null;
     }
+}
+
+/**
+ * Get all existing enums
+ *
+ * @param {object} objects - objects db
+ * @returns {Promise<{}>}
+ */
+async function getAllEnums(objects) {
+    const allEnums = {};
+    const res = await objects.getObjectViewAsync('system', 'enum', {
+        startkey: 'enum.',
+        endkey: 'enum.\u9999'
+    });
+    if (res && res.rows) {
+        for (const row of res.rows) {
+            allEnums[row.id] = row.value;
+        }
+    }
+
+    return allEnums;
 }
 
 /**
@@ -3179,6 +3191,7 @@ module.exports = {
     FORBIDDEN_CHARS,
     getControllerDir,
     getLogger,
+    getAllEnums,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,

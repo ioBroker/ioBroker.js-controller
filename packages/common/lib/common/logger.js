@@ -160,7 +160,7 @@ const logger = function (level, files, noStdout, prefix) {
 
         if (userOptions.transport) {
             let fName = 0;
-            const isWindows = os.platform().match(/^win/);
+            const isWindows = os.platform().startsWith('win');
             Object.keys(userOptions.transport).forEach(f => {
                 const transport = userOptions.transport[f];
                 if (transport.type === 'file' && transport.enabled !== false) {
@@ -414,7 +414,7 @@ const logger = function (level, files, noStdout, prefix) {
                                     } catch (e) {
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
-                                            level: os.platform().match(/^win/) ? 'info' : 'error',
+                                            level: os.platform().startsWith('win') ? 'info' : 'error',
                                             message: `host.${hostname} Cannot delete file "${path.normalize(transport.dirname + '/' + files[i])}": ${e}`
                                         });
                                         console.log(`host.${hostname} Cannot delete file "${path.normalize(transport.dirname + '/' + files[i])}": ${e}`);
