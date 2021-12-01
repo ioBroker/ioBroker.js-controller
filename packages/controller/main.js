@@ -3830,8 +3830,8 @@ async function startInstance(id, wakeUp) {
                             // show for debug
                             console.error(text);
                             if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild') || text.includes('Cannot find module')) {
-                                // only try this at first rebuild
-                                if (!procs[id].rebuildCounter) {
+                                // only try this at second rebuild
+                                if (procs[id].rebuildCounter === 1) {
                                     // extract rebuild path - it is always between the only two single quotes
                                     const matches = text.match(/'.+'/g);
 
