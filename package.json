@@ -26,7 +26,7 @@
     "@types/fs-extra": "^9.0.13",
     "@types/iobroker": "^3.3.4",
     "@types/mocha": "^9.0.0",
-    "@types/node": "^16.11.6",
+    "@types/node": "^16.11.11",
     "@types/semver": "^7.3.9",
     "@types/yargs": "^17.0.5",
     "@typescript-eslint/eslint-plugin": "^5.5.0",
