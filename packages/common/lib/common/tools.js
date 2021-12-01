@@ -2418,10 +2418,39 @@ function validateGeneralObjectProperties(obj, extend) {
             throw new Error(`obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`);
         }
 
-        // if object type indicates a state, check that common.type matches
-        const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
-        if (obj.type === 'state' && !allowedStateTypes.includes(obj.common.type)) {
-            throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
+        if (obj.type === 'state') {
+            // if object type indicates a state, check that common.type matches
+            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
+            if (!allowedStateTypes.includes(obj.common.type)) {
+                throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
+            }
+
+            // ensure, that default value has correct type
+            if (obj.common.def !== undefined && obj.common.def !== null) {
+                if (obj.common.type === 'file') {
+                    // defaults are set via setState but would need setBinaryState
+                    throw new Error('Default value is not supported for type "file"');
+                }
+
+                // else do what strictObjectChecks does for val
+                if (!(obj.common.type === 'mixed' && typeof obj.common.def !== 'object' ||
+                    obj.common.type !== 'object' && obj.common.type === typeof obj.common.def ||
+                    obj.common.type === 'array' && typeof obj.common.def === 'string' ||
+                    obj.common.type === 'json' && typeof obj.common.def === 'string' ||
+                    obj.common.type === 'file' && typeof obj.common.def === 'string' ||
+                    obj.common.type === 'object' && typeof obj.common.def === 'string')
+                ) {
+                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
+                    // array, object, json need to be string
+                    if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
+                        throw new Error(`Default value has to be stringified but received type "${typeof obj.common.def}"`);
+                    } else {
+                        throw new Error(`Default value has to be ${obj.common.type === 'mixed'
+                            ? `one of type "string", "number", "boolean"`
+                            : `type "${obj.common.type}"`} but received type "${typeof obj.common.def}" `);
+                    }
+                }
+            }
         }
     }
 
