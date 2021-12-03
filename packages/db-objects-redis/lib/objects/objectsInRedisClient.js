@@ -70,8 +70,6 @@ class ObjectsInRedisClient {
     connectDb() {
         this.settings.connection = this.settings.connection || {};
 
-        const ioRegExp = new RegExp('^' + this.objNamespace.replace(/\./g, '\\.') + '[_A-Za-z0-9ÄÖÜäöüа-яА-Я]+'); // cfg.o.[_A-Za-z0-9]+
-
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
 
@@ -237,7 +235,7 @@ class ObjectsInRedisClient {
                         setImmediate(() => {
                             this.log.silly(`${this.namespace} Objects system redis pmessage ${pattern}/${channel}:${message}`);
                             try {
-                                if (ioRegExp.test(channel)) {
+                                if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                     const id = channel.substring(this.objNamespaceL);
                                     try {
                                         const obj = message ? JSON.parse(message) : null;
@@ -328,7 +326,7 @@ class ObjectsInRedisClient {
                     setImmediate(() => {
                         this.log.silly(this.namespace + ' Objects user redis pmessage ' + pattern + '/' + channel + ':' + message);
                         try {
-                            if (ioRegExp.test(channel)) {
+                            if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                 const id = channel.substring(this.objNamespaceL);
                                 try {
                                     const obj = message ? JSON.parse(message) : null;
