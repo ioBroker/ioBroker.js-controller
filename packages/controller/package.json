@@ -32,7 +32,7 @@
     "axios": "^0.24.0",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.3",
-    "decache": "^4.6.0",
+    "decache": "^4.6.1",
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
