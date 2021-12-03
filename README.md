@@ -221,6 +221,13 @@ The js-controller defines in its io-package the system scope together with all d
   ]
 }
 ```
+### How to define own scopes?
+Each adapter can define its own "scopes" for own notifiations with its own categories which then will be available in the system. 
+Please contact the core development group if you plan to add an own scoe so that scope names can be checked to stay unique.
+The same applies if you see the need to enhance the system scope by additional categories. 
+Let's discuss the requirements that they can also be added officially into upcoming js-controller versions.
+
+A scope and category definition needs to contain all relevant UI texts in the JSON.
 
 #### How to register own notifications?
 An adapter can use the __method__ `registerNotification` to register own notifications to the system. To find out if the used controller version supports this feature, check if the method exists (or require at least js-controller 3.2.0).
