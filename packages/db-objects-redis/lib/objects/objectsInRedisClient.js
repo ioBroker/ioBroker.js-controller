@@ -3893,7 +3893,7 @@ class ObjectsInRedisClient {
             const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
             _scripts = fs.readdirSync(luaPath).map(name => {
                 const shasum = crypto.createHash('sha1');
-                const script = fs.readFileSync(`${luaPath}${name}`);
+                const script = fs.readFileSync(path.join(luaPath, name));
                 shasum.update(script);
                 const hash = shasum.digest('hex');
                 return {name: name.replace(/\.lua$/, ''), text: script, hash};
