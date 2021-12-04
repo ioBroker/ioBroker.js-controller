@@ -24,6 +24,7 @@ const { isDeepStrictEqual } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
+const controllerVersions = {};
 
 let pluginHandler;
 let notificationHandler;
@@ -49,6 +50,7 @@ let States;
 let decache;
 
 const semver                = require('semver');
+const restart = require('./lib/restart');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
@@ -695,6 +697,24 @@ function createObjects(onConnect) {
                             delete hostAdapter[id];
                         }
                     }
+                } else if (obj.type && obj.type === 'host' && obj.common && obj.common.installedVersion) {
+                    // host object changed
+                    // TODO: remove this shim if 4.0 is old enough
+                    if (controllerVersions[id]) {
+                        if (semver.lt(controllerVersions[id], '4.0.0') && semver.gte(obj.common.installedVersion, '4.0.0')) {
+                            // old version lower 4 new version greater 4, restart needed
+                            logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
+                            const restart = require('./lib/restart');
+                            restart();
+                        } else if (semver.gte(controllerVersions[id], '4.0.0') && semver.lt(obj.common.installedVersion, '4.0.0')) {
+                            // controller was above 4 and now below 4
+                            logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
+                            const restart = require('./lib/restart');
+                            restart();
+                        }
+                    }
+
+                    controllerVersions[id] = obj.common.installedVersion;
                 } else if (obj && obj.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
@@ -4747,8 +4767,25 @@ function init(compactGroupId) {
         console.error(`Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);
     }
 
-    createObjects(() => {
+    createObjects(async () => {
         objects.subscribe('system.adapter.*');
+        // TODO: remove this backward shim if controller 4.0 is old enough
+        // subscribe to host objects to detect upgrade from one of the hosts for sets migration
+        objects.subscribe('system.host.*');
+
+        // get the current host versions
+        try {
+            const hostView = await objects.getObjectViewAsync('system', 'host');
+            if (hostView.rows) {
+                for (const row of hostView.rows) {
+                    if (row.value && row.value.common && row.value.common.installedVersion) {
+                        controllerVersions[row.id] = row.value.common.installedVersion;
+                    }
+                }
+            }
+        } catch {
+            // ignore
+        }
 
         // create states object
         createStates( async () => {

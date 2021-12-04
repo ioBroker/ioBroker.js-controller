@@ -412,6 +412,7 @@ class ObjectsInRedisClient {
                         semver.lt(obj.common.installedVersion, '4.0.0')) {
                         // one of the host has a version smaller 4, we have to use legacy db
                         this.useSets = false;
+                        this.log.info('Sets unsupported');
                     }
                 }
             } catch (e) {
@@ -3991,6 +3992,12 @@ class ObjectsInRedisClient {
 
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // to be safe we remove all sets before migration
+        const keys = await this._getKeysViaScan(`${this.setNamespace}object.type.*`);
+        for (const key of keys) {
+            await this.client.del(key);
         }
 
         let noMigrated = 0;
