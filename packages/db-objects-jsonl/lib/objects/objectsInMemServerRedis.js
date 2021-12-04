@@ -795,6 +795,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             } else { // such a request should never happen
                 handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
             }
+        } else if (namespace === this.setNamespace) {
+            handler.sendArray(responseId, isScan ? ['0', []] : []); // send out empty array, we have no sets
         } else {
             handler.sendError(responseId, new Error(`${isScan ? 'SCAN' : 'KEYS'}-UNSUPPORTED for namespace ${namespace}: Pattern=${pattern}`));
         }
