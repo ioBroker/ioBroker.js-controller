@@ -27,17 +27,7 @@ const deepClone             = require('deep-clone');
 const utils                 = require('./objectsUtils.js');
 const semver = require('semver');
 
-function initScriptFiles() {
-    const scripts = {};
-    try {
-        fs.readdirSync(__dirname + '/lib/objects/lua')
-            .forEach(name => scripts[name.replace(/.lua$/, '')] = fs.readFileSync(path.join(__dirname, 'lua', name)).toString('utf8'));
-    } catch {
-        // TODO
-    }
-    return scripts;
-}
-const scriptFiles = initScriptFiles();
+const scriptFiles = {};
 
 class ObjectsInRedisClient {
 
@@ -403,18 +393,21 @@ class ObjectsInRedisClient {
             this.useSets = true;
 
             try {
-                const objs = await this.client.mget(keys);
-                for (const strObj of objs) {
-                    const obj = JSON.parse(strObj);
-                    if (obj && obj.type === 'host' && obj.common && obj.common.installedVersion &&
-                        semver.lt(obj.common.installedVersion, '4.0.0')) {
-                        // one of the host has a version smaller 4, we have to use legacy db
-                        this.useSets = false;
-                        this.log.info('Sets unsupported');
+                if (keys.length) {
+                    // else  no host known yet - so we are single host
+                    const objs = await this.client.mget(keys);
+                    for (const strObj of objs) {
+                        const obj = JSON.parse(strObj);
+                        if (obj && obj.type === 'host' && obj.common && obj.common.installedVersion &&
+                            semver.lt(obj.common.installedVersion, '4.0.0')) {
+                            // one of the host has a version smaller 4, we have to use legacy db
+                            this.useSets = false;
+                            this.log.info('Sets unsupported');
+                        }
                     }
                 }
             } catch (e) {
-                this.log.error(`Cannot determine Lua scripts strategy: ${e.message}`);
+                this.log.error(`Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`);
                 return;
             }
 
