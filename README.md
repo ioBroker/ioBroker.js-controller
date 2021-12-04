@@ -145,26 +145,102 @@ If you want to disable the error reporting you can do this by setting the state 
 
 The notification system in ioBroker allows to set, detect and store notifications per Host and allows to query the details.
 
-Notifications need to be defined in the io-package.json of the adapter in the key "notifications". Notifications are grouped in "scopes" and contain "categories" of different notification types. Notifications can contain a regex for automatic detection in strings or adapter exception texts.
+Notifications need to be defined in the io-package.json of the adapter in the key `notifications`. Notifications are grouped in `scopes` and contain `categories` of different notification types. Notifications can contain a regex for automatic detection in strings or adapter exception texts.
 The definition also contain localized names and descriptions that can be used to display it to the users.
 
 Registered notifications are stored per host and can be requested via messages to the host. They are also stored when the controller stops and loaded on next start.
-Additionally a summary of the stored categories per scope with a number of stored notifications and the last added timestamp is available in the state `system.host.hostname.notifications.scopeid` as a JSON.
+Additionally, a summary of the stored categories per scope with a number of stored notifications and the last added timestamp is available in the state `system.host.hostname.notifications.scopeid` as a JSON.
 
-The js-controller defines in it's io-package the system scope together with all details. You can use this as an example.
+The js-controller defines in its io-package the system scope together with all details. You can use this as an example and the JSON schema will help you validate your notifications.
+
+```json
+{
+  "notifications": [
+    {
+      "scope": "system",
+      "name": {
+        "en": "System Notifications",
+        "de": "System-Benachrichtigungen",
+        "ru": "Системные уведомления",
+        "pt": "Notificações do sistema",
+        "nl": "Systeemmeldingen",
+        "fr": "Notifications système",
+        "it": "Notifiche di sistema",
+        "es": "Notificaciones del sistema",
+        "pl": "Powiadomienia systemowe",
+        "zh-cn": "系统通知"
+      },
+      "description": {
+        "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix.",
+        "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die überprüft und behoben werden sollten.",
+        "ru": "Эти уведомления собираются системой ioBroker и указывают на проблемы, которые вы должны проверить и исправить.",
+        "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir.",
+        "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen.",
+        "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre.",
+        "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere.",
+        "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
+        "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić.",
+        "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
+      },
+      "categories": [
+        {
+          "category": "memIssues",
+          "name": {
+            "en": "Issues with RAM availability",
+            "de": "Probleme mit der Arbeitsspeicher-Verfügbarkeit",
+            "ru": "Проблемы с доступностью оперативной памяти",
+            "pt": "Problemas com disponibilidade de RAM",
+            "nl": "Problemen met de beschikbaarheid van RAM",
+            "fr": "Problèmes de disponibilité de la RAM",
+            "it": "Problemi con la disponibilità della RAM",
+            "es": "Problemas con la disponibilidad de RAM",
+            "pl": "Problemy z dostępnością pamięci RAM",
+            "zh-cn": "RAM可用性问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Your system is running out of memory. Please check the number of running adapters and processes or if single processes need too many memory.",
+            "de": "Es steht nicht genug Arbeitsspeicher zur Verfügung. Die Anzahl der laufenden Adapter und Prozesse sollte geprüft werden, oder ob einzelne Prozesse zuviel Speicher benötigen.",
+            "ru": "В вашей системе не хватает памяти. Пожалуйста, проверьте количество работающих адаптеров и процессов, или если отдельным процессам требуется слишком много памяти.",
+            "pt": "Seu sistema está ficando sem memória. Verifique o número de adaptadores e processos em execução ou se processos únicos precisam de muita memória.",
+            "nl": "Uw systeem heeft onvoldoende geheugen. Controleer het aantal actieve adapters en processen of als afzonderlijke processen te veel geheugen nodig hebben.",
+            "fr": "Votre système manque de mémoire. Veuillez vérifier le nombre d'adaptateurs et de processus en cours d'exécution ou si des processus uniques nécessitent trop de mémoire.",
+            "it": "Il tuo sistema sta esaurendo la memoria. Controllare il numero di adattatori e processi in esecuzione o se i singoli processi richiedono troppa memoria.",
+            "es": "Su sistema se está quedando sin memoria. Verifique el número de adaptadores y procesos en ejecución o si los procesos individuales necesitan demasiada memoria.",
+            "pl": "W Twoim systemie kończy się pamięć. Sprawdź liczbę działających adapterów i procesów lub czy pojedyncze procesy wymagają zbyt dużej ilości pamięci.",
+            "zh-cn": "您的系统内存不足。请检查正在运行的适配器和进程的数量，或者单个进程是否需要太多内存。"
+          },
+          "regex": [
+            "^Exception-Code: ENOMEM",
+            "buffer allocation failed"
+          ],
+          "limit": 10
+        }
+      ]
+    }
+  ]
+}
+```
+### How to define own scopes?
+Each adapter can define its own "scopes" for own notifiations with its own categories which then will be available in the system. 
+Please contact the core development group if you plan to add an own scoe so that scope names can be checked to stay unique.
+The same applies if you see the need to enhance the system scope by additional categories. 
+Let's discuss the requirements that they can also be added officially into upcoming js-controller versions.
+
+A scope and category definition needs to contain all relevant UI texts in the JSON.
 
 #### How to register own notifications?
-An adapter can use the method "registerNotification" to register own notifications to the system. To find out if the used controller version check if the method exists (or require at least js-controller 3.2.0).
+An adapter can use the __method__ `registerNotification` to register own notifications to the system. To find out if the used controller version supports this feature, check if the method exists (or require at least js-controller 3.2.0).
 
 This method takes the following parameters:
 * scope: scope to be addressed
 * category: category - to be addressed, if null message will be checked by regex of given scope
 * message: message to be stored/checked
 
-When a regex is defined then console.error output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches! 
+When a regex is defined then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches! 
 
 #### How to read notifications?
-The host supports the message command "getNotifications" to query the stored notifications together with the localized names and descriptions.
+The host supports the __message__ command `getNotifications` to query the stored notifications together with the localized names and descriptions.
 
 The message needs to take the following parameters in the message object:
 * scopeFilter - scope of notifications
@@ -174,7 +250,7 @@ The message needs to take the following parameters in the message object:
 All three are optional and can be a string or null/undefined if ommited.
 
 #### How to clear notifications?
-The host supports the message command "clearNotifications" to clear specific notifications after they are handled.
+The host supports the __message__ command `clearNotifications` to clear specific notifications after they are handled.
 
 **Please only clear notifications that really were handled and displayed to the user especially for "system" scope!**
 
