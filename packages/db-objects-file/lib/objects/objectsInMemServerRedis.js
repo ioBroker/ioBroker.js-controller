@@ -799,6 +799,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         } else if (namespace === this.setNamespace) {
             handler.sendArray(responseId, isScan ? ['0', []] : []); // send out empty array, we have no sets
         } else {
+            this.log.error('tesssst ' + this.namespaceSet)
             handler.sendError(responseId, new Error(`${isScan ? 'SCAN' : 'KEYS'}-UNSUPPORTED for namespace ${namespace}: Pattern=${pattern}`));
         }
     }
