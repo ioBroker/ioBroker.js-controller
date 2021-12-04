@@ -2652,8 +2652,13 @@ async function processMessage(msg) {
 
         case 'rebuildAdapter':
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
-                logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
-                installQueue.push({id: msg.message.id, rebuild: true});
+                logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
+                const installObj = {id: msg.message.id, rebuild: true};
+                if (msg.message.path) {
+                    installObj.path = msg.message.path;
+                }
+
+                installQueue.push(installObj);
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
 
@@ -3181,10 +3186,12 @@ function installAdapters() {
             installArgs.push(commandScope);
             if (!task.rebuild) {
                 installArgs.push(name);
+            } else if (task.path) {
+                installArgs.push(task.path);
             }
         }
         logger.info(`${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')}`);
-        installArgs.unshift(__dirname + '/' + tools.appName + '.js');
+        installArgs.unshift(`${__dirname}/${tools.appName}.js`);
 
         try {
             task.inProgress = true;
@@ -3699,15 +3706,23 @@ async function startInstance(id, wakeUp) {
                             procs[id].rebuildCounter = procs[id].rebuildCounter || 0;
                             procs[id].rebuildCounter++;
                             if (procs[id].rebuildCounter < 4) {
-                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
+                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild ${procs[id].rebuildPath
+                                    ? `of ${procs[id].rebuildPath} ` : ''}and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
-                                    message: { id: instance._id }
+                                    message: { id: instance._id}
                                 };
+
+                                // if rebuild path given send it
+                                if (procs[id].rebuildPath) {
+                                    msg.message.path = procs[id].rebuildPath;
+                                    delete procs[id].rebuildPath;
+                                }
+
                                 if (!compactGroupController) { // execute directly
                                     processMessage(msg);
                                 } else { // send to main controller to make sure only one npm process runs at a time
-                                    sendTo('system.host.' + hostname, 'rebuildAdapter', msg);
+                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg);
                                 }
                             } else {
                                 logger.info(`${hostLogPrefix} Rebuild for adapter ${id} not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.`);
@@ -3831,9 +3846,24 @@ async function startInstance(id, wakeUp) {
                                 return;
                             }
                             const text = data.toString();
+
                             // show for debug
                             console.error(text);
-                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
+                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild') || text.includes('Cannot find module')) {
+                                // only try this at second rebuild
+                                if (procs[id].rebuildCounter === 1) {
+                                    // extract rebuild path - it is always between the only two single quotes
+                                    const matches = text.match(/'.+'/g);
+
+                                    if (matches && matches.length === 1) {
+                                        // remove the quotes
+                                        const rebuildPath = matches[0].replace(/'/g, '');
+                                        if (path.isAbsolute(rebuildPath)) {
+                                            // we have found a module which needs rebuild
+                                            procs[id].rebuildPath = rebuildPath;
+                                        }
+                                    }
+                                }
                                 procs[id].needsRebuild = true;
                             }
                             procs[id].errors = procs[id].errors || [];

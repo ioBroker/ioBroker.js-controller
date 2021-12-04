@@ -22,6 +22,7 @@ const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
 const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require('@iobroker/js-controller-common-db');
+const path = require('path');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -118,7 +119,7 @@ function initYargs() {
             }
         })
         .command(['install <adapter>', 'i <adapter>'], 'Installs a specified adapter', {})
-        .command('rebuild', 'Rebuild all native modules', {})
+        .command('rebuild [<path>]', 'Rebuild all native modules or path', {})
         .command('url <url> [<name>]', 'Install adapter from specified url, e.g. GitHub', {})
         .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter from system', {
             custom: {
@@ -745,10 +746,19 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'rebuild': {
-            console.log(`Rebuilding native modules...`);
-            const result = await tools.rebuildNodeModules({
-                debug: process.argv.includes('--debug')
-            });
+            const options = {debug: process.argv.includes('--debug')};
+
+            if (commandOptions.path) {
+                if (path.isAbsolute(commandOptions.path)) {
+                    options.cwd = commandOptions.path;
+                } else {
+                    console.log('Path argument needs to be an absolute path!');
+                    return processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                }
+            }
+
+            console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
+            const result = await tools.rebuildNodeModules(options);
 
             if (result.success) {
                 console.log();
@@ -2816,11 +2826,6 @@ module.exports.execute = function () {
     const command = _yargs.argv._[0];
 
     const args = [];
-    /* We can no longer use this because yargs17 parses arguments according to our help into argv instead of argv._
-    for (let a = 1; a < _yargs.argv._.length; a++) {
-        args.push(_yargs.argv._[a]);
-    }
-     */
 
     // skip interpreter, filename and command
     for (let i=3; i < process.argv.length; i++) {

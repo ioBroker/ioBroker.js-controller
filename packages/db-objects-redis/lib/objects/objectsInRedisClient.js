@@ -72,8 +72,6 @@ class ObjectsInRedisClient {
     connectDb() {
         this.settings.connection = this.settings.connection || {};
 
-        const ioRegExp = new RegExp('^' + this.objNamespace.replace(/\./g, '\\.') + '[_A-Za-z0-9ÄÖÜäöüа-яА-Я]+'); // cfg.o.[_A-Za-z0-9]+
-
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
 
@@ -239,7 +237,7 @@ class ObjectsInRedisClient {
                         setImmediate(() => {
                             this.log.silly(`${this.namespace} Objects system redis pmessage ${pattern}/${channel}:${message}`);
                             try {
-                                if (ioRegExp.test(channel)) {
+                                if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                     const id = channel.substring(this.objNamespaceL);
                                     try {
                                         const obj = message ? JSON.parse(message) : null;
@@ -330,7 +328,7 @@ class ObjectsInRedisClient {
                     setImmediate(() => {
                         this.log.silly(this.namespace + ' Objects user redis pmessage ' + pattern + '/' + channel + ':' + message);
                         try {
-                            if (ioRegExp.test(channel)) {
+                            if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                 const id = channel.substring(this.objNamespaceL);
                                 try {
                                     const obj = message ? JSON.parse(message) : null;
@@ -494,7 +492,7 @@ class ObjectsInRedisClient {
     // -------------- FILE FUNCTIONS -------------------------------------------
     async _setBinaryState(id, data, callback) {
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!Buffer.isBuffer(data)) {
             data = Buffer.from(data);
@@ -582,13 +580,13 @@ class ObjectsInRedisClient {
         if (!fileId) {
             const fileOptions = {'notExists': true};
             if (utils.checkFile(fileOptions, options, flag, this.defaultNewAcl)) {
-                return typeof callback === 'function' && setImmediate(() => callback(false, options, fileOptions)); // NO error
+                return tools.maybeCallback(callback, false, options, fileOptions); // NO error
             } else {
-                return typeof callback === 'function' && setImmediate(() => callback(true, options)); // error
+                return tools.maybeCallback(callback, true, options); // error
             }
         }
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED, options));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED, options);
         }
         let fileOptions;
         try {
@@ -1970,7 +1968,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._subscribe(pattern, options, this.subSystem, callback);
             }
@@ -1994,7 +1992,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._subscribe(pattern, options, this.sub, callback);
             }
@@ -2009,7 +2007,7 @@ class ObjectsInRedisClient {
 
     _unsubscribe(pattern, options, subClient, callback) {
         if (!subClient) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
             let count = pattern.length;
@@ -2040,7 +2038,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._unsubscribe(pattern, options, this.subSystem, callback);
             }
@@ -2064,7 +2062,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithError(callback, err);
             } else {
                 return this._unsubscribe(pattern, options, this.sub, callback);
             }
@@ -2079,7 +2077,7 @@ class ObjectsInRedisClient {
 
     async _objectHelper(keys, objs, callback) {
         if (!keys || !keys.length) {
-            typeof callback === 'function' && callback();
+            return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
                 return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);
@@ -2196,7 +2194,7 @@ class ObjectsInRedisClient {
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.object || !options.acl.object.write) {
                     return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
@@ -2216,10 +2214,10 @@ class ObjectsInRedisClient {
     _chmodObject(pattern, options, callback) {
         this.getConfigKeys(pattern, options, async (err, keys) => {
             if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+                return tools.maybeCallbackWithRedisError(callback, err);
             }
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
             }
 
             let objects;
@@ -2284,18 +2282,18 @@ class ObjectsInRedisClient {
         }
 
         if (options.object === undefined) {
-            this.log.error(this.namespace + ' mode is not defined');
-            return typeof callback === 'function' && setImmediate(() => callback('invalid parameter'));
+            this.log.error(`${this.namespace} mode is not defined`);
+            return tools.maybeCallbackWithError(callback, 'invalid parameter');
         } else if (typeof options.mode === 'string') {
             options.mode = parseInt(options.mode, 16);
         }
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_PERMISSION));
+                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._chmodObject(pattern, options, callback);
                 }
@@ -2464,7 +2462,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getKeys(pattern, options, callback, dontModify);
                 }
@@ -2565,7 +2563,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjects(keys, options, callback, dontModify);
                 }
@@ -2581,12 +2579,11 @@ class ObjectsInRedisClient {
 
     async _getObjectsByPattern(pattern, options, callback) {
         if (!pattern || typeof pattern !== 'string') {
-            typeof callback === 'function' && setImmediate(() => callback('invalid pattern ' + JSON.stringify(pattern)));
-            return;
+            return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
 
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         let keys;
@@ -2619,7 +2616,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjectsByPattern(pattern, options, callback);
                 }
@@ -2635,19 +2632,19 @@ class ObjectsInRedisClient {
 
     async _setObject(id, obj, options, callback) {
         if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
-            return typeof callback === 'function' && setImmediate(() => callback(`Invalid ID: ${id}`));
+            return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
 
         if (!obj) {
             this.log.warn(this.namespace + ' setObject: Argument object is null');
-            return typeof callback === 'function' && setImmediate(() => callback('obj is null'));
+            return tools.maybeCallbackWithError(callback, 'obj is null');
         }
         if (!tools.isObject(obj)) {
             this.log.warn(this.namespace + ' setObject: Argument object is no object: ' + obj);
-            return typeof callback === 'function' && setImmediate(() => callback('obj is no object'));
+            return tools.maybeCallbackWithError(callback, 'obj is no object');
         }
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         // make a copy of object, because we will modify it
         obj = deepClone(obj);
@@ -2729,19 +2726,19 @@ class ObjectsInRedisClient {
         if (obj.common && obj.common.alias && obj.common.alias.id) {
             if (typeof obj.common.alias.id === 'object') {
                 if (typeof obj.common.alias.id.write !== 'string' || typeof obj.common.alias.id.read !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.write.startsWith('alias.') || obj.common.alias.id.read.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             } else {
                 if (typeof obj.common.alias.id !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             }
         }
@@ -2845,7 +2842,7 @@ class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, err => {
             // do not use options from checkObjectRights because this will mess up configured default acl
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._setObject(id, obj, options || {}, callback);
             }
@@ -3357,7 +3354,7 @@ class ObjectsInRedisClient {
 
     async _getObjectView(design, search, params, options, callback) {
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         let obj;
@@ -3365,7 +3362,7 @@ class ObjectsInRedisClient {
             obj = await this.client.get(this.objNamespace + '_design/' + design);
         } catch (e) {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}" : ${e.message}`);
-            return tools.maybeCallbackWithRedisError(callback, new Error(`Cannot find view "${design}"`));
+            return tools.maybeCallbackWithError(callback, new Error(`Cannot find view "${design}"`));
         }
 
         if (obj) {
@@ -3406,7 +3403,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjectView(design, search, params, options, callback);
                 }
@@ -3506,7 +3503,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjectList(params, options, callback);
                 }
@@ -3523,10 +3520,10 @@ class ObjectsInRedisClient {
     // could be optimised, to read object only once. Now it will read 3 times
     async _extendObject(id, obj, options, callback, _iteration) {
         if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
-            return typeof callback === 'function' && setImmediate(() => callback(`Invalid ID: ${id}`));
+            return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate (() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         let oldObj;
@@ -3596,25 +3593,25 @@ class ObjectsInRedisClient {
         if (obj.common && obj.common.alias && obj.common.alias.id) {
             if (typeof obj.common.alias.id === 'object') {
                 if (typeof obj.common.alias.id.write !== 'string' || typeof obj.common.alias.id.read !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.write.startsWith('alias.') || obj.common.alias.id.read.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             } else {
                 if (typeof obj.common.alias.id !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             }
         }
 
         if (_oldObj && !tools.checkNonEditable(_oldObj, oldObj)) {
-            return typeof callback === 'function' && callback('Invalid password for update of vendor information');
+            return tools.maybeCallbackWithError(callback, 'Invalid password for update of vendor information');
         }
         const message = JSON.stringify(oldObj);
 
@@ -3677,7 +3674,7 @@ class ObjectsInRedisClient {
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._extendObject(id, obj, options, callback);
             }
@@ -3832,10 +3829,10 @@ class ObjectsInRedisClient {
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.file.write || options.user !== utils.CONSTS.SYSTEM_ADMIN_USER) {
-                    typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_PERMISSION));
+                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._destroyDB(options, callback);
                 }
