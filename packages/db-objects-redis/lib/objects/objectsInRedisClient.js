@@ -25,6 +25,7 @@ const crypto                = require('crypto');
 const { isDeepStrictEqual } = require('util');
 const deepClone             = require('deep-clone');
 const utils                 = require('./objectsUtils.js');
+const semver = require('semver');
 
 function initScriptFiles() {
     const scripts = {};
@@ -393,7 +394,32 @@ class ObjectsInRedisClient {
                 });
             }
 
-            this.log.debug(this.namespace + ' Objects client initialize lua scripts');
+            if (!this.client) {
+                return;
+            }
+
+            // for controller v4 we have to check if we can use the new lua scripts and set logic
+            // TODO: remove this backward shim if controller v4.0 is old enough
+            const keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
+
+            this.useSets = true;
+
+            try {
+                for (const key of keys) {
+                    let obj = await this.client.get(key);
+                    obj = JSON.parse(obj);
+                    if (obj && obj.type === 'host' && obj.common && obj.common.installedVersion &&
+                        semver.lt(obj.common.installedVersion, '4.0.0')) {
+                        // one of the host has a version smaller 4, we have to use legacy db
+                        this.useSets = false;
+                    }
+                }
+            } catch (e) {
+                this.log.error(`Cannot determine Lua scripts strategy: ${e.message}`);
+                return;
+            }
+
+            this.log.debug(`${this.namespace} Objects client initialize lua scripts`);
             initCounter++;
             try {
                 await this.loadLuaScripts();
@@ -401,13 +427,11 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot initialize database scripts: ${err.message}`);
                 return;
             }
-            if (!this.client) {
-                return;
-            }
+
             // init default new acl
             let obj;
             try {
-                obj = await this.client.get(this.objNamespace + 'system.config');
+                obj = await this.client.get(`${this.objNamespace}system.config`);
             } catch {
                 // ignore
             }
@@ -2063,7 +2087,7 @@ class ObjectsInRedisClient {
                 const obj = objs.shift();
                 const message = JSON.stringify(obj);
                 try {
-                    if (obj.type) {
+                    if (obj.type && this.useSets) {
                         // e.g. _design/ has no type
                         // add the object to the set + set object atomic
                         await this.client.multi()
@@ -2749,27 +2773,31 @@ class ObjectsInRedisClient {
         try {
             const message = JSON.stringify(obj);
 
-            if (obj.type && (!oldObj || !oldObj.type)) {
-                // new object or oldObj had no type -> add to set + set object
-                await this.client.multi()
-                    .set(this.objNamespace + id, message)
-                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                    .exec();
-            } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
-                // the old obj had a type which differs from the new type -> rem old, add new
-                await this.client.multi()
-                    .set(this.objNamespace + id, message)
-                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                    .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
-                    .exec();
-            } else if (oldObj && oldObj.type && !obj.type) {
-                // the oldObj had a type, the new one has no -> rem
-                await this.client.multi()
-                    .set(this.objNamespace + id, message)
-                    .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                    .exec();
+            if (this.useSets) {
+                if (obj.type && (!oldObj || !oldObj.type)) {
+                    // new object or oldObj had no type -> add to set + set object
+                    await this.client.multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
+                    // the old obj had a type which differs from the new type -> rem old, add new
+                    await this.client.multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (oldObj && oldObj.type && !obj.type) {
+                    // the oldObj had a type, the new one has no -> rem
+                    await this.client.multi()
+                        .set(this.objNamespace + id, message)
+                        .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else {
+                    // only set
+                    await this.client.set(this.objNamespace + id, message);
+                }
             } else {
-                // only set
                 await this.client.set(this.objNamespace + id, message);
             }
 
@@ -3590,28 +3618,32 @@ class ObjectsInRedisClient {
         const message = JSON.stringify(oldObj);
 
         try {
-            // what is called oldObj is acutally the obj we set, because it has been extended
-            if (oldObj.type && !oldType) {
-                // new object or oldObj had no type -> add to set + set object
-                await this.client.multi()
-                    .set(this.objNamespace + id, message)
-                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                    .exec();
-            } else if (oldObj.type && oldType && oldObj.type !== oldType) {
-                // the old obj had a type which differs from the new type -> rem old, add new
-                await this.client.multi()
-                    .set(this.objNamespace + id, message)
-                    .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                    .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
-                    .exec();
-            } else if (oldType && !oldObj.type) {
-                // the oldObj had a type, the new one has no -> rem
-                await this.client.multi()
-                    .set(this.objNamespace + id, message)
-                    .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                    .exec();
+            if (this.useSets) {
+                // what is called oldObj is acutally the obj we set, because it has been extended
+                if (oldObj.type && !oldType) {
+                    // new object or oldObj had no type -> add to set + set object
+                    await this.client.multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (oldObj.type && oldType && oldObj.type !== oldType) {
+                    // the old obj had a type which differs from the new type -> rem old, add new
+                    await this.client.multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (oldType && !oldObj.type) {
+                    // the oldObj had a type, the new one has no -> rem
+                    await this.client.multi()
+                        .set(this.objNamespace + id, message)
+                        .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else {
+                    // just set type is equal
+                    await this.client.set(this.objNamespace + id, message);
+                }
             } else {
-                // just set type is equal
                 await this.client.set(this.objNamespace + id, message);
             }
 
@@ -3860,9 +3892,10 @@ class ObjectsInRedisClient {
                 });
             }
         } else {
-            _scripts = fs.readdirSync(__dirname + '/lua/').map(name => {
+            const luaPath = this.useSets ? `${__dirname}/lua/` : `${__dirname}/legacyLua/`;
+            _scripts = fs.readdirSync(luaPath).map(name => {
                 const shasum = crypto.createHash('sha1');
-                const script = fs.readFileSync(__dirname + '/lua/' + name);
+                const script = fs.readFileSync(`${luaPath}${name}`);
                 shasum.update(script);
                 const hash = shasum.digest('hex');
                 return {name: name.replace(/\.lua$/, ''), text: script, hash};
@@ -3952,6 +3985,10 @@ class ObjectsInRedisClient {
      * @return {Promise<number>}
      */
     async migrateToSets() {
+        if (!this.useSets) {
+            return 0;
+        }
+
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
