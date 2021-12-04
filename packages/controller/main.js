@@ -50,7 +50,6 @@ let States;
 let decache;
 
 const semver                = require('semver');
-const restart = require('./lib/restart');
 let logger;
 let isDaemon                = false;
 let callbackId              = 1;
