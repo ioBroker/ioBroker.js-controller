@@ -27,8 +27,6 @@ const deepClone             = require('deep-clone');
 const utils                 = require('./objectsUtils.js');
 const semver = require('semver');
 
-const scriptFiles = {};
-
 class ObjectsInRedisClient {
 
     constructor(settings) {
@@ -3870,29 +3868,16 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        let _scripts = [];
-        if (scriptFiles && scriptFiles.filter) {
-            for (const name of Object.keys(scriptFiles)) {
-                const shasum = crypto.createHash('sha1');
-                const buf = Buffer.from(scriptFiles[name]);
-                shasum.update(buf);
-                _scripts.push({
-                    name,
-                    text: buf,
-                    hash: shasum.digest('hex')
-                });
-            }
-        } else {
-            const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
-            _scripts = fs.readdirSync(luaPath).map(name => {
-                const shasum = crypto.createHash('sha1');
-                const script = fs.readFileSync(path.join(luaPath, name));
-                shasum.update(script);
-                const hash = shasum.digest('hex');
-                return {name: name.replace(/\.lua$/, ''), text: script, hash};
-            });
-        }
-        const hashes = _scripts.map(e => e.hash);
+        const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
+        const scripts = fs.readdirSync(luaPath).map(name => {
+            const shasum = crypto.createHash('sha1');
+            const script = fs.readFileSync(path.join(luaPath, name));
+            shasum.update(script);
+            const hash = shasum.digest('hex');
+            return {name: name.replace(/\.lua$/, ''), text: script, hash};
+        });
+
+        const hashes = scripts.map(e => e.hash);
         hashes.unshift('EXISTS');
 
         if (!this.client) {
@@ -3906,15 +3891,15 @@ class ObjectsInRedisClient {
             // ignore
         }
 
-        arr && _scripts.forEach((e, i) => _scripts[i].loaded = !!arr[i]);
+        arr && scripts.forEach((e, i) => scripts[i].loaded = !!arr[i]);
 
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        for (let i = 0; i < _scripts.length; i++) {
-            if (!_scripts[i].loaded) {
-                const script = _scripts[i];
+        for (let i = 0; i < scripts.length; i++) {
+            if (!scripts[i].loaded) {
+                const script = scripts[i];
                 let hash;
                 try {
                     hash = await this.client.script(['LOAD', script.text]);
@@ -3928,7 +3913,7 @@ class ObjectsInRedisClient {
             }
         }
         this.scripts = {};
-        _scripts.forEach(e => this.scripts[e.name] = e.hash);
+        scripts.forEach(e => this.scripts[e.name] = e.hash);
     }
 
     /**
