@@ -403,9 +403,9 @@ class ObjectsInRedisClient {
             this.useSets = true;
 
             try {
-                for (const key of keys) {
-                    let obj = await this.client.get(key);
-                    obj = JSON.parse(obj);
+                const objs = await this.client.mget(keys);
+                for (const strObj of objs) {
+                    const obj = JSON.parse(strObj);
                     if (obj && obj.type === 'host' && obj.common && obj.common.installedVersion &&
                         semver.lt(obj.common.installedVersion, '4.0.0')) {
                         // one of the host has a version smaller 4, we have to use legacy db
@@ -2886,7 +2886,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
         } else {
             try {
-                if (oldObj.type) {
+                if (oldObj.type && this.useSets) {
                     // e.g. _design/ has no type
                     // del the object from the set + del object atomic
                     await this.client.multi()
@@ -3890,7 +3890,7 @@ class ObjectsInRedisClient {
                 });
             }
         } else {
-            const luaPath = this.useSets ? `${__dirname}/lua/` : `${__dirname}/legacyLua/`;
+            const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
             _scripts = fs.readdirSync(luaPath).map(name => {
                 const shasum = crypto.createHash('sha1');
                 const script = fs.readFileSync(`${luaPath}${name}`);
