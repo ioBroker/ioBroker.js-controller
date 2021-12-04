@@ -714,6 +714,22 @@ function createObjects(onConnect) {
                     }
 
                     controllerVersions[id] = obj.common.installedVersion;
+                } else if (!obj && /^system\.host\.[^.]+$/.test(id)) {
+                    const delVersion = controllerVersions[id];
+                    delete controllerVersions[id];
+                    // host object deleted
+                    if (delVersion && semver.lt(delVersion, '4.0.0')) {
+                        // check if the only below 4 host has been deleted, then we need restart
+                        for (const version of Object.entries(controllerVersions)) {
+                            if (semver.lt(version, '4.0.0')) {
+                                // another version below 4, so still need old protocol
+                                return;
+                            }
+                        }
+                        logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
+                        const restart = require('./lib/restart');
+                        restart();
+                    }
                 } else if (obj && obj.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
