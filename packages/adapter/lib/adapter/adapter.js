@@ -14,7 +14,6 @@
 //   unload:                callback to stop the adapter
 //   config:                configuration of the connection to controller
 //   noNamespace:           return short names of objects and states in objectChange and in stateChange
-//   noDebugLogs:           Do not show debug logs
 //   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without an corresponding existing object
 
 const net = require('net');
@@ -196,7 +195,6 @@ function Adapter(options) {
     this.eventLoopLags = [];
     this.overwriteLogLevel = false;
     this.adapterReady = false;
-    this.noDebugLogs = false;
 
     // Provide tools for use in adapter
     this.tools = tools;
@@ -431,10 +429,6 @@ function Adapter(options) {
         if (!Object.prototype.hasOwnProperty.call(this.systemConfig, 'dataDir')) {
             this.systemConfig.dataDir = tools.getDefaultDataDir();
         }
-    }
-
-    if (options.noDebugLogs) {
-        this.noDebugLogs = true;
     }
 
     let States;
@@ -5447,7 +5441,7 @@ function Adapter(options) {
 
     // initStates is called from initAdapter
     const initStates = cb => {
-        !this.noDebugLogs && logger.debug(this.namespaceLog + ' objectDB connected');
+        logger.silly(this.namespaceLog + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
@@ -5466,7 +5460,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.states,
             connected: async _statesInstance => {
-                !this.noDebugLogs && logger.debug(this.namespaceLog + ' statesDB connected');
+                logger.silly(this.namespaceLog + ' statesDB connected');
                 this.statesConnectedTime = Date.now();
 
                 if (initializeTimeout) {
@@ -5591,7 +5585,7 @@ function Adapter(options) {
                 // If someone want to have log messages
                 if (this.logList && id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    !this.noDebugLogs && logger && logger.debug(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+                    logger && logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect(state ? state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     options.logTransporter && this.processLog && this.processLog(state);
@@ -5758,9 +5752,9 @@ function Adapter(options) {
             }
 
             if (typeof message !== 'object') {
-                !this.noDebugLogs && logger.debug(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}: ${message}`);
+                logger.silly(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}: ${message}`);
             } else {
-                !this.noDebugLogs && logger.debug(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}`);
+                logger.silly(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}`);
             }
 
             // If not specific instance
@@ -8202,7 +8196,7 @@ function Adapter(options) {
                             // disable log receiving after 10 seconds
                             this.logOffTimer = setTimeout(() => {
                                 this.logOffTimer = null;
-                                !this.noDebugLogs && logger.debug(this.namespaceLog + ' Change log subscriber state: FALSE');
+                                logger.silly(this.namespaceLog + ' Change log subscriber state: FALSE');
                                 this.outputCount++;
                                 adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
                                     val: false,
@@ -8215,7 +8209,7 @@ function Adapter(options) {
                                 clearTimeout(this.logOffTimer);
                                 this.logOffTimer = null;
                             } else {
-                                !this.noDebugLogs && logger.debug(this.namespaceLog + ' Change log subscriber state: true');
+                                logger.silly(this.namespaceLog + ' Change log subscriber state: true');
                                 this.outputCount++;
                                 adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
                                     val: true,
@@ -8466,7 +8460,7 @@ function Adapter(options) {
                                 logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
                             }
                             if (schedule) {
-                                !this.noDebugLogs && logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
+                                logger.silly(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
                                 restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                                     logger.info(this.namespaceLog + ' Scheduled restart.');
                                     stop(false, true);
