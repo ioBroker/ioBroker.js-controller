@@ -739,7 +739,12 @@ function Upload(options) {
                 ioPack.common.installedFrom = ioPackFile.common.installedFrom;
             }
             // Not existing? Why ever ... we recreate
-            let obj = await objects.getObject('system.adapter.' + name);
+            let obj;
+            try {
+                obj = await objects.getObject('system.adapter.' + name);
+            } catch (err) {
+                // ignore err
+            }
             obj = obj || {};
             obj.common = ioPack.common || {};
             obj.native = ioPack.native || {};
