@@ -407,7 +407,7 @@ function Install(options) {
 
                 // if required dependency not found => install it
                 if (!isFound) {
-                    const name = await this.createInstance(dName, _options);
+                    const name = await this.createInstanceAsync(dName, _options);
                     await upload.uploadAdapterAsync(name, true, false);
                     await upload.uploadAdapterAsync(name, false, false);
                 }

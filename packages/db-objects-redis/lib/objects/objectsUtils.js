@@ -241,11 +241,11 @@ function checkFileRights(objects, id, name, options, flag, callback) {
         return;
     }
     // If user may write
-    if (flag === 2 && !options.acl.file.write) {// write
+    if (flag === 2 && !options.acl.file.write) { // write
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
     // If user may read
-    if (flag === 4 && !options.acl.file.read) {// read
+    if (flag === 4 && !options.acl.file.read) { // read
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
 
@@ -381,7 +381,7 @@ function getUserGroup(objects, user, callback) {
                 for (let m = 0; m < groups[g].common.members.length; m++) {
                     const u = groups[g].common.members[m];
                     if (!users[u]) {
-                        error = error || (`Unknown user in group "${g}": ${u}`);
+                        error = error || (`Unknown user in group "${groups[g]._id.replace('system.group.', '')}": ${u}`);
                         continue;
                     }
                     users[u].groups.push(groups[g]._id);

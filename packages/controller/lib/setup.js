@@ -488,43 +488,35 @@ async function processCommand(command, args, params, callback) {
                 setup.setup(async (isFirst, _isRedis) => {
                     if (isFirst) {
                         // Creates all instances that are needed on a fresh installation
-                        const createInitialInstances = async () => {
-                            const Install = require('./setup/setupInstall.js');
-                            const install = new Install({
-                                objects,
-                                states,
-                                getRepository,
-                                processExit: callback,
-                                params
-                            });
-                            // In order to loop the instance creation, we need a promisified version of the method
-                            const createInstanceAsync = tools.promisifyNoError(install.createInstance, install);
-
-                            // Define the necessary instances
-                            const initialInstances = ['admin', 'discovery', 'backitup'];
-                            // And try to install each of them
-                            for (const instance of initialInstances) {
-                                try {
-                                    const path = require.resolve(tools.appName + '.' + instance);
-                                    if (path) {
-                                        await createInstanceAsync(instance, {enabled: true, ignoreIfExists: true});
-                                    }
-                                } catch {
-                                    // not found, just continue
+                        const Install = require('./setup/setupInstall.js');
+                        const install = new Install({
+                            objects,
+                            states,
+                            getRepository,
+                            processExit: callback,
+                            params
+                        });
+                        // Define the necessary instances
+                        const initialInstances = ['admin', 'discovery', 'backitup'];
+                        // And try to install each of them
+                        for (const instance of initialInstances) {
+                            try {
+                                const path = require.resolve(tools.appName + '.' + instance);
+                                if (path) {
+                                    await install.createInstanceAsync(instance, {enabled: true, ignoreIfExists: true});
                                 }
+                            } catch {
+                                // not found, just continue
                             }
-                        };
+                        }
 
-                        createInitialInstances()
-                            .then(() => new Promise(resolve => {
-                                // Creates a fresh certificate
-                                const Cert = cli.command.cert;
-                                // Create a new instance of the cert command,
-                                // but use the resolve method as a callback
-                                const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
-                                cert.create();
-                            }))
-                            .then(() => callback && callback());
+                        // Creates a fresh certificate
+                        const Cert = cli.command.cert;
+                        // Create a new instance of the cert command,
+                        // but use the resolve method as a callback
+                        const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
+                        cert.create();
+                        callback && callback();
                     } else {
                         // else we update existing stuff (this is executed on installation)
                         // Rename repositories
@@ -717,14 +709,24 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (!fs.existsSync(adapterDir)) {
-                    await install.downloadPacketAsync(repoUrl, installName);
-                    await install.installAdapterAsync(installName, repoUrl);
-                    await install.createInstance(name, params, callback);
-                    return void callback();
+                    try {
+                        await install.downloadPacketAsync(repoUrl, installName);
+                        await install.installAdapterAsync(installName, repoUrl);
+                        await install.createInstanceAsync(name, params, callback);
+                        return void callback();
+                    } catch (err) {
+                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                    }
                 } else {
                     if (command !== 'install' && command !== 'i') {
-                        await install.createInstanceAsync(name, params);
-                        return void callback();
+                        try {
+                            await install.createInstanceAsync(name, params);
+                            return void callback();
+                        } catch (err) {
+                            console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                            return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                        }
                     } else {
                         console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
                         return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
@@ -1555,8 +1557,8 @@ async function processCommand(command, args, params, callback) {
         case 'g':
         case 'group': {
             const command = args[0] || '';
-            let group   = args[1] || '';
-            let user    = args[2] || '';
+            let group     = args[1] || '';
+            let user      = args[2] || '';
 
             if (group && group.match(/^system\.group\./)) {
                 group = group.substring('system.group.'.length);
@@ -1572,6 +1574,7 @@ async function processCommand(command, args, params, callback) {
                 console.warn(`Please define group name: group ${command} groupName`);
                 return callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
             }
+
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
@@ -1581,7 +1584,7 @@ async function processCommand(command, args, params, callback) {
 
                 if (command === 'useradd' || command === 'adduser') {
                     if (!user) {
-                        console.warn('Please define user name: group useradd groupName userName');
+                        console.warn('Please define user name: "group useradd groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                     users.addUserToGroup(user, group, err => {
@@ -1589,13 +1592,13 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" created');
+                            console.log(`User "${user}" was added to group "${group}"`);
                             return void callback();
                         }
                     });
                 } else if (command === 'userdel' || command === 'deluser') {
                     if (!user) {
-                        console.warn('Please define user name: group userdel groupName userName');
+                        console.warn('Please define user name: "group userdel groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                     users.removeUserFromGroup(user, group, err => {
@@ -1603,7 +1606,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" created');
+                            console.log(`User "${user}" was deleted from group "${group}"`);
                             return void callback();
                         }
                     });
@@ -1613,7 +1616,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + group + '" created');
+                            console.log(`Group "${group}" was created`);
                             return void callback();
                         }
                     });
@@ -1623,7 +1626,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log(`User "${group}" deleted`);
+                            console.log(`Group "${group}" was deleted`);
                             return void callback();
                         }
                     });
@@ -2456,7 +2459,9 @@ function unsetup(params, callback) {
                 if (obj.common.licenseConfirmed || obj.common.language || (obj.native && obj.native.secret)) {
                     obj.common.licenseConfirmed = false;
                     obj.common.language = '';
-                    obj.native && delete obj.native.secret;
+                    if (!params.keepsecret) {
+                        obj.native && delete obj.native.secret;
+                    }
 
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = new Date().getTime();
@@ -2508,7 +2513,7 @@ async function getRepository(repoName, params) {
         await dbConnectAsync(params);
     }
 
-    if (!repoName) {
+    if (!repoName || repoName === 'auto') {
         const systemConfig = await objects.getObjectAsync('system.config');
         repoName = systemConfig.common.activeRepo;
     }
@@ -2555,7 +2560,7 @@ async function getRepository(repoName, params) {
     }
 
     if (!anyFound) {
-        console.log('No repositories defined.');
+        console.error(`ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(systemRepos.native.repositories).join(' | ')}>`);
         throw new Error(EXIT_CODES.INVALID_REPO);
     } else {
         return allSources;

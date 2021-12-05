@@ -54,7 +54,7 @@ const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  */
 function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
     for (const attr of Object.keys(oldObj)) {
-        if (typeof oldObj[attr] !== 'object' || oldObj[attr] instanceof Array) {
+        if (oldObj[attr] === undefined || oldObj[attr] === null || typeof oldObj[attr] !== 'object' || oldObj[attr] instanceof Array) {
             if (oldObj[attr] === '__no_change__' && originalObj && !isNonEdit) {
                 if (originalObj[attr] !== undefined) {
                     newObj[attr] = deepClone(originalObj[attr]);
@@ -1210,8 +1210,6 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
 }
 
 function sendDiagInfo(obj, callback) {
-    request = request || require('request');
-
     console.log(`Send diag info: ${JSON.stringify(obj)}`);
     axios = axios || require('axios');
     const params = new URLSearchParams();

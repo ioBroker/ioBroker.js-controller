@@ -295,7 +295,12 @@ function Upload(options) {
         let _files = [];
         let _dirs = [];
         if (isErase) {
-            const files = await objects.readDirAsync(adapter, path);
+            let files
+            try {
+                files = await objects.readDirAsync(adapter, path);
+            } catch (e) {
+                files = [];
+            }
 
             if (files && files.length) {
                 for (let f = 0; f < files.length; f++) {
@@ -307,9 +312,13 @@ function Upload(options) {
                         if (!_dirs.find(e => e.path === newPath)) {
                             _dirs.push({adapter, path: newPath});
                         }
-                        const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
-                        _files = _files.concat(result.files);
-                        _dirs = _dirs.concat(result.dirs);
+                        try {
+                            const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
+                            _files = _files.concat(result.files);
+                            _dirs = _dirs.concat(result.dirs);
+                        } catch (err) {
+                            console.warn(`Cannot delete folder "${adapter}/${newPath}/": ${err.mesasge}`);
+                        }
                     } else if (!_files.find(e => e.path === newPath)) {
                         _files.push({adapter, path: newPath});
                     }

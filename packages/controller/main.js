@@ -90,8 +90,8 @@ let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
-const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
-const VENDOR_FILE           = '/etc/iob-vendor.json';
+const VENDOR_BOOTSTRAP_FILE = __dirname + '/iob-vendor-secret.json'; // TODO revert '/opt/iobroker/iob-vendor-secret.json'
+const VENDOR_FILE           = __dirname + '/iob-vendor.json'; // TODO revert '/etc/iob-vendor.json'
 let updateIPsTimer          = null;
 let lastDiagSend            = null;
 

@@ -64,36 +64,37 @@ function Vendor(options) {
             data.uuid = null;
 
             // check UUID
-            promises.push(objects.getObject('system.meta.uuid').then(obj => {
-                if (obj && obj.native) {
-                    if (obj.native.uuid !== uuid) {
-                        obj.native.uuid = uuid;
+            promises.push(objects.getObject('system.meta.uuid')
+                .then(obj => {
+                    if (obj && obj.native) {
+                        if (obj.native.uuid !== uuid) {
+                            obj.native.uuid = uuid;
 
-                        logger.info(`Update "system.meta.uuid:native.uuid" = "${obj.native.uuid}"`);
+                            logger.info(`Update "system.meta.uuid:native.uuid" = "${obj.native.uuid}"`);
 
-                        obj.nonEdit = obj.nonEdit || {};
-                        obj.nonEdit.password = password;
-                        return objects.setObjectAsync('system.meta.uuid', obj)
-                            .then(() => logger.info('object system.meta.uuid updated: ' + uuid))
-                            .catch(e => logger.error(`Cannot update system.meta.uuid: ${e.message}`));
-                    }
-                } else {
-                    return objects.setObjectAsync('system.meta.uuid', {
-                        type: 'meta',
-                        common: {
-                            name: 'uuid',
-                            type: 'uuid'
-                        },
-                        ts: new Date().getTime(),
-                        from: 'system.host.' + tools.getHostName() + '.tools',
-                        native: {
-                            uuid: uuid
+                            obj.nonEdit = obj.nonEdit || {};
+                            obj.nonEdit.password = password;
+                            return objects.setObjectAsync('system.meta.uuid', obj)
+                                .then(() => logger.info('object system.meta.uuid updated: ' + uuid))
+                                .catch(e => logger.error(`Cannot update system.meta.uuid: ${e.message}`));
                         }
-                    })
-                        .then(() => logger.info('object system.meta.uuid created: ' + uuid))
-                        .catch(e => logger.error(`Cannot create system.meta.uuid: ${e.message}`));
-                }
-            }));
+                    } else {
+                        return objects.setObjectAsync('system.meta.uuid', {
+                            type: 'meta',
+                            common: {
+                                name: 'uuid',
+                                type: 'uuid'
+                            },
+                            ts: new Date().getTime(),
+                            from: 'system.host.' + tools.getHostName() + '.tools',
+                            native: {
+                                uuid: uuid
+                            }
+                        })
+                            .then(() => logger.info('object system.meta.uuid created: ' + uuid))
+                            .catch(e => logger.error(`Cannot create system.meta.uuid: ${e.message}`));
+                    }
+                }));
         }
 
         // patch iobroker.json file
@@ -110,18 +111,19 @@ function Vendor(options) {
             data.vendor  = null;
 
             // store vendor
-            promises.push(objects.getObject('system.config').then(obj => {
-                if (obj && obj.native) {
-                    if (!isDeepStrictEqual(obj.native.vendor, vendor)) {
-                        obj.native.vendor = vendor;
-                        obj.nonEdit = obj.nonEdit || {};
-                        obj.nonEdit.password = password;
-                        return objects.setObjectAsync(obj._id, obj)
-                            .then(() => logger.info('object system.config updated'))
-                            .catch(err => logger.error(`Cannot update system.config: ${err.message}`));
+            promises.push(objects.getObject('system.config')
+                .then(obj => {
+                    if (obj && obj.native) {
+                        if (!isDeepStrictEqual(obj.native.vendor, vendor)) {
+                            obj.native.vendor = vendor;
+                            obj.nonEdit = obj.nonEdit || {};
+                            obj.nonEdit.password = password;
+                            return objects.setObjectAsync(obj._id, obj)
+                                .then(() => logger.info('object system.config updated'))
+                                .catch(err => logger.error(`Cannot update system.config: ${err.message}`));
+                        }
                     }
-                }
-            }));
+                }));
         }
 
         return Promise.all(promises)
@@ -130,7 +132,7 @@ function Vendor(options) {
                 // update all existing objects according to vendor
                 if (data.objects) {
                     for (let id of Object.keys(data.objects)) {
-                        if (id.indexOf('*') === -1) {
+                        if (!id.includes('*')) {
                             ((_id, _newObj) => {
                                 _promises.push(objects.getObject(_id)
                                     .then(obj => {
