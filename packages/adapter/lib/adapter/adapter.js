@@ -5537,7 +5537,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.states,
             connected: async _statesInstance => {
-                logger.silly(this.namespaceLog + ' statesDB connected');
+                logger.debug(this.namespaceLog + ' statesDB connected');
                 this.statesConnectedTime = Date.now();
 
                 if (initializeTimeout) {
