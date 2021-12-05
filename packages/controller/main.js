@@ -4857,21 +4857,21 @@ function init(compactGroupId) {
 
     const exceptionHandler = err => {
         if (compactGroupController) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }
             stop(false);
             return;
         }
-        console.error(err.message || err);
+        console.error(err.message);
         if (err.stack) {
             console.error(err.stack);
         }
 
         // If by terminating one more exception => stop immediately to break the circle
         if (uncaughtExceptionCount) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }

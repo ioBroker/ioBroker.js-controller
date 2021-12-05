@@ -151,7 +151,7 @@ function Setup(options) {
                     }
                 }
             } catch (err) {
-                console.warn(`Could not create directory "meta.user": ${err.message || err}`);
+                console.warn(`Could not create directory "meta.user": ${err.message}`);
             }
 
             try {
@@ -774,7 +774,7 @@ function Setup(options) {
                     fs.writeFileSync(__dirname + '/../../../../reinstall.js', fs.readFileSync(__dirname + '/../../reinstall.js'));
                 }
             } catch (err) {
-                console.warn(`Cannot write file. Not critical: ${err.message || err}`);
+                console.warn(`Cannot write file. Not critical: ${err.message}`);
             }
         }
         // Delete files for other OS
@@ -806,7 +806,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.writeFileSync(__dirname + '/../../../../' + tools.appName, startFile, {mode: 492 /* 0754 */});
                     }
                 } catch (err) {
-                    console.warn(`Cannot write file. Not critical: ${err.message || err}`);
+                    console.warn(`Cannot write file. Not critical: ${err.message}`);
                 }
             }
         }
@@ -824,7 +824,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     try {
                         fs.unlinkSync(otherInstallDirs[t]);
                     } catch (err) {
-                        console.warn(`Cannot delete file. Not critical: ${err.message || err}`);
+                        console.warn(`Cannot delete file. Not critical: ${err.message}`);
                     }
                 }
             }
@@ -895,7 +895,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     }
                 }
             } catch (err) {
-                console.log(`Non-critical error: ${err.message || err}`);
+                console.log(`Non-critical error: ${err.message}`);
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
@@ -908,7 +908,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     fs.writeJSONSync(configFileName, config, {spaces: 2});
                 }
             } catch (err) {
-                console.warn(`Cannot check config file: ${err.message || err}`);
+                console.warn(`Cannot check config file: ${err.message}`);
             }
 
             setupObjects(() => callback && callback(), true);

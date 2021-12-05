@@ -92,7 +92,7 @@ function Repo(options) {
                 try {
                     data = JSON.parse(fs.readFileSync(urlOrPath).toString('utf8'));
                 } catch (err) {
-                    console.error(`Error: Cannot read or parse file "${urlOrPath}": ${err.message || err}`);
+                    console.error(`Error: Cannot read or parse file "${urlOrPath}": ${err.message}`);
                 }
             } else {
                 console.error(`Error: Cannot find file "${urlOrPath}"`);
@@ -347,7 +347,7 @@ function Repo(options) {
             sysConfigObj = await objects.getObjectAsync('system.config');
             repoObj = await objects.getObjectAsync('system.repositories');
         } catch (err) {
-            throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message || err}`);
+            throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message}`);
         }
 
         if (repoObj && repoObj.native && repoObj.native.repositories) {
@@ -360,7 +360,7 @@ function Repo(options) {
                     await objects.setObjectAsync('system.repositories', repoObj);
                     console.log(`Renamed repository "${oldName} to "${newName}"`);
                 } catch (err) {
-                    throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message || err}`);
+                    throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message}`);
                 }
 
                 // if we changed the name of the activeRepo, we should set newName as active repo
@@ -377,7 +377,7 @@ function Repo(options) {
                     try {
                         await objects.setObjectAsync('system.config', sysConfigObj);
                     } catch (err) {
-                        throw new Error(`Could not set "${newName}" as active repository: ${err.message || err}`);
+                        throw new Error(`Could not set "${newName}" as active repository: ${err.message}`);
                     }
                 }
             }

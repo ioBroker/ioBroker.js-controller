@@ -916,6 +916,7 @@ The following features can be checked using this method:
 * **PLUGINS**: Plugins are supported by this js-controller and adapters, see section below for more details (since js-controller 3.0)
 * **CONTROLLER_NPM_AUTO_REBUILD**: Automatic rebuild when node version mismatch is detected (since js-controller 3.0)
 * **CONTROLLER_READWRITE_BASE_SETTINGS**: Allow read and write of js-controller base settings file (iobroker.json) via host messages (since js-controller 3.0)
+* **CONTROLLER_MULTI_REPO**: indicates that controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 

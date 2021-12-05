@@ -528,7 +528,7 @@ async function processCommand(command, args, params, callback) {
                             await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
                             await repo.rename('latest', 'beta', 'http://download.iobroker.net/sources-dist-latest.json');
                         } catch (err) {
-                            console.warn(`Cannot rename: ${err.message || err}`);
+                            console.warn(`Cannot rename: ${err.message}`);
                         }
 
                         // there has been a bug that user can uplaod js-controller
@@ -564,7 +564,7 @@ async function processCommand(command, args, params, callback) {
                                 console.log('ioBroker configuration updated');
                             }
                         } catch(err) {
-                            console.log(`Could not update ioBroker configuration: ${err.message || err}`);
+                            console.log(`Could not update ioBroker configuration: ${err.message}`);
                         }
 
                         return void callback();
@@ -700,7 +700,7 @@ async function processCommand(command, args, params, callback) {
                     try {
                         obj = await objects.getObjectAsync(`system.host.${params.host}`);
                     } catch (err) {
-                        console.warn(`Could not check existence of host "${params.host}": ${err.message || err}`);
+                        console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
                     }
 
                     if (!obj) {
@@ -713,25 +713,25 @@ async function processCommand(command, args, params, callback) {
                     try {
                         await install.downloadPacketAsync(repoUrl, installName);
                         await install.installAdapterAsync(installName, repoUrl);
-                        await install.createInstanceAsync(name, params, callback);
+                        if (command !== 'install' && command !== 'i') {
+                            await install.createInstanceAsync(name, params);
+                        }
+                        return void callback();
+                    } catch (err) {
+                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                    }
+                } else if (command !== 'install' && command !== 'i') {
+                    try {
+                        await install.createInstanceAsync(name, params);
                         return void callback();
                     } catch (err) {
                         console.error(`adapter "${name}" cannot be installed: ${err.message}`);
                         return void callback(EXIT_CODES.UNKNOWN_ERROR);
                     }
                 } else {
-                    if (command !== 'install' && command !== 'i') {
-                        try {
-                            await install.createInstanceAsync(name, params);
-                            return void callback();
-                        } catch (err) {
-                            console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                            return void callback(EXIT_CODES.UNKNOWN_ERROR);
-                        }
-                    } else {
-                        console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
-                        return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
-                    }
+                    console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
+                    return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
                 }
             });
             break;
@@ -786,7 +786,7 @@ async function processCommand(command, args, params, callback) {
                             await upload.uploadAdapterFullAsync(adapters);
                             callback();
                         } catch (err) {
-                            console.error(`Cannot upload all adapters: ${err.message || err}`);
+                            console.error(`Cannot upload all adapters: ${err.message}`);
                             return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
                         }
                     } else {
@@ -979,7 +979,7 @@ async function processCommand(command, args, params, callback) {
                         }
                         return void callback();
                     } catch (err) {
-                        console.error(`Cannot upgrade: ${err.message || err}`);
+                        console.error(`Cannot upgrade: ${err.message}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 } else {
@@ -992,7 +992,7 @@ async function processCommand(command, args, params, callback) {
                         await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
                         return void callback();
                     } catch (err) {
-                        console.error(`Cannot upgrade: ${err.message || err}`);
+                        console.error(`Cannot upgrade: ${err.message}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 }
@@ -1090,7 +1090,7 @@ async function processCommand(command, args, params, callback) {
                     console.log('Backup OK');
                     processExit(0);
                 } catch (err) {
-                    console.log(`Backup check failed: ${err.message || err}`);
+                    console.log(`Backup check failed: ${err.message}`);
                     processExit(1);
                 }
             });
@@ -2042,7 +2042,7 @@ async function processCommand(command, args, params, callback) {
                             }
                         }
                     } catch (err) {
-                        console.warn(`Could not create directory "meta.user": ${err.message || err}`);
+                        console.warn(`Could not create directory "meta.user": ${err.message}`);
                     }
 
                     try {
@@ -2055,7 +2055,7 @@ async function processCommand(command, args, params, callback) {
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
                     } catch (err) {
-                        console.error(`Error on sync: ${err.message || err}. Partial content might have been synced.`);
+                        console.error(`Error on sync: ${err.message}. Partial content might have been synced.`);
                         return void callback(EXIT_CODES.CANNOT_SYNC_FILES);
                     }
                 } else {
@@ -2152,7 +2152,7 @@ async function processCommand(command, args, params, callback) {
                         await repo.showRepoStatus();
                         return void callback();
                     } catch (err) {
-                        console.error(err);
+                        console.error(`Cannot show repository status: ${err.message}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
@@ -2179,7 +2179,7 @@ async function processCommand(command, args, params, callback) {
                                         return void callback();
                                     }
                                 } catch (err) {
-                                    console.error(err);
+                                    console.error(`Cannot add repository location: ${err.message}`);
                                     return void callback(EXIT_CODES.INVALID_REPO);
                                 }
                             }
@@ -2190,7 +2190,7 @@ async function processCommand(command, args, params, callback) {
                                 await repo.showRepoStatus();
                                 return void callback();
                             } catch (err) {
-                                console.error(err);
+                                console.error(`Cannot activate repository: ${err.message}`);
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             }
                         } else if (repoUrlOrCommand === 'del') {
@@ -2200,7 +2200,7 @@ async function processCommand(command, args, params, callback) {
                                 await repo.showRepoStatus();
                                 return void callback();
                             } catch (err) {
-                                console.error(err);
+                                console.error(`Cannot remove repository: ${err.message}`);
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             }
                         }  else if (repoUrlOrCommand === 'unset') {
@@ -2210,7 +2210,7 @@ async function processCommand(command, args, params, callback) {
                                 await repo.showRepoStatus();
                                 return void callback();
                             } catch (err) {
-                                console.error(err);
+                                console.error(`Cannot deactivate repository: ${err.message}`);
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             }
                         } else {
@@ -2305,7 +2305,7 @@ async function processCommand(command, args, params, callback) {
                         console.log(`Synchronised vendor information.`);
                         return void callback();
                     } catch (err) {
-                        console.error(`Cannot update vendor information: ${err.message || err}`);
+                        console.error(`Cannot update vendor information: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
                     }
                 });
@@ -2345,7 +2345,7 @@ async function processCommand(command, args, params, callback) {
                         console.log(`License ${type} updated.`);
                         return void callback();
                     } catch (err) {
-                        console.error(`Cannot update license: ${err.message || err}`);
+                        console.error(`Cannot update license: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
                     }
                 });
@@ -2388,7 +2388,7 @@ async function processExit(exitCode) {
     }, 1000);
 }
 
-const EXCEPTIONS = [
+const OBJECTS_THAT_CANNOT_BE_DELETED = [
     '0_userdata.0',
     'alias.0',
     'enum.functions',
@@ -2404,7 +2404,7 @@ async function delObjects(ids) {
     if (ids && ids.length) {
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
-            if (!EXCEPTIONS.includes(id)) {
+            if (!OBJECTS_THAT_CANNOT_BE_DELETED.includes(id)) {
                 try {
                     await objects.delObjectAsync(id);
                 } catch (err) {
@@ -2420,7 +2420,11 @@ async function delStates() {
     if (keys) {
         console.log(`clean ${keys.length} states...`);
         for (let i = 0; i < keys.length; i++) {
-            await states.delState(keys[i]);
+            try {
+                await states.delState(keys[i]);
+            } catch (err) {
+                console.error(`[Not critical] Cannot delete state ${keys[i]}: ${err.message}`);
+            }
         }
     }
     return keys ? keys.length : 0;

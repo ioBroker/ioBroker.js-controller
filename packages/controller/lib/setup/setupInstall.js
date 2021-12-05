@@ -216,7 +216,7 @@ function Install(options) {
                 }
                 console.log('NPM version: ' + npmVersion);
             } catch (err) {
-                console.error(`Error trying to check npm version: ${err.message || err}`);
+                console.error(`Error trying to check npm version: ${err.message}`);
             }
 
             if (!npmVersion) {
@@ -240,7 +240,7 @@ function Install(options) {
                 return await this._npmInstall(npmUrl, options, debug);
             }
         } catch (err) {
-            console.error(`Could not check npm version: ${err.message || err}`);
+            console.error(`Could not check npm version: ${err.message}`);
             console.error('Assuming that correct version is installed.');
         }
     };
@@ -425,7 +425,7 @@ function Install(options) {
             try {
                 adapterConf = fs.readJSONSync(adapterDir + '/io-package.json');
             } catch (err) {
-                console.error(`host.${hostname} error: reading io-package.json ${err.message || err}`, adapter);
+                console.error(`host.${hostname} error: reading io-package.json ${err.message}`, adapter);
                 throw new Error(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
         }
@@ -461,7 +461,7 @@ function Install(options) {
                 try {
                     await objects.extendObjectAsync(obj._id, obj);
                 } catch (err) {
-                    console.error(`host.${hostname} error setObject ${obj._id} ${err.message || err}`);
+                    console.error(`host.${hostname} error setObject ${obj._id} ${err.message}`);
                     return EXIT_CODES.CANNOT_SET_OBJECT;
                 }
 
@@ -506,7 +506,7 @@ function Install(options) {
         try {
             adapterConf = fs.readJSONSync(adapterDir + '/io-package.json');
         } catch (err) {
-            console.error(`host.${hostname} error: reading io-package.json ${err.message || err}`);
+            console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
             return processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
         }
 
@@ -546,7 +546,7 @@ function Install(options) {
                 packetManager = packetManager || new PacketManager();
                 await packetManager.install(adapterConf.common.osDependencies[process.platform]);
             } catch (err) {
-                console.error(`host.${hostname} Could not install required OS packages: ${err.message || err}`);
+                console.error(`host.${hostname} Could not install required OS packages: ${err.message}`);
             }
         }
 
@@ -615,7 +615,7 @@ function Install(options) {
 
         let doc = await objects.getObjectAsync('system.adapter.' + adapter);
         // Adapter is not installed - install it now
-        if (!doc || !doc.common.installedVersion) {
+        if (err || !doc || !doc.common.installedVersion) {
             await this.installAdapterAsync(adapter);
             doc = await objects.getObjectAsync('system.adapter.' + adapter);
         }
@@ -630,7 +630,6 @@ function Install(options) {
         });
         const systemConfig = await objects.getObjectAsync('system.config');
         const defaultLogLevel = systemConfig && systemConfig.common && systemConfig.common.defaultLogLevel;
-        let a;
         if (!res) {
             console.error(`host.${hostname} error: view instanceStats`);
             return processExit(EXIT_CODES.CANNOT_READ_INSTANCES);
@@ -647,7 +646,7 @@ function Install(options) {
 
         // check singletonHost one on host
         if (doc.common.singletonHost) {
-            for (a = 0; a < res.rows.length; a++) {
+            for (let a = 0; a < res.rows.length; a++) {
                 if (res.rows[a].value.common.host === hostname) {
                     if (ignoreIfExists) {
                         return;
@@ -669,7 +668,7 @@ function Install(options) {
             }
         } else {
             // find max instance
-            for (a = 0; a < res.rows.length; a++) {
+            for (let a = 0; a < res.rows.length; a++) {
                 const iInstance = parseInt(res.rows[a].id.split('.').pop(), 10);
                 if (instance === null || iInstance > instance) {
                     instance = iInstance;
@@ -743,7 +742,7 @@ function Install(options) {
         try {
             adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
         } catch (err) {
-            console.error(`host.${hostname} error: reading io-package.json ${err.message || err}`);
+            console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
             return void processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
         }
 
@@ -799,7 +798,7 @@ function Install(options) {
                 tools.validateGeneralObjectProperties(obj);
             } catch (err) {
                 // todo: in the future we will not create this object
-                console.warn(`host.${hostname} Object ${obj._id} is invalid: ${err.message || err}`);
+                console.warn(`host.${hostname} Object ${obj._id} is invalid: ${err.message}`);
                 console.warn(`host.${hostname} This object will not be created in future versions. Please report this to the developer.`);
             }
 
@@ -809,7 +808,7 @@ function Install(options) {
                 await objects.setObjectAsync(obj._id, obj);
                 console.log(`host.${hostname} object ${obj._id} created`);
             } catch (err) {
-                console.error(`host.${hostname} error: ${err.message || err}`);
+                console.error(`host.${hostname} error: ${err.message}`);
             }
         }
 
@@ -822,7 +821,7 @@ function Install(options) {
                 await states.setStateAsync(defState.id, defState);
                 console.log(`host.${hostname} Set default value of ${defState.id}: ${defState.val}`);
             } catch (err) {
-                console.error(`host.${hostname} error: ${err.message || err}`);
+                console.error(`host.${hostname} error: ${err.message}`);
             }
         }
 
@@ -833,7 +832,7 @@ function Install(options) {
             await objects.setObjectAsync(instanceObj._id, instanceObj);
             console.log(`host.${hostname} object ${instanceObj._id} created`);
         } catch (err) {
-            console.error(`host.${hostname} error: ${err.message || err}`);
+            console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -886,7 +885,7 @@ function Install(options) {
                 console.log(`host.${hostname} Counted ${newObjIDs.length} instances of ${adapter}${instance !== undefined ? `.${instance}` : ''}`);
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -920,7 +919,7 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -952,7 +951,7 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            console.error(`host.${hostname} Cannot enumerate adapters: ${err.message || err}`);
+            console.error(`host.${hostname} Cannot enumerate adapters: ${err.message}`);
         }
     };
 
@@ -985,7 +984,7 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1017,7 +1016,7 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1072,7 +1071,7 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1103,7 +1102,7 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message || err}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1133,7 +1132,7 @@ function Install(options) {
                     }
                 }
             } catch (err) {
-                console.error(`host.${hostname} Cannot get keys async: ${err.message || err}`);
+                console.error(`host.${hostname} Cannot get keys async: ${err.message}`);
             }
         }
     };
@@ -1158,7 +1157,7 @@ function Install(options) {
                 await objects.unlinkAsync(id, file.name || '');
                 console.log(`host.${hostname} file ${id + (file.name ? `/${file.name}` : '')} deleted`);
             } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete ${id} files folder: ${err.message || err}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete ${id} files folder: ${err.message}`);
             }
         }
 
@@ -1167,7 +1166,7 @@ function Install(options) {
                 await objects.delObjectAsync(objId);
                 console.log(`host.${hostname} object ${objId} deleted`);
             } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message || err}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message}`);
             }
         }
     };
@@ -1191,7 +1190,7 @@ function Install(options) {
             try {
                 await delStateAsync(stateIDs.pop());
             } catch (err) { // yep that works!
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete states: ${err.message || err}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete states: ${err.message}`);
             }
         }
     };
@@ -1228,7 +1227,7 @@ function Install(options) {
                 await objects.delObjectAsync(id);
                 await tools.removeIdFromAllEnums(objects, id, allEnums);
             } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message || err}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message}`);
             }
         }
     };
@@ -1238,7 +1237,7 @@ function Install(options) {
         return this.deleteAdapterAsync(adapter)
             .then(resultCode => callback && callback(adapter, resultCode))
             .catch(err => {
-                console.error(`Cannot delete adapter: ${err.message || err}`);
+                console.error(`Cannot delete adapter: ${err.message}`);
                 callback && callback(adapter, 1);
             });
     };
@@ -1289,7 +1288,7 @@ function Install(options) {
                                             await objects.setObjectAsync(obj._id, obj);
                                             console.log(`Adapter "${obj._id}" restarted.`);
                                         } catch (err) {
-                                            console.error(`Cannot restart adapter "${obj._id}": ${err.message || err}`);
+                                            console.error(`Cannot restart adapter "${obj._id}": ${err.message}`);
                                         }
                                     }
                                 }
@@ -1298,7 +1297,7 @@ function Install(options) {
                     }
                 }
             } catch (err) {
-                console.error(`Error deleting adapter ${adapter} from disk: ${err.message || err}`);
+                console.error(`Error deleting adapter ${adapter} from disk: ${err.message}`);
                 console.error(`You might have to delete it yourself!`);
             }
         };
@@ -1338,7 +1337,7 @@ function Install(options) {
                 await _uninstallNpm();
             }
         } catch (err) {
-            console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${err.message || err}`);
+            console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${err.message}`);
         }
 
         return resultCode;
@@ -1349,7 +1348,7 @@ function Install(options) {
         return this.deleteInstanceAsync(adapter)
             .then(() => callback && callback(adapter, instance))
             .catch(err => {
-                console.error(`Cannot delete instance: ${err.message || err}`);
+                console.error(`Cannot delete instance: ${err.message}`);
                 callback && callback(adapter, instance);
             });
     };
@@ -1416,7 +1415,7 @@ function Install(options) {
         return this.installAdapterFromUrlAsync(url, name)
             .then(() => callback && callback())
             .catch(err => {
-                console.error(`Cannot delete instance: ${err.message || err}`);
+                console.error(`Cannot delete instance: ${err.message}`);
                 callback && callback();
             });
     };
@@ -1460,7 +1459,7 @@ function Install(options) {
                         url = `${user}/${repo}`;
                     }
                 } catch (err) {
-                    console.log(`Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message || err}`);
+                    console.log(`Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`);
                     // Install using the npm Github URL syntax `npm i user/repo_name`:
                     url = `${user}/${repo}`;
                 }

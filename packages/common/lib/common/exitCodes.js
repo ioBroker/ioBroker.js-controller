@@ -52,7 +52,8 @@ const EXIT_CODES = {
     CONTROLLER_NOT_RUNNING: 100,
     CANNOT_GET_UUID: 101,
     CANNOT_GET_REPO_LIST: 102,
-    START_IMMEDIATELY_AFTER_STOP: 156
+    START_IMMEDIATELY_AFTER_STOP: 156,
+    FILE_NOT_FOUND: 404
 };
 // Allow reverse lookup (exit code -> error name)
 for (const [name, code] of Object.entries(EXIT_CODES)) {

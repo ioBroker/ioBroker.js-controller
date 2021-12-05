@@ -50,8 +50,8 @@ function Vendor(options) {
             try {
                 data = fs.readJSONSync(file);
             } catch (err) {
-                logger.error(`cannot read or parse "${file}": ${err.message || err}`);
-                return Promise.reject(new Error(`cannot read or parse "${file}": ${err.message || err}`));
+                logger.error(`cannot read or parse "${file}": ${err.message}`);
+                return Promise.reject(new Error(`cannot read or parse "${file}": ${err.message}`));
             }
         } else {
             logger.error(`"${file}" does not exist`);

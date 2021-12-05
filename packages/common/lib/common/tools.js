@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const { createInterface } = require('readline');
 const { PassThrough } = require('stream');
 const { detectPackageManager } = require('@alcalzone/pak');
+const EXIT_CODES = require('@iobroker/js-controller-common').EXIT_CODES;
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -511,33 +512,31 @@ function getFile(urlOrPath, fileName, callback) {
             url: urlOrPath,
             gzip: true,
             headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
-        }).on('error', error => {
-            console.log(`Cannot download "${tmpFile}": ${error}`);
-            if (callback) {
-                callback(tmpFile);
-            }
-        }).pipe(fs.createWriteStream(tmpFile)).on('close', () => {
-            console.log('downloaded ' + tmpFile);
-            if (callback) {
-                callback(tmpFile);
-            }
-        });
+        })
+            .on('error', error => {
+                console.log(`Cannot download "${tmpFile}": ${error}`);
+                callback && callback(tmpFile);
+            })
+            .pipe(fs.createWriteStream(tmpFile))
+            .on('close', () => {
+                console.log('downloaded ' + tmpFile);
+                callback && callback(tmpFile);
+            });
     } else {
-        if (fs.existsSync(urlOrPath)) {
-            if (callback) {
-                callback(urlOrPath);
+        try {
+            if (fs.existsSync(urlOrPath)) {
+                callback && callback(urlOrPath);
+            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
+                callback && callback(`${__dirname}/../${urlOrPath}`);
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+                callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
+            } else {
+                console.log('File not found: ' + urlOrPath);
+                process.exit(EXIT_CODES.FILE_NOT_FOUND);
             }
-        } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
-            if (callback) {
-                callback(__dirname + '/../' + urlOrPath);
-            }
-        } else if (fs.existsSync(__dirname + '/../tmp/' + urlOrPath)) {
-            if (callback) {
-                callback(__dirname + '/../tmp/' + urlOrPath);
-            }
-        } else {
-            console.log('File not found: ' + urlOrPath);
-            process.exit(1);
+        } catch (err) {
+            console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
+            process.exit(EXIT_CODES.FILE_NOT_FOUND);
         }
     }
 }

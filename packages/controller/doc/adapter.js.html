@@ -4256,7 +4256,7 @@ function Adapter(options) {
             return;
         }
 
-        logger.error(that.namespace + ' uncaught exception: ' + (err.message || err));
+        logger.error(that.namespace + ' uncaught exception: ' + (err.message));
         if (err.stack) logger.error(that.namespace + ' ' + err.stack);
 
 		try {
@@ -4265,7 +4265,7 @@ function Adapter(options) {
 				process.exit(6);
 			}, 1000);
 		} catch (err) {
-			logger.error(that.namespace + ' exception by stop: ' + (err.message || err));
+			logger.error(that.namespace + ' exception by stop: ' + (err.message));
 		}
     });
 

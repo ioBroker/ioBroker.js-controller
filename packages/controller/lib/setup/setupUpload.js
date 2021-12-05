@@ -64,7 +64,7 @@ function Upload(options) {
             }
         } catch (err) {
             // ignore
-            console.warn(`Cannot read hosts: ${err.message || err}`);
+            console.warn(`Cannot read hosts: ${err.message}`);
         }
 
         if (onlyAlive) {
@@ -110,14 +110,14 @@ function Upload(options) {
                                     console.log(`Adapter "${obj._id}" restarted.`);
                                 }
                             } catch (err) {
-                                console.error(`Cannot restart adapter "${instances[r]}": ${err.message || err}`);
+                                console.error(`Cannot restart adapter "${instances[r]}": ${err.message}`);
                             }
                         }
                     }
                 }
             }
         } catch (err) {
-            console.error(`Cannot parse ${adapterDir}/io-package.json: ${err.message || err}`);
+            console.error(`Cannot parse ${adapterDir}/io-package.json: ${err.message}`);
         }
     }
 
@@ -261,7 +261,7 @@ function Upload(options) {
                     result = err.request;
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    result = err.message || err;
+                    result = err.message;
                 }
                 console.error(`Cannot get URL "${source}": ${result}`);
                 throw new Error(result);
@@ -270,7 +270,7 @@ function Upload(options) {
             try {
                 await objects.writeFileAsync(adapter, target, fs.readFileSync(source));
             } catch (err) {
-                console.error(`Cannot read file "${source}": ${err.message || err}`);
+                console.error(`Cannot read file "${source}": ${err.message}`);
                 throw err;
             }
         }
@@ -456,7 +456,7 @@ function Upload(options) {
             cfg = await fs.readJSON(`${adapterDir}/io-package.json`);
         } catch (err) {
             // file not parsable or does not exist
-            console.error(`Could not read io-package.json: ${err.message || err}`);
+            console.error(`Could not read io-package.json: ${err.message}`);
         }
 
         if (!fs.existsSync(dir)) {
@@ -764,7 +764,12 @@ function Upload(options) {
             obj.from = `system.host.${hostname}.cli`;
             obj.ts = Date.now();
 
-            await objects.setObjectAsync('system.adapter.' + name, obj);
+            try {
+                await objects.setObjectAsync('system.adapter.' + name, obj);
+            } catch (err) {
+                logger.error(`Cannot set system.adapter.${name}: ${err.message}`);
+            }
+
             await this._upgradeAdapterObjectsHelper(name, ioPack, hostname, logger);
         }
 

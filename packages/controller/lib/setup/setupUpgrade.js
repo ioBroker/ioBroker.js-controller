@@ -457,7 +457,7 @@ function Upgrade(options) {
                 try {
                     await checkDependencies(repoUrl[adapter].dependencies, repoUrl[adapter].globalDependencies);
                 } catch (err) {
-                    return console.error(`Cannot check dependencies: ${err.message || err}`);
+                    return console.error(`Cannot check dependencies: ${err.message}`);
                 }
             }
 
@@ -490,7 +490,7 @@ function Upgrade(options) {
                 try {
                     await checkDependencies(ioPack.common && ioPack.common.dependencies, ioPack.common && ioPack.common.globalDependencies);
                 } catch (err) {
-                    return console.error(`Cannot check dependencies: ${err.message || err}`);
+                    return console.error(`Cannot check dependencies: ${err.message}`);
                 }
             }
 
