@@ -8533,7 +8533,7 @@ function Adapter(options) {
                                 logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
                             }
                             if (schedule) {
-                                logger.silly(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
+                                logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
                                 restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                                     logger.info(this.namespaceLog + ' Scheduled restart.');
                                     stop(false, true);
