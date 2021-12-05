@@ -5662,7 +5662,7 @@ function Adapter(options) {
                 // If someone want to have log messages
                 if (this.logList && id.match(/\.logging$/)) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    !logger && logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+                    logger && logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect(state ? state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     options.logTransporter && this.processLog && this.processLog(state);
