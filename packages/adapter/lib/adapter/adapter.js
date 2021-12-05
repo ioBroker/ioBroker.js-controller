@@ -5518,7 +5518,7 @@ function Adapter(options) {
 
     // initStates is called from initAdapter
     const initStates = cb => {
-        logger.silly(this.namespaceLog + ' objectDB connected');
+        logger.debug(this.namespaceLog + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
