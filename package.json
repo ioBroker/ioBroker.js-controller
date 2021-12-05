@@ -33,7 +33,7 @@
     "@typescript-eslint/parser": "^5.5.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^8.3.0",
+    "eslint": "^8.4.0",
     "fs-extra": "^10.0.0",
     "get-spdx-license-ids": "^2.1.0",
     "gulp": "^4.0.2",
