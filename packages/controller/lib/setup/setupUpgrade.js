@@ -286,8 +286,12 @@ function Upgrade(options) {
      */
     this.upgradeAdapterAsync = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll) {
         if (!repoUrl || typeof repoUrl !== 'object') {
-            repoUrl = await getRepository(repoUrl, params);
-        }
+            try {
+                const res = await getRepository(repoUrl, params);
+                return this.upgradeAdapter(res, adapter, forceDowngrade, autoConfirm, upgradeAll, callback);
+            } catch (e) {
+                return processExit(e);
+            }
         }
 
         const finishUpgrade = async (name, ioPack) => {

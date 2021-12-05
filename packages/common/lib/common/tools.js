@@ -2612,11 +2612,6 @@ async function getAllEnums(objects) {
 }
 
 /**
- * Promise-version of getAllInstances
- */
-const getAllInstancesAsync = promisify(getAllInstances);
-
-/**
  * get all instances of one adapter
  *
  * @alias getInstances
