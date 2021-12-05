@@ -402,7 +402,7 @@ function Upload(options) {
                     if (stat.isDirectory()) {
                         walk(dir + '/' + file, _results);
                     } else {
-                        if (!file.match(/\.npmignore$/) && !file.match(/\.gitignore$/)) {
+                        if (!file.endsWith('.npmignore') && !file.endsWith('.gitignore')) {
                             _results.push(dir + '/' + file);
                         }
                     }

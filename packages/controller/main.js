@@ -160,7 +160,7 @@ function _startMultihost(_config, secret) {
  * @param {object} __config - the iobroker config object
  * @returns {boolean|void}
  */
-function startMultihost(__config) {
+async function startMultihost(__config) {
     if (compactGroupController) {
         return;
     }
@@ -194,20 +194,31 @@ function startMultihost(__config) {
 
         if (_config.multihostService.secure) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
-                objects.getObject('system.config', (err, obj) => {
-                    if (obj && obj.native && obj.native.secret) {
-                        if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
-                            // if old encryption was used, we need to decrypt in old fashion
-                            tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                                _startMultihost(_config, secret));
-                        } else {
+                let obj, errText;
+                try {
+                    obj = await objects.getObjectAsync('system.config');
+                } catch (e) {
+                    // will log error below
+                    errText = e.message;
+                }
+
+                if (obj && obj.native && obj.native.secret) {
+                    if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
+                        // if old encryption was used, we need to decrypt in old fashion
+                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                            _startMultihost(_config, secret));
+                    } else {
+                        try {
+                            // it can throw in edge cases #1474, we need further investigation
                             const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
                             _startMultihost(_config, secret);
+                        } catch (e) {
+                            logger.error(`${hostLogPrefix} Cannot decrypt password for multihost discovery server: ${e.message}`);
                         }
-                    } else {
-                        logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                     }
-                });
+                } else {
+                    logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err: ${errText})`);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Cannot start multihost discovery server: secure mode was configured, but no secret was set. Please check the configuration!`);
             }
@@ -227,7 +238,7 @@ function startMultihost(__config) {
                         const configFile = tools.getConfigFileName();
                         await fs.writeFile(configFile, JSON.stringify(_config, null, 2));
                     } catch (e) {
-                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                     }
                 }
                 mhTimer = null;
@@ -240,7 +251,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
         }
         return false;
     }
@@ -318,7 +329,7 @@ function createStates(onConnect) {
                 return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
             }
             // If some log transporter activated or deactivated
-            if (id.match(/.logging$/)) {
+            if (id.endsWith('.logging')) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
             } else
             // If this is messagebox, only the main controller is handling the host messages
@@ -939,8 +950,10 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
-    // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController) {
+    const objectData = objects.getStatus();
+    // only file master host controller needs to check/fix the host assignments from the instances
+    // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
+    if (compactGroupController || !objectData.server) {
         return callback && callback();
     }
     objects.getObjectView('system', 'host', {
@@ -2608,8 +2621,13 @@ async function processMessage(msg) {
 
         case 'rebuildAdapter':
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
-                logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
-                installQueue.push({id: msg.message.id, rebuild: true});
+                logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
+                const installObj = {id: msg.message.id, rebuild: true};
+                if (msg.message.path) {
+                    installObj.path = msg.message.path;
+                }
+
+                installQueue.push(installObj);
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
 
@@ -3137,10 +3155,12 @@ function installAdapters() {
             installArgs.push(commandScope);
             if (!task.rebuild) {
                 installArgs.push(name);
+            } else if (task.path) {
+                installArgs.push(task.path);
             }
         }
         logger.info(`${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')}`);
-        installArgs.unshift(__dirname + '/' + tools.appName + '.js');
+        installArgs.unshift(`${__dirname}/${tools.appName}.js`);
 
         try {
             task.inProgress = true;
@@ -3528,7 +3548,7 @@ async function startInstance(id, wakeUp) {
             subscribe[procs[id].subscribe] = [id];
 
             // Subscribe on changes
-            if (procs[id].subscribe.match(/^messagebox\./)) {
+            if (procs[id].subscribe.startsWith('messagebox.')) {
                 states.subscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
             } else {
                 states.subscribe(procs[id].subscribe);
@@ -3655,15 +3675,23 @@ async function startInstance(id, wakeUp) {
                             procs[id].rebuildCounter = procs[id].rebuildCounter || 0;
                             procs[id].rebuildCounter++;
                             if (procs[id].rebuildCounter < 4) {
-                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
+                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild ${procs[id].rebuildPath
+                                    ? `of ${procs[id].rebuildPath} ` : ''}and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
-                                    message: { id: instance._id }
+                                    message: { id: instance._id}
                                 };
+
+                                // if rebuild path given send it
+                                if (procs[id].rebuildPath) {
+                                    msg.message.path = procs[id].rebuildPath;
+                                    delete procs[id].rebuildPath;
+                                }
+
                                 if (!compactGroupController) { // execute directly
                                     processMessage(msg);
                                 } else { // send to main controller to make sure only one npm process runs at a time
-                                    sendTo('system.host.' + hostname, 'rebuildAdapter', msg);
+                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg);
                                 }
                             } else {
                                 logger.info(`${hostLogPrefix} Rebuild for adapter ${id} not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.`);
@@ -3787,9 +3815,24 @@ async function startInstance(id, wakeUp) {
                                 return;
                             }
                             const text = data.toString();
+
                             // show for debug
                             console.error(text);
-                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
+                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild') || text.includes('Cannot find module')) {
+                                // only try this at second rebuild
+                                if (procs[id].rebuildCounter === 1) {
+                                    // extract rebuild path - it is always between the only two single quotes
+                                    const matches = text.match(/'.+'/g);
+
+                                    if (matches && matches.length === 1) {
+                                        // remove the quotes
+                                        const rebuildPath = matches[0].replace(/'/g, '');
+                                        if (path.isAbsolute(rebuildPath)) {
+                                            // we have found a module which needs rebuild
+                                            procs[id].rebuildPath = rebuildPath;
+                                        }
+                                    }
+                                }
                                 procs[id].needsRebuild = true;
                             }
                             procs[id].errors = procs[id].errors || [];
@@ -4156,7 +4199,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
@@ -4323,7 +4366,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);

@@ -8,9 +8,9 @@ const forge = require('node-forge');
 const deepClone = require('deep-clone');
 const cpPromise = require('promisify-child-process');
 const jwt = require('jsonwebtoken');
-const {createInterface} = require('readline');
-const {PassThrough} = require('stream');
-const {detectPackageManager} = require('@alcalzone/pak');
+const { createInterface } = require('readline');
+const { PassThrough } = require('stream');
+const { detectPackageManager } = require('@alcalzone/pak');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -184,16 +184,12 @@ function decryptPhrase(password, data, callback) {
 }
 
 function getAppName() {
-    const parts = __dirname.replace(/\\/g, '/').split('/');
-
     if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
-        // dev install
-        return parts[parts.length - 5].split('.')[0];
+        // dev install - GitHub folder is uppercase
+        return 'ioBroker';
     }
 
-    // find @orga folder
-    return parts[parts.length - 4].replace('@', '');
-
+    return 'iobroker';
 }
 
 function rmdirRecursiveSync(path) {
@@ -261,7 +257,7 @@ function getMac(callback) {
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = (process.platform.indexOf('win') === 0) ? 'getmac' : 'ifconfig || ip link';
 
-    require('child_process').exec(command, {windowsHide: true}, (err, stdout, _stderr) => {
+    require('child_process').exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
         if (err) {
             callback(err);
         } else {
@@ -420,7 +416,7 @@ function createUuid(_objects, callback) {
                 password = password || require('./password');
 
                 // Default Password for user 'admin' is application name in lower case
-                password(getAppName()).hash(null, null, (err, res) => {
+                password(module.exports.appName).hash(null, null, (err, res) => {
                     err && console.error(err);
 
                     // Create user here and not in io-package.js because of hash password
@@ -514,7 +510,7 @@ function getFile(urlOrPath, fileName, callback) {
         request({
             url: urlOrPath,
             gzip: true,
-            headers: {'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}`}
+            headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
         }).on('error', error => {
             console.log(`Cannot download "${tmpFile}": ${error}`);
             if (callback) {
@@ -573,7 +569,7 @@ function getJson(urlOrPath, agent, callback) {
                 url: urlOrPath,
                 timeout: 10000,
                 gzip: true,
-                headers: {'User-Agent': agent}
+                headers: { 'User-Agent': agent }
             }, (error, response, body) => {
                 if (error || !body || response.statusCode !== 200) {
                     console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
@@ -788,15 +784,10 @@ function getInstalledInfo(hostRunningVersion) {
         };
     }
 
-    scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
-    scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
+    // we scan the sub node modules of controller and same hierarchy as controller
+    scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
+    scanDirectory(path.join(fullPath, '..'), result, regExp);
 
-    if (
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName}.js-controller`))
-    ) {
-        scanDirectory(path.join(__dirname, '../..'), result, regExp);
-    }
     // Warning! Do not checkin this code
     if (
         fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
@@ -820,7 +811,7 @@ function getNpmVersion(adapter, callback) {
     const cliCommand = `npm view ${adapter}@latest version`;
 
     const exec = require('child_process').exec;
-    exec(cliCommand, {timeout: 2000, windowsHide: true}, (error, stdout, _stderr) => {
+    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
         let version;
         if (error) {
             // command failed
@@ -934,7 +925,7 @@ function _getRepositoryFile(sources, path, callback) {
             }
             count++;
         }
-        sources._helper = {failCounter: []};
+        sources._helper = { failCounter: [] };
 
         sources._helper.timeout = setTimeout(() => {
             if (sources._helper) {
@@ -1021,7 +1012,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
         urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
         let json = null;
-        request({url: urlOrPath, timeout: 10000, gzip: true}, (error, response, body) => {
+        request({ url: urlOrPath, timeout: 10000, gzip: true }, (error, response, body) => {
             if (error || !body || response.statusCode !== 200) {
                 console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
             } else {
@@ -1169,7 +1160,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         axios = axios || require('axios');
-        _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+        _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
         if (_hash && _hash.data && hash === _hash.data.hash) {
             return _actualRepo;
         }
@@ -1180,7 +1171,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     if (url.startsWith('http://') || url.startsWith('https://')) {
         axios = axios || require('axios');
         if (!_hash) {
-            _hash = await axios({url: url.replace(/\.json$/, '-hash.json'), timeout: 10000});
+            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
         }
 
         if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
@@ -1206,7 +1197,11 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
         }
     }
 
-    return {json: data, changed: _hash && _hash.data ? hash !== _hash.data.hash : true, hash: _hash && _hash.data ? _hash.data.hash : ''};
+    return {
+        json: data,
+        changed: _hash && _hash.data ? hash !== _hash.data.hash : true,
+        hash: _hash && _hash.data ? _hash.data.hash : ''
+    };
 }
 
 function sendDiagInfo(obj, callback) {
@@ -1215,7 +1210,7 @@ function sendDiagInfo(obj, callback) {
     const params = new URLSearchParams();
     params.append('data', JSON.stringify(obj));
     const config = {
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         timeout: 4000
     };
 
@@ -1332,7 +1327,7 @@ function getSystemNpmVersion(callback) {
             }
         }, 10000);
 
-        exec('npm -v', {encoding: 'utf8', env: newEnv, windowsHide: true}, (error, stdout) => {//, stderr) {
+        exec('npm -v', { encoding: 'utf8', env: newEnv, windowsHide: true }, (error, stdout) => {//, stderr) {
             if (timeout) {
                 clearTimeout(timeout);
                 timeout = null;
@@ -1366,14 +1361,14 @@ const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
  * Installs a node module using npm or a similar package manager
  * @param {string} npmUrl Which node module to install
  * @param {InstallNodeModuleOptions} options Options for the installation
- * @returns {Promise<import("@alcalzone/pak").CommandResult>}
+ * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
 async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             // If a cwd was provided, use it
-            ? {cwd: options.cwd}
+            ? { cwd: options.cwd }
             // Otherwise find the ioBroker root dir
             : {
                 cwd: __dirname,
@@ -1397,7 +1392,7 @@ async function installNodeModule(npmUrl, options = {}) {
     }
 
     // And install the module
-    /** @type {import("@alcalzone/pak").InstallOptions} */
+    /** @type {import('@alcalzone/pak').InstallOptions} */
     const installOpts = {};
     if (options.unsafePerm) {
         installOpts.additionalArgs = ['--unsafe-perm'];
@@ -1415,14 +1410,14 @@ async function installNodeModule(npmUrl, options = {}) {
  * Uninstalls a node module using npm or a similar package manager
  * @param {string} packageName Which node module to uninstall
  * @param {UninstallNodeModuleOptions} options Options for the installation
- * @returns {Promise<import("@alcalzone/pak").CommandResult>}
+ * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
 async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             // If a cwd was provided, use it
-            ? {cwd: options.cwd}
+            ? { cwd: options.cwd }
             // Otherwise find the ioBroker root dir
             : {
                 cwd: __dirname,
@@ -1458,14 +1453,14 @@ async function uninstallNodeModule(packageName, options = {}) {
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
  * @param {RebuildNodeModulesOptions} options Options for the rebuild
- * @returns {Promise<import("@alcalzone/pak").CommandResult>}
+ * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
 async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             // If a cwd was provided, use it
-            ? {cwd: options.cwd}
+            ? { cwd: options.cwd }
             // Otherwise find the ioBroker root dir
             : {
                 cwd: __dirname,
@@ -1510,7 +1505,7 @@ function getDiskInfo(platform, callback) {
         try {
             const path = platform === 'win32' ? __dirname.substring(0, 2) : '/';
             const info = diskusage.checkSync(path);
-            return callback && callback(null, {'Disk size': info.total, 'Disk free': info.free});
+            return callback && callback(null, { 'Disk size': info.total, 'Disk free': info.free });
         } catch (err) {
             console.log(err);
         }
@@ -1547,7 +1542,7 @@ function getDiskInfo(platform, callback) {
                     callback && callback(error, null);
                 });
             } else {
-                exec('df -k /', {encoding: 'utf8', windowsHide: true}, (error, stdout) => {//, stderr) {
+                exec('df -k /', { encoding: 'utf8', windowsHide: true }, (error, stdout) => {//, stderr) {
                     // Filesystem            1K-blocks    Used Available Use% Mounted on
                     // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
                     try {
@@ -1661,7 +1656,7 @@ function generateDefaultCertificates() {
     // https://github.com/digitalbazaar/forge
     forge.options.usePureJavaScript = false;
     const pki = forge.pki;
-    const keys = pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
+    const keys = pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
     const cert = pki.createCertificate();
 
     cert.publicKey = keys.publicKey;
@@ -1671,15 +1666,15 @@ function generateDefaultCertificates() {
     cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 
     const subAttrs = [
-        {name: 'commonName', value: getHostName()},
-        {name: 'organizationName', value: 'ioBroker GmbH'},
-        {shortName: 'OU', value: 'iobroker'}
+        { name: 'commonName', value: getHostName() },
+        { name: 'organizationName', value: 'ioBroker GmbH' },
+        { shortName: 'OU', value: 'iobroker' }
     ];
 
     const issAttrs = [
-        {name: 'commonName', value: 'iobroker'},
-        {name: 'organizationName', value: 'ioBroker GmbH'},
-        {shortName: 'OU', value: 'iobroker'}
+        { name: 'commonName', value: 'iobroker' },
+        { name: 'organizationName', value: 'ioBroker GmbH' },
+        { shortName: 'OU', value: 'iobroker' }
     ];
 
     cert.setSubject(subAttrs);
@@ -1965,13 +1960,13 @@ function sliceArgs(argsObj, startIndex) {
  * @returns {(...args: any[]) => Promise<any>}
  */
 function promisify(fn, context, returnArgNames) {
-    return function () {
+    return function() {
         const args = sliceArgs(arguments);
         // @ts-ignore we cannot know the type of `this`
         context = context || this;
         return new Promise((resolve, reject) => {
             fn.apply(context, args.concat([
-                function (error, result) {
+                function(error, result) {
                     if (error) {
                         return reject(error instanceof Error ? error : new Error(error));
                     } else {
@@ -2015,13 +2010,13 @@ function promisify(fn, context, returnArgNames) {
  * @returns {(...args: any[]) => Promise<any>}
  */
 function promisifyNoError(fn, context, returnArgNames) {
-    return function () {
+    return function() {
         const args = sliceArgs(arguments);
         // @ts-ignore we cannot know the type of `this`
         context = context || this;
         return new Promise((resolve, _reject) => {
             fn.apply(context, args.concat([
-                function (result) {
+                function(result) {
                     // decide on how we want to return the callback arguments
                     switch (arguments.length) {
                         case 0: // no arguments were given
@@ -2327,7 +2322,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
             const func = new Function('val', 'type', 'min', 'max', 'sType', 'sMin', 'sMax', 'return ' + targetObj.alias.read);
             state.val = func(state.val, targetObj.type, targetObj.min, targetObj.max, sourceObj.type, sourceObj.min, sourceObj.max);
         } catch (e) {
-            logger.error(`${logNamespace}Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`);
+            logger.error(`${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`);
             return null;
         }
     }
@@ -2338,7 +2333,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
             const func = new Function('val', 'type', 'min', 'max', 'tType', 'tMin', 'tMax', 'return ' + sourceObj.alias.write);
             state.val = func(state.val, sourceObj.type, sourceObj.min, sourceObj.max, targetObj.type, targetObj.min, targetObj.max);
         } catch (e) {
-            logger.error(`${logNamespace}Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`);
+            logger.error(`${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`);
             return null;
         }
     }
@@ -2382,35 +2377,36 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
  * @memberof tools
  * @param {object} objects object to access objects db
  * @param {string} id the object id which will be deleted from enums
- * @returns {Promise}
+ * @param {object} [allEnums] objects with all enums to use - if not provided all enums will be queried
+ * @returns {Promise} All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  *
  */
-function removeIdFromAllEnums(objects, id) {
-    return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'enum', {
-            startkey: 'enum.',
-            endkey: 'enum.\u9999'
-        }, (err, res) => {
-            if (err) {
-                reject(err);
-            } else {
-                const promises = [];
-                for (const obj of res.rows) {
-                    const idx = obj.value && obj.value.common && obj.value.common.members ? obj.value.common.members.indexOf(id) : -1;
+async function removeIdFromAllEnums(objects, id, allEnums) {
+
+    if (!allEnums) {
+        allEnums = await this.getAllEnums(objects);
+    }
+
+    let error = null;
+    for (const [enumId, enumObj] of Object.entries(allEnums)) {
+        const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
                     if (idx !== -1) {
                         // the id is in the enum now we have to remove it
-                        obj.value.common.members.splice(idx, 1);
-                        promises.push(new Promise(resolve => {
-                            objects.setObject(obj.value._id, obj.value, err => {
-                                err ? reject(err) : resolve();
-                            });
-                        }));
-                    } // endIf
-                } // endFor
-                Promise.all(promises).then(resolve);
-            } // endElse
-        });
-    });
+            enumObj.common.members.splice(idx, 1);
+            try {
+                await objects.setObjectAsync(enumId, enumObj);
+                // update cache directly to prevent race conditions when sending many delete in a short time
+                allEnums[enumId] = enumObj;
+            } catch (err) {
+                if (!error) {
+                    error = err;
+                }
+            }
+        }
+    }
+    if (error) {
+        throw error;
+    }
 }
 
 /**
@@ -2477,6 +2473,9 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
         throw new Error(`obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`);
+    } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
+        // for some types, name needs to be a unique string
+        throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
     if (obj.common.type !== undefined) {
@@ -2484,10 +2483,39 @@ function validateGeneralObjectProperties(obj, extend) {
             throw new Error(`obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`);
         }
 
+        if (obj.type === 'state') {
         // if object type indicates a state, check that common.type matches
         const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
-        if (obj.type === 'state' && !allowedStateTypes.includes(obj.common.type)) {
+            if (!allowedStateTypes.includes(obj.common.type)) {
             throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
+        }
+
+            // ensure, that default value has correct type
+            if (obj.common.def !== undefined && obj.common.def !== null) {
+                if (obj.common.type === 'file') {
+                    // defaults are set via setState but would need setBinaryState
+                    throw new Error('Default value is not supported for type "file"');
+    }
+
+                // else do what strictObjectChecks does for val
+                if (!(obj.common.type === 'mixed' && typeof obj.common.def !== 'object' ||
+                    obj.common.type !== 'object' && obj.common.type === typeof obj.common.def ||
+                    obj.common.type === 'array' && typeof obj.common.def === 'string' ||
+                    obj.common.type === 'json' && typeof obj.common.def === 'string' ||
+                    obj.common.type === 'file' && typeof obj.common.def === 'string' ||
+                    obj.common.type === 'object' && typeof obj.common.def === 'string')
+                ) {
+                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
+                    // array, object, json need to be string
+                    if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
+                        throw new Error(`Default value has to be stringified but received type "${typeof obj.common.def}"`);
+                    } else {
+                        throw new Error(`Default value has to be ${obj.common.type === 'mixed'
+                            ? `one of type "string", "number", "boolean"`
+                            : `type "${obj.common.type}"`} but received type "${typeof obj.common.def}" `);
+                    }
+                }
+            }
         }
     }
 
@@ -2561,6 +2589,32 @@ async function getAllInstancesAsync(adapters, objects) {
 
     return instances;
 }
+
+/**
+ * Get all existing enums
+ *
+ * @param {object} objects - objects db
+ * @returns {Promise<{}>}
+ */
+async function getAllEnums(objects) {
+    const allEnums = {};
+    const res = await objects.getObjectViewAsync('system', 'enum', {
+        startkey: 'enum.',
+        endkey: 'enum.\u9999'
+    });
+    if (res && res.rows) {
+        for (const row of res.rows) {
+            allEnums[row.id] = row.value;
+        }
+    }
+
+    return allEnums;
+}
+
+/**
+ * Promise-version of getAllInstances
+ */
+const getAllInstancesAsync = promisify(getAllInstances);
 
 /**
  * get all instances of one adapter
@@ -2657,8 +2711,8 @@ function maybeCallbackWithError(callback, error, ...args) {
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
  * @param {string} command The command to execute
- * @param {import("child_process").ExecOptions} [execOptions] The options for child_process.exec
- * @returns {import("child_process").ChildProcess & Promise<{stdout?: string; stderr?: string}>}
+ * @param {import('child_process').ExecOptions} [execOptions] The options for child_process.exec
+ * @returns {import('child_process').ChildProcess & Promise<{stdout?: string; stderr?: string}>}
  */
 function execAsync(command, execOptions) {
     const defaultOptions = {
@@ -2668,7 +2722,7 @@ function execAsync(command, execOptions) {
         encoding: 'utf8'
     };
     // @ts-ignore We set the encoding, so stdout/stdrr must be a string
-    return cpPromise.exec(command, {...defaultOptions, ...execOptions});
+    return cpPromise.exec(command, { ...defaultOptions, ...execOptions });
 }
 
 /**
@@ -3054,16 +3108,16 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
 function getLogger(log) {
     if (!log) {
         log = {
-            silly: function (_msg) {/*console.log(msg);*/
+            silly: function(_msg) {/*console.log(msg);*/
             },
-            debug: function (_msg) {/*console.log(msg);*/
+            debug: function(_msg) {/*console.log(msg);*/
             },
-            info: function (_msg) {/*console.log(msg);*/
+            info: function(_msg) {/*console.log(msg);*/
             },
-            warn: function (msg) {
+            warn: function(msg) {
                 console.log(msg);
             },
-            error: function (msg) {
+            error: function(msg) {
                 console.log(msg);
             }
         };
@@ -3082,7 +3136,7 @@ function getLogger(log) {
  * @return {Promise<object[]>}
  */
 async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
-    const instances = {'1': [], '2': [], '3': [], 'admin': []};
+    const instances = { '1': [], '2': [], '3': [], 'admin': [] };
     const allowedTiers = [1, 2, 3];
 
     if (logPrefix) {
@@ -3098,7 +3152,7 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
         });
     } catch (e) {
         if (e.message.startsWith('Cannot find ')) {
-            logger.error(`${logPrefix}_design/system missing - call node ${getAppName()}.js setup`);
+            logger.error(`${logPrefix}_design/system missing - call node ${module.exports.appName}.js setup`);
         } else {
             logger.error(`${logPrefix}Can not get instances: ${e.message}`);
         }
@@ -3241,6 +3295,7 @@ module.exports = {
     getControllerDir,
     getLogger,
     showDeprecatedMessage,
+    getAllEnums,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,

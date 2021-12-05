@@ -125,7 +125,7 @@ function killPids(pids, callback) {
     }
 }
 
-if (require('os').platform().match(/^win/) && fs.existsSync(`${__dirname}/../_service_${tools.appName}.bat`)) {
+if (require('os').platform().startsWith('win') && fs.existsSync(`${__dirname}/../_service_${tools.appName}.bat`)) {
     log(`Restarting service ${tools.appName}...`);
 
     const spawn = require('child_process').spawn;

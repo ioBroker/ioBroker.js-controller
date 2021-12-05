@@ -288,6 +288,7 @@ function Upgrade(options) {
         if (!repoUrl || typeof repoUrl !== 'object') {
             repoUrl = await getRepository(repoUrl, params);
         }
+        }
 
         const finishUpgrade = async (name, ioPack) => {
             if (!ioPack) {

@@ -86,7 +86,7 @@ function Install(options) {
         }
     }
 
-    this.downloadPacket = function (repoUrl, packetName, options, stoppedList, callback) {
+    this.downloadPacket = async function (repoUrl, packetName, options, stoppedList, callback) {
         tools.showDeprecatedMessage('setupInstall.downloadPacket');
         if (typeof stoppedList === 'function') {
             callback = stoppedList;
@@ -1206,6 +1206,17 @@ function Install(options) {
             console.log(`host.${hostname} Deleting ${objIDs.length} object(s).`);
         }
 
+        let allEnums;
+
+        if (objIDs.length > 1) {
+            try {
+                // cache all enums, else it will be slow to delete many objects
+                allEnums = await tools.getAllEnums(objects);
+            } catch (e) {
+                console.error(`host.${hostname}: Could not retrieve all enums: ${e.message}`);
+            }
+        }
+
         while (objIDs.length > 0) {
             if (objIDs.length % 200 === 0) {
                 // write progress report
@@ -1215,7 +1226,7 @@ function Install(options) {
             try {
                 const id = objIDs.pop();
                 await objects.delObjectAsync(id);
-                await tools.removeIdFromAllEnums(objects, id);
+                await tools.removeIdFromAllEnums(objects, id, allEnums);
             } catch (err) {
                 err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message || err}`);
             }

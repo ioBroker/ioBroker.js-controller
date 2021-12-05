@@ -170,7 +170,7 @@ function Repo(options) {
                 repoUrl = [repoUrl];
             }
 
-            console.log('Used repository(ies): ' + repoUrl.join(', '));
+            console.log(`Used ${repoUrl.length > 1 ? 'repositories' : 'repository'}: ${repoUrl.join(', ')}`);
 
             const allSources = {};
 

@@ -22,6 +22,7 @@ const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
 const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require('@iobroker/js-controller-common-db');
+const path = require('path');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -118,7 +119,7 @@ function initYargs() {
             }
         })
         .command(['install <adapter>', 'i <adapter>'], 'Installs a specified adapter', {})
-        .command('rebuild', 'Rebuild all native modules', {})
+        .command('rebuild [<path>]', 'Rebuild all native modules or path', {})
         .command('url <url> [<name>]', 'Install adapter from specified url, e.g. GitHub', {})
         .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter from system', {
             custom: {
@@ -737,10 +738,19 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'rebuild': {
-            console.log(`Rebuilding native modules...`);
-            const result = await tools.rebuildNodeModules({
-                debug: process.argv.includes('--debug')
-            });
+            const options = {debug: process.argv.includes('--debug')};
+
+            if (commandOptions.path) {
+                if (path.isAbsolute(commandOptions.path)) {
+                    options.cwd = commandOptions.path;
+                } else {
+                    console.log('Path argument needs to be an absolute path!');
+                    return processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                }
+            }
+
+            console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
+            const result = await tools.rebuildNodeModules(options);
 
             if (result.success) {
                 console.log();
@@ -976,7 +986,7 @@ async function processCommand(command, args, params, callback) {
                     // upgrade all
                     try {
                         const links = await getRepository();
-                        if (!links || !links.json) {
+                        if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
                         await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
@@ -1018,7 +1028,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, (_obj, _stat, isNotRun) => {
 
                 if (!isNotRun) {
-                    console.error('Stop ' + tools.appName + ' first!');
+                    console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                 }
 
@@ -1463,7 +1473,7 @@ async function processCommand(command, args, params, callback) {
             const command = args[0] || '';
             let user    = args[1] || '';
 
-            if (user && user.match(/^system\.user\./)) {
+            if (user && user.startsWith('system.user.')) {
                 user = user.substring('system.user.'.length);
             }
 
@@ -1560,10 +1570,10 @@ async function processCommand(command, args, params, callback) {
             let group     = args[1] || '';
             let user      = args[2] || '';
 
-            if (group && group.match(/^system\.group\./)) {
+            if (group && group.startsWith('system.group.')) {
                 group = group.substring('system.group.'.length);
             }
-            if (user  && user.match(/^system\.user\./))   {
+            if (user && user.startsWith('system.user.')) {
                 user  = user.substring('system.user.'.length);
             }
             if (!command) {
@@ -1807,7 +1817,7 @@ async function processCommand(command, args, params, callback) {
                     if (!err && obj) {
                         let changed = false;
                         for (let a = 0; a < process.argv.length; a++) {
-                            if (process.argv[a].match(/^--/) && process.argv[a + 1] && !process.argv[a + 1].match(/^--/)) {
+                            if (process.argv[a].startsWith('--') && process.argv[a + 1] && !process.argv[a + 1].startsWith('--')) {
                                 const attr = process.argv[a].substring(2);
                                 /** @type {number | string | boolean} */
                                 let val = process.argv[a + 1];
@@ -1869,7 +1879,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'visdebug': {
             let widgetset = args[0];
-            if (widgetset && widgetset.match('/^vis-/')) {
+            if (widgetset && widgetset.startsWith('vis-')) {
                 widgetset = widgetset.substring(4);
             }
 
@@ -2459,6 +2469,8 @@ function unsetup(params, callback) {
                 if (obj.common.licenseConfirmed || obj.common.language || (obj.native && obj.native.secret)) {
                     obj.common.licenseConfirmed = false;
                     obj.common.language = '';
+                    // allow with parameter --keepsecret to not delete the secret
+                    // This is very specific use case for vendors and must not be described in documentation
                     if (!params.keepsecret) {
                         obj.native && delete obj.native.secret;
                     }
@@ -2830,11 +2842,6 @@ module.exports.execute = function () {
     const command = _yargs.argv._[0];
 
     const args = [];
-    /* We can no longer use this because yargs17 parses arguments according to our help into argv instead of argv._
-    for (let a = 1; a < _yargs.argv._.length; a++) {
-        args.push(_yargs.argv._[a]);
-    }
-     */
 
     // skip interpreter, filename and command
     for (let i=3; i < process.argv.length; i++) {

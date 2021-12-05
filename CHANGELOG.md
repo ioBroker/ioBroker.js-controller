@@ -11,6 +11,9 @@
 * CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore, as it does not used
 * WORK IN PROGRESS - Use at own risk!
 
+## 3.3.21 (2021-11-28)
+* (Apollon77/foxriver76) we fixed issues with multihost setup, that existed in 3.3.19/3.3.20
+
 ## 3.3.19 (2021-07-26 - 2021-11-17) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
