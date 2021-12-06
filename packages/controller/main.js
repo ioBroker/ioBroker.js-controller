@@ -3069,7 +3069,7 @@ async function checkVersions(id, deps, globalDeps) {
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} startInstance ${id} [sameHostDependency]: ${e.message}`);
-        logger.error(`${hostLogPrefix} startInstance ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
+        logger.debug(`${hostLogPrefix} startInstance ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
         throw new Error();
     }
 
@@ -3080,7 +3080,7 @@ async function checkVersions(id, deps, globalDeps) {
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} startInstance ${id} [globalDependency]: ${e.message}`);
-        logger.error(`${hostLogPrefix} startInstance ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
+        logger.debug(`${hostLogPrefix} startInstance ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
         throw new Error();
     }
 }
