@@ -743,7 +743,7 @@ function Upload(options) {
             let obj;
             try {
                 obj = await objects.getObject('system.adapter.' + name);
-            } catch (err) {
+            } catch {
                 // ignore err
             }
             obj = obj || {};
@@ -772,7 +772,7 @@ function Upload(options) {
 
             try {
                 await objects.setObjectAsync('system.adapter.' + name, obj);
-            } catch {
+            } catch (err) {
                 logger.error(`Cannot set system.adapter.${name}: ${err.message}`);
             }
 
