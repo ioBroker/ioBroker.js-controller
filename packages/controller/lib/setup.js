@@ -2,7 +2,7 @@
  *
  *  ioBroker Command Line Interface (CLI)
  *
- *  7'2014-2020 bluefox <dogafox@gmail.com>
+ *  7'2014-2021 bluefox <dogafox@gmail.com>
  *         2014 hobbyquaker <hq@ccu.io>
  *
  */
@@ -444,16 +444,15 @@ async function processCommand(command, args, params, callback) {
         case 'update': {
             Objects     = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
-            dbConnect(params, (_objects, _states) => {
+            dbConnect(params, async (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects:     _objects,
                     states:      _states
                 });
 
-                repo.showRepo(repoUrl, params)
-                    .then(() =>
-                        setTimeout(callback, 2000));
+                await repo.showRepo(repoUrl, params);
+                setTimeout(callback, 1000);
             });
             break;
         }
@@ -490,57 +489,48 @@ async function processCommand(command, args, params, callback) {
                 setup.setup(async (isFirst, _isRedis) => {
                     if (isFirst) {
                         // Creates all instances that are needed on a fresh installation
-                        const createInitialInstances = async () => {
-                            const Install = require('./setup/setupInstall.js');
-                            const install = new Install({
-                                objects,
-                                states,
-                                getRepository,
-                                processExit:   callback,
-                                params
-                            });
-                            // In order to loop the instance creation, we need a promisified version of the method
-                            const createInstanceAsync = tools.promisifyNoError(install.createInstance, install);
-
-                            // Define the necessary instances
-                            const initialInstances = ['admin', 'discovery', 'backitup'];
-                            // And try to install each of them
-                            for (const instance of initialInstances) {
-                                try {
-                                    const path = require.resolve(tools.appName + '.' + instance);
-                                    if (path) {
-                                        await createInstanceAsync(instance, {enabled: true, ignoreIfExists: true});
-                                    }
-                                } catch {
-                                    // not found, just continue
+                        const Install = require('./setup/setupInstall.js');
+                        const install = new Install({
+                            objects,
+                            states,
+                            getRepository,
+                            processExit: callback,
+                            params
+                        });
+                        // Define the necessary instances
+                        const initialInstances = ['admin', 'discovery', 'backitup'];
+                        // And try to install each of them
+                        for (const instance of initialInstances) {
+                            try {
+                                const path = require.resolve(tools.appName + '.' + instance);
+                                if (path) {
+                                    await install.createInstanceAsync(instance, {enabled: true, ignoreIfExists: true});
                                 }
+                            } catch {
+                                // not found, just continue
                             }
-                        };
+                        }
 
-                        createInitialInstances()
-                            .then(() => new Promise(resolve => {
-                                // Creates a fresh certificate
-                                const Cert = cli.command.cert;
-                                // Create a new instance of the cert command,
-                                // but use the resolve method as a callback
-                                const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
-                                cert.create();
-                            }))
-                            .then(() => callback && callback());
+                        await new Promise(resolve => {
+                            // Creates a fresh certificate
+                            const Cert = cli.command.cert;
+                            // Create a new instance of the cert command,
+                            // but use the resolve method as a callback
+                            const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
+                            cert.create();
+                        });
+                        callback && callback();
                     } else {
                         // else we update existing stuff (this is executed on installation)
                         // Rename repositories
                         const Repo = require('./setup/setupRepo.js');
-                        const repo = new Repo({
-                            objects:     objects,
-                            states:      states
-                        });
+                        const repo = new Repo({objects, states});
 
                         try {
                             await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
                             await repo.rename('latest', 'beta', 'http://download.iobroker.net/sources-dist-latest.json');
-                        } catch (e) {
-                            console.warn(e.message);
+                        } catch (err) {
+                            console.warn(`Cannot rename: ${err.message}`);
                         }
 
                         // there has been a bug that user can uplaod js-controller
@@ -576,7 +566,7 @@ async function processCommand(command, args, params, callback) {
                                 console.log('ioBroker configuration updated');
                             }
                         } catch(err) {
-                            console.log('Could not update ioBroker configuration: ' + err.message);
+                            console.log(`Could not update ioBroker configuration: ${err.message}`);
                         }
 
                         return void callback();
@@ -608,7 +598,7 @@ async function processCommand(command, args, params, callback) {
                     objects,
                     states,
                     getRepository,
-                    processExit:   callback,
+                    processExit: callback,
                     params
                 });
 
@@ -702,7 +692,7 @@ async function processCommand(command, args, params, callback) {
                     objects,
                     states,
                     getRepository,
-                    processExit:   callback,
+                    processExit: callback,
                     params
                 });
 
@@ -711,8 +701,8 @@ async function processCommand(command, args, params, callback) {
                     let obj;
                     try {
                         obj = await objects.getObjectAsync(`system.host.${params.host}`);
-                    } catch (e) {
-                        console.warn(`Could not check existence of host "${params.host}": ${e.message}`);
+                    } catch (err) {
+                        console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
                     }
 
                     if (!obj) {
@@ -722,24 +712,28 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (!fs.existsSync(adapterDir)) {
-                    install.downloadPacket(repoUrl, installName, null, enableAdapterCallback => {
-                        install.installAdapter(installName, repoUrl, () => {
-                            enableAdapterCallback(() => {
-                                if (command !== 'install' && command !== 'i') {
-                                    install.createInstance(name, params, callback);
-                                } else {
-                                    return void callback();
-                                }
-                            });
-                        });
-                    });
-                } else {
-                    if (command !== 'install' && command !== 'i') {
-                        install.createInstance(name, params, callback);
-                    } else {
-                        console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
-                        return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
+                    try {
+                        await install.downloadPacketAsync(repoUrl, installName);
+                        await install.installAdapterAsync(installName, repoUrl);
+                        if (command !== 'install' && command !== 'i') {
+                            await install.createInstanceAsync(name, params);
+                        }
+                        return void callback();
+                    } catch (err) {
+                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
                     }
+                } else if (command !== 'install' && command !== 'i') {
+                    try {
+                        await install.createInstanceAsync(name, params);
+                        return void callback();
+                    } catch (err) {
+                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                    }
+                } else {
+                    console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
+                    return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
                 }
             });
             break;
@@ -776,15 +770,13 @@ async function processCommand(command, args, params, callback) {
             const name    = args[0];
             const subTree = args[1];
             if (name) {
-                dbConnect(params, () => {
+                dbConnect(params, async () => {
                     const Upload = require('./setup/setupUpload.js');
-                    const upload = new Upload({
-                        states:      states,
-                        objects:     objects
-                    });
+                    const upload = new Upload({states, objects});
 
                     if (name === 'all') {
-                        objects.getObjectList({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (_err, objs) => {
+                        try {
+                            const objs = await objects.getObjectListAsync({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
                             const adapters = [];
                             for (let i = 0; i < objs.rows.length; i++) {
                                 if (objs.rows[i].value.type !== 'adapter') {
@@ -793,25 +785,39 @@ async function processCommand(command, args, params, callback) {
                                 adapters.push(objs.rows[i].value.common.name);
                             }
 
-                            upload.uploadAdapterFull(adapters, callback);
-                        });
+                            await upload.uploadAdapterFullAsync(adapters);
+                            callback();
+                        } catch (err) {
+                            console.error(`Cannot upload all adapters: ${err.message}`);
+                            return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                        }
                     } else {
                         // if upload of file
-                        if (name.indexOf('.') !== -1) {
+                        if (name.includes('.')) {
                             if (!subTree) {
-                                console.log('Please specify target name, like:\n ' + tools.appName + ' upload /file/picture.png /vis.0/main/img/picture.png');
+                                console.log(`Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis.0/main/img/picture.png`);
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             }
 
-                            upload.uploadFile(name, subTree, (err, newName) => {
-                                !err && console.log(`File "${name}" is successfully saved under ${newName}`);
-                                return void callback(err ? EXIT_CODES.CANNOT_UPLOAD_DATA : undefined);
-                            });
+                            try {
+                                const newName = await upload.uploadFileAsync(name, subTree);
+                                console.log(`File "${name}" is successfully saved under ${newName}`);
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot upload file "${name}": ${err.message}`);
+                                return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
+                            }
                         } else {
-                            if (subTree) {
-                                upload.uploadAdapter(name, false, true, subTree, callback);
-                            } else {
-                                upload.uploadAdapterFull([name], callback);
+                            try {
+                                if (subTree) {
+                                    await upload.uploadAdapterAsync(name, false, true, subTree);
+                                } else {
+                                    await upload.uploadAdapterFullAsync([name]);
+                                }
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot upload files "${name}": ${err.message}`);
+                                return void callback(EXIT_CODES.CANNOT_UPLOAD_DATA);
                             }
                         }
                     }
@@ -870,12 +876,12 @@ async function processCommand(command, args, params, callback) {
                         objects,
                         states,
                         getRepository,
-                        processExit:   callback,
+                        processExit: callback,
                         params
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstance(adapter, instance);
+                    await install.deleteInstanceAsync(adapter, instance);
                     callback();
                 });
             } else {
@@ -885,11 +891,11 @@ async function processCommand(command, args, params, callback) {
                         objects,
                         states,
                         getRepository,
-                        processExit:   callback,
+                        processExit: callback,
                         params
                     });
                     console.log(`Delete adapter "${adapter}"`);
-                    const [, resultCode] = await install.deleteAdapter(adapter);
+                    const resultCode = await install.deleteAdapterAsync(adapter);
                     callback(resultCode);
                 });
             }
@@ -966,11 +972,17 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 if (adapter) {
-                    if (adapter === 'self') {
-                        states.getState(`system.host.${tools.getHostName()}.alive`, (err, hostAlive) =>
-                            upgrade.upgradeController('', params.force || params.f, hostAlive && hostAlive.val, callback));
-                    } else {
-                        upgrade.upgradeAdapter('', adapter, params.force || params.f, params.y || params.yes, false, callback);
+                    try {
+                        if (adapter === 'self') {
+                            const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
+                            await upgrade.upgradeControllerAsync('', params.force || params.f, hostAlive && hostAlive.val);
+                        } else {
+                            await upgrade.upgradeAdapterAsync('', adapter, params.force || params.f, params.y || params.yes, false);
+                        }
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot upgrade: ${err.message}`);
+                        return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 } else {
                     // upgrade all
@@ -979,9 +991,10 @@ async function processCommand(command, args, params, callback) {
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                        upgrade.upgradeAdapterHelper(links, Object.keys(links).sort(), false, params.y || params.yes, callback);
-                    } catch (e) {
-                        console.error(e);
+                        await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot upgrade: ${err.message}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
                 }
@@ -1002,7 +1015,7 @@ async function processCommand(command, args, params, callback) {
                     cleanDatabase(true, count => {
                         console.log('Deleted ' + count + ' states');
                         restartController(() => {
-                            console.log('Restarting ' + tools.appName + '...');
+                            console.log(`Restarting ${tools.appName}...`);
                             return void callback();
                         });
                     });
@@ -1022,11 +1035,11 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 const backup = new Backup({
-                    states:            states,
-                    objects:           objects,
-                    cleanDatabase:     cleanDatabase,
-                    restartController: restartController,
-                    processExit:       callback
+                    states,
+                    objects,
+                    cleanDatabaseAsync,
+                    restartControllerAsync,
+                    processExit: callback
                 });
 
                 backup.restoreBackup(args[0], () => {
@@ -1041,19 +1054,23 @@ async function processCommand(command, args, params, callback) {
             const name = args[0];
             const Backup = require('./setup/setupBackup.js');
 
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const backup = new Backup({
-                    states:            states,
-                    objects:           objects,
-                    cleanDatabase:     cleanDatabase,
-                    restartController: restartController,
-                    processExit:       callback
+                    states,
+                    objects,
+                    cleanDatabaseAsync,
+                    restartControllerAsync,
+                    processExit: callback
                 });
 
-                backup.createBackup(name, filePath => {
+                try {
+                    const filePath = await backup.createBackupAsync(name);
                     console.log('Backup created: ' + filePath);
                     return void callback(EXIT_CODES.NO_ERROR);
-                });
+                } catch (err) {
+                    console.log('Cannot create backup: ' + err);
+                    return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+                }
             });
             break;
         }
@@ -1061,34 +1078,36 @@ async function processCommand(command, args, params, callback) {
         case 'validate': {
             const name = args[0];
             const Backup = require('./setup/setupBackup.js');
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const backup = new Backup({
-                    states:            states,
-                    objects:           objects,
-                    cleanDatabase:     cleanDatabase,
-                    restartController: restartController,
-                    processExit:       callback
+                    states,
+                    objects,
+                    cleanDatabaseAsync,
+                    restartControllerAsync,
+                    processExit: callback
                 });
 
-                backup.validateBackup(name).then(() => {
+                try {
+                    await backup.validateBackup(name);
                     console.log('Backup OK');
                     processExit(0);
-                }).catch(e => {
-                    console.log(`Backup check failed: ${e.message}`);
+                } catch (err) {
+                    console.log(`Backup check failed: ${err.message}`);
                     processExit(1);
-                });
+                }
             });
             break;
         }
+
         case 'l':
         case 'list': {
             dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
                 const {setupList: List} = require('@iobroker/js-controller-cli');
                 const list = new List({
-                    states:      states,
-                    objects:     objects,
+                    states,
+                    objects,
                     processExit: callback,
-                    config:      config
+                    config
                 });
                 list.list(args[0], args[1], params);
             });
@@ -1126,8 +1145,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1159,8 +1178,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states:      states,
-                                    objects:     objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 for (let i = 0; i < processed.length; i++) {
@@ -1207,8 +1226,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1241,8 +1260,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states:      states,
-                                    objects:     objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1299,8 +1318,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1333,8 +1352,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states:      states,
-                                    objects:     objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1399,8 +1418,8 @@ async function processCommand(command, args, params, callback) {
                                     if (!--count) {
                                         const {setupList: List} = require('@iobroker/js-controller-cli');
                                         const list = new List({
-                                            states:      states,
-                                            objects:     objects,
+                                            states,
+                                            objects,
                                             processExit: callback
                                         });
                                         files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1435,8 +1454,8 @@ async function processCommand(command, args, params, callback) {
                             if (processed) {
                                 const {setupList: List} = require('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states: states,
-                                    objects: objects,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1463,7 +1482,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects:     objects,
+                    objects,
                     processExit: callback
                 });
                 const password = params.password;
@@ -1475,7 +1494,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" created (Group: ' + group.replace('system.group.', '') + ')');
+                            console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
                             return void callback();
                         }
                     });
@@ -1485,7 +1504,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" deleted');
+                            console.log(`User "${user}" deleted`);
                             return void callback();
                         }
                     });
@@ -1495,7 +1514,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Password for user "' + user + '" matches.');
+                            console.log(`Password for user "${user}" matches.`);
                             return void callback();
                         }
                     });
@@ -1505,7 +1524,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Password for "' + user + '" was successfully set.');
+                            console.log(`Password for "${user}" was successfully set.`);
                             return void callback();
                         }
                     });
@@ -1515,7 +1534,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" was successfully enabled.');
+                            console.log(`User "${user}" was successfully enabled.`);
                             return void callback();
                         }
                     });
@@ -1525,7 +1544,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" was successfully disabled.');
+                            console.log(`User "${user}" was successfully disabled.`);
                             return void callback();
                         }
                     });
@@ -1535,7 +1554,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" is ' + (isEnabled ? 'enabled' : 'disabled'));
+                            console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
                             return void callback();
                         }
                     });
@@ -1550,33 +1569,34 @@ async function processCommand(command, args, params, callback) {
         case 'g':
         case 'group': {
             const command = args[0] || '';
-            let group   = args[1] || '';
-            let user    = args[2] || '';
+            let group     = args[1] || '';
+            let user      = args[2] || '';
 
             if (group && group.startsWith('system.group.')) {
                 group = group.substring('system.group.'.length);
             }
             if (user && user.startsWith('system.user.')) {
-                user = user.substring('system.user.'.length);
+                user  = user.substring('system.user.'.length);
             }
             if (!command) {
-                console.warn('Unknown command "' + command + '". Available commands are: add, del, passwd, enable, disable, list, get');
+                console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (!group) {
-                console.warn('Please define group name: group ' + command + ' groupName');
+                console.warn(`Please define group name: group ${command} groupName`);
                 return callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
             }
+
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects:     objects,
+                    objects,
                     processExit: callback
                 });
 
                 if (command === 'useradd' || command === 'adduser') {
                     if (!user) {
-                        console.warn('Please define user name: group useradd groupName userName');
+                        console.warn('Please define user name: "group useradd groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                     users.addUserToGroup(user, group, err => {
@@ -1584,13 +1604,13 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" created');
+                            console.log(`User "${user}" was added to group "${group}"`);
                             return void callback();
                         }
                     });
                 } else if (command === 'userdel' || command === 'deluser') {
                     if (!user) {
-                        console.warn('Please define user name: group userdel groupName userName');
+                        console.warn('Please define user name: "group userdel groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                     users.removeUserFromGroup(user, group, err => {
@@ -1598,7 +1618,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + user + '" created');
+                            console.log(`User "${user}" was deleted from group "${group}"`);
                             return void callback();
                         }
                     });
@@ -1608,7 +1628,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + group + '" created');
+                            console.log(`Group "${group}" was created`);
                             return void callback();
                         }
                     });
@@ -1618,7 +1638,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('User "' + group + '" deleted');
+                            console.log(`Group "${group}" was deleted`);
                             return void callback();
                         }
                     });
@@ -1628,7 +1648,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" is ' + (isEnabled ? 'enabled' : 'disabled') + ' and has following members:');
+                            console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`);
                             if (list) {
                                 for (let i = 0; i < list.length; i++) {
                                     console.log(list[i].substring('system.user.'.length));
@@ -1643,7 +1663,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" was successfully enabled.');
+                            console.log(`Group "${group}" was successfully enabled.`);
                             return void callback();
                         }
                     });
@@ -1653,7 +1673,7 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" was successfully disabled.');
+                            console.log(`Group "${group}" was successfully disabled.`);
                             return void callback();
                         }
                     });
@@ -1663,12 +1683,12 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log('Group "' + group + '" is ' + (isEnabled ? 'enabled' : 'disabled'));
+                            console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'}`);
                             return void callback();
                         }
                     });
                 } else {
-                    console.warn('Unknown command "' + command + '". Available commands are: add, del, passwd, enable, disable, list, get');
+                    console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
@@ -1683,7 +1703,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects: objects,
+                    objects,
                     processExit: callback
                 });
                 users.addUserPrompt(user, group, password, err => {
@@ -1691,7 +1711,7 @@ async function processCommand(command, args, params, callback) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     } else {
-                        console.log('User "' + user + '" created (Group: ' + group.replace('system.group.', '') + ')');
+                        console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
                         return void callback();
                     }
                 });
@@ -1705,7 +1725,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects:     objects,
+                    objects,
                     processExit: callback
                 });
                 users.setUserPassword(user, password, err => {
@@ -1713,7 +1733,7 @@ async function processCommand(command, args, params, callback) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     } else {
-                        console.log('Password for "' + user + '" was successfully set.');
+                        console.log(`Password for "${user}" was successfully set.`);
                         return void callback();
                     }
                 });
@@ -1730,7 +1750,7 @@ async function processCommand(command, args, params, callback) {
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
-                    objects: objects,
+                    objects,
                     processExit: callback
                 });
                 users.delUser(user, err => {
@@ -1738,7 +1758,7 @@ async function processCommand(command, args, params, callback) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     } else {
-                        console.log('User "' + user + '" deleted');
+                        console.log(`User "${user}" deleted`);
                         return void callback();
                     }
                 });
@@ -1791,7 +1811,7 @@ async function processCommand(command, args, params, callback) {
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
             if (instance.indexOf('.') === -1) {
-                console.warn('please specify instance, like "' + instance + '.0"');
+                console.warn(`please specify instance, like "${instance}.0"`);
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
             dbConnect(params, () => {
@@ -1815,19 +1835,19 @@ async function processCommand(command, args, params, callback) {
                                 if (attr.indexOf('.') !== -1) {
                                     const parts = attr.split('.');
                                     if (!obj.native[parts[0]] || obj.native[parts[0]][parts[1]] === undefined) {
-                                        console.warn('Adapter "' + instance + '" has no setting "'  + attr + '".');
+                                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
                                     } else {
                                         changed = true;
                                         obj.native[parts[0]][parts[1]] = val;
-                                        console.log('New ' + attr + ' for "' + instance + '" is: ' + val);
+                                        console.log(`New ${attr} for "${instance}" is: ${val}`);
                                     }
                                 } else {
                                     if (obj.native[attr] === undefined) {
-                                        console.warn('Adapter "' + instance + '" has no setting "'  + attr + '".');
+                                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
                                     } else {
                                         changed = true;
                                         obj.native[attr] = val;
-                                        console.log('New ' + attr + ' for "' + instance + '" is: ' + val);
+                                        console.log(`New ${attr} for "${instance}" is: ${val}`);
                                     }
                                 }
                                 a++;
@@ -1837,7 +1857,7 @@ async function processCommand(command, args, params, callback) {
                             obj.from = 'system.host.' + tools.getHostName() + '.cli';
                             obj.ts = new Date().getTime();
                             objects.setObject('system.adapter.' + instance, obj, () => {
-                                console.log('Instance settings for "' + instance + '" are changed.');
+                                console.log(`Instance settings for "${instance}" are changed.`);
                                 return void callback();
                             });
                         } else {
@@ -2023,8 +2043,8 @@ async function processCommand(command, args, params, callback) {
                                 console.log('Successfully created "meta.user" directory');
                             }
                         }
-                    } catch (e) {
-                        console.warn(`Could not create directory "meta.user": ${e.message}`);
+                    } catch (err) {
+                        console.warn(`Could not create directory "meta.user": ${err.message}`);
                     }
 
                     try {
@@ -2122,7 +2142,7 @@ async function processCommand(command, args, params, callback) {
                 repoUrlOrCommand = 'show';
             }
 
-            dbConnect(params, (_objects, _states) => {
+            dbConnect(params, async (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects: _objects,
@@ -2130,7 +2150,13 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 if (repoUrlOrCommand === 'show') {
-                    repo.showRepoStatus(callback);
+                    try {
+                        await repo.showRepoStatus();
+                        return void callback();
+                    } catch (err) {
+                        console.error(`Cannot show repository status: ${err.message}`);
+                        return void callback(EXIT_CODES.INVALID_REPO);
+                    }
                 } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
@@ -2141,59 +2167,54 @@ async function processCommand(command, args, params, callback) {
                                 console.warn(`Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`);
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
-                                repo.add(repoName, repoUrl, err => {
-                                    if (err) {
-                                        console.error(err);
-                                        return void callback(EXIT_CODES.INVALID_REPO);
-                                    } else {
-                                        if (repoUrlOrCommand === 'addset') {
-                                            repo.setActive(repoName, err => {
-                                                if (err) {
-                                                    console.error(err);
-                                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                                } else {
-                                                    console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
-                                                    repo.showRepoStatus(callback);
-                                                }
-                                            });
-                                        } else {
-                                            console.log(`Repository "${repoName}" added as "${repoUrl}"`);
-                                            repo.showRepoStatus(callback);
-                                        }
-                                    }
-                                });
+                                try {
+                                    await repo.add(repoName, repoUrl);
 
+                                    if (repoUrlOrCommand === 'addset') {
+                                        await repo.setActive(repoName);
+                                        console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
+                                        await repo.showRepoStatus();
+                                        return void callback();
+                                    } else {
+                                        console.log(`Repository "${repoName}" added as "${repoUrl}"`);
+                                        await repo.showRepoStatus();
+                                        return void callback();
+                                    }
+                                } catch (err) {
+                                    console.error(`Cannot add repository location: ${err.message}`);
+                                    return void callback(EXIT_CODES.INVALID_REPO);
+                                }
                             }
                         } else if (repoUrlOrCommand === 'set') {
-                            repo.setActive(repoName, err => {
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
-                                    console.log(`Repository "${repoName}" set as active.`);
-                                    repo.showRepoStatus(callback);
-                                }
-                            });
+                            try {
+                                await repo.setActive(repoName);
+                                console.log(`Repository "${repoName}" set as active.`);
+                                await repo.showRepoStatus();
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot activate repository: ${err.message}`);
+                                return void callback(EXIT_CODES.INVALID_REPO);
+                            }
                         } else if (repoUrlOrCommand === 'del') {
-                            repo.del(repoName, err => {
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
-                                    console.log(`Repository "${repoName}" deleted.`);
-                                    repo.showRepoStatus(callback);
-                                }
-                            });
+                            try {
+                                await repo.del(repoName);
+                                console.log(`Repository "${repoName}" deleted.`);
+                                await repo.showRepoStatus();
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot remove repository: ${err.message}`);
+                                return void callback(EXIT_CODES.INVALID_REPO);
+                            }
                         }  else if (repoUrlOrCommand === 'unset') {
-                            repo.setInactive(repoName, err => {
-                                if (err) {
-                                    console.error(err);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                } else {
-                                    console.log(`Repository "${repoName}" deactivated.`);
-                                    repo.showRepoStatus(callback);
-                                }
-                            });
+                            try {
+                                await repo.setInactive(repoName);
+                                console.log(`Repository "${repoName}" deactivated.`);
+                                await repo.showRepoStatus();
+                                return void callback();
+                            } catch (err) {
+                                console.error(`Cannot deactivate repository: ${err.message}`);
+                                return void callback(EXIT_CODES.INVALID_REPO);
+                            }
                         } else {
                             console.warn('Unknown repo command: ' + repoUrlOrCommand);
                             return void callback(EXIT_CODES.INVALID_ARGUMENTS);
@@ -2214,9 +2235,9 @@ async function processCommand(command, args, params, callback) {
                 dbConnect(params, () => {
                     const Multihost = require('./setup/setupMultihost.js');
                     const mh = new Multihost({
-                        params:      params,
+                        params,
                         processExit: callback,
-                        objects:     objects
+                        objects
                     });
 
                     if (cmd === 's' || cmd === 'status') {
@@ -2277,18 +2298,18 @@ async function processCommand(command, args, params, callback) {
                 console.warn(`Please specify the path to the vendor file to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, () => {
+                dbConnect(params, async () => {
                     const Vendor = require('./setup/setupVendor');
-                    const vendor = new Vendor({
-                        objects:     objects
-                    });
-                    vendor.checkVendor(file, password).then(() => {
+                    const vendor = new Vendor({objects});
+
+                    try {
+                        await vendor.checkVendor(file, password);
                         console.log(`Synchronised vendor information.`);
                         return void callback();
-                    }).catch(err => {
+                    } catch (err) {
                         console.error(`Cannot update vendor information: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
-                    });
+                    }
                 });
             }
             break;
@@ -2318,18 +2339,17 @@ async function processCommand(command, args, params, callback) {
                 console.warn(`Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, () => {
+                dbConnect(params, async () => {
                     const License = require('./setup/setupLicense');
-                    const license = new License({
-                        objects:     objects
-                    });
-                    license.setLicense(file).then(type => {
+                    const license = new License({objects});
+                    try {
+                        const type = await license.setLicense(file);
                         console.log(`License ${type} updated.`);
                         return void callback();
-                    }).catch(err => {
+                    } catch (err) {
                         console.error(`Cannot update license: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
-                    });
+                    }
                 });
             }
             break;
@@ -2370,78 +2390,79 @@ async function processExit(exitCode) {
     }, 1000);
 }
 
-function delObjects(ids, callback) {
-    if (!ids || !ids.length) {
-        return void callback();
-    } else {
-        const id = ids.shift();
-        objects.delObject(id, err => {
-            if (err &&
-                id !== 'system.group.user' &&
-                id !== 'system.group.administrator' &&
-                id !== 'system.user.admin'
-            ) {
-                console.warn(`[Not critical] Cannot delete object ${id}: ${JSON.stringify(err)}`);
+const OBJECTS_THAT_CANNOT_BE_DELETED = [
+    '0_userdata.0',
+    'alias.0',
+    'enum.functions',
+    'enum.rooms',
+    'system.config',
+    'system.group.administrator',
+    'system.group.user',
+    'system.repositories',
+    'system.user.admin'
+];
+
+async function delObjects(ids) {
+    if (ids && ids.length) {
+        for (let i = 0; i < ids.length; i++) {
+            const id = ids[i];
+            if (!OBJECTS_THAT_CANNOT_BE_DELETED.includes(id)) {
+                try {
+                    await objects.delObjectAsync(id);
+                } catch (err) {
+                    console.warn(`[Not critical] Cannot delete object ${id}: ${JSON.stringify(err)}`);
+                }
             }
-            setImmediate(delObjects, ids, callback);
-        });
+        }
     }
+}
+
+async function delStates() {
+    const keys = await states.getKeys('*');
+    if (keys) {
+        console.log(`clean ${keys.length} states...`);
+        for (let i = 0; i < keys.length; i++) {
+            try {
+                await states.delState(keys[i]);
+            } catch (err) {
+                console.error(`[Not critical] Cannot delete state ${keys[i]}: ${err.message}`);
+            }
+        }
+    }
+    return keys ? keys.length : 0;
 }
 
 function cleanDatabase(isDeleteDb, callback) {
-    let taskCnt = 0;
-
     if (isDeleteDb) {
-        objects.destroyDB(() => {
-
+        objects.destroyDB(async () => {
             // Clean up states
-            states.getKeys('*', (_err, obj) => {
-                const delState = [];
-                let i;
-                if (obj) {
-                    for (i = 0; i < obj.length; i++) {
-                        delState.push(obj[i]);
-                    }
-                }
-                taskCnt = 0;
-                for (i = 0; i < obj.length; i++) {
-                    taskCnt++;
-                    states.delState(delState[i], () => !(--taskCnt) && callback && callback(obj.length));
-                }
-            });
+            const keysCount = await delStates();
+
+            if (callback) {
+                return void callback(keysCount);
+            }
         });
     } else {
         // Clean only objects, not the views
-        objects.getObjectList({startkey: '\u0000', endkey: '\u9999'}, (err, res) => {
+        objects.getObjectList({startkey: '\u0000', endkey: '\u9999'}, async (err, res) => {
             let ids = [];
             if (!err && res.rows.length) {
-                console.log('clean ' + res.rows.length + ' objects...');
+                console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
             }
-            delObjects(ids, () => {
-                // Clean up states
-                states.getKeys('*', (_err, obj) => {
-                    const delState = [];
-                    let i;
-                    if (obj) {
-                        for (i = 0; i < obj.length; i++) {
-                            delState.push(obj[i]);
-                        }
-                    }
-                    taskCnt = 0;
-                    console.log('clean ' + obj.length + ' states...');
-                    for (i = 0; i < obj.length; i++) {
-                        taskCnt++;
-                        states.delState(delState[i], () => !(--taskCnt) && callback && callback(obj.length));
-                    }
-                    if (!taskCnt && callback) {
-                        return void callback(obj.length);
-                    }
-                });
-            });
+            await delObjects(ids);
+            // Clean up states
+            const keysCount = await delStates();
+
+            if (callback) {
+                return void callback(keysCount);
+            }
         });
     }
 }
+
+const cleanDatabaseAsync = tools.promisifyNoError(cleanDatabase);
+
 function unsetup(params, callback) {
     dbConnect(params, () => {
         objects.delObject('system.meta.uuid', err => {
@@ -2480,6 +2501,7 @@ function unsetup(params, callback) {
         });
     });
 }
+
 function restartController(callback) {
     const spawn = require('child_process').spawn;
 
@@ -2500,6 +2522,8 @@ function restartController(callback) {
     }
 }
 
+const restartControllerAsync = tools.promisifyNoError(restartController);
+
 async function getRepository(repoName, params) {
     params = params || {};
 
@@ -2507,7 +2531,7 @@ async function getRepository(repoName, params) {
         await dbConnectAsync(params);
     }
 
-    if (!repoName) {
+    if (!repoName || repoName === 'auto') {
         const systemConfig = await objects.getObjectAsync('system.config');
         repoName = systemConfig.common.activeRepo;
     }
@@ -2554,7 +2578,7 @@ async function getRepository(repoName, params) {
     }
 
     if (!anyFound) {
-        console.log('No repositories defined.');
+        console.error(`ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(systemRepos.native.repositories).join(' | ')}>`);
         throw new Error(EXIT_CODES.INVALID_REPO);
     } else {
         return allSources;
@@ -2778,9 +2802,8 @@ function dbConnect(onlyCheck, params, callback) {
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline => {
-                    callback(objects, states, isOffline, config.objects.type, config);
-                });
+                checkSystemOffline(onlyCheck, isOffline =>
+                    callback(objects, states, isOffline, config.objects.type, config));
             }
         }
     });
@@ -2801,9 +2824,8 @@ function dbConnect(onlyCheck, params, callback) {
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline => {
-                    callback(objects, states, isOffline, config.objects.type, config);
-                });
+                checkSystemOffline(onlyCheck, isOffline =>
+                    callback(objects, states, isOffline, config.objects.type, config));
             }
         },
         change: (id, state) => states.onChange && states.onChange(id, state)

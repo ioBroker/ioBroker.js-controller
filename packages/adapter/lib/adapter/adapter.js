@@ -49,7 +49,8 @@ const supportedFeatures = [
     'ADAPTER_AUTO_DECRYPT_NATIVE', // all native attributes, that are listed in an array `encryptedNative` in io-pack will be automatically decrypted and encrypted. Since js-controller 3.0
     'PLUGINS', // configurable plugins supported. Since js-controller 3.0
     'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
-    'CONTROLLER_READWRITE_BASE_SETTINGS' // If base settings could be read and written. Since js-controller 3.0
+    'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
+    'CONTROLLER_MULTI_REPO' // Controller supports multiple repositories
 ];
 
 //const ACCESS_EVERY_EXEC  = 0x1;
@@ -5440,7 +5441,7 @@ function Adapter(options) {
 
     // initStates is called from initAdapter
     const initStates = cb => {
-        logger.debug(this.namespaceLog + ' objectDB connected');
+        logger.silly(this.namespaceLog + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
@@ -5459,7 +5460,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.states,
             connected: async _statesInstance => {
-                logger.debug(this.namespaceLog + ' statesDB connected');
+                logger.silly(this.namespaceLog + ' statesDB connected');
                 this.statesConnectedTime = Date.now();
 
                 if (initializeTimeout) {

@@ -274,10 +274,10 @@ gulp.task('dev', done => {
         if (fs.existsSync(`${__dirname}/packages/${_package}/package.json`)) {
             const packName = require(`${__dirname}/packages/${_package}/package.json`).name;
             if (fs.existsSync(root + '/' + packName)) {
-                console.log(`Directory  "${root}/${packName}" already exists`);
+                console.log(`Directory "${root}/${packName}" already exists`);
                 const stats = fs.lstatSync(root + '/' + packName);
                 if (!stats.isSymbolicLink()) {
-                    console.log(`Directory  "${root}/${packName}" is not the symbolic link. Patching...`);
+                    console.log(`Directory "${root}/${packName}" is not the symbolic link. Patching...`);
                     // delete whole directory
                     fs.rmSync(`${root}/${packName}`, { recursive: true, force: true });
                     // create symlink

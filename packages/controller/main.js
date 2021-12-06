@@ -90,8 +90,8 @@ let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
-const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
-const VENDOR_FILE           = '/etc/iob-vendor.json';
+const VENDOR_BOOTSTRAP_FILE = __dirname + '/iob-vendor-secret.json'; // TODO revert '/opt/iobroker/iob-vendor-secret.json'
+const VENDOR_FILE           = __dirname + '/iob-vendor.json'; // TODO revert '/etc/iob-vendor.json'
 let updateIPsTimer          = null;
 let lastDiagSend            = null;
 
@@ -1864,16 +1864,28 @@ function sendTo(objName, command, message, callback) {
     states.pushMessage(objName, obj);
 }
 
-function getVersionFromHost(hostId, callback) {
-    states.getState(hostId + '.alive', (err, state) => {
-        if (state && state.val)  {
-            sendTo(hostId, 'getVersion', null, ioPack =>
-                typeof callback === 'function' && setImmediate(callback, ioPack));
-        } else {
-            logger.warn(hostLogPrefix + ' "' + hostId + '" is offline');
-            typeof callback === 'function' && setImmediate(callback, null, hostId);
-        }
-    });
+async function getVersionFromHost(hostId) {
+    const state = await states.getState(hostId + '.alive');
+    if (state && state.val)  {
+        return new Promise(resolve => {
+            let timeout = setTimeout(() => {
+                timeout = null;
+                logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
+                resolve(null);
+            }, 5000);
+
+            sendTo(hostId, 'getVersion', null, ioPack => {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    resolve(ioPack);
+                }
+            });
+        });
+    } else {
+        logger.warn(`${hostLogPrefix} "${hostId}" is offline`);
+        return null;
+    }
 }
 /**
  Helper function that serialize deletion of states
@@ -2109,12 +2121,9 @@ async function processMessage(msg) {
                 objects.getObjectView('system', 'host', {
                     startkey: 'system.host.',
                     endkey: 'system.host.\u9999'
-                }, (err, doc) => {
+                }, async (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
-                    let infoCount = 0;
-                    let timeout = null;
-
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (let i = 0; i < doc.rows.length; i++) {
@@ -2134,36 +2143,16 @@ async function processMessage(msg) {
                                     result.hosts[hostname] = {};
                                 }
                             } else {
-                                infoCount++;
-                                getVersionFromHost(doc.rows[i].id, (ioPack, id) => {
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                        result.hosts[ioPack.host].controller = true;
-                                    }
-
-                                    if (!--infoCount) {
-                                        if (timeout) {
-                                            clearTimeout(timeout);
-                                            timeout = null;
-                                            sendTo(msg.from, msg.command, result, msg.callback);
-                                        } else {
-                                            logger.warn(`${hostLogPrefix} too delayed answer for ${ioPack ? ioPack.host : id}`);
-                                        }
-                                    }
-                                });
+                                const ioPack = await getVersionFromHost(doc.rows[i].id);
+                                if (ioPack) {
+                                    result.hosts[ioPack.host] = ioPack;
+                                    result.hosts[ioPack.host].controller = true;
+                                }
                             }
                         }
                     }
-                    if (!infoCount) {
-                        sendTo(msg.from, msg.command, result, msg.callback);
-                    } else {
-                        // Start timeout and send answer in 5 seconds if some hosts are offline
-                        timeout = setTimeout(() => {
-                            logger.warn(`${hostLogPrefix} some hosts are offline`);
-                            timeout = null;
-                            sendTo(msg.from, msg.command, result, msg.callback);
-                        }, 5000);
-                    }
+
+                    sendTo(msg.from, msg.command, result, msg.callback);
                 });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -2964,7 +2953,7 @@ function initInstances() {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info(hostLogPrefix + ' instance "' + id + '" was not started, because already running.');
+                    logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
                     continue;
                 }
 
@@ -3370,11 +3359,11 @@ function startScheduledInstance(callback) {
                 skipped = true;
             }
         } else {
-            logger.warn(hostLogPrefix + ' instance ' + instance._id + ' does not started, because just executed');
+            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
             skipped = true;
         }
     } else {
-        logger.error(hostLogPrefix + ' scheduleJob: Task deleted (' + id + ')');
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
         skipped = true;
     }
 
@@ -4082,7 +4071,7 @@ async function startInstance(id, wakeUp) {
                 }
 
             } else {
-                !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' ' + (procs[id].stopping ? 'still' : 'already') + ' running with pid ' + procs[id].process.pid);
+                !wakeUp && procs[id] && logger.warn(`${hostLogPrefix} instance ${instance._id} ${procs[id].stopping ? 'still' : 'already'} running with pid ${procs[id].process.pid}`);
                 if (procs[id].stopping) {
                     delete procs[id].stopping;
                 }
@@ -4091,11 +4080,11 @@ async function startInstance(id, wakeUp) {
 
         case 'schedule':
             if (compactGroupController) {
-                logger.debug(hostLogPrefix + ' ' + instance._id + ' schedule is not started by compact group controller');
+                logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
                 break;
             }
             if (!instance.common.schedule) {
-                logger.error(hostLogPrefix + ' ' + instance._id + ' schedule attribute missing');
+                logger.error(`${hostLogPrefix} ${instance._id} schedule attribute missing`);
                 break;
             }
 
@@ -4868,21 +4857,21 @@ function init(compactGroupId) {
 
     const exceptionHandler = err => {
         if (compactGroupController) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }
             stop(false);
             return;
         }
-        console.error(err.message || err);
+        console.error(err.message);
         if (err.stack) {
             console.error(err.stack);
         }
 
         // If by terminating one more exception => stop immediately to break the circle
         if (uncaughtExceptionCount) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }
