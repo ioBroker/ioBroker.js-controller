@@ -211,7 +211,7 @@ class BackupRestore {
      * @param {boolean} noConfig - do not store configs
      * @param {() => void} callback -  callback function
      */
-    async createBackup(name, noConfig, callback) {
+    createBackup(name, noConfig, callback) {
         tools.showDeprecatedMessage('setupBackup.createBackup');
         if (typeof noConfig === 'function') {
             callback = noConfig;
@@ -572,8 +572,8 @@ class BackupRestore {
                 console.error('Wrong');
             }
             const adapterDir = tools.getAdapterDir(adapterName);
-                        if (fs.existsSync(`${adapterDir}/io-package.json`)) {
-                            pkg = fs.readJSONSync(`${adapterDir}/io-package.json`);
+            if (fs.existsSync(`${adapterDir}/io-package.json`)) {
+                pkg = fs.readJSONSync(`${adapterDir}/io-package.json`);
             }
 
             if (pkg && pkg.objects && pkg.objects.length) {
@@ -595,7 +595,7 @@ class BackupRestore {
                 try {
                     await this._uploadUserFiles(root, `${path}/${files[i]}`);
                 } catch (err) {
-                        console.error(`Error: ${err}`);
+                    console.error(`Error: ${err}`);
                 }
             } else {
                 const parts = path.split('/');
@@ -606,7 +606,7 @@ class BackupRestore {
                 try {
                     await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(root + path + '/' + files[i]));
                 } catch (err) {
-                        console.error(`Error: ${err}`);
+                    console.error(`Error: ${err}`);
                 }
             }
         }
@@ -657,7 +657,7 @@ class BackupRestore {
         await this._setObjHelper(restore.objects);
         console.log(restore.objects.length + ' objects restored.');
         await this._setStateHelper(sList, restore.states);
-                console.log(`${sList.length} states restored.`);
+        console.log(`${sList.length} states restored.`);
         // Required for upload adapter
         this.mime = this.mime || require('mime');
         // Load user files into DB
@@ -665,7 +665,7 @@ class BackupRestore {
         //  reload objects of adapters
         await this._reloadAdaptersObjects();
         // Reload host objects
-                            const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+        const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(pathLib.join(tmpDir, 'backup'));

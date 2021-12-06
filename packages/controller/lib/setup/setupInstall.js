@@ -86,7 +86,7 @@ function Install(options) {
         }
     }
 
-    this.downloadPacket = async function (repoUrl, packetName, options, stoppedList, callback) {
+    this.downloadPacket = function (repoUrl, packetName, options, stoppedList, callback) {
         tools.showDeprecatedMessage('setupInstall.downloadPacket');
         if (typeof stoppedList === 'function') {
             callback = stoppedList;
@@ -613,7 +613,13 @@ function Install(options) {
 
         mime = mime || require('mime');
 
-        let doc = await objects.getObjectAsync('system.adapter.' + adapter);
+        let doc;
+        let err;
+        try {
+            doc = await objects.getObjectAsync('system.adapter.' + adapter);
+        } catch (_err) {
+            err = _err;
+        }
         // Adapter is not installed - install it now
         if (err || !doc || !doc.common.installedVersion) {
             await this.installAdapterAsync(adapter);

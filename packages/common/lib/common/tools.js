@@ -2389,8 +2389,8 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
     let error = null;
     for (const [enumId, enumObj] of Object.entries(allEnums)) {
         const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
-                    if (idx !== -1) {
-                        // the id is in the enum now we have to remove it
+        if (idx !== -1) {
+            // the id is in the enum now we have to remove it
             enumObj.common.members.splice(idx, 1);
             try {
                 await objects.setObjectAsync(enumId, enumObj);
@@ -2483,18 +2483,18 @@ function validateGeneralObjectProperties(obj, extend) {
         }
 
         if (obj.type === 'state') {
-        // if object type indicates a state, check that common.type matches
-        const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
+            // if object type indicates a state, check that common.type matches
+            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
-            throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
-        }
+                throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
+            }
 
             // ensure, that default value has correct type
             if (obj.common.def !== undefined && obj.common.def !== null) {
                 if (obj.common.type === 'file') {
                     // defaults are set via setState but would need setBinaryState
                     throw new Error('Default value is not supported for type "file"');
-    }
+                }
 
                 // else do what strictObjectChecks does for val
                 if (!(obj.common.type === 'mixed' && typeof obj.common.def !== 'object' ||

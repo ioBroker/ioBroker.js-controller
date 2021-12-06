@@ -287,8 +287,7 @@ function Upgrade(options) {
     this.upgradeAdapterAsync = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll) {
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
-                const res = await getRepository(repoUrl, params);
-                return this.upgradeAdapter(res, adapter, forceDowngrade, autoConfirm, upgradeAll, callback);
+                repoUrl = await getRepository(repoUrl, params);
             } catch (e) {
                 return processExit(e);
             }

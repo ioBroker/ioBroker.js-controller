@@ -295,10 +295,11 @@ function Upload(options) {
         let _files = [];
         let _dirs = [];
         if (isErase) {
-            let files
+            let files;
             try {
                 files = await objects.readDirAsync(adapter, path);
-            } catch (e) {
+            } catch {
+                // ignore err
                 files = [];
             }
 
@@ -771,7 +772,7 @@ function Upload(options) {
 
             try {
                 await objects.setObjectAsync('system.adapter.' + name, obj);
-            } catch (err) {
+            } catch {
                 logger.error(`Cannot set system.adapter.${name}: ${err.message}`);
             }
 
