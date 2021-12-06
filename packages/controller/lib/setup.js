@@ -511,12 +511,14 @@ async function processCommand(command, args, params, callback) {
                             }
                         }
 
-                        // Creates a fresh certificate
-                        const Cert = cli.command.cert;
-                        // Create a new instance of the cert command,
-                        // but use the resolve method as a callback
-                        const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
-                        cert.create();
+                        await new Promise(resolve => {
+                            // Creates a fresh certificate
+                            const Cert = cli.command.cert;
+                            // Create a new instance of the cert command,
+                            // but use the resolve method as a callback
+                            const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
+                            cert.create();
+                        });
                         callback && callback();
                     } else {
                         // else we update existing stuff (this is executed on installation)
