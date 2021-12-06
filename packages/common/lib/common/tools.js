@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 const { createInterface } = require('readline');
 const { PassThrough } = require('stream');
 const { detectPackageManager } = require('@alcalzone/pak');
-const EXIT_CODES = require('@iobroker/js-controller-common').EXIT_CODES;
+const EXIT_CODES = require('./exitCodes');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
