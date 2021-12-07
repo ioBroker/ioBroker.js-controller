@@ -3035,7 +3035,7 @@ function checkVersion(name, version, instances) {
 /**
  * Chceks if alle dependencies of an adapter are satisfied
  *
- * @param {string} id - instance id of the requiring instance
+ * @param {string} id - instance id of the requiring instance (only used for logging)
  * @param {string[]|object[]|string} deps - same host dependencies as defined in io-pack
  * @param {string[]|object[]|string} globalDeps - global dependencies, as defined in io-pack
  * @returns {Promise<void>}
@@ -3068,9 +3068,8 @@ async function checkVersions(id, deps, globalDeps) {
             checkVersion(dep, deps[dep], instances);
         }
     } catch (e) {
-        logger.error(`${hostLogPrefix} startInstance ${id} [sameHostDependency]: ${e.message}`);
-        logger.debug(`${hostLogPrefix} startInstance ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
-        throw new Error();
+        logger.debug(`${hostLogPrefix} ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
+        throw new Error(`Adapter dependency not fullfilled on "${hostname}": ${e.message}`);
     }
 
     // check global dependencies: required adapter must be NOT installed on the same host
@@ -3079,9 +3078,8 @@ async function checkVersions(id, deps, globalDeps) {
             checkVersion(gDep, globalDeps[gDep], globInstances);
         }
     } catch (e) {
-        logger.error(`${hostLogPrefix} startInstance ${id} [globalDependency]: ${e.message}`);
-        logger.debug(`${hostLogPrefix} startInstance ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
-        throw new Error();
+        logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
+        throw new Error(`Adapter dependency not fullfilled on any host: ${e.message}`);
     }
 }
 
@@ -3423,7 +3421,8 @@ async function startInstance(id, wakeUp) {
     if (instance.common.dependencies || instance.common.globalDependencies) {
         try {
             await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
-        } catch {
+        } catch (e) {
+            logger.error(`${hostLogPrefix} startInstance ${id} ${e.message}`);
             // Do not start this instance
             return;
         }
