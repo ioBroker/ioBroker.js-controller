@@ -2842,7 +2842,16 @@ function dbConnectAsync(onlyCheck, params) {
             err ? reject(err) : resolve({objects, states, isOffline, objectsDBType, config})));
 }
 
-module.exports.execute = function () {
+module.exports.execute = async function () {
+    try {
+        // try to get information if we are allowed to use sentry
+        const { objects } = await dbConnectAsync();
+        console.log(objects)
+    } catch {
+        // ignore
+    }
+
+
     // direct call
     const _yargs = initYargs();
     const command = _yargs.argv._[0];
