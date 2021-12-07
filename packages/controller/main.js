@@ -3069,7 +3069,7 @@ async function checkVersions(id, deps, globalDeps) {
         }
     } catch (e) {
         logger.debug(`${hostLogPrefix} ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
-        throw new Error(`Adapter dependency not fullfilled on "${hostname}": ${e.message}`);
+        throw new Error(`Adapter dependency not fulfilled on "${hostname}": ${e.message}`);
     }
 
     // check global dependencies: required adapter must be NOT installed on the same host
@@ -3079,7 +3079,7 @@ async function checkVersions(id, deps, globalDeps) {
         }
     } catch (e) {
         logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
-        throw new Error(`Adapter dependency not fullfilled on any host: ${e.message}`);
+        throw new Error(`Adapter dependency not fulfilled on any host: ${e.message}`);
     }
 }
 
