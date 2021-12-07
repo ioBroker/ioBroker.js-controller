@@ -2664,32 +2664,40 @@ async function resetDbConnect(_callback) {
 //     }
 // }
 
-function checkSystemOffline(onlyCheck, callback) {
+/**
+ * Checks if system is offline
+ *
+ * @param {boolean} onlyCheck - returns true then
+ * @returns {Promise<boolean>}
+ */
+async function checkSystemOffline(onlyCheck) {
     if (!objects || !states) { // should never happen
-        callback && callback(true);
-        return;
+        return true;
     }
     if (onlyCheck) {
-        callback && callback(true);
-        return;
+        return true;
     }
-    setTimeout(() => { // Slight delay to allow "setup first" from Pre 2.0 to 2.0
-        enumHosts(objects).then(hosts => {
-            const hostToCheck = hosts.map(host => 'system.host.' + host.common.hostname + '.alive');
 
-            states.getStates(hostToCheck, (err, res) => {
-                !err && Array.isArray(res) && res.forEach(aliveState => {
+    const offlineStatus = await new Promise(resolve => {
+        setTimeout(async () => { // Slight delay to allow "setup first" from Pre 2.0 to 2.0
+            try {
+                const hosts = await enumHosts(objects);
+                const hostToCheck = hosts.map(host => `system.host.${host.common.hostname}.alive`);
+
+                const res = await states.getStatesAsync(hostToCheck);
+                Array.isArray(res) && res.forEach(aliveState => {
                     if (aliveState && aliveState.val) {
-                        callback && callback(false);
-                        callback = null;
+                        resolve(false);
                     }
                 });
-                callback && callback(true);
-            });
-        }).catch(() => {
-            callback && callback(true);
-        });
-    }, 500);
+                resolve(true);
+            } catch {
+                resolve(true);
+            }
+        }, 500);
+    });
+
+    return offlineStatus;
 }
 
 /**
@@ -2891,21 +2899,20 @@ function dbConnect(onlyCheck, params, callback) {
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
-        connected: () => {
+        connected: async () => {
             if (isObjectConnected) {
                 return;
             }
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, async isOffline => {
-                    try {
-                        await initializePlugins(config);
-                    } catch {
-                        // ignore in silence
-                    }
-                    callback(objects, states, isOffline, config.objects.type, config);
-                });
+                const isOffline = await checkSystemOffline(onlyCheck);
+                try {
+                    await initializePlugins(config);
+                } catch {
+                    // ignore in silence
+                }
+                callback(objects, states, isOffline, config.objects.type, config);
             }
         }
     });
@@ -2922,21 +2929,20 @@ function dbConnect(onlyCheck, params, callback) {
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
-        connected: () => {
+        connected: async () => {
             if (isStatesConnected) {
                 return;
             }
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, async isOffline => {
-                    try {
-                        await initializePlugins(config);
-                    } catch {
-                        // ignore in silence
-                    }
-                    callback(objects, states, isOffline, config.objects.type, config);
-                });
+                const isOffline = await checkSystemOffline(onlyCheck);
+                try {
+                    await initializePlugins(config);
+                } catch {
+                    // ignore in silence
+                }
+                callback(objects, states, isOffline, config.objects.type, config);
             }
         },
         change: (id, state) => states.onChange && states.onChange(id, state)
