@@ -2698,7 +2698,7 @@ function checkSystemOffline(onlyCheck, callback) {
  * @param {object} config - parsed content of iobroker.json
  * returns {Promise<void>}
  */
-async function initializePlugins(config) {
+function initializePlugins(config) {
     const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
     const packageJson = fs.readJsonSync(path.join(__dirname, '..', 'package.json'));
     const hostname = tools.getHostName();
@@ -2922,7 +2922,7 @@ function dbConnect(onlyCheck, params, callback) {
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
-        connected: async () => {
+        connected: () => {
             if (isStatesConnected) {
                 return;
             }
