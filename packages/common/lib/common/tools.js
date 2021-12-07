@@ -2537,6 +2537,11 @@ function validateGeneralObjectProperties(obj, extend) {
     if (obj.type === 'state' && obj.common.custom !== undefined && obj.common.custom !== null && !isObject(obj.common.custom)) {
         throw new Error(`obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`);
     }
+
+    // common.states needs to be a real object or an arraay
+    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+        throw new Error(`obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`);
+    }
 }
 
 /**
