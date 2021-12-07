@@ -2715,7 +2715,16 @@ function initializePlugins(config) {
         namespace: `system.host.${hostname}`,
         logNamespace: `host.${hostname}`,
         scope: 'controller',
-        log: console,
+        log: { // cli should be clean, only log warn/error
+            silly: _msg => {
+            },
+            debug: _msg => {
+            },
+            info: _msg => {
+            },
+            warn: msg => console.log(msg),
+            error: msg => console.log(msg)
+        },
         iobrokerConfig: config,
         parentPackage: packageJson,
         controllerVersion: ioPackage.common.version
