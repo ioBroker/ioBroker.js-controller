@@ -1,6 +1,9 @@
 {
   "name": "iobroker.js-controller-mono",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@iobroker/db-base": "file:packages/db-base",
     "@iobroker/db-objects-file": "file:packages/db-objects-file",
