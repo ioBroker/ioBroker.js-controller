@@ -2790,9 +2790,7 @@ function dbConnect(onlyCheck, params, callback) {
                         if (isStatesConnected && typeof callback === 'function') {
                             try {
                                 await initializePlugins(config);
-                                console.log('initialized');
                             } catch {
-                                console.log('failed');
                                 // ignore in silence
                             }
                             return void callback(objects, states, true, config.objects.type, config);
@@ -2835,9 +2833,7 @@ function dbConnect(onlyCheck, params, callback) {
                         if (isObjectConnected && typeof callback === 'function') {
                             try {
                                 await initializePlugins(config);
-                                console.log('ok');
                             } catch {
-                                console.log('failed');
                                 // ignore in silence
                             }
                             return void callback(objects, states, true, config.objects.type, config);
@@ -2856,7 +2852,7 @@ function dbConnect(onlyCheck, params, callback) {
                     await objects.destroy();
                     objects = null;
                 }
-                console.log('No connection to states ' + config.states.host + ':' + config.states.port + '[' + config.states.type + ']');
+                console.log(`No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`);
                 if (onlyCheck) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
@@ -2902,8 +2898,14 @@ function dbConnect(onlyCheck, params, callback) {
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline =>
-                    callback(objects, states, isOffline, config.objects.type, config));
+                checkSystemOffline(onlyCheck, async isOffline => {
+                    try {
+                        await initializePlugins(config);
+                    } catch {
+                        // ignore in silence
+                    }
+                    callback(objects, states, isOffline, config.objects.type, config);
+                });
             }
         }
     });
@@ -2920,15 +2922,21 @@ function dbConnect(onlyCheck, params, callback) {
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
-        connected: () => {
+        connected: async () => {
             if (isStatesConnected) {
                 return;
             }
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline =>
-                    callback(objects, states, isOffline, config.objects.type, config));
+                checkSystemOffline(onlyCheck, async isOffline => {
+                    try {
+                        await initializePlugins(config);
+                    } catch {
+                        // ignore in silence
+                    }
+                    callback(objects, states, isOffline, config.objects.type, config);
+                });
             }
         },
         change: (id, state) => states.onChange && states.onChange(id, state)
