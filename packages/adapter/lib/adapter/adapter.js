@@ -612,7 +612,7 @@ function Adapter(options) {
      * @alias supportsFeature
      * @memberof Adapter
      * @param {string} featureName the name of the feature to check
-     * @returns {boolean} true/false wether the featufre is in the list of supported features
+     * @returns {boolean} true/false if the feature is in the list of supported features
      */
     this.supportsFeature = featureName => {
         return supportedFeatures.includes(featureName);
@@ -8730,6 +8730,32 @@ function Adapter(options) {
     };
     this.pluginHandler = new PluginHandler(pluginSettings);
     this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+
+    /**
+     * This method returns the list of license that can be used by this adapter
+     *
+     * @returns {[object]} list of suitable licenses
+    */
+    this.getSuitableLicenses = async all => {
+        const licenses = [];
+        try {
+            const obj = await this.getForeignObject('system.licenses');
+            if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
+                const now = Date.now();
+                obj.native.licenses.forEach(license => {
+                    if (!license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now) {
+                        if (license.startsWith('iobroker.' + this.name && (all || !license.usedBy || license.usedBy === this.namespace))) {
+                            licenses.push(license);
+                        }
+                    }
+                });
+            }
+        } catch {
+
+        }
+
+        return licenses;
+    }
 
     initObjects(() => {
         if (this.inited) {

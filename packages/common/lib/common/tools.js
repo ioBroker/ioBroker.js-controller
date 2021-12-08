@@ -3156,7 +3156,12 @@ function readLicenses(login, password) {
     };
 
     return axios.get(`https://iobroker.net:3001/api/v1/licenses`, config)
-        .then(response => response.data)
+        .then(response => {
+            if (response.data && response.data.length) {
+                const now = Date.now();
+                response.data = response.data.filter(license => !license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now);
+            }
+        })
         .catch(err => {
             if (err.response) {
                 throw new Error((err.response.data && err.response.data.error) || err.response.data || err.response.status);
@@ -3196,10 +3201,10 @@ function updateLicenses(objects, login, password) {
                                     const oldLicenses = systemLicenses.native.licenses;
                                     systemLicenses.native.licenses = licenses;
                                     oldLicenses.forEach(oldLicense => {
-                                        if (oldLicense.usedIn) {
+                                        if (oldLicense.usedBy) {
                                             const newLicense = licenses.find(item => item.json === oldLicense.json);
                                             if (newLicense) {
-                                                newLicense.usedIn = oldLicense.usedIn;
+                                                newLicense.usedBy = oldLicense.usedBy;
                                             }
                                         }
                                     });
