@@ -1966,9 +1966,9 @@ function Adapter(options) {
                                 (obj.common.type === 'object' && typeof state.val === 'string')
                             )
                         ) {
-                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
+                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'
                             // array, object, json need to be string
-                            if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
+                            if (['object', 'json', 'array'].includes(obj.common.type)) {
                                 logger.info(
                                     `${
                                         this.namespaceLog
