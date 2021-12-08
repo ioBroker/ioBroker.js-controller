@@ -55,18 +55,13 @@ jobs:
         run: npm -v
 
       - name: Install js-controller
-        run: npm i
+        run: npm ci
 
       - name: Build TS files
         run: npm run build
 
       - name: Execute Standard Tests
         run: npm test
-
-      - name: Install Jsonl packages
-        run: |
-          npm i @iobroker/db-states-jsonl
-          npm i @iobroker/db-objects-jsonl
 
       - name: Execute Jsonl Tests
         run: npm run test-jsonl
