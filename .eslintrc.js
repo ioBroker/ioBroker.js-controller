@@ -59,7 +59,7 @@ module.exports = {
         ],
         'no-trailing-spaces': 'error',
         'prettier/prettier': 'error',
-        'no-nested-ternary': 'warn',
+        'no-nested-ternary': 'off', // maybe turn this on later
         'no-unneeded-ternary': 'error'
     },
     parserOptions: {
