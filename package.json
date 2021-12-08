@@ -1,6 +1,9 @@
 {
   "name": "iobroker.js-controller-mono",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@iobroker/db-base": "file:packages/db-base",
     "@iobroker/db-objects-file": "file:packages/db-objects-file",
@@ -26,14 +29,14 @@
     "@types/fs-extra": "^9.0.13",
     "@types/iobroker": "^3.3.4",
     "@types/mocha": "^9.0.0",
-    "@types/node": "^16.11.11",
+    "@types/node": "^16.11.12",
     "@types/semver": "^7.3.9",
     "@types/yargs": "^17.0.7",
-    "@typescript-eslint/eslint-plugin": "^5.5.0",
-    "@typescript-eslint/parser": "^5.5.0",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^8.4.0",
+    "eslint": "^8.4.1",
     "fs-extra": "^10.0.0",
     "get-spdx-license-ids": "^2.1.0",
     "gulp": "^4.0.2",

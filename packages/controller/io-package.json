@@ -324,8 +324,6 @@
         },
         "members": [],
         "dontDelete": true,
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
         "acl": {
           "object": {
             "list": true,
