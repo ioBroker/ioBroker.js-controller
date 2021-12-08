@@ -546,7 +546,7 @@ function register(it, expect, context) {
         if (fs.existsSync(dir)) {
             files = fs.readdirSync(dir);
             for (const file of files) {
-                if (file.match(/\.tar\.gz$/)) {
+                if (file.endsWith('.tar.gz')) {
                     fs.unlinkSync(dir + file);
                 }
             }
@@ -561,7 +561,7 @@ function register(it, expect, context) {
         console.log(`Check ${dir}`);
         for (let f = files.length - 1; f > 0; f--) {
             console.log('Detect ' + dir + files[f]);
-            if (files[f].match(/_backupioBroker\.tar\.gz$/)) {
+            if (files[f].endsWith('_backupioBroker.tar.gz')) {
                 // TODO see next TODO
                 //found = true;
                 break;

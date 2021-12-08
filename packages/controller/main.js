@@ -90,8 +90,8 @@ let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
-const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
-const VENDOR_FILE           = '/etc/iob-vendor.json';
+const VENDOR_BOOTSTRAP_FILE = __dirname + '/iob-vendor-secret.json'; // TODO revert '/opt/iobroker/iob-vendor-secret.json'
+const VENDOR_FILE           = __dirname + '/iob-vendor.json'; // TODO revert '/etc/iob-vendor.json'
 let updateIPsTimer          = null;
 let lastDiagSend            = null;
 
@@ -160,7 +160,7 @@ function _startMultihost(_config, secret) {
  * @param {object} __config - the iobroker config object
  * @returns {boolean|void}
  */
-function startMultihost(__config) {
+async function startMultihost(__config) {
     if (compactGroupController) {
         return;
     }
@@ -194,20 +194,31 @@ function startMultihost(__config) {
 
         if (_config.multihostService.secure) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
-                objects.getObject('system.config', (err, obj) => {
-                    if (obj && obj.native && obj.native.secret) {
-                        if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
-                            // if old encryption was used, we need to decrypt in old fashion
-                            tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                                _startMultihost(_config, secret));
-                        } else {
+                let obj, errText;
+                try {
+                    obj = await objects.getObjectAsync('system.config');
+                } catch (e) {
+                    // will log error below
+                    errText = e.message;
+                }
+
+                if (obj && obj.native && obj.native.secret) {
+                    if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
+                        // if old encryption was used, we need to decrypt in old fashion
+                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                            _startMultihost(_config, secret));
+                    } else {
+                        try {
+                            // it can throw in edge cases #1474, we need further investigation
                             const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
                             _startMultihost(_config, secret);
+                        } catch (e) {
+                            logger.error(`${hostLogPrefix} Cannot decrypt password for multihost discovery server: ${e.message}`);
                         }
-                    } else {
-                        logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                     }
-                });
+                } else {
+                    logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err: ${errText})`);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Cannot start multihost discovery server: secure mode was configured, but no secret was set. Please check the configuration!`);
             }
@@ -227,7 +238,7 @@ function startMultihost(__config) {
                         const configFile = tools.getConfigFileName();
                         await fs.writeFile(configFile, JSON.stringify(_config, null, 2));
                     } catch (e) {
-                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
                     }
                 }
                 mhTimer = null;
@@ -240,7 +251,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e.message}`);
         }
         return false;
     }
@@ -318,7 +329,7 @@ function createStates(onConnect) {
                 return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
             }
             // If some log transporter activated or deactivated
-            if (id.match(/.logging$/)) {
+            if (id.endsWith('.logging')) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
             } else
             // If this is messagebox, only the main controller is handling the host messages
@@ -384,18 +395,18 @@ function createStates(onConnect) {
                             }
                         });
                     });
-                } else if (state && state.ack && !state.val) {
-                    // Disabled in 1.5.x
-                    // id = id.substring(0, id.length - /*.alive*/ 6);
-                    // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
-                    //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
-                    //         .then(() => {
-                    //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
-                    //         }).catch(e => {
-                    //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
-                    //     });
-                    // }
-                }
+                } //else if (state && state.ack && !state.val) {
+                // Disabled in 1.5.x
+                // id = id.substring(0, id.length - /*.alive*/ 6);
+                // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
+                //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
+                //         .then(() => {
+                //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
+                //         }).catch(e => {
+                //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
+                //     });
+                // }
+                //}
             } else
             if (subscribe[id]) {
                 for (let i = 0; i < subscribe[id].length; i++) {
@@ -939,11 +950,16 @@ function delObjects(objs, callback) {
  * @return none
  */
 function checkHost(callback) {
-    // only main host controller needs to check/fix the host assignments from the instances
-    if (compactGroupController) {
+    const objectData = objects.getStatus();
+    // only file master host controller needs to check/fix the host assignments from the instances
+    // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
+    if (compactGroupController || !objectData.server) {
         return callback && callback();
     }
-    objects.getObjectView('system', 'host', {}, (_err, doc) => {
+    objects.getObjectView('system', 'host', {
+        startkey: 'system.host.',
+        endkey: 'system.host.\u9999'
+    }, (_err, doc) => {
         if (!_err && doc && doc.rows &&
             doc.rows.length === 1 &&
             doc.rows[0].value.common.name !== hostname) {
@@ -951,7 +967,10 @@ function checkHost(callback) {
             const oldId  = doc.rows[0].value._id;
 
             // find out all instances and rewrite it to actual hostname
-            objects.getObjectView('system', 'instance', {}, (err, doc) => {
+            objects.getObjectView('system', 'instance', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            }, (err, doc) => {
                 if (err && err.message.startsWith('Cannot find ')) {
                     typeof callback === 'function' && callback();
                 } else if (!doc.rows || doc.rows.length === 0) {
@@ -1018,7 +1037,10 @@ async function collectDiagInfo(type) {
         err = null;
 
         try {
-            doc = await objects.getObjectViewAsync('system', 'host', {});
+            doc = await objects.getObjectViewAsync('system', 'host', {
+                startkey: 'system.host.',
+                endkey: 'system.host.\u9999'
+            });
         } catch (e) {
             err = e;
         }
@@ -1077,7 +1099,10 @@ async function collectDiagInfo(type) {
         err = null;
 
         try {
-            doc = await objects.getObjectViewAsync('system', 'adapter', {});
+            doc = await objects.getObjectViewAsync('system', 'adapter', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            });
         } catch (e) {
             err = e;
         }
@@ -1839,16 +1864,28 @@ function sendTo(objName, command, message, callback) {
     states.pushMessage(objName, obj);
 }
 
-function getVersionFromHost(hostId, callback) {
-    states.getState(hostId + '.alive', (err, state) => {
-        if (state && state.val)  {
-            sendTo(hostId, 'getVersion', null, ioPack =>
-                typeof callback === 'function' && setImmediate(callback, ioPack));
-        } else {
-            logger.warn(hostLogPrefix + ' "' + hostId + '" is offline');
-            typeof callback === 'function' && setImmediate(callback, null, hostId);
-        }
-    });
+async function getVersionFromHost(hostId) {
+    const state = await states.getState(hostId + '.alive');
+    if (state && state.val)  {
+        return new Promise(resolve => {
+            let timeout = setTimeout(() => {
+                timeout = null;
+                logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
+                resolve(null);
+            }, 5000);
+
+            sendTo(hostId, 'getVersion', null, ioPack => {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    resolve(ioPack);
+                }
+            });
+        });
+    } else {
+        logger.warn(`${hostLogPrefix} "${hostId}" is offline`);
+        return null;
+    }
 }
 /**
  Helper function that serialize deletion of states
@@ -2081,12 +2118,12 @@ async function processMessage(msg) {
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView('system', 'host', {}, (err, doc) => {
+                objects.getObjectView('system', 'host', {
+                    startkey: 'system.host.',
+                    endkey: 'system.host.\u9999'
+                }, async (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
-                    let infoCount = 0;
-                    let timeout = null;
-
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (let i = 0; i < doc.rows.length; i++) {
@@ -2106,36 +2143,16 @@ async function processMessage(msg) {
                                     result.hosts[hostname] = {};
                                 }
                             } else {
-                                infoCount++;
-                                getVersionFromHost(doc.rows[i].id, (ioPack, id) => {
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                        result.hosts[ioPack.host].controller = true;
-                                    }
-
-                                    if (!--infoCount) {
-                                        if (timeout) {
-                                            clearTimeout(timeout);
-                                            timeout = null;
-                                            sendTo(msg.from, msg.command, result, msg.callback);
-                                        } else {
-                                            logger.warn(`${hostLogPrefix} too delayed answer for ${ioPack ? ioPack.host : id}`);
-                                        }
-                                    }
-                                });
+                                const ioPack = await getVersionFromHost(doc.rows[i].id);
+                                if (ioPack) {
+                                    result.hosts[ioPack.host] = ioPack;
+                                    result.hosts[ioPack.host].controller = true;
+                                }
                             }
                         }
                     }
-                    if (!infoCount) {
-                        sendTo(msg.from, msg.command, result, msg.callback);
-                    } else {
-                        // Start timeout and send answer in 5 seconds if some hosts are offline
-                        timeout = setTimeout(() => {
-                            logger.warn(`${hostLogPrefix} some hosts are offline`);
-                            timeout = null;
-                            sendTo(msg.from, msg.command, result, msg.callback);
-                        }, 5000);
-                    }
+
+                    sendTo(msg.from, msg.command, result, msg.callback);
                 });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -2604,8 +2621,13 @@ async function processMessage(msg) {
 
         case 'rebuildAdapter':
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
-                logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
-                installQueue.push({id: msg.message.id, rebuild: true});
+                logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
+                const installObj = {id: msg.message.id, rebuild: true};
+                if (msg.message.path) {
+                    installObj.path = msg.message.path;
+                }
+
+                installQueue.push(installObj);
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
 
@@ -2931,7 +2953,7 @@ function initInstances() {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info(hostLogPrefix + ' instance "' + id + '" was not started, because already running.');
+                    logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
                     continue;
                 }
 
@@ -2959,15 +2981,22 @@ function initInstances() {
     }
 }
 
-function checkVersion(id, name, version, instances) {
+/**
+ * Chceks if at least one of the instances of given name satisfies the version
+ *
+ * @param {string} name - name of the dependency
+ * @param {string} version - version requirement, e.g. ">=3.3.0"
+ * @param {object} instances - object of instances and their corresponding instance objects
+ * @throws
+ */
+function checkVersion(name, version, instances) {
     let isFound = false;
 
     if (name === 'js-controller') {
         // Check only version
         if (version) {
             if (!semver.satisfies(ioPackage.common.version, version, {includePrerelease: true})) {
-                logger.error(`${hostLogPrefix} startInstance ${id} Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}"`);
-                return false;
+                throw new Error(`Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}"`);
             } else {
                 isFound = true;
             }
@@ -2981,73 +3010,66 @@ function checkVersion(id, name, version, instances) {
         const filteredInst = Object.keys(instances).filter(p => instances[p] && instances[p].common && instances[p].common.name === name);
         for (const inst of filteredInst) {
             if (version && !semver.satisfies(instances[inst].common.version, version, {includePrerelease: true})) {
-                logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`);
-                return false;
+                throw new Error(`required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`);
             }
             isFound = true;
         }
     }
 
     if (!isFound) {
-        logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" not found!`);
-        return false;
-    } else {
-        return true;
+        throw new Error(`required adapter "${name}" not found!`);
     }
 }
 
-function checkVersions(id, deps, globalDeps) {
-    return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, res) => {
-            const instances = {};
-            const globInstances = {};
-            if (res && res.rows) {
-                res.rows.forEach(item => {
-                    if (!item.value._id) {
-                        return;
-                    }
-                    globInstances[item.value._id] = item.value;
-                });
-                Object.keys(globInstances).forEach(id => {
-                    if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
-                        instances[id] = globInstances[id];
-                    }
-                });
+/**
+ * Chceks if alle dependencies of an adapter are satisfied
+ *
+ * @param {string} id - instance id of the requiring instance (only used for logging)
+ * @param {string[]|object[]|string} deps - same host dependencies as defined in io-pack
+ * @param {string[]|object[]|string} globalDeps - global dependencies, as defined in io-pack
+ * @returns {Promise<void>}
+ */
+async function checkVersions(id, deps, globalDeps) {
+    const res = await objects.getObjectViewAsync('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
+    const instances = {};
+    const globInstances = {};
+    if (res && res.rows) {
+        res.rows.forEach(item => {
+            if (!item.value._id) {
+                return;
             }
-
-            // this ensures we have a real object with correct structure
-            deps = tools.parseDependencies(deps);
-            globalDeps = tools.parseDependencies(globalDeps);
-
-            // check local dependencies: required adapter must be installed on the same host
-            try {
-                for (const dep of Object.keys(deps)) {
-                    if (!checkVersion(id, dep, deps[dep], instances)) {
-                        return reject(new Error());
-                    }
-                }
-            } catch (e) {
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${e}`);
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${JSON.stringify(deps)}`);
-                return reject(new Error());
-            }
-
-            // check global dependencies: required adapter must be NOT installed on the same host
-            try {
-                for (const gDep of Object.keys(globalDeps)) {
-                    if (!checkVersion(id, gDep, globalDeps[gDep], globInstances)) {
-                        return reject(new Error());
-                    }
-                }
-            } catch (e) {
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${e}`);
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${JSON.stringify(globalDeps)}`);
-                return reject(new Error());
-            }
-
-            resolve();
+            globInstances[item.value._id] = item.value;
         });
-    });
+        Object.keys(globInstances).forEach(id => {
+            if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
+                instances[id] = globInstances[id];
+            }
+        });
+    }
+
+    // this ensures we have a real object with correct structure
+    deps = tools.parseDependencies(deps);
+    globalDeps = tools.parseDependencies(globalDeps);
+
+    // check local dependencies: required adapter must be installed on the same host
+    try {
+        for (const dep of Object.keys(deps)) {
+            checkVersion(dep, deps[dep], instances);
+        }
+    } catch (e) {
+        logger.debug(`${hostLogPrefix} ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
+        throw new Error(`Adapter dependency not fulfilled on "${hostname}": ${e.message}`);
+    }
+
+    // check global dependencies: required adapter must be NOT installed on the same host
+    try {
+        for (const gDep of Object.keys(globalDeps)) {
+            checkVersion(gDep, globalDeps[gDep], globInstances);
+        }
+    } catch (e) {
+        logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
+        throw new Error(`Adapter dependency not fulfilled on any host: ${e.message}`);
+    }
 }
 
 // Store process IDS to make possible kill them all by restart
@@ -3133,10 +3155,12 @@ function installAdapters() {
             installArgs.push(commandScope);
             if (!task.rebuild) {
                 installArgs.push(name);
+            } else if (task.path) {
+                installArgs.push(task.path);
             }
         }
         logger.info(`${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')}`);
-        installArgs.unshift(__dirname + '/' + tools.appName + '.js');
+        installArgs.unshift(`${__dirname}/${tools.appName}.js`);
 
         try {
             task.inProgress = true;
@@ -3335,11 +3359,11 @@ function startScheduledInstance(callback) {
                 skipped = true;
             }
         } else {
-            logger.warn(hostLogPrefix + ' instance ' + instance._id + ' does not started, because just executed');
+            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
             skipped = true;
         }
     } else {
-        logger.error(hostLogPrefix + ' scheduleJob: Task deleted (' + id + ')');
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
         skipped = true;
     }
 
@@ -3384,16 +3408,13 @@ async function startInstance(id, wakeUp) {
 
     // Check if all required adapters installed and have valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
-        return checkVersions(id, instance.common.dependencies, instance.common.globalDependencies)
-            .then(() => {
-                delete instance.common.dependencies;
-                delete instance.common.globalDependencies;
-                startInstance(id, wakeUp);
-            })
-            .catch(() => {
-                // do nothing
-                // Do not start this instance
-            });
+        try {
+            await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} startInstance ${id} ${e.message}`);
+            // Do not start this instance
+            return;
+        }
     }
 
     const adapterDir = tools.getAdapterDir(name);
@@ -3524,7 +3545,7 @@ async function startInstance(id, wakeUp) {
             subscribe[procs[id].subscribe] = [id];
 
             // Subscribe on changes
-            if (procs[id].subscribe.match(/^messagebox\./)) {
+            if (procs[id].subscribe.startsWith('messagebox.')) {
                 states.subscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
             } else {
                 states.subscribe(procs[id].subscribe);
@@ -3651,15 +3672,23 @@ async function startInstance(id, wakeUp) {
                             procs[id].rebuildCounter = procs[id].rebuildCounter || 0;
                             procs[id].rebuildCounter++;
                             if (procs[id].rebuildCounter < 4) {
-                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
+                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild ${procs[id].rebuildPath
+                                    ? `of ${procs[id].rebuildPath} ` : ''}and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
-                                    message: { id: instance._id }
+                                    message: { id: instance._id}
                                 };
+
+                                // if rebuild path given send it
+                                if (procs[id].rebuildPath) {
+                                    msg.message.path = procs[id].rebuildPath;
+                                    delete procs[id].rebuildPath;
+                                }
+
                                 if (!compactGroupController) { // execute directly
                                     processMessage(msg);
                                 } else { // send to main controller to make sure only one npm process runs at a time
-                                    sendTo('system.host.' + hostname, 'rebuildAdapter', msg);
+                                    sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg);
                                 }
                             } else {
                                 logger.info(`${hostLogPrefix} Rebuild for adapter ${id} not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.`);
@@ -3783,9 +3812,24 @@ async function startInstance(id, wakeUp) {
                                 return;
                             }
                             const text = data.toString();
+
                             // show for debug
                             console.error(text);
-                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
+                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild') || text.includes('Cannot find module')) {
+                                // only try this at second rebuild
+                                if (procs[id].rebuildCounter === 1) {
+                                    // extract rebuild path - it is always between the only two single quotes
+                                    const matches = text.match(/'.+'/g);
+
+                                    if (matches && matches.length === 1) {
+                                        // remove the quotes
+                                        const rebuildPath = matches[0].replace(/'/g, '');
+                                        if (path.isAbsolute(rebuildPath)) {
+                                            // we have found a module which needs rebuild
+                                            procs[id].rebuildPath = rebuildPath;
+                                        }
+                                    }
+                                }
                                 procs[id].needsRebuild = true;
                             }
                             procs[id].errors = procs[id].errors || [];
@@ -4024,7 +4068,7 @@ async function startInstance(id, wakeUp) {
                 }
 
             } else {
-                !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' ' + (procs[id].stopping ? 'still' : 'already') + ' running with pid ' + procs[id].process.pid);
+                !wakeUp && procs[id] && logger.warn(`${hostLogPrefix} instance ${instance._id} ${procs[id].stopping ? 'still' : 'already'} running with pid ${procs[id].process.pid}`);
                 if (procs[id].stopping) {
                     delete procs[id].stopping;
                 }
@@ -4033,11 +4077,11 @@ async function startInstance(id, wakeUp) {
 
         case 'schedule':
             if (compactGroupController) {
-                logger.debug(hostLogPrefix + ' ' + instance._id + ' schedule is not started by compact group controller');
+                logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
                 break;
             }
             if (!instance.common.schedule) {
-                logger.error(hostLogPrefix + ' ' + instance._id + ' schedule attribute missing');
+                logger.error(`${hostLogPrefix} ${instance._id} schedule attribute missing`);
                 break;
             }
 
@@ -4152,7 +4196,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
@@ -4319,7 +4363,7 @@ function stopInstance(id, force, callback) {
                     delete subscribe[procs[id].subscribe];
 
                     // Unsubscribe
-                    if (procs[id].subscribe.match(/^messagebox\./)) {
+                    if (procs[id].subscribe.startsWith('messagebox.')) {
                         states.unsubscribeMessage(procs[id].subscribe.substring('messagebox.'.length));
                     } else {
                         states.unsubscribe(procs[id].subscribe);
@@ -4810,21 +4854,21 @@ function init(compactGroupId) {
 
     const exceptionHandler = err => {
         if (compactGroupController) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }
             stop(false);
             return;
         }
-        console.error(err.message || err);
+        console.error(err.message);
         if (err.stack) {
             console.error(err.stack);
         }
 
         // If by terminating one more exception => stop immediately to break the circle
         if (uncaughtExceptionCount) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }

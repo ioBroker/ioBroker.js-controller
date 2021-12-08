@@ -49,7 +49,8 @@ const supportedFeatures = [
     'ADAPTER_AUTO_DECRYPT_NATIVE', // all native attributes, that are listed in an array `encryptedNative` in io-pack will be automatically decrypted and encrypted. Since js-controller 3.0
     'PLUGINS', // configurable plugins supported. Since js-controller 3.0
     'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
-    'CONTROLLER_READWRITE_BASE_SETTINGS' // If base settings could be read and written. Since js-controller 3.0
+    'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
+    'CONTROLLER_MULTI_REPO' // Controller supports multiple repositories
 ];
 
 //const ACCESS_EVERY_EXEC  = 0x1;
@@ -181,8 +182,6 @@ function Adapter(options) {
 
     config = options.config || config;
     this.startedInCompactMode = options.compact;
-    const regUser = /^system\.user\./;
-    const regGroup = /^system\.group\./;
     let firstConnection = true;
     let systemSecret = null;
 
@@ -191,6 +190,7 @@ function Adapter(options) {
     this.logList = [];
     this.aliases = {};
     this.aliasPatterns = [];
+    this.enums = {};
 
     this.eventLoopLags = [];
     this.overwriteLogLevel = false;
@@ -509,7 +509,7 @@ function Adapter(options) {
         const type = typeof id;
 
         if (!isForeignId && type === 'number') {
-            logger.warn(`${this.namespaceLog} The id "${id}" has an invalid type!: Expected "string" or "object", received "number".`);
+            logger.warn(`${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`);
             logger.warn(`${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`);
         } else if (type !== 'string' && !tools.isObject(id)) {
             throw new Error(`The id "${id}" has an invalid type! Expected "string" or "object", received "${type}".`);
@@ -644,7 +644,7 @@ function Adapter(options) {
             throw new Error('checkPassword: no callback');
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -724,7 +724,7 @@ function Adapter(options) {
             options = null;
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -806,7 +806,7 @@ function Adapter(options) {
             options = null;
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -827,7 +827,7 @@ function Adapter(options) {
             }
         }
 
-        if (group && !regGroup.test(group)) {
+        if (group && !group.startsWith('system.group.')) {
             group = 'system.group.' + group;
         }
         this.getForeignObject(user, options, (err, obj) => {
@@ -955,7 +955,7 @@ function Adapter(options) {
             options = null;
         }
 
-        if (user && !regUser.test(user)) {
+        if (user && !user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -1522,7 +1522,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.objects,
             logger: logger,
-            connected: () => {
+            connected: async () => {
                 this.connected = true;
                 if (initializeTimeout) {
                     clearTimeout(initializeTimeout);
@@ -1531,6 +1531,10 @@ function Adapter(options) {
 
                 // subscribe to user changes
                 adapterObjects.subscribe('system.user.*');
+
+                // get all enums and register for enum changes
+                this.enums = await this.getEnumsAsync();
+                adapterObjects.subscribe('enum.*');
 
                 // Read dateformat if using of formatDate is announced
                 if (options.useFormatDate) {
@@ -1682,10 +1686,18 @@ function Adapter(options) {
                 }
 
                 // Clear cache if got the message about change (Will work for admin and javascript - TODO: maybe always subscribe?)
-                if (id.match(/^system\.user\./) || id.match(/^system\.group\./)) {
+                if (id.startsWith('system.user.') || id.startsWith('system.group.')) {
                     this.users = {};
                     this.groups = {};
                     this.usernames = {};
+                }
+
+                if (id.startsWith('enum.')) {
+                    if (!obj) {
+                        delete this.enums[id];
+                    } else if (obj.type === 'enum') {
+                        this.enums[id] = obj;
+                    }
                 }
             },
             changeUser: (id, obj) => { // User level object changes
@@ -1973,13 +1985,14 @@ function Adapter(options) {
 
                 if (!Object.prototype.hasOwnProperty.call(obj.common, 'name')) {
                     obj.common.name = id;
-                    logger.debug(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property common.name missing, using id as name');
+                    // it is more an unimportant warning as debug
+                    logger.debug(`${this.namespaceLog} setObject ${id} (type=${obj.type}) property common.name missing, using id as name`);
                 }
 
                 id = this._fixId(id, false/*, obj.type*/);
 
                 if (obj.children || obj.parent) {
-                    logger.warn(this.namespaceLog + ' Do not use parent or children for ' + id);
+                    logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
                 }
 
                 obj.from = obj.from || ('system.adapter.' + this.namespace);
@@ -2589,6 +2602,45 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
+            params = params || {};
+
+            // Limit search ranges for system views to the relevant namespaces
+            // to prevent too wide searches where the objects never will be
+            if (design === 'system' && !params.startkey && (!params.endkey || params.endkey === '\u9999')) {
+                switch (search) {
+                    case 'host':
+                        params.startkey = 'system.host.';
+                        params.endKey = 'system.host.\u9999';
+                        break;
+                    case 'adapter':
+                    case 'instance':
+                    case 'instanceStats':
+                        params.startkey = 'system.adapter.';
+                        params.endKey = 'system.adapter.\u9999';
+                        break;
+                    case 'enum':
+                        params.startkey = 'enum.';
+                        params.endKey = 'enum.\u9999';
+                        break;
+                    case 'script':
+                        params.startkey = 'script.';
+                        params.endKey = 'script.\u9999';
+                        break;
+                    case 'group':
+                        params.startkey = 'system.group.';
+                        params.endKey = 'system.group.\u9999';
+                        break;
+                    case 'user':
+                        params.startkey = 'system.user.';
+                        params.endKey = 'system.user.\u9999';
+                        break;
+                    case 'config':
+                        params.startkey = 'system.';
+                        params.endKey = 'system.\u9999';
+                        break;
+                }
+            }
+
             return adapterObjects.getObjectView(design, search, params, options, callback);
         };
         /**
@@ -2686,7 +2738,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
-            if (!_enum.match('^enum.')) {
+            if (!_enum.startsWith('enum.')) {
                 _enum = 'enum.' + _enum;
             }
             const result = {};
@@ -2874,6 +2926,10 @@ function Adapter(options) {
          *        </code></pre>
          */
         this.getForeignObjects = (pattern, type, enums, options, callback) => {
+            if (typeof pattern !== 'string') {
+                return tools.maybeCallbackWithError(callback, new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`));
+            }
+
             if (typeof options === 'function') {
                 callback = options;
                 options = null;
@@ -2917,6 +2973,7 @@ function Adapter(options) {
                     if (res && res.rows) {
                         for (let i = 0; i < res.rows.length; i++) {
                             if (!res.rows[i].value) {
+                                // it is more an unimportant warning as debug
                                 logger.debug(`${this.namespaceLog} getEnums(${JSON.stringify(enums)}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(res.rows[i])}`);
                                 continue;
                             }
@@ -3092,26 +3149,23 @@ function Adapter(options) {
                 return tools.maybeCallback(cb);
             } else {
                 const task = tasks.shift();
-                adapterObjects.delObject(task.id, options, err => {
+                adapterObjects.delObject(task.id, options, async err => {
                     if (err) {
                         return tools.maybeCallbackWithError(cb, err);
-                    } else if (!task.state) {
-                        // if not a state, we dont have to delete state
-                        tools.removeIdFromAllEnums(adapterObjects, task.id).then(() => setImmediate(_deleteObjects, tasks, options, cb))
-                            .catch(e => {
-                                this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
-                                setImmediate(_deleteObjects, tasks, options, cb);
-                            });
-                    } else {
-                        this.delForeignState(task.id, options, err => {
-                            err && this.log.warn(`Could not remove state of ${task.id}`);
-                            tools.removeIdFromAllEnums(adapterObjects, task.id).then(() => setImmediate(_deleteObjects, tasks, options, cb))
-                                .catch(e => {
-                                    this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
-                                    setImmediate(_deleteObjects, tasks, options, cb);
-                                });
-                        });
                     }
+                    if (task.state) {
+                        try {
+                            await this.delForeignStateAsync(task.id, options);
+                        } catch (e) {
+                            this.log.warn(`Could not remove state of ${task.id}: ${e.message}`);
+                        }
+                    }
+                    try {
+                        await tools.removeIdFromAllEnums(adapterObjects, task.id, this.enums);
+                    } catch (e) {
+                        this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
+                    }
+                    setImmediate(_deleteObjects, tasks, options, cb);
                 });
             }
         };
@@ -3166,52 +3220,38 @@ function Adapter(options) {
                     });
                 });
             } else {
-                adapterObjects.getObject(id, options, (err, obj) => {
+                adapterObjects.getObject(id, options, async (err, obj) => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
-                    } else if (!obj) {
-                        // obj non existing we can return right now
-                        return tools.maybeCallback(callback);
-                    } else {
+                    } else if (obj) {
                         // do not allow deletion of objects with dontDelete flag
-                        if (!obj.common || !obj.common.dontDelete) {
-                            adapterObjects.delObject(obj._id, options, err => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else if (obj.type !== 'state') {
-                                    tools.removeIdFromAllEnums(adapterObjects, id)
-                                        .then(() => {
-                                            return tools.maybeCallback(callback);
-                                        })
-                                        .catch(e => {
-                                            return tools.maybeCallbackWithError(callback, e);
-                                        });
+                        if (obj.common && obj.common.dontDelete) {
+                            return tools.maybeCallbackWithError(callback, new Error('not deletable'));
+                        }
+
+                        try {
+                            await adapterObjects.delObject(obj._id, options);
+                        } catch (err) {
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
+                        if (obj.type === 'state') {
+                            try {
+                                if (obj.binary) {
+                                    await this.delBinaryStateAsync(id, options);
                                 } else {
-                                    if (obj.binary) {
-                                        this.delBinaryState(id, options, () =>
-                                            tools.removeIdFromAllEnums(adapterObjects, id)
-                                                .then(() => {
-                                                    return tools.maybeCallback(callback);
-                                                })
-                                                .catch(e => {
-                                                    return tools.maybeCallbackWithError(callback, e);
-                                                }));
-                                    } else {
-                                        this.delForeignState(id, options, () =>
-                                            tools.removeIdFromAllEnums(adapterObjects, id)
-                                                .then(() => {
-                                                    return tools.maybeCallback(callback);
-                                                })
-                                                .catch(e => {
-                                                    return tools.maybeCallbackWithError(callback, e);
-                                                }));
-                                    }
+                                    await this.delForeignStateAsync(id, options);
                                 }
-                            });
-                        } else {
-                            return tools.maybeCallbackWithError(callback, 'not deletable');
+                            } catch {
+                                // Ignore
+                            }
+                        }
+                        try {
+                            await tools.removeIdFromAllEnums(adapterObjects, id, this.enums);
+                        } catch (e) {
+                            return tools.maybeCallbackWithError(callback, e);
                         }
                     }
+                    return tools.maybeCallback(callback);
                 });
             }
         };
@@ -3752,13 +3792,12 @@ function Adapter(options) {
          * @param {object} [options] optional user context
          * @param {ioBroker.ErrorCallback} [callback] return result
          *        <pre><code>
-         *            function (err, obj) {
-         *              // obj is {id: id}
-         *              if (err) adapter.log.error('Cannot write object: ' + err);
+         *            function (err) {
+         *              if (err) adapter.log.error('Cannot delete device: ' + err);
          *            }
          *        </code></pre>
          */
-        this.deleteDevice = (deviceName, options, callback) => {
+        this.deleteDevice = async (deviceName, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = null;
@@ -3770,96 +3809,31 @@ function Adapter(options) {
 
             deviceName = deviceName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             if (!this._namespaceRegExp.test(deviceName)) {
-                deviceName = this.namespace + '.' + deviceName;
+                // make it an id
+                deviceName = `${this.namespace}.${deviceName}`;
             }
 
-            adapterObjects.getObjectView('system', 'device', {
-                startkey: deviceName,
-                endkey: deviceName
-            }, options, (err, res) => {
-                if (err || !res || !res.rows) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-                let cnt = 0;
-                if (res.rows.length > 1) {
-                    logger.warn(this.namespaceLog + ' Found more than one device ' + deviceName);
-                }
+            // get object to check if it is a device
+            let obj;
+            try {
+                obj = await this.getForeignObjectAsync(deviceName);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
 
-                for (let t = 0; t < res.rows.length; t++) {
-                    cnt++;
-                    this.delObject(res.rows[t].id, options, err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
+            if (!obj || obj.type !== 'device') {
+                // it's not a device, so return but no error
+                return tools.maybeCallback(callback);
+            }
 
-                        if (!--cnt) {
-                            let _cnt = 0;
-                            _cnt++;
-                            // read channels of device
-                            adapterObjects.getObjectView('system', 'channel', {
-                                startkey: deviceName + '.',
-                                endkey: deviceName + '.\u9999'
-                            }, options, (err, res) => {
-                                _cnt--;
-                                if (err || !res || !res.rows) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                }
-                                for (let k = 0; k < res.rows.length; k++) {
-                                    _cnt++;
-                                    this.deleteChannel(deviceName, res.rows[k].id, options, err => {
-                                        if (!--_cnt) {
-                                            typeof callback === 'function' && callback(err);
-                                            callback = null;
-                                        } else {
-                                            if (err) {
-                                                typeof callback === 'function' && callback(err);
-                                                callback = null;
-                                            }
-                                        }
-                                    });
-                                }
-                                if (!_cnt && typeof callback === 'function') {
-                                    callback();
-                                    callback = null;
-                                }
-                            });
-                            // read states of the device...
-                            _cnt++;
-                            adapterObjects.getObjectView('system', 'state', {
-                                startkey: deviceName + '.',
-                                endkey: deviceName + '.\u9999'
-                            }, options, (err, res) => {
-                                _cnt--;
-                                if (err || !res || !res.rows) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                }
-                                for (let k = 0; k < res.rows.length; k++) {
-                                    _cnt++;
-                                    this.deleteState(deviceName, '', res.rows[k].id, options, err => {
-                                        if (!--_cnt) {
-                                            typeof callback === 'function' && callback(err);
-                                            callback = null;
-                                        } else {
-                                            if (err) {
-                                                typeof callback === 'function' && callback(err);
-                                                callback = null;
-                                            }
-                                        }
-                                    });
-                                }
-                                if (!_cnt && typeof callback === 'function') {
-                                    callback();
-                                    callback = null;
-                                }
-                            });
-                        }
-                    });
-                }
-                if (!cnt && typeof callback === 'function') {
-                    callback();
-                    callback = null;
-                }
-            });
+            // it's a device now delete it + underlying structure
+            try {
+                await this.delForeignObjectAsync(deviceName, { recursive: true });
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            return tools.maybeCallback(callback);
         };
         /**
          * Promise-version of Adapter.deleteDevice
@@ -3893,7 +3867,7 @@ function Adapter(options) {
 
             const objId = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
 
-            if (addTo.match(/^enum\./)) {
+            if (addTo.startsWith('enum.')) {
                 adapterObjects.getObject(addTo, options, (err, obj) => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
@@ -3910,7 +3884,7 @@ function Adapter(options) {
                     }
                 });
             } else {
-                if (enumName.match(/^enum\./)) {
+                if (enumName.startsWith('enum.')) {
                     enumName = enumName.substring(5);
                 }
 
@@ -4023,7 +3997,21 @@ function Adapter(options) {
          */
         this.deleteChannelFromEnumAsync = tools.promisify(this.deleteChannelFromEnum, this);
 
-        this.deleteChannel = (parentDevice, channelName, options, callback) => {
+        /**
+         * Deletes channel and udnerlying structure
+         * @alais deleteChannel
+         *
+         * @param {string} parentDevice is the part of ID like: adapter.instance.<deviceName>
+         * @param {string} channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
+         * @param {object} [options] optional user context
+         * @param {ioBroker.ErrorCallback} [callback] return result
+         *        <pre><code>
+         *            function (err) {
+         *              if (err) adapter.log.error('Cannot delete device: ' + err);
+         *            }
+         *        </code></pre>
+         */
+        this.deleteChannel = async (parentDevice, channelName, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = null;
@@ -4049,8 +4037,6 @@ function Adapter(options) {
             if (!parentDevice) {
                 parentDevice = '';
             }
-            const _parentDevice = parentDevice;
-            const _channelName = channelName;
 
             if (parentDevice) {
                 if (this._namespaceRegExp.test(parentDevice)) {
@@ -4068,59 +4054,31 @@ function Adapter(options) {
             channelName = channelName || '';
             channelName = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            channelName = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
+            channelName = `${this.namespace}.${this._DCS2ID(parentDevice, channelName)}`;
 
-            logger.info(this.namespaceLog + ' Delete channel ' + channelName);
+            // get object to check if it is a channel
+            let obj;
+            try {
+                obj = await this.getForeignObjectAsync(channelName);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
 
-            adapterObjects.getObjectView('system', 'channel', {
-                startkey: channelName,
-                endkey: channelName
-            }, options, (err, res) => {
-                if (err || !res || !res.rows) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-                let cnt = 0;
-                res.rows.length > 1 && logger.warn(this.namespaceLog + ' Found more than one channel ' + channelName);
+            if (!obj || obj.type !== 'channel') {
+                // it's not a channel, so return but no error
+                return tools.maybeCallback(callback);
+            }
 
-                for (let t = 0; t < res.rows.length; t++) {
-                    cnt++;
-                    this.delObject(res.rows[t].id, options, err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
-                        if (!--cnt) {
-                            adapterObjects.getObjectView('system', 'state', {
-                                startkey: channelName + '.',
-                                endkey: channelName + '.\u9999'
-                            }, options, (err, res) => {
-                                if (err || !res || !res.rows) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                }
-                                let _cnt = 0;
-                                for (let k = 0; k < res.rows.length; k++) {
-                                    _cnt++;
-                                    this.deleteState(_parentDevice, _channelName, res.rows[k].id, options, err => {
-                                        if (!--_cnt && callback) {
-                                            callback(err);
-                                        } else {
-                                            if (err) {
-                                                typeof callback === 'function' && callback(err);
-                                                callback = null;
-                                            }
-                                        }
-                                    });
-                                }
-                                if (!_cnt && callback) {
-                                    callback();
-                                }
-                            });
-                        }
-                    });
-                }
-                if (!cnt && callback) {
-                    callback();
-                }
-            });
+            logger.info(`${this.namespaceLog} Delete channel ${channelName}`);
+
+            // it's a channel now delete it + underlying structure
+            try {
+                await this.delForeignObjectAsync(channelName, { recursive: true });
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            return tools.maybeCallback(callback);
         };
         /**
          * Promise-version of Adapter.deleteChannel
@@ -4400,7 +4358,7 @@ function Adapter(options) {
 
             const objId = this._fixId({device: parentDevice, channel: parentChannel, state: stateName});
 
-            if (addTo.match(/^enum\./)) {
+            if (addTo.startsWith('enum.')) {
                 adapterObjects.getObject(addTo, options, (err, obj) => {
                     if (err || !obj) {
                         return tools.maybeCallbackWithError(callback, err || tools.ERRORS.ERROR_NOT_FOUND);
@@ -4417,7 +4375,7 @@ function Adapter(options) {
                     }
                 });
             } else {
-                if (enumName.match(/^enum\./)) {
+                if (enumName.startsWith('enum.')) {
                     enumName = enumName.substring(5);
                 }
 
@@ -5395,8 +5353,8 @@ function Adapter(options) {
                 if (!this.defaultHistory) {
                     // read all adapters
                     adapterObjects.getObjectView('system', 'instance', {
-                        startkey: '',
-                        endkey: '\u9999'
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
                     }, (err, _obj) => {
                         if (_obj && _obj.rows) {
                             for (let i = 0; i < _obj.rows.length; i++) {
@@ -5483,7 +5441,7 @@ function Adapter(options) {
 
     // initStates is called from initAdapter
     const initStates = cb => {
-        logger.debug(this.namespaceLog + ' objectDB connected');
+        logger.silly(this.namespaceLog + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
@@ -5502,7 +5460,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.states,
             connected: async _statesInstance => {
-                logger.debug(this.namespaceLog + ' statesDB connected');
+                logger.silly(this.namespaceLog + ' statesDB connected');
                 this.statesConnectedTime = Date.now();
 
                 if (initializeTimeout) {
@@ -5625,9 +5583,9 @@ function Adapter(options) {
                 }
 
                 // If someone want to have log messages
-                if (this.logList && id.match(/\.logging$/)) {
+                if (this.logList && id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    logger && logger.debug(this.namespaceLog + ' ' + instance + ': logging ' + (state ? state.val : false));
+                    logger && logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect(state ? state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     options.logTransporter && this.processLog && this.processLog(state);
@@ -5778,14 +5736,13 @@ function Adapter(options) {
                 message = command;
                 command = 'send';
             }
-            const obj = {command: command, message: message, from: 'system.adapter.' + this.namespace};
+            const obj = {command: command, message: message, from: `system.adapter.${this.namespace}`};
 
             if (typeof instanceName !== 'string' || !instanceName) {
-                typeof callback === 'function' && setImmediate(() => callback('No instanceName provided or not a string'));
-                return;
+                return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
             }
 
-            if (!instanceName.match(/^system\.adapter\./)) {
+            if (!instanceName.startsWith('system.adapter.')) {
                 instanceName = 'system.adapter.' + instanceName;
             }
 
@@ -5795,9 +5752,9 @@ function Adapter(options) {
             }
 
             if (typeof message !== 'object') {
-                logger.debug(this.namespaceLog + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace + ': ' + message);
+                logger.silly(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}: ${message}`);
             } else {
-                logger.debug(this.namespaceLog + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace);
+                logger.silly(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}`);
             }
 
             // If not specific instance
@@ -8239,7 +8196,7 @@ function Adapter(options) {
                             // disable log receiving after 10 seconds
                             this.logOffTimer = setTimeout(() => {
                                 this.logOffTimer = null;
-                                logger.debug(this.namespaceLog + ' Change log subscriber state: FALSE');
+                                logger.silly(this.namespaceLog + ' Change log subscriber state: FALSE');
                                 this.outputCount++;
                                 adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
                                     val: false,
@@ -8252,7 +8209,7 @@ function Adapter(options) {
                                 clearTimeout(this.logOffTimer);
                                 this.logOffTimer = null;
                             } else {
-                                logger.debug(this.namespaceLog + ' Change log subscriber state: true');
+                                logger.silly(this.namespaceLog + ' Change log subscriber state: true');
                                 this.outputCount++;
                                 adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
                                     val: true,
@@ -8461,8 +8418,13 @@ function Adapter(options) {
 
                         if (options.instance === undefined) {
                             this.version = (this.pack && this.pack.version) ? this.pack.version : ((this.ioPack && this.ioPack.common) ? this.ioPack.common.version : 'unknown');
+                            // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                            const isNpmVersion = !this.ioPack || !this.ioPack.common ||
+                                typeof this.ioPack.common.installedFrom !== 'string' ||
+                                this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
 
-                            logger.info(`${this.namespaceLog} starting. Version ${this.version} in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
+                            logger.info(`${this.namespaceLog} starting. Version ${this.version} ${!isNpmVersion ?
+                                `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''}in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`);
                             config.system = config.system || {};
                             config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
                             if (!config.isInstall) {
@@ -8498,7 +8460,7 @@ function Adapter(options) {
                                 logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
                             }
                             if (schedule) {
-                                logger.debug(this.namespaceLog + ' Schedule restart: ' + adapterConfig.common.restartSchedule);
+                                logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
                                 restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                                     logger.info(this.namespaceLog + ' Scheduled restart.');
                                     stop(false, true);

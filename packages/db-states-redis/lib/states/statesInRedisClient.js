@@ -60,8 +60,6 @@ class StateRedisClient {
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
 
-        const ioRegExp = new RegExp('^' + this.namespaceRedis.replace(/\./g, '\\.') + '[_A-Za-z0-9ÄÖÜäöüа-яА-Я]+'); // io.[_A-Za-z0-9]+
-
         let ready = false;
         let initError = false;
         let connected = false;
@@ -228,7 +226,7 @@ class StateRedisClient {
                             }
 
                             try {
-                                if (ioRegExp.test(channel)) {
+                                if (channel.startsWith(this.namespaceRedis) && channel.length > this.namespaceRedisL) {
                                     onChange(channel.substring(this.namespaceRedisL), message);
                                 } else {
                                     onChange(channel, message);
@@ -345,7 +343,7 @@ class StateRedisClient {
                         }
 
                         try {
-                            if (ioRegExp.test(channel)) {
+                            if (channel.startsWith(this.namespaceRedis) && channel.length > this.namespaceRedisL) {
                                 onChangeUser(channel.substring(this.namespaceRedisL), message);
                             } else {
                                 onChangeUser(channel, message);
@@ -655,10 +653,6 @@ class StateRedisClient {
     }
 
     async getStates(keys, callback, dontModify) {
-        if (typeof callback !== 'function') {
-            this.log.warn(`${this.namespace} redis getStates no callback`);
-            return;
-        }
         if (!keys || !Array.isArray(keys)) {
             return tools.maybeCallbackWithError(callback, 'no keys', null);
         }

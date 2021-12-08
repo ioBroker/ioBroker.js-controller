@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "4.0.0-alpha.10-20211116-cb8ad50a",
+  "version": "4.0.0-alpha.24-20211207-be691241",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -31,15 +31,15 @@
     "@iobroker/plugin-sentry": "~1.1.10",
     "axios": "^0.24.0",
     "daemonize2": "^0.4.2",
-    "debug": "^4.3.2",
-    "decache": "^4.6.0",
+    "debug": "^4.3.3",
+    "decache": "^4.6.1",
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.7.0",
     "loadavg-windows": "^1.1.1",
     "mime": "^3.0.0",
-    "node-schedule": "^2.0.0",
+    "node-schedule": "^2.1.0",
     "node.extend": "^2.0.2",
     "pidusage": "^3.0.0",
     "promisify-child-process": "^4.1.1",
@@ -48,7 +48,7 @@
     "request": "^2.88.2",
     "semver": "^7.3.5",
     "tar": "^6.1.11",
-    "yargs": "^17.2.1"
+    "yargs": "^17.3.0"
   },
   "homepage": "https://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
