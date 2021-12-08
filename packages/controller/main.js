@@ -395,18 +395,18 @@ function createStates(onConnect) {
                             }
                         });
                     });
-                } else if (state && state.ack && !state.val) {
-                    // Disabled in 1.5.x
-                    // id = id.substring(0, id.length - /*.alive*/ 6);
-                    // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
-                    //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
-                    //         .then(() => {
-                    //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
-                    //         }).catch(e => {
-                    //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
-                    //     });
-                    // }
-                }
+                } //else if (state && state.ack && !state.val) {
+                // Disabled in 1.5.x
+                // id = id.substring(0, id.length - /*.alive*/ 6);
+                // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
+                //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
+                //         .then(() => {
+                //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
+                //         }).catch(e => {
+                //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
+                //     });
+                // }
+                //}
             } else
             if (subscribe[id]) {
                 for (let i = 0; i < subscribe[id].length; i++) {

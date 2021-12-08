@@ -23,6 +23,9 @@ const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
 const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require('@iobroker/js-controller-common-db');
 const path = require('path');
+const { PluginHandler } = require('@iobroker/plugin-base');
+
+let pluginHandler;
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -207,13 +210,13 @@ function initYargs() {
         .command('file', 'File management', yargs => {
             yargs
                 .command(`read <${tools.appName}-path-to-read> [<filesystem-path-to-write>]`, `Read file from ${tools.appName} path and optionally write to destination`, {})
-                .command(`write <filesystem-path-to-read> <${tools.appName}-path-to-write>`, `Read file from path and write it to ${tools.appName} path`,{})
+                .command(`write <filesystem-path-to-read> <${tools.appName}-path-to-write>`, `Read file from path and write it to ${tools.appName} path`, {})
                 .command(`rm <${tools.appName}-path-to-delete>`, 'Remove file', {})
                 .command('sync', 'Sync files', {});
         })
         .command('user', 'User commands', yargs => {
             yargs
-                .command('add <user>', 'Add new user',yargs => {
+                .command('add <user>', 'Add new user', yargs => {
                     yargs.option('ingroup', {
                         describe: 'User group',
                         type: 'string'
@@ -383,7 +386,7 @@ let states;  // instance
  * @param {(exitCode?: number) => void} callback
  */
 async function processCommand(command, args, params, callback) {
-    if (typeof args   === 'function') {
+    if (typeof args === 'function') {
         callback = args;
         args = null;
     }
@@ -402,7 +405,7 @@ async function processCommand(command, args, params, callback) {
     }
 
     /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandContext} */
-    const commandContext = {dbConnect, callback, showHelp};
+    const commandContext = { dbConnect, callback, showHelp };
     /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandOptions} */
     const commandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
@@ -442,13 +445,13 @@ async function processCommand(command, args, params, callback) {
             break;
 
         case 'update': {
-            Objects     = getObjectsConstructor();
+            Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, async (_objects, _states) => {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
-                    objects:     _objects,
-                    states:      _states
+                    objects: _objects,
+                    states: _states
                 });
 
                 await repo.showRepo(repoUrl, params);
@@ -461,7 +464,7 @@ async function processCommand(command, args, params, callback) {
             const Setup = require('./setup/setupSetup.js');
             const setup = new Setup({
                 dbConnect,
-                processExit:        callback,
+                processExit: callback,
                 cleanDatabase,
                 restartController,
                 resetDbConnect,
@@ -504,7 +507,10 @@ async function processCommand(command, args, params, callback) {
                             try {
                                 const path = require.resolve(tools.appName + '.' + instance);
                                 if (path) {
-                                    await install.createInstanceAsync(instance, {enabled: true, ignoreIfExists: true});
+                                    await install.createInstanceAsync(instance, {
+                                        enabled: true,
+                                        ignoreIfExists: true
+                                    });
                                 }
                             } catch {
                                 // not found, just continue
@@ -516,7 +522,7 @@ async function processCommand(command, args, params, callback) {
                             const Cert = cli.command.cert;
                             // Create a new instance of the cert command,
                             // but use the resolve method as a callback
-                            const cert = new Cert(Object.assign({}, commandOptions, {callback: resolve}));
+                            const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
                             cert.create();
                         });
                         callback && callback();
@@ -524,7 +530,7 @@ async function processCommand(command, args, params, callback) {
                         // else we update existing stuff (this is executed on installation)
                         // Rename repositories
                         const Repo = require('./setup/setupRepo.js');
-                        const repo = new Repo({objects, states});
+                        const repo = new Repo({ objects, states });
 
                         try {
                             await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
@@ -547,15 +553,15 @@ async function processCommand(command, args, params, callback) {
                             const config = deepClone(configOrig);
 
                             config.objects.options = config.objects.options || {
-                                'auth_pass' : null,
-                                'retry_max_delay' : 5000
+                                'auth_pass': null,
+                                'retry_max_delay': 5000
                             };
                             if (config.objects.options.retry_max_delay === 15000 || !config.objects.options.retry_max_delay) {
                                 config.objects.options.retry_max_delay = 5000;
                             }
                             config.states.options = config.states.options || {
-                                'auth_pass' : null,
-                                'retry_max_delay' : 5000
+                                'auth_pass': null,
+                                'retry_max_delay': 5000
                             };
                             if (config.states.options.retry_max_delay === 15000 || !config.states.options.retry_max_delay) {
                                 config.states.options.retry_max_delay = 5000;
@@ -565,7 +571,7 @@ async function processCommand(command, args, params, callback) {
                                 fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
                                 console.log('ioBroker configuration updated');
                             }
-                        } catch(err) {
+                        } catch (err) {
                             console.log(`Could not update ioBroker configuration: ${err.message}`);
                         }
 
@@ -577,10 +583,10 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'url': {
-            Objects =       getObjectsConstructor();
+            Objects = getObjectsConstructor();
 
-            let url  =      args[0];
-            const name =      args[1];
+            let url = args[0];
+            const name = args[1];
 
             if (!url) {
                 console.log('Please provide a URL to install from and optionally a name of the adapter to install');
@@ -608,18 +614,18 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'info': {
-            Objects =       getObjectsConstructor();
+            Objects = getObjectsConstructor();
             dbConnect(params, async objects => {
                 try {
                     const data = await tools.getHostInfo(objects);
                     const formatters = require('./formatters');
                     const formatInfo = {
-                        'Uptime':        formatters.formatSeconds,
+                        'Uptime': formatters.formatSeconds,
                         'System uptime': formatters.formatSeconds,
-                        'RAM':           formatters.formatRam,
-                        'Speed':         formatters.formatSpeed,
-                        'Disk size':     formatters.formatBytes,
-                        'Disk free':     formatters.formatBytes
+                        'RAM': formatters.formatRam,
+                        'Speed': formatters.formatSpeed,
+                        'Disk size': formatters.formatBytes,
+                        'Disk free': formatters.formatBytes
                     };
 
                     for (const attr of Object.keys(data)) {
@@ -640,11 +646,11 @@ async function processCommand(command, args, params, callback) {
         case 'add':
         case 'install':
         case 'i': {
-            Objects =       getObjectsConstructor();
+            Objects = getObjectsConstructor();
 
-            let name =      args[0];
-            let instance =  args[1];
-            let repoUrl =   args[2];
+            let name = args[0];
+            let instance = args[1];
+            let repoUrl = args[2];
 
             if (instance === 0) {
                 instance = '0';
@@ -740,7 +746,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'rebuild': {
-            const options = {debug: process.argv.includes('--debug')};
+            const options = { debug: process.argv.includes('--debug') };
 
             if (commandOptions.path) {
                 if (path.isAbsolute(commandOptions.path)) {
@@ -766,17 +772,20 @@ async function processCommand(command, args, params, callback) {
 
         case 'upload':
         case 'u': {
-            Objects     = getObjectsConstructor();
-            const name    = args[0];
+            Objects = getObjectsConstructor();
+            const name = args[0];
             const subTree = args[1];
             if (name) {
                 dbConnect(params, async () => {
                     const Upload = require('./setup/setupUpload.js');
-                    const upload = new Upload({states, objects});
+                    const upload = new Upload({ states, objects });
 
                     if (name === 'all') {
                         try {
-                            const objs = await objects.getObjectListAsync({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
+                            const objs = await objects.getObjectListAsync({
+                                startkey: 'system.adapter.',
+                                endkey: 'system.adapter.\u9999'
+                            });
                             const adapters = [];
                             for (let i = 0; i < objs.rows.length; i++) {
                                 if (objs.rows[i].value.type !== 'adapter') {
@@ -832,7 +841,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'delete':
         case 'del': {
-            let adapter  = args[0];
+            let adapter = args[0];
             let instance = args[1];
 
             // The adapter argument is required
@@ -903,7 +912,7 @@ async function processCommand(command, args, params, callback) {
         }
         case 'unsetup': {
             const rl = require('readline').createInterface({
-                input:  process.stdin,
+                input: process.stdin,
                 output: process.stdout
             });
 
@@ -1102,7 +1111,7 @@ async function processCommand(command, args, params, callback) {
         case 'l':
         case 'list': {
             dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
-                const {setupList: List} = require('@iobroker/js-controller-cli');
+                const { setupList: List } = require('@iobroker/js-controller-cli');
                 const list = new List({
                     states,
                     objects,
@@ -1129,7 +1138,10 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, arr) => {
+                    objects.getObjectList({
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
+                    }, (err, arr) => {
                         if (!err && arr && arr.rows) {
                             const files = [];
                             let count = 0;
@@ -1138,12 +1150,12 @@ async function processCommand(command, args, params, callback) {
                                     continue;
                                 }
                                 count++;
-                                objects.touch(arr.rows[i].value.common.name, '*', {user: 'system.user.admin'}, (err, processed, _id) => {
+                                objects.touch(arr.rows[i].value.common.name, '*', { user: 'system.user.admin' }, (err, processed, _id) => {
                                     if (!err && processed) {
-                                        files.push({id: _id, processed: processed});
+                                        files.push({ id: _id, processed: processed });
                                     }
                                     if (!--count) {
-                                        const {setupList: List} = require('@iobroker/js-controller-cli');
+                                        const { setupList: List } = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states,
                                             objects,
@@ -1168,15 +1180,15 @@ async function processCommand(command, args, params, callback) {
                     });
                 } else {
                     const parts = pattern.split('/');
-                    const id    = parts.shift();
-                    const path  = parts.join('/');
+                    const id = parts.shift();
+                    const path = parts.join('/');
 
-                    objects.touch(id, path, {user: 'system.user.admin'}, (err, processed) => {
+                    objects.touch(id, path, { user: 'system.user.admin' }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const {setupList: List} = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1210,7 +1222,10 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, arr) => {
+                    objects.getObjectList({
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
+                    }, (err, arr) => {
                         if (!err && arr && arr.rows) {
                             const files = [];
                             let count = 0;
@@ -1219,12 +1234,12 @@ async function processCommand(command, args, params, callback) {
                                     continue;
                                 }
                                 count++;
-                                objects.rm(arr.rows[i].value.common.name, '*', {user: 'system.user.admin'}, (err, processed, _id) => {
+                                objects.rm(arr.rows[i].value.common.name, '*', { user: 'system.user.admin' }, (err, processed, _id) => {
                                     if (!err && processed) {
-                                        files.push({id: _id, processed: processed});
+                                        files.push({ id: _id, processed: processed });
                                     }
                                     if (!--count) {
-                                        const {setupList: List} = require('@iobroker/js-controller-cli');
+                                        const { setupList: List } = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states,
                                             objects,
@@ -1250,15 +1265,15 @@ async function processCommand(command, args, params, callback) {
                     });
                 } else {
                     const parts = pattern.split('/');
-                    const id    = parts.shift();
-                    const path  = parts.join('/');
+                    const id = parts.shift();
+                    const path = parts.join('/');
 
-                    objects.rm(id, path, {user: 'system.user.admin'}, (err, processed) => {
+                    objects.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const {setupList: List} = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1279,7 +1294,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'chmod': {
-            let mode    = args[0];
+            let mode = args[0];
             let pattern = args[1];
 
             if (!mode) {
@@ -1302,7 +1317,10 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, arr) => {
+                    objects.getObjectList({
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
+                    }, (err, arr) => {
                         if (!err && arr && arr.rows) {
                             const files = [];
                             let count = 0;
@@ -1311,12 +1329,15 @@ async function processCommand(command, args, params, callback) {
                                     continue;
                                 }
                                 count++;
-                                objects.chmodFile(arr.rows[i].value.common.name, '*', {user: 'system.user.admin', mode}, (err, processed, _id) => {
+                                objects.chmodFile(arr.rows[i].value.common.name, '*', {
+                                    user: 'system.user.admin',
+                                    mode
+                                }, (err, processed, _id) => {
                                     if (!err && processed) {
-                                        files.push({id: _id, processed: processed});
+                                        files.push({ id: _id, processed: processed });
                                     }
                                     if (!--count) {
-                                        const {setupList: List} = require('@iobroker/js-controller-cli');
+                                        const { setupList: List } = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states,
                                             objects,
@@ -1342,15 +1363,15 @@ async function processCommand(command, args, params, callback) {
                     });
                 } else {
                     const parts = pattern.split('/');
-                    const id    = parts.shift();
-                    const path  = parts.join('/');
+                    const id = parts.shift();
+                    const path = parts.join('/');
 
-                    objects.chmodFile(id, path, {user: 'system.user.admin', mode: mode}, (err, processed) => {
+                    objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const {setupList: List} = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1371,8 +1392,8 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'chown': {
-            let user    = args[0];
-            let group   = args[1];
+            let user = args[0];
+            let group = args[1];
             let pattern = args[2];
 
             if (!pattern) {
@@ -1402,7 +1423,10 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, arr) => {
+                    objects.getObjectList({
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
+                    }, (err, arr) => {
                         if (!err && arr && arr.rows) {
                             const files = [];
                             let count = 0;
@@ -1411,12 +1435,16 @@ async function processCommand(command, args, params, callback) {
                                     continue;
                                 }
                                 count++;
-                                objects.chownFile(arr.rows[i].value.common.name, '*', {user: 'system.user.admin', owner: user, ownerGroup: group}, (err, processed, _id) => {
+                                objects.chownFile(arr.rows[i].value.common.name, '*', {
+                                    user: 'system.user.admin',
+                                    owner: user,
+                                    ownerGroup: group
+                                }, (err, processed, _id) => {
                                     if (!err && processed) {
-                                        files.push({id: _id, processed: processed});
+                                        files.push({ id: _id, processed: processed });
                                     }
                                     if (!--count) {
-                                        const {setupList: List} = require('@iobroker/js-controller-cli');
+                                        const { setupList: List } = require('@iobroker/js-controller-cli');
                                         const list = new List({
                                             states,
                                             objects,
@@ -1446,13 +1474,17 @@ async function processCommand(command, args, params, callback) {
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects.chownFile(id, path, {user: 'system.user.admin', owner: user, ownerGroup: group}, (err, processed) => {
+                    objects.chownFile(id, path, {
+                        user: 'system.user.admin',
+                        owner: user,
+                        ownerGroup: group
+                    }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             // call here list
                             if (processed) {
-                                const {setupList: List} = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = require('@iobroker/js-controller-cli');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1473,7 +1505,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'user': {
             const command = args[0] || '';
-            let user    = args[1] || '';
+            let user = args[1] || '';
 
             if (user && user.startsWith('system.user.')) {
                 user = user.substring('system.user.'.length);
@@ -1486,7 +1518,7 @@ async function processCommand(command, args, params, callback) {
                     processExit: callback
                 });
                 const password = params.password;
-                const group    = params.ingroup || 'system.group.administrator';
+                const group = params.ingroup || 'system.group.administrator';
 
                 if (command === 'add') {
                     users.addUserPrompt(user, group, password, err => {
@@ -1498,7 +1530,7 @@ async function processCommand(command, args, params, callback) {
                             return void callback();
                         }
                     });
-                } else if (command === 'del'     || command === 'delete') {
+                } else if (command === 'del' || command === 'delete') {
                     users.delUser(user, err => {
                         if (err) {
                             console.error(err);
@@ -1518,7 +1550,7 @@ async function processCommand(command, args, params, callback) {
                             return void callback();
                         }
                     });
-                } else if (command === 'set'     || command === 'passwd') {
+                } else if (command === 'set' || command === 'passwd') {
                     users.setUserPassword(user, password, err => {
                         if (err) {
                             console.error(err);
@@ -1528,7 +1560,7 @@ async function processCommand(command, args, params, callback) {
                             return void callback();
                         }
                     });
-                } else if (command === 'enable'  || command === 'e') {
+                } else if (command === 'enable' || command === 'e') {
                     users.enableUser(user, true, err => {
                         if (err) {
                             console.error(err);
@@ -1569,14 +1601,14 @@ async function processCommand(command, args, params, callback) {
         case 'g':
         case 'group': {
             const command = args[0] || '';
-            let group     = args[1] || '';
-            let user      = args[2] || '';
+            let group = args[1] || '';
+            let user = args[2] || '';
 
             if (group && group.startsWith('system.group.')) {
                 group = group.substring('system.group.'.length);
             }
             if (user && user.startsWith('system.user.')) {
-                user  = user.substring('system.user.'.length);
+                user = user.substring('system.user.'.length);
             }
             if (!command) {
                 console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
@@ -1720,7 +1752,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'passwd': {
-            const user     = args[0];
+            const user = args[0];
             const password = params.password;
             dbConnect(params, () => {
                 const Users = require('./setup/setupUsers.js');
@@ -1773,13 +1805,12 @@ async function processCommand(command, args, params, callback) {
                 engines: {
                     node: '>=12'
                 },
-                optionalDependencies: {
-                },
+                optionalDependencies: {},
                 dependencies: {},
                 author: 'bluefox <dogafox@gmail.com>'
             };
             json.dependencies[tools.appName + '.js-controller'] = '*';
-            json.dependencies[tools.appName + '.admin']         = '*';
+            json.dependencies[tools.appName + '.admin'] = '*';
 
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
                 if (sources) {
@@ -1823,9 +1854,9 @@ async function processCommand(command, args, params, callback) {
                                 const attr = process.argv[a].substring(2);
                                 /** @type {number | string | boolean} */
                                 let val = process.argv[a + 1];
-                                if (val === '__EMPTY__')  {
+                                if (val === '__EMPTY__') {
                                     val = '';
-                                } else if (val === 'true')  {
+                                } else if (val === 'true') {
                                     val = true;
                                 } else if (val === 'false') {
                                     val = false;
@@ -1889,7 +1920,7 @@ async function processCommand(command, args, params, callback) {
 
             dbConnect(params, _objects => {
                 const visDebug = new VisDebug({
-                    objects:     _objects,
+                    objects: _objects,
                     processExit: callback
                 });
 
@@ -1913,7 +1944,7 @@ async function processCommand(command, args, params, callback) {
             }
 
             dbConnect(params, async (objects, _states, isOffline, objectType) => {
-                if (cmd === 'read' || cmd ==='r') {
+                if (cmd === 'read' || cmd === 'r') {
                     const toRead = args[1];
                     const parts = toRead.replace(/\\/g, '/').split('/');
 
@@ -1948,7 +1979,7 @@ async function processCommand(command, args, params, callback) {
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
-                } else if (cmd === 'write' || cmd ==='w') {
+                } else if (cmd === 'write' || cmd === 'w') {
                     const toRead = args[1] || '';
                     const parts = toRead.replace(/\\/g, '/').split('/');
 
@@ -1998,7 +2029,7 @@ async function processCommand(command, args, params, callback) {
                         console.log('File "' + toRead + '" stored as "' + destFilename + '"');
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
-                } else if (cmd === 'del' || cmd ==='rm' || cmd ==='unlink') {
+                } else if (cmd === 'del' || cmd === 'rm' || cmd === 'unlink') {
                     const toDelete = args[1];
                     const parts = toDelete.replace(/\\/g, '/').split('/');
 
@@ -2048,7 +2079,7 @@ async function processCommand(command, args, params, callback) {
                     }
 
                     try {
-                        const {numberSuccess, notifications} = objects.syncFileDirectory(args[1]);
+                        const { numberSuccess, notifications } = objects.syncFileDirectory(args[1]);
                         console.log(`${numberSuccess} file(s) successfully synchronized with ioBroker storage`);
                         if (notifications.length) {
                             console.log();
@@ -2098,7 +2129,7 @@ async function processCommand(command, args, params, callback) {
                 try {
                     iopckg = require(tools.appName + '.' + adapter + '/package.json');
                 } catch {
-                    iopckg = {version: '"' + adapter + '" not found'};
+                    iopckg = { version: '"' + adapter + '" not found' };
                 }
             } else {
                 iopckg = require('../package.json');
@@ -2115,13 +2146,20 @@ async function processCommand(command, args, params, callback) {
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
                     console.log(tools.appName + ' is running');
-                    objects.getObjectList({startkey: 'system.host.', endkey: 'system.host.' + '\u9999'}, null, (err, res) => {
+                    objects.getObjectList({
+                        startkey: 'system.host.',
+                        endkey: 'system.host.' + '\u9999'
+                    }, null, (err, res) => {
                         if (!err && res.rows.length) {
                             for (let i = 0; i < res.rows.length; i++) {
                                 const parts = res.rows[i].id.split('.');
                                 // ignore system.host.name.alive and so on
                                 if (parts.length === 3) {
-                                    states.pushMessage(res.rows[i].id, {command: 'checkLogging', message: null, from: 'console'});
+                                    states.pushMessage(res.rows[i].id, {
+                                        command: 'checkLogging',
+                                        message: null,
+                                        from: 'console'
+                                    });
                                 }
                             }
                         }
@@ -2135,8 +2173,8 @@ async function processCommand(command, args, params, callback) {
         case 'repo': {
             Objects = getObjectsConstructor();
             let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
-            const repoName       = args[1]; // Repo url or name
-            let repoUrl          = args[2]; // Repo url or name
+            const repoName = args[1]; // Repo url or name
+            let repoUrl = args[2]; // Repo url or name
             if (repoUrlOrCommand !== 'add' && repoUrlOrCommand !== 'del' && repoUrlOrCommand !== 'set' && repoUrlOrCommand !== 'show' && repoUrlOrCommand !== 'addset' && repoUrlOrCommand !== 'unset') {
                 repoUrl = repoUrlOrCommand;
                 repoUrlOrCommand = 'show';
@@ -2146,7 +2184,7 @@ async function processCommand(command, args, params, callback) {
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects: _objects,
-                    states:  _states
+                    states: _states
                 });
 
                 if (repoUrlOrCommand === 'show') {
@@ -2205,7 +2243,7 @@ async function processCommand(command, args, params, callback) {
                                 console.error(`Cannot remove repository: ${err.message}`);
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             }
-                        }  else if (repoUrlOrCommand === 'unset') {
+                        } else if (repoUrlOrCommand === 'unset') {
                             try {
                                 await repo.setInactive(repoName);
                                 console.log(`Repository "${repoName}" deactivated.`);
@@ -2242,8 +2280,7 @@ async function processCommand(command, args, params, callback) {
 
                     if (cmd === 's' || cmd === 'status') {
                         mh.status(() => void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP));
-                    } else
-                    if (cmd === 'b' || cmd === 'browse') {
+                    } else if (cmd === 'b' || cmd === 'browse') {
                         mh.browse((err, list) => {
                             if (err) {
                                 console.error(err);
@@ -2272,7 +2309,11 @@ async function processCommand(command, args, params, callback) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(`system.host.${tools.getHostName()}`, {command: 'updateMultihost', message: null, from: 'setup'}, callback);
+                                states.pushMessage(`system.host.${tools.getHostName()}`, {
+                                    command: 'updateMultihost',
+                                    message: null,
+                                    from: 'setup'
+                                }, callback);
                             }
                         });
                     } else if (cmd === 'c' || cmd === 'connect') {
@@ -2290,17 +2331,18 @@ async function processCommand(command, args, params, callback) {
 
         case 'vendor': {
             const password = args[0];
-            const file     = args[1];
+            const file = args[1];
             if (!password) {
                 console.warn(`Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            } if (!file) {
+            }
+            if (!file) {
                 console.warn(`Please specify the path to the vendor file to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`);
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async () => {
                     const Vendor = require('./setup/setupVendor');
-                    const vendor = new Vendor({objects});
+                    const vendor = new Vendor({ objects });
 
                     try {
                         await vendor.checkVendor(file, password);
@@ -2341,7 +2383,7 @@ async function processCommand(command, args, params, callback) {
             } else {
                 dbConnect(params, async () => {
                     const License = require('./setup/setupLicense');
-                    const license = new License({objects});
+                    const license = new License({ objects });
                     try {
                         const type = await license.setLicense(file);
                         console.log(`License ${type} updated.`);
@@ -2362,7 +2404,7 @@ async function processCommand(command, args, params, callback) {
                     try {
                         iopckg = require(tools.appName + '.' + command + '/package.json');
                     } catch {
-                        iopckg = {version: '"' + command + '" not found'};
+                        iopckg = { version: '"' + command + '" not found' };
                     }
                 } else {
                     iopckg = require('../package.json');
@@ -2379,10 +2421,14 @@ async function processCommand(command, args, params, callback) {
 
 // Save objects before exit
 async function processExit(exitCode) {
+    if (pluginHandler) {
+        pluginHandler.destroyAll();
+    }
+
     if (objects && objects.destroy) {
         await objects.destroy();
     }
-    if (states  && states.destroy)  {
+    if (states && states.destroy) {
         await states.destroy();
     }
     setTimeout(() => {
@@ -2444,7 +2490,7 @@ function cleanDatabase(isDeleteDb, callback) {
         });
     } else {
         // Clean only objects, not the views
-        objects.getObjectList({startkey: '\u0000', endkey: '\u9999'}, async (err, res) => {
+        objects.getObjectList({ startkey: '\u0000', endkey: '\u9999' }, async (err, res) => {
             let ids = [];
             if (!err && res.rows.length) {
                 console.log(`clean ${res.rows.length} objects...`);
@@ -2618,32 +2664,80 @@ async function resetDbConnect(_callback) {
 //     }
 // }
 
-function checkSystemOffline(onlyCheck, callback) {
+/**
+ * Checks if system is offline
+ *
+ * @param {boolean} onlyCheck - returns true then
+ * @returns {Promise<boolean>}
+ */
+async function checkSystemOffline(onlyCheck) {
     if (!objects || !states) { // should never happen
-        callback && callback(true);
-        return;
+        return true;
     }
     if (onlyCheck) {
-        callback && callback(true);
-        return;
+        return true;
     }
-    setTimeout(() => { // Slight delay to allow "setup first" from Pre 2.0 to 2.0
-        enumHosts(objects).then(hosts => {
-            const hostToCheck = hosts.map(host => 'system.host.' + host.common.hostname + '.alive');
 
-            states.getStates(hostToCheck, (err, res) => {
-                !err && Array.isArray(res) && res.forEach(aliveState => {
+    const offlineStatus = await new Promise(resolve => {
+        setTimeout(async () => { // Slight delay to allow "setup first" from Pre 2.0 to 2.0
+            try {
+                const hosts = await enumHosts(objects);
+                const hostToCheck = hosts.map(host => `system.host.${host.common.hostname}.alive`);
+
+                const res = await states.getStatesAsync(hostToCheck);
+                Array.isArray(res) && res.forEach(aliveState => {
                     if (aliveState && aliveState.val) {
-                        callback && callback(false);
-                        callback = null;
+                        resolve(false);
                     }
                 });
-                callback && callback(true);
-            });
-        }).catch(() => {
-            callback && callback(true);
-        });
-    }, 500);
+                resolve(true);
+            } catch {
+                resolve(true);
+            }
+        }, 500);
+    });
+
+    return offlineStatus;
+}
+
+/**
+ * Initialize plugins from io-pack and config json
+ *
+ * @param {object} config - parsed content of iobroker.json
+ * returns {Promise<void>}
+ */
+function initializePlugins(config) {
+    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
+    const packageJson = fs.readJsonSync(path.join(__dirname, '..', 'package.json'));
+    const hostname = tools.getHostName();
+
+    const pluginSettings = {
+        namespace: `system.host.${hostname}`,
+        logNamespace: `host.${hostname}`,
+        scope: 'controller',
+        log: { // cli should be clean, only log warn/error
+            silly: _msg => {
+            },
+            debug: _msg => {
+            },
+            info: _msg => {
+            },
+            warn: msg => console.log(msg),
+            error: msg => console.log(msg)
+        },
+        iobrokerConfig: config,
+        parentPackage: packageJson,
+        controllerVersion: ioPackage.common.version
+    };
+
+    pluginHandler = new PluginHandler(pluginSettings);
+    pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
+    pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+    pluginHandler.setDatabaseForPlugins(objects, states);
+
+    return new Promise(resolve => {
+        pluginHandler.initPlugins(ioPackage, resolve);
+    });
 }
 
 /**
@@ -2652,17 +2746,17 @@ function checkSystemOffline(onlyCheck, callback) {
  */
 function dbConnect(onlyCheck, params, callback) {
     if (typeof onlyCheck === 'object') {
-        callback  = params;
-        params    = onlyCheck;
+        callback = params;
+        params = onlyCheck;
         onlyCheck = false;
     }
     if (typeof onlyCheck === 'function') {
-        callback  = onlyCheck;
+        callback = onlyCheck;
         onlyCheck = false;
     }
     if (typeof params === 'function') {
-        callback  = params;
-        params    = null;
+        callback = params;
+        params = null;
     }
     params = params || {};
 
@@ -2672,11 +2766,11 @@ function dbConnect(onlyCheck, params, callback) {
         return void callback(objects, states, false, config.objects.type, config);
     }
 
-    config.states  = config.states  || {type: 'file'};
-    config.objects = config.objects || {type: 'file'};
+    config.states = config.states || { type: 'file' };
+    config.objects = config.objects || { type: 'file' };
 
     Objects = getObjectsConstructor(); // Objects DB Client object
-    States  = getStatesConstructor(); // States DB Client object
+    States = getStatesConstructor(); // States DB Client object
 
     // Give to controller 2 seconds for connection
     let isObjectConnected = false;
@@ -2699,15 +2793,23 @@ function dbConnect(onlyCheck, params, callback) {
                 objects = new Objects({
                     connection: config.objects,
                     logger: {
-                        silly: _msg => {},
-                        debug: _msg => {},
-                        info:  _msg => {},
-                        warn:  msg => console.log(msg),
+                        silly: _msg => {
+                        },
+                        debug: _msg => {
+                        },
+                        info: _msg => {
+                        },
+                        warn: msg => console.log(msg),
                         error: msg => console.log(msg)
                     },
-                    connected: () => {
+                    connected: async () => {
                         isObjectConnected = true;
                         if (isStatesConnected && typeof callback === 'function') {
+                            try {
+                                await initializePlugins(config);
+                            } catch {
+                                // ignore in silence
+                            }
                             return void callback(objects, states, true, config.objects.type, config);
                         }
                     }
@@ -2734,15 +2836,23 @@ function dbConnect(onlyCheck, params, callback) {
                 states = new States({
                     connection: config.states,
                     logger: {
-                        silly: _msg => {},
-                        debug: _msg => {},
-                        info:  _msg => {},
-                        warn:  msg => console.log(msg),
+                        silly: _msg => {
+                        },
+                        debug: _msg => {
+                        },
+                        info: _msg => {
+                        },
+                        warn: msg => console.log(msg),
                         error: msg => console.log(msg)
                     },
-                    connected: () => {
+                    connected: async () => {
                         isStatesConnected = true;
                         if (isObjectConnected && typeof callback === 'function') {
+                            try {
+                                await initializePlugins(config);
+                            } catch {
+                                // ignore in silence
+                            }
                             return void callback(objects, states, true, config.objects.type, config);
                         }
                     },
@@ -2759,7 +2869,7 @@ function dbConnect(onlyCheck, params, callback) {
                     await objects.destroy();
                     objects = null;
                 }
-                console.log('No connection to states ' + config.states.host + ':' + config.states.port + '[' + config.states.type + ']');
+                console.log(`No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`);
                 if (onlyCheck) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
@@ -2789,21 +2899,29 @@ function dbConnect(onlyCheck, params, callback) {
     objects = new Objects({
         connection: config.objects,
         logger: {
-            silly: _msg => {},
-            debug: _msg => {},
-            info:  _msg => {},
-            warn:  msg => console.log(msg),
+            silly: _msg => {
+            },
+            debug: _msg => {
+            },
+            info: _msg => {
+            },
+            warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
-        connected: () => {
+        connected: async () => {
             if (isObjectConnected) {
                 return;
             }
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline =>
-                    callback(objects, states, isOffline, config.objects.type, config));
+                const isOffline = await checkSystemOffline(onlyCheck);
+                try {
+                    await initializePlugins(config);
+                } catch {
+                    // ignore in silence
+                }
+                callback(objects, states, isOffline, config.objects.type, config);
             }
         }
     });
@@ -2811,21 +2929,29 @@ function dbConnect(onlyCheck, params, callback) {
     states = new States({
         connection: config.states,
         logger: {
-            silly: _msg => {},
-            debug: _msg => {},
-            info:  _msg => {},
-            warn:  msg => console.log(msg),
+            silly: _msg => {
+            },
+            debug: _msg => {
+            },
+            info: _msg => {
+            },
+            warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
-        connected: () => {
+        connected: async () => {
             if (isStatesConnected) {
                 return;
             }
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                checkSystemOffline(onlyCheck, isOffline =>
-                    callback(objects, states, isOffline, config.objects.type, config));
+                const isOffline = await checkSystemOffline(onlyCheck);
+                try {
+                    await initializePlugins(config);
+                } catch {
+                    // ignore in silence
+                }
+                callback(objects, states, isOffline, config.objects.type, config);
             }
         },
         change: (id, state) => states.onChange && states.onChange(id, state)
@@ -2839,10 +2965,10 @@ function dbConnect(onlyCheck, params, callback) {
 function dbConnectAsync(onlyCheck, params) {
     return new Promise((resolve, reject) =>
         dbConnect(onlyCheck, params, (err, objects, states, isOffline, objectsDBType, config) =>
-            err ? reject(err) : resolve({objects, states, isOffline, objectsDBType, config})));
+            err ? reject(err) : resolve({ objects, states, isOffline, objectsDBType, config })));
 }
 
-module.exports.execute = function () {
+module.exports.execute = function() {
     // direct call
     const _yargs = initYargs();
     const command = _yargs.argv._[0];
@@ -2850,7 +2976,7 @@ module.exports.execute = function () {
     const args = [];
 
     // skip interpreter, filename and command
-    for (let i=3; i < process.argv.length; i++) {
+    for (let i = 3; i < process.argv.length; i++) {
         if (process.argv[i].startsWith('-')) {
             // on first param we have all our args
             break;
