@@ -224,7 +224,18 @@
       "type": "group",
       "common": {
         "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPGcgZmlsbD0iY3VycmVudENvbG9yIj4NCiAgICAgICAgPHBhdGggZD0iTTQsMTh2LTAuNjVjMC0wLjM0LDAuMTYtMC42NiwwLjQxLTAuODFDNi4xLDE1LjUzLDguMDMsMTUsMTAsMTVjMC4wMywwLDAuMDUsMCwwLjA4LDAuMDFjMC4xLTAuNywwLjMtMS4zNywwLjU5LTEuOTggQzEwLjQ1LDEzLjAxLDEwLjIzLDEzLDEwLDEzYy0yLjQyLDAtNC42OCwwLjY3LTYuNjEsMS44MkMyLjUxLDE1LjM0LDIsMTYuMzIsMiwxNy4zNVYyMGg5LjI2Yy0wLjQyLTAuNi0wLjc1LTEuMjgtMC45Ny0ySDR6Ii8+DQogICAgICAgIDxwYXRoIGQ9Ik0xMCwxMmMyLjIxLDAsNC0xLjc5LDQtNHMtMS43OS00LTQtNEM3Ljc5LDQsNiw1Ljc5LDYsOFM3Ljc5LDEyLDEwLDEyeiBNMTAsNmMxLjEsMCwyLDAuOSwyLDJzLTAuOSwyLTIsMiBjLTEuMSwwLTItMC45LTItMlM4LjksNiwxMCw2eiIvPg0KICAgICAgICA8cGF0aCBkPSJNMjAuNzUsMTZjMC0wLjIyLTAuMDMtMC40Mi0wLjA2LTAuNjNsMS4xNC0xLjAxbC0xLTEuNzNsLTEuNDUsMC40OWMtMC4zMi0wLjI3LTAuNjgtMC40OC0xLjA4LTAuNjNMMTgsMTFoLTJsLTAuMywxLjQ5IGMtMC40LDAuMTUtMC43NiwwLjM2LTEuMDgsMC42M2wtMS40NS0wLjQ5bC0xLDEuNzNsMS4xNCwxLjAxYy0wLjAzLDAuMjEtMC4wNiwwLjQxLTAuMDYsMC42M3MwLjAzLDAuNDIsMC4wNiwwLjYzbC0xLjE0LDEuMDEgbDEsMS43M2wxLjQ1LTAuNDljMC4zMiwwLjI3LDAuNjgsMC40OCwxLjA4LDAuNjNMMTYsMjFoMmwwLjMtMS40OWMwLjQtMC4xNSwwLjc2LTAuMzYsMS4wOC0wLjYzbDEuNDUsMC40OWwxLTEuNzNsLTEuMTQtMS4wMSBDMjAuNzIsMTYuNDIsMjAuNzUsMTYuMjIsMjAuNzUsMTZ6IE0xNywxOGMtMS4xLDAtMi0wLjktMi0yczAuOS0yLDItMnMyLDAuOSwyLDJTMTguMSwxOCwxNywxOHoiLz4NCiAgICA8L2c+DQo8L3N2Zz4=",
-        "name": "Administrator",
+        "name": {
+          "en": "Administrator",
+          "de": "Administrator",
+          "ru": "Администратор",
+          "pt": "Administrador",
+          "nl": "Beheerder",
+          "fr": "Administrateur",
+          "it": "Amministratore",
+          "es": "Administrador",
+          "pl": "Administrator",
+          "zh-cn": "管理员"
+        },
         "description": {
           "en": "Can do everything with System",
           "de": "Darf alles mit dem System machen",
@@ -287,7 +298,18 @@
       "type": "group",
       "common": {
         "icon": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjRweCI+DQogICAgPHBhdGggZmlsbD0iY3VycmVudENvbG9yIiBkPSJNMTIgNmMxLjEgMCAyIC45IDIgMnMtLjkgMi0yIDItMi0uOS0yLTIgLjktMiAyLTJtMCAxMGMyLjcgMCA1LjggMS4yOSA2IDJINmMuMjMtLjcyIDMuMzEtMiA2LTJtMC0xMkM5Ljc5IDQgOCA1Ljc5IDggOHMxLjc5IDQgNCA0IDQtMS43OSA0LTQtMS43OS00LTQtNHptMCAxMGMtMi42NyAwLTggMS4zNC04IDR2MmgxNnYtMmMwLTIuNjYtNS4zMy00LTgtNHoiLz4NCjwvc3ZnPg==",
-        "name":  "User",
+        "name": {
+          "en": "User",
+          "de": "Benutzer",
+          "ru": "Пользователь",
+          "pt": "Do utilizador",
+          "nl": "Gebruiker",
+          "fr": "Utilisateur",
+          "it": "Utente",
+          "es": "Usuario",
+          "pl": "Użytkownik",
+          "zh-cn": "用户"
+        },
         "description": {
           "en": "Cannot modify everything",
           "de": "Darf nicht alles ändern",
