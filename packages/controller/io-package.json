@@ -542,6 +542,35 @@
       }
     },
     {
+      "_id": "system.licenses",
+      "type": "config",
+      "common": {
+        "name": {
+          "en": "Licenses from iobroker.net",
+          "de": "Lizenzen von iobroker.net",
+          "ru": "Лицензии от iobroker.net",
+          "pt": "Licenças de iobroker.net",
+          "nl": "Licenties van iobroker.net",
+          "fr": "Licences de iobroker.net",
+          "it": "Licenze da iobroker.net",
+          "es": "Licencias de iobroker.net",
+          "pl": "Licencje z iobroker.net",
+          "zh-cn": "来自 iobroker.net 的许可证"
+        }
+      },
+      "native": {
+        "login": "",
+        "password": "",
+        "licenses": [],
+        "readTime": 0
+      },
+      "acl": {
+        "owner": "system.user.admin",
+        "ownerGroup": "system.group.administrator",
+        "object": 1604
+      }
+    },
+    {
       "_id": "system.certificates",
       "type": "config",
       "common": {

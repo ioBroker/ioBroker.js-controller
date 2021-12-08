@@ -919,11 +919,12 @@ The following features can be checked using this method:
 * **ALIAS_SEPARATE_READ_WRITE_ID**: allows to specify separate ids for read and write (since js.controller 3.0)
 * **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface  (since js.controller 2.0) 
 * **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object was created  (since js.controller 2.0)
-* **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures (since js-controller 2.2)
+* **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports `options.recursive` flag to delete whole object structures (since js-controller 2.2)
 * **ADAPTER_AUTO_DECRYPT_NATIVE**: The Controller supports auto decryption of encrypted native properties (since js-controller 3.0)
 * **PLUGINS**: Plugins are supported by this js-controller and adapters, see section below for more details (since js-controller 3.0)
 * **CONTROLLER_NPM_AUTO_REBUILD**: Automatic rebuild when node version mismatch is detected (since js-controller 3.0)
 * **CONTROLLER_READWRITE_BASE_SETTINGS**: Allow read and write of js-controller base settings file (iobroker.json) via host messages (since js-controller 3.0)
+* **CONTROLLER_LICENSE_MANAGER**: js-controller can read from iobroker.net the licenses (since js-controller 4.0)
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 
