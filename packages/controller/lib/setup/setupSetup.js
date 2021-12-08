@@ -245,7 +245,7 @@ function Setup(options) {
             } catch (e) {
                 console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
             }
-          
+
             // clean up invalid user group assignments (non-existing user in a group)
             try {
                 const usersView = await objects.getObjectViewAsync('system', 'user');
