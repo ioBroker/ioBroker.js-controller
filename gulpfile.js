@@ -7,18 +7,18 @@
  */
 'use strict';
 
-const gulp      = require('gulp');
-const fs        = require('fs-extra');
-const path      = require('path');
-const pkg       = require('./package.json');
+const gulp = require('gulp');
+const fs = require('fs-extra');
+const path = require('path');
+const pkg = require('./package.json');
 const iopackage = require('./packages/controller/io-package.json');
-const version   = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
-const request   = require('request');
-const replace   = require('gulp-replace');
-const jsdoc     = require('gulp-jsdoc3');
+const version = pkg && pkg.version ? pkg.version : iopackage.common.version;
+const request = require('request');
+const replace = require('gulp-replace');
+const jsdoc = require('gulp-jsdoc3');
 
-const appName   = getAppName();
-const srcDir    = __dirname + '/';
+const appName = getAppName();
+const srcDir = __dirname + '/';
 
 function getAppName() {
     const parts = __dirname.replace(/\\/g, '/').split('/');
@@ -49,10 +49,10 @@ gulp.task('updateRepo', done => {
     processAdapters(sources, adapters, result => {
         for (const adapter of Object.keys(result)) {
             const meta = sources[adapter].meta;
-            const url  = sources[adapter].url;
+            const url = sources[adapter].url;
             sources[adapter] = result[adapter];
             sources[adapter].meta = meta;
-            sources[adapter].url  = url;
+            sources[adapter].url = url;
             sources[adapter].icon = sources[adapter].extIcon;
         }
         fs.writeFileSync(__dirname + '/conf/sources-dist.json', JSON.stringify(sources, null, 2));
@@ -62,19 +62,19 @@ gulp.task('updateRepo', done => {
 
 gulp.task('renameFiles', done => {
     fs.unlink(__dirname + '/lib/img/iobroker.png');
-    if (fs.existsSync(__dirname + '/iobroker'))                 {
-        fs.renameSync(__dirname + '/iobroker',                __dirname + '/' + appName);
+    if (fs.existsSync(__dirname + '/iobroker')) {
+        fs.renameSync(__dirname + '/iobroker', __dirname + '/' + appName);
     }
-    if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    {
-        fs.renameSync(__dirname + '/_service_iobroker.bat',   __dirname + '/_service_' + appName + '.bat');
+    if (fs.existsSync(__dirname + '/_service_iobroker.bat')) {
+        fs.renameSync(__dirname + '/_service_iobroker.bat', __dirname + '/_service_' + appName + '.bat');
     }
-    if (fs.existsSync(__dirname + '/iobroker.bat'))             {
-        fs.renameSync(__dirname + '/iobroker.bat',            __dirname + '/' + appName + '.bat');
+    if (fs.existsSync(__dirname + '/iobroker.bat')) {
+        fs.renameSync(__dirname + '/iobroker.bat', __dirname + '/' + appName + '.bat');
     }
-    if (fs.existsSync(__dirname + '/iobroker.js'))              {
-        fs.renameSync(__dirname + '/iobroker.js',             __dirname + '/' + appName + '.js');
+    if (fs.existsSync(__dirname + '/iobroker.js')) {
+        fs.renameSync(__dirname + '/iobroker.js', __dirname + '/' + appName + '.js');
     }
-    if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  {
+    if (fs.existsSync(__dirname + '/conf/iobroker-dist.json')) {
         fs.renameSync(__dirname + '/conf/iobroker-dist.json', __dirname + '/conf/' + appName + '-dist.json');
     }
     done();
@@ -83,76 +83,62 @@ gulp.task('renameFiles', done => {
 gulp.task('replaceName', () => {
     const patterns = [
         {
-            match:       /iobroker/gi,
+            match: /iobroker/gi,
             replacement: appName
         },
         {
-            match:       /"iobroker\.admin": "\*"/i,
+            match: /"iobroker\.admin": "\*"/i,
             replacement: ''
         }
     ];
     const files = [
         {
-            expand:  true,
+            expand: true,
             flatten: true,
-            src:     [
-                srcDir + '*.*',
-                srcDir + '.travis.yml',
-                srcDir + '.npmignore',
-                srcDir + '.gitignore'
-            ],
-            dest:    srcDir
+            src: [srcDir + '*.*', srcDir + '.travis.yml', srcDir + '.npmignore', srcDir + '.gitignore'],
+            dest: srcDir
         },
         {
-            expand:  true,
+            expand: true,
             flatten: true,
-            src:     [
-                srcDir + 'admin/*.*',
-                '!' + srcDir + 'admin/*.png'
-            ],
-            dest:    srcDir + 'admin'
+            src: [srcDir + 'admin/*.*', '!' + srcDir + 'admin/*.png'],
+            dest: srcDir + 'admin'
         },
         {
-            expand:  true,
+            expand: true,
             flatten: true,
-            src:     [
-                srcDir + 'lib/*.*'
-            ],
-            dest:    srcDir + 'lib'
+            src: [srcDir + 'lib/*.*'],
+            dest: srcDir + 'lib'
         },
         {
-            expand:  true,
+            expand: true,
             flatten: true,
-            src:     [
-                srcDir + 'example/*.*'
-            ],
-            dest:    srcDir + 'example'
+            src: [srcDir + 'example/*.*'],
+            dest: srcDir + 'example'
         },
         {
-            expand:  true,
+            expand: true,
             flatten: true,
-            src:     [
-                srcDir + 'www/*.*'
-            ],
-            dest:    srcDir + 'www'
+            src: [srcDir + 'www/*.*'],
+            dest: srcDir + 'www'
         },
         {
-            expand:  true,
+            expand: true,
             flatten: true,
-            src:     [
-                srcDir + 'conf/*.*'
-            ],
-            dest:    srcDir + 'conf'
+            src: [srcDir + 'conf/*.*'],
+            dest: srcDir + 'conf'
         }
     ];
 
     const tasks = [];
 
     files.forEach(task =>
-        tasks.push(gulp.src(task.src)
-            .pipe(replace(patterns[0].match, patterns[0].replacement))
-            .pipe(replace(patterns[1].match, patterns[1].replacement))
-            .pipe(gulp.dest(task.dest))
+        tasks.push(
+            gulp
+                .src(task.src)
+                .pipe(replace(patterns[0].match, patterns[0].replacement))
+                .pipe(replace(patterns[1].match, patterns[1].replacement))
+                .pipe(gulp.dest(task.dest))
         )
     );
 
@@ -170,10 +156,7 @@ gulp.task('replaceCore', done => {
             replacement: '"version": "' + iopackage.common.version + '",'
         }
     ];
-    const files = [
-        srcDir + 'controller.js',
-        srcDir + 'package.json'
-    ];
+    const files = [srcDir + 'controller.js', srcDir + 'package.json'];
     for (let f = 0; f < files.length; f++) {
         if (fs.existsSync(files[f])) {
             let text = fs.readFileSync(files[f], 'utf8');
@@ -181,7 +164,6 @@ gulp.task('replaceCore', done => {
                 text = text.replace(pattern.match, pattern.replacement);
             });
             fs.writeFileSync(files[f], text);
-
         }
     }
     done();
@@ -191,15 +173,15 @@ gulp.task('cleanRepo', done => {
     const sources = fs.readJSONSync(__dirname + '/conf/sources-dist.json');
     for (const adapter of Object.keys(sources)) {
         const meta = sources[adapter].meta;
-        const url  = sources[adapter].url;
+        const url = sources[adapter].url;
         const icon = sources[adapter].icon;
 
         sources[adapter] = {};
         if (meta) {
             sources[adapter].meta = meta;
         }
-        if (url)  {
-            sources[adapter].url  = url;
+        if (url) {
+            sources[adapter].url = url;
         }
         if (icon) {
             sources[adapter].icon = icon;
@@ -213,9 +195,12 @@ gulp.task('updateReadme', done => {
     const readme = fs.readFileSync('CHANGELOG.md');
     if (readme.indexOf(version) === -1) {
         const timestamp = new Date();
-        const date = timestamp.getFullYear() + '-' +
-            ('0' + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
-            ('0' + (timestamp.getDate()).toString(10)).slice(-2);
+        const date =
+            timestamp.getFullYear() +
+            '-' +
+            ('0' + (timestamp.getMonth() + 1).toString(10)).slice(-2) +
+            '-' +
+            ('0' + timestamp.getDate().toString(10)).slice(-2);
 
         let news = '';
         if (iopackage.common.whatsNew) {
@@ -233,8 +218,8 @@ gulp.task('updateReadme', done => {
 });
 
 gulp.task('jsdoc', done => {
-    gulp.src(['lib/adapter.js'], {read: false})
-        .pipe(jsdoc(
+    gulp.src(['lib/adapter.js'], { read: false }).pipe(
+        jsdoc(
             {
                 tags: {
                     allowUnknownTags: true
@@ -242,9 +227,7 @@ gulp.task('jsdoc', done => {
                 opts: {
                     destination: './doc'
                 },
-                plugins: [
-                    'plugins/markdown'
-                ],
+                plugins: ['plugins/markdown'],
                 templates: {
                     cleverLinks: false,
                     monospaceLinks: false,
@@ -258,7 +241,9 @@ gulp.task('jsdoc', done => {
                     //dateFormat: "MMMM Do YYYY, h:mm:ss a"
                 }
             },
-            done));
+            done
+        )
+    );
 });
 
 // Creates symlinks in node_modules for all packages found in "./packages" directory
@@ -267,7 +252,8 @@ gulp.task('dev', done => {
     // check if node_modules exists
     const root = path.normalize(__dirname + '/../node_modules');
     if (fs.existsSync(__dirname + '/../node_modules')) {
-        !fs.existsSync(__dirname + '/../node_modules/@iobroker') && fs.mkdirSync(__dirname + '/../node_modules/@iobroker');
+        !fs.existsSync(__dirname + '/../node_modules/@iobroker') &&
+            fs.mkdirSync(__dirname + '/../node_modules/@iobroker');
     }
     const packages = fs.readdirSync(__dirname + '/packages');
     packages.forEach(_package => {
@@ -281,13 +267,17 @@ gulp.task('dev', done => {
                     // delete whole directory
                     fs.rmSync(`${root}/${packName}`, { recursive: true, force: true });
                     // create symlink
-                    const relativePath = path.relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`).replace(/^\.\.[/\\]/, '');
+                    const relativePath = path
+                        .relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`)
+                        .replace(/^\.\.[/\\]/, '');
                     console.log(`Create symlink to "${root}/${packName}" => ${relativePath}`);
                     fs.symlinkSync(relativePath, `${root}/${packName}`, 'dir');
                 }
             } else {
                 // create symlink
-                const relativePath = path.relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`).replace(/^\.\.[/\\]/, '');
+                const relativePath = path
+                    .relative(`${root}/${packName}`, `${__dirname}/packages/${_package}`)
+                    .replace(/^\.\.[/\\]/, '');
                 console.log(`Create symlink to "${root}/${packName}" => ${relativePath}`);
                 fs.symlinkSync(relativePath, `${root}/${packName}`, 'dir');
             }
@@ -296,7 +286,7 @@ gulp.task('dev', done => {
     done();
 });
 
-gulp.task('default',    gulp.series('replaceCore', 'updateReadme'));
-gulp.task('p',          gulp.series('replaceCore', 'updateReadme'));
-gulp.task('rename',     gulp.series('replaceName', 'renameFiles'));
-gulp.task('doc',        gulp.series('jsdoc'));
+gulp.task('default', gulp.series('replaceCore', 'updateReadme'));
+gulp.task('p', gulp.series('replaceCore', 'updateReadme'));
+gulp.task('rename', gulp.series('replaceName', 'renameFiles'));
+gulp.task('doc', gulp.series('jsdoc'));

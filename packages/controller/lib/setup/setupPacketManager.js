@@ -3,26 +3,26 @@
 const { execAsync } = require('@iobroker/js-controller-common').tools;
 
 const LOG_LEVELS = {
-    'silly': 4,
-    'debug': 3,
-    'log': 3,
-    'info': 2,
-    'warn': 1,
-    'error': 0
+    silly: 4,
+    debug: 3,
+    log: 3,
+    info: 2,
+    warn: 1,
+    error: 0
 };
 
 class PacketManager {
     constructor(options) {
-        options = options || {logLevel: LOG_LEVELS.info};
+        options = options || { logLevel: LOG_LEVELS.info };
 
         // detect apt, apt-get or yum
         /** @type {string} */
         this.manager = (options && options.manager) || '';
         this.logger = (options && options.logger) || {
             silly: text => options.logLevel >= LOG_LEVELS.silly && console.log(text),
-            info:  text => options.logLevel >= LOG_LEVELS.info  && console.log(text),
-            log:   text => options.logLevel >= LOG_LEVELS.log   && console.log(text),
-            warn:  text => options.logLevel >= LOG_LEVELS.warn  && console.warn(text),
+            info: text => options.logLevel >= LOG_LEVELS.info && console.log(text),
+            log: text => options.logLevel >= LOG_LEVELS.log && console.log(text),
+            warn: text => options.logLevel >= LOG_LEVELS.warn && console.warn(text),
             error: text => options.logLevel >= LOG_LEVELS.error && console.error(text),
             debug: text => options.logLevel >= LOG_LEVELS.debug && console.log(text)
         };
@@ -38,7 +38,7 @@ class PacketManager {
                 const manager = await this._detectManager();
                 this.logger && this.logger.debug('Detected packet manager: ' + manager);
                 // Check if sudo is available for packet manager and store information
-                this.sudo = await this._isSudoAvailable() && await this._isSudoAvailableForManager();
+                this.sudo = (await this._isSudoAvailable()) && (await this._isSudoAvailableForManager());
             }
 
             // Check if dpkg is available
@@ -76,7 +76,10 @@ class PacketManager {
             return !!((stdout && stdout.includes('dpkg --help')) || (stderr && stderr.includes('dpkg --help')));
         } catch (err) {
             // non zero exit code, however lets check if ok
-            if ((err.stdout && err.stdout.includes('dpkg --help')) || (err.stderr && err.stderr.includes('dpkg --help'))) {
+            if (
+                (err.stdout && err.stdout.includes('dpkg --help')) ||
+                (err.stderr && err.stderr.includes('dpkg --help'))
+            ) {
                 return true;
             } else {
                 this.logger && this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
@@ -105,7 +108,8 @@ class PacketManager {
             await execAsync(`sudo -n ${this.manager} -v`);
             return true;
         } catch (err) {
-            this.logger && this.logger.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
+            this.logger &&
+                this.logger.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
             return false;
         }
     }
@@ -216,10 +220,20 @@ class PacketManager {
         const failed = await this._installPackets(notInstalled);
         if (this.logger) {
             if (failed.length > 0) {
-                this.logger.warn(`The following ${this.manager || 'OS'} packages could not be installed: ${failed.join(', ')}. Please install them manually.`);
+                this.logger.warn(
+                    `The following ${this.manager || 'OS'} packages could not be installed: ${failed.join(
+                        ', '
+                    )}. Please install them manually.`
+                );
             } else {
-                notInstalled.length && this.logger.info(`Installed the following ${this.manager || 'OS'} packages: ${notInstalled.join(', ')}`);
-                installed.length && this.logger.info(`These ${this.manager || 'OS'} packages were already installed: ${installed.join(', ')}`);
+                notInstalled.length &&
+                    this.logger.info(
+                        `Installed the following ${this.manager || 'OS'} packages: ${notInstalled.join(', ')}`
+                    );
+                installed.length &&
+                    this.logger.info(
+                        `These ${this.manager || 'OS'} packages were already installed: ${installed.join(', ')}`
+                    );
             }
         }
     }

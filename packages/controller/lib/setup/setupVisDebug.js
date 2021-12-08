@@ -11,9 +11,9 @@
 
 /** @class */
 function VisDebug(options) {
-    const fs         = require('fs-extra');
+    const fs = require('fs-extra');
     const { tools } = require('@iobroker/js-controller-common');
-    const path       = require('path');
+    const path = require('path');
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
     // allow use without new operator
@@ -23,15 +23,15 @@ function VisDebug(options) {
 
     options = options || {};
 
-    if (!options.objects)           {
+    if (!options.objects) {
         throw new Error('Invalid arguments: objects is missing');
     }
-    if (!options.processExit)       {
+    if (!options.processExit) {
         throw new Error('Invalid arguments: processExit is missing');
     }
 
-    const objects           = options.objects;
-    const processExit       = options.processExit;
+    const objects = options.objects;
+    const processExit = options.processExit;
 
     // upload widget directory to vis directory
     function uploadWidgets(dir, adapter, pathW, callback) {
@@ -41,12 +41,20 @@ function VisDebug(options) {
             const stat = fs.statSync(dir + '/' + dirs[d]);
             count++;
             if (stat.isDirectory()) {
-                uploadWidgets(dir + '/' + dirs[d], adapter, pathW + '/' + dirs[d], () =>
-                    (!--count) && callback && callback());
+                uploadWidgets(
+                    dir + '/' + dirs[d],
+                    adapter,
+                    pathW + '/' + dirs[d],
+                    () => !--count && callback && callback()
+                );
             } else {
                 console.log('Upload "' + dir + '/' + dirs[d] + '"');
-                objects.writeFile(adapter, pathW  + '/' + dirs[d], fs.readFileSync(dir + '/' + dirs[d]), () =>
-                    (!--count) && callback && callback());
+                objects.writeFile(
+                    adapter,
+                    pathW + '/' + dirs[d],
+                    fs.readFileSync(dir + '/' + dirs[d]),
+                    () => !--count && callback && callback()
+                );
             }
         }
         if (!count && callback) {
@@ -55,7 +63,6 @@ function VisDebug(options) {
     }
 
     this.enableDebug = function (widgetset) {
-
         let adapterDir;
         if (widgetset) {
             // Try to find out the adapter directory out of a list of options
@@ -110,7 +117,8 @@ function VisDebug(options) {
             console.log(`Upload "${path.normalize(`${visDir}/www/index.html.original`)}"`);
             const file = fs.readFileSync(`${visDir}/www/index.html.original`, 'utf8');
             count++;
-            objects.writeFile('vis', 'index.html', file)
+            objects
+                .writeFile('vis', 'index.html', file)
                 .catch(e => console.error(`Cannot save ${visDir}/vis/index.html: ${e}`))
                 .then(() => !--count && processExit());
         }
@@ -119,7 +127,8 @@ function VisDebug(options) {
             console.log(`Upload "${path.normalize(`${visDir}/www/edit.html.original`)}"`);
             const file = fs.readFileSync(`${visDir}/www/edit.html.original`, 'utf8');
             count++;
-            objects.writeFile('vis', 'edit.html', file)
+            objects
+                .writeFile('vis', 'edit.html', file)
                 .catch(e => console.error(`Cannot save ${visDir}/vis/index.html: ${e}`))
                 .then(() => !--count && processExit());
         }
@@ -154,7 +163,8 @@ FALLBACK:
             // also update it in the vis npm dir like vis does it by itself
             fs.writeFileSync(`${visDir}/www/cache.manifest`, file);
             count++;
-            objects.writeFile('vis', 'cache.manifest', file)
+            objects
+                .writeFile('vis', 'cache.manifest', file)
                 .catch(e => console.error(`Cannot save ${visDir}/www/cache.manifest: ${e}`))
                 .then(() => !--count && processExit());
         }
@@ -188,7 +198,7 @@ FALLBACK:
                 if (!found) {
                     console.log('Modify config.js');
                     const pckg = fs.readJSONSync(adapterDir + '/io-package.json');
-                    if (pckg.native && pckg.native.dependencies && pckg.native.dependencies.length){
+                    if (pckg.native && pckg.native.dependencies && pckg.native.dependencies.length) {
                         json.push({
                             name: widgetset,
                             depends: pckg.native.dependencies
@@ -197,7 +207,10 @@ FALLBACK:
                         json.push(widgetset);
                     }
 
-                    data =  data.replace(/"widgetSets":\s+.*};/, '"widgetSets": ' + JSON.stringify(json, null, 2) + '};');
+                    data = data.replace(
+                        /"widgetSets":\s+.*};/,
+                        '"widgetSets": ' + JSON.stringify(json, null, 2) + '};'
+                    );
 
                     objects.writeFile('vis', 'js/config.js', data, () => {
                         // upload all files into vis
@@ -212,11 +225,15 @@ FALLBACK:
                 } else {
                     // upload all files into vis
                     console.log('Upload "' + adapterDir + '/widgets' + '"');
-                    uploadWidgets(adapterDir + '/widgets', 'vis', 'widgets', () =>
-                        // timeout to print all messages
-                        (!--count) && setTimeout(() => processExit(), 100));
+                    uploadWidgets(
+                        adapterDir + '/widgets',
+                        'vis',
+                        'widgets',
+                        () =>
+                            // timeout to print all messages
+                            !--count && setTimeout(() => processExit(), 100)
+                    );
                 }
-
             });
         } else {
             !count && processExit();

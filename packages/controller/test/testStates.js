@@ -5,10 +5,10 @@
 'use strict';
 
 const expect = require('chai').expect;
-const setup  = require(__dirname + '/lib/setup4controller');
-const fs     = require('fs');
-let objects     = null;
-let states      = null;
+const setup = require(__dirname + '/lib/setup4controller');
+const fs = require('fs');
+let objects = null;
+let states = null;
 let onStatesChanged = null;
 const dataDir = __dirname + '/../tmp/data';
 
@@ -27,32 +27,34 @@ function cleanDbs() {
     }
 }
 
-describe('States: Test states in File-Redis', function() {
+describe('States: Test states in File-Redis', function () {
     before('States: Start js-controller', function (_done) {
         this.timeout(2000);
         cleanDbs();
 
-        setup.startController({
-            objects: {
-                dataDir: dataDir,
-                onChange: (id, _obj) => console.log('object changed. ' + id)
-            },
-            states: {
-                dataDir: dataDir,
-                onChange: (id, state) => {
-                    console.log('state changed. ' + id);
-                    onStatesChanged && onStatesChanged(id, state);
+        setup.startController(
+            {
+                objects: {
+                    dataDir: dataDir,
+                    onChange: (id, _obj) => console.log('object changed. ' + id)
+                },
+                states: {
+                    dataDir: dataDir,
+                    onChange: (id, state) => {
+                        console.log('state changed. ' + id);
+                        onStatesChanged && onStatesChanged(id, state);
+                    }
                 }
+            },
+            function (_objects, _states) {
+                objects = _objects;
+                states = _states;
+                states.subscribe('*');
+                expect(objects).to.be.ok;
+                expect(states).to.be.ok;
+                _done();
             }
-        },
-        function (_objects, _states) {
-            objects = _objects;
-            states  = _states;
-            states.subscribe('*');
-            expect(objects).to.be.ok;
-            expect(states).to.be.ok;
-            _done();
-        });
+        );
     });
 
     it('States: should setState', function (done) {
@@ -77,8 +79,7 @@ describe('States: Test states in File-Redis', function() {
             }
         };
 
-        states.setState(testID, 1, err =>
-            expect(err).to.be.not.ok);
+        states.setState(testID, 1, err => expect(err).to.be.not.ok);
     });
 
     it('States: should setState async', done => {
@@ -106,7 +107,6 @@ describe('States: Test states in File-Redis', function() {
 
     after('States: Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(() =>
-            setTimeout(done, 2000));
+        setup.stopController(() => setTimeout(done, 2000));
     });
 });

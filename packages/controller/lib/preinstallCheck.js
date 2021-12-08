@@ -26,29 +26,35 @@ function checkNpmVersion() {
                 reject(new Error('Timeout'));
             }, 10000);
 
-            child_process.exec('npm -v', {encoding: 'utf8', env: newEnv, windowsHide: true}, (error, stdout, _stderr) => {
-                if (timer) {
-                    let npmVersion = stdout;
-                    clearTimeout(timer);
-                    timer = null;
-                    npmVersion = npmVersion.trim();
-                    console.log('NPM version: ' + npmVersion);
+            child_process.exec(
+                'npm -v',
+                { encoding: 'utf8', env: newEnv, windowsHide: true },
+                (error, stdout, _stderr) => {
+                    if (timer) {
+                        let npmVersion = stdout;
+                        clearTimeout(timer);
+                        timer = null;
+                        npmVersion = npmVersion.trim();
+                        console.log('NPM version: ' + npmVersion);
 
-                    if (gte(npmVersion, '5.0.0') && lt(npmVersion, '5.7.1')) {
-                        console.warn('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                        console.warn('WARNING:');
-                        console.warn('You are using an unsupported npm version!');
-                        console.warn('This can lead to problems when installing further packages');
-                        console.warn();
-                        console.warn('Please use "npm install -g npm@4" to downgrade npm to 4.x or ');
-                        console.warn('use "npm install -g npm@latest" to install a supported version of npm!');
-                        console.warn('You need to make sure to repeat this step after installing an update to NodeJS and/or npm.');
-                        console.warn('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-                        process.exit(25);
+                        if (gte(npmVersion, '5.0.0') && lt(npmVersion, '5.7.1')) {
+                            console.warn('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            console.warn('WARNING:');
+                            console.warn('You are using an unsupported npm version!');
+                            console.warn('This can lead to problems when installing further packages');
+                            console.warn();
+                            console.warn('Please use "npm install -g npm@4" to downgrade npm to 4.x or ');
+                            console.warn('use "npm install -g npm@latest" to install a supported version of npm!');
+                            console.warn(
+                                'You need to make sure to repeat this step after installing an update to NodeJS and/or npm.'
+                            );
+                            console.warn('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                            process.exit(25);
+                        }
+                        resolve(npmVersion);
                     }
-                    resolve(npmVersion);
                 }
-            });
+            );
         } catch (e) {
             reject(e);
         }
@@ -59,7 +65,8 @@ checkNpmVersion()
     .catch(err => {
         console.error('Could not check npm version: ' + err);
         console.error('Assuming that correct version is installed.');
-    }).then(() => {
+    })
+    .then(() => {
         process.exit(0);
     });
 
@@ -113,7 +120,7 @@ function gt(v1, v2) {
         return false;
     }
 
-    return (v1.build > v2.build);
+    return v1.build > v2.build;
 }
 
 /**
@@ -141,7 +148,7 @@ function lt(v1, v2) {
         return false;
     }
 
-    return (v1.build < v2.build);
+    return v1.build < v2.build;
 }
 
 /**

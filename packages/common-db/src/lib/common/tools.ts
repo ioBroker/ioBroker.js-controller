@@ -1,6 +1,6 @@
 'use strict';
 // @ts-expect-error no typings yet
-import {tools} from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common';
 
 /**
  * Allows to find out if a given states dbType offers a server or not
@@ -23,7 +23,7 @@ export function statesDbHasServer(dbType: string): boolean {
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLocalOnly: boolean=false): boolean {
+export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLocalOnly: boolean = false): boolean {
     const ownIps = tools.findIPs();
     if (!objectsDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
@@ -42,7 +42,7 @@ export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLoca
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalStatesDbServer(dbType: string, host: string, checkIfLocalOnly=false): boolean {
+export function isLocalStatesDbServer(dbType: string, host: string, checkIfLocalOnly = false): boolean {
     const ownIps = tools.findIPs();
     if (!statesDbHasServer(dbType)) {
         return false; // if no server it can not be a local server

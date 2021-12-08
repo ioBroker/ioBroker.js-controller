@@ -3,6 +3,6 @@ module.exports = {
     Server: null,
     objectsUtils: require('./lib/objects/objectsUtils.js'),
     getDefaultPort: host => {
-        return (host.includes(',')) ? 26379 : 6379;
+        return host.includes(',') ? 26379 : 6379;
     }
 };

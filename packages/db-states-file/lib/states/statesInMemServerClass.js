@@ -18,16 +18,15 @@ const StatesInRedisClient = require('@iobroker/db-states-redis').Client;
 const StatesInMemServer = require('./statesInMemServerRedis');
 
 class StatesInMemoryServerClass extends StatesInRedisClient {
-
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
 
         const serverSettings = {
-            namespace:  settings.namespace ? `${settings.namespace}-Server` : 'Server',
+            namespace: settings.namespace ? `${settings.namespace}-Server` : 'Server',
             connection: settings.connection,
-            logger:     settings.logger,
-            hostname:   settings.hostname,
+            logger: settings.logger,
+            hostname: settings.hostname,
             connected: () => {
                 this.connectDb(); // now that server is connected also connect client
             }

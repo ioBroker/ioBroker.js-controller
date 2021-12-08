@@ -37,9 +37,9 @@ function formatSeconds(seconds) {
  * @returns {String}
  */
 function formatRam(bytes) {
-    const GB = Math.floor(bytes / (1024 * 1024 * 1024) * 10) / 10;
-    bytes %= (1024 * 1024 * 1024);
-    const MB = Math.floor(bytes / (1024 * 1024) * 10) / 10;
+    const GB = Math.floor((bytes / (1024 * 1024 * 1024)) * 10) / 10;
+    bytes %= 1024 * 1024 * 1024;
+    const MB = Math.floor((bytes / (1024 * 1024)) * 10) / 10;
     let text = '';
     if (GB > 1) {
         text += GB + ' GB ';
@@ -69,7 +69,7 @@ function formatBytes(bytes) {
     if (Math.abs(bytes) < 1024) {
         return bytes + ' B';
     }
-    const units = ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    const units = ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
     let u = -1;
     do {
         bytes /= 1024;

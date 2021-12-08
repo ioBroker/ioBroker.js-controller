@@ -4,16 +4,16 @@
 /* jslint esversion: 6 */
 'use strict';
 
-const winston         = require('winston');
+const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
-const fs              = require('fs');
-const path            = require('path');
-const os              = require('os');
-const tools           = require('./tools');
-const hostname        = tools.getHostName();
-const Transport       = require('winston-transport');
-const {LEVEL}         = require('triple-beam');
-const deepClone       = require('deep-clone');
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const tools = require('./tools');
+const hostname = tools.getHostName();
+const Transport = require('winston-transport');
+const { LEVEL } = require('triple-beam');
+const deepClone = require('deep-clone');
 
 let SysLog;
 try {
@@ -30,71 +30,77 @@ try {
 }
 
 // We must check if SysLog is defined before extending it
-const IoSysLog = SysLog && class extends SysLog {
-    constructor(options) {
-        super(options);
-    }
+const IoSysLog =
+    SysLog &&
+    class extends SysLog {
+        constructor(options) {
+            super(options);
+        }
 
-    log(info, callback) {
-        // we need to map the ioBroker loglevels to the Syslog ones
-        const ioInfo = info;
-        if (ioInfo[LEVEL] === 'warn') {
-            ioInfo[LEVEL] = 'warning';
+        log(info, callback) {
+            // we need to map the ioBroker loglevels to the Syslog ones
+            const ioInfo = info;
+            if (ioInfo[LEVEL] === 'warn') {
+                ioInfo[LEVEL] = 'warning';
+            }
+            if (ioInfo[LEVEL] === 'info') {
+                ioInfo[LEVEL] = 'notice';
+            }
+            if (ioInfo[LEVEL] === 'debug') {
+                ioInfo[LEVEL] = 'info';
+            }
+            if (ioInfo[LEVEL] === 'silly') {
+                ioInfo[LEVEL] = 'debug';
+            }
+            super.log(ioInfo, callback);
         }
-        if (ioInfo[LEVEL] === 'info') {
-            ioInfo[LEVEL] = 'notice';
-        }
-        if (ioInfo[LEVEL] === 'debug') {
-            ioInfo[LEVEL] = 'info';
-        }
-        if (ioInfo[LEVEL] === 'silly') {
-            ioInfo[LEVEL] = 'debug';
-        }
-        super.log(ioInfo, callback);
-    }
-};
+    };
 
 // We want to enhance some data for Seq
-const IoSeq = Seq && class extends Seq {
-    constructor(options) {
-        options.levelMapper = options.levelMapper || function (level) {
-            level = (level || '').toLowerCase();
-            if (level.includes('error')) {
-                return 'Error';
-            }
-            if (level.includes('warn')) {
-                return 'Warning';
-            }
-            if (level.includes('info')) {
-                return 'Information';
-            }
-            if (level.includes('debug')) {
-                return 'Debug';
-            }
-            if (level.includes('silly')) {
-                return 'Verbose';
-            }
-            return 'Information';
-        };
-        super(options);
-    }
-
-    log(info, callback) {
-        const ioInfo = info;
-        ioInfo.meta = ioInfo.meta || {};
-
-        // we add own properties
-        ioInfo.meta.Hostname = tools.getHostName();
-        const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
-        if (msgParts) {
-            ioInfo.meta.Source = msgParts[1];
-            ioInfo.meta.Pid = msgParts[2];
-        } else {
-            ioInfo.meta.Source = 'js-controller';
+const IoSeq =
+    Seq &&
+    class extends Seq {
+        constructor(options) {
+            options.levelMapper =
+                options.levelMapper ||
+                function (level) {
+                    level = (level || '').toLowerCase();
+                    if (level.includes('error')) {
+                        return 'Error';
+                    }
+                    if (level.includes('warn')) {
+                        return 'Warning';
+                    }
+                    if (level.includes('info')) {
+                        return 'Information';
+                    }
+                    if (level.includes('debug')) {
+                        return 'Debug';
+                    }
+                    if (level.includes('silly')) {
+                        return 'Verbose';
+                    }
+                    return 'Information';
+                };
+            super(options);
         }
-        super.log(ioInfo, callback);
-    }
-};
+
+        log(info, callback) {
+            const ioInfo = info;
+            ioInfo.meta = ioInfo.meta || {};
+
+            // we add own properties
+            ioInfo.meta.Hostname = tools.getHostName();
+            const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
+            if (msgParts) {
+                ioInfo.meta.Source = msgParts[1];
+                ioInfo.meta.Pid = msgParts[2];
+            } else {
+                ioInfo.meta.Source = 'js-controller';
+            }
+            super.log(ioInfo, callback);
+        }
+    };
 
 // Class used to inform adapter about new log entry
 class NotifierTransport extends Transport {
@@ -126,23 +132,25 @@ const logger = function (level, files, noStdout, prefix) {
         files = [files];
     }
 
-    const formatter = info =>
-        `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
+    const formatter = info => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
 
     files = files || [];
 
     // indicator which is used to determine the log dir for developing, where it should be inside the repository
-    const isNpm = !__dirname.replace(/\\/g, '/').toLowerCase().includes(tools.appName.toLowerCase() + `.js-controller/packages/`);
+    const isNpm = !__dirname
+        .replace(/\\/g, '/')
+        .toLowerCase()
+        .includes(tools.appName.toLowerCase() + `.js-controller/packages/`);
 
     if (typeof level === 'object') {
         userOptions = deepClone(level);
 
-        level    = userOptions.level;
-        prefix   = userOptions.prefix;
+        level = userOptions.level;
+        prefix = userOptions.prefix;
         noStdout = userOptions.noStdout;
 
         const winstonFormats = [];
-        winstonFormats.push(winston.format.timestamp({format: timestamp}));
+        winstonFormats.push(winston.format.timestamp({ format: timestamp }));
         if (userOptions.json === undefined || userOptions.json) {
             winstonFormats.push(winston.format.json());
         }
@@ -164,8 +172,7 @@ const logger = function (level, files, noStdout, prefix) {
             Object.keys(userOptions.transport).forEach(f => {
                 const transport = userOptions.transport[f];
                 if (transport.type === 'file' && transport.enabled !== false) {
-
-                    transport.filename = transport.filename || ('log/' + tools.appName);
+                    transport.filename = transport.filename || 'log/' + tools.appName;
 
                     if (!transport.fileext && transport.filename.indexOf('.log') === -1) {
                         transport.fileext = '.log';
@@ -176,13 +183,15 @@ const logger = function (level, files, noStdout, prefix) {
                     }
 
                     transport.handleExceptions = false;
-                    transport.name        = !fName ? tools.appName : 'dailyRotateFile' + fName;
+                    transport.name = !fName ? tools.appName : 'dailyRotateFile' + fName;
                     fName++;
-                    transport.filename    = transport.filename.replace(/\\/g, '/');
+                    transport.filename = transport.filename.replace(/\\/g, '/');
                     if (transport.filename.match(/^\w:\/|^\//)) {
                         transport.filename = path.normalize(transport.filename);
                     } else {
-                        const _path = path.normalize(`${tools.getControllerDir()}${isNpm ? '/../../' : '/'}${transport.filename}`);
+                        const _path = path.normalize(
+                            `${tools.getControllerDir()}${isNpm ? '/../../' : '/'}${transport.filename}`
+                        );
                         /*
                         if (_path.indexOf('js-controller') !== -1 && isNpm) {
                             _path = path.normalize(`${__dirname}/../../${transport.filename}`);
@@ -191,24 +200,37 @@ const logger = function (level, files, noStdout, prefix) {
 
                         transport.filename = _path;
                     }
-                    transport.auditFile     = transport.filename + '-audit.json';
+                    transport.auditFile = transport.filename + '-audit.json';
 
-                    transport.createSymlink = (transport.createSymlink !== undefined) ? transport.createSymlink : !isWindows;
-                    transport.symlinkName   = (transport.symlinkName !== undefined) ? transport.symlinkName : (path.basename(transport.filename + '.current.log'));
+                    transport.createSymlink =
+                        transport.createSymlink !== undefined ? transport.createSymlink : !isWindows;
+                    transport.symlinkName =
+                        transport.symlinkName !== undefined
+                            ? transport.symlinkName
+                            : path.basename(transport.filename + '.current.log');
 
-                    transport.filename     += '.%DATE%' + (transport.fileext || '');
+                    transport.filename += '.%DATE%' + (transport.fileext || '');
                     //transport.label       = prefix || ''; //TODO format.label()
-                    transport.level         = transport.level || level;
+                    transport.level = transport.level || level;
                     //                    transport.json        = (transport.json      !== undefined) ? transport.json      : false; // TODO format.json(), new Default!!
-                    transport.silent        = (transport.silent    !== undefined) ? transport.silent    : false;
+                    transport.silent = transport.silent !== undefined ? transport.silent : false;
                     //                    transport.colorize    = (transport.colorize  !== undefined) ? transport.colorize  : ((userOptions.colorize  === undefined) ? true : userOptions.colorize); //TODO format.colorize()
-                    transport.localTime     = (transport.localTime !== undefined) ? transport.localTime : ((userOptions.localTime === undefined) ? true : userOptions.localTime);
-                    transport.datePattern   = 'YYYY-MM-DD';
-                    transport.format        = winston.format.combine(winston.format.printf(formatter));
+                    transport.localTime =
+                        transport.localTime !== undefined
+                            ? transport.localTime
+                            : userOptions.localTime === undefined
+                            ? true
+                            : userOptions.localTime;
+                    transport.datePattern = 'YYYY-MM-DD';
+                    transport.format = winston.format.combine(winston.format.printf(formatter));
                     /*transport.logException = function (message, info, next, err) {
                         console.error(message);
                     };*/
-                    transport.zippedArchive = isWindows ? false: (transport.zippedArchive !== undefined ? transport.zippedArchive : true);
+                    transport.zippedArchive = isWindows
+                        ? false
+                        : transport.zippedArchive !== undefined
+                        ? transport.zippedArchive
+                        : true;
 
                     if (transport.maxFiles === null && userOptions.maxDays) {
                         transport.maxFiles = userOptions.maxDays + 'd';
@@ -318,14 +340,16 @@ const logger = function (level, files, noStdout, prefix) {
     } else {
         for (let i = 0; i < files.length; i++) {
             const opt = {
-                name:         i ? 'dailyRotateFile' + i : tools.appName,
-                filename:     path.normalize(isNpm ? `${__dirname}/../../../log/${files[i]}` : `${__dirname}/../log/${files[i]}`),
-                extension:      '.log',
-                datePattern:  'YYYY-MM-DD',
+                name: i ? 'dailyRotateFile' + i : tools.appName,
+                filename: path.normalize(
+                    isNpm ? `${__dirname}/../../../log/${files[i]}` : `${__dirname}/../log/${files[i]}`
+                ),
+                extension: '.log',
+                datePattern: 'YYYY-MM-DD',
                 //json:         false,  // If true, messages will be logged as JSON (default true). TODO format.json()
                 level,
-                silent:       false,
-                localTime:    true,
+                silent: false,
+                localTime: true,
                 //colorize:     (userOptions.colorize === undefined) ? true : userOptions.colorize, // TODO format.colorize()
                 //timestamp:    timestamp, // TODO: format.timestamp()
                 //label:        prefix || '', // TODO format.label()
@@ -338,21 +362,25 @@ const logger = function (level, files, noStdout, prefix) {
     }
 
     if (!noStdout) {
-        options.transports.push(new winston.transports.Console({
-            level,
-            silent: false,
-            format: winston.format.combine(winston.format.printf(formatter))
-            //colorize:  (userOptions.colorize === undefined) ? true : userOptions.colorize, // TODO format.colorize()
-            //timestamp: timestamp, // TODO: format.timestamp()
-            //label:     prefix || '' // TODO format.label()
-        }));
+        options.transports.push(
+            new winston.transports.Console({
+                level,
+                silent: false,
+                format: winston.format.combine(winston.format.printf(formatter))
+                //colorize:  (userOptions.colorize === undefined) ? true : userOptions.colorize, // TODO format.colorize()
+                //timestamp: timestamp, // TODO: format.timestamp()
+                //label:     prefix || '' // TODO format.label()
+            })
+        );
     }
 
     // Must be registered, for adapter.js notification about new logs
-    options.transports.push(new NotifierTransport({
-        level,
-        silent: false
-    }));
+    options.transports.push(
+        new NotifierTransport({
+            level,
+            silent: false
+        })
+    );
 
     const log = winston.createLogger(options);
 
@@ -383,7 +411,11 @@ const logger = function (level, files, noStdout, prefix) {
             // Check every hour
             this._fileChecker = setInterval(() => {
                 this.transports.forEach(transport => {
-                    if (transport.name !=='dailyRotateFile' || !transport.options || transport.options.name !== tools.appName) {
+                    if (
+                        transport.name !== 'dailyRotateFile' ||
+                        !transport.options ||
+                        transport.options.name !== tools.appName
+                    ) {
                         return;
                     }
 
@@ -415,9 +447,15 @@ const logger = function (level, files, noStdout, prefix) {
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
                                             level: os.platform().startsWith('win') ? 'info' : 'error',
-                                            message: `host.${hostname} Cannot delete file "${path.normalize(transport.dirname + '/' + files[i])}": ${e}`
+                                            message: `host.${hostname} Cannot delete file "${path.normalize(
+                                                transport.dirname + '/' + files[i]
+                                            )}": ${e}`
                                         });
-                                        console.log(`host.${hostname} Cannot delete file "${path.normalize(transport.dirname + '/' + files[i])}": ${e}`);
+                                        console.log(
+                                            `host.${hostname} Cannot delete file "${path.normalize(
+                                                transport.dirname + '/' + files[i]
+                                            )}": ${e}`
+                                        );
                                     }
                                 }
                             }
@@ -490,8 +528,7 @@ function timestamp(date) {
     value = ts.getMilliseconds();
     if (value < 10) {
         value = '00' + value;
-    } else
-    if (value < 100) {
+    } else if (value < 100) {
         value = '0' + value;
     }
 

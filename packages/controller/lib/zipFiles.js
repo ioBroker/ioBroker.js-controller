@@ -12,12 +12,19 @@ function _getAllFilesInDir(objects, id, name, options, callback, result) {
             for (let f = 0; f < files.length; f++) {
                 if (files[f].isDir) {
                     count++;
-                    _getAllFilesInDir(objects, id, name + '/' + files[f].file, options, (err, _result) => {
-                        err && errors.push(err);
-                        if (!--count) {
-                            callback(errors.length ? errors : null, _result);
-                        }
-                    }, result);
+                    _getAllFilesInDir(
+                        objects,
+                        id,
+                        name + '/' + files[f].file,
+                        options,
+                        (err, _result) => {
+                            err && errors.push(err);
+                            if (!--count) {
+                                callback(errors.length ? errors : null, _result);
+                            }
+                        },
+                        result
+                    );
                 } else {
                     result.push(name + '/' + files[f].file);
                 }
@@ -105,21 +112,27 @@ function readDirAsZip(objects, id, name, options, callback) {
 
                                 _addFile(objects, adapter, parts.join('/'), options, zip, null, err => {
                                     if (!--count) {
-                                        zip.generateAsync({type: 'base64'})
-                                            .then(base64 => callback(err, base64), err => callback(err));
+                                        zip.generateAsync({ type: 'base64' }).then(
+                                            base64 => callback(err, base64),
+                                            err => callback(err)
+                                        );
 
                                         zip = null;
                                     }
                                 });
                             }
                             if (!count) {
-                                zip.generateAsync({type: 'base64'})
-                                    .then(base64 => callback(err, base64), err => callback(err));
+                                zip.generateAsync({ type: 'base64' }).then(
+                                    base64 => callback(err, base64),
+                                    err => callback(err)
+                                );
                                 zip = null;
                             }
                         } else {
-                            zip.generateAsync({type: 'base64'})
-                                .then(base64 => callback(err, base64), err => callback(err));
+                            zip.generateAsync({ type: 'base64' }).then(
+                                base64 => callback(err, base64),
+                                err => callback(err)
+                            );
                             zip = null;
                         }
                     }
@@ -140,8 +153,7 @@ function _checkDir(objects, id, root, parts, options, callback) {
     root += '/' + parts.shift();
     objects.readDir(id, root, options, (err, _files) => {
         if (err === tools.ERRORS.ERROR_NOT_FOUND) {
-            objects.mkdir(id, root, options, _err =>
-                _checkDir(objects, id, root, parts, options, callback));
+            objects.mkdir(id, root, options, _err => _checkDir(objects, id, root, parts, options, callback));
         } else {
             _checkDir(objects, id, root, parts, options, callback);
         }
@@ -149,8 +161,8 @@ function _checkDir(objects, id, root, parts, options, callback) {
 }
 
 function _writeOneFile(objects, zip, id, name, filename, options, callback) {
-    zip.files[filename].async('nodebuffer')
-        .then(data => {
+    zip.files[filename].async('nodebuffer').then(
+        data => {
             let _err;
             if (options.parse) {
                 try {
@@ -163,10 +175,11 @@ function _writeOneFile(objects, zip, id, name, filename, options, callback) {
             const parts = fName.split('/');
             parts.pop();
             _checkDir(objects, id, '', parts, options, () =>
-                objects.writeFile(id, name + filename, data, options, err =>
-                    callback(_err || err)));
-
-        }, err => callback(err));
+                objects.writeFile(id, name + filename, data, options, err => callback(_err || err))
+            );
+        },
+        err => callback(err)
+    );
 }
 
 function writeDirAsZip(objects, id, name, data, options, callback) {
@@ -188,39 +201,42 @@ function writeDirAsZip(objects, id, name, data, options, callback) {
     }
 
     try {
-        zip.loadAsync(data).then(function () {
-            let count = 0;
-            const error = [];
-            if (name[name.length - 1] !== '/') {
-                name += '/';
-            }
-            for (const filename of Object.keys(zip.files)) {
-                if (!filename || filename[filename.length - 1] === '/') {
-                    continue;
+        zip.loadAsync(data).then(
+            function () {
+                let count = 0;
+                const error = [];
+                if (name[name.length - 1] !== '/') {
+                    name += '/';
                 }
-                count++;
-                try {
-                    _writeOneFile(objects, zip, id, name, filename, options, err => {
-                        err && error.push('Cannot write file "' + filename + '":' + err.toString());
+                for (const filename of Object.keys(zip.files)) {
+                    if (!filename || filename[filename.length - 1] === '/') {
+                        continue;
+                    }
+                    count++;
+                    try {
+                        _writeOneFile(objects, zip, id, name, filename, options, err => {
+                            err && error.push('Cannot write file "' + filename + '":' + err.toString());
 
-                        if (!--count && callback) {
-                            callback(error.length ? error.join(', ') : null);
+                            if (!--count && callback) {
+                                callback(error.length ? error.join(', ') : null);
+                                callback = null;
+                            }
+                        });
+                    } catch (error) {
+                        if (callback) {
+                            callback(error.toString());
                             callback = null;
                         }
-                    });
-                } catch (error) {
-                    if (callback) {
-                        callback(error.toString());
-                        callback = null;
                     }
                 }
+            },
+            function (error) {
+                if (callback) {
+                    callback(error.toString());
+                    callback = null;
+                }
             }
-        }, function (error) {
-            if (callback) {
-                callback(error.toString());
-                callback = null;
-            }
-        });
+        );
     } catch (error) {
         if (callback) {
             callback(error.toString());
@@ -251,7 +267,7 @@ function readObjectsAsZip(objects, rootId, adapter, options, callback) {
             JSZip = JSZip || require('jszip');
             const zip = new JSZip();
             for (let f = 0; f < objs.length; f++) {
-                let data = {id: keys[f], data: objs[f]};
+                let data = { id: keys[f], data: objs[f] };
 
                 if (options.stringify) {
                     try {
@@ -268,17 +284,19 @@ function readObjectsAsZip(objects, rootId, adapter, options, callback) {
 
                 zip.file(data.id, data.data);
             }
-            zip.generateAsync({type: 'base64'})
-                .then(base64 => callback(err, base64), err => callback(err));
+            zip.generateAsync({ type: 'base64' }).then(
+                base64 => callback(err, base64),
+                err => callback(err)
+            );
         });
     });
 }
 
 function _writeOneObject(objects, zip, rootId, filename, options, callback) {
-    zip.files[filename].async('nodebuffer')
-        .then(data => {
-            data = {data: data.toString(), id: filename};
-            if (options.parse){
+    zip.files[filename].async('nodebuffer').then(
+        data => {
+            data = { data: data.toString(), id: filename };
+            if (options.parse) {
                 try {
                     data = options.parse(data, options ? options.settings : null);
                 } catch (e) {
@@ -286,7 +304,7 @@ function _writeOneObject(objects, zip, rootId, filename, options, callback) {
                     return;
                 }
             } else {
-                data.id = (rootId ? (rootId + '.') : '') + data.id.replace(/\//g, '.').replace(/\.json$/, '');
+                data.id = (rootId ? rootId + '.' : '') + data.id.replace(/\//g, '.').replace(/\.json$/, '');
             }
             if (data && typeof data.data !== 'object') {
                 try {
@@ -301,13 +319,15 @@ function _writeOneObject(objects, zip, rootId, filename, options, callback) {
                 options.from = 'system.host.' + tools.getHostName() + '.cli';
                 objects.setObject(data.id, data.data, options, err => callback(err));
             } else {
-                if (data && data.error)  {
+                if (data && data.error) {
                     callback(data.error);
                 } else {
                     callback();
                 }
             }
-        }, err => callback('Cannot parse unzip: ' + err));
+        },
+        err => callback('Cannot parse unzip: ' + err)
+    );
 }
 
 function writeObjectsAsZip(objects, rootId, adapter, data, options, callback) {
@@ -320,14 +340,14 @@ function writeObjectsAsZip(objects, rootId, adapter, data, options, callback) {
         try {
             options.parse = require(tools.appName + '.' + adapter + '/lib/convert.js').parse;
         } catch {
-        // OK
+            // OK
         }
     }
 
     const zip = new JSZip();
     try {
-        zip.loadAsync(data)
-            .then(() => {
+        zip.loadAsync(data).then(
+            () => {
                 let count = 0;
                 const error = [];
                 for (const filename of Object.keys(zip.files)) {
@@ -345,12 +365,14 @@ function writeObjectsAsZip(objects, rootId, adapter, data, options, callback) {
                         }
                     });
                 }
-            }, error => {
+            },
+            error => {
                 if (callback) {
                     callback(error.toString());
                     callback = null;
                 }
-            });
+            }
+        );
     } catch (error) {
         if (callback) {
             callback(error.toString());
@@ -359,7 +381,7 @@ function writeObjectsAsZip(objects, rootId, adapter, data, options, callback) {
     }
 }
 
-module.exports.readDirAsZip      = readDirAsZip;
-module.exports.writeDirAsZip     = writeDirAsZip;
-module.exports.readObjectsAsZip  = readObjectsAsZip;
+module.exports.readDirAsZip = readDirAsZip;
+module.exports.writeDirAsZip = writeDirAsZip;
+module.exports.readObjectsAsZip = readObjectsAsZip;
 module.exports.writeObjectsAsZip = writeObjectsAsZip;

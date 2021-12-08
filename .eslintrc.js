@@ -8,6 +8,7 @@ module.exports = {
     ignorePatterns: ['**/doc', '**/build'],
     reportUnusedDisableDirectives: true,
     rules: {
+        /* pretier takes care of these two rules
         indent: [
             'error',
             4,
@@ -21,15 +22,12 @@ module.exports = {
                 ArrayExpression: 'consistent',
                 ArrayPattern: { minItems: 3 }
             }
-        ],
+        ],*/
         curly: 'error',
         'brace-style': 'error',
         'arrow-parens': ['error', 'as-needed'],
         'no-console': 'off',
-        'no-unused-vars': [
-            'error',
-            { argsIgnorePattern: '^_', caughtErrors: 'all' }
-        ],
+        'no-unused-vars': ['error', { argsIgnorePattern: '^_', caughtErrors: 'all' }],
         'no-useless-escape': 'warn',
         'no-constant-condition': 'off',
         'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
@@ -61,7 +59,7 @@ module.exports = {
         ],
         'no-trailing-spaces': 'error',
         'prettier/prettier': 'error',
-        'no-nested-ternary': 'error',
+        'no-nested-ternary': 'warn',
         'no-unneeded-ternary': 'error'
     },
     parserOptions: {

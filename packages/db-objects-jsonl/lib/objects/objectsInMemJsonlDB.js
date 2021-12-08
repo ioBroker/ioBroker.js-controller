@@ -13,7 +13,7 @@
 /* jshint -W061 */
 'use strict';
 
-const ObjectsInMemoryFileDB        = require('@iobroker/db-objects-file').ObjectsInMemoryFileDB;
+const ObjectsInMemoryFileDB = require('@iobroker/db-objects-file').ObjectsInMemoryFileDB;
 const { JsonlDB } = require('@alcalzone/jsonl-db');
 const path = require('path');
 
@@ -22,7 +22,6 @@ const path = require('path');
  * including the available methods for use by js-controller directly
  **/
 class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
-
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = {
@@ -48,10 +47,7 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         super(settings);
 
         /** @type {JsonlDB<any>} */
-        this._db = new JsonlDB(
-            path.join(this.dataDir, settings.jsonlDB.fileName),
-            jsonlOptions
-        );
+        this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
     }
 
     async open() {
@@ -103,7 +99,6 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             await this._db.close();
         }
     }
-
 }
 
 module.exports = ObjectsInMemoryJsonlDB;
