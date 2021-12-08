@@ -20,10 +20,7 @@ module.exports = class CLICompact extends CLICommand {
         const { callback, ...params } = this.options;
         const adapter = args[0];
         if (!adapter) {
-            CLI.error.requiredArgumentMissing(
-                'adaptername',
-                'debug <adaptername>'
-            );
+            CLI.error.requiredArgumentMissing('adaptername', 'debug <adaptername>');
             return void callback(34);
         }
 
@@ -49,9 +46,7 @@ module.exports = class CLICompact extends CLICommand {
         const nodeArgs = [
             ...tools.getDefaultNodeArgs(mainFile),
             // --inspect[-brk][=[ip]:[port]]
-            `--inspect${params.wait ? '-brk' : ''}${
-                !!params.ip || !!params.port ? '=' : ''
-            }${params.ip || ''}${
+            `--inspect${params.wait ? '-brk' : ''}${!!params.ip || !!params.port ? '=' : ''}${params.ip || ''}${
                 !!params.ip && !!params.port ? ':' : ''
             }${params.port || ''}`
         ];

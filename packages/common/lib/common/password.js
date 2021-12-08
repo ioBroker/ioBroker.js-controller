@@ -34,13 +34,12 @@
 /* jslint node: true */
 'use strict';
 
-const crypto  = require('crypto');
-let   version = null;
+const crypto = require('crypto');
+let version = null;
 
 const password = pw => {
     return {
         hash: (salt, iterations, callback) => {
-
             salt = salt || crypto.randomBytes(16).toString('hex');
             iterations = iterations || 10000;
 
@@ -66,7 +65,6 @@ const password = pw => {
 
                     callback(null, `pbkdf2$${iterations}$${key.toString('hex')}$${salt}`);
                 });
-
             }
         },
         check: function (hashedPassword, callback) {
@@ -93,10 +91,10 @@ const password = pw => {
             let result = false;
             if (typeof password === 'string') {
                 result =
-                    password.length >= 8 &&           // minimum length is 8
-                    password.match(/\d/) &&    // contains at least one digit
+                    password.length >= 8 && // minimum length is 8
+                    password.match(/\d/) && // contains at least one digit
                     password.match(/[a-z]/) && // contains at least one lower case letter
-                    password.match(/[A-Z]/);   // contains at least one upper case letter
+                    password.match(/[A-Z]/); // contains at least one upper case letter
             }
             typeof callback === 'function' && callback(result);
             return result; // true if the complexity OK

@@ -13,19 +13,18 @@
 /* jshint -W061 */
 'use strict';
 
-const fs                    = require('fs-extra');
-const path                  = require('path');
-const InMemoryFileDB        = require('@iobroker/db-base').inMemoryFileDB;
-const tools                 = require('@iobroker/db-base').tools;
-const utils                 = require('@iobroker/db-objects-redis').objectsUtils;
-const deepClone             = require('deep-clone');
+const fs = require('fs-extra');
+const path = require('path');
+const InMemoryFileDB = require('@iobroker/db-base').inMemoryFileDB;
+const tools = require('@iobroker/db-base').tools;
+const utils = require('@iobroker/db-objects-redis').objectsUtils;
+const deepClone = require('deep-clone');
 
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  **/
 class ObjectsInMemoryFileDB extends InMemoryFileDB {
-
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = {
@@ -46,8 +45,10 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.preserveSettings = ['custom'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
         this.namespace = this.settings.namespace || this.settings.hostname || '';
-        this.writeFileInterval = this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number' ?
-            parseInt(this.settings.connection.writeFileInterval) : 5000;
+        this.writeFileInterval =
+            this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
+                ? parseInt(this.settings.connection.writeFileInterval)
+                : 5000;
         this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
 
         this.objectsDir = path.join(this.dataDir, 'files');
@@ -57,14 +58,23 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         // Handle some < js-controller 2.0 broken objects and correct them
         for (const key of Object.keys(this.dataset)) {
-            if (typeof this.dataset[key] === 'object' && this.dataset[key].acl && this.dataset[key].acl.permissions && !this.dataset[key].acl.object) {
+            if (
+                typeof this.dataset[key] === 'object' &&
+                this.dataset[key].acl &&
+                this.dataset[key].acl.permissions &&
+                !this.dataset[key].acl.object
+            ) {
                 this.dataset[key].acl.object = this.dataset[key].acl.permissions;
                 delete this.dataset[key].acl.permissions;
             }
         }
 
         // init default new acl
-        if (this.dataset['system.config'] && this.dataset['system.config'].common && this.dataset['system.config'].common.defaultNewAcl) {
+        if (
+            this.dataset['system.config'] &&
+            this.dataset['system.config'].common &&
+            this.dataset['system.config'].common.defaultNewAcl
+        ) {
             this.defaultNewAcl = deepClone(this.dataset['system.config'].common.defaultNewAcl);
         }
     }
@@ -208,7 +218,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 return;
             }
             if (!metaObjects[dir]) {
-                resNotifies.push(`Ignoring Directory "${dir}" because officially not created as meta object. Please remove directory!`);
+                resNotifies.push(
+                    `Ignoring Directory "${dir}" because officially not created as meta object. Please remove directory!`
+                );
                 return;
             }
             this._loadFileSettings(dir);
@@ -219,21 +231,27 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     return;
                 }
                 if (!this.fileOptions[dir][localFile]) {
-                    const fileStat    = fs.statSync(file);
-                    const ext         = path.extname(localFile);
-                    const mime        = utils.getMimeType(ext);
-                    const _mimeType   = mime.mimeType;
-                    const isBinary    = mime.isBinary;
+                    const fileStat = fs.statSync(file);
+                    const ext = path.extname(localFile);
+                    const mime = utils.getMimeType(ext);
+                    const _mimeType = mime.mimeType;
+                    const isBinary = mime.isBinary;
 
                     this.fileOptions[dir][localFile] = {
                         createdAt: fileStat.ctimeMs,
-                        acl      : {
-                            owner:       (this.defaultNewAcl && this.defaultNewAcl.owner)      || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                            permissions: (this.defaultNewAcl && this.defaultNewAcl.file)       || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ)// 0x644
+                        acl: {
+                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup:
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            permissions:
+                                (this.defaultNewAcl && this.defaultNewAcl.file) ||
+                                utils.CONSTS.ACCESS_USER_RW |
+                                    utils.CONSTS.ACCESS_GROUP_READ |
+                                    utils.CONSTS.ACCESS_EVERY_READ // 0x644
                         },
-                        mimeType  : _mimeType,
-                        binary    : isBinary,
+                        mimeType: _mimeType,
+                        binary: isBinary,
                         modifiedAt: fileStat.mtimeMs
                     };
                     dirSynced++;
@@ -252,7 +270,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
     // needed by server
     _writeFile(id, name, data, options) {
         if (typeof options === 'string') {
-            options = {mimeType: options};
+            options = { mimeType: options };
         }
         if (options && options.acl) {
             options.acl = null;
@@ -276,33 +294,49 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 fs.mkdirSync(path.join(this.objectsDir, id));
             }
         } catch (e) {
-            this.log.error(`${this.namespace} Cannot create directories: ${path.join(this.objectsDir, id)}: ${e.message}`);
-            this.log.error(`${this.namespace} Check the permissions! Or run installation fixer or "iobroker fix" command!`);
+            this.log.error(
+                `${this.namespace} Cannot create directories: ${path.join(this.objectsDir, id)}: ${e.message}`
+            );
+            this.log.error(
+                `${this.namespace} Check the permissions! Or run installation fixer or "iobroker fix" command!`
+            );
             throw e;
         }
 
-        const ext         = path.extname(name);
-        const mime        = utils.getMimeType(ext);
-        const _mimeType   = mime.mimeType;
-        const isBinary    = mime.isBinary;
+        const ext = path.extname(name);
+        const mime = utils.getMimeType(ext);
+        const _mimeType = mime.mimeType;
+        const isBinary = mime.isBinary;
 
-        this.fileOptions[id][name]                = this.fileOptions[id][name] || {createdAt: Date.now()};
-        this.fileOptions[id][name].acl            = this.fileOptions[id][name].acl || {
-            owner:       options.user  || (this.defaultNewAcl && this.defaultNewAcl.owner)      || utils.CONSTS.SYSTEM_ADMIN_USER,
-            ownerGroup:  options.group || (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-            permissions: options.mode  || (this.defaultNewAcl && this.defaultNewAcl.file)       || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ)// 0x644
+        this.fileOptions[id][name] = this.fileOptions[id][name] || { createdAt: Date.now() };
+        this.fileOptions[id][name].acl = this.fileOptions[id][name].acl || {
+            owner: options.user || (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+            ownerGroup:
+                options.group ||
+                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+            permissions:
+                options.mode ||
+                (this.defaultNewAcl && this.defaultNewAcl.file) ||
+                utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ // 0x644
         };
 
-        this.fileOptions[id][name].mimeType       = options.mimeType || _mimeType;
-        this.fileOptions[id][name].binary         = isBinary;
-        this.fileOptions[id][name].acl.ownerGroup = this.fileOptions[id][name].acl.ownerGroup || (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP;
-        this.fileOptions[id][name].modifiedAt     = Date.now();
+        this.fileOptions[id][name].mimeType = options.mimeType || _mimeType;
+        this.fileOptions[id][name].binary = isBinary;
+        this.fileOptions[id][name].acl.ownerGroup =
+            this.fileOptions[id][name].acl.ownerGroup ||
+            (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+            utils.CONSTS.SYSTEM_ADMIN_GROUP;
+        this.fileOptions[id][name].modifiedAt = Date.now();
 
         try {
             // Create directories if complex structure
             fs.ensureDirSync(path.join(this.objectsDir, id, path.dirname(name)));
             // Store file
-            fs.writeFileSync(path.join(this.objectsDir, id, name), data, {'flag': 'w', 'encoding': isBinary ? 'binary' : 'utf8'});
+            fs.writeFileSync(path.join(this.objectsDir, id, name), data, {
+                flag: 'w',
+                encoding: isBinary ? 'binary' : 'utf8'
+            });
 
             if (isBinary) {
                 // Reload by read
@@ -314,7 +348,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             // Store dir description
             this._saveFileSettings(id);
         } catch (e) {
-            this.log.error(`${this.namespace} Cannot write files: ${path.join(this.objectsDir, id, name)}: ${e.message}`);
+            this.log.error(
+                `${this.namespace} Cannot write files: ${path.join(this.objectsDir, id, name)}: ${e.message}`
+            );
             throw e;
         }
     }
@@ -341,19 +377,31 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     // Create description object if not exists
                     this.fileOptions[id][name] = this.fileOptions[id][name] || {
                         acl: {
-                            owner:       (this.defaultNewAcl && this.defaultNewAcl.owner)            || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup)       || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                            permissions: (this.defaultNewAcl && this.defaultNewAcl.file.permissions) || (utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_ALL) // 777
-
+                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup:
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            permissions:
+                                (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                utils.CONSTS.ACCESS_USER_ALL |
+                                    utils.CONSTS.ACCESS_GROUP_ALL |
+                                    utils.CONSTS.ACCESS_EVERY_ALL // 777
                         }
                     };
                     if (typeof this.fileOptions[id][name] !== 'object') {
                         this.fileOptions[id][name] = {
-                            mimeType:    this.fileOptions[id][name],
+                            mimeType: this.fileOptions[id][name],
                             acl: {
-                                owner:       (this.defaultNewAcl && this.defaultNewAcl.owner)            || utils.CONSTS.SYSTEM_ADMIN_USER,
-                                ownerGroup:  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup)       || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                                permissions: (this.defaultNewAcl && this.defaultNewAcl.file.permissions) || (utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_ALL) // 777
+                                owner:
+                                    (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup:
+                                    (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                    utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                permissions:
+                                    (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                    utils.CONSTS.ACCESS_USER_ALL |
+                                        utils.CONSTS.ACCESS_GROUP_ALL |
+                                        utils.CONSTS.ACCESS_EVERY_ALL // 777
                             }
                         };
                     }
@@ -362,7 +410,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     if (this.fileOptions[id][name].binary === undefined) {
                         const ext = path.extname(name);
                         const mimeType = utils.getMimeType(ext);
-                        this.fileOptions[id][name].binary   = mimeType.isBinary;
+                        this.fileOptions[id][name].binary = mimeType.isBinary;
                         this.fileOptions[id][name].mimeType = mimeType.mimeType;
                     }
 
@@ -375,7 +423,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     if (this.fileOptions[id][name] !== undefined) {
                         delete this.fileOptions[id][name];
                     }
-                    if (this.files[id][name]       !== undefined) {
+                    if (this.files[id][name] !== undefined) {
                         delete this.files[id][name];
                     }
                 }
@@ -384,9 +432,12 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (this.fileOptions[id][name] && !this.fileOptions[id][name].acl) {
                 // all files belongs to admin by default, but everyone can edit it
                 this.fileOptions[id][name].acl = {
-                    owner:       (this.defaultNewAcl && this.defaultNewAcl.owner)            || utils.CONSTS.SYSTEM_ADMIN_USER,
-                    ownerGroup:  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup)       || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                    permissions: (this.defaultNewAcl && this.defaultNewAcl.file.permissions) || (utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_RW) // 776
+                    owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                    ownerGroup:
+                        (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                    permissions:
+                        (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                        utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_RW // 776
                 };
             }
 
@@ -487,7 +538,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
     // needed by server
     _unlink(id, name) {
         const _path = utils.sanitizePath(id, name);
-        id   = _path.id;
+        id = _path.id;
         name = _path.name;
 
         this._loadFileSettings(id);
@@ -514,7 +565,6 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 if (this.files[id] && this.files[id]) {
                     delete this.files[id];
                 }
-
             } else {
                 this.log.debug('Delete file ' + path.join(id, name));
                 try {
@@ -563,7 +613,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         this._loadFileSettings(id);
 
-        const len = (name) ? name.length : 0;
+        const len = name ? name.length : 0;
         for (const f of Object.keys(this.fileOptions[id])) {
             if (!name || f.substring(0, len) === name) {
                 /** @type {string|string[]} */
@@ -599,28 +649,50 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (fs.existsSync(path.join(location, _files[j]))) {
                 try {
                     const stats = fs.statSync(path.join(location, _files[j]));
-                    const acl = (this.fileOptions[id][name + _files[j]] && this.fileOptions[id][name + _files[j]].acl) ?
-                        JSON.parse(JSON.stringify(this.fileOptions[id][name + _files[j]].acl)) : // copy settings
-                        {
-                            read:        true,
-                            write :      true,
-                            owner:       (this.defaultNewAcl && this.defaultNewAcl.owner)            || utils.CONSTS.SYSTEM_ADMIN_USER,
-                            ownerGroup:  (this.defaultNewAcl && this.defaultNewAcl.ownerGroup)       || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                            permissions: (this.defaultNewAcl && this.defaultNewAcl.file.permissions) || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ)
-                        };
+                    const acl =
+                        this.fileOptions[id][name + _files[j]] && this.fileOptions[id][name + _files[j]].acl
+                            ? JSON.parse(JSON.stringify(this.fileOptions[id][name + _files[j]].acl)) // copy settings
+                            : {
+                                  read: true,
+                                  write: true,
+                                  owner:
+                                      (this.defaultNewAcl && this.defaultNewAcl.owner) ||
+                                      utils.CONSTS.SYSTEM_ADMIN_USER,
+                                  ownerGroup:
+                                      (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                      utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                  permissions:
+                                      (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                      utils.CONSTS.ACCESS_USER_RW |
+                                          utils.CONSTS.ACCESS_GROUP_READ |
+                                          utils.CONSTS.ACCESS_EVERY_READ
+                              };
 
                     // if filter for user
                     if (options.filter && acl) {
                         // If user may not write
-                        if (!options.acl.file.write) {// write
-                            acl.permissions &= ~(utils.CONSTS.ACCESS_USER_WRITE | utils.CONSTS.ACCESS_GROUP_WRITE | utils.CONSTS.ACCESS_EVERY_WRITE);
+                        if (!options.acl.file.write) {
+                            // write
+                            acl.permissions &= ~(
+                                utils.CONSTS.ACCESS_USER_WRITE |
+                                utils.CONSTS.ACCESS_GROUP_WRITE |
+                                utils.CONSTS.ACCESS_EVERY_WRITE
+                            );
                         }
                         // If user may not read
-                        if (!options.acl.file.read) {// read
-                            acl.permissions &= ~(utils.CONSTS.ACCESS_USER_READ | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ);
+                        if (!options.acl.file.read) {
+                            // read
+                            acl.permissions &= ~(
+                                utils.CONSTS.ACCESS_USER_READ |
+                                utils.CONSTS.ACCESS_GROUP_READ |
+                                utils.CONSTS.ACCESS_EVERY_READ
+                            );
                         }
 
-                        if (options.user !== utils.CONSTS.SYSTEM_ADMIN_USER && options.groups.includes(utils.CONSTS.SYSTEM_ADMIN_GROUP)) {
+                        if (
+                            options.user !== utils.CONSTS.SYSTEM_ADMIN_USER &&
+                            options.groups.includes(utils.CONSTS.SYSTEM_ADMIN_GROUP)
+                        ) {
                             if (acl.owner !== options.user) {
                                 // Check if the user is in the group
                                 if (options.groups.includes(acl.ownerGroup)) {
@@ -628,14 +700,14 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                     if (!(acl.permissions & utils.CONSTS.ACCESS_GROUP_RW)) {
                                         continue;
                                     }
-                                    acl.read  = !!(acl.permissions & utils.CONSTS.ACCESS_GROUP_READ);
+                                    acl.read = !!(acl.permissions & utils.CONSTS.ACCESS_GROUP_READ);
                                     acl.write = !!(acl.permissions & utils.CONSTS.ACCESS_GROUP_WRITE);
                                 } else {
                                     // everybody
                                     if (!(acl.permissions & utils.CONSTS.ACCESS_EVERY_RW)) {
                                         continue;
                                     }
-                                    acl.read  = !!(acl.permissions & utils.CONSTS.ACCESS_EVERY_READ);
+                                    acl.read = !!(acl.permissions & utils.CONSTS.ACCESS_EVERY_READ);
                                     acl.write = !!(acl.permissions & utils.CONSTS.ACCESS_EVERY_WRITE);
                                 }
                             } else {
@@ -643,26 +715,36 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                 if (!(acl.permissions & utils.CONSTS.ACCESS_USER_RW)) {
                                     continue;
                                 }
-                                acl.read  = !!(acl.permissions & utils.CONSTS.ACCESS_USER_READ);
+                                acl.read = !!(acl.permissions & utils.CONSTS.ACCESS_USER_READ);
                                 acl.write = !!(acl.permissions & utils.CONSTS.ACCESS_USER_WRITE);
                             }
                         } else {
-                            acl.read  = true;
+                            acl.read = true;
                             acl.write = true;
                         }
                     }
 
                     res.push({
-                        file:       _files[j],
-                        stats:      stats,
-                        isDir:      stats.isDirectory(),
-                        acl:        acl,
-                        modifiedAt: this.fileOptions[id][name + _files[j]] ? this.fileOptions[id][name + _files[j]].modifiedAt : undefined,
-                        createdAt:  this.fileOptions[id][name + _files[j]] ? this.fileOptions[id][name + _files[j]].createdAt : undefined
+                        file: _files[j],
+                        stats: stats,
+                        isDir: stats.isDirectory(),
+                        acl: acl,
+                        modifiedAt: this.fileOptions[id][name + _files[j]]
+                            ? this.fileOptions[id][name + _files[j]].modifiedAt
+                            : undefined,
+                        createdAt: this.fileOptions[id][name + _files[j]]
+                            ? this.fileOptions[id][name + _files[j]].createdAt
+                            : undefined
                     });
-
                 } catch (e) {
-                    this.log.error(`${this.namespace} Cannot read permissions of ${path.join(this.objectsDir, id, name, _files[j])}: ${e.message}`);
+                    this.log.error(
+                        `${this.namespace} Cannot read permissions of ${path.join(
+                            this.objectsDir,
+                            id,
+                            name,
+                            _files[j]
+                        )}: ${e.message}`
+                    );
                 }
             }
         }
@@ -767,7 +849,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
     // needed by server
     _delObject(id) {
         if (!this.dataset[id]) {
-            throw new Error (utils.ERRORS.ERROR_NOT_FOUND);
+            throw new Error(utils.ERRORS.ERROR_NOT_FOUND);
         }
 
         if (this.dataset[id].common && this.dataset[id].common.dontDelete) {
@@ -796,7 +878,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         // eslint-disable-next-line no-unused-vars
         function _emit_(id, obj) {
-            result.rows.push({id: id, value: obj});
+            result.rows.push({ id: id, value: obj });
         }
 
         const f = eval('(' + func.map.replace(/emit/g, '_emit_') + ')');
@@ -806,7 +888,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 if (params.startkey && id < params.startkey) {
                     continue;
                 }
-                if (params.endkey   && id > params.endkey)   {
+                if (params.endkey && id > params.endkey) {
                     continue;
                 }
             }
@@ -827,7 +909,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 }
             }
             if (max !== null) {
-                result.rows = [{id: '_stats', value: {max: max}}];
+                result.rows = [{ id: '_stats', value: { max: max } }];
             } else {
                 result.rows = [];
             }

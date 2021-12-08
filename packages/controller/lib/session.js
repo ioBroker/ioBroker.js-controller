@@ -12,7 +12,7 @@ module.exports = function (session, defaultTtl) {
 
         options = options || {};
         if (!options.cookie) {
-            options.cookie = {maxAge: defaultTtl};
+            options.cookie = { maxAge: defaultTtl };
         }
         Store.call(this, options);
     }
@@ -30,7 +30,6 @@ module.exports = function (session, defaultTtl) {
      */
 
     AdapterStore.prototype.get = function (sid, fn) {
-
         this.adapter.getSession(sid, obj => {
             if (obj) {
                 if (fn) {
@@ -54,10 +53,13 @@ module.exports = function (session, defaultTtl) {
      */
     AdapterStore.prototype.set = function (sid, ttl, sess, fn) {
         if (typeof ttl === 'object') {
-            fn   = sess;
+            fn = sess;
             sess = ttl;
             // analyse if the session is stored directly from express session
-            ttl  = sess && sess.cookie && sess.cookie.originalMaxAge ? Math.round(sess.cookie.originalMaxAge / 1000) : defaultTtl;
+            ttl =
+                sess && sess.cookie && sess.cookie.originalMaxAge
+                    ? Math.round(sess.cookie.originalMaxAge / 1000)
+                    : defaultTtl;
         }
         ttl = ttl || defaultTtl;
         this.adapter.setSession(sid, ttl, sess, function () {

@@ -11,8 +11,7 @@
 
 /** @class */
 function Install(options) {
-
-    const {tools, EXIT_CODES} = require('@iobroker/js-controller-common');
+    const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
     const fs = require('fs-extra');
     const hostname = tools.getHostName();
     const path = require('path');
@@ -92,12 +91,11 @@ function Install(options) {
             callback = stoppedList;
             stoppedList = null;
         }
-        return this.downloadPacketAsync(repoUrl, packetName, options, stoppedList)
-            .then(() => {
-                if (typeof callback === 'function') {
-                    callback(_callback => typeof _callback === 'function' && _callback(), packetName);
-                }
-            });
+        return this.downloadPacketAsync(repoUrl, packetName, options, stoppedList).then(() => {
+            if (typeof callback === 'function') {
+                callback(_callback => typeof _callback === 'function' && _callback(), packetName);
+            }
+        });
     };
 
     this.downloadPacketAsync = async function (repoUrl, packetName, options, stoppedList) {
@@ -176,32 +174,40 @@ function Install(options) {
         if (sources[packetName]) {
             url = sources[packetName].url;
 
-            if (url &&
+            if (
+                url &&
                 packetName === 'js-controller' &&
-                fs.existsSync(`${__dirname}/../../../../node_modules/${tools.appName}.js-controller`)) {
+                fs.existsSync(`${__dirname}/../../../../node_modules/${tools.appName}.js-controller`)
+            ) {
                 url = null;
             }
 
             if (!url && packetName !== 'example') {
                 // Install node modules
-                await this._npmInstallWithCheck(`${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`, options, debug);
+                await this._npmInstallWithCheck(
+                    `${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`,
+                    options,
+                    debug
+                );
                 await enableAdapters(stoppedList, true);
                 return packetName;
-            } else
-            if (url && url.match(tarballRegex)) {
+            } else if (url && url.match(tarballRegex)) {
                 // Install node modules
                 await this._npmInstallWithCheck(url, options, debug);
                 await enableAdapters(stoppedList, true);
                 return packetName;
-            }  else
-            // Adapter
-            if (!url) {
-                console.warn(`host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName}.js-controller`);
+            } else if (!url) {
+                // Adapter
+                console.warn(
+                    `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName}.js-controller`
+                );
                 return packetName;
             }
         }
 
-        console.error(`host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`);
+        console.error(
+            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+        );
         processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     };
 
@@ -210,7 +216,7 @@ function Install(options) {
         try {
             let npmVersion;
             try {
-                npmVersion = child_process.execSync('npm -v', {encoding: 'utf8'});
+                npmVersion = child_process.execSync('npm -v', { encoding: 'utf8' });
                 if (npmVersion) {
                     npmVersion = semver.valid(npmVersion.trim());
                 }
@@ -223,17 +229,22 @@ function Install(options) {
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 console.error('Aborting install because the npm version could not be checked!');
                 console.error('Please check that npm is installed correctly.');
-                console.error('Use "npm install -g npm@4" or "npm install -g npm@latest" to install a supported version.');
-                console.error('You need to make sure to repeat this step after installing an update to NodeJS and/or npm');
+                console.error(
+                    'Use "npm install -g npm@4" or "npm install -g npm@latest" to install a supported version.'
+                );
+                console.error(
+                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm'
+                );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return processExit(EXIT_CODES.INVALID_NPM_VERSION);
-            } else
-            if (semver.gte(npmVersion, '5.0.0') && semver.lt(npmVersion, '5.7.1')) {
+            } else if (semver.gte(npmVersion, '5.0.0') && semver.lt(npmVersion, '5.7.1')) {
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 console.error('NPM 5 is only supported starting with version 5.7.1!');
                 console.error('Please use "npm install -g npm@4" to downgrade npm to 4.x or ');
                 console.error('use "npm install -g npm@latest" to install a supported version of npm!');
-                console.error('You need to make sure to repeat this step after installing an update to NodeJS and/or npm');
+                console.error(
+                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm'
+                );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return processExit(EXIT_CODES.INVALID_NPM_VERSION);
             } else {
@@ -317,7 +328,7 @@ function Install(options) {
             // create file that indicates, that npm was called there
             fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
             // command succeeded
-            return {_url: npmUrl, installDir: path.dirname(installDir)};
+            return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
             processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
@@ -326,7 +337,7 @@ function Install(options) {
 
     /** @type {(packageName: string, options: any, debug: boolean, callback?: (err?: Error) => void) => Promise<void>} */
     this._npmUninstall = async function (packageName, options, debug) {
-        const result = await tools.uninstallNodeModule(packageName, {debug: !!debug});
+        const result = await tools.uninstallNodeModule(packageName, { debug: !!debug });
         if (!result.success) {
             throw new Error(`host.${hostname}: Cannot uninstall ${packageName}: ${result.exitCode}`);
         }
@@ -342,7 +353,7 @@ function Install(options) {
         globalDeps = tools.parseDependencies(globalDeps);
 
         // combine both dependencies
-        const allDeps = {...deps, ...globalDeps};
+        const allDeps = { ...deps, ...globalDeps };
 
         // Get all installed adapters
         const objs = await objects.getObjectViewAsync('system', 'instance', {
@@ -359,8 +370,10 @@ function Install(options) {
                     // Check only if version not *, else we dont have to read io-pack unnecessarily
                     if (version !== '*') {
                         const iopkg_ = fs.readJSONSync(`${__dirname}/../../package.json`);
-                        if (!semver.satisfies(iopkg_.version, version, {includePrerelease: true})) {
-                            console.error(`host.${hostname} Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}"`);
+                        if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
+                            console.error(
+                                `host.${hostname} Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}"`
+                            );
                             return processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
                             isFound = true;
@@ -375,11 +388,20 @@ function Install(options) {
                     let locInstances = [];
                     // if global dep get all instances of adapter
                     if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(obj => obj && obj.value && obj.value.common && obj.value.common.name === dName);
+                        gInstances = objs.rows.filter(
+                            obj => obj && obj.value && obj.value.common && obj.value.common.name === dName
+                        );
                     }
                     if (deps[dName] !== undefined) {
                         // local dep get all instances on same host
-                        locInstances = objs.rows.filter(obj => obj && obj.value && obj.value.common && obj.value.common.name === dName && obj.value.common.host === hostname);
+                        locInstances = objs.rows.filter(
+                            obj =>
+                                obj &&
+                                obj.value &&
+                                obj.value.common &&
+                                obj.value.common.name === dName &&
+                                obj.value.common.host === hostname
+                        );
                         if (locInstances.length === 0) {
                             console.error(`host.${hostname} Required dependency "${dName}" not found on this host.`);
                         }
@@ -387,8 +409,12 @@ function Install(options) {
 
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
-                        if (!semver.satisfies(instance.value.common.version, deps[dName], {includePrerelease: true})) {
-                            console.error(`host.${hostname} Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${deps[dName]}"`);
+                        if (
+                            !semver.satisfies(instance.value.common.version, deps[dName], { includePrerelease: true })
+                        ) {
+                            console.error(
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${deps[dName]}"`
+                            );
                             return processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
                             isFound = true;
@@ -396,8 +422,14 @@ function Install(options) {
                     }
 
                     for (const instance of gInstances) {
-                        if (!semver.satisfies(instance.value.common.version, globalDeps[dName], {includePrerelease: true})) {
-                            console.error(`host.${hostname} Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${globalDeps[dName]}"`);
+                        if (
+                            !semver.satisfies(instance.value.common.version, globalDeps[dName], {
+                                includePrerelease: true
+                            })
+                        ) {
+                            console.error(
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${globalDeps[dName]}"`
+                            );
                             return processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
                             isFound = true;
@@ -438,7 +470,12 @@ function Install(options) {
         }
 
         // check if some dependencies are missing and install them if some found
-        await this._checkDependencies(adapter, adapterConf.common.dependencies, adapterConf.common.globalDependencies, params);
+        await this._checkDependencies(
+            adapter,
+            adapterConf.common.dependencies,
+            adapterConf.common.globalDependencies,
+            params
+        );
         adapterConf.common.installedVersion = adapterConf.common.version;
 
         if (adapterConf.common.news) {
@@ -477,7 +514,7 @@ function Install(options) {
             repoUrl = null;
         }
         return this.installAdapterAsync(adapter, repoUrl)
-            .then(() => callback && callback(null,  adapter))
+            .then(() => callback && callback(null, adapter))
             .catch(err => callback && callback(err));
     };
 
@@ -513,11 +550,17 @@ function Install(options) {
         // Check if the operation system is ok
         if (adapterConf.common && adapterConf.common.os) {
             if (typeof adapterConf.common.os === 'string' && adapterConf.common.os !== osPlatform) {
-                console.error(`host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`);
+                console.error(
+                    `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`
+                );
                 return processExit(EXIT_CODES.INVALID_OS);
             } else {
                 if (!adapterConf.common.os.includes(osPlatform)) {
-                    console.error(`host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(', ')}. Actual platform: ${osPlatform}`);
+                    console.error(
+                        `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
+                            ', '
+                        )}. Actual platform: ${osPlatform}`
+                    );
                     return processExit(EXIT_CODES.INVALID_OS);
                 }
             }
@@ -535,7 +578,9 @@ function Install(options) {
         // check node.js version if defined in package.json
         if (engineVersion) {
             if (!semver.satisfies(process.version.replace(/^v/, ''), engineVersion)) {
-                console.error(`host.${hostname} Adapter does not support current nodejs version. Required ${engineVersion}. Actual version: ${process.version}`);
+                console.error(
+                    `host.${hostname} Adapter does not support current nodejs version. Required ${engineVersion}. Actual version: ${process.version}`
+                );
                 return processExit(EXIT_CODES.INVALID_NODE_VERSION);
             }
         }
@@ -561,7 +606,7 @@ function Install(options) {
     async function callInstallOfAdapter(adapter, config) {
         if (config.common.install) {
             // Install node modules
-            const {exec} = require('child_process');
+            const { exec } = require('child_process');
             let cmd = 'node ';
 
             let fileFullName;
@@ -574,7 +619,7 @@ function Install(options) {
             return new Promise(resolve => {
                 cmd += `"${fileFullName}" --install`;
                 console.log(`host.${hostname} command: ${cmd}`);
-                const child = exec(cmd, {windowsHide: true});
+                const child = exec(cmd, { windowsHide: true });
                 tools.pipeLinewise(child.stderr, process.stdout);
                 child.on('exit', () => resolve(adapter));
             });
@@ -697,8 +742,12 @@ function Install(options) {
         if (instanceObj._rev) {
             delete instanceObj._rev;
         }
-        instanceObj.common.enabled = (options.enabled === true || options.enabled === false) ? options.enabled :
-            ((instanceObj.common.enabled === true || instanceObj.common.enabled === false) ? instanceObj.common.enabled : false);
+        instanceObj.common.enabled =
+            options.enabled === true || options.enabled === false
+                ? options.enabled
+                : instanceObj.common.enabled === true || instanceObj.common.enabled === false
+                ? instanceObj.common.enabled
+                : false;
         instanceObj.common.host = options.host;
 
         if (options.port) {
@@ -760,23 +809,41 @@ function Install(options) {
         // Create only for this instance the predefined in io-package.json objects
         // It is not necessary to write "system.adapter.name.N." in the object '_id'
         for (let i = 0; i < adapterConf.instanceObjects.length; i++) {
-            adapterConf.instanceObjects[i]._id = `${adapter}.${instance}${adapterConf.instanceObjects[i]._id ? ('.' + adapterConf.instanceObjects[i]._id) : ''}`;
+            adapterConf.instanceObjects[i]._id = `${adapter}.${instance}${
+                adapterConf.instanceObjects[i]._id ? '.' + adapterConf.instanceObjects[i]._id : ''
+            }`;
 
             if (adapterConf.instanceObjects[i].common) {
                 if (adapterConf.instanceObjects[i].common.name) {
                     // if name has many languages
                     if (typeof adapterConf.instanceObjects[i].common.name === 'object') {
-                        Object.keys(adapterConf.instanceObjects[i].common.name).forEach(lang => adapterConf.instanceObjects[i].common.name[lang] = adapterConf.instanceObjects[i].common.name[lang].replace('%INSTANCE%', instance));
+                        Object.keys(adapterConf.instanceObjects[i].common.name).forEach(
+                            lang =>
+                                (adapterConf.instanceObjects[i].common.name[lang] = adapterConf.instanceObjects[
+                                    i
+                                ].common.name[lang].replace('%INSTANCE%', instance))
+                        );
                     } else {
-                        adapterConf.instanceObjects[i].common.name = adapterConf.instanceObjects[i].common.name.replace('%INSTANCE%', instance);
+                        adapterConf.instanceObjects[i].common.name = adapterConf.instanceObjects[i].common.name.replace(
+                            '%INSTANCE%',
+                            instance
+                        );
                     }
                 }
                 if (adapterConf.instanceObjects[i].common.desc) {
                     // if name has many languages
                     if (typeof adapterConf.instanceObjects[i].common.desc === 'object') {
-                        Object.keys(adapterConf.instanceObjects[i].common.desc).forEach(lang => adapterConf.instanceObjects[i].common.desc[lang] = adapterConf.instanceObjects[i].common.desc[lang].replace('%INSTANCE%', instance));
+                        Object.keys(adapterConf.instanceObjects[i].common.desc).forEach(
+                            lang =>
+                                (adapterConf.instanceObjects[i].common.desc[lang] = adapterConf.instanceObjects[
+                                    i
+                                ].common.desc[lang].replace('%INSTANCE%', instance))
+                        );
                     } else {
-                        adapterConf.instanceObjects[i].common.desc = adapterConf.instanceObjects[i].common.desc.replace('%INSTANCE%', instance);
+                        adapterConf.instanceObjects[i].common.desc = adapterConf.instanceObjects[i].common.desc.replace(
+                            '%INSTANCE%',
+                            instance
+                        );
                     }
                 }
             }
@@ -805,7 +872,9 @@ function Install(options) {
             } catch (err) {
                 // todo: in the future we will not create this object
                 console.warn(`host.${hostname} Object ${obj._id} is invalid: ${err.message}`);
-                console.warn(`host.${hostname} This object will not be created in future versions. Please report this to the developer.`);
+                console.warn(
+                    `host.${hostname} This object will not be created in future versions. Please report this to the developer.`
+                );
             }
 
             obj.from = 'system.host.' + tools.getHostName() + '.cli';
@@ -855,9 +924,10 @@ function Install(options) {
         //   startkey: system.adapter.mqtt
         //   endkey: system.adapter.mqtt.\u9999
         // matches system.adapter.mqtt AND system.adapter.mqtt-client
-        const instanceRegex = instance !== undefined
-            ? new RegExp(`^system\\.adapter\\.${adapter}\\.${instance}$`)
-            : new RegExp(`^system\\.adapter\\.${adapter}\\.\\d+$`);
+        const instanceRegex =
+            instance !== undefined
+                ? new RegExp(`^system\\.adapter\\.${adapter}\\.${instance}$`)
+                : new RegExp(`^system\\.adapter\\.${adapter}\\.\\d+$`);
 
         try {
             const doc = await objects.getObjectView('system', 'instance', {
@@ -882,16 +952,20 @@ function Install(options) {
                     }
                 })
                 .map(row => row.value._id)
-                .filter(id => knownObjIDs.indexOf(id) === -1)
-            ;
-
+                .filter(id => knownObjIDs.indexOf(id) === -1);
             knownObjIDs.push.apply(knownObjIDs, newObjIDs);
 
             if (newObjIDs.length > 0) {
-                console.log(`host.${hostname} Counted ${newObjIDs.length} instances of ${adapter}${instance !== undefined ? `.${instance}` : ''}`);
+                console.log(
+                    `host.${hostname} Counted ${newObjIDs.length} instances of ${adapter}${
+                        instance !== undefined ? `.${instance}` : ''
+                    }`
+                );
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -914,8 +988,7 @@ function Install(options) {
                     .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
-                    .filter(id => knownObjIDs.indexOf(id) === -1)
-                ;
+                    .filter(id => knownObjIDs.indexOf(id) === -1);
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
                 // meta ids can also be present as files
                 metaFilesToDelete.push.apply(metaFilesToDelete, newObjs);
@@ -925,7 +998,9 @@ function Install(options) {
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -941,7 +1016,13 @@ function Install(options) {
             if (obj) {
                 if (obj.common && obj.common.nondeletable) {
                     // If the adapter is non-deletable, mark it as not installed
-                    console.log('host.' + hostname + ' Adapter ' + adapter + ' cannot be deleted completely, because it is marked non-deletable.');
+                    console.log(
+                        'host.' +
+                            hostname +
+                            ' Adapter ' +
+                            adapter +
+                            ' cannot be deleted completely, because it is marked non-deletable.'
+                    );
                     obj.installedVersion = '';
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = Date.now();
@@ -982,15 +1063,20 @@ function Install(options) {
                     .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
-                    .filter(id => !knownObjIDs.includes(id))
-                ;
+                    .filter(id => !knownObjIDs.includes(id));
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
                 if (newObjs.length > 0) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} devices of ${adapter}${instance !== undefined ? `.${instance}` : ''}`);
+                    console.log(
+                        `host.${hostname} Counted ${newObjs.length} devices of ${adapter}${
+                            instance !== undefined ? `.${instance}` : ''
+                        }`
+                    );
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1014,15 +1100,20 @@ function Install(options) {
                     .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
-                    .filter(id => !knownObjIDs.includes(id))
-                ;
+                    .filter(id => !knownObjIDs.includes(id));
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
                 if (newObjs.length > 0) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} channels of ${adapter}${instance ? `.${instance}` : ''}`);
+                    console.log(
+                        `host.${hostname} Counted ${newObjs.length} channels of ${adapter}${
+                            instance ? `.${instance}` : ''
+                        }`
+                    );
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1048,12 +1139,15 @@ function Install(options) {
                     .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
-                    .filter(id => !knownObjIDs.includes(id))
-                ;
+                    .filter(id => !knownObjIDs.includes(id));
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
 
                 if (newObjs.length > 0) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} states of ${adapter}${instance ? `.${instance}` : ''}`);
+                    console.log(
+                        `host.${hostname} Counted ${newObjs.length} states of ${adapter}${
+                            instance ? `.${instance}` : ''
+                        }`
+                    );
                 }
             }
 
@@ -1073,11 +1167,17 @@ function Install(options) {
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
 
                 if (newObjs.length > 0) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} states of system.adapter.${adapter}${instance ? `.${instance}` : ''}`);
+                    console.log(
+                        `host.${hostname} Counted ${newObjs.length} states of system.adapter.${adapter}${
+                            instance ? `.${instance}` : ''
+                        }`
+                    );
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1093,22 +1193,27 @@ function Install(options) {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            const doc = await objects.getObjectListAsync({include_docs: true});
+            const doc = await objects.getObjectListAsync({ include_docs: true });
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
                     .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id) || sysAdapterRegex.test(id))
-                    .filter(id => !knownObjIDs.includes(id))
-                ;
+                    .filter(id => !knownObjIDs.includes(id));
                 knownObjIDs.push.apply(knownObjIDs, newObjs);
                 if (newObjs.length > 0) {
-                    console.log(`host.${hostname} Counted ${newObjs.length} objects of ${adapter}${instance ? `.${instance}` : ''}`);
+                    console.log(
+                        `host.${hostname} Counted ${newObjs.length} objects of ${adapter}${
+                            instance ? `.${instance}` : ''
+                        }`
+                    );
                 }
             }
         } catch (err) {
-            err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} error: ${err.message}`);
+            err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                console.error(`host.${hostname} error: ${err.message}`);
         }
     };
 
@@ -1128,8 +1233,7 @@ function Install(options) {
                 const ids = await getKeysAsync(pattern);
                 if (ids && ids.length) {
                     // add non-duplicates to the list
-                    const newStates = ids
-                        .filter(id => !knownStateIDs.includes(id));
+                    const newStates = ids.filter(id => !knownStateIDs.includes(id));
 
                     knownStateIDs.push.apply(knownStateIDs, newStates);
 
@@ -1150,11 +1254,11 @@ function Install(options) {
     this._deleteAdapterFiles = async (adapter, metaFilesToDelete) => {
         // special files, which are not meta (vis widgets), combined with meta object ids
         const filesToDelete = [
-            {id: `vis`, name: `widgets/${adapter}`},
-            {id: `vis`, name: `widgets/${adapter}.html`},
-            {id: adapter},
-            {id: `${adapter}.admin`},
-            ...metaFilesToDelete.map(id => ({id}))
+            { id: `vis`, name: `widgets/${adapter}` },
+            { id: `vis`, name: `widgets/${adapter}.html` },
+            { id: adapter },
+            { id: `${adapter}.admin` },
+            ...metaFilesToDelete.map(id => ({ id }))
         ];
 
         for (const file of filesToDelete) {
@@ -1163,7 +1267,9 @@ function Install(options) {
                 await objects.unlinkAsync(id, file.name || '');
                 console.log(`host.${hostname} file ${id + (file.name ? `/${file.name}` : '')} deleted`);
             } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete ${id} files folder: ${err.message}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    console.error(`host.${hostname} Cannot delete ${id} files folder: ${err.message}`);
             }
         }
 
@@ -1172,7 +1278,9 @@ function Install(options) {
                 await objects.delObjectAsync(objId);
                 console.log(`host.${hostname} object ${objId} deleted`);
             } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    console.error(`host.${hostname} cannot delete objects: ${err.message}`);
             }
         }
     };
@@ -1195,8 +1303,11 @@ function Install(options) {
             // try to delete the current state
             try {
                 await delStateAsync(stateIDs.pop());
-            } catch (err) { // yep that works!
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} Cannot delete states: ${err.message}`);
+            } catch (err) {
+                // yep that works!
+                err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    console.error(`host.${hostname} Cannot delete states: ${err.message}`);
             }
         }
     };
@@ -1233,7 +1344,9 @@ function Install(options) {
                 await objects.delObjectAsync(id);
                 await tools.removeIdFromAllEnums(objects, id, allEnums);
             } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND && err.message !== tools.ERRORS.ERROR_NOT_FOUND && console.error(`host.${hostname} cannot delete objects: ${err.message}`);
+                err !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    console.error(`host.${hostname} cannot delete objects: ${err.message}`);
             }
         }
     };
@@ -1426,119 +1539,135 @@ function Install(options) {
             });
     };
 
-    this.installAdapterFromUrlAsync = /**
-     * @param {string} url
-     * @param {string} name
-     */
-    async function (url, name) {
-        // If the user provided an URL, try to parse it into known ways to represent a Github URL
-        let parsedUrl;
-        try {
-            parsedUrl = new URL(url);
-        } catch { /* ignore, not a valid URL */
-        }
-
-        let debug = false;
-        for (let i = 0; i < process.argv.length; i++) {
-            if (process.argv[i] === '--debug') {
-                debug = true;
-                break;
-            }
-        }
-
-        if (parsedUrl && parsedUrl.hostname === 'github.com') {
-            if (!tools.isGithubPathname(parsedUrl.pathname)) {
-                return console.log(`Cannot install from GitHub. Invalid URL ${url}`);
+    this.installAdapterFromUrlAsync =
+        /**
+         * @param {string} url
+         * @param {string} name
+         */
+        async function (url, name) {
+            // If the user provided an URL, try to parse it into known ways to represent a Github URL
+            let parsedUrl;
+            try {
+                parsedUrl = new URL(url);
+            } catch {
+                /* ignore, not a valid URL */
             }
 
-            // This is a URL we can parse
-            const {repo, user, commit} = tools.parseGithubPathname(parsedUrl.pathname);
+            let debug = false;
+            for (let i = 0; i < process.argv.length; i++) {
+                if (process.argv[i] === '--debug') {
+                    debug = true;
+                    break;
+                }
+            }
 
-            if (!commit) {
-                // No commit given, try to get it from the API
-                try {
-                    const result = await axios(`http://api.github.com/repos/${user}/${repo}/commits`, {headers: {'User-Agent': 'ioBroker Adapter install', validateStatus: status => status === 200}});
-                    if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
-                        url = `${user}/${repo}#${result.data[0].sha}`;
-                    } else {
-                        console.log(`Info: Can not get current GitHub commit, only remember that we installed from GitHub.`);
+            if (parsedUrl && parsedUrl.hostname === 'github.com') {
+                if (!tools.isGithubPathname(parsedUrl.pathname)) {
+                    return console.log(`Cannot install from GitHub. Invalid URL ${url}`);
+                }
+
+                // This is a URL we can parse
+                const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
+
+                if (!commit) {
+                    // No commit given, try to get it from the API
+                    try {
+                        const result = await axios(`http://api.github.com/repos/${user}/${repo}/commits`, {
+                            headers: {
+                                'User-Agent': 'ioBroker Adapter install',
+                                validateStatus: status => status === 200
+                            }
+                        });
+                        if (
+                            result.data &&
+                            Array.isArray(result.data) &&
+                            result.data.length >= 1 &&
+                            result.data[0].sha
+                        ) {
+                            url = `${user}/${repo}#${result.data[0].sha}`;
+                        } else {
+                            console.log(
+                                `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`
+                            );
+                            url = `${user}/${repo}`;
+                        }
+                    } catch (err) {
+                        console.log(
+                            `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`
+                        );
+                        // Install using the npm Github URL syntax `npm i user/repo_name`:
                         url = `${user}/${repo}`;
                     }
-                } catch (err) {
-                    console.log(`Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`);
-                    // Install using the npm Github URL syntax `npm i user/repo_name`:
-                    url = `${user}/${repo}`;
-                }
-            } else {
-                // We've extracted all we need from the URL
-                url = `${user}/${repo}#${commit}`;
-            }
-        }
-
-        console.log(`install ${url}`);
-
-        // Try to extract name from URL
-        if (!name) {
-            const reNpmPacket = new RegExp('^' + tools.appName + '\\.([-_\\w\\d]+)(@.*)?$', 'i');
-            const match = reNpmPacket.exec(url); // we have iobroker.adaptername@1.2.3
-            if (match) {
-                name = match[1];
-            } else if (url.match(/\.(tgz|gz|zip|tar\.gz)$/)) {
-                const parts = url.split('/');
-                const last = parts.pop();
-                const mm = last.match(/\.([-_\w\d]+)-[.\d]+/);
-                if (mm) {
-                    name = mm[1];
-                }
-            } else {
-                const githubUrlParts = tools.parseShortGithubUrl(url);
-                // Try to extract the adapter name from the github url if possible
-                // Otherwise fall back to the complete URL
-                if (githubUrlParts) {
-                    name = githubUrlParts.repo;
                 } else {
-                    name = url;
+                    // We've extracted all we need from the URL
+                    url = `${user}/${repo}#${commit}`;
                 }
-                // Remove the leading `iobroker.` from the name
-                const reG = new RegExp(tools.appName + '\\.([-_\\w\\d]+)$', 'i');
-                const match = reG.exec(name);
+            }
+
+            console.log(`install ${url}`);
+
+            // Try to extract name from URL
+            if (!name) {
+                const reNpmPacket = new RegExp('^' + tools.appName + '\\.([-_\\w\\d]+)(@.*)?$', 'i');
+                const match = reNpmPacket.exec(url); // we have iobroker.adaptername@1.2.3
                 if (match) {
                     name = match[1];
-                }
-            }
-        }
-
-        const options = {
-            packetName: name
-        };
-        const {installDir} = await this._npmInstallWithCheck(url, options, debug);
-        if (name) {
-            await upload.uploadAdapterAsync(name, true, true);
-            await upload.uploadAdapterAsync(name, false, true);
-            await upload.upgradeAdapterObjectsAsync(name);
-        } else {
-            // Try to find io-package.json with newest date
-            const dirs = fs.readdirSync(installDir);
-            let date = null;
-            let dir = null;
-            for (let i = 0; i < dirs.length; i++) {
-                if (fs.existsSync(installDir + '/' + dirs[i] + '/io-package.json')) {
-                    const stat = fs.statSync(installDir + '/' + dirs[i] + '/io-package.json');
-                    if (!date || stat.mtime.getTime() > date.getTime()) {
-                        dir = dirs[i];
-                        date = stat.mtime;
+                } else if (url.match(/\.(tgz|gz|zip|tar\.gz)$/)) {
+                    const parts = url.split('/');
+                    const last = parts.pop();
+                    const mm = last.match(/\.([-_\w\d]+)-[.\d]+/);
+                    if (mm) {
+                        name = mm[1];
+                    }
+                } else {
+                    const githubUrlParts = tools.parseShortGithubUrl(url);
+                    // Try to extract the adapter name from the github url if possible
+                    // Otherwise fall back to the complete URL
+                    if (githubUrlParts) {
+                        name = githubUrlParts.repo;
+                    } else {
+                        name = url;
+                    }
+                    // Remove the leading `iobroker.` from the name
+                    const reG = new RegExp(tools.appName + '\\.([-_\\w\\d]+)$', 'i');
+                    const match = reG.exec(name);
+                    if (match) {
+                        name = match[1];
                     }
                 }
             }
-            // if modify time is not older than one hour
-            if (dir && Date.now() - date.getTime() < 3600000) {
-                name = dir.substring(tools.appName.length + 1);
+
+            const options = {
+                packetName: name
+            };
+            const { installDir } = await this._npmInstallWithCheck(url, options, debug);
+            if (name) {
                 await upload.uploadAdapterAsync(name, true, true);
                 await upload.uploadAdapterAsync(name, false, true);
                 await upload.upgradeAdapterObjectsAsync(name);
+            } else {
+                // Try to find io-package.json with newest date
+                const dirs = fs.readdirSync(installDir);
+                let date = null;
+                let dir = null;
+                for (let i = 0; i < dirs.length; i++) {
+                    if (fs.existsSync(installDir + '/' + dirs[i] + '/io-package.json')) {
+                        const stat = fs.statSync(installDir + '/' + dirs[i] + '/io-package.json');
+                        if (!date || stat.mtime.getTime() > date.getTime()) {
+                            dir = dirs[i];
+                            date = stat.mtime;
+                        }
+                    }
+                }
+                // if modify time is not older than one hour
+                if (dir && Date.now() - date.getTime() < 3600000) {
+                    name = dir.substring(tools.appName.length + 1);
+                    await upload.uploadAdapterAsync(name, true, true);
+                    await upload.uploadAdapterAsync(name, false, true);
+                    await upload.upgradeAdapterObjectsAsync(name);
+                }
             }
-        }
-    };
+        };
 }
 
 module.exports = Install;

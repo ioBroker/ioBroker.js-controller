@@ -6,7 +6,6 @@ const fs = require('fs-extra');
 
 /** Command ioBroker compact ... */
 module.exports = class CLICompact extends CLICommand {
-
     /** @param {import('./cliCommand.js').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -111,13 +110,18 @@ module.exports = class CLICompact extends CLICommand {
             objects.getObject('system.adapter.' + instance, (err, obj) => {
                 if (!err && obj) {
                     if (!obj.common.compact) {
-                        console.log('This adapter does not support compact mode. The below settings will have no effect!');
+                        console.log(
+                            'This adapter does not support compact mode. The below settings will have no effect!'
+                        );
                         console.log();
                     } else {
                         console.log('Adapter supports compact mode:     ' + !!obj.common.compact);
                     }
                     console.log('Compact mode enabled for instance: ' + !!obj.common.runAsCompactMode);
-                    console.log('Compact group:                     ' + (obj.common.compactGroup !== undefined ? obj.common.compactGroup : 1));
+                    console.log(
+                        'Compact group:                     ' +
+                            (obj.common.compactGroup !== undefined ? obj.common.compactGroup : 1)
+                    );
                     return void callback();
                 } else {
                     CLI.error.invalidInstance(instance);
@@ -138,7 +142,9 @@ module.exports = class CLICompact extends CLICommand {
             objects.getObject('system.adapter.' + instance, (err, obj) => {
                 if (!err && obj) {
                     if (!obj.common.compact) {
-                        console.log('This adapter does not support compact mode. The below settings will have no effect!');
+                        console.log(
+                            'This adapter does not support compact mode. The below settings will have no effect!'
+                        );
                         console.log();
                     } else {
                         console.log('Adapter supports compact mode :    ' + !!obj.common.compact);
@@ -158,8 +164,18 @@ module.exports = class CLICompact extends CLICommand {
                             newCompactGroup = groupId;
                         }
                     }
-                    console.log('Compact mode enabled for instance: ' + (newRunAsCompactMode !== undefined ? '--> ' + newRunAsCompactMode : !!obj.common.runAsCompactMode));
-                    console.log('Compact group:                     ' + (newCompactGroup !== undefined && obj.common.compactGroup !== newCompactGroup ? '--> ' + newCompactGroup : obj.common.compactGroup));
+                    console.log(
+                        'Compact mode enabled for instance: ' +
+                            (newRunAsCompactMode !== undefined
+                                ? '--> ' + newRunAsCompactMode
+                                : !!obj.common.runAsCompactMode)
+                    );
+                    console.log(
+                        'Compact group:                     ' +
+                            (newCompactGroup !== undefined && obj.common.compactGroup !== newCompactGroup
+                                ? '--> ' + newCompactGroup
+                                : obj.common.compactGroup)
+                    );
                     if (newRunAsCompactMode !== undefined || newCompactGroup !== undefined) {
                         if (newCompactGroup !== undefined) {
                             obj.common.compactGroup = newCompactGroup;
@@ -188,5 +204,4 @@ module.exports = class CLICompact extends CLICommand {
             });
         });
     }
-
 };

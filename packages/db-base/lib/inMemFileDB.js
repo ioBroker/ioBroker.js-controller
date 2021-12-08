@@ -14,9 +14,9 @@
 /* jslint node: true */
 'use strict';
 
-const fs                = require('fs-extra');
-const path              = require('path');
-const tools             = require('./tools.js');
+const fs = require('fs-extra');
+const path = require('path');
+const tools = require('./tools.js');
 
 // settings = {
 //    change:    function (id, state) {},
@@ -44,7 +44,6 @@ const tools             = require('./tools.js');
  * and general subscription and publish functionality
  **/
 class InMemoryFileDB {
-
     constructor(settings) {
         this.settings = settings || {};
 
@@ -58,14 +57,14 @@ class InMemoryFileDB {
         this.callbackSubscriptionClient = {};
 
         this.settings.backup = this.settings.backup || {
-            disabled: false,  // deactivates
-            files: 24,     // minimum number of files
-            hours: 48,     // hours
-            period: 120,    // minutes
-            path: ''      // use default path
+            disabled: false, // deactivates
+            files: 24, // minimum number of files
+            hours: 48, // hours
+            period: 120, // minutes
+            path: '' // use default path
         };
 
-        this.dataDir = (this.settings.connection.dataDir || tools.getDefaultDataDir());
+        this.dataDir = this.settings.connection.dataDir || tools.getDefaultDataDir();
         if (!path.isAbsolute(this.dataDir)) {
             this.dataDir = path.normalize(path.join(tools.getControllerDir(), this.dataDir));
         }
@@ -77,7 +76,7 @@ class InMemoryFileDB {
 
         this.stateTimer = null;
 
-        this.backupDir = this.settings.backup.path || (path.join(this.dataDir, this.settings.fileDB.backupDirName));
+        this.backupDir = this.settings.backup.path || path.join(this.dataDir, this.settings.fileDB.backupDirName);
 
         if (!this.settings.backup.disabled) {
             this.initBackupDir();
@@ -127,22 +126,30 @@ class InMemoryFileDB {
                 try {
                     if (await fs.pathExists(datasetName)) {
                         try {
-                            await fs.move(datasetName, `${datasetName}.broken`, {overwrite: true});
+                            await fs.move(datasetName, `${datasetName}.broken`, { overwrite: true });
                         } catch (e) {
-                            this.log.error(`${this.namespace} Cannot copy the broken file ${datasetName} to ${datasetName}.broken ${e.message}`);
+                            this.log.error(
+                                `${this.namespace} Cannot copy the broken file ${datasetName} to ${datasetName}.broken ${e.message}`
+                            );
                         }
                         try {
                             await fs.writeFile(datasetName, JSON.stringify(ret));
                         } catch (e) {
-                            this.log.error(`${this.namespace} Cannot restore backup file as new main ${datasetName}: ${e.message}`);
+                            this.log.error(
+                                `${this.namespace} Cannot restore backup file as new main ${datasetName}: ${e.message}`
+                            );
                         }
                     }
                 } catch {
                     // ignore, file does not exist
                 }
             } catch (err) {
-                this.log.error(`${this.namespace} Cannot load ${datasetName}.bak: ${err.message}. Continue with empty dataset!`);
-                this.log.error(`${this.namespace} If this is no Migration or initial start please restore the last backup from ${this.backupDir}`);
+                this.log.error(
+                    `${this.namespace} Cannot load ${datasetName}.bak: ${err.message}. Continue with empty dataset!`
+                );
+                this.log.error(
+                    `${this.namespace} If this is no Migration or initial start please restore the last backup from ${this.backupDir}`
+                );
             }
         }
         return ret;
@@ -151,18 +158,21 @@ class InMemoryFileDB {
     initBackupDir() {
         this.zlib = this.zlib || require('zlib');
         // Interval in minutes => to milliseconds
-        this.settings.backup.period = this.settings.backup.period === undefined ? 120 : parseInt(this.settings.backup.period);
+        this.settings.backup.period =
+            this.settings.backup.period === undefined ? 120 : parseInt(this.settings.backup.period);
         if (isNaN(this.settings.backup.period)) {
             this.settings.backup.period = 120;
         }
         this.settings.backup.period *= 60000;
 
-        this.settings.backup.files = this.settings.backup.files === undefined ? 24 : parseInt(this.settings.backup.files);
+        this.settings.backup.files =
+            this.settings.backup.files === undefined ? 24 : parseInt(this.settings.backup.files);
         if (isNaN(this.settings.backup.files)) {
             this.settings.backup.files = 24;
         }
 
-        this.settings.backup.hours = this.settings.backup.hours === undefined ? 48 : parseInt(this.settings.backup.hours);
+        this.settings.backup.hours =
+            this.settings.backup.hours === undefined ? 48 : parseInt(this.settings.backup.hours);
         if (isNaN(this.settings.backup.hours)) {
             this.settings.backup.hours = 48;
         }
@@ -186,11 +196,11 @@ class InMemoryFileDB {
                     return;
                 }
 
-                s.push({pattern: pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options: options});
+                s.push({ pattern: pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options: options });
             });
         } else {
             if (!s.find(sub => sub.pattern === pattern)) {
-                s.push({pattern: pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options: options});
+                s.push({ pattern: pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options: options });
             }
         }
         typeof cb === 'function' && cb();
@@ -245,7 +255,9 @@ class InMemoryFileDB {
                 try {
                     fs.unlinkSync(path.join(this.backupDir, file));
                 } catch (e) {
-                    this.log.error(`${this.namespace} Cannot delete file "${path.join(this.backupDir, file)}: ${e.message}`);
+                    this.log.error(
+                        `${this.namespace} Cannot delete file "${path.join(this.backupDir, file)}: ${e.message}`
+                    );
                 }
             }
         }
@@ -319,7 +331,7 @@ class InMemoryFileDB {
         try {
             if (await fs.pathExists(this.datasetName)) {
                 try {
-                    await fs.move(this.datasetName, `${this.datasetName}.bak`, {overwrite: true});
+                    await fs.move(this.datasetName, `${this.datasetName}.bak`, { overwrite: true });
                 } catch (e) {
                     bakOk = false;
                     this.log.error(`${this.namespace} Cannot backup file ${this.datasetName}.bak: ${e.message}`);
@@ -333,19 +345,21 @@ class InMemoryFileDB {
         }
 
         try {
-            await fs.move(`${this.datasetName}.new`, this.datasetName, {overwrite: true});
+            await fs.move(`${this.datasetName}.new`, this.datasetName, { overwrite: true });
         } catch (e) {
-            this.log.error(`${this.namespace} Cannot move ${this.datasetName}.new to ${this.datasetName}: ${e.message}. Try direct write as fallback`);
+            this.log.error(
+                `${this.namespace} Cannot move ${this.datasetName}.new to ${this.datasetName}: ${e.message}. Try direct write as fallback`
+            );
             try {
                 await fs.writeFile(this.datasetName, jsonString);
             } catch (e) {
                 this.log.error(`${this.namespace} Cannot directly write Dataset to ${this.datasetName}: ${e.message}`);
                 return jsonString;
             }
-
         }
 
-        if (!bakOk) { // it seems the bak File is not successfully there, write current content again
+        if (!bakOk) {
+            // it seems the bak File is not successfully there, write current content again
             try {
                 await fs.writeFile(`${this.datasetName}.bak`, jsonString);
             } catch (e) {
@@ -368,7 +382,10 @@ class InMemoryFileDB {
         // makes backups only if settings.backupInterval is not 0
         if (this.settings.backup.period && (!this.lastSave || now - this.lastSave > this.settings.backup.period)) {
             this.lastSave = now;
-            const backFileName = path.join(this.backupDir, this.getTimeStr(now) + '_' + this.settings.fileDB.fileName + '.gz');
+            const backFileName = path.join(
+                this.backupDir,
+                this.getTimeStr(now) + '_' + this.settings.fileDB.fileName + '.gz'
+            );
 
             try {
                 if (!fs.existsSync(backFileName)) {
@@ -395,7 +412,7 @@ class InMemoryFileDB {
     }
 
     getStatus() {
-        return {type: 'file', server: true};
+        return { type: 'file', server: true };
     }
 
     /** @returns {object} */
@@ -419,11 +436,14 @@ class InMemoryFileDB {
         }
 
         // local subscriptions
-        if (this.change && this.callbackSubscriptionClient._subscribe && this.callbackSubscriptionClient._subscribe[type]) {
+        if (
+            this.change &&
+            this.callbackSubscriptionClient._subscribe &&
+            this.callbackSubscriptionClient._subscribe[type]
+        ) {
             for (let j = 0; j < this.callbackSubscriptionClient._subscribe[type].length; j++) {
                 if (this.callbackSubscriptionClient._subscribe[type][j].regex.test(id)) {
-                    setImmediate(() =>
-                        this.change(id, obj));
+                    setImmediate(() => this.change(id, obj));
                     break;
                 }
             }

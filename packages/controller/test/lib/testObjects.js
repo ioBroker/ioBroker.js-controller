@@ -11,60 +11,65 @@ function register(it, expect, context) {
     const testId = namespace + '.test2';
 
     it(testName + 'should create and read object', done => {
-
         const objects = context.objects;
-        objects.setObject(testId, {
-            common: {
-                name: 'test2'
+        objects.setObject(
+            testId,
+            {
+                common: {
+                    name: 'test2'
+                },
+                native: {}
             },
-            native: {
-
-            }
-        }, (err, res) => {
-            expect(err).to.be.not.ok;
-            expect(res).to.be.ok;
-            expect(res.id).to.be.equal(testId);
-
-            objects.getObject(testId, (err, obj) => {
+            (err, res) => {
                 expect(err).to.be.not.ok;
-                expect(obj).to.be.ok;
-                expect(obj.common.name).to.be.equal('test2');
-                expect(obj._id).to.be.equal(testId);
-                console.log(JSON.stringify(obj));
-                done();
-            });
-        });
+                expect(res).to.be.ok;
+                expect(res.id).to.be.equal(testId);
+
+                objects.getObject(testId, (err, obj) => {
+                    expect(err).to.be.not.ok;
+                    expect(obj).to.be.ok;
+                    expect(obj.common.name).to.be.equal('test2');
+                    expect(obj._id).to.be.equal(testId);
+                    console.log(JSON.stringify(obj));
+                    done();
+                });
+            }
+        );
     }).timeout(2000);
 
     it(testName + 'should create object async', done => {
         const objects = context.objects;
-        objects.setObjectAsync(testId + 'async', {
-            common: {
-                name: 'test1a'
-            },
-            native: {
-
-            }
-        }).then(res => {
-            expect(res).to.be.ok;
-            expect(res.id).to.be.equal(testId + 'async');
-            done();
-        }).catch(err => {
-            expect(err).to.be.not.ok;
-        });
+        objects
+            .setObjectAsync(testId + 'async', {
+                common: {
+                    name: 'test1a'
+                },
+                native: {}
+            })
+            .then(res => {
+                expect(res).to.be.ok;
+                expect(res.id).to.be.equal(testId + 'async');
+                done();
+            })
+            .catch(err => {
+                expect(err).to.be.not.ok;
+            });
     });
 
     it(testName + 'should read object async', done => {
         const objects = context.objects;
-        objects.getObjectAsync(testId + 'async').then(obj => {
-            expect(obj).to.be.ok;
-            expect(obj.common.name).to.be.equal('test1a');
-            expect(obj._id).to.be.equal(testId + 'async');
-            console.log(JSON.stringify(obj));
-            done();
-        }).catch(err => {
-            expect(err).to.be.not.ok;
-        });
+        objects
+            .getObjectAsync(testId + 'async')
+            .then(obj => {
+                expect(obj).to.be.ok;
+                expect(obj.common.name).to.be.equal('test1a');
+                expect(obj._id).to.be.equal(testId + 'async');
+                console.log(JSON.stringify(obj));
+                done();
+            })
+            .catch(err => {
+                expect(err).to.be.not.ok;
+            });
     });
 
     it(testName + 'should find object', done => {
@@ -97,23 +102,29 @@ function register(it, expect, context) {
 
     it(testName + 'should find object async', done => {
         const objects = context.objects;
-        objects.findObject(testId).then(id => {
-            expect(id).to.be.equal(testId);
-            return objects.findObject('test2');
-        }).then(id => {
-            expect(id).to.be.equal(testId);
+        objects
+            .findObject(testId)
+            .then(id => {
+                expect(id).to.be.equal(testId);
+                return objects.findObject('test2');
+            })
+            .then(id => {
+                expect(id).to.be.equal(testId);
 
-            return objects.findObject('test3');
-        }).then(id => {
-            expect(id).to.be.equal(null);
-            return objects.findObject('test3', 'channel');
-        }).then(id => {
-            expect(id).to.be.equal(null);
-            done();
-        }).catch(err => {
-            console.error(err);
-            expect(1).to.be.equal('Never happens');
-        });
+                return objects.findObject('test3');
+            })
+            .then(id => {
+                expect(id).to.be.equal(null);
+                return objects.findObject('test3', 'channel');
+            })
+            .then(id => {
+                expect(id).to.be.equal(null);
+                done();
+            })
+            .catch(err => {
+                console.error(err);
+                expect(1).to.be.equal('Never happens');
+            });
     });
 
     it(testName + 'should read objects by pattern', done => {
@@ -140,23 +151,28 @@ function register(it, expect, context) {
 
     it(testName + 'should read objects by pattern async', done => {
         const objects = context.objects;
-        objects.getObjectsByPattern(testId + '*').then(objs => {
-            expect(objs.length).to.be.equal(2);
+        objects
+            .getObjectsByPattern(testId + '*')
+            .then(objs => {
+                expect(objs.length).to.be.equal(2);
 
-            return objects.getObjectsByPattern(testId);
-        }).then(objs => {
-            expect(objs.length).to.be.equal(1);
-            expect(typeof objs[0]).to.be.equal('object');
-            expect(objs[0]._id).to.be.equal(testId);
+                return objects.getObjectsByPattern(testId);
+            })
+            .then(objs => {
+                expect(objs.length).to.be.equal(1);
+                expect(typeof objs[0]).to.be.equal('object');
+                expect(objs[0]._id).to.be.equal(testId);
 
-            return objects.getObjectsByPattern(testId + 'non');
-        }).then(objs => {
-            expect(objs.length).to.be.equal(0);
+                return objects.getObjectsByPattern(testId + 'non');
+            })
+            .then(objs => {
+                expect(objs.length).to.be.equal(0);
 
-            done();
-        }).catch(_err => {
-            expect(1).to.be.equal('Never happens');
-        });
+                done();
+            })
+            .catch(_err => {
+                expect(1).to.be.equal('Never happens');
+            });
     });
 
     it(testName + 'should read keys', done => {
@@ -182,22 +198,27 @@ function register(it, expect, context) {
 
     it(testName + 'should read keys async', done => {
         const objects = context.objects;
-        objects.getKeys(testId + '*').then(keys => {
-            expect(keys.length).to.be.equal(2);
+        objects
+            .getKeys(testId + '*')
+            .then(keys => {
+                expect(keys.length).to.be.equal(2);
 
-            return objects.getKeys(testId);
-        }).then(keys => {
-            expect(keys.length).to.be.equal(1);
-            expect(keys[0]).to.be.equal(testId);
+                return objects.getKeys(testId);
+            })
+            .then(keys => {
+                expect(keys.length).to.be.equal(1);
+                expect(keys[0]).to.be.equal(testId);
 
-            return objects.getKeys(testId + 'non');
-        }).then(keys => {
-            expect(keys.length).to.be.equal(0);
+                return objects.getKeys(testId + 'non');
+            })
+            .then(keys => {
+                expect(keys.length).to.be.equal(0);
 
-            done();
-        }).catch(_err => {
-            expect(1).to.be.equal('Never happens');
-        });
+                done();
+            })
+            .catch(_err => {
+                expect(1).to.be.equal('Never happens');
+            });
     });
 
     it(testName + 'should read objects', done => {
@@ -217,22 +238,26 @@ function register(it, expect, context) {
     it(testName + 'should read objects async', done => {
         const objects = context.objects;
         let gKeys;
-        objects.getKeys(testId + '*').then(keys => {
-            gKeys = keys;
-            return objects.getObjects(keys);
-        }).then(objs => {
-            expect(objs.length).to.be.equal(2);
-            expect(objs[0]._id).to.be.equal(gKeys[0]);
-            expect(objs[1]._id).to.be.equal(gKeys[1]);
-            done();
-        }).catch(_err => {
-            expect(1).to.be.equal('Never happens');
-        });
+        objects
+            .getKeys(testId + '*')
+            .then(keys => {
+                gKeys = keys;
+                return objects.getObjects(keys);
+            })
+            .then(objs => {
+                expect(objs.length).to.be.equal(2);
+                expect(objs[0]._id).to.be.equal(gKeys[0]);
+                expect(objs[1]._id).to.be.equal(gKeys[1]);
+                done();
+            })
+            .catch(_err => {
+                expect(1).to.be.equal('Never happens');
+            });
     });
 
     it(testName + 'should extend object', done => {
         const objects = context.objects;
-        objects.extendObject(testId, {common: {def: 'default'}}, (err, res, id) => {
+        objects.extendObject(testId, { common: { def: 'default' } }, (err, res, id) => {
             expect(err).to.be.not.ok;
             expect(id).to.be.equal(testId);
             expect(res.id).to.be.equal(testId);
@@ -244,7 +269,7 @@ function register(it, expect, context) {
                 expect(obj.common.def).to.be.equal('default');
                 expect(obj.common.name).to.be.equal('test2');
 
-                objects.extendObject(namespace + '.other', {common: {def: 'default'}}, (err, res, id) => {
+                objects.extendObject(namespace + '.other', { common: { def: 'default' } }, (err, res, id) => {
                     expect(err).to.be.not.ok;
                     expect(id).to.be.equal(namespace + '.other');
                     expect(res.id).to.be.equal(namespace + '.other');
@@ -258,22 +283,26 @@ function register(it, expect, context) {
 
     it(testName + 'should extend object async', done => {
         const objects = context.objects;
-        objects.extendObject(testId, {common: {def: 'default'}}).then(res => {
-            expect(res.id).to.be.equal(testId);
-            expect(res.value.common.def).to.be.equal('default');
-            return objects.extendObject(namespace + '.otherAsync', {common: {def: 'default'}});
-        }).then(res => {
-            expect(res.id).to.be.equal(namespace + '.otherAsync');
-            expect(res.value.common.def).to.be.equal('default');
-            done();
-        }).catch(_err => {
-            expect(1).to.be.equal('Never happens');
-        });
+        objects
+            .extendObject(testId, { common: { def: 'default' } })
+            .then(res => {
+                expect(res.id).to.be.equal(testId);
+                expect(res.value.common.def).to.be.equal('default');
+                return objects.extendObject(namespace + '.otherAsync', { common: { def: 'default' } });
+            })
+            .then(res => {
+                expect(res.id).to.be.equal(namespace + '.otherAsync');
+                expect(res.value.common.def).to.be.equal('default');
+                done();
+            })
+            .catch(_err => {
+                expect(1).to.be.equal('Never happens');
+            });
     });
 
     it(testName + 'should getObjectList', done => {
         const objects = context.objects;
-        objects.getObjectList({startkey: namespace, endkey: testId}, (err, res) => {
+        objects.getObjectList({ startkey: namespace, endkey: testId }, (err, res) => {
             console.log(res.rows.map(e => e.id));
             expect(err).to.be.not.ok;
             expect(res.rows.length).to.be.equal(3);
@@ -281,7 +310,7 @@ function register(it, expect, context) {
             expect(obj.id).to.be.equal(testId);
             expect(obj.value._id).to.be.equal(testId);
 
-            objects.getObjectList({startkey: '', endkey: ' '}, (err, res) => {
+            objects.getObjectList({ startkey: '', endkey: ' ' }, (err, res) => {
                 expect(err).to.be.not.ok;
                 expect(res.rows.length).to.be.equal(0);
                 done();
@@ -291,25 +320,29 @@ function register(it, expect, context) {
 
     it(testName + 'should getObjectList async', done => {
         const objects = context.objects;
-        objects.getObjectList({startkey: namespace, endkey: testId}).then(res => {
-            expect(res.rows.length).to.be.equal(3);
-            const obj = res.rows.find(val => val.value._id === testId);
-            expect(obj.id).to.be.equal(testId);
-            expect(obj.value._id).to.be.equal(testId);
-            return objects.getObjectList({startkey: '', endkey: ' '});
-        }).then(res => {
-            console.log(JSON.stringify(res));
-            expect(res.rows.length).to.be.equal(0);
-            done();
-        }).catch(err => {
-            console.error(err);
-            expect(1).to.be.equal('Never happens');
-        });
+        objects
+            .getObjectList({ startkey: namespace, endkey: testId })
+            .then(res => {
+                expect(res.rows.length).to.be.equal(3);
+                const obj = res.rows.find(val => val.value._id === testId);
+                expect(obj.id).to.be.equal(testId);
+                expect(obj.value._id).to.be.equal(testId);
+                return objects.getObjectList({ startkey: '', endkey: ' ' });
+            })
+            .then(res => {
+                console.log(JSON.stringify(res));
+                expect(res.rows.length).to.be.equal(0);
+                done();
+            })
+            .catch(err => {
+                console.error(err);
+                expect(1).to.be.equal('Never happens');
+            });
     });
 
     it(testName + 'should create and read file', done => {
         const objects = context.objects;
-        objects.setObject(testId, {type: 'meta'}, err => {
+        objects.setObject(testId, { type: 'meta' }, err => {
             expect(err).to.be.not.ok;
             objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
                 err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
@@ -411,7 +444,6 @@ function register(it, expect, context) {
                     });
                 });
             });
-
         });
     });
 
@@ -463,11 +495,14 @@ function register(it, expect, context) {
 
     it(testName + 'should delete object async', done => {
         const objects = context.objects;
-        objects.delObjectAsync(testId + 'async').then(() => {
-            done();
-        }).catch(err => {
-            expect(err).to.be.not.ok;
-        });
+        objects
+            .delObjectAsync(testId + 'async')
+            .then(() => {
+                done();
+            })
+            .catch(err => {
+                expect(err).to.be.not.ok;
+            });
     });
 
     it(testName + 'should not delete non existing object', done => {
@@ -480,11 +515,14 @@ function register(it, expect, context) {
 
     it(testName + 'should not delete non existing object async', done => {
         const objects = context.objects;
-        objects.delObjectAsync(testId + 'async1').then(() => {
-            done();
-        }).catch(err => {
-            expect(err.message).to.be.equal('Should not happen');
-        });
+        objects
+            .delObjectAsync(testId + 'async1')
+            .then(() => {
+                done();
+            })
+            .catch(err => {
+                expect(err.message).to.be.equal('Should not happen');
+            });
     });
 
     it(testName + 'should close DB', () => {

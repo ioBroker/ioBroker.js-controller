@@ -57,7 +57,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         super(settings);
 
         this.serverConnections = {};
-        this.namespaceObjects = (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') + '.';
+        this.namespaceObjects =
+            (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') +
+            '.';
         this.namespaceFile = this.namespaceObjects + 'f.';
         this.namespaceObj = this.namespaceObjects + 'o.';
         this.namespaceSet = this.namespaceObjects + 's.';
@@ -71,18 +73,29 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         this.normalizeFileRegex1 = new RegExp('^(.*)\\$%\\$(.*)\\$%\\$(meta|data)$');
         this.normalizeFileRegex2 = new RegExp('^(.*)\\$%\\$(.*)\\/?\\*$');
 
-        this.open().then(() => {
-            return this._initRedisServer(this.settings.connection);
-        }).then(() => {
-            this.log.debug(this.namespace + ' ' + (settings.secure ? 'Secure ' : '') + ' Redis inMem-objects listening on port ' + (settings.port || 9001));
+        this.open()
+            .then(() => {
+                return this._initRedisServer(this.settings.connection);
+            })
+            .then(() => {
+                this.log.debug(
+                    this.namespace +
+                        ' ' +
+                        (settings.secure ? 'Secure ' : '') +
+                        ' Redis inMem-objects listening on port ' +
+                        (settings.port || 9001)
+                );
 
-            if (typeof this.settings.connected === 'function') {
-                setImmediate(() => this.settings.connected());
-            }
-        }).catch(e => {
-            this.log.error(this.namespace + ' Cannot start inMem-objects on port ' + (settings.port || 9001) + ': ' + e.message);
-            process.exit(24); // todo: replace it with exitcode
-        });
+                if (typeof this.settings.connected === 'function') {
+                    setImmediate(() => this.settings.connected());
+                }
+            })
+            .catch(e => {
+                this.log.error(
+                    this.namespace + ' Cannot start inMem-objects on port ' + (settings.port || 9001) + ': ' + e.message
+                );
+                process.exit(24); // todo: replace it with exitcode
+            });
     }
 
     /**
@@ -126,7 +139,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     if (fileIdDetails) {
                         id = fileIdDetails[1];
                         name = fileIdDetails[2] || '';
-                        isMeta = (fileIdDetails[3] === 'meta');
+                        isMeta = fileIdDetails[3] === 'meta';
                     } else {
                         fileIdDetails = id.match(this.normalizeFileRegex2);
                         if (fileIdDetails) {
@@ -182,9 +195,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         if (id.endsWith('.admin')) {
             if (name.startsWith('admin/')) {
                 name = name.replace(/^admin\//, '');
-            } else
-            // e.g. ekey.admin and iobroker.ekey/admin/ekey.png
-            if (name.match(/^iobroker.[-\d\w]\/admin\//i)) {
+            } else if (name.match(/^iobroker.[-\d\w]\/admin\//i)) {
+                // e.g. ekey.admin and iobroker.ekey/admin/ekey.png
                 name = name.replace(/^iobroker.[-\d\w]\/admin\//i, '');
             }
         }
@@ -250,13 +262,21 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
                     this.knownScripts[scriptChecksum] = { design: design, search: search };
                     if (this.settings.connection.enhancedLogging) {
-                        this.log.silly(`${namespaceLog} Register View LUA Script: ${scriptChecksum} = ${JSON.stringify(this.knownScripts[scriptChecksum])}`);
+                        this.log.silly(
+                            `${namespaceLog} Register View LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum]
+                            )}`
+                        );
                     }
                     handler.sendBulk(responseId, scriptChecksum);
                 } else if (scriptFunc && scriptFunc[1]) {
                     this.knownScripts[scriptChecksum] = { func: scriptFunc[1] };
                     if (this.settings.connection.enhancedLogging) {
-                        this.log.silly(`${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(this.knownScripts[scriptChecksum])}`);
+                        this.log.silly(
+                            `${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum]
+                            )}`
+                        );
                     }
                     handler.sendBulk(responseId, scriptChecksum);
                 } else {
@@ -283,7 +303,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         scriptSearch = 'state';
                     }
                     if (this.settings.connection.enhancedLogging) {
-                        this.log.silly(`${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`);
+                        this.log.silly(
+                            `${namespaceLog} Script transformed into getObjectView: design=${scriptDesign}, search=${scriptSearch}`
+                        );
                     }
                     let objs;
                     try {
@@ -293,7 +315,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             include_docs: true
                         });
                     } catch (err) {
-                        return void handler.sendError(responseId, new Error('_getObjectView Error for ' + scriptDesign + '/' + scriptSearch + ': ' + err.message));
+                        return void handler.sendError(
+                            responseId,
+                            new Error(
+                                '_getObjectView Error for ' + scriptDesign + '/' + scriptSearch + ': ' + err.message
+                            )
+                        );
                     }
                     const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
                     handler.sendArray(responseId, res);
@@ -320,7 +347,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
-            if (namespace === this.namespaceObj) { // a "set" always comes afterwards, so do not publish
+            if (namespace === this.namespaceObj) {
+                // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
             const publishCount = this.publishAll(namespace.substr(0, namespace.length - 1), id, JSON.parse(data[1]));
@@ -340,7 +368,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     const { id, namespace } = this._normalizeId(dataId);
                     if (namespace !== this.namespaceObj) {
                         keys.push(null);
-                        this.log.warn(`${namespaceLog} Got MGET request for non Object-ID in Objects-ID chunk for ${namespace} / ${dataId}`);
+                        this.log.warn(
+                            `${namespaceLog} Got MGET request for non Object-ID in Objects-ID chunk for ${namespace} / ${dataId}`
+                        );
                         return;
                     }
                     keys.push(id);
@@ -351,7 +381,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 } catch (err) {
                     return void handler.sendError(responseId, new Error('ERROR _getObjects: ' + err.message));
                 }
-                result = result.map(el => el ? JSON.stringify(el) : null);
+                result = result.map(el => (el ? JSON.stringify(el) : null));
                 handler.sendArray(responseId, result);
             } else if (namespace === this.namespaceFile) {
                 // Handle request for Meta data for files
@@ -361,7 +391,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         const { id, namespace, name } = this._normalizeId(dataId);
                         if (namespace !== this.namespaceFile) {
                             response.push(null);
-                            this.log.warn(`${namespaceLog} Got MGET request for non File ID in File-ID chunk for ${dataId}`);
+                            this.log.warn(
+                                `${namespaceLog} Got MGET request for non File ID in File-ID chunk for ${dataId}`
+                            );
                             return;
                         }
                         this._loadFileSettings(id);
@@ -375,7 +407,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             obj.stats = fs.statSync(path.join(this.objectsDir, id, name));
                         } catch (err) {
                             if (!name.endsWith('/_data.json')) {
-                                this.log.warn(`${namespaceLog} Got MGET request for non existing file ${dataId}, err: ${err.message}`);
+                                this.log.warn(
+                                    `${namespaceLog} Got MGET request for non existing file ${dataId}, err: ${err.message}`
+                                );
                             }
                             response.push(null);
                             return;
@@ -388,7 +422,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendError(responseId, new Error('MGET-UNSUPPORTED for file data'));
                 }
             } else {
-                handler.sendError(responseId, new Error('MGET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data)));
+                handler.sendError(
+                    responseId,
+                    new Error('MGET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                );
             }
         });
 
@@ -413,11 +450,14 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         return void handler.sendNull(responseId);
                     }
                     if (stats.isDirectory()) {
-                        return void handler.sendBulk(responseId, JSON.stringify({
-                            file: name,
-                            stats: {},
-                            isDir: true
-                        }));
+                        return void handler.sendBulk(
+                            responseId,
+                            JSON.stringify({
+                                file: name,
+                                stats: {},
+                                isDir: true
+                            })
+                        );
                     }
                     this._loadFileSettings(id);
                     if (!this.fileOptions[id] || !this.fileOptions[id][name]) {
@@ -429,9 +469,16 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         obj = {
                             mimeType: obj,
                             acl: {
-                                owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                                ownerGroup: (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                                permissions: (this.defaultNewAcl && this.defaultNewAcl.file.permissions) || (utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_ALL) // 777
+                                owner:
+                                    (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                                ownerGroup:
+                                    (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                    utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                permissions:
+                                    (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
+                                    utils.CONSTS.ACCESS_USER_ALL |
+                                        utils.CONSTS.ACCESS_GROUP_ALL |
+                                        utils.CONSTS.ACCESS_EVERY_ALL // 777
                             }
                         };
                     }
@@ -452,12 +499,17 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     if (!Buffer.isBuffer(fileData) && tools.isObject(fileData)) {
                         // if its an invalid object, stringify it and log warning
                         fileData = JSON.stringify(fileData);
-                        this.log.warn(`${namespaceLog} Data of "${id}/${name}" has invalid structure at file data request: ${fileData}`);
+                        this.log.warn(
+                            `${namespaceLog} Data of "${id}/${name}" has invalid structure at file data request: ${fileData}`
+                        );
                     }
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
             } else {
-                handler.sendError(responseId, new Error('GET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data)));
+                handler.sendError(
+                    responseId,
+                    new Error('GET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                );
             }
         });
 
@@ -485,10 +537,16 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         // only set if the meta object is already/still existing
                         if (this.fileOptions[id]) {
                             this.fileOptions[id][name] = JSON.parse(data[1].toString('utf-8'));
-                            fs.writeFileSync(path.join(this.objectsDir, id, '_data.json'), JSON.stringify(this.fileOptions[id]));
+                            fs.writeFileSync(
+                                path.join(this.objectsDir, id, '_data.json'),
+                                JSON.stringify(this.fileOptions[id])
+                            );
                         }
                     } catch (err) {
-                        return void handler.sendError(responseId, new Error(`ERROR writeFile-Meta id=${id}: ${err.message}`));
+                        return void handler.sendError(
+                            responseId,
+                            new Error(`ERROR writeFile-Meta id=${id}: ${err.message}`)
+                        );
                     }
                     handler.sendString(responseId, 'OK');
                 } else {
@@ -496,12 +554,18 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     try {
                         this._writeFile(id, name, data[1]);
                     } catch (err) {
-                        return void handler.sendError(responseId, new Error(`ERROR writeFile id=${id}: ${err.message}`));
+                        return void handler.sendError(
+                            responseId,
+                            new Error(`ERROR writeFile id=${id}: ${err.message}`)
+                        );
                     }
                     handler.sendString(responseId, 'OK');
                 }
             } else {
-                handler.sendError(responseId, new Error(`SET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`));
+                handler.sendError(
+                    responseId,
+                    new Error(`SET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                );
             }
         });
 
@@ -512,7 +576,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
             if (oldDetails.namespace === this.namespaceFile) {
                 if (oldDetails.id !== newDetails.id) {
-                    return void handler.sendError(responseId, new Error('ERROR renameObject: id needs to stay the same'));
+                    return void handler.sendError(
+                        responseId,
+                        new Error('ERROR renameObject: id needs to stay the same')
+                    );
                 }
 
                 // Handle request for Meta data for files
@@ -528,7 +595,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendString(responseId, 'OK');
                 }
             } else {
-                handler.sendError(responseId, new Error(`RENAME-UNSUPPORTED for namespace ${oldDetails.namespace}: Data=${JSON.stringify(data)}`));
+                handler.sendError(
+                    responseId,
+                    new Error(`RENAME-UNSUPPORTED for namespace ${oldDetails.namespace}: Data=${JSON.stringify(data)}`)
+                );
             }
         });
 
@@ -558,7 +628,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendString(responseId, 'OK');
                 }
             } else {
-                handler.sendError(responseId, new Error(`DEL-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`));
+                handler.sendError(
+                    responseId,
+                    new Error(`DEL-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                );
             }
         });
 
@@ -647,7 +720,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 this._subscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {
-                handler.sendError(responseId, new Error('PSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data)));
+                handler.sendError(
+                    responseId,
+                    new Error('PSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                );
             }
         });
 
@@ -659,7 +735,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 this._unsubscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
             } else {
-                handler.sendError(responseId, new Error('PUNSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data)));
+                handler.sendError(
+                    responseId,
+                    new Error('PUNSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                );
             }
         });
 
@@ -719,17 +798,19 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 delete this.serverConnections[s];
             });
 
-            return /** @type {Promise<void>} */ (new Promise(resolve => {
-                if (!this.server) {
-                    return void resolve();
-                }
-                try {
-                    this.server.close(() => resolve());
-                } catch (e) {
-                    console.log(e.message);
-                    resolve();
-                }
-            }));
+            return /** @type {Promise<void>} */ (
+                new Promise(resolve => {
+                    if (!this.server) {
+                        return void resolve();
+                    }
+                    try {
+                        this.server.close(() => resolve());
+                    } catch (e) {
+                        console.log(e.message);
+                        resolve();
+                    }
+                })
+            );
         }
     }
 
@@ -749,7 +830,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
             response = this._getKeys(id).map(val => this.namespaceObj + val);
             // if scan, we send the cursor as first argument
-            if (namespace !== this.namespaceObjects) { // When it was not the full DB namespace send out response
+            if (namespace !== this.namespaceObjects) {
+                // When it was not the full DB namespace send out response
                 return void handler.sendArray(responseId, isScan ? ['0', response] : response);
             }
         }
@@ -760,13 +842,15 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 try {
                     res = this._readDir(id, name);
                     if (!res || !res.length) {
-                        res = [{
-                            file: '_data.json',
-                            stats: {},
-                            isDir: false,
-                            virtualFile: true,
-                            notExists: true
-                        }];
+                        res = [
+                            {
+                                file: '_data.json',
+                                stats: {},
+                                isDir: false,
+                                virtualFile: true,
+                                notExists: true
+                            }
+                        ];
                     }
                 } catch (err) {
                     if (!err.message.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
@@ -793,13 +877,17 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     response.push(this.getFileId(entryId, baseName + arr.file, false));
                 });
                 handler.sendArray(responseId, isScan ? ['0', response] : response); // send out file or full db response
-            } else { // such a request should never happen
+            } else {
+                // such a request should never happen
                 handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
             }
         } else if (namespace === this.namespaceSet) {
             handler.sendArray(responseId, isScan ? ['0', []] : []); // send out empty array, we have no sets
         } else {
-            handler.sendError(responseId, new Error(`${isScan ? 'SCAN' : 'KEYS'}-UNSUPPORTED for namespace ${namespace}: Pattern=${pattern}`));
+            handler.sendError(
+                responseId,
+                new Error(`${isScan ? 'SCAN' : 'KEYS'}-UNSUPPORTED for namespace ${namespace}: Pattern=${pattern}`)
+            );
         }
     }
 
@@ -843,7 +931,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             try {
                 this.server = net.createServer();
                 this.server.on('error', err =>
-                    this.log.info(`${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-objects listening on port ${settings.port || 9001}: ${err}`));
+                    this.log.info(
+                        `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-objects listening on port ${
+                            settings.port || 9001
+                        }: ${err}`
+                    )
+                );
                 this.server.on('connection', socket => this._initSocket(socket));
 
                 this.server.listen(

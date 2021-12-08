@@ -9,45 +9,45 @@
  */
 
 'use strict';
-const dgram          = require('dgram');
+const dgram = require('dgram');
 const dbTools = require('@iobroker/js-controller-common-db');
-const PORT           = 50005;
+const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
 /** @class */
 function MHServer(hostname, logger, config, info, ips, secret) {
-    const count     = 0;
-    const buffer    = {};
+    const count = 0;
+    const buffer = {};
     const lastFrame = {};
-    const authList  = {};
+    const authList = {};
 
-    let server      = null;
-    let initTimer   = null;
-    let stopped     = false;
+    let server = null;
+    let initTimer = null;
+    let stopped = false;
     let crypto;
 
     config = Object.assign({}, config); // make a copy
 
     if (config.objects) {
         config.objects = {
-            type:     config.objects.type,
-            host:     config.objects.host,
-            port:     config.objects.port,
-            user:     config.objects.user,
-            pass:     config.objects.pass,
-            options:  config.objects.options,
+            type: config.objects.type,
+            host: config.objects.host,
+            port: config.objects.port,
+            user: config.objects.user,
+            pass: config.objects.pass,
+            options: config.objects.options,
             maxQueue: config.objects.maxQueue
         };
     }
 
     if (config.states) {
         config.states = {
-            type:     config.states.type,
-            host:     config.states.host,
-            port:     config.states.port,
-            user:     config.states.user,
-            pass:     config.states.pass,
-            options:  config.states.options,
+            type: config.states.type,
+            host: config.states.host,
+            port: config.states.port,
+            user: config.states.user,
+            pass: config.states.pass,
+            options: config.states.options,
             maxQueue: config.states.maxQueue
         };
     }
@@ -59,7 +59,9 @@ function MHServer(hostname, logger, config, info, ips, secret) {
                 try {
                     server.send(text, 0, text.length, rinfo.port, rinfo.address);
                 } catch (e) {
-                    logger.warn(`host.${hostname} Multi-host discovery server: cannot send answer to ${rinfo.address}:${rinfo.port}: ${e}`);
+                    logger.warn(
+                        `host.${hostname} Multi-host discovery server: cannot send answer to ${rinfo.address}:${rinfo.port}: ${e}`
+                    );
                 }
             });
         }
@@ -107,41 +109,50 @@ function MHServer(hostname, logger, config, info, ips, secret) {
                 if (secret && msg.password && authList[id]) {
                     return sha(secret, authList[id].salt, shaText => {
                         if (shaText !== msg.password) {
-                            send({
-                                auth:   config.multihostService.secure,
-                                cmd:    msg.cmd,
-                                id:     msg.id,
-                                result: 'invalid password'
-                            }, rinfo);
+                            send(
+                                {
+                                    auth: config.multihostService.secure,
+                                    cmd: msg.cmd,
+                                    id: msg.id,
+                                    result: 'invalid password'
+                                },
+                                rinfo
+                            );
                         } else {
                             authList[id].auth = true;
-                            send({
-                                auth:     config.multihostService.secure,
-                                cmd:      msg.cmd,
-                                id:       msg.id,
-                                objects:  config.objects,
-                                states:   config.states,
-                                info:     info,
-                                hostname: hostname,
-                                slave:    !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
-                                result:   'ok'
-                            }, rinfo);
+                            send(
+                                {
+                                    auth: config.multihostService.secure,
+                                    cmd: msg.cmd,
+                                    id: msg.id,
+                                    objects: config.objects,
+                                    states: config.states,
+                                    info: info,
+                                    hostname: hostname,
+                                    slave: !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
+                                    result: 'ok'
+                                },
+                                rinfo
+                            );
                         }
                     });
                 }
 
                 if (!config.multihostService.secure || (authList[id] && authList[id].auth)) {
-                    send({
-                        auth:     config.multihostService.secure,
-                        cmd:      msg.cmd,
-                        id:       msg.id,
-                        objects:  config.objects,
-                        states:   config.states,
-                        info:     info,
-                        hostname: hostname,
-                        slave:    !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
-                        result:   'ok'
-                    }, rinfo);
+                    send(
+                        {
+                            auth: config.multihostService.secure,
+                            cmd: msg.cmd,
+                            id: msg.id,
+                            objects: config.objects,
+                            states: config.states,
+                            info: info,
+                            hostname: hostname,
+                            slave: !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
+                            result: 'ok'
+                        },
+                        rinfo
+                    );
                 } else {
                     authList[id] = {
                         time: ts,
@@ -152,22 +163,28 @@ function MHServer(hostname, logger, config, info, ips, secret) {
                     if (authList[id].salt.length < 16) {
                         authList[id].salt += new Array(16 - authList[id].salt.length).join('_');
                     }
-                    send({
-                        auth:   config.multihostService.secure,
-                        cmd:    msg.cmd,
-                        id:     msg.id,
-                        result: 'not authenticated',
-                        salt:   authList[id].salt
-                    }, rinfo);
+                    send(
+                        {
+                            auth: config.multihostService.secure,
+                            cmd: msg.cmd,
+                            id: msg.id,
+                            result: 'not authenticated',
+                            salt: authList[id].salt
+                        },
+                        rinfo
+                    );
                 }
                 break;
 
             default:
-                send({
-                    cmd:     msg.cmd,
-                    id:      msg.id,
-                    result:  'unknown command'
-                }, rinfo);
+                send(
+                    {
+                        cmd: msg.cmd,
+                        id: msg.id,
+                        result: 'unknown command'
+                    },
+                    rinfo
+                );
                 break;
         }
     }
@@ -180,20 +197,24 @@ function MHServer(hostname, logger, config, info, ips, secret) {
         }
 
         if (count > 10) {
-            return logger.warn('host.' + hostname + ' Multi-host discovery server: Port ' + PORT + ' is occupied. Service stopped.');
+            return logger.warn(
+                'host.' + hostname + ' Multi-host discovery server: Port ' + PORT + ' is occupied. Service stopped.'
+            );
         }
 
-        server = dgram.createSocket({type: 'udp4', reuseAddr: true});
+        server = dgram.createSocket({ type: 'udp4', reuseAddr: true });
 
         server.on('error', err => {
             logger.error('host.' + hostname + ' Multi-host discovery server: error: ' + err.stack);
             server.close();
             server = null;
 
-            initTimer = initTimer || setTimeout(() => {
-                initTimer = null;
-                this.init();
-            }, 5000);
+            initTimer =
+                initTimer ||
+                setTimeout(() => {
+                    initTimer = null;
+                    this.init();
+                }, 5000);
         });
 
         server.on('close', _err => {
@@ -210,7 +231,7 @@ function MHServer(hostname, logger, config, info, ips, secret) {
         server.on('message', (msg, rinfo) => {
             // following messages are allowed
             const text = msg.toString();
-            const now  = new Date().getTime();
+            const now = new Date().getTime();
             const id = rinfo.address + ':' + rinfo.port;
 
             for (const ids in buffer) {
@@ -230,7 +251,9 @@ function MHServer(hostname, logger, config, info, ips, secret) {
 
             if (!buffer[id] && text[0] !== '{') {
                 // ignore message
-                logger.debug(`host.${hostname} Multi-host discovery server: Message from ${rinfo.address} ignored: ${text}`);
+                logger.debug(
+                    `host.${hostname} Multi-host discovery server: Message from ${rinfo.address} ignored: ${text}`
+                );
             } else {
                 buffer[id] = (buffer[id] || '') + msg.toString();
                 if (buffer[id] && buffer[id][buffer[id].length - 1] === '}') {
@@ -254,7 +277,9 @@ function MHServer(hostname, logger, config, info, ips, secret) {
                 logger.warn(`host.${hostname} Multi-host discovery server: Multicast membership could not be added.`);
             }
             const address = server.address();
-            logger.info(`host.${hostname} Multi-host discovery server: service started on ${address.address}:${address.port}`);
+            logger.info(
+                `host.${hostname} Multi-host discovery server: service started on ${address.address}:${address.port}`
+            );
         });
 
         server.bind(PORT);

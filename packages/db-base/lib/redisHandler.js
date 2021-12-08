@@ -40,7 +40,7 @@ class RedisHandler extends EventEmitter {
         this.resp.on('error', err => {
             this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error:${err}`);
             if (this.initialized) {
-                this.sendError(null,new Error('PARSER ERROR ' + err)); // TODO
+                this.sendError(null, new Error('PARSER ERROR ' + err)); // TODO
             } else {
                 this.close();
             }
@@ -50,7 +50,19 @@ class RedisHandler extends EventEmitter {
 
         socket.on('data', data => {
             if (this.options.enhancedLogging) {
-                this.log.silly(`${this.socketId} New Redis request: ${(data.length > 1024) ? data.toString().replace(/[\r\n]+/g, '').substring(0, 100) + ' -- ' + data.length + ' bytes' : data.toString().replace(/[\r\n]+/g, '')}`);
+                this.log.silly(
+                    `${this.socketId} New Redis request: ${
+                        data.length > 1024
+                            ? data
+                                  .toString()
+                                  .replace(/[\r\n]+/g, '')
+                                  .substring(0, 100) +
+                              ' -- ' +
+                              data.length +
+                              ' bytes'
+                            : data.toString().replace(/[\r\n]+/g, '')
+                    }`
+                );
             }
             this.resp.write(data);
         });
@@ -91,11 +103,17 @@ class RedisHandler extends EventEmitter {
             this.initialized = true;
         }
         const t = process.hrtime();
-        const responseId = (t[0] * 1e3) + (t[1] / 1e6);
+        const responseId = t[0] * 1e3 + t[1] / 1e6;
         if (this.options.enhancedLogging) {
-            this.log.silly(`${this.socketId} Parser result: id=${responseId}, command=${command}, data=${(JSON.stringify(data).length > 1024) ? JSON.stringify(data).substring(0, 100) + ' -- ' + JSON.stringify(data).length + ' bytes' : JSON.stringify(data)}`);
+            this.log.silly(
+                `${this.socketId} Parser result: id=${responseId}, command=${command}, data=${
+                    JSON.stringify(data).length > 1024
+                        ? JSON.stringify(data).substring(0, 100) + ' -- ' + JSON.stringify(data).length + ' bytes'
+                        : JSON.stringify(data)
+                }`
+            );
         }
-        this.writeQueue.push({id: responseId, data: false});
+        this.writeQueue.push({ id: responseId, data: false });
         if (this.listenerCount(command) !== 0) {
             setImmediate(() => this.emit(command, data, responseId));
         } else {
@@ -127,7 +145,13 @@ class RedisHandler extends EventEmitter {
             if (idx === 0 && this.writeQueue[idx].data !== false) {
                 const response = this.writeQueue.shift();
                 if (this.options.enhancedLogging) {
-                    this.log.silly(`${this.socketId} Redis response (${response.id}): ${(response.data.length > 1024) ? data.length + ' bytes' : response.data.toString().replace(/[\r\n]+/g, '')}`);
+                    this.log.silly(
+                        `${this.socketId} Redis response (${response.id}): ${
+                            response.data.length > 1024
+                                ? data.length + ' bytes'
+                                : response.data.toString().replace(/[\r\n]+/g, '')
+                        }`
+                    );
                 }
                 this._write(response.data);
                 // We sended out first queue entry but no further response is ready
