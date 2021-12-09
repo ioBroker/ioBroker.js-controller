@@ -3217,6 +3217,11 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
     }
 }
 
+function showDeprecatedMessage(func, logger) {
+    logger = logger || console.log;
+    logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
+}
+
 function readLicenses(login, password) {
     axios = axios || require('axios');
     const config = {
@@ -3224,17 +3229,13 @@ function readLicenses(login, password) {
         timeout: 4000
     };
 
-function showDeprecatedMessage(func, logger) {
-    logger = logger || console.log;
-    logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
-}
-
     return axios.get(`https://iobroker.net:3001/api/v1/licenses`, config)
         .then(response => {
             if (response.data && response.data.length) {
                 const now = Date.now();
                 response.data = response.data.filter(license => !license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now);
             }
+            return response.data;
         })
         .catch(err => {
             if (err.response) {
@@ -3260,6 +3261,7 @@ function updateLicenses(objects, login, password) {
                     // get the secret to decode the password
                     return objects.getObject('system.config')
                         .then(systemConfig => {
+                            // decode the password
                             let password;
                             try {
                                 password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
@@ -3268,43 +3270,45 @@ function updateLicenses(objects, login, password) {
                             }
 
                             // read licenses from iobroker.net
-                            return readLicenses(systemLicenses.native.login, password)
-                                .then(licenses => {
-                                    // save licenses to system.licenses and remember the time
-                                    // merge the information together
-                                    const oldLicenses = systemLicenses.native.licenses;
-                                    systemLicenses.native.licenses = licenses;
-                                    oldLicenses.forEach(oldLicense => {
-                                        if (oldLicense.usedBy) {
-                                            const newLicense = licenses.find(item => item.json === oldLicense.json);
-                                            if (newLicense) {
-                                                newLicense.usedBy = oldLicense.usedBy;
-                                            }
-                                        }
-                                    });
+                            return readLicenses(systemLicenses.native.login, password);
+                        })
+                        .then(licenses => {
+                            // save licenses to system.licenses and remember the time
+                            // merge the information together
+                            const oldLicenses = systemLicenses.native.licenses || [];
+                            systemLicenses.native.licenses = licenses;
+                            oldLicenses.forEach(oldLicense => {
+                                if (oldLicense.usedBy) {
+                                    const newLicense = licenses.find(item => item.json === oldLicense.json);
+                                    if (newLicense) {
+                                        newLicense.usedBy = oldLicense.usedBy;
+                                    }
+                                }
+                            });
 
+                            systemLicenses.native.readTime = new Date().toISOString();
+
+                            // update read time
+                            return objects.setObject('system.licenses', systemLicenses)
+                                .then(() => licenses);
+                        })
+                        .catch(err => {
+                            // if password is invalid
+                            if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password')) {
+                                // clear existing licenses if exist
+                                if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
+                                    systemLicenses.native.licenses = [];
                                     systemLicenses.native.readTime = new Date().toISOString();
                                     return objects.setObject('system.licenses', systemLicenses)
-                                        .then(() => licenses);
-                                })
-                                .catch(err => {
-                                    // if password is invalid
-                                    if (err.message.includes('Authentication required')) {
-                                        // clear existing licenses if exist
-                                        if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
-                                            systemLicenses.native.licenses = [];
-                                            systemLicenses.native.readTime = new Date().toISOString();
-                                            return objects.setObject('system.licenses', systemLicenses)
-                                                .then(() => {
-                                                    throw err;
-                                                });
-                                        } else {
+                                        .then(() => {
                                             throw err;
-                                        }
-                                    } else {
-                                        throw err;
-                                    }
-                                });
+                                        });
+                                } else {
+                                    throw err;
+                                }
+                            } else {
+                                throw err;
+                            }
                         });
                 } else {
                     // if password or login are empty => clear existing licenses if exist

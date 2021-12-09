@@ -21,6 +21,7 @@ const fs = require('fs-extra');
 const extend = require('node.extend');
 const util = require('util');
 const os = require('os');
+const jwt = require('jsonwebtoken');
 const EventEmitter = require('events').EventEmitter;
 const {tools} = require('@iobroker/js-controller-common');
 const pidUsage = require('pidusage');
@@ -50,7 +51,7 @@ const supportedFeatures = [
     'PLUGINS', // configurable plugins supported. Since js-controller 3.0
     'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
     'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
-    'CONTROLLER_MULTI_REPO' // Controller supports multiple repositories
+    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
     'CONTROLLER_LICENSE_MANAGER' // Controller can read licenses from iobroker.net. Since js-controller 4.0
 ];
 
@@ -8358,6 +8359,7 @@ function Adapter(options) {
                     this.common = adapterConfig.common || {};
                     this.host = this.common.host || tools.getHostName() || os.hostname();
                 }
+
                 this.adapterConfig = adapterConfig;
 
                 // Decrypt all attributes of encryptedNative
@@ -8740,14 +8742,35 @@ function Adapter(options) {
     this.getSuitableLicenses = async all => {
         const licenses = [];
         try {
-            const obj = await this.getForeignObject('system.licenses');
+            const obj = await this.getForeignObjectAsync('system.licenses');
             if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
                 const now = Date.now();
+                const cert = fs.readFileSync(__dirname + '/../../cert/cloudCert.crt');
+                const version = this.pack.version.split('.')[0];
+
                 obj.native.licenses.forEach(license => {
-                    if (!license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now) {
-                        if (license.startsWith('iobroker.' + this.name && (all || !license.usedBy || license.usedBy === this.namespace))) {
-                            licenses.push(license);
+                    try {
+                        const decoded = jwt.verify(license.json, cert);
+                        if (decoded.name && (!decoded.valid_till || license.valid_till === '0000-00-00 00:00:00' || new Date(license.valid_till).getTime() > now)) {
+                            if (decoded.name.startsWith('iobroker.' + this.name) && (all || !license.usedBy || license.usedBy === this.namespace)) {
+                                if (decoded.version === '<2' || decoded.version === '<1' || decoded.version === '<=1') {
+                                    if (version !== '0' && version !== '1') {
+                                        return;
+                                    }
+                                } else if (decoded.version && decoded.version !== version) {
+                                    return;
+                                }
+                                // remove free license if commercial license found
+                                if (decoded.invoice !== 'free') {
+                                    const pos = licenses.findIndex(item => item.invoice === 'free');
+                                    pos !== -1 && licenses.splice(pos, 1);
+                                }
+                                license.decoded = decoded;
+                                licenses.push(license);
+                            }
                         }
+                    } catch (err) {
+                        adapter.log.error(`Cannot decode license "${license.name}": ${err.message}`);
                     }
                 });
             }

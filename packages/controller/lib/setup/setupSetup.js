@@ -26,12 +26,12 @@ function Setup(options) {
 
     options = options || {};
 
-    const processExit       = options.processExit;
-    const dbConnect         = options.dbConnect;
-    const params            = options.params;
-    const cleanDatabase     = options.cleanDatabase;
-    const resetDbConnect    = options.resetDbConnect;
-    const restartController = options.restartController;
+    const processExit            = options.processExit;
+    const dbConnect              = options.dbConnect;
+    const params                 = options.params;
+    const cleanDatabaseAsync     = options.cleanDatabaseAsync;
+    const resetDbConnect         = options.resetDbConnect;
+    const restartControllerAsync = options.restartControllerAsync;
     let objects;
     let states;
 
@@ -411,8 +411,8 @@ function Setup(options) {
                     const backup = new Backup({
                         states,
                         objects,
-                        cleanDatabase,
-                        restartController,
+                        cleanDatabaseAsync,
+                        restartControllerAsync,
                         processExit: callback
                     });
 
@@ -453,8 +453,8 @@ function Setup(options) {
                             const backup = new Backup({
                                 states,
                                 objects,
-                                cleanDatabase,
-                                restartController,
+                                cleanDatabaseAsync,
+                                restartControllerAsync,
                                 processExit: callback,
                                 dbMigration: true
                             });
