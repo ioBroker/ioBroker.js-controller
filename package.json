@@ -16,6 +16,7 @@
     "@iobroker/js-controller-cli": "file:packages/cli",
     "@iobroker/js-controller-common": "file:packages/common",
     "@iobroker/js-controller-common-db": "file:packages/common-db",
+    "iobroker.iogo": "0.6.6",
     "iobroker.js-controller": "file:packages/controller"
   },
   "devDependencies": {

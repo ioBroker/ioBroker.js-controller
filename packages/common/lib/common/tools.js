@@ -514,30 +514,30 @@ function getFile(urlOrPath, fileName, callback) {
             headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
         })
             .on('error', error => {
-            console.log(`Cannot download "${tmpFile}": ${error}`);
+                console.log(`Cannot download "${tmpFile}": ${error}`);
                 callback && callback(tmpFile);
             })
             .pipe(fs.createWriteStream(tmpFile))
             .on('close', () => {
-            console.log('downloaded ' + tmpFile);
+                console.log('downloaded ' + tmpFile);
                 callback && callback(tmpFile);
         });
     } else {
         try {
-        if (fs.existsSync(urlOrPath)) {
+            if (fs.existsSync(urlOrPath)) {
                 callback && callback(urlOrPath);
             } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
                 callback && callback(`${__dirname}/../${urlOrPath}`);
             } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
                 callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
-        } else {
-            console.log('File not found: ' + urlOrPath);
+            } else {
+                console.log('File not found: ' + urlOrPath);
                 process.exit(EXIT_CODES.FILE_NOT_FOUND);
-        }
+            }
         } catch (err) {
             console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
             process.exit(EXIT_CODES.FILE_NOT_FOUND);
-    }
+        }
     }
 }
 
@@ -2579,11 +2579,11 @@ async function getAllInstancesAsync(adapters, objects) {
         }
         if (!adapters[i].includes('.')) {
             const inst = await getInstancesAsync(adapters[i], objects);
-                for (let j = 0; j < inst.length; j++) {
-                    if (!instances.includes(inst[j])) {
-                        instances.push(inst[j]);
-                    }
+            for (let j = 0; j < inst.length; j++) {
+                if (!instances.includes(inst[j])) {
+                    instances.push(inst[j]);
                 }
+            }
         } else {
             if (!instances.includes(adapters[i])) {
                 instances.push(adapters[i]);

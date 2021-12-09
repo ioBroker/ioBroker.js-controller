@@ -8770,16 +8770,16 @@ function Adapter(options) {
                             }
                         }
                     } catch (err) {
-                        adapter.log.error(`Cannot decode license "${license.name}": ${err.message}`);
+                        logger.error(`${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`);
                     }
                 });
             }
         } catch {
-
+            // ignore
         }
 
         return licenses;
-    }
+    };
 
     initObjects(() => {
         if (this.inited) {
