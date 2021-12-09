@@ -521,7 +521,7 @@ function getFile(urlOrPath, fileName, callback) {
             .on('close', () => {
                 console.log('downloaded ' + tmpFile);
                 callback && callback(tmpFile);
-        });
+            });
     } else {
         try {
             if (fs.existsSync(urlOrPath)) {
