@@ -49,7 +49,8 @@ const supportedFeatures = [
     'ADAPTER_AUTO_DECRYPT_NATIVE', // all native attributes, that are listed in an array `encryptedNative` in io-pack will be automatically decrypted and encrypted. Since js-controller 3.0
     'PLUGINS', // configurable plugins supported. Since js-controller 3.0
     'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
-    'CONTROLLER_READWRITE_BASE_SETTINGS' // If base settings could be read and written. Since js-controller 3.0
+    'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
+    'CONTROLLER_MULTI_REPO' // Controller supports multiple repositories
 ];
 
 //const ACCESS_EVERY_EXEC  = 0x1;
@@ -1984,13 +1985,14 @@ function Adapter(options) {
 
                 if (!Object.prototype.hasOwnProperty.call(obj.common, 'name')) {
                     obj.common.name = id;
-                    logger.debug(this.namespaceLog + ' setObject ' + id + ' (type=' + obj.type + ') property common.name missing, using id as name');
+                    // it is more an unimportant warning as debug
+                    logger.debug(`${this.namespaceLog} setObject ${id} (type=${obj.type}) property common.name missing, using id as name`);
                 }
 
                 id = this._fixId(id, false/*, obj.type*/);
 
                 if (obj.children || obj.parent) {
-                    logger.warn(this.namespaceLog + ' Do not use parent or children for ' + id);
+                    logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
                 }
 
                 obj.from = obj.from || ('system.adapter.' + this.namespace);
@@ -2971,6 +2973,7 @@ function Adapter(options) {
                     if (res && res.rows) {
                         for (let i = 0; i < res.rows.length; i++) {
                             if (!res.rows[i].value) {
+                                // it is more an unimportant warning as debug
                                 logger.debug(`${this.namespaceLog} getEnums(${JSON.stringify(enums)}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(res.rows[i])}`);
                                 continue;
                             }
@@ -5438,7 +5441,7 @@ function Adapter(options) {
 
     // initStates is called from initAdapter
     const initStates = cb => {
-        logger.debug(this.namespaceLog + ' objectDB connected');
+        logger.silly(this.namespaceLog + ' objectDB connected');
 
         config.states.maxQueue = config.states.maxQueue || 1000;
 
@@ -5457,7 +5460,7 @@ function Adapter(options) {
             namespace: this.namespaceLog,
             connection: config.states,
             connected: async _statesInstance => {
-                logger.debug(this.namespaceLog + ' statesDB connected');
+                logger.silly(this.namespaceLog + ' statesDB connected');
                 this.statesConnectedTime = Date.now();
 
                 if (initializeTimeout) {
@@ -5582,7 +5585,7 @@ function Adapter(options) {
                 // If someone want to have log messages
                 if (this.logList && id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    logger && logger.debug(this.namespaceLog + ' ' + instance + ': logging ' + (state ? state.val : false));
+                    logger && logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect(state ? state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     options.logTransporter && this.processLog && this.processLog(state);
@@ -5749,9 +5752,9 @@ function Adapter(options) {
             }
 
             if (typeof message !== 'object') {
-                logger.debug(this.namespaceLog + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace + ': ' + message);
+                logger.silly(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}: ${message}`);
             } else {
-                logger.debug(this.namespaceLog + ' sendTo "' + command + '" to ' + instanceName + ' from system.adapter.' + this.namespace);
+                logger.silly(`${this.namespaceLog} sendTo "${command}" to ${instanceName} from system.adapter.${this.namespace}`);
             }
 
             // If not specific instance
@@ -8193,7 +8196,7 @@ function Adapter(options) {
                             // disable log receiving after 10 seconds
                             this.logOffTimer = setTimeout(() => {
                                 this.logOffTimer = null;
-                                logger.debug(this.namespaceLog + ' Change log subscriber state: FALSE');
+                                logger.silly(this.namespaceLog + ' Change log subscriber state: FALSE');
                                 this.outputCount++;
                                 adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
                                     val: false,
@@ -8206,7 +8209,7 @@ function Adapter(options) {
                                 clearTimeout(this.logOffTimer);
                                 this.logOffTimer = null;
                             } else {
-                                logger.debug(this.namespaceLog + ' Change log subscriber state: true');
+                                logger.silly(this.namespaceLog + ' Change log subscriber state: true');
                                 this.outputCount++;
                                 adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
                                     val: true,
@@ -8457,7 +8460,7 @@ function Adapter(options) {
                                 logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
                             }
                             if (schedule) {
-                                logger.debug(this.namespaceLog + ' Schedule restart: ' + adapterConfig.common.restartSchedule);
+                                logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
                                 restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                                     logger.info(this.namespaceLog + ' Scheduled restart.');
                                     stop(false, true);

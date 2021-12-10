@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 const { createInterface } = require('readline');
 const { PassThrough } = require('stream');
 const { detectPackageManager } = require('@alcalzone/pak');
+const EXIT_CODES = require('./exitCodes');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -54,7 +55,7 @@ const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  */
 function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
     for (const attr of Object.keys(oldObj)) {
-        if (typeof oldObj[attr] !== 'object' || oldObj[attr] instanceof Array) {
+        if (oldObj[attr] === undefined || oldObj[attr] === null || typeof oldObj[attr] !== 'object' || oldObj[attr] instanceof Array) {
             if (oldObj[attr] === '__no_change__' && originalObj && !isNonEdit) {
                 if (originalObj[attr] !== undefined) {
                     newObj[attr] = deepClone(originalObj[attr]);
@@ -423,10 +424,10 @@ function createUuid(_objects, callback) {
                     _objects.setObject('system.user.admin', {
                         type: 'user',
                         common: {
-                            name: 'admin',
-                            password: res,
+                            name:      'admin',
+                            password:   res,
                             dontDelete: true,
-                            enabled: true
+                            enabled:    true
                         },
                         ts: new Date().getTime(),
                         from: 'system.host.' + getHostName() + '.tools',
@@ -459,7 +460,7 @@ function createUuid(_objects, callback) {
                     _objects.getObject('system.adapter.vis.0', (err, licObj) => {
                         if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
-                            updateUuid('', _objects, _uuid => resolve(_uuid));
+                            updateUuid('',  _objects, _uuid => resolve(_uuid));
                         } else {
                             // decode obj.native.license
                             let data;
@@ -489,7 +490,7 @@ function createUuid(_objects, callback) {
                 }
             } else {
                 // generate new UUID
-                updateUuid('', _objects, _uuid => resolve(_uuid));
+                updateUuid('',  _objects, _uuid => resolve(_uuid));
             }
         })
     );
@@ -511,33 +512,31 @@ function getFile(urlOrPath, fileName, callback) {
             url: urlOrPath,
             gzip: true,
             headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
-        }).on('error', error => {
-            console.log(`Cannot download "${tmpFile}": ${error}`);
-            if (callback) {
-                callback(tmpFile);
-            }
-        }).pipe(fs.createWriteStream(tmpFile)).on('close', () => {
-            console.log('downloaded ' + tmpFile);
-            if (callback) {
-                callback(tmpFile);
-            }
-        });
+        })
+            .on('error', error => {
+                console.log(`Cannot download "${tmpFile}": ${error}`);
+                callback && callback(tmpFile);
+            })
+            .pipe(fs.createWriteStream(tmpFile))
+            .on('close', () => {
+                console.log('downloaded ' + tmpFile);
+                callback && callback(tmpFile);
+            });
     } else {
-        if (fs.existsSync(urlOrPath)) {
-            if (callback) {
-                callback(urlOrPath);
+        try {
+            if (fs.existsSync(urlOrPath)) {
+                callback && callback(urlOrPath);
+            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
+                callback && callback(`${__dirname}/../${urlOrPath}`);
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+                callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
+            } else {
+                console.log('File not found: ' + urlOrPath);
+                process.exit(EXIT_CODES.FILE_NOT_FOUND);
             }
-        } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
-            if (callback) {
-                callback(__dirname + '/../' + urlOrPath);
-            }
-        } else if (fs.existsSync(__dirname + '/../tmp/' + urlOrPath)) {
-            if (callback) {
-                callback(__dirname + '/../tmp/' + urlOrPath);
-            }
-        } else {
-            console.log('File not found: ' + urlOrPath);
-            process.exit(1);
+        } catch (err) {
+            console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
+            process.exit(EXIT_CODES.FILE_NOT_FOUND);
         }
     }
 }
@@ -645,6 +644,65 @@ function getJson(urlOrPath, agent, callback) {
     }
 }
 
+/**
+ * Return content of the json file. Download it or read directly
+ * @param {string|object} urlOrPath URL where the json file could be found
+ * @param {string} agent optional agent identifier like "Windows Chrome 12.56"
+ * @returns {object} json object
+ */
+async function getJsonAsync(urlOrPath, agent) {
+    agent = agent || '';
+
+    axios = axios || require('axios');
+    let sources = {};
+    // If object was read
+    if (urlOrPath && typeof urlOrPath === 'object') {
+        return urlOrPath;
+    } else if (!urlOrPath) {
+        console.log('Empty url!');
+        return null;
+    } else {
+        if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
+            try {
+                const result = await axios(urlOrPath, {timeout: 10000, headers: {'User-Agent': agent}, validateStatus: status => status !== 200});
+                return result.data;
+            } catch (error) {
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error}`);
+                return null;
+            }
+        } else {
+            if (fs.existsSync(urlOrPath)) {
+                try {
+                    sources = fs.readJSONSync(urlOrPath);
+                } catch (e) {
+                    console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+                try {
+                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                } catch (e) {
+                    console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+                try {
+                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                } catch (e) {
+                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else {
+                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
+                return null;
+            }
+        }
+    }
+}
+
 function scanDirectory(dirName, list, regExp) {
     if (fs.existsSync(dirName)) {
         let dirs;
@@ -728,6 +786,14 @@ function getInstalledInfo(hostRunningVersion) {
     // we scan the sub node modules of controller and same hierarchy as controller
     scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
     scanDirectory(path.join(fullPath, '..'), result, regExp);
+
+    // Warning! Do not checkin this code
+    if (
+        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
+        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName}.js-controller`))
+    ) {
+        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
+    }
 
     return result;
 }
@@ -1138,8 +1204,6 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
 }
 
 function sendDiagInfo(obj, callback) {
-    request = request || require('request');
-
     console.log(`Send diag info: ${JSON.stringify(obj)}`);
     axios = axios || require('axios');
     const params = new URLSearchParams();
@@ -1711,7 +1775,7 @@ async function getHostInfo(objects, callback) {
 
     const cpus = os.cpus();
     const data = {
-        Platform: os.platform(),
+        Platform: isDocker() ? 'docker' : os.platform(),
         os: process.platform,
         Architecture: os.arch(),
         CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
@@ -2415,7 +2479,7 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
-            throw new Error(`obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`);
+            throw new Error(`obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`);
         }
 
         if (obj.type === 'state') {
@@ -2473,6 +2537,11 @@ function validateGeneralObjectProperties(obj, extend) {
     if (obj.type === 'state' && obj.common.custom !== undefined && obj.common.custom !== null && !isObject(obj.common.custom)) {
         throw new Error(`obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`);
     }
+
+    // common.states needs to be a real object or an arraay
+    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+        throw new Error(`obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`);
+    }
 }
 
 /**
@@ -2481,45 +2550,48 @@ function validateGeneralObjectProperties(obj, extend) {
  * @alias getAllInstances
  * @memberof tools
  * @param {string[]} adapters list of adapter names to get instances for
+ * @param {object} objects class redis objects
  * @param {function} callback callback to be executed
  */
 function getAllInstances(adapters, objects, callback) {
+    showDeprecatedMessage('tools.getAllInstances');
+
+    return getAllInstancesAsync(adapters, objects)
+        .then(instances => callback(null, instances))
+        .catch(err => callback(err));
+}
+
+/**
+ * get all instances of all adapters in the list
+ *
+ * @alias getAllInstancesAsync
+ * @memberof tools
+ * @param {string[]} adapters list of adapter names to get instances for
+ * @param {object} objects class redis objects
+ * @returns {string[]} - array of IDs
+ */
+async function getAllInstancesAsync(adapters, objects) {
     const instances = [];
-    let count = 0;
-    for (let k = 0; k < adapters.length; k++) {
-        if (!adapters[k]) {
-            continue;
-        }
-        if (adapters[k].indexOf('.') === -1) {
-            count++;
-        }
-    }
+
     for (let i = 0; i < adapters.length; i++) {
         if (!adapters[i]) {
             continue;
         }
-        if (adapters[i].indexOf('.') === -1) {
-            getInstances(adapters[i], objects, false, (err, inst) => {
-                for (let j = 0; j < inst.length; j++) {
-                    if (!instances.includes(inst[j])) {
-                        instances.push(inst[j]);
-                    }
+        if (!adapters[i].includes('.')) {
+            const inst = await getInstancesAsync(adapters[i], objects);
+            for (let j = 0; j < inst.length; j++) {
+                if (!instances.includes(inst[j])) {
+                    instances.push(inst[j]);
                 }
-                if (!--count && callback) {
-                    callback(null, instances);
-                    callback = null;
-                }
-            });
+            }
         } else {
-            if (instances.indexOf(adapters[i]) === -1) {
+            if (!instances.includes(adapters[i])) {
                 instances.push(adapters[i]);
             }
         }
     }
-    if (!count && callback) {
-        callback(null, instances);
-        callback = null;
-    }
+
+    return instances;
 }
 
 /**
@@ -2542,11 +2614,6 @@ async function getAllEnums(objects) {
 
     return allEnums;
 }
-
-/**
- * Promise-version of getAllInstances
- */
-const getAllInstancesAsync = promisify(getAllInstances);
 
 /**
  * get all instances of one adapter
@@ -3150,6 +3217,11 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
     }
 }
 
+function showDeprecatedMessage(func, logger) {
+    logger = logger || console.log;
+    logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
+}
+
 const ERROR_NOT_FOUND = 'Not exists';
 const ERROR_EMPTY_OBJECT = 'null object';
 const ERROR_NO_OBJECT = 'no object';
@@ -3178,6 +3250,7 @@ module.exports = {
     getInstanceIndicatorObjects,
     getIoPack,
     getJson,
+    getJsonAsync,
     getInstancesOrderedByStartPrio,
     getRepositoryFile,
     getRepositoryFileAsync,
@@ -3220,6 +3293,7 @@ module.exports = {
     FORBIDDEN_CHARS,
     getControllerDir,
     getLogger,
+    showDeprecatedMessage,
     getAllEnums,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,

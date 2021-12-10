@@ -91,8 +91,8 @@ let compactGroupController  = false;
 let compactGroup            = null;
 const compactProcs          = {};
 const scheduledInstances    = {};
-const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
-const VENDOR_FILE           = '/etc/iob-vendor.json';
+const VENDOR_BOOTSTRAP_FILE = __dirname + '/iob-vendor-secret.json'; // TODO revert '/opt/iobroker/iob-vendor-secret.json'
+const VENDOR_FILE           = __dirname + '/iob-vendor.json'; // TODO revert '/etc/iob-vendor.json'
 let updateIPsTimer          = null;
 let lastDiagSend            = null;
 
@@ -396,18 +396,18 @@ function createStates(onConnect) {
                             }
                         });
                     });
-                } else if (state && state.ack && !state.val) {
-                    // Disabled in 1.5.x
-                    // id = id.substring(0, id.length - /*.alive*/ 6);
-                    // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
-                    //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
-                    //         .then(() => {
-                    //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
-                    //         }).catch(e => {
-                    //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
-                    //     });
-                    // }
-                }
+                } //else if (state && state.ack && !state.val) {
+                // Disabled in 1.5.x
+                // id = id.substring(0, id.length - /*.alive*/ 6);
+                // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
+                //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
+                //         .then(() => {
+                //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
+                //         }).catch(e => {
+                //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
+                //     });
+                // }
+                //}
             } else
             if (subscribe[id]) {
                 for (let i = 0; i < subscribe[id].length; i++) {
@@ -1899,16 +1899,28 @@ function sendTo(objName, command, message, callback) {
     states.pushMessage(objName, obj);
 }
 
-function getVersionFromHost(hostId, callback) {
-    states.getState(hostId + '.alive', (err, state) => {
-        if (state && state.val)  {
-            sendTo(hostId, 'getVersion', null, ioPack =>
-                typeof callback === 'function' && setImmediate(callback, ioPack));
-        } else {
-            logger.warn(hostLogPrefix + ' "' + hostId + '" is offline');
-            typeof callback === 'function' && setImmediate(callback, null, hostId);
-        }
-    });
+async function getVersionFromHost(hostId) {
+    const state = await states.getState(hostId + '.alive');
+    if (state && state.val)  {
+        return new Promise(resolve => {
+            let timeout = setTimeout(() => {
+                timeout = null;
+                logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
+                resolve(null);
+            }, 5000);
+
+            sendTo(hostId, 'getVersion', null, ioPack => {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                    resolve(ioPack);
+                }
+            });
+        });
+    } else {
+        logger.warn(`${hostLogPrefix} "${hostId}" is offline`);
+        return null;
+    }
 }
 /**
  Helper function that serialize deletion of states
@@ -2144,12 +2156,9 @@ async function processMessage(msg) {
                 objects.getObjectView('system', 'host', {
                     startkey: 'system.host.',
                     endkey: 'system.host.\u9999'
-                }, (err, doc) => {
+                }, async (err, doc) => {
                     const result = tools.getInstalledInfo(version);
                     result.hosts = {};
-                    let infoCount = 0;
-                    let timeout = null;
-
                     if (doc && doc.rows.length) {
                         // Read installed versions of all hosts
                         for (let i = 0; i < doc.rows.length; i++) {
@@ -2169,36 +2178,16 @@ async function processMessage(msg) {
                                     result.hosts[hostname] = {};
                                 }
                             } else {
-                                infoCount++;
-                                getVersionFromHost(doc.rows[i].id, (ioPack, id) => {
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                        result.hosts[ioPack.host].controller = true;
-                                    }
-
-                                    if (!--infoCount) {
-                                        if (timeout) {
-                                            clearTimeout(timeout);
-                                            timeout = null;
-                                            sendTo(msg.from, msg.command, result, msg.callback);
-                                        } else {
-                                            logger.warn(`${hostLogPrefix} too delayed answer for ${ioPack ? ioPack.host : id}`);
-                                        }
-                                    }
-                                });
+                                const ioPack = await getVersionFromHost(doc.rows[i].id);
+                                if (ioPack) {
+                                    result.hosts[ioPack.host] = ioPack;
+                                    result.hosts[ioPack.host].controller = true;
+                                }
                             }
                         }
                     }
-                    if (!infoCount) {
-                        sendTo(msg.from, msg.command, result, msg.callback);
-                    } else {
-                        // Start timeout and send answer in 5 seconds if some hosts are offline
-                        timeout = setTimeout(() => {
-                            logger.warn(`${hostLogPrefix} some hosts are offline`);
-                            timeout = null;
-                            sendTo(msg.from, msg.command, result, msg.callback);
-                        }, 5000);
-                    }
+
+                    sendTo(msg.from, msg.command, result, msg.callback);
                 });
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
@@ -2999,7 +2988,7 @@ function initInstances() {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info(hostLogPrefix + ' instance "' + id + '" was not started, because already running.');
+                    logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
                     continue;
                 }
 
@@ -3027,15 +3016,22 @@ function initInstances() {
     }
 }
 
-function checkVersion(id, name, version, instances) {
+/**
+ * Chceks if at least one of the instances of given name satisfies the version
+ *
+ * @param {string} name - name of the dependency
+ * @param {string} version - version requirement, e.g. ">=3.3.0"
+ * @param {object} instances - object of instances and their corresponding instance objects
+ * @throws
+ */
+function checkVersion(name, version, instances) {
     let isFound = false;
 
     if (name === 'js-controller') {
         // Check only version
         if (version) {
             if (!semver.satisfies(ioPackage.common.version, version, {includePrerelease: true})) {
-                logger.error(`${hostLogPrefix} startInstance ${id} Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}"`);
-                return false;
+                throw new Error(`Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}"`);
             } else {
                 isFound = true;
             }
@@ -3049,73 +3045,66 @@ function checkVersion(id, name, version, instances) {
         const filteredInst = Object.keys(instances).filter(p => instances[p] && instances[p].common && instances[p].common.name === name);
         for (const inst of filteredInst) {
             if (version && !semver.satisfies(instances[inst].common.version, version, {includePrerelease: true})) {
-                logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`);
-                return false;
+                throw new Error(`required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`);
             }
             isFound = true;
         }
     }
 
     if (!isFound) {
-        logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" not found!`);
-        return false;
-    } else {
-        return true;
+        throw new Error(`required adapter "${name}" not found!`);
     }
 }
 
-function checkVersions(id, deps, globalDeps) {
-    return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, res) => {
-            const instances = {};
-            const globInstances = {};
-            if (res && res.rows) {
-                res.rows.forEach(item => {
-                    if (!item.value._id) {
-                        return;
-                    }
-                    globInstances[item.value._id] = item.value;
-                });
-                Object.keys(globInstances).forEach(id => {
-                    if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
-                        instances[id] = globInstances[id];
-                    }
-                });
+/**
+ * Chceks if alle dependencies of an adapter are satisfied
+ *
+ * @param {string} id - instance id of the requiring instance (only used for logging)
+ * @param {string[]|object[]|string} deps - same host dependencies as defined in io-pack
+ * @param {string[]|object[]|string} globalDeps - global dependencies, as defined in io-pack
+ * @returns {Promise<void>}
+ */
+async function checkVersions(id, deps, globalDeps) {
+    const res = await objects.getObjectViewAsync('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'});
+    const instances = {};
+    const globInstances = {};
+    if (res && res.rows) {
+        res.rows.forEach(item => {
+            if (!item.value._id) {
+                return;
             }
-
-            // this ensures we have a real object with correct structure
-            deps = tools.parseDependencies(deps);
-            globalDeps = tools.parseDependencies(globalDeps);
-
-            // check local dependencies: required adapter must be installed on the same host
-            try {
-                for (const dep of Object.keys(deps)) {
-                    if (!checkVersion(id, dep, deps[dep], instances)) {
-                        return reject(new Error());
-                    }
-                }
-            } catch (e) {
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${e}`);
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${JSON.stringify(deps)}`);
-                return reject(new Error());
-            }
-
-            // check global dependencies: required adapter must be NOT installed on the same host
-            try {
-                for (const gDep of Object.keys(globalDeps)) {
-                    if (!checkVersion(id, gDep, globalDeps[gDep], globInstances)) {
-                        return reject(new Error());
-                    }
-                }
-            } catch (e) {
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${e}`);
-                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${JSON.stringify(globalDeps)}`);
-                return reject(new Error());
-            }
-
-            resolve();
+            globInstances[item.value._id] = item.value;
         });
-    });
+        Object.keys(globInstances).forEach(id => {
+            if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
+                instances[id] = globInstances[id];
+            }
+        });
+    }
+
+    // this ensures we have a real object with correct structure
+    deps = tools.parseDependencies(deps);
+    globalDeps = tools.parseDependencies(globalDeps);
+
+    // check local dependencies: required adapter must be installed on the same host
+    try {
+        for (const dep of Object.keys(deps)) {
+            checkVersion(dep, deps[dep], instances);
+        }
+    } catch (e) {
+        logger.debug(`${hostLogPrefix} ${id} [sameHostDependency]: ${JSON.stringify(deps)}`);
+        throw new Error(`Adapter dependency not fulfilled on "${hostname}": ${e.message}`);
+    }
+
+    // check global dependencies: required adapter must be NOT installed on the same host
+    try {
+        for (const gDep of Object.keys(globalDeps)) {
+            checkVersion(gDep, globalDeps[gDep], globInstances);
+        }
+    } catch (e) {
+        logger.debug(`${hostLogPrefix} ${id} [globalDependency]: ${JSON.stringify(globalDeps)}`);
+        throw new Error(`Adapter dependency not fulfilled on any host: ${e.message}`);
+    }
 }
 
 // Store process IDS to make possible kill them all by restart
@@ -3405,11 +3394,11 @@ function startScheduledInstance(callback) {
                 skipped = true;
             }
         } else {
-            logger.warn(hostLogPrefix + ' instance ' + instance._id + ' does not started, because just executed');
+            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
             skipped = true;
         }
     } else {
-        logger.error(hostLogPrefix + ' scheduleJob: Task deleted (' + id + ')');
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
         skipped = true;
     }
 
@@ -3454,16 +3443,13 @@ async function startInstance(id, wakeUp) {
 
     // Check if all required adapters installed and have valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
-        return checkVersions(id, instance.common.dependencies, instance.common.globalDependencies)
-            .then(() => {
-                delete instance.common.dependencies;
-                delete instance.common.globalDependencies;
-                startInstance(id, wakeUp);
-            })
-            .catch(() => {
-                // do nothing
-                // Do not start this instance
-            });
+        try {
+            await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} startInstance ${id} ${e.message}`);
+            // Do not start this instance
+            return;
+        }
     }
 
     const adapterDir = tools.getAdapterDir(name);
@@ -4117,7 +4103,7 @@ async function startInstance(id, wakeUp) {
                 }
 
             } else {
-                !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' ' + (procs[id].stopping ? 'still' : 'already') + ' running with pid ' + procs[id].process.pid);
+                !wakeUp && procs[id] && logger.warn(`${hostLogPrefix} instance ${instance._id} ${procs[id].stopping ? 'still' : 'already'} running with pid ${procs[id].process.pid}`);
                 if (procs[id].stopping) {
                     delete procs[id].stopping;
                 }
@@ -4126,11 +4112,11 @@ async function startInstance(id, wakeUp) {
 
         case 'schedule':
             if (compactGroupController) {
-                logger.debug(hostLogPrefix + ' ' + instance._id + ' schedule is not started by compact group controller');
+                logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
                 break;
             }
             if (!instance.common.schedule) {
-                logger.error(hostLogPrefix + ' ' + instance._id + ' schedule attribute missing');
+                logger.error(`${hostLogPrefix} ${instance._id} schedule attribute missing`);
                 break;
             }
 
@@ -4920,21 +4906,21 @@ function init(compactGroupId) {
 
     const exceptionHandler = err => {
         if (compactGroupController) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }
             stop(false);
             return;
         }
-        console.error(err.message || err);
+        console.error(err.message);
         if (err.stack) {
             console.error(err.stack);
         }
 
         // If by terminating one more exception => stop immediately to break the circle
         if (uncaughtExceptionCount) {
-            console.error(err.message || err);
+            console.error(err.message);
             if (err.stack) {
                 console.error(err.stack);
             }

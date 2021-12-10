@@ -637,7 +637,7 @@ class ObjectsInRedisClient {
             if (error) {
                 this.log.error(`${this.namespace} ${error}`);
             }
-            return tools.maybeCallbackWithError(callback, user, userGroups, userAcl);
+            return tools.maybeCallback(callback, user, userGroups, userAcl);
         });
     }
 

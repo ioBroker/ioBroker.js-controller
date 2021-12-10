@@ -1,7 +1,7 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2020 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -16,13 +16,13 @@ const COLOR_GREEN  = '\x1b[32m';
 
 /** @class */
 function Setup(options) {
-    const fs          = require('fs-extra');
-    const path        = require('path');
+    const fs             = require('fs-extra');
+    const path           = require('path');
     const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
     const dbTools = require('@iobroker/js-controller-common-db').tools;
-    const Backup      = require('./setupBackup');
-    const deepClone   = require('deep-clone');
-    const pluginInfos = require('./pluginInfos');
+    const Backup         = require('./setupBackup');
+    const deepClone      = require('deep-clone');
+    const pluginInfos    = require('./pluginInfos');
 
     options = options || {};
 
@@ -150,8 +150,8 @@ function Setup(options) {
                         console.log('Successfully created "meta.user" directory');
                     }
                 }
-            } catch (e) {
-                console.warn(`Could not create directory "meta.user": ${e.message}`);
+            } catch (err) {
+                console.warn(`Could not create directory "meta.user": ${err.message}`);
             }
 
             try {
@@ -223,6 +223,12 @@ function Setup(options) {
         }
     }
 
+    /**
+     * Creates objects and does object related cleanup
+     *
+     * @param {() => void} callback
+     * @param {boolean} checkCertificateOnly
+     */
     function setupObjects(callback, checkCertificateOnly) {
         dbConnect(params, async (_objects, _states) => {
             objects = _objects;
@@ -239,6 +245,35 @@ function Setup(options) {
             } catch (e) {
                 console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
             }
+          
+            // clean up invalid user group assignments (non-existing user in a group)
+            try {
+                const usersView = await objects.getObjectViewAsync('system', 'user');
+                const groupView = await objects.getObjectViewAsync('system', 'group');
+
+                const existingUsers = usersView.rows.map(obj => obj.value._id);
+
+                for (const group of groupView.rows) {
+                    // reference for readability
+                    const groupMembers = group.value.common.members;
+                    let changed = false;
+
+                    for (let i = groupMembers.length - 1; i >= 0; i--) {
+                        if (!existingUsers.includes(groupMembers[i])) {
+                            // we have found a non-existing user, so remove it
+                            changed = true;
+                            console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`);
+                            groupMembers.splice(i, 1);
+                        }
+                    }
+
+                    if (changed) {
+                        await objects.setObjectAsync(group.value._id, group.value);
+                    }
+                }
+            } catch (e) {
+                console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+            }
 
             if (checkCertificateOnly) {
                 let certObj;
@@ -252,38 +287,46 @@ function Setup(options) {
                 }
 
                 if (certObj) {
-                    objects.getObject('system.certificates', (err, obj) => {
-                        if (obj && obj.native && obj.native.certificates && obj.native.certificates.defaultPublic !== undefined) {
-                            let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
-                            if (cert) {
-                                const dateCertStart = Date.parse(cert.validityNotBefore);
-                                const dateCertEnd = Date.parse(cert.validityNotAfter);
-                                // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
-                                if (dateCertEnd <= Date.now() || cert.keyLength < 2048 || (dateCertEnd - dateCertStart) > 365 * 24 * 60 * 60 * 1000) {
-                                    // generate new certificates
-                                    if (cert.certificateFilename) {
-                                        console.log(`Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`);
-                                    } else {
-                                        console.log('Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!');
-                                        cert = null;
-                                    }
+                    let obj;
+                    try {
+                        obj = await objects.getObjectAsync('system.certificates');
+                    } catch {
+                        // ignore
+                    }
+
+                    if (obj && obj.native && obj.native.certificates && obj.native.certificates.defaultPublic !== undefined) {
+                        let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
+                        if (cert) {
+                            const dateCertStart = Date.parse(cert.validityNotBefore);
+                            const dateCertEnd = Date.parse(cert.validityNotAfter);
+                            // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
+                            if (dateCertEnd <= Date.now() || cert.keyLength < 2048 || (dateCertEnd - dateCertStart) > 365 * 24 * 60 * 60 * 1000) {
+                                // generate new certificates
+                                if (cert.certificateFilename) {
+                                    console.log(`Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`);
+                                } else {
+                                    console.log('Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!');
+                                    cert = null;
                                 }
                             }
-                            if (!cert) {
-                                const newCert = tools.generateDefaultCertificates();
-
-                                obj.native.certificates.defaultPrivate = newCert.defaultPrivate;
-                                obj.native.certificates.defaultPublic = newCert.defaultPublic;
-
-                                objects.setObject(obj._id, obj, err => {
-                                    !err && console.log(`object ${obj._id} updated`);
-                                    dbSetup(iopkg, true, callback);
-                                });
-                                return;
-                            }
                         }
-                        dbSetup(iopkg, true, callback);
-                    });
+                        if (!cert) {
+                            const newCert = tools.generateDefaultCertificates();
+
+                            obj.native.certificates.defaultPrivate = newCert.defaultPrivate;
+                            obj.native.certificates.defaultPublic = newCert.defaultPublic;
+
+                            try {
+                                await objects.setObjectAsync(obj._id, obj);
+                                console.log(`object ${obj._id} updated`);
+                            } catch {
+                                //ignore
+                            }
+                            dbSetup(iopkg, true, callback);
+                            return;
+                        }
+                    }
+                    dbSetup(iopkg, true, callback);
                 } else {
                     dbSetup(iopkg,true, callback);
                 }
@@ -292,15 +335,6 @@ function Setup(options) {
             }
         });
     }
-
-    /*function migrateStates(newConfig, oldConfig, rl, callback) {
-        if (oldConfig && oldConfig.states.type !== newConfig.states.type) {
-
-            callback();
-        } else {
-            callback();
-        }
-    }*/
 
     /**
      * Asks the user if he wants to migrate objects if it makes sense and performs migration according to input
@@ -907,8 +941,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.mkdirSync(__dirname + '/../../log');
                     }
                 }
-            } catch (e) {
-                console.log(`Non-critical error: ${e.message}`);
+            } catch (err) {
+                console.log(`Non-critical error: ${err.message}`);
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
@@ -920,8 +954,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, {spaces: 2});
                 }
-            } catch (e) {
-                console.warn(`Cannot check config file: ${e.message}`);
+            } catch (err) {
+                console.warn(`Cannot check config file: ${err.message}`);
             }
 
             setupObjects(() => callback && callback(), true);
