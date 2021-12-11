@@ -8736,8 +8736,8 @@ function Adapter(options) {
 
     /**
      * This method returns the list of license that can be used by this adapter
-     *
-     * @returns {[object]} list of suitable licenses
+     * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @returns {object[]} list of suitable licenses
     */
     this.getSuitableLicenses = async all => {
         const licenses = [];
