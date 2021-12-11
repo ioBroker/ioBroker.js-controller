@@ -3222,7 +3222,13 @@ function showDeprecatedMessage(func, logger) {
     logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
 }
 
-function readLicenses(login, password) {
+/**
+ * Requests the licenses from ioBroker.net
+ * @param {string} login Login for ioBroker.net
+ * @param {string} password Decoded password for ioBroker.net
+ * @returns {object[]} array of all licenses stored on iobroker.net
+ */
+function _readLicenses(login, password) {
     axios = axios || require('axios');
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(login + ':' + password).toString('base64')}` },
@@ -3248,10 +3254,18 @@ function readLicenses(login, password) {
         });
 }
 
+/**
+ * Reads the licenses from iobroker.net
+ * Reads the licenses from iobroker.net and if no login/password provided stores it in system.licenses
+ * @param {object} objects Object store instance
+ * @param {string} login Login for ioBroker.net
+ * @param {string} password Decoded password for ioBroker.net
+ * @returns {object[]} array of all licenses stored on iobroker.net
+ */
 function updateLicenses(objects, login, password) {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
-        return readLicenses(login, password);
+        return _readLicenses(login, password);
     } else {
         // get actual object
         return objects.getObject('system.licenses')
@@ -3270,7 +3284,7 @@ function updateLicenses(objects, login, password) {
                             }
 
                             // read licenses from iobroker.net
-                            return readLicenses(systemLicenses.native.login, password);
+                            return _readLicenses(systemLicenses.native.login, password);
                         })
                         .then(licenses => {
                             // save licenses to system.licenses and remember the time
