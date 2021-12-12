@@ -787,12 +787,18 @@ function createObjects(onConnect) {
                     // host object changed
                     // TODO: remove this shim if 4.0 is old enough
                     if (controllerVersions[id]) {
-                        if (semver.lt(controllerVersions[id], '4.0.0') && semver.gte(obj.common.installedVersion, '4.0.0')) {
+                        if (
+                            semver.lt(controllerVersions[id], '4.0.0') &&
+                            semver.gte(obj.common.installedVersion, '4.0.0')
+                        ) {
                             // old version lower 4 new version greater 4, restart needed
                             logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
                             const restart = require('./lib/restart');
                             restart();
-                        } else if (semver.gte(controllerVersions[id], '4.0.0') && semver.lt(obj.common.installedVersion, '4.0.0')) {
+                        } else if (
+                            semver.gte(controllerVersions[id], '4.0.0') &&
+                            semver.lt(obj.common.installedVersion, '4.0.0')
+                        ) {
                             // controller was above 4 and now below 4
                             logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
                             const restart = require('./lib/restart');
