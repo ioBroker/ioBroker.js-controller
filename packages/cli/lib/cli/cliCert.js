@@ -6,7 +6,6 @@ const { tools } = require('@iobroker/js-controller-common');
 
 /** Command ioBroker cert ... */
 module.exports = class CLICert extends CLICommand {
-
     /** @param {import('./cliCommand.js').CLICommandOptions} options */
     constructor(options) {
         super(options);

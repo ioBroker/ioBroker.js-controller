@@ -9,10 +9,10 @@
  */
 'use strict';
 
-const dgram  = require('dgram');
+const dgram = require('dgram');
 const { tools } = require('@iobroker/js-controller-common');
 let crypto = null;
-const port   = 50005;
+const port = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
 /** @class */
@@ -68,10 +68,9 @@ function MHClient(_hostname, _logger, _config, _info) {
                 onFinished(null);
                 onFinished = null;
             }
-
         }, timeout);
 
-        server.on('error',  function (err) {
+        server.on('error', function (err) {
             stopServer();
 
             if (onFinished) {
@@ -109,19 +108,26 @@ function MHClient(_hostname, _logger, _config, _info) {
         const result = [];
         const ownIps = tools.findIPs();
 
-        startServer(true, timeout,
+        startServer(
+            true,
+            timeout,
             function onReady(_srv) {
                 const text = JSON.stringify({
                     cmd: 'browse',
-                    id:  ++id
+                    id: ++id
                 });
                 server.send(text, 0, text.length, port, MULTICAST_ADDR);
             },
-            function onMessage (_srv, msg, rinfo) {
+            function onMessage(_srv, msg, rinfo) {
                 // ignore own answers
-                if (isDebug || rinfo.address !== '127.0.0.1' && ownIps.indexOf(rinfo.address) === -1) {
+                if (isDebug || (rinfo.address !== '127.0.0.1' && ownIps.indexOf(rinfo.address) === -1)) {
                     if (msg.result === 'not authenticated') {
-                        result.push({ip: rinfo.address, hostname: rinfo.address,  info: 'authentication required', auth: msg.auth});
+                        result.push({
+                            ip: rinfo.address,
+                            hostname: rinfo.address,
+                            info: 'authentication required',
+                            auth: msg.auth
+                        });
                     } else if (msg.result === 'ok') {
                         result.push(msg);
                     } else {
@@ -139,15 +145,17 @@ function MHClient(_hostname, _logger, _config, _info) {
     };
 
     this.connect = function (ip, password, callback) {
-        startServer(false, 2000,
+        startServer(
+            false,
+            2000,
             function onReady(_srv) {
                 const text = JSON.stringify({
                     cmd: 'browse',
-                    id:  ++id
+                    id: ++id
                 });
                 server.send(text, 0, text.length, port, ip);
             },
-            function onMessage (_srv, msg, rinfo) {
+            function onMessage(_srv, msg, rinfo) {
                 if (msg.cmd === 'browse' && msg.id === id) {
                     if (msg.result === 'ok') {
                         if (callback) {
@@ -173,8 +181,8 @@ function MHClient(_hostname, _logger, _config, _info) {
                             sha(password, msg.salt, function (shaText) {
                                 // send password
                                 const text = JSON.stringify({
-                                    cmd:      'browse',
-                                    id:       ++id,
+                                    cmd: 'browse',
+                                    id: ++id,
                                     password: shaText
                                 });
                                 server.send(text, 0, text.length, port, ip);

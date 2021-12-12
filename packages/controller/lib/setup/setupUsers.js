@@ -13,18 +13,18 @@
 function Users(options) {
     const { tools } = require('@iobroker/js-controller-common');
 
-    const that  = this;
+    const that = this;
 
-    options   = options || {};
+    options = options || {};
 
-    if (!options.objects)     {
+    if (!options.objects) {
         throw new Error('Invalid arguments: objects is missing');
     }
     if (!options.processExit) {
         throw new Error('Invalid arguments: processExit is missing');
     }
 
-    const objects     = options.objects;
+    const objects = options.objects;
     const processExit = options.processExit;
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
@@ -35,22 +35,26 @@ function Users(options) {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'User yet exists');
             } else {
-                objects.setObject('system.user.' + _user, {
-                    type: 'user',
-                    common: {
-                        name: user,
-                        enabled: true
+                objects.setObject(
+                    'system.user.' + _user,
+                    {
+                        type: 'user',
+                        common: {
+                            name: user,
+                            enabled: true
+                        },
+                        from: 'system.host.' + tools.getHostName() + '.cli',
+                        ts: Date.now(),
+                        native: {}
                     },
-                    from: 'system.host.' + tools.getHostName() + '.cli',
-                    ts: Date.now(),
-                    native: {}
-                }, err => {
-                    if (!err) {
-                        that.setPassword(user, pw, callback);
-                    } else {
-                        return tools.maybeCallbackWithError(callback, err);
+                    err => {
+                        if (!err) {
+                            that.setPassword(user, pw, callback);
+                        } else {
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
                     }
-                });
+                );
             }
         });
     };
@@ -117,30 +121,38 @@ function Users(options) {
                     objects.delObject('system.user.' + _user, err => {
                         // Remove this user from all groups
                         if (!err) {
-                            objects.getObjectList({startkey: 'system.group.', endkey: 'system.group.\u9999'}, (err, groups) => {
-                                let count = 0;
-                                for (let i = 0; i < groups.rows.length; i++) {
-                                    if (groups.rows[i].value.type !== 'group') {
-                                        continue;
+                            objects.getObjectList(
+                                { startkey: 'system.group.', endkey: 'system.group.\u9999' },
+                                (err, groups) => {
+                                    let count = 0;
+                                    for (let i = 0; i < groups.rows.length; i++) {
+                                        if (groups.rows[i].value.type !== 'group') {
+                                            continue;
+                                        }
+                                        // find all groups
+                                        if (
+                                            groups.rows[i].value.common.members &&
+                                            groups.rows[i].value.common.members.indexOf('system.user.' + _user) !== -1
+                                        ) {
+                                            const pos = groups.rows[i].value.common.members.indexOf(
+                                                'system.user.' + _user
+                                            );
+                                            groups.rows[i].value.common.members.splice(pos, 1);
+                                            count++;
+                                            groups.rows[i].value.from = 'system.host.' + tools.getHostName() + '.cli';
+                                            groups.rows[i].value.ts = Date.now();
+                                            objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
+                                                if (!--count) {
+                                                    return tools.maybeCallbackWithError(callback, err);
+                                                }
+                                            });
+                                        }
                                     }
-                                    // find all groups
-                                    if (groups.rows[i].value.common.members && groups.rows[i].value.common.members.indexOf('system.user.' + _user) !== -1) {
-                                        const pos = groups.rows[i].value.common.members.indexOf('system.user.' + _user);
-                                        groups.rows[i].value.common.members.splice(pos, 1);
-                                        count++;
-                                        groups.rows[i].value.from = 'system.host.' + tools.getHostName() + '.cli';
-                                        groups.rows[i].value.ts = Date.now();
-                                        objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
-                                            if (!(--count)) {
-                                                return tools.maybeCallbackWithError(callback, err);
-                                            }
-                                        });
+                                    if (!count) {
+                                        return tools.maybeCallback(callback);
                                     }
                                 }
-                                if (!count) {
-                                    return tools.maybeCallback(callback);
-                                }
-                            });
+                            );
                         } else {
                             return tools.maybeCallbackWithError(callback, err);
                         }
@@ -190,7 +202,7 @@ function Users(options) {
         }
 
         // Check group
-        if (group.substring(0, 13) !== 'system.group.' ) {
+        if (group.substring(0, 13) !== 'system.group.') {
             group = 'system.group.' + group;
         }
 
@@ -277,21 +289,21 @@ function Users(options) {
                 // Check group
                 if (!password) {
                     const prompt = require('prompt');
-                    prompt.message   = '';
+                    prompt.message = '';
                     prompt.delimiter = '';
                     const schema = {
                         properties: {
                             password: {
                                 description: 'Enter your password:',
-                                pattern:     /^[^'"]*$/,
-                                message:     'No " are allowed',
-                                hidden:      true
+                                pattern: /^[^'"]*$/,
+                                message: 'No " are allowed',
+                                hidden: true
                             },
                             repeatPassword: {
                                 description: 'Repeat your password:',
-                                pattern:     /^[^'"]*$/,
-                                message:     'No " are allowed',
-                                hidden:      true
+                                pattern: /^[^'"]*$/,
+                                message: 'No " are allowed',
+                                hidden: true
                             }
                         }
                     };
@@ -342,7 +354,8 @@ function Users(options) {
         objects.getObject(`system.user.${user}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read user: ${err.message}`);
-            } if (!obj) {
+            }
+            if (!obj) {
                 return tools.maybeCallbackWithError(callback, `User "${user}" not found`);
             } else {
                 obj.common.enabled = enable;
@@ -360,7 +373,7 @@ function Users(options) {
         let schema;
         if (!user && !password) {
             prompt = require('prompt');
-            prompt.message   = '';
+            prompt.message = '';
             prompt.delimiter = '';
             schema = {
                 properties: {
@@ -383,7 +396,10 @@ function Users(options) {
             prompt.get(schema, (err, result) => {
                 that.checkPassword(result.username, result.password, (err, res) => {
                     if (err || !res) {
-                        return tools.maybeCallbackWithError(callback, `Password for user "${result.username}" does not match${err ? ': ' + err : ''}`);
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            `Password for user "${result.username}" does not match${err ? ': ' + err : ''}`
+                        );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
                     }
@@ -391,13 +407,13 @@ function Users(options) {
             });
         } else if (!password) {
             prompt = require('prompt');
-            prompt.message   = '';
+            prompt.message = '';
             prompt.delimiter = '';
             schema = {
                 properties: {
                     password: {
                         description: 'Enter current password:',
-                        pattern:  /^[^'"]+$/,
+                        pattern: /^[^'"]+$/,
                         message: 'No " are allowed',
                         hidden: true
                     }
@@ -408,16 +424,22 @@ function Users(options) {
             prompt.get(schema, (err, result) => {
                 that.checkPassword(user, result.password, (err, res) => {
                     if (err || !res) {
-                        return tools.maybeCallbackWithError(callback, 'Password for user "' + user + '" does not matched' + (err ? ': ' + err : ''));
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            'Password for user "' + user + '" does not matched' + (err ? ': ' + err : '')
+                        );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
                     }
                 });
             });
-        } else{
+        } else {
             this.checkPassword(user, password, (err, res) => {
                 if (err || !res) {
-                    return tools.maybeCallbackWithError(callback, 'Password for user "' + user + '" does not matched' + (err ? ': ' + err : ''));
+                    return tools.maybeCallbackWithError(
+                        callback,
+                        'Password for user "' + user + '" does not matched' + (err ? ': ' + err : '')
+                    );
                 } else {
                     return tools.maybeCallbackWithError(callback, null);
                 }
@@ -429,7 +451,8 @@ function Users(options) {
         objects.getObject(`system.user.${user}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read user: ${err.message}`);
-            } if (!obj) {
+            }
+            if (!obj) {
                 return tools.maybeCallbackWithError(callback, `User "${user}" not found`);
             } else {
                 return tools.maybeCallbackWithError(callback, null, obj.common.enabled);
@@ -441,7 +464,8 @@ function Users(options) {
         objects.getObject(`system.group.${group}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read group: ${err.message}`);
-            } if (!obj) {
+            }
+            if (!obj) {
                 return tools.maybeCallbackWithError(callback, `Group "${group}" not found`);
             } else {
                 return tools.maybeCallbackWithError(callback, null, obj.common.enabled, obj.common.members);
@@ -464,7 +488,8 @@ function Users(options) {
         objects.getObject('system.group.' + group, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read group: ${err.message}`);
-            } if (!obj) {
+            }
+            if (!obj) {
                 return tools.maybeCallbackWithError(callback, `Group "${group}" not found`);
             } else {
                 obj.common.enabled = enable;
@@ -483,20 +508,23 @@ function Users(options) {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'Group yet exists');
             } else {
-                objects.setObject('system.group.' + _group, {
-                    type: 'group',
-                    common: {
-                        name: group,
-                        enabled: true,
-                        members: []
+                objects.setObject(
+                    'system.group.' + _group,
+                    {
+                        type: 'group',
+                        common: {
+                            name: group,
+                            enabled: true,
+                            members: []
+                        },
+                        from: 'system.host.' + tools.getHostName() + '.cli',
+                        ts: Date.now(),
+                        native: {}
                     },
-                    from: 'system.host.' + tools.getHostName() + '.cli',
-                    ts: Date.now(),
-                    native: {}
-                },
-                err => {
-                    return tools.maybeCallbackWithError(callback, err);
-                });
+                    err => {
+                        return tools.maybeCallbackWithError(callback, err);
+                    }
+                );
             }
         });
     };

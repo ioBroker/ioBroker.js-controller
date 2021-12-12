@@ -6,7 +6,6 @@ const { tools } = require('@iobroker/js-controller-common');
 
 /** Command iobroker object ... */
 module.exports = class CLIObjects extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -74,10 +73,14 @@ module.exports = class CLIObjects extends CLICommand {
         }
 
         dbConnect((objects, states) => {
-            objects.chmodObject(pattern, { user: 'system.user.admin', object: modeObject, state: modeState }, (err, processed) => {
-                // Print the new object rights
-                this.printObjectList(objects, states, err, processed);
-            });
+            objects.chmodObject(
+                pattern,
+                { user: 'system.user.admin', object: modeObject, state: modeState },
+                (err, processed) => {
+                    // Print the new object rights
+                    this.printObjectList(objects, states, err, processed);
+                }
+            );
         });
     }
 
@@ -88,7 +91,7 @@ module.exports = class CLIObjects extends CLICommand {
     chown(args) {
         const { callback, dbConnect } = this.options;
         /** @type {[string, string, any]} */
-        let [user, group, pattern] = (args.slice(1));
+        let [user, group, pattern] = args.slice(1);
 
         if (!pattern) {
             pattern = group;
@@ -110,10 +113,14 @@ module.exports = class CLIObjects extends CLICommand {
             return void callback(1);
         }
         dbConnect((objects, states) => {
-            objects.chownObject(pattern, { user: 'system.user.admin', owner: user, ownerGroup: group }, (err, processed) => {
-                // Print the new object rights
-                this.printObjectList(objects, states, err, processed);
-            });
+            objects.chownObject(
+                pattern,
+                { user: 'system.user.admin', owner: user, ownerGroup: group },
+                (err, processed) => {
+                    // Print the new object rights
+                    this.printObjectList(objects, states, err, processed);
+                }
+            );
         });
     }
 
@@ -131,7 +138,8 @@ module.exports = class CLIObjects extends CLICommand {
         dbConnect((objects, states) => {
             objects.getObjectList(pattern, { user: 'system.user.admin', sorted: true }, (err, processed) => {
                 this.printObjectList(
-                    objects, states,
+                    objects,
+                    states,
                     err,
                     processed && processed.rows && processed.rows.map(r => r.value)
                 );
@@ -147,7 +155,7 @@ module.exports = class CLIObjects extends CLICommand {
     get(args) {
         const { callback, pretty, dbConnect } = this.options;
         /** @type {[string, string]} */
-        const [id, propPath] = (args.slice(1));
+        const [id, propPath] = args.slice(1);
         if (!id) {
             CLI.error.requiredArgumentMissing('id', 'object get id [propertypath]');
             return void callback(1);
@@ -270,7 +278,7 @@ module.exports = class CLIObjects extends CLICommand {
             for (const prop in value) {
                 if (typeof res.native[prop] === 'string' && res.encryptedNative.includes(prop)) {
                     try {
-                        config = config || await objects.getObjectAsync('system.config');
+                        config = config || (await objects.getObjectAsync('system.config'));
                         res.native[prop] = tools.encrypt(config.native.secret, res.native[prop]);
                     } catch (e) {
                         console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);
@@ -323,7 +331,20 @@ module.exports = class CLIObjects extends CLICommand {
      * @return {Promise<object[]>}
      */
     async _collectObjects(objects, params, callback) {
-        const types = ['state', 'channel', 'device', 'enum', 'instance', 'host', 'adapter', 'meta', 'config', 'group', 'user', 'script'];
+        const types = [
+            'state',
+            'channel',
+            'device',
+            'enum',
+            'instance',
+            'host',
+            'adapter',
+            'meta',
+            'config',
+            'group',
+            'user',
+            'script'
+        ];
         const result = [];
 
         for (const type of types) {
@@ -386,7 +407,7 @@ module.exports = class CLIObjects extends CLICommand {
             if (id.endsWith('*')) {
                 const params = {
                     startkey: id.replace(/\*/g, ''),
-                    endkey:   id.replace(/\*/g, '\u9999')
+                    endkey: id.replace(/\*/g, '\u9999')
                 };
                 this._collectObjects(objects, params, result => {
                     if (!result || !result.length) {
@@ -398,12 +419,19 @@ module.exports = class CLIObjects extends CLICommand {
                     // if no auto confirmation, ask user
                     if (!this.options.f && this.options.y && !this.options.yes) {
                         const rl = require('readline').createInterface({
-                            input:  process.stdin,
+                            input: process.stdin,
                             output: process.stdout
                         });
                         rl.question(result.length + ' object(s) will be deleted. Are you sure? [y/N]: ', answer => {
                             rl.close();
-                            if (answer === 'y' || answer === 'yes' || answer === 'j' || answer === 'ja' || answer === 'да' || answer === 'д') {
+                            if (
+                                answer === 'y' ||
+                                answer === 'yes' ||
+                                answer === 'j' ||
+                                answer === 'ja' ||
+                                answer === 'да' ||
+                                answer === 'д'
+                            ) {
                                 this._deleteObjects(objects, ids, callback);
                             } else {
                                 console.log('Aborted.');
@@ -421,13 +449,16 @@ module.exports = class CLIObjects extends CLICommand {
                         CLI.error.objectNotFound(id, err);
                         return void callback(3);
                     } else {
-                        tools.removeIdFromAllEnums(objects, id).then(() => {
-                            CLI.success.objectDeleted(id);
-                            return void callback();
-                        }).catch(e => {
-                            CLI.error.cannotDeleteObjectFromEnums(id, e.message);
-                            return void callback(3);
-                        });
+                        tools
+                            .removeIdFromAllEnums(objects, id)
+                            .then(() => {
+                                CLI.success.objectDeleted(id);
+                                return void callback();
+                            })
+                            .catch(e => {
+                                CLI.error.cannotDeleteObjectFromEnums(id, e.message);
+                                return void callback(3);
+                            });
                     }
                 });
             }

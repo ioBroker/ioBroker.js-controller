@@ -8,14 +8,13 @@ const dbTools = require('@iobroker/js-controller-common-db').tools;
 const deepClone = require('deep-clone');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
-const { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances} = require('./cliTools.js');
+const { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } = require('./cliTools.js');
 
 // The root of this project. Change this when moving code to another directory
 const rootDir = tools.getControllerDir();
 const killAllScriptPath = path.join(rootDir, 'killall.sh');
 
 module.exports = class CLIProcess extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -62,7 +61,7 @@ module.exports = class CLIProcess extends CLICommand {
      */
     stop(args) {
         const adapterName = normalizeAdapterName(args[0]);
-        if (adapterName === undefined ) {
+        if (adapterName === undefined) {
             this.stopJSController();
         } else if (adapterName === 'all') {
             this.setAllAdaptersEnabled(false);
@@ -99,7 +98,7 @@ module.exports = class CLIProcess extends CLICommand {
      * @param {boolean} [restartIfRunning=false] Whether running instances should be restarted
      */
     setAdapterEnabled(adapter, enabled, restartIfRunning) {
-        const {callback, dbConnect} = this.options;
+        const { callback, dbConnect } = this.options;
         dbConnect(async objects => {
             // Due to the many return locations we cannot simply chain the promises here
             // Use the pre-Node8 async/await pattern
@@ -108,7 +107,10 @@ module.exports = class CLIProcess extends CLICommand {
                 const adapterInstances = await enumInstances(objects, adapter);
                 // If there are multiple instances for this adapter, ask the user to specify which one
                 if (adapterInstances.length > 1) {
-                    CLI.error.specifyInstance(adapter, adapterInstances.map(obj => obj._id.substring('system.adapter.'.length)));
+                    CLI.error.specifyInstance(
+                        adapter,
+                        adapterInstances.map(obj => obj._id.substring('system.adapter.'.length))
+                    );
                     return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                 } else if (adapterInstances.length === 0) {
                     CLI.error.noInstancesFound(adapter);
@@ -168,8 +170,8 @@ module.exports = class CLIProcess extends CLICommand {
                 if (fs.existsSync(killAllScriptPath)) {
                     fs.chmodSync(killAllScriptPath, '777');
                     const child = require('child_process').spawn(killAllScriptPath, [], { windowsHide: true });
-                    child.stdout.on('data', _data => data += _data.toString().replace(/\n/g, ''));
-                    child.stderr.on('data', _data => data += _data.toString().replace(/\n/g, ''));
+                    child.stdout.on('data', _data => (data += _data.toString().replace(/\n/g, '')));
+                    child.stderr.on('data', _data => (data += _data.toString().replace(/\n/g, '')));
                     child.on('exit', exitCode => {
                         console.log('Exit code for "killall.sh": ' + exitCode);
                         return void callback();
@@ -185,9 +187,7 @@ module.exports = class CLIProcess extends CLICommand {
     /** Restarts the JS controller */
     restartJSController() {
         const daemon = setupDaemonize();
-        daemon
-            .on('stopped', () => daemon.start())
-            .on('notrunning', () => daemon.start());
+        daemon.on('stopped', () => daemon.start()).on('notrunning', () => daemon.start());
         daemon.stop();
     }
 
@@ -207,7 +207,10 @@ module.exports = class CLIProcess extends CLICommand {
                     const alive = hostAlive ? hostAlive.val : false;
                     CLI.success.controllerStatus(alive);
                     console.log();
-                    if (!dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host)) {
+                    if (
+                        !dbTools.isLocalStatesDbServer(config.states.type, config.states.host) &&
+                        !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host)
+                    ) {
                         CLI.success.systemStatus(!isOffline);
                     }
 
@@ -232,7 +235,10 @@ module.exports = class CLIProcess extends CLICommand {
                     const adapterInstances = await enumInstances(_objects, adapterName);
                     // If there are multiple instances of this adapter, ask the user to specify which one
                     if (adapterInstances.length > 1) {
-                        CLI.error.specifyInstance(adapterName, adapterInstances.map(obj => obj._id.substring('system.adapter.'.length)));
+                        CLI.error.specifyInstance(
+                            adapterName,
+                            adapterInstances.map(obj => obj._id.substring('system.adapter.'.length))
+                        );
                         return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                     } else if (adapterInstances.length === 0) {
                         CLI.error.noInstancesFound(adapterName);
@@ -341,7 +347,9 @@ function setupDaemonize() {
         }
     } catch {
         console.warn('Cannot read memoryLimitMB');
-        console.warn(`May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`);
+        console.warn(
+            `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`
+        );
     }
     const startObj = {
         main: path.join(rootDir, 'controller.js'),

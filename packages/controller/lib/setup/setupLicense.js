@@ -11,9 +11,9 @@
 
 /** @class */
 function License(options) {
-    const fs    = require('fs');
-    const jwt   = require('jsonwebtoken');
-    options     = options || {};
+    const fs = require('fs');
+    const jwt = require('jsonwebtoken');
+    options = options || {};
 
     const objects = options.objects;
     // read info from  '/etc/iob_vendor.json' and executes instructions stored there
@@ -35,10 +35,13 @@ function License(options) {
         }
 
         // read all instances of this adapter
-        const arr = await objects.getObjectListAsync({
-            startkey: 'system.adapter.' + adapter + '.',
-            endkey:   'system.adapter.' + adapter + '.\u9999'
-        }, {checked: true});
+        const arr = await objects.getObjectListAsync(
+            {
+                startkey: 'system.adapter.' + adapter + '.',
+                endkey: 'system.adapter.' + adapter + '.\u9999'
+            },
+            { checked: true }
+        );
 
         let updated = 0;
 

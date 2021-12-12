@@ -11,5 +11,5 @@ const getSpdxLicenseIds = require('get-spdx-license-ids');
     const licenses = await getSpdxLicenseIds();
     const ioPackSchema = require(__dirname + '/io-package.json');
     ioPackSchema.properties.common.properties.license.enum = licenses;
-    require('fs-extra').writeJSONSync('io-package.json', ioPackSchema, {spaces: 2});
+    require('fs-extra').writeJSONSync('io-package.json', ioPackSchema, { spaces: 2 });
 })();

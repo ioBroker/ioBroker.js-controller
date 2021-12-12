@@ -4,43 +4,44 @@
 /* jshint expr:true */
 'use strict';
 
-const expect   = require('chai').expect;
-const setup    = require('./lib/setup4controller');
-let   objects  = null;
-let   states   = null;
+const expect = require('chai').expect;
+const setup = require('./lib/setup4controller');
+let objects = null;
+let states = null;
 const textName = 'File';
-const tests    = require('./lib/testObjects');
-const context  = {
+const tests = require('./lib/testObjects');
+const context = {
     objects: null,
     name: textName
 };
 
-describe(textName + ' Test Objects File-Redis', function() {
+describe(textName + ' Test Objects File-Redis', function () {
     before(textName + ' Start js-controller', function (_done) {
         this.timeout(2000);
 
-        setup.startController({
-            objects: {
-                dataDir: __dirname + '/../tmp/data',
-                onChange: function (id, _obj) {
-                    console.log('object changed. ' + id);
+        setup.startController(
+            {
+                objects: {
+                    dataDir: __dirname + '/../tmp/data',
+                    onChange: function (id, _obj) {
+                        console.log('object changed. ' + id);
+                    }
+                },
+                states: {
+                    dataDir: __dirname + '/../tmp/data',
+                    onChange: function (id, _state) {
+                        console.log('state changed. ' + id);
+                    }
                 }
             },
-            states: {
-                dataDir: __dirname + '/../tmp/data',
-                onChange: function (id, _state) {
-                    console.log('state changed. ' + id);
-                }
+            function (_objects, _states) {
+                objects = _objects;
+                states = _states;
+                context.objects = _objects;
+                expect(objects).to.be.ok;
+                expect(states).to.be.ok;
+                _done();
             }
-        },
-        function (_objects, _states) {
-            objects = _objects;
-            states  = _states;
-            context.objects = _objects;
-            expect(objects).to.be.ok;
-            expect(states).to.be.ok;
-            _done();
-        }
         );
     });
 
@@ -48,7 +49,6 @@ describe(textName + ' Test Objects File-Redis', function() {
 
     after(textName + ' Stop js-controller', function (done) {
         this.timeout(5000);
-        setup.stopController(() =>
-            setTimeout(done, 2000));
+        setup.stopController(() => setTimeout(done, 2000));
     });
 });

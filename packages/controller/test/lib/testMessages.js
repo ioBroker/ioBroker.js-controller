@@ -18,7 +18,7 @@ function register(it, expect, context) {
                 context.onAdapterMessage = null;
             };
 
-            context.states.pushMessage(gid, {test: 1}, function (err, id) {
+            context.states.pushMessage(gid, { test: 1 }, function (err, id) {
                 expect(err).to.be.null;
                 expect(id).to.be.equal(gid);
             });
@@ -36,7 +36,7 @@ function register(it, expect, context) {
                 context.onAdapterMessage = null;
             };
 
-            context.states.pushMessage(gid, {test: Buffer.from('ABCDEFG')}, function (err, id) {
+            context.states.pushMessage(gid, { test: Buffer.from('ABCDEFG') }, function (err, id) {
                 expect(err).to.be.null;
                 expect(id).to.be.equal(gid);
             });
@@ -52,7 +52,7 @@ function register(it, expect, context) {
     it(testName + 'check pushLog', function (done) {
         context.states.subscribeLog(gid, function (err) {
             expect(err).to.be.not.ok;
-            context.states.pushLog(gid, {test: 1}, function (err, id) {
+            context.states.pushLog(gid, { test: 1 }, function (err, id) {
                 expect(err).to.be.null;
                 expect(id).to.be.equal(gid);
                 done();
@@ -80,7 +80,8 @@ function register(it, expect, context) {
 
     it(testName + 'check clearAllLogs', function (done) {
         context.states.clearAllLogs(function (err) {
-            if (err) { // undefined for "file" db version
+            if (err) {
+                // undefined for "file" db version
                 expect(err).to.be.equal('Not exists');
             }
             done();

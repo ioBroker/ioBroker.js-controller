@@ -11,16 +11,16 @@
 
 /** @class */
 function Multihost(options) {
-    const fs         = require('fs-extra');
+    const fs = require('fs-extra');
     const { tools } = require('@iobroker/js-controller-common');
     const dbTools = require('@iobroker/js-controller-common-db');
     const configName = tools.getConfigFileName();
-    const that       = this;
+    const that = this;
 
-    options          = options || {};
+    options = options || {};
 
-    const params     = options.params || {};
-    const objects    = options.objects;
+    const params = options.params || {};
+    const objects = options.objects;
 
     function getConfig() {
         let config;
@@ -47,10 +47,17 @@ function Multihost(options) {
 
     this.showHosts = function (list) {
         if (!list || !list.length) {
-            console.info('No Multihost server found. Make sure iobroker is running on the host where you enabled multihost discovery (and it is not this host)!');
+            console.info(
+                'No Multihost server found. Make sure iobroker is running on the host where you enabled multihost discovery (and it is not this host)!'
+            );
         } else {
             for (let i = 0; i < list.length; i++) {
-                console.log(`${i + 1} | ${leftPad(list[i].hostname, 20)} | ${list[i].slave ? 'slave' : ' host'} | ${leftPad(list[i].ip, 20)} | ${JSON.stringify(list[i].info)}`);
+                console.log(
+                    `${i + 1} | ${leftPad(list[i].hostname, 20)} | ${list[i].slave ? 'slave' : ' host'} | ${leftPad(
+                        list[i].ip,
+                        20
+                    )} | ${JSON.stringify(list[i].info)}`
+                );
             }
         }
     };
@@ -76,19 +83,31 @@ function Multihost(options) {
                 changed = true;
             } else if (config.objects.type === 'redis') {
                 warningShown = true;
-                console.log('Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.');
+                console.log(
+                    'Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
+                );
             } else {
                 warningShown = true;
-                console.log('Please check the binding of the configured ' + config.objects.type + ' server to allow remote connections.');
+                console.log(
+                    'Please check the binding of the configured ' +
+                        config.objects.type +
+                        ' server to allow remote connections.'
+                );
             }
             if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
                 console.log('Changing states server to accept connections on all IP addresses.');
                 config.states.host = '0.0.0.0';
                 changed = true;
-            } else if (config.states.type  === 'redis') {
-                !warningShown && console.log('Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.');
+            } else if (config.states.type === 'redis') {
+                !warningShown &&
+                    console.log(
+                        'Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
+                    );
             } else {
-                !warningShown && console.log(`Please check the binding of the configured ${config.states.type} server to allow remote connections.`);
+                !warningShown &&
+                    console.log(
+                        `Please check the binding of the configured ${config.states.type} server to allow remote connections.`
+                    );
             }
         }
         if (!changed) {
@@ -100,7 +119,11 @@ function Multihost(options) {
         console.log('\n');
         console.log(`Multihost discovery server: ${config.multihostService.enabled ? 'enabled' : 'disabled'}`);
         console.log(`Discovery authentication:   ${config.multihostService.secure ? 'enabled' : 'disabled'}`);
-        console.log(`Persistent activation:      ${config.multihostService.enabled && config.multihostService.persist ? 'enabled' : 'disabled'}`);
+        console.log(
+            `Persistent activation:      ${
+                config.multihostService.enabled && config.multihostService.persist ? 'enabled' : 'disabled'
+            }`
+        );
         console.log(`Objects:                    ${config.objects.type} on ${config.objects.host}`);
         console.log(`States:                     ${config.states.type} on ${config.states.host}`);
         callback();
@@ -115,16 +138,22 @@ function Multihost(options) {
     this.enable = function (isEnable, callback) {
         let changed = false;
         const config = getConfig();
-        config.multihostService = config.multihostService || {enabled: false, secure: true};
+        config.multihostService = config.multihostService || { enabled: false, secure: true };
 
         if (isEnable && !config.multihostService.enabled) {
             changed = true;
             config.multihostService.enabled = true;
             config.multihostService.password = '';
-            console.log('Multihost discovery server activated on this host. If iobroker is currently not running please start befeore trying to discover this host.');
-            console.log('Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.');
+            console.log(
+                'Multihost discovery server activated on this host. If iobroker is currently not running please start befeore trying to discover this host.'
+            );
+            console.log(
+                'Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.'
+            );
             if (!params.persist) {
-                console.log('Multihost discovery will be automatically deactivated after 15 minutes. If you want to activate it permanently use the --persist flag');
+                console.log(
+                    'Multihost discovery will be automatically deactivated after 15 minutes. If you want to activate it permanently use the --persist flag'
+                );
             }
         } else if (!isEnable && config.multihostService.enabled) {
             changed = true;
@@ -138,28 +167,33 @@ function Multihost(options) {
 
         params.persist = !!params.persist;
 
-        if (isEnable && (config.multihostService.secure !== params.secure || (config.multihostService.secure && !config.multihostService.password) || (config.multihostService.persist !== params.persist))) {
+        if (
+            isEnable &&
+            (config.multihostService.secure !== params.secure ||
+                (config.multihostService.secure && !config.multihostService.password) ||
+                config.multihostService.persist !== params.persist)
+        ) {
             changed = true;
             config.multihostService.secure = params.secure;
             config.multihostService.persist = params.persist;
             console.log(`Discovery authentication ${params.secure ? 'activated' : 'deactivated'}.`);
             if (config.multihostService.secure) {
                 const prompt = require('prompt');
-                prompt.message   = '';
+                prompt.message = '';
                 prompt.delimiter = '';
                 const schema = {
                     properties: {
                         password: {
                             description: 'Enter secret phrase for connection:',
-                            pattern:     /^[^'"]+$/,
-                            message:     'No " are allowed',
-                            hidden:      true
+                            pattern: /^[^'"]+$/,
+                            message: 'No " are allowed',
+                            hidden: true
                         },
                         passwordRepeat: {
                             description: 'Repeat secret phrase for connection:',
-                            pattern:     /^[^'"]+$/,
-                            message:     'No " are allowed',
-                            hidden:      true
+                            pattern: /^[^'"]+$/,
+                            message: 'No " are allowed',
+                            hidden: true
                         }
                     }
                 };
@@ -189,7 +223,7 @@ function Multihost(options) {
 
     this.status = function (callback) {
         const config = getConfig();
-        config.multihostService = config.multihostService || {enabled: false, secure: true};
+        config.multihostService = config.multihostService || { enabled: false, secure: true };
         showMHState(config, false, callback);
     };
 
@@ -224,8 +258,7 @@ function Multihost(options) {
             });
         }
 
-        hidden('Enter secret phrase for connection: ', password =>
-            callback(password));
+        hidden('Enter secret phrase for connection: ', password => callback(password));
     }
 
     function connect(mhClient, ip, pass, callback) {
@@ -235,14 +268,21 @@ function Multihost(options) {
             } else if (oObjects && oStates) {
                 const config = getConfig();
                 config.objects = oObjects;
-                config.states  = oStates;
-                if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true) || dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
-                    callback('IP Address of the remote host is 127.0.0.1. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.');
+                config.states = oStates;
+                if (
+                    dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true) ||
+                    dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)
+                ) {
+                    callback(
+                        'IP Address of the remote host is 127.0.0.1. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.'
+                    );
                 } else {
-                    if (config.states.host === '0.0.0.0') { // TODO: why we set the remote IP only when the local config allows full connectivity?
+                    if (config.states.host === '0.0.0.0') {
+                        // TODO: why we set the remote IP only when the local config allows full connectivity?
                         config.states.host = ipHost;
                     }
-                    if (config.objects.host === '0.0.0.0') { // TODO: why we set the remote IP only when the local config allows full connectivity?
+                    if (config.objects.host === '0.0.0.0') {
+                        // TODO: why we set the remote IP only when the local config allows full connectivity?
                         config.objects.host = ipHost;
                     }
 
@@ -263,7 +303,7 @@ function Multihost(options) {
         }
         if (typeof number === 'function') {
             callback = number;
-            number   = null;
+            number = null;
         }
         const MHClient = require('../multihostClient');
         const mhClient = new MHClient();
@@ -285,12 +325,11 @@ function Multihost(options) {
                     } else {
                         callback('Invalid index: ' + number);
                     }
-                } else
-                if (list && list.length) {
+                } else if (list && list.length) {
                     const readline = require('readline');
 
                     const rl = readline.createInterface({
-                        input:  process.stdin,
+                        input: process.stdin,
                         output: process.stdout
                     });
                     rl.question('Please select host [1]: ', answer => {

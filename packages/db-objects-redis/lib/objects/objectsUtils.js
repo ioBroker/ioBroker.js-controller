@@ -8,111 +8,111 @@
  */
 
 'use strict';
-const stream      = require('stream');
-const Writable    = stream.Writable;
-const memStore    = {};
-const util        = require('util');
-const path        = require('path');
-const deepClone   = require('deep-clone');
-const tools       = require('@iobroker/db-base').tools;
+const stream = require('stream');
+const Writable = stream.Writable;
+const memStore = {};
+const util = require('util');
+const path = require('path');
+const deepClone = require('deep-clone');
+const tools = require('@iobroker/db-base').tools;
 
-const userStartsWith     = 'system.user.';
-const groupStartsWith    = 'system.group.';
-const regCheckId  = /[*?[\]]|\$%\$/;
+const userStartsWith = 'system.user.';
+const groupStartsWith = 'system.group.';
+const regCheckId = /[*?[\]]|\$%\$/;
 
-const SYSTEM_ADMIN_USER  = 'system.user.admin';
+const SYSTEM_ADMIN_USER = 'system.user.admin';
 const SYSTEM_ADMIN_GROUP = 'system.group.administrator';
 
-const ERROR_PERMISSION   = 'permissionError';
-const ERROR_NOT_FOUND    = 'Not exists';
-const ERROR_DB_CLOSED    = 'DB closed';
+const ERROR_PERMISSION = 'permissionError';
+const ERROR_NOT_FOUND = 'Not exists';
+const ERROR_DB_CLOSED = 'DB closed';
 
-const ACCESS_EVERY_EXEC  = 0x1;
+const ACCESS_EVERY_EXEC = 0x1;
 const ACCESS_EVERY_WRITE = 0x2;
-const ACCESS_EVERY_READ  = 0x4;
-const ACCESS_EVERY_RW    = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ;
-const ACCESS_EVERY_ALL   = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ | ACCESS_EVERY_EXEC;
+const ACCESS_EVERY_READ = 0x4;
+const ACCESS_EVERY_RW = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ;
+const ACCESS_EVERY_ALL = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ | ACCESS_EVERY_EXEC;
 
-const ACCESS_GROUP_EXEC  = 0x10;
+const ACCESS_GROUP_EXEC = 0x10;
 const ACCESS_GROUP_WRITE = 0x20;
-const ACCESS_GROUP_READ  = 0x40;
-const ACCESS_GROUP_RW    = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ;
-const ACCESS_GROUP_ALL   = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ | ACCESS_GROUP_EXEC;
+const ACCESS_GROUP_READ = 0x40;
+const ACCESS_GROUP_RW = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ;
+const ACCESS_GROUP_ALL = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ | ACCESS_GROUP_EXEC;
 
-const ACCESS_USER_EXEC   = 0x100;
-const ACCESS_USER_WRITE  = 0x200;
-const ACCESS_USER_READ   = 0x400;
-const ACCESS_USER_RW     = ACCESS_USER_WRITE | ACCESS_USER_READ;
-const ACCESS_USER_ALL    = ACCESS_USER_WRITE | ACCESS_USER_READ | ACCESS_USER_EXEC;
+const ACCESS_USER_EXEC = 0x100;
+const ACCESS_USER_WRITE = 0x200;
+const ACCESS_USER_READ = 0x400;
+const ACCESS_USER_RW = ACCESS_USER_WRITE | ACCESS_USER_READ;
+const ACCESS_USER_ALL = ACCESS_USER_WRITE | ACCESS_USER_READ | ACCESS_USER_EXEC;
 
-const ACCESS_WRITE       = 0x2;
-const ACCESS_READ        = 0x4;
-const ACCESS_LIST        = 'list';
-const ACCESS_DELETE      = 'delete';
-const ACCESS_CREATE      = 'create';
+const ACCESS_WRITE = 0x2;
+const ACCESS_READ = 0x4;
+const ACCESS_LIST = 'list';
+const ACCESS_DELETE = 'delete';
+const ACCESS_CREATE = 'create';
 
 const mimeTypes = {
-    '.css':     {type: 'text/css',                  binary: false},
-    '.bmp':     {type: 'image/bmp',                 binary: true},
-    '.png':     {type: 'image/png',                 binary: true},
-    '.jpg':     {type: 'image/jpeg',                binary: true},
-    '.jpeg':    {type: 'image/jpeg',                binary: true},
-    '.gif':     {type: 'image/gif',                 binary: true},
-    '.ico':     {type: 'image/x-icon',              binary: true},
-    '.webp':    {type: 'image/webp',                binary: true},
-    '.wbmp':    {type: 'image/vnd.wap.wbmp',        binary: true},
-    '.tif':     {type: 'image/tiff',                binary: true},
-    '.js':      {type: 'application/javascript',    binary: false},
-    '.html':    {type: 'text/html',                 binary: false},
-    '.htm':     {type: 'text/html',                 binary: false},
-    '.json':    {type: 'application/json',          binary: false},
-    '.md':      {type: 'text/markdown',             binary: false},
-    '.xml':     {type: 'text/xml',                  binary: false},
-    '.svg':     {type: 'image/svg+xml',              binary: false},
-    '.eot':     {type: 'application/vnd.ms-fontobject', binary: true},
-    '.ttf':     {type: 'application/font-sfnt',     binary: true},
-    '.cur':     {type: 'application/x-win-bitmap',  binary: true},
-    '.woff':    {type: 'application/font-woff',     binary: true},
-    '.wav':     {type: 'audio/wav',                 binary: true},
-    '.mp3':     {type: 'audio/mpeg3',               binary: true},
-    '.avi':     {type: 'video/avi',                 binary: true},
-    '.qt':      {type: 'video/quicktime',           binary: true},
-    '.ppt':     {type: 'application/vnd.ms-powerpoint', binary: true},
-    '.pptx':    {type: 'application/vnd.ms-powerpoint', binary: true},
-    '.doc':     {type: 'application/msword',        binary: true},
-    '.docx':    {type: 'application/msword',        binary: true},
-    '.xls':     {type: 'application/vnd.ms-excel',  binary: true},
-    '.xlsx':    {type: 'application/vnd.ms-excel',  binary: true},
-    '.mp4':     {type: 'video/mp4',                 binary: true},
-    '.mkv':     {type: 'video/mkv',                 binary: true},
-    '.zip':     {type: 'application/zip',           binary: true},
-    '.ogg':     {type: 'audio/ogg',                 binary: true},
-    '.manifest':{type: 'text/cache-manifest',       binary: false},
-    '.pdf':     {type: 'application/pdf',           binary: true},
-    '.gz':      {type: 'application/gzip',          binary: true},
-    '.gzip':    {type: 'application/gzip',          binary: true}
+    '.css': { type: 'text/css', binary: false },
+    '.bmp': { type: 'image/bmp', binary: true },
+    '.png': { type: 'image/png', binary: true },
+    '.jpg': { type: 'image/jpeg', binary: true },
+    '.jpeg': { type: 'image/jpeg', binary: true },
+    '.gif': { type: 'image/gif', binary: true },
+    '.ico': { type: 'image/x-icon', binary: true },
+    '.webp': { type: 'image/webp', binary: true },
+    '.wbmp': { type: 'image/vnd.wap.wbmp', binary: true },
+    '.tif': { type: 'image/tiff', binary: true },
+    '.js': { type: 'application/javascript', binary: false },
+    '.html': { type: 'text/html', binary: false },
+    '.htm': { type: 'text/html', binary: false },
+    '.json': { type: 'application/json', binary: false },
+    '.md': { type: 'text/markdown', binary: false },
+    '.xml': { type: 'text/xml', binary: false },
+    '.svg': { type: 'image/svg+xml', binary: false },
+    '.eot': { type: 'application/vnd.ms-fontobject', binary: true },
+    '.ttf': { type: 'application/font-sfnt', binary: true },
+    '.cur': { type: 'application/x-win-bitmap', binary: true },
+    '.woff': { type: 'application/font-woff', binary: true },
+    '.wav': { type: 'audio/wav', binary: true },
+    '.mp3': { type: 'audio/mpeg3', binary: true },
+    '.avi': { type: 'video/avi', binary: true },
+    '.qt': { type: 'video/quicktime', binary: true },
+    '.ppt': { type: 'application/vnd.ms-powerpoint', binary: true },
+    '.pptx': { type: 'application/vnd.ms-powerpoint', binary: true },
+    '.doc': { type: 'application/msword', binary: true },
+    '.docx': { type: 'application/msword', binary: true },
+    '.xls': { type: 'application/vnd.ms-excel', binary: true },
+    '.xlsx': { type: 'application/vnd.ms-excel', binary: true },
+    '.mp4': { type: 'video/mp4', binary: true },
+    '.mkv': { type: 'video/mkv', binary: true },
+    '.zip': { type: 'application/zip', binary: true },
+    '.ogg': { type: 'audio/ogg', binary: true },
+    '.manifest': { type: 'text/cache-manifest', binary: false },
+    '.pdf': { type: 'application/pdf', binary: true },
+    '.gz': { type: 'application/gzip', binary: true },
+    '.gzip': { type: 'application/gzip', binary: true }
 };
 
-let users                = {};
-let groups               = {};
+let users = {};
+let groups = {};
 
 function getMimeType(ext) {
     if (!ext) {
-        return {mimeType: 'text/html', isBinary: false};
+        return { mimeType: 'text/html', isBinary: false };
     }
     if (ext instanceof Array) {
         ext = ext[0];
     }
     ext = ext.toLowerCase();
     let mimeType = 'text/javascript';
-    let isBinary  = false;
+    let isBinary = false;
 
     if (mimeTypes[ext]) {
         mimeType = mimeTypes[ext].type;
         isBinary = mimeTypes[ext].binary;
     }
 
-    return {mimeType, isBinary};
+    return { mimeType, isBinary };
 }
 
 /**
@@ -134,9 +134,9 @@ util.inherits(WMStrm, Writable);
 WMStrm.prototype._write = function (chunk, enc, cb) {
     if (chunk) {
         // our memory store stores things in buffers
-        const buffer = (Buffer.isBuffer(chunk)) ?
-            chunk :  // already is Buffer use it
-            Buffer.from(chunk, enc);  // string, convert
+        const buffer = Buffer.isBuffer(chunk)
+            ? chunk // already is Buffer use it
+            : Buffer.from(chunk, enc); // string, convert
 
         // concatenate to the buffer already there
         if (!memStore[this.key]) {
@@ -153,7 +153,7 @@ WMStrm.prototype._write = function (chunk, enc, cb) {
 
 function insert(objects, id, attName, _ignore, options, _obj, callback) {
     if (typeof options === 'string') {
-        options = {mimeType: options};
+        options = { mimeType: options };
     }
 
     // return pipe for write into redis
@@ -179,20 +179,22 @@ function checkFile(fileOptions, options, flag, defaultNewAcl) {
         fileOptions = {};
         fileOptions.mimeType = deepClone(fileOptions);
         fileOptions.acl = {
-            owner:       (defaultNewAcl && defaultNewAcl.owner)      || SYSTEM_ADMIN_USER,
-            ownerGroup:  (defaultNewAcl && defaultNewAcl.ownerGroup) || SYSTEM_ADMIN_GROUP,
-            permissions: (defaultNewAcl && defaultNewAcl.file)       || (ACCESS_USER_RW | ACCESS_GROUP_READ | ACCESS_EVERY_READ) // '0644'
+            owner: (defaultNewAcl && defaultNewAcl.owner) || SYSTEM_ADMIN_USER,
+            ownerGroup: (defaultNewAcl && defaultNewAcl.ownerGroup) || SYSTEM_ADMIN_GROUP,
+            permissions: (defaultNewAcl && defaultNewAcl.file) || ACCESS_USER_RW | ACCESS_GROUP_READ | ACCESS_EVERY_READ // '0644'
         };
     }
 
     // Set default owner group
-    fileOptions.acl.ownerGroup  = fileOptions.acl.ownerGroup  || (defaultNewAcl && defaultNewAcl.ownerGroup) || SYSTEM_ADMIN_GROUP;
-    fileOptions.acl.owner       = fileOptions.acl.owner       || (defaultNewAcl && defaultNewAcl.owner)      || SYSTEM_ADMIN_USER;
-    fileOptions.acl.permissions = fileOptions.acl.permissions || (defaultNewAcl && defaultNewAcl.file)       || (ACCESS_USER_RW | ACCESS_GROUP_READ | ACCESS_EVERY_READ); // '0644'
+    fileOptions.acl.ownerGroup =
+        fileOptions.acl.ownerGroup || (defaultNewAcl && defaultNewAcl.ownerGroup) || SYSTEM_ADMIN_GROUP;
+    fileOptions.acl.owner = fileOptions.acl.owner || (defaultNewAcl && defaultNewAcl.owner) || SYSTEM_ADMIN_USER;
+    fileOptions.acl.permissions =
+        fileOptions.acl.permissions ||
+        (defaultNewAcl && defaultNewAcl.file) ||
+        ACCESS_USER_RW | ACCESS_GROUP_READ | ACCESS_EVERY_READ; // '0644'
 
-    if (options.user !== SYSTEM_ADMIN_USER &&
-        options.groups.indexOf(SYSTEM_ADMIN_GROUP) === -1 &&
-        fileOptions.acl) {
+    if (options.user !== SYSTEM_ADMIN_USER && options.groups.indexOf(SYSTEM_ADMIN_GROUP) === -1 && fileOptions.acl) {
         if (fileOptions.acl.owner !== options.user) {
             // Check if the user is in the group
             if (options.groups.indexOf(fileOptions.acl.ownerGroup) !== -1) {
@@ -221,9 +223,9 @@ function checkFileRights(objects, id, name, options, flag, callback) {
     if (!options.user) {
         // Before files converted, lets think: if no options it is admin
         options = {
-            user:    'system.user.admin',
-            params:  options,
-            group:   'system.group.administrator'
+            user: 'system.user.admin',
+            params: options,
+            group: 'system.group.administrator'
         };
     }
 
@@ -233,19 +235,21 @@ function checkFileRights(objects, id, name, options, flag, callback) {
 
     if (!options.acl) {
         objects.getUserGroup(options.user, (_user, groups, acl) => {
-            options.acl    = acl || {};
+            options.acl = acl || {};
             options.groups = groups;
-            options.group  = groups ? groups[0] : null;
+            options.group = groups ? groups[0] : null;
             checkFileRights(objects, id, name, options, flag, callback);
         });
         return;
     }
     // If user may write
-    if (flag === 2 && !options.acl.file.write) { // write
+    if (flag === 2 && !options.acl.file.write) {
+        // write
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
     // If user may read
-    if (flag === 4 && !options.acl.file.read) { // read
+    if (flag === 4 && !options.acl.file.read) {
+        // read
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
 
@@ -300,30 +304,30 @@ function checkFileRights(objects, id, name, options, flag, callback) {
 function getDefaultAdminRights(acl, _isState) {
     acl = acl || {};
     acl.file = {
-        list:     true,
-        read:     true,
-        write:    true,
-        create:   true,
-        'delete': true
+        list: true,
+        read: true,
+        write: true,
+        create: true,
+        delete: true
     };
     acl.object = {
-        create:   true,
-        list:     true,
-        read:     true,
-        write:    true,
-        'delete': true
+        create: true,
+        list: true,
+        read: true,
+        write: true,
+        delete: true
     };
     acl.users = {
-        create:   true,
-        list:     true,
-        read:     true,
-        write:    true,
-        'delete': true
+        create: true,
+        list: true,
+        read: true,
+        write: true,
+        delete: true
     };
     acl.state = {
         read: true,
         write: true,
-        'delete': true,
+        delete: true,
         create: true,
         list: true
     };
@@ -336,7 +340,13 @@ function getUserGroup(objects, user, callback) {
         console.log(`invalid user name: ${user}`);
         user = JSON.stringify(user);
         // deep copy
-        return tools.maybeCallbackWithError(callback, `invalid user name: ${user}`, user, [], deepClone(defaultAcl.acl));
+        return tools.maybeCallbackWithError(
+            callback,
+            `invalid user name: ${user}`,
+            user,
+            [],
+            deepClone(defaultAcl.acl)
+        );
     }
     if (users[user]) {
         return tools.maybeCallbackWithError(callback, null, user, users[user].groups, users[user].acl);
@@ -344,136 +354,163 @@ function getUserGroup(objects, user, callback) {
 
     let error;
     // Read all groups
-    objects.getObjectList({startkey: 'system.group.', endkey: 'system.group.\u9999'}, {checked: true}, (err, arr) => {
-        if (err) {
-            error = err;
-        }
-        groups = [];
-        if (arr) {
-            // Read all groups
-            for (let g = 0; g < arr.rows.length; g++) {
-                groups[g] = arr.rows[g].value;
-                if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
-                    groups[g].common.acl = getDefaultAdminRights(groups[g].common.acl);
-                }
-            }
-        }
-
-        objects.getObjectList({startkey: 'system.user.', endkey: 'system.user.\u9999'}, {checked: true}, (err, arr) => {
+    objects.getObjectList(
+        { startkey: 'system.group.', endkey: 'system.group.\u9999' },
+        { checked: true },
+        (err, arr) => {
             if (err) {
                 error = err;
             }
-            users = {};
-
+            groups = [];
             if (arr) {
-                for (let i = 0; i < arr.rows.length; i++) {
-                    // cannot use here Object.assign, because required deep copy
-                    users[arr.rows[i].value._id] = deepClone(defaultAcl);
-                }
-            }
-            users[SYSTEM_ADMIN_USER] = users[SYSTEM_ADMIN_USER] || deepClone(defaultAcl);
-            users[SYSTEM_ADMIN_USER].acl = getDefaultAdminRights(users[SYSTEM_ADMIN_USER].acl);
-
-            for (let g = 0; g < groups.length; g++) {
-                if (!groups[g] || !groups[g].common || !groups[g].common.members) {
-                    continue;
-                }
-                for (let m = 0; m < groups[g].common.members.length; m++) {
-                    const u = groups[g].common.members[m];
-                    if (!users[u]) {
-                        error = error || (`Unknown user in group "${groups[g]._id.replace('system.group.', '')}": ${u}`);
-                        continue;
-                    }
-                    users[u].groups.push(groups[g]._id);
-
-                    if (groups[g].common.acl && groups[g].common.acl.file) {
-                        if (!users[u].acl || !users[u].acl.file) {
-                            users[u].acl      = users[u].acl || {};
-                            users[u].acl.file = users[u].acl.file || {};
-
-                            users[u].acl.file.create    = groups[g].common.acl.file.create;
-                            users[u].acl.file.read      = groups[g].common.acl.file.read;
-                            users[u].acl.file.write     = groups[g].common.acl.file.write;
-                            users[u].acl.file['delete'] = groups[g].common.acl.file['delete'];
-                            users[u].acl.file.list      = groups[g].common.acl.file.list;
-                        } else {
-                            users[u].acl.file.create    = users[u].acl.file.create    || groups[g].common.acl.file.create;
-                            users[u].acl.file.read      = users[u].acl.file.read      || groups[g].common.acl.file.read;
-                            users[u].acl.file.write     = users[u].acl.file.write     || groups[g].common.acl.file.write;
-                            users[u].acl.file['delete'] = users[u].acl.file['delete'] || groups[g].common.acl.file['delete'];
-                            users[u].acl.file.list      = users[u].acl.file.list      || groups[g].common.acl.file.list;
-                        }
-                    }
-
-                    if (groups[g].common.acl && groups[g].common.acl.object) {
-                        if (!users[u].acl || !users[u].acl.object) {
-                            users[u].acl        = users[u].acl || {};
-                            users[u].acl.object = users[u].acl.object || {};
-
-                            users[u].acl.object.create    = groups[g].common.acl.object.create;
-                            users[u].acl.object.read      = groups[g].common.acl.object.read;
-                            users[u].acl.object.write     = groups[g].common.acl.object.write;
-                            users[u].acl.object['delete'] = groups[g].common.acl.object['delete'];
-                            users[u].acl.object.list      = groups[g].common.acl.object.list;
-                        } else {
-                            users[u].acl.object.create    = users[u].acl.object.create    || groups[g].common.acl.object.create;
-                            users[u].acl.object.read      = users[u].acl.object.read      || groups[g].common.acl.object.read;
-                            users[u].acl.object.write     = users[u].acl.object.write     || groups[g].common.acl.object.write;
-                            users[u].acl.object['delete'] = users[u].acl.object['delete'] || groups[g].common.acl.object['delete'];
-                            users[u].acl.object.list      = users[u].acl.object.list      || groups[g].common.acl.object.list;
-                        }
-                    }
-
-                    if (groups[g].common.acl && groups[g].common.acl.users) {
-                        if (!users[u].acl || !users[u].acl.users) {
-                            users[u].acl       = users[u].acl || {};
-                            users[u].acl.users = users[u].acl.users || {};
-
-                            users[u].acl.users.create    = groups[g].common.acl.users.create;
-                            users[u].acl.users.read      = groups[g].common.acl.users.read;
-                            users[u].acl.users.write     = groups[g].common.acl.users.write;
-                            users[u].acl.users['delete'] = groups[g].common.acl.users['delete'];
-                            users[u].acl.users.list      = groups[g].common.acl.users.list;
-
-                        } else {
-                            users[u].acl.users.create    = users[u].acl.users.create    || groups[g].common.acl.users.create;
-                            users[u].acl.users.read      = users[u].acl.users.read      || groups[g].common.acl.users.read;
-                            users[u].acl.users.write     = users[u].acl.users.write     || groups[g].common.acl.users.write;
-                            users[u].acl.users['delete'] = users[u].acl.users['delete'] || groups[g].common.acl.users['delete'];
-                            users[u].acl.users.list      = users[u].acl.users.list      || groups[g].common.acl.users.list;
-                        }
-                    }
-
-                    if (groups[g].common.acl && groups[g].common.acl.state) {
-                        if (!users[u].acl || !users[u].acl.state) {
-                            users[u].acl       = users[u].acl || {};
-                            users[u].acl.state = users[u].acl.state || {};
-
-                            users[u].acl.state.create    = groups[g].common.acl.state.create;
-                            users[u].acl.state.read      = groups[g].common.acl.state.read;
-                            users[u].acl.state.write     = groups[g].common.acl.state.write;
-                            users[u].acl.state['delete'] = groups[g].common.acl.state['delete'];
-                            users[u].acl.state.list      = groups[g].common.acl.state.list;
-
-                        } else {
-                            users[u].acl.state.create    = users[u].acl.state.create    || groups[g].common.acl.state.create;
-                            users[u].acl.state.read      = users[u].acl.state.read      || groups[g].common.acl.state.read;
-                            users[u].acl.state.write     = users[u].acl.state.write     || groups[g].common.acl.state.write;
-                            users[u].acl.state['delete'] = users[u].acl.state['delete'] || groups[g].common.acl.state['delete'];
-                            users[u].acl.state.list      = users[u].acl.state.list      || groups[g].common.acl.state.list;
-                        }
+                // Read all groups
+                for (let g = 0; g < arr.rows.length; g++) {
+                    groups[g] = arr.rows[g].value;
+                    if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
+                        groups[g].common.acl = getDefaultAdminRights(groups[g].common.acl);
                     }
                 }
             }
 
-            return tools.maybeCallbackWithError(callback,
-                error,
-                user,
-                users[user] ? users[user].groups : [],
-                users[user] ? users[user].acl : JSON.parse(JSON.stringify(defaultAcl.acl))
+            objects.getObjectList(
+                { startkey: 'system.user.', endkey: 'system.user.\u9999' },
+                { checked: true },
+                (err, arr) => {
+                    if (err) {
+                        error = err;
+                    }
+                    users = {};
+
+                    if (arr) {
+                        for (let i = 0; i < arr.rows.length; i++) {
+                            // cannot use here Object.assign, because required deep copy
+                            users[arr.rows[i].value._id] = deepClone(defaultAcl);
+                        }
+                    }
+                    users[SYSTEM_ADMIN_USER] = users[SYSTEM_ADMIN_USER] || deepClone(defaultAcl);
+                    users[SYSTEM_ADMIN_USER].acl = getDefaultAdminRights(users[SYSTEM_ADMIN_USER].acl);
+
+                    for (let g = 0; g < groups.length; g++) {
+                        if (!groups[g] || !groups[g].common || !groups[g].common.members) {
+                            continue;
+                        }
+                        for (let m = 0; m < groups[g].common.members.length; m++) {
+                            const u = groups[g].common.members[m];
+                            if (!users[u]) {
+                                error =
+                                    error ||
+                                    `Unknown user in group "${groups[g]._id.replace('system.group.', '')}": ${u}`;
+                                continue;
+                            }
+                            users[u].groups.push(groups[g]._id);
+
+                            if (groups[g].common.acl && groups[g].common.acl.file) {
+                                if (!users[u].acl || !users[u].acl.file) {
+                                    users[u].acl = users[u].acl || {};
+                                    users[u].acl.file = users[u].acl.file || {};
+
+                                    users[u].acl.file.create = groups[g].common.acl.file.create;
+                                    users[u].acl.file.read = groups[g].common.acl.file.read;
+                                    users[u].acl.file.write = groups[g].common.acl.file.write;
+                                    users[u].acl.file['delete'] = groups[g].common.acl.file['delete'];
+                                    users[u].acl.file.list = groups[g].common.acl.file.list;
+                                } else {
+                                    users[u].acl.file.create =
+                                        users[u].acl.file.create || groups[g].common.acl.file.create;
+                                    users[u].acl.file.read = users[u].acl.file.read || groups[g].common.acl.file.read;
+                                    users[u].acl.file.write =
+                                        users[u].acl.file.write || groups[g].common.acl.file.write;
+                                    users[u].acl.file['delete'] =
+                                        users[u].acl.file['delete'] || groups[g].common.acl.file['delete'];
+                                    users[u].acl.file.list = users[u].acl.file.list || groups[g].common.acl.file.list;
+                                }
+                            }
+
+                            if (groups[g].common.acl && groups[g].common.acl.object) {
+                                if (!users[u].acl || !users[u].acl.object) {
+                                    users[u].acl = users[u].acl || {};
+                                    users[u].acl.object = users[u].acl.object || {};
+
+                                    users[u].acl.object.create = groups[g].common.acl.object.create;
+                                    users[u].acl.object.read = groups[g].common.acl.object.read;
+                                    users[u].acl.object.write = groups[g].common.acl.object.write;
+                                    users[u].acl.object['delete'] = groups[g].common.acl.object['delete'];
+                                    users[u].acl.object.list = groups[g].common.acl.object.list;
+                                } else {
+                                    users[u].acl.object.create =
+                                        users[u].acl.object.create || groups[g].common.acl.object.create;
+                                    users[u].acl.object.read =
+                                        users[u].acl.object.read || groups[g].common.acl.object.read;
+                                    users[u].acl.object.write =
+                                        users[u].acl.object.write || groups[g].common.acl.object.write;
+                                    users[u].acl.object['delete'] =
+                                        users[u].acl.object['delete'] || groups[g].common.acl.object['delete'];
+                                    users[u].acl.object.list =
+                                        users[u].acl.object.list || groups[g].common.acl.object.list;
+                                }
+                            }
+
+                            if (groups[g].common.acl && groups[g].common.acl.users) {
+                                if (!users[u].acl || !users[u].acl.users) {
+                                    users[u].acl = users[u].acl || {};
+                                    users[u].acl.users = users[u].acl.users || {};
+
+                                    users[u].acl.users.create = groups[g].common.acl.users.create;
+                                    users[u].acl.users.read = groups[g].common.acl.users.read;
+                                    users[u].acl.users.write = groups[g].common.acl.users.write;
+                                    users[u].acl.users['delete'] = groups[g].common.acl.users['delete'];
+                                    users[u].acl.users.list = groups[g].common.acl.users.list;
+                                } else {
+                                    users[u].acl.users.create =
+                                        users[u].acl.users.create || groups[g].common.acl.users.create;
+                                    users[u].acl.users.read =
+                                        users[u].acl.users.read || groups[g].common.acl.users.read;
+                                    users[u].acl.users.write =
+                                        users[u].acl.users.write || groups[g].common.acl.users.write;
+                                    users[u].acl.users['delete'] =
+                                        users[u].acl.users['delete'] || groups[g].common.acl.users['delete'];
+                                    users[u].acl.users.list =
+                                        users[u].acl.users.list || groups[g].common.acl.users.list;
+                                }
+                            }
+
+                            if (groups[g].common.acl && groups[g].common.acl.state) {
+                                if (!users[u].acl || !users[u].acl.state) {
+                                    users[u].acl = users[u].acl || {};
+                                    users[u].acl.state = users[u].acl.state || {};
+
+                                    users[u].acl.state.create = groups[g].common.acl.state.create;
+                                    users[u].acl.state.read = groups[g].common.acl.state.read;
+                                    users[u].acl.state.write = groups[g].common.acl.state.write;
+                                    users[u].acl.state['delete'] = groups[g].common.acl.state['delete'];
+                                    users[u].acl.state.list = groups[g].common.acl.state.list;
+                                } else {
+                                    users[u].acl.state.create =
+                                        users[u].acl.state.create || groups[g].common.acl.state.create;
+                                    users[u].acl.state.read =
+                                        users[u].acl.state.read || groups[g].common.acl.state.read;
+                                    users[u].acl.state.write =
+                                        users[u].acl.state.write || groups[g].common.acl.state.write;
+                                    users[u].acl.state['delete'] =
+                                        users[u].acl.state['delete'] || groups[g].common.acl.state['delete'];
+                                    users[u].acl.state.list =
+                                        users[u].acl.state.list || groups[g].common.acl.state.list;
+                                }
+                            }
+                        }
+                    }
+
+                    return tools.maybeCallbackWithError(
+                        callback,
+                        error,
+                        user,
+                        users[user] ? users[user].groups : [],
+                        users[user] ? users[user].acl : JSON.parse(JSON.stringify(defaultAcl.acl))
+                    );
+                }
             );
-        });
-    });
+        }
+    );
 }
 
 function sanitizePath(id, name) {
@@ -506,7 +543,7 @@ function sanitizePath(id, name) {
         name = name.substring(1);
     } // do not allow absolute paths
 
-    return {id: id, name: name};
+    return { id: id, name: name };
 }
 
 function checkObject(obj, options, flag) {
@@ -527,8 +564,10 @@ function checkObject(obj, options, flag) {
     // checkObject always called after checkObjectRights and admin is checked there
     if (obj.acl.owner !== options.user) {
         // Check if the user is in the group
-        if ((options.group && options.group === obj.acl.ownerGroup) ||
-            (options.groups && options.groups.includes(obj.acl.ownerGroup))) {
+        if (
+            (options.group && options.group === obj.acl.ownerGroup) ||
+            (options.groups && options.groups.includes(obj.acl.ownerGroup))
+        ) {
             // Check group rights
             if (!(obj.acl.object & (flag << 4))) {
                 return false;
@@ -554,25 +593,26 @@ function checkObjectRights(objects, id, object, options, flag, callback) {
     if (!options.user) {
         // Before files converted, lets think: if no options it is admin
         options = {
-            user:    SYSTEM_ADMIN_USER,
-            params:  options,
-            group:   SYSTEM_ADMIN_GROUP,
-            groups:  [SYSTEM_ADMIN_GROUP],
-            acl:     getDefaultAdminRights()
+            user: SYSTEM_ADMIN_USER,
+            params: options,
+            group: SYSTEM_ADMIN_GROUP,
+            groups: [SYSTEM_ADMIN_GROUP],
+            acl: getDefaultAdminRights()
         };
     }
 
     if (!options.acl) {
         return objects.getUserGroup(options.user, (_user, groups, acl) => {
-            options.acl    = acl || {};
+            options.acl = acl || {};
             options.groups = groups;
-            options.group  = groups ? groups[0] : null;
+            options.group = groups ? groups[0] : null;
             checkObjectRights(objects, id, object, options, flag, callback);
         });
     }
 
     // now options are filled and we can go
-    if (options.user  === SYSTEM_ADMIN_USER ||
+    if (
+        options.user === SYSTEM_ADMIN_USER ||
         options.group === SYSTEM_ADMIN_GROUP ||
         (options.groups && options.groups.includes(SYSTEM_ADMIN_GROUP))
     ) {
@@ -582,57 +622,68 @@ function checkObjectRights(objects, id, object, options, flag, callback) {
     // if user or group objects
     if (typeof id === 'string' && (id.startsWith(userStartsWith) || id.startsWith(groupStartsWith))) {
         // If user may write
-        if (flag === ACCESS_WRITE && !options.acl.users.write) {// write
+        if (flag === ACCESS_WRITE && !options.acl.users.write) {
+            // write
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
         }
 
         // If user may read
-        if (flag === ACCESS_READ && !options.acl.users.read) {// read
+        if (flag === ACCESS_READ && !options.acl.users.read) {
+            // read
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
         }
 
         // If user may delete
-        if (flag === ACCESS_DELETE && !options.acl.users.delete) {// delete
+        if (flag === ACCESS_DELETE && !options.acl.users.delete) {
+            // delete
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
         }
 
         // If user may list
-        if (flag === ACCESS_LIST && !options.acl.users.list) {// list
+        if (flag === ACCESS_LIST && !options.acl.users.list) {
+            // list
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
         }
 
         // If user may create
-        if (flag === ACCESS_CREATE && !options.acl.users.create) {// create
+        if (flag === ACCESS_CREATE && !options.acl.users.create) {
+            // create
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
         }
 
         // If user may write
-        if (flag === ACCESS_DELETE) { // he may delete
+        if (flag === ACCESS_DELETE) {
+            // he may delete
             flag = ACCESS_WRITE;
         }
     }
 
     // If user may write
-    if (flag === ACCESS_WRITE && !options.acl.object.write) {// write
+    if (flag === ACCESS_WRITE && !options.acl.object.write) {
+        // write
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
 
     // If user may read
-    if (flag === ACCESS_READ && !options.acl.object.read) {// read
+    if (flag === ACCESS_READ && !options.acl.object.read) {
+        // read
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
 
     // If user may delete
-    if (flag === ACCESS_DELETE && !options.acl.object.delete) {// delete
+    if (flag === ACCESS_DELETE && !options.acl.object.delete) {
+        // delete
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
 
     // If user may list
-    if (flag === ACCESS_LIST && !options.acl.object.list) {// list
+    if (flag === ACCESS_LIST && !options.acl.object.list) {
+        // list
         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
     }
 
-    if (flag === ACCESS_DELETE) {// write
+    if (flag === ACCESS_DELETE) {
+        // write
         flag = ACCESS_WRITE;
     }
 
@@ -648,32 +699,32 @@ const defaultAcl = {
     groups: [],
     acl: {
         file: {
-            list:     false,
-            read:     false,
-            write:    false,
-            create:   false,
-            'delete': false
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
         },
         object: {
-            list:     false,
-            read:     false,
-            write:    false,
-            create:   false,
-            'delete': false
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
         },
         state: {
-            list:     false,
-            read:     false,
-            write:    false,
-            create:   false,
-            'delete': false
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
         },
         users: {
-            list:     false,
-            read:     false,
-            write:    false,
-            create:   false,
-            'delete': false
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
         }
     }
 };
