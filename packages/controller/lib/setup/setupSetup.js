@@ -982,7 +982,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         });
                     }
                 } catch (e) {
-                    console.warn(`Cannot write file. Not critical: ${e}`);
+                    console.warn(`Cannot write file. Not critical: ${e.message}`);
                 }
             }
         }
