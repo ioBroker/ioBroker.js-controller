@@ -26,9 +26,10 @@
 * (foxriver76) Added installedFrom info to adapter start log line when not installed from npm normally
 
 **Optimizations and Fixes**
-* (foxriver76/Apollon77) Improve performance for object searches (especially when using redis)
-* (Apolllon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 300% faster, redis 46.300% !! faster)
-* (foxriver76) Better handle backup restores when custom hostnames were used
+* (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 300% faster, redis 46.000% !! faster)
+* (foxriver76/Apollon77) Improve performance for object searches in general by limiting search namespaces to the relevant ones automatically
+* (foxriver76/Apollon77) Improve performance for redis object searches by 90-3.000% by using lookup structures for object types (TODO DOCS)
+* (foxriver76) Improve handling of backup restores when custom hostnames were used (especially relevant for Docker usage)
 * (foxriver76) Optimize backup to make sure invalid user-generated JSONs do not prevent backups from being considered valid
 * (foxriver76/klein0r) Improved CLI help
 * (foxriver76) Preserve changed instance names also when updating adapter (name was reset before)
@@ -41,6 +42,7 @@
 * (bluefox/foxriver76) bigger internal refactorings in cli commands (TESTFOKUS)
 * (foxriver76) make logging of not fulfilled adapter dependencies more user-friendly
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
+* (foxriver76) Check user and group assignments and remove unknown users from groups (could have happened in earlier versions) in setup first
 
 **Developer relevant DEPRECATIONS/WARNINGS**
 * **js-controller is no longer installable from GitHub because is now a monorepo. Use @dev tag on npm to get the nightly build of master js-controller!**
@@ -63,6 +65,7 @@
 * (Apollon77/foxriver76) Limit the search scope for object types host, adapter, instance, instanceStats, enum, script, group, user, config to the relevant namespaces when no search start/end is provided to speedup these calls in general
 * (foxriver76) Optimize deleteDevice/deleteChannel methods to just delete all objects the relevant device/channel
 * (foxriver76) Remove some magic path lookups  to be compatible to npm 7/8. Appname of controller is now always "iobroker" ("ioBroker" in dev cases)
+* (foxriver76) Also use Sentry (if enabled/allowed) in CLI commands whenever database is initialized to report crashes from CLI if they happen
 
 * general dependency updates
 * code style optimizations and streamline code
