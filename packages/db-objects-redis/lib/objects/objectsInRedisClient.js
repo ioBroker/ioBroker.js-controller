@@ -2293,17 +2293,26 @@ class ObjectsInRedisClient {
                 const obj = objs.shift();
                 const message = JSON.stringify(obj);
                 try {
-                    if (obj.type && this.useSets) {
-                        // e.g. _design/ has no type
-                        // add the object to the set + set object atomic
-                        await this.client
-                            .multi()
-                            .set(id, message)
-                            .sadd(`${this.setNamespace}object.type.${obj.type}`, id)
-                            .exec();
-                    } else {
+                    const commands = [];
+                    if (this.useSets) {
+                        if (obj.type) {
+                            // e.g. _design/ has no type
+                            // add the object to the set + set object atomic
+                            commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, id]);
+                        }
+
+                        if (obj.common && obj.common.custom) {
+                            // add to "common" set
+                            commands.push(['sadd', `${this.setNamespace}object.common.custom`, id]);
+                        }
+                    }
+
+                    if (!commands.length) {
                         // only set
                         await this.client.set(id, message);
+                    } else {
+                        commands.push(['set', id, message]);
+                        await this.client.multi(commands).exec();
                     }
                     await this.client.publish(id, message);
                 } catch (e) {
@@ -3022,35 +3031,28 @@ class ObjectsInRedisClient {
         try {
             const message = JSON.stringify(obj);
 
+            const commands = [];
             if (this.useSets) {
                 if (obj.type && (!oldObj || !oldObj.type)) {
                     // new object or oldObj had no type -> add to set + set object
-                    await this.client
-                        .multi()
-                        .set(this.objNamespace + id, message)
-                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                        .exec();
+                    commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
                 } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
                     // the old obj had a type which differs from the new type -> rem old, add new
-                    await this.client
-                        .multi()
-                        .set(this.objNamespace + id, message)
-                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
-                        .exec();
+                    commands.push(
+                        ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
+                        ['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id]
+                    );
                 } else if (oldObj && oldObj.type && !obj.type) {
                     // the oldObj had a type, the new one has no -> rem
-                    await this.client
-                        .multi()
-                        .set(this.objNamespace + id, message)
-                        .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                        .exec();
-                } else {
-                    // only set
-                    await this.client.set(this.objNamespace + id, message);
+                    commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
                 }
-            } else {
+            }
+
+            if (!commands.length) {
                 await this.client.set(this.objNamespace + id, message);
+            } else {
+                commands.push(['set', this.objNamespace + id, message]);
+                await this.client.multi(commands).exec();
             }
 
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
@@ -3141,17 +3143,31 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
         } else {
             try {
-                if (oldObj.type && this.useSets) {
-                    // e.g. _design/ has no type
-                    // del the object from the set + del object atomic
-                    await this.client
-                        .multi()
-                        .del(this.objNamespace + id)
-                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
-                        .exec();
-                } else {
+                const commands = [];
+
+                if (this.useSets) {
+                    if (oldObj.type) {
+                        // e.g. _design/ has no type
+                        // del the object from the set + del object atomic
+                        commands.push([
+                            'srem',
+                            `${this.setNamespace}object.type.${oldObj.type}`,
+                            this.objNamespace + id
+                        ]);
+                    }
+
+                    if (oldObj.common && oldObj.common.type) {
+                        // del the object from "custom" set
+                        commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+                    }
+                }
+
+                if (!commands.length) {
                     // only del
                     await this.client.del(this.objNamespace + id);
+                } else {
+                    commands.push(['del', this.objNamespace + id]);
+                    await this.client.multi(commands).exec();
                 }
 
                 // object has been deleted -> remove from cached meta if there
@@ -3521,7 +3537,7 @@ class ObjectsInRedisClient {
                         params.startkey,
                         params.endkey,
                         cursor,
-                        `${this.setNamespace}object.type.state`
+                        `${this.setNamespace}object.common.custom`
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
@@ -3885,6 +3901,8 @@ class ObjectsInRedisClient {
             _oldObj = deepClone(oldObj);
         }
 
+        const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
+
         oldObj = oldObj || {};
         obj = deepClone(obj); // copy here to prevent "sandboxed" objects from JavaScript adapter
         if (
@@ -3893,11 +3911,13 @@ class ObjectsInRedisClient {
             oldObj.common.custom !== null &&
             !tools.isObject(oldObj.common.custom)
         ) {
+            // custom has to be an object, else clean up
             delete oldObj.common.custom;
         }
 
         // we need to check if type has changed
         const oldType = oldObj.type;
+
         oldObj = extend(true, oldObj, obj);
         oldObj._id = id;
 
@@ -3958,36 +3978,37 @@ class ObjectsInRedisClient {
         const message = JSON.stringify(oldObj);
 
         try {
+            const commands = [];
             if (this.useSets) {
                 // what is called oldObj is acutally the obj we set, because it has been extended
                 if (oldObj.type && !oldType) {
                     // new object or oldObj had no type -> add to set + set object
-                    await this.client
-                        .multi()
-                        .set(this.objNamespace + id, message)
-                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                        .exec();
+                    commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
                 } else if (oldObj.type && oldType && oldObj.type !== oldType) {
                     // the old obj had a type which differs from the new type -> rem old, add new
-                    await this.client
-                        .multi()
-                        .set(this.objNamespace + id, message)
-                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
-                        .exec();
+                    commands.push(
+                        ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
+                        ['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id]
+                    );
                 } else if (oldType && !oldObj.type) {
                     // the oldObj had a type, the new one has no -> rem
-                    await this.client
-                        .multi()
-                        .set(this.objNamespace + id, message)
-                        .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
-                        .exec();
-                } else {
-                    // just set type is equal
-                    await this.client.set(this.objNamespace + id, message);
+                    commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
                 }
-            } else {
+            }
+
+            if (oldObj.common && oldObj.common.custom && !oldObjHasCustom) {
+                // we now have custom, old object had no custom
+                commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+            } else if (oldObjHasCustom && (!oldObj.common || !oldObj.common.custom)) {
+                // we no longer have custom
+                commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+            }
+
+            if (!commands.length) {
                 await this.client.set(this.objNamespace + id, message);
+            } else {
+                commands.push(['set', this.objNamespace + id, message]);
+                await this.client.multi(commands).exec();
             }
 
             // extended -> if its now type meta and currently marked as not -> cache
@@ -4349,6 +4370,15 @@ class ObjectsInRedisClient {
                 // 1 if added else 0 (mostly always part of the set)
                 const migrated = await this.client.sadd(
                     `${this.setNamespace}object.type.${obj.value.type}`,
+                    this.objNamespace + obj.id
+                );
+                noMigrated += migrated;
+            }
+
+            // check for custom
+            if (obj.value.common && obj.value.common.custom) {
+                const migrated = await this.client.sadd(
+                    `${this.setNamespace}object.common.custom`,
                     this.objNamespace + obj.id
                 );
                 noMigrated += migrated;
