@@ -28,6 +28,7 @@
     "@types/event-stream": "^4.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/iobroker": "^3.3.4",
+    "@types/ioredis": "^4.28.1",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.12",
     "@types/semver": "^7.3.9",

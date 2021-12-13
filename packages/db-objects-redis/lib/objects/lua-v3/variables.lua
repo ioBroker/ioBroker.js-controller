@@ -3,7 +3,7 @@
 local rep = {}
 -- local keys=redis.call("keys", KEYS[1].."*")
 local cursor = KEYS[4];
-local result = redis.call("SSCAN", KEYS[5], cursor, "MATCH", KEYS[1] .. "*", "COUNT", 500)
+local result = redis.call("SCAN", cursor, "MATCH", KEYS[1] .. "*", "COUNT", 500)
 cursor = result[1]
 local keys = result[2]
 local argStart = KEYS[1] .. KEYS[2]
@@ -15,7 +15,7 @@ local checkStr = string.format("%q:", "TypeName");
 --      }
 --  }
 for _, key in ipairs(keys) do
-    if (key >= argStart and key < argEnd) then
+    if (key >= argStart and key < argEnd and key:sub(7, 13) == "hm-rega") then
         local obj = redis.call("get", key)
         if (obj:find(checkStr) ~= nil) then
             local success, decoded = pcall(cjson.decode, obj)

@@ -241,6 +241,17 @@ function Setup(options) {
             states = _states;
             const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
 
+            // in all casses we need to ensure that existing objects are migrated to sets
+            try {
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                }
+            } catch (e) {
+                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
+            }
+
             // clean up invalid user group assignments (non-existing user in a group)
             try {
                 const usersView = await objects.getObjectViewAsync('system', 'user');
@@ -282,6 +293,7 @@ function Setup(options) {
                         }
                     }
                 }
+
                 if (certObj) {
                     let obj;
                     try {
@@ -718,14 +730,14 @@ function Setup(options) {
             oport.forEach((port, idx) => {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
-                    console.log(COLOR_RED + 'Invalid objects port: ' + oport[idx] + COLOR_RESET);
+                    console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
                     return void callback(23);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
-                console.log(COLOR_RED + 'Invalid objects port: ' + oport + COLOR_RESET);
+                console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
                 return void callback(23);
             }
         }
@@ -748,7 +760,7 @@ function Setup(options) {
             // ignore, unchanged
         }
 
-        let stype = rl.question('Type of states DB [(f)file, (r)edis, ...], default [' + defaultStatesType + ']: ', {
+        let stype = rl.question(`Type of states DB [(f)file, (r)edis, ...], default [${defaultStatesType}]: `, {
             defaultInput: defaultStatesType
         });
         stype = stype.toLowerCase();
@@ -831,14 +843,14 @@ function Setup(options) {
             sport.forEach((port, idx) => {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
-                    console.log(COLOR_RED + 'Invalid states port: ' + sport[idx] + COLOR_RESET);
+                    console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
                     return void callback(23);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
-                console.log(COLOR_RED + 'Invalid states port: ' + sport + COLOR_RESET);
+                console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
                 return void callback(23);
             }
         }
@@ -859,7 +871,7 @@ function Setup(options) {
         let hname;
 
         if (dbTools.isLocalStatesDbServer(stype, shost) || dbTools.isLocalObjectsDbServer(otype, ohost)) {
-            dir = rl.question('Data directory (file), default[' + tools.getDefaultDataDir() + ']: ', {
+            dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
                 defaultInput: tools.getDefaultDataDir()
             });
 
@@ -874,13 +886,13 @@ function Setup(options) {
                 }
             );
         } else {
-            hname = rl.question('Host name of this machine [' + require('os').hostname() + ']: ', {
+            hname = rl.question(`Host name of this machine [${require('os').hostname()}]: `, {
                 defaultInput: ''
             });
         }
 
         if (hname.match(/\s/)) {
-            console.log(COLOR_RED + 'Invalid host name: ' + hname + COLOR_RESET);
+            console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
             return void callback(23);
         }
 
@@ -925,8 +937,8 @@ function Setup(options) {
                         fs.readFileSync(__dirname + '/../../reinstall.js')
                     );
                 }
-            } catch (err) {
-                console.warn(`Cannot write file. Not critical: ${err.message}`);
+            } catch (e) {
+                console.warn(`Cannot write file. Not critical: ${e.message}`);
             }
         }
         // Delete files for other OS
@@ -969,8 +981,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                             mode: 492 /* 0754 */
                         });
                     }
-                } catch (err) {
-                    console.warn(`Cannot write file. Not critical: ${err.message}`);
+                } catch (e) {
+                    console.warn(`Cannot write file. Not critical: ${e.message}`);
                 }
             }
         }
@@ -987,8 +999,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 } else {
                     try {
                         fs.unlinkSync(otherInstallDirs[t]);
-                    } catch (err) {
-                        console.warn(`Cannot delete file. Not critical: ${err.message}`);
+                    } catch (e) {
+                        console.warn(`Cannot delete file. Not critical: ${e.message}`);
                     }
                 }
             }

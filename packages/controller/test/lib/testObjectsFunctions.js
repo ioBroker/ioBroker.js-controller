@@ -663,9 +663,13 @@ function register(it, expect, context) {
                                 endkey: 'hm-rpc.meta.VALUES.\u9999'
                             },
                             (err, doc) => {
+                                // now check that our object view contains our object
                                 expect(err).to.be.null;
-                                // the mapping cannot perform emit, thus we currently get an empty array in doc.rows, non existing view would result in error
                                 expect(doc.rows).to.be.an('array');
+                                expect(doc.rows.length).to.be.equal(1);
+                                expect(doc.rows[0].value._id).to.be.equal(
+                                    'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
+                                );
                                 done();
                             }
                         );
@@ -674,43 +678,38 @@ function register(it, expect, context) {
     });
 
     // getObjectViewAsync
-    it(testName + 'Try to get object view in async setup', done => {
+    it(testName + 'Try to get object view in async setup', async () => {
         // create the view
-        context.adapter
-            .setForeignObjectAsync('_design/hm-rpc', {
-                language: 'javascript',
-                views: {
-                    paramsetDescription: {
-                        map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
-                    }
-                },
-                common: {}
-            })
-            .then(() => {
-                // now lets create an object matching the view
-                context.adapter
-                    .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
-                        type: 'meta',
-                        meta: {
-                            adapter: 'hm-rpc',
-                            type: 'paramsetDescription'
-                        },
-                        common: {},
-                        native: {}
-                    })
-                    .then(() => {
-                        context.adapter
-                            .getObjectViewAsync('hm-rpc', 'paramsetDescription', {
-                                startkey: 'hm-rpc.meta.VALUES',
-                                endkey: 'hm-rpc.meta.VALUES.\u9999'
-                            })
-                            .then(doc => {
-                                // the mapping cannot perform emit, thus we currently get an empty array in doc.rows, non existing view would result in error
-                                expect(doc.rows).to.be.an('array');
-                                done();
-                            });
-                    });
-            });
+        await context.adapter.setForeignObjectAsync('_design/hm-rpc', {
+            language: 'javascript',
+            views: {
+                paramsetDescription: {
+                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
+                }
+            },
+            common: {}
+        });
+
+        // now lets create an object matching the view
+        await context.adapter.setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
+            type: 'meta',
+            meta: {
+                adapter: 'hm-rpc',
+                type: 'paramsetDescription'
+            },
+            common: {},
+            native: {}
+        });
+
+        const doc = await context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {
+            startkey: 'hm-rpc.meta.VALUES',
+            endkey: 'hm-rpc.meta.VALUES.\u9999'
+        });
+
+        // now check that our object view contains our object
+        expect(doc.rows).to.be.an('array');
+        expect(doc.rows.length).to.be.equal(1);
+        expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
     // getObjectList

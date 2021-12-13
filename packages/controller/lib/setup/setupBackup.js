@@ -683,7 +683,7 @@ class BackupRestore {
         const sList = Object.keys(restore.states);
 
         await this._setObjHelper(restore.objects);
-        console.log(restore.objects.length + ' objects restored.');
+        console.log(`${restore.objects.length} objects restored.`);
         await this._setStateHelper(sList, restore.states);
         console.log(`${sList.length} states restored.`);
         // Required for upload adapter

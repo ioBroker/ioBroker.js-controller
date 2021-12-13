@@ -25,22 +25,7 @@ const crypto = require('crypto');
 const { isDeepStrictEqual } = require('util');
 const deepClone = require('deep-clone');
 const utils = require('./objectsUtils.js');
-
-function initScriptFiles() {
-    const scripts = {};
-    try {
-        fs.readdirSync(__dirname + '/lib/objects/lua').forEach(
-            name =>
-                (scripts[name.replace(/.lua$/, '')] = fs
-                    .readFileSync(path.join(__dirname, 'lua', name))
-                    .toString('utf8'))
-        );
-    } catch {
-        // TODO
-    }
-    return scripts;
-}
-const scriptFiles = initScriptFiles();
+const semver = require('semver');
 
 class ObjectsInRedisClient {
     constructor(settings) {
@@ -52,6 +37,7 @@ class ObjectsInRedisClient {
         this.fileNamespace = this.redisNamespace + 'f.';
         this.fileNamespaceL = this.fileNamespace.length;
         this.objNamespace = this.redisNamespace + 'o.';
+        this.setNamespace = this.redisNamespace + 's.';
         this.objNamespaceL = this.objNamespace.length;
 
         this.stop = false;
@@ -552,7 +538,43 @@ class ObjectsInRedisClient {
                 });
             }
 
-            this.log.debug(this.namespace + ' Objects client initialize lua scripts');
+            if (!this.client) {
+                return;
+            }
+
+            // for controller v4 we have to check if we can use the new lua scripts and set logic
+            // TODO: remove this backward shim if controller v4.0 is old enough
+            let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
+
+            // filter out obvious non-host objects
+            keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
+            this.useSets = true;
+
+            try {
+                if (keys.length) {
+                    // else  no host known yet - so we are single host
+                    const objs = await this.client.mget(keys);
+                    for (const strObj of objs) {
+                        const obj = JSON.parse(strObj);
+                        if (
+                            obj &&
+                            obj.type === 'host' &&
+                            obj.common &&
+                            obj.common.installedVersion &&
+                            semver.lt(obj.common.installedVersion, '4.0.0')
+                        ) {
+                            // one of the host has a version smaller 4, we have to use legacy db
+                            this.useSets = false;
+                            this.log.info('Sets unsupported');
+                        }
+                    }
+                }
+            } catch (e) {
+                this.log.error(`Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`);
+                return;
+            }
+
+            this.log.debug(`${this.namespace} Objects client initialize lua scripts`);
             initCounter++;
             try {
                 await this.loadLuaScripts();
@@ -560,13 +582,11 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot initialize database scripts: ${err.message}`);
                 return;
             }
-            if (!this.client) {
-                return;
-            }
+
             // init default new acl
             let obj;
             try {
-                obj = await this.client.get(this.objNamespace + 'system.config');
+                obj = await this.client.get(`${this.objNamespace}system.config`);
             } catch {
                 // ignore
             }
@@ -996,10 +1016,10 @@ class ObjectsInRedisClient {
      */
     async objectExists(id, options) {
         if (!this.client) {
-            return Promise.reject(new Error(utils.ERRORS.ERROR_DB_CLOSED));
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
-            return Promise.reject(new Error(`invalid id ${JSON.stringify(id)}`));
+            throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
 
         try {
@@ -2273,7 +2293,18 @@ class ObjectsInRedisClient {
                 const obj = objs.shift();
                 const message = JSON.stringify(obj);
                 try {
-                    await this.client.set(id, message);
+                    if (obj.type && this.useSets) {
+                        // e.g. _design/ has no type
+                        // add the object to the set + set object atomic
+                        await this.client
+                            .multi()
+                            .set(id, message)
+                            .sadd(`${this.setNamespace}object.type.${obj.type}`, id)
+                            .exec();
+                    } else {
+                        // only set
+                        await this.client.set(id, message);
+                    }
                     await this.client.publish(id, message);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
@@ -2991,7 +3022,37 @@ class ObjectsInRedisClient {
         try {
             const message = JSON.stringify(obj);
 
-            await this.client.set(this.objNamespace + id, message);
+            if (this.useSets) {
+                if (obj.type && (!oldObj || !oldObj.type)) {
+                    // new object or oldObj had no type -> add to set + set object
+                    await this.client
+                        .multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
+                    // the old obj had a type which differs from the new type -> rem old, add new
+                    await this.client
+                        .multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (oldObj && oldObj.type && !obj.type) {
+                    // the oldObj had a type, the new one has no -> rem
+                    await this.client
+                        .multi()
+                        .set(this.objNamespace + id, message)
+                        .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else {
+                    // only set
+                    await this.client.set(this.objNamespace + id, message);
+                }
+            } else {
+                await this.client.set(this.objNamespace + id, message);
+            }
+
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
             // object updated -> if type changed to meta -> cache
             if (oldObj && oldObj.type === 'meta' && this.existingMetaObjects[id] === false) {
@@ -3080,7 +3141,19 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
         } else {
             try {
-                await this.client.del(this.objNamespace + id);
+                if (oldObj.type && this.useSets) {
+                    // e.g. _design/ has no type
+                    // del the object from the set + del object atomic
+                    await this.client
+                        .multi()
+                        .del(this.objNamespace + id)
+                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                        .exec();
+                } else {
+                    // only del
+                    await this.client.del(this.objNamespace + id);
+                }
+
                 // object has been deleted -> remove from cached meta if there
                 if (this.existingMetaObjects[id]) {
                     this.existingMetaObjects[id] = false;
@@ -3192,12 +3265,13 @@ class ObjectsInRedisClient {
                 try {
                     objs = await this.client.evalsha([
                         this.scripts.filter,
-                        5,
+                        6,
                         this.objNamespace,
                         params.startkey,
                         params.endkey,
                         m[1],
-                        cursor
+                        cursor,
+                        `${this.setNamespace}object.type.${m[1]}`
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
@@ -3277,14 +3351,15 @@ class ObjectsInRedisClient {
                 try {
                     objs = await this.client.evalsha([
                         this.scripts.script,
-                        4,
+                        5,
                         this.objNamespace,
                         params.startkey,
                         params.endkey,
-                        cursor
+                        cursor,
+                        `${this.setNamespace}object.type.script`
                     ]);
                 } catch (e) {
-                    this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
+                    this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
@@ -3332,11 +3407,12 @@ class ObjectsInRedisClient {
                 try {
                     objs = await this.client.evalsha([
                         this.scripts.programs,
-                        4,
-                        this.objNamespace,
+                        5,
+                        `${this.objNamespace}hm-rega.`,
                         params.startkey,
                         params.endkey,
-                        cursor
+                        cursor,
+                        `${this.setNamespace}object.type.channel`
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
@@ -3386,11 +3462,12 @@ class ObjectsInRedisClient {
                 try {
                     objs = await this.client.evalsha([
                         this.scripts.variables,
-                        4,
-                        this.objNamespace,
+                        5,
+                        `${this.objNamespace}hm-rega.`,
                         params.startkey,
                         params.endkey,
-                        cursor
+                        cursor,
+                        `${this.setNamespace}object.type.state`
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view ${e.message}`);
@@ -3439,11 +3516,12 @@ class ObjectsInRedisClient {
                 try {
                     objs = await this.client.evalsha([
                         this.scripts.custom,
-                        4,
+                        5,
                         this.objNamespace,
                         params.startkey,
                         params.endkey,
-                        cursor
+                        cursor,
+                        `${this.setNamespace}object.type.state`
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
@@ -3818,6 +3896,8 @@ class ObjectsInRedisClient {
             delete oldObj.common.custom;
         }
 
+        // we need to check if type has changed
+        const oldType = oldObj.type;
         oldObj = extend(true, oldObj, obj);
         oldObj._id = id;
 
@@ -3878,7 +3958,37 @@ class ObjectsInRedisClient {
         const message = JSON.stringify(oldObj);
 
         try {
-            await this.client.set(this.objNamespace + id, message);
+            if (this.useSets) {
+                // what is called oldObj is acutally the obj we set, because it has been extended
+                if (oldObj.type && !oldType) {
+                    // new object or oldObj had no type -> add to set + set object
+                    await this.client
+                        .multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (oldObj.type && oldType && oldObj.type !== oldType) {
+                    // the old obj had a type which differs from the new type -> rem old, add new
+                    await this.client
+                        .multi()
+                        .set(this.objNamespace + id, message)
+                        .sadd(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .srem(`${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id)
+                        .exec();
+                } else if (oldType && !oldObj.type) {
+                    // the oldObj had a type, the new one has no -> rem
+                    await this.client
+                        .multi()
+                        .set(this.objNamespace + id, message)
+                        .srem(`${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id)
+                        .exec();
+                } else {
+                    // just set type is equal
+                    await this.client.set(this.objNamespace + id, message);
+                }
+            } else {
+                await this.client.set(this.objNamespace + id, message);
+            }
 
             // extended -> if its now type meta and currently marked as not -> cache
             if (this.existingMetaObjects[id] === false && oldObj && oldObj.type === 'meta') {
@@ -4123,28 +4233,16 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        let _scripts = [];
-        if (scriptFiles && scriptFiles.filter) {
-            for (const name of Object.keys(scriptFiles)) {
-                const shasum = crypto.createHash('sha1');
-                const buf = Buffer.from(scriptFiles[name]);
-                shasum.update(buf);
-                _scripts.push({
-                    name,
-                    text: buf,
-                    hash: shasum.digest('hex')
-                });
-            }
-        } else {
-            _scripts = fs.readdirSync(__dirname + '/lua/').map(name => {
-                const shasum = crypto.createHash('sha1');
-                const script = fs.readFileSync(__dirname + '/lua/' + name);
-                shasum.update(script);
-                const hash = shasum.digest('hex');
-                return { name: name.replace(/\.lua$/, ''), text: script, hash };
-            });
-        }
-        const hashes = _scripts.map(e => e.hash);
+        const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
+        const scripts = fs.readdirSync(luaPath).map(name => {
+            const shasum = crypto.createHash('sha1');
+            const script = fs.readFileSync(path.join(luaPath, name));
+            shasum.update(script);
+            const hash = shasum.digest('hex');
+            return { name: name.replace(/\.lua$/, ''), text: script, hash };
+        });
+
+        const hashes = scripts.map(e => e.hash);
         hashes.unshift('EXISTS');
 
         if (!this.client) {
@@ -4158,15 +4256,15 @@ class ObjectsInRedisClient {
             // ignore
         }
 
-        arr && _scripts.forEach((e, i) => (_scripts[i].loaded = !!arr[i]));
+        arr && scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
 
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        for (let i = 0; i < _scripts.length; i++) {
-            if (!_scripts[i].loaded) {
-                const script = _scripts[i];
+        for (let i = 0; i < scripts.length; i++) {
+            if (!scripts[i].loaded) {
+                const script = scripts[i];
                 let hash;
                 try {
                     hash = await this.client.script(['LOAD', script.text]);
@@ -4180,14 +4278,14 @@ class ObjectsInRedisClient {
             }
         }
         this.scripts = {};
-        _scripts.forEach(e => (this.scripts[e.name] = e.hash));
+        scripts.forEach(e => (this.scripts[e.name] = e.hash));
     }
 
     /**
      * Get all keys matching a pattern using redis SCAN command, duplicates are filtered out
      *
      * @param {string} pattern - pattern to match, e. g. io.hm-rpc.0*
-     * @param {number} count - count argument used by redis SCAN, default is 500
+     * @param {number} count - count argument used by redis SCAN, default is 250
      * @return {Promise<string[]>}
      * @private
      */
@@ -4206,6 +4304,57 @@ class ObjectsInRedisClient {
                 resolve(Array.from(new Set(uniqueKeys)));
             });
         });
+    }
+
+    /**
+     * Checks if a given set exists
+     * @param {string} id - id of the set
+     * @private
+     * @return {Promise<boolean>}
+     */
+    async setExists(id) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const exists = await this.client.exists(this.setNamespace + id);
+        return !!exists;
+    }
+
+    /**
+     * Migrate all objects to sets
+     * @return {Promise<number>}
+     */
+    async migrateToSets() {
+        if (!this.useSets) {
+            return 0;
+        }
+
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // to be safe we remove all sets before migration
+        const keys = await this._getKeysViaScan(`${this.setNamespace}object.type.*`);
+        for (const key of keys) {
+            await this.client.del(key);
+        }
+
+        let noMigrated = 0;
+        // get all objs without using view
+        const objs = await this.getObjectList({ startkey: '', endkey: '\u9999' });
+        for (const obj of objs.rows) {
+            if (obj.value.type) {
+                // e.g. _design/.. has no type
+                // 1 if added else 0 (mostly always part of the set)
+                const migrated = await this.client.sadd(
+                    `${this.setNamespace}object.type.${obj.value.type}`,
+                    this.objNamespace + obj.id
+                );
+                noMigrated += migrated;
+            }
+        }
+        return noMigrated;
     }
 }
 

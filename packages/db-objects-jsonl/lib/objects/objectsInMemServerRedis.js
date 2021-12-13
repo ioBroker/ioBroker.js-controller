@@ -62,6 +62,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             '.';
         this.namespaceFile = this.namespaceObjects + 'f.';
         this.namespaceObj = this.namespaceObjects + 'o.';
+        this.namespaceSet = this.namespaceObjects + 's.';
+        this.namespaceSetLen = this.namespaceSet.length;
+
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
@@ -124,6 +127,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     idx = this.namespaceObjLen;
                 } else if (idWithNamespace.startsWith(this.namespaceFile)) {
                     idx = this.namespaceFileLen;
+                } else if (idWithNamespace.startsWith(this.namespaceSet)) {
+                    idx = this.namespaceSetLen;
                 }
                 if (idx !== -1) {
                     ns = idWithNamespace.substr(0, idx);
@@ -654,6 +659,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     return void handler.sendError(responseId, e);
                 }
                 handler.sendInteger(responseId, exists ? 1 : 0);
+            } else if (namespace === this.namespaceSet) {
+                // we are not using sets in simulator, so just say it exists
+                return void handler.sendInteger(responseId, 1);
             } else {
                 handler.sendError(responseId, new Error(`EXISTS-UNSUPPORTED for namespace ${namespace}`));
             }
@@ -675,6 +683,33 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             }
 
             return this._handleScanOrKeys(handler, data[0], responseId);
+        });
+
+        // MULTI/EXEC is never used with return values, thus we just answer with syntactic correct responses
+        handler.on('multi', (data, responseId) => {
+            return void handler.sendString(responseId, 'OK');
+        });
+
+        handler.on('exec', (data, reponseId) => {
+            return void handler.sendArray(reponseId, []);
+        });
+
+        // commands for redis SETS, just dummies
+        handler.on('sadd', (data, responseId) => {
+            return void handler.sendInteger(responseId, 1);
+        });
+
+        handler.on('srem', (data, responseId) => {
+            return void handler.sendInteger(responseId, 1);
+        });
+
+        handler.on('sscan', (data, responseId) => {
+            // for file DB it does the same as scan but data looks different
+            if (!data || data.length < 4) {
+                return void handler.sendArray(responseId, ['0', []]);
+            }
+
+            return this._handleScanOrKeys(handler, data[3], responseId, true);
         });
 
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
@@ -846,6 +881,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 // such a request should never happen
                 handler.sendArray(responseId, isScan ? ['0', []] : []); // send out file or full db response
             }
+        } else if (namespace === this.namespaceSet) {
+            handler.sendArray(responseId, isScan ? ['0', []] : []); // send out empty array, we have no sets
         } else {
             handler.sendError(
                 responseId,

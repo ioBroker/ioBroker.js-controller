@@ -3,7 +3,7 @@
 local rep = {}
 -- local keys=redis.call("keys", KEYS[1].."*")
 local cursor = KEYS[4];
-local result = redis.call("SCAN", cursor, "MATCH", KEYS[1] .. "*", "COUNT", 500)
+local result = redis.call("SSCAN", KEYS[5], cursor, "MATCH", KEYS[1] .. "*", "COUNT", 500)
 cursor = result[1]
 local keys = result[2]
 local argStart = KEYS[1] .. KEYS[2]
@@ -18,7 +18,7 @@ for _, key in ipairs(keys) do
         local obj = redis.call("get", key)
         if (obj:find(checkStr) ~= nil) then
             local success, decoded = pcall(cjson.decode, obj)
-            if (success and decoded.type == "state" and decoded.common ~= nil and decoded.common.custom ~= nil) then
+            if (success and decoded.common ~= nil and decoded.common.custom ~= nil) then
                 rep[#rep + 1] = obj
             end
         end
