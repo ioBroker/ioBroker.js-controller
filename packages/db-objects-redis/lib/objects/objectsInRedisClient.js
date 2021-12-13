@@ -2311,6 +2311,7 @@ class ObjectsInRedisClient {
                         // only set
                         await this.client.set(id, message);
                     } else {
+                        // set all commands atomic
                         commands.push(['set', id, message]);
                         await this.client.multi(commands).exec();
                     }
@@ -3051,6 +3052,7 @@ class ObjectsInRedisClient {
             if (!commands.length) {
                 await this.client.set(this.objNamespace + id, message);
             } else {
+                // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
                 await this.client.multi(commands).exec();
             }
@@ -3166,6 +3168,7 @@ class ObjectsInRedisClient {
                     // only del
                     await this.client.del(this.objNamespace + id);
                 } else {
+                    // set all commands atomic
                     commands.push(['del', this.objNamespace + id]);
                     await this.client.multi(commands).exec();
                 }
@@ -3901,6 +3904,7 @@ class ObjectsInRedisClient {
             _oldObj = deepClone(oldObj);
         }
 
+        // we need to know if custom has been added/deleted
         const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
 
         oldObj = oldObj || {};
@@ -4007,6 +4011,7 @@ class ObjectsInRedisClient {
             if (!commands.length) {
                 await this.client.set(this.objNamespace + id, message);
             } else {
+                // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
                 await this.client.multi(commands).exec();
             }
