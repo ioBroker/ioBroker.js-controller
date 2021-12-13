@@ -2919,6 +2919,9 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, 'Invalid password for update of vendor information');
         }
 
+        // we need to know if custom has been added/deleted
+        const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
+
         // do not delete common settings, like "history" or "mobile". It can be erased only with "null"
         if (oldObj && oldObj.common) {
             this.preserveSettings.forEach(commonSetting => {
@@ -3046,6 +3049,14 @@ class ObjectsInRedisClient {
                 } else if (oldObj && oldObj.type && !obj.type) {
                     // the oldObj had a type, the new one has no -> rem
                     commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
+                }
+
+                if (obj.common && obj.common.custom && !oldObjHasCustom) {
+                    // we now have custom, old object had no custom
+                    commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+                } else if (oldObjHasCustom && (!obj.common || !obj.common.custom)) {
+                    // we no longer have custom
+                    commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
                 }
             }
 
