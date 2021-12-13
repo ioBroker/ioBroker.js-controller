@@ -340,6 +340,47 @@ function register(it, expect, context) {
             });
     });
 
+    it(testName + 'should getObjectView without sets', async () => {
+        // turn off useSets and reinitialize scripts, thus we will have old scripts and do not use SADD on setting objects
+        context.objects.useSets = false;
+        await context.objects.loadLuaScripts();
+
+        await context.objects.setObjectAsync('_design/testAdapter', {
+            language: 'javascript',
+            views: {
+                test: {
+                    map: 'function(doc) {\n  if (doc._id.match(/^testAdapter/) && doc.meta.type === "test") {\n   emit(doc._id, doc);\n  }\n}'
+                }
+            },
+            common: {}
+        });
+
+        // now lets create an object matching the view
+        await context.objects.setObjectAsync('testAdapter.test', {
+            type: 'meta',
+            meta: {
+                adapter: 'testAdapter',
+                type: 'test'
+            },
+            common: {},
+            native: {}
+        });
+
+        const doc = await context.objects.getObjectViewAsync('testAdapter', 'test', {
+            startkey: 'testAdapter',
+            endkey: 'testAdapter\u9999'
+        });
+
+        // now check that our object view contains our object
+        expect(doc.rows).to.be.an('array');
+        expect(doc.rows.length).to.be.equal(1);
+        expect(doc.rows[0].value._id).to.be.equal('testAdapter.test');
+
+        // put it back on
+        context.objects.useSets = true;
+        await context.objects.loadLuaScripts();
+    });
+
     it(testName + 'should create and read file', done => {
         const objects = context.objects;
         objects.setObject(testId, { type: 'meta' }, err => {

@@ -542,41 +542,36 @@ class ObjectsInRedisClient {
                 return;
             }
 
-            // if use sets is explicitly set, we do not make our checks
-            if (typeof this.settings.useSets !== 'boolean') {
-                // for controller v4 we have to check if we can use the new lua scripts and set logic
-                // TODO: remove this backward shim if controller v4.0 is old enough
-                let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
+            // for controller v4 we have to check if we can use the new lua scripts and set logic
+            // TODO: remove this backward shim if controller v4.0 is old enough
+            let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
 
-                // filter out obvious non-host objects
-                keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
-                this.useSets = true;
+            // filter out obvious non-host objects
+            keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
+            this.useSets = true;
 
-                try {
-                    if (keys.length) {
-                        // else  no host known yet - so we are single host
-                        const objs = await this.client.mget(keys);
-                        for (const strObj of objs) {
-                            const obj = JSON.parse(strObj);
-                            if (
-                                obj &&
-                                obj.type === 'host' &&
-                                obj.common &&
-                                obj.common.installedVersion &&
-                                semver.lt(obj.common.installedVersion, '4.0.0')
-                            ) {
-                                // one of the host has a version smaller 4, we have to use legacy db
-                                this.useSets = false;
-                                this.log.info('Sets unsupported');
-                            }
+            try {
+                if (keys.length) {
+                    // else  no host known yet - so we are single host
+                    const objs = await this.client.mget(keys);
+                    for (const strObj of objs) {
+                        const obj = JSON.parse(strObj);
+                        if (
+                            obj &&
+                            obj.type === 'host' &&
+                            obj.common &&
+                            obj.common.installedVersion &&
+                            semver.lt(obj.common.installedVersion, '4.0.0')
+                        ) {
+                            // one of the host has a version smaller 4, we have to use legacy db
+                            this.useSets = false;
+                            this.log.info('Sets unsupported');
                         }
                     }
-                } catch (e) {
-                    this.log.error(`Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`);
-                    return;
                 }
-            } else {
-                this.useSets = this.settings.useSets;
+            } catch (e) {
+                this.log.error(`Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`);
+                return;
             }
 
             this.log.debug(`${this.namespace} Objects client initialize lua scripts`);
