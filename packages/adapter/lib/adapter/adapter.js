@@ -2443,8 +2443,7 @@ function Adapter(options) {
 
             // delete arrays if they should be changed
             if (
-                obj &&
-                (
+                obj && (
                     (obj.common && obj.common.members) ||
                     (obj.native && obj.native.repositories) ||
                     (obj.native && obj.native.certificates) ||
@@ -2714,8 +2713,7 @@ function Adapter(options) {
 
             // delete arrays if they should be changed
             if (
-                obj &&
-                (
+                obj && (
                     (obj.common && obj.common.members) ||
                     (obj.native && obj.native.repositories) ||
                     (obj.native && obj.native.certificates) ||
@@ -3171,7 +3169,7 @@ function Adapter(options) {
                     },
                     options,
                     (err, res) => {
-                    // be aware, that res.rows[x].id is the name of enum!
+                        // be aware, that res.rows[x].id is the name of enum!
                         if (err) {
                             return tools.maybeCallbackWithError(callback, err);
                         }
@@ -3539,8 +3537,7 @@ function Adapter(options) {
             if (options && options.recursive) {
                 // read object itself
                 adapterObjects.getObject(id, options, (err, obj) => {
-                    const tasks = obj && (!obj.common || !obj.common.dontDelete)
-                        ? [{id, state: obj.type === 'state'}] : [];
+                    const tasks = obj && (!obj.common || !obj.common.dontDelete) ? [{id, state: obj.type === 'state'}] : [];
 
                     const selector = { startkey: id + '.', endkey: id + '.\u9999' };
                     // read all underlying states
@@ -3550,7 +3547,7 @@ function Adapter(options) {
                             res.rows.forEach(item =>
                                 !tasks.find(task => task.id === item.id) &&
                                 (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
-                                    tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
+                                tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
                             );
                         _deleteObjects(tasks, options, callback);
                     });
@@ -4850,9 +4847,9 @@ function Adapter(options) {
 
             const objId = this._fixId(
                 {
-                device: parentDevice,
-                channel: parentChannel,
-                state: stateName
+                    device: parentDevice,
+                    channel: parentChannel,
+                    state: stateName
                 },
                 false /*, 'state'*/
             );
@@ -6016,10 +6013,10 @@ function Adapter(options) {
                         this.outputCount++;
                         adapterStates &&
                             adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
-                            val: currentLevel,
-                            ack: true,
-                            from: `system.adapter.${this.namespace}`
-                        });
+                                val: currentLevel,
+                                ack: true,
+                                from: `system.adapter.${this.namespace}`
+                            });
                     }
                 }
 
@@ -9560,6 +9557,7 @@ function Adapter(options) {
         const licenses = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
+
             if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
                 const now = Date.now();
                 const cert = fs.readFileSync(__dirname + '/../../cert/cloudCert.crt');

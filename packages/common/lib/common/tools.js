@@ -603,11 +603,11 @@ function getJson(urlOrPath, agent, callback) {
                     url: urlOrPath,
                     timeout: 10000,
                     gzip: true,
-                    headers: {'User-Agent': agent}
+                    headers: { 'User-Agent': agent }
                 },
                 (error, response, body) => {
                     if (error || !body || response.statusCode !== 200) {
-                        console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                        console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
                         if (callback) {
                             callback(null, urlOrPath);
                         }
@@ -1438,11 +1438,10 @@ const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
-        typeof options.cwd === 'string' ?
-            // If a cwd was provided, use it
-            {cwd: options.cwd}
-            :
-            // Otherwise find the ioBroker root dir
+        typeof options.cwd === 'string'
+            ? // If a cwd was provided, use it
+            { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
             {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
@@ -1488,11 +1487,10 @@ async function installNodeModule(npmUrl, options = {}) {
 async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
-        typeof options.cwd === 'string' ?
-            // If a cwd was provided, use it
-            {cwd: options.cwd}
-            :
-            // Otherwise find the ioBroker root dir
+        typeof options.cwd === 'string'
+            ? // If a cwd was provided, use it
+            { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
             {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
@@ -1532,11 +1530,10 @@ async function uninstallNodeModule(packageName, options = {}) {
 async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
-        typeof options.cwd === 'string' ?
-            // If a cwd was provided, use it
-            {cwd: options.cwd}
-            :
-            // Otherwise find the ioBroker root dir
+        typeof options.cwd === 'string'
+            ? // If a cwd was provided, use it
+            { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
             {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
@@ -1612,13 +1609,10 @@ function getDiskInfo(platform, callback) {
                             });
                             if (line) {
                                 const parts = line.split(/\s+/);
-                                    return (
-                                        callback &&
-                                        callback(error, {
+                                return callback && callback(error, {
                                     'Disk size': parseInt(parts[2]),
                                     'Disk free': parseInt(parts[1])
-                                        })
-                                    );
+                                });
                             }
                         }
                         callback && callback(error, null);
@@ -2070,21 +2064,21 @@ function promisify(fn, context, returnArgNames) {
                                     return resolve(result);
                                     default: {
                                         // multiple values should be returned
-                                    /** @type {{} | any[]} */
-                                    let ret;
-                                    const extraArgs = sliceArgs(arguments, 1);
-                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                        // we can build an object
-                                        ret = {};
-                                        for (let i = 0; i < returnArgNames.length; i++) {
-                                            ret[returnArgNames[i]] = extraArgs[i];
+                                        /** @type {{} | any[]} */
+                                        let ret;
+                                        const extraArgs = sliceArgs(arguments, 1);
+                                        if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                            // we can build an object
+                                            ret = {};
+                                            for (let i = 0; i < returnArgNames.length; i++) {
+                                                ret[returnArgNames[i]] = extraArgs[i];
+                                            }
+                                        } else {
+                                            // we return the raw array
+                                            ret = extraArgs;
                                         }
-                                    } else {
-                                        // we return the raw array
-                                        ret = extraArgs;
+                                        return resolve(ret);
                                     }
-                                    return resolve(ret);
-                                }
                             }
                         }
                     }
@@ -3448,6 +3442,7 @@ async function _readLicenses(login, password) {
                 new Date(license.validTill).getTime() > now
             );
         }
+
         return response.data;
     } catch (err) {
         if (err.response) {

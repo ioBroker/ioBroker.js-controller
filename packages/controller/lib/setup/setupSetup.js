@@ -708,11 +708,12 @@ function Setup(options) {
         const defaultObjectsPort =
             otype === originalConfig.objects.type && ohost === originalConfig.objects.host
                 ? originalConfig.objects.port : op;
+
         const userObjPort = rl.question(
             `Port of objects DB(${otype}), default[${Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort}]: `,
             {
-            defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
-            limit: /^[0-9, ]+$/
+                defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
+                limit: /^[0-9, ]+$/
             }
         );
         let oport;
@@ -790,13 +791,9 @@ function Setup(options) {
             defaultStatesHost = ohost;
         }
         let shost = rl.question(
-            'Host / Unix Socket of states DB (' +
-                stype +
-                '), default[' +
-                (Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost) +
-                ']: ',
+            `Host / Unix Socket of states DB (${stype}), default[${Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost}]: `,
             {
-            defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
+                defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }
         );
         shost = shost.toLowerCase();
@@ -861,8 +858,7 @@ function Setup(options) {
             });
 
             hname = rl.question(
-                `Host name of this machine [${originalConfig && originalConfig.system
-                    ? originalConfig.system.hostname || require('os').hostname() : require('os').hostname()}]: `,
+                `Host name of this machine [${originalConfig && originalConfig.system ? originalConfig.system.hostname || require('os').hostname() : require('os').hostname()}]: `,
                 {
                     defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
                 }
