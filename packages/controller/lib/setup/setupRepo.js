@@ -3,11 +3,11 @@
 /** @class */
 function Repo(options) {
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
-    const { tools }  = require('@iobroker/js-controller-common');
-    const axios      = require('axios');
-    const ioPackage  = require('../../io-package.json');
-    const version    = ioPackage.common.version;
-    const fs         = require('fs');
+    const { tools } = require('@iobroker/js-controller-common');
+    const axios = require('axios');
+    const ioPackage = require('../../io-package.json');
+    const version = ioPackage.common.version;
+    const fs = require('fs');
 
     const defaultSystemRepo = {
         common: {
@@ -40,7 +40,7 @@ function Repo(options) {
     }
 
     const objects = options.objects;
-    const states  = options.states;
+    const states = options.states;
 
     async function updateRepo(repoName, force, _systemConfig, _systemRepos) {
         if (!repoName) {
@@ -63,7 +63,7 @@ function Repo(options) {
             oldRepos.native.repositories[repoName].json &&
             (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://'))
         ) {
-            hash = await axios({url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000});
+            hash = await axios({ url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000 });
             if (hash && hash.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
                 return oldRepos.native.repositories[repoName].json;
             }
@@ -73,7 +73,7 @@ function Repo(options) {
 
         if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
             if (!hash) {
-                hash = await axios({url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000});
+                hash = await axios({ url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000 });
             }
 
             const agent = `${tools.appName}, RND: CLI, Node:${process.version}, V:${version}`;
@@ -124,7 +124,7 @@ function Repo(options) {
 
             adapters.forEach(name => {
                 let updatable = false;
-                let text = (sources[name].controller ? 'Controller ' : 'Adapter    ');
+                let text = sources[name].controller ? 'Controller ' : 'Adapter    ';
                 text += `"${name}"`;
                 text = text.padEnd(11 + 15);
 
@@ -139,12 +139,19 @@ function Repo(options) {
 
                 if (installed[name] && installed[name].version) {
                     text += ', installed ' + installed[name].version;
-                    if (sources[name].version !== installed[name].version &&
-                        sources[name].version &&
-                        !tools.upToDate(sources[name].version, installed[name].version)) {
-                        updatable = true;
-                        text = text.padEnd(11 + 15 + 11 + 18);
-                        text += ' [Updatable]';
+                    try {
+                        // tools.upToDate can throw if version is invalid
+                        if (
+                            sources[name].version !== installed[name].version &&
+                            sources[name].version &&
+                            !tools.upToDate(sources[name].version, installed[name].version)
+                        ) {
+                            updatable = true;
+                            text = text.padEnd(11 + 15 + 11 + 18);
+                            text += ' [Updatable]';
+                        }
+                    } catch (e) {
+                        console.error(`Cannot determine update info of "${name}": ${e.message}`);
                     }
                 }
                 if ((flags.updatable || flags.u) && !updatable) {
@@ -189,7 +196,11 @@ function Repo(options) {
                     const sources = await updateRepo(repo, flags.force || flags.f, systemConfig, systemRepos);
                     sources && Object.assign(allSources, sources);
                 } else {
-                    console.error(`Error: unknown repository is active - "${repo}". Known: ${Object.keys(systemRepos.native.repositories).join(', ')}`);
+                    console.error(
+                        `Error: unknown repository is active - "${repo}". Known: ${Object.keys(
+                            systemRepos.native.repositories
+                        ).join(', ')}`
+                    );
                 }
             }
 
@@ -206,25 +217,40 @@ function Repo(options) {
 
     async function updateInfo(sources) {
         const installed = tools.getInstalledInfo();
-        const list  = [];
+        const list = [];
 
         Object.keys(sources).forEach(name => {
             if (installed[name] && installed[name].version && sources[name].version) {
-                if (sources[name].version !== installed[name].version &&
-                    !tools.upToDate(sources[name].version, installed[name].version)) {
-                    // remove first part of the name
-                    const n = name.indexOf('.');
-                    list.push(n === -1 ? name : name.substring(n + 1));
+                try {
+                    // tools.upToDate can throw if version is invalid
+                    if (
+                        sources[name].version !== installed[name].version &&
+                        !tools.upToDate(sources[name].version, installed[name].version)
+                    ) {
+                        // remove first part of the name
+                        const n = name.indexOf('.');
+                        list.push(n === -1 ? name : name.substring(n + 1));
+                    }
+                } catch (e) {
+                    console.error(`Cannot determine update info of "${name}": ${e.message}`);
                 }
             }
         });
 
-        const objs = await objects.getObjectViewAsync('system', 'instance', {startkey: 'system.adapter.admin', endkey: 'system.adapter.admin\u9999'});
+        const objs = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: 'system.adapter.admin',
+            endkey: 'system.adapter.admin\u9999'
+        });
 
         if (objs && objs.rows && objs.rows.length) {
             const listStr = list.join(', ');
             for (let t = 0; t < objs.rows.length; t++) {
-                if (objs.rows[t] && objs.rows[t].value && objs.rows[t].value.common && objs.rows[t].value.type === 'instance') {
+                if (
+                    objs.rows[t] &&
+                    objs.rows[t].value &&
+                    objs.rows[t].value.common &&
+                    objs.rows[t].value.type === 'instance'
+                ) {
                     await states.setStateAsync(objs.rows[t].id + '.info.updatesNumber', list.length, true);
                     await states.setStateAsync(objs.rows[t].id + '.info.updatesList', listStr, true);
                 }
@@ -238,10 +264,10 @@ function Repo(options) {
             if (!obj) {
                 console.error('List is empty');
                 return EXIT_CODES.CANNOT_GET_REPO_LIST;
-            } else
-            if (obj.native.repositories) {
+            } else if (obj.native.repositories) {
                 Object.keys(obj.native.repositories).forEach(r =>
-                    console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`));
+                    console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`)
+                );
 
                 const objCfg = await objects.getObjectAsync('system.config');
                 if (objCfg && objCfg.common) {
@@ -255,7 +281,7 @@ function Repo(options) {
                 console.error('List is empty');
                 return EXIT_CODES.CANNOT_GET_REPO_LIST;
             }
-        } catch (err)  {
+        } catch (err) {
             console.error('Cannot get list: ' + err);
             return EXIT_CODES.CANNOT_GET_REPO_LIST;
         }
@@ -280,8 +306,14 @@ function Repo(options) {
 
     this.del = async function (repoName) {
         const obj = await objects.getObjectAsync('system.config');
-        if ((obj.common.activeRepo && typeof obj.common.activeRepo === 'string' && obj.common.activeRepo === repoName) ||
-            (obj.common.activeRepo && typeof obj.common.activeRepo === 'object' && obj.common.activeRepo.includes(repoName))) {
+        if (
+            (obj.common.activeRepo &&
+                typeof obj.common.activeRepo === 'string' &&
+                obj.common.activeRepo === repoName) ||
+            (obj.common.activeRepo &&
+                typeof obj.common.activeRepo === 'object' &&
+                obj.common.activeRepo.includes(repoName))
+        ) {
             throw new Error(`Cannot delete active repository: ${repoName}`);
         } else {
             const repoObj = await objects.getObjectAsync('system.repositories');
@@ -351,8 +383,11 @@ function Repo(options) {
         }
 
         if (repoObj && repoObj.native && repoObj.native.repositories) {
-            if (repoObj.native.repositories[oldName] && repoObj.native.repositories[oldName].link === matchingLink &&
-            !repoObj.native.repositories[newName]) {
+            if (
+                repoObj.native.repositories[oldName] &&
+                repoObj.native.repositories[oldName].link === matchingLink &&
+                !repoObj.native.repositories[newName]
+            ) {
                 repoObj.native.repositories[newName] = repoObj.native.repositories[oldName];
                 delete repoObj.native.repositories[oldName];
 
@@ -364,9 +399,13 @@ function Repo(options) {
                 }
 
                 // if we changed the name of the activeRepo, we should set newName as active repo
-                if (sysConfigObj && sysConfigObj.common &&
-                    ((typeof sysConfigObj.common.activeRepo === 'string' && sysConfigObj.common.activeRepo === oldName) ||
-                     (typeof sysConfigObj.common.activeRepo === 'object' && sysConfigObj.common.activeRepo.includes(oldName)))
+                if (
+                    sysConfigObj &&
+                    sysConfigObj.common &&
+                    ((typeof sysConfigObj.common.activeRepo === 'string' &&
+                        sysConfigObj.common.activeRepo === oldName) ||
+                        (typeof sysConfigObj.common.activeRepo === 'object' &&
+                            sysConfigObj.common.activeRepo.includes(oldName)))
                 ) {
                     if (typeof sysConfigObj.common.activeRepo === 'string') {
                         sysConfigObj.common.activeRepo = [sysConfigObj.common.activeRepo];

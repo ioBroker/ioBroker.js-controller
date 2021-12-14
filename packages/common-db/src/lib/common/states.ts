@@ -2,12 +2,12 @@
 
 import * as fs from 'fs-extra';
 // @ts-expect-error no typings yet
-import {tools} from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common';
 
 export function getStatesConstructor(): any {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.states) {
-        config.states = {type: 'file'};
+        config.states = { type: 'file' };
     }
 
     try {

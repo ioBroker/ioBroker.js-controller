@@ -1,13 +1,12 @@
 'use strict';
 const { tools } = require('@iobroker/js-controller-common');
-const CLI               = require('./messages.js');
-const CLICommand        = require('./cliCommand.js');
-const {formatValue}     = require('./cliTools');
+const CLI = require('./messages.js');
+const CLICommand = require('./cliCommand.js');
+const { formatValue } = require('./cliTools');
 const ALIAS_STARTS_WITH = 'alias.';
 
 /** Command iobroker state ... */
 module.exports = class CLIStates extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -33,18 +32,12 @@ module.exports = class CLIStates extends CLICommand {
                         return 'null';
                     }
 
-                    return [
-                        obj.val,
-                        obj.ack,
-                        obj.from,
-                        obj.ts,
-                        obj.lc
-                    ].map(line => formatValue(line)).join('\n');
+                    return [obj.val, obj.ack, obj.from, obj.ts, obj.lc].map(line => formatValue(line)).join('\n');
                 };
                 return this.get_(args, resultTransform);
             case 'getValue':
             case 'getvalue':
-                resultTransform = obj => obj ? formatValue(obj.val, pretty) : 'null';
+                resultTransform = obj => (obj ? formatValue(obj.val, pretty) : 'null');
                 return this.get_(args, resultTransform);
             case 'set':
                 return this.set_(args);
@@ -68,7 +61,7 @@ module.exports = class CLIStates extends CLICommand {
      * @param {(input: any) => any} resultTransform
      */
     get_(args, resultTransform) {
-        const {callback, dbConnect} = this.options;
+        const { callback, dbConnect } = this.options;
         const id = args[1];
 
         dbConnect((objects, states) => {
@@ -76,7 +69,10 @@ module.exports = class CLIStates extends CLICommand {
                 objects.getObject(id, (err, targetObj) => {
                     // alias
                     if (targetObj && targetObj.common && targetObj.common.alias && targetObj.common.alias.id) {
-                        const aliasId = typeof targetObj.common.alias.id.read === 'string' ? targetObj.common.alias.id.read : targetObj.common.alias.id;
+                        const aliasId =
+                            typeof targetObj.common.alias.id.read === 'string'
+                                ? targetObj.common.alias.id.read
+                                : targetObj.common.alias.id;
                         objects.getObject(aliasId, (err, sourceObj) => {
                             // write target
                             states.getState(aliasId, (err, state) => {
@@ -111,7 +107,7 @@ module.exports = class CLIStates extends CLICommand {
      * @param {any[]} args
      */
     set_(args) {
-        const {callback, dbConnect, showHelp} = this.options;
+        const { callback, dbConnect, showHelp } = this.options;
         // eslint-disable-next-line prefer-const
         let [id, val, ack] = /** @type {[string, any, any]} */ (args.slice(1));
         const force = args.includes('--force') || args.includes('-f');
@@ -127,13 +123,16 @@ module.exports = class CLIStates extends CLICommand {
         }
 
         dbConnect((objects, states) => {
-            const newVal = ack === undefined ?  {val, ack: false} : {val, ack: !!ack};
+            const newVal = ack === undefined ? { val, ack: false } : { val, ack: !!ack };
 
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 objects.getObject(id, (err, obj) => {
                     // alias
                     if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                        const aliasId = typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
+                        const aliasId =
+                            typeof obj.common.alias.id.write === 'string'
+                                ? obj.common.alias.id.write
+                                : obj.common.alias.id;
 
                         objects.getObject(aliasId, (err, targetObj) => {
                             if (err) {
@@ -152,20 +151,28 @@ module.exports = class CLIStates extends CLICommand {
                                     newVal.val = parseFloat(newVal.val);
                                 } else if (obj.common.type === 'boolean') {
                                     newVal.val = newVal.val.toString();
-                                    newVal.val = newVal.val === 'true' || newVal.val === '1' || newVal.val === 'ON' || newVal.val === 'on';
+                                    newVal.val =
+                                        newVal.val === 'true' ||
+                                        newVal.val === '1' ||
+                                        newVal.val === 'ON' ||
+                                        newVal.val === 'on';
                                 }
                             }
 
                             // write target
-                            states.setState(aliasId, tools.formatAliasValue(obj.common, targetObj.common, newVal, console, ''), err => {
-                                if (err) {
-                                    CLI.error.unknown(err);
-                                    return void callback(1); // ?
-                                } else {
-                                    CLI.success.stateUpdated(id, val, !!ack);
-                                    return void callback();
+                            states.setState(
+                                aliasId,
+                                tools.formatAliasValue(obj.common, targetObj.common, newVal, console, ''),
+                                err => {
+                                    if (err) {
+                                        CLI.error.unknown(err);
+                                        return void callback(1); // ?
+                                    } else {
+                                        CLI.success.stateUpdated(id, val, !!ack);
+                                        return void callback();
+                                    }
                                 }
-                            });
+                            );
                         });
                     } else {
                         CLI.error.unknown(`Alias ${id} has no target`);
@@ -190,7 +197,11 @@ module.exports = class CLIStates extends CLICommand {
                             newVal.val = parseFloat(newVal.val);
                         } else if (obj.common.type === 'boolean') {
                             newVal.val = newVal.val.toString();
-                            newVal.val = newVal.val === 'true' || newVal.val === '1' || newVal.val === 'ON' || newVal.val === 'on';
+                            newVal.val =
+                                newVal.val === 'true' ||
+                                newVal.val === '1' ||
+                                newVal.val === 'ON' ||
+                                newVal.val === 'on';
                         }
                     }
 
@@ -213,7 +224,7 @@ module.exports = class CLIStates extends CLICommand {
      * @param {any[]} args
      */
     delete(args) {
-        const {callback, dbConnect} = this.options;
+        const { callback, dbConnect } = this.options;
         /** @type {string} */
         const id = args[1];
         if (!id) {
@@ -230,6 +241,7 @@ module.exports = class CLIStates extends CLICommand {
                     CLI.success.stateDeleted(id);
                     return void callback();
                 }
-            }));
+            })
+        );
     }
 };

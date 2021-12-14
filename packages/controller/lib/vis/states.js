@@ -24,7 +24,10 @@ function calcProject(objects, projects, instance, result, callback) {
         }
         const dps = getUsedObjectIDs(json, false);
         if (dps && dps.IDs) {
-            result.push({id: `vis.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`, val: dps.IDs.length});
+            result.push({
+                id: `vis.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
+                val: dps.IDs.length
+            });
         }
         setImmediate(calcProject, objects, projects, instance, result, callback);
     });
@@ -33,7 +36,7 @@ function calcProject(objects, projects, instance, result, callback) {
 function calcProjects(objects, states, instance, config, callback) {
     objects.readDir('vis.' + instance, '/', (err, projects) => {
         if (err || !projects || !projects.length) {
-            callback && callback(err || null, [{id: 'vis.' + instance + '.datapoints.total', val: 0}]);
+            callback && callback(err || null, [{ id: 'vis.' + instance + '.datapoints.total', val: 0 }]);
         } else {
             calcProject(objects, projects, instance, [], (err, result) => {
                 if (result && result.length) {
@@ -41,7 +44,7 @@ function calcProjects(objects, states, instance, config, callback) {
                     for (let r = 0; r < result.length; r++) {
                         total += result[r].val;
                     }
-                    result.push({id: 'vis.' + instance + '.datapoints.total', val: total});
+                    result.push({ id: 'vis.' + instance + '.datapoints.total', val: total });
                 }
 
                 callback && callback(err, result);

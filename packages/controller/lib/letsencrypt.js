@@ -20,11 +20,16 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
     }
     // prepare domains
     if (leSettings && typeof leSettings.domains === 'string') {
-        leSettings.domains = leSettings.domains.split(',').map(d => d.trim()).filter(d => d);
+        leSettings.domains = leSettings.domains
+            .split(',')
+            .map(d => d.trim())
+            .filter(d => d);
     }
 
     if (!leSettings || !leSettings.email || !Array.isArray(leSettings.domains) || !leSettings.domains.length) {
-        log.error('Please specify the email address and domains to use Let\'s Encrypt certificates! We reuse old certificates');
+        log.error(
+            "Please specify the email address and domains to use Let's Encrypt certificates! We reuse old certificates"
+        );
         return require('https').createServer(certificates, app);
     }
 
@@ -48,7 +53,9 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
             fs.mkdirSync(leDir);
         }
     } catch (err) {
-        log.error(`Lets encrypt Directory does not exist and can not be created as ${leDir}: ${err.message}. We reuse old certificates`);
+        log.error(
+            `Lets encrypt Directory does not exist and can not be created as ${leDir}: ${err.message}. We reuse old certificates`
+        );
         return require('https').createServer(certificates, app);
     }
 
@@ -65,24 +72,31 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
         notify: (ev, params) => {
             switch (ev) {
                 case 'warning':
-                    log.warn('[LE] ' + (typeof(params) === 'string' ? params : JSON.stringify(params)));
+                    log.warn('[LE] ' + (typeof params === 'string' ? params : JSON.stringify(params)));
                     break;
 
                 case 'error':
-                    log.error('[LE] ' + (typeof(params) === 'string' ? params : JSON.stringify(params)));
+                    log.error('[LE] ' + (typeof params === 'string' ? params : JSON.stringify(params)));
                     break;
 
                 default:
                     // For all other event types, always debug
-                    log.debug(`[LE] ${ev}: ` + (typeof(params) === 'string' ? params : JSON.stringify(params)));
+                    log.debug(`[LE] ${ev}: ` + (typeof params === 'string' ? params : JSON.stringify(params)));
 
                     // Special cases for certificate issue/renewal notices
                     // TODO: possibly check for ev === 'cert_renewal' / 'cert_issue'
                     if (params.status === 'valid' && params.altname) {
                         log.info(`Received new certificate for ${params.altname} via ${params.type}`);
                     } else if (params.renewAt) {
-                        log.info(`Certificate for ${params.subject} is valid till ${new Date(params.renewAt).toISOString()}`);
-                        adapter && adapter.sendToHost(adapter.host, 'certsUpdated', {validTill: params.renewAt, domain: params.subject, instance: adapter.namespace});
+                        log.info(
+                            `Certificate for ${params.subject} is valid till ${new Date(params.renewAt).toISOString()}`
+                        );
+                        adapter &&
+                            adapter.sendToHost(adapter.host, 'certsUpdated', {
+                                validTill: params.renewAt,
+                                domain: params.subject,
+                                instance: adapter.namespace
+                            });
                     }
                     break;
             }
@@ -121,7 +135,7 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
 
         log.debug(`Adding to Greenlock: ${domain} with alternative names ${altnames.join(',')}`);
         try {
-            await gl.add({subject: domain, altnames});
+            await gl.add({ subject: domain, altnames });
             addedDomains++;
         } catch (err) {
             log.warn(`Failed to add "${domain}" into configuration: ${err.message}`);
@@ -139,34 +153,40 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
     });
 
     return new Promise((resolve, reject) => {
-        require('greenlock-express').init({
-            greenlock: gl
-        }).ready(glx => {
-            // The below is from greenlock-express examples/https/server.js
+        require('greenlock-express')
+            .init({
+                greenlock: gl
+            })
+            .ready(glx => {
+                // The below is from greenlock-express examples/https/server.js
 
-            if (settings.leUpdate) {
-                // Start the challenge server. Wait for it before resolving (pass back https).
-                settings.lePort = parseInt(settings.lePort, 10) || 80;
-                const bind = (!settings.bind || settings.bind === '0.0.0.0') ? undefined : settings.bind || undefined;
-                // Check port not in use, because catching EADDRINUSE from httpServer.listen not possible.
-                adapter.getPort(settings.lePort, bind, port => {
-                    if (port !== settings.lePort) {
-                        reject(new Error(`Challenge server port ${settings.lePort} already in use`));
-                    } else {
-                        const httpServer = glx.httpServer();
-                        httpServer.listen(settings.lePort, bind, () => {
-                            log.info(`Challenge server listening on port ${settings.lePort}`);
-                            log.info(`If something is not working and your adapter is not reachable anymore you can turn off HTTPS with executing "iobroker ${adapter ?  adapter.namespace : 'admin'} set --secure false" in your shell.`);
-                            resolve(glx.httpsServer(null, app));
-                        });
-                    }
-                });
-            } else {
-                // Just resolve with https.
-                // Don't call listen here (or above) because caller will do that
-                resolve(glx.httpsServer(null, app));
-            }
-        });
+                if (settings.leUpdate) {
+                    // Start the challenge server. Wait for it before resolving (pass back https).
+                    settings.lePort = parseInt(settings.lePort, 10) || 80;
+                    const bind = !settings.bind || settings.bind === '0.0.0.0' ? undefined : settings.bind || undefined;
+                    // Check port not in use, because catching EADDRINUSE from httpServer.listen not possible.
+                    adapter.getPort(settings.lePort, bind, port => {
+                        if (port !== settings.lePort) {
+                            reject(new Error(`Challenge server port ${settings.lePort} already in use`));
+                        } else {
+                            const httpServer = glx.httpServer();
+                            httpServer.listen(settings.lePort, bind, () => {
+                                log.info(`Challenge server listening on port ${settings.lePort}`);
+                                log.info(
+                                    `If something is not working and your adapter is not reachable anymore you can turn off HTTPS with executing "iobroker ${
+                                        adapter ? adapter.namespace : 'admin'
+                                    } set --secure false" in your shell.`
+                                );
+                                resolve(glx.httpsServer(null, app));
+                            });
+                        }
+                    });
+                } else {
+                    // Just resolve with https.
+                    // Don't call listen here (or above) because caller will do that
+                    resolve(glx.httpsServer(null, app));
+                }
+            });
     });
 }
 
@@ -185,7 +205,9 @@ function createServer(app, settings, certificates, leSettings, log) {
 
     if (settings.secure) {
         if (leSettings && settings.leEnabled) {
-            log.info('Please update this adapter to the latest version to allow again to update your certificates.  Using the current certificates');
+            log.info(
+                'Please update this adapter to the latest version to allow again to update your certificates.  Using the current certificates'
+            );
         }
 
         try {

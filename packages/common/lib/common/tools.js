@@ -55,7 +55,12 @@ const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  */
 function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
     for (const attr of Object.keys(oldObj)) {
-        if (oldObj[attr] === undefined || oldObj[attr] === null || typeof oldObj[attr] !== 'object' || oldObj[attr] instanceof Array) {
+        if (
+            oldObj[attr] === undefined ||
+            oldObj[attr] === null ||
+            typeof oldObj[attr] !== 'object' ||
+            oldObj[attr] instanceof Array
+        ) {
             if (oldObj[attr] === '__no_change__' && originalObj && !isNonEdit) {
                 if (originalObj[attr] !== undefined) {
                     newObj[attr] = deepClone(originalObj[attr]);
@@ -71,7 +76,12 @@ function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
             }
         } else {
             newObj[attr] = newObj[attr] || {};
-            copyAttributes(oldObj[attr], newObj[attr], originalObj && originalObj[attr], isNonEdit || attr === 'nonEdit');
+            copyAttributes(
+                oldObj[attr],
+                newObj[attr],
+                originalObj && originalObj[attr],
+                isNonEdit || attr === 'nonEdit'
+            );
         }
     }
 }
@@ -122,7 +132,6 @@ function checkNonEditable(oldObject, newObject) {
         } else {
             newObject.nonEdit = oldObject.nonEdit;
         }
-
     } else if (newObject.nonEdit) {
         oldObject.nonEdit = deepClone(newObject.nonEdit);
         if (newObject.nonEdit.password) {
@@ -150,6 +159,7 @@ function checkNonEditable(oldObject, newObject) {
 /**
  * @param {string} repoVersion
  * @param {string} installedVersion
+ * @throws {Error} if version is invalid
  */
 function upToDate(repoVersion, installedVersion) {
     // Check if the installed version is at least the repo version
@@ -221,9 +231,12 @@ function findIPs() {
         try {
             const ifaces = require('os').networkInterfaces();
             Object.keys(ifaces).forEach(dev =>
-                ifaces[dev].forEach(details =>
+                ifaces[dev].forEach(
+                    details =>
                     // noinspection JSUnresolvedVariable
-                    !details.internal && ownIpArr.push(details.address)));
+                        !details.internal && ownIpArr.push(details.address)
+                )
+            );
         } catch (e) {
             console.error(`Can not find local IPs: ${e.message}`);
         }
@@ -236,12 +249,10 @@ function findPath(path, url) {
     if (!url) {
         return '';
     }
-    if (url.substring(0, 'http://'.length) === 'http://' ||
-        url.substring(0, 'https://'.length) === 'https://') {
+    if (url.substring(0, 'http://'.length) === 'http://' || url.substring(0, 'https://'.length) === 'https://') {
         return url;
     } else {
-        if (path.substring(0, 'http://'.length) === 'http://' ||
-            path.substring(0, 'https://'.length) === 'https://') {
+        if (path.substring(0, 'http://'.length) === 'http://' || path.substring(0, 'https://'.length) === 'https://') {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
             if (url[0] === '/') {
@@ -254,9 +265,9 @@ function findPath(path, url) {
 }
 
 function getMac(callback) {
-    const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/ig;
+    const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
-    const command = (process.platform.indexOf('win') === 0) ? 'getmac' : 'ifconfig || ip link';
+    const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
 
     require('child_process').exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
         if (err) {
@@ -320,7 +331,7 @@ function uuid(givenMac, callback) {
         return callback('55travis-pipe-line-cior-githubaction');
     }
 
-    let mac = givenMac !== null ? (givenMac || '') : null;
+    let mac = givenMac !== null ? givenMac || '' : null;
     let u;
 
     if (!_isDocker && mac === '') {
@@ -349,7 +360,16 @@ function uuid(givenMac, callback) {
         const md5sum = require('crypto').createHash('md5');
         md5sum.update(mac);
         mac = md5sum.digest('hex');
-        u = mac.substring(0, 8) + '-' + mac.substring(8, 12) + '-' + mac.substring(12, 16) + '-' + mac.substring(16, 20) + '-' + mac.substring(20);
+        u =
+            mac.substring(0, 8) +
+            '-' +
+            mac.substring(8, 12) +
+            '-' +
+            mac.substring(12, 16) +
+            '-' +
+            mac.substring(16, 20) +
+            '-' +
+            mac.substring(20);
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         /** @type {any} */
@@ -357,7 +377,7 @@ function uuid(givenMac, callback) {
         let b;
         b = a = '';
         while (a++ < 36) {
-            b += ((a * 51) & 52) ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-';
+            b += (a * 51) & 52 ? (a ^ 15 ? 8 ^ (Math.random() * (a ^ 20 ? 16 : 4)) : 4).toString(16) : '-';
         }
         u = b;
     }
@@ -380,7 +400,9 @@ function updateUuid(newUuid, _objects, callback) {
             }
         }
 
-        _objects.setObject('system.meta.uuid', {
+        _objects.setObject(
+            'system.meta.uuid',
+            {
             type: 'meta',
             common: {
                 name: 'uuid',
@@ -391,7 +413,8 @@ function updateUuid(newUuid, _objects, callback) {
             native: {
                 uuid: _uuid
             }
-        }, err => {
+            },
+            err => {
             if (err) {
                 console.error('object system.meta.uuid cannot be updated: ' + err);
                 callback();
@@ -406,8 +429,9 @@ function updateUuid(newUuid, _objects, callback) {
                     callback(_uuid);
                 });
             }
+            }
+        );
         });
-    });
 }
 
 function createUuid(_objects, callback) {
@@ -421,22 +445,26 @@ function createUuid(_objects, callback) {
                     err && console.error(err);
 
                     // Create user here and not in io-package.js because of hash password
-                    _objects.setObject('system.user.admin', {
+                    _objects.setObject(
+                        'system.user.admin',
+                        {
                         type: 'user',
                         common: {
-                            name: 'admin',
-                            password: res,
+                                name: 'admin',
+                                password: res,
                             dontDelete: true,
-                            enabled: true
+                                enabled: true
                         },
                         ts: new Date().getTime(),
                         from: 'system.host.' + getHostName() + '.tools',
                         native: {}
-                    }, () => {
+                        },
+                        () => {
                         console.log('object system.user.admin created');
                         resolve();
+                        }
+                    );
                     });
-                });
             } else {
                 resolve();
             }
@@ -478,8 +506,12 @@ function createUuid(_objects, callback) {
                                     updateUuid(data.correct ? data.uuid : '', _objects, _uuid => resolve(_uuid));
                                 } else {
                                     // Show error
-                                    console.warn(`Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`);
-                                    console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
+                                    console.warn(
+                                        `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`
+                                    );
+                                    console.warn(
+                                        `Provide following information in email: ${data.email}, invoice: ${data.invoice}`
+                                    );
                                     resolve();
                                 }
                             }
@@ -495,8 +527,7 @@ function createUuid(_objects, callback) {
         })
     );
 
-    return Promise.all([promiseCheckPassword, promiseCheckUuid])
-        .then(result => callback && callback(result[1]));
+    return Promise.all([promiseCheckPassword, promiseCheckUuid]).then(result => callback && callback(result[1]));
 }
 
 // Download file to tmp or return file name directly
@@ -504,9 +535,11 @@ function getFile(urlOrPath, fileName, callback) {
     request = request || require('request');
 
     // If object was read
-    if (urlOrPath.substring(0, 'http://'.length) === 'http://' ||
-        urlOrPath.substring(0, 'https://'.length) === 'https://') {
-        const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xFFFFFFE) + '.zip'}`;
+    if (
+        urlOrPath.substring(0, 'http://'.length) === 'http://' ||
+        urlOrPath.substring(0, 'https://'.length) === 'https://'
+    ) {
+        const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xffffffe) + '.zip'}`;
         // Add some information to user-agent, like chrome, IE and Firefox do
         request({
             url: urlOrPath,
@@ -562,14 +595,18 @@ function getJson(urlOrPath, agent, callback) {
             callback(null);
         }
     } else {
-        if (urlOrPath.substring(0, 'http://'.length) === 'http://' ||
-            urlOrPath.substring(0, 'https://'.length) === 'https://') {
-            request({
+        if (
+            urlOrPath.substring(0, 'http://'.length) === 'http://' ||
+            urlOrPath.substring(0, 'https://'.length) === 'https://'
+        ) {
+            request(
+                {
                 url: urlOrPath,
                 timeout: 10000,
                 gzip: true,
                 headers: { 'User-Agent': agent }
-            }, (error, response, body) => {
+                },
+                (error, response, body) => {
                 if (error || !body || response.statusCode !== 200) {
                     console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
                     if (callback) {
@@ -590,7 +627,8 @@ function getJson(urlOrPath, agent, callback) {
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            }).on('error', _error => {
+                }
+            ).on('error', _error => {
                 //console.log('Cannot download json from ' + urlOrPath + '. Error: ' + error);
                 //if (callback) callback(null, urlOrPath);
             });
@@ -612,7 +650,9 @@ function getJson(urlOrPath, agent, callback) {
                 try {
                     sources = fs.readJSONSync(__dirname + '/../' + urlOrPath);
                 } catch (e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/../' + urlOrPath + '. Error: ' + e.message);
+                    console.log(
+                        'Cannot parse json file from ' + __dirname + '/../' + urlOrPath + '. Error: ' + e.message
+                    );
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -625,7 +665,9 @@ function getJson(urlOrPath, agent, callback) {
                 try {
                     sources = fs.readJSONSync(__dirname + '/../tmp/' + urlOrPath);
                 } catch (e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/../tmp/' + urlOrPath + '. Error: ' + e.message);
+                    console.log(
+                        'Cannot parse json file from ' + __dirname + '/../tmp/' + urlOrPath + '. Error: ' + e.message
+                    );
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -664,7 +706,11 @@ async function getJsonAsync(urlOrPath, agent) {
     } else {
         if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
             try {
-                const result = await axios(urlOrPath, {timeout: 10000, headers: {'User-Agent': agent}, validateStatus: status => status !== 200});
+                const result = await axios(urlOrPath, {
+                    timeout: 10000,
+                    headers: { 'User-Agent': agent },
+                    validateStatus: status => status !== 200
+                });
                 return result.data;
             } catch (error) {
                 console.warn(`Cannot download json from ${urlOrPath}. Error: ${error}`);
@@ -719,10 +765,10 @@ function scanDirectory(dirName, list, regExp) {
                 const fileName = path.join(fullPath, 'package.json');
                 if (regExp.test(dirs[i]) && fs.existsSync(fileIoName)) {
                     const ioPackage = fs.readJSONSync(fileIoName);
-                    const package_ = fs.existsSync(fileName)
-                        ? fs.readJSONSync(fileName)
-                        : {};
-                    const localIcon = (ioPackage.common.icon ? `/adapter/${dirs[i].substring(module.exports.appName.length + 1)}/${ioPackage.common.icon}` : '');
+                    const package_ = fs.existsSync(fileName) ? fs.readJSONSync(fileName) : {};
+                    const localIcon = ioPackage.common.icon
+                        ? `/adapter/${dirs[i].substring(module.exports.appName.length + 1)}/${ioPackage.common.icon}`
+                        : '';
                     //noinspection JSUnresolvedVariable
                     list[ioPackage.common.name] = {
                         controller: ioPackage.common.controller || false,
@@ -736,12 +782,18 @@ function scanDirectory(dirName, list, regExp) {
                         keywords: ioPackage.common.keywords,
                         readme: ioPackage.common.readme,
                         type: ioPackage.common.type,
-                        license: ioPackage.common.license ? ioPackage.common.license : ((package_.licenses && package_.licenses.length) ? package_.licenses[0].type : ''),
-                        licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
+                        license: ioPackage.common.license
+                            ? ioPackage.common.license
+                            : package_.licenses && package_.licenses.length
+                            ? package_.licenses[0].type
+                            : '',
+                        licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
                     };
                 }
             } catch (e) {
-                console.log(`Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`);
+                console.log(
+                    `Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`
+                );
             }
         }
     }
@@ -763,7 +815,9 @@ function getInstalledInfo(hostRunningVersion) {
     } catch (e) {
         console.error(`Cannot get installed host information: ${e.message}`);
     }
-    const package_ = fs.existsSync(path.join(fullPath, 'package.json')) ? fs.readJSONSync(path.join(fullPath, 'package.json')) : {};
+    const package_ = fs.existsSync(path.join(fullPath, 'package.json'))
+        ? fs.readJSONSync(path.join(fullPath, 'package.json'))
+        : {};
     const regExp = new RegExp(`^${module.exports.appName}\\.`, 'i');
 
     if (ioPackage) {
@@ -778,8 +832,12 @@ function getInstalledInfo(hostRunningVersion) {
             keywords: ioPackage.common.keywords,
             readme: ioPackage.common.readme,
             runningVersion: hostRunningVersion,
-            license: ioPackage.common.license ? ioPackage.common.license : ((package_.licenses && package_.licenses.length) ? package_.licenses[0].type : ''),
-            licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
+            license: ioPackage.common.license
+                ? ioPackage.common.license
+                : package_.licenses && package_.licenses.length
+                ? package_.licenses[0].type
+                : '',
+            licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
         };
     }
 
@@ -789,7 +847,9 @@ function getInstalledInfo(hostRunningVersion) {
 
     // Warning! Do not checkin this code
     if (
-        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
+        fs.existsSync(
+            path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)
+        ) ||
         fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName}.js-controller`))
     ) {
         scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
@@ -889,8 +949,10 @@ function getIoPack(sources, name, callback) {
                                 callback(sources, name);
                             }
                         } else {
-                            if (sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
-                                sources[name].meta.substring(0, 'https://'.length) === 'https://') {
+                            if (
+                                sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
+                                sources[name].meta.substring(0, 'https://'.length) === 'https://'
+                            ) {
                                 //installed from npm
                                 getNpmVersion(name, (_err, version) => {
                                     if (version) {
@@ -975,8 +1037,7 @@ function _getRepositoryFile(sources, path, callback) {
                         callback = null;
                     } else {
                         // process next
-                        setImmediate(() =>
-                            _getRepositoryFile(sources, path, callback));
+                        setImmediate(() => _getRepositoryFile(sources, path, callback));
                     }
                 }
             });
@@ -1112,7 +1173,9 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
         let agent = '';
         if (additionalInfo) {
             // Add some information to user-agent, like chrome, IE and Firefox do
-            agent = `${additionalInfo.name}, RND: ${additionalInfo.randomID || randomID}, Node:${additionalInfo.node}, V:${additionalInfo.controller}`;
+            agent = `${additionalInfo.name}, RND: ${additionalInfo.randomID || randomID}, Node:${
+                additionalInfo.node
+            }, V:${additionalInfo.controller}`;
         }
 
         // load hash of file first to not load the whole 1MB of sources
@@ -1132,11 +1195,21 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
                             _getRepositoryFile(sources, path, err => {
                                 err && console.error(`[${new Date()}] ${err}`);
                                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-                            }));
+                            })
+                        );
                     } else {
                         // return cached sources, because no sources found
-                        console.log(`failed to download new sources, ${additionalInfo.sources ? 'use cached sources' : 'no cached sources available'}`);
-                        return maybeCallbackWithError(callback, `Cannot read "${urlOrPath}"`, additionalInfo.sources, '');
+                        console.log(
+                            `failed to download new sources, ${
+                                additionalInfo.sources ? 'use cached sources' : 'no cached sources available'
+                            }`
+                        );
+                        return maybeCallbackWithError(
+                            callback,
+                            `Cannot read "${urlOrPath}"`,
+                            additionalInfo.sources,
+                            ''
+                        );
                     }
                 });
             }
@@ -1176,7 +1249,9 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
         if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
-            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${require('../../package.json').version}`;
+            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
+                require('../../package.json').version
+            }`;
             data = await axios({
                 url,
                 timeout: 10000,
@@ -1213,7 +1288,8 @@ function sendDiagInfo(obj, callback) {
         timeout: 4000
     };
 
-    return axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
+    return axios
+        .post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
         .then(() => typeof callback === 'function' && callback())
         .catch(error => {
             console.log(`Cannot send diag info: ${error.message}`);
@@ -1241,10 +1317,7 @@ function getAdapterDir(adapter) {
         adapter = adapter.substr(0, adapter.lastIndexOf('.'));
     }
 
-    const possibilities = [
-        `${appName.toLowerCase()}.${adapter}/package.json`,
-        `${appName}.${adapter}/package.json`
-    ];
+    const possibilities = [`${appName.toLowerCase()}.${adapter}/package.json`, `${appName}.${adapter}/package.json`];
 
     /** @type {string} */
     let adapterPath;
@@ -1326,7 +1399,8 @@ function getSystemNpmVersion(callback) {
             }
         }, 10000);
 
-        exec('npm -v', { encoding: 'utf8', env: newEnv, windowsHide: true }, (error, stdout) => {//, stderr) {
+        exec('npm -v', { encoding: 'utf8', env: newEnv, windowsHide: true }, (error, stdout) => {
+            //, stderr) {
             if (timeout) {
                 clearTimeout(timeout);
                 timeout = null;
@@ -1366,10 +1440,10 @@ async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
-            // If a cwd was provided, use it
-            ? { cwd: options.cwd }
-            // Otherwise find the ioBroker root dir
-            : {
+            ? // If a cwd was provided, use it
+              { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
+              {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
             }
@@ -1415,10 +1489,10 @@ async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
-            // If a cwd was provided, use it
-            ? { cwd: options.cwd }
-            // Otherwise find the ioBroker root dir
-            : {
+            ? // If a cwd was provided, use it
+              { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
+              {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
             }
@@ -1458,10 +1532,10 @@ async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
-            // If a cwd was provided, use it
-            ? { cwd: options.cwd }
-            // Otherwise find the ioBroker root dir
-            : {
+            ? // If a cwd was provided, use it
+              { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
+              {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
             }
@@ -1520,10 +1594,14 @@ function getDiskInfo(platform, callback) {
                 // Z:       116649795584  148368257024
                 const disk = __dirname.substring(0, 2).toUpperCase();
 
-                exec('wmic logicaldisk get size,freespace,caption', {
+                exec(
+                    'wmic logicaldisk get size,freespace,caption',
+                    {
                     encoding: 'utf8',
                     windowsHide: true
-                }, (error, stdout) => {//, stderr) {
+                    },
+                    (error, stdout) => {
+                        //, stderr) {
                     if (stdout) {
                         const lines = stdout.split('\n');
                         const line = lines.find(line => {
@@ -1532,25 +1610,33 @@ function getDiskInfo(platform, callback) {
                         });
                         if (line) {
                             const parts = line.split(/\s+/);
-                            return callback && callback(error, {
+                                return (
+                                    callback &&
+                                    callback(error, {
                                 'Disk size': parseInt(parts[2]),
                                 'Disk free': parseInt(parts[1])
-                            });
+                                    })
+                                );
                         }
                     }
                     callback && callback(error, null);
-                });
+                    }
+                );
             } else {
-                exec('df -k /', { encoding: 'utf8', windowsHide: true }, (error, stdout) => {//, stderr) {
+                exec('df -k /', { encoding: 'utf8', windowsHide: true }, (error, stdout) => {
+                    //, stderr) {
                     // Filesystem            1K-blocks    Used Available Use% Mounted on
                     // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
                     try {
                         if (stdout) {
                             const parts = stdout.split('\n')[1].split(/\s+/);
-                            return callback && callback(error, {
+                            return (
+                                callback &&
+                                callback(error, {
                                 'Disk size': parseInt(parts[1]) * 1024,
                                 'Disk free': parseInt(parts[3]) * 1024
-                            });
+                                })
+                            );
                         }
                     } catch {
                         // continue regardless of error
@@ -1700,10 +1786,12 @@ function generateDefaultCertificates() {
         },
         {
             name: 'subjectAltName',
-            altNames: [{
+            altNames: [
+                {
                 type: 2,
                 value: os.hostname()
-            }]
+                }
+            ]
         },
         {
             name: 'subjectKeyIdentifier'
@@ -1798,7 +1886,9 @@ async function getHostInfo(objects, callback) {
     // Check if repositories exists
     const allRepos = {};
     if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
-        const repos = Array.isArray(systemConfig.common.activeRepo) ? systemConfig.common.activeRepo : [systemConfig.common.activeRepo];
+        const repos = Array.isArray(systemConfig.common.activeRepo)
+            ? systemConfig.common.activeRepo
+            : [systemConfig.common.activeRepo];
         repos
             .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
             .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
@@ -1919,8 +2009,10 @@ function getConfigFileName() {
     }
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
-    if (fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName}.js-controller`)) {
+    if (
+        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName}.js-controller`)
+    ) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 7, 7);
         configDir = configDir.join('/');
@@ -1959,13 +2051,15 @@ function sliceArgs(argsObj, startIndex) {
  * @returns {(...args: any[]) => Promise<any>}
  */
 function promisify(fn, context, returnArgNames) {
-    return function() {
+    return function () {
         const args = sliceArgs(arguments);
         // @ts-ignore we cannot know the type of `this`
         context = context || this;
         return new Promise((resolve, reject) => {
-            fn.apply(context, args.concat([
-                function(error, result) {
+            fn.apply(
+                context,
+                args.concat([
+                    function (error, result) {
                     if (error) {
                         return reject(error instanceof Error ? error : new Error(error));
                     } else {
@@ -1975,7 +2069,8 @@ function promisify(fn, context, returnArgNames) {
                                 return resolve(); // Promise<void>
                             case 2: // a single value (result) was returned
                                 return resolve(result);
-                            default: {// multiple values should be returned
+                                default: {
+                                    // multiple values should be returned
                                 /** @type {{} | any[]} */
                                 let ret;
                                 const extraArgs = sliceArgs(arguments, 1);
@@ -1994,7 +2089,8 @@ function promisify(fn, context, returnArgNames) {
                         }
                     }
                 }
-            ]));
+                ])
+            );
         });
     };
 }
@@ -2009,20 +2105,23 @@ function promisify(fn, context, returnArgNames) {
  * @returns {(...args: any[]) => Promise<any>}
  */
 function promisifyNoError(fn, context, returnArgNames) {
-    return function() {
+    return function () {
         const args = sliceArgs(arguments);
         // @ts-ignore we cannot know the type of `this`
         context = context || this;
         return new Promise((resolve, _reject) => {
-            fn.apply(context, args.concat([
-                function(result) {
+            fn.apply(
+                context,
+                args.concat([
+                    function (result) {
                     // decide on how we want to return the callback arguments
                     switch (arguments.length) {
                         case 0: // no arguments were given
                             return resolve(); // Promise<void>
                         case 1: // a single value (result) was returned
                             return resolve(result);
-                        default: {// multiple values should be returned
+                            default: {
+                                // multiple values should be returned
                             /** @type {{} | any[]} */
                             let ret;
                             const extraArgs = sliceArgs(arguments, 0);
@@ -2040,7 +2139,8 @@ function promisifyNoError(fn, context, returnArgNames) {
                         }
                     }
                 }
-            ]));
+                ])
+            );
         });
     };
 }
@@ -2059,20 +2159,28 @@ function _setQualityForStates(states, keys, quality, cb) {
     if (!keys || !states || !keys.length) {
         cb();
     } else {
-        states.setState(keys.shift(), {
+        states.setState(
+            keys.shift(),
+            {
             ack: null,
             q: quality
-        }, () => setImmediate(_setQualityForStates, states, keys, quality, cb));
+            },
+            () => setImmediate(_setQualityForStates, states, keys, quality, cb)
+        );
     }
 }
 
 function setQualityForInstance(objects, states, namespace, q) {
     return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'state', {
+        objects.getObjectView(
+            'system',
+            'state',
+            {
             startkey: namespace + '.',
             endkey: namespace + '.\u9999',
             include_docs: false
-        }, (err, _states) => {
+            },
+            (err, _states) => {
             if (err) {
                 reject(err);
             } else {
@@ -2092,11 +2200,12 @@ function setQualityForInstance(objects, states, namespace, q) {
                     // Get only states, that have ack = true
                     keys = keys.filter((_id, i) => values[i] && values[i].ack);
                     // update quality code of the states to new one
-                    _setQualityForStates(states, keys, q, err => err ? reject(err) : resolve());
+                        _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
                 });
             }
+            }
+        );
         });
-    });
 }
 
 /**
@@ -2128,8 +2237,7 @@ function captureStackTrace(wrapperName) {
     const ret = new Error();
     if (ret.stack) {
         let foundSelf = false;
-        const lines = ret.stack.split('\n')
-            .filter(line => {
+        const lines = ret.stack.split('\n').filter(line => {
                 // keep all lines after this function's
                 if (foundSelf) {
                     return true;
@@ -2291,7 +2399,7 @@ function measureEventLoopLag(ms, cb) {
 
     function hrtime() {
         const t = process.hrtime();
-        return (t[0] * 1e3) + (t[1] / 1e6);
+        return t[0] * 1e3 + t[1] / 1e6;
     }
 }
 
@@ -2318,10 +2426,29 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
     if (targetObj && targetObj.alias && targetObj.alias.read) {
         try {
             // process the value here
-            const func = new Function('val', 'type', 'min', 'max', 'sType', 'sMin', 'sMax', 'return ' + targetObj.alias.read);
-            state.val = func(state.val, targetObj.type, targetObj.min, targetObj.max, sourceObj.type, sourceObj.min, sourceObj.max);
+            const func = new Function(
+                'val',
+                'type',
+                'min',
+                'max',
+                'sType',
+                'sMin',
+                'sMax',
+                'return ' + targetObj.alias.read
+            );
+            state.val = func(
+                state.val,
+                targetObj.type,
+                targetObj.min,
+                targetObj.max,
+                sourceObj.type,
+                sourceObj.min,
+                sourceObj.max
+            );
         } catch (e) {
-            logger.error(`${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`);
+            logger.error(
+                `${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`
+            );
             return null;
         }
     }
@@ -2329,10 +2456,29 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
     if (sourceObj && sourceObj.alias && sourceObj.alias.write) {
         try {
             // process the value here
-            const func = new Function('val', 'type', 'min', 'max', 'tType', 'tMin', 'tMax', 'return ' + sourceObj.alias.write);
-            state.val = func(state.val, sourceObj.type, sourceObj.min, sourceObj.max, targetObj.type, targetObj.min, targetObj.max);
+            const func = new Function(
+                'val',
+                'type',
+                'min',
+                'max',
+                'tType',
+                'tMin',
+                'tMax',
+                'return ' + sourceObj.alias.write
+            );
+            state.val = func(
+                state.val,
+                sourceObj.type,
+                sourceObj.min,
+                sourceObj.max,
+                targetObj.type,
+                targetObj.min,
+                targetObj.max
+            );
         } catch (e) {
-            logger.error(`${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`);
+            logger.error(
+                `${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`
+            );
             return null;
         }
     }
@@ -2354,15 +2500,35 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
     }
 
     // auto-scaling, only if val not null and unit for target (x)or source is %
-    if (((targetObj && targetObj.alias && !targetObj.alias.read) || (sourceObj && sourceObj.alias && !sourceObj.alias.write)) && state.val !== null) {
-        if (targetObj && targetObj.type === 'number' && targetObj.unit === '%' && sourceObj &&
-            sourceObj.type === 'number' && sourceObj.unit !== '%' && sourceObj.min !== undefined && sourceObj.max !== undefined) {
+    if (
+        ((targetObj && targetObj.alias && !targetObj.alias.read) ||
+            (sourceObj && sourceObj.alias && !sourceObj.alias.write)) &&
+        state.val !== null
+    ) {
+        if (
+            targetObj &&
+            targetObj.type === 'number' &&
+            targetObj.unit === '%' &&
+            sourceObj &&
+            sourceObj.type === 'number' &&
+            sourceObj.unit !== '%' &&
+            sourceObj.min !== undefined &&
+            sourceObj.max !== undefined
+        ) {
             // scale target between 0 and 100 % based on sources min/max
-            state.val = (state.val - sourceObj.min) / (sourceObj.max - sourceObj.min) * 100;
-        } else if (sourceObj && sourceObj.type === 'number' && sourceObj.unit === '%' && targetObj &&
-            targetObj.unit !== '%' && targetObj.type === 'number' && targetObj.min !== undefined && targetObj.max !== undefined) {
+            state.val = ((state.val - sourceObj.min) / (sourceObj.max - sourceObj.min)) * 100;
+        } else if (
+            sourceObj &&
+            sourceObj.type === 'number' &&
+            sourceObj.unit === '%' &&
+            targetObj &&
+            targetObj.unit !== '%' &&
+            targetObj.type === 'number' &&
+            targetObj.min !== undefined &&
+            targetObj.max !== undefined
+        ) {
             // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetObj.max - targetObj.min) * state.val / 100) + targetObj.min;
+            state.val = ((targetObj.max - targetObj.min) * state.val) / 100 + targetObj.min;
         }
     }
 
@@ -2381,7 +2547,6 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
  *
  */
 async function removeIdFromAllEnums(objects, id, allEnums) {
-
     if (!allEnums) {
         allEnums = await this.getAllEnums(objects);
     }
@@ -2425,7 +2590,9 @@ function parseDependencies(dependencies) {
                 adapters[rule] = '*';
             } else if (isObject(rule)) {
                 // can be object containing single adapter or multiple
-                Object.keys(rule).filter(adapter => !adapters[adapter]).forEach(adapter => adapters[adapter] = rule[adapter]);
+                Object.keys(rule)
+                    .filter(adapter => !adapters[adapter])
+                    .forEach(adapter => (adapters[adapter] = rule[adapter]));
             }
         });
     } else if (typeof dependencies === 'string') {
@@ -2460,9 +2627,26 @@ function validateGeneralObjectProperties(obj, extend) {
         throw new Error(`obj.type has an invalid type! Expected "string", received  "${typeof obj.type}"`);
     }
 
-    const allowedObjectTypes = ['state', 'channel', 'device', 'enum', 'host', 'adapter', 'instance', 'meta', 'config', 'script', 'user', 'group', 'chart', 'folder'];
+    const allowedObjectTypes = [
+        'state',
+        'channel',
+        'device',
+        'enum',
+        'host',
+        'adapter',
+        'instance',
+        'meta',
+        'config',
+        'script',
+        'user',
+        'group',
+        'chart',
+        'folder'
+    ];
     if (obj.type !== undefined && !allowedObjectTypes.includes(obj.type)) {
-        throw new Error(`obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`);
+        throw new Error(
+            `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`
+        );
     }
 
     // obj.common is optional in general check
@@ -2471,7 +2655,9 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
-        throw new Error(`obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`);
+        throw new Error(
+            `obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`
+        );
     } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
         // for some types, name needs to be a unique string
         throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
@@ -2479,14 +2665,20 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
-            throw new Error(`obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`);
+            throw new Error(
+                `obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`
+            );
         }
 
         if (obj.type === 'state') {
             // if object type indicates a state, check that common.type matches
             const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
-                throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
+                throw new Error(
+                    `obj.common.type has an invalid value (${
+                        obj.common.type
+                    }) but has to be one of ${allowedStateTypes.join(', ')}`
+                );
             }
 
             // ensure, that default value has correct type
@@ -2497,21 +2689,30 @@ function validateGeneralObjectProperties(obj, extend) {
                 }
 
                 // else do what strictObjectChecks does for val
-                if (!(obj.common.type === 'mixed' && typeof obj.common.def !== 'object' ||
-                    obj.common.type !== 'object' && obj.common.type === typeof obj.common.def ||
-                    obj.common.type === 'array' && typeof obj.common.def === 'string' ||
-                    obj.common.type === 'json' && typeof obj.common.def === 'string' ||
-                    obj.common.type === 'file' && typeof obj.common.def === 'string' ||
-                    obj.common.type === 'object' && typeof obj.common.def === 'string')
+                if (
+                    !(
+                        (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
+                        (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
+                        (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                        (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
+                        (obj.common.type === 'file' && typeof obj.common.def === 'string') ||
+                        (obj.common.type === 'object' && typeof obj.common.def === 'string')
+                    )
                 ) {
                     // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
                     // array, object, json need to be string
                     if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
-                        throw new Error(`Default value has to be stringified but received type "${typeof obj.common.def}"`);
+                        throw new Error(
+                            `Default value has to be stringified but received type "${typeof obj.common.def}"`
+                        );
                     } else {
-                        throw new Error(`Default value has to be ${obj.common.type === 'mixed'
+                        throw new Error(
+                            `Default value has to be ${
+                                obj.common.type === 'mixed'
                             ? `one of type "string", "number", "boolean"`
-                            : `type "${obj.common.type}"`} but received type "${typeof obj.common.def}" `);
+                                    : `type "${obj.common.type}"`
+                            } but received type "${typeof obj.common.def}" `
+                        );
                     }
                 }
             }
@@ -2519,28 +2720,45 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
-        throw new Error(`obj.common.read has an invalid type! Expected "boolean", received  "${typeof obj.common.read}"`);
+        throw new Error(
+            `obj.common.read has an invalid type! Expected "boolean", received  "${typeof obj.common.read}"`
+        );
     }
 
     if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
-        throw new Error(`obj.common.write has an invalid type! Expected "boolean", received  "${typeof obj.common.write}"`);
+        throw new Error(
+            `obj.common.write has an invalid type! Expected "boolean", received  "${typeof obj.common.write}"`
+        );
     }
 
     if (obj.common.role !== undefined && typeof obj.common.role !== 'string') {
-        throw new Error(`obj.common.role has an invalid type! Expected "string", received  "${typeof obj.common.role}"`);
+        throw new Error(
+            `obj.common.role has an invalid type! Expected "string", received  "${typeof obj.common.role}"`
+        );
     }
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
-        throw new Error(`obj.common.desc has an invalid type! Expected "string" or "object", received  "${typeof obj.common.desc}"`);
+        throw new Error(
+            `obj.common.desc has an invalid type! Expected "string" or "object", received  "${typeof obj.common.desc}"`
+        );
     }
 
-    if (obj.type === 'state' && obj.common.custom !== undefined && obj.common.custom !== null && !isObject(obj.common.custom)) {
-        throw new Error(`obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`);
+    if (
+        obj.type === 'state' &&
+        obj.common.custom !== undefined &&
+        obj.common.custom !== null &&
+        !isObject(obj.common.custom)
+    ) {
+        throw new Error(
+            `obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`
+        );
     }
 
     // common.states needs to be a real object or an arraay
     if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
-        throw new Error(`obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`);
+        throw new Error(
+            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
+        );
     }
 }
 
@@ -2750,19 +2968,11 @@ async function resolveAdapterMainFile(adapter) {
         throw new Error(`Could not find adapter dir of ${adapter}`);
     }
 
-    const possibleMainFiles = [
-        'main.js',
-        `${adapter}.js`
-    ];
+    const possibleMainFiles = ['main.js', `${adapter}.js`];
 
     // Add package.json -> main as the 2nd choice
     try {
-        const pack = JSON.parse(
-            await fs.readFile(
-                path.join(adapterDir, 'package.json'),
-                'utf8'
-            )
-        );
+        const pack = JSON.parse(await fs.readFile(path.join(adapterDir, 'package.json'), 'utf8'));
         if (pack && typeof pack.main === 'string') {
             possibleMainFiles.unshift(pack.main);
         }
@@ -2772,12 +2982,7 @@ async function resolveAdapterMainFile(adapter) {
 
     // Add io-package.json -> common.main as the preferred choice
     try {
-        const ioPack = JSON.parse(
-            await fs.readFile(
-                path.join(adapterDir, 'io-package.json'),
-                'utf8'
-            )
-        );
+        const ioPack = JSON.parse(await fs.readFile(path.join(adapterDir, 'io-package.json'), 'utf8'));
         if (ioPack && ioPack.common && typeof ioPack.common.main === 'string') {
             possibleMainFiles.unshift(ioPack.common.main);
         }
@@ -2837,7 +3042,8 @@ function parseShortGithubUrl(url) {
 }
 
 /** This is used to parse the pathname of a github URL */
-const githubPathnameRegex = /^\/(?<user>[^/]+)\/(?<repo>[^/]*?)(?:\.git)?(?:\/(?:tree|tarball|archive)\/(?<commit>.*?)(?:\.(?:zip|gz|tar\.gz))?)?$/;
+const githubPathnameRegex =
+    /^\/(?<user>[^/]+)\/(?<repo>[^/]*?)(?:\.git)?(?:\/(?:tree|tarball|archive)\/(?<commit>.*?)(?:\.(?:zip|gz|tar\.gz))?)?$/;
 
 /**
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
@@ -2875,7 +3081,7 @@ function removePreservedProperties(preserve, oldObj, newObj) {
         if (isObject(preserve[prop]) && isObject(newObj[prop])) {
             // we have to go one step deeper
             removePreservedProperties(preserve[prop], oldObj[prop], newObj[prop]);
-        } else if (newObj && newObj[prop] !== undefined && (oldObj && oldObj[prop] !== undefined)) {
+        } else if (newObj && newObj[prop] !== undefined && oldObj && oldObj[prop] !== undefined) {
             // we only need to remove something if its in the old object and in the new one
             if (typeof preserve[prop] === 'boolean') {
                 delete newObj[prop];
@@ -2950,7 +3156,8 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
                 unit: '% of one core'
             },
             native: {}
-        }, {
+        },
+        {
             _id: `${id}.cputime`,
             type: 'state',
             common: {
@@ -3021,7 +3228,7 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
             type: 'state',
             common: {
                 name: `${namespace} events input counter`,
-                desc: 'State\'s inputs in 15 seconds',
+                desc: "State's inputs in 15 seconds",
                 type: 'number',
                 read: true,
                 write: false,
@@ -3035,7 +3242,7 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
             type: 'state',
             common: {
                 name: `${namespace} events output counter`,
-                desc: 'State\'s outputs in 15 seconds',
+                desc: "State's outputs in 15 seconds",
                 type: 'number',
                 read: true,
                 write: false,
@@ -3107,16 +3314,19 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
 function getLogger(log) {
     if (!log) {
         log = {
-            silly: function(_msg) {/*console.log(msg);*/
+            silly: function (_msg) {
+                /*console.log(msg);*/
             },
-            debug: function(_msg) {/*console.log(msg);*/
+            debug: function (_msg) {
+                /*console.log(msg);*/
             },
-            info: function(_msg) {/*console.log(msg);*/
+            info: function (_msg) {
+                /*console.log(msg);*/
             },
-            warn: function(msg) {
+            warn: function (msg) {
                 console.log(msg);
             },
-            error: function(msg) {
+            error: function (msg) {
                 console.log(msg);
             }
         };
@@ -3135,7 +3345,7 @@ function getLogger(log) {
  * @return {Promise<object[]>}
  */
 async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
-    const instances = { '1': [], '2': [], '3': [], 'admin': [] };
+    const instances = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
     if (logPrefix) {

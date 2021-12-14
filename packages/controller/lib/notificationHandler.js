@@ -9,7 +9,6 @@ const { tools } = require('@iobroker/js-controller-common');
 const path = require('path');
 
 class NotificationHandler {
-
     /**
      * Create a new instance of NotificationHandler
      *
@@ -146,14 +145,17 @@ class NotificationHandler {
                             native: {}
                         });
                     } catch (e) {
-                        this.log.error(`${this.logPrefix} Could not create notifications object for category "${scopeObj.category}": ${e.message}`);
+                        this.log.error(
+                            `${this.logPrefix} Could not create notifications object for category "${scopeObj.category}": ${e.message}`
+                        );
                     }
                 }
 
                 if (Array.isArray(scopeObj.categories)) {
                     for (const categoryObj of scopeObj.categories) {
                         this.setup[scopeObj.scope] = this.setup[scopeObj.scope] || {};
-                        this.setup[scopeObj.scope][categoryObj.category] = this.setup[scopeObj.scope][categoryObj.category] || {};
+                        this.setup[scopeObj.scope][categoryObj.category] =
+                            this.setup[scopeObj.scope][categoryObj.category] || {};
                         try {
                             // regex is an array
                             let regex = categoryObj.regex;
@@ -175,7 +177,9 @@ class NotificationHandler {
                                 description: categoryObj.description
                             };
                         } catch (e) {
-                            this.log.error(`${this.logPrefix} Cannot store ${categoryObj.regex} for scope "${scopeObj.scope}", category "${categoryObj.category}": ${e.message}`);
+                            this.log.error(
+                                `${this.logPrefix} Cannot store ${categoryObj.regex} for scope "${scopeObj.scope}", category "${categoryObj.category}": ${e.message}`
+                            );
                         }
                     }
                 }
@@ -194,7 +198,9 @@ class NotificationHandler {
      */
     async addMessage(scope, category, message, instance) {
         if (typeof instance !== 'string') {
-            this.log.error(`${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`);
+            this.log.error(
+                `${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`
+            );
             return;
         }
 
@@ -223,21 +229,27 @@ class NotificationHandler {
                 this.currentNotifications[scope] = this.currentNotifications[scope] || {};
                 this.currentNotifications[scope][_category] = this.currentNotifications[scope][_category] || {};
                 // array of all messages for instance/category
-                this.currentNotifications[scope][_category][instance] = this.currentNotifications[scope][_category][instance] || [];
+                this.currentNotifications[scope][_category][instance] =
+                    this.currentNotifications[scope][_category][instance] || [];
 
                 if (!this.setup[scope] || !this.setup[scope][_category]) {
                     // no setup for this instance/category combination found - so nothing to add
-                    this.log.warn(`${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`);
+                    this.log.warn(
+                        `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`
+                    );
                     continue;
                 }
 
                 // if limit exceeded, remove last element - use while if it somehow grew too big
-                while (this.setup[scope][_category].limit < this.currentNotifications[scope][_category][instance].length + 1) {
+                while (
+                    this.setup[scope][_category].limit <
+                    this.currentNotifications[scope][_category][instance].length + 1
+                ) {
                     this.currentNotifications[scope][_category][instance].pop();
                 }
 
                 // add new element at beginning
-                this.currentNotifications[scope][_category][instance].unshift({message, ts: Date.now()});
+                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now() });
             }
         }
 
@@ -246,7 +258,7 @@ class NotificationHandler {
             for (const _category of Object.keys(this.currentNotifications[scope])) {
                 const categoryCounter = Object.keys(this.currentNotifications[scope][_category]).length;
 
-                stateVal[_category] = {count: categoryCounter};
+                stateVal[_category] = { count: categoryCounter };
             }
         }
 
@@ -273,7 +285,7 @@ class NotificationHandler {
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 // count number of instances with this error
                 const catCounter = Object.keys(this.currentNotifications[scope][category]).length;
-                stateVal[category] = {count: catCounter};
+                stateVal[category] = { count: catCounter };
             }
 
             // set updated scope state
@@ -283,7 +295,9 @@ class NotificationHandler {
                     ack: true
                 });
             } catch (e) {
-                this.log.error(`${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`);
+                this.log.error(
+                    `${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`
+                );
             }
         }
     }
@@ -365,7 +379,7 @@ class NotificationHandler {
                 continue;
             }
 
-            res[scope] = {categories: {}};
+            res[scope] = { categories: {} };
             res[scope].description = this.setup[scope].description;
             res[scope].name = this.setup[scope].name;
 
@@ -380,7 +394,7 @@ class NotificationHandler {
                     continue;
                 }
 
-                res[scope].categories[category] = {instances: {}};
+                res[scope].categories[category] = { instances: {} };
                 res[scope].categories[category].description = this.setup[scope][category].description;
                 res[scope].categories[category].name = this.setup[scope][category].name;
                 res[scope].categories[category].severity = this.setup[scope][category].severity;
@@ -392,7 +406,8 @@ class NotificationHandler {
                     }
 
                     res[scope].categories[category].instances[instance] = {};
-                    res[scope].categories[category].instances[instance].messages = this.currentNotifications[scope][category][instance];
+                    res[scope].categories[category].instances[instance].messages =
+                        this.currentNotifications[scope][category][instance];
                 }
             }
         }
@@ -444,7 +459,7 @@ class NotificationHandler {
                     delete this.currentNotifications[scope][category][instance];
                 }
 
-                stateVal[category] = {count: categoryCounter};
+                stateVal[category] = { count: categoryCounter };
 
                 // check if all instances of this category deleted
                 if (!Object.keys(this.currentNotifications[scope][category]).length) {
@@ -465,7 +480,9 @@ class NotificationHandler {
                     ack: true
                 });
             } catch (e) {
-                this.log.error(`${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`);
+                this.log.error(
+                    `${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`
+                );
             }
         }
     }

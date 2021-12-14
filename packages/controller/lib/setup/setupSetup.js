@@ -26,11 +26,11 @@ function Setup(options) {
 
     options = options || {};
 
-    const processExit            = options.processExit;
-    const dbConnect              = options.dbConnect;
-    const params                 = options.params;
+    const processExit = options.processExit;
+    const dbConnect = options.dbConnect;
+    const params = options.params;
     const cleanDatabaseAsync     = options.cleanDatabaseAsync;
-    const resetDbConnect         = options.resetDbConnect;
+    const resetDbConnect = options.resetDbConnect;
     const restartControllerAsync = options.restartControllerAsync;
     let objects;
     let states;
@@ -108,7 +108,9 @@ function Setup(options) {
 
             let enabledState;
             try {
-                enabledState = await states.getStateAsync(`system.host.${tools.getHostName()}.plugins.${plugin}.enabled`);
+                enabledState = await states.getStateAsync(
+                    `system.host.${tools.getHostName()}.plugins.${plugin}.enabled`
+                );
             } catch {
                 // ignore
             }
@@ -155,8 +157,12 @@ function Setup(options) {
             }
 
             try {
-                const {numberSuccess, notifications} = objects.syncFileDirectory();
-                numberSuccess && console.log(numberSuccess + ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!');
+                const { numberSuccess, notifications } = objects.syncFileDirectory();
+                numberSuccess &&
+                    console.log(
+                        numberSuccess +
+                            ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!'
+                    );
                 if (notifications.length) {
                     console.log();
                     console.log('The following notifications happened during sync: ');
@@ -184,7 +190,7 @@ function Setup(options) {
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = Date.now();
                     objects.setObject(obj._id, obj, () => {
-                        console.log(`object ${obj._id} ${(err || !_obj) ? 'created' : 'updated'}`);
+                        console.log(`object ${obj._id} ${err || !_obj ? 'created' : 'updated'}`);
                         setTimeout(dbSetup, 25, iopkg, ignoreExisting, callback);
                     });
                 } else {
@@ -235,6 +241,17 @@ function Setup(options) {
             states = _states;
             const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
 
+            // in all casses we need to ensure that existing objects are migrated to sets
+            try {
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                }
+            } catch (e) {
+                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
+            }
+
             // clean up invalid user group assignments (non-existing user in a group)
             try {
                 const usersView = await objects.getObjectViewAsync('system', 'user');
@@ -251,7 +268,9 @@ function Setup(options) {
                         if (!existingUsers.includes(groupMembers[i])) {
                             // we have found a non-existing user, so remove it
                             changed = true;
-                            console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`);
+                            console.log(
+                                `Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`
+                            );
                             groupMembers.splice(i, 1);
                         }
                     }
@@ -274,6 +293,7 @@ function Setup(options) {
                         }
                     }
                 }
+
                 if (certObj) {
                     let obj;
                     try {
@@ -282,18 +302,31 @@ function Setup(options) {
                         // ignore
                     }
 
-                    if (obj && obj.native && obj.native.certificates && obj.native.certificates.defaultPublic !== undefined) {
+                    if (
+                        obj &&
+                        obj.native &&
+                        obj.native.certificates &&
+                        obj.native.certificates.defaultPublic !== undefined
+                    ) {
                         let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
                         if (cert) {
                             const dateCertStart = Date.parse(cert.validityNotBefore);
                             const dateCertEnd = Date.parse(cert.validityNotAfter);
                             // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
-                            if (dateCertEnd <= Date.now() || cert.keyLength < 2048 || (dateCertEnd - dateCertStart) > 365 * 24 * 60 * 60 * 1000) {
+                            if (
+                                dateCertEnd <= Date.now() ||
+                                cert.keyLength < 2048 ||
+                                dateCertEnd - dateCertStart > 365 * 24 * 60 * 60 * 1000
+                            ) {
                                 // generate new certificates
                                 if (cert.certificateFilename) {
-                                    console.log(`Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`);
+                                    console.log(
+                                        `Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`
+                                    );
                                 } else {
-                                    console.log('Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!');
+                                    console.log(
+                                        'Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!'
+                                    );
                                     cert = null;
                                 }
                             }
@@ -316,7 +349,7 @@ function Setup(options) {
                     }
                     dbSetup(iopkg, true, callback);
                 } else {
-                    dbSetup(iopkg,true, callback);
+                    dbSetup(iopkg, true, callback);
                 }
             } else {
                 dbSetup(iopkg, callback);
@@ -343,12 +376,12 @@ function Setup(options) {
         const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
         const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
         const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
-        if (oldConfig &&
-            (
-                (oldConfig.states.type !== newConfig.states.type || oldConfig.objects.type !== newConfig.objects.type) ||
+        if (
+            oldConfig &&
+            (oldConfig.states.type !== newConfig.states.type ||
+                oldConfig.objects.type !== newConfig.objects.type ||
                 (!oldStatesHasServer && oldConfig.states.host !== newConfig.states.host) ||
-                (!oldObjectsHasServer && oldConfig.objects.host !== newConfig.objects.host)
-            )
+                (!oldObjectsHasServer && oldConfig.objects.host !== newConfig.objects.host))
         ) {
             let fromMaster =  oldStatesLocalServer || oldObjectsLocalServer;
 
@@ -364,30 +397,42 @@ function Setup(options) {
             let allowMigration;
             if (fromMaster) {
                 if (!toMaster) {
-                    const answer = rl.question(`Please choose if this is a Master/single host (enter "m") or a Slave host (enter "S") you are about to edit. For Slave hosts the data migration will be skipped. [S/m]: `, {
+                    const answer = rl.question(
+                        `Please choose if this is a Master/single host (enter "m") or a Slave host (enter "S") you are about to edit. For Slave hosts the data migration will be skipped. [S/m]: `,
+                        {
                         limit: /^[SsMm]?$/,
                         defaultInput: 'S'
-                    });
+                        }
+                    );
                     allowMigration = !(answer === 'S' || answer === 's');
                 } else {
-                    const answer = rl.question(`This host appears to be a Master or a Single host system. Is this correct? [Y/n]: `, {
+                    const answer = rl.question(
+                        `This host appears to be a Master or a Single host system. Is this correct? [Y/n]: `,
+                        {
                         limit: /^[YyNnJj]?$/,
                         defaultInput: 'Y'
-                    });
+                        }
+                    );
                     allowMigration = answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j';
                 }
             } else {
                 if (toMaster) {
-                    const answer = rl.question(`It appears that you want to convert this slave host into a Master or Single host system. Is this correct? [Y/n]: `, {
+                    const answer = rl.question(
+                        `It appears that you want to convert this slave host into a Master or Single host system. Is this correct? [Y/n]: `,
+                        {
                         limit: /^[YyNnJj]?$/,
                         defaultInput: 'Y'
-                    });
+                        }
+                    );
                     allowMigration = answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j';
                 } else {
-                    const answer = rl.question(`This host appears to be an ioBroker SLAVE system. Migration will be skipped. Is this correct? [Y/n]: `, {
+                    const answer = rl.question(
+                        `This host appears to be an ioBroker SLAVE system. Migration will be skipped. Is this correct? [Y/n]: `,
+                        {
                         limit: /^[YyNnJj]?$/,
                         defaultInput: 'Y'
-                    });
+                        }
+                    );
                     allowMigration = !(answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j');
                 }
             }
@@ -417,17 +462,26 @@ function Setup(options) {
             let answer = 'N';
             if (allowMigration) {
                 console.log();
-                answer = rl.question(`Do you want to migrate objects and states from "${oldConfig.objects.type}/${oldConfig.states.type}" to "${newConfig.objects.type}/${newConfig.states.type}" [y/N]: `, {
+                answer = rl.question(
+                    `Do you want to migrate objects and states from "${oldConfig.objects.type}/${oldConfig.states.type}" to "${newConfig.objects.type}/${newConfig.states.type}" [y/N]: `,
+                    {
                     limit: /^[YyNnJj]?$/,
                     defaultInput: 'N'
-                });
+                    }
+                );
 
-                if (newConfig.objects.type !== oldConfig.objects.type && (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j')) {
+                if (
+                    newConfig.objects.type !== oldConfig.objects.type &&
+                    (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j')
+                ) {
                     console.log(COLOR_YELLOW);
-                    answer = rl.question(`Migrating the objects database will overwrite all objects! Are you sure that this is not a slave host and you want to migrate the data? [y/N]: `, {
+                    answer = rl.question(
+                        `Migrating the objects database will overwrite all objects! Are you sure that this is not a slave host and you want to migrate the data? [y/N]: `,
+                        {
                         limit: /^[YyNnJj]?$/,
                         defaultInput: 'N'
-                    });
+                        }
+                    );
                     console.log(COLOR_RESET);
                 }
             }
@@ -439,7 +493,9 @@ function Setup(options) {
                     if (!isOffline) {
                         console.error(COLOR_RED);
                         console.error('Cannot migrate DB while js-controller is still running!');
-                        console.error('Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET);
+                        console.error(
+                            'Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET
+                        );
                         return void callback(90);
                     }
 
@@ -474,10 +530,13 @@ function Setup(options) {
                         console.log('');
                         console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
 
-                        dbConnect(true, Object.assign(params, {timeout: 20000}), (objects, states) => {
+                        dbConnect(true, Object.assign(params, { timeout: 20000 }), (objects, states) => {
                             if (!states || !objects) {
                                 console.error(COLOR_RED);
-                                console.log('New Database could not be connected. Please check your settings. No settings have been changed.' + COLOR_RESET);
+                                console.log(
+                                    'New Database could not be connected. Please check your settings. No settings have been changed.' +
+                                        COLOR_RESET
+                                );
 
                                 console.log('restoring conf/' + tools.appName + '.json');
                                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
@@ -507,8 +566,12 @@ function Setup(options) {
 
                                     console.log(COLOR_YELLOW);
                                     console.log('Important: If your system consists of multiple hosts please execute ');
-                                    console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
-                                    console.log('also been updated to this states/objects database configuration AND are');
+                                    console.log(
+                                        '"iobroker upload all" on the master AFTER all other hosts/slaves have '
+                                    );
+                                    console.log(
+                                        'also been updated to this states/objects database configuration AND are'
+                                    );
                                     console.log('running!' + COLOR_RESET);
 
                                     fs.unlinkSync(tools.getConfigFileName() + '.bak');
@@ -523,7 +586,11 @@ function Setup(options) {
             } else if (!newObjectsHasServer) {
                 console.log('');
                 console.log('No Database migration was done.');
-                console.log(COLOR_YELLOW + 'If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.' + COLOR_RESET);
+                console.log(
+                    COLOR_YELLOW +
+                        'If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.' +
+                        COLOR_RESET
+                );
                 console.log('');
             }
         }
@@ -557,16 +624,25 @@ function Setup(options) {
         console.log('  - Host/Unix Socket: ' + originalConfig.objects.host);
         console.log('  - Port: ' + originalConfig.objects.port);
         if (Array.isArray(originalConfig.objects.host)) {
-            console.log('  - Sentinel-Master-Name: ' + (originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster'));
+            console.log(
+                '  - Sentinel-Master-Name: ' +
+                    (originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster')
+            );
         }
         console.log('- States database:');
         console.log('  - Type: ' + originalConfig.states.type);
         console.log('  - Host/Unix Socket: ' + originalConfig.states.host);
         console.log('  - Port: ' + originalConfig.states.port);
         if (Array.isArray(originalConfig.states.host)) {
-            console.log('  - Sentinel-Master-Name: ' + (originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster'));
+            console.log(
+                '  - Sentinel-Master-Name: ' +
+                    (originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster')
+            );
         }
-        if (dbTools.objectsDbHasServer(originalConfig.objects.type) || dbTools.statesDbHasServer(originalConfig.states.type)) {
+        if (
+            dbTools.objectsDbHasServer(originalConfig.objects.type) ||
+            dbTools.statesDbHasServer(originalConfig.states.type)
+        ) {
             console.log('- Data Directory: ' + tools.getDefaultDataDir());
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
@@ -605,15 +681,24 @@ function Setup(options) {
             console.log(COLOR_YELLOW);
             console.log('When Objects and Files are stored in a Redis database please consider the following:');
             console.log('1. All data will be stored in RAM, make sure to have enough free RAM available!');
-            console.log('2. Make sure to check Redis persistence options to make sure a Redis problem will not cause data loss!');
+            console.log(
+                '2. Make sure to check Redis persistence options to make sure a Redis problem will not cause data loss!'
+            );
             console.log('3. The Redis persistence files can get big, make sure not to use an SD card to store them.');
             console.log(COLOR_RESET);
         }
 
-        const defaultObjectsHost = (otype === originalConfig.objects.type) ? originalConfig.objects.host : '127.0.0.1';
-        let ohost = rl.question('Host / Unix Socket of objects DB(' + otype + '), default[' + (Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost) + ']: ', {
+        const defaultObjectsHost = otype === originalConfig.objects.type ? originalConfig.objects.host : '127.0.0.1';
+        let ohost = rl.question(
+            'Host / Unix Socket of objects DB(' +
+                otype +
+                '), default[' +
+                (Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost) +
+                ']: ',
+            {
             defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
-        });
+            }
+        );
         ohost = ohost.toLowerCase();
 
         const op = getDefaultObjectsPort(ohost);
@@ -621,35 +706,47 @@ function Setup(options) {
 
         if (oSentinel) {
             ohost = ohost.split(',');
-            ohost.forEach((host, idx) => ohost[idx] = host.trim());
+            ohost.forEach((host, idx) => (ohost[idx] = host.trim()));
         }
 
-        const defaultObjectsPort = (otype === originalConfig.objects.type && ohost === originalConfig.objects.host) ? originalConfig.objects.port : op;
-        const userObjPort = rl.question('Port of objects DB(' + otype + '), default[' + (Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort) + ']: ', {
+        const defaultObjectsPort =
+            otype === originalConfig.objects.type && ohost === originalConfig.objects.host
+                ? originalConfig.objects.port
+                : op;
+        const userObjPort = rl.question(
+            'Port of objects DB(' +
+                otype +
+                '), default[' +
+                (Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort) +
+                ']: ',
+            {
             defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
             limit: /^[0-9, ]+$/
-        });
+            }
+        );
         let oport;
         if (userObjPort.includes(',')) {
             oport = userObjPort.split(',');
             oport.forEach((port, idx) => {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
-                    console.log(COLOR_RED + 'Invalid objects port: ' + oport[idx] + COLOR_RESET);
+                    console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
                     return void callback(23);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
-                console.log(COLOR_RED + 'Invalid objects port: ' + oport + COLOR_RESET);
+                console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
                 return void callback(23);
             }
         }
 
         let oSentinelName = null;
         if (oSentinel) {
-            const defaultSentinelName = originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster';
+            const defaultSentinelName = originalConfig.objects.sentinelName
+                ? originalConfig.objects.sentinelName
+                : 'mymaster';
             oSentinelName = rl.question('Objects Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
                 defaultInput: defaultSentinelName
             });
@@ -663,7 +760,7 @@ function Setup(options) {
             // ignore, unchanged
         }
 
-        let stype = rl.question('Type of states DB [(f)file, (r)edis, ...], default [' + defaultStatesType + ']: ', {
+        let stype = rl.question(`Type of states DB [(f)file, (r)edis, ...], default [${defaultStatesType}]: `, {
             defaultInput: defaultStatesType
         });
         stype = stype.toLowerCase();
@@ -697,13 +794,21 @@ function Setup(options) {
             console.log(COLOR_RESET);
         }
 
-        let defaultStatesHost = (stype === originalConfig.states.type) ? originalConfig.states.host : ohost || '127.0.0.1';
+        let defaultStatesHost =
+            stype === originalConfig.states.type ? originalConfig.states.host : ohost || '127.0.0.1';
         if (stype === otype) {
             defaultStatesHost = ohost;
         }
-        let shost = rl.question('Host / Unix Socket of states DB (' + stype + '), default[' + (Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost) + ']: ', {
+        let shost = rl.question(
+            'Host / Unix Socket of states DB (' +
+                stype +
+                '), default[' +
+                (Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost) +
+                ']: ',
+            {
             defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
-        });
+            }
+        );
         shost = shost.toLowerCase();
 
         const sp = getDefaultStatesPort(shost);
@@ -711,38 +816,52 @@ function Setup(options) {
 
         if (sSentinel) {
             shost = shost.split(',');
-            shost.forEach((host, idx) => shost[idx] = host.trim());
+            shost.forEach((host, idx) => (shost[idx] = host.trim()));
         }
 
-        let defaultStatesPort = (stype === originalConfig.states.type && shost === originalConfig.states.host) ? originalConfig.states.port : sp;
+        let defaultStatesPort =
+            stype === originalConfig.states.type && shost === originalConfig.states.host
+                ? originalConfig.states.port
+                : sp;
         if (stype === otype && !dbTools.statesDbHasServer(stype) && shost === ohost) {
             defaultStatesPort = oport;
         }
-        const userStatePort = rl.question('Port of states DB (' + stype + '), default[' + (Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort) + ']: ', {
+        const userStatePort = rl.question(
+            'Port of states DB (' +
+                stype +
+                '), default[' +
+                (Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort) +
+                ']: ',
+            {
             defaultInput: Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort,
             limit: /^[0-9, ]+$/
-        });
+            }
+        );
         let sport;
         if (userStatePort.includes(',')) {
             sport = userStatePort.split(',');
             sport.forEach((port, idx) => {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
-                    console.log(COLOR_RED + 'Invalid states port: ' + sport[idx] + COLOR_RESET);
+                    console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
                     return void callback(23);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
-                console.log(COLOR_RED + 'Invalid states port: ' + sport + COLOR_RESET);
+                console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
                 return void callback(23);
             }
         }
 
         let sSentinelName = null;
         if (sSentinel) {
-            const defaultSentinelName = originalConfig.states.sentinelName ? originalConfig.states.sentinelName : (oSentinelName && oport === sport) ? oSentinelName: 'mymaster';
+            const defaultSentinelName = originalConfig.states.sentinelName
+                ? originalConfig.states.sentinelName
+                : oSentinelName && oport === sport
+                ? oSentinelName
+                : 'mymaster';
             sSentinelName = rl.question('States Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
                 defaultInput: defaultSentinelName
             });
@@ -752,21 +871,28 @@ function Setup(options) {
         let hname;
 
         if (dbTools.isLocalStatesDbServer(stype, shost) || dbTools.isLocalObjectsDbServer(otype, ohost)) {
-            dir = rl.question('Data directory (file), default[' + tools.getDefaultDataDir() + ']: ', {
+            dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
                 defaultInput: tools.getDefaultDataDir()
             });
 
-            hname = rl.question('Host name of this machine [' + (originalConfig && originalConfig.system ? originalConfig.system.hostname || require('os').hostname() : require('os').hostname()) + ']: ', {
+            hname = rl.question(
+                'Host name of this machine [' +
+                    (originalConfig && originalConfig.system
+                        ? originalConfig.system.hostname || require('os').hostname()
+                        : require('os').hostname()) +
+                    ']: ',
+                {
                 defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
-            });
+                }
+            );
         } else {
-            hname = rl.question('Host name of this machine [' + require('os').hostname() + ']: ', {
+            hname = rl.question(`Host name of this machine [${require('os').hostname()}]: `, {
                 defaultInput: ''
             });
         }
 
         if (hname.match(/\s/)) {
-            console.log(COLOR_RED + 'Invalid host name: ' + hname + COLOR_RESET);
+            console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
             return void callback(23);
         }
 
@@ -806,10 +932,13 @@ function Setup(options) {
         if (fs.existsSync(__dirname + '/../../../../node_modules/')) {
             try {
                 if (fs.existsSync(__dirname + '/../../reinstall.js')) {
-                    fs.writeFileSync(__dirname + '/../../../../reinstall.js', fs.readFileSync(__dirname + '/../../reinstall.js'));
+                    fs.writeFileSync(
+                        __dirname + '/../../../../reinstall.js',
+                        fs.readFileSync(__dirname + '/../../reinstall.js')
+                    );
                 }
-            } catch (err) {
-                console.warn(`Cannot write file. Not critical: ${err.message}`);
+            } catch (e) {
+                console.warn(`Cannot write file. Not critical: ${e.message}`);
             }
         }
         // Delete files for other OS
@@ -829,19 +958,31 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
 
                 try {
                     if (fs.existsSync(__dirname + '/../../killall.sh')) {
-                        fs.writeFileSync(__dirname + '/../../../../killall.sh', fs.readFileSync(__dirname + '/../../killall.sh'), {mode: 492 /* 0754 */});
+                        fs.writeFileSync(
+                            __dirname + '/../../../../killall.sh',
+                            fs.readFileSync(__dirname + '/../../killall.sh'),
+                            { mode: 492 /* 0754 */ }
+                        );
                     }
                     if (fs.existsSync(__dirname + '/../../reinstall.sh')) {
-                        fs.writeFileSync(__dirname + '/../../../../reinstall.sh', fs.readFileSync(__dirname + '/../../reinstall.sh'), {mode: 492 /* 0754 */});
+                        fs.writeFileSync(
+                            __dirname + '/../../../../reinstall.sh',
+                            fs.readFileSync(__dirname + '/../../reinstall.sh'),
+                            { mode: 492 /* 0754 */ }
+                        );
                     }
                     if (!fs.existsSync(__dirname + '/../../../../' + tools.appName.substring(0, 3))) {
-                        fs.writeFileSync(__dirname + '/../../../../' + tools.appName.substring(0, 3), startFile, {mode: 492 /* 0754 */});
+                        fs.writeFileSync(__dirname + '/../../../../' + tools.appName.substring(0, 3), startFile, {
+                            mode: 492 /* 0754 */
+                        });
                     }
                     if (!fs.existsSync(__dirname + '/../../../../' + tools.appName)) {
-                        fs.writeFileSync(__dirname + '/../../../../' + tools.appName, startFile, {mode: 492 /* 0754 */});
+                        fs.writeFileSync(__dirname + '/../../../../' + tools.appName, startFile, {
+                            mode: 492 /* 0754 */
+                        });
                     }
-                } catch (err) {
-                    console.warn(`Cannot write file. Not critical: ${err.message}`);
+                } catch (e) {
+                    console.warn(`Cannot write file. Not critical: ${e.message}`);
                 }
             }
         }
@@ -858,8 +999,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 } else {
                     try {
                         fs.unlinkSync(otherInstallDirs[t]);
-                    } catch (err) {
-                        console.warn(`Cannot delete file. Not critical: ${err.message}`);
+                    } catch (e) {
+                        console.warn(`Cannot delete file. Not critical: ${e.message}`);
                     }
                 }
             }
@@ -892,7 +1033,9 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
 
             // this path is relative to js-controller
             config.dataDir = tools.getDefaultDataDir();
-            const _path = path.normalize(__dirname + '/../../../node_modules/' + tools.appName + '.js-controller').replace(/\\/g, '/');
+            const _path = path
+                .normalize(__dirname + '/../../../node_modules/' + tools.appName + '.js-controller')
+                .replace(/\\/g, '/');
             if (fs.existsSync(_path)) {
                 if (_path.indexOf('/node_modules/') !== -1) {
                     mkpathSync(__dirname + '/../../', config.dataDir);
@@ -914,7 +1057,12 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
 
             try {
                 // Create
-                if (__dirname.toLowerCase().replace(/\\/g, '/').indexOf('node_modules/' + tools.appName + '.js-controller') !== -1) {
+                if (
+                    __dirname
+                        .toLowerCase()
+                        .replace(/\\/g, '/')
+                        .indexOf('node_modules/' + tools.appName + '.js-controller') !== -1
+                ) {
                     const parts = config.dataDir.split('/');
                     // Remove appName-data/
                     parts.pop();
@@ -940,7 +1088,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     // Workaround: there was a bug with admin v5 which could remove the dataDir attribute -> fix this
                     // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir
                     config.dataDir = tools.getDefaultDataDir();
-                    fs.writeJSONSync(configFileName, config, {spaces: 2});
+                    fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
             } catch (err) {
                 console.warn(`Cannot check config file: ${err.message}`);

@@ -10,7 +10,6 @@ const { tools } = require('@iobroker/js-controller-common');
 
 /** Command ioBroker state ... */
 module.exports = class CLILogs extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -24,7 +23,6 @@ module.exports = class CLILogs extends CLICommand {
      * @param {any[]} args
      */
     execute(args, params) {
-
         /** @type {string | undefined} */
         const adapterName = args[0];
         const watch = params.watch || params.w;
@@ -60,10 +58,10 @@ module.exports = class CLILogs extends CLICommand {
                 fileName = fileName.replace(/\\/g, '/');
                 const parts = fileName.split('/');
                 parts.pop();
-                chokidar.watch(`${parts.join('/')}/iobroker*`, {awaitWriteFinish: {stabilityThreshold: 500}})
+                chokidar
+                    .watch(`${parts.join('/')}/iobroker*`, { awaitWriteFinish: { stabilityThreshold: 500 } })
                     .on('all', this.watchHandler.bind(this, options))
-                    .on('ready', () => this.isReady = true)
-                ;
+                    .on('ready', () => (this.isReady = true));
             }
         } else {
             console.log('No log file found');
@@ -86,12 +84,7 @@ module.exports = class CLILogs extends CLICommand {
     watchHandler(options, event, path, stats) {
         if (event === 'add' || !this.fileSizes.has(path)) {
             this.fileSizes.set(path, stats.size);
-            if (
-                stats.size > 0 && (
-                    this.isReady
-                    || (options.complete && this.isTodaysLogfile(path))
-                )
-            ) {
+            if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
                 this.streamChange(path, 0, options);
             }
         } else if (event === 'change') {
@@ -133,12 +126,10 @@ module.exports = class CLILogs extends CLICommand {
                 // @ts-ignore
                 .pipe(es.filterSync(line => line.includes(options.adapterName)))
                 .pipe(es.mapSync(line => line + os.EOL))
-                .pipe(process.stdout)
-            ;
+                .pipe(process.stdout);
         } else {
             // just pipe the input through
             tools.pipeLinewise(input, process.stdout);
         }
     }
 };
-

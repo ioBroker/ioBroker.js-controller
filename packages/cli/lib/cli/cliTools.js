@@ -9,9 +9,7 @@ const { tools } = require('@iobroker/js-controller-common');
 function formatValue(val, pretty) {
     // Only use JSON.stringify if we need it (for objects and arrays)
     const needsStringify = tools.isObject(val) || tools.isArray(val);
-    const output = !needsStringify ? val
-        : pretty ? JSON.stringify(val, null, 2)
-            : JSON.stringify(val);
+    const output = !needsStringify ? val : pretty ? JSON.stringify(val, null, 2) : JSON.stringify(val);
     return output;
 }
 
@@ -108,7 +106,7 @@ function enumHosts(objects) {
 function enumObjects(objects, type, startkey) {
     return new Promise((resolve, reject) => {
         const endkey = startkey + '\u9999';
-        objects.getObjectView('system', type, {startkey, endkey}, null, (err, res) => {
+        objects.getObjectView('system', type, { startkey, endkey }, null, (err, res) => {
             if (err) {
                 return reject(err);
             }

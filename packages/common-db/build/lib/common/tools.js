@@ -1,9 +1,7 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.objectsDbHasServer = exports.isLocalStatesDbServer = exports.isLocalObjectsDbServer = exports.statesDbHasServer = void 0;
-// we currently have no typings so ignore
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-expect-error no typings yet
 const js_controller_common_1 = require("@iobroker/js-controller-common");
 /**
  * Allows to find out if a given states dbType offers a server or not
@@ -15,7 +13,7 @@ function statesDbHasServer(dbType) {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         return !!require(`@iobroker/db-states-${dbType}`).Server;
     }
-    catch (_a) {
+    catch {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
     }
 }
@@ -68,8 +66,9 @@ function objectsDbHasServer(dbType) {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         return !!require(`@iobroker/db-objects-${dbType}`).Server;
     }
-    catch (_a) {
+    catch {
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
 }
 exports.objectsDbHasServer = objectsDbHasServer;
+//# sourceMappingURL=tools.js.map

@@ -11,23 +11,23 @@
 
 /** @class */
 function Upload(options) {
-    const fs        = require('fs-extra');
+    const fs = require('fs-extra');
     const { tools } = require('@iobroker/js-controller-common');
-    const hostname  = tools.getHostName();
+    const hostname = tools.getHostName();
     const deepClone = require('deep-clone');
     const { isDeepStrictEqual } = require('util');
-    const axios     = require('axios');
+    const axios = require('axios');
 
     options = options || {};
 
-    if (!options.states)      {
+    if (!options.states) {
         throw new Error('Invalid arguments: states is missing');
     }
-    if (!options.objects)     {
+    if (!options.objects) {
         throw new Error('Invalid arguments: objects is missing');
     }
 
-    const states  = options.states;
+    const states = options.states;
     const objects = options.objects;
 
     let callbacks;
@@ -53,7 +53,7 @@ function Upload(options) {
     async function getHosts(onlyAlive) {
         const hosts = [];
         try {
-            const arr = await objects.getObjectListAsync({startkey: 'system.host.', endkey: 'system.host.\u9999'});
+            const arr = await objects.getObjectListAsync({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
             if (arr && arr.rows) {
                 for (let i = 0; i < arr.rows.length; i++) {
                     if (arr.rows[i].value.type !== 'host') {
@@ -149,20 +149,20 @@ function Upload(options) {
         };
 
         states.subscribeMessage(from, () => {
-            const obj = {command, message: message, from: 'system.host.' + hostname + '_cli_' + time};
+            const obj = { command, message: message, from: 'system.host.' + hostname + '_cli_' + time };
 
             obj.callback = {
                 message,
-                id:      callbackId++,
-                ack:     false,
+                id: callbackId++,
+                ack: false,
                 time
             };
 
-            if (callbackId > 0xFFFFFFFF) {
+            if (callbackId > 0xffffffff) {
                 callbackId = 1;
             }
             callbacks = callbacks || {};
-            callbacks['_' + obj.callback.id] = {cb: callback};
+            callbacks['_' + obj.callback.id] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
             states.pushMessage(host, obj);
@@ -179,7 +179,11 @@ function Upload(options) {
                 let instance = instances.find(obj => obj && obj.common && obj.common.host === hostname);
 
                 // try to find enabled instance on live host
-                instance = instance || instances.find(obj => obj && obj.common && obj.common.enabled && liveHosts.includes(obj.common.host));
+                instance =
+                    instance ||
+                    instances.find(
+                        obj => obj && obj.common && obj.common.enabled && liveHosts.includes(obj.common.host)
+                    );
 
                 // try to find any instance
                 instance = instance || instances.find(obj => obj && obj.common && liveHosts.includes(obj.common.host));
@@ -198,7 +202,9 @@ function Upload(options) {
                         // no one alive instance found
                         const adapterDir = tools.getAdapterDir(adapter);
                         if (!fs.existsSync(adapterDir)) {
-                            console.warn(`No alive host found which has the adapter ${adapter} installed! No upload possible. Skipped.`);
+                            console.warn(
+                                `No alive host found which has the adapter ${adapter} installed! No upload possible. Skipped.`
+                            );
                             continue;
                         }
                     }
@@ -241,7 +247,10 @@ function Upload(options) {
 
         if (source.match(/^http:\/\/|^https:\/\//)) {
             try {
-                const result = await axios(source, {responseType: 'arraybuffer', validateStatus: status => status === 200});
+                const result = await axios(source, {
+                    responseType: 'arraybuffer',
+                    validateStatus: status => status === 200
+                });
                 if (result && result.data) {
                     await objects.writeFileAsync(adapter, target, result.data);
                 } else {
@@ -311,7 +320,7 @@ function Upload(options) {
                     const newPath = path + files[f].file;
                     if (files[f].isDir) {
                         if (!_dirs.find(e => e.path === newPath)) {
-                            _dirs.push({adapter, path: newPath});
+                            _dirs.push({ adapter, path: newPath });
                         }
                         try {
                             const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
@@ -321,13 +330,13 @@ function Upload(options) {
                             console.warn(`Cannot delete folder "${adapter}/${newPath}/": ${err.mesasge}`);
                         }
                     } else if (!_files.find(e => e.path === newPath)) {
-                        _files.push({adapter, path: newPath});
+                        _files.push({ adapter, path: newPath });
                     }
                 }
             }
         }
 
-        return {filesToDelete: _files, dirs: _dirs};
+        return { filesToDelete: _files, dirs: _dirs };
     }
 
     let lastProgressUpdate = Date.now();
@@ -335,7 +344,7 @@ function Upload(options) {
     async function upload(adapter, isAdmin, files, id, rev, logger) {
         const uploadID = `system.adapter.${adapter}.upload`;
 
-        await states.setStateAsync(uploadID, {val: 0, ack: true});
+        await states.setStateAsync(uploadID, { val: 0, ack: true });
 
         for (let f = 0; f < files.length; f++) {
             const file = files[f];
@@ -355,9 +364,11 @@ function Upload(options) {
             attName = attName.pop();
             attName = attName.split('/').slice(2).join('/');
             if (files.length - f > 100) {
-                (!f || !((files.length - f - 1) % 50)) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+                (!f || !((files.length - f - 1) % 50)) &&
+                    logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             } else if (files.length - f - 1 > 20) {
-                (!f || !((files.length - f - 1) % 10)) && logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+                (!f || !((files.length - f - 1) % 10)) &&
+                    logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             } else {
                 logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
             }
@@ -367,13 +378,16 @@ function Upload(options) {
                 const now = Date.now();
                 if (now - lastProgressUpdate > 1000) {
                     lastProgressUpdate = now;
-                    await states.setStateAsync(uploadID, {val: Math.round(1000 * (files.length - f) / files.length) / 10, ack: true});
+                    await states.setStateAsync(uploadID, {
+                        val: Math.round((1000 * (files.length - f)) / files.length) / 10,
+                        ack: true
+                    });
                 }
             }
 
             await new Promise(resolve =>
                 fs.createReadStream(file).pipe(
-                    objects.insert(id, attName, null, mimeType, {rev: rev}, (err, res) => {
+                    objects.insert(id, attName, null, mimeType, { rev: rev }, (err, res) => {
                         err && console.log(err);
                         if (res) {
                             rev = res.rev;
@@ -386,7 +400,7 @@ function Upload(options) {
 
         // Set upload progress to 0;
         if (!isAdmin && files.length) {
-            await states.setStateAsync(uploadID, {val: 0, ack: true});
+            await states.setStateAsync(uploadID, { val: 0, ack: true });
         }
 
         return adapter;
@@ -448,7 +462,11 @@ function Upload(options) {
             dir += `/${subTree}`;
         }
         if (!fs.existsSync(adapterDir)) {
-            console.log(`INFO: Directory "${adapterDir || (`for ${adapter}${isAdmin ? '.admin' : ''}`)}" was not found! Nothing was uploaded or deleted.`);
+            console.log(
+                `INFO: Directory "${
+                    adapterDir || `for ${adapter}${isAdmin ? '.admin' : ''}`
+                }" was not found! Nothing was uploaded or deleted.`
+            );
             return adapter;
         }
 
@@ -463,7 +481,11 @@ function Upload(options) {
         if (!fs.existsSync(dir)) {
             // www folder have not all adapters. So show warning only for admin folder
             (isAdmin || (cfg && cfg.common && cfg.common.onlyWWW)) &&
-                console.log(`INFO: Directory "${dir || (`for ${adapter}${isAdmin ? '.admin' : ''}`)}" was not found! Nothing was uploaded or deleted.`);
+                console.log(
+                    `INFO: Directory "${
+                        dir || `for ${adapter}${isAdmin ? '.admin' : ''}`
+                    }" was not found! Nothing was uploaded or deleted.`
+                );
 
             if (isAdmin) {
                 return adapter;
@@ -489,8 +511,8 @@ function Upload(options) {
             }
             if (!obj) {
                 await objects.setObjectAsync(uploadID, {
-                    _id:   uploadID,
-                    type:   'state',
+                    _id: uploadID,
+                    type: 'state',
                     common: {
                         name: adapter + '.upload',
                         type: 'number',
@@ -498,7 +520,7 @@ function Upload(options) {
                         unit: '%',
                         min: 0,
                         max: 100,
-                        def:  0,
+                        def: 0,
                         desc: 'Upload process indicator'
                     },
                     from: `system.host.${tools.getHostName()}.cli`,
@@ -512,7 +534,12 @@ function Upload(options) {
 
         mime = mime || require('mime');
 
-        let {filesToDelete} = await eraseFolder(cfg && cfg.common && cfg.common.eraseOnUpload, isAdmin ? adapter + '.admin' : adapter, '/', logger);
+        let { filesToDelete } = await eraseFolder(
+            cfg && cfg.common && cfg.common.eraseOnUpload,
+            isAdmin ? adapter + '.admin' : adapter,
+            '/',
+            logger
+        );
         if (filesToDelete) {
             // directories should be deleted automatically
             //files = files.concat(dirs);
@@ -593,7 +620,7 @@ function Upload(options) {
                     if (target[attr] === undefined) {
                         target[attr] = additional[attr];
                     }
-                } else if (typeof additional[attr] !== 'object' || (additional[attr] instanceof Array)) {
+                } else if (typeof additional[attr] !== 'object' || additional[attr] instanceof Array) {
                     try {
                         target[attr] = additional[attr];
 
@@ -619,7 +646,10 @@ function Upload(options) {
 
     this._upgradeAdapterObjectsHelper = async (name, ioPack, hostname, logger) => {
         // Update all instances of this host
-        const res = await objects.getObjectViewAsync('system', 'instance', {startkey: `system.adapter.${name}.`, endkey: `system.adapter.${name}.\u9999`});
+        const res = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: `system.adapter.${name}.`,
+            endkey: `system.adapter.${name}.\u9999`
+        });
 
         if (res) {
             for (let i = 0; i < res.rows.length; i++) {
@@ -632,16 +662,16 @@ function Upload(options) {
                     newObject.native = extendNative(newObject.native, ioPack.native);
 
                     // protected/encryptedNative and notifications also need to be updated
-                    newObject.protectedNative         = ioPack.protectedNative || [];
-                    newObject.encryptedNative         = ioPack.encryptedNative || [];
-                    newObject.notifications           = ioPack.notifications   || [];
+                    newObject.protectedNative = ioPack.protectedNative || [];
+                    newObject.encryptedNative = ioPack.encryptedNative || [];
+                    newObject.notifications = ioPack.notifications || [];
                     // update instanceObjects and objects
-                    newObject.instanceObjects         = ioPack.instanceObjects || [];
-                    newObject.objects                 = ioPack.objects         || [];
+                    newObject.instanceObjects = ioPack.instanceObjects || [];
+                    newObject.objects = ioPack.objects || [];
 
-                    newObject.common.version          = ioPack.common.version;
+                    newObject.common.version = ioPack.common.version;
                     newObject.common.installedVersion = ioPack.common.version;
-                    newObject.common.installedFrom    = ioPack.common.installedFrom;
+                    newObject.common.installedFrom = ioPack.common.installedFrom;
 
                     if (!ioPack.common.compact && newObject.common.compact) {
                         newObject.common.compact = ioPack.common.compact;
@@ -698,8 +728,11 @@ function Upload(options) {
         if (typeof ioPack === 'function') {
             callback = ioPack;
             ioPack = null;
-        } else
-        if (typeof ioPack === 'object' && typeof ioPack.warn === 'function' && typeof ioPack.error === 'function') {
+        } else if (
+            typeof ioPack === 'object' &&
+            typeof ioPack.warn === 'function' &&
+            typeof ioPack.error === 'function'
+        ) {
             callback = logger;
             logger = ioPack;
             ioPack = null;
@@ -757,7 +790,7 @@ function Upload(options) {
             obj.instanceObjects = ioPack.instanceObjects || [];
             obj.objects = ioPack.objects || [];
 
-            obj.type   = 'adapter';
+            obj.type = 'adapter';
 
             obj.common.installedVersion = ioPack.common.version;
 

@@ -26,3 +26,4 @@ export declare function isLocalStatesDbServer(dbType: string, host: string, chec
  * @returns true if a server class is available
  */
 export declare function objectsDbHasServer(dbType: string): boolean;
+//# sourceMappingURL=tools.d.ts.map

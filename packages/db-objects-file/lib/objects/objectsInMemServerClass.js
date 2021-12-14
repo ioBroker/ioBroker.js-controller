@@ -18,13 +18,12 @@ const ObjectsInRedisClient = require('@iobroker/db-objects-redis').Client;
 const ObjectsInMemServer = require('./objectsInMemServerRedis');
 
 class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
-
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
 
         const serverSettings = {
-            namespace:  settings.namespace ? `${settings.namespace}-Server` : 'Server',
+            namespace: settings.namespace ? `${settings.namespace}-Server` : 'Server',
             connection: settings.connection,
             logger: settings.logger,
             hostname: settings.hostname,

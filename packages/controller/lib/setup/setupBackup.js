@@ -54,7 +54,6 @@ class BackupRestore {
         this.configParts = tools.getConfigFileName().split('/');
         this.configParts.pop(); // remove *.json
         this.configDir = this.configParts.join('/'); // => name-data
-
     } // endConstructor
 
     // --------------------------------------- BACKUP ---------------------------------------------------
@@ -97,13 +96,15 @@ class BackupRestore {
     }
 
     async _removeFolderRecursive(path) {
-        if (fs.existsSync(path) ) {
+        if (fs.existsSync(path)) {
             for (const file of fs.readdirSync(path)) {
                 const curPath = `${path}/${file}`;
 
-                if (fs.statSync(curPath).isDirectory()) { // recurse
+                if (fs.statSync(curPath).isDirectory()) {
+                    // recurse
                     await this._removeFolderRecursive(curPath);
-                } else { // delete file
+                } else {
+                    // delete file
                     fs.unlinkSync(curPath);
                 }
             }
@@ -129,7 +130,7 @@ class BackupRestore {
         }
 
         const parts = dataDir.split('/');
-        parts.pop();// remove data or appName-data
+        parts.pop(); // remove data or appName-data
         parts.pop();
 
         return pathLib.normalize(parts.join('/') + '/backups/');
@@ -197,7 +198,7 @@ class BackupRestore {
             });
 
             try {
-                tar.create({gzip: true, cwd: `${tmpDir}/`}, ['backup']).pipe(f);
+                tar.create({ gzip: true, cwd: `${tmpDir}/` }, ['backup']).pipe(f);
             } catch (err) {
                 console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
                 return this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
@@ -217,8 +218,7 @@ class BackupRestore {
             callback = noConfig;
             noConfig = false;
         }
-        return this.createBackupAsync(name, noConfig)
-            .then(path => typeof callback === 'function' && callback(path));
+        return this.createBackupAsync(name, noConfig).then(path => typeof callback === 'function' && callback(path));
     }
 
     /**
@@ -229,12 +229,20 @@ class BackupRestore {
     async createBackupAsync(name, noConfig) {
         if (!name) {
             const d = new Date();
-            name = d.getFullYear()                   + '_' +
-                ('0' + (d.getMonth() + 1)).slice(-2) + '_' +
-                ('0' + d.getDate()).slice(-2) + '-' +
-                ('0' + d.getHours()).slice(-2) + '_' +
-                ('0' + d.getMinutes()).slice(-2) + '_' +
-                ('0' + d.getSeconds()).slice(-2) + '_backup' + tools.appName;
+            name =
+                d.getFullYear() +
+                '_' +
+                ('0' + (d.getMonth() + 1)).slice(-2) +
+                '_' +
+                ('0' + d.getDate()).slice(-2) +
+                '-' +
+                ('0' + d.getHours()).slice(-2) +
+                '_' +
+                ('0' + d.getMinutes()).slice(-2) +
+                '_' +
+                ('0' + d.getSeconds()).slice(-2) +
+                '_backup' +
+                tools.appName;
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -253,12 +261,12 @@ class BackupRestore {
             }
         }
 
-        const result = {objects: null, states: {}};
+        const result = { objects: null, states: {} };
 
         const hostname = tools.getHostName();
 
         try {
-            const res = await this.objects.getObjectListAsync({include_docs: true});
+            const res = await this.objects.getObjectListAsync({ include_docs: true });
             result.objects = res.rows;
         } catch (e) {
             console.error(`host.${hostname} Cannot get objects: ${e.message}`);
@@ -336,12 +344,19 @@ class BackupRestore {
 
         // try to find user files
         for (let j = 0; j < result.objects.length; j++) {
-            if (!result.objects[j] || !result.objects[j].value || !result.objects[j].value._id || !result.objects[j].value.common) {
+            if (
+                !result.objects[j] ||
+                !result.objects[j].value ||
+                !result.objects[j].value._id ||
+                !result.objects[j].value.common
+            ) {
                 continue;
             }
             //if (result.objects[j].doc) delete result.objects[j].doc;
-            if (result.objects[j].value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
-                result.objects[j].value.common.host === hostname) {
+            if (
+                result.objects[j].value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
+                result.objects[j].value.common.host === hostname
+            ) {
                 result.objects[j].value.common.host = '$$__hostname__$$';
                 if (result.objects[j].doc) {
                     result.objects[j].doc.common.host = '$$__hostname__$$';
@@ -371,21 +386,26 @@ class BackupRestore {
             }
 
             // Read all files
-            if (result.objects[j].value.type === 'meta' &&
-                    result.objects[j].value.common &&
-                    result.objects[j].value.common.type === 'meta.user'
+            if (
+                result.objects[j].value.type === 'meta' &&
+                result.objects[j].value.common &&
+                result.objects[j].value.common.type === 'meta.user'
             ) {
                 // do not process "xxx.0. " and "xxx.0."
-                if (result.objects[j].id.trim() === result.objects[j].id &&
-                        result.objects[j].id[result.objects[j].id.length - 1] !== '.') {
+                if (
+                    result.objects[j].id.trim() === result.objects[j].id &&
+                    result.objects[j].id[result.objects[j].id.length - 1] !== '.'
+                ) {
                     await this.copyDir(result.objects[j].id, '', `${tmpDir}/backup/files/${result.objects[j].id}`);
                 }
             }
 
             // Read all files
-            if (result.objects[j].value.type === 'instance' &&
+            if (
+                result.objects[j].value.type === 'instance' &&
                 result.objects[j].value.common &&
-                result.objects[j].value.common.dataFolder) {
+                result.objects[j].value.common.dataFolder
+            ) {
                 let path = result.objects[j].value.common.dataFolder;
 
                 if (path[0] !== '/' && !path.match(/^\w:/)) {
@@ -458,11 +478,13 @@ class BackupRestore {
     async _setObjHelper(_objects) {
         for (let i = 0; i < _objects.length; i++) {
             // Disable all adapters.
-            if (!this.dbMigration
-                && _objects[i].id
-                && _objects[i].id.startsWith('system.adapter.')
-                && !_objects[i].id.startsWith('system.adapter.admin.')
-                && !_objects[i].id.startsWith('system.adapter.backitup.')) {
+            if (
+                !this.dbMigration &&
+                _objects[i].id &&
+                _objects[i].id.startsWith('system.adapter.') &&
+                !_objects[i].id.startsWith('system.adapter.admin.') &&
+                !_objects[i].id.startsWith('system.adapter.backitup.')
+            ) {
                 if (_objects[i].doc.common && _objects[i].doc.common.enabled) {
                     _objects[i].doc.common.enabled = false;
                 }
@@ -525,8 +547,10 @@ class BackupRestore {
                 if (_modules) {
                     const regEx = new RegExp(`^${tools.appName}\\.`, 'i');
                     for (let i = 0; i < _modules.length; i++) {
-                        if (regEx.test(_modules[i]) &&
-                            !dirs.includes(_modules[i].substring(tools.appName.length + 1))) {
+                        if (
+                            regEx.test(_modules[i]) &&
+                            !dirs.includes(_modules[i].substring(tools.appName.length + 1))
+                        ) {
                             dirs.push(_modules[i]);
                         }
                     }
@@ -538,8 +562,10 @@ class BackupRestore {
                     if (_modules) {
                         const regEx = new RegExp('^' + tools.appName + '\\.', 'i');
                         for (let i = 0; i < _modules.length; i++) {
-                            if (regEx.test(_modules[i]) &&
-                                !dirs.includes(_modules[i].substring(tools.appName.length + 1))) {
+                            if (
+                                regEx.test(_modules[i]) &&
+                                !dirs.includes(_modules[i].substring(tools.appName.length + 1))
+                            ) {
                                 dirs.push(_modules[i]);
                             }
                         }
@@ -554,10 +580,12 @@ class BackupRestore {
             const regEx_ = new RegExp(`^${tools.appName}\\.`, 'i');
             for (let j = 0; j < _modules.length; j++) {
                 // if starting from application name + '.'
-                if (regEx_.test(_modules[j]) &&
+                if (
+                    regEx_.test(_modules[j]) &&
                     // If not js-controller
-                    (_modules[j].substring(tools.appName.length + 1) !== 'js-controller') &&
-                    !dirs.includes(_modules[j].substring(tools.appName.length + 1))) {
+                    _modules[j].substring(tools.appName.length + 1) !== 'js-controller' &&
+                    !dirs.includes(_modules[j].substring(tools.appName.length + 1))
+                ) {
                     dirs.push(_modules[j]);
                 }
             }
@@ -655,7 +683,7 @@ class BackupRestore {
         const sList = Object.keys(restore.states);
 
         await this._setObjHelper(restore.objects);
-        console.log(restore.objects.length + ' objects restored.');
+        console.log(`${restore.objects.length} objects restored.`);
         await this._setStateHelper(sList, restore.states);
         console.log(`${sList.length} states restored.`);
         // Required for upload adapter
@@ -722,7 +750,7 @@ class BackupRestore {
         // @ts-ignore
         if (!name && name !== 0) {
             backups = this.listBackups();
-            backups.sort((a, b) => b > a ? 1 : (b === a ? 0 : -1));
+            backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
                 // List all available backups
                 console.log('Please specify one of the backup names:');
@@ -738,14 +766,16 @@ class BackupRestore {
         // If number
         if (parseInt(name, 10).toString() === name.toString()) {
             backups = this.listBackups();
-            backups.sort((a, b) => b > a ? 1 : (b === a ? 0 : -1));
+            backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             name = backups[parseInt(name, 10)];
             if (!name) {
                 console.log('No matching backup found');
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     for (const t of Object.keys(backups)) {
-                        console.log(`${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`);
+                        console.log(
+                            `${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`
+                        );
                     }
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
@@ -777,46 +807,53 @@ class BackupRestore {
         }
 
         return new Promise(resolve => {
-            tar.extract({
-                file: name,
-                cwd: tmpDir
-            }, async err => {
-                if (err) {
-                    console.error(`host.${hostname} Cannot extract from file "${name}"`);
-                    return void this.processExit(9);
-                }
-                if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
-                    console.error(`host.${hostname} Validation failed. Cannot find extracted file from file "${tmpDir}/backup/backup.json"`);
-                    return void this.processExit(9);
-                }
+            tar.extract(
+                {
+                    file: name,
+                    cwd: tmpDir
+                },
+                async err => {
+                    if (err) {
+                        console.error(`host.${hostname} Cannot extract from file "${name}"`);
+                        return void this.processExit(9);
+                    }
+                    if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
+                        console.error(
+                            `host.${hostname} Validation failed. Cannot find extracted file from file "${tmpDir}/backup/backup.json"`
+                        );
+                        return void this.processExit(9);
+                    }
 
-                console.log(`host.${hostname} Starting validation ...`);
-                let backupJSON;
-                try {
-                    backupJSON = require(`${tmpDir}/backup/backup.json`);
-                } catch (err) {
-                    console.error(`host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`);
-                    await this._removeFolderRecursive(`${tmpDir}/backup/`);
-                    return void this.processExit(26);
+                    console.log(`host.${hostname} Starting validation ...`);
+                    let backupJSON;
+                    try {
+                        backupJSON = require(`${tmpDir}/backup/backup.json`);
+                    } catch (err) {
+                        console.error(
+                            `host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
+                        );
+                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        return void this.processExit(26);
+                    }
+
+                    if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
+                        console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
+                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        return void this.processExit(26);
+                    } // endIf
+
+                    console.log(`host.${hostname} backup.json OK`);
+
+                    try {
+                        this._checkDirectory(`${tmpDir}/backup/files`, true);
+                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        resolve();
+                    } catch (err) {
+                        console.error(`host.${hostname} Backup corrupted: ${err.message}`);
+                        return void this.processExit(26);
+                    }
                 }
-
-                if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
-                    console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
-                    await this._removeFolderRecursive(`${tmpDir}/backup/`);
-                    return void this.processExit(26);
-                } // endIf
-
-                console.log(`host.${hostname} backup.json OK`);
-
-                try {
-                    this._checkDirectory(`${tmpDir}/backup/files`, true);
-                    await this._removeFolderRecursive(`${tmpDir}/backup/`);
-                    resolve();
-                } catch (err) {
-                    console.error(`host.${hostname} Backup corrupted: ${err.message}`);
-                    return void this.processExit(26);
-                }
-            });
+            );
         });
     } // endValidateBackup
 
@@ -826,7 +863,7 @@ class BackupRestore {
      * @param {boolean} verbose - if logging should be verbose
      * @private
      */
-    _checkDirectory(path, verbose=false) {
+    _checkDirectory(path, verbose = false) {
         if (fs.existsSync(path)) {
             const files = fs.readdirSync(path);
             if (!files.length) {
@@ -834,7 +871,7 @@ class BackupRestore {
             }
             for (const file of files) {
                 const filePath = `${path}/${file}`;
-                if(fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+                if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
                     // if directory then check it
                     this._checkDirectory(filePath, verbose);
                 } else if (file.endsWith('.json')) {
@@ -857,10 +894,11 @@ class BackupRestore {
             // List all available backups
             console.log('Please specify one of the backup names:');
             backups = this.listBackups();
-            backups.sort((a, b) => b > a ? 1 : (b === a ? 0 : -1));
+            backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
                 backups.forEach((backup, i) =>
-                    console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`));
+                    console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`)
+                );
             } else {
                 console.warn('No backups found');
             }
@@ -877,14 +915,15 @@ class BackupRestore {
         // If number
         if (parseInt(name, 10).toString() === name.toString()) {
             backups = this.listBackups();
-            backups.sort((a, b) => b > a ? 1 : (b === a ? 0 : -1));
+            backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             name = backups[parseInt(name, 10)];
             if (!name) {
                 console.log('No matching backup found');
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     backups.forEach((backup, i) =>
-                        console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`));
+                        console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`)
+                    );
                 } // endIf
             } else {
                 console.log(`host.${hostname} Using backup file ${name}`);
@@ -911,42 +950,47 @@ class BackupRestore {
         // delete /backup/backup.json
         fs.existsSync(tmpDir + '/backup/backup.json') && fs.unlinkSync(tmpDir + '/backup/backup.json');
 
-        tar.extract({
-            file: name,
-            cwd: tmpDir
-        }, err => {
-            if (err) {
-                console.error(`host.${hostname} Cannot extract from file "${name}"`);
-                return this.processExit(9);
-            }
-            if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
-                console.error(`host.${hostname} Cannot find extracted file from file "${tmpDir}/backup/backup.json"`);
-                return this.processExit(9);
-            }
-            // Stop controller
-            const daemon = require('daemonize2').setup({
-                main: '../../controller.js',
-                name: tools.appName + ' controller',
-                pidfile: `${__dirname}/../${tools.appName}.pid`,
-                cwd: '../../',
-                stopTimeout: 1000
-            });
-            daemon.on('error', async () => {
-                await this._restoreAfterStop(false);
-                callback && callback();
-            });
-            daemon.on('stopped', async () => {
-                await this._restoreAfterStop(true);
-                callback && callback();
-            });
-            daemon.on('notrunning', async () => {
-                console.log(`host.${hostname} OK.`);
-                await this._restoreAfterStop(false);
-                callback && callback();
-            });
+        tar.extract(
+            {
+                file: name,
+                cwd: tmpDir
+            },
+            err => {
+                if (err) {
+                    console.error(`host.${hostname} Cannot extract from file "${name}"`);
+                    return this.processExit(9);
+                }
+                if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
+                    console.error(
+                        `host.${hostname} Cannot find extracted file from file "${tmpDir}/backup/backup.json"`
+                    );
+                    return this.processExit(9);
+                }
+                // Stop controller
+                const daemon = require('daemonize2').setup({
+                    main: '../../controller.js',
+                    name: tools.appName + ' controller',
+                    pidfile: `${__dirname}/../${tools.appName}.pid`,
+                    cwd: '../../',
+                    stopTimeout: 1000
+                });
+                daemon.on('error', async () => {
+                    await this._restoreAfterStop(false);
+                    callback && callback();
+                });
+                daemon.on('stopped', async () => {
+                    await this._restoreAfterStop(true);
+                    callback && callback();
+                });
+                daemon.on('notrunning', async () => {
+                    console.log(`host.${hostname} OK.`);
+                    await this._restoreAfterStop(false);
+                    callback && callback();
+                });
 
-            daemon.stop();
-        });
+                daemon.stop();
+            }
+        );
     }
 }
 

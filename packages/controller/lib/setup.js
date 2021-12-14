@@ -37,7 +37,7 @@ let yargs;
 function initYargs() {
     yargs = require('yargs')
         .scriptName(tools.appName)
-        .locale('en')// otherwise it could be mixed, because our implementations are in english
+        .locale('en') // otherwise it could be mixed, because our implementations are in english
         .version(false) // disable yargs own version handling, because we have our own depending on passed instances
         .completion('_createCompletion', false) // can be created via iob _createCompletion >> ~/.bashrc or ~/.bash_profile for OSX
         .command('setup', 'Setup ioBroker', {
@@ -69,19 +69,25 @@ function initYargs() {
                 type: 'boolean'
             }
         })
-        .command('start [all|<adapter>.<instance>]', 'Starts the js-controller or a specified adapter instance', yargs => {
-            yargs
-                .command('all', 'Starts js-controller and all adapters')
-                .command('<adapter>[.<instance>]', 'Starts a specified adapter instance');
-        })
+        .command(
+            'start [all|<adapter>.<instance>]',
+            'Starts the js-controller or a specified adapter instance',
+            yargs => {
+                yargs
+                    .command('all', 'Starts js-controller and all adapters')
+                    .command('<adapter>[.<instance>]', 'Starts a specified adapter instance');
+            }
+        )
         .command('stop [<adapter>.<instance>]', 'stops the js-controller or a specified adapter instance', yargs => {
-            yargs
-                .command('<adapter>[.<instance>]', 'Stops a specified adapter instance');
+            yargs.command('<adapter>[.<instance>]', 'Stops a specified adapter instance');
         })
-        .command(['restart [<adapter>.<instance>]', 'r [<adapter>.<instance>]'], 'Restarts js-controller or a specified adapter instance', yargs => {
-            yargs
-                .command('<adapter>[.<instance>]', 'Restarts a specified adapter instance', {});
-        })
+        .command(
+            ['restart [<adapter>.<instance>]', 'r [<adapter>.<instance>]'],
+            'Restarts js-controller or a specified adapter instance',
+            yargs => {
+                yargs.command('<adapter>[.<instance>]', 'Restarts a specified adapter instance', {});
+            }
+        )
         .command('debug <adapter>[.<instance>]', 'Starts a Node.js debugging session for the adapter instance', {
             ip: {
                 describe: 'IP-address <ip>',
@@ -98,7 +104,8 @@ function initYargs() {
         })
         .command('info', 'Shows the host info', {})
         .command('logs [<adapter>]', 'Monitor log', {
-            'lines=1000': { // TODO: it's the only place we use = we should avoid this
+            'lines=1000': {
+                // TODO: it's the only place we use = we should avoid this
                 describe: 'Number of lines',
                 type: 'string'
             },
@@ -161,13 +168,29 @@ function initYargs() {
                     type: 'boolean'
                 })
                 .command('[<repositoryUrl>]', 'Upgrade all adapters, optionally you can specify the repository url', {})
-                .command('all [<repositoryUrl>]', 'Upgrade all adapters, optionally you can specify the repository url', {})
-                .command('self [<repositoryUrl>]', 'Upgrade js-controller, optionally you can specify the repository url', {})
-                .command('<adapter> [<repositoryUrl>]', 'Upgrade specified adapter, optionally you can specify the repository url', {});
+                .command(
+                    'all [<repositoryUrl>]',
+                    'Upgrade all adapters, optionally you can specify the repository url',
+                    {}
+                )
+                .command(
+                    'self [<repositoryUrl>]',
+                    'Upgrade js-controller, optionally you can specify the repository url',
+                    {}
+                )
+                .command(
+                    '<adapter> [<repositoryUrl>]',
+                    'Upgrade specified adapter, optionally you can specify the repository url',
+                    {}
+                );
         })
         .command(['upload [all|<adapter>]', 'u [all|<adapter>]'], 'Upload management', yargs => {
             yargs
-                .command(`<pathToLocalFile> <pathIn${tools.appName}>`, 'Upload given files to provided path to make them available for instances', {})
+                .command(
+                    `<pathToLocalFile> <pathIn${tools.appName}>`,
+                    'Upload given files to provided path to make them available for instances',
+                    {}
+                )
                 .command('all', 'Upload all adapter files to make them available for instances', {})
                 .command('<adapter>', 'Upload specified adapter files to make them available for instances', {});
         })
@@ -175,8 +198,16 @@ function initYargs() {
             yargs
                 .command('get <id>', 'Get object specified by id', {})
                 .command('set <id> <json-value>', 'Set object with the given id by providing a new json object', {})
-                .command('set <id> propertyname=<value or json-value>', 'Update part of the object by providing a new value or partial object', {})
-                .command('extend <id> <json-value>', 'Extend object with the given id by providing a new json object', {})
+                .command(
+                    'set <id> propertyname=<value or json-value>',
+                    'Update part of the object by providing a new value or partial object',
+                    {}
+                )
+                .command(
+                    'extend <id> <json-value>',
+                    'Extend object with the given id by providing a new json object',
+                    {}
+                )
                 .command('del <id|pattern>', 'Delete object with given id or all objects matching the pattern', {
                     y: {
                         describe: 'Bypass questionnaire',
@@ -209,18 +240,27 @@ function initYargs() {
         .command('rm <file>', 'Remove file', {})
         .command('file', 'File management', yargs => {
             yargs
-                .command(`read <${tools.appName}-path-to-read> [<filesystem-path-to-write>]`, `Read file from ${tools.appName} path and optionally write to destination`, {})
-                .command(`write <filesystem-path-to-read> <${tools.appName}-path-to-write>`, `Read file from path and write it to ${tools.appName} path`, {})
+                .command(
+                    `read <${tools.appName}-path-to-read> [<filesystem-path-to-write>]`,
+                    `Read file from ${tools.appName} path and optionally write to destination`,
+                    {}
+                )
+                .command(
+                    `write <filesystem-path-to-read> <${tools.appName}-path-to-write>`,
+                    `Read file from path and write it to ${tools.appName} path`,
+                    {}
+                )
                 .command(`rm <${tools.appName}-path-to-delete>`, 'Remove file', {})
                 .command('sync', 'Sync files', {});
         })
         .command('user', 'User commands', yargs => {
             yargs
                 .command('add <user>', 'Add new user', yargs => {
-                    yargs.option('ingroup', {
-                        describe: 'User group',
-                        type: 'string'
-                    })
+                    yargs
+                        .option('ingroup', {
+                            describe: 'User group',
+                            type: 'string'
+                        })
                         .option('password', {
                             describe: 'User password',
                             type: 'string'
@@ -228,21 +268,19 @@ function initYargs() {
                 })
                 .command('del <user>', 'Delete user', {})
                 .command('passwd <user>', 'Change user password', yargs => {
-                    yargs
-                        .option('password', {
-                            describe: 'User password',
-                            type: 'string'
-                        });
+                    yargs.option('password', {
+                        describe: 'User password',
+                        type: 'string'
+                    });
                 })
                 .command('enable <user>', 'Enable user', {})
                 .command('disable <user>', 'Disable user', {})
                 .command('get <user>', 'Get user', {})
                 .command('check <user>', 'Check user password', yargs => {
-                    yargs
-                        .option('password', {
-                            describe: 'User password',
-                            type: 'string'
-                        });
+                    yargs.option('password', {
+                        describe: 'User password',
+                        type: 'string'
+                    });
                 });
         })
         .command('group', 'group management', yargs => {
@@ -264,7 +302,8 @@ function initYargs() {
         })
         .command('set <adapter>.<instance>', 'Change settings of adapter config', {
             customOption: {
-                describe: 'Set the name of the parameter you want to change as option followed by its value, e. g. --port 80'
+                describe:
+                    'Set the name of the parameter you want to change as option followed by its value, e. g. --port 80'
             }
         })
         .command('license <license.file or license.text>', 'Update license by given file', {})
@@ -317,45 +356,62 @@ function initYargs() {
                 .command('off', 'Disable compact mode in general')
                 .command('<adapter>.<instance> status', 'Show if compact mode is enabled for a specific instance')
                 .command('<adapter>.<instance> group <group-id>', 'Define compact group of a specific adapter')
-                .command('<adapter>.<instance> <disable|off> [group-id]', 'Enable or disable compact mode for specified adapter instance and set compact group optionally')
-                .command('<adapter>.<instance> <enable|on> [group-id]', 'Enable or disable compact mode for specified adapter instance and set compact group optionally');
+                .command(
+                    '<adapter>.<instance> <disable|off> [group-id]',
+                    'Enable or disable compact mode for specified adapter instance and set compact group optionally'
+                )
+                .command(
+                    '<adapter>.<instance> <enable|on> [group-id]',
+                    'Enable or disable compact mode for specified adapter instance and set compact group optionally'
+                );
         })
         .command('plugin', 'Plugin management', yargs => {
             yargs
-                .command('enable <pluginname>', 'Enables a plugin for the specified host or instance. If no host is specified, the current one is used', {
-                    host: {
-                        describe: 'Hostname',
-                        type: 'string'
-                    },
-                    instance: {
-                        describe: 'Instance, e.g. hm-rpc.0',
-                        type: 'string'
+                .command(
+                    'enable <pluginname>',
+                    'Enables a plugin for the specified host or instance. If no host is specified, the current one is used',
+                    {
+                        host: {
+                            describe: 'Hostname',
+                            type: 'string'
+                        },
+                        instance: {
+                            describe: 'Instance, e.g. hm-rpc.0',
+                            type: 'string'
+                        }
                     }
-                })
-                .command('disable <pluginname>', 'Disables a plugin for the specified host or instance. If no host is specified, the current one is used', {
-                    host: {
-                        describe: 'Hostname',
-                        type: 'string'
-                    },
-                    instance: {
-                        describe: 'Instance, e.g. hm-rpc.0',
-                        type: 'string'
+                )
+                .command(
+                    'disable <pluginname>',
+                    'Disables a plugin for the specified host or instance. If no host is specified, the current one is used',
+                    {
+                        host: {
+                            describe: 'Hostname',
+                            type: 'string'
+                        },
+                        instance: {
+                            describe: 'Instance, e.g. hm-rpc.0',
+                            type: 'string'
+                        }
                     }
-                })
-                .command('status <pluginname>', 'Checks if a plugin is enabled for the specified host or instance. If no host is specified, the current one is used', {
-                    host: {
-                        describe: 'Hostname',
-                        type: 'string'
-                    },
-                    instance: {
-                        describe: 'Instance, e.g. hm-rpc.0',
-                        type: 'string'
+                )
+                .command(
+                    'status <pluginname>',
+                    'Checks if a plugin is enabled for the specified host or instance. If no host is specified, the current one is used',
+                    {
+                        host: {
+                            describe: 'Hostname',
+                            type: 'string'
+                        },
+                        instance: {
+                            describe: 'Instance, e.g. hm-rpc.0',
+                            type: 'string'
+                        }
                     }
-                });
+                );
         })
         .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter')
-        .wrap(null)
-    ;
+        .wrap(null);
 
     return yargs;
 }
@@ -374,8 +430,8 @@ function showHelp(_yargs) {
 
 let Objects; // constructor
 let objects; // instance
-let States;  // constructor
-let states;  // instance
+let States; // constructor
+let states; // instance
 
 /**
  * Process the given CLI command
@@ -412,7 +468,6 @@ async function processCommand(command, args, params, callback) {
     debug(`args: ${args}`);
 
     switch (command) {
-
         case 'start':
         case 'stop': {
             const procCommand = new cli.command.process(commandOptions);
@@ -489,95 +544,113 @@ async function processCommand(command, args, params, callback) {
                 isRedis = params.redis || isRedis;
                 isFirst = params.first || isFirst;
 
-                setup.setup(async (isFirst, _isRedis) => {
-                    if (isFirst) {
-                        // Creates all instances that are needed on a fresh installation
-                        const Install = require('./setup/setupInstall.js');
-                        const install = new Install({
-                            objects,
-                            states,
-                            getRepository,
-                            processExit: callback,
-                            params
-                        });
-                        // Define the necessary instances
-                        const initialInstances = ['admin', 'discovery', 'backitup'];
-                        // And try to install each of them
-                        for (const instance of initialInstances) {
-                            try {
-                                const path = require.resolve(tools.appName + '.' + instance);
-                                if (path) {
-                                    await install.createInstanceAsync(instance, {
-                                        enabled: true,
-                                        ignoreIfExists: true
-                                    });
+                setup.setup(
+                    async (isFirst, _isRedis) => {
+                        if (isFirst) {
+                            // Creates all instances that are needed on a fresh installation
+                            const Install = require('./setup/setupInstall.js');
+                            const install = new Install({
+                                objects,
+                                states,
+                                getRepository,
+                                processExit: callback,
+                                params
+                            });
+                            // Define the necessary instances
+                            const initialInstances = ['admin', 'discovery', 'backitup'];
+                            // And try to install each of them
+                            for (const instance of initialInstances) {
+                                try {
+                                    const path = require.resolve(tools.appName + '.' + instance);
+                                    if (path) {
+                                        await install.createInstanceAsync(instance, {
+                                            enabled: true,
+                                            ignoreIfExists: true
+                                        });
+                                    }
+                                } catch {
+                                    // not found, just continue
                                 }
+                            }
+
+                            await new Promise(resolve => {
+                                // Creates a fresh certificate
+                                const Cert = cli.command.cert;
+                                // Create a new instance of the cert command,
+                                // but use the resolve method as a callback
+                                const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
+                                cert.create();
+                            });
+                            callback && callback();
+                        } else {
+                            // else we update existing stuff (this is executed on installation)
+                            // Rename repositories
+                            const Repo = require('./setup/setupRepo.js');
+                            const repo = new Repo({ objects, states });
+
+                            try {
+                                await repo.rename(
+                                    'default',
+                                    'stable',
+                                    'http://download.iobroker.net/sources-dist.json'
+                                );
+                                await repo.rename(
+                                    'latest',
+                                    'beta',
+                                    'http://download.iobroker.net/sources-dist-latest.json'
+                                );
+                            } catch (err) {
+                                console.warn(`Cannot rename: ${err.message}`);
+                            }
+
+                            // there has been a bug that user can uplaod js-controller
+                            try {
+                                await objects.delObjectAsync('system.adapter.js-controller');
                             } catch {
-                                // not found, just continue
-                            }
-                        }
-
-                        await new Promise(resolve => {
-                            // Creates a fresh certificate
-                            const Cert = cli.command.cert;
-                            // Create a new instance of the cert command,
-                            // but use the resolve method as a callback
-                            const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
-                            cert.create();
-                        });
-                        callback && callback();
-                    } else {
-                        // else we update existing stuff (this is executed on installation)
-                        // Rename repositories
-                        const Repo = require('./setup/setupRepo.js');
-                        const repo = new Repo({ objects, states });
-
-                        try {
-                            await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
-                            await repo.rename('latest', 'beta', 'http://download.iobroker.net/sources-dist-latest.json');
-                        } catch (err) {
-                            console.warn(`Cannot rename: ${err.message}`);
-                        }
-
-                        // there has been a bug that user can uplaod js-controller
-                        try {
-                            await objects.delObjectAsync('system.adapter.js-controller');
-                        } catch {
-                            // ignore
-                        }
-
-                        try {
-                            const configFile = tools.getConfigFileName();
-
-                            const configOrig = fs.readJSONSync(configFile);
-                            const config = deepClone(configOrig);
-
-                            config.objects.options = config.objects.options || {
-                                'auth_pass': null,
-                                'retry_max_delay': 5000
-                            };
-                            if (config.objects.options.retry_max_delay === 15000 || !config.objects.options.retry_max_delay) {
-                                config.objects.options.retry_max_delay = 5000;
-                            }
-                            config.states.options = config.states.options || {
-                                'auth_pass': null,
-                                'retry_max_delay': 5000
-                            };
-                            if (config.states.options.retry_max_delay === 15000 || !config.states.options.retry_max_delay) {
-                                config.states.options.retry_max_delay = 5000;
+                                // ignore
                             }
 
-                            if (!isDeepStrictEqual(config, configOrig)) {
-                                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                                console.log('ioBroker configuration updated');
-                            }
-                        } catch (err) {
-                            console.log(`Could not update ioBroker configuration: ${err.message}`);
-                        }
+                            try {
+                                const configFile = tools.getConfigFileName();
 
-                        return void callback();
-                    }
-                }, isFirst, isRedis);
+                                const configOrig = fs.readJSONSync(configFile);
+                                const config = deepClone(configOrig);
+
+                                config.objects.options = config.objects.options || {
+                                    auth_pass: null,
+                                    retry_max_delay: 5000
+                                };
+                                if (
+                                    config.objects.options.retry_max_delay === 15000 ||
+                                    !config.objects.options.retry_max_delay
+                                ) {
+                                    config.objects.options.retry_max_delay = 5000;
+                                }
+                                config.states.options = config.states.options || {
+                                    auth_pass: null,
+                                    retry_max_delay: 5000
+                                };
+                                if (
+                                    config.states.options.retry_max_delay === 15000 ||
+                                    !config.states.options.retry_max_delay
+                                ) {
+                                    config.states.options.retry_max_delay = 5000;
+                                }
+
+                                if (!isDeepStrictEqual(config, configOrig)) {
+                                    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                                    console.log('ioBroker configuration updated');
+                                }
+                            } catch (err) {
+                                console.log(`Could not update ioBroker configuration: ${err.message}`);
+                            }
+
+                            return void callback();
+                        }
+                    },
+                    isFirst,
+                    isRedis
+                );
             }
             break;
         }
@@ -620,18 +693,21 @@ async function processCommand(command, args, params, callback) {
                     const data = await tools.getHostInfo(objects);
                     const formatters = require('./formatters');
                     const formatInfo = {
-                        'Uptime': formatters.formatSeconds,
+                        Uptime: formatters.formatSeconds,
                         'System uptime': formatters.formatSeconds,
-                        'RAM': formatters.formatRam,
-                        'Speed': formatters.formatSpeed,
+                        RAM: formatters.formatRam,
+                        Speed: formatters.formatSpeed,
                         'Disk size': formatters.formatBytes,
                         'Disk free': formatters.formatBytes
                     };
 
                     for (const attr of Object.keys(data)) {
-                        console.log(`${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''}`);
+                        console.log(
+                            `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
+                                formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''
+                            }`
+                        );
                     }
-
                 } catch (err) {
                     console.error('Cannot read host info: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
                     return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
@@ -804,7 +880,9 @@ async function processCommand(command, args, params, callback) {
                         // if upload of file
                         if (name.includes('.')) {
                             if (!subTree) {
-                                console.log(`Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis.0/main/img/picture.png`);
+                                console.log(
+                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis.0/main/img/picture.png`
+                                );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             }
 
@@ -864,15 +942,12 @@ async function processCommand(command, args, params, callback) {
                 }
                 // split the adapter into adapter + instance if necessary
                 if (adapter.indexOf('.') > -1) {
-                    ([adapter, instance] = adapter.split('.', 2));
+                    [adapter, instance] = adapter.split('.', 2);
                 }
             } else {
                 // ensure that adapter contains a valid adapter identifier
                 // and the instance is a number
-                if (
-                    !cli.tools.validateAdapterIdentifier(adapter)
-                    || !/^\d+$/.test(instance)
-                ) {
+                if (!cli.tools.validateAdapterIdentifier(adapter) || !/^\d+$/.test(instance)) {
                     showHelp();
                     return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                 }
@@ -984,9 +1059,19 @@ async function processCommand(command, args, params, callback) {
                     try {
                         if (adapter === 'self') {
                             const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                            await upgrade.upgradeControllerAsync('', params.force || params.f, hostAlive && hostAlive.val);
+                            await upgrade.upgradeControllerAsync(
+                                '',
+                                params.force || params.f,
+                                hostAlive && hostAlive.val
+                            );
                         } else {
-                            await upgrade.upgradeAdapterAsync('', adapter, params.force || params.f, params.y || params.yes, false);
+                            await upgrade.upgradeAdapterAsync(
+                                '',
+                                adapter,
+                                params.force || params.f,
+                                params.y || params.yes,
+                                false
+                            );
                         }
                         return void callback();
                     } catch (err) {
@@ -1000,7 +1085,12 @@ async function processCommand(command, args, params, callback) {
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                        await upgrade.upgradeAdapterHelperAsync(links, Object.keys(links).sort(), false, params.y || params.yes);
+                        await upgrade.upgradeAdapterHelperAsync(
+                            links,
+                            Object.keys(links).sort(),
+                            false,
+                            params.y || params.yes
+                        );
                         return void callback();
                     } catch (err) {
                         console.error(`Cannot upgrade: ${err.message}`);
@@ -1014,7 +1104,9 @@ async function processCommand(command, args, params, callback) {
         case 'clean': {
             const yes = args[0];
             if (yes !== 'yes') {
-                console.log(`Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`);
+                console.log(
+                    `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`
+                );
             } else {
                 dbConnect(params, (_obj, _stat, isNotRun) => {
                     if (!isNotRun) {
@@ -1037,7 +1129,6 @@ async function processCommand(command, args, params, callback) {
             const Backup = require('./setup/setupBackup.js');
 
             dbConnect(params, (_obj, _stat, isNotRun) => {
-
                 if (!isNotRun) {
                     console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
@@ -1138,46 +1229,58 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
-                    }, (err, arr) => {
-                        if (!err && arr && arr.rows) {
-                            const files = [];
-                            let count = 0;
-                            for (let i = 0; i < arr.rows.length; i++) {
-                                if (arr.rows[i].value.type !== 'adapter') {
-                                    continue;
-                                }
-                                count++;
-                                objects.touch(arr.rows[i].value.common.name, '*', { user: 'system.user.admin' }, (err, processed, _id) => {
-                                    if (!err && processed) {
-                                        files.push({ id: _id, processed: processed });
+                    objects.getObjectList(
+                        {
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
+                        },
+                        (err, arr) => {
+                            if (!err && arr && arr.rows) {
+                                const files = [];
+                                let count = 0;
+                                for (let i = 0; i < arr.rows.length; i++) {
+                                    if (arr.rows[i].value.type !== 'adapter') {
+                                        continue;
                                     }
-                                    if (!--count) {
-                                        const { setupList: List } = require('@iobroker/js-controller-cli');
-                                        const list = new List({
-                                            states,
-                                            objects,
-                                            processExit: callback
-                                        });
-                                        files.sort((a, b) => a.id.localeCompare(b.id));
+                                    count++;
+                                    objects.touch(
+                                        arr.rows[i].value.common.name,
+                                        '*',
+                                        { user: 'system.user.admin' },
+                                        (err, processed, _id) => {
+                                            if (!err && processed) {
+                                                files.push({ id: _id, processed: processed });
+                                            }
+                                            if (!--count) {
+                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const list = new List({
+                                                    states,
+                                                    objects,
+                                                    processExit: callback
+                                                });
+                                                files.sort((a, b) => a.id.localeCompare(b.id));
 
-                                        for (let k = 0; k < files.length; k++) {
-                                            for (let t = 0; t < files[k].processed.length; t++) {
-                                                list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
+                                                for (let k = 0; k < files.length; k++) {
+                                                    for (let t = 0; t < files[k].processed.length; t++) {
+                                                        list.showFile(
+                                                            files[k].id,
+                                                            files[k].processed[t].path,
+                                                            files[k].processed[t]
+                                                        );
+                                                    }
+                                                }
+                                                setTimeout(callback, 1000);
                                             }
                                         }
-                                        setTimeout(callback, 1000);
-                                    }
-                                });
-                            }
-                            if (!count) {
-                                console.log('Nothing found');
-                                return void callback();
+                                    );
+                                }
+                                if (!count) {
+                                    console.log('Nothing found');
+                                    return void callback();
+                                }
                             }
                         }
-                    });
+                    );
                 } else {
                     const parts = pattern.split('/');
                     const id = parts.shift();
@@ -1201,7 +1304,6 @@ async function processCommand(command, args, params, callback) {
                         }
                         setTimeout(callback, 1000);
                     });
-
                 }
             });
             break;
@@ -1222,47 +1324,59 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
-                    }, (err, arr) => {
-                        if (!err && arr && arr.rows) {
-                            const files = [];
-                            let count = 0;
-                            for (let i = 0; i < arr.rows.length; i++) {
-                                if (arr.rows[i].value.type !== 'adapter') {
-                                    continue;
-                                }
-                                count++;
-                                objects.rm(arr.rows[i].value.common.name, '*', { user: 'system.user.admin' }, (err, processed, _id) => {
-                                    if (!err && processed) {
-                                        files.push({ id: _id, processed: processed });
+                    objects.getObjectList(
+                        {
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
+                        },
+                        (err, arr) => {
+                            if (!err && arr && arr.rows) {
+                                const files = [];
+                                let count = 0;
+                                for (let i = 0; i < arr.rows.length; i++) {
+                                    if (arr.rows[i].value.type !== 'adapter') {
+                                        continue;
                                     }
-                                    if (!--count) {
-                                        const { setupList: List } = require('@iobroker/js-controller-cli');
-                                        const list = new List({
-                                            states,
-                                            objects,
-                                            processExit: callback
-                                        });
-                                        files.sort((a, b) => a.id.localeCompare(b.id));
+                                    count++;
+                                    objects.rm(
+                                        arr.rows[i].value.common.name,
+                                        '*',
+                                        { user: 'system.user.admin' },
+                                        (err, processed, _id) => {
+                                            if (!err && processed) {
+                                                files.push({ id: _id, processed: processed });
+                                            }
+                                            if (!--count) {
+                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const list = new List({
+                                                    states,
+                                                    objects,
+                                                    processExit: callback
+                                                });
+                                                files.sort((a, b) => a.id.localeCompare(b.id));
 
-                                        list.showFileHeader();
-                                        for (let k = 0; k < files.length; k++) {
-                                            for (let t = 0; t < files[k].processed.length; t++) {
-                                                list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
+                                                list.showFileHeader();
+                                                for (let k = 0; k < files.length; k++) {
+                                                    for (let t = 0; t < files[k].processed.length; t++) {
+                                                        list.showFile(
+                                                            files[k].id,
+                                                            files[k].processed[t].path,
+                                                            files[k].processed[t]
+                                                        );
+                                                    }
+                                                }
+                                                setTimeout(callback, 1000);
                                             }
                                         }
-                                        setTimeout(callback, 1000);
-                                    }
-                                });
-                            }
-                            if (!count) {
-                                console.log('Nothing found');
-                                return void callback();
+                                    );
+                                }
+                                if (!count) {
+                                    console.log('Nothing found');
+                                    return void callback();
+                                }
                             }
                         }
-                    });
+                    );
                 } else {
                     const parts = pattern.split('/');
                     const id = parts.shift();
@@ -1287,7 +1401,6 @@ async function processCommand(command, args, params, callback) {
                         }
                         setTimeout(callback, 1000);
                     });
-
                 }
             });
             break;
@@ -1317,50 +1430,62 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
-                    }, (err, arr) => {
-                        if (!err && arr && arr.rows) {
-                            const files = [];
-                            let count = 0;
-                            for (let i = 0; i < arr.rows.length; i++) {
-                                if (arr.rows[i].value.type !== 'adapter') {
-                                    continue;
-                                }
-                                count++;
-                                objects.chmodFile(arr.rows[i].value.common.name, '*', {
-                                    user: 'system.user.admin',
-                                    mode
-                                }, (err, processed, _id) => {
-                                    if (!err && processed) {
-                                        files.push({ id: _id, processed: processed });
+                    objects.getObjectList(
+                        {
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
+                        },
+                        (err, arr) => {
+                            if (!err && arr && arr.rows) {
+                                const files = [];
+                                let count = 0;
+                                for (let i = 0; i < arr.rows.length; i++) {
+                                    if (arr.rows[i].value.type !== 'adapter') {
+                                        continue;
                                     }
-                                    if (!--count) {
-                                        const { setupList: List } = require('@iobroker/js-controller-cli');
-                                        const list = new List({
-                                            states,
-                                            objects,
-                                            processExit: callback
-                                        });
-                                        files.sort((a, b) => a.id.localeCompare(b.id));
+                                    count++;
+                                    objects.chmodFile(
+                                        arr.rows[i].value.common.name,
+                                        '*',
+                                        {
+                                            user: 'system.user.admin',
+                                            mode
+                                        },
+                                        (err, processed, _id) => {
+                                            if (!err && processed) {
+                                                files.push({ id: _id, processed: processed });
+                                            }
+                                            if (!--count) {
+                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const list = new List({
+                                                    states,
+                                                    objects,
+                                                    processExit: callback
+                                                });
+                                                files.sort((a, b) => a.id.localeCompare(b.id));
 
-                                        list.showFileHeader();
-                                        for (let k = 0; k < files.length; k++) {
-                                            for (let t = 0; t < files[k].processed.length; t++) {
-                                                list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
+                                                list.showFileHeader();
+                                                for (let k = 0; k < files.length; k++) {
+                                                    for (let t = 0; t < files[k].processed.length; t++) {
+                                                        list.showFile(
+                                                            files[k].id,
+                                                            files[k].processed[t].path,
+                                                            files[k].processed[t]
+                                                        );
+                                                    }
+                                                }
+                                                setTimeout(callback, 1000);
                                             }
                                         }
-                                        setTimeout(callback, 1000);
-                                    }
-                                });
-                            }
-                            if (!count) {
-                                console.log('Nothing found');
-                                return void callback();
+                                    );
+                                }
+                                if (!count) {
+                                    console.log('Nothing found');
+                                    return void callback();
+                                }
                             }
                         }
-                    });
+                    );
                 } else {
                     const parts = pattern.split('/');
                     const id = parts.shift();
@@ -1385,7 +1510,6 @@ async function processCommand(command, args, params, callback) {
                         }
                         setTimeout(callback, 1000);
                     });
-
                 }
             });
             break;
@@ -1423,81 +1547,97 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList({
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
-                    }, (err, arr) => {
-                        if (!err && arr && arr.rows) {
-                            const files = [];
-                            let count = 0;
-                            for (let i = 0; i < arr.rows.length; i++) {
-                                if (arr.rows[i].value.type !== 'adapter') {
-                                    continue;
-                                }
-                                count++;
-                                objects.chownFile(arr.rows[i].value.common.name, '*', {
-                                    user: 'system.user.admin',
-                                    owner: user,
-                                    ownerGroup: group
-                                }, (err, processed, _id) => {
-                                    if (!err && processed) {
-                                        files.push({ id: _id, processed: processed });
+                    objects.getObjectList(
+                        {
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
+                        },
+                        (err, arr) => {
+                            if (!err && arr && arr.rows) {
+                                const files = [];
+                                let count = 0;
+                                for (let i = 0; i < arr.rows.length; i++) {
+                                    if (arr.rows[i].value.type !== 'adapter') {
+                                        continue;
                                     }
-                                    if (!--count) {
-                                        const { setupList: List } = require('@iobroker/js-controller-cli');
-                                        const list = new List({
-                                            states,
-                                            objects,
-                                            processExit: callback
-                                        });
-                                        files.sort((a, b) => a.id.localeCompare(b.id));
+                                    count++;
+                                    objects.chownFile(
+                                        arr.rows[i].value.common.name,
+                                        '*',
+                                        {
+                                            user: 'system.user.admin',
+                                            owner: user,
+                                            ownerGroup: group
+                                        },
+                                        (err, processed, _id) => {
+                                            if (!err && processed) {
+                                                files.push({ id: _id, processed: processed });
+                                            }
+                                            if (!--count) {
+                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const list = new List({
+                                                    states,
+                                                    objects,
+                                                    processExit: callback
+                                                });
+                                                files.sort((a, b) => a.id.localeCompare(b.id));
 
-                                        list.showFileHeader();
-                                        for (let k = 0; k < files.length; k++) {
-                                            for (let t = 0; t < files[k].processed.length; t++) {
-                                                list.showFile(files[k].id, files[k].processed[t].path, files[k].processed[t]);
+                                                list.showFileHeader();
+                                                for (let k = 0; k < files.length; k++) {
+                                                    for (let t = 0; t < files[k].processed.length; t++) {
+                                                        list.showFile(
+                                                            files[k].id,
+                                                            files[k].processed[t].path,
+                                                            files[k].processed[t]
+                                                        );
+                                                    }
+                                                }
+                                                setTimeout(callback, 1000);
                                             }
                                         }
-                                        setTimeout(callback, 1000);
-                                    }
-                                });
-                            }
-                            if (!count) {
-                                console.log('Nothing found');
-                                return void callback();
+                                    );
+                                }
+                                if (!count) {
+                                    console.log('Nothing found');
+                                    return void callback();
+                                }
                             }
                         }
-                    });
+                    );
                 } else {
-
                     const parts = pattern.split('/');
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects.chownFile(id, path, {
-                        user: 'system.user.admin',
-                        owner: user,
-                        ownerGroup: group
-                    }, (err, processed) => {
-                        if (err) {
-                            console.error(err);
-                        } else {
-                            // call here list
-                            if (processed) {
-                                const { setupList: List } = require('@iobroker/js-controller-cli');
-                                const list = new List({
-                                    states,
-                                    objects,
-                                    processExit: callback
-                                });
-                                list.showFileHeader();
-                                for (let i = 0; i < processed.length; i++) {
-                                    list.showFile(id, processed[i].path, processed[i]);
+                    objects.chownFile(
+                        id,
+                        path,
+                        {
+                            user: 'system.user.admin',
+                            owner: user,
+                            ownerGroup: group
+                        },
+                        (err, processed) => {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                // call here list
+                                if (processed) {
+                                    const { setupList: List } = require('@iobroker/js-controller-cli');
+                                    const list = new List({
+                                        states,
+                                        objects,
+                                        processExit: callback
+                                    });
+                                    list.showFileHeader();
+                                    for (let i = 0; i < processed.length; i++) {
+                                        list.showFile(id, processed[i].path, processed[i]);
+                                    }
                                 }
                             }
+                            setTimeout(callback, 1000);
                         }
-                        setTimeout(callback, 1000);
-                    });
+                    );
                 }
             });
             break;
@@ -1591,7 +1731,9 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else {
-                    console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, check, get`);
+                    console.warn(
+                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, check, get`
+                    );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
@@ -1611,7 +1753,9 @@ async function processCommand(command, args, params, callback) {
                 user = user.substring('system.user.'.length);
             }
             if (!command) {
-                console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
+                console.warn(
+                    `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (!group) {
@@ -1680,7 +1824,9 @@ async function processCommand(command, args, params, callback) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
-                            console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`);
+                            console.log(
+                                `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`
+                            );
                             if (list) {
                                 for (let i = 0; i < list.length; i++) {
                                     console.log(list[i].substring('system.user.'.length));
@@ -1720,7 +1866,9 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else {
-                    console.warn(`Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`);
+                    console.warn(
+                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`
+                    );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
@@ -1850,7 +1998,11 @@ async function processCommand(command, args, params, callback) {
                     if (!err && obj) {
                         let changed = false;
                         for (let a = 0; a < process.argv.length; a++) {
-                            if (process.argv[a].startsWith('--') && process.argv[a + 1] && !process.argv[a + 1].startsWith('--')) {
+                            if (
+                                process.argv[a].startsWith('--') &&
+                                process.argv[a + 1] &&
+                                !process.argv[a + 1].startsWith('--')
+                            ) {
                                 const attr = process.argv[a].substring(2);
                                 /** @type {number | string | boolean} */
                                 let val = process.argv[a + 1];
@@ -1932,13 +2084,28 @@ async function processCommand(command, args, params, callback) {
         case 'file':
         case 'f': {
             const cmd = args[0];
-            if (cmd !== 'read' && cmd !== 'r' && cmd !== 'w' && cmd !== 'write' && cmd !== 'sync' && cmd !== 'rm' && cmd !== 'unlink' && cmd !== 'del') {
-                console.log('Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file');
+            if (
+                cmd !== 'read' &&
+                cmd !== 'r' &&
+                cmd !== 'w' &&
+                cmd !== 'write' &&
+                cmd !== 'sync' &&
+                cmd !== 'rm' &&
+                cmd !== 'unlink' &&
+                cmd !== 'del'
+            ) {
+                console.log(
+                    'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file'
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (cmd !== 'sync' && !args[1]) {
-                console.log('Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk');
-                console.log('or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk');
+                console.log(
+                    'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                );
+                console.log(
+                    'or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                );
                 console.log('or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
@@ -1950,15 +2117,18 @@ async function processCommand(command, args, params, callback) {
 
                     const path = (args[2] || process.cwd()).replace(/\\/g, '/').split('/');
                     const file = path[path.length - 1];
-                    if (!file.match(/\.[a-zA-Z0-9]+$/)) { // If destination location seems to be a directory, add filename
+                    if (!file.match(/\.[a-zA-Z0-9]+$/)) {
+                        // If destination location seems to be a directory, add filename
                         if (file !== '') {
                             path.push(parts[parts.length - 1]);
-                        } else { // trailing slash
+                        } else {
+                            // trailing slash
                             path[path.length - 1] = parts[parts.length - 1];
                         }
                     }
                     let adapt = parts.shift();
-                    if (!adapt) { // leading slash
+                    if (!adapt) {
+                        // leading slash
                         adapt = parts.shift();
                     }
                     if (!adapt) {
@@ -1995,25 +2165,33 @@ async function processCommand(command, args, params, callback) {
 
                     const fileSrc = parts[parts.length - 1];
                     let fileDest = path[path.length - 1];
-                    if (!fileDest || !fileDest.match(/\.[a-zA-Z0-9]+$/)) { // last portion of destination has no extension, consider being a directory
+                    if (!fileDest || !fileDest.match(/\.[a-zA-Z0-9]+$/)) {
+                        // last portion of destination has no extension, consider being a directory
                         fileDest = '';
                     }
                     if (!fileSrc || !fs.existsSync(toRead)) {
-                        console.log(`Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`);
+                        console.log(
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`
+                        );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
                     const srcStat = fs.statSync(toRead);
                     if (!srcStat.isFile()) {
-                        console.log(`Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`);
+                        console.log(
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`
+                        );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
-                    if (!fileDest) { // destination filename is not given, use same name as source file
+                    if (!fileDest) {
+                        // destination filename is not given, use same name as source file
                         fileDest = fileSrc;
                     }
-                    if (fileDest !== path[path.length - 1]) { // if last part of path is different then filename, add filename
+                    if (fileDest !== path[path.length - 1]) {
+                        // if last part of path is different then filename, add filename
                         if (path[path.length - 1] !== '') {
                             path.push(fileDest);
-                        } else { // trailing slash
+                        } else {
+                            // trailing slash
                             path[path.length - 1] = fileDest;
                         }
                     }
@@ -2034,7 +2212,8 @@ async function processCommand(command, args, params, callback) {
                     const parts = toDelete.replace(/\\/g, '/').split('/');
 
                     let adapt = parts.shift();
-                    if (!adapt) { // leading slash
+                    if (!adapt) {
+                        // leading slash
                         adapt = parts.shift();
                     }
 
@@ -2052,13 +2231,17 @@ async function processCommand(command, args, params, callback) {
                         !err && console.log('File "' + toDelete + '" was deleted');
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
-                } else if (cmd === 'sync') { // Sync
+                } else if (cmd === 'sync') {
+                    // Sync
                     if (objectType !== 'file') {
                         console.log('File Sync is only available when database type "file" is used.');
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
-                    if (!objects.syncFileDirectory || !objects.dirExists) { // functionality only exists in server class
-                        console.log('Please stop ioBroker before syncing files and only use this command on the ioBroker master host!');
+                    if (!objects.syncFileDirectory || !objects.dirExists) {
+                        // functionality only exists in server class
+                        console.log(
+                            'Please stop ioBroker before syncing files and only use this command on the ioBroker master host!'
+                        );
                         return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
 
@@ -2092,9 +2275,15 @@ async function processCommand(command, args, params, callback) {
                         return void callback(EXIT_CODES.CANNOT_SYNC_FILES);
                     }
                 } else {
-                    console.log('Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk');
-                    console.log('or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk');
-                    console.log('or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB');
+                    console.log(
+                        'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                    );
+                    console.log(
+                        'or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                    );
+                    console.log(
+                        'or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB'
+                    );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
@@ -2146,25 +2335,29 @@ async function processCommand(command, args, params, callback) {
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
                     console.log(tools.appName + ' is running');
-                    objects.getObjectList({
-                        startkey: 'system.host.',
-                        endkey: 'system.host.' + '\u9999'
-                    }, null, (err, res) => {
-                        if (!err && res.rows.length) {
-                            for (let i = 0; i < res.rows.length; i++) {
-                                const parts = res.rows[i].id.split('.');
-                                // ignore system.host.name.alive and so on
-                                if (parts.length === 3) {
-                                    states.pushMessage(res.rows[i].id, {
-                                        command: 'checkLogging',
-                                        message: null,
-                                        from: 'console'
-                                    });
+                    objects.getObjectList(
+                        {
+                            startkey: 'system.host.',
+                            endkey: 'system.host.' + '\u9999'
+                        },
+                        null,
+                        (err, res) => {
+                            if (!err && res.rows.length) {
+                                for (let i = 0; i < res.rows.length; i++) {
+                                    const parts = res.rows[i].id.split('.');
+                                    // ignore system.host.name.alive and so on
+                                    if (parts.length === 3) {
+                                        states.pushMessage(res.rows[i].id, {
+                                            command: 'checkLogging',
+                                            message: null,
+                                            from: 'console'
+                                        });
+                                    }
                                 }
                             }
+                            setTimeout(callback, 200);
                         }
-                        setTimeout(callback, 200);
-                    });
+                    );
                 }
             });
             break;
@@ -2175,7 +2368,14 @@ async function processCommand(command, args, params, callback) {
             let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
             const repoName = args[1]; // Repo url or name
             let repoUrl = args[2]; // Repo url or name
-            if (repoUrlOrCommand !== 'add' && repoUrlOrCommand !== 'del' && repoUrlOrCommand !== 'set' && repoUrlOrCommand !== 'show' && repoUrlOrCommand !== 'addset' && repoUrlOrCommand !== 'unset') {
+            if (
+                repoUrlOrCommand !== 'add' &&
+                repoUrlOrCommand !== 'del' &&
+                repoUrlOrCommand !== 'set' &&
+                repoUrlOrCommand !== 'show' &&
+                repoUrlOrCommand !== 'addset' &&
+                repoUrlOrCommand !== 'unset'
+            ) {
                 repoUrl = repoUrlOrCommand;
                 repoUrlOrCommand = 'show';
             }
@@ -2195,14 +2395,22 @@ async function processCommand(command, args, params, callback) {
                         console.error(`Cannot show repository status: ${err.message}`);
                         return void callback(EXIT_CODES.INVALID_REPO);
                     }
-                } else if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'del' || repoUrlOrCommand === 'set' || repoUrlOrCommand === 'addset' || repoUrlOrCommand === 'unset') {
+                } else if (
+                    repoUrlOrCommand === 'add' ||
+                    repoUrlOrCommand === 'del' ||
+                    repoUrlOrCommand === 'set' ||
+                    repoUrlOrCommand === 'addset' ||
+                    repoUrlOrCommand === 'unset'
+                ) {
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
                         return void callback();
                     } else {
                         if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
                             if (!repoUrl) {
-                                console.warn(`Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`);
+                                console.warn(
+                                    `Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`
+                                );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
                                 try {
@@ -2266,7 +2474,18 @@ async function processCommand(command, args, params, callback) {
         case 'multihost':
         case 'mh': {
             const cmd = args[0];
-            if (cmd !== 'c' && cmd !== 'connect' && cmd !== 's' && cmd !== 'status' && cmd !== 'b' && cmd !== 'browse' && cmd !== 'e' && cmd !== 'enable' && cmd !== 'd' && cmd !== 'disable') {
+            if (
+                cmd !== 'c' &&
+                cmd !== 'connect' &&
+                cmd !== 's' &&
+                cmd !== 'status' &&
+                cmd !== 'b' &&
+                cmd !== 'browse' &&
+                cmd !== 'e' &&
+                cmd !== 'enable' &&
+                cmd !== 'd' &&
+                cmd !== 'disable'
+            ) {
                 console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
@@ -2296,11 +2515,15 @@ async function processCommand(command, args, params, callback) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(`system.host.${tools.getHostName()}`, {
-                                    command: 'updateMultihost',
-                                    message: null,
-                                    from: 'setup'
-                                }, callback);
+                                states.pushMessage(
+                                    `system.host.${tools.getHostName()}`,
+                                    {
+                                        command: 'updateMultihost',
+                                        message: null,
+                                        from: 'setup'
+                                    },
+                                    callback
+                                );
                             }
                         });
                     } else if (cmd === 'd' || cmd === 'disable') {
@@ -2309,11 +2532,15 @@ async function processCommand(command, args, params, callback) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(`system.host.${tools.getHostName()}`, {
-                                    command: 'updateMultihost',
-                                    message: null,
-                                    from: 'setup'
-                                }, callback);
+                                states.pushMessage(
+                                    `system.host.${tools.getHostName()}`,
+                                    {
+                                        command: 'updateMultihost',
+                                        message: null,
+                                        from: 'setup'
+                                    },
+                                    callback
+                                );
                             }
                         });
                     } else if (cmd === 'c' || cmd === 'connect') {
@@ -2333,11 +2560,15 @@ async function processCommand(command, args, params, callback) {
             const password = args[0];
             const file = args[1];
             if (!password) {
-                console.warn(`Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`);
+                console.warn(
+                    `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (!file) {
-                console.warn(`Please specify the path to the vendor file to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`);
+                console.warn(
+                    `Please specify the path to the vendor file to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async () => {
@@ -2378,7 +2609,9 @@ async function processCommand(command, args, params, callback) {
         case 'license': {
             const file = args[0];
             if (!file) {
-                console.warn(`Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`);
+                console.warn(
+                    `Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async () => {
@@ -2624,7 +2857,11 @@ async function getRepository(repoName, params) {
     }
 
     if (!anyFound) {
-        console.error(`ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(systemRepos.native.repositories).join(' | ')}>`);
+        console.error(
+            `ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(
+                systemRepos.native.repositories
+            ).join(' | ')}>`
+        );
         throw new Error(EXIT_CODES.INVALID_REPO);
     } else {
         return allSources;
@@ -2671,7 +2908,8 @@ async function resetDbConnect(_callback) {
  * @returns {Promise<boolean>}
  */
 async function checkSystemOffline(onlyCheck) {
-    if (!objects || !states) { // should never happen
+    if (!objects || !states) {
+        // should never happen
         return true;
     }
     if (onlyCheck) {
@@ -2679,17 +2917,19 @@ async function checkSystemOffline(onlyCheck) {
     }
 
     const offlineStatus = await new Promise(resolve => {
-        setTimeout(async () => { // Slight delay to allow "setup first" from Pre 2.0 to 2.0
+        setTimeout(async () => {
+            // Slight delay to allow "setup first" from Pre 2.0 to 2.0
             try {
                 const hosts = await enumHosts(objects);
                 const hostToCheck = hosts.map(host => `system.host.${host.common.hostname}.alive`);
 
                 const res = await states.getStatesAsync(hostToCheck);
-                Array.isArray(res) && res.forEach(aliveState => {
-                    if (aliveState && aliveState.val) {
-                        resolve(false);
-                    }
-                });
+                Array.isArray(res) &&
+                    res.forEach(aliveState => {
+                        if (aliveState && aliveState.val) {
+                            resolve(false);
+                        }
+                    });
                 resolve(true);
             } catch {
                 resolve(true);
@@ -2715,13 +2955,11 @@ function initializePlugins(config) {
         namespace: `system.host.${hostname}`,
         logNamespace: `host.${hostname}`,
         scope: 'controller',
-        log: { // cli should be clean, only log warn/error
-            silly: _msg => {
-            },
-            debug: _msg => {
-            },
-            info: _msg => {
-            },
+        log: {
+            // cli should be clean, only log warn/error
+            silly: _msg => {},
+            debug: _msg => {},
+            info: _msg => {},
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
@@ -2732,7 +2970,7 @@ function initializePlugins(config) {
 
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
-    pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+    pluginHandler.addPlugins(config.plugins, __dirname); // ... plugins from iobroker.json
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return new Promise(resolve => {
@@ -2783,7 +3021,8 @@ function dbConnect(onlyCheck, params, callback) {
         }
 
         if (!isObjectConnected) {
-            if (objects) { // Destroy Client we tried to connect with
+            if (objects) {
+                // Destroy Client we tried to connect with
                 await objects.destroy();
                 objects = null;
             }
@@ -2793,12 +3032,9 @@ function dbConnect(onlyCheck, params, callback) {
                 objects = new Objects({
                     connection: config.objects,
                     logger: {
-                        silly: _msg => {
-                        },
-                        debug: _msg => {
-                        },
-                        info: _msg => {
-                        },
+                        silly: _msg => {},
+                        debug: _msg => {},
+                        info: _msg => {},
                         warn: msg => console.log(msg),
                         error: msg => console.log(msg)
                     },
@@ -2815,7 +3051,9 @@ function dbConnect(onlyCheck, params, callback) {
                     }
                 });
             } else {
-                console.log(`No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`);
+                console.log(
+                    `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
+                );
                 if (onlyCheck) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
@@ -2826,7 +3064,8 @@ function dbConnect(onlyCheck, params, callback) {
         }
 
         if (!isStatesConnected) {
-            if (states) { // Destroy Client we tried to connect with
+            if (states) {
+                // Destroy Client we tried to connect with
                 await states.destroy();
                 states = null;
             }
@@ -2836,12 +3075,9 @@ function dbConnect(onlyCheck, params, callback) {
                 states = new States({
                     connection: config.states,
                     logger: {
-                        silly: _msg => {
-                        },
-                        debug: _msg => {
-                        },
-                        info: _msg => {
-                        },
+                        silly: _msg => {},
+                        debug: _msg => {},
+                        info: _msg => {},
                         warn: msg => console.log(msg),
                         error: msg => console.log(msg)
                     },
@@ -2861,15 +3097,19 @@ function dbConnect(onlyCheck, params, callback) {
                 });
                 states.onChange = null; // here the custom onChange handler could be installed
             } else {
-                if (states) { // Destroy Client we tried to connect with
+                if (states) {
+                    // Destroy Client we tried to connect with
                     await states.destroy();
                     states = null;
                 }
-                if (objects) { // Destroy Client we tried to connect with
+                if (objects) {
+                    // Destroy Client we tried to connect with
                     await objects.destroy();
                     objects = null;
                 }
-                console.log(`No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`);
+                console.log(
+                    `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
+                );
                 if (onlyCheck) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
@@ -2879,7 +3119,8 @@ function dbConnect(onlyCheck, params, callback) {
             }
         }
 
-        setTimeout(() => { // Failsafe
+        setTimeout(() => {
+            // Failsafe
             if (isObjectConnected && isStatesConnected) {
                 return;
             }
@@ -2891,20 +3132,16 @@ function dbConnect(onlyCheck, params, callback) {
             } else {
                 processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
-        }, params.timeout || (10000 + config.objects.connectTimeout) || 12000);
-
-    }, params.timeout || (config.objects.connectTimeout * 2) || 4000);
+        }, params.timeout || 10000 + config.objects.connectTimeout || 12000);
+    }, params.timeout || config.objects.connectTimeout * 2 || 4000);
 
     // try to connect as client
     objects = new Objects({
         connection: config.objects,
         logger: {
-            silly: _msg => {
-            },
-            debug: _msg => {
-            },
-            info: _msg => {
-            },
+            silly: _msg => {},
+            debug: _msg => {},
+            info: _msg => {},
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
@@ -2929,12 +3166,9 @@ function dbConnect(onlyCheck, params, callback) {
     states = new States({
         connection: config.states,
         logger: {
-            silly: _msg => {
-            },
-            debug: _msg => {
-            },
-            info: _msg => {
-            },
+            silly: _msg => {},
+            debug: _msg => {},
+            info: _msg => {},
             warn: msg => console.log(msg),
             error: msg => console.log(msg)
         },
@@ -2965,10 +3199,12 @@ function dbConnect(onlyCheck, params, callback) {
 function dbConnectAsync(onlyCheck, params) {
     return new Promise((resolve, reject) =>
         dbConnect(onlyCheck, params, (err, objects, states, isOffline, objectsDBType, config) =>
-            err ? reject(err) : resolve({ objects, states, isOffline, objectsDBType, config })));
+            err ? reject(err) : resolve({ objects, states, isOffline, objectsDBType, config })
+        )
+    );
 }
 
-module.exports.execute = function() {
+module.exports.execute = function () {
     // direct call
     const _yargs = initYargs();
     const command = _yargs.argv._[0];

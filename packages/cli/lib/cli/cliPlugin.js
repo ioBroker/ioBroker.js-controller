@@ -49,10 +49,7 @@ module.exports = class CLIPlugin extends CLICommand {
         /** @type {string} */
         const pluginName = args[1];
         if (!pluginName) {
-            CLI.error.requiredArgumentMissing(
-                'pluginName',
-                'plugin enable <pluginname>'
-            );
+            CLI.error.requiredArgumentMissing('pluginName', 'plugin enable <pluginname>');
             return void callback(34);
         }
 
@@ -75,99 +72,82 @@ module.exports = class CLIPlugin extends CLICommand {
             }
         }
 
-        dbConnect(
-            async (objects, states, _isOffline, _dbType, iobrokerJson) => {
-                try {
-                    // Check if the host or instance exists
-                    /** @type {string} */ let objectNamespace;
-                    if (hostname) {
-                        objectNamespace = `system.host.${hostname}`;
-                        const hostObject = await objects.getObject(
-                            objectNamespace
-                        );
-                        if (!hostObject) {
-                            CLI.error.hostDoesNotExist(hostname);
-                            return void callback(30);
-                        }
-                    } else {
-                        objectNamespace = `system.adapter.${instance}`;
-                        const instanceObject = await objects.getObject(
-                            objectNamespace
-                        );
-                        if (!instanceObject) {
-                            CLI.error.invalidInstance(instance);
-                            return void callback(30);
-                        }
-                    }
-
-                    // Check if the plugin is defined
-                    if (!pluginExists(pluginName, iobrokerJson, instance)) {
-                        CLI.error.pluginNotDefined(
-                            pluginName,
-                            hostname,
-                            instance
-                        );
+        dbConnect(async (objects, states, _isOffline, _dbType, iobrokerJson) => {
+            try {
+                // Check if the host or instance exists
+                /** @type {string} */ let objectNamespace;
+                if (hostname) {
+                    objectNamespace = `system.host.${hostname}`;
+                    const hostObject = await objects.getObject(objectNamespace);
+                    if (!hostObject) {
+                        CLI.error.hostDoesNotExist(hostname);
                         return void callback(30);
                     }
-
-                    // Create the plugin state if it does not exist
-                    const pluginsFolderId = `${objectNamespace}.plugins`;
-                    if (!(await objects.getObjectAsync(pluginsFolderId))) {
-                        await objects.setObject(pluginsFolderId, {
-                            type: 'folder',
-                            common: {
-                                name: `${
-                                    hostname ? 'host' : 'instance'
-                                }: plugin states`
-                            },
-                            native: {}
-                        });
+                } else {
+                    objectNamespace = `system.adapter.${instance}`;
+                    const instanceObject = await objects.getObject(objectNamespace);
+                    if (!instanceObject) {
+                        CLI.error.invalidInstance(instance);
+                        return void callback(30);
                     }
-                    const pluginFolderId = `${objectNamespace}.plugins.${pluginName}`;
-                    if (!(await objects.getObjectAsync(pluginFolderId))) {
-                        await objects.setObject(pluginFolderId, {
-                            type: 'folder',
-                            common: {
-                                name: `${pluginName}: plugin states`
-                            },
-                            native: {}
-                        });
-                    }
-                    const pluginEnabledId = `${pluginFolderId}.enabled`;
-                    if (!(await objects.getObjectAsync(pluginEnabledId))) {
-                        await objects.setObject(pluginEnabledId, {
-                            type: 'state',
-                            common: {
-                                name: 'Plugin enabled',
-                                type: 'boolean',
-                                read: true,
-                                write: true,
-                                role: 'value'
-                            },
-                            native: {}
-                        });
-                    }
-
-                    // Update the state
-                    await states.setStateAsync(pluginEnabledId, {
-                        val: enabled,
-                        from: getObjectFrom()
-                    });
-
-                    // Notify the user that we are done
-                    CLI.success.pluginEnabledOrDisabled(
-                        pluginName,
-                        hostname,
-                        instance,
-                        enabled
-                    );
-                    return void callback();
-                } catch (err) {
-                    CLI.error.unknown(err.message);
-                    return void callback(1);
                 }
+
+                // Check if the plugin is defined
+                if (!pluginExists(pluginName, iobrokerJson, instance)) {
+                    CLI.error.pluginNotDefined(pluginName, hostname, instance);
+                    return void callback(30);
+                }
+
+                // Create the plugin state if it does not exist
+                const pluginsFolderId = `${objectNamespace}.plugins`;
+                if (!(await objects.getObjectAsync(pluginsFolderId))) {
+                    await objects.setObject(pluginsFolderId, {
+                        type: 'folder',
+                        common: {
+                            name: `${hostname ? 'host' : 'instance'}: plugin states`
+                        },
+                        native: {}
+                    });
+                }
+                const pluginFolderId = `${objectNamespace}.plugins.${pluginName}`;
+                if (!(await objects.getObjectAsync(pluginFolderId))) {
+                    await objects.setObject(pluginFolderId, {
+                        type: 'folder',
+                        common: {
+                            name: `${pluginName}: plugin states`
+                        },
+                        native: {}
+                    });
+                }
+                const pluginEnabledId = `${pluginFolderId}.enabled`;
+                if (!(await objects.getObjectAsync(pluginEnabledId))) {
+                    await objects.setObject(pluginEnabledId, {
+                        type: 'state',
+                        common: {
+                            name: 'Plugin enabled',
+                            type: 'boolean',
+                            read: true,
+                            write: true,
+                            role: 'value'
+                        },
+                        native: {}
+                    });
+                }
+
+                // Update the state
+                await states.setStateAsync(pluginEnabledId, {
+                    val: enabled,
+                    from: getObjectFrom()
+                });
+
+                // Notify the user that we are done
+                CLI.success.pluginEnabledOrDisabled(pluginName, hostname, instance, enabled);
+                return void callback();
+            } catch (err) {
+                CLI.error.unknown(err.message);
+                return void callback(1);
             }
-        );
+        });
     }
 
     /**
@@ -179,10 +159,7 @@ module.exports = class CLIPlugin extends CLICommand {
         /** @type {string} */
         const pluginName = args[1];
         if (!pluginName) {
-            CLI.error.requiredArgumentMissing(
-                'pluginName',
-                'plugin status <pluginname>'
-            );
+            CLI.error.requiredArgumentMissing('pluginName', 'plugin status <pluginname>');
             return void callback(34);
         }
 
@@ -205,75 +182,60 @@ module.exports = class CLIPlugin extends CLICommand {
             }
         }
 
-        dbConnect(
-            async (objects, states, _isOffline, _dbType, iobrokerJson) => {
-                try {
-                    // Check if the host or instance exists
-                    /** @type {string} */ let objectNamespace;
-                    if (hostname) {
-                        objectNamespace = `system.host.${hostname}`;
-                        const hostObject = await objects.getObject(
-                            objectNamespace
-                        );
-                        if (!hostObject) {
-                            CLI.error.hostDoesNotExist(hostname);
-                            return void callback(30);
-                        }
-                    } else {
-                        objectNamespace = `system.adapter.${instance}`;
-                        const instanceObject = await objects.getObject(
-                            objectNamespace
-                        );
-                        if (!instanceObject) {
-                            CLI.error.invalidInstance(instance);
-                            return void callback(30);
-                        }
-                    }
-
-                    // Check if the plugin is defined
-                    if (!pluginExists(pluginName, iobrokerJson, instance)) {
-                        CLI.error.pluginNotDefined(
-                            pluginName,
-                            hostname,
-                            instance
-                        );
+        dbConnect(async (objects, states, _isOffline, _dbType, iobrokerJson) => {
+            try {
+                // Check if the host or instance exists
+                /** @type {string} */ let objectNamespace;
+                if (hostname) {
+                    objectNamespace = `system.host.${hostname}`;
+                    const hostObject = await objects.getObject(objectNamespace);
+                    if (!hostObject) {
+                        CLI.error.hostDoesNotExist(hostname);
                         return void callback(30);
                     }
-
-                    const pluginEnabledId = `${objectNamespace}.plugins.${pluginName}.enabled`;
-
-                    // Read the state
-                    try {
-                        const { val } = await states.getStateAsync(pluginEnabledId);
-
-                        if (typeof val === 'boolean') {
-                            CLI.success.pluginStatus(pluginName, hostname, instance, val);
-                            return void callback();
-                        }
-                    } catch {
-                        /* ignore */
+                } else {
+                    objectNamespace = `system.adapter.${instance}`;
+                    const instanceObject = await objects.getObject(objectNamespace);
+                    if (!instanceObject) {
+                        CLI.error.invalidInstance(instance);
+                        return void callback(30);
                     }
-
-                    // If the state could not be read or had no value, fall back to the configuration
-                    const enabled = pluginEnabled(
-                        pluginName,
-                        instance,
-                        await objects.getObjectAsync('system.config'),
-                        iobrokerJson
-                    );
-                    CLI.success.pluginStatus(
-                        pluginName,
-                        hostname,
-                        instance,
-                        enabled
-                    );
-                    return void callback();
-                } catch (err) {
-                    CLI.error.unknown(err.message);
-                    return void callback(1);
                 }
+
+                // Check if the plugin is defined
+                if (!pluginExists(pluginName, iobrokerJson, instance)) {
+                    CLI.error.pluginNotDefined(pluginName, hostname, instance);
+                    return void callback(30);
+                }
+
+                const pluginEnabledId = `${objectNamespace}.plugins.${pluginName}.enabled`;
+
+                // Read the state
+                try {
+                    const { val } = await states.getStateAsync(pluginEnabledId);
+
+                    if (typeof val === 'boolean') {
+                        CLI.success.pluginStatus(pluginName, hostname, instance, val);
+                        return void callback();
+                    }
+                } catch {
+                    /* ignore */
+                }
+
+                // If the state could not be read or had no value, fall back to the configuration
+                const enabled = pluginEnabled(
+                    pluginName,
+                    instance,
+                    await objects.getObjectAsync('system.config'),
+                    iobrokerJson
+                );
+                CLI.success.pluginStatus(pluginName, hostname, instance, enabled);
+                return void callback();
+            } catch (err) {
+                CLI.error.unknown(err.message);
+                return void callback(1);
             }
-        );
+        });
     }
 };
 
@@ -287,16 +249,9 @@ function pluginExists(pluginName, iobrokerJson, adapter) {
     // 1. check if the plugin is defined in io-package.json
     // TODO: replace this with fs-extra methods #799
     try {
-        const ioPackPath = adapter
-            ? path.join(tools.getAdapterDir(adapter), 'io-package.json')
-            : controllerIoPackPath;
+        const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter), 'io-package.json') : controllerIoPackPath;
         const ioPack = JSON.parse(fs.readFileSync(ioPackPath, 'utf8'));
-        if (
-            ioPack &&
-            ioPack.common &&
-            ioPack.common.plugins &&
-            pluginName in ioPack.common.plugins
-        ) {
+        if (ioPack && ioPack.common && ioPack.common.plugins && pluginName in ioPack.common.plugins) {
             return true;
         }
     } catch {
@@ -304,11 +259,7 @@ function pluginExists(pluginName, iobrokerJson, adapter) {
     }
 
     // 2. check if the plugin is defined in iobroker.json
-    return (
-        iobrokerJson &&
-        iobrokerJson.plugins &&
-        pluginName in iobrokerJson.plugins
-    );
+    return iobrokerJson && iobrokerJson.plugins && pluginName in iobrokerJson.plugins;
 }
 
 /**
@@ -320,20 +271,14 @@ function pluginExists(pluginName, iobrokerJson, adapter) {
  */
 function pluginEnabled(pluginName, adapter, systemConfig, iobrokerJson) {
     // 1. check if diagnostics are disabled in ioBroker
-    if (
-        systemConfig &&
-        systemConfig.common &&
-        systemConfig.common.diag === 'none'
-    ) {
+    if (systemConfig && systemConfig.common && systemConfig.common.diag === 'none') {
         return false;
     }
 
     // 2. check if the plugin is disabled in io-package.json
     // TODO: replace this with fs-extra methods #799
     try {
-        const ioPackPath = adapter
-            ? path.join(tools.getAdapterDir(adapter), 'io-package.json')
-            : controllerIoPackPath;
+        const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter), 'io-package.json') : controllerIoPackPath;
         const ioPack = JSON.parse(fs.readFileSync(ioPackPath, 'utf8'));
         if (
             ioPack &&
