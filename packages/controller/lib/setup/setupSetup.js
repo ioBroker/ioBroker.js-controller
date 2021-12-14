@@ -230,6 +230,22 @@ function Setup(options) {
     }
 
     /**
+     * Ensure that protocol version exists
+     *
+     * @param {object} objects - objects db
+     * @param {object} states - states db
+     */
+    function ensureDefaultProtocolVersion(objects, states) {
+        for (const instance of [objects, states]) {
+            const protoVersion = instance.getProtocolVersion();
+            if (!protoVersion) {
+                // if non existing yet, we set newest version
+                instance.setProtocolVersion(Math.max(...instance.supportedProtocolVersions));
+            }
+        }
+    }
+
+    /**
      * Creates objects and does object related cleanup
      *
      * @param {() => void} callback
@@ -251,6 +267,8 @@ function Setup(options) {
             } catch (e) {
                 console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
             }
+
+            await ensureDefaultProtocolVersion(_objects, _states);
 
             // clean up invalid user group assignments (non-existing user in a group)
             try {
