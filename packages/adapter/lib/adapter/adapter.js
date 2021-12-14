@@ -26,6 +26,7 @@ const EventEmitter = require('events').EventEmitter;
 const {tools} = require('@iobroker/js-controller-common');
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
+const semver = require('semver');
 const {EXIT_CODES} = require('@iobroker/js-controller-common');
 const {PluginHandler} = require('@iobroker/plugin-base');
 // local version is always same as controller version, since lerna exact: true is used
@@ -8737,7 +8738,7 @@ function Adapter(options) {
     /**
      * This method returns the list of license that can be used by this adapter
      * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
-     * @returns {object[]} list of suitable licenses
+     * @returns {Promise<object[]>} list of suitable licenses
     */
     this.getSuitableLicenses = async all => {
         const licenses = [];
@@ -8746,24 +8747,30 @@ function Adapter(options) {
             if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
                 const now = Date.now();
                 const cert = fs.readFileSync(__dirname + '/../../cert/cloudCert.crt');
-                const version = this.pack.version.split('.')[0];
+                const version = semver.major(this.pack.version);
 
                 obj.native.licenses.forEach(license => {
                     try {
                         const decoded = jwt.verify(license.json, cert);
                         if (decoded.name && (!decoded.valid_till || license.valid_till === '0000-00-00 00:00:00' || new Date(license.valid_till).getTime() > now)) {
                             if (decoded.name.startsWith('iobroker.' + this.name) && (all || !license.usedBy || license.usedBy === this.namespace)) {
-                                if (decoded.version === '<2' || decoded.version === '<1' || decoded.version === '<=1') {
+                                // If license is for adapter with version 0 or 1
+                                if (decoded.version === '&lt;2' || decoded.version === '<2' || decoded.version === '<1' || decoded.version === '<=1') {
+                                    // check the current adapter major version
                                     if (version !== '0' && version !== '1') {
                                         return;
                                     }
-                                } else if (decoded.version && decoded.version !== version) {
+                                } else
+                                // decoded.version could be only '<2' or direct version, like "2", "3" and so on
+                                if (decoded.version && decoded.version !== version) {
                                     return;
                                 }
                                 // remove free license if commercial license found
                                 if (decoded.invoice !== 'free') {
                                     const pos = licenses.findIndex(item => item.invoice === 'free');
-                                    pos !== -1 && licenses.splice(pos, 1);
+                                    if (pos !== -1) {
+                                        licenses.splice(pos, 1);
+                                    }
                                 }
                                 license.decoded = decoded;
                                 licenses.push(license);

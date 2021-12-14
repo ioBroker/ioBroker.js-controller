@@ -3226,32 +3226,31 @@ function showDeprecatedMessage(func, logger) {
  * Requests the licenses from ioBroker.net
  * @param {string} login Login for ioBroker.net
  * @param {string} password Decoded password for ioBroker.net
- * @returns {object[]} array of all licenses stored on iobroker.net
+ * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
  */
-function _readLicenses(login, password) {
+async function _readLicenses(login, password) {
     axios = axios || require('axios');
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(login + ':' + password).toString('base64')}` },
         timeout: 4000
     };
 
-    return axios.get(`https://iobroker.net:3001/api/v1/licenses`, config)
-        .then(response => {
-            if (response.data && response.data.length) {
-                const now = Date.now();
-                response.data = response.data.filter(license => !license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now);
-            }
-            return response.data;
-        })
-        .catch(err => {
-            if (err.response) {
-                throw new Error((err.response.data && err.response.data.error) || err.response.data || err.response.status);
-            } else if (err.request) {
-                throw new Error('no response');
-            } else {
-                throw err;
-            }
-        });
+    try {
+        const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config)
+        if (response.data && response.data.length) {
+            const now = Date.now();
+            response.data = response.data.filter(license => !license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now);
+        }
+        return response.data;
+    } catch (err) {
+        if (err.response) {
+            throw new Error((err.response.data && err.response.data.error) || err.response.data || err.response.status);
+        } else if (err.request) {
+            throw new Error('no response');
+        } else {
+            throw err;
+        }
+    }
 }
 
 /**
@@ -3260,84 +3259,71 @@ function _readLicenses(login, password) {
  * @param {object} objects Object store instance
  * @param {string} login Login for ioBroker.net
  * @param {string} password Decoded password for ioBroker.net
- * @returns {object[]} array of all licenses stored on iobroker.net
+ * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
  */
-function updateLicenses(objects, login, password) {
+async function updateLicenses(objects, login, password) {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
         return _readLicenses(login, password);
     } else {
         // get actual object
-        return objects.getObject('system.licenses')
-            .then(systemLicenses => {
-                // If password and login exist
-                if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
-                    // get the secret to decode the password
-                    return objects.getObject('system.config')
-                        .then(systemConfig => {
-                            // decode the password
-                            let password;
-                            try {
-                                password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
-                            } catch {
-                                throw new Error('Cannot decode password');
-                            }
+        const systemLicenses = await objects.getObjectAsync('system.licenses');
+        // If password and login exist
+        if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+            try {
+                // get the secret to decode the password
+                const systemConfig = objects.getObjectAsync('system.config');
 
-                            // read licenses from iobroker.net
-                            return _readLicenses(systemLicenses.native.login, password);
-                        })
-                        .then(licenses => {
-                            // save licenses to system.licenses and remember the time
-                            // merge the information together
-                            const oldLicenses = systemLicenses.native.licenses || [];
-                            systemLicenses.native.licenses = licenses;
-                            oldLicenses.forEach(oldLicense => {
-                                if (oldLicense.usedBy) {
-                                    const newLicense = licenses.find(item => item.json === oldLicense.json);
-                                    if (newLicense) {
-                                        newLicense.usedBy = oldLicense.usedBy;
-                                    }
-                                }
-                            });
+                // decode the password
+                let password;
+                try {
+                    password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
+                } catch (err) {
+                    throw new Error('Cannot decode password: ' + err.message);
+                }
 
-                            systemLicenses.native.readTime = new Date().toISOString();
+                // read licenses from iobroker.net
+                const licenses = await _readLicenses(systemLicenses.native.login, password);
+                // save licenses to system.licenses and remember the time
+                // merge the information together
+                const oldLicenses = systemLicenses.native.licenses || [];
+                systemLicenses.native.licenses = licenses;
+                oldLicenses.forEach(oldLicense => {
+                    if (oldLicense.usedBy) {
+                        const newLicense = licenses.find(item => item.json === oldLicense.json);
+                        if (newLicense) {
+                            newLicense.usedBy = oldLicense.usedBy;
+                        }
+                    }
+                });
 
-                            // update read time
-                            return objects.setObject('system.licenses', systemLicenses)
-                                .then(() => licenses);
-                        })
-                        .catch(err => {
-                            // if password is invalid
-                            if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password')) {
-                                // clear existing licenses if exist
-                                if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
-                                    systemLicenses.native.licenses = [];
-                                    systemLicenses.native.readTime = new Date().toISOString();
-                                    return objects.setObject('system.licenses', systemLicenses)
-                                        .then(() => {
-                                            throw err;
-                                        });
-                                } else {
-                                    throw err;
-                                }
-                            } else {
-                                throw err;
-                            }
-                        });
-                } else {
-                    // if password or login are empty => clear existing licenses if exist
+                systemLicenses.native.readTime = new Date().toISOString();
+
+                // update read time
+                await objects.setObjectAsync('system.licenses', systemLicenses)
+                return licenses;
+            } catch (err) {
+                // if password is invalid
+                if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
+                    // clear existing licenses if exist
                     if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
                         systemLicenses.native.licenses = [];
                         systemLicenses.native.readTime = new Date().toISOString();
-                        return objects.setObject('system.licenses', systemLicenses)
-                            .then(() => {
-                                throw new Error('No password or login');
-                            });
-                    } else {
-                        throw new Error('No password or login');
+                        await objects.setObjectAsync('system.licenses', systemLicenses)
                     }
                 }
-            });
+
+                throw err;
+            }
+        } else {
+            // if password or login are empty => clear existing licenses if exist
+            if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
+                systemLicenses.native.licenses = [];
+                systemLicenses.native.readTime = new Date().toISOString();
+                await objects.setObjectAsync('system.licenses', systemLicenses)
+            }
+            throw new Error('No password or login');
+        }
     }
 }
 
