@@ -3169,7 +3169,7 @@ class ObjectsInRedisClient {
                         ]);
                     }
 
-                    if (oldObj.common && oldObj.common.type) {
+                    if (oldObj.common && oldObj.common.custom) {
                         // del the object from "custom" set
                         commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
                     }
