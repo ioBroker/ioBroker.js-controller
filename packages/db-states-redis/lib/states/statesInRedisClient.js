@@ -17,6 +17,7 @@
 const Redis = require('ioredis');
 const tools = require('@iobroker/db-base').tools;
 const { isDeepStrictEqual } = require('util');
+const utils = require('./objectsUtils.js');
 
 /**
  *
@@ -43,10 +44,14 @@ class StateRedisClient {
         this.namespaceMsg = (this.settings.namespaceMsg || 'messagebox') + '.';
         this.namespaceLog = (this.settings.namespaceLog || 'log') + '.';
         this.namespaceSession = (this.settings.namespaceSession || 'session') + '.';
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
 
         this.globalMessageId = Math.round(Math.random() * 100000000);
         this.globalLogId = Math.round(Math.random() * 100000000);
         this.namespace = this.settings.namespace || this.settings.hostname || '';
+
+        this.supportedProtocolVersions = ['4'];
+        this.activeProtocolVersion = 4;
 
         this.stop = false;
         this.client = null;
@@ -57,6 +62,24 @@ class StateRedisClient {
 
         if (this.settings.autoConnect !== false) {
             this.connectDb();
+        }
+    }
+
+    /**
+     * Checks if we are allowed to start and sets the protocol version accordingly
+     *
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _determineProtocolVersion() {
+        const protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
+
+        // check if we can support this version
+        if (this.supportedProtocolVersions.includes(protoVersion)) {
+            this.activeProtocolVersion = parseInt(protoVersion);
+        } else {
+            // find at least one of the lowest hosts, to tell user which one to upgrade
+            throw new Error(`This host does not support protocol version "${protoVersion}"`);
         }
     }
 
@@ -514,6 +537,16 @@ class StateRedisClient {
                         }
                     }
                 });
+            }
+
+            try {
+                await this._determineProtocolVersion();
+            } catch (e) {
+                this.log.error(
+                    `${this.namespace} States DB is not allowed to start in the current Multihost environment`
+                );
+                this.log.error(`${this.namespace} ${e.message}`);
+                return;
             }
 
             if (initCounter < 1) {
@@ -1280,6 +1313,32 @@ class StateRedisClient {
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e, id);
         }
+    }
+
+    /**
+     * Returns the protocol version from DB
+     *
+     * @returns {Promise<string>}
+     */
+    async getProtocolVersion() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(`${this.metaNamespace}states.protocolVersion`);
+    }
+
+    /**
+     * Sets the protocol version to the DB
+     * @param {number} version - protocol version
+     * @returns {Promise<void>}
+     */
+    async setProtocolVersion(version) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        await this.client.set(`${this.metaNamespace}states.protocolVersion`, version.toString());
     }
 }
 

@@ -410,6 +410,10 @@ function initYargs() {
                     }
                 );
         })
+        .command('object setVersion <version>', 'Sets the protocol version of the objects database')
+        .command('object getVersion', 'Get the protocol version of the objects database')
+        .command('state setVersion <version>', 'Sets the protocol version of the states database')
+        .command('state getVersion', 'Get the protocol version of the states database')
         .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter')
         .wrap(null);
 

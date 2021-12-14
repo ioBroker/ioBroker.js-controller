@@ -38,7 +38,10 @@ class ObjectsInRedisClient {
         this.fileNamespaceL = this.fileNamespace.length;
         this.objNamespace = this.redisNamespace + 'o.';
         this.setNamespace = this.redisNamespace + 's.';
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
         this.objNamespaceL = this.objNamespace.length;
+        this.supportedProtocolVersions = ['4'];
+        this.activeProtocolVersion = 4;
 
         this.stop = false;
         this.client = null;
@@ -56,6 +59,24 @@ class ObjectsInRedisClient {
 
         if (this.settings.autoConnect !== false) {
             this.connectDb();
+        }
+    }
+
+    /**
+     * Checks if we are allowed to start and sets the protocol version accordingly
+     *
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _determineProtocolVersion() {
+        const protoVersion = await this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+
+        // check if we can support this version
+        if (this.supportedProtocolVersions.includes(protoVersion)) {
+            this.activeProtocolVersion = parseInt(protoVersion);
+        } else {
+            // find at least one of the lowest hosts, to tell user which one to upgrade
+            throw new Error(`This host does not support protocol version "${protoVersion}"`);
         }
     }
 
@@ -542,6 +563,16 @@ class ObjectsInRedisClient {
                 return;
             }
 
+            try {
+                await this._determineProtocolVersion();
+            } catch (e) {
+                this.log.error(
+                    `${this.namespace} Objects DB is not allowed to start in the current Multihost environment`
+                );
+                this.log.error(`${this.namespace} ${e.message}`);
+                return;
+            }
+
             // for controller v4 we have to check if we can use the new lua scripts and set logic
             // TODO: remove this backward shim if controller v4.0 is old enough
             let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
@@ -552,7 +583,7 @@ class ObjectsInRedisClient {
 
             try {
                 if (keys.length) {
-                    // else  no host known yet - so we are single host
+                    // else no host known yet - so we are single host
                     const objs = await this.client.mget(keys);
                     for (const strObj of objs) {
                         const obj = JSON.parse(strObj);
@@ -4401,6 +4432,38 @@ class ObjectsInRedisClient {
             }
         }
         return noMigrated;
+    }
+
+    /**
+     * Returns the protocol version from DB
+     *
+     * @returns {Promise<string>}
+     */
+    getProtocolVersion() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+    }
+
+    /**
+     * Sets the protocol version to the DB
+     * @param {number|string} version - protocol version
+     * @returns {Promise<void>}
+     */
+    async setProtocolVersion(version) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        version = version.toString();
+        // we can only set a protocol if we actually support it
+        if (this.supportedProtocolVersions.includes(version)) {
+            await this.client.set(`${this.metaNamespace}objects.protocolVersion`, version);
+        } else {
+            throw new Error('Cannot set an unsupported protocol version on the current host');
+        }
     }
 }
 

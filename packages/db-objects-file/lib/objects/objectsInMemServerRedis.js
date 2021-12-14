@@ -67,6 +67,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.knownScripts = {};
 
@@ -128,6 +130,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     idx = this.namespaceFileLen;
                 } else if (idWithNamespace.startsWith(this.namespaceSet)) {
                     idx = this.namespaceSetLen;
+                } else if (idWithNamespace.startsWith(this.metaNamespace)) {
+                    idx = this.metaNamespaceLen;
                 }
 
                 if (idx !== -1) {
@@ -505,6 +509,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
+            } else if (namespace === this.metaNamespace) {
+                // TODO
             } else {
                 handler.sendError(
                     responseId,

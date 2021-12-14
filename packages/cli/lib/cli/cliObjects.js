@@ -36,11 +36,44 @@ module.exports = class CLIObjects extends CLICommand {
             case 'delete':
             case 'del':
                 return this.delete(args);
+            case 'getVersion':
+                return this.getVersion(args);
+            case 'setVersion':
+                return this.setVersion(args);
             default:
                 CLI.error.unknownCommand('object', command);
                 showHelp();
                 return void callback(3);
         }
+    }
+
+    /**
+     * Get the protocol version
+     */
+    getVersion() {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async objects => {
+            const version = await objects.getProtocolVersion();
+            console.log(`Current Objects DB protocol version: ${version}`);
+            return void callback();
+        });
+    }
+
+    /**
+     * Set protocol version
+     */
+    setVersion(args) {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async objects => {
+            try {
+                await objects.setProtocolVersion(args[1]);
+            } catch (e) {
+                console.error(`Cannot update protocol version: ${e.message}`);
+                return void callback(1);
+            }
+            console.log(`Objects DB protocol updated to version ${args[1]}`);
+            return void callback();
+        });
     }
 
     /**
