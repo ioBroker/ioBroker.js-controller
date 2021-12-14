@@ -594,7 +594,7 @@ class BackupRestore {
         for (let index = 0; index < dirs.length; index++) {
             const adapterName = dirs[index].replace(/^iobroker\./i, '');
             await this.upload.uploadAdapterAsync(adapterName, false, true);
-            await this.upload.uploadAdapterAsnyc(adapterName, true, true);
+            await this.upload.uploadAdapterAsync(adapterName, true, true);
             let pkg = null;
             if (!dirs[index]) {
                 console.error('Wrong');
