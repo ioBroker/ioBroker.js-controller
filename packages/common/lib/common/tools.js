@@ -22,7 +22,7 @@ let password;
 let npmVersion;
 let crypto;
 let diskusage;
-const randomID = Math.round(Math.random() * 10000000000000);  // Used for creation of User-Agent
+const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
 let lastCalculationOfIps;
@@ -233,7 +233,7 @@ function findIPs() {
             Object.keys(ifaces).forEach(dev =>
                 ifaces[dev].forEach(
                     details =>
-                    // noinspection JSUnresolvedVariable
+                        // noinspection JSUnresolvedVariable
                         !details.internal && ownIpArr.push(details.address)
                 )
             );
@@ -403,35 +403,34 @@ function updateUuid(newUuid, _objects, callback) {
         _objects.setObject(
             'system.meta.uuid',
             {
-            type: 'meta',
-            common: {
-                name: 'uuid',
-                type: 'uuid'
-            },
-            ts: new Date().getTime(),
-            from: 'system.host.' + getHostName() + '.tools',
-            native: {
-                uuid: _uuid
-            }
+                type: 'meta',
+                common: {
+                    name: 'uuid',
+                    type: 'uuid'
+                },
+                ts: new Date().getTime(),
+                from: 'system.host.' + getHostName() + '.tools',
+                native: {
+                    uuid: _uuid
+                }
             },
             err => {
-            if (err) {
-                console.error('object system.meta.uuid cannot be updated: ' + err);
-                callback();
-            } else {
-                _objects.getObject('system.meta.uuid', (err, obj) => {
-                    if (obj.native.uuid !== _uuid) {
-                        console.error('object system.meta.uuid cannot be updated: write protected');
-                    } else {
-                        console.log('object system.meta.uuid created: ' + _uuid);
-                    }
-
-                    callback(_uuid);
-                });
-            }
+                if (err) {
+                    console.error('object system.meta.uuid cannot be updated: ' + err);
+                    callback();
+                } else {
+                    _objects.getObject('system.meta.uuid', (err, obj) => {
+                        if (obj.native.uuid !== _uuid) {
+                            console.error('object system.meta.uuid cannot be updated: write protected');
+                        } else {
+                            console.log('object system.meta.uuid created: ' + _uuid);
+                        }
+                        callback(_uuid);
+                    });
+                }
             }
         );
-        });
+    });
 }
 
 function createUuid(_objects, callback) {
@@ -448,23 +447,23 @@ function createUuid(_objects, callback) {
                     _objects.setObject(
                         'system.user.admin',
                         {
-                        type: 'user',
-                        common: {
+                            type: 'user',
+                            common: {
                                 name: 'admin',
                                 password: res,
-                            dontDelete: true,
+                                dontDelete: true,
                                 enabled: true
-                        },
-                        ts: new Date().getTime(),
-                        from: 'system.host.' + getHostName() + '.tools',
-                        native: {}
+                            },
+                            ts: new Date().getTime(),
+                            from: 'system.host.' + getHostName() + '.tools',
+                            native: {}
                         },
                         () => {
-                        console.log('object system.user.admin created');
-                        resolve();
+                            console.log('object system.user.admin created');
+                            resolve();
                         }
                     );
-                    });
+                });
             } else {
                 resolve();
             }
@@ -601,32 +600,32 @@ function getJson(urlOrPath, agent, callback) {
         ) {
             request(
                 {
-                url: urlOrPath,
-                timeout: 10000,
-                gzip: true,
-                headers: { 'User-Agent': agent }
+                    url: urlOrPath,
+                    timeout: 10000,
+                    gzip: true,
+                    headers: {'User-Agent': agent}
                 },
                 (error, response, body) => {
-                if (error || !body || response.statusCode !== 200) {
-                    console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
-                    if (callback) {
-                        callback(null, urlOrPath);
+                    if (error || !body || response.statusCode !== 200) {
+                        console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                        if (callback) {
+                            callback(null, urlOrPath);
+                        }
+                        return;
                     }
-                    return;
-                }
-                try {
-                    sources = JSON.parse(body);
-                } catch {
-                    console.error('Json file is invalid on ' + urlOrPath);
-                    if (callback) {
-                        callback(null, urlOrPath);
+                    try {
+                        sources = JSON.parse(body);
+                    } catch {
+                        console.error('Json file is invalid on ' + urlOrPath);
+                        if (callback) {
+                            callback(null, urlOrPath);
+                        }
+                        return;
                     }
-                    return;
-                }
 
-                if (callback) {
-                    callback(sources, urlOrPath);
-                }
+                    if (callback) {
+                        callback(sources, urlOrPath);
+                    }
                 }
             ).on('error', _error => {
                 //console.log('Cannot download json from ' + urlOrPath + '. Error: ' + error);
@@ -1439,11 +1438,12 @@ const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
+        typeof options.cwd === 'string' ?
+            // If a cwd was provided, use it
+            {cwd: options.cwd}
+            :
+            // Otherwise find the ioBroker root dir
+            {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
             }
@@ -1488,11 +1488,12 @@ async function installNodeModule(npmUrl, options = {}) {
 async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
+        typeof options.cwd === 'string' ?
+            // If a cwd was provided, use it
+            {cwd: options.cwd}
+            :
+            // Otherwise find the ioBroker root dir
+            {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
             }
@@ -1531,11 +1532,12 @@ async function uninstallNodeModule(packageName, options = {}) {
 async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
+        typeof options.cwd === 'string' ?
+            // If a cwd was provided, use it
+            {cwd: options.cwd}
+            :
+            // Otherwise find the ioBroker root dir
+            {
                 cwd: __dirname,
                 setCwdToPackageRoot: true
             }
@@ -1597,29 +1599,29 @@ function getDiskInfo(platform, callback) {
                 exec(
                     'wmic logicaldisk get size,freespace,caption',
                     {
-                    encoding: 'utf8',
-                    windowsHide: true
+                        encoding: 'utf8',
+                        windowsHide: true
                     },
                     (error, stdout) => {
                         //, stderr) {
-                    if (stdout) {
-                        const lines = stdout.split('\n');
-                        const line = lines.find(line => {
-                            const parts = line.split(/\s+/);
-                            return parts[0].toUpperCase() === disk;
-                        });
-                        if (line) {
-                            const parts = line.split(/\s+/);
-                                return (
-                                    callback &&
-                                    callback(error, {
-                                'Disk size': parseInt(parts[2]),
-                                'Disk free': parseInt(parts[1])
-                                    })
-                                );
+                        if (stdout) {
+                            const lines = stdout.split('\n');
+                            const line = lines.find(line => {
+                                const parts = line.split(/\s+/);
+                                return parts[0].toUpperCase() === disk;
+                            });
+                            if (line) {
+                                const parts = line.split(/\s+/);
+                                    return (
+                                        callback &&
+                                        callback(error, {
+                                    'Disk size': parseInt(parts[2]),
+                                    'Disk free': parseInt(parts[1])
+                                        })
+                                    );
+                            }
                         }
-                    }
-                    callback && callback(error, null);
+                        callback && callback(error, null);
                     }
                 );
             } else {
@@ -1630,13 +1632,10 @@ function getDiskInfo(platform, callback) {
                     try {
                         if (stdout) {
                             const parts = stdout.split('\n')[1].split(/\s+/);
-                            return (
-                                callback &&
-                                callback(error, {
+                            return callback && callback(error, {
                                 'Disk size': parseInt(parts[1]) * 1024,
                                 'Disk free': parseInt(parts[3]) * 1024
-                                })
-                            );
+                            });
                         }
                     } catch {
                         // continue regardless of error
@@ -1788,8 +1787,8 @@ function generateDefaultCertificates() {
             name: 'subjectAltName',
             altNames: [
                 {
-                type: 2,
-                value: os.hostname()
+                    type: 2,
+                    value: os.hostname()
                 }
             ]
         },
@@ -2060,35 +2059,35 @@ function promisify(fn, context, returnArgNames) {
                 context,
                 args.concat([
                     function (error, result) {
-                    if (error) {
-                        return reject(error instanceof Error ? error : new Error(error));
-                    } else {
-                        // decide on how we want to return the callback arguments
-                        switch (arguments.length) {
-                            case 1: // only an error was given
-                                return resolve(); // Promise<void>
-                            case 2: // a single value (result) was returned
-                                return resolve(result);
-                                default: {
-                                    // multiple values should be returned
-                                /** @type {{} | any[]} */
-                                let ret;
-                                const extraArgs = sliceArgs(arguments, 1);
-                                if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                    // we can build an object
-                                    ret = {};
-                                    for (let i = 0; i < returnArgNames.length; i++) {
-                                        ret[returnArgNames[i]] = extraArgs[i];
+                        if (error) {
+                            return reject(error instanceof Error ? error : new Error(error));
+                        } else {
+                            // decide on how we want to return the callback arguments
+                            switch (arguments.length) {
+                                case 1: // only an error was given
+                                    return resolve(); // Promise<void>
+                                case 2: // a single value (result) was returned
+                                    return resolve(result);
+                                    default: {
+                                        // multiple values should be returned
+                                    /** @type {{} | any[]} */
+                                    let ret;
+                                    const extraArgs = sliceArgs(arguments, 1);
+                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                        // we can build an object
+                                        ret = {};
+                                        for (let i = 0; i < returnArgNames.length; i++) {
+                                            ret[returnArgNames[i]] = extraArgs[i];
+                                        }
+                                    } else {
+                                        // we return the raw array
+                                        ret = extraArgs;
                                     }
-                                } else {
-                                    // we return the raw array
-                                    ret = extraArgs;
+                                    return resolve(ret);
                                 }
-                                return resolve(ret);
                             }
                         }
                     }
-                }
                 ])
             );
         });
@@ -2114,31 +2113,31 @@ function promisifyNoError(fn, context, returnArgNames) {
                 context,
                 args.concat([
                     function (result) {
-                    // decide on how we want to return the callback arguments
-                    switch (arguments.length) {
-                        case 0: // no arguments were given
-                            return resolve(); // Promise<void>
-                        case 1: // a single value (result) was returned
-                            return resolve(result);
-                            default: {
-                                // multiple values should be returned
-                            /** @type {{} | any[]} */
-                            let ret;
-                            const extraArgs = sliceArgs(arguments, 0);
-                            if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                // we can build an object
-                                ret = {};
-                                for (let i = 0; i < returnArgNames.length; i++) {
-                                    ret[returnArgNames[i]] = extraArgs[i];
+                        // decide on how we want to return the callback arguments
+                        switch (arguments.length) {
+                            case 0: // no arguments were given
+                                return resolve(); // Promise<void>
+                            case 1: // a single value (result) was returned
+                                return resolve(result);
+                                default: {
+                                    // multiple values should be returned
+                                /** @type {{} | any[]} */
+                                let ret;
+                                const extraArgs = sliceArgs(arguments, 0);
+                                if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                    // we can build an object
+                                    ret = {};
+                                    for (let i = 0; i < returnArgNames.length; i++) {
+                                        ret[returnArgNames[i]] = extraArgs[i];
+                                    }
+                                } else {
+                                    // we return the raw array
+                                    ret = extraArgs;
                                 }
-                            } else {
-                                // we return the raw array
-                                ret = extraArgs;
+                                return resolve(ret);
                             }
-                            return resolve(ret);
                         }
                     }
-                }
                 ])
             );
         });
@@ -2162,8 +2161,8 @@ function _setQualityForStates(states, keys, quality, cb) {
         states.setState(
             keys.shift(),
             {
-            ack: null,
-            q: quality
+                ack: null,
+                q: quality
             },
             () => setImmediate(_setQualityForStates, states, keys, quality, cb)
         );
@@ -2176,36 +2175,36 @@ function setQualityForInstance(objects, states, namespace, q) {
             'system',
             'state',
             {
-            startkey: namespace + '.',
-            endkey: namespace + '.\u9999',
-            include_docs: false
+                startkey: namespace + '.',
+                endkey: namespace + '.\u9999',
+                include_docs: false
             },
             (err, _states) => {
-            if (err) {
-                reject(err);
-            } else {
-                let keys = [];
-                if (_states && _states.rows) {
-                    for (let s = 0; s < _states.rows.length; s++) {
-                        const id = _states.rows[s].id;
-                        // if instance still active, but device is offline
-                        if (!(q & 0x10) && id.match(/\.info\.connection$/)) {
-                            continue;
+                if (err) {
+                    reject(err);
+                } else {
+                    let keys = [];
+                    if (_states && _states.rows) {
+                        for (let s = 0; s < _states.rows.length; s++) {
+                            const id = _states.rows[s].id;
+                            // if instance still active, but device is offline
+                            if (!(q & 0x10) && id.match(/\.info\.connection$/)) {
+                                continue;
+                            }
+                            keys.push(id);
                         }
-                        keys.push(id);
                     }
+                    // read all values for IDs
+                    states.getStates(keys, (_err, values) => {
+                        // Get only states, that have ack = true
+                        keys = keys.filter((_id, i) => values[i] && values[i].ack);
+                        // update quality code of the states to new one
+                            _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
+                    });
                 }
-                // read all values for IDs
-                states.getStates(keys, (_err, values) => {
-                    // Get only states, that have ack = true
-                    keys = keys.filter((_id, i) => values[i] && values[i].ack);
-                    // update quality code of the states to new one
-                        _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
-                });
-            }
             }
         );
-        });
+    });
 }
 
 /**
@@ -2238,15 +2237,15 @@ function captureStackTrace(wrapperName) {
     if (ret.stack) {
         let foundSelf = false;
         const lines = ret.stack.split('\n').filter(line => {
-                // keep all lines after this function's
-                if (foundSelf) {
-                    return true;
-                }
-                if (line.indexOf(wrapperName) > -1) {
-                    foundSelf = true;
-                }
-                return false;
-            });
+            // keep all lines after this function's
+            if (foundSelf) {
+                return true;
+            }
+            if (line.includes(wrapperName)) {
+                foundSelf = true;
+            }
+            return false;
+        });
         return lines.join('\n');
     }
     return '';
@@ -2675,9 +2674,7 @@ function validateGeneralObjectProperties(obj, extend) {
             const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
                 throw new Error(
-                    `obj.common.type has an invalid value (${
-                        obj.common.type
-                    }) but has to be one of ${allowedStateTypes.join(', ')}`
+                    `obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`
                 );
             }
 
@@ -2707,11 +2704,7 @@ function validateGeneralObjectProperties(obj, extend) {
                         );
                     } else {
                         throw new Error(
-                            `Default value has to be ${
-                                obj.common.type === 'mixed'
-                            ? `one of type "string", "number", "boolean"`
-                                    : `type "${obj.common.type}"`
-                            } but received type "${typeof obj.common.def}" `
+                            `Default value has to be ${obj.common.type === 'mixed' ? `one of type "string", "number", "boolean"` : `type "${obj.common.type}"`} but received type "${typeof obj.common.def}"`
                         );
                     }
                 }
@@ -2721,25 +2714,25 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received  "${typeof obj.common.read}"`
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`
         );
     }
 
     if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received  "${typeof obj.common.write}"`
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`
         );
     }
 
     if (obj.common.role !== undefined && typeof obj.common.role !== 'string') {
         throw new Error(
-            `obj.common.role has an invalid type! Expected "string", received  "${typeof obj.common.role}"`
+            `obj.common.role has an invalid type! Expected "string", received "${typeof obj.common.role}"`
         );
     }
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
         throw new Error(
-            `obj.common.desc has an invalid type! Expected "string" or "object", received  "${typeof obj.common.desc}"`
+            `obj.common.desc has an invalid type! Expected "string" or "object", received "${typeof obj.common.desc}"`
         );
     }
 
@@ -2750,11 +2743,11 @@ function validateGeneralObjectProperties(obj, extend) {
         !isObject(obj.common.custom)
     ) {
         throw new Error(
-            `obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`
+            `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`
         );
     }
 
-    // common.states needs to be a real object or an arraay
+    // common.states needs to be a real object or an array
     if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
@@ -3446,10 +3439,14 @@ async function _readLicenses(login, password) {
     };
 
     try {
-        const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config)
+        const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config);
         if (response.data && response.data.length) {
             const now = Date.now();
-            response.data = response.data.filter(license => !license.validTill || license.validTill === '0000-00-00 00:00:00' || new Date(license.validTill).getTime() > now);
+            response.data = response.data.filter(license =>
+                !license.validTill ||
+                license.validTill === '0000-00-00 00:00:00' ||
+                new Date(license.validTill).getTime() > now
+            );
         }
         return response.data;
     } catch (err) {
@@ -3510,16 +3507,22 @@ async function updateLicenses(objects, login, password) {
                 systemLicenses.native.readTime = new Date().toISOString();
 
                 // update read time
-                await objects.setObjectAsync('system.licenses', systemLicenses)
+                await objects.setObjectAsync('system.licenses', systemLicenses);
                 return licenses;
             } catch (err) {
                 // if password is invalid
-                if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
+                if (err.message.includes('Authentication required') ||
+                    err.message.includes('Cannot decode password:')
+                ) {
                     // clear existing licenses if exist
-                    if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
+                    if (systemLicenses &&
+                        systemLicenses.native &&
+                        systemLicenses.native.licenses &&
+                        systemLicenses.native.licenses.length
+                    ) {
                         systemLicenses.native.licenses = [];
                         systemLicenses.native.readTime = new Date().toISOString();
-                        await objects.setObjectAsync('system.licenses', systemLicenses)
+                        await objects.setObjectAsync('system.licenses', systemLicenses);
                     }
                 }
 
@@ -3527,10 +3530,14 @@ async function updateLicenses(objects, login, password) {
             }
         } else {
             // if password or login are empty => clear existing licenses if exist
-            if (systemLicenses && systemLicenses.native && systemLicenses.native.licenses && systemLicenses.native.licenses.length) {
+            if (systemLicenses &&
+                systemLicenses.native &&
+                systemLicenses.native.licenses &&
+                systemLicenses.native.licenses.length
+            ) {
                 systemLicenses.native.licenses = [];
                 systemLicenses.native.readTime = new Date().toISOString();
-                await objects.setObjectAsync('system.licenses', systemLicenses)
+                await objects.setObjectAsync('system.licenses', systemLicenses);
             }
             throw new Error('No password or login');
         }

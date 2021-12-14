@@ -9,27 +9,27 @@
 
 'use strict';
 
-const COLOR_RED    = '\x1b[31m';
+const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
-const COLOR_RESET  = '\x1b[0m';
-const COLOR_GREEN  = '\x1b[32m';
+const COLOR_RESET = '\x1b[0m';
+const COLOR_GREEN = '\x1b[32m';
 
 /** @class */
 function Setup(options) {
-    const fs             = require('fs-extra');
-    const path           = require('path');
+    const fs = require('fs-extra');
+    const path = require('path');
     const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
     const dbTools = require('@iobroker/js-controller-common-db').tools;
-    const Backup         = require('./setupBackup');
-    const deepClone      = require('deep-clone');
-    const pluginInfos    = require('./pluginInfos');
+    const Backup = require('./setupBackup');
+    const deepClone = require('deep-clone');
+    const pluginInfos = require('./pluginInfos');
 
     options = options || {};
 
     const processExit = options.processExit;
     const dbConnect = options.dbConnect;
     const params = options.params;
-    const cleanDatabaseAsync     = options.cleanDatabaseAsync;
+    const cleanDatabaseAsync = options.cleanDatabaseAsync;
     const resetDbConnect = options.resetDbConnect;
     const restartControllerAsync = options.restartControllerAsync;
     let objects;
@@ -212,7 +212,7 @@ function Setup(options) {
                     if (obj && (!obj.native || !obj.native.secret)) {
                         require('crypto').randomBytes(24, (ex, buf) => {
                             obj.native = obj.native || {};
-                            obj.native.secret =  buf.toString('hex');
+                            obj.native.secret = buf.toString('hex');
                             obj.from = 'system.host.' + tools.getHostName() + '.cli';
                             obj.ts = Date.now();
                             objects.setObject('system.config', obj, () => setupReady(obj, callback));
@@ -383,7 +383,7 @@ function Setup(options) {
                 (!oldStatesHasServer && oldConfig.states.host !== newConfig.states.host) ||
                 (!oldObjectsHasServer && oldConfig.objects.host !== newConfig.objects.host))
         ) {
-            let fromMaster =  oldStatesLocalServer || oldObjectsLocalServer;
+            let fromMaster = oldStatesLocalServer || oldObjectsLocalServer;
 
             let toMaster = newStatesLocalServer || newObjectsLocalServer;
 
@@ -400,8 +400,8 @@ function Setup(options) {
                     const answer = rl.question(
                         `Please choose if this is a Master/single host (enter "m") or a Slave host (enter "S") you are about to edit. For Slave hosts the data migration will be skipped. [S/m]: `,
                         {
-                        limit: /^[SsMm]?$/,
-                        defaultInput: 'S'
+                            limit: /^[SsMm]?$/,
+                            defaultInput: 'S'
                         }
                     );
                     allowMigration = !(answer === 'S' || answer === 's');
@@ -409,8 +409,8 @@ function Setup(options) {
                     const answer = rl.question(
                         `This host appears to be a Master or a Single host system. Is this correct? [Y/n]: `,
                         {
-                        limit: /^[YyNnJj]?$/,
-                        defaultInput: 'Y'
+                            limit: /^[YyNnJj]?$/,
+                            defaultInput: 'Y'
                         }
                     );
                     allowMigration = answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j';
@@ -420,8 +420,8 @@ function Setup(options) {
                     const answer = rl.question(
                         `It appears that you want to convert this slave host into a Master or Single host system. Is this correct? [Y/n]: `,
                         {
-                        limit: /^[YyNnJj]?$/,
-                        defaultInput: 'Y'
+                            limit: /^[YyNnJj]?$/,
+                            defaultInput: 'Y'
                         }
                     );
                     allowMigration = answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j';
@@ -429,8 +429,8 @@ function Setup(options) {
                     const answer = rl.question(
                         `This host appears to be an ioBroker SLAVE system. Migration will be skipped. Is this correct? [Y/n]: `,
                         {
-                        limit: /^[YyNnJj]?$/,
-                        defaultInput: 'Y'
+                            limit: /^[YyNnJj]?$/,
+                            defaultInput: 'Y'
                         }
                     );
                     allowMigration = !(answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j');
@@ -465,8 +465,8 @@ function Setup(options) {
                 answer = rl.question(
                     `Do you want to migrate objects and states from "${oldConfig.objects.type}/${oldConfig.states.type}" to "${newConfig.objects.type}/${newConfig.states.type}" [y/N]: `,
                     {
-                    limit: /^[YyNnJj]?$/,
-                    defaultInput: 'N'
+                        limit: /^[YyNnJj]?$/,
+                        defaultInput: 'N'
                     }
                 );
 
@@ -478,8 +478,8 @@ function Setup(options) {
                     answer = rl.question(
                         `Migrating the objects database will overwrite all objects! Are you sure that this is not a slave host and you want to migrate the data? [y/N]: `,
                         {
-                        limit: /^[YyNnJj]?$/,
-                        defaultInput: 'N'
+                            limit: /^[YyNnJj]?$/,
+                            defaultInput: 'N'
                         }
                     );
                     console.log(COLOR_RESET);
@@ -690,13 +690,9 @@ function Setup(options) {
 
         const defaultObjectsHost = otype === originalConfig.objects.type ? originalConfig.objects.host : '127.0.0.1';
         let ohost = rl.question(
-            'Host / Unix Socket of objects DB(' +
-                otype +
-                '), default[' +
-                (Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost) +
-                ']: ',
+            `Host / Unix Socket of objects DB(${otype}), default[${Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost}]: `,
             {
-            defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
+                defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }
         );
         ohost = ohost.toLowerCase();
@@ -711,14 +707,9 @@ function Setup(options) {
 
         const defaultObjectsPort =
             otype === originalConfig.objects.type && ohost === originalConfig.objects.host
-                ? originalConfig.objects.port
-                : op;
+                ? originalConfig.objects.port : op;
         const userObjPort = rl.question(
-            'Port of objects DB(' +
-                otype +
-                '), default[' +
-                (Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort) +
-                ']: ',
+            `Port of objects DB(${otype}), default[${Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort}]: `,
             {
             defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
             limit: /^[0-9, ]+$/
@@ -745,9 +736,8 @@ function Setup(options) {
         let oSentinelName = null;
         if (oSentinel) {
             const defaultSentinelName = originalConfig.objects.sentinelName
-                ? originalConfig.objects.sentinelName
-                : 'mymaster';
-            oSentinelName = rl.question('Objects Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
+                ? originalConfig.objects.sentinelName : 'mymaster';
+            oSentinelName = rl.question(`Objects Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
         }
@@ -776,7 +766,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-states-${stype}`);
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
-            console.log(COLOR_RED + 'Unknown objects type: ' + stype + COLOR_RESET);
+            console.log(`${COLOR_RED}Unknown objects type: ${stype}${COLOR_RESET}`);
             if (stype !== 'file' && stype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the states db type you entered is really correct!`);
@@ -821,20 +811,15 @@ function Setup(options) {
 
         let defaultStatesPort =
             stype === originalConfig.states.type && shost === originalConfig.states.host
-                ? originalConfig.states.port
-                : sp;
+                ? originalConfig.states.port : sp;
         if (stype === otype && !dbTools.statesDbHasServer(stype) && shost === ohost) {
             defaultStatesPort = oport;
         }
         const userStatePort = rl.question(
-            'Port of states DB (' +
-                stype +
-                '), default[' +
-                (Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort) +
-                ']: ',
+            `Port of states DB (${stype}), default[${Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort}]: `,
             {
-            defaultInput: Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort,
-            limit: /^[0-9, ]+$/
+                defaultInput: Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort,
+                limit: /^[0-9, ]+$/
             }
         );
         let sport;
@@ -862,7 +847,7 @@ function Setup(options) {
                 : oSentinelName && oport === sport
                 ? oSentinelName
                 : 'mymaster';
-            sSentinelName = rl.question('States Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
+            sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
         }
@@ -876,13 +861,10 @@ function Setup(options) {
             });
 
             hname = rl.question(
-                'Host name of this machine [' +
-                    (originalConfig && originalConfig.system
-                        ? originalConfig.system.hostname || require('os').hostname()
-                        : require('os').hostname()) +
-                    ']: ',
+                `Host name of this machine [${originalConfig && originalConfig.system
+                    ? originalConfig.system.hostname || require('os').hostname() : require('os').hostname()}]: `,
                 {
-                defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
+                    defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
                 }
             );
         } else {

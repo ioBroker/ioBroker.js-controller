@@ -802,13 +802,13 @@ function Adapter(options) {
                 this.extendForeignObject(
                     user,
                     {
-                    common: {
-                        password: ''
-                    }
+                        common: {
+                            password: ''
+                        }
                     },
                     options,
                     () => {
-                    return tools.maybeCallback(callback);
+                        return tools.maybeCallback(callback);
                     }
                 );
             } else {
@@ -819,16 +819,16 @@ function Adapter(options) {
                     this.extendForeignObject(
                         user,
                         {
-                        common: {
-                            password: res
-                        }
+                            common: {
+                                password: res
+                            }
                         },
                         options,
                         () => {
-                        return tools.maybeCallbackWithError(callback, null);
+                            return tools.maybeCallbackWithError(callback, null);
                         }
                     );
-                    });
+                });
             }
         });
     };
@@ -1241,9 +1241,9 @@ function Adapter(options) {
                     callback,
                     null,
                     {
-                    key: readFileCertificate(obj.native.certificates[privateName]),
-                    cert: readFileCertificate(obj.native.certificates[publicName]),
-                    ca
+                        key: readFileCertificate(obj.native.certificates[privateName]),
+                        cert: readFileCertificate(obj.native.certificates[publicName]),
+                        ca
                     },
                     obj.native.letsEncrypt
                 );
@@ -1474,9 +1474,9 @@ function Adapter(options) {
             adapterStates.setState(
                 task._id,
                 {
-                val: state,
-                from: `system.adapter.${this.namespace}`,
-                ack: true
+                    val: state,
+                    from: `system.adapter.${this.namespace}`,
+                    ack: true
                 },
                 () => setImmediate(extendObjects, tasks, callback)
             );
@@ -1712,13 +1712,13 @@ function Adapter(options) {
                 this.connected = false;
                 !this.terminated &&
                     setTimeout(() => {
-                    if (this.connected) {
-                        return;
-                    } // If reconnected in the meantime, do not terminate
+                        if (this.connected) {
+                            return;
+                        } // If reconnected in the meantime, do not terminate
                         logger &&
                             logger.warn(this.namespaceLog + ' Cannot connect/reconnect to objects DB. Terminating');
-                    this.terminate(EXIT_CODES.NO_ERROR);
-                }, 4000);
+                        this.terminate(EXIT_CODES.NO_ERROR);
+                    }, 4000);
             },
             change: async (id, obj) => {
                 // System level object changes (and alias objects)
@@ -1727,7 +1727,7 @@ function Adapter(options) {
                 }
 
                 if (!id) {
-                    logger.error(this.namespaceLog + ' change ID is empty:  ' + JSON.stringify(obj));
+                    logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
                     return;
                 }
 
@@ -2444,10 +2444,12 @@ function Adapter(options) {
             // delete arrays if they should be changed
             if (
                 obj &&
-                ((obj.common && obj.common.members) ||
-                (obj.native && obj.native.repositories) ||
-                (obj.native && obj.native.certificates) ||
-                (obj.native && obj.native.devices))
+                (
+                    (obj.common && obj.common.members) ||
+                    (obj.native && obj.native.repositories) ||
+                    (obj.native && obj.native.certificates) ||
+                    (obj.native && obj.native.devices)
+                )
             ) {
                 if (!oldObj) {
                     logger.error(`${this.namespaceLog} Object ${id} not exist!`);
@@ -2713,10 +2715,12 @@ function Adapter(options) {
             // delete arrays if they should be changed
             if (
                 obj &&
-                ((obj.common && obj.common.members) ||
-                (obj.native && obj.native.repositories) ||
-                (obj.native && obj.native.certificates) ||
-                (obj.native && obj.native.devices))
+                (
+                    (obj.common && obj.common.members) ||
+                    (obj.native && obj.native.repositories) ||
+                    (obj.native && obj.native.certificates) ||
+                    (obj.native && obj.native.devices)
+                )
             ) {
                 if (!oldObj) {
                     logger.error(`${this.namespaceLog} Object ${id} not exist!`);
@@ -3054,20 +3058,20 @@ function Adapter(options) {
                 'system',
                 'enum',
                 {
-                startkey: _enum + '.',
-                endkey: _enum + '.\u9999'
+                    startkey: _enum + '.',
+                    endkey: _enum + '.\u9999'
                 },
                 options,
                 (err, res) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-                if (res && res.rows) {
-                    for (let t = 0; t < res.rows.length; t++) {
-                        result[res.rows[t].id] = res.rows[t].value;
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
                     }
-                }
-                return tools.maybeCallbackWithError(callback, err, result, _enum);
+                    if (res && res.rows) {
+                        for (let t = 0; t < res.rows.length; t++) {
+                            result[res.rows[t].id] = res.rows[t].value;
+                        }
+                    }
+                    return tools.maybeCallbackWithError(callback, err, result, _enum);
                 }
             );
         };
@@ -3142,8 +3146,7 @@ function Adapter(options) {
                 const promises = [];
 
                 for (const currEnum of _enumList) {
-                    promises.push(
-                        new Promise((resolve, reject) => {
+                    promises.push(new Promise((resolve, reject) =>
                         this.getEnum(currEnum, options, (err, list, _enum) => {
                             if (err) {
                                 return reject(err);
@@ -3151,49 +3154,43 @@ function Adapter(options) {
                                 _enums[_enum] = list;
                             }
                             resolve();
-                        });
-                        })
-                    );
+                        })));
                 }
 
                 Promise.all(promises)
-                    .then(() => {
-                        return tools.maybeCallbackWithError(callback, null, _enums);
-                    })
-                    .catch(e => {
-                        return tools.maybeCallbackWithError(callback, e);
-                    });
+                    .then(() => tools.maybeCallbackWithError(callback, null, _enums))
+                    .catch(e => tools.maybeCallbackWithError(callback, e));
             } else {
                 // Read all enums
                 adapterObjects.getObjectView(
                     'system',
                     'enum',
                     {
-                    startkey: 'enum.',
-                    endkey: 'enum.\u9999'
+                        startkey: 'enum.',
+                        endkey: 'enum.\u9999'
                     },
                     options,
                     (err, res) => {
                     // be aware, that res.rows[x].id is the name of enum!
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-                    const result = {};
-                    if (res && res.rows) {
-                        for (let i = 0; i < res.rows.length; i++) {
-                            const parts = res.rows[i].id.split('.', 3);
-                            if (!parts[2]) {
-                                continue;
-                            }
-                            if (!result[parts[0] + '.' + parts[1]]) {
-                                result[parts[0] + '.' + parts[1]] = {};
-                            }
-                            result[parts[0] + '.' + parts[1]][res.rows[i].id] = res.rows[i].value;
+                        if (err) {
+                            return tools.maybeCallbackWithError(callback, err);
                         }
-                    }
+                        const result = {};
+                        if (res && res.rows) {
+                            for (let i = 0; i < res.rows.length; i++) {
+                                const parts = res.rows[i].id.split('.', 3);
+                                if (!parts[2]) {
+                                    continue;
+                                }
+                                if (!result[parts[0] + '.' + parts[1]]) {
+                                    result[parts[0] + '.' + parts[1]] = {};
+                                }
+                                result[parts[0] + '.' + parts[1]][res.rows[i].id] = res.rows[i].value;
+                            }
+                        }
 
-                    return tools.maybeCallbackWithError(callback, err, result);
-            }
+                        return tools.maybeCallbackWithError(callback, err, result);
+                    }
                 );
             }
         };
@@ -3542,24 +3539,17 @@ function Adapter(options) {
             if (options && options.recursive) {
                 // read object itself
                 adapterObjects.getObject(id, options, (err, obj) => {
-                    const tasks =
-                        obj && (!obj.common || !obj.common.dontDelete)
-                            ? [
-                                  {
-                        id,
-                        state: obj.type === 'state'
-                                  }
-                              ]
-                            : [];
+                    const tasks = obj && (!obj.common || !obj.common.dontDelete)
+                        ? [{id, state: obj.type === 'state'}] : [];
+
                     const selector = { startkey: id + '.', endkey: id + '.\u9999' };
                     // read all underlying states
                     adapterObjects.getObjectList(selector, options, (err, res) => {
                         res &&
                             res.rows &&
-                            res.rows.forEach(
-                                item =>
-                            !tasks.find(task => task.id === item.id) &&
-                            (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
+                            res.rows.forEach(item =>
+                                !tasks.find(task => task.id === item.id) &&
+                                (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
                                     tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
                             );
                         _deleteObjects(tasks, options, callback);
@@ -3930,9 +3920,9 @@ function Adapter(options) {
             this.setObjectNotExists(
                 deviceName,
                 {
-                type: 'device',
-                common: common,
-                native: _native
+                    type: 'device',
+                    common: common,
+                    native: _native
                 },
                 options,
                 callback
@@ -4115,35 +4105,35 @@ function Adapter(options) {
             this.setObjectNotExists(
                 id,
                 {
-                type: 'state',
-                common: common,
-                native: _native
+                    type: 'state',
+                    common: common,
+                    native: _native
                 },
                 options,
                 err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else if (common.def !== undefined) {
-                    this.getState(id, null, (err, state) => {
-                        if (!state) {
-                            if (common.defAck !== undefined) {
-                                this.setState(id, common.def, common.defAck, options, callback);
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else if (common.def !== undefined) {
+                        this.getState(id, null, (err, state) => {
+                            if (!state) {
+                                if (common.defAck !== undefined) {
+                                    this.setState(id, common.def, common.defAck, options, callback);
+                                } else {
+                                    this.setState(id, common.def, options, callback);
+                                }
                             } else {
-                                this.setState(id, common.def, options, callback);
+                                return tools.maybeCallback(callback);
                             }
-                        } else {
-                            return tools.maybeCallback(callback);
-                        }
-                    });
-                } else {
-                    this.getState(id, null, (err, state) => {
-                        if (!state) {
-                            this.setState(id, null, true, options, callback);
-                        } else {
-                            return tools.maybeCallback(callback);
-                        }
-                    });
-                }
+                        });
+                    } else {
+                        this.getState(id, null, (err, state) => {
+                            if (!state) {
+                                this.setState(id, null, true, options, callback);
+                            } else {
+                                return tools.maybeCallback(callback);
+                            }
+                        });
+                    }
                 }
             );
         };
@@ -4280,13 +4270,13 @@ function Adapter(options) {
                         adapterObjects.setObject(
                             'enum.' + enumName + '.' + addTo,
                             {
-                            common: {
-                                name: addTo,
-                                members: [objId]
-                            },
-                            from: 'system.adapter.' + this.namespace,
-                            ts: Date.now(),
-                            type: 'enum'
+                                common: {
+                                    name: addTo,
+                                    members: [objId]
+                                },
+                                from: 'system.adapter.' + this.namespace,
+                                ts: Date.now(),
+                                type: 'enum'
                             },
                             options,
                             callback
@@ -4338,37 +4328,37 @@ function Adapter(options) {
                 'system',
                 'enum',
                 {
-                startkey: enumName,
-                endkey: enumName + '\u9999'
+                    startkey: enumName,
+                    endkey: enumName + '\u9999'
                 },
                 options,
                 async (err, res) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    }
 
-                if (res && res.rows) {
-                    for (let i = 0; i < res.rows.length; i++) {
-                        try {
-                            const obj = await adapterObjects.getObject(res.rows[i].id, options);
+                    if (res && res.rows) {
+                        for (let i = 0; i < res.rows.length; i++) {
+                            try {
+                                const obj = await adapterObjects.getObject(res.rows[i].id, options);
 
-                            if (obj && obj.common && obj.common.members) {
-                                const pos = obj.common.members.indexOf(objId);
-                                if (pos !== -1) {
-                                    obj.common.members.splice(pos, 1);
-                                    obj.from = 'system.adapter.' + this.namespace;
-                                    obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                                    obj.ts = Date.now();
+                                if (obj && obj.common && obj.common.members) {
+                                    const pos = obj.common.members.indexOf(objId);
+                                    if (pos !== -1) {
+                                        obj.common.members.splice(pos, 1);
+                                        obj.from = 'system.adapter.' + this.namespace;
+                                        obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                                        obj.ts = Date.now();
 
-                                    await adapterObjects.setObjectAsync(obj._id, obj, options);
+                                        await adapterObjects.setObjectAsync(obj._id, obj, options);
+                                    }
                                 }
+                            } catch (e) {
+                                return tools.maybeCallbackWithError(callback, e);
                             }
-                        } catch (e) {
-                            return tools.maybeCallbackWithError(callback, e);
                         }
                     }
-                }
-                return tools.maybeCallback(callback);
+                    return tools.maybeCallback(callback);
                 }
             );
         };
@@ -4559,19 +4549,19 @@ function Adapter(options) {
                 'system',
                 'device',
                 {
-                startkey: this.namespace + '.',
-                endkey: this.namespace + '.\u9999'
+                    startkey: this.namespace + '.',
+                    endkey: this.namespace + '.\u9999'
                 },
                 options,
                 (err, obj) => {
-                if (err || !obj || !obj.rows || !obj.rows.length) {
-                    return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
-                }
-                const res = [];
-                for (let i = 0; i < obj.rows.length; i++) {
-                    res.push(obj.rows[i].value);
-                }
-                return tools.maybeCallbackWithError(callback, null, res);
+                    if (err || !obj || !obj.rows || !obj.rows.length) {
+                        return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
+                    }
+                    const res = [];
+                    for (let i = 0; i < obj.rows.length; i++) {
+                        res.push(obj.rows[i].value);
+                    }
+                    return tools.maybeCallbackWithError(callback, null, res);
                 }
             );
         };
@@ -4609,19 +4599,19 @@ function Adapter(options) {
                 'system',
                 'channel',
                 {
-                startkey: parentDevice + '.',
-                endkey: parentDevice + '.\u9999'
+                    startkey: parentDevice + '.',
+                    endkey: parentDevice + '.\u9999'
                 },
                 options,
                 (err, obj) => {
-                if (err || !obj || !obj.rows || !obj.rows.length) {
-                    return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
-                }
-                const res = [];
-                for (let i = 0; i < obj.rows.length; i++) {
-                    res.push(obj.rows[i].value);
-                }
-                return tools.maybeCallbackWithError(callback, null, res);
+                    if (err || !obj || !obj.rows || !obj.rows.length) {
+                        return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
+                    }
+                    const res = [];
+                    for (let i = 0; i < obj.rows.length; i++) {
+                        res.push(obj.rows[i].value);
+                    }
+                    return tools.maybeCallbackWithError(callback, null, res);
                 }
             );
         };
@@ -4684,28 +4674,28 @@ function Adapter(options) {
                 'system',
                 'state',
                 {
-                startkey: id,
-                endkey: id + '\u9999'
+                    startkey: id,
+                    endkey: id + '\u9999'
                 },
                 options,
                 (err, obj) => {
-                if (err || !obj || !obj.rows || !obj.rows.length) {
-                    return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
-                }
-                const res = [];
-                let read = 0;
-                for (let i = 0; i < obj.rows.length; i++) {
-                    read++;
-                    adapterObjects.getObject(obj.rows[i].id, (err, subObj) => {
-                        if (subObj) {
-                            res.push(subObj);
-                        }
+                    if (err || !obj || !obj.rows || !obj.rows.length) {
+                        return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
+                    }
+                    const res = [];
+                    let read = 0;
+                    for (let i = 0; i < obj.rows.length; i++) {
+                        read++;
+                        adapterObjects.getObject(obj.rows[i].id, (err, subObj) => {
+                            if (subObj) {
+                                res.push(subObj);
+                            }
 
-                        if (!--read) {
-                            return tools.maybeCallbackWithError(callback, null, res);
-                        }
-                    });
-                }
+                            if (!--read) {
+                                return tools.maybeCallbackWithError(callback, null, res);
+                            }
+                        });
+                    }
                 }
             );
         };
@@ -4779,8 +4769,7 @@ function Adapter(options) {
 
                 adapterObjects.getObject('enum.' + enumName + '.' + addTo, options, (err, obj) => {
                     if (!err && obj) {
-                        const pos = obj.common.members.indexOf(objId);
-                        if (pos === -1) {
+                        if (!obj.common.members.includes(objId)) {
                             obj.common.members.push(objId);
                             obj.from = 'system.adapter.' + this.namespace;
                             obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -4798,13 +4787,13 @@ function Adapter(options) {
                         adapterObjects.setObject(
                             'enum.' + enumName + '.' + addTo,
                             {
-                            common: {
-                                name: addTo,
-                                members: [objId]
-                            },
-                            from: 'system.adapter.' + this.namespace,
-                            ts: Date.now(),
-                            type: 'enum'
+                                common: {
+                                    name: addTo,
+                                    members: [objId]
+                                },
+                                from: 'system.adapter.' + this.namespace,
+                                ts: Date.now(),
+                                type: 'enum'
                             },
                             options,
                             callback
@@ -4878,33 +4867,33 @@ function Adapter(options) {
                 'system',
                 'enum',
                 {
-                startkey: enumName,
-                endkey: enumName + '\u9999'
+                    startkey: enumName,
+                    endkey: enumName + '\u9999'
                 },
                 options,
                 async (err, res) => {
-                if (err || !res || !res.rows) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                for (const row of res.rows) {
-                    try {
-                        const obj = await adapterObjects.getObjectAsync(row.id);
-                        if (obj && obj.common && obj.common.members) {
-                            const pos = obj.common.members.indexOf(objId);
-                            if (pos !== -1) {
-                                obj.common.members.splice(pos, 1);
-                                obj.from = 'system.adapter.' + this.namespace;
-                                obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
-                                obj.ts = Date.now();
-                                await adapterObjects.setObjectAsync(obj._id, obj);
-                            }
-                        }
-                    } catch (e) {
-                        return tools.maybeCallbackWithError(callback, e);
+                    if (err || !res || !res.rows) {
+                        return tools.maybeCallbackWithError(callback, err);
                     }
-                }
-                return tools.maybeCallback(callback);
+
+                    for (const row of res.rows) {
+                        try {
+                            const obj = await adapterObjects.getObjectAsync(row.id);
+                            if (obj && obj.common && obj.common.members) {
+                                const pos = obj.common.members.indexOf(objId);
+                                if (pos !== -1) {
+                                    obj.common.members.splice(pos, 1);
+                                    obj.from = 'system.adapter.' + this.namespace;
+                                    obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                                    obj.ts = Date.now();
+                                    await adapterObjects.setObjectAsync(obj._id, obj);
+                                }
+                            }
+                        } catch (e) {
+                            return tools.maybeCallbackWithError(callback, e);
+                        }
+                    }
+                    return tools.maybeCallback(callback);
                 }
             );
         };
@@ -5806,22 +5795,22 @@ function Adapter(options) {
                         'system',
                         'instance',
                         {
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
                         },
                         (err, _obj) => {
-                        if (_obj && _obj.rows) {
-                            for (let i = 0; i < _obj.rows.length; i++) {
-                                if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
-                                    this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
-                                    break;
+                            if (_obj && _obj.rows) {
+                                for (let i = 0; i < _obj.rows.length; i++) {
+                                    if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
+                                        this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        if (!this.defaultHistory) {
-                            this.defaultHistory = 'history.0';
-                        }
-                        return tools.maybeCallback(callback);
+                            if (!this.defaultHistory) {
+                                this.defaultHistory = 'history.0';
+                            }
+                            return tools.maybeCallback(callback);
                         }
                     );
                 } else {
@@ -6192,13 +6181,13 @@ function Adapter(options) {
                 this.connected = false;
                 !this.terminated &&
                     setTimeout(() => {
-                    if (this.connected) {
-                        return;
-                    } // If reconnected in the meantime, do not terminate
+                        if (this.connected) {
+                            return;
+                        } // If reconnected in the meantime, do not terminate
                         logger &&
                             logger.warn(this.namespaceLog + ' Cannot connect/reconnect to states DB. Terminating');
-                    this.terminate(EXIT_CODES.NO_ERROR);
-                }, 5000);
+                        this.terminate(EXIT_CODES.NO_ERROR);
+                    }, 5000);
             }
         });
 
@@ -6268,19 +6257,19 @@ function Adapter(options) {
                     'system',
                     'instance',
                     {
-                    startkey: instanceName + '.',
-                    endkey: instanceName + '.\u9999'
+                        startkey: instanceName + '.',
+                        endkey: instanceName + '.\u9999'
                     },
                     async (err, _obj) => {
-                    if (_obj && _obj.rows) {
-                        for (let i = 0; i < _obj.rows.length; i++) {
-                            try {
-                                await adapterStates.pushMessage(_obj.rows[i].id, obj);
-                            } catch (e) {
-                                return tools.maybeCallbackWithError(callback, e);
+                        if (_obj && _obj.rows) {
+                            for (let i = 0; i < _obj.rows.length; i++) {
+                                try {
+                                    await adapterStates.pushMessage(_obj.rows[i].id, obj);
+                                } catch (e) {
+                                    return tools.maybeCallbackWithError(callback, e);
+                                }
                             }
                         }
-                    }
                     }
                 );
             } else {
@@ -6380,28 +6369,28 @@ function Adapter(options) {
                 // Send to all hosts
                 adapterObjects.getObjectList(
                     {
-                    startkey: 'system.host.',
-                    endkey: `system.host.\u9999`
+                        startkey: 'system.host.',
+                        endkey: `system.host.\u9999`
                     },
                     null,
                     async (err, res) => {
                         if (!adapterStates) {
                             // if states is no longer existing, we do not need to unsubscribe
-                        return;
-                    }
-                    if (!err && res.rows.length) {
-                        for (let i = 0; i < res.rows.length; i++) {
-                            const parts = res.rows[i].id.split('.');
-                            // ignore system.host.name.alive and so on
-                            if (parts.length === 3) {
-                                try {
-                                    await adapterStates.pushMessage(res.rows[i].id, obj);
-                                } catch (e) {
-                                    return tools.maybeCallbackWithError(callback, e);
+                            return;
+                        }
+                        if (!err && res.rows.length) {
+                            for (let i = 0; i < res.rows.length; i++) {
+                                const parts = res.rows[i].id.split('.');
+                                // ignore system.host.name.alive and so on
+                                if (parts.length === 3) {
+                                    try {
+                                        await adapterStates.pushMessage(res.rows[i].id, obj);
+                                    } catch (e) {
+                                        return tools.maybeCallbackWithError(callback, e);
+                                    }
                                 }
                             }
                         }
-                    }
                     }
                 );
             } else {
@@ -9031,16 +9020,16 @@ function Adapter(options) {
                             adapterStates.setState(
                                 id + '.connected',
                                 {
-                                val: true,
-                                ack: true,
-                                expire: 30,
-                                from: id
+                                    val: true,
+                                    ack: true,
+                                    expire: 30,
+                                    from: id
                                 },
                                 () => {
-                                if (!done) {
-                                    done = true;
-                                    this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                                }
+                                    if (!done) {
+                                        done = true;
+                                        this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
+                                    }
                                 }
                             );
                             setTimeout(() => {
@@ -9579,19 +9568,30 @@ function Adapter(options) {
                 obj.native.licenses.forEach(license => {
                     try {
                         const decoded = jwt.verify(license.json, cert);
-                        if (decoded.name && (!decoded.valid_till || license.valid_till === '0000-00-00 00:00:00' || new Date(license.valid_till).getTime() > now)) {
-                            if (decoded.name.startsWith('iobroker.' + this.name) && (all || !license.usedBy || license.usedBy === this.namespace)) {
+                        if (decoded.name &&
+                            (!decoded.valid_till ||
+                                license.valid_till === '0000-00-00 00:00:00' ||
+                                new Date(license.valid_till).getTime() > now)
+                        ) {
+                            if (decoded.name.startsWith('iobroker.' + this.name) &&
+                                (all || !license.usedBy || license.usedBy === this.namespace)
+                            ) {
                                 // If license is for adapter with version 0 or 1
-                                if (decoded.version === '&lt;2' || decoded.version === '<2' || decoded.version === '<1' || decoded.version === '<=1') {
+                                if (decoded.version === '&lt;2' ||
+                                    decoded.version === '<2' ||
+                                    decoded.version === '<1' ||
+                                    decoded.version === '<=1'
+                                ) {
                                     // check the current adapter major version
                                     if (version !== '0' && version !== '1') {
                                         return;
                                     }
-                                } else
+                                }
                                 // decoded.version could be only '<2' or direct version, like "2", "3" and so on
-                                if (decoded.version && decoded.version !== version) {
+                                else if (decoded.version && decoded.version !== version) {
                                     return;
                                 }
+
                                 // remove free license if commercial license found
                                 if (decoded.invoice !== 'free') {
                                     const pos = licenses.findIndex(item => item.invoice === 'free');
