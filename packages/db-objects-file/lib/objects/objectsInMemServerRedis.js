@@ -567,6 +567,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
                     handler.sendString(responseId, 'OK');
                 }
+            } else if (namespace === this.metaNamespace) {
+                // TODO
             } else {
                 handler.sendError(
                     responseId,

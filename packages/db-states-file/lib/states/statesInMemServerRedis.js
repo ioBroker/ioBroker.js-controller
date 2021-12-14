@@ -61,6 +61,8 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
         //this.namespaceSessionlen = this.namespaceSession.length;
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
             .then(() => {
@@ -108,7 +110,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             const pointIdx = idWithNamespace.indexOf('.');
             if (pointIdx !== -1) {
                 ns = idWithNamespace.substr(0, pointIdx + 1);
-                if (ns === this.namespaceStates) {
+                if (ns === this.namespaceStates || ns === this.metaNamespace) {
                     id = idWithNamespace.substr(pointIdx + 1);
                 }
             }
@@ -243,6 +245,8 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                 } else {
                     handler.sendBulk(responseId, JSON.stringify(result));
                 }
+            } else if (namespace === this.metaNamespace) {
+                // TODO
             } else {
                 handler.sendError(
                     responseId,
@@ -269,6 +273,8 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                 } catch (err) {
                     handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
                 }
+            } else if (namespace === this.metaNamespace) {
+                // TODO
             } else {
                 handler.sendError(
                     responseId,
