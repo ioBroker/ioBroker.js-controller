@@ -41,7 +41,7 @@ class ObjectsInRedisClient {
         this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
         this.objNamespaceL = this.objNamespace.length;
         this.supportedProtocolVersions = ['4'];
-        this.activeProtocolVersion = 4;
+        this.activeProtocolVersion = '4';
 
         this.stop = false;
         this.client = null;
@@ -75,7 +75,6 @@ class ObjectsInRedisClient {
         if (this.supportedProtocolVersions.includes(protoVersion)) {
             this.activeProtocolVersion = parseInt(protoVersion);
         } else {
-            // find at least one of the lowest hosts, to tell user which one to upgrade
             throw new Error(`This host does not support protocol version "${protoVersion}"`);
         }
     }

@@ -51,7 +51,7 @@ class StateRedisClient {
         this.namespace = this.settings.namespace || this.settings.hostname || '';
 
         this.supportedProtocolVersions = ['4'];
-        this.activeProtocolVersion = 4;
+        this.activeProtocolVersion = '4';
 
         this.stop = false;
         this.client = null;
@@ -78,7 +78,6 @@ class StateRedisClient {
         if (this.supportedProtocolVersions.includes(protoVersion)) {
             this.activeProtocolVersion = parseInt(protoVersion);
         } else {
-            // find at least one of the lowest hosts, to tell user which one to upgrade
             throw new Error(`This host does not support protocol version "${protoVersion}"`);
         }
     }
