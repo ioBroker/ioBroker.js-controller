@@ -159,6 +159,7 @@ function checkNonEditable(oldObject, newObject) {
 /**
  * @param {string} repoVersion
  * @param {string} installedVersion
+ * @throws
  */
 function upToDate(repoVersion, installedVersion) {
     // Check if the installed version is at least the repo version

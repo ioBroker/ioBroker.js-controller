@@ -139,14 +139,19 @@ function Repo(options) {
 
                 if (installed[name] && installed[name].version) {
                     text += ', installed ' + installed[name].version;
-                    if (
-                        sources[name].version !== installed[name].version &&
-                        sources[name].version &&
-                        !tools.upToDate(sources[name].version, installed[name].version)
-                    ) {
-                        updatable = true;
-                        text = text.padEnd(11 + 15 + 11 + 18);
-                        text += ' [Updatable]';
+                    try {
+                        // tools.upToDate can throw if version is invalid
+                        if (
+                            sources[name].version !== installed[name].version &&
+                            sources[name].version &&
+                            !tools.upToDate(sources[name].version, installed[name].version)
+                        ) {
+                            updatable = true;
+                            text = text.padEnd(11 + 15 + 11 + 18);
+                            text += ' [Updatable]';
+                        }
+                    } catch (e) {
+                        console.error(`Cannot determine update info of "${name}": ${e.message}`);
                     }
                 }
                 if ((flags.updatable || flags.u) && !updatable) {
@@ -216,13 +221,18 @@ function Repo(options) {
 
         Object.keys(sources).forEach(name => {
             if (installed[name] && installed[name].version && sources[name].version) {
-                if (
-                    sources[name].version !== installed[name].version &&
-                    !tools.upToDate(sources[name].version, installed[name].version)
-                ) {
-                    // remove first part of the name
-                    const n = name.indexOf('.');
-                    list.push(n === -1 ? name : name.substring(n + 1));
+                try {
+                    // tools.upToDate can throw if version is invalid
+                    if (
+                        sources[name].version !== installed[name].version &&
+                        !tools.upToDate(sources[name].version, installed[name].version)
+                    ) {
+                        // remove first part of the name
+                        const n = name.indexOf('.');
+                        list.push(n === -1 ? name : name.substring(n + 1));
+                    }
+                } catch (e) {
+                    console.error(`Cannot determine update info of "${name}": ${e.message}`);
                 }
             }
         });
