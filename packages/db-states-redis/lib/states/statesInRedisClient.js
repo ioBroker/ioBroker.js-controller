@@ -1348,7 +1348,7 @@ class StateRedisClient {
      *
      * @returns {Promise<string>}
      */
-    async getProtocolVersion() {
+    getProtocolVersion() {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
