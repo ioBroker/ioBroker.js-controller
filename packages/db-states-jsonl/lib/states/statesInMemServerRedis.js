@@ -61,6 +61,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
         //this.namespaceSessionlen = this.namespaceSession.length;
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
             .then(() => {
@@ -108,7 +110,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             const pointIdx = idWithNamespace.indexOf('.');
             if (pointIdx !== -1) {
                 ns = idWithNamespace.substr(0, pointIdx + 1);
-                if (ns === this.namespaceStates) {
+                if (ns === this.namespaceStates || ns === this.metaNamespace) {
                     id = idWithNamespace.substr(pointIdx + 1);
                 }
             }
@@ -240,6 +242,13 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 } else {
                     handler.sendBulk(responseId, JSON.stringify(result));
                 }
+            } else if (namespace === this.metaNamespace) {
+                const result = this.getMeta(id);
+                if (!result) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, result);
+                }
             } else {
                 handler.sendError(
                     responseId,
@@ -266,6 +275,9 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 } catch (err) {
                     handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
                 }
+            } else if (namespace === this.metaNamespace) {
+                this.setMeta(id, data[1]);
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(
                     responseId,

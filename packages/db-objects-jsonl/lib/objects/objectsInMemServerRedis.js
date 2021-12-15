@@ -68,6 +68,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.knownScripts = {};
 
@@ -151,6 +153,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                             isMeta = undefined;
                         }
                     }
+                }
+            } else if (idWithNamespace.startsWith(this.metaNamespace)) {
+                const idx = this.metaNamespaceLen;
+                if (idx !== -1) {
+                    ns = idWithNamespace.substr(0, idx);
+                    id = idWithNamespace.substr(idx);
                 }
             }
         }
@@ -505,6 +513,13 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
+            } else if (namespace === this.metaNamespace) {
+                const result = this.getMeta(id);
+                if (!result) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, result);
+                }
             } else {
                 handler.sendError(
                     responseId,
@@ -561,6 +576,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     handler.sendString(responseId, 'OK');
                 }
+            } else if (namespace === this.metaNamespace) {
+                this.setMeta(id, data[1]);
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(
                     responseId,
