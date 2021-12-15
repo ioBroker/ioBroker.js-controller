@@ -737,6 +737,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.metaNamespace) {
+                this._subscribeMeta(handler, id);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {
                 handler.sendError(
                     responseId,

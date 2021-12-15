@@ -242,6 +242,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         this.handleSubscribe(client, 'state', pattern);
     }
 
+    _subscribeMeta(client, pattern) {
+        this.handleSubscribe(client, 'meta', pattern);
+    }
+
     // needed by Server
     _unsubscribeForClient(client, pattern) {
         this.handleUnsubscribe(client, 'state', pattern);

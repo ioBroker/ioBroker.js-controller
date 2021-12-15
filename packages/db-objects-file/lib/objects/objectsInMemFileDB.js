@@ -805,6 +805,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.handleSubscribe(client, 'objects', pattern);
     }
 
+    _subscribeMeta(client, pattern) {
+        this.handleSubscribe(client, 'meta', pattern);
+    }
     // needed by server
     _unsubscribeConfigForClient(client, pattern) {
         this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone

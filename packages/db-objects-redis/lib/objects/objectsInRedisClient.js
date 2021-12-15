@@ -311,6 +311,21 @@ class ObjectsInRedisClient {
                             this.log.silly(
                                 `${this.namespace} Objects system redis pmessage ${pattern}/${channel}:${message}`
                             );
+
+                            if (channel.startsWith(this.metaNamespace)) {
+                                if (
+                                    channel === `${this.metaNamespace}objects.protocolVersion` &&
+                                    message !== this.activeProtocolVersion
+                                ) {
+                                    // protocol version has changed, restart controller
+                                    this.log.info(
+                                        `${this.namespace} Objects protocol version has changed, restarting controller!`
+                                    );
+                                    // TODO: restart controller
+                                    return;
+                                }
+                            }
+
                             try {
                                 if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                     const id = channel.substring(this.objNamespaceL);
@@ -431,6 +446,15 @@ class ObjectsInRedisClient {
                         this.subSystem && (await this.subSystem.psubscribe(`${this.objNamespace}system.config`));
                     } catch {
                         // ignore
+                    }
+
+                    // subscribe to meta changes
+                    try {
+                        this.subSystem && (await this.subSystem.subscribe(`${this.metaNamespace}*`));
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
+                        );
                     }
 
                     if (this.subSystem) {

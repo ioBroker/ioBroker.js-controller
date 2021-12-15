@@ -284,6 +284,20 @@ class StateRedisClient {
                                 `${this.namespace} States system redis pmessage ${pattern}/${channel}:${message}`
                             );
 
+                            if (channel.startsWith(this.metaNamespace)) {
+                                if (
+                                    channel === `${this.metaNamespace}states.protocolVersion` &&
+                                    message !== this.activeProtocolVersion
+                                ) {
+                                    // protocol version has changed, restart controller
+                                    this.log.info(
+                                        `${this.namespace} States protocol version has changed, restarting controller!`
+                                    );
+                                    // TODO: restart controller
+                                    return;
+                                }
+                            }
+
                             try {
                                 message = message
                                     ? JSON.parse(message, message.includes('"Buffer"') ? bufferJsonDecoder : undefined)
@@ -406,6 +420,15 @@ class StateRedisClient {
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to evicted Keyspace events from Redis Server: ${e.message}`
+                        );
+                    }
+
+                    // subscribe to meta changes
+                    try {
+                        this.subSystem && (await this.subSystem.subscribe(`${this.metaNamespace}*`));
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
                         );
                     }
 
