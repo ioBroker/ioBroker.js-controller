@@ -294,7 +294,7 @@ class StateRedisClient {
                                         this.log.info(
                                             `${this.namespace} States protocol version has changed, restarting controller!`
                                         );
-                                        // TODO: restart controller
+                                        this.settings.restart();
                                     }
                                     return;
                                 }
