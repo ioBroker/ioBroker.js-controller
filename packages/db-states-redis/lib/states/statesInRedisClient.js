@@ -289,11 +289,13 @@ class StateRedisClient {
                                     channel === `${this.metaNamespace}states.protocolVersion` &&
                                     message !== this.activeProtocolVersion
                                 ) {
-                                    // protocol version has changed, restart controller
-                                    this.log.info(
-                                        `${this.namespace} States protocol version has changed, restarting controller!`
-                                    );
-                                    // TODO: restart controller
+                                    if (this.settings.restart) {
+                                        // protocol version has changed, restart controller
+                                        this.log.info(
+                                            `${this.namespace} States protocol version has changed, restarting controller!`
+                                        );
+                                        // TODO: restart controller
+                                    }
                                     return;
                                 }
                             }
