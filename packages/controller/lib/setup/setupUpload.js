@@ -324,9 +324,7 @@ function Upload(options) {
                         }
                         try {
                             const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
-                            if (result.files) {
-                                _files = _files.concat(result.files);
-                            } else if (_files.filesToDelete) {
+                            if (_files.filesToDelete) {
                                 _files = _files.concat(result.filesToDelete);
                             }
 
@@ -547,7 +545,7 @@ function Upload(options) {
         );
         if (filesToDelete) {
             // directories should be deleted automatically
-            //files = files.concat(dirs);
+            // files = files.concat(dirs);
         } else {
             filesToDelete = [];
         }
