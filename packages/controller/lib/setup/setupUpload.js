@@ -324,10 +324,15 @@ function Upload(options) {
                         }
                         try {
                             const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
-                            _files = _files.concat(result.files);
+                            if (result.files) {
+                                _files = _files.concat(result.files);
+                            } else if (_files.filesToDelete) {
+                                _files = _files.concat(result.filesToDelete);
+                            }
+
                             _dirs = _dirs.concat(result.dirs);
                         } catch (err) {
-                            console.warn(`Cannot delete folder "${adapter}/${newPath}/": ${err.mesasge}`);
+                            console.warn(`Cannot delete folder "${adapter}${newPath}/": ${err.message}`);
                         }
                     } else if (!_files.find(e => e.path === newPath)) {
                         _files.push({ adapter, path: newPath });
