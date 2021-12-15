@@ -510,7 +510,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
             } else if (namespace === this.metaNamespace) {
-                // TODO
+                const result = this.getMeta(id);
+                if (!result) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, result);
+                }
             } else {
                 handler.sendError(
                     responseId,
@@ -568,7 +573,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendString(responseId, 'OK');
                 }
             } else if (namespace === this.metaNamespace) {
-                // TODO
+                this.setMeta(id, data[1]);
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(
                     responseId,

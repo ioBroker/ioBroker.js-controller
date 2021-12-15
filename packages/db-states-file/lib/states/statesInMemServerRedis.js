@@ -246,7 +246,12 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                     handler.sendBulk(responseId, JSON.stringify(result));
                 }
             } else if (namespace === this.metaNamespace) {
-                // TODO
+                const result = this.getMeta(id);
+                if (!result) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, result);
+                }
             } else {
                 handler.sendError(
                     responseId,
@@ -274,7 +279,8 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                     handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
                 }
             } else if (namespace === this.metaNamespace) {
-                // TODO
+                this.setMeta(id, data[1]);
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(
                     responseId,
