@@ -17,7 +17,6 @@
 const Redis = require('ioredis');
 const tools = require('@iobroker/db-base').tools;
 const { isDeepStrictEqual } = require('util');
-const utils = require('./objectsUtils.js');
 
 /**
  *
@@ -1320,7 +1319,7 @@ class StateRedisClient {
      */
     async getProtocolVersion() {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         return this.client.get(`${this.metaNamespace}states.protocolVersion`);
@@ -1333,7 +1332,7 @@ class StateRedisClient {
      */
     async setProtocolVersion(version) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         await this.client.set(`${this.metaNamespace}states.protocolVersion`, version.toString());
