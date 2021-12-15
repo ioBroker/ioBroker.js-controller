@@ -72,6 +72,14 @@ class StateRedisClient {
     async _determineProtocolVersion() {
         const protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
 
+        if (!protoVersion) {
+            // if no proto version existent yet, we set ours
+            const highestVersion = Math.max(...this.supportedProtocolVersions);
+            await this.setProtocolVersion(highestVersion);
+            this.activeProtocolVersion = highestVersion.toString();
+            return;
+        }
+
         // check if we can support this version
         if (this.supportedProtocolVersions.includes(protoVersion)) {
             this.activeProtocolVersion = protoVersion;

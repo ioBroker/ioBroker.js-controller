@@ -130,8 +130,6 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     idx = this.namespaceFileLen;
                 } else if (idWithNamespace.startsWith(this.namespaceSet)) {
                     idx = this.namespaceSetLen;
-                } else if (idWithNamespace.startsWith(this.metaNamespace)) {
-                    idx = this.metaNamespaceLen;
                 }
 
                 if (idx !== -1) {
@@ -155,6 +153,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             isMeta = undefined;
                         }
                     }
+                }
+            } else if (idWithNamespace.startsWith(this.metaNamespace)) {
+                const idx = this.metaNamespaceLen;
+                if (idx !== -1) {
+                    ns = idWithNamespace.substr(0, idx);
+                    id = idWithNamespace.substr(idx);
                 }
             }
         }
