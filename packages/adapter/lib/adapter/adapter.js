@@ -2443,12 +2443,11 @@ function Adapter(options) {
 
             // delete arrays if they should be changed
             if (
-                obj && (
-                    (obj.common && obj.common.members) ||
+                obj &&
+                ((obj.common && obj.common.members) ||
                     (obj.native && obj.native.repositories) ||
                     (obj.native && obj.native.certificates) ||
-                    (obj.native && obj.native.devices)
-                )
+                    (obj.native && obj.native.devices))
             ) {
                 if (!oldObj) {
                     logger.error(`${this.namespaceLog} Object ${id} not exist!`);
@@ -2713,12 +2712,11 @@ function Adapter(options) {
 
             // delete arrays if they should be changed
             if (
-                obj && (
-                    (obj.common && obj.common.members) ||
+                obj &&
+                ((obj.common && obj.common.members) ||
                     (obj.native && obj.native.repositories) ||
                     (obj.native && obj.native.certificates) ||
-                    (obj.native && obj.native.devices)
-                )
+                    (obj.native && obj.native.devices))
             ) {
                 if (!oldObj) {
                     logger.error(`${this.namespaceLog} Object ${id} not exist!`);
@@ -3144,15 +3142,18 @@ function Adapter(options) {
                 const promises = [];
 
                 for (const currEnum of _enumList) {
-                    promises.push(new Promise((resolve, reject) =>
-                        this.getEnum(currEnum, options, (err, list, _enum) => {
-                            if (err) {
-                                return reject(err);
-                            } else if (list) {
-                                _enums[_enum] = list;
-                            }
-                            resolve();
-                        })));
+                    promises.push(
+                        new Promise((resolve, reject) =>
+                            this.getEnum(currEnum, options, (err, list, _enum) => {
+                                if (err) {
+                                    return reject(err);
+                                } else if (list) {
+                                    _enums[_enum] = list;
+                                }
+                                resolve();
+                            })
+                        )
+                    );
                 }
 
                 Promise.all(promises)
@@ -3475,7 +3476,6 @@ function Adapter(options) {
          * Promise-version of Adapter.delObject
          */
         this.delObjectAsync = tools.promisify(this.delObject, this);
-
         const _deleteObjects = (tasks, options, cb) => {
             if (!tasks || !tasks.length) {
                 return tools.maybeCallback(cb);
@@ -3537,17 +3537,19 @@ function Adapter(options) {
             if (options && options.recursive) {
                 // read object itself
                 adapterObjects.getObject(id, options, (err, obj) => {
-                    const tasks = obj && (!obj.common || !obj.common.dontDelete) ? [{id, state: obj.type === 'state'}] : [];
+                    const tasks =
+                        obj && (!obj.common || !obj.common.dontDelete) ? [{ id, state: obj.type === 'state' }] : [];
 
                     const selector = { startkey: id + '.', endkey: id + '.\u9999' };
                     // read all underlying states
                     adapterObjects.getObjectList(selector, options, (err, res) => {
                         res &&
                             res.rows &&
-                            res.rows.forEach(item =>
-                                !tasks.find(task => task.id === item.id) &&
-                                (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
-                                tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
+                            res.rows.forEach(
+                                item =>
+                                    !tasks.find(task => task.id === item.id) &&
+                                    (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
+                                    tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
                             );
                         _deleteObjects(tasks, options, callback);
                     });
@@ -9552,7 +9554,7 @@ function Adapter(options) {
      * This method returns the list of license that can be used by this adapter
      * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
      * @returns {Promise<object[]>} list of suitable licenses
-    */
+     */
     this.getSuitableLicenses = async all => {
         const licenses = [];
         try {
@@ -9566,16 +9568,19 @@ function Adapter(options) {
                 obj.native.licenses.forEach(license => {
                     try {
                         const decoded = jwt.verify(license.json, cert);
-                        if (decoded.name &&
+                        if (
+                            decoded.name &&
                             (!decoded.valid_till ||
                                 license.valid_till === '0000-00-00 00:00:00' ||
                                 new Date(license.valid_till).getTime() > now)
                         ) {
-                            if (decoded.name.startsWith('iobroker.' + this.name) &&
+                            if (
+                                decoded.name.startsWith('iobroker.' + this.name) &&
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
                                 // If license is for adapter with version 0 or 1
-                                if (decoded.version === '&lt;2' ||
+                                if (
+                                    decoded.version === '&lt;2' ||
                                     decoded.version === '<2' ||
                                     decoded.version === '<1' ||
                                     decoded.version === '<=1'

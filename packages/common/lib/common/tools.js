@@ -1440,12 +1440,12 @@ async function installNodeModule(npmUrl, options = {}) {
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             ? // If a cwd was provided, use it
-            { cwd: options.cwd }
+              { cwd: options.cwd }
             : // Otherwise find the ioBroker root dir
-            {
-                cwd: __dirname,
-                setCwdToPackageRoot: true
-            }
+              {
+                  cwd: __dirname,
+                  setCwdToPackageRoot: true
+              }
     );
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
@@ -1489,12 +1489,12 @@ async function uninstallNodeModule(packageName, options = {}) {
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             ? // If a cwd was provided, use it
-            { cwd: options.cwd }
+              { cwd: options.cwd }
             : // Otherwise find the ioBroker root dir
-            {
-                cwd: __dirname,
-                setCwdToPackageRoot: true
-            }
+              {
+                  cwd: __dirname,
+                  setCwdToPackageRoot: true
+              }
     );
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
@@ -1532,12 +1532,12 @@ async function rebuildNodeModules(options = {}) {
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
             ? // If a cwd was provided, use it
-            { cwd: options.cwd }
+              { cwd: options.cwd }
             : // Otherwise find the ioBroker root dir
-            {
-                cwd: __dirname,
-                setCwdToPackageRoot: true
-            }
+              {
+                  cwd: __dirname,
+                  setCwdToPackageRoot: true
+              }
     );
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
@@ -1609,10 +1609,13 @@ function getDiskInfo(platform, callback) {
                             });
                             if (line) {
                                 const parts = line.split(/\s+/);
-                                return callback && callback(error, {
-                                    'Disk size': parseInt(parts[2]),
-                                    'Disk free': parseInt(parts[1])
-                                });
+                                return (
+                                    callback &&
+                                    callback(error, {
+                                        'Disk size': parseInt(parts[2]),
+                                        'Disk free': parseInt(parts[1])
+                                    })
+                                );
                             }
                         }
                         callback && callback(error, null);
@@ -1626,10 +1629,13 @@ function getDiskInfo(platform, callback) {
                     try {
                         if (stdout) {
                             const parts = stdout.split('\n')[1].split(/\s+/);
-                            return callback && callback(error, {
-                                'Disk size': parseInt(parts[1]) * 1024,
-                                'Disk free': parseInt(parts[3]) * 1024
-                            });
+                            return (
+                                callback &&
+                                callback(error, {
+                                    'Disk size': parseInt(parts[1]) * 1024,
+                                    'Disk free': parseInt(parts[3]) * 1024
+                                })
+                            );
                         }
                     } catch {
                         // continue regardless of error
@@ -2062,23 +2068,23 @@ function promisify(fn, context, returnArgNames) {
                                     return resolve(); // Promise<void>
                                 case 2: // a single value (result) was returned
                                     return resolve(result);
-                                    default: {
-                                        // multiple values should be returned
-                                        /** @type {{} | any[]} */
-                                        let ret;
-                                        const extraArgs = sliceArgs(arguments, 1);
-                                        if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                            // we can build an object
-                                            ret = {};
-                                            for (let i = 0; i < returnArgNames.length; i++) {
-                                                ret[returnArgNames[i]] = extraArgs[i];
-                                            }
-                                        } else {
-                                            // we return the raw array
-                                            ret = extraArgs;
+                                default: {
+                                    // multiple values should be returned
+                                    /** @type {{} | any[]} */
+                                    let ret;
+                                    const extraArgs = sliceArgs(arguments, 1);
+                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                        // we can build an object
+                                        ret = {};
+                                        for (let i = 0; i < returnArgNames.length; i++) {
+                                            ret[returnArgNames[i]] = extraArgs[i];
                                         }
-                                        return resolve(ret);
+                                    } else {
+                                        // we return the raw array
+                                        ret = extraArgs;
                                     }
+                                    return resolve(ret);
+                                }
                             }
                         }
                     }
@@ -2113,8 +2119,8 @@ function promisifyNoError(fn, context, returnArgNames) {
                                 return resolve(); // Promise<void>
                             case 1: // a single value (result) was returned
                                 return resolve(result);
-                                default: {
-                                    // multiple values should be returned
+                            default: {
+                                // multiple values should be returned
                                 /** @type {{} | any[]} */
                                 let ret;
                                 const extraArgs = sliceArgs(arguments, 0);
@@ -2193,7 +2199,7 @@ function setQualityForInstance(objects, states, namespace, q) {
                         // Get only states, that have ack = true
                         keys = keys.filter((_id, i) => values[i] && values[i].ack);
                         // update quality code of the states to new one
-                            _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
+                        _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
                     });
                 }
             }
@@ -2668,7 +2674,9 @@ function validateGeneralObjectProperties(obj, extend) {
             const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
                 throw new Error(
-                    `obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`
+                    `obj.common.type has an invalid value (${
+                        obj.common.type
+                    }) but has to be one of ${allowedStateTypes.join(', ')}`
                 );
             }
 
@@ -2698,7 +2706,11 @@ function validateGeneralObjectProperties(obj, extend) {
                         );
                     } else {
                         throw new Error(
-                            `Default value has to be ${obj.common.type === 'mixed' ? `one of type "string", "number", "boolean"` : `type "${obj.common.type}"`} but received type "${typeof obj.common.def}"`
+                            `Default value has to be ${
+                                obj.common.type === 'mixed'
+                                    ? `one of type "string", "number", "boolean"`
+                                    : `type "${obj.common.type}"`
+                            } but received type "${typeof obj.common.def}"`
                         );
                     }
                 }
@@ -2719,9 +2731,7 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     if (obj.common.role !== undefined && typeof obj.common.role !== 'string') {
-        throw new Error(
-            `obj.common.role has an invalid type! Expected "string", received "${typeof obj.common.role}"`
-        );
+        throw new Error(`obj.common.role has an invalid type! Expected "string", received "${typeof obj.common.role}"`);
     }
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
@@ -3436,10 +3446,11 @@ async function _readLicenses(login, password) {
         const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config);
         if (response.data && response.data.length) {
             const now = Date.now();
-            response.data = response.data.filter(license =>
-                !license.validTill ||
-                license.validTill === '0000-00-00 00:00:00' ||
-                new Date(license.validTill).getTime() > now
+            response.data = response.data.filter(
+                license =>
+                    !license.validTill ||
+                    license.validTill === '0000-00-00 00:00:00' ||
+                    new Date(license.validTill).getTime() > now
             );
         }
 
@@ -3506,11 +3517,13 @@ async function updateLicenses(objects, login, password) {
                 return licenses;
             } catch (err) {
                 // if password is invalid
-                if (err.message.includes('Authentication required') ||
+                if (
+                    err.message.includes('Authentication required') ||
                     err.message.includes('Cannot decode password:')
                 ) {
                     // clear existing licenses if exist
-                    if (systemLicenses &&
+                    if (
+                        systemLicenses &&
                         systemLicenses.native &&
                         systemLicenses.native.licenses &&
                         systemLicenses.native.licenses.length
@@ -3525,7 +3538,8 @@ async function updateLicenses(objects, login, password) {
             }
         } else {
             // if password or login are empty => clear existing licenses if exist
-            if (systemLicenses &&
+            if (
+                systemLicenses &&
                 systemLicenses.native &&
                 systemLicenses.native.licenses &&
                 systemLicenses.native.licenses.length

@@ -3084,12 +3084,17 @@ async function processMessage(msg) {
 
         // read licenses from iobroker.net
         case 'updateLicenses': {
-            tools.updateLicenses(objects, msg.message && msg.message.login, msg.message && msg.message.password)
-                .then(licenses =>
-                    msg.callback && msg.from && sendTo(msg.from, msg.command, {result: licenses}, msg.callback)
+            tools
+                .updateLicenses(objects, msg.message && msg.message.login, msg.message && msg.message.password)
+                .then(
+                    licenses =>
+                        msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback)
                 )
-                .catch(err =>
-                    msg.callback && msg.from && sendTo(msg.from, msg.command, {result: [], error: err.message}, msg.callback)
+                .catch(
+                    err =>
+                        msg.callback &&
+                        msg.from &&
+                        sendTo(msg.from, msg.command, { result: [], error: err.message }, msg.callback)
                 );
             break;
         }

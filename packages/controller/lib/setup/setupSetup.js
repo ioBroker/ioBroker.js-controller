@@ -690,7 +690,9 @@ function Setup(options) {
 
         const defaultObjectsHost = otype === originalConfig.objects.type ? originalConfig.objects.host : '127.0.0.1';
         let ohost = rl.question(
-            `Host / Unix Socket of objects DB(${otype}), default[${Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost}]: `,
+            `Host / Unix Socket of objects DB(${otype}), default[${
+                Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }
@@ -707,10 +709,13 @@ function Setup(options) {
 
         const defaultObjectsPort =
             otype === originalConfig.objects.type && ohost === originalConfig.objects.host
-                ? originalConfig.objects.port : op;
+                ? originalConfig.objects.port
+                : op;
 
         const userObjPort = rl.question(
-            `Port of objects DB(${otype}), default[${Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort}]: `,
+            `Port of objects DB(${otype}), default[${
+                Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
                 limit: /^[0-9, ]+$/
@@ -737,7 +742,8 @@ function Setup(options) {
         let oSentinelName = null;
         if (oSentinel) {
             const defaultSentinelName = originalConfig.objects.sentinelName
-                ? originalConfig.objects.sentinelName : 'mymaster';
+                ? originalConfig.objects.sentinelName
+                : 'mymaster';
             oSentinelName = rl.question(`Objects Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
@@ -791,7 +797,9 @@ function Setup(options) {
             defaultStatesHost = ohost;
         }
         let shost = rl.question(
-            `Host / Unix Socket of states DB (${stype}), default[${Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost}]: `,
+            `Host / Unix Socket of states DB (${stype}), default[${
+                Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }
@@ -808,12 +816,15 @@ function Setup(options) {
 
         let defaultStatesPort =
             stype === originalConfig.states.type && shost === originalConfig.states.host
-                ? originalConfig.states.port : sp;
+                ? originalConfig.states.port
+                : sp;
         if (stype === otype && !dbTools.statesDbHasServer(stype) && shost === ohost) {
             defaultStatesPort = oport;
         }
         const userStatePort = rl.question(
-            `Port of states DB (${stype}), default[${Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort}]: `,
+            `Port of states DB (${stype}), default[${
+                Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort,
                 limit: /^[0-9, ]+$/
@@ -858,7 +869,11 @@ function Setup(options) {
             });
 
             hname = rl.question(
-                `Host name of this machine [${originalConfig && originalConfig.system ? originalConfig.system.hostname || require('os').hostname() : require('os').hostname()}]: `,
+                `Host name of this machine [${
+                    originalConfig && originalConfig.system
+                        ? originalConfig.system.hostname || require('os').hostname()
+                        : require('os').hostname()
+                }]: `,
                 {
                     defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
                 }
@@ -874,16 +889,16 @@ function Setup(options) {
             return void callback(23);
         }
 
-        config.system           = config.system || {};
-        config.system.hostname  = hname;
-        config.objects.host     = ohost;
-        config.objects.type     = otype;
-        config.objects.port     = oport;
-        config.states.host      = shost;
-        config.states.type      = stype;
-        config.states.port      = sport;
-        config.states.dataDir   = undefined;
-        config.objects.dataDir  = undefined;
+        config.system = config.system || {};
+        config.system.hostname = hname;
+        config.objects.host = ohost;
+        config.objects.type = otype;
+        config.objects.port = oport;
+        config.states.host = shost;
+        config.states.type = stype;
+        config.states.port = sport;
+        config.states.dataDir = undefined;
+        config.objects.dataDir = undefined;
         if (dir) {
             config.objects.dataDir = dir;
         }
