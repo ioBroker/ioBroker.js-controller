@@ -572,11 +572,8 @@ class StateRedisClient {
             try {
                 await this._determineProtocolVersion();
             } catch (e) {
-                this.log.error(
-                    `${this.namespace} States DB is not allowed to start in the current Multihost environment`
-                );
                 this.log.error(`${this.namespace} ${e.message}`);
-                return;
+                throw new Error('States DB is not allowed to start in the current Multihost environment');
             }
 
             if (initCounter < 1) {

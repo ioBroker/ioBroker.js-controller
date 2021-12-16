@@ -598,11 +598,8 @@ class ObjectsInRedisClient {
             try {
                 await this._determineProtocolVersion();
             } catch (e) {
-                this.log.error(
-                    `${this.namespace} Objects DB is not allowed to start in the current Multihost environment`
-                );
                 this.log.error(`${this.namespace} ${e.message}`);
-                return;
+                throw new Error('Objects DB is not allowed to start in the current Multihost environment');
             }
 
             // for controller v4 we have to check if we can use the new lua scripts and set logic
