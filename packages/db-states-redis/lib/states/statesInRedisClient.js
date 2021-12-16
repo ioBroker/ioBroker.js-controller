@@ -1369,6 +1369,7 @@ class StateRedisClient {
         // we can only set a protocol if we actually support it
         if (this.supportedProtocolVersions.includes(version)) {
             await this.client.set(`${this.metaNamespace}states.protocolVersion`, version);
+            await this.client.publish(`${this.metaNamespace}states.protocolVersion`, version);
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
         }
