@@ -64,8 +64,8 @@ module.exports = class CLIStates extends CLICommand {
      */
     getVersion() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
-            const version = await objects.getProtocolVersion();
+        dbConnect(async (objects, states) => {
+            const version = await states.getProtocolVersion();
             console.log(`Current States DB protocol version: ${version}`);
             return void callback();
         });
