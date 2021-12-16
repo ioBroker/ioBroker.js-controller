@@ -279,7 +279,8 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                     handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
                 }
             } else if (namespace === this.metaNamespace) {
-                this.setMeta(id, data[1]);
+                this.log.error('set proto version');
+                this.setMeta(id, data[1].toString('utf-8'));
                 handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(

@@ -427,7 +427,7 @@ class StateRedisClient {
 
                     // subscribe to meta changes
                     try {
-                        this.subSystem && (await this.subSystem.subscribe(`${this.metaNamespace}*`));
+                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
