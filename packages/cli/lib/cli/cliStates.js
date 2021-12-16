@@ -48,10 +48,10 @@ module.exports = class CLIStates extends CLICommand {
             case 'delete':
             case 'del':
                 return this.delete(args);
-            case 'getVersion':
-                return this.getVersion(args);
-            case 'setVersion':
-                return this.setVersion(args);
+            case 'getDBVersion':
+                return this.getDBVersion(args);
+            case 'setDBVersion':
+                return this.setDBVersion(args);
             default:
                 CLI.error.unknownCommand('state', command);
                 showHelp();
@@ -62,7 +62,7 @@ module.exports = class CLIStates extends CLICommand {
     /**
      * Get the protocol version
      */
-    getVersion() {
+    getDBVersion() {
         const { callback, dbConnect } = this.options;
         dbConnect(async (objects, states) => {
             const version = await states.getProtocolVersion();
@@ -74,7 +74,7 @@ module.exports = class CLIStates extends CLICommand {
     /**
      * Set protocol version
      */
-    setVersion(args) {
+    setDBVersion(args) {
         const { callback, dbConnect } = this.options;
         dbConnect(async (objects, states) => {
             try {

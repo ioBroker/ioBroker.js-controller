@@ -218,8 +218,8 @@ function initYargs() {
                 .command('chmod <object-mode> [state-mode] <id>', 'Change object rights', {})
                 .command('chown <user> <group> <id>', 'Change object ownership', {})
                 .command('list <pattern>', 'List object matching given pattern', {})
-                .command('setVersion <version>', 'Sets the protocol version of the objects database')
-                .command('getVersion', 'Get the protocol version of the objects database');
+                .command('setDBVersion <version>', 'Sets the protocol version of the objects database')
+                .command('getDBVersion', 'Get the protocol version of the objects database');
         })
         .command(['state', 's'], 'State management', yargs => {
             yargs
@@ -233,8 +233,8 @@ function initYargs() {
                 .command('getvalue <id>', 'Get state value, specified by id', {})
                 .command('set <id> <value> [<ack>]', 'Set state, specified by id', {})
                 .command('del <id>', 'Delete state, specified by id', {})
-                .command('setVersion <version>', 'Sets the protocol version of the states database')
-                .command('getVersion', 'Get the protocol version of the states database');
+                .command('setDBVersion <version>', 'Sets the protocol version of the states database')
+                .command('getDBVersion', 'Get the protocol version of the states database');
         })
         .command('message <adapter>[.instance] <command> [<message>]', 'Send message to adapter instance/s', {})
         .command('list <type> [<filter>]', 'List all entries, like objects', {})

@@ -36,10 +36,10 @@ module.exports = class CLIObjects extends CLICommand {
             case 'delete':
             case 'del':
                 return this.delete(args);
-            case 'getVersion':
-                return this.getVersion(args);
-            case 'setVersion':
-                return this.setVersion(args);
+            case 'getDBVersion':
+                return this.getDBVersion(args);
+            case 'setDBVersion':
+                return this.setDBVersion(args);
             default:
                 CLI.error.unknownCommand('object', command);
                 showHelp();
@@ -50,7 +50,7 @@ module.exports = class CLIObjects extends CLICommand {
     /**
      * Get the protocol version
      */
-    getVersion() {
+    getDBVersion() {
         const { callback, dbConnect } = this.options;
         dbConnect(async objects => {
             const version = await objects.getProtocolVersion();
@@ -62,7 +62,7 @@ module.exports = class CLIObjects extends CLICommand {
     /**
      * Set protocol version
      */
-    setVersion(args) {
+    setDBVersion(args) {
         const { callback, dbConnect } = this.options;
         dbConnect(async objects => {
             try {
