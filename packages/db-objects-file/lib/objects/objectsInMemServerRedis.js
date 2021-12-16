@@ -183,6 +183,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         if (found) {
             if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
                 const sendPattern = this.metaNamespace + found.pattern;
                 const sendId = this.metaNamespace + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);

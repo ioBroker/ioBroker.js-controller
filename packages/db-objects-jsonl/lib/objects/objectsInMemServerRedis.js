@@ -181,11 +181,18 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
         const found = s.find(sub => sub.regex.test(id));
         if (found) {
-            const objString = JSON.stringify(obj);
-            this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
-            const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
-            const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                const sendPattern = this.metaNamespace + found.pattern;
+                const sendId = this.metaNamespace + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else {
+                const objString = JSON.stringify(obj);
+                this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
+                const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
+                const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
             return 1;
         }
         return 0;

@@ -135,19 +135,26 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
         const found = s.find(sub => sub.regex.test(id));
 
         if (found) {
-            let objString;
-            try {
-                objString = JSON.stringify(obj);
-            } catch (e) {
-                // mainly catch circular structures - thus log object with inspect
-                this.log.error(`${this.namespace} Error on publishing state: ${id}=${inspect(obj)}: ${e.message}`);
-                return 0;
-            }
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                const sendPattern = this.metaNamespace + found.pattern;
+                const sendId = this.metaNamespace + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else {
+                let objString;
+                try {
+                    objString = JSON.stringify(obj);
+                } catch (e) {
+                    // mainly catch circular structures - thus log object with inspect
+                    this.log.error(`${this.namespace} Error on publishing state: ${id}=${inspect(obj)}: ${e.message}`);
+                    return 0;
+                }
 
-            this.log.silly(`${this.namespace} Redis Publish State ${id}=${objString}`);
-            const sendPattern = (type === 'state' ? '' : this.namespaceStates) + found.pattern;
-            const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+                this.log.silly(`${this.namespace} Redis Publish State ${id}=${objString}`);
+                const sendPattern = (type === 'state' ? '' : this.namespaceStates) + found.pattern;
+                const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
             return 1;
         }
         return 0;
