@@ -324,8 +324,8 @@ class ObjectsInRedisClient {
                                         );
                                         this.settings.restart();
                                     }
-                                    return;
                                 }
+                                return;
                             }
 
                             try {

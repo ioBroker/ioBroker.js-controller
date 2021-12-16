@@ -296,8 +296,8 @@ class StateRedisClient {
                                         );
                                         this.settings.restart();
                                     }
-                                    return;
                                 }
+                                return;
                             }
 
                             try {
