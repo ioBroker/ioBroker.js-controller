@@ -363,7 +363,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
-            if (namespace === this.namespaceObj) {
+            if (namespace === this.namespaceObj || namespace === this.metaNamespace) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }

@@ -197,7 +197,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         // Handle Redis "PUBLISH" request
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
-            if (namespace === this.namespaceStates) {
+            if (namespace === this.namespaceStates || namespace === this.metaNamespace) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
