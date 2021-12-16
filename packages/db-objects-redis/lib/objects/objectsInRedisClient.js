@@ -291,7 +291,7 @@ class ObjectsInRedisClient {
             initError = false;
             ignoreErrors = false;
 
-            this.log.debug(this.namespace + ' Objects client ready ... initialize now');
+            this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
             try {
                 await this.client.config('set', ['lua-time-limit', 10000]); // increase LUA timeout TODO needs better fix
             } catch (e) {
@@ -301,7 +301,7 @@ class ObjectsInRedisClient {
             let initCounter = 0;
             if (!this.subSystem && typeof onChange === 'function') {
                 initCounter++;
-                this.log.debug(this.namespace + ' Objects create System PubSub Client');
+                this.log.debug(`${this.namespace} Objects create System PubSub Client`);
                 this.subSystem = new Redis(this.settings.connection.options);
                 this.subSystem.ioBrokerSubscriptions = {};
 

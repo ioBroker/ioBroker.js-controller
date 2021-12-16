@@ -76,9 +76,9 @@ module.exports = class CLIStates extends CLICommand {
      */
     setVersion(args) {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
+        dbConnect(async (objects, states) => {
             try {
-                await objects.setProtocolVersion(args[1]);
+                await states.setProtocolVersion(args[1]);
             } catch (e) {
                 console.error(`Cannot update protocol version: ${e.message}`);
                 return void callback(1);
