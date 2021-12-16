@@ -317,12 +317,12 @@ class ObjectsInRedisClient {
                                     channel === `${this.metaNamespace}objects.protocolVersion` &&
                                     message !== this.activeProtocolVersion
                                 ) {
-                                    if (this.settings.restart) {
+                                    if (typeof this.settings.disconnected === 'function') {
                                         // protocol version has changed, restart controller
                                         this.log.info(
-                                            `${this.namespace} Objects protocol version has changed, restarting controller!`
+                                            `${this.namespace} Objects protocol version has changed, disconnecting!`
                                         );
-                                        this.settings.restart();
+                                        this.settings.disconnected();
                                     }
                                 }
                                 return;

@@ -289,12 +289,12 @@ class StateRedisClient {
                                     channel === `${this.metaNamespace}states.protocolVersion` &&
                                     message !== this.activeProtocolVersion
                                 ) {
-                                    if (this.settings.restart) {
+                                    if (typeof this.settings.disconnected === 'function') {
                                         // protocol version has changed, restart controller
                                         this.log.info(
-                                            `${this.namespace} States protocol version has changed, restarting controller!`
+                                            `${this.namespace} States protocol version has changed, disconnecting!`
                                         );
-                                        this.settings.restart();
+                                        this.settings.disconnected();
                                     }
                                 }
                                 return;

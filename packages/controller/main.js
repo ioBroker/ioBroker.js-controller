@@ -24,7 +24,6 @@ const { isDeepStrictEqual } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
-const restart = require('./lib/restart');
 const controllerVersions = {};
 
 let pluginHandler;
@@ -349,7 +348,6 @@ function createStates(onConnect) {
         connection: config.states,
         logger: logger,
         hostname: hostname,
-        restart: restart,
         change: (id, state) => {
             inputCount++;
             if (!id) {
@@ -621,7 +619,6 @@ function createObjects(onConnect) {
         controller: true,
         logger: logger,
         hostname: hostname,
-        restart: restart,
         connected: () => {
             // stop disconnect timeout
             if (objectsDisconnectTimeout) {
@@ -796,6 +793,7 @@ function createObjects(onConnect) {
                         ) {
                             // old version lower 4 new version greater 4, restart needed
                             logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
+                            const restart = require('./lib/restart');
                             restart();
                         } else if (
                             semver.gte(controllerVersions[id], '4.0.0') &&
@@ -803,6 +801,7 @@ function createObjects(onConnect) {
                         ) {
                             // controller was above 4 and now below 4
                             logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
+                            const restart = require('./lib/restart');
                             restart();
                         }
                     }
