@@ -747,7 +747,7 @@ function Setup(options) {
             const defaultSentinelName = originalConfig.objects.sentinelName
                 ? originalConfig.objects.sentinelName
                 : 'mymaster';
-            oSentinelName = rl.question('Objects Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
+            oSentinelName = rl.question(`Objects Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
         }

@@ -39,7 +39,7 @@ module.exports = class CLIObjects extends CLICommand {
             case 'getDBVersion':
                 return this.getDBVersion(args);
             case 'setDBVersion':
-                return this.setDBVersion(args);
+                return this.setDBVersion();
             default:
                 CLI.error.unknownCommand('object', command);
                 showHelp();
@@ -62,16 +62,30 @@ module.exports = class CLIObjects extends CLICommand {
     /**
      * Set protocol version
      */
-    setDBVersion(args) {
+    setDBVersion() {
         const { callback, dbConnect } = this.options;
         dbConnect(async objects => {
+            const rl = require('readline-sync');
+
+            let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
+                limit: /^(yes|y|n|no)$/i,
+                defaultInput: 'no'
+            });
+
+            answer = answer.toLowerCase();
+
+            if (answer !== 'y' && answer !== 'yes') {
+                console.log('Protocol version has not been changed!');
+                return void callback();
+            }
+
             try {
-                await objects.setProtocolVersion(args[1]);
+                await objects.setProtocolVersion(this.options.version);
             } catch (e) {
                 console.error(`Cannot update protocol version: ${e.message}`);
                 return void callback(1);
             }
-            console.log(`Objects DB protocol updated to version ${args[1]}`);
+            console.log(`Objects DB protocol updated to version ${this.options.version}`);
             return void callback();
         });
     }
