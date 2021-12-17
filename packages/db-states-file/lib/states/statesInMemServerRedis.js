@@ -254,7 +254,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                 }
             } else if (namespace === this.metaNamespace) {
                 const result = this.getMeta(id);
-                if (!result) {
+                if (result === undefined || result === null) {
                     handler.sendNull(responseId);
                 } else {
                     handler.sendBulk(responseId, result);
