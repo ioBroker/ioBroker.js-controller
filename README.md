@@ -917,6 +917,8 @@ The following features can be checked using this method:
 * **CONTROLLER_NPM_AUTO_REBUILD**: Automatic rebuild when node version mismatch is detected (since js-controller 3.0)
 * **CONTROLLER_READWRITE_BASE_SETTINGS**: Allow read and write of js-controller base settings file (iobroker.json) via host messages (since js-controller 3.0)
 * **CONTROLLER_MULTI_REPO**: indicates that controller supports multiple repository sources, which will be combined in one (since js-controller 4.0)
+* **CONTROLLER_GET_TIME**: indicates that controller can send local host time and offset as response to `getHostTime` message (since js-controller 4.0)
+* **DEL_INSTANCE_CUSTOM**: indicates that controller is able to delete all custom attributes of an adapter and instance if it is deleted via `--custom` flag (since js-controller 4.0)
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 
