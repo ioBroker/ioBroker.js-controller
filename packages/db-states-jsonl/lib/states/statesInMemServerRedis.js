@@ -61,6 +61,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
         //this.namespaceSessionlen = this.namespaceSession.length;
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.open()
             .then(() => {
@@ -108,7 +110,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             const pointIdx = idWithNamespace.indexOf('.');
             if (pointIdx !== -1) {
                 ns = idWithNamespace.substr(0, pointIdx + 1);
-                if (ns === this.namespaceStates) {
+                if (ns === this.namespaceStates || ns === this.metaNamespace) {
                     id = idWithNamespace.substr(pointIdx + 1);
                 }
             }
@@ -133,19 +135,26 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         const found = s.find(sub => sub.regex.test(id));
 
         if (found) {
-            let objString;
-            try {
-                objString = JSON.stringify(obj);
-            } catch (e) {
-                // mainly catch circular structures - thus log object with inspect
-                this.log.error(`${this.namespace} Error on publishing state: ${id}=${inspect(obj)}: ${e.message}`);
-                return 0;
-            }
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                const sendPattern = this.metaNamespace + found.pattern;
+                const sendId = this.metaNamespace + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else {
+                let objString;
+                try {
+                    objString = JSON.stringify(obj);
+                } catch (e) {
+                    // mainly catch circular structures - thus log object with inspect
+                    this.log.error(`${this.namespace} Error on publishing state: ${id}=${inspect(obj)}: ${e.message}`);
+                    return 0;
+                }
 
-            this.log.silly(`${this.namespace} Redis Publish State ${id}=${objString}`);
-            const sendPattern = (type === 'state' ? '' : this.namespaceStates) + found.pattern;
-            const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+                this.log.silly(`${this.namespace} Redis Publish State ${id}=${objString}`);
+                const sendPattern = (type === 'state' ? '' : this.namespaceStates) + found.pattern;
+                const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
             return 1;
         }
         return 0;
@@ -188,7 +197,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         // Handle Redis "PUBLISH" request
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
-            if (namespace === this.namespaceStates) {
+            if (namespace === this.namespaceStates || namespace === this.metaNamespace) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
@@ -240,6 +249,13 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 } else {
                     handler.sendBulk(responseId, JSON.stringify(result));
                 }
+            } else if (namespace === this.metaNamespace) {
+                const result = this.getMeta(id);
+                if (result === undefined || result === null) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, result);
+                }
             } else {
                 handler.sendError(
                     responseId,
@@ -266,6 +282,9 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 } catch (err) {
                     handler.sendError(responseId, new Error(`ERROR setState id=${id}: ${err.message}`));
                 }
+            } else if (namespace === this.metaNamespace) {
+                this.setMeta(id, data[1].toString('utf-8'));
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(
                     responseId,
@@ -372,6 +391,9 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else if (namespace === this.namespaceStates) {
                 this._subscribeForClient(handler, id);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.metaNamespace) {
+                this._subscribeMeta(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {
                 handler.sendError(

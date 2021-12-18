@@ -805,6 +805,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.handleSubscribe(client, 'objects', pattern);
     }
 
+    _subscribeMeta(client, pattern) {
+        this.handleSubscribe(client, 'meta', pattern);
+    }
     // needed by server
     _unsubscribeConfigForClient(client, pattern) {
         this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone
@@ -830,6 +833,44 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
 
         return keys.map(id => this.dataset[id]);
+    }
+
+    /**
+     * Get value of given meta id
+     *
+     * @param {string} id
+     * @returns {*}
+     */
+    getMeta(id) {
+        if (!this.dataset['**META**']) {
+            this.dataset['**META**'] = {};
+        }
+
+        return this.dataset['**META**'][id];
+    }
+
+    /**
+     * Sets given value to id in metaNamespace
+     *
+     * @param {string} id
+     * @param {string} value
+     */
+    setMeta(id, value) {
+        if (!this.dataset['**META**']) {
+            this.dataset['**META**'] = {};
+        }
+
+        this.dataset['**META**'][id] = value;
+
+        setImmediate(() => {
+            // publish event in states
+            this.log.silly(`${this.namespace} memory publish meta ${id} ${value}`);
+            this.publishAll('meta', id, value);
+        });
+
+        if (!this.stateTimer) {
+            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
+        }
     }
 
     // needed by server
