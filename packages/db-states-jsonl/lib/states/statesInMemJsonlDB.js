@@ -53,8 +53,10 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             fileName: 'states.json',
             backupDirName: 'backup-objects'
         };
+        super(settings);
+
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
-        const jsonlOptions = {
+        const jsonlOptions = this.settings.connection.jsonlOptions || {
             autoCompress: {
                 sizeFactor: 10,
                 sizeFactorMinimumSize: 50000
@@ -66,10 +68,8 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             }
         };
         settings.jsonlDB = {
-            fileName: 'states.jsonl',
-            options: jsonlOptions
+            fileName: 'states.jsonl'
         };
-        super(settings);
 
         /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);

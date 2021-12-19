@@ -30,8 +30,10 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             fileName: 'objects.json',
             backupDirName: 'backup-objects'
         };
+        super(settings);
+
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
-        const jsonlOptions = {
+        const jsonlOptions = this.settings.connection.jsonlOptions || {
             autoCompress: {
                 sizeFactor: 2,
                 sizeFactorMinimumSize: 25000
@@ -43,10 +45,8 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             }
         };
         settings.jsonlDB = {
-            fileName: 'objects.jsonl',
-            options: jsonlOptions
+            fileName: 'objects.jsonl'
         };
-        super(settings);
 
         /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);

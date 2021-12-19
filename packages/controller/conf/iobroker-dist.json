@@ -49,6 +49,17 @@
             "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
             "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+        },
+        "jsonlOptions": {
+            "autoCompress": {
+                "sizeFactor": 2,
+                "sizeFactorMinimumSize": 25000
+            },
+            "ignoreReadErrors": true,
+            "throttleFS": {
+                "intervalMs": 60000,
+                "maxBufferedCommands": 100
+            }
         }
     },
     "states" : {
@@ -76,6 +87,17 @@
             "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
             "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+        },
+        "jsonlOptions": {
+            "autoCompress": {
+                "sizeFactor": 10,
+                "sizeFactorMinimumSize": 50000
+            },
+            "ignoreReadErrors": true,
+            "throttleFS": {
+                "intervalMs": 60000,
+                "maxBufferedCommands": 2000
+            }
         }
     },
     "log": {
