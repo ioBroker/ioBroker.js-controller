@@ -9,24 +9,37 @@ For an explanation of the commands in native redis, we refer to the [redis docum
 
 Currently, the following commands are supported by the simulator for objects db:
 
+### Namespaces
+The simulator supports four different namespaces:
+
+- files (default: `cfg.f.`)
+- objects (default: `cfg.o.`)
+- sets (default: `cfg.s.`)
+- meta (default: `meta.`)
+
 ### Overview: Objects db and general functionalities
-| Command      | State of integration |
-| ----------- | ----------- |
-| quit      | full       |
-| script      | partial       |
-| evalsha      | full       |
-| publish      | full       |
-| mget      | full       |
-| get      | full       |
-| set      | full       |
-| del      | full       |
-| exists      | full       |
-| scan      | full       |
-| keys      | full       |
-| psubscribe      | full       |
-| punsubscribe      | full       |
-| config      | dummy       |
-| client      | partial       |
+| Command      | State of integration | namespace |
+| ----------- | ----------- | ----------- |
+| quit      | full       | independent |
+| script      | partial       | independent |
+| evalsha      | full       | independent |
+| publish      | full       | objects, meta |
+| mget      | full       | objects, files |
+| get      | full       | objects, files, meta |
+| set      | full       | objects, files, meta |
+| del      | full       | objects, files |
+| exists      | full       | objects, files, sets |
+| scan      | full       | objects, files, sets |
+| keys      | full       | objects, files, sets |
+| psubscribe      | full       | objects, meta |
+| punsubscribe      | full       | objects |
+| config      | dummy       | independent |
+| client      | partial       | independent |
+| multi | dummy | independent |
+| exec | dummy | independent |
+| sadd | dummy | independent |
+| srem | dummy | independent |
+| sscan |full | objects, files, sets |
 
 ### Overview: File db specific
 | Command      | State of integration |
@@ -68,13 +81,14 @@ On publish the server will publish to all clients who have subscribed to the obj
 `del` deletes a given object/file from the db.
 
 ### exists
-`exists` checks if a given object/file exists in the database.
+`exists` checks if a given object/file exists in the database. For sets this is just a dummy.
 
 ### scan
 `scan` is just like `keys` and returns all matching keys, but addtionally it returns the counter (always 0) to satisfy the redis client.
+For sets this is just a dummy.
 
 ### keys
-It returns all matching keys.
+It returns all matching keys. For sets this is just a dummy.
 
 ### psubscribe
 Subscribes for a pattern to receive object changes.
@@ -87,6 +101,21 @@ Mainly a dummy, just sends a positive response if `lua-time-limit` change receiv
 
 ### client
 Is used to handle `setname` and `getname` requests. `setname` is used to change the logging namespace. On `getname` the server will respond with the current connection name, which has been set via `getname`.
+
+### multi
+Just a dummy, responds with `OK`.
+
+### exec
+Just a dummy, responds with `OK`.
+
+### sadd
+Just a dummy, always responds with `1`, which means we have added the item to the set.
+
+### srem
+Just a dummy, always responds with `1`, which means we have removed the item from set.
+
+### sscan
+Does the same as `scan`.
 
 ## License
 Apache 2.0

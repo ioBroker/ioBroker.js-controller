@@ -9,23 +9,32 @@ For an explanation of the commands in native redis, we refer to the [redis docum
 
 Currently, the following commands are supported by the simulator for states db:
 
+### Namespaces
+The simulator supports five different namespaces:
+
+- states (default: `io.`)
+- messages (default: `messagebox.`)
+- log (default: `log.`)
+- session (default: `session.`)
+- meta (default: `meta.`)
+
 ### Overview
-| Command      | State of integration |
-| ----------- | ----------- |
-| info      | partial       |
-| quit      | full       |
-| publish      | full       |
-| mget      | full       |
-| get      | full       |
-| set      | full       |
-| setex      | full       |
-| del      | full       |
-| keys      | full       |
-| psubscribe      | full       |
-| punsubscribe      | full       |
-| subscribe      | dummy       |
-| config      | dummy       |
-| client      | partial       |
+| Command      | State of integration | namespace |
+| ----------- | ----------- | ----------- |
+| info      | partial       | independent |
+| quit      | full       | independent |
+| publish      | full       | all |
+| mget      | full       | states |
+| get      | full       | states, session, meta |
+| set      | full       | states, meta |
+| setex      | full       | states, session |
+| del      | full       | states, session |
+| keys      | full       | states |
+| psubscribe      | full       | messages, log, states, meta |
+| punsubscribe      | full       | messages, log, states |
+| subscribe      | dummy       | independent |
+| config      | dummy       | independent |
+| client      | partial       | independent |
 
 ### info
 Returns infomration about the simulator.
