@@ -324,8 +324,6 @@
         },
         "members": [],
         "dontDelete": true,
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
-        "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
         "acl": {
           "object": {
             "list": true,
@@ -473,7 +471,7 @@
         "defaultHistory": "",
         "expertMode": false,
         "defaultLogLevel": "info",
-        "activeRepo": "default",
+        "activeRepo": ["stable"],
         "diag": "extended",
         "tabs": [
           "tab-intro",
@@ -515,11 +513,11 @@
       },
       "native": {
         "repositories": {
-          "default": {
+          "stable": {
             "link": "http://download.iobroker.net/sources-dist.json",
             "json": null
           },
-          "latest": {
+          "beta": {
             "link": "http://download.iobroker.net/sources-dist-latest.json",
             "json": null
           }

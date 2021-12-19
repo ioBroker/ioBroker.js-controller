@@ -6,7 +6,6 @@ const { enumInstances } = require('./cliTools');
 
 /** Command iobroker object ... */
 module.exports = class CLIMessage extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -19,8 +18,7 @@ module.exports = class CLIMessage extends CLICommand {
     execute(args) {
         const { callback, dbConnect, showHelp } = this.options;
         /** @type {[string, string, any?]} */
-        // eslint-disable-next-line prefer-const
-        let [adapter, command, message] = (args);
+        let [adapter, command, message] = args;
         if (adapter === null || adapter === undefined) {
             CLI.error.requiredArgumentMissing('adapter');
             showHelp();
@@ -37,11 +35,7 @@ module.exports = class CLIMessage extends CLICommand {
         }
         // Try to parse JSON
         // TODO: can we use the methods from cliObjects?
-        if (
-            typeof message === 'string'
-            && message.startsWith('{')
-            && message.endsWith('}')
-        ) {
+        if (typeof message === 'string' && message.startsWith('{') && message.endsWith('}')) {
             message = JSON.parse(message);
         }
 
@@ -68,12 +62,9 @@ module.exports = class CLIMessage extends CLICommand {
                 }
 
                 // Send the message to all targets
-                const messagePromises = messageTargets.map(
-                    t => sendMessage(states, t, command, message)
-                );
+                const messagePromises = messageTargets.map(t => sendMessage(states, t, command, message));
                 await Promise.all(messagePromises);
                 return void callback();
-
             } catch (err) {
                 CLI.error.unknown(err.message);
                 return void callback(1);

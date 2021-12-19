@@ -27,3 +27,6 @@ node_modules
 /.dev-server
 ioB
 ioBroker
+*.tsbuildinfo
+/packages/controller/ioBroker.pid
+/packages/controller/iob-vendor.json

@@ -13,13 +13,13 @@ before(() => {
     chai.use(chaiAsPromised);
 });
 
-const setup  = require('./setup4controller');
+const setup = require('./setup4controller');
 const deepClone = require('deep-clone');
 
 function testAdapter(options) {
-    const statesConfig  = options.statesConfig;
+    const statesConfig = options.statesConfig;
     const objectsConfig = options.objectsConfig;
-    options.name  = options.name || 'Test';
+    options.name = options.name || 'Test';
 
     const tests = [
         require('./testAdapterHelpers'),
@@ -63,10 +63,8 @@ function testAdapter(options) {
             },
             dirname: __dirname + '/',
             name: context.adapterShortName,
-            objectChange: (id, obj) =>
-                context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
-            stateChange: (id, state) =>
-                context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
+            objectChange: (id, obj) => context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
+            stateChange: (id, state) => context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
             unload: callback => {
                 if (context.onAdapterUnload) {
                     context.onAdapterUnload(callback);
@@ -76,7 +74,6 @@ function testAdapter(options) {
                 if (context.onAdapterMessage) {
                     context.onAdapterMessage(obj);
                 }
-
             },
             ready: () => {
                 if (callback) {
@@ -101,7 +98,7 @@ function testAdapter(options) {
             if (err) {
                 console.error(err);
             }
-            if (state && (state.val === isConnected)) {
+            if (state && state.val === isConnected) {
                 if (cb) {
                     cb();
                 }
@@ -130,14 +127,12 @@ function testAdapter(options) {
                 if (cb) {
                     cb();
                 }
-            } else
-            if (state && (value === undefined || state.val === value)) {
+            } else if (state && (value === undefined || state.val === value)) {
                 if (cb) {
                     cb();
                 }
             } else {
                 setTimeout(function () {
-                    // eslint-disable-next-line no-unused-vars
                     checkValueOfState(id, value, cb, counter + 1);
                 }, 500);
             }
@@ -154,15 +149,15 @@ function testAdapter(options) {
         };
 
         context.states.pushMessage('system.adapter.' + target, {
-            command:    command,
-            message:    message,
-            from:       'system.adapter.test.0',
+            command: command,
+            message: message,
+            from: 'system.adapter.test.0',
             callback: {
                 message: message,
                 // eslint-disable-next-line no-undef
-                id:      sendToID++, // TODO: sendToID is undefined!
-                ack:     false,
-                time:    (new Date()).getTime()
+                id: sendToID++, // TODO: sendToID is undefined!
+                ack: false,
+                time: Date.now()
             }
         });
     }
@@ -210,7 +205,7 @@ function testAdapter(options) {
             this.timeout(10000); // no installation
 
             addInstance();
-            const _statesConfig  = deepClone(statesConfig);
+            const _statesConfig = deepClone(statesConfig);
             const _objectsConfig = deepClone(objectsConfig);
 
             _statesConfig.onChange = (id, state) => {
@@ -226,24 +221,25 @@ function testAdapter(options) {
                 }
             };
 
-            setup.startController({
-                objects: _objectsConfig,
-                states: _statesConfig
-            },
-            async (_objects, _states) => {
-                context.objects = _objects;
-                context.states  = _states;
-                expect(context.objects).to.be.ok;
-                expect(context.states).to.be.ok;
+            setup.startController(
+                {
+                    objects: _objectsConfig,
+                    states: _statesConfig
+                },
+                async (_objects, _states) => {
+                    context.objects = _objects;
+                    context.states = _states;
+                    expect(context.objects).to.be.ok;
+                    expect(context.states).to.be.ok;
 
-                if (objectsConfig.type !== 'file') {
-                    const objs = require('./objects.json');
-                    await addObjects(_objects, objs);
-                    startAdapter(() => _done());
-                } else {
-                    startAdapter(() => _done());
+                    if (objectsConfig.type !== 'file') {
+                        const objs = require('./objects.json');
+                        await addObjects(_objects, objs);
+                        startAdapter(() => _done());
+                    } else {
+                        startAdapter(() => _done());
+                    }
                 }
-            }
             );
         });
 
@@ -258,64 +254,85 @@ function testAdapter(options) {
             });
         });
 
-        it(options.name + ' ' + context.adapterShortName + ' adapter: check all important adapter attributes', function (done) {
-            this.timeout(1000);
-            expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
-            expect(context.adapter.name).to.be.equal(context.adapterShortName);
-            expect(context.adapter.instance).to.be.equal(0);
-            expect(context.adapter.states).to.be.undefined;
-            expect(context.adapter.objects).to.be.ok; // TODO remove after deprecating objects mock
-            expect(context.adapter.log).to.be.ok;
-            expect(context.adapter.log.info).to.be.a('function');
-            expect(context.adapter.log.debug).to.be.a('function');
-            expect(context.adapter.log.warn).to.be.a('function');
-            expect(context.adapter.log.error).to.be.a('function');
-            expect(context.adapter.config.paramString).to.be.equal('value1');
-            expect(context.adapter.config.paramNumber).to.be.equal(42);
-            expect(context.adapter.config.paramBoolean).to.be.equal(false);
-            expect(context.adapter.config.username).to.be.equal('tesla');
-            // password has to be winning (decrypted via legacy - backward compatibility)
-            expect(context.adapter.config.password).to.be.equal('winning');
-            // secondPassword should be decrypted with AES-256 correctly
-            expect(context.adapter.config.secondPassword).to.be.equal('ii-€+winning*-³§"');
+        it(
+            options.name + ' ' + context.adapterShortName + ' adapter: check all important adapter attributes',
+            function (done) {
+                this.timeout(1000);
+                expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
+                expect(context.adapter.name).to.be.equal(context.adapterShortName);
+                expect(context.adapter.instance).to.be.equal(0);
+                expect(context.adapter.states).to.be.undefined;
+                expect(context.adapter.objects).to.be.undefined;
+                expect(context.adapter.log).to.be.ok;
+                expect(context.adapter.log.info).to.be.a('function');
+                expect(context.adapter.log.debug).to.be.a('function');
+                expect(context.adapter.log.warn).to.be.a('function');
+                expect(context.adapter.log.error).to.be.a('function');
+                expect(context.adapter.config.paramString).to.be.equal('value1');
+                expect(context.adapter.config.paramNumber).to.be.equal(42);
+                expect(context.adapter.config.paramBoolean).to.be.equal(false);
+                expect(context.adapter.config.username).to.be.equal('tesla');
+                // password has to be winning (decrypted via legacy - backward compatibility)
+                expect(context.adapter.config.password).to.be.equal('winning');
+                // secondPassword should be decrypted with AES-256 correctly
+                expect(context.adapter.config.secondPassword).to.be.equal('ii-€+winning*-³§"');
 
-            let count = 0;
+                let count = 0;
 
-            context.states.getState('system.adapter.' + context.adapterShortName + '.0.compactMode', function (err, state) {
-                expect(state.val).to.be.equal(true);
-                setTimeout(() => (!--count) && done(), 0);
-            });
+                context.states.getState(
+                    'system.adapter.' + context.adapterShortName + '.0.compactMode',
+                    function (err, state) {
+                        expect(state.val).to.be.equal(true);
+                        setTimeout(() => !--count && done(), 0);
+                    }
+                );
 
-            count++;
-            context.states.getState('system.adapter.' + context.adapterShortName + '.0.connected', function (err, state) {
-                expect(state.val).to.be.equal(true);
-                setTimeout(() => (!--count) && done(), 0);
-            });
+                count++;
+                context.states.getState(
+                    'system.adapter.' + context.adapterShortName + '.0.connected',
+                    function (err, state) {
+                        expect(state.val).to.be.equal(true);
+                        setTimeout(() => !--count && done(), 0);
+                    }
+                );
 
-            count++;
-            context.states.getState('system.adapter.' + context.adapterShortName + '.0.memRss', function (err, state) {
-                expect(state.val).to.be.equal(0);
-                setTimeout(() => (!--count) && done(), 0);
-            });
+                count++;
+                context.states.getState(
+                    'system.adapter.' + context.adapterShortName + '.0.memRss',
+                    function (err, state) {
+                        expect(state.val).to.be.equal(0);
+                        setTimeout(() => !--count && done(), 0);
+                    }
+                );
 
-            count++;
-            context.states.getState('system.adapter.' + context.adapterShortName + '.0.memHeapTotal', function (err, state) {
-                expect(state.val).to.be.equal(0);
-                setTimeout(() => (!--count) && done(), 0);
-            });
+                count++;
+                context.states.getState(
+                    'system.adapter.' + context.adapterShortName + '.0.memHeapTotal',
+                    function (err, state) {
+                        expect(state.val).to.be.equal(0);
+                        setTimeout(() => !--count && done(), 0);
+                    }
+                );
 
-            count++;
-            context.states.getState('system.adapter.' + context.adapterShortName + '.0.memHeapUsed', function (err, state) {
-                expect(state.val).to.be.equal(0);
-                setTimeout(() => (!--count) && done(), 0);
-            });
+                count++;
+                context.states.getState(
+                    'system.adapter.' + context.adapterShortName + '.0.memHeapUsed',
+                    function (err, state) {
+                        expect(state.val).to.be.equal(0);
+                        setTimeout(() => !--count && done(), 0);
+                    }
+                );
 
-            count++;
-            context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state) {
-                expect(state.val).to.be.at.least(0);
-                setTimeout(() => (!--count) && done(), 0);
-            });
-        });
+                count++;
+                context.states.getState(
+                    'system.adapter.' + context.adapterShortName + '.0.uptime',
+                    function (err, state) {
+                        expect(state.val).to.be.at.least(0);
+                        setTimeout(() => !--count && done(), 0);
+                    }
+                );
+            }
+        );
 
         for (let t = 0; t < tests.length; t++) {
             tests[t].register(it, expect, context);

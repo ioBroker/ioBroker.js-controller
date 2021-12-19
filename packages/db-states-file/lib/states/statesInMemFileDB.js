@@ -14,8 +14,8 @@
 /* jslint node: true */
 'use strict';
 
-const InMemoryFileDB        = require('@iobroker/db-base').inMemoryFileDB;
-const tools                 = require('@iobroker/db-base').tools;
+const InMemoryFileDB = require('@iobroker/db-base').inMemoryFileDB;
+const tools = require('@iobroker/db-base').tools;
 
 // settings = {
 //    change:    function (id, state) {},
@@ -43,7 +43,6 @@ const tools                 = require('@iobroker/db-base').tools;
  * including the available methods for use by js-controller directly
  **/
 class StatesInMemoryFileDB extends InMemoryFileDB {
-
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = {
@@ -59,9 +58,11 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
 
         this.stateExpires = {};
         this.sessionExpires = {};
-        this.ONE_DAY_IN_SECS = 24*60*60*1000;
-        this.writeFileInterval = this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number' ?
-            parseInt(this.settings.connection.writeFileInterval) : 30000;
+        this.ONE_DAY_IN_SECS = 24 * 60 * 60 * 1000;
+        this.writeFileInterval =
+            this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
+                ? parseInt(this.settings.connection.writeFileInterval)
+                : 30000;
         this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
 
         //this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1000;
@@ -72,7 +73,7 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
 
     // internal functionality
     _expireAll() {
-        Object.keys(this.stateExpires).forEach( id => {
+        Object.keys(this.stateExpires).forEach(id => {
             clearTimeout(this.stateExpires[id]);
             this._expireState(id);
         });
@@ -137,12 +138,50 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         if (!keys || !Array.isArray(keys)) {
             throw new Error('no keys');
         }
-        return keys.map(el => this.dataset[el] !== undefined ? this.dataset[el] : null);
+        return keys.map(el => (this.dataset[el] !== undefined ? this.dataset[el] : null));
     }
 
     // needed by Server
     _getState(id) {
         return this.dataset[id];
+    }
+
+    /**
+     * Get value of given meta id
+     *
+     * @param {string} id
+     * @returns {*}
+     */
+    getMeta(id) {
+        if (!this.dataset['**META**']) {
+            this.dataset['**META**'] = {};
+        }
+
+        return this.dataset['**META**'][id];
+    }
+
+    /**
+     * Sets given value to id in metaNamespace
+     *
+     * @param {string} id
+     * @param {string} value
+     */
+    setMeta(id, value) {
+        if (!this.dataset['**META**']) {
+            this.dataset['**META**'] = {};
+        }
+
+        this.dataset['**META**'][id] = value;
+
+        setImmediate(() => {
+            // publish event in states
+            this.log.silly(`${this.namespace} memory publish meta ${id} ${value}`);
+            this.publishAll('meta', id, value);
+        });
+
+        if (!this.stateTimer) {
+            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
+        }
     }
 
     // needed by Server
@@ -162,7 +201,7 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         // If val === undefined, the state was just created and not filled with value
         if (obj.val !== undefined) {
             setImmediate(() => {
-            // publish event in states
+                // publish event in states
                 this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(obj)}`);
                 this.publishAll('state', id, obj);
             });
@@ -201,6 +240,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
     // needed by Server
     _subscribeForClient(client, pattern) {
         this.handleSubscribe(client, 'state', pattern);
+    }
+
+    _subscribeMeta(client, pattern) {
+        this.handleSubscribe(client, 'meta', pattern);
     }
 
     // needed by Server

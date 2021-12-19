@@ -5,9 +5,9 @@
 'use strict';
 
 // check if tmp directory exists
-const fs            = require('fs-extra');
-const path          = require('path');
-const rootDir       = path.normalize(__dirname + '/../../');
+const fs = require('fs-extra');
+const path = require('path');
+const rootDir = path.normalize(__dirname + '/../../');
 //const pkg           = require(rootDir + 'package.json');
 //const debug         = typeof v8debug === 'object';
 
@@ -37,34 +37,35 @@ function startController(options, callback) {
     // adjust db for the cli tests
     const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', appName + '.json'));
     iobrokerJSON.objects.type = options.objects.type || 'file';
-    iobrokerJSON.objects.port = (options.objects.port === undefined) ? 19001 : options.objects.port;
+    iobrokerJSON.objects.port = options.objects.port === undefined ? 19001 : options.objects.port;
     iobrokerJSON.objects.host = options.objects.host || '127.0.0.1';
     iobrokerJSON.objects.redisNamespace = options.objects.redisNamespace || '';
     iobrokerJSON.states.type = options.states.type || 'file';
-    iobrokerJSON.states.port = (options.states.port === undefined) ? 19000 : options.states.port;
+    iobrokerJSON.states.port = options.states.port === undefined ? 19000 : options.states.port;
     iobrokerJSON.states.host = options.states.host || '127.0.0.1';
-    fs.writeJSONSync(path.join(rootDir, 'data', appName + '.json'), iobrokerJSON, {spaces: 2});
+    fs.writeJSONSync(path.join(rootDir, 'data', appName + '.json'), iobrokerJSON, { spaces: 2 });
 
     const settingsObjects = {
         connection: {
-            type:               options.objects.type || 'file',
-            host:               options.objects.host || '127.0.0.1',
-            port:               (options.objects.port === undefined) ? 19001 : options.objects.port,
-            user:               options.objects.user || '',
-            pass:               options.objects.pass || '',
-            redisNamespace:     options.objects.redisNamespace || '',
-            noFileCache:        (options.objects.noFileCache === undefined) ? options.objects.noFileCache : true,
-            connectTimeout:     options.objects.connectTimeout || 2000,
-            dataDir:            options.objects.dataDir || '',
+            type: options.objects.type || 'file',
+            host: options.objects.host || '127.0.0.1',
+            port: options.objects.port === undefined ? 19001 : options.objects.port,
+            user: options.objects.user || '',
+            pass: options.objects.pass || '',
+            redisNamespace: options.objects.redisNamespace || '',
+            noFileCache: options.objects.noFileCache === undefined ? options.objects.noFileCache : true,
+            connectTimeout: options.objects.connectTimeout || 2000,
+            dataDir: options.objects.dataDir || '',
             enhancedLogging: true
         },
-        logger: options.objects.logger || options.logger || {
-            silly: msg => console.log(msg),
-            debug: msg => console.log(msg),
-            info:  msg => console.log(msg),
-            warn:  msg => console.warn(msg),
-            error: msg => console.error(msg)
-        },
+        logger: options.objects.logger ||
+            options.logger || {
+                silly: msg => console.log(msg),
+                debug: msg => console.log(msg),
+                info: msg => console.log(msg),
+                warn: msg => console.warn(msg),
+                error: msg => console.error(msg)
+            },
         connected: () => {
             // clear all states
             objects.destroyDB(() => {
@@ -118,25 +119,26 @@ function startController(options, callback) {
 
     const settingsStates = {
         connection: {
-            options : {
+            options: {
                 auth_pass: null,
                 retry_max_delay: 15000
             },
-            type:           options.states.type     || 'file',
-            host:           options.states.host     || '127.0.0.1',
-            port:           (options.states.port === undefined) ? 19000 : options.states.port,
-            user:           options.states.user     || '',
-            pass:           options.states.pass     || '',
-            dataDir:        options.states.dataDir  || '',
+            type: options.states.type || 'file',
+            host: options.states.host || '127.0.0.1',
+            port: options.states.port === undefined ? 19000 : options.states.port,
+            user: options.states.user || '',
+            pass: options.states.pass || '',
+            dataDir: options.states.dataDir || '',
             enhancedLogging: true
         },
-        logger:         options.states.logger || options.logger || {
-            silly: msg => console.log(msg),
-            debug: msg => console.log(msg),
-            info:  msg => console.log(msg),
-            warn:  msg => console.warn(msg),
-            error: msg => console.error(msg)
-        },
+        logger: options.states.logger ||
+            options.logger || {
+                silly: msg => console.log(msg),
+                debug: msg => console.log(msg),
+                info: msg => console.log(msg),
+                warn: msg => console.warn(msg),
+                error: msg => console.error(msg)
+            },
         connected: () => {
             if (settingsStates.connection.type === 'redis') {
                 states.destroyDB(() => {
@@ -179,8 +181,8 @@ async function stopController(cb) {
 }
 
 if (require.main !== module) {
-    module.exports.startController  = startController;
-    module.exports.stopController   = stopController;
-    module.exports.appName          = appName;
-    module.exports.rootDir          = rootDir;
+    module.exports.startController = startController;
+    module.exports.stopController = stopController;
+    module.exports.appName = appName;
+    module.exports.rootDir = rootDir;
 }

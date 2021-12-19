@@ -20,10 +20,9 @@ jobs:
         fetch-depth: 0 # Fetch the history, or this action won't work
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.4.1
+      uses: actions/setup-node@v2.5.0
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
 
     - name: Detect changes (git)
       id: changes
@@ -56,6 +55,10 @@ jobs:
       if: steps.changes.outputs.result == 'ok'
       run: npm ci
 
+    - name: Build TS files
+      if: steps.changes.outputs.result == 'ok'
+      run: npm run build
+
     - name: Test
       if: steps.changes.outputs.result == 'ok'
       run: npm test
@@ -63,8 +66,9 @@ jobs:
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
-      uses: actions/github-script@v4
+      uses: actions/github-script@v5
       with:
+        result-encoding: string
         script: |
           const semver = require("semver");
           const now = new Date();
@@ -72,13 +76,25 @@ jobs:
           const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
           const sha = require("child_process").execSync("git rev-parse --short HEAD").toString("utf8").trim();
 
-          // Figure out the next version
-          const newVersion = `${semver.inc(
-            require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version,
-            "prerelease",
-          )}-${dateStr}-${sha}`;
+          const prevVersion = require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
 
-          return newVersion;
+          const parsed = semver.parse(prevVersion);
+          const prereleaseIdentifier = parsed.prerelease[0] || "alpha";
+
+          for (let i = 1; i < parsed.prerelease.length; i++) {
+            const part = parsed.prerelease[i];
+            if (typeof part === "number") {
+              continue;
+            }
+            // Parse stuff like `8-20210909-001a711c` back to `8`
+            const numeric = parseInt(part);
+            if (!Number.isNaN(numeric)) {
+              parsed.prerelease[i] = numeric;
+            }
+          }
+
+          // Figure out the next version
+          return `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
 
     - name: Bump version and publish
       if: steps.changes.outputs.result == 'ok'
@@ -100,7 +116,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: v${{ steps.version.outputs.result }}
         release_name: Release v${{ steps.version.outputs.result }}
         draft: false
         prerelease: true

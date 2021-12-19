@@ -6,24 +6,26 @@
 
 const testAdapter = require(__dirname + '/../lib/testAdapter');
 const dataDir = __dirname + '/../../tmp/data-redis';
-const fs       = require('fs');
-let  isExecute = fs.existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
+const fs = require('fs');
+let isExecute = fs.existsSync(__dirname + '/../lib/objects/objectsInRedis.js');
 if (!isExecute) {
     try {
         const path = require.resolve('iobroker.objects-redis');
         isExecute = !!path;
-    } catch { /* OK */ }
+    } catch {
+        /* OK */
+    }
 }
 
 const statesConfig = {
-    options : {
+    options: {
         auth_pass: null,
         retry_max_delay: 15000
     },
-    type:           'redis',
+    type: 'redis',
     redisNamespace: 'testObjectsIo',
-    host:           '/var/run/redis.sock',
-    port:           0
+    host: '/var/run/redis.sock',
+    port: 0
 };
 let objectsConfig;
 
@@ -33,32 +35,32 @@ if (!fs.existsSync(__dirname + '/../tmp')) {
 
 if (isExecute) {
     objectsConfig = {
-        dataDir:        __dirname + '/../tmp/data',
-        options : {
+        dataDir: __dirname + '/../tmp/data',
+        options: {
             auth_pass: null,
             retry_max_delay: 15000
         },
         redisNamespace: 'testObjectsCfg',
-        type:           'redis',
-        host:           '/var/run/redis.sock',
-        port:           0
+        type: 'redis',
+        host: '/var/run/redis.sock',
+        port: 0
     };
 } else {
     objectsConfig = {
-        dataDir:        dataDir,
-        type:           'file',
-        host:           '127.0.0.1',
-        port:           19002,
-        user:           '',
-        pass:           '',
-        noFileCache:    true,
+        dataDir: dataDir,
+        type: 'file',
+        host: '127.0.0.1',
+        port: 19002,
+        user: '',
+        pass: '',
+        noFileCache: true,
         connectTimeout: 2000
     };
 }
 
 // states in REDIS, objects in files
 testAdapter({
-    statesConfig:  statesConfig,
+    statesConfig: statesConfig,
     objectsConfig: objectsConfig,
     name: 'Tests REDIS-Socket'
 });

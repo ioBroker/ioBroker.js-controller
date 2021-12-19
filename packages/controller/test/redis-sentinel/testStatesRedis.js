@@ -4,14 +4,14 @@
 /* jshint expr:true */
 'use strict';
 
-const fs      = require('fs');
-const path    = require('path');
-const expect  = require('chai').expect;
-const setup   = require(path.join(__dirname,'..', 'lib', 'setup4controller'));
+const fs = require('fs');
+const path = require('path');
+const expect = require('chai').expect;
+const setup = require(path.join(__dirname, '..', 'lib', 'setup4controller'));
 const { exec } = require('child_process');
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
-let objects     = null;
-let states      = null;
+let objects = null;
+let states = null;
 let onStatesChanged = null;
 
 function cleanDbs() {
@@ -34,33 +34,34 @@ describe('States-Redis-Sentinel: Test states', function () {
         this.timeout(10000);
         cleanDbs();
 
-        setup.startController({
-            objects: {
-                dataDir: dataDir,
-                onChange: (id, _obj) => {
-                    console.log('object changed. ' + id);
-                }
-            },
-            states: {
-                type: 'redis',
-                host: ['127.0.0.1', '127.0.0.1', '127.0.0.1'],
-                port: [26380, 26381, 26382],
-                onChange: (id, state) => {
-                    console.log('Redis-state-Sentinel changed. ' + id);
-                    if (onStatesChanged) {
-                        onStatesChanged(id, state);
+        setup.startController(
+            {
+                objects: {
+                    dataDir: dataDir,
+                    onChange: (id, _obj) => {
+                        console.log('object changed. ' + id);
+                    }
+                },
+                states: {
+                    type: 'redis',
+                    host: ['127.0.0.1', '127.0.0.1', '127.0.0.1'],
+                    port: [26380, 26381, 26382],
+                    onChange: (id, state) => {
+                        console.log('Redis-state-Sentinel changed. ' + id);
+                        if (onStatesChanged) {
+                            onStatesChanged(id, state);
+                        }
                     }
                 }
+            },
+            (_objects, _states) => {
+                objects = _objects;
+                states = _states;
+                states.subscribe('*');
+                expect(objects).to.be.ok;
+                expect(states).to.be.ok;
+                setTimeout(_done, 5000);
             }
-        },
-        (_objects, _states) => {
-            objects = _objects;
-            states  = _states;
-            states.subscribe('*');
-            expect(objects).to.be.ok;
-            expect(states).to.be.ok;
-            setTimeout(_done, 5000);
-        }
         );
     });
 
@@ -103,7 +104,7 @@ describe('States-Redis-Sentinel: Test states', function () {
             if (id === testID) {
                 console.log('Receive state value: ' + state.val);
                 expect(state).to.be.ok;
-                if (state.val !== sendCounter -1) {
+                if (state.val !== sendCounter - 1) {
                     // timing special case for failover ... sometimes we loose some resubmits
                     // we need to accept that for now
                     expect(state.val).to.be.equal(receiveCounter + 1);

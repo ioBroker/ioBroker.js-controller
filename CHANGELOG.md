@@ -4,13 +4,77 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 4.0.0 (2021-xx-xx) Release I...
+## 4.0.0 (2021-xx-xx) Release I... [Cut off: 13.12.2021 11:00]
+**WORK IN PROGRESS - Use at own risk!**
+
 **BREAKING CHANGES**
-* Support for Node.js 10 is dropped! Supported are Node.js 12.x and 14.x and 16.x (Node.js 16.x is working WHEN USED WITH npm 6!!... still in testing phase)
+* Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
+* CLI command `iob update --updateable` changed to `iob update --updatable`
+* CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore
 
-* WORK IN PROGRESS - Use at own risk!
+**Features**
+* (bluefox) Add complexity rules for user passwords: New created passwords need to follow the following rules (TODO ADMIN UI INFO ISSUE):
+  * minimum length is 8
+  * contains at least one digit
+  * contains at least one lower case letter
+  * contains at least one upper case letter 
+* (foxriver76) Introduce option "--custom" when deleting instances or adapter to also clean up relevant custom entries from all objects (TODO ADMIN ISSUE ADD CHECKBOX!, TESTFOKUS)
+* (foxriver76) Added new host objects to provide Node.js version and PID
+* (foxriver76) Update the Linux capabilities on js-controller start when a Node.js version change was detected (TESTFOKUS)
+* (AlCalzone/foxriver76) Further optimize strategy for required Node.js module rebuilds. We first try to rebuild the really affected module and also try to run rebuild in root package. Should give better results then former strategy (TESTFOKUS)
+* (bluefox) Add support for configuring multiple repositories (TODO LINK+INFO FLAG)
+* (foxriver76) Added installedFrom info to adapter start log line when not installed from npm normally
 
-## 3.3.18 (2021-07-26 - 2021-09-11) Release Hannah
+**Optimizations and Fixes**
+* (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 300% faster, redis 46.000% !! faster)
+* (foxriver76/Apollon77) Improve performance for object searches in general by limiting search namespaces to the relevant ones automatically
+* (foxriver76/Apollon77) Improve performance for redis object searches by 90-3.000% by using lookup structures for object types (TODO DOCS)
+* (foxriver76) Improve handling of backup restores when custom hostnames were used (especially relevant for Docker usage)
+* (foxriver76) Optimize backup to make sure invalid user-generated JSONs do not prevent backups from being considered valid
+* (foxriver76/klein0r) Improved CLI help
+* (foxriver76) Preserve changed instance names also when updating adapter (name was reset before)
+* (foxriver76) Prevent crashes for uploads with invalid adapter installations
+* (bluefox) Remove news from instance/adapter objects on install/update because taken from repository in Admin5 (TODO CHECK ADMIN4 EFFECTS)
+* (AlCalzone) Remove extraneous "npm install" inside adapter directory
+* (foxriver76/AlCalzone) reduce jsonl compression frequency to reduce I/O (relevant when experimental jsonl database modules are used)
+* (foxriver76) prevent uploading js-controller (creating system.adapter.js-controller object) and remove existing cases on setup first
+* (foxriver76) prevent crash when multihost password is invalid  and multihost active
+* (bluefox/foxriver76) bigger internal refactorings in cli commands (TESTFOKUS)
+* (foxriver76) make logging of not fulfilled adapter dependencies more user-friendly
+* (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
+* (foxriver76) Check user and group assignments and remove unknown users from groups (could have happened in earlier versions) in setup first
+
+**Developer relevant DEPRECATIONS/WARNINGS**
+* **js-controller is no longer installable from GitHub because is now a monorepo. Use @dev tag on npm to get the nightly build of master js-controller!**
+* log info when setState is used for an object of type File - use setBinaryState instead!
+* log info when default value of an object is invalid (e.g. does not match object type)
+* log info when common.states is used and not an object (deprecate String usage)
+* Enhanced object checks: user, adapter, group need to have a name as string (TODO VERIFY!!)
+* Decline calls for getForeignObjects with non string pattern (was pot. crashing before)
+* remove all *Fifo* Methods from adapter.js because deprecated since 1.x
+* remove adapter.objects.* methods because deprecated since 2.x
+
+**Developer relevant new Features**
+* (AlCalzone) Introduce new methods in tools for Node.js module management: installNodeModule, uninstallNodeModule (TODO Issues adapter that use npm install -> Move))
+* (AlCalzone) Switch NPM relevant handling to library pak to be more flexible for the future which package manager we want to use. Important: There are still parts that rely on npm for now!
+* (bluefox) Also report docker info when sending diag data 
+
+**Developer relevant Optimizations and Fixes**
+* (foxriver76) fix permissionError on setBinaryState
+* (foxriver76) preserve "native" content for instanceObjects when updating the objects on adapter start
+* (Apollon77/foxriver76) Limit the search scope for object types host, adapter, instance, instanceStats, enum, script, group, user, config to the relevant namespaces when no search start/end is provided to speedup these calls in general
+* (foxriver76) Optimize deleteDevice/deleteChannel methods to just delete all objects the relevant device/channel
+* (foxriver76) Remove some magic path lookups  to be compatible to npm 7/8. Appname of controller is now always "iobroker" ("ioBroker" in dev cases)
+* (foxriver76) Also use Sentry (if enabled/allowed) in CLI commands whenever database is initialized to report crashes from CLI if they happen
+
+* general dependency updates
+* code style optimizations and streamline code
+
+
+## 3.3.21 (2021-11-28)
+* (Apollon77/foxriver76) we fixed issues with multihost setup, that existed in 3.3.19/3.3.20
+
+## 3.3.19 (2021-07-26 - 2021-11-17) Release Hannah
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 16.x is also working WHEN USED WITH npm 6!!, but officially not yet supported because we do not have enough results)
 * The experimental jsonl db libraries are now included in js-controller directly too
@@ -60,7 +124,9 @@
 * (Apollon77) fix "iobroker upgrade" call that crashed when no updates were available
 * (foxriver/Apollon77) fix invalid logging in package manager
 * (foxriver76) avoid deleting too many meta objects starting with the same name as adapter
-  
+* (foxriver76) we fixed a crash due to multilingual instance objects
+* (bluefox) Fix compact group host check
+
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**

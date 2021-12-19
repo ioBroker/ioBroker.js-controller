@@ -8,19 +8,21 @@ const forge = require('node-forge');
 const deepClone = require('deep-clone');
 const cpPromise = require('promisify-child-process');
 const jwt = require('jsonwebtoken');
-const {createInterface} = require('readline');
-const {PassThrough} = require('stream');
-const {detectPackageManager} = require('@alcalzone/pak');
+const { createInterface } = require('readline');
+const { PassThrough } = require('stream');
+const { detectPackageManager } = require('@alcalzone/pak');
+const EXIT_CODES = require('./exitCodes');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
 let request;
+let axios;
 let extend;
 let password;
 let npmVersion;
 let crypto;
 let diskusage;
-const randomID = Math.round(Math.random() * 10000000000000);  // Used for creation of User-Agent
+const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
 let lastCalculationOfIps;
@@ -53,7 +55,12 @@ const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  */
 function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
     for (const attr of Object.keys(oldObj)) {
-        if (typeof oldObj[attr] !== 'object' || oldObj[attr] instanceof Array) {
+        if (
+            oldObj[attr] === undefined ||
+            oldObj[attr] === null ||
+            typeof oldObj[attr] !== 'object' ||
+            oldObj[attr] instanceof Array
+        ) {
             if (oldObj[attr] === '__no_change__' && originalObj && !isNonEdit) {
                 if (originalObj[attr] !== undefined) {
                     newObj[attr] = deepClone(originalObj[attr]);
@@ -69,7 +76,12 @@ function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
             }
         } else {
             newObj[attr] = newObj[attr] || {};
-            copyAttributes(oldObj[attr], newObj[attr], originalObj && originalObj[attr], isNonEdit || attr === 'nonEdit');
+            copyAttributes(
+                oldObj[attr],
+                newObj[attr],
+                originalObj && originalObj[attr],
+                isNonEdit || attr === 'nonEdit'
+            );
         }
     }
 }
@@ -120,7 +132,6 @@ function checkNonEditable(oldObject, newObject) {
         } else {
             newObject.nonEdit = oldObject.nonEdit;
         }
-
     } else if (newObject.nonEdit) {
         oldObject.nonEdit = deepClone(newObject.nonEdit);
         if (newObject.nonEdit.password) {
@@ -148,6 +159,7 @@ function checkNonEditable(oldObject, newObject) {
 /**
  * @param {string} repoVersion
  * @param {string} installedVersion
+ * @throws {Error} if version is invalid
  */
 function upToDate(repoVersion, installedVersion) {
     // Check if the installed version is at least the repo version
@@ -183,16 +195,12 @@ function decryptPhrase(password, data, callback) {
 }
 
 function getAppName() {
-    const parts = __dirname.replace(/\\/g, '/').split('/');
-
     if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
-        // dev install
-        return parts[parts.length - 5].split('.')[0];
+        // dev install - GitHub folder is uppercase
+        return 'ioBroker';
     }
 
-    // find @orga folder
-    return parts[parts.length - 4].replace('@', '');
-
+    return 'iobroker';
 }
 
 function rmdirRecursiveSync(path) {
@@ -223,9 +231,12 @@ function findIPs() {
         try {
             const ifaces = require('os').networkInterfaces();
             Object.keys(ifaces).forEach(dev =>
-                ifaces[dev].forEach(details =>
-                    // noinspection JSUnresolvedVariable
-                    !details.internal && ownIpArr.push(details.address)));
+                ifaces[dev].forEach(
+                    details =>
+                        // noinspection JSUnresolvedVariable
+                        !details.internal && ownIpArr.push(details.address)
+                )
+            );
         } catch (e) {
             console.error(`Can not find local IPs: ${e.message}`);
         }
@@ -238,12 +249,10 @@ function findPath(path, url) {
     if (!url) {
         return '';
     }
-    if (url.substring(0, 'http://'.length) === 'http://' ||
-        url.substring(0, 'https://'.length) === 'https://') {
+    if (url.substring(0, 'http://'.length) === 'http://' || url.substring(0, 'https://'.length) === 'https://') {
         return url;
     } else {
-        if (path.substring(0, 'http://'.length) === 'http://' ||
-            path.substring(0, 'https://'.length) === 'https://') {
+        if (path.substring(0, 'http://'.length) === 'http://' || path.substring(0, 'https://'.length) === 'https://') {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
             if (url[0] === '/') {
@@ -256,11 +265,11 @@ function findPath(path, url) {
 }
 
 function getMac(callback) {
-    const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/ig;
+    const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
-    const command = (process.platform.indexOf('win') === 0) ? 'getmac' : 'ifconfig || ip link';
+    const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
 
-    require('child_process').exec(command, {windowsHide: true}, (err, stdout, _stderr) => {
+    require('child_process').exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
         if (err) {
             callback(err);
         } else {
@@ -322,7 +331,7 @@ function uuid(givenMac, callback) {
         return callback('55travis-pipe-line-cior-githubaction');
     }
 
-    let mac = givenMac !== null ? (givenMac || '') : null;
+    let mac = givenMac !== null ? givenMac || '' : null;
     let u;
 
     if (!_isDocker && mac === '') {
@@ -351,7 +360,16 @@ function uuid(givenMac, callback) {
         const md5sum = require('crypto').createHash('md5');
         md5sum.update(mac);
         mac = md5sum.digest('hex');
-        u = mac.substring(0, 8) + '-' + mac.substring(8, 12) + '-' + mac.substring(12, 16) + '-' + mac.substring(16, 20) + '-' + mac.substring(20);
+        u =
+            mac.substring(0, 8) +
+            '-' +
+            mac.substring(8, 12) +
+            '-' +
+            mac.substring(12, 16) +
+            '-' +
+            mac.substring(16, 20) +
+            '-' +
+            mac.substring(20);
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         /** @type {any} */
@@ -359,7 +377,7 @@ function uuid(givenMac, callback) {
         let b;
         b = a = '';
         while (a++ < 36) {
-            b += ((a * 51) & 52) ? (a ^ 15 ? 8 ^ Math.random() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-';
+            b += (a * 51) & 52 ? (a ^ 15 ? 8 ^ (Math.random() * (a ^ 20 ? 16 : 4)) : 4).toString(16) : '-';
         }
         u = b;
     }
@@ -382,33 +400,37 @@ function updateUuid(newUuid, _objects, callback) {
             }
         }
 
-        _objects.setObject('system.meta.uuid', {
-            type: 'meta',
-            common: {
-                name: 'uuid',
-                type: 'uuid'
+        _objects.setObject(
+            'system.meta.uuid',
+            {
+                type: 'meta',
+                common: {
+                    name: 'uuid',
+                    type: 'uuid'
+                },
+                ts: new Date().getTime(),
+                from: 'system.host.' + getHostName() + '.tools',
+                native: {
+                    uuid: _uuid
+                }
             },
-            ts: new Date().getTime(),
-            from: 'system.host.' + getHostName() + '.tools',
-            native: {
-                uuid: _uuid
-            }
-        }, err => {
-            if (err) {
-                console.error('object system.meta.uuid cannot be updated: ' + err);
-                callback();
-            } else {
-                _objects.getObject('system.meta.uuid', (err, obj) => {
-                    if (obj.native.uuid !== _uuid) {
-                        console.error('object system.meta.uuid cannot be updated: write protected');
-                    } else {
-                        console.log('object system.meta.uuid created: ' + _uuid);
-                    }
+            err => {
+                if (err) {
+                    console.error('object system.meta.uuid cannot be updated: ' + err);
+                    callback();
+                } else {
+                    _objects.getObject('system.meta.uuid', (err, obj) => {
+                        if (obj.native.uuid !== _uuid) {
+                            console.error('object system.meta.uuid cannot be updated: write protected');
+                        } else {
+                            console.log('object system.meta.uuid created: ' + _uuid);
+                        }
 
-                    callback(_uuid);
-                });
+                        callback(_uuid);
+                    });
+                }
             }
-        });
+        );
     });
 }
 
@@ -419,25 +441,29 @@ function createUuid(_objects, callback) {
                 password = password || require('./password');
 
                 // Default Password for user 'admin' is application name in lower case
-                password(getAppName()).hash(null, null, (err, res) => {
+                password(module.exports.appName).hash(null, null, (err, res) => {
                     err && console.error(err);
 
                     // Create user here and not in io-package.js because of hash password
-                    _objects.setObject('system.user.admin', {
-                        type: 'user',
-                        common: {
-                            name:      'admin',
-                            password:   res,
-                            dontDelete: true,
-                            enabled:    true
+                    _objects.setObject(
+                        'system.user.admin',
+                        {
+                            type: 'user',
+                            common: {
+                                name: 'admin',
+                                password: res,
+                                dontDelete: true,
+                                enabled: true
+                            },
+                            ts: new Date().getTime(),
+                            from: 'system.host.' + getHostName() + '.tools',
+                            native: {}
                         },
-                        ts: new Date().getTime(),
-                        from: 'system.host.' + getHostName() + '.tools',
-                        native: {}
-                    }, () => {
-                        console.log('object system.user.admin created');
-                        resolve();
-                    });
+                        () => {
+                            console.log('object system.user.admin created');
+                            resolve();
+                        }
+                    );
                 });
             } else {
                 resolve();
@@ -462,7 +488,7 @@ function createUuid(_objects, callback) {
                     _objects.getObject('system.adapter.vis.0', (err, licObj) => {
                         if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
-                            updateUuid('',  _objects, _uuid => resolve(_uuid));
+                            updateUuid('', _objects, _uuid => resolve(_uuid));
                         } else {
                             // decode obj.native.license
                             let data;
@@ -480,8 +506,12 @@ function createUuid(_objects, callback) {
                                     updateUuid(data.correct ? data.uuid : '', _objects, _uuid => resolve(_uuid));
                                 } else {
                                     // Show error
-                                    console.warn(`Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`);
-                                    console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
+                                    console.warn(
+                                        `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`
+                                    );
+                                    console.warn(
+                                        `Provide following information in email: ${data.email}, invoice: ${data.invoice}`
+                                    );
                                     resolve();
                                 }
                             }
@@ -492,13 +522,12 @@ function createUuid(_objects, callback) {
                 }
             } else {
                 // generate new UUID
-                updateUuid('',  _objects, _uuid => resolve(_uuid));
+                updateUuid('', _objects, _uuid => resolve(_uuid));
             }
         })
     );
 
-    return Promise.all([promiseCheckPassword, promiseCheckUuid])
-        .then(result => callback && callback(result[1]));
+    return Promise.all([promiseCheckPassword, promiseCheckUuid]).then(result => callback && callback(result[1]));
 }
 
 // Download file to tmp or return file name directly
@@ -506,41 +535,41 @@ function getFile(urlOrPath, fileName, callback) {
     request = request || require('request');
 
     // If object was read
-    if (urlOrPath.substring(0, 'http://'.length) === 'http://' ||
-        urlOrPath.substring(0, 'https://'.length) === 'https://') {
-        const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xFFFFFFE) + '.zip'}`;
+    if (
+        urlOrPath.substring(0, 'http://'.length) === 'http://' ||
+        urlOrPath.substring(0, 'https://'.length) === 'https://'
+    ) {
+        const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xffffffe) + '.zip'}`;
         // Add some information to user-agent, like chrome, IE and Firefox do
         request({
             url: urlOrPath,
             gzip: true,
-            headers: {'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}`}
-        }).on('error', error => {
-            console.log(`Cannot download "${tmpFile}": ${error}`);
-            if (callback) {
-                callback(tmpFile);
-            }
-        }).pipe(fs.createWriteStream(tmpFile)).on('close', () => {
-            console.log('downloaded ' + tmpFile);
-            if (callback) {
-                callback(tmpFile);
-            }
-        });
+            headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
+        })
+            .on('error', error => {
+                console.log(`Cannot download "${tmpFile}": ${error}`);
+                callback && callback(tmpFile);
+            })
+            .pipe(fs.createWriteStream(tmpFile))
+            .on('close', () => {
+                console.log('downloaded ' + tmpFile);
+                callback && callback(tmpFile);
+            });
     } else {
-        if (fs.existsSync(urlOrPath)) {
-            if (callback) {
-                callback(urlOrPath);
+        try {
+            if (fs.existsSync(urlOrPath)) {
+                callback && callback(urlOrPath);
+            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
+                callback && callback(`${__dirname}/../${urlOrPath}`);
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+                callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
+            } else {
+                console.log('File not found: ' + urlOrPath);
+                process.exit(EXIT_CODES.FILE_NOT_FOUND);
             }
-        } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
-            if (callback) {
-                callback(__dirname + '/../' + urlOrPath);
-            }
-        } else if (fs.existsSync(__dirname + '/../tmp/' + urlOrPath)) {
-            if (callback) {
-                callback(__dirname + '/../tmp/' + urlOrPath);
-            }
-        } else {
-            console.log('File not found: ' + urlOrPath);
-            process.exit(1);
+        } catch (err) {
+            console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
+            process.exit(EXIT_CODES.FILE_NOT_FOUND);
         }
     }
 }
@@ -566,35 +595,40 @@ function getJson(urlOrPath, agent, callback) {
             callback(null);
         }
     } else {
-        if (urlOrPath.substring(0, 'http://'.length) === 'http://' ||
-            urlOrPath.substring(0, 'https://'.length) === 'https://') {
-            request({
-                url: urlOrPath,
-                timeout: 10000,
-                gzip: true,
-                headers: {'User-Agent': agent}
-            }, (error, response, body) => {
-                if (error || !body || response.statusCode !== 200) {
-                    console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
-                    if (callback) {
-                        callback(null, urlOrPath);
+        if (
+            urlOrPath.substring(0, 'http://'.length) === 'http://' ||
+            urlOrPath.substring(0, 'https://'.length) === 'https://'
+        ) {
+            request(
+                {
+                    url: urlOrPath,
+                    timeout: 10000,
+                    gzip: true,
+                    headers: { 'User-Agent': agent }
+                },
+                (error, response, body) => {
+                    if (error || !body || response.statusCode !== 200) {
+                        console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                        if (callback) {
+                            callback(null, urlOrPath);
+                        }
+                        return;
                     }
-                    return;
-                }
-                try {
-                    sources = JSON.parse(body);
-                } catch {
-                    console.error('Json file is invalid on ' + urlOrPath);
-                    if (callback) {
-                        callback(null, urlOrPath);
+                    try {
+                        sources = JSON.parse(body);
+                    } catch {
+                        console.error('Json file is invalid on ' + urlOrPath);
+                        if (callback) {
+                            callback(null, urlOrPath);
+                        }
+                        return;
                     }
-                    return;
-                }
 
-                if (callback) {
-                    callback(sources, urlOrPath);
+                    if (callback) {
+                        callback(sources, urlOrPath);
+                    }
                 }
-            }).on('error', _error => {
+            ).on('error', _error => {
                 //console.log('Cannot download json from ' + urlOrPath + '. Error: ' + error);
                 //if (callback) callback(null, urlOrPath);
             });
@@ -616,7 +650,9 @@ function getJson(urlOrPath, agent, callback) {
                 try {
                     sources = fs.readJSONSync(__dirname + '/../' + urlOrPath);
                 } catch (e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/../' + urlOrPath + '. Error: ' + e.message);
+                    console.log(
+                        'Cannot parse json file from ' + __dirname + '/../' + urlOrPath + '. Error: ' + e.message
+                    );
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -629,7 +665,9 @@ function getJson(urlOrPath, agent, callback) {
                 try {
                     sources = fs.readJSONSync(__dirname + '/../tmp/' + urlOrPath);
                 } catch (e) {
-                    console.log('Cannot parse json file from ' + __dirname + '/../tmp/' + urlOrPath + '. Error: ' + e.message);
+                    console.log(
+                        'Cannot parse json file from ' + __dirname + '/../tmp/' + urlOrPath + '. Error: ' + e.message
+                    );
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -643,6 +681,69 @@ function getJson(urlOrPath, agent, callback) {
                 if (callback) {
                     callback(null, urlOrPath);
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Return content of the json file. Download it or read directly
+ * @param {string|object} urlOrPath URL where the json file could be found
+ * @param {string} agent optional agent identifier like "Windows Chrome 12.56"
+ * @returns {object} json object
+ */
+async function getJsonAsync(urlOrPath, agent) {
+    agent = agent || '';
+
+    axios = axios || require('axios');
+    let sources = {};
+    // If object was read
+    if (urlOrPath && typeof urlOrPath === 'object') {
+        return urlOrPath;
+    } else if (!urlOrPath) {
+        console.log('Empty url!');
+        return null;
+    } else {
+        if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
+            try {
+                const result = await axios(urlOrPath, {
+                    timeout: 10000,
+                    headers: { 'User-Agent': agent },
+                    validateStatus: status => status !== 200
+                });
+                return result.data;
+            } catch (error) {
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error}`);
+                return null;
+            }
+        } else {
+            if (fs.existsSync(urlOrPath)) {
+                try {
+                    sources = fs.readJSONSync(urlOrPath);
+                } catch (e) {
+                    console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+                try {
+                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                } catch (e) {
+                    console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+                try {
+                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                } catch (e) {
+                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    return null;
+                }
+                return sources;
+            } else {
+                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
+                return null;
             }
         }
     }
@@ -664,10 +765,10 @@ function scanDirectory(dirName, list, regExp) {
                 const fileName = path.join(fullPath, 'package.json');
                 if (regExp.test(dirs[i]) && fs.existsSync(fileIoName)) {
                     const ioPackage = fs.readJSONSync(fileIoName);
-                    const package_ = fs.existsSync(fileName)
-                        ? fs.readJSONSync(fileName)
-                        : {};
-                    const localIcon = (ioPackage.common.icon ? `/adapter/${dirs[i].substring(module.exports.appName.length + 1)}/${ioPackage.common.icon}` : '');
+                    const package_ = fs.existsSync(fileName) ? fs.readJSONSync(fileName) : {};
+                    const localIcon = ioPackage.common.icon
+                        ? `/adapter/${dirs[i].substring(module.exports.appName.length + 1)}/${ioPackage.common.icon}`
+                        : '';
                     //noinspection JSUnresolvedVariable
                     list[ioPackage.common.name] = {
                         controller: ioPackage.common.controller || false,
@@ -681,12 +782,18 @@ function scanDirectory(dirName, list, regExp) {
                         keywords: ioPackage.common.keywords,
                         readme: ioPackage.common.readme,
                         type: ioPackage.common.type,
-                        license: ioPackage.common.license ? ioPackage.common.license : ((package_.licenses && package_.licenses.length) ? package_.licenses[0].type : ''),
-                        licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
+                        license: ioPackage.common.license
+                            ? ioPackage.common.license
+                            : package_.licenses && package_.licenses.length
+                            ? package_.licenses[0].type
+                            : '',
+                        licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
                     };
                 }
             } catch (e) {
-                console.log(`Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`);
+                console.log(
+                    `Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`
+                );
             }
         }
     }
@@ -708,7 +815,9 @@ function getInstalledInfo(hostRunningVersion) {
     } catch (e) {
         console.error(`Cannot get installed host information: ${e.message}`);
     }
-    const package_ = fs.existsSync(path.join(fullPath, 'package.json')) ? fs.readJSONSync(path.join(fullPath, 'package.json')) : {};
+    const package_ = fs.existsSync(path.join(fullPath, 'package.json'))
+        ? fs.readJSONSync(path.join(fullPath, 'package.json'))
+        : {};
     const regExp = new RegExp(`^${module.exports.appName}\\.`, 'i');
 
     if (ioPackage) {
@@ -723,19 +832,29 @@ function getInstalledInfo(hostRunningVersion) {
             keywords: ioPackage.common.keywords,
             readme: ioPackage.common.readme,
             runningVersion: hostRunningVersion,
-            license: ioPackage.common.license ? ioPackage.common.license : ((package_.licenses && package_.licenses.length) ? package_.licenses[0].type : ''),
-            licenseUrl: (package_.licenses && package_.licenses.length) ? package_.licenses[0].url : ''
+            license: ioPackage.common.license
+                ? ioPackage.common.license
+                : package_.licenses && package_.licenses.length
+                ? package_.licenses[0].type
+                : '',
+            licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
         };
     }
-    scanDirectory(path.join(__dirname, '../node_modules'), result, regExp);
-    scanDirectory(path.join(__dirname, '../../node_modules'), result, regExp);
 
+    // we scan the sub node modules of controller and same hierarchy as controller
+    scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
+    scanDirectory(path.join(fullPath, '..'), result, regExp);
+
+    // Warning! Do not checkin this code
     if (
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)) ||
-        fs.existsSync(path.join(__dirname, `../../../node_modules/${module.exports.appName}.js-controller`))
+        fs.existsSync(
+            path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)
+        ) ||
+        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName}.js-controller`))
     ) {
-        scanDirectory(path.join(__dirname, '../..'), result, regExp);
+        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
     }
+
     return result;
 }
 
@@ -751,7 +870,7 @@ function getNpmVersion(adapter, callback) {
     const cliCommand = `npm view ${adapter}@latest version`;
 
     const exec = require('child_process').exec;
-    exec(cliCommand, {timeout: 2000, windowsHide: true}, (error, stdout, _stderr) => {
+    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
         let version;
         if (error) {
             // command failed
@@ -830,8 +949,10 @@ function getIoPack(sources, name, callback) {
                                 callback(sources, name);
                             }
                         } else {
-                            if (sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
-                                sources[name].meta.substring(0, 'https://'.length) === 'https://') {
+                            if (
+                                sources[name].meta.substring(0, 'http://'.length) === 'http://' ||
+                                sources[name].meta.substring(0, 'https://'.length) === 'https://'
+                            ) {
                                 //installed from npm
                                 getNpmVersion(name, (_err, version) => {
                                     if (version) {
@@ -865,7 +986,7 @@ function _getRepositoryFile(sources, path, callback) {
             }
             count++;
         }
-        sources._helper = {failCounter: []};
+        sources._helper = { failCounter: [] };
 
         sources._helper.timeout = setTimeout(() => {
             if (sources._helper) {
@@ -876,7 +997,7 @@ function _getRepositoryFile(sources, path, callback) {
                     }
                 }
                 if (callback) {
-                    callback('Timeout by read all package.json (' + count + ') seconds', sources);
+                    callback(`Timeout by read all package.json (${count}) seconds`, sources);
                 }
                 callback = null;
             }
@@ -916,14 +1037,14 @@ function _getRepositoryFile(sources, path, callback) {
                         callback = null;
                     } else {
                         // process next
-                        setImmediate(() =>
-                            _getRepositoryFile(sources, path, callback));
+                        setImmediate(() => _getRepositoryFile(sources, path, callback));
                     }
                 }
             });
             return;
         }
     }
+
     // all packages are processed
     if (sources._helper) {
         let err;
@@ -951,9 +1072,9 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
         urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
         let json = null;
-        request({url: urlOrPath, timeout: 10000, gzip: true}, (error, response, body) => {
+        request({ url: urlOrPath, timeout: 10000, gzip: true }, (error, response, body) => {
             if (error || !body || response.statusCode !== 200) {
-                console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
             } else {
                 try {
                     json = JSON.parse(body);
@@ -993,7 +1114,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
  *
  * @alias getRepositoryFile
  * @memberof tools
- * @param {string} urlOrPath URL stargin with http:// or https:// or local file link
+ * @param {string} urlOrPath URL starting with http:// or https:// or local file link
  * @param {object} additionalInfo destination object
  * @param {function} callback function (err, sources, actualHash) { }
  *
@@ -1052,7 +1173,9 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
         let agent = '';
         if (additionalInfo) {
             // Add some information to user-agent, like chrome, IE and Firefox do
-            agent = `${additionalInfo.name}, RND: ${additionalInfo.randomID || randomID}, Node:${additionalInfo.node}, V:${additionalInfo.controller}`;
+            agent = `${additionalInfo.name}, RND: ${additionalInfo.randomID || randomID}, Node:${
+                additionalInfo.node
+            }, V:${additionalInfo.controller}`;
         }
 
         // load hash of file first to not load the whole 1MB of sources
@@ -1072,11 +1195,21 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
                             _getRepositoryFile(sources, path, err => {
                                 err && console.error(`[${new Date()}] ${err}`);
                                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-                            }));
+                            })
+                        );
                     } else {
                         // return cached sources, because no sources found
-                        console.log(`failed to download new sources, ${additionalInfo.sources ? 'use cached sources' : 'no cached sources available'}`);
-                        return maybeCallbackWithError(callback, `Cannot read "${urlOrPath}"`, additionalInfo.sources, '');
+                        console.log(
+                            `failed to download new sources, ${
+                                additionalInfo.sources ? 'use cached sources' : 'no cached sources available'
+                            }`
+                        );
+                        return maybeCallbackWithError(
+                            callback,
+                            `Cannot read "${urlOrPath}"`,
+                            additionalInfo.sources,
+                            ''
+                        );
                     }
                 });
             }
@@ -1084,30 +1217,84 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
     }
 }
 
+/**
+ * Read on repository
+ *
+ * @alias getRepositoryFileAsync
+ * @memberof tools
+ * @param {string} url URL starting with http:// or https:// or local file link
+ * @param {string} hash actual hash
+ * @param {boolean} force Force repository update despite on hash
+ * @param {object} _actualRepo Actual repository
+ *
+ */
+async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
+    let _hash;
+    if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
+        axios = axios || require('axios');
+        _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+        if (_hash && _hash.data && hash === _hash.data.hash) {
+            return _actualRepo;
+        }
+    }
+
+    let data;
+
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        axios = axios || require('axios');
+        if (!_hash) {
+            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+        }
+
+        if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
+            data = _actualRepo;
+        } else {
+            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
+                require('../../package.json').version
+            }`;
+            data = await axios({
+                url,
+                timeout: 10000,
+                headers: { 'User-Agent': agent }
+            });
+            data = data.data;
+        }
+    } else {
+        if (fs.existsSync(url)) {
+            try {
+                data = JSON.parse(fs.readFileSync(url).toString('utf8'));
+            } catch (e) {
+                throw new Error(`Error: Cannot read or parse file "${url}": ${e}`);
+            }
+        } else {
+            throw new Error(`Error: Cannot find file "${url}"`);
+        }
+    }
+
+    return {
+        json: data,
+        changed: _hash && _hash.data ? hash !== _hash.data.hash : true,
+        hash: _hash && _hash.data ? _hash.data.hash : ''
+    };
+}
+
 function sendDiagInfo(obj, callback) {
-    request = request || require('request');
-
     console.log(`Send diag info: ${JSON.stringify(obj)}`);
-    request.post({
-        url: 'http://download.' + module.exports.appName + '.net/diag.php',
-        method: 'POST',
-        gzip: true,
-        headers: {'content-type': 'application/x-www-form-urlencoded'},
-        body: 'data=' + JSON.stringify(obj),
-        timeout: 2000
-    }, (_err, _response, _body) => {
-        /*if (err || !body || response.statusCode !== 200) {
+    axios = axios || require('axios');
+    const params = new URLSearchParams();
+    params.append('data', JSON.stringify(obj));
+    const config = {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        timeout: 4000
+    };
 
-        }*/
-        if (typeof callback === 'function') {
-            callback();
-        }
-    }).on('error', error => {
-        console.log('Cannot send diag info: ' + error.message);
-        if (typeof callback === 'function') {
-            callback(error);
-        }
-    });
+    return axios
+        .post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
+        .then(() => typeof callback === 'function' && callback())
+        .catch(error => {
+            console.log(`Cannot send diag info: ${error.message}`);
+            typeof callback === 'function' && callback(error);
+        });
 }
 
 /**
@@ -1130,10 +1317,7 @@ function getAdapterDir(adapter) {
         adapter = adapter.substr(0, adapter.lastIndexOf('.'));
     }
 
-    const possibilities = [
-        `${appName.toLowerCase()}.${adapter}/package.json`,
-        `${appName}.${adapter}/package.json`
-    ];
+    const possibilities = [`${appName.toLowerCase()}.${adapter}/package.json`, `${appName}.${adapter}/package.json`];
 
     /** @type {string} */
     let adapterPath;
@@ -1144,10 +1328,12 @@ function getAdapterDir(adapter) {
         } else {
             try {
                 adapterPath = require.resolve(possibility);
-                break;
             } catch {
                 // not found
             }
+        }
+        if (adapterPath) {
+            break;
         }
     }
 
@@ -1201,7 +1387,7 @@ function getSystemNpmVersion(callback) {
         .split(path.delimiter)
         .filter(dir => {
             dir = dir.toLowerCase();
-            return !(dir.indexOf('iobroker') > -1 && dir.indexOf(path.join('node_modules', '.bin')) > -1);
+            return !dir.includes('iobroker') || !dir.includes(path.join('node_modules', '.bin'));
         })
         .join(path.delimiter);
     try {
@@ -1213,7 +1399,8 @@ function getSystemNpmVersion(callback) {
             }
         }, 10000);
 
-        exec('npm -v', {encoding: 'utf8', env: newEnv, windowsHide: true}, (error, stdout) => {//, stderr) {
+        exec('npm -v', { encoding: 'utf8', env: newEnv, windowsHide: true }, (error, stdout) => {
+            //, stderr) {
             if (timeout) {
                 clearTimeout(timeout);
                 timeout = null;
@@ -1234,6 +1421,8 @@ function getSystemNpmVersion(callback) {
     }
 }
 
+const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
+
 /**
  * @typedef {object} InstallNodeModuleOptions
  * @property {boolean} [unsafePerm] Whether the `--unsafe-perm` flag should be used
@@ -1245,19 +1434,19 @@ function getSystemNpmVersion(callback) {
  * Installs a node module using npm or a similar package manager
  * @param {string} npmUrl Which node module to install
  * @param {InstallNodeModuleOptions} options Options for the installation
- * @returns {Promise<import("@alcalzone/pak").CommandResult>}
+ * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
 async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
-            // If a cwd was provided, use it
-            ? {cwd: options.cwd}
-            // Otherwise find the ioBroker root dir
-            : {
-                cwd: __dirname,
-                setCwdToPackageRoot: true
-            }
+            ? // If a cwd was provided, use it
+              { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
+              {
+                  cwd: __dirname,
+                  setCwdToPackageRoot: true
+              }
     );
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
@@ -1276,7 +1465,7 @@ async function installNodeModule(npmUrl, options = {}) {
     }
 
     // And install the module
-    /** @type {import("@alcalzone/pak").InstallOptions} */
+    /** @type {import('@alcalzone/pak').InstallOptions} */
     const installOpts = {};
     if (options.unsafePerm) {
         installOpts.additionalArgs = ['--unsafe-perm'];
@@ -1294,19 +1483,19 @@ async function installNodeModule(npmUrl, options = {}) {
  * Uninstalls a node module using npm or a similar package manager
  * @param {string} packageName Which node module to uninstall
  * @param {UninstallNodeModuleOptions} options Options for the installation
- * @returns {Promise<import("@alcalzone/pak").CommandResult>}
+ * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
 async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
-            // If a cwd was provided, use it
-            ? {cwd: options.cwd}
-            // Otherwise find the ioBroker root dir
-            : {
-                cwd: __dirname,
-                setCwdToPackageRoot: true
-            }
+            ? // If a cwd was provided, use it
+              { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
+              {
+                  cwd: __dirname,
+                  setCwdToPackageRoot: true
+              }
     );
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
@@ -1337,19 +1526,19 @@ async function uninstallNodeModule(packageName, options = {}) {
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
  * @param {RebuildNodeModulesOptions} options Options for the rebuild
- * @returns {Promise<import("@alcalzone/pak").CommandResult>}
+ * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
 async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
-            // If a cwd was provided, use it
-            ? {cwd: options.cwd}
-            // Otherwise find the ioBroker root dir
-            : {
-                cwd: __dirname,
-                setCwdToPackageRoot: true
-            }
+            ? // If a cwd was provided, use it
+              { cwd: options.cwd }
+            : // Otherwise find the ioBroker root dir
+              {
+                  cwd: __dirname,
+                  setCwdToPackageRoot: true
+              }
     );
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
@@ -1389,7 +1578,7 @@ function getDiskInfo(platform, callback) {
         try {
             const path = platform === 'win32' ? __dirname.substring(0, 2) : '/';
             const info = diskusage.checkSync(path);
-            return callback && callback(null, {'Disk size': info.total, 'Disk free': info.free});
+            return callback && callback(null, { 'Disk size': info.total, 'Disk free': info.free });
         } catch (err) {
             console.log(err);
         }
@@ -1405,37 +1594,49 @@ function getDiskInfo(platform, callback) {
                 // Z:       116649795584  148368257024
                 const disk = __dirname.substring(0, 2).toUpperCase();
 
-                exec('wmic logicaldisk get size,freespace,caption', {
-                    encoding: 'utf8',
-                    windowsHide: true
-                }, (error, stdout) => {//, stderr) {
-                    if (stdout) {
-                        const lines = stdout.split('\n');
-                        const line = lines.find(line => {
-                            const parts = line.split(/\s+/);
-                            return parts[0].toUpperCase() === disk;
-                        });
-                        if (line) {
-                            const parts = line.split(/\s+/);
-                            return callback && callback(error, {
-                                'Disk size': parseInt(parts[2]),
-                                'Disk free': parseInt(parts[1])
+                exec(
+                    'wmic logicaldisk get size,freespace,caption',
+                    {
+                        encoding: 'utf8',
+                        windowsHide: true
+                    },
+                    (error, stdout) => {
+                        //, stderr) {
+                        if (stdout) {
+                            const lines = stdout.split('\n');
+                            const line = lines.find(line => {
+                                const parts = line.split(/\s+/);
+                                return parts[0].toUpperCase() === disk;
                             });
+                            if (line) {
+                                const parts = line.split(/\s+/);
+                                return (
+                                    callback &&
+                                    callback(error, {
+                                        'Disk size': parseInt(parts[2]),
+                                        'Disk free': parseInt(parts[1])
+                                    })
+                                );
+                            }
                         }
+                        callback && callback(error, null);
                     }
-                    callback && callback(error, null);
-                });
+                );
             } else {
-                exec('df -k /', {encoding: 'utf8', windowsHide: true}, (error, stdout) => {//, stderr) {
+                exec('df -k /', { encoding: 'utf8', windowsHide: true }, (error, stdout) => {
+                    //, stderr) {
                     // Filesystem            1K-blocks    Used Available Use% Mounted on
                     // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
                     try {
                         if (stdout) {
                             const parts = stdout.split('\n')[1].split(/\s+/);
-                            return callback && callback(error, {
-                                'Disk size': parseInt(parts[1]) * 1024,
-                                'Disk free': parseInt(parts[3]) * 1024
-                            });
+                            return (
+                                callback &&
+                                callback(error, {
+                                    'Disk size': parseInt(parts[1]) * 1024,
+                                    'Disk free': parseInt(parts[3]) * 1024
+                                })
+                            );
                         }
                     } catch {
                         // continue regardless of error
@@ -1448,6 +1649,8 @@ function getDiskInfo(platform, callback) {
         }
     }
 }
+
+const getDiskInfoAsync = promisify(getDiskInfo);
 
 /**
  * Returns information about a certificate
@@ -1538,7 +1741,7 @@ function generateDefaultCertificates() {
     // https://github.com/digitalbazaar/forge
     forge.options.usePureJavaScript = false;
     const pki = forge.pki;
-    const keys = pki.rsa.generateKeyPair({bits: 2048, e: 0x10001});
+    const keys = pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
     const cert = pki.createCertificate();
 
     cert.publicKey = keys.publicKey;
@@ -1548,15 +1751,15 @@ function generateDefaultCertificates() {
     cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 
     const subAttrs = [
-        {name: 'commonName', value: getHostName()},
-        {name: 'organizationName', value: 'ioBroker GmbH'},
-        {shortName: 'OU', value: 'iobroker'}
+        { name: 'commonName', value: getHostName() },
+        { name: 'organizationName', value: 'ioBroker GmbH' },
+        { shortName: 'OU', value: 'iobroker' }
     ];
 
     const issAttrs = [
-        {name: 'commonName', value: 'iobroker'},
-        {name: 'organizationName', value: 'ioBroker GmbH'},
-        {shortName: 'OU', value: 'iobroker'}
+        { name: 'commonName', value: 'iobroker' },
+        { name: 'organizationName', value: 'ioBroker GmbH' },
+        { shortName: 'OU', value: 'iobroker' }
     ];
 
     cert.setSubject(subAttrs);
@@ -1583,10 +1786,12 @@ function generateDefaultCertificates() {
         },
         {
             name: 'subjectAltName',
-            altNames: [{
-                type: 2,
-                value: os.hostname()
-            }]
+            altNames: [
+                {
+                    type: 2,
+                    value: os.hostname()
+                }
+            ]
         },
         {
             name: 'subjectKeyIdentifier'
@@ -1639,14 +1844,13 @@ function makeid(length) {
  * @alias getHostInfo
  * @memberof Tools
  * @param {object} objects
- * @param {function} callback return result
  *        <pre><code>
  *            function (err, result) {
  *              adapter.log.debug('Info about host: ' + JSON.stringify(result, null, 2);
  *            }
  *        </code></pre>
  */
-function getHostInfo(objects, callback) {
+async function getHostInfo(objects, callback) {
     const os = require('os');
 
     if (diskusage !== false) {
@@ -1659,7 +1863,7 @@ function getHostInfo(objects, callback) {
 
     const cpus = os.cpus();
     const data = {
-        Platform: os.platform(),
+        Platform: isDocker() ? 'docker' : os.platform(),
         os: process.platform,
         Architecture: os.arch(),
         CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
@@ -1676,47 +1880,44 @@ function getHostInfo(objects, callback) {
         data.Platform = 'OSX';
     }
 
-    let task = 0;
-    task++;
-    objects.getObject('system.config', (_err, systemConfig) => {
-        objects.getObject('system.repositories', (err, repos) => {
-            // Check if repositories exists
-            if (!err && repos && repos.native && repos.native.repositories) {
-                const repo = repos.native.repositories[systemConfig.common.activeRepo];
-                if (repo && repo.json) {
-                    data['adapters count'] = Object.keys(repo.json).length;
-                }
-            }
-            if (!--task) {
-                callback(err, data);
-            }
-        });
-    });
+    const systemConfig = await objects.getObjectAsync('system.config');
+    const systemRepos = await objects.getObjectAsync('system.repositories');
+
+    // Check if repositories exists
+    const allRepos = {};
+    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+        const repos = Array.isArray(systemConfig.common.activeRepo)
+            ? systemConfig.common.activeRepo
+            : [systemConfig.common.activeRepo];
+        repos
+            .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
+            .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
+
+        data['adapters count'] = Object.keys(allRepos).length;
+    }
 
     if (!npmVersion) {
-        task++;
-        getSystemNpmVersion((err, version) => {
+        try {
+            const version = await getSystemNpmVersionAsync();
             data['NPM'] = 'v' + (version || ' ---');
             npmVersion = version;
-            if (!--task) {
-                callback(err, data);
-            }
-        });
+        } catch (e) {
+            console.error('Cannot get NPM version: ' + e);
+        }
     } else {
         data['NPM'] = npmVersion;
-        if (!task) {
-            callback(null, data);
-        }
     }
-    task++;
-    getDiskInfo(data.Platform, (err, info) => {
+    try {
+        const info = await getDiskInfoAsync(data.Platform);
         if (info) {
             Object.assign(data, info);
         }
-        if (!--task) {
-            callback(err, data);
-        }
-    });
+    } catch (e) {
+        console.error('Cannot get disk information: ' + e);
+    }
+    callback && callback(data);
+
+    return data;
 }
 
 /**
@@ -1800,16 +2001,18 @@ function getConfigFileName() {
         configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
         configDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(configDir + '/conf/' + appName + '.json')) {
-            return configDir + '/conf/' + appName + '.json';
+        if (fs.existsSync(`${configDir}/conf/${appName}.json`)) {
+            return `${configDir}/conf/${appName}.json`;
         } else {
-            return configDir + '/data/' + appName + '.json';
+            return `${configDir}/data/${appName}.json`;
         }
     }
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
-    if (fs.existsSync(__dirname + '/../../../../../../../node_modules/' + appName.toLowerCase() + '.js-controller') ||
-        fs.existsSync(__dirname + '/../../../../../../../node_modules/' + appName + '.js-controller')) {
+    if (
+        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName}.js-controller`)
+    ) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 7, 7);
         configDir = configDir.join('/');
@@ -1819,7 +2022,7 @@ function getConfigFileName() {
         configDir = configDir.join('/');
     }
 
-    return configDir + '/' + appName + '-data/' + appName + '.json';
+    return `${configDir}/${appName}-data/${appName}.json`;
 }
 
 /**
@@ -1853,37 +2056,41 @@ function promisify(fn, context, returnArgNames) {
         // @ts-ignore we cannot know the type of `this`
         context = context || this;
         return new Promise((resolve, reject) => {
-            fn.apply(context, args.concat([
-                function (error, result) {
-                    if (error) {
-                        return reject(error instanceof Error ? error : new Error(error));
-                    } else {
-                        // decide on how we want to return the callback arguments
-                        switch (arguments.length) {
-                            case 1: // only an error was given
-                                return resolve(); // Promise<void>
-                            case 2: // a single value (result) was returned
-                                return resolve(result);
-                            default: {// multiple values should be returned
-                                /** @type {{} | any[]} */
-                                let ret;
-                                const extraArgs = sliceArgs(arguments, 1);
-                                if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                    // we can build an object
-                                    ret = {};
-                                    for (let i = 0; i < returnArgNames.length; i++) {
-                                        ret[returnArgNames[i]] = extraArgs[i];
+            fn.apply(
+                context,
+                args.concat([
+                    function (error, result) {
+                        if (error) {
+                            return reject(error instanceof Error ? error : new Error(error));
+                        } else {
+                            // decide on how we want to return the callback arguments
+                            switch (arguments.length) {
+                                case 1: // only an error was given
+                                    return resolve(); // Promise<void>
+                                case 2: // a single value (result) was returned
+                                    return resolve(result);
+                                default: {
+                                    // multiple values should be returned
+                                    /** @type {{} | any[]} */
+                                    let ret;
+                                    const extraArgs = sliceArgs(arguments, 1);
+                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                        // we can build an object
+                                        ret = {};
+                                        for (let i = 0; i < returnArgNames.length; i++) {
+                                            ret[returnArgNames[i]] = extraArgs[i];
+                                        }
+                                    } else {
+                                        // we return the raw array
+                                        ret = extraArgs;
                                     }
-                                } else {
-                                    // we return the raw array
-                                    ret = extraArgs;
+                                    return resolve(ret);
                                 }
-                                return resolve(ret);
                             }
                         }
                     }
-                }
-            ]));
+                ])
+            );
         });
     };
 }
@@ -1903,33 +2110,37 @@ function promisifyNoError(fn, context, returnArgNames) {
         // @ts-ignore we cannot know the type of `this`
         context = context || this;
         return new Promise((resolve, _reject) => {
-            fn.apply(context, args.concat([
-                function (result) {
-                    // decide on how we want to return the callback arguments
-                    switch (arguments.length) {
-                        case 0: // no arguments were given
-                            return resolve(); // Promise<void>
-                        case 1: // a single value (result) was returned
-                            return resolve(result);
-                        default: {// multiple values should be returned
-                            /** @type {{} | any[]} */
-                            let ret;
-                            const extraArgs = sliceArgs(arguments, 0);
-                            if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                // we can build an object
-                                ret = {};
-                                for (let i = 0; i < returnArgNames.length; i++) {
-                                    ret[returnArgNames[i]] = extraArgs[i];
+            fn.apply(
+                context,
+                args.concat([
+                    function (result) {
+                        // decide on how we want to return the callback arguments
+                        switch (arguments.length) {
+                            case 0: // no arguments were given
+                                return resolve(); // Promise<void>
+                            case 1: // a single value (result) was returned
+                                return resolve(result);
+                            default: {
+                                // multiple values should be returned
+                                /** @type {{} | any[]} */
+                                let ret;
+                                const extraArgs = sliceArgs(arguments, 0);
+                                if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                    // we can build an object
+                                    ret = {};
+                                    for (let i = 0; i < returnArgNames.length; i++) {
+                                        ret[returnArgNames[i]] = extraArgs[i];
+                                    }
+                                } else {
+                                    // we return the raw array
+                                    ret = extraArgs;
                                 }
-                            } else {
-                                // we return the raw array
-                                ret = extraArgs;
+                                return resolve(ret);
                             }
-                            return resolve(ret);
                         }
                     }
-                }
-            ]));
+                ])
+            );
         });
     };
 }
@@ -1948,43 +2159,52 @@ function _setQualityForStates(states, keys, quality, cb) {
     if (!keys || !states || !keys.length) {
         cb();
     } else {
-        states.setState(keys.shift(), {
-            ack: null,
-            q: quality
-        }, () => setImmediate(_setQualityForStates, states, keys, quality, cb));
+        states.setState(
+            keys.shift(),
+            {
+                ack: null,
+                q: quality
+            },
+            () => setImmediate(_setQualityForStates, states, keys, quality, cb)
+        );
     }
 }
 
 function setQualityForInstance(objects, states, namespace, q) {
     return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'state', {
-            startkey: namespace + '.',
-            endkey: namespace + '.\u9999',
-            include_docs: false
-        }, (err, _states) => {
-            if (err) {
-                reject(err);
-            } else {
-                let keys = [];
-                if (_states && _states.rows) {
-                    for (let s = 0; s < _states.rows.length; s++) {
-                        const id = _states.rows[s].id;
-                        // if instance still active, but device is offline
-                        if (!(q & 0x10) && id.match(/\.info\.connection$/)) {
-                            continue;
+        objects.getObjectView(
+            'system',
+            'state',
+            {
+                startkey: namespace + '.',
+                endkey: namespace + '.\u9999',
+                include_docs: false
+            },
+            (err, _states) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    let keys = [];
+                    if (_states && _states.rows) {
+                        for (let s = 0; s < _states.rows.length; s++) {
+                            const id = _states.rows[s].id;
+                            // if instance still active, but device is offline
+                            if (!(q & 0x10) && id.match(/\.info\.connection$/)) {
+                                continue;
+                            }
+                            keys.push(id);
                         }
-                        keys.push(id);
                     }
+                    // read all values for IDs
+                    states.getStates(keys, (_err, values) => {
+                        // Get only states, that have ack = true
+                        keys = keys.filter((_id, i) => values[i] && values[i].ack);
+                        // update quality code of the states to new one
+                        _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
+                    });
                 }
-                // read all values for IDs
-                states.getStates(keys, (_err, values) => {
-                    // Get only states, that have ack = true
-                    keys = keys.filter((_id, i) => values[i] && values[i].ack);
-                    // update quality code of the states to new one
-                    _setQualityForStates(states, keys, q, err => err ? reject(err) : resolve());
-                });
             }
-        });
+        );
     });
 }
 
@@ -2017,17 +2237,16 @@ function captureStackTrace(wrapperName) {
     const ret = new Error();
     if (ret.stack) {
         let foundSelf = false;
-        const lines = ret.stack.split('\n')
-            .filter(line => {
-                // keep all lines after this function's
-                if (foundSelf) {
-                    return true;
-                }
-                if (line.indexOf(wrapperName) > -1) {
-                    foundSelf = true;
-                }
-                return false;
-            });
+        const lines = ret.stack.split('\n').filter(line => {
+            // keep all lines after this function's
+            if (foundSelf) {
+                return true;
+            }
+            if (line.indexOf(wrapperName) > -1) {
+                foundSelf = true;
+            }
+            return false;
+        });
         return lines.join('\n');
     }
     return '';
@@ -2180,7 +2399,7 @@ function measureEventLoopLag(ms, cb) {
 
     function hrtime() {
         const t = process.hrtime();
-        return (t[0] * 1e3) + (t[1] / 1e6);
+        return t[0] * 1e3 + t[1] / 1e6;
     }
 }
 
@@ -2207,10 +2426,29 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
     if (targetObj && targetObj.alias && targetObj.alias.read) {
         try {
             // process the value here
-            const func = new Function('val', 'type', 'min', 'max', 'sType', 'sMin', 'sMax', 'return ' + targetObj.alias.read);
-            state.val = func(state.val, targetObj.type, targetObj.min, targetObj.max, sourceObj.type, sourceObj.min, sourceObj.max);
+            const func = new Function(
+                'val',
+                'type',
+                'min',
+                'max',
+                'sType',
+                'sMin',
+                'sMax',
+                'return ' + targetObj.alias.read
+            );
+            state.val = func(
+                state.val,
+                targetObj.type,
+                targetObj.min,
+                targetObj.max,
+                sourceObj.type,
+                sourceObj.min,
+                sourceObj.max
+            );
         } catch (e) {
-            logger.error(`${logNamespace}Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e}`);
+            logger.error(
+                `${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`
+            );
             return null;
         }
     }
@@ -2218,10 +2456,29 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
     if (sourceObj && sourceObj.alias && sourceObj.alias.write) {
         try {
             // process the value here
-            const func = new Function('val', 'type', 'min', 'max', 'tType', 'tMin', 'tMax', 'return ' + sourceObj.alias.write);
-            state.val = func(state.val, sourceObj.type, sourceObj.min, sourceObj.max, targetObj.type, targetObj.min, targetObj.max);
+            const func = new Function(
+                'val',
+                'type',
+                'min',
+                'max',
+                'tType',
+                'tMin',
+                'tMax',
+                'return ' + sourceObj.alias.write
+            );
+            state.val = func(
+                state.val,
+                sourceObj.type,
+                sourceObj.min,
+                sourceObj.max,
+                targetObj.type,
+                targetObj.min,
+                targetObj.max
+            );
         } catch (e) {
-            logger.error(`${logNamespace}Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e}`);
+            logger.error(
+                `${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`
+            );
             return null;
         }
     }
@@ -2243,15 +2500,35 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
     }
 
     // auto-scaling, only if val not null and unit for target (x)or source is %
-    if (((targetObj && targetObj.alias && !targetObj.alias.read) || (sourceObj && sourceObj.alias && !sourceObj.alias.write)) && state.val !== null) {
-        if (targetObj && targetObj.type === 'number' && targetObj.unit === '%' && sourceObj &&
-            sourceObj.type === 'number' && sourceObj.unit !== '%' && sourceObj.min !== undefined && sourceObj.max !== undefined) {
+    if (
+        ((targetObj && targetObj.alias && !targetObj.alias.read) ||
+            (sourceObj && sourceObj.alias && !sourceObj.alias.write)) &&
+        state.val !== null
+    ) {
+        if (
+            targetObj &&
+            targetObj.type === 'number' &&
+            targetObj.unit === '%' &&
+            sourceObj &&
+            sourceObj.type === 'number' &&
+            sourceObj.unit !== '%' &&
+            sourceObj.min !== undefined &&
+            sourceObj.max !== undefined
+        ) {
             // scale target between 0 and 100 % based on sources min/max
-            state.val = (state.val - sourceObj.min) / (sourceObj.max - sourceObj.min) * 100;
-        } else if (sourceObj && sourceObj.type === 'number' && sourceObj.unit === '%' && targetObj &&
-            targetObj.unit !== '%' && targetObj.type === 'number' && targetObj.min !== undefined && targetObj.max !== undefined) {
+            state.val = ((state.val - sourceObj.min) / (sourceObj.max - sourceObj.min)) * 100;
+        } else if (
+            sourceObj &&
+            sourceObj.type === 'number' &&
+            sourceObj.unit === '%' &&
+            targetObj &&
+            targetObj.unit !== '%' &&
+            targetObj.type === 'number' &&
+            targetObj.min !== undefined &&
+            targetObj.max !== undefined
+        ) {
             // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetObj.max - targetObj.min) * state.val / 100) + targetObj.min;
+            state.val = ((targetObj.max - targetObj.min) * state.val) / 100 + targetObj.min;
         }
     }
 
@@ -2265,32 +2542,35 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
  * @memberof tools
  * @param {object} objects object to access objects db
  * @param {string} id the object id which will be deleted from enums
- * @returns {Promise}
+ * @param {object} [allEnums] objects with all enums to use - if not provided all enums will be queried
+ * @returns {Promise} All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  *
  */
-function removeIdFromAllEnums(objects, id) {
-    return new Promise((resolve, reject) => {
-        objects.getObjectView('system', 'enum', {startkey: '', endkey: '\u9999'}, (err, res) => {
-            if (err) {
-                reject(err);
-            } else {
-                const promises = [];
-                for (const obj of res.rows) {
-                    const idx = obj.value && obj.value.common && obj.value.common.members ? obj.value.common.members.indexOf(id) : -1;
-                    if (idx !== -1) {
-                        // the id is in the enum now we have to remove it
-                        obj.value.common.members.splice(idx, 1);
-                        promises.push(new Promise(resolve => {
-                            objects.setObject(obj.value._id, obj.value, err => {
-                                err ? reject(err) : resolve();
-                            });
-                        }));
-                    } // endIf
-                } // endFor
-                Promise.all(promises).then(resolve);
-            } // endElse
-        });
-    });
+async function removeIdFromAllEnums(objects, id, allEnums) {
+    if (!allEnums) {
+        allEnums = await this.getAllEnums(objects);
+    }
+
+    let error = null;
+    for (const [enumId, enumObj] of Object.entries(allEnums)) {
+        const idx = enumObj.common.members ? enumObj.common.members.indexOf(id) : -1;
+        if (idx !== -1) {
+            // the id is in the enum now we have to remove it
+            enumObj.common.members.splice(idx, 1);
+            try {
+                await objects.setObjectAsync(enumId, enumObj);
+                // update cache directly to prevent race conditions when sending many delete in a short time
+                allEnums[enumId] = enumObj;
+            } catch (err) {
+                if (!error) {
+                    error = err;
+                }
+            }
+        }
+    }
+    if (error) {
+        throw error;
+    }
 }
 
 /**
@@ -2310,7 +2590,9 @@ function parseDependencies(dependencies) {
                 adapters[rule] = '*';
             } else if (isObject(rule)) {
                 // can be object containing single adapter or multiple
-                Object.keys(rule).filter(adapter => !adapters[adapter]).forEach(adapter => adapters[adapter] = rule[adapter]);
+                Object.keys(rule)
+                    .filter(adapter => !adapters[adapter])
+                    .forEach(adapter => (adapters[adapter] = rule[adapter]));
             }
         });
     } else if (typeof dependencies === 'string') {
@@ -2345,9 +2627,26 @@ function validateGeneralObjectProperties(obj, extend) {
         throw new Error(`obj.type has an invalid type! Expected "string", received  "${typeof obj.type}"`);
     }
 
-    const allowedObjectTypes = ['state', 'channel', 'device', 'enum', 'host', 'adapter', 'instance', 'meta', 'config', 'script', 'user', 'group', 'chart', 'folder'];
+    const allowedObjectTypes = [
+        'state',
+        'channel',
+        'device',
+        'enum',
+        'host',
+        'adapter',
+        'instance',
+        'meta',
+        'config',
+        'script',
+        'user',
+        'group',
+        'chart',
+        'folder'
+    ];
     if (obj.type !== undefined && !allowedObjectTypes.includes(obj.type)) {
-        throw new Error(`obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`);
+        throw new Error(
+            `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`
+        );
     }
 
     // obj.common is optional in general check
@@ -2356,39 +2655,110 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
-        throw new Error(`obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`);
+        throw new Error(
+            `obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`
+        );
+    } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
+        // for some types, name needs to be a unique string
+        throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
 
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
-            throw new Error(`obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`);
+            throw new Error(
+                `obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`
+            );
         }
 
-        // if object type indicates a state, check that common.type matches
-        const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
-        if (obj.type === 'state' && !allowedStateTypes.includes(obj.common.type)) {
-            throw new Error(`obj.common.type has an invalid value (${obj.common.type}) but has to be one of ${allowedStateTypes.join(', ')}`);
+        if (obj.type === 'state') {
+            // if object type indicates a state, check that common.type matches
+            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
+            if (!allowedStateTypes.includes(obj.common.type)) {
+                throw new Error(
+                    `obj.common.type has an invalid value (${
+                        obj.common.type
+                    }) but has to be one of ${allowedStateTypes.join(', ')}`
+                );
+            }
+
+            // ensure, that default value has correct type
+            if (obj.common.def !== undefined && obj.common.def !== null) {
+                if (obj.common.type === 'file') {
+                    // defaults are set via setState but would need setBinaryState
+                    throw new Error('Default value is not supported for type "file"');
+                }
+
+                // else do what strictObjectChecks does for val
+                if (
+                    !(
+                        (obj.common.type === 'mixed' && typeof obj.common.def !== 'object') ||
+                        (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
+                        (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
+                        (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
+                        (obj.common.type === 'file' && typeof obj.common.def === 'string') ||
+                        (obj.common.type === 'object' && typeof obj.common.def === 'string')
+                    )
+                ) {
+                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
+                    // array, object, json need to be string
+                    if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
+                        throw new Error(
+                            `Default value has to be stringified but received type "${typeof obj.common.def}"`
+                        );
+                    } else {
+                        throw new Error(
+                            `Default value has to be ${
+                                obj.common.type === 'mixed'
+                                    ? `one of type "string", "number", "boolean"`
+                                    : `type "${obj.common.type}"`
+                            } but received type "${typeof obj.common.def}" `
+                        );
+                    }
+                }
+            }
         }
     }
 
     if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
-        throw new Error(`obj.common.read has an invalid type! Expected "boolean", received  "${typeof obj.common.read}"`);
+        throw new Error(
+            `obj.common.read has an invalid type! Expected "boolean", received  "${typeof obj.common.read}"`
+        );
     }
 
     if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
-        throw new Error(`obj.common.write has an invalid type! Expected "boolean", received  "${typeof obj.common.write}"`);
+        throw new Error(
+            `obj.common.write has an invalid type! Expected "boolean", received  "${typeof obj.common.write}"`
+        );
     }
 
     if (obj.common.role !== undefined && typeof obj.common.role !== 'string') {
-        throw new Error(`obj.common.role has an invalid type! Expected "string", received  "${typeof obj.common.role}"`);
+        throw new Error(
+            `obj.common.role has an invalid type! Expected "string", received  "${typeof obj.common.role}"`
+        );
     }
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
-        throw new Error(`obj.common.desc has an invalid type! Expected "string" or "object", received  "${typeof obj.common.desc}"`);
+        throw new Error(
+            `obj.common.desc has an invalid type! Expected "string" or "object", received  "${typeof obj.common.desc}"`
+        );
     }
 
-    if (obj.type === 'state' && obj.common.custom !== undefined && obj.common.custom !== null && !isObject(obj.common.custom)) {
-        throw new Error(`obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`);
+    if (
+        obj.type === 'state' &&
+        obj.common.custom !== undefined &&
+        obj.common.custom !== null &&
+        !isObject(obj.common.custom)
+    ) {
+        throw new Error(
+            `obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`
+        );
+    }
+
+    // common.states needs to be a real object or an arraay
+    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+        throw new Error(
+            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
+        );
     }
 }
 
@@ -2398,51 +2768,70 @@ function validateGeneralObjectProperties(obj, extend) {
  * @alias getAllInstances
  * @memberof tools
  * @param {string[]} adapters list of adapter names to get instances for
+ * @param {object} objects class redis objects
  * @param {function} callback callback to be executed
  */
 function getAllInstances(adapters, objects, callback) {
+    showDeprecatedMessage('tools.getAllInstances');
+
+    return getAllInstancesAsync(adapters, objects)
+        .then(instances => callback(null, instances))
+        .catch(err => callback(err));
+}
+
+/**
+ * get all instances of all adapters in the list
+ *
+ * @alias getAllInstancesAsync
+ * @memberof tools
+ * @param {string[]} adapters list of adapter names to get instances for
+ * @param {object} objects class redis objects
+ * @returns {string[]} - array of IDs
+ */
+async function getAllInstancesAsync(adapters, objects) {
     const instances = [];
-    let count = 0;
-    for (let k = 0; k < adapters.length; k++) {
-        if (!adapters[k]) {
-            continue;
-        }
-        if (adapters[k].indexOf('.') === -1) {
-            count++;
-        }
-    }
+
     for (let i = 0; i < adapters.length; i++) {
         if (!adapters[i]) {
             continue;
         }
-        if (adapters[i].indexOf('.') === -1) {
-            getInstances(adapters[i], objects, false, (err, inst) => {
-                for (let j = 0; j < inst.length; j++) {
-                    if (instances.indexOf(inst[j]) === -1) {
-                        instances.push(inst[j]);
-                    }
+        if (!adapters[i].includes('.')) {
+            const inst = await getInstancesAsync(adapters[i], objects);
+            for (let j = 0; j < inst.length; j++) {
+                if (!instances.includes(inst[j])) {
+                    instances.push(inst[j]);
                 }
-                if (!--count && callback) {
-                    callback(null, instances);
-                    callback = null;
-                }
-            });
+            }
         } else {
-            if (instances.indexOf(adapters[i]) === -1) {
+            if (!instances.includes(adapters[i])) {
                 instances.push(adapters[i]);
             }
         }
     }
-    if (!count && callback) {
-        callback(null, instances);
-        callback = null;
-    }
+
+    return instances;
 }
 
 /**
- * Promise-version of getAllInstances
+ * Get all existing enums
+ *
+ * @param {object} objects - objects db
+ * @returns {Promise<{}>}
  */
-const getAllInstancesAsync = promisify(getAllInstances);
+async function getAllEnums(objects) {
+    const allEnums = {};
+    const res = await objects.getObjectViewAsync('system', 'enum', {
+        startkey: 'enum.',
+        endkey: 'enum.\u9999'
+    });
+    if (res && res.rows) {
+        for (const row of res.rows) {
+            allEnums[row.id] = row.value;
+        }
+    }
+
+    return allEnums;
+}
 
 /**
  * get all instances of one adapter
@@ -2459,25 +2848,39 @@ function getInstances(adapter, objects, withObjects, callback) {
         withObjects = false;
     }
 
-    objects.getObjectList({
+    return getInstancesAsync(adapter, objects, withObjects)
+        .then(instances => callback(null, instances))
+        .catch(error => callback(error));
+}
+
+/**
+ * get async all instances of one adapter
+ *
+ * @alias getInstancesAsync
+ * @param {string }adapter name of the adapter
+ * @param {object }objects objects DB
+ * @param {boolean} withObjects return objects instead of only ids
+ */
+async function getInstancesAsync(adapter, objects, withObjects) {
+    const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
-    }, (err, arr) => {
-        const instances = [];
-        if (!err && arr && arr.rows) {
-            for (let i = 0; i < arr.rows.length; i++) {
-                if (arr.rows[i].value.type !== 'instance') {
-                    continue;
-                }
-                if (withObjects) {
-                    instances.push(arr.rows[i].value);
-                } else {
-                    instances.push(arr.rows[i].value._id);
-                }
+    });
+    const instances = [];
+    if (arr && arr.rows) {
+        for (let i = 0; i < arr.rows.length; i++) {
+            if (arr.rows[i].value.type !== 'instance') {
+                continue;
+            }
+            if (withObjects) {
+                instances.push(arr.rows[i].value);
+            } else {
+                instances.push(arr.rows[i].value._id);
             }
         }
-        callback(null, instances);
-    });
+    }
+
+    return instances;
 }
 
 /**
@@ -2525,8 +2928,8 @@ function maybeCallbackWithError(callback, error, ...args) {
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
  * @param {string} command The command to execute
- * @param {import("child_process").ExecOptions} [execOptions] The options for child_process.exec
- * @returns {import("child_process").ChildProcess & Promise<{stdout?: string; stderr?: string}>}
+ * @param {import('child_process').ExecOptions} [execOptions] The options for child_process.exec
+ * @returns {import('child_process').ChildProcess & Promise<{stdout?: string; stderr?: string}>}
  */
 function execAsync(command, execOptions) {
     const defaultOptions = {
@@ -2536,7 +2939,7 @@ function execAsync(command, execOptions) {
         encoding: 'utf8'
     };
     // @ts-ignore We set the encoding, so stdout/stdrr must be a string
-    return cpPromise.exec(command, {...defaultOptions, ...execOptions});
+    return cpPromise.exec(command, { ...defaultOptions, ...execOptions });
 }
 
 /**
@@ -2565,19 +2968,11 @@ async function resolveAdapterMainFile(adapter) {
         throw new Error(`Could not find adapter dir of ${adapter}`);
     }
 
-    const possibleMainFiles = [
-        'main.js',
-        `${adapter}.js`
-    ];
+    const possibleMainFiles = ['main.js', `${adapter}.js`];
 
     // Add package.json -> main as the 2nd choice
     try {
-        const pack = JSON.parse(
-            await fs.readFile(
-                path.join(adapterDir, 'package.json'),
-                'utf8'
-            )
-        );
+        const pack = JSON.parse(await fs.readFile(path.join(adapterDir, 'package.json'), 'utf8'));
         if (pack && typeof pack.main === 'string') {
             possibleMainFiles.unshift(pack.main);
         }
@@ -2587,12 +2982,7 @@ async function resolveAdapterMainFile(adapter) {
 
     // Add io-package.json -> common.main as the preferred choice
     try {
-        const ioPack = JSON.parse(
-            await fs.readFile(
-                path.join(adapterDir, 'io-package.json'),
-                'utf8'
-            )
-        );
+        const ioPack = JSON.parse(await fs.readFile(path.join(adapterDir, 'io-package.json'), 'utf8'));
         if (ioPack && ioPack.common && typeof ioPack.common.main === 'string') {
             possibleMainFiles.unshift(ioPack.common.main);
         }
@@ -2652,7 +3042,8 @@ function parseShortGithubUrl(url) {
 }
 
 /** This is used to parse the pathname of a github URL */
-const githubPathnameRegex = /^\/(?<user>[^/]+)\/(?<repo>[^/]*?)(?:\.git)?(?:\/(?:tree|tarball|archive)\/(?<commit>.*?)(?:\.(?:zip|gz|tar\.gz))?)?$/;
+const githubPathnameRegex =
+    /^\/(?<user>[^/]+)\/(?<repo>[^/]*?)(?:\.git)?(?:\/(?:tree|tarball|archive)\/(?<commit>.*?)(?:\.(?:zip|gz|tar\.gz))?)?$/;
 
 /**
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
@@ -2690,7 +3081,7 @@ function removePreservedProperties(preserve, oldObj, newObj) {
         if (isObject(preserve[prop]) && isObject(newObj[prop])) {
             // we have to go one step deeper
             removePreservedProperties(preserve[prop], oldObj[prop], newObj[prop]);
-        } else if (newObj && newObj[prop] !== undefined && (oldObj && oldObj[prop] !== undefined)) {
+        } else if (newObj && newObj[prop] !== undefined && oldObj && oldObj[prop] !== undefined) {
             // we only need to remove something if its in the old object and in the new one
             if (typeof preserve[prop] === 'boolean') {
                 delete newObj[prop];
@@ -2765,7 +3156,8 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
                 unit: '% of one core'
             },
             native: {}
-        }, {
+        },
+        {
             _id: `${id}.cputime`,
             type: 'state',
             common: {
@@ -2836,7 +3228,7 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
             type: 'state',
             common: {
                 name: `${namespace} events input counter`,
-                desc: 'State\'s inputs in 15 seconds',
+                desc: "State's inputs in 15 seconds",
                 type: 'number',
                 read: true,
                 write: false,
@@ -2850,7 +3242,7 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
             type: 'state',
             common: {
                 name: `${namespace} events output counter`,
-                desc: 'State\'s outputs in 15 seconds',
+                desc: "State's outputs in 15 seconds",
                 type: 'number',
                 read: true,
                 write: false,
@@ -2922,11 +3314,14 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
 function getLogger(log) {
     if (!log) {
         log = {
-            silly: function (_msg) {/*console.log(msg);*/
+            silly: function (_msg) {
+                /*console.log(msg);*/
             },
-            debug: function (_msg) {/*console.log(msg);*/
+            debug: function (_msg) {
+                /*console.log(msg);*/
             },
-            info: function (_msg) {/*console.log(msg);*/
+            info: function (_msg) {
+                /*console.log(msg);*/
             },
             warn: function (msg) {
                 console.log(msg);
@@ -2950,7 +3345,7 @@ function getLogger(log) {
  * @return {Promise<object[]>}
  */
 async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
-    const instances = {'1': [], '2': [], '3': [], 'admin': []};
+    const instances = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
     if (logPrefix) {
@@ -2960,10 +3355,13 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
 
     let doc = {};
     try {
-        doc = await objects.getObjectViewAsync('system', 'instance');
+        doc = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: 'system.adapter.',
+            endkey: 'system.adapter.\u9999'
+        });
     } catch (e) {
         if (e.message.startsWith('Cannot find ')) {
-            logger.error(`${logPrefix}_design/system missing - call node ${getAppName()}.js setup`);
+            logger.error(`${logPrefix}_design/system missing - call node ${module.exports.appName}.js setup`);
         } else {
             logger.error(`${logPrefix}Can not get instances: ${e.message}`);
         }
@@ -3029,6 +3427,11 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
     }
 }
 
+function showDeprecatedMessage(func, logger) {
+    logger = logger || console.log;
+    logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
+}
+
 const ERROR_NOT_FOUND = 'Not exists';
 const ERROR_EMPTY_OBJECT = 'null object';
 const ERROR_NO_OBJECT = 'no object';
@@ -3043,6 +3446,7 @@ module.exports = {
     generateDefaultCertificates,
     getAdapterDir,
     getInstances,
+    getInstancesAsync,
     getAllInstances,
     getAllInstancesAsync,
     getCertificateInfo,
@@ -3056,8 +3460,10 @@ module.exports = {
     getInstanceIndicatorObjects,
     getIoPack,
     getJson,
+    getJsonAsync,
     getInstancesOrderedByStartPrio,
     getRepositoryFile,
+    getRepositoryFileAsync,
     getSystemNpmVersion,
     installNodeModule,
     uninstallNodeModule,
@@ -3097,6 +3503,8 @@ module.exports = {
     FORBIDDEN_CHARS,
     getControllerDir,
     getLogger,
+    showDeprecatedMessage,
+    getAllEnums,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,

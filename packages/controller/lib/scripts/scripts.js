@@ -1,31 +1,33 @@
 const https = require('https');
-const fs    = require('fs');
+const fs = require('fs');
 const tools = require('../tools.js');
 
 function httpsGet(link, callback) {
-    https.get(link, function (res) {
-        const statusCode = res.statusCode;
+    https
+        .get(link, function (res) {
+            const statusCode = res.statusCode;
 
-        if (statusCode !== 200) {
-            // consume response data to free up memory
-            res.resume();
-            callback(statusCode, null, link);
-        }
+            if (statusCode !== 200) {
+                // consume response data to free up memory
+                res.resume();
+                callback(statusCode, null, link);
+            }
 
-        res.setEncoding('utf8');
-        let rawData = '';
-        res.on('data', function (chunk) {
-            rawData += chunk;
+            res.setEncoding('utf8');
+            let rawData = '';
+            res.on('data', function (chunk) {
+                rawData += chunk;
+            });
+            res.on('end', function () {
+                callback(null, rawData ? rawData.toString() : null, link);
+            });
+        })
+        .on('error', function (e) {
+            callback(e.message, null, link);
         });
-        res.on('end', function () {
-            callback(null, rawData ? rawData.toString() : null, link);
-        });
-    }).on('error', function (e) {
-        callback(e.message, null, link);
-    });
 }
 
-const stableURL = 'https://raw.githubusercontent.com/' + tools.appName + '/' + tools.appName + '.repositories/master/sources-dist-stable.json';
+const stableURL = `https://raw.githubusercontent.com/${tools.appName}/${tools.appName}.repositories/master/sources-dist-stable.json`;
 
 function updateVersion(name, callback, _sources) {
     if (!_sources) {
@@ -36,12 +38,12 @@ function updateVersion(name, callback, _sources) {
     const cmd = 'npm show ' + tools.appName + '.' + name + ' version';
     const exec = require('child_process').exec;
     let result = '';
-    const child = exec(cmd, {windowsHide: true}, (error, stdout, _stderr) => result = stdout);
+    const child = exec(cmd, { windowsHide: true }, (error, stdout, _stderr) => (result = stdout));
 
     child.stderr.pipe(process.stdout);
     child.on('exit', function (code /* , signal */) {
         if (code) {
-            console.error('host.' + tools.getHostName() + ' Cannot get version of  ' +  tools.appName + '.' + name + ': ' + code);
+            console.error(`host.${tools.getHostName()} Cannot get version of  ${tools.appName}.${name}: ${code}`);
             callback(code, _sources, name, null);
         } else {
             _sources[name].version = result;
@@ -57,11 +59,15 @@ function updateVersions(callback) {
         for (const name of Object.keys(sources)) {
             if (!sources[name].version) {
                 count++;
-                updateVersion(name, function () {
-                    if (!--count) {
-                        callback(sources);
-                    }
-                }, sources);
+                updateVersion(
+                    name,
+                    function () {
+                        if (!--count) {
+                            callback(sources);
+                        }
+                    },
+                    sources
+                );
             }
         }
         if (!count) {
@@ -74,7 +80,7 @@ function updateVersions(callback) {
 if (process.argv.indexOf('--prepublish') !== -1) {
     httpsGet(stableURL, function (err, body) {
         if (err || !body) {
-            console.error('Cannot read sources file "' + stableURL + '": '  + err);
+            console.error('Cannot read sources file "' + stableURL + '": ' + err);
             process.exit(2);
         } else {
             fs.writeFileSync(__dirname + '/../../conf/sources-dist.json', body);

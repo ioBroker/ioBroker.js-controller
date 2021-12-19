@@ -2,7 +2,7 @@
  *
  *      password hash and check
  *
- *      7'2014-2016 Bluefox <dogafox@gmail.com>
+ *      7'2014-2021 Bluefox <dogafox@gmail.com>
  *             2014 hobbyquaker <hq@ccu.io>
  *
  *      derived from https://github.com/florianheinemann/password-hash-and-salt/ (MIT License)
@@ -34,20 +34,19 @@
 /* jslint node: true */
 'use strict';
 
-const crypto  = require('crypto');
-let   version = null;
+const crypto = require('crypto');
+let version = null;
 
 const password = pw => {
     return {
         hash: (salt, iterations, callback) => {
-
             salt = salt || crypto.randomBytes(16).toString('hex');
             iterations = iterations || 10000;
 
             // version 0.10 has no 'sha256' and this option must be ignored
             if (version === null) {
                 version = process.version.replace('v', '');
-                version = !version.match(/^0\.10\./);
+                version = !version.startsWith('0.10.');
             }
 
             if (version) {
@@ -66,7 +65,6 @@ const password = pw => {
 
                     callback(null, `pbkdf2$${iterations}$${key.toString('hex')}$${salt}`);
                 });
-
             }
         },
         check: function (hashedPassword, callback) {
@@ -81,17 +79,25 @@ const password = pw => {
                 return callback('Unknown');
             }
 
-            this.hash(key[3], parseInt(key[1], 10), function (error, newHash) {
+            this.hash(key[3], parseInt(key[1], 10), (error, newHash) => {
                 if (error) {
-                    return callback(error);
+                    callback(error);
+                } else {
+                    callback(null, newHash === hashedPassword);
                 }
-                callback(null, newHash === hashedPassword);
             });
-
         },
-        complexity: _callback => {
-            // Todo: Check for password complexity
-            return true;
+        complexity: (password, callback) => {
+            let result = false;
+            if (typeof password === 'string') {
+                result =
+                    password.length >= 8 && // minimum length is 8
+                    password.match(/\d/) && // contains at least one digit
+                    password.match(/[a-z]/) && // contains at least one lower case letter
+                    password.match(/[A-Z]/); // contains at least one upper case letter
+            }
+            typeof callback === 'function' && callback(result);
+            return result; // true if the complexity OK
         }
     };
 };

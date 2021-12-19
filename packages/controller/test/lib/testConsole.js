@@ -25,7 +25,7 @@ function getBackupDir() {
     }
 
     const parts = dataDir.split('/');
-    parts.pop();// remove data or appName-data
+    parts.pop(); // remove data or appName-data
     parts.pop();
 
     return parts.join('/') + '/backups/';
@@ -38,36 +38,62 @@ function register(it, expect, context) {
     it(testName + 'user passwd', async () => {
         let res;
 
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`
+        );
         expect(res.stderr).to.be.not.ok;
 
         // check password
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`
+        );
         expect(res.stderr).to.be.not.ok;
         // negative check
         try {
-            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`);
+            await cpPromise.exec(
+                `"${
+                    process.execPath
+                }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`
+            );
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
         // set new password
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`);
+        res = await cpPromise.exec(
+            `"${
+                process.execPath
+            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`
+        );
         expect(res.stderr).to.be.not.ok;
         // check new Password
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`);
+        res = await cpPromise.exec(
+            `"${
+                process.execPath
+            }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`
+        );
         expect(res.stderr).to.be.not.ok;
 
         // set password back
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`);
+        res = await cpPromise.exec(
+            `"${
+                process.execPath
+            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`
+        );
         expect(res.stderr).to.be.not.ok;
         // check password
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`
+        );
         expect(res.stderr).to.be.not.ok;
 
         // set password for non existing user
         try {
-            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`);
+            await cpPromise.exec(
+                `"${
+                    process.execPath
+                }" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`
+            );
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
@@ -75,7 +101,11 @@ function register(it, expect, context) {
 
         // check password for non existing user
         try {
-            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`);
+            await cpPromise.exec(
+                `"${
+                    process.execPath
+                }" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`
+            );
             expect(true, 'should throw').to.be.false;
         } catch {
             //ok
@@ -131,7 +161,9 @@ function register(it, expect, context) {
         }
 
         // add user
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`
+        );
         expect(res.stderr).to.be.not.ok;
 
         // add existing user not allowed
@@ -144,14 +176,18 @@ function register(it, expect, context) {
 
         // add with invalid group
         try {
-            await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add user1 --password bbb --ingroup invalid`);
+            await cpPromise.exec(
+                `"${process.execPath}" "${iobExecutable}" user add user1 --password bbb --ingroup invalid`
+            );
             expect(true, 'should throw').to.be.false;
         } catch {
             // ok
         }
 
         // check adduser
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" adduser user2 --password user --ingroup user`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" adduser user2 --password user --ingroup user`
+        );
         expect(res.stderr).to.be.not.ok;
     }).timeout(20000);
 
@@ -160,7 +196,9 @@ function register(it, expect, context) {
         let res;
 
         // add second user
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add user1 --password bbb --ingroup user`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" user add user1 --password bbb --ingroup user`
+        );
         expect(res.stderr).to.be.not.ok;
 
         // check if no args set
@@ -415,7 +453,9 @@ function register(it, expect, context) {
         }
 
         // add user for tests
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user add user4 --ingroup user --password bbb`);
+        res = await cpPromise.exec(
+            `"${process.execPath}" "${iobExecutable}" user add user4 --ingroup user --password bbb`
+        );
         expect(res.stderr).to.be.not.ok;
 
         // add normal user to normal group
@@ -527,13 +567,8 @@ function register(it, expect, context) {
     // message
     // update
     it(testName + 'update', async () => {
-        let res;
         // check update
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
-        expect(res.stderr).to.be.not.ok;
-
-        // check update with repo url
-        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update http://download.iobroker.net/sources-dist.json`);
+        const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(40000);
 
@@ -551,7 +586,7 @@ function register(it, expect, context) {
         if (fs.existsSync(dir)) {
             files = fs.readdirSync(dir);
             for (const file of files) {
-                if (file.match(/\.tar\.gz$/)) {
+                if (file.endsWith('.tar.gz')) {
                     fs.unlinkSync(dir + file);
                 }
             }
@@ -566,7 +601,7 @@ function register(it, expect, context) {
         console.log(`Check ${dir}`);
         for (let f = files.length - 1; f > 0; f--) {
             console.log('Detect ' + dir + files[f]);
-            if (files[f].match(/_backupioBroker\.tar\.gz$/)) {
+            if (files[f].endsWith('_backupioBroker.tar.gz')) {
                 // TODO see next TODO
                 //found = true;
                 break;
@@ -639,6 +674,10 @@ function register(it, expect, context) {
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set stable`);
         expect(res.stderr).to.be.not.ok;
 
+        // remove local from active repos
+        res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo unset local`);
+        expect(res.stderr).to.be.not.ok;
+
         // delete non-active repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local`);
         expect(res.stderr).to.be.not.ok;
@@ -651,7 +690,7 @@ function register(it, expect, context) {
             // ok
         }
 
-        // delete non-active repo
+        // add and set as active new repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo addset local1 some/path`);
         expect(res.stderr).to.be.not.ok;
 
@@ -662,6 +701,9 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
+
+        // remove local1 from active repos
+        await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo unset local1`);
 
         // set active repo to default
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo set stable`);
@@ -675,7 +717,8 @@ function register(it, expect, context) {
     // license
     it(testName + 'license', async () => {
         // test license
-        const licenseText = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
+        const licenseText =
+            'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
         let licenseFile = __dirname + '/visLicense.data';
         licenseFile = licenseFile.replace(/\\/g, '/');
         const fs = require('fs');
@@ -703,9 +746,7 @@ function register(it, expect, context) {
             common: {
                 name: 'iobroker.vis'
             },
-            native: {
-
-            },
+            native: {},
             type: 'instance'
         });
         // license must be taken

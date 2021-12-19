@@ -1,14 +1,13 @@
 'use strict';
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
-const {enumHosts, enumObjects, getObjectFrom, enumInstances} = require('./cliTools');
+const { enumHosts, enumObjects, getObjectFrom, enumInstances } = require('./cliTools');
 const { tools } = require('@iobroker/js-controller-common');
 const os = require('os');
 const fs = require('fs-extra');
 
 /** Command iobroker host ... */
 module.exports = class CLIHost extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -126,7 +125,6 @@ module.exports = class CLIHost extends CLICommand {
                 // Notify the user that we are done
                 CLI.success.hostDeleted(hostname);
                 return void callback();
-
             } catch (err) {
                 CLI.error.unknown(err.message);
                 return void callback(1);
@@ -261,8 +259,8 @@ module.exports = class CLIHost extends CLICommand {
 
                 // Also rename all instances
                 const instances = await enumInstances(objects);
-                const instancesToRename = oldHostname === undefined ? instances
-                    : instances.filter(i => i.common.host === oldHostname);
+                const instancesToRename =
+                    oldHostname === undefined ? instances : instances.filter(i => i.common.host === oldHostname);
                 if (instancesToRename.length > 0) {
                     for (const instance of instancesToRename) {
                         // Update each instance object
@@ -272,14 +270,12 @@ module.exports = class CLIHost extends CLICommand {
                     CLI.warn.noInstancesFoundOnHost(oldHostname);
                 }
                 return void callback();
-
             } catch (err) {
                 CLI.error.unknown(err.message);
                 return void callback(1);
             }
         });
     }
-
 };
 
 /**
@@ -295,7 +291,8 @@ function changeInstanceHost(objects, instance, newHostname) {
         instance.ts = Date.now();
         instance.common.host = newHostname;
         // and save it
-        objects.setObjectAsync(instance._id, instance)
+        objects
+            .setObjectAsync(instance._id, instance)
             .then(() => {
                 CLI.success.instanceHostChanged(instance._id, oldInstanceHost, newHostname);
                 resolve();

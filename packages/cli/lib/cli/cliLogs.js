@@ -10,7 +10,6 @@ const { tools } = require('@iobroker/js-controller-common');
 
 /** Command ioBroker state ... */
 module.exports = class CLILogs extends CLICommand {
-
     /** @param {import('./cliCommand').CLICommandOptions} options */
     constructor(options) {
         super(options);
@@ -24,7 +23,6 @@ module.exports = class CLILogs extends CLICommand {
      * @param {any[]} args
      */
     execute(args, params) {
-
         /** @type {string | undefined} */
         const adapterName = args[0];
         const watch = params.watch || params.w;
@@ -36,7 +34,7 @@ module.exports = class CLILogs extends CLICommand {
         };
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
-        const logger = require('../logger')(config.log);
+        const logger = require('@iobroker/js-controller-common').logger(config.log);
         let fileName = logger.getFileName();
         if (fileName) {
             let lines = fs.readFileSync(fileName).toString('utf-8').split('\n');
@@ -60,10 +58,10 @@ module.exports = class CLILogs extends CLICommand {
                 fileName = fileName.replace(/\\/g, '/');
                 const parts = fileName.split('/');
                 parts.pop();
-                chokidar.watch(`${parts.join('/')}/iobroker*`, {awaitWriteFinish: {stabilityThreshold: 500}})
+                chokidar
+                    .watch(`${parts.join('/')}/iobroker*`, { awaitWriteFinish: { stabilityThreshold: 500 } })
                     .on('all', this.watchHandler.bind(this, options))
-                    .on('ready', () => this.isReady = true)
-                ;
+                    .on('ready', () => (this.isReady = true));
             }
         } else {
             console.log('No log file found');
@@ -86,12 +84,7 @@ module.exports = class CLILogs extends CLICommand {
     watchHandler(options, event, path, stats) {
         if (event === 'add' || !this.fileSizes.has(path)) {
             this.fileSizes.set(path, stats.size);
-            if (
-                stats.size > 0 && (
-                    this.isReady
-                    || (options.complete && this.isTodaysLogfile(path))
-                )
-            ) {
+            if (stats.size > 0 && (this.isReady || (options.complete && this.isTodaysLogfile(path)))) {
                 this.streamChange(path, 0, options);
             }
         } else if (event === 'change') {
@@ -111,7 +104,7 @@ module.exports = class CLILogs extends CLICommand {
      */
     isTodaysLogfile(path) {
         const YYYYMMDDDate = new Date().toJSON().slice(0, 10);
-        return path.indexOf(YYYYMMDDDate) > -1;
+        return path.includes(YYYYMMDDDate);
     }
 
     /**
@@ -123,7 +116,7 @@ module.exports = class CLILogs extends CLICommand {
     streamChange(path, start, options) {
         const input = fs.createReadStream(path, {
             encoding: 'utf8',
-            start: start,
+            start,
             autoClose: true
         });
         if (options.adapterName) {
@@ -131,14 +124,12 @@ module.exports = class CLILogs extends CLICommand {
             input
                 .pipe(es.split())
                 // @ts-ignore
-                .pipe(es.filterSync(line => line.indexOf(options.adapterName) > -1))
+                .pipe(es.filterSync(line => line.includes(options.adapterName)))
                 .pipe(es.mapSync(line => line + os.EOL))
-                .pipe(process.stdout)
-            ;
+                .pipe(process.stdout);
         } else {
             // just pipe the input through
             tools.pipeLinewise(input, process.stdout);
         }
     }
 };
-

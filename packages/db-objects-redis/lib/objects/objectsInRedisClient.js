@@ -16,37 +16,31 @@
 /* jshint -W061 */
 'use strict';
 
-const extend                = require('node.extend');
-const Redis                 = require('ioredis');
-const tools                 = require('@iobroker/db-base').tools;
-const fs                    = require('fs');
-const path                  = require('path');
-const crypto                = require('crypto');
+const extend = require('node.extend');
+const Redis = require('ioredis');
+const tools = require('@iobroker/db-base').tools;
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
 const { isDeepStrictEqual } = require('util');
-const deepClone             = require('deep-clone');
-const utils                 = require('./objectsUtils.js');
-
-function initScriptFiles() {
-    const scripts = {};
-    try {
-        fs.readdirSync(__dirname + '/lib/objects/lua')
-            .forEach(name => scripts[name.replace(/.lua$/, '')] = fs.readFileSync(path.join(__dirname, 'lua', name)).toString('utf8'));
-    } catch {
-        // TODO
-    }
-    return scripts;
-}
-const scriptFiles = initScriptFiles();
+const deepClone = require('deep-clone');
+const utils = require('./objectsUtils.js');
+const semver = require('semver');
 
 class ObjectsInRedisClient {
-
     constructor(settings) {
         this.settings = settings || {};
-        this.redisNamespace = (this.settings.redisNamespace || (this.settings.connection && this.settings.connection.redisNamespace) || 'cfg') + '.';
+        this.redisNamespace =
+            (this.settings.redisNamespace ||
+                (this.settings.connection && this.settings.connection.redisNamespace) ||
+                'cfg') + '.';
         this.fileNamespace = this.redisNamespace + 'f.';
         this.fileNamespaceL = this.fileNamespace.length;
         this.objNamespace = this.redisNamespace + 'o.';
+        this.setNamespace = this.redisNamespace + 's.';
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
         this.objNamespaceL = this.objNamespace.length;
+        this.supportedProtocolVersions = ['4'];
 
         this.stop = false;
         this.client = null;
@@ -67,10 +61,33 @@ class ObjectsInRedisClient {
         }
     }
 
+    /**
+     * Checks if we are allowed to start and sets the protocol version accordingly
+     *
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _determineProtocolVersion() {
+        const protoVersion = await this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+
+        if (!protoVersion) {
+            // if no proto version existent yet, we set ours
+            const highestVersion = Math.max(...this.supportedProtocolVersions);
+            await this.setProtocolVersion(highestVersion);
+            this.activeProtocolVersion = highestVersion.toString();
+            return;
+        }
+
+        // check if we can support this version
+        if (this.supportedProtocolVersions.includes(protoVersion)) {
+            this.activeProtocolVersion = protoVersion;
+        } else {
+            throw new Error(`This host does not support protocol version "${protoVersion}"`);
+        }
+    }
+
     connectDb() {
         this.settings.connection = this.settings.connection || {};
-
-        const ioRegExp = new RegExp('^' + this.objNamespace.replace(/\./g, '\\.') + '[_A-Za-z0-9ÄÖÜäöüа-яА-Я]+'); // cfg.o.[_A-Za-z0-9]+
 
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
@@ -131,11 +148,17 @@ class ObjectsInRedisClient {
         delete this.settings.connection.options.retry_max_delay;
         this.settings.connection.options.enableReadyCheck = true;
 
-        if (this.settings.connection.port === 0) { // Port = 0 means unix socket
+        if (this.settings.connection.port === 0) {
+            // Port = 0 means unix socket
             // initiate a unix socket connection
             this.settings.connection.options.path = this.settings.connection.host;
-            this.log.debug(this.namespace + ' Redis Objects: Use File Socket for connection: ' + this.settings.connection.options.path);
-        } else if (Array.isArray(this.settings.connection.host)) { // Host is an array means we use a sentinel
+            this.log.debug(
+                this.namespace +
+                    ' Redis Objects: Use File Socket for connection: ' +
+                    this.settings.connection.options.path
+            );
+        } else if (Array.isArray(this.settings.connection.host)) {
+            // Host is an array means we use a sentinel
             const defaultPort = Array.isArray(this.settings.connection.port) ? null : this.settings.connection.port;
 
             this.settings.connection.options.sentinels = this.settings.connection.host.map((redisNode, idx) => ({
@@ -143,16 +166,31 @@ class ObjectsInRedisClient {
                 port: defaultPort || this.settings.connection.port[idx]
             }));
 
-            this.settings.connection.options.name = this.settings.connection.sentinelName ? this.settings.connection.sentinelName : 'mymaster';
-            this.log.debug(this.namespace + ' Redis Objects: Use Sentinel for connection: ' + this.settings.connection.options.name + ', ' + JSON.stringify(this.settings.connection.options.sentinels));
+            this.settings.connection.options.name = this.settings.connection.sentinelName
+                ? this.settings.connection.sentinelName
+                : 'mymaster';
+            this.log.debug(
+                this.namespace +
+                    ' Redis Objects: Use Sentinel for connection: ' +
+                    this.settings.connection.options.name +
+                    ', ' +
+                    JSON.stringify(this.settings.connection.options.sentinels)
+            );
         } else {
             this.settings.connection.options.host = this.settings.connection.host;
             this.settings.connection.options.port = this.settings.connection.port;
-            this.log.debug(this.namespace + ' Redis Objects: Use Redis connection: ' + this.settings.connection.options.host + ':' + this.settings.connection.options.port);
+            this.log.debug(
+                this.namespace +
+                    ' Redis Objects: Use Redis connection: ' +
+                    this.settings.connection.options.host +
+                    ':' +
+                    this.settings.connection.options.port
+            );
         }
         this.settings.connection.options.db = this.settings.connection.options.db || 0;
         this.settings.connection.options.family = this.settings.connection.options.family || 0;
-        this.settings.connection.options.password = this.settings.connection.options.auth_pass || this.settings.connection.pass || null;
+        this.settings.connection.options.password =
+            this.settings.connection.options.auth_pass || this.settings.connection.pass || null;
 
         this.settings.connection.options.autoResubscribe = false; // We do our own resubscribe because other sometimes not work
         // REDIS does not allow whitespaces, we have some because of pid
@@ -161,7 +199,18 @@ class ObjectsInRedisClient {
         this.client = new Redis(this.settings.connection.options);
 
         this.client.on('error', error => {
-            this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Redis ERROR Objects: (' + ignoreErrors + '/' + this.stop + ') ' + error.message + ' / ' + error.stack);
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(
+                    this.namespace +
+                        ' Redis ERROR Objects: (' +
+                        ignoreErrors +
+                        '/' +
+                        this.stop +
+                        ') ' +
+                        error.message +
+                        ' / ' +
+                        error.stack
+                );
             if (this.stop) {
                 return;
             }
@@ -169,7 +218,14 @@ class ObjectsInRedisClient {
                 initError = true;
                 // Seems we have a socket.io server
                 if (!ignoreErrors && error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
-                    this.log.error(this.namespace + ' Could not connect to objects database at ' + this.settings.connection.options.host + ':' + this.settings.connection.options.port + ' (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!');
+                    this.log.error(
+                        this.namespace +
+                            ' Could not connect to objects database at ' +
+                            this.settings.connection.options.host +
+                            ':' +
+                            this.settings.connection.options.port +
+                            ' (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!'
+                    );
                 }
                 return;
             }
@@ -178,12 +234,14 @@ class ObjectsInRedisClient {
         });
 
         this.client.on('end', () => {
-            this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Objects-Redis Event end (stop=' + this.stop + ')');
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(this.namespace + ' Objects-Redis Event end (stop=' + this.stop + ')');
             ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
         });
 
         this.client.on('connect', () => {
-            this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Objects-Redis Event connect (stop=' + this.stop + ')');
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(this.namespace + ' Objects-Redis Event connect (stop=' + this.stop + ')');
             connected = true;
             if (errorLogged) {
                 this.log.info(this.namespace + ' Objects database successfully reconnected');
@@ -192,7 +250,8 @@ class ObjectsInRedisClient {
         });
 
         this.client.on('close', () => {
-            this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Objects-Redis Event close (stop=' + this.stop + ')');
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(this.namespace + ' Objects-Redis Event close (stop=' + this.stop + ')');
             //if (ready && typeof this.settings.disconnected === 'function') this.settings.disconnected();
         });
 
@@ -201,10 +260,24 @@ class ObjectsInRedisClient {
                 reconnectCounter++;
             }
 
-            this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Objects-Redis Event reconnect (reconnectCounter=' + reconnectCounter + ', stop=' + this.stop + ')');
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(
+                    this.namespace +
+                        ' Objects-Redis Event reconnect (reconnectCounter=' +
+                        reconnectCounter +
+                        ', stop=' +
+                        this.stop +
+                        ')'
+                );
 
-            if (reconnectCounter > 2) { // fallback logic for nodejs <10
-                this.log.error(this.namespace + ' The DB port  ' + this.settings.connection.options.port +' is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!');
+            if (reconnectCounter > 2) {
+                // fallback logic for nodejs <10
+                this.log.error(
+                    this.namespace +
+                        ' The DB port  ' +
+                        this.settings.connection.options.port +
+                        ' is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!'
+                );
                 return;
             }
             connected = false;
@@ -218,7 +291,7 @@ class ObjectsInRedisClient {
             initError = false;
             ignoreErrors = false;
 
-            this.log.debug(this.namespace + ' Objects client ready ... initialize now');
+            this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
             try {
                 await this.client.config('set', ['lua-time-limit', 10000]); // increase LUA timeout TODO needs better fix
             } catch (e) {
@@ -228,46 +301,81 @@ class ObjectsInRedisClient {
             let initCounter = 0;
             if (!this.subSystem && typeof onChange === 'function') {
                 initCounter++;
-                this.log.debug(this.namespace + ' Objects create System PubSub Client');
+                this.log.debug(`${this.namespace} Objects create System PubSub Client`);
                 this.subSystem = new Redis(this.settings.connection.options);
                 this.subSystem.ioBrokerSubscriptions = {};
 
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) =>
                         setImmediate(() => {
-                            this.log.silly(`${this.namespace} Objects system redis pmessage ${pattern}/${channel}:${message}`);
+                            this.log.silly(
+                                `${this.namespace} Objects system redis pmessage ${pattern}/${channel}:${message}`
+                            );
+
+                            if (channel.startsWith(this.metaNamespace)) {
+                                if (
+                                    channel === `${this.metaNamespace}objects.protocolVersion` &&
+                                    message !== this.activeProtocolVersion
+                                ) {
+                                    if (typeof this.settings.disconnected === 'function') {
+                                        // protocol version has changed, restart controller
+                                        this.log.info(
+                                            `${this.namespace} Objects protocol version has changed, disconnecting!`
+                                        );
+                                        this.settings.disconnected();
+                                    }
+                                }
+                                return;
+                            }
+
                             try {
-                                if (ioRegExp.test(channel)) {
+                                if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                     const id = channel.substring(this.objNamespaceL);
                                     try {
                                         const obj = message ? JSON.parse(message) : null;
 
-                                        if (id === 'system.config' &&
+                                        if (
+                                            id === 'system.config' &&
                                             obj &&
                                             obj.common &&
                                             obj.common.defaultNewAcl &&
-                                            !isDeepStrictEqual(obj.common.defaultNewAcl, this.defaultNewAcl)) {
+                                            !isDeepStrictEqual(obj.common.defaultNewAcl, this.defaultNewAcl)
+                                        ) {
                                             this.defaultNewAcl = JSON.parse(JSON.stringify(obj.common.defaultNewAcl));
                                             this.settings.controller && this.setDefaultAcl(this.defaultNewAcl);
                                         }
 
                                         onChange(id, obj);
                                     } catch (e) {
-                                        this.log.warn(`${this.namespace} Objects Cannot process system pmessage ${id} - ${message}: ${e.message}`);
+                                        this.log.warn(
+                                            `${this.namespace} Objects Cannot process system pmessage ${id} - ${message}: ${e.message}`
+                                        );
                                         this.log.warn(`${this.namespace} ${e.stack}`);
                                     }
                                 } else {
-                                    this.log.warn(`${this.namespace} Objects Received unexpected system pmessage: ${channel}`);
+                                    this.log.warn(
+                                        `${this.namespace} Objects Received unexpected system pmessage: ${channel}`
+                                    );
                                 }
                             } catch (e) {
-                                this.log.warn(this.namespace + ' Objects system pmessage ' + channel + ' ' + JSON.stringify(message) + ' ' + e.message);
+                                this.log.warn(
+                                    this.namespace +
+                                        ' Objects system pmessage ' +
+                                        channel +
+                                        ' ' +
+                                        JSON.stringify(message) +
+                                        ' ' +
+                                        e.message
+                                );
                                 this.log.warn(this.namespace + ' ' + e.stack);
                             }
-                        }));
+                        })
+                    );
                 }
 
                 this.subSystem.on('end', () => {
-                    this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Objects-Redis System Event end sub (stop=' + this.stop + ')');
+                    this.settings.connection.enhancedLogging &&
+                        this.log.silly(this.namespace + ' Objects-Redis System Event end sub (stop=' + this.stop + ')');
                     ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
                 });
 
@@ -275,35 +383,80 @@ class ObjectsInRedisClient {
                     if (this.stop) {
                         return;
                     }
-                    this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' PubSub System client Objects No redis connection: ' + JSON.stringify(error));
+                    this.settings.connection.enhancedLogging &&
+                        this.log.silly(
+                            this.namespace +
+                                ' PubSub System client Objects No redis connection: ' +
+                                JSON.stringify(error)
+                        );
                 });
 
                 if (this.settings.connection.enhancedLogging) {
                     this.subSystem.on('connect', () =>
-                        this.log.silly(this.namespace + ' PubSub System client Objects-Redis Event connect (stop=' + this.stop + ')'));
+                        this.log.silly(
+                            this.namespace +
+                                ' PubSub System client Objects-Redis Event connect (stop=' +
+                                this.stop +
+                                ')'
+                        )
+                    );
 
                     this.subSystem.on('close', () =>
-                        this.log.silly(this.namespace + ' PubSub System client Objects-Redis Event close (stop=' + this.stop + ')'));
+                        this.log.silly(
+                            this.namespace + ' PubSub System client Objects-Redis Event close (stop=' + this.stop + ')'
+                        )
+                    );
 
                     this.subSystem.on('reconnecting', reconnectCounter =>
-                        this.log.silly(this.namespace + ' PubSub System client Objects-Redis Event reconnect (reconnectCounter=' + reconnectCounter + ', stop=' + this.stop + ')'));
+                        this.log.silly(
+                            this.namespace +
+                                ' PubSub System client Objects-Redis Event reconnect (reconnectCounter=' +
+                                reconnectCounter +
+                                ', stop=' +
+                                this.stop +
+                                ')'
+                        )
+                    );
                 }
 
                 this.subSystem.on('ready', async () => {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
-                            this.log.debug(this.namespace + ' Objects ' + (ready ? 'system re' : '') + 'connected to redis: ' + this.settings.connection.host);
+                            this.log.debug(
+                                this.namespace +
+                                    ' Objects ' +
+                                    (ready ? 'system re' : '') +
+                                    'connected to redis: ' +
+                                    this.settings.connection.host
+                            );
                         } else {
-                            this.log.debug(this.namespace + ' Objects ' + (ready ? 'system re' : '') + 'connected to redis: ' + this.settings.connection.host + ':' + this.settings.connection.port);
+                            this.log.debug(
+                                this.namespace +
+                                    ' Objects ' +
+                                    (ready ? 'system re' : '') +
+                                    'connected to redis: ' +
+                                    this.settings.connection.host +
+                                    ':' +
+                                    this.settings.connection.port
+                            );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
                         ready = true;
                     }
                     // subscribe on system.config anytime because also adapters need stuff like defaultNewAcl (especially admin)
                     try {
-                        this.subSystem && await this.subSystem.psubscribe(`${this.objNamespace}system.config`);
+                        this.subSystem && (await this.subSystem.psubscribe(`${this.objNamespace}system.config`));
                     } catch {
                         // ignore
+                    }
+
+                    // subscribe to meta changes
+                    try {
+                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
+                        );
                     }
 
                     if (this.subSystem) {
@@ -326,30 +479,45 @@ class ObjectsInRedisClient {
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
-                        this.log.silly(this.namespace + ' Objects user redis pmessage ' + pattern + '/' + channel + ':' + message);
+                        this.log.silly(
+                            this.namespace + ' Objects user redis pmessage ' + pattern + '/' + channel + ':' + message
+                        );
                         try {
-                            if (ioRegExp.test(channel)) {
+                            if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                 const id = channel.substring(this.objNamespaceL);
                                 try {
                                     const obj = message ? JSON.parse(message) : null;
 
                                     onChangeUser(id, obj);
                                 } catch (e) {
-                                    this.log.warn(`${this.namespace} Objects user cannot process pmessage ${id} - ${message}: ${e.message}`);
+                                    this.log.warn(
+                                        `${this.namespace} Objects user cannot process pmessage ${id} - ${message}: ${e.message}`
+                                    );
                                     this.log.warn(`${this.namespace} ${e.stack}`);
                                 }
                             } else {
-                                this.log.warn(`${this.namespace} Objects user received unexpected pmessage: ${channel}`);
+                                this.log.warn(
+                                    `${this.namespace} Objects user received unexpected pmessage: ${channel}`
+                                );
                             }
                         } catch (e) {
-                            this.log.warn(this.namespace + ' Objects user pmessage ' + channel + ' ' + JSON.stringify(message) + ' ' + e.message);
+                            this.log.warn(
+                                this.namespace +
+                                    ' Objects user pmessage ' +
+                                    channel +
+                                    ' ' +
+                                    JSON.stringify(message) +
+                                    ' ' +
+                                    e.message
+                            );
                             this.log.warn(this.namespace + ' ' + e.stack);
                         }
                     });
                 });
 
                 this.sub.on('end', () => {
-                    this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' Objects-Redis Event end user sub (stop=' + this.stop + ')');
+                    this.settings.connection.enhancedLogging &&
+                        this.log.silly(this.namespace + ' Objects-Redis Event end user sub (stop=' + this.stop + ')');
                     ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
                 });
 
@@ -357,26 +525,57 @@ class ObjectsInRedisClient {
                     if (this.stop) {
                         return;
                     }
-                    this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' PubSub user client Objects No redis connection: ' + JSON.stringify(error));
+                    this.settings.connection.enhancedLogging &&
+                        this.log.silly(
+                            this.namespace + ' PubSub user client Objects No redis connection: ' + JSON.stringify(error)
+                        );
                 });
 
                 if (this.settings.connection.enhancedLogging) {
                     this.sub.on('connect', () =>
-                        this.log.silly(this.namespace + ' PubSub user client Objects-Redis Event connect (stop=' + this.stop + ')'));
+                        this.log.silly(
+                            this.namespace + ' PubSub user client Objects-Redis Event connect (stop=' + this.stop + ')'
+                        )
+                    );
 
                     this.sub.on('close', () =>
-                        this.log.silly(this.namespace + ' PubSub user client Objects-Redis Event close (stop=' + this.stop + ')'));
+                        this.log.silly(
+                            this.namespace + ' PubSub user client Objects-Redis Event close (stop=' + this.stop + ')'
+                        )
+                    );
 
                     this.sub.on('reconnecting', reconnectCounter =>
-                        this.log.silly(this.namespace + ' PubSub user client Objects-Redis Event reconnect (reconnectCounter=' + reconnectCounter + ', stop=' + this.stop + ')'));
+                        this.log.silly(
+                            this.namespace +
+                                ' PubSub user client Objects-Redis Event reconnect (reconnectCounter=' +
+                                reconnectCounter +
+                                ', stop=' +
+                                this.stop +
+                                ')'
+                        )
+                    );
                 }
 
                 this.sub.on('ready', async () => {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
-                            this.log.debug(this.namespace + ' Objects ' + (ready ? 'user re' : '') + 'connected to redis: ' + this.settings.connection.host);
+                            this.log.debug(
+                                this.namespace +
+                                    ' Objects ' +
+                                    (ready ? 'user re' : '') +
+                                    'connected to redis: ' +
+                                    this.settings.connection.host
+                            );
                         } else {
-                            this.log.debug(this.namespace + ' Objects ' + (ready ? 'user re' : '') + 'connected to redis: ' + this.settings.connection.host + ':' + this.settings.connection.port);
+                            this.log.debug(
+                                this.namespace +
+                                    ' Objects ' +
+                                    (ready ? 'user re' : '') +
+                                    'connected to redis: ' +
+                                    this.settings.connection.host +
+                                    ':' +
+                                    this.settings.connection.port
+                            );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
                         ready = true;
@@ -392,7 +591,50 @@ class ObjectsInRedisClient {
                 });
             }
 
-            this.log.debug(this.namespace + ' Objects client initialize lua scripts');
+            if (!this.client) {
+                return;
+            }
+
+            try {
+                await this._determineProtocolVersion();
+            } catch (e) {
+                this.log.error(`${this.namespace} ${e.message}`);
+                throw new Error('Objects DB is not allowed to start in the current Multihost environment');
+            }
+
+            // for controller v4 we have to check if we can use the new lua scripts and set logic
+            // TODO: remove this backward shim if controller v4.0 is old enough
+            let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
+
+            // filter out obvious non-host objects
+            keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
+            this.useSets = true;
+
+            try {
+                if (keys.length) {
+                    // else no host known yet - so we are single host
+                    const objs = await this.client.mget(keys);
+                    for (const strObj of objs) {
+                        const obj = JSON.parse(strObj);
+                        if (
+                            obj &&
+                            obj.type === 'host' &&
+                            obj.common &&
+                            obj.common.installedVersion &&
+                            semver.lt(obj.common.installedVersion, '4.0.0')
+                        ) {
+                            // one of the host has a version smaller 4, we have to use legacy db
+                            this.useSets = false;
+                            this.log.info('Sets unsupported');
+                        }
+                    }
+                }
+            } catch (e) {
+                this.log.error(`Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`);
+                return;
+            }
+
+            this.log.debug(`${this.namespace} Objects client initialize lua scripts`);
             initCounter++;
             try {
                 await this.loadLuaScripts();
@@ -400,13 +642,11 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot initialize database scripts: ${err.message}`);
                 return;
             }
-            if (!this.client) {
-                return;
-            }
+
             // init default new acl
             let obj;
             try {
-                obj = await this.client.get(this.objNamespace + 'system.config');
+                obj = await this.client.get(`${this.objNamespace}system.config`);
             } catch {
                 // ignore
             }
@@ -426,9 +666,23 @@ class ObjectsInRedisClient {
 
             if (--initCounter < 1) {
                 if (this.settings.connection.port === 0) {
-                    this.log.debug(this.namespace + ' Objects ' + (ready ? 'client re' : '') + 'connected to redis: ' + this.settings.connection.host);
+                    this.log.debug(
+                        this.namespace +
+                            ' Objects ' +
+                            (ready ? 'client re' : '') +
+                            'connected to redis: ' +
+                            this.settings.connection.host
+                    );
                 } else {
-                    this.log.debug(this.namespace + ' Objects ' + (ready ? 'client re' : '') + 'connected to redis: ' + this.settings.connection.host + ':' + this.settings.connection.port);
+                    this.log.debug(
+                        this.namespace +
+                            ' Objects ' +
+                            (ready ? 'client re' : '') +
+                            'connected to redis: ' +
+                            this.settings.connection.host +
+                            ':' +
+                            this.settings.connection.port
+                    );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
                 ready = true;
@@ -437,7 +691,7 @@ class ObjectsInRedisClient {
     }
 
     getStatus() {
-        return {type: 'redis', server: false};
+        return { type: 'redis', server: false };
     }
 
     /**
@@ -468,7 +722,7 @@ class ObjectsInRedisClient {
     // -------------- FILE FUNCTIONS -------------------------------------------
     async _setBinaryState(id, data, callback) {
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!Buffer.isBuffer(data)) {
             data = Buffer.from(data);
@@ -526,12 +780,11 @@ class ObjectsInRedisClient {
     getFileId(id, name, isMeta) {
         name = this.normalizeFilename(name);
         // e.g. ekey.admin and admin/ekey.png
-        if (id.match(/\.admin$/)) {
-            if (name.match(/^admin\//)) {
+        if (id.endsWith('.admin')) {
+            if (name.startsWith('admin/')) {
                 name = name.replace(/^admin\//, '');
-            } else
-            // e.g. ekey.admin and iobroker.ekey/admin/ekey.png
-            if (name.match(/^iobroker.[-\d\w]\/admin\//i)) {
+            } else if (name.match(/^iobroker.[-\d\w]\/admin\//i)) {
+                // e.g. ekey.admin and iobroker.ekey/admin/ekey.png
                 name = name.replace(/^iobroker.[-\d\w]\/admin\//i, '');
             }
         }
@@ -554,15 +807,15 @@ class ObjectsInRedisClient {
         // read file settings from redis
         const fileId = this.getFileId(id, name, true);
         if (!fileId) {
-            const fileOptions = {'notExists': true};
+            const fileOptions = { notExists: true };
             if (utils.checkFile(fileOptions, options, flag, this.defaultNewAcl)) {
-                return typeof callback === 'function' && setImmediate(() => callback(false, options, fileOptions)); // NO error
+                return tools.maybeCallback(callback, false, options, fileOptions); // NO error
             } else {
-                return typeof callback === 'function' && setImmediate(() => callback(true, options)); // error
+                return tools.maybeCallback(callback, true, options); // error
             }
         }
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED, options));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED, options);
         }
         let fileOptions;
         try {
@@ -575,7 +828,7 @@ class ObjectsInRedisClient {
             fileOptions = JSON.parse(fileOptions);
         } catch {
             this.log.error(`${this.namespace} Cannot parse JSON ${id}: ${fileOptions}`);
-            fileOptions = {notExists: true};
+            fileOptions = { notExists: true };
         }
         if (utils.checkFile(fileOptions, options, flag, this.defaultNewAcl)) {
             return typeof callback === 'function' && callback(false, options, fileOptions); // NO error
@@ -594,12 +847,9 @@ class ObjectsInRedisClient {
             this.getObject(id, (err, obj) => {
                 if (obj && !obj.acl) {
                     obj.acl = defaultAcl;
-                    this.setObject(id, obj, null, () =>
-                        setImmediate(() =>
-                            this._setDefaultAcl(ids, defaultAcl)));
+                    this.setObject(id, obj, null, () => setImmediate(() => this._setDefaultAcl(ids, defaultAcl)));
                 } else {
-                    setImmediate(() =>
-                        this._setDefaultAcl(ids, defaultAcl));
+                    setImmediate(() => this._setDefaultAcl(ids, defaultAcl));
                 }
             });
         }
@@ -622,7 +872,7 @@ class ObjectsInRedisClient {
             if (error) {
                 this.log.error(`${this.namespace} ${error}`);
             }
-            return tools.maybeCallbackWithError(callback, user, userGroups, userAcl);
+            return tools.maybeCallback(callback, user, userGroups, userAcl);
         });
     }
 
@@ -631,10 +881,10 @@ class ObjectsInRedisClient {
     }
 
     async _writeFile(id, name, data, options, callback, meta) {
-        const ext         = name.match(/\.[^.]+$/);
-        const mime        = utils.getMimeType(ext);
-        const _mimeType   = mime.mimeType;
-        const isBinary    = mime.isBinary;
+        const ext = name.match(/\.[^.]+$/);
+        const mime = utils.getMimeType(ext);
+        const _mimeType = mime.mimeType;
+        const isBinary = mime.isBinary;
 
         const metaID = this.getFileId(id, name, true);
         if (!this.client) {
@@ -654,12 +904,18 @@ class ObjectsInRedisClient {
             }
         } else {
             if (!meta) {
-                meta = {createdAt: Date.now()};
+                meta = { createdAt: Date.now() };
             }
             if (!meta.acl) {
                 meta.acl = {
-                    owner: options.user || (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
-                    ownerGroup: options.group || (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                    owner:
+                        options.user ||
+                        (this.defaultNewAcl && this.defaultNewAcl.owner) ||
+                        utils.CONSTS.SYSTEM_ADMIN_USER,
+                    ownerGroup:
+                        options.group ||
+                        (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                        utils.CONSTS.SYSTEM_ADMIN_GROUP,
                     permissions: options.mode || (this.defaultNewAcl && this.defaultNewAcl.file) || 0x644
                 };
             }
@@ -672,7 +928,10 @@ class ObjectsInRedisClient {
 
             meta.mimeType = options.mimeType || _mimeType;
             meta.binary = isBinary;
-            meta.acl.ownerGroup = meta.acl.ownerGroup || (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP;
+            meta.acl.ownerGroup =
+                meta.acl.ownerGroup ||
+                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                utils.CONSTS.SYSTEM_ADMIN_GROUP;
             meta.modifiedAt = Date.now();
 
             this._setBinaryState(this.getFileId(id, name, false), data, async err => {
@@ -692,7 +951,7 @@ class ObjectsInRedisClient {
             options = null;
         }
         if (typeof options === 'string') {
-            options = {mimeType: options};
+            options = { mimeType: options };
         }
 
         if (options && options.acl) {
@@ -700,9 +959,11 @@ class ObjectsInRedisClient {
         }
 
         if (!callback) {
-            return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-                this.writeFile(id, name, data, options, err =>
-                    err ? reject(err) : resolve())));
+            return /** @type {Promise<void>} */ (
+                new Promise((resolve, reject) =>
+                    this.writeFile(id, name, data, options, err => (err ? reject(err) : resolve()))
+                )
+            );
         }
 
         try {
@@ -735,9 +996,11 @@ class ObjectsInRedisClient {
     }
 
     writeFileAsync(id, name, data, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.writeFile(id, name, data, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) =>
+                this.writeFile(id, name, data, options, err => (err ? reject(err) : resolve()))
+            )
+        );
     }
 
     async _readFile(id, name, options, callback, meta) {
@@ -764,7 +1027,7 @@ class ObjectsInRedisClient {
     readFile(id, name, options, callback) {
         if (typeof options === 'function') {
             callback = options;
-            options  = null;
+            options = null;
         }
         if (options && options.acl) {
             options.acl = null;
@@ -773,7 +1036,9 @@ class ObjectsInRedisClient {
         if (!callback) {
             return new Promise((resolve, reject) =>
                 this.readFile(id, name, options, (err, res, mimeType) =>
-                    err ? reject(err) : resolve({data: res, mimeType: mimeType})));
+                    err ? reject(err) : resolve({ data: res, mimeType: mimeType })
+                )
+            );
         }
 
         if (typeof name !== 'string' || !name.length || name === '/') {
@@ -797,7 +1062,9 @@ class ObjectsInRedisClient {
     readFileAsync(id, name, options) {
         return new Promise((resolve, reject) =>
             this.readFile(id, name, options, (err, res, mimeType) =>
-                err ? reject(err) : resolve({data: res, mimeType: mimeType})));
+                err ? reject(err) : resolve({ data: res, mimeType: mimeType })
+            )
+        );
     }
 
     /**
@@ -809,22 +1076,24 @@ class ObjectsInRedisClient {
      */
     async objectExists(id, options) {
         if (!this.client) {
-            return Promise.reject(new Error(utils.ERRORS.ERROR_DB_CLOSED));
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
-            return Promise.reject(new Error(`invalid id ${JSON.stringify(id)}`));
+            throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
 
         try {
-            await /** @type {Promise<void>} */ (new Promise((resolve, reject) => {
-                utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_LIST, err => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            }));
+            await /** @type {Promise<void>} */ (
+                new Promise((resolve, reject) => {
+                    utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_LIST, err => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                })
+            );
             const exists = await this.client.exists(this.objNamespace + id);
             return !!exists;
         } catch (e) {
@@ -851,15 +1120,17 @@ class ObjectsInRedisClient {
         }
 
         try {
-            await /** @type {Promise<void>} */ (new Promise((resolve, reject) => {
-                this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_READ, err => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve();
-                    }
-                });
-            }));
+            await /** @type {Promise<void>} */ (
+                new Promise((resolve, reject) => {
+                    this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_READ, err => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });
+                })
+            );
             id = this.getFileId(id, name, false);
             const exists = await this.client.exists(id);
             return !!exists;
@@ -892,7 +1163,7 @@ class ObjectsInRedisClient {
     unlink(id, name, options, callback) {
         if (typeof options === 'function') {
             callback = options;
-            options  = null;
+            options = null;
         }
         if (options && options.acl) {
             options.acl = null;
@@ -920,9 +1191,9 @@ class ObjectsInRedisClient {
     }
 
     unlinkAsync(id, name, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.unlink(id, name, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.unlink(id, name, options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     delFile(id, name, options, callback) {
@@ -938,7 +1209,8 @@ class ObjectsInRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
-        if (id === '') { // special case for "root"
+        if (id === '') {
+            // special case for "root"
             const dirID = this.getFileId('*', '*');
 
             let keys;
@@ -993,21 +1265,19 @@ class ObjectsInRedisClient {
         if (!keys || !keys.length) {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND, []);
         }
-        keys = keys
-            .sort()
-            .filter(key => {
-                if (key.match(/\$%\$meta$/)) {
-                    const parts = key.substr(start, key.length - end).split('/');
-                    if (parts.length === deepLevel) {
-                        return !key.includes('/_data.json$%$') && key !== '_data.json'; // sort out "virtual" files that are used to mark directories
-                    } else {
-                        const dir = parts[deepLevel - 1];
-                        if (dirs.indexOf(dir) === -1) {
-                            dirs.push(dir);
-                        }
+        keys = keys.sort().filter(key => {
+            if (key.endsWith('$%$meta')) {
+                const parts = key.substr(start, key.length - end).split('/');
+                if (parts.length === deepLevel) {
+                    return !key.includes('/_data.json$%$') && key !== '_data.json'; // sort out "virtual" files that are used to mark directories
+                } else {
+                    const dir = parts[deepLevel - 1];
+                    if (dirs.indexOf(dir) === -1) {
+                        dirs.push(dir);
                     }
                 }
-            });
+            }
+        });
         if (!keys.length) {
             const result = [];
             while (dirs.length) {
@@ -1030,9 +1300,9 @@ class ObjectsInRedisClient {
 
         const result = [];
         const dontCheck =
-                    options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                    options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                    (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+            options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+            (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
         objs = objs || [];
         for (let i = 0; i < keys.length; i++) {
@@ -1056,11 +1326,14 @@ class ObjectsInRedisClient {
                     continue;
                 } // virtual file, ignore
                 objs[i].acl = objs[i].acl || {};
-                if (options.user !== utils.CONSTS.SYSTEM_ADMIN_USER && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) === -1) {
-                    objs[i].acl.read  = !!(objs[i].acl.permissions & utils.CONSTS.ACCESS_EVERY_READ);
+                if (
+                    options.user !== utils.CONSTS.SYSTEM_ADMIN_USER &&
+                    options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) === -1
+                ) {
+                    objs[i].acl.read = !!(objs[i].acl.permissions & utils.CONSTS.ACCESS_EVERY_READ);
                     objs[i].acl.write = !!(objs[i].acl.permissions & utils.CONSTS.ACCESS_EVERY_WRITE);
                 } else {
-                    objs[i].acl.read  = true;
+                    objs[i].acl.read = true;
                     objs[i].acl.write = true;
                 }
                 result.push({
@@ -1069,7 +1342,7 @@ class ObjectsInRedisClient {
                     isDir: false,
                     acl: objs[i].acl,
                     modifiedAt: objs[i].modifiedAt,
-                    createdAt:  objs[i].createdAt
+                    createdAt: objs[i].createdAt
                 });
             }
         }
@@ -1119,8 +1392,8 @@ class ObjectsInRedisClient {
 
     readDirAsync(id, name, options) {
         return new Promise((resolve, reject) =>
-            this.readDir(id, name, options, (err, res) =>
-                err ? reject(err) : resolve(res)));
+            this.readDir(id, name, options, (err, res) => (err ? reject(err) : resolve(res)))
+        );
     }
 
     async _renameHelper(keys, oldBase, newBase, callback) {
@@ -1133,7 +1406,10 @@ class ObjectsInRedisClient {
             for (const id of keys) {
                 try {
                     try {
-                        await this.client.rename(id.replace(/\$%\$meta$/, '$%$data'), id.replace(oldBase, newBase).replace(/\$%\$meta$/, '$%$data'));
+                        await this.client.rename(
+                            id.replace(/\$%\$meta$/, '$%$data'),
+                            id.replace(oldBase, newBase).replace(/\$%\$meta$/, '$%$data')
+                        );
                     } catch (e) {
                         // _data.json is not having a data key, so ignore error
                         if (!(id.endsWith('/_data.json$%$meta') && e.message.includes('no such key'))) {
@@ -1190,9 +1466,7 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
             }
 
-            keys = keys
-                .sort()
-                .filter(key => key.match(/\$%\$meta$/));
+            keys = keys.sort().filter(key => key.endsWith('$%$meta'));
 
             if (!keys.length) {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
@@ -1206,9 +1480,9 @@ class ObjectsInRedisClient {
             }
             let result;
             const dontCheck =
-                        options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                        options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                        (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             objs = objs || [];
             if (!dontCheck) {
@@ -1247,8 +1521,16 @@ class ObjectsInRedisClient {
         if (options && options.acl) {
             options.acl = null;
         }
-        if (typeof oldName !== 'string' || !oldName.length || oldName === '/' || oldName === '//' ||
-            typeof newName !== 'string' || !newName.length || newName === '/' || newName === '//') {
+        if (
+            typeof oldName !== 'string' ||
+            !oldName.length ||
+            oldName === '/' ||
+            oldName === '//' ||
+            typeof newName !== 'string' ||
+            !newName.length ||
+            newName === '/' ||
+            newName === '//'
+        ) {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
         }
         if (oldName.startsWith('/')) {
@@ -1278,9 +1560,11 @@ class ObjectsInRedisClient {
     }
 
     renameAsync(id, oldName, newName, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.rename(id, oldName, newName, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) =>
+                this.rename(id, oldName, newName, options, err => (err ? reject(err) : resolve()))
+            )
+        );
     }
 
     async _touch(id, name, options, callback, meta) {
@@ -1327,9 +1611,9 @@ class ObjectsInRedisClient {
     }
 
     touchAsync(id, name, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.touch(id, name, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.touch(id, name, options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     async _rmHelper(keys, callback) {
@@ -1364,7 +1648,7 @@ class ObjectsInRedisClient {
             }
             name = this.normalizeFilename(name);
             // it could be dir
-            if (! name.endsWith('/*')) {
+            if (!name.endsWith('/*')) {
                 name += '/*';
             } else if (name.endsWith('/')) {
                 name += '*';
@@ -1383,9 +1667,7 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
             }
 
-            keys = keys
-                .sort()
-                .filter(key => key.match(/\$%\$meta$/));
+            keys = keys.sort().filter(key => key.endsWith('$%$meta'));
 
             if (!keys.length) {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
@@ -1399,9 +1681,9 @@ class ObjectsInRedisClient {
             }
             let result;
             const dontCheck =
-                        options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                        options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                        (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             objs = objs || [];
             if (!dontCheck) {
@@ -1424,9 +1706,9 @@ class ObjectsInRedisClient {
                 const name = key.substring(this.fileNamespaceL + id.length + 3, key.length - 7);
                 const pos = name.lastIndexOf('/');
                 if (pos !== -1) {
-                    return {file: name.substring(pos + 1), path: name.substring(0, pos)};
+                    return { file: name.substring(pos + 1), path: name.substring(0, pos) };
                 } else {
-                    return {file: id, path: ''};
+                    return { file: id, path: '' };
                 }
             });
             this._rmHelper(result, () => {
@@ -1463,8 +1745,8 @@ class ObjectsInRedisClient {
 
     rmAsync(id, name, options) {
         return new Promise((resolve, reject) =>
-            this.rm(id, name, options, (err, files) =>
-                err ? reject(err) : resolve(files)));
+            this.rm(id, name, options, (err, files) => (err ? reject(err) : resolve(files)))
+        );
     }
 
     // simulate. redis has no dirs
@@ -1499,9 +1781,9 @@ class ObjectsInRedisClient {
     }
 
     mkdirAsync(id, dirName, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.mkdir(id, dirName, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.mkdir(id, dirName, options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     async _chownFileHelper(keys, metas, options, callback) {
@@ -1546,20 +1828,22 @@ class ObjectsInRedisClient {
             }
             const nameArr = name.split('/');
             const file = nameArr.pop();
-            const res = [{
-                path:       nameArr.join('/'),
-                file:       file,
-                stats:      meta.stats,
-                isDir:      false,
-                acl:        meta.acl || {},
-                modifiedAt: meta.modifiedAt,
-                createdAt:  meta.createdAt
-            }];
+            const res = [
+                {
+                    path: nameArr.join('/'),
+                    file: file,
+                    stats: meta.stats,
+                    isDir: false,
+                    acl: meta.acl || {},
+                    modifiedAt: meta.modifiedAt,
+                    createdAt: meta.createdAt
+                }
+            ];
             return tools.maybeCallbackWithError(callback, null, res);
         }
 
         // it could be dir
-        if (! name.endsWith('/*')) {
+        if (!name.endsWith('/*')) {
             name += '/*';
         } else if (name.endsWith('/')) {
             name += '*';
@@ -1580,9 +1864,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
         }
 
-        keys = keys
-            .sort()
-            .filter(key => key.match(/\$%\$meta$/));
+        keys = keys.sort().filter(key => key.endsWith('$%$meta'));
 
         // Check permissions
         let metas;
@@ -1591,9 +1873,10 @@ class ObjectsInRedisClient {
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
-        const dontCheck = options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                    options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                    (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+        const dontCheck =
+            options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+            options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+            (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
         const keysFiltered = [];
         const objsFiltered = [];
         const processed = [];
@@ -1619,13 +1902,13 @@ class ObjectsInRedisClient {
                 const nameArr = name.split('/');
                 const file = nameArr.pop();
                 processed.push({
-                    path:       nameArr.join('/'),
-                    file:       file,
-                    stats:      metas[i].stats || {},
-                    isDir:      false,
-                    acl:        metas[i].acl || {},
+                    path: nameArr.join('/'),
+                    file: file,
+                    stats: metas[i].stats || {},
+                    isDir: false,
+                    acl: metas[i].acl || {},
                     modifiedAt: metas[i].modifiedAt,
-                    createdAt:  metas[i].createdAt
+                    createdAt: metas[i].createdAt
                 });
             }
         }
@@ -1641,7 +1924,7 @@ class ObjectsInRedisClient {
         }
         options = options || {};
         if (typeof options !== 'object') {
-            options = {owner: options};
+            options = { owner: options };
         }
 
         if (typeof name !== 'string' || !name.length || name === '/') {
@@ -1655,8 +1938,8 @@ class ObjectsInRedisClient {
         if (!options.ownerGroup && options.group) {
             options.ownerGroup = options.group;
         }
-        if (!options.owner      && options.user)  {
-            options.owner      = options.user;
+        if (!options.owner && options.user) {
+            options.owner = options.user;
         }
 
         if (!options.owner) {
@@ -1691,9 +1974,11 @@ class ObjectsInRedisClient {
     }
 
     chownFileAsync(id, name, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.chownFile(id, name, options, (err, processed) =>
-                err ? reject(err) : resolve(processed))));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) =>
+                this.chownFile(id, name, options, (err, processed) => (err ? reject(err) : resolve(processed)))
+            )
+        );
     }
 
     /**
@@ -1746,15 +2031,17 @@ class ObjectsInRedisClient {
 
             const nameArr = name.split('/');
             const file = nameArr.pop();
-            const res = [{
-                path:       nameArr.join('/'),
-                file:       file,
-                stats:      meta.stats,
-                isDir:      false,
-                acl:        meta.acl || {},
-                modifiedAt: meta.modifiedAt,
-                createdAt:  meta.createdAt
-            }];
+            const res = [
+                {
+                    path: nameArr.join('/'),
+                    file: file,
+                    stats: meta.stats,
+                    isDir: false,
+                    acl: meta.acl || {},
+                    modifiedAt: meta.modifiedAt,
+                    createdAt: meta.createdAt
+                }
+            ];
             return tools.maybeCallbackWithError(callback, null, res);
         }
 
@@ -1780,9 +2067,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
         }
 
-        keys = keys
-            .sort()
-            .filter(key => key.match(/\$%\$meta$/));
+        keys = keys.sort().filter(key => key.endsWith('$%$meta'));
 
         // Check permissions
         let objs;
@@ -1793,9 +2078,9 @@ class ObjectsInRedisClient {
         }
 
         const dontCheck =
-                    options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                    options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                    (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+            options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+            (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
         const keysFiltered = [];
         const objsFiltered = [];
@@ -1822,18 +2107,19 @@ class ObjectsInRedisClient {
                 const nameArr = name.split('/');
                 const file = nameArr.pop();
                 processed.push({
-                    path:       nameArr.join('/'),
-                    file:       file,
-                    stats:      objs[i].stats,
-                    isDir:      false,
-                    acl:        objs[i].acl || {},
+                    path: nameArr.join('/'),
+                    file: file,
+                    stats: objs[i].stats,
+                    isDir: false,
+                    acl: objs[i].acl || {},
                     modifiedAt: objs[i].modifiedAt,
-                    createdAt:  objs[i].createdAt
+                    createdAt: objs[i].createdAt
                 });
             }
         }
         this._chmodFileHelper(keysFiltered, objsFiltered, options, err =>
-            tools.maybeCallbackWithError(callback, err, processed));
+            tools.maybeCallbackWithError(callback, err, processed)
+        );
     }
 
     chmodFile(id, name, options, callback) {
@@ -1852,7 +2138,7 @@ class ObjectsInRedisClient {
         }
 
         if (typeof options !== 'object') {
-            options = {mode: options};
+            options = { mode: options };
         }
 
         if (options.mode === undefined) {
@@ -1876,9 +2162,11 @@ class ObjectsInRedisClient {
     }
 
     chmodFileAsync(id, name, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.chmodFile(id, name, options, (err, processed) =>
-                err ? reject(err) : resolve(processed))));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) =>
+                this.chmodFile(id, name, options, (err, processed) => (err ? reject(err) : resolve(processed)))
+            )
+        );
     }
 
     enableFileCache(enabled, options, callback) {
@@ -1903,8 +2191,8 @@ class ObjectsInRedisClient {
 
     enableFileCacheAsync(enabled, options) {
         return new Promise((resolve, reject) =>
-            this.enableFileCache(enabled, options, (err, res) =>
-                err ? reject(err) : resolve(res)));
+            this.enableFileCache(enabled, options, (err, res) => (err ? reject(err) : resolve(res)))
+        );
     }
 
     // -------------- OBJECT FUNCTIONS -------------------------------------------
@@ -1924,7 +2212,6 @@ class ObjectsInRedisClient {
                         return tools.maybeCallbackWithError(callback, err);
                     }
                 });
-
             });
         } else {
             this.log.silly(this.namespace + ' redis psubscribe ' + this.objNamespace + pattern);
@@ -1944,7 +2231,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._subscribe(pattern, options, this.subSystem, callback);
             }
@@ -1956,9 +2243,9 @@ class ObjectsInRedisClient {
     }
 
     subscribeAsync(pattern, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.subscribe(pattern, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.subscribe(pattern, options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     subscribeUser(pattern, options, callback) {
@@ -1968,7 +2255,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._subscribe(pattern, options, this.sub, callback);
             }
@@ -1976,14 +2263,16 @@ class ObjectsInRedisClient {
     }
 
     subscribeUserAsync(pattern, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.subscribeUser(pattern, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) =>
+                this.subscribeUser(pattern, options, err => (err ? reject(err) : resolve()))
+            )
+        );
     }
 
     _unsubscribe(pattern, options, subClient, callback) {
         if (!subClient) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
             let count = pattern.length;
@@ -2014,7 +2303,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._unsubscribe(pattern, options, this.subSystem, callback);
             }
@@ -2026,9 +2315,9 @@ class ObjectsInRedisClient {
     }
 
     unsubscribeAsync(pattern, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.unsubscribe(pattern, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.unsubscribe(pattern, options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     unsubscribeUser(pattern, options, callback) {
@@ -2038,7 +2327,7 @@ class ObjectsInRedisClient {
         }
         utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithError(callback, err);
             } else {
                 return this._unsubscribe(pattern, options, this.sub, callback);
             }
@@ -2046,14 +2335,16 @@ class ObjectsInRedisClient {
     }
 
     unsubscribeUserAsync(pattern, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.unsubscribeUser(pattern, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) =>
+                this.unsubscribeUser(pattern, options, err => (err ? reject(err) : resolve()))
+            )
+        );
     }
 
     async _objectHelper(keys, objs, callback) {
         if (!keys || !keys.length) {
-            typeof callback === 'function' && callback();
+            return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
                 return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);
@@ -2062,7 +2353,28 @@ class ObjectsInRedisClient {
                 const obj = objs.shift();
                 const message = JSON.stringify(obj);
                 try {
-                    await this.client.set(id, message);
+                    const commands = [];
+                    if (this.useSets) {
+                        if (obj.type) {
+                            // e.g. _design/ has no type
+                            // add the object to the set + set object atomic
+                            commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, id]);
+                        }
+
+                        if (obj.common && obj.common.custom) {
+                            // add to "common" set
+                            commands.push(['sadd', `${this.setNamespace}object.common.custom`, id]);
+                        }
+                    }
+
+                    if (!commands.length) {
+                        // only set
+                        await this.client.set(id, message);
+                    } else {
+                        // set all commands atomic
+                        commands.push(['set', id, message]);
+                        await this.client.multi(commands).exec();
+                    }
                     await this.client.publish(id, message);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
@@ -2073,52 +2385,67 @@ class ObjectsInRedisClient {
     }
 
     _chownObject(pattern, options, callback) {
-        this.getConfigKeys(pattern, options, async (err, keys) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
-            if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
-            }
+        this.getConfigKeys(
+            pattern,
+            options,
+            async (err, keys) => {
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+                if (!this.client) {
+                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                }
 
-            let objects;
-            try {
-                objects = await this.client.mget(keys);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e);
-            }
-            const filteredKeys = [];
-            const filteredObjs = [];
-            objects = objects || [];
-            for (let k = 0; k < keys.length; k++) {
+                let objects;
                 try {
-                    objects[k] = JSON.parse(objects[k]);
-                } catch {
-                    this.log.error(`${this.namespace} Cannot parse JSON ${keys[k]}: ${objects[k]}`);
-                    continue;
+                    objects = await this.client.mget(keys);
+                } catch (e) {
+                    return tools.maybeCallbackWithRedisError(callback, e);
                 }
-                if (!utils.checkObject(objects[k], options, utils.CONSTS.ACCESS_WRITE)) {
-                    continue;
-                }
-                if (!objects[k].acl) {
-                    objects[k].acl = {
-                        owner:      (this.defaultNewAcl && this.defaultNewAcl.owner)      || utils.CONSTS.SYSTEM_ADMIN_USER,
-                        ownerGroup: (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                        object:     (this.defaultNewAcl && this.defaultNewAcl.object)     || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ) // '0644'
-                    };
-                    if (objects[k].type === 'state') {
-                        objects[k].acl.state = (this.defaultNewAcl && this.defaultNewAcl.state) || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ); // '0644'
+                const filteredKeys = [];
+                const filteredObjs = [];
+                objects = objects || [];
+                for (let k = 0; k < keys.length; k++) {
+                    try {
+                        objects[k] = JSON.parse(objects[k]);
+                    } catch {
+                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[k]}: ${objects[k]}`);
+                        continue;
                     }
+                    if (!utils.checkObject(objects[k], options, utils.CONSTS.ACCESS_WRITE)) {
+                        continue;
+                    }
+                    if (!objects[k].acl) {
+                        objects[k].acl = {
+                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup:
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            object:
+                                (this.defaultNewAcl && this.defaultNewAcl.object) ||
+                                utils.CONSTS.ACCESS_USER_RW |
+                                    utils.CONSTS.ACCESS_GROUP_READ |
+                                    utils.CONSTS.ACCESS_EVERY_READ // '0644'
+                        };
+                        if (objects[k].type === 'state') {
+                            objects[k].acl.state =
+                                (this.defaultNewAcl && this.defaultNewAcl.state) ||
+                                utils.CONSTS.ACCESS_USER_RW |
+                                    utils.CONSTS.ACCESS_GROUP_READ |
+                                    utils.CONSTS.ACCESS_EVERY_READ; // '0644'
+                        }
+                    }
+                    objects[k].acl.owner = options.owner;
+                    objects[k].acl.ownerGroup = options.ownerGroup;
+                    filteredKeys.push(keys[k]);
+                    filteredObjs.push(objects[k]);
                 }
-                objects[k].acl.owner      = options.owner;
-                objects[k].acl.ownerGroup = options.ownerGroup;
-                filteredKeys.push(keys[k]);
-                filteredObjs.push(objects[k]);
-            }
-            this._objectHelper(filteredKeys, filteredObjs, () => {
-                return tools.maybeCallbackWithError(callback, null, filteredObjs);
-            });
-        }, true);
+                this._objectHelper(filteredKeys, filteredObjs, () => {
+                    return tools.maybeCallbackWithError(callback, null, filteredObjs);
+                });
+            },
+            true
+        );
     }
 
     chownObject(pattern, options, callback) {
@@ -2130,13 +2457,13 @@ class ObjectsInRedisClient {
         options.acl = null;
 
         if (typeof options !== 'object') {
-            options = {owner: options};
+            options = { owner: options };
         }
 
         if (!options.ownerGroup && options.group) {
             options.ownerGroup = options.group;
         }
-        if (!options.owner && options.user)  {
+        if (!options.owner && options.user) {
             options.owner = options.user;
         }
 
@@ -2160,7 +2487,7 @@ class ObjectsInRedisClient {
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.object || !options.acl.object.write) {
                     return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
@@ -2173,62 +2500,77 @@ class ObjectsInRedisClient {
 
     chownObjectAsync(pattern, options) {
         return new Promise((resolve, reject) =>
-            this.chownObject(pattern, options, (err, list) =>
-                err ? reject(err) : resolve(list)));
+            this.chownObject(pattern, options, (err, list) => (err ? reject(err) : resolve(list)))
+        );
     }
 
     _chmodObject(pattern, options, callback) {
-        this.getConfigKeys(pattern, options, async (err, keys) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
-            if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
-            }
+        this.getConfigKeys(
+            pattern,
+            options,
+            async (err, keys) => {
+                if (err) {
+                    return tools.maybeCallbackWithRedisError(callback, err);
+                }
+                if (!this.client) {
+                    return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                }
 
-            let objects;
-            try {
-                objects = await this.client.mget(keys);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e);
-            }
-
-            const filteredKeys = [];
-            const filteredObjs = [];
-            objects = objects || [];
-            for (let k = 0; k < keys.length; k++) {
+                let objects;
                 try {
-                    objects[k] = JSON.parse(objects[k]);
-                } catch {
-                    this.log.error(`${this.namespace} Cannot parse JSON ${keys[k]}: ${objects[k]}`);
-                    continue;
+                    objects = await this.client.mget(keys);
+                } catch (e) {
+                    return tools.maybeCallbackWithRedisError(callback, e);
                 }
-                if (!utils.checkObject(objects[k], options, utils.CONSTS.ACCESS_WRITE)) {
-                    continue;
-                }
-                if (!objects[k].acl) {
-                    objects[k].acl = {
-                        owner:      (this.defaultNewAcl && this.defaultNewAcl.owner)      || utils.CONSTS.SYSTEM_ADMIN_USER,
-                        ownerGroup: (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
-                        object:     (this.defaultNewAcl && this.defaultNewAcl.object)     || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ) // '0644'
-                    };
-                    if (objects[k].type === 'state') {
-                        objects[k].acl.state = (this.defaultNewAcl && this.defaultNewAcl.state) || (utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ); // '0644'
+
+                const filteredKeys = [];
+                const filteredObjs = [];
+                objects = objects || [];
+                for (let k = 0; k < keys.length; k++) {
+                    try {
+                        objects[k] = JSON.parse(objects[k]);
+                    } catch {
+                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[k]}: ${objects[k]}`);
+                        continue;
                     }
+                    if (!utils.checkObject(objects[k], options, utils.CONSTS.ACCESS_WRITE)) {
+                        continue;
+                    }
+                    if (!objects[k].acl) {
+                        objects[k].acl = {
+                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            ownerGroup:
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                            object:
+                                (this.defaultNewAcl && this.defaultNewAcl.object) ||
+                                utils.CONSTS.ACCESS_USER_RW |
+                                    utils.CONSTS.ACCESS_GROUP_READ |
+                                    utils.CONSTS.ACCESS_EVERY_READ // '0644'
+                        };
+                        if (objects[k].type === 'state') {
+                            objects[k].acl.state =
+                                (this.defaultNewAcl && this.defaultNewAcl.state) ||
+                                utils.CONSTS.ACCESS_USER_RW |
+                                    utils.CONSTS.ACCESS_GROUP_READ |
+                                    utils.CONSTS.ACCESS_EVERY_READ; // '0644'
+                        }
+                    }
+                    if (options.object !== undefined) {
+                        objects[k].acl.object = options.object;
+                    }
+                    if (options.state !== undefined) {
+                        objects[k].acl.state = options.state;
+                    }
+                    filteredKeys.push(keys[k]);
+                    filteredObjs.push(objects[k]);
                 }
-                if (options.object !== undefined) {
-                    objects[k].acl.object = options.object;
-                }
-                if (options.state !== undefined) {
-                    objects[k].acl.state = options.state;
-                }
-                filteredKeys.push(keys[k]);
-                filteredObjs.push(objects[k]);
-            }
-            this._objectHelper(filteredKeys, filteredObjs, () => {
-                return tools.maybeCallbackWithError(callback, null, filteredObjs);
-            });
-        }, true);
+                this._objectHelper(filteredKeys, filteredObjs, () => {
+                    return tools.maybeCallbackWithError(callback, null, filteredObjs);
+                });
+            },
+            true
+        );
     }
 
     chmodObject(pattern, options, callback) {
@@ -2240,7 +2582,7 @@ class ObjectsInRedisClient {
         options.acl = null;
 
         if (typeof options !== 'object') {
-            options = {object: options};
+            options = { object: options };
         }
 
         if (options.mode && !options.object) {
@@ -2248,18 +2590,18 @@ class ObjectsInRedisClient {
         }
 
         if (options.object === undefined) {
-            this.log.error(this.namespace + ' mode is not defined');
-            return typeof callback === 'function' && setImmediate(() => callback('invalid parameter'));
+            this.log.error(`${this.namespace} mode is not defined`);
+            return tools.maybeCallbackWithError(callback, 'invalid parameter');
         } else if (typeof options.mode === 'string') {
             options.mode = parseInt(options.mode, 16);
         }
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_PERMISSION));
+                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._chmodObject(pattern, options, callback);
                 }
@@ -2269,8 +2611,8 @@ class ObjectsInRedisClient {
 
     chmodObjectAsync(pattern, options) {
         return new Promise((resolve, reject) =>
-            this.chmodObject(pattern, options, (err, list) =>
-                err ? reject(err) : resolve(list)));
+            this.chmodObject(pattern, options, (err, list) => (err ? reject(err) : resolve(list)))
+        );
     }
 
     async _getObject(id, options, callback) {
@@ -2317,8 +2659,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getObject(id, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj)));
+                this.getObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+            );
         }
 
         if (typeof callback === 'function') {
@@ -2337,8 +2679,8 @@ class ObjectsInRedisClient {
 
     getObjectAsync(id, options) {
         return new Promise((resolve, reject) =>
-            this.getObject(id, options, (err, obj) =>
-                err ? reject(err) : resolve(obj)));
+            this.getObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+        );
     }
 
     async _getKeys(pattern, options, callback, dontModify) {
@@ -2367,9 +2709,9 @@ class ObjectsInRedisClient {
             keys.sort();
             const result = [];
             const dontCheck =
-                    options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                    options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                    (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             if (dontCheck) {
                 for (let i = 0; i < keys.length; i++) {
@@ -2422,13 +2764,13 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getKeys(pattern, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj), dontModify));
+                this.getKeys(pattern, options, (err, obj) => (err ? reject(err) : resolve(obj)), dontModify)
+            );
         }
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getKeys(pattern, options, callback, dontModify);
                 }
@@ -2438,8 +2780,8 @@ class ObjectsInRedisClient {
 
     getKeysAsync(id, options) {
         return new Promise((resolve, reject) =>
-            this.getKeys(id, options, (err, keys) =>
-                err ? reject(err) : resolve(keys)));
+            this.getKeys(id, options, (err, keys) => (err ? reject(err) : resolve(keys)))
+        );
     }
 
     getConfigKeys(pattern, options, callback, dontModify) {
@@ -2471,7 +2813,8 @@ class ObjectsInRedisClient {
         let objs;
         try {
             objs = await this.client.mget(_keys);
-            this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis mget ' + (!objs ? 0 : objs.length) + ' ' + _keys.length);
+            this.settings.connection.enhancedLogging &&
+                this.log.silly(this.namespace + ' redis mget ' + (!objs ? 0 : objs.length) + ' ' + _keys.length);
         } catch (e) {
             this.log.warn(`${this.namespace} redis mget ${!objs ? 0 : objs.length} ${_keys.length}, err: ${e.message}`);
         }
@@ -2479,9 +2822,9 @@ class ObjectsInRedisClient {
 
         if (objs) {
             const dontCheck =
-                    options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                    options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                    (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             if (!dontCheck) {
                 for (let i = 0; i < objs.length; i++) {
@@ -2489,13 +2832,13 @@ class ObjectsInRedisClient {
                         objs[i] = JSON.parse(objs[i]);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON ${_keys[i]}: ${objs[i]}`);
-                        result.push({error: utils.ERRORS.ERROR_PERMISSION});
+                        result.push({ error: utils.ERRORS.ERROR_PERMISSION });
                         continue;
                     }
                     if (utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_READ)) {
                         result.push(objs[i]);
                     } else {
-                        result.push({error: utils.ERRORS.ERROR_PERMISSION});
+                        result.push({ error: utils.ERRORS.ERROR_PERMISSION });
                     }
                 }
             } else {
@@ -2519,8 +2862,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getObjects(keys, options, (err, objs) =>
-                    err ? reject(err) : resolve(objs), dontModify));
+                this.getObjects(keys, options, (err, objs) => (err ? reject(err) : resolve(objs)), dontModify)
+            );
         }
 
         if (options && options.acl) {
@@ -2529,7 +2872,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjects(keys, options, callback, dontModify);
                 }
@@ -2539,18 +2882,17 @@ class ObjectsInRedisClient {
 
     getObjectsAsync(id, options) {
         return new Promise((resolve, reject) =>
-            this.getObjects(id, options, (err, objs) =>
-                err ? reject(err) : resolve(objs)));
+            this.getObjects(id, options, (err, objs) => (err ? reject(err) : resolve(objs)))
+        );
     }
 
     async _getObjectsByPattern(pattern, options, callback) {
         if (!pattern || typeof pattern !== 'string') {
-            typeof callback === 'function' && setImmediate(() => callback('invalid pattern ' + JSON.stringify(pattern)));
-            return;
+            return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
 
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         let keys;
@@ -2563,7 +2905,8 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
-        this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis keys ${keys.length} ${pattern}`);
+        this.settings.connection.enhancedLogging &&
+            this.log.silly(`${this.namespace} redis keys ${keys.length} ${pattern}`);
         this._getObjects(keys, options, callback, true);
     }
 
@@ -2574,8 +2917,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getObjectsByPattern(pattern, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj)));
+                this.getObjectsByPattern(pattern, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+            );
         }
         if (options && options.acl) {
             options.acl = null;
@@ -2583,7 +2926,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjectsByPattern(pattern, options, callback);
                 }
@@ -2593,25 +2936,25 @@ class ObjectsInRedisClient {
 
     getObjectsByPatternAsync(pattern, options) {
         return new Promise((resolve, reject) =>
-            this.getObjectsByPattern(pattern, options, (err, objs) =>
-                err ? reject(err) : resolve(objs)));
+            this.getObjectsByPattern(pattern, options, (err, objs) => (err ? reject(err) : resolve(objs)))
+        );
     }
 
     async _setObject(id, obj, options, callback) {
         if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
-            return typeof callback === 'function' && setImmediate(() => callback(`Invalid ID: ${id}`));
+            return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
 
         if (!obj) {
             this.log.warn(this.namespace + ' setObject: Argument object is null');
-            return typeof callback === 'function' && setImmediate(() => callback('obj is null'));
+            return tools.maybeCallbackWithError(callback, 'obj is null');
         }
         if (!tools.isObject(obj)) {
             this.log.warn(this.namespace + ' setObject: Argument object is no object: ' + obj);
-            return typeof callback === 'function' && setImmediate(() => callback('obj is no object'));
+            return tools.maybeCallbackWithError(callback, 'obj is no object');
         }
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         // make a copy of object, because we will modify it
         obj = deepClone(obj);
@@ -2636,17 +2979,29 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, 'Invalid password for update of vendor information');
         }
 
+        // we need to know if custom has been added/deleted
+        const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
+
         // do not delete common settings, like "history" or "mobile". It can be erased only with "null"
         if (oldObj && oldObj.common) {
             this.preserveSettings.forEach(commonSetting => {
                 // special case if "custom"
                 if (commonSetting === 'custom') {
                     // we had broken objects where common.custom was a "non-object" ... check and fix them here, no warning because users will most likely have no idea how to deal with it
-                    if (oldObj.common.custom !== undefined && oldObj.common.custom !== null && !tools.isObject(oldObj.common.custom)) {
+                    if (
+                        oldObj.common.custom !== undefined &&
+                        oldObj.common.custom !== null &&
+                        !tools.isObject(oldObj.common.custom)
+                    ) {
                         delete oldObj.common.custom;
                     }
                     // also remove invalid data from new objects ... should not happen because adapter.js checks too
-                    if (obj.common && obj.common.custom !== undefined && obj.common.custom !== null && !tools.isObject(obj.common.custom)) {
+                    if (
+                        obj.common &&
+                        obj.common.custom !== undefined &&
+                        obj.common.custom !== null &&
+                        !tools.isObject(obj.common.custom)
+                    ) {
                         delete obj.common.custom;
                     }
 
@@ -2680,9 +3035,11 @@ class ObjectsInRedisClient {
                     // remove settings if desired
                     if (obj.common && obj.common[commonSetting] === null) {
                         delete obj.common[commonSetting];
-                    } else
-                    // if old setting present and new setting is absent
-                    if (oldObj.common[commonSetting] !== undefined && (!obj.common || obj.common[commonSetting] === undefined)) {
+                    } else if (
+                        // if old setting present and new setting is absent
+                        oldObj.common[commonSetting] !== undefined &&
+                        (!obj.common || obj.common[commonSetting] === undefined)
+                    ) {
                         obj.common = obj.common || {};
                         obj.common[commonSetting] = oldObj.common[commonSetting];
                     }
@@ -2693,19 +3050,19 @@ class ObjectsInRedisClient {
         if (obj.common && obj.common.alias && obj.common.alias.id) {
             if (typeof obj.common.alias.id === 'object') {
                 if (typeof obj.common.alias.id.write !== 'string' || typeof obj.common.alias.id.read !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.write.startsWith('alias.') || obj.common.alias.id.read.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             } else {
                 if (typeof obj.common.alias.id !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             }
         }
@@ -2738,7 +3095,39 @@ class ObjectsInRedisClient {
         try {
             const message = JSON.stringify(obj);
 
-            await this.client.set(this.objNamespace + id, message);
+            const commands = [];
+            if (this.useSets) {
+                if (obj.type && (!oldObj || !oldObj.type)) {
+                    // new object or oldObj had no type -> add to set + set object
+                    commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
+                } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
+                    // the old obj had a type which differs from the new type -> rem old, add new
+                    commands.push(
+                        ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
+                        ['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id]
+                    );
+                } else if (oldObj && oldObj.type && !obj.type) {
+                    // the oldObj had a type, the new one has no -> rem
+                    commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
+                }
+
+                if (obj.common && obj.common.custom && !oldObjHasCustom) {
+                    // we now have custom, old object had no custom
+                    commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+                } else if (oldObjHasCustom && (!obj.common || !obj.common.custom)) {
+                    // we no longer have custom
+                    commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+                }
+            }
+
+            if (!commands.length) {
+                await this.client.set(this.objNamespace + id, message);
+            } else {
+                // set all commands atomic
+                commands.push(['set', this.objNamespace + id, message]);
+                await this.client.multi(commands).exec();
+            }
+
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
             // object updated -> if type changed to meta -> cache
             if (oldObj && oldObj.type === 'meta' && this.existingMetaObjects[id] === false) {
@@ -2747,9 +3136,9 @@ class ObjectsInRedisClient {
 
             await this.client.publish(this.objNamespace + id, message);
 
-            return tools.maybeCallbackWithError(callback, null, {id});
+            return tools.maybeCallbackWithError(callback, null, { id });
         } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e, {id});
+            return tools.maybeCallbackWithRedisError(callback, e, { id });
         }
     }
 
@@ -2772,8 +3161,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.setObject(id, obj, options, (err, res) =>
-                    err ? reject(err) : resolve(res)));
+                this.setObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
+            );
         }
         if (options && options.acl) {
             options.acl = null;
@@ -2782,7 +3171,7 @@ class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, err => {
             // do not use options from checkObjectRights because this will mess up configured default acl
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._setObject(id, obj, options || {}, callback);
             }
@@ -2791,8 +3180,8 @@ class ObjectsInRedisClient {
 
     setObjectAsync(id, obj, options) {
         return new Promise((resolve, reject) =>
-            this.setObject(id, obj, options, (err, res) =>
-                err ? reject(err) : resolve(res)));
+            this.setObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
+        );
     }
 
     async _delObject(id, options, callback) {
@@ -2811,7 +3200,8 @@ class ObjectsInRedisClient {
             this.log.warn(`${this.namespace} redis get ${id}, error - ${e.message}`);
         }
 
-        if (!oldObj) { // Not existent, so goal reached :-)
+        if (!oldObj) {
+            // Not existent, so goal reached :-)
             return tools.maybeCallback(callback);
         }
 
@@ -2826,7 +3216,34 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
         } else {
             try {
-                await this.client.del(this.objNamespace + id);
+                const commands = [];
+
+                if (this.useSets) {
+                    if (oldObj.type) {
+                        // e.g. _design/ has no type
+                        // del the object from the set + del object atomic
+                        commands.push([
+                            'srem',
+                            `${this.setNamespace}object.type.${oldObj.type}`,
+                            this.objNamespace + id
+                        ]);
+                    }
+
+                    if (oldObj.common && oldObj.common.custom) {
+                        // del the object from "custom" set
+                        commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+                    }
+                }
+
+                if (!commands.length) {
+                    // only del
+                    await this.client.del(this.objNamespace + id);
+                } else {
+                    // set all commands atomic
+                    commands.push(['del', this.objNamespace + id]);
+                    await this.client.multi(commands).exec();
+                }
+
                 // object has been deleted -> remove from cached meta if there
                 if (this.existingMetaObjects[id]) {
                     this.existingMetaObjects[id] = false;
@@ -2847,8 +3264,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.delObject(id, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj)));
+                this.delObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+            );
         }
 
         if (options && options.acl) {
@@ -2864,9 +3281,9 @@ class ObjectsInRedisClient {
     }
 
     delObjectAsync(id, options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.delObject(id, options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.delObject(id, options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     // this function is very ineffective. Because reads all objects and then process them
@@ -2906,7 +3323,7 @@ class ObjectsInRedisClient {
 
         params = params || {};
         params.startkey = params.startkey || '';
-        params.endkey   = params.endkey   || '\u9999';
+        params.endkey = params.endkey || '\u9999';
         const wildcardPos = params.endkey.indexOf('\u9999');
         let wildCardLastPos = true;
         if (wildcardPos !== -1 && wildcardPos !== params.endkey.length - 1) {
@@ -2920,7 +3337,13 @@ class ObjectsInRedisClient {
         }
 
         // filter by type
-        if (wildCardLastPos && func && func.map && this.scripts.filter && (m = func.map.match(/if\s\(doc\.type\s?===?\s?'(\w+)'\)\semit\(([^,]+),\s?doc\s?\)/))) {
+        if (
+            wildCardLastPos &&
+            func &&
+            func.map &&
+            this.scripts.filter &&
+            (m = func.map.match(/if\s\(doc\.type\s?===?\s?'(\w+)'\)\semit\(([^,]+),\s?doc\s?\)/))
+        ) {
             let cursor = '0';
             let filterRequired = true;
             do {
@@ -2930,7 +3353,16 @@ class ObjectsInRedisClient {
 
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.filter, 5, this.objNamespace, params.startkey, params.endkey, m[1], cursor]);
+                    objs = await this.client.evalsha([
+                        this.scripts.filter,
+                        6,
+                        this.objNamespace,
+                        params.startkey,
+                        params.endkey,
+                        m[1],
+                        cursor,
+                        `${this.setNamespace}object.type.${m[1]}`
+                    ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                 }
@@ -2949,23 +3381,23 @@ class ObjectsInRedisClient {
                         obj = JSON.parse(obj);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
-                        return {id: 'parseError', value: null};
+                        return { id: 'parseError', value: null };
                     }
                     if (m[2] && m[2].trim() === 'doc._id') {
-                        return {id: obj._id, value: obj};
+                        return { id: obj._id, value: obj };
                     } else if (m[2] && m[2].trim() === 'doc.common.name' && obj.common) {
                         if (typeof obj.common.name === 'object') {
                             if (obj.common.name.en) {
-                                return {id: obj.common.name.en, value: obj};
+                                return { id: obj.common.name.en, value: obj };
                             } else {
-                                return {id: JSON.stringify(obj.common.name), value: obj};
+                                return { id: JSON.stringify(obj.common.name), value: obj };
                             }
                         } else {
-                            return {id: obj.common.name, value: obj};
+                            return { id: obj.common.name, value: obj };
                         }
                     } else {
                         this.log.error(`${this.namespace} Cannot filter "${m[2]}": ${JSON.stringify(obj)}`);
-                        return {id: 'parseError', value: null};
+                        return { id: 'parseError', value: null };
                     }
                 });
                 if (currRows.length) {
@@ -2982,7 +3414,7 @@ class ObjectsInRedisClient {
                     }
                 }
                 if (max !== null) {
-                    result.rows = [{id: '_stats', value: {max: max}}];
+                    result.rows = [{ id: '_stats', value: { max: max } }];
                 } else {
                     result.rows = [];
                 }
@@ -2991,9 +3423,14 @@ class ObjectsInRedisClient {
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
             return tools.maybeCallbackWithError(callback, null, result);
-        } else
-        // filter by script
-        if (wildCardLastPos && func && func.map && this.scripts.script && func.map.indexOf('doc.common.engineType') !== -1) {
+        } else if (
+            // filter by script
+            wildCardLastPos &&
+            func &&
+            func.map &&
+            this.scripts.script &&
+            func.map.indexOf('doc.common.engineType') !== -1
+        ) {
             let cursor = '0';
             let filterRequired = true;
             do {
@@ -3002,9 +3439,17 @@ class ObjectsInRedisClient {
                 }
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.script, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([
+                        this.scripts.script,
+                        5,
+                        this.objNamespace,
+                        params.startkey,
+                        params.endkey,
+                        cursor,
+                        `${this.setNamespace}object.type.script`
+                    ]);
                 } catch (e) {
-                    this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
+                    this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
@@ -3020,9 +3465,9 @@ class ObjectsInRedisClient {
                         obj = JSON.parse(obj);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
-                        return {id: 'parseError', value: null};
+                        return { id: 'parseError', value: null };
                     }
-                    return {id: obj._id, value: obj};
+                    return { id: obj._id, value: obj };
                 });
                 if (currRows.length) {
                     result.rows = [...result.rows, ...currRows];
@@ -3032,9 +3477,15 @@ class ObjectsInRedisClient {
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
             return tools.maybeCallbackWithError(callback, null, result);
-        } else
-        // filter by hm-rega programs
-        if (wildCardLastPos && func && func.map && this.scripts.programs && func.map.indexOf('doc.native.TypeName === \'PROGRAM\'') !== -1) {
+        } else if (
+            // filter by hm-rega programs
+
+            wildCardLastPos &&
+            func &&
+            func.map &&
+            this.scripts.programs &&
+            func.map.indexOf("doc.native.TypeName === 'PROGRAM'") !== -1
+        ) {
             let cursor = '0';
             let filterRequired = true;
             do {
@@ -3044,7 +3495,15 @@ class ObjectsInRedisClient {
 
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.programs, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([
+                        this.scripts.programs,
+                        5,
+                        `${this.objNamespace}hm-rega.`,
+                        params.startkey,
+                        params.endkey,
+                        cursor,
+                        `${this.setNamespace}object.type.channel`
+                    ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                 }
@@ -3062,21 +3521,26 @@ class ObjectsInRedisClient {
                         obj = JSON.parse(obj);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
-                        return {id: 'parseError', value: null};
+                        return { id: 'parseError', value: null };
                     }
-                    return {id: obj._id, value: obj};
+                    return { id: obj._id, value: obj };
                 });
                 if (currRows.length) {
                     result.rows = [...result.rows, ...currRows];
                 } // endIf
-            } while(cursor !== '0');
+            } while (cursor !== '0');
 
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
             return tools.maybeCallbackWithError(callback, null, result);
-        } else
-        // filter by hm-rega variables
-        if (wildCardLastPos && func && func.map && this.scripts.variables && func.map.indexOf('doc.native.TypeName === \'ALARMDP\'') !== -1) {
+        } else if (
+            // filter by hm-rega variables
+            wildCardLastPos &&
+            func &&
+            func.map &&
+            this.scripts.variables &&
+            func.map.indexOf("doc.native.TypeName === 'ALARMDP'") !== -1
+        ) {
             let cursor = '0';
             let filterRequired = true;
             do {
@@ -3086,7 +3550,15 @@ class ObjectsInRedisClient {
 
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.variables, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([
+                        this.scripts.variables,
+                        5,
+                        `${this.objNamespace}hm-rega.`,
+                        params.startkey,
+                        params.endkey,
+                        cursor,
+                        `${this.setNamespace}object.type.state`
+                    ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view ${e.message}`);
                 }
@@ -3104,9 +3576,9 @@ class ObjectsInRedisClient {
                         obj = JSON.parse(obj);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
-                        return {id: 'parseError', value: null};
+                        return { id: 'parseError', value: null };
                     }
-                    return {id: obj._id, value: obj};
+                    return { id: obj._id, value: obj };
                 });
                 if (currRows.length) {
                     result.rows = [...result.rows, ...currRows];
@@ -3116,9 +3588,14 @@ class ObjectsInRedisClient {
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
             typeof callback === 'function' && callback(null, result);
-        } else
-        // filter by custom, redis also returns if common.custom is not present
-        if (wildCardLastPos && func && func.map && this.scripts.custom && func.map.indexOf('doc.common.custom') !== -1) {
+        } else if (
+            // filter by custom, redis also returns if common.custom is not present
+            wildCardLastPos &&
+            func &&
+            func.map &&
+            this.scripts.custom &&
+            func.map.indexOf('doc.common.custom') !== -1
+        ) {
             let cursor = '0';
             let filterRequired = true;
             do {
@@ -3127,7 +3604,15 @@ class ObjectsInRedisClient {
                 }
                 let objs;
                 try {
-                    objs = await this.client.evalsha([this.scripts.custom, 4, this.objNamespace, params.startkey, params.endkey, cursor]);
+                    objs = await this.client.evalsha([
+                        this.scripts.custom,
+                        5,
+                        this.objNamespace,
+                        params.startkey,
+                        params.endkey,
+                        cursor,
+                        `${this.setNamespace}object.common.custom`
+                    ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
                 }
@@ -3148,7 +3633,7 @@ class ObjectsInRedisClient {
                         obj = null;
                     }
                     if (obj && obj.common && obj.common.custom) {
-                        result.rows.push({id: obj._id, value: obj.common.custom});
+                        result.rows.push({ id: obj._id, value: obj.common.custom });
                     }
                 });
             } while (cursor !== '0');
@@ -3158,13 +3643,16 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, null, result);
         } else {
             if (!wildCardLastPos) {
-                this.log.debug(`${this.namespace} Search can't be optimized because wildcard not at the end, fallback to keys!: ${func.map}`);
+                this.log.debug(
+                    `${this.namespace} Search can't be optimized because wildcard not at the end, fallback to keys!: ${func.map}`
+                );
             } else {
                 this.log.debug(`${this.namespace} No suitable Lua script, fallback to keys!: ${func.map}`);
             }
 
             let searchKeys = this.objNamespace + '*';
-            if (wildcardPos !== -1) { // Wildcard included
+            if (wildcardPos !== -1) {
+                // Wildcard included
                 searchKeys = this.objNamespace + params.endkey.replace(/\u9999/g, '*');
             }
 
@@ -3181,7 +3669,7 @@ class ObjectsInRedisClient {
 
             const endAfterWildcard = params.endkey.substr(wildcardPos + 1);
             params.startkey = this.objNamespace + params.startkey;
-            params.endkey   = this.objNamespace + params.endkey;
+            params.endkey = this.objNamespace + params.endkey;
 
             keys = keys.sort().filter(key => {
                 if (key && !utils.regCheckId.test(key)) {
@@ -3189,11 +3677,10 @@ class ObjectsInRedisClient {
                         if (params.startkey && key < params.startkey) {
                             return false;
                         }
-                        if (params.endkey   && key > params.endkey)   {
+                        if (params.endkey && key > params.endkey) {
                             return false;
                         }
-                    } else
-                    if (params && wildcardPos === 0) {
+                    } else if (params && wildcardPos === 0) {
                         if (!key.endsWith(endAfterWildcard)) {
                             return false;
                         }
@@ -3210,9 +3697,9 @@ class ObjectsInRedisClient {
             } catch {
                 //ignore
             }
-            // eslint-disable-next-line no-unused-vars
+
             const _emit_ = (id, obj) => {
-                result.rows.push({id: id, value: obj});
+                result.rows.push({ id: id, value: obj });
             };
 
             const f = eval('(' + func.map.replace(/^function\(([a-z0-9A-Z_]+)\)/g, 'function($1, emit)') + ')');
@@ -3246,7 +3733,7 @@ class ObjectsInRedisClient {
                     }
                 }
                 if (max !== null) {
-                    result.rows = [{id: '_stats', value: {max: max}}];
+                    result.rows = [{ id: '_stats', value: { max: max } }];
                 } else {
                     result.rows = [];
                 }
@@ -3262,8 +3749,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this._applyView(func, params, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj)));
+                this._applyView(func, params, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+            );
         }
 
         if (options && options.acl) {
@@ -3283,7 +3770,7 @@ class ObjectsInRedisClient {
 
     async _getObjectView(design, search, params, options, callback) {
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         let obj;
@@ -3291,7 +3778,7 @@ class ObjectsInRedisClient {
             obj = await this.client.get(this.objNamespace + '_design/' + design);
         } catch (e) {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}" : ${e.message}`);
-            return tools.maybeCallbackWithRedisError(callback, new Error(`Cannot find view "${design}"`));
+            return tools.maybeCallbackWithError(callback, new Error(`Cannot find view "${design}"`));
         }
 
         if (obj) {
@@ -3299,14 +3786,20 @@ class ObjectsInRedisClient {
                 obj = JSON.parse(obj);
             } catch {
                 this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
-                return tools.maybeCallbackWithError(callback, new Error(`Cannot parse JSON: "_design/${design}" / "${obj}"`));
+                return tools.maybeCallbackWithError(
+                    callback,
+                    new Error(`Cannot parse JSON: "_design/${design}" / "${obj}"`)
+                );
             }
 
             if (obj.views && obj.views[search]) {
                 return this._applyViewFunc(obj.views[search], params, options, callback);
             } else {
                 this.log.error(`${this.namespace} Cannot find search "${search}" in "${design}"`);
-                return tools.maybeCallbackWithError(callback, new Error(`Cannot find search "${search}" in "${design}"`));
+                return tools.maybeCallbackWithError(
+                    callback,
+                    new Error(`Cannot find search "${search}" in "${design}"`)
+                );
             }
         } else {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}"`);
@@ -3321,8 +3814,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getObjectView(design, search, params, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj)));
+                this.getObjectView(design, search, params, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+            );
         }
 
         if (options && options.acl) {
@@ -3332,7 +3825,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjectView(design, search, params, options, callback);
                 }
@@ -3342,8 +3835,8 @@ class ObjectsInRedisClient {
 
     getObjectViewAsync(design, search, params, options) {
         return new Promise((resolve, reject) =>
-            this.getObjectView(design, search, params, options, (err, arr) =>
-                err ? reject(err) : resolve(arr)));
+            this.getObjectView(design, search, params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
+        );
     }
 
     async _getObjectList(params, options, callback) {
@@ -3354,7 +3847,10 @@ class ObjectsInRedisClient {
         params = params || {};
         params.startkey = params.startkey || '';
         params.endkey = params.endkey || '\u9999';
-        const pattern = (params.endkey.substring(0, params.startkey.length) === params.startkey) ? this.objNamespace + params.startkey + '*' : this.objNamespace + '*';
+        const pattern =
+            params.endkey.substring(0, params.startkey.length) === params.startkey
+                ? this.objNamespace + params.startkey + '*'
+                : this.objNamespace + '*';
 
         // todo: use lua script for this
         let keys;
@@ -3408,7 +3904,7 @@ class ObjectsInRedisClient {
                 if (!objs[r] || !utils.checkObject(objs[r], options, utils.CONSTS.ACCESS_READ)) {
                     continue;
                 }
-                result.rows.push({id: objs[r]._id, value: objs[r], doc: objs[r]});
+                result.rows.push({ id: objs[r]._id, value: objs[r], doc: objs[r] });
             }
         }
         return tools.maybeCallbackWithError(callback, null, result);
@@ -3421,8 +3917,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getObjectList(params, options, (err, obj) =>
-                    err ? reject(err) : resolve(obj)));
+                this.getObjectList(params, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+            );
         }
 
         if (options && options.acl) {
@@ -3432,7 +3928,7 @@ class ObjectsInRedisClient {
         if (typeof callback === 'function') {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
-                    typeof callback === 'function' && setImmediate(() => callback(err));
+                    return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
                     return this._getObjectList(params, options, callback);
                 }
@@ -3442,17 +3938,17 @@ class ObjectsInRedisClient {
 
     getObjectListAsync(params, options) {
         return new Promise((resolve, reject) =>
-            this.getObjectList(params, options, (err, arr) =>
-                err ? reject(err) : resolve(arr)));
+            this.getObjectList(params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
+        );
     }
 
     // could be optimised, to read object only once. Now it will read 3 times
     async _extendObject(id, obj, options, callback, _iteration) {
         if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
-            return typeof callback === 'function' && setImmediate(() => callback(`Invalid ID: ${id}`));
+            return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
         if (!this.client) {
-            return typeof callback === 'function' && setImmediate (() => callback(utils.ERRORS.ERROR_DB_CLOSED));
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         let oldObj;
@@ -3479,11 +3975,23 @@ class ObjectsInRedisClient {
             _oldObj = deepClone(oldObj);
         }
 
+        // we need to know if custom has been added/deleted
+        const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
+
         oldObj = oldObj || {};
         obj = deepClone(obj); // copy here to prevent "sandboxed" objects from JavaScript adapter
-        if (oldObj.common && oldObj.common.custom !== undefined && oldObj.common.custom !== null && !tools.isObject(oldObj.common.custom)) {
+        if (
+            oldObj.common &&
+            oldObj.common.custom !== undefined &&
+            oldObj.common.custom !== null &&
+            !tools.isObject(oldObj.common.custom)
+        ) {
+            // custom has to be an object, else clean up
             delete oldObj.common.custom;
         }
+
+        // we need to check if type has changed
+        const oldType = oldObj.type;
 
         oldObj = extend(true, oldObj, obj);
         oldObj._id = id;
@@ -3503,7 +4011,9 @@ class ObjectsInRedisClient {
                     oldObj.acl.ownerGroup = null;
                     return this.getUserGroup(options.owner, (user, groups /*, permissions */) => {
                         if (!groups || !groups[0]) {
-                            options.ownerGroup = (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP;
+                            options.ownerGroup =
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
+                                utils.CONSTS.SYSTEM_ADMIN_GROUP;
                         } else {
                             options.ownerGroup = groups[0];
                         }
@@ -3520,30 +4030,62 @@ class ObjectsInRedisClient {
         if (obj.common && obj.common.alias && obj.common.alias.id) {
             if (typeof obj.common.alias.id === 'object') {
                 if (typeof obj.common.alias.id.write !== 'string' || typeof obj.common.alias.id.read !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.write.startsWith('alias.') || obj.common.alias.id.read.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             } else {
                 if (typeof obj.common.alias.id !== 'string') {
-                    return typeof callback === 'function' && callback('Invalid alias ID');
+                    return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
                 }
 
                 if (obj.common.alias.id.startsWith('alias.')) {
-                    return typeof callback === 'function' && callback('Cannot make alias on alias');
+                    return tools.maybeCallbackWithError(callback, 'Cannot make alias on alias');
                 }
             }
         }
 
         if (_oldObj && !tools.checkNonEditable(_oldObj, oldObj)) {
-            return typeof callback === 'function' && callback('Invalid password for update of vendor information');
+            return tools.maybeCallbackWithError(callback, 'Invalid password for update of vendor information');
         }
         const message = JSON.stringify(oldObj);
 
         try {
-            await this.client.set(this.objNamespace + id, message);
+            const commands = [];
+            if (this.useSets) {
+                // what is called oldObj is acutally the obj we set, because it has been extended
+                if (oldObj.type && !oldType) {
+                    // new object or oldObj had no type -> add to set + set object
+                    commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
+                } else if (oldObj.type && oldType && oldObj.type !== oldType) {
+                    // the old obj had a type which differs from the new type -> rem old, add new
+                    commands.push(
+                        ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
+                        ['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id]
+                    );
+                } else if (oldType && !oldObj.type) {
+                    // the oldObj had a type, the new one has no -> rem
+                    commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
+                }
+            }
+
+            if (oldObj.common && oldObj.common.custom && !oldObjHasCustom) {
+                // we now have custom, old object had no custom
+                commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+            } else if (oldObjHasCustom && (!oldObj.common || !oldObj.common.custom)) {
+                // we no longer have custom
+                commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
+            }
+
+            if (!commands.length) {
+                await this.client.set(this.objNamespace + id, message);
+            } else {
+                // set all commands atomic
+                commands.push(['set', this.objNamespace + id, message]);
+                await this.client.multi(commands).exec();
+            }
 
             // extended -> if its now type meta and currently marked as not -> cache
             if (this.existingMetaObjects[id] === false && oldObj && oldObj.type === 'meta') {
@@ -3551,7 +4093,7 @@ class ObjectsInRedisClient {
             }
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
             await this.client.publish(this.objNamespace + id, message);
-            return tools.maybeCallbackWithError(callback, null, {id: id, value: oldObj}, id);
+            return tools.maybeCallbackWithError(callback, null, { id: id, value: oldObj }, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -3564,8 +4106,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.extendObject(id, obj, options, (err, res) =>
-                    err ? reject(err) : resolve(res)));
+                this.extendObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
+            );
         }
 
         if (options && options.acl) {
@@ -3574,7 +4116,7 @@ class ObjectsInRedisClient {
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 return this._extendObject(id, obj, options, callback);
             }
@@ -3583,8 +4125,8 @@ class ObjectsInRedisClient {
 
     extendObjectAsync(id, obj, options) {
         return new Promise((resolve, reject) =>
-            this.extendObject(id, obj, options, (err, res) =>
-                err ? reject(err) : resolve(res)));
+            this.extendObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
+        );
     }
 
     setConfig(id, obj, options, callback) {
@@ -3606,33 +4148,45 @@ class ObjectsInRedisClient {
     _findObject(idOrName, type, options, callback) {
         this._getObject(idOrName, options, (err, obj) => {
             // Assume it is ID
-            if (obj && utils.checkObject(obj, options, utils.CONSTS.ACCESS_READ) && (!type || (obj.common && obj.common.type === type))) {
+            if (
+                obj &&
+                utils.checkObject(obj, options, utils.CONSTS.ACCESS_READ) &&
+                (!type || (obj.common && obj.common.type === type))
+            ) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
             } else {
-                this._getKeys('*', options, async (err, keys) => {
-                    let objs;
-                    try {
-                        objs = await this.client.mget(keys);
-                    } catch (e) {
-                        return tools.maybeCallbackWithRedisError(callback, e);
-                    }
-                    objs = objs || [];
-                    // Assume it is name
-                    for (let i = 0; i < keys.length; i++) {
+                this._getKeys(
+                    '*',
+                    options,
+                    async (err, keys) => {
+                        let objs;
                         try {
-                            objs[i] = JSON.parse(objs[i]);
-                        } catch {
-                            this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
-                            continue;
+                            objs = await this.client.mget(keys);
+                        } catch (e) {
+                            return tools.maybeCallbackWithRedisError(callback, e);
                         }
-                        if (objs[i] && objs[i].common &&
+                        objs = objs || [];
+                        // Assume it is name
+                        for (let i = 0; i < keys.length; i++) {
+                            try {
+                                objs[i] = JSON.parse(objs[i]);
+                            } catch {
+                                this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
+                                continue;
+                            }
+                            if (
+                                objs[i] &&
+                                objs[i].common &&
                                 objs[i].common.name === idOrName &&
-                                (!type || objs[i].common.type === type)) {
-                            return tools.maybeCallbackWithError(callback, null, objs[i]._id, idOrName);
+                                (!type || objs[i].common.type === type)
+                            ) {
+                                return tools.maybeCallbackWithError(callback, null, objs[i]._id, idOrName);
+                            }
                         }
-                    }
-                    return tools.maybeCallbackWithError(callback, null, null, idOrName);
-                }, true);
+                        return tools.maybeCallbackWithError(callback, null, null, idOrName);
+                    },
+                    true
+                );
             }
         });
     }
@@ -3649,8 +4203,8 @@ class ObjectsInRedisClient {
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.findObject(idOrName, type, options, (err, id, _idOrName) =>
-                    err ? reject(err) : resolve(id)));
+                this.findObject(idOrName, type, options, (err, id, _idOrName) => (err ? reject(err) : resolve(id)))
+            );
         }
 
         if (options && options.acl) {
@@ -3670,8 +4224,8 @@ class ObjectsInRedisClient {
 
     findObjectAsync(idOrName, type, options) {
         return new Promise((resolve, reject) =>
-            this.findObject(idOrName, type, options, (err, id, _idOrName) =>
-                err ? reject(err) : resolve(id)));
+            this.findObject(idOrName, type, options, (err, id, _idOrName) => (err ? reject(err) : resolve(id)))
+        );
     }
 
     // can be called only from js-controller
@@ -3729,10 +4283,10 @@ class ObjectsInRedisClient {
 
         utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
-                typeof callback === 'function' && setImmediate(() => callback(err));
+                return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.file.write || options.user !== utils.CONSTS.SYSTEM_ADMIN_USER) {
-                    typeof callback === 'function' && setImmediate(() => callback(utils.ERRORS.ERROR_PERMISSION));
+                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._destroyDB(options, callback);
                 }
@@ -3741,9 +4295,9 @@ class ObjectsInRedisClient {
     }
 
     destroyDBAsync(options) {
-        return /** @type {Promise<void>} */ (new Promise((resolve, reject) =>
-            this.destroyDB(options, err =>
-                err ? reject(err) : resolve())));
+        return /** @type {Promise<void>} */ (
+            new Promise((resolve, reject) => this.destroyDB(options, err => (err ? reject(err) : resolve())))
+        );
     }
 
     // Destructor of the class. Called by shutting down.
@@ -3756,7 +4310,6 @@ class ObjectsInRedisClient {
             } catch {
                 // ignore error
             }
-
         }
         if (this.sub) {
             try {
@@ -3777,28 +4330,16 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        let _scripts = [];
-        if (scriptFiles && scriptFiles.filter) {
-            for (const name of Object.keys(scriptFiles)) {
-                const shasum = crypto.createHash('sha1');
-                const buf = Buffer.from(scriptFiles[name]);
-                shasum.update(buf);
-                _scripts.push({
-                    name,
-                    text: buf,
-                    hash: shasum.digest('hex')
-                });
-            }
-        } else {
-            _scripts = fs.readdirSync(__dirname + '/lua/').map(name => {
-                const shasum = crypto.createHash('sha1');
-                const script = fs.readFileSync(__dirname + '/lua/' + name);
-                shasum.update(script);
-                const hash = shasum.digest('hex');
-                return {name: name.replace(/\.lua$/, ''), text: script, hash};
-            });
-        }
-        const hashes = _scripts.map(e => e.hash);
+        const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
+        const scripts = fs.readdirSync(luaPath).map(name => {
+            const shasum = crypto.createHash('sha1');
+            const script = fs.readFileSync(path.join(luaPath, name));
+            shasum.update(script);
+            const hash = shasum.digest('hex');
+            return { name: name.replace(/\.lua$/, ''), text: script, hash };
+        });
+
+        const hashes = scripts.map(e => e.hash);
         hashes.unshift('EXISTS');
 
         if (!this.client) {
@@ -3812,15 +4353,15 @@ class ObjectsInRedisClient {
             // ignore
         }
 
-        arr && _scripts.forEach((e, i) => _scripts[i].loaded = !!arr[i]);
+        arr && scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
 
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        for (let i = 0; i < _scripts.length; i++) {
-            if (!_scripts[i].loaded) {
-                const script = _scripts[i];
+        for (let i = 0; i < scripts.length; i++) {
+            if (!scripts[i].loaded) {
+                const script = scripts[i];
                 let hash;
                 try {
                     hash = await this.client.script(['LOAD', script.text]);
@@ -3834,20 +4375,20 @@ class ObjectsInRedisClient {
             }
         }
         this.scripts = {};
-        _scripts.forEach(e => this.scripts[e.name] = e.hash);
+        scripts.forEach(e => (this.scripts[e.name] = e.hash));
     }
 
     /**
      * Get all keys matching a pattern using redis SCAN command, duplicates are filtered out
      *
      * @param {string} pattern - pattern to match, e. g. io.hm-rpc.0*
-     * @param {number} count - count argument used by redis SCAN, default is 500
+     * @param {number} count - count argument used by redis SCAN, default is 250
      * @return {Promise<string[]>}
      * @private
      */
     _getKeysViaScan(pattern, count = 250) {
         return new Promise(resolve => {
-            const stream = this.client.scanStream({match: pattern, count: count});
+            const stream = this.client.scanStream({ match: pattern, count: count });
             let uniqueKeys = [];
 
             stream.on('data', resultKeys => {
@@ -3860,6 +4401,99 @@ class ObjectsInRedisClient {
                 resolve(Array.from(new Set(uniqueKeys)));
             });
         });
+    }
+
+    /**
+     * Checks if a given set exists
+     * @param {string} id - id of the set
+     * @private
+     * @return {Promise<boolean>}
+     */
+    async setExists(id) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const exists = await this.client.exists(this.setNamespace + id);
+        return !!exists;
+    }
+
+    /**
+     * Migrate all objects to sets
+     * @return {Promise<number>}
+     */
+    async migrateToSets() {
+        if (!this.useSets) {
+            return 0;
+        }
+
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // to be safe we remove all sets before migration
+        const keys = await this._getKeysViaScan(`${this.setNamespace}object.type.*`);
+        for (const key of keys) {
+            await this.client.del(key);
+        }
+
+        let noMigrated = 0;
+        // get all objs without using view
+        const objs = await this.getObjectList({ startkey: '', endkey: '\u9999' });
+        for (const obj of objs.rows) {
+            if (obj.value.type) {
+                // e.g. _design/.. has no type
+                // 1 if added else 0 (mostly always part of the set)
+                const migrated = await this.client.sadd(
+                    `${this.setNamespace}object.type.${obj.value.type}`,
+                    this.objNamespace + obj.id
+                );
+                noMigrated += migrated;
+            }
+
+            // check for custom
+            if (obj.value.common && obj.value.common.custom) {
+                const migrated = await this.client.sadd(
+                    `${this.setNamespace}object.common.custom`,
+                    this.objNamespace + obj.id
+                );
+                noMigrated += migrated;
+            }
+        }
+        return noMigrated;
+    }
+
+    /**
+     * Returns the protocol version from DB
+     *
+     * @returns {Promise<string>}
+     */
+    getProtocolVersion() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+    }
+
+    /**
+     * Sets the protocol version to the DB
+     * @param {number|string} version - protocol version
+     * @returns {Promise<void>}
+     */
+    async setProtocolVersion(version) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        version = version.toString();
+        // we can only set a protocol if we actually support it
+        if (this.supportedProtocolVersions.includes(version)) {
+            await this.client.set(`${this.metaNamespace}objects.protocolVersion`, version);
+            await this.client.publish(`${this.metaNamespace}objects.protocolVersion`, version);
+        } else {
+            throw new Error('Cannot set an unsupported protocol version on the current host');
+        }
     }
 }
 

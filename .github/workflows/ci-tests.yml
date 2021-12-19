@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v2.5.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -55,15 +55,13 @@ jobs:
         run: npm -v
 
       - name: Install js-controller
-        run: npm i
+        run: npm ci
+
+      - name: Build TS files
+        run: npm run build
 
       - name: Execute Standard Tests
         run: npm test
-
-      - name: Install Jsonl packages
-        run: |
-          npm i @iobroker/db-states-jsonl
-          npm i @iobroker/db-objects-jsonl
 
       - name: Execute Jsonl Tests
         run: npm run test-jsonl
@@ -97,7 +95,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v2.5.0
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -137,7 +135,7 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release v${{ steps.extract_release.outputs.VERSION }}
           draft: false
-          # Prerelease versions create prereleases on Github
+          # Prerelease versions create prereleases on GitHub
           prerelease: ${{ contains(steps.extract_release.outputs.VERSION, '-') }}
           body: ${{ steps.extract_release.outputs.BODY }}
 

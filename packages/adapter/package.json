@@ -1,11 +1,11 @@
 {
   "name": "@iobroker/js-controller-adapter",
-  "version": "4.0.0-alpha.8-20210909-001a711c",
+  "version": "4.0.0-alpha.29-20211219-76997bf3",
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@alcalzone/pak": "^0.6.0",
+    "@alcalzone/pak": "^0.7.0",
     "@iobroker/db-objects-file": "file:../db-objects-file",
     "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
     "@iobroker/db-objects-redis": "file:../db-objects-redis",
@@ -18,9 +18,9 @@
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.0.0",
     "node-forge": "^0.10.0",
-    "node-schedule": "^2.0.0",
+    "node-schedule": "^2.1.0",
     "node.extend": "^2.0.2",
-    "pidusage": "^2.0.21",
+    "pidusage": "^3.0.0",
     "readline": "^1.3.0",
     "semver": "^7.3.5"
   },

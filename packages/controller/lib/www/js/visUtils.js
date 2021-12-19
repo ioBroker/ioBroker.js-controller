@@ -42,7 +42,7 @@ function extractBinding(format) {
                 visOid = visOid + '.val';
             }
 
-            const isSeconds = (test2 === '.ts' || test2 === '.lc');
+            const isSeconds = test2 === '.ts' || test2 === '.lc';
 
             test1 = systemOid.substring(systemOid.length - 4);
             test2 = systemOid.substring(systemOid.length - 3);
@@ -53,7 +53,7 @@ function extractBinding(format) {
                 systemOid = systemOid.substring(0, systemOid.length - 3);
             }
             let operations = null;
-            const isEval = visOid.match(/[\d\w_.]+:[-\d\w_.]+/) || (!visOid.length && parts.length > 0);//(visOid.indexOf(':') !== -1) && (visOid.indexOf('::') === -1);
+            const isEval = visOid.match(/[\d\w_.]+:[-\d\w_.]+/) || (!visOid.length && parts.length > 0); //(visOid.indexOf(':') !== -1) && (visOid.indexOf('::') === -1);
 
             if (isEval) {
                 const xx = visOid.split(':', 2);
@@ -63,18 +63,21 @@ function extractBinding(format) {
                 operations = operations || [];
                 operations.push({
                     op: 'eval',
-                    arg: [{
-                        name: xx[0],
-                        visOid: visOid,
-                        systemOid: systemOid
-                    }]
+                    arg: [
+                        {
+                            name: xx[0],
+                            visOid: visOid,
+                            systemOid: systemOid
+                        }
+                    ]
                 });
             }
 
             for (let u = 1; u < parts.length; u++) {
                 // eval construction
                 if (isEval) {
-                    if (parts[u].trim().match(/^[\d\w_.]+:[-.\d\w_]+$/)) {//parts[u].indexOf(':') !== -1 && parts[u].indexOf('::') === -1) {
+                    if (parts[u].trim().match(/^[\d\w_.]+:[-.\d\w_]+$/)) {
+                        //parts[u].indexOf(':') !== -1 && parts[u].indexOf('::') === -1) {
                         let _systemOid = parts[u].trim();
                         let _visOid = _systemOid;
 
@@ -97,8 +100,8 @@ function extractBinding(format) {
                         const y1 = _systemOid.split(':', 2);
 
                         operations[0].arg.push({
-                            name:      x1[0],
-                            visOid:    x1[1],
+                            name: x1[0],
+                            visOid: x1[1],
                             systemOid: y1[1]
                         });
                     } else {
@@ -117,13 +120,15 @@ function extractBinding(format) {
                     if (parse && parse[1]) {
                         parse[1] = parse[1].trim();
                         // operators requires parameter
-                        if (parse[1] === '*' ||
+                        if (
+                            parse[1] === '*' ||
                             parse[1] === '+' ||
                             parse[1] === '-' ||
                             parse[1] === '/' ||
                             parse[1] === '%' ||
                             parse[1] === 'min' ||
-                            parse[1] === 'max') {
+                            parse[1] === 'max'
+                        ) {
                             if (parse[2] === undefined) {
                                 console.log('Invalid format of format string: ' + format);
                                 parse[2] = null;
@@ -137,40 +142,36 @@ function extractBinding(format) {
                                     parse[2] = null;
                                 } else {
                                     operations = operations || [];
-                                    operations.push({op: parse[1], arg: parse[2]});
+                                    operations.push({ op: parse[1], arg: parse[2] });
                                 }
                             }
-                        } else
-                        // date formatting
-                        if (parse[1] === 'date') {
+                        } else if (parse[1] === 'date') {
+                            // date formatting
                             operations = operations || [];
                             parse[2] = (parse[2] || '').trim();
                             parse[2] = parse[2].substring(1, parse[2].length - 1);
-                            operations.push({op: parse[1], arg: parse[2]});
-                        } else
-                        // returns array[value]. e.g.: {id.ack;array(ack is false,ack is true)}
-                        if (parse[1] === 'array') {
+                            operations.push({ op: parse[1], arg: parse[2] });
+                        } else if (parse[1] === 'array') {
+                            // returns array[value]. e.g.: {id.ack;array(ack is false,ack is true)}
                             operations = operations || [];
                             param = (parse[2] || '').trim();
                             param = param.substring(1, param.length - 1);
                             param = param.split(',');
                             if (Array.isArray(param)) {
-                                operations.push ({op: parse[1], arg: param}); //xxx
+                                operations.push({ op: parse[1], arg: param }); //xxx
                             }
-                        } else
-                        // value formatting
-                        if (parse[1] === 'value') {
+                        } else if (parse[1] === 'value') {
+                            // value formatting
                             operations = operations || [];
-                            param = (parse[2] === undefined) ? '(2)' : (parse[2] || '');
+                            param = parse[2] === undefined ? '(2)' : parse[2] || '';
                             param = param.trim();
                             param = param.substring(1, param.length - 1);
-                            operations.push({op: parse[1], arg: param});
-                        } else
-                        // operators have optional parameter
-                        if (parse[1] === 'pow' || parse[1] === 'round' || parse[1] === 'random') {
+                            operations.push({ op: parse[1], arg: param });
+                        } else if (parse[1] === 'pow' || parse[1] === 'round' || parse[1] === 'random') {
+                            // operators have optional parameter
                             if (parse[2] === undefined) {
                                 operations = operations || [];
-                                operations.push({op: parse[1]});
+                                operations.push({ op: parse[1] });
                             } else {
                                 parse[2] = (parse[2] || '').trim().replace(',', '.');
                                 parse[2] = parse[2].substring(1, parse[2].length - 1);
@@ -181,13 +182,13 @@ function extractBinding(format) {
                                     parse[2] = null;
                                 } else {
                                     operations = operations || [];
-                                    operations.push({op: parse[1], arg: parse[2]});
+                                    operations.push({ op: parse[1], arg: parse[2] });
                                 }
                             }
                         } else {
                             // operators without parameter
                             operations = operations || [];
-                            operations.push({op: parse[1]});
+                            operations.push({ op: parse[1] });
                         }
                     } else {
                         console.log('Invalid format ' + format);
@@ -215,11 +216,11 @@ function getUsedObjectIDs(views, isByViews) {
     }
 
     const _views = isByViews ? {} : null;
-    const IDs         = [];
-    const visibility  = {};
-    const bindings    = {};
+    const IDs = [];
+    const visibility = {};
+    const bindings = {};
     const lastChanges = {};
-    const signals     = {};
+    const signals = {};
 
     let view;
     let id;
@@ -239,7 +240,7 @@ function getUsedObjectIDs(views, isByViews) {
             }
             for (id of Object.keys(views[view].widgets)) {
                 // Check all attributes
-                const data  = views[view].widgets[id].data;
+                const data = views[view].widgets[id].data;
                 const style = views[view].widgets[id].style;
 
                 // fix error in naming
@@ -411,7 +412,15 @@ function getUsedObjectIDs(views, isByViews) {
                                         }
                                     }
                                 }
-                            } else if (attr !== 'oidTrueValue' && attr !== 'oidFalseValue' && ((attr.match(/oid\d{0,2}$/) || attr.match(/^oid/) || attr.match(/^signals-oid-/) || attr === 'lc-oid') && data[attr])) {
+                            } else if (
+                                attr !== 'oidTrueValue' &&
+                                attr !== 'oidFalseValue' &&
+                                (attr.match(/oid\d{0,2}$/) ||
+                                    attr.match(/^oid/) ||
+                                    attr.match(/^signals-oid-/) ||
+                                    attr === 'lc-oid') &&
+                                data[attr]
+                            ) {
                                 if (data[attr] && data[attr] !== 'nothing_selected') {
                                     if (IDs.indexOf(data[attr]) === -1) {
                                         IDs.push(data[attr]);
@@ -434,7 +443,7 @@ function getUsedObjectIDs(views, isByViews) {
                                     if (!visibility[vid]) {
                                         visibility[vid] = [];
                                     }
-                                    visibility[vid].push({view: view, widget: id});
+                                    visibility[vid].push({ view: view, widget: id });
                                 }
 
                                 // Signal binding
@@ -559,7 +568,10 @@ function getUsedObjectIDs(views, isByViews) {
                     if (tools.isObject(views[view].widgets)) {
                         for (id of Object.keys(views[view].widgets)) {
                             // Add all OIDs from this view to parent
-                            if (views[view].widgets[id].tpl === 'tplContainerView' && views[view].widgets[id].data.contains_view) {
+                            if (
+                                views[view].widgets[id].tpl === 'tplContainerView' &&
+                                views[view].widgets[id].data.contains_view
+                            ) {
                                 const ids = _views[views[view].widgets[id].data.contains_view];
                                 if (ids) {
                                     for (let a = 0; a < ids.length; a++) {
@@ -569,7 +581,9 @@ function getUsedObjectIDs(views, isByViews) {
                                         }
                                     }
                                 } else {
-                                    console.warn('View does not exist: "' + views[view].widgets[id].data.contains_view + '"');
+                                    console.warn(
+                                        'View does not exist: "' + views[view].widgets[id].data.contains_view + '"'
+                                    );
                                 }
                             }
                         }
@@ -579,7 +593,14 @@ function getUsedObjectIDs(views, isByViews) {
         } while (changed);
     }
 
-    return {IDs: IDs, byViews: _views, visibility: visibility, bindings: bindings, lastChanges: lastChanges, signals: signals};
+    return {
+        IDs: IDs,
+        byViews: _views,
+        visibility: visibility,
+        bindings: bindings,
+        lastChanges: lastChanges,
+        signals: signals
+    };
 }
 
 if (module && module.parent) {
