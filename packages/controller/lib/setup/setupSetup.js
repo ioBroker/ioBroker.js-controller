@@ -510,7 +510,7 @@ function Setup(options) {
                     console.log('Creating backup ...');
                     console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
 
-                    const filePath = await backup.createBackup('', true);
+                    let filePath = await backup.createBackup('', true);
                     const origBackupPath = filePath;
                     filePath = filePath.replace('.tar.gz', '-migration.tar.gz');
                     try {
