@@ -690,13 +690,13 @@ class BackupRestore {
                 const backupJson = JSON.parse(data);
                 const hostObj = backupJson.objects.find(obj => obj.id === `system.host.${backupHostname}`);
                 if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
-                    console.warn('The current js-controller differs from the js-controller in the backup.');
-                    console.warn('The js-controller version of the backup can not be restored.');
+                    console.warn('The current version of js-controller differs from the version in the backup.');
+                    console.warn('The js-controller version of the backup can not be restored automatically.');
                     console.warn(
-                        `If you need the js-controller version of the backup, you can execute npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production inside your ioBroker directory`
+                        `To restore the js-controller version of the backup, execute npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production inside your ioBroker directory`
                     );
                     console.warn(
-                        'If you want to restore your backup with the current installed js-controller, execute the restore command with the --force flag'
+                        'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
                     );
 
                     return EXIT_CODES.CANNOT_RESTORE_BACKUP;
