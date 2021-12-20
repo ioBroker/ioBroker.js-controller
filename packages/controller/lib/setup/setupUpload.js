@@ -324,7 +324,7 @@ function Upload(options) {
                         }
                         try {
                             const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
-                            if (_files.filesToDelete) {
+                            if (result.filesToDelete) {
                                 _files = _files.concat(result.filesToDelete);
                             }
 

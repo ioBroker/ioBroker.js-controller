@@ -900,7 +900,7 @@ function Adapter(options) {
                 if (err || !obj) {
                     return tools.maybeCallback(callback, false);
                 }
-                if (obj.common.members.indexOf(user) !== -1) {
+                if (obj.common.members.includes(user)) {
                     return tools.maybeCallback(callback, true);
                 } else {
                     return tools.maybeCallback(callback, false);
@@ -1065,7 +1065,7 @@ function Adapter(options) {
                         groups[g] &&
                         groups[g].common &&
                         groups[g].common.members &&
-                        groups[g].common.members.indexOf(user) !== -1
+                        groups[g].common.members.includes(user)
                     ) {
                         acl.groups.push(groups[g]._id);
                         if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
@@ -1644,7 +1644,7 @@ function Adapter(options) {
                     for (let c = res.rows.length - 1; c >= 0; c--) {
                         if (res.rows[c].value.common.subscribable) {
                             const _id = res.rows[c].id.substring(15); // cut system.adapter.
-                            if (this.autoSubscribe.indexOf(_id) === -1) {
+                            if (!this.autoSubscribe.includes(_id)) {
                                 this.autoSubscribe.push(_id);
                             }
                         }
@@ -1843,7 +1843,7 @@ function Adapter(options) {
                     if (obj && obj.common && obj.common.subscribable) {
                         const _id = id.substring(15); // 'system.adapter.'.length
                         if (obj.common.enabled) {
-                            if (this.autoSubscribe.indexOf(_id) === -1) {
+                            if (!this.autoSubscribe.includes(_id)) {
                                 this.autoSubscribe.push(_id);
                             }
                         } else {
@@ -3326,9 +3326,9 @@ function Adapter(options) {
                                             continue;
                                         }
                                         if (
-                                            _enums[es][e].common.members.indexOf(id) !== -1 ||
-                                            _enums[es][e].common.members.indexOf(channel) !== -1 ||
-                                            _enums[es][e].common.members.indexOf(device) !== -1
+                                            _enums[es][e].common.members.includes(id) ||
+                                            _enums[es][e].common.members.includes(channel) ||
+                                            _enums[es][e].common.members.includes(device)
                                         ) {
                                             list[id].enums[e] = _enums[es][e].common.name;
                                         }
@@ -4230,14 +4230,15 @@ function Adapter(options) {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else if (obj) {
-                        const pos = obj.common.members.indexOf(objId);
-                        if (pos === -1) {
+                        if (!obj.common.members.includes(objId)) {
                             obj.common.members.push(objId);
                             obj.from = 'system.adapter.' + this.namespace;
                             obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                             obj.ts = Date.now();
 
                             adapterObjects.setObject(obj._id, obj, options, callback);
+                        } else {
+                            return tools.maybeCallback(callback);
                         }
                     }
                 });
@@ -4252,8 +4253,7 @@ function Adapter(options) {
                     }
 
                     if (obj) {
-                        const pos = obj.common.members.indexOf(objId);
-                        if (pos === -1) {
+                        if (!obj.common.members.includes(objId)) {
                             obj.common.members.push(objId);
 
                             obj.from = 'system.adapter.' + this.namespace;
@@ -4750,8 +4750,7 @@ function Adapter(options) {
                     if (err || !obj) {
                         return tools.maybeCallbackWithError(callback, err || tools.ERRORS.ERROR_NOT_FOUND);
                     }
-                    const pos = obj.common.members.indexOf(objId);
-                    if (pos === -1) {
+                    if (!obj.common.members.includes(objId)) {
                         obj.common.members.push(objId);
                         obj.from = 'system.adapter.' + this.namespace;
                         obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -5398,7 +5397,7 @@ function Adapter(options) {
             };
 
             for (let i = 0; i < format.length; i++) {
-                if (validFormatChars.indexOf(format[i]) >= 0) {
+                if (validFormatChars.includes(format[i])) {
                     s += format[i];
                 } else {
                     put(s);
@@ -5436,7 +5435,7 @@ function Adapter(options) {
         this.getForeignObject(options.user, null, (err, userAcl) => {
             if (!userAcl) {
                 // User does not exists
-                logger.error(this.namespaceLog + ' unknown user "' + options.user + '"');
+                logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
                 return tools.maybeCallback(callback, options);
             } else {
                 this.getForeignObjects('*', 'group', null, null, (err, groups) => {
@@ -5448,7 +5447,7 @@ function Adapter(options) {
                                 groups[g] &&
                                 groups[g].common &&
                                 groups[g].common.members &&
-                                groups[g].common.members.indexOf(options.user) !== -1
+                                groups[g].common.members.includes(options.user)
                             ) {
                                 options.groups.push(groups[g]._id);
                             }
@@ -5613,9 +5612,9 @@ function Adapter(options) {
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
+                        logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
                     }
-                } else if (options.groups.indexOf(obj.acl.ownerGroup) !== -1 && !limitToOwnerRights) {
+                } else if (options.groups.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
                         if (command === 'delState' && !options.acl.state['delete']) {
                             logger.warn(
@@ -5641,7 +5640,7 @@ function Adapter(options) {
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
+                        logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
                     }
                 } else if (!limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
@@ -5669,19 +5668,19 @@ function Adapter(options) {
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
+                        logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
                         return false;
                     }
                 } else {
-                    logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
+                    logger.warn(`${this.namespaceLog} Permissions limited to Owner rights on "${obj._id}"`);
                     return false;
                 }
             } else if (limitToOwnerRights) {
-                logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
+                logger.warn(`${this.namespaceLog} Permissions limited to Owner rights on "${obj._id}"`);
                 return false;
             }
         } else if (limitToOwnerRights) {
-            logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
+            logger.warn(`${this.namespaceLog} Permissions limited to Owner rights on "${obj._id}"`);
             return false;
         }
 
@@ -5730,7 +5729,7 @@ function Adapter(options) {
                     if (_helper.i + 1 >= ids.length) {
                         if (_helper.errors.length) {
                             for (let j = ids.length - 1; j >= 0; j--) {
-                                if (_helper.errors.indexOf(ids[j]) !== -1) {
+                                if (_helper.errors.includes(ids[j])) {
                                     ids.splice(j, 1);
                                     _helper.objs.splice(j, 1);
                                 }
@@ -8062,7 +8061,7 @@ function Adapter(options) {
             }
 
             // RegExp is allowed for alias only
-            if (pattern instanceof RegExp && pattern.toString().indexOf('alias') !== -1) {
+            if (pattern instanceof RegExp && pattern.toString().includes('alias')) {
                 logger.error(`${this.namespaceLog} Regexp is not supported for "subscribeForeignStates"`);
                 return tools.maybeCallbackWithError(callback, 'Regexp is not supported for "subscribeForeignStates"');
             }
@@ -8804,17 +8803,17 @@ function Adapter(options) {
                                 const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                                 if (
                                     (typeof obj[i] === 'string' &&
-                                        (obj[i].indexOf('"val":true') !== -1 ||
-                                            obj[i].indexOf('"val":"true"') !== -1)) ||
+                                        (obj[i].includes('"val":true') ||
+                                            obj[i].includes('"val":"true"'))) ||
                                     (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))
                                 ) {
-                                    logs.push('Subscriber - ' + id + ' ENABLED');
+                                    logs.push(`Subscriber - ${id} ENABLED`);
                                 } else {
                                     if (logs) {
-                                        logs.push('Subscriber - ' + id + ' (disabled)');
+                                        logs.push(`Subscriber - ${id} (disabled)`);
                                     } else {
                                         logger.error(
-                                            this.namespaceLog + ' LOGINFO: Subscriber - ' + id + ' (disabled)'
+                                            `${this.namespaceLog} LOGINFO: Subscriber - ${id} (disabled)`
                                         );
                                     }
                                 }
@@ -8859,7 +8858,7 @@ function Adapter(options) {
                             const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                             if (
                                 typeof obj[i] === 'string' &&
-                                (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)
+                                (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))
                             ) {
                                 this.logRedirect(true, id);
                             } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
@@ -8897,7 +8896,7 @@ function Adapter(options) {
             }
 
             if (isActive) {
-                if (this.logList.indexOf(id) === -1) {
+                if (!this.logList.includes(id)) {
                     this.logList.push(id);
                 }
             } else {
@@ -9139,7 +9138,7 @@ function Adapter(options) {
                                     .then(decryptedValue => (this.config[attr] = decryptedValue))
                                     .catch(e =>
                                         logger.error(
-                                            this.namespaceLog + ' Can not decrypt attribute ' + attr + ': ' + e
+                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e}`
                                         )
                                     )
                             );
@@ -9578,6 +9577,8 @@ function Adapter(options) {
                                 decoded.name.startsWith('iobroker.' + this.name) &&
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
+                                // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
+                                //
                                 // If license is for adapter with version 0 or 1
                                 if (
                                     decoded.version === '&lt;2' ||
@@ -9590,6 +9591,10 @@ function Adapter(options) {
                                         return;
                                     }
                                 }
+                                // Licenses for adapter versions >=2 need to match to the adapter major version
+                                // which means that a new major version requires new licenses if it would be "included"
+                                // in last purchase
+
                                 // decoded.version could be only '<2' or direct version, like "2", "3" and so on
                                 else if (decoded.version && decoded.version !== version) {
                                     return;
