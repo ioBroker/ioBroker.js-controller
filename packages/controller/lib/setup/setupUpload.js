@@ -211,7 +211,7 @@ function Upload(options) {
 
                     // try to upload on this host. It will print an error if the adapter directory not found
                     await this.uploadAdapter(adapter, true, true);
-                    await this.upgradeAdapterObjectsAsync(adapter);
+                    await this.upgradeAdapterObjects(adapter);
                     await this.uploadAdapter(adapter, false, true);
                 }
             }
@@ -435,8 +435,8 @@ function Upload(options) {
      * @param {string} adapter
      * @param {boolean} isAdmin
      * @param {boolean} forceUpload
-     * @param {boolean}subTree
-     * @param {object} logger
+     * @param {string?} subTree
+     * @param {object?} logger
      * @return {Promise<string>}
      */
     this.uploadAdapter = async (adapter, isAdmin, forceUpload, subTree, logger) => {
@@ -711,33 +711,15 @@ function Upload(options) {
         return name;
     };
 
-    this.upgradeAdapterObjects = (name, ioPack, logger, callback) => {
-        tools.showDeprecatedMessage('setupUpload.upgradeAdapterObjects');
-        if (typeof ioPack === 'function') {
-            callback = ioPack;
-            ioPack = null;
-        } else if (
-            typeof ioPack === 'object' &&
-            typeof ioPack.warn === 'function' &&
-            typeof ioPack.error === 'function'
-        ) {
-            callback = logger;
-            logger = ioPack;
-            ioPack = null;
-        }
-        if (typeof logger === 'function') {
-            callback = logger;
-            logger = null;
-        }
-        return this.upgradeAdapterObjectsAsync(name, ioPack, logger)
-            .then(() => callback && callback(name))
-            .catch(err => {
-                logger.error('Cannot upgrade Adapter Objects: ' + err);
-                callback && callback();
-            });
-    };
-
-    this.upgradeAdapterObjectsAsync = async (name, ioPack, logger) => {
+    /**
+     * Create object from io-package json
+     *
+     * @param {string} name
+     * @param {object?} ioPack
+     * @param {object?} logger
+     * @return {Promise<string>}
+     */
+    this.upgradeAdapterObjects = async (name, ioPack, logger) => {
         logger = logger || console;
 
         const adapterDir = tools.getAdapterDir(name);

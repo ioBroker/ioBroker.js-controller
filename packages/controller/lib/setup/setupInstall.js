@@ -85,20 +85,16 @@ function Install(options) {
         }
     }
 
-    this.downloadPacket = function (repoUrl, packetName, options, stoppedList, callback) {
-        tools.showDeprecatedMessage('setupInstall.downloadPacket');
-        if (typeof stoppedList === 'function') {
-            callback = stoppedList;
-            stoppedList = null;
-        }
-        return this.downloadPacketAsync(repoUrl, packetName, options, stoppedList).then(() => {
-            if (typeof callback === 'function') {
-                callback(_callback => typeof _callback === 'function' && _callback(), packetName);
-            }
-        });
-    };
-
-    this.downloadPacketAsync = async function (repoUrl, packetName, options, stoppedList) {
+    /**
+     * Download given packet
+     *
+     * @param {string} repoUrl
+     * @param {string} packetName
+     * @param {object?} options
+     * @param {object[]?} stoppedList
+     * @return {Promise<void>}
+     */
+    this.downloadPacket = async function (repoUrl, packetName, options, stoppedList) {
         let url;
         if (!options || typeof options !== 'object') {
             options = {};
@@ -535,7 +531,7 @@ function Install(options) {
             }
             _installCount++;
 
-            await this.downloadPacketAsync(repoUrl, fullName);
+            await this.downloadPacket(repoUrl, fullName);
             await this.installAdapterAsync(adapter, null, _installCount);
             return adapter;
         }
@@ -599,7 +595,7 @@ function Install(options) {
         await upload.uploadAdapter(adapter, false, true);
         await callInstallOfAdapter(adapter, adapterConf);
         await this._uploadStaticObjects(adapter);
-        await upload.upgradeAdapterObjectsAsync(adapter);
+        await upload.upgradeAdapterObjects(adapter);
         return adapter;
     };
 
@@ -1644,7 +1640,7 @@ function Install(options) {
             if (name) {
                 await upload.uploadAdapter(name, true, true);
                 await upload.uploadAdapter(name, false, true);
-                await upload.upgradeAdapterObjectsAsync(name);
+                await upload.upgradeAdapterObjects(name);
             } else {
                 // Try to find io-package.json with newest date
                 const dirs = fs.readdirSync(installDir);
@@ -1664,7 +1660,7 @@ function Install(options) {
                     name = dir.substring(tools.appName.length + 1);
                     await upload.uploadAdapter(name, true, true);
                     await upload.uploadAdapter(name, false, true);
-                    await upload.upgradeAdapterObjectsAsync(name);
+                    await upload.upgradeAdapterObjects(name);
                 }
             }
         };

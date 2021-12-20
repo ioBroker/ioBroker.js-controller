@@ -489,7 +489,7 @@ function Setup(options) {
             if (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j') {
                 console.log(`Connecting to previous DB "${oldConfig.objects.type}"...`);
 
-                dbConnect(params, (objects, states, isOffline) => {
+                dbConnect(params, async (objects, states, isOffline) => {
                     if (!isOffline) {
                         console.error(COLOR_RED);
                         console.error('Cannot migrate DB while js-controller is still running!');
@@ -510,75 +510,70 @@ function Setup(options) {
                     console.log('Creating backup ...');
                     console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
 
-                    backup.createBackup('', true, async filePath => {
-                        const origBackupPath = filePath;
-                        filePath = filePath.replace('.tar.gz', '-migration.tar.gz');
-                        try {
-                            fs.renameSync(origBackupPath, filePath);
-                        } catch {
-                            filePath = origBackupPath;
-                            console.log('[Not Critical Error] Could not rename Backup file');
+                    const filePath = await backup.createBackup('', true);
+                    const origBackupPath = filePath;
+                    filePath = filePath.replace('.tar.gz', '-migration.tar.gz');
+                    try {
+                        fs.renameSync(origBackupPath, filePath);
+                    } catch {
+                        filePath = origBackupPath;
+                        console.log('[Not Critical Error] Could not rename Backup file');
+                    }
+
+                    console.log('Backup created: ' + filePath);
+                    await resetDbConnect();
+
+                    console.log('updating conf/' + tools.appName + '.json');
+                    fs.writeFileSync(tools.getConfigFileName() + '.bak', JSON.stringify(oldConfig, null, 2));
+                    fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
+
+                    console.log('');
+                    console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
+
+                    dbConnect(true, Object.assign(params, { timeout: 20000 }), (objects, states) => {
+                        if (!states || !objects) {
+                            console.error(COLOR_RED);
+                            console.log(
+                                'New Database could not be connected. Please check your settings. No settings have been changed.' +
+                                    COLOR_RESET
+                            );
+
+                            console.log('restoring conf/' + tools.appName + '.json');
+                            fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
+                            fs.unlinkSync(tools.getConfigFileName() + '.bak');
+
+                            return void callback(78);
                         }
-
-                        console.log('Backup created: ' + filePath);
-                        await resetDbConnect();
-
-                        console.log('updating conf/' + tools.appName + '.json');
-                        fs.writeFileSync(tools.getConfigFileName() + '.bak', JSON.stringify(oldConfig, null, 2));
-                        fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
-
-                        console.log('');
-                        console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
-
-                        dbConnect(true, Object.assign(params, { timeout: 20000 }), (objects, states) => {
-                            if (!states || !objects) {
-                                console.error(COLOR_RED);
-                                console.log(
-                                    'New Database could not be connected. Please check your settings. No settings have been changed.' +
-                                        COLOR_RESET
-                                );
-
+                        const backup = new Backup({
+                            states,
+                            objects,
+                            cleanDatabase,
+                            restartController,
+                            processExit: callback,
+                            dbMigration: true
+                        });
+                        console.log('Restore backup ...');
+                        console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
+                        backup.restoreBackup(filePath, err => {
+                            if (err) {
+                                console.log('Error happened during restore: ' + err);
+                                console.log();
                                 console.log('restoring conf/' + tools.appName + '.json');
                                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                                 fs.unlinkSync(tools.getConfigFileName() + '.bak');
+                            } else {
+                                console.log('Backup restored - Migration successful');
 
-                                return void callback(78);
+                                console.log(COLOR_YELLOW);
+                                console.log('Important: If your system consists of multiple hosts please execute ');
+                                console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
+                                console.log('also been updated to this states/objects database configuration AND are');
+                                console.log('running!' + COLOR_RESET);
+
+                                fs.unlinkSync(tools.getConfigFileName() + '.bak');
                             }
-                            const backup = new Backup({
-                                states,
-                                objects,
-                                cleanDatabase,
-                                restartController,
-                                processExit: callback,
-                                dbMigration: true
-                            });
-                            console.log('Restore backup ...');
-                            console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
-                            backup.restoreBackup(filePath, err => {
-                                if (err) {
-                                    console.log('Error happened during restore: ' + err);
-                                    console.log();
-                                    console.log('restoring conf/' + tools.appName + '.json');
-                                    fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
-                                    fs.unlinkSync(tools.getConfigFileName() + '.bak');
-                                } else {
-                                    console.log('Backup restored - Migration successful');
 
-                                    console.log(COLOR_YELLOW);
-                                    console.log('Important: If your system consists of multiple hosts please execute ');
-                                    console.log(
-                                        '"iobroker upload all" on the master AFTER all other hosts/slaves have '
-                                    );
-                                    console.log(
-                                        'also been updated to this states/objects database configuration AND are'
-                                    );
-                                    console.log('running!' + COLOR_RESET);
-
-                                    fs.unlinkSync(tools.getConfigFileName() + '.bak');
-                                }
-
-                                callback(err ? 78 : 0);
-                            });
+                            callback(err ? 78 : 0);
                         });
                     });
                 });

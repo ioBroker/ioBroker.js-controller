@@ -354,7 +354,7 @@ function Upgrade(options) {
             await upload.uploadAdapter(name, false, true);
             // extend all adapter instance default configs with current config
             // (introduce potentially new attributes while keeping current settings)
-            await upload.upgradeAdapterObjectsAsync(name, ioPack);
+            await upload.upgradeAdapterObjects(name, ioPack);
             await upload.uploadAdapter(name, true, true);
         };
 
@@ -560,7 +560,7 @@ function Upgrade(options) {
 
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacketAsync(sources, `${adapter}@${targetVersion}`);
+                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
                 await finishUpgrade(name);
             }
         } else if (repoUrl[adapter].meta) {
@@ -602,7 +602,7 @@ function Upgrade(options) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
-                const name = await install.downloadPacketAsync(sources, `${adapter}@${targetVersion}`);
+                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
                 await finishUpgrade(name, ioPack);
             }
         } else {
@@ -617,7 +617,7 @@ function Upgrade(options) {
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${version}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacketAsync(sources, `${adapter}@${version}`);
+                const name = await install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(name);
             } else {
                 return console.error(`Unable to get version for "${adapter}".`);
@@ -683,7 +683,7 @@ function Upgrade(options) {
                     }`
                 );
                 // Get the controller from web site
-                await install.downloadPacketAsync(
+                await install.downloadPacket(
                     repoUrl,
                     `${installed.common.name}@${repoUrl[installed.common.name].version}`
                 );
@@ -718,7 +718,7 @@ function Upgrade(options) {
                 const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : installed.common.name;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
-                await install.downloadPacketAsync(repoUrl, name + version);
+                await install.downloadPacket(repoUrl, name + version);
             }
         }
     };

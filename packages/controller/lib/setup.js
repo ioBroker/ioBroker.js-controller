@@ -799,7 +799,7 @@ async function processCommand(command, args, params, callback) {
 
                 if (!fs.existsSync(adapterDir)) {
                     try {
-                        await install.downloadPacketAsync(repoUrl, installName);
+                        await install.downloadPacket(repoUrl, installName);
                         await install.installAdapterAsync(installName, repoUrl);
                         if (command !== 'install' && command !== 'i') {
                             await install.createInstanceAsync(name, params);

@@ -210,21 +210,7 @@ class BackupRestore {
      * Creates backup and stores with given name
      * @param {string} name - name of the backup
      * @param {boolean} noConfig - do not store configs
-     * @param {() => void} callback -  callback function
-     */
-    createBackup(name, noConfig, callback) {
-        tools.showDeprecatedMessage('setupBackup.createBackup');
-        if (typeof noConfig === 'function') {
-            callback = noConfig;
-            noConfig = false;
-        }
-        return this.createBackupAsync(name, noConfig).then(path => typeof callback === 'function' && callback(path));
-    }
-
-    /**
-     * Creates backup and stores with given name
-     * @param {string} name - name of the backup
-     * @param {boolean} noConfig - do not store configs
+     * @return {Promise<string>}
      */
     async createBackupAsync(name, noConfig) {
         if (!name) {
