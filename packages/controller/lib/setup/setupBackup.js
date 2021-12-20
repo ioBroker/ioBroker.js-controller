@@ -683,7 +683,7 @@ class BackupRestore {
 
         // check that the same controller version is installed as it is contained in backup
         if (!force) {
-            const exitCode = this.ensureCompatibility(controllerDir, restore.config.system.hostname || hostname, data);
+            const exitCode = this._ensureCompatibility(controllerDir, restore.config.system.hostname || hostname, data);
             if (exitCode) {
                 // we had an error
                 return exitCode;
@@ -691,7 +691,7 @@ class BackupRestore {
         }
 
         // prevent having wrong versions of adapters
-        await this.removeAllAdapters(controllerDir);
+        await this._removeAllAdapters(controllerDir);
 
         // stop all adapters
         console.log(`host.${hostname} Clear all objects and states...`);
@@ -747,8 +747,9 @@ class BackupRestore {
      * Removes all adapters
      * @param {string} controllerDir - directory of js-controller
      * @return {Promise<void>}
+     * @private
      */
-    async removeAllAdapters(controllerDir) {
+    async _removeAllAdapters(controllerDir) {
         const nodeModulePath = path.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
 
@@ -777,8 +778,9 @@ class BackupRestore {
      * @param {string} backupHostname - hostname in backup file
      * @param {string} backupData - the stringified version of the backup file
      * @return {undefined|number}
+     * @private
      */
-    ensureCompatibility(controllerDir, backupHostname, backupData) {
+    _ensureCompatibility(controllerDir, backupHostname, backupData) {
         try {
             const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
             const backupJson = JSON.parse(backupData);
