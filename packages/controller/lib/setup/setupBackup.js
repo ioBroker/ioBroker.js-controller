@@ -683,47 +683,15 @@ class BackupRestore {
 
         // check that the same controller version is installed as it is contained in backup
         if (!force) {
-            const backupHostname = restore.config.system.hostname || hostname;
-
-            try {
-                const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
-                const backupJson = JSON.parse(data);
-                const hostObj = backupJson.objects.find(obj => obj.id === `system.host.${backupHostname}`);
-                if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
-                    console.warn('The current version of js-controller differs from the version in the backup.');
-                    console.warn('The js-controller version of the backup can not be restored automatically.');
-                    console.warn(
-                        `To restore the js-controller version of the backup, execute npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production inside your ioBroker directory`
-                    );
-                    console.warn(
-                        'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
-                    );
-
-                    return EXIT_CODES.CANNOT_RESTORE_BACKUP;
-                }
-            } catch {
-                // ignore
+            const exitCode = this.ensureCompatibility(controllerDir, restore.config.system.hostname || hostname, data);
+            if (exitCode) {
+                // we had an error
+                return exitCode;
             }
         }
 
-        const nodeModulePath = path.join(controllerDir, '..');
-        const nodeModuleDirs = fs.readdirSync(nodeModulePath);
-
-        // we need to uninstall current adapters to get exact the same system as before backup
-        for (const dirName of nodeModuleDirs) {
-            if (
-                dirName.startsWith(`${tools.appName.toLowerCase()}.`) &&
-                dirName !== `${tools.appName.toLowerCase()}.js-controller`
-            ) {
-                try {
-                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dirName, 'package.json'));
-                    console.log(`Removing current installation of ${packJson.name}`);
-                    await tools.uninstallNodeModule(packJson.name);
-                } catch {
-                    // ignore
-                }
-            }
-        }
+        // prevent having wrong versions of adapters
+        await this.removeAllAdapters(controllerDir);
 
         // stop all adapters
         console.log(`host.${hostname} Clear all objects and states...`);
@@ -757,9 +725,15 @@ class BackupRestore {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
             const cpPromise = require('promisify-child-process');
-            await cpPromise.exec(
-                `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
-            );
+            try {
+                await cpPromise.exec(
+                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+                );
+            } catch (e) {
+                console.error(
+                    `Could not execute "setup" command, please ensure "setup" is called before starting ioBroker: ${e.message}`
+                );
+            }
         }
 
         if (restartOnFinish) {
@@ -767,6 +741,63 @@ class BackupRestore {
         }
 
         return EXIT_CODES.NO_ERROR;
+    }
+
+    /**
+     * Removes all adapters
+     * @param {string} controllerDir - directory of js-controller
+     * @return {Promise<void>}
+     */
+    async removeAllAdapters(controllerDir) {
+        const nodeModulePath = path.join(controllerDir, '..');
+        const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
+
+        // we need to uninstall current adapters to get exact the same system as before backup
+        for (const dir of nodeModuleDirs) {
+            if (
+                dir.isDirectory() &&
+                dir.name.startsWith(`${tools.appName.toLowerCase()}.`) &&
+                dir.name !== `${tools.appName.toLowerCase()}.js-controller`
+            ) {
+                try {
+                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dir.name, 'package.json'));
+                    console.log(`Removing current installation of ${packJson.name}`);
+                    await tools.uninstallNodeModule(packJson.name);
+                } catch {
+                    // ignore
+                }
+            }
+        }
+    }
+
+    /**
+     * Ensure that installed controller version matches version in backup
+     *
+     * @param {string} controllerDir - directory of js-controller
+     * @param {string} backupHostname - hostname in backup file
+     * @param {string} backupData - the stringified version of the backup file
+     * @return {undefined|number}
+     */
+    ensureCompatibility(controllerDir, backupHostname, backupData) {
+        try {
+            const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
+            const backupJson = JSON.parse(backupData);
+            const hostObj = backupJson.objects.find(obj => obj.id === `system.host.${backupHostname}`);
+            if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
+                console.warn('The current version of js-controller differs from the version in the backup.');
+                console.warn('The js-controller version of the backup can not be restored automatically.');
+                console.warn(
+                    `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
+                );
+                console.warn(
+                    'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
+                );
+
+                return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+            }
+        } catch {
+            // ignore
+        }
     }
 
     /**
