@@ -2624,7 +2624,7 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     if (obj.type !== undefined && typeof obj.type !== 'string') {
-        throw new Error(`obj.type has an invalid type! Expected "string", received  "${typeof obj.type}"`);
+        throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
     }
 
     const allowedObjectTypes = [
@@ -2656,7 +2656,7 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
         throw new Error(
-            `obj.common.name has an invalid type! Expected "string" or "object", received  "${typeof obj.common.name}"`
+            `obj.common.name has an invalid type! Expected "string" or "object", received "${typeof obj.common.name}"`
         );
     } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
         // for some types, name needs to be a unique string
@@ -2666,7 +2666,7 @@ function validateGeneralObjectProperties(obj, extend) {
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
             throw new Error(
-                `obj.common.type has an invalid type! Expected "string", received  "${typeof obj.common.type}"`
+                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`
             );
         }
 
@@ -2679,6 +2679,41 @@ function validateGeneralObjectProperties(obj, extend) {
                         obj.common.type
                     }) but has to be one of ${allowedStateTypes.join(', ')}`
                 );
+            }
+
+            // ensure that min max only exists for common.type number and is number itself
+            if (obj.common.min !== undefined) {
+                if (typeof obj.common.min !== 'number') {
+                    throw new Error(
+                        `obj.common.min has an invalid type! Expected "number", received "${typeof obj.common.min}"`
+                    );
+                }
+
+                if (obj.common.type !== 'number') {
+                    throw new Error(
+                        `obj.common.min is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                    );
+                }
+            }
+
+            if (obj.common.max !== undefined) {
+                if (typeof obj.common.max !== 'number') {
+                    throw new Error(
+                        `obj.common.max has an invalid type! Expected "number", received "${typeof obj.common.max}"`
+                    );
+                }
+
+                if (obj.common.type !== 'number') {
+                    throw new Error(
+                        `obj.common.max is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                    );
+                }
+
+                if (obj.common.min !== undefined && obj.common.min > obj.common.max) {
+                    throw new Error(
+                        `obj.common.min (${obj.common.min}) needs to be less than or equal to obj.common.max (${obj.common.max})`
+                    );
+                }
             }
 
             // ensure, that default value has correct type
