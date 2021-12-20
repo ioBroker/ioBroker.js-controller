@@ -321,6 +321,7 @@ function initYargs() {
         .command('restore <backup name or path>', 'Restore a specified backup', {
             force: {
                 describe: 'Restore backup of different controller version',
+                alias: 'f',
                 type: 'boolean'
             }
         })
