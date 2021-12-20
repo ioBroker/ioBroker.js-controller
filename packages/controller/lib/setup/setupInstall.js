@@ -1386,7 +1386,7 @@ function Install(options) {
                             ioPack.common.restartAdapters = [ioPack.common.restartAdapters];
                         }
                         if (ioPack.common.restartAdapters.length && ioPack.common.restartAdapters[0]) {
-                            const instances = await tools.getAllInstancesAsync(ioPack.common.restartAdapters, objects);
+                            const instances = await tools.getAllInstances(ioPack.common.restartAdapters, objects);
                             if (instances && instances.length) {
                                 for (const instance of instances) {
                                     const obj = await objects.getObjectAsync(instance);

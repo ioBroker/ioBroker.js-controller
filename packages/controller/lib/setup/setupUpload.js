@@ -89,7 +89,7 @@ function Upload(options) {
                 }
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
-                    const instances = await tools.getAllInstancesAsync(adapterConf.common.restartAdapters, objects);
+                    const instances = await tools.getAllInstances(adapterConf.common.restartAdapters, objects);
                     if (instances && !instances.length) {
                         for (let r = 0; r < instances.length; r++) {
                             try {
