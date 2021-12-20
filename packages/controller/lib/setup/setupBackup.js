@@ -755,6 +755,7 @@ class BackupRestore {
         if (restartOnFinish) {
             await this.restartControllerAsync();
         }
+        return EXIT_CODES.NO_ERROR;
     }
 
     /**
@@ -1030,17 +1031,17 @@ class BackupRestore {
                     stopTimeout: 1000
                 });
                 daemon.on('error', async () => {
-                    await this._restoreAfterStop(false, force);
-                    callback && callback();
+                    const exitCode = await this._restoreAfterStop(false, force);
+                    callback && callback(exitCode);
                 });
                 daemon.on('stopped', async () => {
-                    await this._restoreAfterStop(true, force);
-                    callback && callback();
+                    const exitCode = await this._restoreAfterStop(true, force);
+                    callback && callback(exitCode);
                 });
                 daemon.on('notrunning', async () => {
                     console.log(`host.${hostname} OK.`);
-                    await this._restoreAfterStop(false, force);
-                    callback && callback();
+                    const exitCode = await this._restoreAfterStop(false, force);
+                    callback && callback(exitCode);
                 });
 
                 daemon.stop();

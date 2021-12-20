@@ -1151,9 +1151,11 @@ async function processCommand(command, args, params, callback) {
                     processExit: callback
                 });
 
-                backup.restoreBackup(args[0], !!params.force, () => {
-                    console.log('System successfully restored!');
-                    return void callback(EXIT_CODES.NO_ERROR);
+                backup.restoreBackup(args[0], !!params.force, exitCode => {
+                    if (exitCode === EXIT_CODES.NO_ERROR) {
+                        console.log('System successfully restored!');
+                    }
+                    return void callback(exitCode);
                 });
             });
             break;
