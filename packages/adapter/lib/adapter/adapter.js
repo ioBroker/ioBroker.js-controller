@@ -4248,6 +4248,8 @@ function Adapter(options) {
                             obj.ts = Date.now();
 
                             adapterObjects.setObject(obj._id, obj, options, callback);
+                        } else {
+                            return tools.maybeCallback(callback);
                         }
                     }
                 });
