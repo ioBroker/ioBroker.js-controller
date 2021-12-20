@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.3.22 (2021-12-20)
 * (bluefox) Fixed addChannelToEnum function
 
 ## 3.3.21 (2021-11-28)
