@@ -752,9 +752,20 @@ class BackupRestore {
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(pathLib.join(tmpDir, 'backup'));
+
+        if (force) {
+            // js-controller version has changed (setup never called for this version)
+            console.log('Forced restore - executing setup ...');
+            const cpPromise = require('promisify-child-process');
+            await cpPromise.exec(
+                `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+            );
+        }
+
         if (restartOnFinish) {
             await this.restartControllerAsync();
         }
+
         return EXIT_CODES.NO_ERROR;
     }
 
