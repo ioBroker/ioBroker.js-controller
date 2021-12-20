@@ -318,7 +318,12 @@ function initYargs() {
         })
         .command('clean <yes>', 'Clears all objects and states', {})
         .command('backup', 'Create backup', {})
-        .command('restore <backup name or path>', 'Restore a specified backup', {})
+        .command('restore <backup name or path>', 'Restore a specified backup', {
+            force: {
+                describe: 'Restore backup of different controller version',
+                type: 'boolean'
+            }
+        })
         .command('validate <backup name or path>', 'Validate a specified backup', {})
         .command(['status [all|<adapter>.<instance>]', 'isrun'], 'Status of ioBroker or adapter instance', yargs => {
             yargs
@@ -1146,7 +1151,7 @@ async function processCommand(command, args, params, callback) {
                     processExit: callback
                 });
 
-                backup.restoreBackup(args[0], () => {
+                backup.restoreBackup(args[0], !!params.force, () => {
                     console.log('System successfully restored!');
                     return void callback(EXIT_CODES.NO_ERROR);
                 });

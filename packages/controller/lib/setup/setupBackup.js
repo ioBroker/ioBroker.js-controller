@@ -14,6 +14,7 @@ const pathLib = require('path');
 const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
+const path = require('path');
 
 // We cannot use relative paths for the backup locations, as they used by both
 // require, which resolves relative paths from __dirname
@@ -655,7 +656,15 @@ class BackupRestore {
         });
     }
 
-    async _restoreAfterStop(restartOnFinish) {
+    /**
+     * Restore after controller has been stopped
+     *
+     * @param {boolean} restartOnFinish - restart controller after restore
+     * @param {boolean} force - skip the controller version check
+     * @returns {Promise<*>}
+     * @private
+     */
+    async _restoreAfterStop(restartOnFinish, force) {
         // Open file
         let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
@@ -668,6 +677,52 @@ class BackupRestore {
         } catch (err) {
             console.error(`Cannot parse "${tmpDir}/backup/backup_.json": ${err.message}`);
             return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+        }
+
+        const controllerDir = tools.getControllerDir();
+
+        // check that the same controller version is installed as it is contained in backup
+        if (!force) {
+            const backupHostname = restore.config.system.hostname || hostname;
+
+            try {
+                const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
+                const backupJson = JSON.parse(data);
+                const hostObj = backupJson.objects.find(obj => obj.id === `system.host.${backupHostname}`);
+                if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
+                    console.warn('The current js-controller differs from the js-controller in the backup.');
+                    console.warn('The js-controller version of the backup can not be restored.');
+                    console.warn(
+                        `If you need the js-controller version of the backup, you can execute npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production inside your ioBroker directory`
+                    );
+                    console.warn(
+                        'If you want to restore your backup with the current installed js-controller, execute the restore command with the --force flag'
+                    );
+
+                    return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+                }
+            } catch {
+                // ignore
+            }
+        }
+
+        const nodeModulePath = path.join(controllerDir, '..');
+        const nodeModuleDirs = fs.readdirSync(nodeModulePath);
+
+        // we need to uninstall current adapters to get exact the same system as before backup
+        for (const dirName of nodeModuleDirs) {
+            if (
+                dirName.startsWith(`${tools.appName.toLowerCase()}.`) &&
+                dirName !== `${tools.appName.toLowerCase()}.js-controller`
+            ) {
+                try {
+                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dirName, 'package.json'));
+                    console.log(`Removing current installation of ${packJson.name}`);
+                    await tools.uninstallNodeModule(packJson.name);
+                } catch {
+                    // ignore
+                }
+            }
         }
 
         // stop all adapters
@@ -888,7 +943,7 @@ class BackupRestore {
         } // endIf
     } // endCheckDirectory
 
-    restoreBackup(name, callback) {
+    restoreBackup(name, force, callback) {
         let backups;
         if (!name && name !== 0) {
             // List all available backups
@@ -975,16 +1030,16 @@ class BackupRestore {
                     stopTimeout: 1000
                 });
                 daemon.on('error', async () => {
-                    await this._restoreAfterStop(false);
+                    await this._restoreAfterStop(false, force);
                     callback && callback();
                 });
                 daemon.on('stopped', async () => {
-                    await this._restoreAfterStop(true);
+                    await this._restoreAfterStop(true, force);
                     callback && callback();
                 });
                 daemon.on('notrunning', async () => {
                     console.log(`host.${hostname} OK.`);
-                    await this._restoreAfterStop(false);
+                    await this._restoreAfterStop(false, force);
                     callback && callback();
                 });
 
