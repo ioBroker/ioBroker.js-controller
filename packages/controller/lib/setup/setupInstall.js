@@ -435,7 +435,7 @@ function Install(options) {
 
                 // if required dependency not found => install it
                 if (!isFound) {
-                    const name = await this.createInstanceAsync(dName, _options);
+                    const name = await this.createInstance(dName, _options);
                     await upload.uploadAdapter(name, true, false);
                     await upload.uploadAdapter(name, false, false);
                 }
@@ -503,18 +503,15 @@ function Install(options) {
         }
     };
 
-    this.installAdapter = (adapter, repoUrl, callback) => {
-        tools.showDeprecatedMessage('setupInstall.installAdapter');
-        if (typeof repoUrl === 'function') {
-            callback = repoUrl;
-            repoUrl = null;
-        }
-        return this.installAdapterAsync(adapter, repoUrl)
-            .then(() => callback && callback(null, adapter))
-            .catch(err => callback && callback(err));
-    };
-
-    this.installAdapterAsync = async (adapter, repoUrl, _installCount) => {
+    /**
+     * Installs given adapter
+     *
+     * @param {string} adapter
+     * @param {string?} repoUrl
+     * @param {number?} _installCount
+     * @return {Promise<string>}
+     */
+    this.installAdapter = async (adapter, repoUrl, _installCount) => {
         _installCount = _installCount || 0;
         const fullName = adapter;
         if (adapter.includes('@')) {
@@ -532,7 +529,7 @@ function Install(options) {
             _installCount++;
 
             await this.downloadPacket(repoUrl, fullName);
-            await this.installAdapterAsync(adapter, null, _installCount);
+            await this.installAdapter(adapter, null, _installCount);
             return adapter;
         }
         let adapterConf;
@@ -622,19 +619,14 @@ function Install(options) {
         }
     }
 
-    this.createInstance = (adapter, options, callback) => {
-        tools.showDeprecatedMessage('setupInstall.createInstance');
-        if (typeof options === 'function') {
-            callback = options;
-            options = null;
-        }
-        return this.createInstanceAsync(adapter, options)
-            .then(() => callback && callback())
-            .catch(err => callback && callback(err));
-    };
-
-    //options = enabled, host, port
-    this.createInstanceAsync = async function (adapter, options) {
+    /**
+     * Create adapter instance
+     *
+     * @param {string} adapter
+     * @param {object?} options - enabled, host, port
+     * @return {Promise<void>}
+     */
+    this.createInstance = async function (adapter, options) {
         const adapterDir = tools.getAdapterDir(adapter);
         let ignoreIfExists = false;
         options = options || {};
@@ -663,7 +655,7 @@ function Install(options) {
         }
         // Adapter is not installed - install it now
         if (err || !doc || !doc.common.installedVersion) {
-            await this.installAdapterAsync(adapter);
+            await this.installAdapter(adapter);
             doc = await objects.getObjectAsync('system.adapter.' + adapter);
         }
 

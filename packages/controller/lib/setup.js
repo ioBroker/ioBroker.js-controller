@@ -567,7 +567,7 @@ async function processCommand(command, args, params, callback) {
                                 try {
                                     const path = require.resolve(tools.appName + '.' + instance);
                                     if (path) {
-                                        await install.createInstanceAsync(instance, {
+                                        await install.createInstance(instance, {
                                             enabled: true,
                                             ignoreIfExists: true
                                         });
@@ -800,9 +800,9 @@ async function processCommand(command, args, params, callback) {
                 if (!fs.existsSync(adapterDir)) {
                     try {
                         await install.downloadPacket(repoUrl, installName);
-                        await install.installAdapterAsync(installName, repoUrl);
+                        await install.installAdapter(installName, repoUrl);
                         if (command !== 'install' && command !== 'i') {
-                            await install.createInstanceAsync(name, params);
+                            await install.createInstance(name, params);
                         }
                         return void callback();
                     } catch (err) {
@@ -811,7 +811,7 @@ async function processCommand(command, args, params, callback) {
                     }
                 } else if (command !== 'install' && command !== 'i') {
                     try {
-                        await install.createInstanceAsync(name, params);
+                        await install.createInstance(name, params);
                         return void callback();
                     } catch (err) {
                         console.error(`adapter "${name}" cannot be installed: ${err.message}`);

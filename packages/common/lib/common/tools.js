@@ -3410,11 +3410,6 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
     }
 }
 
-function showDeprecatedMessage(func, logger) {
-    logger = logger || console.log;
-    logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
-}
-
 const ERROR_NOT_FOUND = 'Not exists';
 const ERROR_EMPTY_OBJECT = 'null object';
 const ERROR_NO_OBJECT = 'no object';
@@ -3485,7 +3480,6 @@ module.exports = {
     FORBIDDEN_CHARS,
     getControllerDir,
     getLogger,
-    showDeprecatedMessage,
     getAllEnums,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
