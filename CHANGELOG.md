@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (bluefox) Fixed addChannelToEnum function
+
 ## 3.3.21 (2021-11-28)
 * (foxriver76) we now fixed the multihost functionality in the correct spot
 
@@ -14,7 +17,7 @@
 * (foxriver76) we fixed a crash due to multilingual instance objects
 
 ## 3.3.18 (2021-09-11)
-* (bluefox) Fix another edge case for UUID generation
+* (bluefox) Fixed another edge case for UUID generation
 
 ## 3.3.17 (2021-09-09)
 * (bluefox) Fix edge case for UUID generation
@@ -23,7 +26,7 @@
 * (Bluefox) Adjust generation of installation UUID
 
 ## 3.3.15 (2021-07-26)
-* (foxriver76) avoid deleting too many meta objects starting with the same name as adapter
+* (foxriver76) avoid deleting too many meta-objects starting with the same name as adapter
 
 ## 3.3.14 (2021-06-20) Release Hannah
 **BREAKING CHANGES**
