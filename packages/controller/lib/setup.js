@@ -891,7 +891,7 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             try {
-                                const newName = await upload.uploadFileAsync(name, subTree);
+                                const newName = await upload.uploadFile(name, subTree);
                                 console.log(`File "${name}" is successfully saved under ${newName}`);
                                 return void callback();
                             } catch (err) {
@@ -901,7 +901,7 @@ async function processCommand(command, args, params, callback) {
                         } else {
                             try {
                                 if (subTree) {
-                                    await upload.uploadAdapterAsync(name, false, true, subTree);
+                                    await upload.uploadAdapter(name, false, true, subTree);
                                 } else {
                                     await upload.uploadAdapterFullAsync([name]);
                                 }

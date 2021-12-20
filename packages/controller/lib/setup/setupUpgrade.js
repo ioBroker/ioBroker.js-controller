@@ -351,11 +351,11 @@ function Upgrade(options) {
             }
 
             // Upload www and admin files of adapter into CouchDB
-            await upload.uploadAdapterAsync(name, false, true);
+            await upload.uploadAdapter(name, false, true);
             // extend all adapter instance default configs with current config
             // (introduce potentially new attributes while keeping current settings)
             await upload.upgradeAdapterObjectsAsync(name, ioPack);
-            await upload.uploadAdapterAsync(name, true, true);
+            await upload.uploadAdapter(name, true, true);
         };
 
         const sources = repoUrl;

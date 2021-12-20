@@ -440,8 +440,8 @@ function Install(options) {
                 // if required dependency not found => install it
                 if (!isFound) {
                     const name = await this.createInstanceAsync(dName, _options);
-                    await upload.uploadAdapterAsync(name, true, false);
-                    await upload.uploadAdapterAsync(name, false, false);
+                    await upload.uploadAdapter(name, true, false);
+                    await upload.uploadAdapter(name, false, false);
                 }
             }
         }
@@ -595,8 +595,8 @@ function Install(options) {
             }
         }
 
-        await upload.uploadAdapterAsync(adapter, true, true);
-        await upload.uploadAdapterAsync(adapter, false, true);
+        await upload.uploadAdapter(adapter, true, true);
+        await upload.uploadAdapter(adapter, false, true);
         await callInstallOfAdapter(adapter, adapterConf);
         await this._uploadStaticObjects(adapter);
         await upload.upgradeAdapterObjectsAsync(adapter);
@@ -672,8 +672,8 @@ function Install(options) {
         }
 
         // Check if some web pages should be uploaded
-        await upload.uploadAdapterAsync(adapter, true, false);
-        await upload.uploadAdapterAsync(adapter, false, false);
+        await upload.uploadAdapter(adapter, true, false);
+        await upload.uploadAdapter(adapter, false, false);
 
         const res = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.' + adapter + '.',
@@ -1642,8 +1642,8 @@ function Install(options) {
             };
             const { installDir } = await this._npmInstallWithCheck(url, options, debug);
             if (name) {
-                await upload.uploadAdapterAsync(name, true, true);
-                await upload.uploadAdapterAsync(name, false, true);
+                await upload.uploadAdapter(name, true, true);
+                await upload.uploadAdapter(name, false, true);
                 await upload.upgradeAdapterObjectsAsync(name);
             } else {
                 // Try to find io-package.json with newest date
@@ -1662,8 +1662,8 @@ function Install(options) {
                 // if modify time is not older than one hour
                 if (dir && Date.now() - date.getTime() < 3600000) {
                     name = dir.substring(tools.appName.length + 1);
-                    await upload.uploadAdapterAsync(name, true, true);
-                    await upload.uploadAdapterAsync(name, false, true);
+                    await upload.uploadAdapter(name, true, true);
+                    await upload.uploadAdapter(name, false, true);
                     await upload.upgradeAdapterObjectsAsync(name);
                 }
             }

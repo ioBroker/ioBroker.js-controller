@@ -210,23 +210,22 @@ function Upload(options) {
                     }
 
                     // try to upload on this host. It will print an error if the adapter directory not found
-                    await this.uploadAdapterAsync(adapter, true, true);
+                    await this.uploadAdapter(adapter, true, true);
                     await this.upgradeAdapterObjectsAsync(adapter);
-                    await this.uploadAdapterAsync(adapter, false, true);
+                    await this.uploadAdapter(adapter, false, true);
                 }
             }
         }
     };
 
-    this.uploadFile = (source, target, callback) => {
-        tools.showDeprecatedMessage('setupUpload.uploadFile');
-
-        return this.uploadFileAsync(source, target)
-            .then(path => callback && callback(null, path))
-            .catch(err => callback && callback(err));
-    };
-
-    this.uploadFileAsync = async (source, target) => {
+    /**
+     * Uploads a file
+     *
+     * @param {string} source
+     * @param {string} target
+     * @return {Promise<string>}
+     */
+    this.uploadFile = async (source, target) => {
         target = target.replace(/\\/g, '/');
         source = source.replace(/\\/g, '/');
         if (target[0] === '/') {
@@ -284,7 +283,7 @@ function Upload(options) {
             }
         }
 
-        return adapter + '/' + target;
+        return `${adapter}/${target}`;
     };
 
     async function eraseFiles(files, logger) {
@@ -430,28 +429,17 @@ function Upload(options) {
         return _results;
     }
 
-    this.uploadAdapter = (adapter, isAdmin, forceUpload, subTree, logger, callback) => {
-        tools.showDeprecatedMessage('setupUpload.uploadAdapter');
-        if (tools.isObject(subTree)) {
-            callback = logger;
-            logger = subTree;
-            subTree = null;
-        } else if (typeof subTree === 'function') {
-            callback = subTree;
-            subTree = null;
-            logger = null;
-        }
-        if (typeof logger === 'function') {
-            callback = logger;
-            logger = null;
-        }
-
-        return this.uploadAdapterAsync(adapter, isAdmin, forceUpload, subTree, logger)
-            .then(() => callback && callback(adapter))
-            .catch(err => callback && callback(err));
-    };
-
-    this.uploadAdapterAsync = async (adapter, isAdmin, forceUpload, subTree, logger) => {
+    /**
+     * Upload given adapter
+     *
+     * @param {string} adapter
+     * @param {boolean} isAdmin
+     * @param {boolean} forceUpload
+     * @param {boolean}subTree
+     * @param {object} logger
+     * @return {Promise<string>}
+     */
+    this.uploadAdapter = async (adapter, isAdmin, forceUpload, subTree, logger) => {
         const id = adapter + (isAdmin ? '.admin' : '');
         const adapterDir = tools.getAdapterDir(adapter);
         let dir = adapterDir ? adapterDir + (isAdmin ? '/admin' : '/www') : '';
