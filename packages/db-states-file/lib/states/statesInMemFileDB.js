@@ -146,6 +146,44 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         return this.dataset[id];
     }
 
+    /**
+     * Get value of given meta id
+     *
+     * @param {string} id
+     * @returns {*}
+     */
+    getMeta(id) {
+        if (!this.dataset['**META**']) {
+            this.dataset['**META**'] = {};
+        }
+
+        return this.dataset['**META**'][id];
+    }
+
+    /**
+     * Sets given value to id in metaNamespace
+     *
+     * @param {string} id
+     * @param {string} value
+     */
+    setMeta(id, value) {
+        if (!this.dataset['**META**']) {
+            this.dataset['**META**'] = {};
+        }
+
+        this.dataset['**META**'][id] = value;
+
+        setImmediate(() => {
+            // publish event in states
+            this.log.silly(`${this.namespace} memory publish meta ${id} ${value}`);
+            this.publishAll('meta', id, value);
+        });
+
+        if (!this.stateTimer) {
+            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
+        }
+    }
+
     // needed by Server
     _setStateDirect(id, obj, expire) {
         if (this.stateExpires[id]) {
@@ -202,6 +240,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
     // needed by Server
     _subscribeForClient(client, pattern) {
         this.handleSubscribe(client, 'state', pattern);
+    }
+
+    _subscribeMeta(client, pattern) {
+        this.handleSubscribe(client, 'meta', pattern);
     }
 
     // needed by Server

@@ -43,10 +43,13 @@ class StateRedisClient {
         this.namespaceMsg = (this.settings.namespaceMsg || 'messagebox') + '.';
         this.namespaceLog = (this.settings.namespaceLog || 'log') + '.';
         this.namespaceSession = (this.settings.namespaceSession || 'session') + '.';
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
 
         this.globalMessageId = Math.round(Math.random() * 100000000);
         this.globalLogId = Math.round(Math.random() * 100000000);
         this.namespace = this.settings.namespace || this.settings.hostname || '';
+
+        this.supportedProtocolVersions = ['4'];
 
         this.stop = false;
         this.client = null;
@@ -57,6 +60,31 @@ class StateRedisClient {
 
         if (this.settings.autoConnect !== false) {
             this.connectDb();
+        }
+    }
+
+    /**
+     * Checks if we are allowed to start and sets the protocol version accordingly
+     *
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _determineProtocolVersion() {
+        const protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
+
+        if (!protoVersion) {
+            // if no proto version existent yet, we set ours
+            const highestVersion = Math.max(...this.supportedProtocolVersions);
+            await this.setProtocolVersion(highestVersion);
+            this.activeProtocolVersion = highestVersion.toString();
+            return;
+        }
+
+        // check if we can support this version
+        if (this.supportedProtocolVersions.includes(protoVersion)) {
+            this.activeProtocolVersion = protoVersion;
+        } else {
+            throw new Error(`This host does not support protocol version "${protoVersion}"`);
         }
     }
 
@@ -256,6 +284,22 @@ class StateRedisClient {
                                 `${this.namespace} States system redis pmessage ${pattern}/${channel}:${message}`
                             );
 
+                            if (channel.startsWith(this.metaNamespace)) {
+                                if (
+                                    channel === `${this.metaNamespace}states.protocolVersion` &&
+                                    message !== this.activeProtocolVersion
+                                ) {
+                                    if (typeof this.settings.disconnected === 'function') {
+                                        // protocol version has changed, restart controller
+                                        this.log.info(
+                                            `${this.namespace} States protocol version has changed, disconnecting!`
+                                        );
+                                        this.settings.disconnected();
+                                    }
+                                }
+                                return;
+                            }
+
                             try {
                                 message = message
                                     ? JSON.parse(message, message.includes('"Buffer"') ? bufferJsonDecoder : undefined)
@@ -378,6 +422,15 @@ class StateRedisClient {
                     } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to evicted Keyspace events from Redis Server: ${e.message}`
+                        );
+                    }
+
+                    // subscribe to meta changes
+                    try {
+                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
                         );
                     }
 
@@ -514,6 +567,13 @@ class StateRedisClient {
                         }
                     }
                 });
+            }
+
+            try {
+                await this._determineProtocolVersion();
+            } catch (e) {
+                this.log.error(`${this.namespace} ${e.message}`);
+                throw new Error('States DB is not allowed to start in the current Multihost environment');
             }
 
             if (initCounter < 1) {
@@ -1279,6 +1339,39 @@ class StateRedisClient {
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e, id);
+        }
+    }
+
+    /**
+     * Returns the protocol version from DB
+     *
+     * @returns {Promise<string>}
+     */
+    getProtocolVersion() {
+        if (!this.client) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(`${this.metaNamespace}states.protocolVersion`);
+    }
+
+    /**
+     * Sets the protocol version to the DB
+     * @param {number} version - protocol version
+     * @returns {Promise<void>}
+     */
+    async setProtocolVersion(version) {
+        if (!this.client) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        version = version.toString();
+        // we can only set a protocol if we actually support it
+        if (this.supportedProtocolVersions.includes(version)) {
+            await this.client.set(`${this.metaNamespace}states.protocolVersion`, version);
+            await this.client.publish(`${this.metaNamespace}states.protocolVersion`, version);
+        } else {
+            throw new Error('Cannot set an unsupported protocol version on the current host');
         }
     }
 }

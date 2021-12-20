@@ -68,6 +68,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.metaNamespaceLen = this.metaNamespace.length;
 
         this.knownScripts = {};
 
@@ -152,6 +154,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         }
                     }
                 }
+            } else if (idWithNamespace.startsWith(this.metaNamespace)) {
+                const idx = this.metaNamespaceLen;
+                if (idx !== -1) {
+                    ns = idWithNamespace.substr(0, idx);
+                    id = idWithNamespace.substr(idx);
+                }
             }
         }
         return { id, namespace: ns, name, isMeta };
@@ -173,11 +181,18 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
         const found = s.find(sub => sub.regex.test(id));
         if (found) {
-            const objString = JSON.stringify(obj);
-            this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
-            const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
-            const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                const sendPattern = this.metaNamespace + found.pattern;
+                const sendId = this.metaNamespace + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else {
+                const objString = JSON.stringify(obj);
+                this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
+                const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
+                const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
             return 1;
         }
         return 0;
@@ -347,7 +362,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
-            if (namespace === this.namespaceObj) {
+            if (namespace === this.namespaceObj || namespace === this.metaNamespace) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
@@ -505,6 +520,13 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
+            } else if (namespace === this.metaNamespace) {
+                const result = this.getMeta(id);
+                if (result === undefined || result === null) {
+                    handler.sendNull(responseId);
+                } else {
+                    handler.sendBulk(responseId, result);
+                }
             } else {
                 handler.sendError(
                     responseId,
@@ -561,6 +583,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     handler.sendString(responseId, 'OK');
                 }
+            } else if (namespace === this.metaNamespace) {
+                this.setMeta(id, data[1].toString('utf-8'));
+                handler.sendString(responseId, 'OK');
             } else {
                 handler.sendError(
                     responseId,
@@ -718,6 +743,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.metaNamespace) {
+                this._subscribeMeta(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {
                 handler.sendError(

@@ -38,7 +38,9 @@ class ObjectsInRedisClient {
         this.fileNamespaceL = this.fileNamespace.length;
         this.objNamespace = this.redisNamespace + 'o.';
         this.setNamespace = this.redisNamespace + 's.';
+        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
         this.objNamespaceL = this.objNamespace.length;
+        this.supportedProtocolVersions = ['4'];
 
         this.stop = false;
         this.client = null;
@@ -56,6 +58,31 @@ class ObjectsInRedisClient {
 
         if (this.settings.autoConnect !== false) {
             this.connectDb();
+        }
+    }
+
+    /**
+     * Checks if we are allowed to start and sets the protocol version accordingly
+     *
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _determineProtocolVersion() {
+        const protoVersion = await this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+
+        if (!protoVersion) {
+            // if no proto version existent yet, we set ours
+            const highestVersion = Math.max(...this.supportedProtocolVersions);
+            await this.setProtocolVersion(highestVersion);
+            this.activeProtocolVersion = highestVersion.toString();
+            return;
+        }
+
+        // check if we can support this version
+        if (this.supportedProtocolVersions.includes(protoVersion)) {
+            this.activeProtocolVersion = protoVersion;
+        } else {
+            throw new Error(`This host does not support protocol version "${protoVersion}"`);
         }
     }
 
@@ -264,7 +291,7 @@ class ObjectsInRedisClient {
             initError = false;
             ignoreErrors = false;
 
-            this.log.debug(this.namespace + ' Objects client ready ... initialize now');
+            this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
             try {
                 await this.client.config('set', ['lua-time-limit', 10000]); // increase LUA timeout TODO needs better fix
             } catch (e) {
@@ -274,7 +301,7 @@ class ObjectsInRedisClient {
             let initCounter = 0;
             if (!this.subSystem && typeof onChange === 'function') {
                 initCounter++;
-                this.log.debug(this.namespace + ' Objects create System PubSub Client');
+                this.log.debug(`${this.namespace} Objects create System PubSub Client`);
                 this.subSystem = new Redis(this.settings.connection.options);
                 this.subSystem.ioBrokerSubscriptions = {};
 
@@ -284,6 +311,23 @@ class ObjectsInRedisClient {
                             this.log.silly(
                                 `${this.namespace} Objects system redis pmessage ${pattern}/${channel}:${message}`
                             );
+
+                            if (channel.startsWith(this.metaNamespace)) {
+                                if (
+                                    channel === `${this.metaNamespace}objects.protocolVersion` &&
+                                    message !== this.activeProtocolVersion
+                                ) {
+                                    if (typeof this.settings.disconnected === 'function') {
+                                        // protocol version has changed, restart controller
+                                        this.log.info(
+                                            `${this.namespace} Objects protocol version has changed, disconnecting!`
+                                        );
+                                        this.settings.disconnected();
+                                    }
+                                }
+                                return;
+                            }
+
                             try {
                                 if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                     const id = channel.substring(this.objNamespaceL);
@@ -404,6 +448,15 @@ class ObjectsInRedisClient {
                         this.subSystem && (await this.subSystem.psubscribe(`${this.objNamespace}system.config`));
                     } catch {
                         // ignore
+                    }
+
+                    // subscribe to meta changes
+                    try {
+                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
+                        );
                     }
 
                     if (this.subSystem) {
@@ -542,6 +595,13 @@ class ObjectsInRedisClient {
                 return;
             }
 
+            try {
+                await this._determineProtocolVersion();
+            } catch (e) {
+                this.log.error(`${this.namespace} ${e.message}`);
+                throw new Error('Objects DB is not allowed to start in the current Multihost environment');
+            }
+
             // for controller v4 we have to check if we can use the new lua scripts and set logic
             // TODO: remove this backward shim if controller v4.0 is old enough
             let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
@@ -552,7 +612,7 @@ class ObjectsInRedisClient {
 
             try {
                 if (keys.length) {
-                    // else  no host known yet - so we are single host
+                    // else no host known yet - so we are single host
                     const objs = await this.client.mget(keys);
                     for (const strObj of objs) {
                         const obj = JSON.parse(strObj);
@@ -4401,6 +4461,39 @@ class ObjectsInRedisClient {
             }
         }
         return noMigrated;
+    }
+
+    /**
+     * Returns the protocol version from DB
+     *
+     * @returns {Promise<string>}
+     */
+    getProtocolVersion() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+    }
+
+    /**
+     * Sets the protocol version to the DB
+     * @param {number|string} version - protocol version
+     * @returns {Promise<void>}
+     */
+    async setProtocolVersion(version) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        version = version.toString();
+        // we can only set a protocol if we actually support it
+        if (this.supportedProtocolVersions.includes(version)) {
+            await this.client.set(`${this.metaNamespace}objects.protocolVersion`, version);
+            await this.client.publish(`${this.metaNamespace}objects.protocolVersion`, version);
+        } else {
+            throw new Error('Cannot set an unsupported protocol version on the current host');
+        }
     }
 }
 
