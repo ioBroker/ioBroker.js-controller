@@ -1339,17 +1339,13 @@ function Install(options) {
         }
     };
 
-    this.deleteAdapter = (adapter, callback) => {
-        tools.showDeprecatedMessage('setupInstall.deleteAdapter');
-        return this.deleteAdapterAsync(adapter)
-            .then(resultCode => callback && callback(adapter, resultCode))
-            .catch(err => {
-                console.error(`Cannot delete adapter: ${err.message}`);
-                callback && callback(adapter, 1);
-            });
-    };
-
-    this.deleteAdapterAsync = async adapter => {
+    /**
+     * Deltes given adapter from filesystem and removes all instances
+     *
+     * @param {string} adapter
+     * @return {Promise<number>}
+     */
+    this.deleteAdapter = async adapter => {
         const knownObjectIDs = [];
         const metaFilesToDelete = [];
         const notDeletedObjectIDs = [];
@@ -1450,17 +1446,14 @@ function Install(options) {
         return resultCode;
     };
 
-    this.deleteInstance = (adapter, instance, callback) => {
-        tools.showDeprecatedMessage('setupInstall.deleteInstance');
-        return this.deleteInstanceAsync(adapter)
-            .then(() => callback && callback(adapter, instance))
-            .catch(err => {
-                console.error(`Cannot delete instance: ${err.message}`);
-                callback && callback(adapter, instance);
-            });
-    };
-
-    this.deleteInstanceAsync = async (adapter, instance) => {
+    /**
+     * Deletes given instance of an adapter
+     *
+     * @param {string} adapter
+     * @param {string?} instance
+     * @return {Promise<void>}
+     */
+    this.deleteInstance = async (adapter, instance) => {
         const knownObjectIDs = [];
         const knownStateIDs = [];
 

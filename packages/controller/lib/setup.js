@@ -969,7 +969,7 @@ async function processCommand(command, args, params, callback) {
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstanceAsync(adapter, instance);
+                    await install.deleteInstance(adapter, instance);
                     callback();
                 });
             } else {
@@ -983,7 +983,7 @@ async function processCommand(command, args, params, callback) {
                         params
                     });
                     console.log(`Delete adapter "${adapter}"`);
-                    const resultCode = await install.deleteAdapterAsync(adapter);
+                    const resultCode = await install.deleteAdapter(adapter);
                     callback(resultCode);
                 });
             }
