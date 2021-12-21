@@ -58,6 +58,7 @@
     "build": "npm run build:ts",
     "release": "release-script",
     "lint": "eslint \"packages/*/*.js\" \"packages/*/lib/**/*.js\"",
+    "prettier": "node node_modules/prettier/bin-prettier.js --config ./.prettierrc.json --write --ignore-path ./.prettierignore \"./packages/**/*.js\"",
     "test": "mocha packages/controller/test --exit",
     "test-jsonl": "mocha packages/controller/test/jsonl/ --exit",
     "test-redis-socket": "mocha packages/controller/test/redis-socket/ --exit",
