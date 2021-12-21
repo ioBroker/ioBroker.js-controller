@@ -1506,149 +1506,130 @@ function Install(options) {
     };
 
     /**
+     * Installs an adapter from given url
      * @param {string} url
      * @param {string} name
-     * @param {() => any} callback
+     * @return {Promise<void>}
      */
-    this.installAdapterFromUrl = (url, name, callback) => {
-        tools.showDeprecatedMessage('setupInstall.installAdapterFromUrl');
-        return this.installAdapterFromUrlAsync(url, name)
-            .then(() => callback && callback())
-            .catch(err => {
-                console.error(`Cannot delete instance: ${err.message}`);
-                callback && callback();
-            });
-    };
+    this.installAdapterFromUrl = async function (url, name) {
+        // If the user provided an URL, try to parse it into known ways to represent a Github URL
+        let parsedUrl;
+        try {
+            parsedUrl = new URL(url);
+        } catch {
+            /* ignore, not a valid URL */
+        }
 
-    this.installAdapterFromUrlAsync =
-        /**
-         * @param {string} url
-         * @param {string} name
-         */
-        async function (url, name) {
-            // If the user provided an URL, try to parse it into known ways to represent a Github URL
-            let parsedUrl;
-            try {
-                parsedUrl = new URL(url);
-            } catch {
-                /* ignore, not a valid URL */
+        let debug = false;
+        for (let i = 0; i < process.argv.length; i++) {
+            if (process.argv[i] === '--debug') {
+                debug = true;
+                break;
+            }
+        }
+
+        if (parsedUrl && parsedUrl.hostname === 'github.com') {
+            if (!tools.isGithubPathname(parsedUrl.pathname)) {
+                return console.log(`Cannot install from GitHub. Invalid URL ${url}`);
             }
 
-            let debug = false;
-            for (let i = 0; i < process.argv.length; i++) {
-                if (process.argv[i] === '--debug') {
-                    debug = true;
-                    break;
-                }
-            }
+            // This is a URL we can parse
+            const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
 
-            if (parsedUrl && parsedUrl.hostname === 'github.com') {
-                if (!tools.isGithubPathname(parsedUrl.pathname)) {
-                    return console.log(`Cannot install from GitHub. Invalid URL ${url}`);
-                }
-
-                // This is a URL we can parse
-                const { repo, user, commit } = tools.parseGithubPathname(parsedUrl.pathname);
-
-                if (!commit) {
-                    // No commit given, try to get it from the API
-                    try {
-                        const result = await axios(`http://api.github.com/repos/${user}/${repo}/commits`, {
-                            headers: {
-                                'User-Agent': 'ioBroker Adapter install',
-                                validateStatus: status => status === 200
-                            }
-                        });
-                        if (
-                            result.data &&
-                            Array.isArray(result.data) &&
-                            result.data.length >= 1 &&
-                            result.data[0].sha
-                        ) {
-                            url = `${user}/${repo}#${result.data[0].sha}`;
-                        } else {
-                            console.log(
-                                `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`
-                            );
-                            url = `${user}/${repo}`;
+            if (!commit) {
+                // No commit given, try to get it from the API
+                try {
+                    const result = await axios(`http://api.github.com/repos/${user}/${repo}/commits`, {
+                        headers: {
+                            'User-Agent': 'ioBroker Adapter install',
+                            validateStatus: status => status === 200
                         }
-                    } catch (err) {
+                    });
+                    if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
+                        url = `${user}/${repo}#${result.data[0].sha}`;
+                    } else {
                         console.log(
-                            `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`
+                            `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`
                         );
-                        // Install using the npm Github URL syntax `npm i user/repo_name`:
                         url = `${user}/${repo}`;
                     }
-                } else {
-                    // We've extracted all we need from the URL
-                    url = `${user}/${repo}#${commit}`;
+                } catch (err) {
+                    console.log(
+                        `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`
+                    );
+                    // Install using the npm Github URL syntax `npm i user/repo_name`:
+                    url = `${user}/${repo}`;
                 }
+            } else {
+                // We've extracted all we need from the URL
+                url = `${user}/${repo}#${commit}`;
             }
+        }
 
-            console.log(`install ${url}`);
+        console.log(`install ${url}`);
 
-            // Try to extract name from URL
-            if (!name) {
-                const reNpmPacket = new RegExp('^' + tools.appName + '\\.([-_\\w\\d]+)(@.*)?$', 'i');
-                const match = reNpmPacket.exec(url); // we have iobroker.adaptername@1.2.3
+        // Try to extract name from URL
+        if (!name) {
+            const reNpmPacket = new RegExp('^' + tools.appName + '\\.([-_\\w\\d]+)(@.*)?$', 'i');
+            const match = reNpmPacket.exec(url); // we have iobroker.adaptername@1.2.3
+            if (match) {
+                name = match[1];
+            } else if (url.match(/\.(tgz|gz|zip|tar\.gz)$/)) {
+                const parts = url.split('/');
+                const last = parts.pop();
+                const mm = last.match(/\.([-_\w\d]+)-[.\d]+/);
+                if (mm) {
+                    name = mm[1];
+                }
+            } else {
+                const githubUrlParts = tools.parseShortGithubUrl(url);
+                // Try to extract the adapter name from the github url if possible
+                // Otherwise fall back to the complete URL
+                if (githubUrlParts) {
+                    name = githubUrlParts.repo;
+                } else {
+                    name = url;
+                }
+                // Remove the leading `iobroker.` from the name
+                const reG = new RegExp(tools.appName + '\\.([-_\\w\\d]+)$', 'i');
+                const match = reG.exec(name);
                 if (match) {
                     name = match[1];
-                } else if (url.match(/\.(tgz|gz|zip|tar\.gz)$/)) {
-                    const parts = url.split('/');
-                    const last = parts.pop();
-                    const mm = last.match(/\.([-_\w\d]+)-[.\d]+/);
-                    if (mm) {
-                        name = mm[1];
-                    }
-                } else {
-                    const githubUrlParts = tools.parseShortGithubUrl(url);
-                    // Try to extract the adapter name from the github url if possible
-                    // Otherwise fall back to the complete URL
-                    if (githubUrlParts) {
-                        name = githubUrlParts.repo;
-                    } else {
-                        name = url;
-                    }
-                    // Remove the leading `iobroker.` from the name
-                    const reG = new RegExp(tools.appName + '\\.([-_\\w\\d]+)$', 'i');
-                    const match = reG.exec(name);
-                    if (match) {
-                        name = match[1];
+                }
+            }
+        }
+
+        const options = {
+            packetName: name
+        };
+        const { installDir } = await this._npmInstallWithCheck(url, options, debug);
+        if (name) {
+            await upload.uploadAdapter(name, true, true);
+            await upload.uploadAdapter(name, false, true);
+            await upload.upgradeAdapterObjects(name);
+        } else {
+            // Try to find io-package.json with newest date
+            const dirs = fs.readdirSync(installDir);
+            let date = null;
+            let dir = null;
+            for (let i = 0; i < dirs.length; i++) {
+                if (fs.existsSync(installDir + '/' + dirs[i] + '/io-package.json')) {
+                    const stat = fs.statSync(installDir + '/' + dirs[i] + '/io-package.json');
+                    if (!date || stat.mtime.getTime() > date.getTime()) {
+                        dir = dirs[i];
+                        date = stat.mtime;
                     }
                 }
             }
-
-            const options = {
-                packetName: name
-            };
-            const { installDir } = await this._npmInstallWithCheck(url, options, debug);
-            if (name) {
+            // if modify time is not older than one hour
+            if (dir && Date.now() - date.getTime() < 3600000) {
+                name = dir.substring(tools.appName.length + 1);
                 await upload.uploadAdapter(name, true, true);
                 await upload.uploadAdapter(name, false, true);
                 await upload.upgradeAdapterObjects(name);
-            } else {
-                // Try to find io-package.json with newest date
-                const dirs = fs.readdirSync(installDir);
-                let date = null;
-                let dir = null;
-                for (let i = 0; i < dirs.length; i++) {
-                    if (fs.existsSync(installDir + '/' + dirs[i] + '/io-package.json')) {
-                        const stat = fs.statSync(installDir + '/' + dirs[i] + '/io-package.json');
-                        if (!date || stat.mtime.getTime() > date.getTime()) {
-                            dir = dirs[i];
-                            date = stat.mtime;
-                        }
-                    }
-                }
-                // if modify time is not older than one hour
-                if (dir && Date.now() - date.getTime() < 3600000) {
-                    name = dir.substring(tools.appName.length + 1);
-                    await upload.uploadAdapter(name, true, true);
-                    await upload.uploadAdapter(name, false, true);
-                    await upload.upgradeAdapterObjects(name);
-                }
             }
-        };
+        }
+    };
 }
 
 module.exports = Install;

@@ -675,7 +675,7 @@ async function processCommand(command, args, params, callback) {
             }
             url = url.trim();
 
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const Install = require('./setup/setupInstall.js');
                 const install = new Install({
                     objects,
@@ -685,7 +685,13 @@ async function processCommand(command, args, params, callback) {
                     params
                 });
 
-                install.installAdapterFromUrl(url, name, callback);
+                try {
+                    await install.installAdapterFromUrl(url, name);
+                    return void callback(EXIT_CODES.NO_ERROR);
+                } catch (e) {
+                    console.error(`Could not install adapter from url: ${e.message}`);
+                    return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+                }
             });
             break;
         }
@@ -1063,13 +1069,9 @@ async function processCommand(command, args, params, callback) {
                     try {
                         if (adapter === 'self') {
                             const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                            await upgrade.upgradeControllerAsync(
-                                '',
-                                params.force || params.f,
-                                hostAlive && hostAlive.val
-                            );
+                            await upgrade.upgradeController('', params.force || params.f, hostAlive && hostAlive.val);
                         } else {
-                            await upgrade.upgradeAdapterAsync(
+                            await upgrade.upgradeAdapter(
                                 '',
                                 adapter,
                                 params.force || params.f,
@@ -1089,7 +1091,7 @@ async function processCommand(command, args, params, callback) {
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                        await upgrade.upgradeAdapterHelperAsync(
+                        await upgrade.upgradeAdapterHelper(
                             links,
                             Object.keys(links).sort(),
                             false,
