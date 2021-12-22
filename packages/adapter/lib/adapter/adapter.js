@@ -8076,7 +8076,7 @@ function Adapter(options) {
                 }
             }
 
-            // RegExp is allowed for alias only
+            // RegExp is not allowed for alias
             if (pattern instanceof RegExp && pattern.toString().includes('alias')) {
                 logger.error(`${this.namespaceLog} Regexp is not supported for "subscribeForeignStates"`);
                 return tools.maybeCallbackWithError(callback, 'Regexp is not supported for "subscribeForeignStates"');
@@ -8095,7 +8095,7 @@ function Adapter(options) {
 
                 for (let aliasPattern of pattern) {
                     // TODO according to unsubscribe and jsdoc regexp is not allowed as array - we should return here with an error
-                    aliasPattern = aliasPattern instanceof RegExp ? JSON.stringify(aliasPattern) : aliasPattern;
+                    aliasPattern = aliasPattern instanceof RegExp ? aliasPattern.toString() : aliasPattern;
                     if (
                         typeof aliasPattern === 'string' &&
                         (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
@@ -8149,7 +8149,7 @@ function Adapter(options) {
                     try {
                         const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
                         const promises = [];
-                        const aliasPattern = pattern instanceof RegExp ? JSON.stringify(pattern) : pattern;
+                        const aliasPattern = pattern instanceof RegExp ? pattern.toString() : pattern;
                         if (!this.aliasPatterns.includes(aliasPattern)) {
                             // its a new pattern to store
                             this.aliasPatterns.push(aliasPattern);
@@ -8312,7 +8312,7 @@ function Adapter(options) {
                     await this.unsubscribeForeignStatesAsync(_pattern);
                 }
             } else if (pattern instanceof RegExp) {
-                aliasPattern = JSON.stringify(pattern); // check all aliases
+                aliasPattern = pattern.toString(); // check all aliases
                 await adapterStates.unsubscribeUser(pattern);
             } else if (
                 typeof pattern === 'string' &&
