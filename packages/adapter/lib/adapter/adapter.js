@@ -1640,10 +1640,10 @@ function Adapter(options) {
 
                 if (res && res.rows) {
                     this.autoSubscribe = [];
-                    for (let c = res.rows.length - 1; c >= 0; c--) {
-                        if (res.rows[c].value.common.subscribable) {
-                            const _id = res.rows[c].id.substring(15); // cut system.adapter.
-                            if (this.autoSubscribe.indexOf(_id) === -1) {
+                    for (const row of res.rows) {
+                        if (row.value.common.subscribable) {
+                            const _id = row.id.substring(15); // cut system.adapter.
+                            if (this.autoSubscribe.includes(_id)) {
                                 this.autoSubscribe.push(_id);
                             }
                         }
