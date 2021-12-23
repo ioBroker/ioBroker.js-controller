@@ -8014,16 +8014,16 @@ function Adapter(options) {
         this.subscribeForeignStates = async (pattern, options, callback) => {
             pattern = pattern || '*';
 
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
             if (pattern instanceof RegExp) {
                 return tools.maybeCallbackWithError(
                     callback,
                     `Regexp is not supported for "subscribeForeignStates", received "${pattern.toString()}"`
                 );
-            }
-
-            if (typeof options === 'function') {
-                callback = options;
-                options = null;
             }
 
             if (!adapterStates) {
@@ -8235,6 +8235,12 @@ function Adapter(options) {
         this.unsubscribeForeignStates = async (pattern, options, callback) => {
             pattern = pattern || '*';
 
+            // Todo check rights for options
+            if (typeof options === 'function') {
+                callback = options;
+                options = null;
+            }
+
             if (pattern instanceof RegExp) {
                 return tools.maybeCallbackWithError(
                     callback,
@@ -8246,12 +8252,6 @@ function Adapter(options) {
                 // if states is no longer existing, we do not need to unsubscribe
                 this.log.info('unsubscrubeForeignStates not processed because States database not connected');
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            // Todo check rights for options
-            if (typeof options === 'function') {
-                callback = options;
-                options = null;
             }
 
             if (this.autoSubscribe && typeof pattern === 'string') {
