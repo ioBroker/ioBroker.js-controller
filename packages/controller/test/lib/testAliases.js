@@ -510,25 +510,20 @@ function register(it, expect, context) {
         const regexp = new RegExp(parts.join('\\.') + '\\..*');
 
         context.adapter.subscribeForeignStates(regexp, err => {
+            // regexp not allowed so err
             expect(err).to.be.ok;
             done();
         });
     }).timeout(1000);
 
     it(testName + 'Test unsubscribe aliases regex', done => {
-        context.onAdapterStateChanged = () => {
-            expect(true).to.be.false;
-        };
-
         const parts = gAliasID.split('.');
         parts.pop();
         const regexp = new RegExp(parts.join('\\.') + '\\..*');
 
-        context.adapter.unsubscribeForeignStates(regexp, () => {
-            context.states.setState(gid, 10, err => {
-                expect(err).to.be.not.ok;
-                setTimeout(() => done(), 500);
-            });
+        context.adapter.unsubscribeForeignStates(regexp, err => {
+            expect(err).to.be.ok;
+            done();
         });
     }).timeout(1000);
 

@@ -1643,7 +1643,7 @@ function Adapter(options) {
                     for (const row of res.rows) {
                         if (row.value.common.subscribable) {
                             const _id = row.id.substring(15); // cut system.adapter.
-                            if (this.autoSubscribe.includes(_id)) {
+                            if (!this.autoSubscribe.includes(_id)) {
                                 this.autoSubscribe.push(_id);
                             }
                         }
@@ -8019,12 +8019,20 @@ function Adapter(options) {
          *
          * @alias subscribeForeignStates
          * @memberof Adapter
-         * @param {string | string[] | RegExp} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+         * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
          * @param {object} [options] optional argument to describe the user context
          * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
          */
         this.subscribeForeignStates = async (pattern, options, callback) => {
             pattern = pattern || '*';
+
+            if (pattern instanceof RegExp) {
+                return tools.maybeCallbackWithError(
+                    callback,
+                    `Regexp is not supported for "subscribeForeignStates", received "${pattern.toString()}"`
+                );
+            }
+
             if (typeof options === 'function') {
                 callback = options;
                 options = null;
@@ -8076,12 +8084,6 @@ function Adapter(options) {
                 }
             }
 
-            // RegExp is not allowed for alias
-            if (pattern instanceof RegExp && pattern.toString().includes('alias')) {
-                logger.error(`${this.namespaceLog} Regexp is not supported for "subscribeForeignStates"`);
-                return tools.maybeCallbackWithError(callback, 'Regexp is not supported for "subscribeForeignStates"');
-            }
-
             if (Array.isArray(pattern)) {
                 // get all aliases
                 const aliasesIds = pattern
@@ -8093,9 +8095,7 @@ function Adapter(options) {
                     .map(id => (typeof id === 'string' && !id.startsWith(ALIAS_STARTS_WITH) ? id : null))
                     .filter(id => id);
 
-                for (let aliasPattern of pattern) {
-                    // TODO according to unsubscribe and jsdoc regexp is not allowed as array - we should return here with an error
-                    aliasPattern = aliasPattern instanceof RegExp ? aliasPattern.toString() : aliasPattern;
+                for (const aliasPattern of pattern) {
                     if (
                         typeof aliasPattern === 'string' &&
                         (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
@@ -8135,11 +8135,8 @@ function Adapter(options) {
                     logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
                 }
                 return tools.maybeCallback(callback);
-            } else if ((typeof pattern === 'string' && pattern.includes('*')) || pattern instanceof RegExp) {
-                if (
-                    (typeof pattern === 'string' && (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH))) ||
-                    pattern instanceof RegExp
-                ) {
+            } else if (typeof pattern === 'string' && pattern.includes('*')) {
+                if (typeof pattern === 'string' && (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH))) {
                     if (!this._aliasObjectsSubscribed) {
                         this._aliasObjectsSubscribed = true;
                         adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
@@ -8149,10 +8146,9 @@ function Adapter(options) {
                     try {
                         const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
                         const promises = [];
-                        const aliasPattern = pattern instanceof RegExp ? pattern.toString() : pattern;
-                        if (!this.aliasPatterns.includes(aliasPattern)) {
+                        if (!this.aliasPatterns.includes(pattern)) {
                             // its a new pattern to store
-                            this.aliasPatterns.push(aliasPattern);
+                            this.aliasPatterns.push(pattern);
                         }
 
                         for (const id of Object.keys(objs)) {
@@ -8160,7 +8156,7 @@ function Adapter(options) {
                             if (id.startsWith(ALIAS_STARTS_WITH)) {
                                 const aliasObj = objs[id];
                                 promises.push(
-                                    new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasPattern, resolve))
+                                    new Promise(resolve => this._addAliasSubscribe(aliasObj, pattern, resolve))
                                 );
                             }
                         }
@@ -8244,12 +8240,19 @@ function Adapter(options) {
          *
          * @alias unsubscribeForeignStates
          * @memberof Adapter
-         * @param {string | string[] | RegExp} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+         * @param {string | string[]} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
          * @param {object} [options] optional argument to describe the user context
          * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
          */
         this.unsubscribeForeignStates = async (pattern, options, callback) => {
             pattern = pattern || '*';
+
+            if (pattern instanceof RegExp) {
+                return tools.maybeCallbackWithError(
+                    callback,
+                    `Regexp is not supported for "unsubscribeForeignStates", received "${pattern.toString()}"`
+                );
+            }
 
             if (!adapterStates) {
                 // if states is no longer existing, we do not need to unsubscribe
@@ -8299,21 +8302,19 @@ function Adapter(options) {
                             delete subs[pattern];
                         }
                         this.outputCount++;
-                        adapterStates.setState(`system.adapter.${autoSub}.subscribes`, subs);
+                        adapterStates.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
                     }
                 }
             }
 
             let aliasPattern;
+            const promises = [];
 
             if (Array.isArray(pattern)) {
                 // process every entry as single unsubscribe
                 for (const _pattern of pattern) {
-                    await this.unsubscribeForeignStatesAsync(_pattern);
+                    promises.push(this.unsubscribeForeignStatesAsync(_pattern));
                 }
-            } else if (pattern instanceof RegExp) {
-                aliasPattern = pattern.toString(); // check all aliases
-                await adapterStates.unsubscribeUser(pattern);
             } else if (
                 typeof pattern === 'string' &&
                 (pattern.includes('*') || pattern.startsWith(ALIAS_STARTS_WITH))
@@ -8321,13 +8322,13 @@ function Adapter(options) {
                 if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
                     aliasPattern = pattern; // check all aliases
                     if (pattern === '*') {
-                        await adapterStates.unsubscribeUser(pattern);
+                        promises.push(adapterStates.unsubscribeUser(pattern));
                     }
                 } else {
-                    await adapterStates.unsubscribeUser(pattern);
+                    promises.push(adapterStates.unsubscribeUser(pattern));
                 }
             } else {
-                await adapterStates.unsubscribeUser(pattern);
+                promises.push(adapterStates.unsubscribeUser(pattern));
             }
 
             // if pattern known, remove it from alias patterns to not subscribe to further matching aliases
@@ -8337,12 +8338,13 @@ function Adapter(options) {
                 for (const [sourceId, alias] of Object.entries(this.aliases)) {
                     for (let i = alias.targets.length - 1; i >= 0; i--) {
                         if (alias.targets[i].pattern === aliasPattern) {
-                            await this._removeAliasSubscribe(sourceId, i);
+                            promises.push(this._removeAliasSubscribe(sourceId, i));
                         }
                     }
                 }
             }
 
+            await Promise.all(promises);
             // if no alias subscribed any longer, remove subscription
             if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
                 this._aliasObjectsSubscribed = false;
@@ -9289,7 +9291,7 @@ function Adapter(options) {
                             this.adapterReady = true;
 
                             // todo remove it later, when the error is fixed
-                            adapterStates.subscribe(this.namespace + '.checkLogging');
+                            adapterStates.subscribe(`${this.namespace}.checkLogging`);
                         }
                     });
             });
