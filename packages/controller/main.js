@@ -3093,6 +3093,28 @@ async function processMessage(msg) {
             break;
         }
 
+        // read licenses from iobroker.net
+        case 'updateLicenses': {
+            tools
+                .updateLicenses(objects, msg.message && msg.message.login, msg.message && msg.message.password)
+                .then(licenses => {
+                    logger.info(
+                        `${hostLogPrefix} Received ${licenses.length} licenses: "${licenses
+                            .map(l => l.product)
+                            .join(', ')}"`
+                    );
+                    msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
+                })
+                .catch(err => {
+                    logger.error(`${hostLogPrefix} Cannot read licenses: ${err.message}`);
+
+                    msg.callback &&
+                        msg.from &&
+                        sendTo(msg.from, msg.command, { result: [], error: err.message }, msg.callback);
+                });
+            break;
+        }
+
         case 'restartController': {
             const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);

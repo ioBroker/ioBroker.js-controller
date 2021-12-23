@@ -236,13 +236,13 @@ class InMemoryFileDB {
         throw new Error('no communication handling implemented');
     }
 
-    deleteOldBackupFiles() {
+    deleteOldBackupFiles(baseFilename) {
         // delete files only if settings.backupNumber is not 0
         let files = fs.readdirSync(this.backupDir);
         files.sort();
         const limit = Date.now() - this.settings.backup.hours * 3600000;
 
-        files = files.filter(f => f.endsWith(this.settings.fileDB.fileName + '.gz'));
+        files = files.filter(f => f.endsWith(baseFilename + '.gz'));
 
         while (files.length > this.settings.backup.files) {
             const file = files.shift();
@@ -403,7 +403,7 @@ class InMemoryFileDB {
                     compress.end();
 
                     // analyse older files
-                    this.deleteOldBackupFiles();
+                    this.deleteOldBackupFiles(this.settings.fileDB.fileName);
                 }
             } catch (e) {
                 this.log.error(`${this.namespace} Cannot save backup ${backFileName}: ${e.message}`);

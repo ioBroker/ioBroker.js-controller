@@ -17,6 +17,8 @@
 const StatesInMemoryFileDB = require('@iobroker/db-states-file').StatesInMemoryFileDB;
 const { JsonlDB } = require('@alcalzone/jsonl-db');
 const path = require('path');
+const fs = require('fs');
+const os = require('os');
 
 // settings = {
 //    change:    function (id, state) {},
@@ -51,8 +53,10 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             fileName: 'states.json',
             backupDirName: 'backup-objects'
         };
+        super(settings);
+
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
-        const jsonlOptions = {
+        const jsonlOptions = this.settings.connection.jsonlOptions || {
             autoCompress: {
                 sizeFactor: 10,
                 sizeFactorMinimumSize: 50000
@@ -64,10 +68,8 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             }
         };
         settings.jsonlDB = {
-            fileName: 'states.jsonl',
-            options: jsonlOptions
+            fileName: 'states.jsonl'
         };
-        super(settings);
 
         /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
@@ -111,15 +113,59 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
                 };
             }
         });
+
+        if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
+            this._backupInterval = setInterval(() => {
+                this.saveBackup();
+            }, this.settings.backup.period);
+        }
     }
 
     async saveState() {
         // Nothing to do, the DB saves behind the scenes
     }
 
+    // Is regularly called and stores a compressed backup of the DB
+    async saveBackup() {
+        const now = Date.now();
+        const tmpBackupFileName = path.join(os.tmpdir(), this.getTimeStr(now) + '_' + this.settings.jsonlDB.fileName);
+        const backupFileName = path.join(
+            this.backupDir,
+            this.getTimeStr(now) + '_' + this.settings.jsonlDB.fileName + '.gz'
+        );
+        try {
+            if (fs.existsSync(backupFileName)) {
+                return;
+            }
+
+            // Create a DB dump
+            await this._db.dump(tmpBackupFileName);
+            // and zip it
+
+            const zlib = require('zlib');
+            const input = fs.createReadStream(tmpBackupFileName);
+            const output = fs.createWriteStream(backupFileName);
+            output.on('error', err => {
+                this.log.error(`${this.namespace} Cannot save ${this.datasetName}: ${err}`);
+            });
+            const compress = zlib.createGzip();
+            input.pipe(compress).pipe(output);
+
+            fs.unlinkSync(tmpBackupFileName);
+
+            // analyse older files
+            this.deleteOldBackupFiles(this.settings.jsonlDB.fileName);
+        } catch (e) {
+            this.log.error(`${this.namespace} Cannot save backup ${backupFileName}: ${e.message}`);
+        }
+    }
+
     async destroy() {
         if (this._db) {
             await this._db.close();
+        }
+        if (this._backupInterval) {
+            clearInterval(this._backupInterval);
         }
     }
 }

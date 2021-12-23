@@ -425,7 +425,6 @@ function updateUuid(newUuid, _objects, callback) {
                         } else {
                             console.log('object system.meta.uuid created: ' + _uuid);
                         }
-
                         callback(_uuid);
                     });
                 }
@@ -608,7 +607,7 @@ function getJson(urlOrPath, agent, callback) {
                 },
                 (error, response, body) => {
                     if (error || !body || response.statusCode !== 200) {
-                        console.warn('Cannot download json from ' + urlOrPath + '. Error: ' + (error || body));
+                        console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
                         if (callback) {
                             callback(null, urlOrPath);
                         }
@@ -2242,7 +2241,7 @@ function captureStackTrace(wrapperName) {
             if (foundSelf) {
                 return true;
             }
-            if (line.indexOf(wrapperName) > -1) {
+            if (line.includes(wrapperName)) {
                 foundSelf = true;
             }
             return false;
@@ -2746,7 +2745,7 @@ function validateGeneralObjectProperties(obj, extend) {
                                 obj.common.type === 'mixed'
                                     ? `one of type "string", "number", "boolean"`
                                     : `type "${obj.common.type}"`
-                            } but received type "${typeof obj.common.def}" `
+                            } but received type "${typeof obj.common.def}"`
                         );
                     }
                 }
@@ -2756,25 +2755,23 @@ function validateGeneralObjectProperties(obj, extend) {
 
     if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received  "${typeof obj.common.read}"`
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`
         );
     }
 
     if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received  "${typeof obj.common.write}"`
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`
         );
     }
 
     if (obj.common.role !== undefined && typeof obj.common.role !== 'string') {
-        throw new Error(
-            `obj.common.role has an invalid type! Expected "string", received  "${typeof obj.common.role}"`
-        );
+        throw new Error(`obj.common.role has an invalid type! Expected "string", received "${typeof obj.common.role}"`);
     }
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
         throw new Error(
-            `obj.common.desc has an invalid type! Expected "string" or "object", received  "${typeof obj.common.desc}"`
+            `obj.common.desc has an invalid type! Expected "string" or "object", received "${typeof obj.common.desc}"`
         );
     }
 
@@ -2785,11 +2782,11 @@ function validateGeneralObjectProperties(obj, extend) {
         !isObject(obj.common.custom)
     ) {
         throw new Error(
-            `obj.common.custom has an invalid type! Expected "object", received  "${typeof obj.common.custom}"`
+            `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`
         );
     }
 
-    // common.states needs to be a real object or an arraay
+    // common.states needs to be a real object or an array
     if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
@@ -3467,6 +3464,130 @@ function showDeprecatedMessage(func, logger) {
     logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
 }
 
+/**
+ * Requests the licenses from ioBroker.net
+ * @param {string} login Login for ioBroker.net
+ * @param {string} password Decoded password for ioBroker.net
+ * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
+ */
+async function _readLicenses(login, password) {
+    axios = axios || require('axios');
+    const config = {
+        headers: { Authorization: `Basic ${Buffer.from(login + ':' + password).toString('base64')}` },
+        timeout: 4000
+    };
+
+    try {
+        const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config);
+        if (response.data && response.data.length) {
+            const now = Date.now();
+            response.data = response.data.filter(
+                license =>
+                    !license.validTill ||
+                    license.validTill === '0000-00-00 00:00:00' ||
+                    new Date(license.validTill).getTime() > now
+            );
+        }
+
+        return response.data;
+    } catch (err) {
+        if (err.response) {
+            throw new Error((err.response.data && err.response.data.error) || err.response.data || err.response.status);
+        } else if (err.request) {
+            throw new Error('no response');
+        } else {
+            throw err;
+        }
+    }
+}
+
+/**
+ * Reads the licenses from iobroker.net
+ * Reads the licenses from iobroker.net and if no login/password provided stores it in system.licenses
+ * @param {object} objects Object store instance
+ * @param {string} login Login for ioBroker.net
+ * @param {string} password Decoded password for ioBroker.net
+ * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
+ */
+async function updateLicenses(objects, login, password) {
+    // if login and password provided in the message, just try to read without saving it in system.licenses
+    if (login && password) {
+        return _readLicenses(login, password);
+    } else {
+        // get actual object
+        const systemLicenses = await objects.getObjectAsync('system.licenses');
+        // If password and login exist
+        if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+            try {
+                // get the secret to decode the password
+                const systemConfig = objects.getObjectAsync('system.config');
+
+                // decode the password
+                let password;
+                try {
+                    password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
+                } catch (err) {
+                    throw new Error('Cannot decode password: ' + err.message);
+                }
+
+                // read licenses from iobroker.net
+                const licenses = await _readLicenses(systemLicenses.native.login, password);
+                // save licenses to system.licenses and remember the time
+                // merge the information together
+                const oldLicenses = systemLicenses.native.licenses || [];
+                systemLicenses.native.licenses = licenses;
+                oldLicenses.forEach(oldLicense => {
+                    if (oldLicense.usedBy) {
+                        const newLicense = licenses.find(item => item.json === oldLicense.json);
+                        if (newLicense) {
+                            newLicense.usedBy = oldLicense.usedBy;
+                        }
+                    }
+                });
+
+                systemLicenses.native.readTime = new Date().toISOString();
+
+                // update read time
+                await objects.setObjectAsync('system.licenses', systemLicenses);
+                return licenses;
+            } catch (err) {
+                // if password is invalid
+                if (
+                    err.message.includes('Authentication required') ||
+                    err.message.includes('Cannot decode password:')
+                ) {
+                    // clear existing licenses if exist
+                    if (
+                        systemLicenses &&
+                        systemLicenses.native &&
+                        systemLicenses.native.licenses &&
+                        systemLicenses.native.licenses.length
+                    ) {
+                        systemLicenses.native.licenses = [];
+                        systemLicenses.native.readTime = new Date().toISOString();
+                        await objects.setObjectAsync('system.licenses', systemLicenses);
+                    }
+                }
+
+                throw err;
+            }
+        } else {
+            // if password or login are empty => clear existing licenses if exist
+            if (
+                systemLicenses &&
+                systemLicenses.native &&
+                systemLicenses.native.licenses &&
+                systemLicenses.native.licenses.length
+            ) {
+                systemLicenses.native.licenses = [];
+                systemLicenses.native.readTime = new Date().toISOString();
+                await objects.setObjectAsync('system.licenses', systemLicenses);
+            }
+            throw new Error('No password or login');
+        }
+    }
+}
+
 const ERROR_NOT_FOUND = 'Not exists';
 const ERROR_EMPTY_OBJECT = 'null object';
 const ERROR_NO_OBJECT = 'no object';
@@ -3540,6 +3661,7 @@ module.exports = {
     getLogger,
     showDeprecatedMessage,
     getAllEnums,
+    updateLicenses,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,
