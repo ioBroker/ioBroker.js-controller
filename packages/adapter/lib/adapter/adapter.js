@@ -9587,13 +9587,12 @@ function Adapter(options) {
                                     if (version !== '0' && version !== '1') {
                                         return;
                                     }
-                                }
-                                // Licenses for adapter versions >=2 need to match to the adapter major version
-                                // which means that a new major version requires new licenses if it would be "included"
-                                // in last purchase
+                                } else if (decoded.version && decoded.version !== version) {
+                                    // Licenses for adapter versions >=2 need to match to the adapter major version
+                                    // which means that a new major version requires new licenses if it would be "included"
+                                    // in last purchase
 
-                                // decoded.version could be only '<2' or direct version, like "2", "3" and so on
-                                else if (decoded.version && decoded.version !== version) {
+                                    // decoded.version could be only '<2' or direct version, like "2", "3" and so on
                                     return;
                                 }
 
