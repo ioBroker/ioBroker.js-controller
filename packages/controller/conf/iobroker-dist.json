@@ -3,19 +3,19 @@
         "memoryLimitMB": 0,
         "hostname": "",
         "statisticsInterval": 15000,
-        "statisticsIntervalComment": "Interval how often the counters for input/output in adapters and controller will be updated",
+        "// statisticsInterval": "Interval how often the counters for input/output in adapters and controller will be updated",
         "checkDiskInterval": 300000,
-        "checkDiskIntervalComment": "Interval how often the disk size will be checked",
+        "// checkDiskInterval": "Interval how often the disk size will be checked",
         "instanceStartInterval": 2000,
-        "noChmodComment": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)",
+        "// noChmod": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)",
         "compact": false,
-        "compactComment": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json",
+        "// compact": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json",
         "allowShellCommands": false,
-        "allowShellCommandsComment": "Allow execution of \"shell\" sendToHost commands",
+        "// allowShellCommands": "Allow execution of \"shell\" sendToHost commands",
         "memLimitWarn": 100,
-        "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
+        "// memLimitWarn": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
         "memLimitError": 50,
-        "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
+        "// memLimitError": "If the available RAM is below this threshold on adapter start, an error will be logged."
     },
     "multihostService": {
         "enabled": false,
@@ -24,7 +24,7 @@
     },
     "objects" : {
         "type": "file",
-        "typeComment": "Possible values: 'file' - [port 9001], redis - [port 6379 or 26379 for sentinel].",
+        "// type": "Possible values: 'file' - [port 9001], redis - [port 6379 or 26379 for sentinel].",
         "host": "127.0.0.1",
         "port": 9001,
         "noFileCache": false,
@@ -42,18 +42,37 @@
         "backup": {
             "disabled": false,
             "files": 24,
-            "filesComment": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
+            "// files": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
             "hours": 48,
-            "hoursComment": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
+            "// hours": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
             "period": 120,
-            "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
+            "// period": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
-            "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+            "// path": "Absolute path to backup directory or empty to backup in data directory"
+        },
+        "jsonlOptions": {
+            "// autoCompress (1)": "The JSONL DB is append-only and will contain unnecessary entries after a while.",
+            "// autoCompress (2)": "It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize",
+            "// autoCompress (3)": "Note that too low values here will cause the DB to be rewritten often.",
+            "autoCompress": {
+                "sizeFactor": 2,
+                "sizeFactorMinimumSize": 25000
+            },
+            "// ignoreReadErrors": "If single lines in the DB are corrupted, they can be ignored without losing the whole DB.",
+            "ignoreReadErrors": true,
+            "// throttleFS (1)": "By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.",
+            "// throttleFS (2)": "Be aware that buffered changes will be lost in case the process crashes.",
+            "throttleFS": {
+                "// intervalMs": "Write to the database file no more than every intervalMs milliseconds.",
+                "intervalMs": 60000,
+                "// maxBufferedCommands": "Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash.",
+                "maxBufferedCommands": 100
+            }
         }
     },
     "states" : {
         "type": "file",
-        "typeComment": "Possible values: 'file' - [port 9000], 'redis' - [port 6379].",
+        "// type": "Possible values: 'file' - [port 9000], 'redis' - [port 6379].",
         "host": "127.0.0.1",
         "port": 9000,
         "connectTimeout": 2000,
@@ -69,13 +88,32 @@
         "backup": {
             "disabled": false,
             "files": 24,
-            "filesComment": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
+            "// files": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
             "hours": 48,
-            "hoursComment": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
+            "// hoursC": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
             "period": 120,
-            "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
+            "// period": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
-            "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+            "// path": "Absolute path to backup directory or empty to backup in data directory"
+        },
+        "jsonlOptions": {
+            "// autoCompress (1)": "The JSONL DB is append-only and will contain unnecessary entries after a while.",
+            "// autoCompress (2)": "It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize",
+            "// autoCompress (3)": "Note that too low values here will cause the DB to be rewritten often.",
+            "autoCompress": {
+                "sizeFactor": 10,
+                "sizeFactorMinimumSize": 50000
+            },
+            "// ignoreReadErrors": "If single lines in the DB are corrupted, they can be ignored without losing the whole DB.",
+            "ignoreReadErrors": true,
+            "// throttleFS (1)": "By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.",
+            "// throttleFS (2)": "Be aware that buffered changes will be lost in case the process crashes.",
+            "throttleFS": {
+                "// intervalMs": "Write to the database file no more than every intervalMs milliseconds.",
+                "intervalMs": 60000,
+                "// maxBufferedCommands": "Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash.",
+                "maxBufferedCommands": 2000
+            }
         }
     },
     "log": {
@@ -92,36 +130,35 @@
                "maxFiles": null
             },
             "syslog1": {
-                "type":                 "syslog",
-                "enabled":              false,
+                "type": "syslog",
+                "enabled": false,
 
-                "host":                 "localhost",
-                "hostComment":          "The host running syslogd, defaults to localhost.",
+                "host": "localhost",
+                "// host": "The host running syslogd, defaults to localhost.",
 
-                "portComment":          "The port on the host that syslog is running on, defaults to syslogd's default port(514/UDP).",
+                "// port": "The port on the host that syslog is running on, defaults to syslogd's default port(514/UDP).",
+                "protocol": "udp4",
+                "// protocolC": "The network protocol to log over (e.g. tcp4, udp4, unix, unix-connect, etc).",
 
-                "protocol":             "udp4",
-                "protocolComment":      "The network protocol to log over (e.g. tcp4, udp4, unix, unix-connect, etc).",
-
-                "pathComment":          "The path to the syslog dgram socket (i.e. /dev/log or /var/run/syslog for OS X).",
-                "facilityComment":      "Syslog facility to use (Default: local0).",
-                "localhost":            "iobroker",
-                "localhostComment":     "Host to indicate that log messages are coming from (Default: localhost).",
-                "sysLogTypeComment":    "The type of the syslog protocol to use (Default: BSD).",
-                "app_nameComment":      "The name of the application (Default: process.title).",
-                "eolComment":           "The end of line character to be added to the end of the message (Default: Message without modifications)."
+                "// path": "The path to the syslog dgram socket (i.e. /dev/log or /var/run/syslog for OS X).",
+                "// facility": "Syslog facility to use (Default: local0).",
+                "localhost": "iobroker",
+                "// localhost": "Host to indicate that log messages are coming from (Default: localhost).",
+                "// sysLogType": "The type of the syslog protocol to use (Default: BSD).",
+                "// app_name": "The name of the application (Default: process.title).",
+                "// eol": "The end of line character to be added to the end of the message (Default: Message without modifications)."
             },
             "seq1": {
-                "type":                 "seq",
-                "enabled":              false,
-                "serverUrl":            "http://IP:PORT",
-                "serverUrlComment":     "The http(s) URL including port of the seq server. If you use HTTPS a real certificate is needed; self signed certs are ot accepted.",
-                "apiKey":               "",
-                "apiKeyComment":        "The apiKey of the seq system"
+                "type": "seq",
+                "enabled": false,
+                "serverUrl": "http://IP:PORT",
+                "// serverUrl": "The http(s) URL including port of the seq server. If you use HTTPS a real certificate is needed; self signed certs are ot accepted.",
+                "apiKey": "",
+                "// apiKey": "The apiKey of the seq system"
             }
         }
     },
-    "dataDirComment": "Always relative to iobroker.js-controller/",
+    "// dataDir": "Always relative to iobroker.js-controller/",
     "plugins": {
 
     }

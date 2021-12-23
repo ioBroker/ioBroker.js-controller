@@ -21,12 +21,14 @@ const fs = require('fs-extra');
 const extend = require('node.extend');
 const util = require('util');
 const os = require('os');
+const jwt = require('jsonwebtoken');
 const EventEmitter = require('events').EventEmitter;
 const { tools } = require('@iobroker/js-controller-common');
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
+const semver = require('semver');
 // local version is always same as controller version, since lerna exact: true is used
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
@@ -51,6 +53,7 @@ const supportedFeatures = [
     'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
     'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
     'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
+    'CONTROLLER_LICENSE_MANAGER', // Controller can read licenses from iobroker.net. Since js-controller 4.0    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
     'CONTROLLER_GET_TIME', // you can get the local time and offset via sendTo 'getHostTime'. Since js-controller 4.0
     'DEL_INSTANCE_CUSTOM' // instances/adapter can be deleted with --custom flag to remove corresponding custom of all objects. Since js-controller 4.0
 ];
@@ -649,7 +652,7 @@ function Adapter(options) {
      * @alias supportsFeature
      * @memberof Adapter
      * @param {string} featureName the name of the feature to check
-     * @returns {boolean} true/false wether the featufre is in the list of supported features
+     * @returns {boolean} true/false if the feature is in the list of supported features
      */
     this.supportsFeature = featureName => {
         return supportedFeatures.includes(featureName);
@@ -899,7 +902,7 @@ function Adapter(options) {
                 if (err || !obj) {
                     return tools.maybeCallback(callback, false);
                 }
-                if (obj.common.members.indexOf(user) !== -1) {
+                if (obj.common.members.includes(user)) {
                     return tools.maybeCallback(callback, true);
                 } else {
                     return tools.maybeCallback(callback, false);
@@ -1064,7 +1067,7 @@ function Adapter(options) {
                         groups[g] &&
                         groups[g].common &&
                         groups[g].common.members &&
-                        groups[g].common.members.indexOf(user) !== -1
+                        groups[g].common.members.includes(user)
                     ) {
                         acl.groups.push(groups[g]._id);
                         if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
@@ -1643,7 +1646,7 @@ function Adapter(options) {
                     for (let c = res.rows.length - 1; c >= 0; c--) {
                         if (res.rows[c].value.common.subscribable) {
                             const _id = res.rows[c].id.substring(15); // cut system.adapter.
-                            if (this.autoSubscribe.indexOf(_id) === -1) {
+                            if (!this.autoSubscribe.includes(_id)) {
                                 this.autoSubscribe.push(_id);
                             }
                         }
@@ -1726,7 +1729,7 @@ function Adapter(options) {
                 }
 
                 if (!id) {
-                    logger.error(this.namespaceLog + ' change ID is empty:  ' + JSON.stringify(obj));
+                    logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
                     return;
                 }
 
@@ -1842,7 +1845,7 @@ function Adapter(options) {
                     if (obj && obj.common && obj.common.subscribable) {
                         const _id = id.substring(15); // 'system.adapter.'.length
                         if (obj.common.enabled) {
-                            if (this.autoSubscribe.indexOf(_id) === -1) {
+                            if (!this.autoSubscribe.includes(_id)) {
                                 this.autoSubscribe.push(_id);
                             }
                         } else {
@@ -3142,7 +3145,7 @@ function Adapter(options) {
 
                 for (const currEnum of _enumList) {
                     promises.push(
-                        new Promise((resolve, reject) => {
+                        new Promise((resolve, reject) =>
                             this.getEnum(currEnum, options, (err, list, _enum) => {
                                 if (err) {
                                     return reject(err);
@@ -3150,18 +3153,14 @@ function Adapter(options) {
                                     _enums[_enum] = list;
                                 }
                                 resolve();
-                            });
-                        })
+                            })
+                        )
                     );
                 }
 
                 Promise.all(promises)
-                    .then(() => {
-                        return tools.maybeCallbackWithError(callback, null, _enums);
-                    })
-                    .catch(e => {
-                        return tools.maybeCallbackWithError(callback, e);
-                    });
+                    .then(() => tools.maybeCallbackWithError(callback, null, _enums))
+                    .catch(e => tools.maybeCallbackWithError(callback, e));
             } else {
                 // Read all enums
                 adapterObjects.getObjectView(
@@ -3329,9 +3328,9 @@ function Adapter(options) {
                                             continue;
                                         }
                                         if (
-                                            _enums[es][e].common.members.indexOf(id) !== -1 ||
-                                            _enums[es][e].common.members.indexOf(channel) !== -1 ||
-                                            _enums[es][e].common.members.indexOf(device) !== -1
+                                            _enums[es][e].common.members.includes(id) ||
+                                            _enums[es][e].common.members.includes(channel) ||
+                                            _enums[es][e].common.members.includes(device)
                                         ) {
                                             list[id].enums[e] = _enums[es][e].common.name;
                                         }
@@ -3479,7 +3478,6 @@ function Adapter(options) {
          * Promise-version of Adapter.delObject
          */
         this.delObjectAsync = tools.promisify(this.delObject, this);
-
         const _deleteObjects = (tasks, options, cb) => {
             if (!tasks || !tasks.length) {
                 return tools.maybeCallback(cb);
@@ -3542,14 +3540,8 @@ function Adapter(options) {
                 // read object itself
                 adapterObjects.getObject(id, options, (err, obj) => {
                     const tasks =
-                        obj && (!obj.common || !obj.common.dontDelete)
-                            ? [
-                                  {
-                                      id,
-                                      state: obj.type === 'state'
-                                  }
-                              ]
-                            : [];
+                        obj && (!obj.common || !obj.common.dontDelete) ? [{ id, state: obj.type === 'state' }] : [];
+
                     const selector = { startkey: id + '.', endkey: id + '.\u9999' };
                     // read all underlying states
                     adapterObjects.getObjectList(selector, options, (err, res) => {
@@ -4240,8 +4232,7 @@ function Adapter(options) {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else if (obj) {
-                        const pos = obj.common.members.indexOf(objId);
-                        if (pos === -1) {
+                        if (!obj.common.members.includes(objId)) {
                             obj.common.members.push(objId);
                             obj.from = 'system.adapter.' + this.namespace;
                             obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -4264,8 +4255,7 @@ function Adapter(options) {
                     }
 
                     if (obj) {
-                        const pos = obj.common.members.indexOf(objId);
-                        if (pos === -1) {
+                        if (!obj.common.members.includes(objId)) {
                             obj.common.members.push(objId);
 
                             obj.from = 'system.adapter.' + this.namespace;
@@ -4762,8 +4752,7 @@ function Adapter(options) {
                     if (err || !obj) {
                         return tools.maybeCallbackWithError(callback, err || tools.ERRORS.ERROR_NOT_FOUND);
                     }
-                    const pos = obj.common.members.indexOf(objId);
-                    if (pos === -1) {
+                    if (!obj.common.members.includes(objId)) {
                         obj.common.members.push(objId);
                         obj.from = 'system.adapter.' + this.namespace;
                         obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -4780,8 +4769,7 @@ function Adapter(options) {
 
                 adapterObjects.getObject('enum.' + enumName + '.' + addTo, options, (err, obj) => {
                     if (!err && obj) {
-                        const pos = obj.common.members.indexOf(objId);
-                        if (pos === -1) {
+                        if (!obj.common.members.includes(objId)) {
                             obj.common.members.push(objId);
                             obj.from = 'system.adapter.' + this.namespace;
                             obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -5411,7 +5399,7 @@ function Adapter(options) {
             };
 
             for (let i = 0; i < format.length; i++) {
-                if (validFormatChars.indexOf(format[i]) >= 0) {
+                if (validFormatChars.includes(format[i])) {
                     s += format[i];
                 } else {
                     put(s);
@@ -5449,7 +5437,7 @@ function Adapter(options) {
         this.getForeignObject(options.user, null, (err, userAcl) => {
             if (!userAcl) {
                 // User does not exists
-                logger.error(this.namespaceLog + ' unknown user "' + options.user + '"');
+                logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
                 return tools.maybeCallback(callback, options);
             } else {
                 this.getForeignObjects('*', 'group', null, null, (err, groups) => {
@@ -5461,7 +5449,7 @@ function Adapter(options) {
                                 groups[g] &&
                                 groups[g].common &&
                                 groups[g].common.members &&
-                                groups[g].common.members.indexOf(options.user) !== -1
+                                groups[g].common.members.includes(options.user)
                             ) {
                                 options.groups.push(groups[g]._id);
                             }
@@ -5626,9 +5614,9 @@ function Adapter(options) {
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
+                        logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
                     }
-                } else if (options.groups.indexOf(obj.acl.ownerGroup) !== -1 && !limitToOwnerRights) {
+                } else if (options.groups.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
                         if (command === 'delState' && !options.acl.state['delete']) {
                             logger.warn(
@@ -5654,7 +5642,7 @@ function Adapter(options) {
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
+                        logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
                     }
                 } else if (!limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
@@ -5682,19 +5670,19 @@ function Adapter(options) {
                             return false;
                         }
                     } else {
-                        logger.warn(this.namespaceLog + ' Called unknown command:' + command);
+                        logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
                         return false;
                     }
                 } else {
-                    logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
+                    logger.warn(`${this.namespaceLog} Permissions limited to Owner rights on "${obj._id}"`);
                     return false;
                 }
             } else if (limitToOwnerRights) {
-                logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
+                logger.warn(`${this.namespaceLog} Permissions limited to Owner rights on "${obj._id}"`);
                 return false;
             }
         } else if (limitToOwnerRights) {
-            logger.warn(this.namespaceLog + ' Permissions limited to Owner rights');
+            logger.warn(`${this.namespaceLog} Permissions limited to Owner rights on "${obj._id}"`);
             return false;
         }
 
@@ -5743,7 +5731,7 @@ function Adapter(options) {
                     if (_helper.i + 1 >= ids.length) {
                         if (_helper.errors.length) {
                             for (let j = ids.length - 1; j >= 0; j--) {
-                                if (_helper.errors.indexOf(ids[j]) !== -1) {
+                                if (_helper.errors.includes(ids[j])) {
                                     ids.splice(j, 1);
                                     _helper.objs.splice(j, 1);
                                 }
@@ -6044,7 +6032,7 @@ function Adapter(options) {
                 if (options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
                     let subs;
                     try {
-                        subs = JSON.parse(state.val || '{}');
+                        subs = JSON.parse((state && state.val) || '{}');
                         Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
                     } catch {
                         subs = {};
@@ -6141,7 +6129,7 @@ function Adapter(options) {
                             ? tools.formatAliasValue(
                                   this.aliases[id].source,
                                   target,
-                                  JSON.parse(JSON.stringify(state)),
+                                  deepClone(state),
                                   logger,
                                   this.namespaceLog
                               )
@@ -7938,7 +7926,7 @@ function Adapter(options) {
                 this.aliases[sourceId] = this.aliases[sourceId] || { source: null, targets: [] };
 
                 const targetEntry = {
-                    alias: JSON.parse(JSON.stringify(aliasObj.common.alias)),
+                    alias: deepClone(aliasObj.common.alias),
                     id: aliasObj._id,
                     pattern,
                     type: aliasObj.common.type,
@@ -8075,7 +8063,7 @@ function Adapter(options) {
             }
 
             // RegExp is allowed for alias only
-            if (pattern instanceof RegExp && pattern.toString().indexOf('alias') !== -1) {
+            if (pattern instanceof RegExp && pattern.toString().includes('alias')) {
                 logger.error(`${this.namespaceLog} Regexp is not supported for "subscribeForeignStates"`);
                 return tools.maybeCallbackWithError(callback, 'Regexp is not supported for "subscribeForeignStates"');
             }
@@ -8817,18 +8805,15 @@ function Adapter(options) {
                                 const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                                 if (
                                     (typeof obj[i] === 'string' &&
-                                        (obj[i].indexOf('"val":true') !== -1 ||
-                                            obj[i].indexOf('"val":"true"') !== -1)) ||
+                                        (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))) ||
                                     (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))
                                 ) {
-                                    logs.push('Subscriber - ' + id + ' ENABLED');
+                                    logs.push(`Subscriber - ${id} ENABLED`);
                                 } else {
                                     if (logs) {
-                                        logs.push('Subscriber - ' + id + ' (disabled)');
+                                        logs.push(`Subscriber - ${id} (disabled)`);
                                     } else {
-                                        logger.error(
-                                            this.namespaceLog + ' LOGINFO: Subscriber - ' + id + ' (disabled)'
-                                        );
+                                        logger.error(`${this.namespaceLog} LOGINFO: Subscriber - ${id} (disabled)`);
                                     }
                                 }
                             }
@@ -8872,7 +8857,7 @@ function Adapter(options) {
                             const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                             if (
                                 typeof obj[i] === 'string' &&
-                                (obj[i].indexOf('"val":true') !== -1 || obj[i].indexOf('"val":"true"') !== -1)
+                                (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))
                             ) {
                                 this.logRedirect(true, id);
                             } else if (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true')) {
@@ -8910,7 +8895,7 @@ function Adapter(options) {
             }
 
             if (isActive) {
-                if (this.logList.indexOf(id) === -1) {
+                if (!this.logList.includes(id)) {
                     this.logList.push(id);
                 }
             } else {
@@ -9138,6 +9123,7 @@ function Adapter(options) {
                     this.common = adapterConfig.common || {};
                     this.host = this.common.host || tools.getHostName() || os.hostname();
                 }
+
                 this.adapterConfig = adapterConfig;
 
                 // Decrypt all attributes of encryptedNative
@@ -9150,9 +9136,7 @@ function Adapter(options) {
                                 this.getEncryptedConfig(attr)
                                     .then(decryptedValue => (this.config[attr] = decryptedValue))
                                     .catch(e =>
-                                        logger.error(
-                                            this.namespaceLog + ' Can not decrypt attribute ' + attr + ': ' + e
-                                        )
+                                        logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e}`)
                                     )
                             );
                         }
@@ -9561,6 +9545,79 @@ function Adapter(options) {
     };
     this.pluginHandler = new PluginHandler(pluginSettings);
     this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+
+    /**
+     * This method returns the list of license that can be used by this adapter
+     * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @returns {Promise<object[]>} list of suitable licenses
+     */
+    this.getSuitableLicenses = async all => {
+        const licenses = [];
+        try {
+            const obj = await this.getForeignObjectAsync('system.licenses');
+
+            if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
+                const now = Date.now();
+                const cert = fs.readFileSync(__dirname + '/../../cert/cloudCert.crt');
+                const version = semver.major(this.pack.version);
+
+                obj.native.licenses.forEach(license => {
+                    try {
+                        const decoded = jwt.verify(license.json, cert);
+                        if (
+                            decoded.name &&
+                            (!decoded.valid_till ||
+                                license.valid_till === '0000-00-00 00:00:00' ||
+                                new Date(license.valid_till).getTime() > now)
+                        ) {
+                            if (
+                                decoded.name.startsWith('iobroker.' + this.name) &&
+                                (all || !license.usedBy || license.usedBy === this.namespace)
+                            ) {
+                                // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
+                                //
+                                // If license is for adapter with version 0 or 1
+                                if (
+                                    decoded.version === '&lt;2' ||
+                                    decoded.version === '<2' ||
+                                    decoded.version === '<1' ||
+                                    decoded.version === '<=1'
+                                ) {
+                                    // check the current adapter major version
+                                    if (version !== '0' && version !== '1') {
+                                        return;
+                                    }
+                                } else if (decoded.version && decoded.version !== version) {
+                                    // Licenses for adapter versions >=2 need to match to the adapter major version
+                                    // which means that a new major version requires new licenses if it would be "included"
+                                    // in last purchase
+
+                                    // decoded.version could be only '<2' or direct version, like "2", "3" and so on
+                                    return;
+                                }
+
+                                // remove free license if commercial license found
+                                if (decoded.invoice !== 'free') {
+                                    const pos = licenses.findIndex(item => item.invoice === 'free');
+                                    if (pos !== -1) {
+                                        licenses.splice(pos, 1);
+                                    }
+                                }
+                                license.decoded = decoded;
+                                licenses.push(license);
+                            }
+                        }
+                    } catch (err) {
+                        logger.error(`${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`);
+                    }
+                });
+            }
+        } catch {
+            // ignore
+        }
+
+        return licenses;
+    };
 
     initObjects(() => {
         if (this.inited) {

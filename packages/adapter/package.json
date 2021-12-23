@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-adapter",
-  "version": "4.0.0-alpha.30-20211220-ce617590",
+  "version": "4.0.0-alpha.31-20211221-5d2e6cde",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -17,6 +17,7 @@
     "@iobroker/plugin-sentry": "~1.1.10",
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.0.0",
+    "jsonwebtoken": "^8.5.1",
     "node-forge": "^0.10.0",
     "node-schedule": "^2.1.0",
     "node.extend": "^2.0.2",

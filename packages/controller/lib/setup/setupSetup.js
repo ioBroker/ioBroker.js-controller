@@ -29,9 +29,9 @@ function Setup(options) {
     const processExit = options.processExit;
     const dbConnect = options.dbConnect;
     const params = options.params;
-    const cleanDatabase = options.cleanDatabase;
+    const cleanDatabaseAsync = options.cleanDatabaseAsync;
     const resetDbConnect = options.resetDbConnect;
-    const restartController = options.restartController;
+    const restartControllerAsync = options.restartControllerAsync;
     let objects;
     let states;
 
@@ -502,13 +502,13 @@ function Setup(options) {
                     const backup = new Backup({
                         states,
                         objects,
-                        cleanDatabase,
-                        restartController,
+                        cleanDatabaseAsync,
+                        restartControllerAsync,
                         processExit: callback
                     });
 
                     console.log('Creating backup ...');
-                    console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
+                    console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
 
                     let filePath = await backup.createBackup('', true);
                     const origBackupPath = filePath;
@@ -523,7 +523,7 @@ function Setup(options) {
                     console.log('Backup created: ' + filePath);
                     await resetDbConnect();
 
-                    console.log('updating conf/' + tools.appName + '.json');
+                    console.log(`updating conf/${tools.appName}.json`);
                     fs.writeFileSync(tools.getConfigFileName() + '.bak', JSON.stringify(oldConfig, null, 2));
                     fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
 
@@ -547,13 +547,13 @@ function Setup(options) {
                         const backup = new Backup({
                             states,
                             objects,
-                            cleanDatabase,
-                            restartController,
+                            cleanDatabaseAsync,
+                            restartControllerAsync,
                             processExit: callback,
                             dbMigration: true
                         });
                         console.log('Restore backup ...');
-                        console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
+                        console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
                         backup.restoreBackup(filePath, err => {
                             if (err) {
                                 console.log('Error happened during restore: ' + err);
@@ -563,14 +563,11 @@ function Setup(options) {
                                 fs.unlinkSync(tools.getConfigFileName() + '.bak');
                             } else {
                                 console.log('Backup restored - Migration successful');
-
                                 console.log(COLOR_YELLOW);
                                 console.log('Important: If your system consists of multiple hosts please execute ');
                                 console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
                                 console.log('also been updated to this states/objects database configuration AND are');
                                 console.log('running!' + COLOR_RESET);
-
-                                fs.unlinkSync(tools.getConfigFileName() + '.bak');
                             }
 
                             callback(err ? 78 : 0);
@@ -685,11 +682,9 @@ function Setup(options) {
 
         const defaultObjectsHost = otype === originalConfig.objects.type ? originalConfig.objects.host : '127.0.0.1';
         let ohost = rl.question(
-            'Host / Unix Socket of objects DB(' +
-                otype +
-                '), default[' +
-                (Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost) +
-                ']: ',
+            `Host / Unix Socket of objects DB(${otype}), default[${
+                Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }
@@ -708,12 +703,11 @@ function Setup(options) {
             otype === originalConfig.objects.type && ohost === originalConfig.objects.host
                 ? originalConfig.objects.port
                 : op;
+
         const userObjPort = rl.question(
-            'Port of objects DB(' +
-                otype +
-                '), default[' +
-                (Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort) +
-                ']: ',
+            `Port of objects DB(${otype}), default[${
+                Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
                 limit: /^[0-9, ]+$/
@@ -771,7 +765,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-states-${stype}`);
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
-            console.log(COLOR_RED + 'Unknown objects type: ' + stype + COLOR_RESET);
+            console.log(`${COLOR_RED}Unknown objects type: ${stype}${COLOR_RESET}`);
             if (stype !== 'file' && stype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the states db type you entered is really correct!`);
@@ -795,11 +789,9 @@ function Setup(options) {
             defaultStatesHost = ohost;
         }
         let shost = rl.question(
-            'Host / Unix Socket of states DB (' +
-                stype +
-                '), default[' +
-                (Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost) +
-                ']: ',
+            `Host / Unix Socket of states DB (${stype}), default[${
+                Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }
@@ -822,11 +814,9 @@ function Setup(options) {
             defaultStatesPort = oport;
         }
         const userStatePort = rl.question(
-            'Port of states DB (' +
-                stype +
-                '), default[' +
-                (Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort) +
-                ']: ',
+            `Port of states DB (${stype}), default[${
+                Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort
+            }]: `,
             {
                 defaultInput: Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort,
                 limit: /^[0-9, ]+$/
@@ -857,7 +847,7 @@ function Setup(options) {
                 : oSentinelName && oport === sport
                 ? oSentinelName
                 : 'mymaster';
-            sSentinelName = rl.question('States Redis Sentinel Master Name [' + defaultSentinelName + ']: ', {
+            sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
         }
@@ -871,11 +861,11 @@ function Setup(options) {
             });
 
             hname = rl.question(
-                'Host name of this machine [' +
-                    (originalConfig && originalConfig.system
+                `Host name of this machine [${
+                    originalConfig && originalConfig.system
                         ? originalConfig.system.hostname || require('os').hostname()
-                        : require('os').hostname()) +
-                    ']: ',
+                        : require('os').hostname()
+                }]: `,
                 {
                     defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
                 }
