@@ -8069,7 +8069,7 @@ function Adapter(options) {
                         subs = {};
                     }
 
-                    if (!tools.isObject(subs)) {
+                    if (!tools.isObject(subs[pattern])) {
                         subs[pattern] = {};
                     }
 
@@ -8297,12 +8297,11 @@ function Adapter(options) {
 
                         if (typeof subs[pattern][this.namespace] === 'number') {
                             subs[pattern][this.namespace]--;
+                            if (subs[pattern][this.namespace] <= 0) {
+                                delete subs[pattern][this.namespace];
+                            }
                         } else {
                             // corrupted info, we can only delete
-                            delete subs[pattern][this.namespace];
-                        }
-
-                        if (subs[pattern][this.namespace] <= 0) {
                             delete subs[pattern][this.namespace];
                         }
 
