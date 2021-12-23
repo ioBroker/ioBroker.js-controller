@@ -3099,7 +3099,9 @@ async function processMessage(msg) {
                 .updateLicenses(objects, msg.message && msg.message.login, msg.message && msg.message.password)
                 .then(licenses => {
                     logger.info(
-                        `${hostLogPrefix} Received ${licenses.length} licenses: "${licenses.map(l => l.product).join(', ')}"`
+                        `${hostLogPrefix} Received ${licenses.length} licenses: "${licenses
+                            .map(l => l.product)
+                            .join(', ')}"`
                     );
                     msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
                 })
@@ -3107,8 +3109,8 @@ async function processMessage(msg) {
                     logger.error(`${hostLogPrefix} Cannot read licenses: ${err.message}`);
 
                     msg.callback &&
-                    msg.from &&
-                    sendTo(msg.from, msg.command, { result: [], error: err.message }, msg.callback);
+                        msg.from &&
+                        sendTo(msg.from, msg.command, { result: [], error: err.message }, msg.callback);
                 });
             break;
         }

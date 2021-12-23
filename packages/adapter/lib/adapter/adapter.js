@@ -6032,7 +6032,7 @@ function Adapter(options) {
                 if (options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
                     let subs;
                     try {
-                        subs = JSON.parse(state.val || '{}');
+                        subs = JSON.parse((state && state.val) || '{}');
                         Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
                     } catch {
                         subs = {};
@@ -8805,8 +8805,7 @@ function Adapter(options) {
                                 const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                                 if (
                                     (typeof obj[i] === 'string' &&
-                                        (obj[i].includes('"val":true') ||
-                                            obj[i].includes('"val":"true"'))) ||
+                                        (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))) ||
                                     (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))
                                 ) {
                                     logs.push(`Subscriber - ${id} ENABLED`);
@@ -8814,9 +8813,7 @@ function Adapter(options) {
                                     if (logs) {
                                         logs.push(`Subscriber - ${id} (disabled)`);
                                     } else {
-                                        logger.error(
-                                            `${this.namespaceLog} LOGINFO: Subscriber - ${id} (disabled)`
-                                        );
+                                        logger.error(`${this.namespaceLog} LOGINFO: Subscriber - ${id} (disabled)`);
                                     }
                                 }
                             }
@@ -9139,9 +9136,7 @@ function Adapter(options) {
                                 this.getEncryptedConfig(attr)
                                     .then(decryptedValue => (this.config[attr] = decryptedValue))
                                     .catch(e =>
-                                        logger.error(
-                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e}`
-                                        )
+                                        logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e}`)
                                     )
                             );
                         }
