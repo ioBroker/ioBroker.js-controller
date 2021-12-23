@@ -80,6 +80,24 @@
             "object": 1604
         }
     },
+    "system.licenses": {
+        "_id": "system.licenses",
+        "type": "config",
+        "common": {
+            "name": "Licenses from iobroker.net"
+        },
+        "native": {
+            "login": "",
+            "password": "",
+            "licenses": [],
+            "readTime": 0
+        },
+        "acl": {
+            "owner": "system.user.admin",
+            "ownerGroup": "system.group.administrator",
+            "object": 1604
+        }
+    },
     "enum.rooms": {
         "_id": "enum.rooms",
         "common": {

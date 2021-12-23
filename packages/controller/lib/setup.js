@@ -524,8 +524,8 @@ async function processCommand(command, args, params, callback) {
             const setup = new Setup({
                 dbConnect,
                 processExit: callback,
-                cleanDatabase,
-                restartController,
+                cleanDatabaseAsync,
+                restartControllerAsync,
                 resetDbConnect,
                 params
             });
