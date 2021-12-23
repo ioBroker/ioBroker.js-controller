@@ -49,6 +49,25 @@
             "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
             "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+        },
+        "jsonlOptions": {
+            "// autoCompress (1)": "The JSONL DB is append-only and will contain unnecessary entries after a while.",
+            "// autoCompress (2)": "It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize",
+            "// autoCompress (3)": "Note that too low values here will cause the DB to be rewritten often.",
+            "autoCompress": {
+                "sizeFactor": 2,
+                "sizeFactorMinimumSize": 25000
+            },
+            "// ignoreReadErrors": "If single lines in the DB are corrupted, they can be ignored without losing the whole DB.",
+            "ignoreReadErrors": true,
+            "// throttleFS (1)": "By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.",
+            "// throttleFS (2)": "Be aware that buffered changes will be lost in case the process crashes.",
+            "throttleFS": {
+                "// intervalMs": "Write to the database file no more than every intervalMs milliseconds.",
+                "intervalMs": 60000,
+                "// maxBufferedCommands": "Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash.",
+                "maxBufferedCommands": 100
+            }
         }
     },
     "states" : {
@@ -76,6 +95,25 @@
             "periodComment": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
             "pathComment": "Absolute path to backup directory or empty to backup in data directory"
+        },
+        "jsonlOptions": {
+            "// autoCompress (1)": "The JSONL DB is append-only and will contain unnecessary entries after a while.",
+            "// autoCompress (2)": "It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize",
+            "// autoCompress (3)": "Note that too low values here will cause the DB to be rewritten often.",
+            "autoCompress": {
+                "sizeFactor": 10,
+                "sizeFactorMinimumSize": 50000
+            },
+            "// ignoreReadErrors": "If single lines in the DB are corrupted, they can be ignored without losing the whole DB.",
+            "ignoreReadErrors": true,
+            "// throttleFS (1)": "By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.",
+            "// throttleFS (2)": "Be aware that buffered changes will be lost in case the process crashes.",
+            "throttleFS": {
+                "// intervalMs": "Write to the database file no more than every intervalMs milliseconds.",
+                "intervalMs": 60000,
+                "// maxBufferedCommands": "Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash.",
+                "maxBufferedCommands": 2000
+            }
         }
     },
     "log": {
