@@ -8274,13 +8274,23 @@ function Adapter(options) {
                             logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`);
                             return;
                         }
-                        if (!subs[pattern]) {
+
+                        if (
+                            !tools.isObject(subs) ||
+                            !tools.isObject(subs[pattern]) ||
+                            subs[pattern][this.namespace] === undefined
+                        ) {
+                            // check subs is a valid object, because it comes from state.val
                             return;
                         }
-                        if (subs[pattern][this.namespace] === undefined) {
-                            return;
+
+                        if (typeof subs[pattern][this.namespace] === 'number') {
+                            subs[pattern][this.namespace]--;
+                        } else {
+                            // corrupted info, we can only delete
+                            delete subs[pattern][this.namespace];
                         }
-                        subs[pattern][this.namespace]--;
+
                         if (subs[pattern][this.namespace] <= 0) {
                             delete subs[pattern][this.namespace];
                         }
