@@ -14,6 +14,7 @@ const pathLib = require('path');
 const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
+const path = require('path');
 
 // We cannot use relative paths for the backup locations, as they used by both
 // require, which resolves relative paths from __dirname
@@ -119,9 +120,9 @@ class BackupRestore {
         // All paths are returned always relative to /node_modules/appName.js-controller
         if (dataDir) {
             if (dataDir[0] === '.' && dataDir[1] === '.') {
-                dataDir = __dirname + '/../../' + dataDir;
+                dataDir = `${__dirname}/../../${dataDir}`;
             } else if (dataDir[0] === '.' && dataDir[1] === '/') {
-                dataDir = __dirname + '/../../' + dataDir.substring(2);
+                dataDir = `${__dirname}/../../${dataDir.substring(2)}`;
             }
         }
         dataDir = dataDir.replace(/\\/g, '/');
@@ -133,7 +134,7 @@ class BackupRestore {
         parts.pop(); // remove data or appName-data
         parts.pop();
 
-        return pathLib.normalize(parts.join('/') + '/backups/');
+        return pathLib.normalize(`${parts.join('/')}/backups/`);
     }
 
     copyFileSync(source, target) {
@@ -176,12 +177,18 @@ class BackupRestore {
         }
     }
 
-    // returns Promise and could be used as async
+    /**
+     * Pack and compress the backup
+     *
+     * @param {string} name - backup name
+     * @return {Promise<string>}
+     * @private
+     */
     _packBackup(name) {
         // 2021_10_25 BF (TODO): store letsencrypt files too
-        const letsEncrypt = this.configDir + '/letsencrypt';
+        const letsEncrypt = `${this.configDir}/letsencrypt`;
         if (fs.existsSync(letsEncrypt)) {
-            this.copyFolderRecursiveSync(letsEncrypt, tmpDir + '/backup');
+            this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
         }
         const tar = require('tar');
 
@@ -539,34 +546,28 @@ class BackupRestore {
     async _reloadAdaptersObjects() {
         const dirs = [];
         let _modules;
-        let p = pathLib.normalize(__dirname + '/../../node_modules');
+        let p = pathLib.normalize(`${__dirname}/../../node_modules`);
 
         if (fs.existsSync(p)) {
             if (!p.includes('js-controller')) {
                 _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
                 if (_modules) {
                     const regEx = new RegExp(`^${tools.appName}\\.`, 'i');
-                    for (let i = 0; i < _modules.length; i++) {
-                        if (
-                            regEx.test(_modules[i]) &&
-                            !dirs.includes(_modules[i].substring(tools.appName.length + 1))
-                        ) {
-                            dirs.push(_modules[i]);
+                    for (const module of _modules) {
+                        if (regEx.test(module) && !dirs.includes(module.substring(tools.appName.length + 1))) {
+                            dirs.push(module);
                         }
                     }
                 }
             } else {
-                p = pathLib.normalize(__dirname + '/../../../node_modules');
+                p = pathLib.normalize(`${__dirname}/../../../node_modules`);
                 if (fs.existsSync(p)) {
                     _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
                     if (_modules) {
-                        const regEx = new RegExp('^' + tools.appName + '\\.', 'i');
-                        for (let i = 0; i < _modules.length; i++) {
-                            if (
-                                regEx.test(_modules[i]) &&
-                                !dirs.includes(_modules[i].substring(tools.appName.length + 1))
-                            ) {
-                                dirs.push(_modules[i]);
+                        const regEx = new RegExp(`^${tools.appName}\\.`, 'i');
+                        for (const module of _modules) {
+                            if (regEx.test(module) && !dirs.includes(module.substring(tools.appName.length + 1))) {
+                                dirs.push(module);
                             }
                         }
                     }
@@ -575,28 +576,28 @@ class BackupRestore {
         }
         // if installed as npm
         if (fs.existsSync(`${__dirname}/../../../../node_modules/${tools.appName}.js-controller`)) {
-            const p = pathLib.normalize(__dirname + '/../../..');
+            const p = pathLib.normalize(`${__dirname}/../../..`);
             _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
             const regEx_ = new RegExp(`^${tools.appName}\\.`, 'i');
-            for (let j = 0; j < _modules.length; j++) {
+            for (const module of _modules) {
                 // if starting from application name + '.'
                 if (
-                    regEx_.test(_modules[j]) &&
+                    regEx_.test(module) &&
                     // If not js-controller
-                    _modules[j].substring(tools.appName.length + 1) !== 'js-controller' &&
-                    !dirs.includes(_modules[j].substring(tools.appName.length + 1))
+                    module.substring(tools.appName.length + 1) !== 'js-controller' &&
+                    !dirs.includes(module.substring(tools.appName.length + 1))
                 ) {
-                    dirs.push(_modules[j]);
+                    dirs.push(module);
                 }
             }
         }
 
-        for (let index = 0; index < dirs.length; index++) {
-            const adapterName = dirs[index].replace(/^iobroker\./i, '');
+        for (const dir of dirs) {
+            const adapterName = dir.replace(/^iobroker\./i, '');
             await this.upload.uploadAdapterAsync(adapterName, false, true);
             await this.upload.uploadAdapterAsync(adapterName, true, true);
             let pkg = null;
-            if (!dirs[index]) {
+            if (!dir) {
                 console.error('Wrong');
             }
             const adapterDir = tools.getAdapterDir(adapterName);
@@ -605,7 +606,7 @@ class BackupRestore {
             }
 
             if (pkg && pkg.objects && pkg.objects.length) {
-                console.log(`host.${hostname} Setup "${dirs[index]}" adapter`);
+                console.log(`host.${hostname} Setup "${dir}" adapter`);
                 await this._reloadAdapterObject(pkg.objects);
             }
         }
@@ -617,11 +618,11 @@ class BackupRestore {
             return;
         }
         const files = fs.readdirSync(root + path);
-        for (let i = 0; i < files.length; i++) {
-            const stat = fs.statSync(`${root + path}/${files[i]}`);
+        for (const file of files) {
+            const stat = fs.statSync(`${root + path}/${file}`);
             if (stat.isDirectory()) {
                 try {
-                    await this._uploadUserFiles(root, `${path}/${files[i]}`);
+                    await this._uploadUserFiles(root, `${path}/${file}`);
                 } catch (err) {
                     console.error(`Error: ${err}`);
                 }
@@ -629,12 +630,12 @@ class BackupRestore {
                 const parts = path.split('/');
                 let adapter = parts.splice(0, 2);
                 adapter = adapter[1];
-                const _path = parts.join('/') + '/' + files[i];
+                const _path = `${parts.join('/')}/${file}`;
                 console.log(`host.${hostname} Upload user file "${adapter}/${_path}`);
                 try {
-                    await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(root + path + '/' + files[i]));
+                    await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(`${root + path}/${file}`));
                 } catch (err) {
-                    console.error(`Error: ${err}`);
+                    console.error(`Error: ${err.message}`);
                 }
             }
         }
@@ -655,7 +656,15 @@ class BackupRestore {
         });
     }
 
-    async _restoreAfterStop(restartOnFinish) {
+    /**
+     * Restore after controller has been stopped
+     *
+     * @param {boolean} restartOnFinish - restart controller after restore
+     * @param {boolean} force - skip the controller version check
+     * @returns {Promise<*>}
+     * @private
+     */
+    async _restoreAfterStop(restartOnFinish, force) {
         // Open file
         let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
@@ -669,6 +678,25 @@ class BackupRestore {
             console.error(`Cannot parse "${tmpDir}/backup/backup_.json": ${err.message}`);
             return EXIT_CODES.CANNOT_RESTORE_BACKUP;
         }
+
+        const controllerDir = tools.getControllerDir();
+
+        // check that the same controller version is installed as it is contained in backup
+        if (!force) {
+            const exitCode = this._ensureCompatibility(
+                controllerDir,
+                restore.config.system.hostname || hostname,
+                restore.objects
+            );
+
+            if (exitCode) {
+                // we had an error
+                return exitCode;
+            }
+        }
+
+        // prevent having wrong versions of adapters
+        await this._removeAllAdapters(controllerDir);
 
         // stop all adapters
         console.log(`host.${hostname} Clear all objects and states...`);
@@ -689,16 +717,92 @@ class BackupRestore {
         // Required for upload adapter
         this.mime = this.mime || require('mime');
         // Load user files into DB
-        await this._uploadUserFiles(tmpDir + '/backup/files');
-        //  reload objects of adapters
+        await this._uploadUserFiles(`${tmpDir}/backup/files`);
+        // reload objects of adapters (if some couldn't be removed - normally this shouldn't be necessary anymore)
         await this._reloadAdaptersObjects();
         // Reload host objects
         const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(pathLib.join(tmpDir, 'backup'));
+
+        if (force) {
+            // js-controller version has changed (setup never called for this version)
+            console.log('Forced restore - executing setup ...');
+            const cpPromise = require('promisify-child-process');
+            try {
+                await cpPromise.exec(
+                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+                );
+            } catch (e) {
+                console.error(
+                    `Could not execute "setup" command, please ensure "setup" is called before starting ioBroker: ${e.message}`
+                );
+            }
+        }
+
         if (restartOnFinish) {
             await this.restartControllerAsync();
+        }
+
+        return EXIT_CODES.NO_ERROR;
+    }
+
+    /**
+     * Removes all adapters
+     * @param {string} controllerDir - directory of js-controller
+     * @return {Promise<void>}
+     * @private
+     */
+    async _removeAllAdapters(controllerDir) {
+        const nodeModulePath = path.join(controllerDir, '..');
+        const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
+
+        // we need to uninstall current adapters to get exact the same system as before backup
+        for (const dir of nodeModuleDirs) {
+            if (
+                dir.isDirectory() &&
+                dir.name.startsWith(`${tools.appName.toLowerCase()}.`) &&
+                dir.name !== `${tools.appName.toLowerCase()}.js-controller`
+            ) {
+                try {
+                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dir.name, 'package.json'));
+                    console.log(`Removing current installation of ${packJson.name}`);
+                    await tools.uninstallNodeModule(packJson.name);
+                } catch {
+                    // ignore
+                }
+            }
+        }
+    }
+
+    /**
+     * Ensure that installed controller version matches version in backup
+     *
+     * @param {string} controllerDir - directory of js-controller
+     * @param {string} backupHostname - hostname in backup file
+     * @param {object[]} backupObjects - the objects contained in the backup
+     * @return {undefined|number}
+     * @private
+     */
+    _ensureCompatibility(controllerDir, backupHostname, backupObjects) {
+        try {
+            const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
+            const hostObj = backupObjects.find(obj => obj.id === `system.host.${backupHostname}`);
+            if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
+                console.warn('The current version of js-controller differs from the version in the backup.');
+                console.warn('The js-controller version of the backup can not be restored automatically.');
+                console.warn(
+                    `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
+                );
+                console.warn(
+                    'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
+                );
+
+                return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+            }
+        } catch {
+            // ignore
         }
     }
 
@@ -712,9 +816,9 @@ class BackupRestore {
         const result = [];
         if (fs.existsSync(dir)) {
             const files = fs.readdirSync(dir);
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].match(/\.tar\.gz$/i)) {
-                    result.push(files[i]);
+            for (const file of files) {
+                if (file.match(/\.tar\.gz$/i)) {
+                    result.push(file);
                 }
             }
             return result;
@@ -888,7 +992,7 @@ class BackupRestore {
         } // endIf
     } // endCheckDirectory
 
-    restoreBackup(name, callback) {
+    restoreBackup(name, force, callback) {
         let backups;
         if (!name && name !== 0) {
             // List all available backups
@@ -897,7 +1001,7 @@ class BackupRestore {
             backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
                 backups.forEach((backup, i) =>
-                    console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`)
+                    console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`)
                 );
             } else {
                 console.warn('No backups found');
@@ -922,7 +1026,7 @@ class BackupRestore {
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     backups.forEach((backup, i) =>
-                        console.log(`${backup} or ${backup.replace('_backup' + tools.appName + '.tar.gz', '')} or ${i}`)
+                        console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`)
                     );
                 } // endIf
             } else {
@@ -948,7 +1052,7 @@ class BackupRestore {
         const tar = require('tar');
 
         // delete /backup/backup.json
-        fs.existsSync(tmpDir + '/backup/backup.json') && fs.unlinkSync(tmpDir + '/backup/backup.json');
+        fs.existsSync(`${tmpDir}/backup/backup.json`) && fs.unlinkSync(`${tmpDir}/backup/backup.json`);
 
         tar.extract(
             {
@@ -969,23 +1073,23 @@ class BackupRestore {
                 // Stop controller
                 const daemon = require('daemonize2').setup({
                     main: '../../controller.js',
-                    name: tools.appName + ' controller',
+                    name: `${tools.appName} controller`,
                     pidfile: `${__dirname}/../${tools.appName}.pid`,
                     cwd: '../../',
                     stopTimeout: 1000
                 });
                 daemon.on('error', async () => {
-                    await this._restoreAfterStop(false);
-                    callback && callback();
+                    const exitCode = await this._restoreAfterStop(false, force);
+                    callback && callback(exitCode);
                 });
                 daemon.on('stopped', async () => {
-                    await this._restoreAfterStop(true);
-                    callback && callback();
+                    const exitCode = await this._restoreAfterStop(true, force);
+                    callback && callback(exitCode);
                 });
                 daemon.on('notrunning', async () => {
                     console.log(`host.${hostname} OK.`);
-                    await this._restoreAfterStop(false);
-                    callback && callback();
+                    const exitCode = await this._restoreAfterStop(false, force);
+                    callback && callback(exitCode);
                 });
 
                 daemon.stop();

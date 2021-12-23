@@ -554,7 +554,7 @@ function Setup(options) {
                             });
                             console.log('Restore backup ...');
                             console.log(COLOR_GREEN + 'This can take some time ... please be patient!' + COLOR_RESET);
-                            backup.restoreBackup(filePath, err => {
+                            backup.restoreBackup(filePath, false, err => {
                                 if (err) {
                                     console.log('Error happened during restore: ' + err);
                                     console.log();
