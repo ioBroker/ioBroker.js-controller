@@ -8064,8 +8064,19 @@ function Adapter(options) {
                         logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSubEntry}.subscribes"`);
                     }
 
-                    subs[pattern] = subs[pattern] || {};
-                    subs[pattern][this.namespace] = subs[pattern][this.namespace] || 0;
+                    // validate that correct structure read from state.val
+                    if (!tools.isObject(subs)) {
+                        subs = {};
+                    }
+
+                    if (!tools.isObject(subs)) {
+                        subs[pattern] = {};
+                    }
+
+                    if (typeof subs[pattern][this.namespace] !== 'number') {
+                        subs[pattern][this.namespace] = 0;
+                    }
+
                     subs[pattern][this.namespace]++;
                     this.outputCount++;
                     adapterStates.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
@@ -8265,14 +8276,14 @@ function Adapter(options) {
                             // ignore
                         }
                         if (!state || !state.val) {
-                            return;
+                            continue;
                         }
                         let subs;
                         try {
                             subs = JSON.parse(state.val);
                         } catch {
                             logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`);
-                            return;
+                            continue;
                         }
 
                         if (
@@ -8281,7 +8292,7 @@ function Adapter(options) {
                             subs[pattern][this.namespace] === undefined
                         ) {
                             // check subs is a valid object, because it comes from state.val
-                            return;
+                            continue;
                         }
 
                         if (typeof subs[pattern][this.namespace] === 'number') {
