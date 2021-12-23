@@ -785,7 +785,8 @@ class StateRedisClient {
      * @method getState
      *
      * @param {String} id
-     * @param callback
+     * @param {function?} callback
+     * @return {Promise<object>}
      */
     async getState(id, callback) {
         if (!id || typeof id !== 'string') {
@@ -820,15 +821,7 @@ class StateRedisClient {
      * Promise-version of getState
      */
     getStateAsync(id) {
-        return new Promise((resolve, reject) => {
-            this.getState(id, (err, res) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(res);
-                }
-            });
-        });
+        return this.getState(id);
     }
 
     async getStates(keys, callback, dontModify) {
@@ -1027,10 +1020,16 @@ class StateRedisClient {
         return this.subscribe(pattern, this.sub, callback);
     }
 
-    unsubscribe(pattern, subClient, callback) {
+    /**
+     * Unsubscribe pattern
+     * @param {string} pattern
+     * @param {object?} subClient
+     * @param {(err: Error) => void?} callback
+     * @return {Promise<void>}
+     */
+    async unsubscribe(pattern, subClient, callback) {
         if (!pattern || typeof pattern !== 'string') {
-            typeof callback === 'function' && setImmediate(callback, `invalid pattern ${JSON.stringify(pattern)}`);
-            return;
+            return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
         if (typeof subClient === 'function') {
             callback = subClient;
@@ -1039,24 +1038,29 @@ class StateRedisClient {
         subClient = subClient || this.subSystem;
 
         if (!subClient) {
-            return typeof callback === 'function' && setImmediate(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         this.settings.connection.enhancedLogging &&
             this.log.silly(`${this.namespace} redis punsubscribe ${this.namespaceRedis}${pattern}`);
-        subClient.punsubscribe(this.namespaceRedis + pattern, err => {
-            if (!err && subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern] !== undefined) {
+        try {
+            await subClient.punsubscribe(this.namespaceRedis + pattern);
+            if (subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern] !== undefined) {
                 delete subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern];
             }
-            typeof callback === 'function' && callback(err);
-        });
+
+            return tools.maybeCallback(callback);
+        } catch (e) {
+            return tools.maybeCallbackWithRedisError(callback, e);
+        }
     }
 
     /**
      * @method unsubscribeUser
      *
-     * @param pattern
-     * @param {function} callback callback function (optional)
+     * @param {string} pattern
+     * @param {function?} callback callback function (optional)
+     * @return {Promise<void>}
      */
     unsubscribeUser(pattern, callback) {
         return this.unsubscribe(pattern, this.sub, callback);
