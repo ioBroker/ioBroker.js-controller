@@ -6129,7 +6129,7 @@ function Adapter(options) {
                             ? tools.formatAliasValue(
                                   this.aliases[id].source,
                                   target,
-                                  JSON.parse(JSON.stringify(state)),
+                                  deepClone(state),
                                   logger,
                                   this.namespaceLog
                               )
@@ -7926,7 +7926,7 @@ function Adapter(options) {
                 this.aliases[sourceId] = this.aliases[sourceId] || { source: null, targets: [] };
 
                 const targetEntry = {
-                    alias: JSON.parse(JSON.stringify(aliasObj.common.alias)),
+                    alias: deepClone(aliasObj.common.alias),
                     id: aliasObj._id,
                     pattern,
                     type: aliasObj.common.type,
