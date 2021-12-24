@@ -217,21 +217,7 @@ class BackupRestore {
      * Creates backup and stores with given name
      * @param {string} name - name of the backup
      * @param {boolean} noConfig - do not store configs
-     * @param {() => void} callback -  callback function
-     */
-    createBackup(name, noConfig, callback) {
-        tools.showDeprecatedMessage('setupBackup.createBackup');
-        if (typeof noConfig === 'function') {
-            callback = noConfig;
-            noConfig = false;
-        }
-        return this.createBackupAsync(name, noConfig).then(path => typeof callback === 'function' && callback(path));
-    }
-
-    /**
-     * Creates backup and stores with given name
-     * @param {string} name - name of the backup
-     * @param {boolean} noConfig - do not store configs
+     * @return {Promise<string>}
      */
     async createBackupAsync(name, noConfig) {
         if (!name) {
@@ -594,8 +580,9 @@ class BackupRestore {
 
         for (const dir of dirs) {
             const adapterName = dir.replace(/^iobroker\./i, '');
-            await this.upload.uploadAdapterAsync(adapterName, false, true);
-            await this.upload.uploadAdapterAsync(adapterName, true, true);
+            await this.upload.uploadAdapter(adapterName, false, true);
+            await this.upload.uploadAdapter(adapterName, true, true);
+
             let pkg = null;
             if (!dir) {
                 console.error('Wrong');

@@ -2801,26 +2801,9 @@ function validateGeneralObjectProperties(obj, extend) {
  * @memberof tools
  * @param {string[]} adapters list of adapter names to get instances for
  * @param {object} objects class redis objects
- * @param {function} callback callback to be executed
+ * @returns {Promise<string[]>} - array of IDs
  */
-function getAllInstances(adapters, objects, callback) {
-    showDeprecatedMessage('tools.getAllInstances');
-
-    return getAllInstancesAsync(adapters, objects)
-        .then(instances => callback(null, instances))
-        .catch(err => callback(err));
-}
-
-/**
- * get all instances of all adapters in the list
- *
- * @alias getAllInstancesAsync
- * @memberof tools
- * @param {string[]} adapters list of adapter names to get instances for
- * @param {object} objects class redis objects
- * @returns {string[]} - array of IDs
- */
-async function getAllInstancesAsync(adapters, objects) {
+async function getAllInstances(adapters, objects) {
     const instances = [];
 
     for (let i = 0; i < adapters.length; i++) {
@@ -2828,7 +2811,7 @@ async function getAllInstancesAsync(adapters, objects) {
             continue;
         }
         if (!adapters[i].includes('.')) {
-            const inst = await getInstancesAsync(adapters[i], objects);
+            const inst = await getInstancesAsync(adapters[i], objects, false);
             for (let j = 0; j < inst.length; j++) {
                 if (!instances.includes(inst[j])) {
                     instances.push(inst[j]);
@@ -3459,11 +3442,6 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
     }
 }
 
-function showDeprecatedMessage(func, logger) {
-    logger = logger || console.log;
-    logger(`Function "${func}" is deprecated. Please use async version of it: "${func}Async"`);
-}
-
 /**
  * Requests the licenses from ioBroker.net
  * @param {string} login Login for ioBroker.net
@@ -3604,7 +3582,6 @@ module.exports = {
     getInstances,
     getInstancesAsync,
     getAllInstances,
-    getAllInstancesAsync,
     getCertificateInfo,
     getConfigFileName,
     getDefaultDataDir,
@@ -3659,7 +3636,6 @@ module.exports = {
     FORBIDDEN_CHARS,
     getControllerDir,
     getLogger,
-    showDeprecatedMessage,
     getAllEnums,
     updateLicenses,
     ERRORS: {

@@ -2146,7 +2146,7 @@ function deleteAllZipPackages(cb) {
     states.getKeys(hostObjectPrefix + '.zip.*', (err, list) => _deleteAllZipPackages(list, cb));
 }
 
-function startAdapterUpload() {
+async function startAdapterUpload() {
     if (!uploadTasks.length) {
         return;
     }
@@ -2169,18 +2169,15 @@ function startAdapterUpload() {
           }
         : null;
 
-    upload.uploadAdapter(uploadTasks[0].adapter, true, true, logger, () =>
-        upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger, () =>
-            upload.uploadAdapter(uploadTasks[0].adapter, false, true, logger, () => {
-                // send response to requester
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
+    await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
+    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
+    await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
+    // send response to requester
+    msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
 
-                uploadTasks.shift();
+    uploadTasks.shift();
 
-                setImmediate(startAdapterUpload);
-            })
-        )
-    );
+    setImmediate(startAdapterUpload);
 }
 
 // Process message to controller, like execute some script

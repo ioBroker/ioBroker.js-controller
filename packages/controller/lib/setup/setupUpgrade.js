@@ -52,32 +52,8 @@ function Upgrade(options) {
      * @param {string[]} list list of adapters to upgrade
      * @param {boolean} forceDowngrade flag to force downgrade
      * @param {boolean} autoConfirm automatically confirm the tty questions (bypass)
-     * @param {function} callback callback to be executed after function is finished
      */
-    this.upgradeAdapterHelper = (repo, list, forceDowngrade, autoConfirm, callback) => {
-        tools.showDeprecatedMessage('setupUpgrade.upgradeAdapterHelper');
-
-        if (typeof autoConfirm === 'function') {
-            callback = autoConfirm;
-            autoConfirm = false;
-        }
-
-        return this.upgradeAdapterHelperAsync(repo, list, forceDowngrade, autoConfirm)
-            .then(() => callback && callback())
-            .catch(err => {
-                console.error('Cannot upgrade adapter (helper): ' + err);
-                callback && callback();
-            });
-    };
-    /**
-     * Sorts the adapters by their dependencies and then upgrades multiple adapters from the given repository url
-     *
-     * @param {object} repo the repository content
-     * @param {string[]} list list of adapters to upgrade
-     * @param {boolean} forceDowngrade flag to force downgrade
-     * @param {boolean} autoConfirm automatically confirm the tty questions (bypass)
-     */
-    this.upgradeAdapterHelperAsync = async (repo, list, forceDowngrade, autoConfirm) => {
+    this.upgradeAdapterHelper = async (repo, list, forceDowngrade, autoConfirm) => {
         const relevantAdapters = [];
         // check which adapters are upgradeable and sort them according to their dependencies
         for (const adapter of list) {
@@ -149,13 +125,13 @@ function Upgrade(options) {
 
             debug(`upgrade order is "${sortedAdapters.join(', ')}"`);
 
-            await this._upgradeAdapterHelper(repo, sortedAdapters, 0, forceDowngrade, autoConfirm);
+            await this.upgradeAdapterHelper(repo, sortedAdapters, forceDowngrade, autoConfirm);
 
             for (let i = 0; i < sortedAdapters.length; i++) {
                 if (repo[sortedAdapters[i]] && repo[sortedAdapters[i]].controller) {
                     continue;
                 }
-                await this.upgradeAdapterAsync(repo, sortedAdapters[i], forceDowngrade, autoConfirm, true);
+                await this.upgradeAdapter(repo, sortedAdapters[i], forceDowngrade, autoConfirm, true);
             }
         } else {
             console.log('All adapters are up to date');
@@ -301,36 +277,15 @@ function Upgrade(options) {
     }
 
     /**
-     * Try to upgrade adapter from given source with some checks
-     *
-     * @param {string} repoUrl url of the selected repository
-     * @param {string} adapter name of the adapter
-     * @param {boolean} forceDowngrade flag to force downgrade
-     * @param {boolean} autoConfirm automatically confirm the tty questions (bypass)
-     * @param {boolean} upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
-     * @param {function} callback callback to be executed after function is finished
-     */
-    this.upgradeAdapter = (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll, callback) => {
-        tools.showDeprecatedMessage('setupUpgrade.upgradeAdapter');
-
-        return this.upgradeAdapterAsync(repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll)
-            .then(() => callback && callback())
-            .catch(err => {
-                console.error('Cannot upgrade adapter: ' + err);
-                callback && callback();
-            });
-    };
-
-    /**
      * Try to async upgrade adapter from given source with some checks
      *
-     * @param {string} repoUrl url of the selected repository
+     * @param {string|object} repoUrl url of the selected repository or parsed repo
      * @param {string} adapter name of the adapter
      * @param {boolean} forceDowngrade flag to force downgrade
      * @param {boolean} autoConfirm automatically confirm the tty questions (bypass)
      * @param {boolean} upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
      */
-    this.upgradeAdapterAsync = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll) {
+    this.upgradeAdapter = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll) {
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
                 repoUrl = await getRepository(repoUrl, params);
@@ -351,11 +306,11 @@ function Upgrade(options) {
             }
 
             // Upload www and admin files of adapter into CouchDB
-            await upload.uploadAdapterAsync(name, false, true);
+            await upload.uploadAdapter(name, false, true);
             // extend all adapter instance default configs with current config
             // (introduce potentially new attributes while keeping current settings)
-            await upload.upgradeAdapterObjectsAsync(name, ioPack);
-            await upload.uploadAdapterAsync(name, true, true);
+            await upload.upgradeAdapterObjects(name, ioPack);
+            await upload.uploadAdapter(name, true, true);
         };
 
         const sources = repoUrl;
@@ -560,7 +515,7 @@ function Upgrade(options) {
 
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacketAsync(sources, `${adapter}@${targetVersion}`);
+                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
                 await finishUpgrade(name);
             }
         } else if (repoUrl[adapter].meta) {
@@ -602,7 +557,7 @@ function Upgrade(options) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
-                const name = await install.downloadPacketAsync(sources, `${adapter}@${targetVersion}`);
+                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
                 await finishUpgrade(name, ioPack);
             }
         } else {
@@ -617,7 +572,7 @@ function Upgrade(options) {
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${version}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacketAsync(sources, `${adapter}@${version}`);
+                const name = await install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(name);
             } else {
                 return console.error(`Unable to get version for "${adapter}".`);
@@ -625,21 +580,15 @@ function Upgrade(options) {
         }
     };
 
-    this.upgradeController = (repoUrl, forceDowngrade, controllerRunning, callback) => {
-        tools.showDeprecatedMessage('setupUpgrade.upgradeController');
-        if (typeof controllerRunning === 'function') {
-            callback = controllerRunning;
-            controllerRunning = false;
-        }
-        return this.upgradeControllerAsync(repoUrl, forceDowngrade, controllerRunning)
-            .then(() => callback && callback())
-            .catch(err => {
-                console.error('Cannot upgrade controller: ' + err);
-                callback && callback();
-            });
-    };
-
-    this.upgradeControllerAsync = async function (repoUrl, forceDowngrade, controllerRunning) {
+    /**
+     * Upgrade the js-controller
+     *
+     * @param {string} repoUrl
+     * @param {boolean} forceDowngrade
+     * @param {boolean} controllerRunning
+     * @return {Promise<void>}
+     */
+    this.upgradeController = async function (repoUrl, forceDowngrade, controllerRunning) {
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
                 const result = await getRepository(repoUrl, params);
@@ -683,7 +632,7 @@ function Upgrade(options) {
                     }`
                 );
                 // Get the controller from web site
-                await install.downloadPacketAsync(
+                await install.downloadPacket(
                     repoUrl,
                     `${installed.common.name}@${repoUrl[installed.common.name].version}`
                 );
@@ -718,7 +667,7 @@ function Upgrade(options) {
                 const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : installed.common.name;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
-                await install.downloadPacketAsync(repoUrl, name + version);
+                await install.downloadPacket(repoUrl, name + version);
             }
         }
     };

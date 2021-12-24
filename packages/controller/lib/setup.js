@@ -573,7 +573,7 @@ async function processCommand(command, args, params, callback) {
                                 try {
                                     const path = require.resolve(tools.appName + '.' + instance);
                                     if (path) {
-                                        await install.createInstanceAsync(instance, {
+                                        await install.createInstance(instance, {
                                             enabled: true,
                                             ignoreIfExists: true
                                         });
@@ -681,7 +681,7 @@ async function processCommand(command, args, params, callback) {
             }
             url = url.trim();
 
-            dbConnect(params, () => {
+            dbConnect(params, async () => {
                 const Install = require('./setup/setupInstall.js');
                 const install = new Install({
                     objects,
@@ -691,7 +691,13 @@ async function processCommand(command, args, params, callback) {
                     params
                 });
 
-                install.installAdapterFromUrl(url, name, callback);
+                try {
+                    await install.installAdapterFromUrl(url, name);
+                    return void callback(EXIT_CODES.NO_ERROR);
+                } catch (e) {
+                    console.error(`Could not install adapter from url: ${e.message}`);
+                    return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+                }
             });
             break;
         }
@@ -805,10 +811,10 @@ async function processCommand(command, args, params, callback) {
 
                 if (!fs.existsSync(adapterDir)) {
                     try {
-                        await install.downloadPacketAsync(repoUrl, installName);
-                        await install.installAdapterAsync(installName, repoUrl);
+                        await install.downloadPacket(repoUrl, installName);
+                        await install.installAdapter(installName, repoUrl);
                         if (command !== 'install' && command !== 'i') {
-                            await install.createInstanceAsync(name, params);
+                            await install.createInstance(name, params);
                         }
                         return void callback();
                     } catch (err) {
@@ -817,7 +823,7 @@ async function processCommand(command, args, params, callback) {
                     }
                 } else if (command !== 'install' && command !== 'i') {
                     try {
-                        await install.createInstanceAsync(name, params);
+                        await install.createInstance(name, params);
                         return void callback();
                     } catch (err) {
                         console.error(`adapter "${name}" cannot be installed: ${err.message}`);
@@ -897,7 +903,7 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             try {
-                                const newName = await upload.uploadFileAsync(name, subTree);
+                                const newName = await upload.uploadFile(name, subTree);
                                 console.log(`File "${name}" is successfully saved under ${newName}`);
                                 return void callback();
                             } catch (err) {
@@ -907,7 +913,7 @@ async function processCommand(command, args, params, callback) {
                         } else {
                             try {
                                 if (subTree) {
-                                    await upload.uploadAdapterAsync(name, false, true, subTree);
+                                    await upload.uploadAdapter(name, false, true, subTree);
                                 } else {
                                     await upload.uploadAdapterFullAsync([name]);
                                 }
@@ -975,7 +981,7 @@ async function processCommand(command, args, params, callback) {
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstanceAsync(adapter, instance);
+                    await install.deleteInstance(adapter, instance);
                     callback();
                 });
             } else {
@@ -989,7 +995,7 @@ async function processCommand(command, args, params, callback) {
                         params
                     });
                     console.log(`Delete adapter "${adapter}"`);
-                    const resultCode = await install.deleteAdapterAsync(adapter);
+                    const resultCode = await install.deleteAdapter(adapter);
                     callback(resultCode);
                 });
             }
@@ -1069,13 +1075,9 @@ async function processCommand(command, args, params, callback) {
                     try {
                         if (adapter === 'self') {
                             const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                            await upgrade.upgradeControllerAsync(
-                                '',
-                                params.force || params.f,
-                                hostAlive && hostAlive.val
-                            );
+                            await upgrade.upgradeController('', params.force || params.f, hostAlive && hostAlive.val);
                         } else {
-                            await upgrade.upgradeAdapterAsync(
+                            await upgrade.upgradeAdapter(
                                 '',
                                 adapter,
                                 params.force || params.f,
@@ -1095,7 +1097,7 @@ async function processCommand(command, args, params, callback) {
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
-                        await upgrade.upgradeAdapterHelperAsync(
+                        await upgrade.upgradeAdapterHelper(
                             links,
                             Object.keys(links).sort(),
                             false,
