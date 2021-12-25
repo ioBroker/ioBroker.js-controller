@@ -2741,18 +2741,6 @@ async function processMessage(msg) {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
-        case 'getHostTime': {
-            if (msg.callback && msg.from) {
-                const dateObj = new Date();
-
-                // give infos to compare the local times
-                const data = { time: dateObj.getTime(), offset: dateObj.getTimezoneOffset() };
-                sendTo(msg.from, msg.command, data, msg.callback);
-            } else {
-                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
-            }
-            break;
-        }
         case 'delLogs': {
             const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
             fs.existsSync(__dirname + '/log/' + tools.appName + '.log') &&
