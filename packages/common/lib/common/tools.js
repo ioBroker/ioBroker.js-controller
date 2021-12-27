@@ -1874,7 +1874,7 @@ async function getHostInfo(objects, callback) {
         'System uptime': Math.round(os.uptime()),
         'Node.js': process.version,
         time: dateObj.getTime(), // give infos to compare the local times
-        offset: dateObj.getTimezoneOffset()
+        timeOffset: dateObj.getTimezoneOffset()
     };
 
     if (data.Platform === 'win32') {
