@@ -136,8 +136,11 @@ function Install(options) {
         const sources = repoUrl;
         options.unsafePerm = sources[packetName] && sources[packetName].unsafePerm;
 
-        // Check if flag stopBeforeUpdate is true
-        if (sources[packetName] && sources[packetName].stopBeforeUpdate && !stoppedList) {
+        // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
+        if (
+            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
+            !stoppedList
+        ) {
             const arr = await objects.getObjectListAsync({
                 startkey: `system.adapter.${packetName}.`,
                 endkey: `system.adapter.${packetName}.\u9999`
@@ -146,10 +149,10 @@ function Install(options) {
             stoppedList = [];
 
             if (arr) {
-                for (let id = 0; id < arr.rows.length; id++) {
+                for (const row of arr.rows) {
                     // stop only started instances on this host
-                    if (arr.rows[id].value.common.enabled && hostname === arr.rows[id].value.common.host) {
-                        stoppedList.push(arr.rows[id].value);
+                    if (row.value.common.enabled && hostname === row.value.common.host) {
+                        stoppedList.push(row.value);
                     }
                 }
             }
