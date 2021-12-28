@@ -62,7 +62,7 @@ const IoSeq =
     class extends Seq {
         log(info, callback) {
             const ioInfo = info;
-            ioInfo.properties = ioInfo.properties || {};
+            ioInfo.props = ioInfo.props || {};
 
             // map our log levels to Seq levels
             const level = (info.level || '').toLowerCase();
@@ -81,13 +81,13 @@ const IoSeq =
             }
 
             // we add own properties
-            ioInfo.properties.Hostname = tools.getHostName();
+            ioInfo.props.Hostname = tools.getHostName();
             const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
             if (msgParts) {
-                ioInfo.properties.Source = msgParts[1];
-                ioInfo.properties.Pid = msgParts[2];
+                ioInfo.props.Source = msgParts[1];
+                ioInfo.props.Pid = msgParts[2];
             } else {
-                ioInfo.properties.Source = 'js-controller';
+                ioInfo.props.Source = 'js-controller';
             }
             super.log(ioInfo, callback);
         }
