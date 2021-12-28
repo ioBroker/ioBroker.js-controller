@@ -9575,6 +9575,14 @@ function Adapter(options) {
         const licenses = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
+            const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
+            let uuid;
+            if (!uuidObj || !uuidObj.native || !uuidObj.native.uuid) {
+                logger.warn(this.namespaceLog + ' No UUID found!');
+                return licenses;
+            } else {
+                uuid = uuidObj.native.uuid;
+            }
 
             if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
                 const now = Date.now();
@@ -9587,8 +9595,8 @@ function Adapter(options) {
                         if (
                             decoded.name &&
                             (!decoded.valid_till ||
-                                license.valid_till === '0000-00-00 00:00:00' ||
-                                new Date(license.valid_till).getTime() > now)
+                                decoded.valid_till === '0000-00-00 00:00:00' ||
+                                new Date(decoded.valid_till).getTime() > now)
                         ) {
                             if (
                                 decoded.name.startsWith('iobroker.' + this.name) &&
@@ -9604,7 +9612,7 @@ function Adapter(options) {
                                     decoded.version === '<=1'
                                 ) {
                                     // check the current adapter major version
-                                    if (version !== '0' && version !== '1') {
+                                    if (version !== 0 && version !== 1) {
                                         return;
                                     }
                                 } else if (decoded.version && decoded.version !== version) {
@@ -9613,6 +9621,10 @@ function Adapter(options) {
                                     // in last purchase
 
                                     // decoded.version could be only '<2' or direct version, like "2", "3" and so on
+                                    return;
+                                }
+                                if (decoded.uuid && decoded.uuid !== uuid) {
+                                    // License is not for this server
                                     return;
                                 }
 
@@ -9635,6 +9647,18 @@ function Adapter(options) {
         } catch {
             // ignore
         }
+
+        licenses.sort((a, b) => {
+            const aInvoice = a.decoded.invoice !== 'free';
+            const bInvoice = b.decoded.invoice !== 'free';
+            if (aInvoice === bInvoice) {
+                return 0;
+            } else if (aInvoice) {
+                return -1;
+            } else if (bInvoice) {
+                return 1;
+            }
+        });
 
         return licenses;
     };
