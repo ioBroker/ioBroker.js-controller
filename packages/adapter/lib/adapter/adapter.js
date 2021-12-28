@@ -54,7 +54,6 @@ const supportedFeatures = [
     'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
     'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
     'CONTROLLER_LICENSE_MANAGER', // Controller can read licenses from iobroker.net. Since js-controller 4.0    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
-    'CONTROLLER_GET_TIME', // you can get the local time and offset via sendTo 'getHostTime'. Since js-controller 4.0
     'DEL_INSTANCE_CUSTOM' // instances/adapter can be deleted with --custom flag to remove corresponding custom of all objects. Since js-controller 4.0
 ];
 

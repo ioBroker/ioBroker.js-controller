@@ -1861,6 +1861,8 @@ async function getHostInfo(objects, callback) {
     }
 
     const cpus = os.cpus();
+    const dateObj = new Date();
+
     const data = {
         Platform: isDocker() ? 'docker' : os.platform(),
         os: process.platform,
@@ -1870,7 +1872,9 @@ async function getHostInfo(objects, callback) {
         Model: cpus && Array.isArray(cpus) ? cpus[0].model : null,
         RAM: os.totalmem(),
         'System uptime': Math.round(os.uptime()),
-        'Node.js': process.version
+        'Node.js': process.version,
+        time: dateObj.getTime(), // give infos to compare the local times
+        timeOffset: dateObj.getTimezoneOffset()
     };
 
     if (data.Platform === 'win32') {
