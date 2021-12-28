@@ -9579,7 +9579,8 @@ function Adapter(options) {
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
             let uuid;
             if (!uuidObj || !uuidObj.native || !uuidObj.native.uuid) {
-                uuid = 'UNKNOWN';
+                logger.warn(this.namespaceLog + ' No UUID found!');
+                return licenses;
             } else {
                 uuid = uuidObj.native.uuid;
             }
