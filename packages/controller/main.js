@@ -2717,6 +2717,8 @@ async function processMessage(msg) {
                 }
 
                 const cpus = os.cpus();
+                const dateObj = new Date();
+
                 const data = {
                     Platform: os.platform(),
                     os: process.platform,
@@ -2727,7 +2729,9 @@ async function processMessage(msg) {
                     RAM: os.totalmem(),
                     'System uptime': Math.round(os.uptime()),
                     'Node.js': process.version,
-                    location
+                    location,
+                    time: dateObj.getTime(), // give infos to compare the local times
+                    timeOffset: dateObj.getTimezoneOffset()
                 };
 
                 if (data.Platform === 'win32') {
