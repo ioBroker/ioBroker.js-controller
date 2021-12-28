@@ -13,7 +13,6 @@
 //   message:               callback to inform about new message the adapter
 //   unload:                callback to stop the adapter
 //   config:                configuration of the connection to controller
-//   noNamespace:           return short names of objects and states in objectChange and in stateChange
 //   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without an corresponding existing object
 
 const net = require('net');
