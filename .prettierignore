@@ -1,2 +1,6 @@
 # Ignore artifacts:
 build
+**/node_modules/**/*
+packages/controller/data/**/*
+packages/controller/doc/**/*
+data
