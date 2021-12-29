@@ -24,7 +24,7 @@ try {
 
 let Seq;
 try {
-    Seq = require('winston-seq-updated').default;
+    Seq = require('@datalust/winston-seq').SeqTransport;
 } catch {
     //console.log('No seq support');
 }
@@ -60,43 +60,34 @@ const IoSysLog =
 const IoSeq =
     Seq &&
     class extends Seq {
-        constructor(options) {
-            options.levelMapper =
-                options.levelMapper ||
-                function (level) {
-                    level = (level || '').toLowerCase();
-                    if (level.includes('error')) {
-                        return 'Error';
-                    }
-                    if (level.includes('warn')) {
-                        return 'Warning';
-                    }
-                    if (level.includes('info')) {
-                        return 'Information';
-                    }
-                    if (level.includes('debug')) {
-                        return 'Debug';
-                    }
-                    if (level.includes('silly')) {
-                        return 'Verbose';
-                    }
-                    return 'Information';
-                };
-            super(options);
-        }
-
         log(info, callback) {
             const ioInfo = info;
-            ioInfo.meta = ioInfo.meta || {};
+            ioInfo.props = ioInfo.props || {};
+
+            // map our log levels to Seq levels
+            const level = (info.level || '').toLowerCase();
+            if (level.includes('error')) {
+                info.level = 'Error';
+            } else if (level.includes('warn')) {
+                info.level = 'Warning';
+            } else if (level.includes('info')) {
+                info.level = 'Information';
+            } else if (level.includes('debug')) {
+                info.level = 'Debug';
+            } else if (level.includes('silly')) {
+                info.level = 'Verbose';
+            } else {
+                info.level = 'Information';
+            }
 
             // we add own properties
-            ioInfo.meta.Hostname = tools.getHostName();
+            ioInfo.props.Hostname = tools.getHostName();
             const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
             if (msgParts) {
-                ioInfo.meta.Source = msgParts[1];
-                ioInfo.meta.Pid = msgParts[2];
+                ioInfo.props.Source = msgParts[1];
+                ioInfo.props.Pid = msgParts[2];
             } else {
-                ioInfo.meta.Source = 'js-controller';
+                ioInfo.props.Source = 'js-controller';
             }
             super.log(ioInfo, callback);
         }
@@ -189,16 +180,9 @@ const logger = function (level, files, noStdout, prefix) {
                     if (transport.filename.match(/^\w:\/|^\//)) {
                         transport.filename = path.normalize(transport.filename);
                     } else {
-                        const _path = path.normalize(
+                        transport.filename = path.normalize(
                             `${tools.getControllerDir()}${isNpm ? '/../../' : '/'}${transport.filename}`
                         );
-                        /*
-                        if (_path.indexOf('js-controller') !== -1 && isNpm) {
-                            _path = path.normalize(`${__dirname}/../../${transport.filename}`);
-                        }
-                         */
-
-                        transport.filename = _path;
                     }
                     transport.auditFile = transport.filename + '-audit.json';
 
@@ -275,7 +259,7 @@ const logger = function (level, files, noStdout, prefix) {
                     try {
                         options.transports.push(new IoSysLog(transport));
                     } catch (err) {
-                        console.log(`Cannot activate Syslog: ${err}`);
+                        console.log(`Cannot activate Syslog: ${err.message}`);
                     }
                 } else if (transport.type === 'http' && transport.enabled !== false) {
                     // host: (Default: localhost) Remote host of the HTTP logging endpoint
@@ -290,7 +274,7 @@ const logger = function (level, files, noStdout, prefix) {
                     try {
                         options.transports.push(new winston.transports.Http(transport));
                     } catch (err) {
-                        console.log('Cannot activate HTTP: ' + err);
+                        console.log(`Cannot activate HTTP: ${err.message}`);
                     }
                 } else if (transport.type === 'stream' && transport.enabled !== false) {
                     // stream: any Node.js stream. If an objectMode stream is provided then the entire info object will be written. Otherwise info[MESSAGE] will be written.
@@ -305,7 +289,7 @@ const logger = function (level, files, noStdout, prefix) {
                         if (typeof transport.stream === 'string') {
                             transport.stream = fs.createWriteStream(transport.stream);
                             transport.stream.on('error', err => {
-                                console.log('Error in Stream: ' + err);
+                                console.log(`Error in Stream: ${err}`);
                             });
                         }
 
@@ -323,13 +307,13 @@ const logger = function (level, files, noStdout, prefix) {
                     // Add only if serverUrl is configured at least
                     if (transport.serverUrl) {
                         try {
+                            transport.onError = e => {
+                                console.log(`SEQ error: ${e}`);
+                            };
                             const seqLogger = new IoSeq(transport);
-                            seqLogger.on('error', error => {
-                                console.log(`SEQ error: ${error}`);
-                            });
                             options.transports.push(seqLogger);
                         } catch (err) {
-                            console.log(`Cannot activate SEQ: ${err}`);
+                            console.log(`Cannot activate SEQ: ${err.message}`);
                         }
                     } else {
                         console.log('Cannot activate SEQ: No serverUrl specified');
