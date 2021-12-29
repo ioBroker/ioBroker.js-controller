@@ -367,7 +367,7 @@ class ObjectsInRedisClient {
                                         ' ' +
                                         e.message
                                 );
-                                this.log.warn(this.namespace + ' ' + e.stack);
+                                this.log.warn(`${this.namespace} ${e.stack}`);
                             }
                         })
                     );
@@ -375,7 +375,7 @@ class ObjectsInRedisClient {
 
                 this.subSystem.on('end', () => {
                     this.settings.connection.enhancedLogging &&
-                        this.log.silly(this.namespace + ' Objects-Redis System Event end sub (stop=' + this.stop + ')');
+                        this.log.silly(`${this.namespace} Objects-Redis System Event end sub (stop=${this.stop})`);
                     ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
                 });
 
@@ -517,7 +517,7 @@ class ObjectsInRedisClient {
 
                 this.sub.on('end', () => {
                     this.settings.connection.enhancedLogging &&
-                        this.log.silly(this.namespace + ' Objects-Redis Event end user sub (stop=' + this.stop + ')');
+                        this.log.silly(`${this.namespace} Objects-Redis Event end user sub (stop=${this.stop})`);
                     ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
                 });
 
@@ -527,7 +527,7 @@ class ObjectsInRedisClient {
                     }
                     this.settings.connection.enhancedLogging &&
                         this.log.silly(
-                            this.namespace + ' PubSub user client Objects No redis connection: ' + JSON.stringify(error)
+                            `${this.namespace} PubSub user client Objects No redis connection: ${JSON.stringify(error)}`
                         );
                 });
 
@@ -595,6 +595,9 @@ class ObjectsInRedisClient {
                 return;
             }
 
+            // do this before starting with async calls ;-)
+            initCounter++;
+
             try {
                 await this._determineProtocolVersion();
             } catch (e) {
@@ -635,7 +638,7 @@ class ObjectsInRedisClient {
             }
 
             this.log.debug(`${this.namespace} Objects client initialize lua scripts`);
-            initCounter++;
+
             try {
                 await this.loadLuaScripts();
             } catch (err) {

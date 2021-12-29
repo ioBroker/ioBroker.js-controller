@@ -5530,8 +5530,8 @@ function init(compactGroupId) {
                 const nodeVersion = process.version.replace(/^v/, '');
                 const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
 
-                if (prevNodeVersionState && prevNodeVersionState.val !== nodeVersion) {
-                    // detected a change in the nodejs version
+                if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
+                    // detected a change in the nodejs version (or state non existing - upgrade from below v4)
                     logger.info(
                         `${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`
                     );
