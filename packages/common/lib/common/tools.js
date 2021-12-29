@@ -12,6 +12,7 @@ const { createInterface } = require('readline');
 const { PassThrough } = require('stream');
 const { detectPackageManager } = require('@alcalzone/pak');
 const EXIT_CODES = require('./exitCodes');
+const zlib = require('zlib');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -3570,6 +3571,45 @@ async function updateLicenses(objects, login, password) {
     }
 }
 
+/**
+ * @typedef {object} GZipFileOptions
+ * @property {boolean} [deleteInput] Delete the input file after compression. Default: false.
+ */
+
+/**
+ * Compresses an input file using GZip and writes it somewhere else
+ * @param {string} inputFilename The filename of the input file that should be gzipped
+ * @param {string} outputFilename The filename of the output file where the gzipped content should be written to
+ * @param {GZipFileOptions} [options] Options for the compression
+ * @returns {Promise<void>}
+ */
+function compressFileGZip(inputFilename, outputFilename, options = {}) {
+    const { deleteInput = false } = options;
+
+    return new Promise((resolve, reject) => {
+        const input = fs.createReadStream(inputFilename);
+        const output = fs.createWriteStream(outputFilename);
+        const compress = zlib.createGzip();
+        input.on('error', err => {
+            reject(err);
+        });
+        output.on('error', err => {
+            reject(err);
+        });
+        compress.on('error', err => {
+            reject(err);
+        });
+        output.on('close', () => {
+            if (deleteInput) {
+                fs.unlinkSync(inputFilename);
+            }
+            resolve();
+        });
+
+        input.pipe(compress).pipe(output);
+    });
+}
+
 const ERROR_NOT_FOUND = 'Not exists';
 const ERROR_EMPTY_OBJECT = 'null object';
 const ERROR_NO_OBJECT = 'no object';
@@ -3642,6 +3682,7 @@ module.exports = {
     getLogger,
     getAllEnums,
     updateLicenses,
+    compressFileGZip,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,
