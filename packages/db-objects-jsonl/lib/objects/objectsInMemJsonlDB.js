@@ -18,6 +18,7 @@ const { JsonlDB } = require('@alcalzone/jsonl-db');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+const { tools } = require('@iobroker/js-controller-common');
 
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
@@ -118,19 +119,8 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             // Create a DB dump
             await this._db.dump(tmpBackupFileName);
             // and zip it
-
-            const zlib = require('zlib');
-            const input = fs.createReadStream(tmpBackupFileName);
-            const output = fs.createWriteStream(backupFileName);
-            output.on('error', err => {
-                this.log.error(`${this.namespace} Cannot save ${this.datasetName}: ${err}`);
-            });
-            const compress = zlib.createGzip();
-            input.pipe(compress).pipe(output);
-
-            fs.unlinkSync(tmpBackupFileName);
-
-            // analyse older files
+            await tools.compressFileGZip(tmpBackupFileName, backupFileName, { deleteInput: true });
+            // figure out if older files need to be deleted
             this.deleteOldBackupFiles(this.settings.jsonlDB.fileName);
         } catch (e) {
             this.log.error(`${this.namespace} Cannot save backup ${backupFileName}: ${e.message}`);
