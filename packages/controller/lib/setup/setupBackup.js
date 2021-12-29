@@ -216,10 +216,10 @@ class BackupRestore {
     /**
      * Creates backup and stores with given name
      * @param {string} name - name of the backup
-     * @param {boolean} noConfig - do not store configs
+     * @param {boolean?} noConfig - do not store configs
      * @return {Promise<string>}
      */
-    async createBackupAsync(name, noConfig) {
+    async createBackup(name, noConfig) {
         if (!name) {
             const d = new Date();
             name =

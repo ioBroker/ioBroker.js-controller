@@ -1178,7 +1178,7 @@ async function processCommand(command, args, params, callback) {
                 });
 
                 try {
-                    const filePath = await backup.createBackupAsync(name);
+                    const filePath = await backup.createBackup(name);
                     console.log('Backup created: ' + filePath);
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (err) {
