@@ -42,7 +42,7 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             ignoreReadErrors: true,
             throttleFS: {
                 intervalMs: 60000,
-                maxBufferedCommands: 100
+                maxBufferedCommands: 1000
             }
         };
         settings.jsonlDB = {
