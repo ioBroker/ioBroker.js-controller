@@ -38,15 +38,15 @@ class BackupRestore {
         if (!options.cleanDatabaseAsync) {
             throw new Error('Invalid arguments: cleanDatabaseAsync is missing');
         }
-        if (!options.restartControllerAsync) {
-            throw new Error('Invalid arguments: restartControllerAsync is missing');
+        if (!options.restartController) {
+            throw new Error('Invalid arguments: restartController is missing');
         }
 
         this.objects = options.objects;
         this.states = options.states;
         this.processExit = options.processExit;
         this.cleanDatabaseAsync = options.cleanDatabaseAsync;
-        this.restartControllerAsync = options.restartControllerAsync;
+        this.restartController = options.restartController;
         this.dbMigration = options.dbMigration || false;
         this.mime = null;
 
@@ -729,7 +729,7 @@ class BackupRestore {
         }
 
         if (restartOnFinish) {
-            await this.restartControllerAsync();
+            this.restartController();
         }
 
         return EXIT_CODES.NO_ERROR;
@@ -999,8 +999,8 @@ class BackupRestore {
         if (!this.cleanDatabaseAsync) {
             throw new Error('Invalid arguments: cleanDatabaseAsync is missing');
         }
-        if (!this.restartControllerAsync) {
-            throw new Error('Invalid arguments: restartControllerAsync is missing');
+        if (!this.restartController) {
+            throw new Error('Invalid arguments: restartController is missing');
         }
 
         // If number

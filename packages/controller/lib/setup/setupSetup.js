@@ -31,7 +31,7 @@ function Setup(options) {
     const params = options.params;
     const cleanDatabaseAsync = options.cleanDatabaseAsync;
     const resetDbConnect = options.resetDbConnect;
-    const restartControllerAsync = options.restartControllerAsync;
+    const restartController = options.restartController;
     let objects;
     let states;
 
@@ -503,7 +503,7 @@ function Setup(options) {
                         states,
                         objects,
                         cleanDatabaseAsync,
-                        restartControllerAsync,
+                        restartController,
                         processExit: callback
                     });
 
@@ -548,7 +548,7 @@ function Setup(options) {
                             states,
                             objects,
                             cleanDatabaseAsync,
-                            restartControllerAsync,
+                            restartController,
                             processExit: callback,
                             dbMigration: true
                         });

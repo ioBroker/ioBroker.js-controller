@@ -506,7 +506,8 @@ async function processCommand(command, args, params, callback) {
         }
 
         case '_restart':
-            restartController(callback);
+            restartController();
+            callback();
             break;
 
         case 'update': {
@@ -531,7 +532,7 @@ async function processCommand(command, args, params, callback) {
                 dbConnect,
                 processExit: callback,
                 cleanDatabaseAsync,
-                restartControllerAsync,
+                restartController,
                 resetDbConnect,
                 params
             });
@@ -1126,11 +1127,10 @@ async function processCommand(command, args, params, callback) {
                         return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
                     cleanDatabase(true, count => {
-                        console.log('Deleted ' + count + ' states');
-                        restartController(() => {
-                            console.log(`Restarting ${tools.appName}...`);
-                            return void callback();
-                        });
+                        console.log(`Deleted ${count} states`);
+                        restartController();
+                        console.log(`Restarting ${tools.appName}...`);
+                        return void callback();
                     });
                 });
             }
@@ -1150,7 +1150,7 @@ async function processCommand(command, args, params, callback) {
                     states,
                     objects,
                     cleanDatabaseAsync,
-                    restartControllerAsync,
+                    restartController,
                     processExit: callback
                 });
 
@@ -1173,7 +1173,7 @@ async function processCommand(command, args, params, callback) {
                     states,
                     objects,
                     cleanDatabaseAsync,
-                    restartControllerAsync,
+                    restartController,
                     processExit: callback
                 });
 
@@ -1197,7 +1197,7 @@ async function processCommand(command, args, params, callback) {
                     states,
                     objects,
                     cleanDatabaseAsync,
-                    restartControllerAsync,
+                    restartController,
                     processExit: callback
                 });
 
@@ -2795,27 +2795,22 @@ function unsetup(params, callback) {
     });
 }
 
-function restartController(callback) {
-    const spawn = require('child_process').spawn;
+/**
+ * Spawns a process which restarts the controller
+ */
+function restartController() {
+    const { spawn } = require('child_process');
 
     console.log('Starting node restart.js');
 
-    const child = spawn('node', [__dirname + '/restart.js'], {
+    const child = spawn('node', [`${__dirname}/restart.js`], {
         detached: true,
         stdio: ['ignore', 'ignore', 'ignore'],
         windowsHide: true
     });
 
     child.unref();
-
-    if (callback) {
-        callback();
-    } else {
-        processExit();
-    }
 }
-
-const restartControllerAsync = tools.promisifyNoError(restartController);
 
 async function getRepository(repoName, params) {
     params = params || {};
