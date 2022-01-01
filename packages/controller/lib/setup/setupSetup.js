@@ -44,10 +44,10 @@ function Setup(options) {
             return;
         }
 
-        for (let i = 0; i < dirpath.length; i++) {
-            rootpath = path.join(rootpath, dirpath[i]);
+        for (const dir of dirpath) {
+            rootpath = path.join(rootpath, dir);
             if (!fs.existsSync(rootpath)) {
-                if (dirpath[i] !== '..') {
+                if (dir !== '..') {
                     fs.mkdirSync(rootpath);
                 } else {
                     throw new Error(`Cannot create ${rootpath}${dirpath.join('/')}`);
@@ -554,9 +554,9 @@ function Setup(options) {
                         });
                         console.log('Restore backup ...');
                         console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                        backup.restoreBackup(filePath, err => {
+                        backup.restoreBackup(filePath, false, err => {
                             if (err) {
-                                console.log('Error happened during restore: ' + err);
+                                console.log(`Error happened during restore: ${err.message}`);
                                 console.log();
                                 console.log('restoring conf/' + tools.appName + '.json');
                                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));

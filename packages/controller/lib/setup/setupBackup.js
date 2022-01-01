@@ -672,7 +672,7 @@ class BackupRestore {
         if (!force) {
             const exitCode = this._ensureCompatibility(
                 controllerDir,
-                restore.config.system.hostname || hostname,
+                restore.config ? restore.config.system.hostname || hostname : hostname,
                 restore.objects
             );
 

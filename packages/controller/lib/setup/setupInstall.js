@@ -102,8 +102,7 @@ function Install(options) {
 
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
-                const result = await getRepository(repoUrl, params);
-                repoUrl = result;
+                repoUrl = await getRepository(repoUrl, params);
             } catch (err) {
                 return processExit(err);
             }
@@ -210,6 +209,15 @@ function Install(options) {
         processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     };
 
+    /**
+     * Install npm module from url
+     *
+     * @param {string} npmUrl
+     * @param {object} options
+     * @param {boolean} debug
+     * @return {Promise<undefined|{installDir: string, _url: string}>}
+     * @private
+     */
     this._npmInstallWithCheck = async function (npmUrl, options, debug) {
         // Get npm version
         try {
@@ -1605,7 +1613,15 @@ function Install(options) {
         const options = {
             packetName: name
         };
-        const { installDir } = await this._npmInstallWithCheck(url, options, debug);
+
+        const res = await this._npmInstallWithCheck(url, options, debug);
+        // if we have no installDir, the method has called processExit itself
+        if (!res || !res.installDir) {
+            return;
+        }
+
+        const { installDir } = res;
+
         if (name) {
             await upload.uploadAdapter(name, true, true);
             await upload.uploadAdapter(name, false, true);
@@ -1615,11 +1631,11 @@ function Install(options) {
             const dirs = fs.readdirSync(installDir);
             let date = null;
             let dir = null;
-            for (let i = 0; i < dirs.length; i++) {
-                if (fs.existsSync(installDir + '/' + dirs[i] + '/io-package.json')) {
-                    const stat = fs.statSync(installDir + '/' + dirs[i] + '/io-package.json');
+            for (const _dir of dirs) {
+                if (fs.existsSync(`${installDir}/${_dir}/io-package.json`)) {
+                    const stat = fs.statSync(`${installDir}/${_dir}/io-package.json`);
                     if (!date || stat.mtime.getTime() > date.getTime()) {
-                        dir = dirs[i];
+                        dir = _dir;
                         date = stat.mtime;
                     }
                 }
