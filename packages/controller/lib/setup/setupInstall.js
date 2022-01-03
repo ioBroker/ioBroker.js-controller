@@ -675,8 +675,8 @@ function Install(options) {
         await upload.uploadAdapter(adapter, false, false);
 
         const res = await objects.getObjectViewAsync('system', 'instance', {
-            startkey: 'system.adapter.' + adapter + '.',
-            endkey: 'system.adapter.' + adapter + '.\u9999'
+            startkey: `system.adapter.${adapter}.`,
+            endkey: `system.adapter.${adapter}.\u9999`
         });
         const systemConfig = await objects.getObjectAsync('system.config');
         const defaultLogLevel = systemConfig && systemConfig.common && systemConfig.common.defaultLogLevel;
@@ -759,9 +759,9 @@ function Install(options) {
         }
 
         if (defaultLogLevel) {
-            instanceObj.common.logLevel = defaultLogLevel;
-        } else if (!instanceObj.common.logLevel) {
-            instanceObj.common.logLevel = 'info';
+            instanceObj.common.loglevel = defaultLogLevel;
+        } else if (!instanceObj.common.loglevel) {
+            instanceObj.common.loglevel = 'info';
         }
 
         console.log(`host.${hostname} create instance ${adapter}`);
