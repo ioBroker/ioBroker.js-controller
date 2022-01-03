@@ -35,8 +35,8 @@ class BackupRestore {
         if (!options.processExit) {
             throw new Error('Invalid arguments: processExit is missing');
         }
-        if (!options.cleanDatabaseAsync) {
-            throw new Error('Invalid arguments: cleanDatabaseAsync is missing');
+        if (!options.cleanDatabase) {
+            throw new Error('Invalid arguments: cleanDatabase is missing');
         }
         if (!options.restartController) {
             throw new Error('Invalid arguments: restartController is missing');
@@ -45,7 +45,7 @@ class BackupRestore {
         this.objects = options.objects;
         this.states = options.states;
         this.processExit = options.processExit;
-        this.cleanDatabaseAsync = options.cleanDatabaseAsync;
+        this.cleanDatabase = options.cleanDatabase;
         this.restartController = options.restartController;
         this.dbMigration = options.dbMigration || false;
         this.mime = null;
@@ -648,10 +648,11 @@ class BackupRestore {
      *
      * @param {boolean} restartOnFinish - restart controller after restore
      * @param {boolean} force - skip the controller version check
-     * @returns {Promise<*>}
+     * @param {boolean} dontDeleteAdapters - skip adapter deletion, e.g. for setup custom db migration
+     * @returns {Promise<number>}
      * @private
      */
-    async _restoreAfterStop(restartOnFinish, force) {
+    async _restoreAfterStop(restartOnFinish, force, dontDeleteAdapters) {
         // Open file
         let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
@@ -682,12 +683,14 @@ class BackupRestore {
             }
         }
 
-        // prevent having wrong versions of adapters
-        await this._removeAllAdapters(controllerDir);
+        if (!dontDeleteAdapters) {
+            // prevent having wrong versions of adapters
+            await this._removeAllAdapters(controllerDir);
+        }
 
         // stop all adapters
         console.log(`host.${hostname} Clear all objects and states...`);
-        await this.cleanDatabaseAsync(false);
+        await this.cleanDatabase(false);
         console.log(`host.${hostname} done.`);
         // upload all data into DB
         // restore ioBroker.json
@@ -979,7 +982,15 @@ class BackupRestore {
         } // endIf
     } // endCheckDirectory
 
-    restoreBackup(name, force, callback) {
+    /**
+     * Restores a backup
+     *
+     * @param {string|number} name - backup name or index
+     * @param {boolean} force - if force, js-controller is allowed to have a different version
+     * @param {boolean} dontDeleteAdapters - skip adapter deletion, e.g. for setup custom db migration
+     * @param {(number) => void} callback
+     */
+    restoreBackup(name, force, dontDeleteAdapters, callback) {
         let backups;
         if (!name && name !== 0) {
             // List all available backups
@@ -996,8 +1007,8 @@ class BackupRestore {
             return this.processExit(10);
         }
 
-        if (!this.cleanDatabaseAsync) {
-            throw new Error('Invalid arguments: cleanDatabaseAsync is missing');
+        if (!this.cleanDatabase) {
+            throw new Error('Invalid arguments: cleanDatabase is missing');
         }
         if (!this.restartController) {
             throw new Error('Invalid arguments: restartController is missing');
@@ -1024,7 +1035,7 @@ class BackupRestore {
         name = (name || '').toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = this.getBackupDir() + name;
-            const regEx = new RegExp('_backup' + tools.appName, 'i');
+            const regEx = new RegExp(`_backup${tools.appName}`, 'i');
             if (!regEx.test(name)) {
                 name += '_backup' + tools.appName;
             }
@@ -1066,16 +1077,16 @@ class BackupRestore {
                     stopTimeout: 1000
                 });
                 daemon.on('error', async () => {
-                    const exitCode = await this._restoreAfterStop(false, force);
+                    const exitCode = await this._restoreAfterStop(false, force, dontDeleteAdapters);
                     callback && callback(exitCode);
                 });
                 daemon.on('stopped', async () => {
-                    const exitCode = await this._restoreAfterStop(true, force);
+                    const exitCode = await this._restoreAfterStop(true, force, dontDeleteAdapters);
                     callback && callback(exitCode);
                 });
                 daemon.on('notrunning', async () => {
                     console.log(`host.${hostname} OK.`);
-                    const exitCode = await this._restoreAfterStop(false, force);
+                    const exitCode = await this._restoreAfterStop(false, force, dontDeleteAdapters);
                     callback && callback(exitCode);
                 });
 
