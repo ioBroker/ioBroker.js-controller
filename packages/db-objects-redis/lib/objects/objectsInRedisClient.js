@@ -394,27 +394,19 @@ class ObjectsInRedisClient {
                 if (this.settings.connection.enhancedLogging) {
                     this.subSystem.on('connect', () =>
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub System client Objects-Redis Event connect (stop=' +
-                                this.stop +
-                                ')'
+                            `${this.namespace} PubSub System client Objects-Redis Event connect (stop=${this.stop})`
                         )
                     );
 
                     this.subSystem.on('close', () =>
                         this.log.silly(
-                            this.namespace + ' PubSub System client Objects-Redis Event close (stop=' + this.stop + ')'
+                            `${this.namespace} PubSub System client Objects-Redis Event close (stop=${this.stop})`
                         )
                     );
 
                     this.subSystem.on('reconnecting', reconnectCounter =>
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub System client Objects-Redis Event reconnect (reconnectCounter=' +
-                                reconnectCounter +
-                                ', stop=' +
-                                this.stop +
-                                ')'
+                            `${this.namespace} PubSub System client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
                         )
                     );
                 }
@@ -473,14 +465,14 @@ class ObjectsInRedisClient {
 
             if (!this.sub && typeof onChangeUser === 'function') {
                 initCounter++;
-                this.log.debug(this.namespace + ' Objects create User PubSub Client');
+                this.log.debug(`${this.namespace} Objects create User PubSub Client`);
                 this.sub = new Redis(this.settings.connection.options);
                 this.sub.ioBrokerSubscriptions = {};
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
                         this.log.silly(
-                            this.namespace + ' Objects user redis pmessage ' + pattern + '/' + channel + ':' + message
+                            `${this.namespace} Objects user redis pmessage ${pattern}/${channel}:${message}`
                         );
                         try {
                             if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
@@ -502,15 +494,11 @@ class ObjectsInRedisClient {
                             }
                         } catch (e) {
                             this.log.warn(
-                                this.namespace +
-                                    ' Objects user pmessage ' +
-                                    channel +
-                                    ' ' +
-                                    JSON.stringify(message) +
-                                    ' ' +
+                                `${this.namespace} Objects user pmessage ${channel} ${JSON.stringify(message)} ${
                                     e.message
+                                }`
                             );
-                            this.log.warn(this.namespace + ' ' + e.stack);
+                            this.log.warn(`${this.namespace} ${e.stack}`);
                         }
                     });
                 });
@@ -534,24 +522,19 @@ class ObjectsInRedisClient {
                 if (this.settings.connection.enhancedLogging) {
                     this.sub.on('connect', () =>
                         this.log.silly(
-                            this.namespace + ' PubSub user client Objects-Redis Event connect (stop=' + this.stop + ')'
+                            `${this.namespace} PubSub user client Objects-Redis Event connect (stop=${this.stop})`
                         )
                     );
 
                     this.sub.on('close', () =>
                         this.log.silly(
-                            this.namespace + ' PubSub user client Objects-Redis Event close (stop=' + this.stop + ')'
+                            `${this.namespace} PubSub user client Objects-Redis Event close (stop=${this.stop})`
                         )
                     );
 
                     this.sub.on('reconnecting', reconnectCounter =>
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub user client Objects-Redis Event reconnect (reconnectCounter=' +
-                                reconnectCounter +
-                                ', stop=' +
-                                this.stop +
-                                ')'
+                            `${this.namespace} PubSub user client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
                         )
                     );
                 }
@@ -560,21 +543,15 @@ class ObjectsInRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'user re' : '') +
-                                    'connected to redis: ' +
+                                `${this.namespace} Objects ${ready ? 'user re' : ''}connected to redis: ${
                                     this.settings.connection.host
+                                }`
                             );
                         } else {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'user re' : '') +
-                                    'connected to redis: ' +
-                                    this.settings.connection.host +
-                                    ':' +
-                                    this.settings.connection.port
+                                `${this.namespace} Objects ${ready ? 'user re' : ''}connected to redis: ${
+                                    this.settings.connection.host
+                                }:${this.settings.connection.port}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -4477,6 +4454,35 @@ class ObjectsInRedisClient {
         }
 
         return this.client.get(`${this.metaNamespace}objects.protocolVersion`);
+    }
+
+    /**
+     * Sets current host as primary if no primary host missing
+     * Value will expire after sec seconds
+     *
+     * {number} ms - ms until value expires
+     * @return {Promise<void>}
+     */
+    async setPrimaryHost(ms) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+        this.log.warn(`${this.metaNamespace}objects.primaryHost`);
+        // TODO: With NX we cannot keep ourself up to date
+        await this.client.set(`${this.metaNamespace}objects.primaryHost`, this.settings.hostname, 'NX', 'PX', ms);
+    }
+
+    /**
+     * Get name of the primary host
+     *
+     * @return {Promise<boolean>}
+     */
+    async getPrimaryHost() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(`${this.metaNamespace}objects.primaryHost`);
     }
 
     /**

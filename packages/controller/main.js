@@ -901,9 +901,12 @@ function reportStatus() {
         }
     });
 
+    // let our host value live two times the report interval
+    objects.setPrimaryHost(config.system.statisticsInterval * 2);
+
     const mem = process.memoryUsage();
-    states.setState(id + '.memRss', { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
-    states.setState(id + '.memHeapTotal', {
+    states.setState(`${id}.memRss`, { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
+    states.setState(`${id}.memHeapTotal`, {
         val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
         ack: true,
         from: id
