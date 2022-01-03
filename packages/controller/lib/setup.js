@@ -1135,7 +1135,7 @@ async function processCommand(command, args, params, callback) {
                     }
                     restartController();
                     console.log(`Restarting ${tools.appName}...`);
-                    return void callback();
+                    callback();
                 });
             }
             break;
@@ -2739,7 +2739,8 @@ async function cleanDatabase(isDeleteDb) {
     if (isDeleteDb) {
         await objects.destroyDBAsync();
         // Clean up states
-        return delStates();
+        const keysCount = await delStates();
+        return keysCount;
     } else {
         // Clean only objects, not the views
         let ids = [];
@@ -2757,7 +2758,6 @@ async function cleanDatabase(isDeleteDb) {
         await delObjects(ids);
         // Clean up states
         const keysCount = await delStates();
-
         return keysCount;
     }
 }
