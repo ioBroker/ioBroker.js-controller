@@ -56,7 +56,7 @@ class InMemoryFileDB {
         this.zlib = null;
         this.callbackSubscriptionClient = {};
 
-        this.settings.backup = this.settings.backup || {
+        this.settings.backup = this.settings.connection.backup || {
             disabled: false, // deactivates
             files: 24, // minimum number of files
             hours: 48, // hours
