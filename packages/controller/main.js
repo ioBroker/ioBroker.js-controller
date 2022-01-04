@@ -5352,7 +5352,8 @@ function init(compactGroupId) {
                 `${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`
             );
         } else {
-            console.error(`Error initializing logger: ${e.message}`);
+            // without logger multiple things will have undefined behavior and probably more is wrong -> do not start
+            throw new Error(`Error initializing logger: ${e.message}`);
         }
     }
 
