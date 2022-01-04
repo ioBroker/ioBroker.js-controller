@@ -4496,7 +4496,7 @@ class ObjectsInRedisClient {
     /**
      * Get name of the primary host
      *
-     * @return {Promise<boolean>}
+     * @return {Promise<string>}
      */
     getPrimaryHost() {
         if (!this.client) {

@@ -5213,6 +5213,7 @@ function stop(force, callback) {
         notificationHandler && notificationHandler.storeNotifications();
 
         try {
+            // if we are the host we should now let someone else take over
             await objects.releasePrimaryHost();
         } catch {
             // ignore
