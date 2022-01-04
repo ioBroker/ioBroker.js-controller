@@ -867,7 +867,7 @@ function startAliveInterval() {
     tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag));
 }
 
-function reportStatus() {
+async function reportStatus() {
     if (!states) {
         return;
     }
@@ -902,7 +902,11 @@ function reportStatus() {
     });
 
     // let our host value live two times the report interval
-    objects.setPrimaryHost(config.system.statisticsInterval * 2);
+    try {
+        await objects.setPrimaryHost(config.system.statisticsInterval * 2);
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Could not execute primary host determination: ${e.message}`);
+    }
 
     const mem = process.memoryUsage();
     states.setState(`${id}.memRss`, { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
@@ -5207,6 +5211,12 @@ function stop(force, callback) {
     stopInstances(force, async wasForced => {
         pluginHandler.destroyAll();
         notificationHandler && notificationHandler.storeNotifications();
+
+        try {
+            await objects.releasePrimaryHost();
+        } catch {
+            // ignore
+        }
 
         if (objects && objects.destroy) {
             await objects.destroy();

@@ -4461,15 +4461,36 @@ class ObjectsInRedisClient {
      * Value will expire after sec seconds
      *
      * {number} ms - ms until value expires
-     * @return {Promise<void>}
+     * @return {Promise<number>}
      */
     async setPrimaryHost(ms) {
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
-        this.log.warn(`${this.metaNamespace}objects.primaryHost`);
-        // TODO: With NX we cannot keep ourself up to date
-        await this.client.set(`${this.metaNamespace}objects.primaryHost`, this.settings.hostname, 'NX', 'PX', ms);
+
+        // try to acquire lock
+        const lockAquired = await this.client.evalsha([
+            this.scripts['redlock_acquire'],
+            3,
+            `${this.metaNamespace}objects.primaryHost`,
+            this.settings.hostname,
+            ms
+        ]);
+
+        // we have not acquired lock, maybe we are already master so we should try to extend
+        if (!lockAquired) {
+            const lockExtended = await this.client.evalsha([
+                this.scripts['redlock_extend'],
+                3,
+                `${this.metaNamespace}objects.primaryHost`,
+                this.settings.hostname,
+                ms
+            ]);
+
+            return lockExtended;
+        }
+
+        return lockAquired;
     }
 
     /**
@@ -4483,6 +4504,25 @@ class ObjectsInRedisClient {
         }
 
         return this.client.get(`${this.metaNamespace}objects.primaryHost`);
+    }
+
+    /**
+     * Ensure we are no longer the primary host
+     *
+     * @return Promise<void>
+     */
+    releasePrimaryHost() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // try to acquire lock
+        return this.client.evalsha([
+            this.scripts['redlock_release'],
+            2,
+            `${this.metaNamespace}objects.primaryHost`,
+            this.settings.hostname
+        ]);
     }
 
     /**
