@@ -2625,8 +2625,7 @@ async function processMessage(msg) {
                                 const parts = ['..', '..', '..', '..'];
                                 do {
                                     parts.pop();
-                                    const _filename =
-                                        path.normalize(__dirname + '/' + parts.join('/') + '/') + filename;
+                                    const _filename = path.normalize(`${__dirname}/${parts.join('/')}/`) + filename;
                                     if (fs.existsSync(_filename)) {
                                         filename = _filename;
                                         break;
@@ -2637,13 +2636,13 @@ async function processMessage(msg) {
                             if (fs.existsSync(filename)) {
                                 const files = fs.readdirSync(filename);
 
-                                for (let f = 0; f < files.length; f++) {
+                                for (const file of files) {
                                     try {
-                                        if (!files[f].endsWith('-audit.json')) {
-                                            const stat = fs.lstatSync(filename + '/' + files[f]);
+                                        if (!file.endsWith('-audit.json')) {
+                                            const stat = fs.lstatSync(path.join(filename, file));
                                             if (!stat.isDirectory()) {
                                                 result.list.push({
-                                                    fileName: `log/${hostname}/${transport}/${files[f]}`,
+                                                    fileName: `log/${hostname}/${transport}/${file}`,
                                                     size: stat.size
                                                 });
                                             }
@@ -2652,7 +2651,9 @@ async function processMessage(msg) {
                                         // push unchecked
                                         // result.list.push('log/' + transport + '/' + files[f]);
                                         logger.error(
-                                            `${hostLogPrefix} cannot check file: ${filename}/${files[f]} - ${e}`
+                                            `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
+                                                e.message
+                                            }`
                                         );
                                     }
                                 }
