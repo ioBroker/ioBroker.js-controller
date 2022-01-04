@@ -295,18 +295,29 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         );
                     }
                     handler.sendBulk(responseId, scriptChecksum);
+                } else if (data[1].includes('-- REDLOCK SCRIPT')) {
+                    // redlock scripts are currently not needed for Simulator
+                    this.knownScripts[scriptChecksum] = { redlock: true };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(
+                            `${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum]
+                            )}`
+                        );
+                    }
+                    handler.sendBulk(responseId, scriptChecksum);
                 } else {
-                    handler.sendError(responseId, new Error('Unknown LUA script ' + data[0]));
+                    handler.sendError(responseId, new Error(`Unknown LUA script ${data[1]}`));
                 }
             } else {
-                handler.sendError(responseId, new Error('Unsupported Script command ' + data[0]));
+                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0]}`));
             }
         });
 
         // Handle Redis "EVALSHA" request
         handler.on('evalsha', (data, responseId) => {
             if (!this.knownScripts[data[0]]) {
-                return void handler.sendError(responseId, new Error('Unknown Script ' + data[0]));
+                return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
             }
             if (this.knownScripts[data[0]].design) {
                 const scriptDesign = this.knownScripts[data[0]].design;
@@ -354,8 +365,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
 
                 return void handler.sendArray(responseId, res);
+            } else if (this.knownScripts[data[0]].redlock) {
+                // just return a dummy
+                return void handler.sendArray(responseId, [0]);
             } else {
-                handler.sendError(responseId, new Error('Unknown LUA script eval call ' + JSON.stringify(data)));
+                handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
             }
         });
 

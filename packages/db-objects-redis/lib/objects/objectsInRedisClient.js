@@ -4477,7 +4477,7 @@ class ObjectsInRedisClient {
      *
      * @return {Promise<boolean>}
      */
-    async getPrimaryHost() {
+    getPrimaryHost() {
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }

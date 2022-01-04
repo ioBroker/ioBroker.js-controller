@@ -1,3 +1,4 @@
+-- REDLOCK SCRIPT
 -- release a lock by deleting the key
 -- call with key, value
 local key = KEYS[1]

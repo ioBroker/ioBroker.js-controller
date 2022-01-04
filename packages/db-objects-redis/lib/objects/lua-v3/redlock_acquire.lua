@@ -1,3 +1,4 @@
+-- REDLOCK SCRIPT
 -- call with key, value, ms (for set px)
 local key = KEYS[1]
 

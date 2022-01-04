@@ -307,8 +307,8 @@ class RedisHandler extends EventEmitter {
 
     /**
      * Encode a array values to buffers and send out
-     * @param responseId ID of the response
-     * @param arr Array to send out
+     * @param {string} responseId ID of the response
+     * @param {any[]} arr Array to send out
      */
     sendArray(responseId, arr) {
         this.sendResponse(responseId, Resp.encodeArray(this.encodeRespArray(arr)));
