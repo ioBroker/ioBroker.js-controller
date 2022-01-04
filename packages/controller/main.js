@@ -5533,7 +5533,9 @@ function init(compactGroupId) {
                 if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
                     // detected a change in the nodejs version (or state non existing - upgrade from below v4)
                     logger.info(
-                        `${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`
+                        `${hostLogPrefix} Node.js version has changed from ${
+                            prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
+                        } to ${nodeVersion}`
                     );
                     if (os.platform() === 'linux') {
                         // ensure capabilities are set
