@@ -17,7 +17,6 @@ node_modules
 **/test/report
 **/conf/sources-dist.json
 /.npmrc
-**/lib/objects/lua
 /*.pid
 **/test/tmp
 **/test/redis-sentinel/log
