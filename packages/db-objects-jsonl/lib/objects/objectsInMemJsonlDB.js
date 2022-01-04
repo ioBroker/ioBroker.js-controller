@@ -54,7 +54,9 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     }
 
     async open() {
-        await this._db.open();
+        if (!(await this._maybeMigrateFileDB())) {
+            await this._db.open();
+        }
 
         // Create an object-like wrapper around the internal Map
         this.dataset = new Proxy(this._db, {
@@ -97,6 +99,83 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
                 this.saveBackup();
             }, this.settings.backup.period);
         }
+    }
+
+    /**
+     * Checks if an existing file DB should be migrated to JSONL
+     * @returns {Promise<boolean>} true if the file DB was migrated. false if not.
+     * If this returns true, the jsonl DB was opened and doesn't need to be opened again.
+     */
+    async _maybeMigrateFileDB() {
+        const jsonlFileName = path.join(this.dataDir, this.settings.jsonlDB.fileName);
+        const jsonFileName = path.join(this.dataDir, this.settings.fileDB.fileName);
+        const bakFileName = path.join(this.dataDir, this.settings.fileDB.fileName + '.bak');
+
+        // Check the timestamps of each file, defaulting to 0 if they don't exist
+        let jsonlTimeStamp = 0;
+        let jsonTimeStamp = 0;
+        let bakTimeStamp = 0;
+        try {
+            const stat = fs.statSync(jsonlFileName);
+            if (stat.isFile()) {
+                jsonlTimeStamp = stat.mtime;
+            }
+        } catch {
+            // ignore
+        }
+        try {
+            const stat = fs.statSync(jsonFileName);
+            if (stat.isFile()) {
+                jsonTimeStamp = stat.mtime;
+            }
+        } catch {
+            // ignore
+        }
+        try {
+            const stat = fs.statSync(bakFileName);
+            if (stat.isFile()) {
+                bakTimeStamp = stat.mtime;
+            }
+        } catch {
+            // ignore
+        }
+
+        // If there is nothing to restore, we're done
+        if (jsonTimeStamp === 0 && bakTimeStamp === 0) {
+            return false;
+        }
+
+        // Figure out which file needs to be imported
+        /** @type {string} */
+        let importFilename;
+        if (bakTimeStamp > 0 && bakTimeStamp > jsonTimeStamp && bakTimeStamp > jsonlTimeStamp) {
+            importFilename = bakFileName;
+        } else if (jsonTimeStamp > 0 && jsonTimeStamp > bakTimeStamp && jsonTimeStamp > jsonlTimeStamp) {
+            importFilename = jsonFileName;
+        }
+
+        await this._db.open();
+        this._db.clear();
+        await this._db.importJson(importFilename);
+
+        // And rename the existing files to avoid redoing the work next time
+        if (fs.existsSync(jsonFileName)) {
+            try {
+                fs.renameSync(jsonFileName, jsonFileName + '.migrated');
+            } catch {
+                // ignore
+            }
+        }
+        if (fs.existsSync(bakFileName)) {
+            try {
+                fs.renameSync(bakFileName, bakFileName + '.migrated');
+            } catch {
+                // ignore
+            }
+        }
+
+        // Signal to the caller that the DB is already open
+        return true;
     }
 
     async saveState() {
