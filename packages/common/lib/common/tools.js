@@ -2662,7 +2662,8 @@ function validateGeneralObjectProperties(obj, extend) {
         throw new Error(
             `obj.common.name has an invalid type! Expected "string" or "object", received "${typeof obj.common.name}"`
         );
-    } else if (['user', 'adapter', 'group'].includes(obj.type) && typeof obj.common.name !== 'string') {
+    } else if (['adapter'].includes(obj.type) && typeof obj.common.name !== 'string') {
+        // TODO: we need this for group/user too, but have to solve problems described in #1266
         // for some types, name needs to be a unique string
         throw new Error(`obj.common.name has an invalid type! Expected "string", received "${typeof obj.common.name}"`);
     }
