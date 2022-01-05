@@ -531,7 +531,7 @@ async function processCommand(command, args, params, callback) {
             const setup = new Setup({
                 dbConnect,
                 processExit: callback,
-                cleanDatabaseAsync,
+                cleanDatabase,
                 restartController,
                 resetDbConnect,
                 params
@@ -1121,17 +1121,21 @@ async function processCommand(command, args, params, callback) {
                     `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`
                 );
             } else {
-                dbConnect(params, (_obj, _stat, isNotRun) => {
+                dbConnect(params, async (_obj, _stat, isNotRun) => {
                     if (!isNotRun) {
                         console.error(`Stop ${tools.appName} first!`);
                         return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
-                    cleanDatabase(true, count => {
+
+                    try {
+                        const count = await cleanDatabase(true);
                         console.log(`Deleted ${count} states`);
-                        restartController();
-                        console.log(`Restarting ${tools.appName}...`);
-                        return void callback();
-                    });
+                    } catch {
+                        // ignore
+                    }
+                    restartController();
+                    console.log(`Restarting ${tools.appName}...`);
+                    callback();
                 });
             }
             break;
@@ -1149,12 +1153,12 @@ async function processCommand(command, args, params, callback) {
                 const backup = new Backup({
                     states,
                     objects,
-                    cleanDatabaseAsync,
+                    cleanDatabase,
                     restartController,
                     processExit: callback
                 });
 
-                backup.restoreBackup(args[0], !!params.force, exitCode => {
+                backup.restoreBackup(args[0], !!params.force, false, exitCode => {
                     if (exitCode === EXIT_CODES.NO_ERROR) {
                         console.log('System successfully restored!');
                     }
@@ -1172,7 +1176,7 @@ async function processCommand(command, args, params, callback) {
                 const backup = new Backup({
                     states,
                     objects,
-                    cleanDatabaseAsync,
+                    cleanDatabase,
                     restartController,
                     processExit: callback
                 });
@@ -1196,7 +1200,7 @@ async function processCommand(command, args, params, callback) {
                 const backup = new Backup({
                     states,
                     objects,
-                    cleanDatabaseAsync,
+                    cleanDatabase,
                     restartController,
                     processExit: callback
                 });
@@ -2345,10 +2349,10 @@ async function processCommand(command, args, params, callback) {
         case 'checklog': {
             dbConnect(params, (objects, states, isOffline, objectType) => {
                 if (isOffline && dbTools.objectsDbHasServer(objectType)) {
-                    console.log(tools.appName + ' is not running');
+                    console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
-                    console.log(tools.appName + ' is running');
+                    console.log(`${tools.appName} is running`);
                     objects.getObjectList(
                         {
                             startkey: 'system.host.',
@@ -2725,36 +2729,38 @@ async function delStates() {
     return keys ? keys.length : 0;
 }
 
-function cleanDatabase(isDeleteDb, callback) {
+/**
+ * Cleans the database
+ *
+ * @param {boolean} isDeleteDb - if whole db should be destroyed
+ * @return {Promise<number>}
+ */
+async function cleanDatabase(isDeleteDb) {
     if (isDeleteDb) {
-        objects.destroyDB(async () => {
-            // Clean up states
-            const keysCount = await delStates();
-
-            if (callback) {
-                return void callback(keysCount);
-            }
-        });
+        await objects.destroyDBAsync();
+        // Clean up states
+        const keysCount = await delStates();
+        return keysCount;
     } else {
         // Clean only objects, not the views
-        objects.getObjectList({ startkey: '\u0000', endkey: '\u9999' }, async (err, res) => {
-            let ids = [];
-            if (!err && res.rows.length) {
+        let ids = [];
+
+        try {
+            const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
+            if (res.rows.length) {
                 console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
             }
-            await delObjects(ids);
-            // Clean up states
-            const keysCount = await delStates();
+        } catch {
+            // ignore
+        }
 
-            if (callback) {
-                return void callback(keysCount);
-            }
-        });
+        await delObjects(ids);
+        // Clean up states
+        const keysCount = await delStates();
+        return keysCount;
     }
 }
-
-const cleanDatabaseAsync = tools.promisifyNoError(cleanDatabase);
 
 function unsetup(params, callback) {
     dbConnect(params, () => {

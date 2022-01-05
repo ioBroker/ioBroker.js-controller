@@ -29,7 +29,7 @@ function Setup(options) {
     const processExit = options.processExit;
     const dbConnect = options.dbConnect;
     const params = options.params;
-    const cleanDatabaseAsync = options.cleanDatabaseAsync;
+    const cleanDatabase = options.cleanDatabase;
     const resetDbConnect = options.resetDbConnect;
     const restartController = options.restartController;
     let objects;
@@ -502,7 +502,7 @@ function Setup(options) {
                     const backup = new Backup({
                         states,
                         objects,
-                        cleanDatabaseAsync,
+                        cleanDatabase,
                         restartController,
                         processExit: callback
                     });
@@ -547,14 +547,14 @@ function Setup(options) {
                         const backup = new Backup({
                             states,
                             objects,
-                            cleanDatabaseAsync,
+                            cleanDatabase,
                             restartController,
                             processExit: callback,
                             dbMigration: true
                         });
                         console.log('Restore backup ...');
                         console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                        backup.restoreBackup(filePath, false, err => {
+                        backup.restoreBackup(filePath, false, true, err => {
                             if (err) {
                                 console.log(`Error happened during restore: ${err.message}`);
                                 console.log();
