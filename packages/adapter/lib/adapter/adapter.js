@@ -33,6 +33,7 @@ const path = require('path');
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
 const { password } = require('@iobroker/js-controller-common');
+const Log = require('./log');
 
 const { FORBIDDEN_CHARS } = tools;
 const {
@@ -60,49 +61,6 @@ const {
 function getErrorText(code) {
     code = code || 0;
     return (EXIT_CODES[code] || code).toString();
-}
-
-class Log {
-    /**
-     * @param {string} namespaceLog Logging namespace to prefix
-     * @param {string} level The log level
-     * @param {object} logger logger instance
-     */
-    constructor(namespaceLog, level, logger) {
-        this.namespaceLog = namespaceLog;
-        this.level = level;
-        // We have to bind the this context here or it is possible that `this` is
-        // undefined when passing around the logger methods. This happens e.g. when doing this:
-        //   const log = new Log(...);
-        //   const test = log.info;
-        //   test();
-        this.logger = logger;
-        this.silly = this.silly.bind(this);
-        this.debug = this.debug.bind(this);
-        this.info = this.info.bind(this);
-        this.error = this.error.bind(this);
-        this.warn = this.warn.bind(this);
-    }
-
-    silly(msg) {
-        this.logger.silly(`${this.namespaceLog} ${msg}`);
-    }
-
-    debug(msg) {
-        this.logger.debug(`${this.namespaceLog} ${msg}`);
-    }
-
-    info(msg) {
-        this.logger.info(`${this.namespaceLog} ${msg}`);
-    }
-
-    error(msg) {
-        this.logger.error(`${this.namespaceLog} ${msg}`);
-    }
-
-    warn(msg) {
-        this.logger.warn(`${this.namespaceLog} ${msg}`);
-    }
 }
 
 /**
@@ -9639,7 +9597,7 @@ function Adapter(options) {
 
     initObjects(() => {
         if (this.inited) {
-            this.log && logger.warn(this.namespaceLog + ' Reconnection to DB.');
+            this.log && logger.warn(`${this.namespaceLog} Reconnection to DB.`);
             return;
         }
 
