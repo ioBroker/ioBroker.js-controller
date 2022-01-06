@@ -28,6 +28,7 @@ const deepClone = require('deep-clone');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const semver = require('semver');
+const path = require('path');
 // local version is always same as controller version, since lerna exact: true is used
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
@@ -9585,7 +9586,7 @@ function Adapter(options) {
 
             if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(__dirname + '/../../cert/cloudCert.crt');
+                const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
                 const version = semver.major(this.pack.version);
 
                 obj.native.licenses.forEach(license => {

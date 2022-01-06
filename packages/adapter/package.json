@@ -45,6 +45,7 @@
     "access": "public"
   },
   "files": [
+    "cert/",
     "lib/",
     "index.js"
   ]
