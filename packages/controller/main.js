@@ -5353,7 +5353,8 @@ function init(compactGroupId) {
             );
         } else {
             // without logger multiple things will have undefined behavior and probably more is wrong -> do not start
-            throw new Error(`Error initializing logger: ${e.message}`);
+            console.error(`Error initializing logger: ${e.stack}`);
+            process.exit(EXIT_CODES.UNKNOWN_ERROR);
         }
     }
 
