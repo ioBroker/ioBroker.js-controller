@@ -491,21 +491,19 @@ module.exports = class CLIObjects extends CLICommand {
                 });
             } else {
                 // only one object
-                objects.delObject(id, err => {
+                objects.delObject(id, async err => {
                     if (err) {
                         CLI.error.objectNotFound(id, err);
                         return void callback(3);
                     } else {
-                        tools
-                            .removeIdFromAllEnums(objects, id)
-                            .then(() => {
-                                CLI.success.objectDeleted(id);
-                                return void callback();
-                            })
-                            .catch(e => {
-                                CLI.error.cannotDeleteObjectFromEnums(id, e.message);
-                                return void callback(3);
-                            });
+                        try {
+                            await tools.removeIdFromAllEnums(objects, id);
+                            CLI.success.objectDeleted(id);
+                            return void callback();
+                        } catch (e) {
+                            CLI.error.cannotDeleteObjectFromEnums(id, e.message);
+                            return void callback(3);
+                        }
                     }
                 });
             }

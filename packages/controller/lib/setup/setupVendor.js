@@ -76,7 +76,7 @@ function Vendor(options) {
                             obj.nonEdit.password = password;
                             return objects
                                 .setObjectAsync('system.meta.uuid', obj)
-                                .then(() => logger.info('object system.meta.uuid updated: ' + uuid))
+                                .then(() => logger.info(`object system.meta.uuid updated: ${uuid}`))
                                 .catch(e => logger.error(`Cannot update system.meta.uuid: ${e.message}`));
                         }
                     } else {
@@ -88,12 +88,12 @@ function Vendor(options) {
                                     type: 'uuid'
                                 },
                                 ts: new Date().getTime(),
-                                from: 'system.host.' + tools.getHostName() + '.tools',
+                                from: `system.host.${tools.getHostName()}.tools`,
                                 native: {
                                     uuid: uuid
                                 }
                             })
-                            .then(() => logger.info('object system.meta.uuid created: ' + uuid))
+                            .then(() => logger.info(`object system.meta.uuid created: ${uuid}`))
                             .catch(e => logger.error(`Cannot create system.meta.uuid: ${e.message}`));
                     }
                 })
