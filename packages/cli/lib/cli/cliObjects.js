@@ -469,7 +469,7 @@ module.exports = class CLIObjects extends CLICommand {
                             input: process.stdin,
                             output: process.stdout
                         });
-                        rl.question(result.length + ' object(s) will be deleted. Are you sure? [y/N]: ', answer => {
+                        rl.question(`${result.length} object(s) will be deleted. Are you sure? [y/N]: `, answer => {
                             rl.close();
                             if (
                                 answer === 'y' ||
@@ -494,15 +494,15 @@ module.exports = class CLIObjects extends CLICommand {
                 objects.delObject(id, async err => {
                     if (err) {
                         CLI.error.objectNotFound(id, err);
-                        return void callback(3);
+                        callback(3);
                     } else {
                         try {
                             await tools.removeIdFromAllEnums(objects, id);
                             CLI.success.objectDeleted(id);
-                            return void callback();
+                            callback();
                         } catch (e) {
                             CLI.error.cannotDeleteObjectFromEnums(id, e.message);
-                            return void callback(3);
+                            callback(3);
                         }
                     }
                 });
