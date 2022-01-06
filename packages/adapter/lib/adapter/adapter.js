@@ -35,54 +35,21 @@ const controllerVersion = require('@iobroker/js-controller-adapter/package.json'
 const { password } = require('@iobroker/js-controller-common');
 
 const { FORBIDDEN_CHARS } = tools;
-const DEFAULT_SECRET = 'Zgfr56gFe87jJOM';
-const ALIAS_STARTS_WITH = 'alias.';
-
-const SYSTEM_ADMIN_USER = 'system.user.admin';
-const SYSTEM_ADMIN_GROUP = 'system.group.administrator';
-const QUALITY_SUBS_INITIAL = 0x20;
-
-const supportedFeatures = [
-    'ALIAS', // Alias Feature supported, Since js-controller 2.0
-    'ALIAS_SEPARATE_READ_WRITE_ID', // Alias support separated ids for read and write, Since js-controller 3.0
-    'ADAPTER_GETPORT_BIND', // getPort method of adapter supports second parameter to bind to a special network interface, Since js-controller 2.0
-    'ADAPTER_DEL_OBJECT_RECURSIVE', // delObject supports options.recursive flag to delete objects structures recursive, Since js-controller 2.2
-    'ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE', // setObject(*) methods set the default (def) value via setState after the object is created. Since js-controller 2.0
-    'ADAPTER_AUTO_DECRYPT_NATIVE', // all native attributes, that are listed in an array `encryptedNative` in io-pack will be automatically decrypted and encrypted. Since js-controller 3.0
-    'PLUGINS', // configurable plugins supported. Since js-controller 3.0
-    'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
-    'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
-    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
-    'CONTROLLER_LICENSE_MANAGER', // Controller can read licenses from iobroker.net. Since js-controller 4.0    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
-    'DEL_INSTANCE_CUSTOM' // instances/adapter can be deleted with --custom flag to remove corresponding custom of all objects. Since js-controller 4.0
-];
-
-//const ACCESS_EVERY_EXEC  = 0x1;
-const ACCESS_EVERY_WRITE = 0x2;
-const ACCESS_EVERY_READ = 0x4;
-//const ACCESS_EVERY_RW    = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ;
-//const ACCESS_EVERY_ALL   = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ | ACCESS_EVERY_EXEC;
-
-//const ACCESS_GROUP_EXEC  = 0x10;
-const ACCESS_GROUP_WRITE = 0x20;
-const ACCESS_GROUP_READ = 0x40;
-//const ACCESS_GROUP_RW    = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ;
-//const ACCESS_GROUP_ALL   = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ | ACCESS_GROUP_EXEC;
-
-//const ACCESS_USER_EXEC   = 0x100;
-const ACCESS_USER_WRITE = 0x200;
-const ACCESS_USER_READ = 0x400;
-//const ACCESS_USER_RW     = ACCESS_USER_WRITE | ACCESS_USER_READ;
-//const ACCESS_USER_ALL    = ACCESS_USER_WRITE | ACCESS_USER_READ | ACCESS_USER_EXEC;
-
-// const ACCESS_EXEC        = 0x1;
-// const ACCESS_WRITE       = 0x2;
-// const ACCESS_READ        = 0x4;
-// const ACCESS_LIST        = 'list';
-// const ACCESS_DELETE      = 'delete';
-// const ACCESS_CREATE      = 'create';
-
-const ERROR_PERMISSION = 'permissionError';
+const {
+    DEFAULT_SECRET,
+    ALIAS_STARTS_WITH,
+    SYSTEM_ADMIN_USER,
+    SYSTEM_ADMIN_GROUP,
+    QUALITY_SUBS_INITIAL,
+    SUPPORTED_FEATURES,
+    ERROR_PERMISSION,
+    ACCESS_EVERY_READ,
+    ACCESS_EVERY_WRITE,
+    ACCESS_GROUP_WRITE,
+    ACCESS_GROUP_READ,
+    ACCESS_USER_WRITE,
+    ACCESS_USER_READ
+} = require('./constants');
 
 /**
  * Look up the error description for an error code
@@ -118,23 +85,23 @@ class Log {
     }
 
     silly(msg) {
-        this.logger.silly(this.namespaceLog + ' ' + msg);
+        this.logger.silly(`${this.namespaceLog} ${msg}`);
     }
 
     debug(msg) {
-        this.logger.debug(this.namespaceLog + ' ' + msg);
+        this.logger.debug(`${this.namespaceLog} ${msg}`);
     }
 
     info(msg) {
-        this.logger.info(this.namespaceLog + ' ' + msg);
+        this.logger.info(`${this.namespaceLog} ${msg}`);
     }
 
     error(msg) {
-        this.logger.error(this.namespaceLog + ' ' + msg);
+        this.logger.error(`${this.namespaceLog} ${msg}`);
     }
 
     warn(msg) {
-        this.logger.warn(this.namespaceLog + ' ' + msg);
+        this.logger.warn(`${this.namespaceLog} ${msg}`);
     }
 }
 
@@ -654,7 +621,7 @@ function Adapter(options) {
      * @returns {boolean} true/false if the feature is in the list of supported features
      */
     this.supportsFeature = featureName => {
-        return supportedFeatures.includes(featureName);
+        return SUPPORTED_FEATURES.includes(featureName);
     };
 
     /**
@@ -9179,9 +9146,9 @@ function Adapter(options) {
                     }
                 } else {
                     // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
-                    const idx = supportedFeatures.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
+                    const idx = SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
                     if (idx !== -1) {
-                        supportedFeatures.splice(idx, 1);
+                        SUPPORTED_FEATURES.splice(idx, 1);
                     }
                 }
 
