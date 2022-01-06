@@ -177,7 +177,7 @@ function Setup(options) {
         }
     }
 
-    function dbSetup(iopkg, ignoreExisting, callback) {
+    async function dbSetup(iopkg, ignoreExisting, callback) {
         if (typeof ignoreExisting === 'function') {
             callback = ignoreExisting;
             ignoreExisting = false;
@@ -199,32 +199,31 @@ function Setup(options) {
                 }
             });
         } else {
-            tools.createUuid(objects, () => {
-                // check if encrypt secret exists
-                objects.getObject('system.config', (err, obj) => {
-                    let configFixed = false;
-                    if (obj && obj.type !== 'config') {
-                        obj.type = 'config';
-                        obj.from = 'system.host.' + tools.getHostName() + '.cli';
+            await tools.createUuid(objects);
+            // check if encrypt secret exists
+            objects.getObject('system.config', (err, obj) => {
+                let configFixed = false;
+                if (obj && obj.type !== 'config') {
+                    obj.type = 'config';
+                    obj.from = `system.host.${tools.getHostName()}.cli`;
+                    obj.ts = Date.now();
+                    configFixed = true;
+                }
+                if (obj && (!obj.native || !obj.native.secret)) {
+                    require('crypto').randomBytes(24, (ex, buf) => {
+                        obj.native = obj.native || {};
+                        obj.native.secret = buf.toString('hex');
+                        obj.from = `system.host.${tools.getHostName()}.cli`;
                         obj.ts = Date.now();
-                        configFixed = true;
-                    }
-                    if (obj && (!obj.native || !obj.native.secret)) {
-                        require('crypto').randomBytes(24, (ex, buf) => {
-                            obj.native = obj.native || {};
-                            obj.native.secret = buf.toString('hex');
-                            obj.from = 'system.host.' + tools.getHostName() + '.cli';
-                            obj.ts = Date.now();
-                            objects.setObject('system.config', obj, () => setupReady(obj, callback));
-                        });
+                        objects.setObject('system.config', obj, () => setupReady(obj, callback));
+                    });
+                } else {
+                    if (configFixed) {
+                        objects.setObject('system.config', obj, () => setupReady(obj, callback));
                     } else {
-                        if (configFixed) {
-                            objects.setObject('system.config', obj, () => setupReady(obj, callback));
-                        } else {
-                            setupReady(obj, callback);
-                        }
+                        setupReady(obj, callback);
                     }
-                });
+                }
             });
         }
     }

@@ -1317,7 +1317,7 @@ async function collectDiagInfo(type) {
                     });
                 });
             } catch (e) {
-                logger.error(`${hostLogPrefix} cannot call visUtils: ${e}`);
+                logger.error(`${hostLogPrefix} cannot call visUtils: ${e.message}`);
                 return diag;
             }
         } else {
@@ -1958,63 +1958,59 @@ function setMeta() {
             await extendObjects(tasks);
             // create UUID if not exist
             if (!compactGroupController) {
-                tools.createUuid(objects, async uuid => {
-                    uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
+                const uuid = await tools.createUuid(objects);
+                uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
 
-                    if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                        logger &&
-                            logger.info(
-                                `${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`
-                            );
-                        try {
-                            let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
-                            startScript = JSON.parse(startScript);
+                if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                    logger &&
+                        logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
+                    try {
+                        let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
+                        startScript = JSON.parse(startScript);
 
-                            if (startScript.password) {
-                                const Vendor = require('./lib/setup/setupVendor');
-                                const vendor = new Vendor({ objects });
+                        if (startScript.password) {
+                            const Vendor = require('./lib/setup/setupVendor');
+                            const vendor = new Vendor({ objects });
 
-                                logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
+                            logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
+                            try {
+                                await vendor.checkVendor(VENDOR_FILE, startScript.password, logger);
+                                logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
                                 try {
-                                    await vendor.checkVendor(VENDOR_FILE, startScript.password, logger);
-                                    logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
-                                    try {
-                                        if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
-                                            fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        }
-                                    } catch (e) {
-                                        logger &&
-                                            logger.error(
-                                                `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
-                                            );
+                                    if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                                        fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                     }
                                 } catch (e) {
                                     logger &&
-                                        logger.error(`${hostLogPrefix} Cannot update vendor information: ${e.message}`);
-                                    try {
-                                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                    } catch (e) {
-                                        logger &&
-                                            logger.error(
-                                                `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
-                                            );
-                                    }
+                                        logger.error(
+                                            `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
+                                        );
                                 }
-                            }
-                        } catch (e) {
-                            logger &&
-                                logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
-                            try {
-                                fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
                                 logger &&
-                                    logger.error(
-                                        `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
-                                    );
+                                    logger.error(`${hostLogPrefix} Cannot update vendor information: ${e.message}`);
+                                try {
+                                    fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                } catch (e) {
+                                    logger &&
+                                        logger.error(
+                                            `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
+                                        );
+                                }
                             }
                         }
+                    } catch (e) {
+                        logger && logger.error(`${hostLogPrefix} Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
+                        try {
+                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                        } catch (e) {
+                            logger &&
+                                logger.error(
+                                    `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
+                                );
+                        }
                     }
-                });
+                }
             }
         }
     );
@@ -2229,8 +2225,8 @@ async function processMessage(msg) {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             // if user selected 'none' we will have null here and do not want to send it
                             obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
-                        } catch (err) {
-                            logger.error(`${hostLogPrefix} cannot collect diagnostics: ${err}`);
+                        } catch (e) {
+                            logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
                         }
                     }
 
