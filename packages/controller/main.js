@@ -385,17 +385,6 @@ function createStates(onConnect) {
                         processMessage(obj);
                     }
                 }
-            } else if (!compactGroupController && id.match(/^[^.]+\.\d+\.info\.connection$/)) {
-                // If this NAME.0.info.connection, only main controller is handling this
-                // Disabled in 1.5.x
-                // if (state && !state.val) {
-                //     tools.setQualityForInstance(objects, states, id.substring(0, id.length - /* '.info.connection'.length*/ 16), 0x42)
-                //         .then(() => {
-                //             logger.debug(hostLogPrefix + ' set all states quality to 0x42 (device not connected');
-                //         }).catch(e => {
-                //             logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
-                //         });
-                // }
             } else if (!compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
@@ -426,18 +415,7 @@ function createStates(onConnect) {
                             }
                         });
                     });
-                } //else if (state && state.ack && !state.val) {
-                // Disabled in 1.5.x
-                // id = id.substring(0, id.length - /*.alive*/ 6);
-                // if (procs[id] && procs[id].config.common.host === hostname && procs[id].config.common.mode === 'daemon') {
-                //     tools.setQualityForInstance(objects, states, id.substring(15 /*'system.adapter.'.length*/), 0x12)
-                //         .then(() => {
-                //             logger.debug(hostLogPrefix + ' set all states quality to 0x12 (instance not connected');
-                //         }).catch(e => {
-                //         logger.error(hostLogPrefix + ' cannot set all states quality: ' + e);
-                //     });
-                // }
-                //}
+                }
             } else if (subscribe[id]) {
                 for (let i = 0; i < subscribe[id].length; i++) {
                     // wake up adapter
@@ -507,21 +485,6 @@ function createStates(onConnect) {
                     }
                 }
             }
-            /* it is not used because of code before
-            else
-            // Monitor activity of the adapter and restart it if stopped
-            if (!isStopping && id.substring(id.length - '.alive'.length) === '.alive') {
-                let adapter = id.substring(0, id.length - '.alive'.length);
-                if (procs[adapter] &&
-                    !procs[adapter].stopping &&
-                    !procs[adapter].process &&
-                    procs[adapter].config &&
-                    procs[adapter].config.common.enabled &&
-                    procs[adapter].config.common.mode === 'daemon') {
-                    startInstance(adapter, false);
-                }
-            }
-             */
         },
         connected: () => {
             if (statesDisconnectTimeout) {
@@ -1995,7 +1958,7 @@ function setMeta() {
             await extendObjects(tasks);
             // create UUID if not exist
             if (!compactGroupController) {
-                tools.createUuid(objects, uuid => {
+                tools.createUuid(objects, async uuid => {
                     uuid && logger && logger.info(`${hostLogPrefix} Created UUID: ${uuid}`);
 
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
@@ -2012,35 +1975,31 @@ function setMeta() {
                                 const vendor = new Vendor({ objects });
 
                                 logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
-                                vendor
-                                    .checkVendor(VENDOR_FILE, startScript.password, logger)
-                                    .then(() => {
-                                        logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
-                                        try {
-                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) &&
-                                                fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        } catch (e) {
-                                            logger &&
-                                                logger.error(
-                                                    `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
-                                                );
+                                try {
+                                    await vendor.checkVendor(VENDOR_FILE, startScript.password, logger);
+                                    logger && logger.info(`${hostLogPrefix} Vendor information synchronised.`);
+                                    try {
+                                        if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
+                                            fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         }
-                                    })
-                                    .catch(err => {
+                                    } catch (e) {
                                         logger &&
                                             logger.error(
-                                                `${hostLogPrefix} Cannot update vendor information: ${err.message}`
+                                                `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
                                             );
-                                        try {
-                                            fs.existsSync(VENDOR_BOOTSTRAP_FILE) &&
-                                                fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
-                                        } catch (e) {
-                                            logger &&
-                                                logger.error(
-                                                    `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
-                                                );
-                                        }
-                                    });
+                                    }
+                                } catch (e) {
+                                    logger &&
+                                        logger.error(`${hostLogPrefix} Cannot update vendor information: ${e.message}`);
+                                    try {
+                                        fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
+                                    } catch (e) {
+                                        logger &&
+                                            logger.error(
+                                                `${hostLogPrefix} Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`
+                                            );
+                                    }
+                                }
                             }
                         } catch (e) {
                             logger &&
@@ -2674,33 +2633,32 @@ async function processMessage(msg) {
                 // node.js --version
                 // npm --version
                 // uptime
-                tools
-                    .getHostInfo(objects)
-                    .catch(err => {
-                        logger.error(`${hostLogPrefix} cannot get getHostInfo: ${err}`);
-                        return null;
-                    })
-                    .then(data => {
-                        data = data || {};
-                        data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
-                        // add information about running instances
-                        let count = 0;
-                        for (const id of Object.keys(procs)) {
-                            if (procs[id].process) {
-                                count++;
-                            }
-                        }
+                let data;
+                try {
+                    data = (await tools.getHostInfo(objects)) || {};
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} cannot get getHostInfo: ${e.message}`);
+                    return null;
+                }
 
-                        let location = path.normalize(__dirname + '/../');
-                        if (path.basename(location) === 'node_modules') {
-                            location = path.normalize(__dirname + '/../../');
-                        }
+                data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
+                // add information about running instances
+                let count = 0;
+                for (const id of Object.keys(procs)) {
+                    if (procs[id].process) {
+                        count++;
+                    }
+                }
 
-                        data['Active instances'] = count;
-                        data.location = location;
+                let location = path.normalize(__dirname + '/../');
+                if (path.basename(location) === 'node_modules') {
+                    location = path.normalize(__dirname + '/../../');
+                }
 
-                        sendTo(msg.from, msg.command, data, msg.callback);
-                    });
+                data['Active instances'] = count;
+                data.location = location;
+
+                sendTo(msg.from, msg.command, data, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -3084,23 +3042,25 @@ async function processMessage(msg) {
 
         // read licenses from iobroker.net
         case 'updateLicenses': {
-            tools
-                .updateLicenses(objects, msg.message && msg.message.login, msg.message && msg.message.password)
-                .then(licenses => {
-                    logger.info(
-                        `${hostLogPrefix} Received ${licenses.length} licenses: "${licenses
-                            .map(l => l.product)
-                            .join(', ')}"`
-                    );
-                    msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
-                })
-                .catch(err => {
-                    logger.error(`${hostLogPrefix} Cannot read licenses: ${err.message}`);
+            try {
+                const licenses = await tools.updateLicenses(
+                    objects,
+                    msg.message && msg.message.login,
+                    msg.message && msg.message.password
+                );
+                logger.info(
+                    `${hostLogPrefix} Received ${licenses.length} licenses: "${licenses
+                        .map(l => l.product)
+                        .join(', ')}"`
+                );
+                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: licenses }, msg.callback);
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot read licenses: ${e.message}`);
 
-                    msg.callback &&
-                        msg.from &&
-                        sendTo(msg.from, msg.command, { result: [], error: err.message }, msg.callback);
-                });
+                msg.callback &&
+                    msg.from &&
+                    sendTo(msg.from, msg.command, { result: [], error: e.message }, msg.callback);
+            }
             break;
         }
 

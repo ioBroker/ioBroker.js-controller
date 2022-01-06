@@ -1275,38 +1275,49 @@ function Adapter(options) {
      * After updating the configuration, the adapter is automatically restarted.
      *
      * @param {Record<string, any>} newConfig The new config values to be stored
+     * @return Promise<void>
      */
-    this.updateConfig = newConfig => {
+    this.updateConfig = async newConfig => {
         // merge the old and new configuration
         const _config = Object.assign({}, this.config, newConfig);
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
-        this.getForeignObjectAsync(configObjId)
-            .then(obj => {
-                if (!obj) {
-                    return Promise.reject(new Error(tools.ERRORS.ERROR_DB_CLOSED));
-                }
-                obj.native = _config;
-                return this.setForeignObjectAsync(configObjId, obj);
-            })
-            .catch(err => logger.error(`${this.namespaceLog} Updating the adapter config failed: ${err.message}`));
+        let obj;
+        try {
+            obj = await this.getForeignObjectAsync(configObjId);
+        } catch (e) {
+            logger.error(`${this.namespaceLog} Updating the adapter config failed: ${e.message}`);
+        }
+
+        if (!obj) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        obj.native = _config;
+        return this.setForeignObjectAsync(configObjId, obj);
     };
 
     /**
      * Disables and stops the adapter instance.
+     *
+     * @return Promise<void>
      */
-    this.disable = () => {
+    this.disable = async () => {
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
-        this.getForeignObjectAsync(configObjId)
-            .then(obj => {
-                if (!obj) {
-                    return Promise.reject(new Error(tools.ERRORS.ERROR_DB_CLOSED));
-                }
-                obj.common.enabled = false;
-                return this.setForeignObjectAsync(configObjId, obj);
-            })
-            .catch(err => logger.error(`${this.namespaceLog} Disabling the adapter instance failed: ${err.message}`));
+        let obj;
+        try {
+            obj = await this.getForeignObjectAsync(configObjId);
+        } catch (e) {
+            logger.error(`${this.namespaceLog} Disabling the adapter instance failed: ${e.message}`);
+        }
+
+        if (!obj) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        obj.common.enabled = false;
+        return this.setForeignObjectAsync(configObjId, obj);
     };
 
     /**
@@ -3121,7 +3132,7 @@ function Adapter(options) {
          *            }
          *        </code></pre>
          */
-        this.getEnums = (_enumList, options, callback) => {
+        this.getEnums = async (_enumList, options, callback) => {
             if (typeof _enumList === 'function') {
                 callback = _enumList;
                 _enumList = null;
@@ -3157,9 +3168,12 @@ function Adapter(options) {
                     );
                 }
 
-                Promise.all(promises)
-                    .then(() => tools.maybeCallbackWithError(callback, null, _enums))
-                    .catch(e => tools.maybeCallbackWithError(callback, e));
+                try {
+                    await Promise.all(promises);
+                    return tools.maybeCallbackWithError(callback, null, _enums);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 // Read all enums
                 adapterObjects.getObjectView(
@@ -9014,7 +9028,7 @@ function Adapter(options) {
     const initAdapter = adapterConfig => {
         initLogging(() => {
             this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
-            this.pluginHandler.initPlugins(adapterConfig, () => {
+            this.pluginHandler.initPlugins(adapterConfig, async () => {
                 if (!adapterStates) {
                     // if adapterState was destroyed,we should not continue
                     return;
@@ -9156,7 +9170,9 @@ function Adapter(options) {
                                 this.getEncryptedConfig(attr)
                                     .then(decryptedValue => (this.config[attr] = decryptedValue))
                                     .catch(e =>
-                                        logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e}`)
+                                        logger.error(
+                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
+                                        )
                                     )
                             );
                         }
@@ -9169,134 +9185,121 @@ function Adapter(options) {
                     }
                 }
 
-                let promiseReadSecret;
-
                 // read the systemSecret
-                if (systemSecret !== null) {
-                    promiseReadSecret = Promise.resolve();
-                } else {
-                    promiseReadSecret = new Promise(resolve => {
-                        this.getForeignObject('system.config', null, (err, data) => {
-                            if (data && data.native) {
-                                systemSecret = data.native.secret;
-                            }
-                            systemSecret = systemSecret || DEFAULT_SECRET;
-                            resolve();
-                        });
-                    });
+                if (systemSecret === null) {
+                    try {
+                        const data = await this.getForeignObjectAsync('system.config', null);
+                        if (data && data.native) {
+                            systemSecret = data.native.secret;
+                        }
+                    } catch {
+                        // ignore
+                    }
+                    systemSecret = systemSecret || DEFAULT_SECRET;
                 }
 
-                // Wait till secret read and all attributes decrypted
-                promiseReadSecret
-                    .then(() => Promise.all(promises))
-                    .then(() => {
-                        this.log = new Log(this.namespaceLog, config.log.level, logger);
+                // Wait till all attributes decrypted
+                await Promise.all(promises);
+                this.log = new Log(this.namespaceLog, config.log.level, logger);
 
-                        if (!adapterStates) {
-                            // if adapterState was destroyed,we should not continue
-                            return;
-                        }
+                if (!adapterStates) {
+                    // if adapterState was destroyed,we should not continue
+                    return;
+                }
 
-                        this.outputCount++;
-                        // set current loglevel
-                        adapterStates.setState('system.adapter.' + this.namespace + '.logLevel', {
-                            val: config.log.level,
+                this.outputCount++;
+                // set current loglevel
+                adapterStates.setState('system.adapter.' + this.namespace + '.logLevel', {
+                    val: config.log.level,
+                    ack: true,
+                    from: 'system.adapter.' + this.namespace
+                });
+
+                if (options.instance === undefined) {
+                    this.version =
+                        this.pack && this.pack.version
+                            ? this.pack.version
+                            : this.ioPack && this.ioPack.common
+                            ? this.ioPack.common.version
+                            : 'unknown';
+                    // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                    const isNpmVersion =
+                        !this.ioPack ||
+                        !this.ioPack.common ||
+                        typeof this.ioPack.common.installedFrom !== 'string' ||
+                        this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+
+                    logger.info(
+                        `${this.namespaceLog} starting. Version ${this.version} ${
+                            !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
+                        }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                    );
+                    config.system = config.system || {};
+                    config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+                    if (!config.isInstall) {
+                        reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
+                        reportStatus();
+                        const id = 'system.adapter.' + this.namespace;
+                        adapterStates.setState(id + '.compactMode', {
                             ack: true,
-                            from: 'system.adapter.' + this.namespace
+                            from: id,
+                            val: !!this.startedInCompactMode
                         });
 
-                        if (options.instance === undefined) {
-                            this.version =
-                                this.pack && this.pack.version
-                                    ? this.pack.version
-                                    : this.ioPack && this.ioPack.common
-                                    ? this.ioPack.common.version
-                                    : 'unknown';
-                            // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
-                            const isNpmVersion =
-                                !this.ioPack ||
-                                !this.ioPack.common ||
-                                typeof this.ioPack.common.installedFrom !== 'string' ||
-                                this.ioPack.common.installedFrom.startsWith(
-                                    `${tools.appName.toLowerCase()}.${this.name}`
-                                );
+                        this.outputCount++;
 
-                            logger.info(
-                                `${this.namespaceLog} starting. Version ${this.version} ${
-                                    !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
-                                }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
-                            );
-                            config.system = config.system || {};
-                            config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
-                            if (!config.isInstall) {
-                                reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
-                                reportStatus();
-                                const id = 'system.adapter.' + this.namespace;
-                                adapterStates.setState(id + '.compactMode', {
-                                    ack: true,
-                                    from: id,
-                                    val: !!this.startedInCompactMode
-                                });
-
-                                this.outputCount++;
-
-                                if (this.startedInCompactMode) {
-                                    adapterStates.setState(id + '.cpu', { ack: true, from: id, val: 0 });
-                                    adapterStates.setState(id + '.cputime', { ack: true, from: id, val: 0 });
-                                    adapterStates.setState(id + '.memRss', { val: 0, ack: true, from: id });
-                                    adapterStates.setState(id + '.memHeapTotal', { val: 0, ack: true, from: id });
-                                    adapterStates.setState(id + '.memHeapUsed', { val: 0, ack: true, from: id });
-                                    adapterStates.setState(id + '.eventLoopLag', { val: 0, ack: true, from: id });
-                                    this.outputCount += 6;
-                                } else {
-                                    tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
-                                }
-                            }
-                        }
-
-                        if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
-                            try {
-                                schedule = require('node-schedule');
-                            } catch {
-                                logger.error(
-                                    this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled'
-                                );
-                            }
-                            if (schedule) {
-                                logger.debug(
-                                    `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
-                                );
-                                restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
-                                    logger.info(this.namespaceLog + ' Scheduled restart.');
-                                    stop(false, true);
-                                });
-                            }
-                        }
-
-                        // auto oStates
-                        if (options.states) {
-                            this.getStates('*', null, (err, _states) => {
-                                this.oStates = _states;
-                                this.subscribeStates('*');
-                                if (firstConnection) {
-                                    firstConnection = false;
-                                    typeof options.ready === 'function' && options.ready();
-                                    this.emit('ready');
-                                } else {
-                                    typeof options.reconnect === 'function' && options.reconnect();
-                                    this.emit('reconnect');
-                                }
-                                this.adapterReady = true;
-                            });
+                        if (this.startedInCompactMode) {
+                            adapterStates.setState(id + '.cpu', { ack: true, from: id, val: 0 });
+                            adapterStates.setState(id + '.cputime', { ack: true, from: id, val: 0 });
+                            adapterStates.setState(id + '.memRss', { val: 0, ack: true, from: id });
+                            adapterStates.setState(id + '.memHeapTotal', { val: 0, ack: true, from: id });
+                            adapterStates.setState(id + '.memHeapUsed', { val: 0, ack: true, from: id });
+                            adapterStates.setState(id + '.eventLoopLag', { val: 0, ack: true, from: id });
+                            this.outputCount += 6;
                         } else {
+                            tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
+                        }
+                    }
+                }
+
+                if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
+                    try {
+                        schedule = require('node-schedule');
+                    } catch {
+                        logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
+                    }
+                    if (schedule) {
+                        logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
+                        restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
+                            logger.info(this.namespaceLog + ' Scheduled restart.');
+                            stop(false, true);
+                        });
+                    }
+                }
+
+                // auto oStates
+                if (options.states) {
+                    this.getStates('*', null, (err, _states) => {
+                        this.oStates = _states;
+                        this.subscribeStates('*');
+                        if (firstConnection) {
+                            firstConnection = false;
                             typeof options.ready === 'function' && options.ready();
                             this.emit('ready');
-                            this.adapterReady = true;
-
-                            // todo remove it later, when the error is fixed
-                            adapterStates.subscribe(`${this.namespace}.checkLogging`);
+                        } else {
+                            typeof options.reconnect === 'function' && options.reconnect();
+                            this.emit('reconnect');
                         }
+                        this.adapterReady = true;
                     });
+                } else {
+                    typeof options.ready === 'function' && options.ready();
+                    this.emit('ready');
+                    this.adapterReady = true;
+
+                    // todo remove it later, when the error is fixed
+                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
+                }
             });
         });
     };
@@ -9386,7 +9389,7 @@ function Adapter(options) {
         this.outputCount = 0;
     };
 
-    const stop = (isPause, isScheduled, exitCode, updateAliveState) => {
+    const stop = async (isPause, isScheduled, exitCode, updateAliveState) => {
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -9447,7 +9450,11 @@ function Adapter(options) {
                     const unloadPromise = options.unload();
                     if (unloadPromise instanceof Promise) {
                         // Call finishUnload in the case of success and failure
-                        unloadPromise.then(finishUnload, finishUnload);
+                        try {
+                            await unloadPromise;
+                        } finally {
+                            finishUnload();
+                        }
                     } else {
                         // No callback accepted and no Promise returned - force unload
                         logger.error(
