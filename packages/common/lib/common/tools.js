@@ -2817,7 +2817,7 @@ async function getAllInstances(adapters, objects) {
             continue;
         }
         if (!adapters[i].includes('.')) {
-            const inst = await getInstancesAsync(adapters[i], objects, false);
+            const inst = await getInstances(adapters[i], objects, false);
             for (let j = 0; j < inst.length; j++) {
                 if (!instances.includes(inst[j])) {
                     instances.push(inst[j]);
@@ -2855,34 +2855,14 @@ async function getAllEnums(objects) {
 }
 
 /**
- * get all instances of one adapter
- *
- * @alias getInstances
- * @param {string }adapter name of the adapter
- * @param {object }objects objects DB
- * @param {boolean} withObjects return objects instead of only ids
- * @param {function} callback callback to be executed
- */
-function getInstances(adapter, objects, withObjects, callback) {
-    if (typeof withObjects === 'function') {
-        callback = withObjects;
-        withObjects = false;
-    }
-
-    return getInstancesAsync(adapter, objects, withObjects)
-        .then(instances => callback(null, instances))
-        .catch(error => callback(error));
-}
-
-/**
  * get async all instances of one adapter
  *
- * @alias getInstancesAsync
- * @param {string }adapter name of the adapter
- * @param {object }objects objects DB
+ * @alias getInstances
+ * @param {string} adapter name of the adapter
+ * @param {object}objects objects DB
  * @param {boolean} withObjects return objects instead of only ids
  */
-async function getInstancesAsync(adapter, objects, withObjects) {
+async function getInstances(adapter, objects, withObjects) {
     const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
@@ -3625,7 +3605,6 @@ module.exports = {
     generateDefaultCertificates,
     getAdapterDir,
     getInstances,
-    getInstancesAsync,
     getAllInstances,
     getCertificateInfo,
     getConfigFileName,
