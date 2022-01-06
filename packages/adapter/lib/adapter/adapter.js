@@ -182,7 +182,7 @@ function Adapter(options) {
         logger.silly = logger.debug;
     }
 
-    // enable "var adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
+    // enable "const adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
     if (typeof options === 'string') {
         options = { name: options };
     }
@@ -192,6 +192,31 @@ function Adapter(options) {
     }
 
     this.performStrictObjectChecks = options.strictObjectChecks !== false;
+
+    /**
+     * Initiates the databases
+     */
+    const _init = () => {
+        initObjects(() => {
+            if (this.inited) {
+                this.log && logger.warn(`${this.namespaceLog} Reconnection to DB.`);
+                return;
+            }
+
+            this.inited = true;
+
+            // auto oObjects
+            if (options.objects) {
+                this.getAdapterObjects(objs => {
+                    this.oObjects = objs;
+                    this.subscribeObjects('*');
+                    initStates(prepareInitAdapter);
+                });
+            } else {
+                initStates(prepareInitAdapter);
+            }
+        });
+    };
 
     this._getObjectsByArray = (keys, objects, options, cb, _index, _result, _errors) => {
         if (objects) {
@@ -304,44 +329,6 @@ function Adapter(options) {
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
     }
-
-    // remove "lib"
-    /*
-    this.adapterDir.pop();
-    const jsc = this.adapterDir.pop();
-    if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') && this.adapterDir.pop() === 'node_modules') {
-        // js-controller is installed as npm
-        const appName = tools.appName.toLowerCase();
-        this.adapterDir = this.adapterDir.join('/');
-        if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + appName + '.' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/adapter/' + options.name)) {
-            this.adapterDir += '/node_modules/' + appName + '.js-controller/adapter/' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name;
-        } else {
-            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
-            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-        }
-    } else {
-        this.adapterDir = __dirname.replace(/\\/g, '/');
-        // remove "/lib"
-        this.adapterDir = this.adapterDir.substring(0, this.adapterDir.length - 4);
-        if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + tools.appName + '.' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/../node_modules/' + tools.appName + '.' + options.name)) {
-            const parts = this.adapterDir.split('/');
-            parts.pop();
-            this.adapterDir = parts.join('/') + '/node_modules/' + tools.appName + '.' + options.name;
-        } else {
-            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
-            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-        }
-    }
-}
- */
 
     if (fs.existsSync(this.adapterDir + '/package.json')) {
         this.pack = fs.readJSONSync(this.adapterDir + '/package.json');
@@ -1156,9 +1143,9 @@ function Adapter(options) {
                         '-----END CERTIFICATE-----\r\n'
                     );
                     ca = [];
-                    for (let c = 0; c < chained.length; c++) {
-                        if (chained[c].replace(/(\r\n|\r|\n)/g, '').trim()) {
-                            ca.push(chained[c] + '-----END CERTIFICATE-----\r\n');
+                    for (const cert of chained) {
+                        if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
+                            ca.push(cert + '-----END CERTIFICATE-----\r\n');
                         }
                     }
                 }
@@ -9595,26 +9582,8 @@ function Adapter(options) {
         return licenses;
     };
 
-    initObjects(() => {
-        if (this.inited) {
-            this.log && logger.warn(`${this.namespaceLog} Reconnection to DB.`);
-            return;
-        }
-
-        this.inited = true;
-
-        // auto oObjects
-        if (options.objects) {
-            this.getAdapterObjects(objs => {
-                this.oObjects = objs;
-                this.subscribeObjects('*');
-                initStates(prepareInitAdapter);
-            });
-        } else {
-            initStates(prepareInitAdapter);
-        }
-    });
-
+    // finally init
+    _init();
     return this;
 }
 
