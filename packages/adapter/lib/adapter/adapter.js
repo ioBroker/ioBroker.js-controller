@@ -34,6 +34,7 @@ const controllerVersion = require('@iobroker/js-controller-adapter/package.json'
 
 const { password } = require('@iobroker/js-controller-common');
 const Log = require('./log');
+const Utils = require('./utils');
 
 const { FORBIDDEN_CHARS } = tools;
 const {
@@ -51,17 +52,6 @@ const {
     ACCESS_USER_WRITE,
     ACCESS_USER_READ
 } = require('./constants');
-
-/**
- * Look up the error description for an error code
- *
- * @param {number} code error code
- * @return {string} error description
- */
-function getErrorText(code) {
-    code = code || 0;
-    return (EXIT_CODES[code] || code).toString();
-}
 
 /**
  * Adapter class
@@ -95,6 +85,7 @@ function Adapter(options) {
         throw new Error('Configuration not set!');
     }
 
+    let utils;
     let schedule;
     let restartScheduleJob;
     let initializeTimeout;
@@ -284,7 +275,7 @@ function Adapter(options) {
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${getErrorText(exitCode)}): ${
+        const text = `${this.namespaceLog} Terminated (${utils.getErrorText(exitCode)}): ${
             reason ? reason : 'Without reason'
         }`;
         if (isNotCritical) {
@@ -420,80 +411,6 @@ function Adapter(options) {
 
     let callbackId = 1;
     this.getPortRunning = null;
-
-    /**
-     * Checks if a passed ID is valid. Throws an error if id is invalid
-     *
-     * @param {string|object} id id to check or object with properties device, channel and state
-     * @param {boolean} isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
-     * @param {object} options optional
-     * @throws Error when id is invalid
-     */
-    const validateId = (id, isForeignId, options) => {
-        // there is special maintenance mode to clear the DB from invalid IDs
-        if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
-            return;
-        }
-
-        if (!id && id !== 0) {
-            throw new Error('The id is empty! Please provide a valid id.');
-        }
-
-        const type = typeof id;
-
-        if (!isForeignId && type === 'number') {
-            logger.warn(
-                `${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`
-            );
-            logger.warn(
-                `${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`
-            );
-        } else if (type !== 'string' && !tools.isObject(id)) {
-            throw new Error(`The id "${id}" has an invalid type! Expected "string" or "object", received "${type}".`);
-        }
-
-        if (tools.isObject(id)) {
-            // id can be an object, at least one of the following properties has to exist
-            const reqProperties = ['device', 'channel', 'state'];
-            let found = false;
-            for (const reqProperty of reqProperties) {
-                if (reqProperty !== undefined) {
-                    if (typeof reqProperty !== 'string') {
-                        throw new Error(
-                            `The id's property "${reqProperty}" of "${JSON.stringify(
-                                id
-                            )}" has an invalid type! Expected "string", received "${typeof reqProperty}".`
-                        );
-                    }
-
-                    if (reqProperty.includes('.')) {
-                        throw new Error(
-                            `The id's property "${reqProperty}" of "${JSON.stringify(
-                                id
-                            )}" contains the invalid character "."!`
-                        );
-                    }
-                    found = true;
-                }
-            }
-            if (found === false) {
-                throw new Error(
-                    `The id "${JSON.stringify(
-                        id
-                    )}" is an invalid object! Expected at least one of the properties "device", "channel" or "state" to exist.`
-                );
-            }
-        } else {
-            if (type !== 'string') {
-                throw new Error(
-                    `The id "${JSON.stringify(id)}" has an invalid type! Expected "string", received "${type}".`
-                );
-            }
-            if (id.endsWith('.')) {
-                throw new Error(`The id "${id}" is invalid. Ids are not allowed to end in "."`);
-            }
-        }
-    };
 
     /**
      * Helper function to find next free port
@@ -1479,7 +1396,12 @@ function Adapter(options) {
         extendObjects(objs, callback);
     };
 
+    /**
+     * Called if states and objects successfully initalized
+     */
     const prepareInitAdapter = () => {
+        utils = new Utils(adapterObjects, adapterStates, this.namespaceLog, logger);
+
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
@@ -1496,12 +1418,7 @@ function Adapter(options) {
                         killRes.val === -1
                     ) {
                         logger.error(
-                            this.namespaceLog +
-                                ' ' +
-                                options.name +
-                                '.' +
-                                instance +
-                                ' needs to be stopped because not correctly started in compact mode'
+                            `${this.namespaceLog} ${options.name}.${instance} needs to be stopped because not correctly started in compact mode`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -1841,109 +1758,6 @@ function Adapter(options) {
         });
 
         /**
-         * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
-         * additionally it rounds state values whose objects have a common.step attribute defined
-         *
-         * @param {string} id - id of the state
-         * @param {object} state - ioBroker setState object
-         * @return {Promise<void>}
-         */
-        this._performStrictObjectCheck = async (id, state) => {
-            // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
-            // can already let the non existing object case throw with 3.4 because this is already producing a warning
-            try {
-                if (state.val === undefined) {
-                    // only ack etc. is also possible to acknowledge the current value,
-                    // if only undefined provided, it should have thrown before
-                    return;
-                }
-
-                const obj = await adapterObjects.getObjectAsync(id);
-                // at first check object existence
-                if (!obj) {
-                    logger.warn(
-                        `${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`
-                    );
-                    return;
-                }
-
-                // for a state object we require common.type to exist
-                if (obj.common && obj.common.type) {
-                    // check if we are allowed to write (read-only can only be written with ack: true)
-                    if (!state.ack && obj.common.write === false) {
-                        logger.warn(
-                            `${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`
-                        );
-                    }
-
-                    if (state.val !== null) {
-                        // now check if type is correct, null is always allowed
-                        if (obj.common.type === 'file') {
-                            // file has to be set with setBinaryState
-                            logger.warn(
-                                `${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`
-                            );
-                        } else if (
-                            !(
-                                (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                                (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                                (obj.common.type === 'array' && typeof state.val === 'string') ||
-                                (obj.common.type === 'json' && typeof state.val === 'string') ||
-                                (obj.common.type === 'file' && typeof state.val === 'string') ||
-                                (obj.common.type === 'object' && typeof state.val === 'string')
-                            )
-                        ) {
-                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'
-                            // array, object, json need to be string
-                            if (['object', 'json', 'array'].includes(obj.common.type)) {
-                                logger.info(
-                                    `${
-                                        this.namespaceLog
-                                    } State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`
-                                );
-                            } else {
-                                logger.info(
-                                    `${this.namespaceLog} State value to set for "${id}" has to be ${
-                                        obj.common.type === 'mixed'
-                                            ? `one of type "string", "number", "boolean"`
-                                            : `type "${obj.common.type}"`
-                                    } but received type "${typeof state.val}" `
-                                );
-                            }
-                        }
-
-                        // now round step and check min/max if it's a number
-                        if (typeof state.val === 'number') {
-                            if (typeof obj.common.step === 'number' && obj.common.step > 0) {
-                                // round to next step
-                                const inv = 1 / obj.common.step;
-                                state.val = Math.round(state.val * inv) / inv;
-                            }
-
-                            if (obj.common.max !== undefined && state.val > obj.common.max) {
-                                logger.warn(
-                                    `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`
-                                );
-                            }
-
-                            if (obj.common.min !== undefined && state.val < obj.common.min) {
-                                logger.warn(
-                                    `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`
-                                );
-                            }
-                        }
-                    }
-                } else {
-                    logger.warn(
-                        `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`
-                    );
-                }
-            } catch (e) {
-                logger.warn(`${this.namespaceLog} Could not perform strict object check of state ${id}: ${e.message}`);
-            }
-        };
-
-        /**
          * @param {string | {device?: string, channel?: string, state?: string}} id
          * @param {boolean} [isPattern=false]
          */
@@ -2005,7 +1819,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -2085,7 +1899,7 @@ function Adapter(options) {
 
             if (obj.type !== 'meta') {
                 try {
-                    validateId(id, false, null);
+                    utils.validateId(id, false, null);
                 } catch (err) {
                     logger.error(tools.appendStackTrace(`${this.namespaceLog} ${err.message}`));
                     return;
@@ -2330,7 +2144,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -2542,8 +2356,8 @@ function Adapter(options) {
                 // if alias is object validate read and write
                 if (typeof obj.common.alias.id === 'object') {
                     try {
-                        validateId(obj.common.alias.id.write, true, null);
-                        validateId(obj.common.alias.id.read, true, null);
+                        utils.validateId(obj.common.alias.id.write, true, null);
+                        utils.validateId(obj.common.alias.id.read, true, null);
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, `Alias id is invalid: ${e.message}`);
                     }
@@ -2556,7 +2370,7 @@ function Adapter(options) {
                     }
                 } else {
                     try {
-                        validateId(obj.common.alias.id, true, null);
+                        utils.validateId(obj.common.alias.id, true, null);
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, `Alias id is invalid: ${e.message}`);
                     }
@@ -2605,7 +2419,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -2783,7 +2597,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3306,7 +3120,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3345,7 +3159,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3455,7 +3269,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3690,7 +3504,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3764,7 +3578,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -5795,7 +5609,7 @@ function Adapter(options) {
                     if (differ) {
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
                         this.outputCount++;
                         adapterStates.setState(id, state, (/* err */) => {
@@ -6494,7 +6308,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -6542,7 +6356,7 @@ function Adapter(options) {
 
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
 
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -6556,7 +6370,7 @@ function Adapter(options) {
 
                                 // validate here because we use objects/states db directly
                                 try {
-                                    validateId(aliasId, true, null);
+                                    utils.validateId(aliasId, true, null);
                                 } catch (e) {
                                     logger.warn(
                                         `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
@@ -6624,7 +6438,7 @@ function Adapter(options) {
 
                             // validate here because we use objects/states db directly
                             try {
-                                validateId(aliasId, true, null);
+                                utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                                 return tools.maybeCallbackWithError(
@@ -6660,7 +6474,7 @@ function Adapter(options) {
                 } else {
                     if (this.performStrictObjectChecks) {
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._performStrictObjectCheck(id, state);
+                        await utils.performStrictObjectCheck(id, state);
                     }
 
                     if (!adapterStates) {
@@ -6723,7 +6537,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -6829,7 +6643,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -6887,7 +6701,7 @@ function Adapter(options) {
 
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
 
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -6901,7 +6715,7 @@ function Adapter(options) {
 
                                 // validate here because we use objects/states db directly
                                 try {
-                                    validateId(aliasId, true, null);
+                                    utils.validateId(aliasId, true, null);
                                 } catch (e) {
                                     logger.warn(
                                         `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
@@ -6974,7 +6788,7 @@ function Adapter(options) {
 
                             // validate here because we use objects/states db directly
                             try {
-                                validateId(aliasId, true, null);
+                                utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                                 return tools.maybeCallbackWithError(
@@ -7029,7 +6843,7 @@ function Adapter(options) {
                         }
 
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._performStrictObjectCheck(id, state);
+                        await this.performStrictObjectCheck(id, state);
                     }
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
@@ -7103,7 +6917,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7224,7 +7038,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7244,7 +7058,7 @@ function Adapter(options) {
 
                                 // validate here because we use objects/states db directly
                                 try {
-                                    validateId(aliasId, true, null);
+                                    utils.validateId(aliasId, true, null);
                                 } catch (e) {
                                     logger.warn(
                                         `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
@@ -7323,7 +7137,7 @@ function Adapter(options) {
 
                             // validate here because we use objects/states db directly
                             try {
-                                validateId(aliasId, true, null);
+                                utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                                 return tools.maybeCallbackWithError(
@@ -7433,7 +7247,7 @@ function Adapter(options) {
          */
         this.getHistory = (id, options, callback) => {
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7507,7 +7321,7 @@ function Adapter(options) {
          */
         this.delState = (id, options, callback) => {
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7546,7 +7360,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7839,7 +7653,7 @@ function Adapter(options) {
 
                 // validate here because we use objects/states db directly
                 try {
-                    validateId(sourceId, true, null);
+                    utils.validateId(sourceId, true, null);
                 } catch (e) {
                     logger.warn(`${this.namespaceLog} Error validating alias id of ${aliasObj._id}: ${e.message}`);
                     return tools.maybeCallbackWithError(
@@ -8449,7 +8263,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -8577,7 +8391,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -8648,7 +8462,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -9115,16 +8929,16 @@ function Adapter(options) {
                 this.log = new Log(this.namespaceLog, config.log.level, logger);
 
                 if (!adapterStates) {
-                    // if adapterState was destroyed,we should not continue
+                    // if adapterStates was destroyed, we should not continue
                     return;
                 }
 
                 this.outputCount++;
                 // set current loglevel
-                adapterStates.setState('system.adapter.' + this.namespace + '.logLevel', {
+                adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
                     val: config.log.level,
                     ack: true,
-                    from: 'system.adapter.' + this.namespace
+                    from: `system.adapter.${this.namespace}`
                 });
 
                 if (options.instance === undefined) {
