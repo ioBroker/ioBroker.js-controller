@@ -13,25 +13,19 @@ function createDefaults() {
             def: false,
             type: 'boolean',
             read: true,
-            write: false,
-            min: false,
-            max: true
+            write: false
         },
         'indicator.maintenance': {
             def: false,
             type: 'boolean',
             read: true,
-            write: false,
-            min: false,
-            max: true
+            write: false
         },
         'indicator.maintenance.lowbat': {
             def: false,
             type: 'boolean',
             read: true,
             write: false,
-            min: false,
-            max: true,
             desc: 'Low battery'
         },
         'indicator.maintenance.unreach': {
@@ -39,8 +33,6 @@ function createDefaults() {
             type: 'boolean',
             read: true,
             write: false,
-            min: false,
-            max: true,
             desc: 'Device unreachable'
         },
         switch: {

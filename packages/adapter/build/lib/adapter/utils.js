@@ -1,13 +1,15 @@
 "use strict";
-const { SYSTEM_ADMIN_USER } = require('./constants');
+Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("./constants");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 class Utils {
     /**
      * Utils for internal adapter.js usage
-     * @param {object} objects - Objects DB
-     * @param {object} states - States DB
-     * @param {string} namespaceLog - Log prefix
-     * @param {object} logger - Logger instance
+     * @param objects - Objects DB
+     * @param states - States DB
+     * @param namespaceLog - Log prefix
+     * @param logger - Logger instance
      */
     constructor(objects, states, namespaceLog, logger) {
         this.objects = objects;
@@ -19,9 +21,8 @@ class Utils {
      * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
      * additionally it rounds state values whose objects have a common.step attribute defined
      *
-     * @param {string} id - id of the state
-     * @param {object} state - ioBroker setState object
-     * @return {Promise<void>}
+     * @param id - id of the state
+     * @param state - ioBroker setState object
      */
     async performStrictObjectCheck(id, state) {
         // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
@@ -94,14 +95,14 @@ class Utils {
     /**
      * Checks if a passed ID is valid. Throws an error if id is invalid
      *
-     * @param {string|object} id id to check or object with properties device, channel and state
-     * @param {boolean} isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
-     * @param {object} options optional
+     * @param id id to check or object with properties device, channel and state
+     * @param isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
+     * @param options optional
      * @throws Error when id is invalid
      */
     validateId(id, isForeignId, options) {
         // there is special maintenance mode to clear the DB from invalid IDs
-        if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
+        if (options && options.maintenance && options.user === constants_1.SYSTEM_ADMIN_USER) {
             return;
         }
         if (!id && id !== 0) {
@@ -121,8 +122,9 @@ class Utils {
             let found = false;
             for (const reqProperty of reqProperties) {
                 if (reqProperty !== undefined) {
+                    // TODO: these checks make no sense
                     if (typeof reqProperty !== 'string') {
-                        throw new Error(`The id's property "${reqProperty}" of "${JSON.stringify(id)}" has an invalid type! Expected "string", received "${typeof reqProperty}".`);
+                        throw new Error(`The id's property "${JSON.stringify(reqProperty)}" of "${JSON.stringify(id)}" has an invalid type! Expected "string", received "${typeof reqProperty}".`);
                     }
                     if (reqProperty.includes('.')) {
                         throw new Error(`The id's property "${reqProperty}" of "${JSON.stringify(id)}" contains the invalid character "."!`);
@@ -130,7 +132,7 @@ class Utils {
                     found = true;
                 }
             }
-            if (found === false) {
+            if (!found) {
                 throw new Error(`The id "${JSON.stringify(id)}" is an invalid object! Expected at least one of the properties "device", "channel" or "state" to exist.`);
             }
         }
@@ -146,8 +148,8 @@ class Utils {
     /**
      * Look up the error description for an error code
      *
-     * @param {number} code error code
-     * @return {string} error description
+     * @param code error code
+     * @return error description
      */
     getErrorText(code) {
         code = code || 0;

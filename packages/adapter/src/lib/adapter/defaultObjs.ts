@@ -1,4 +1,4 @@
-function createDefaults(): Record<string, any> {
+function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> {
     return {
         'level.dimmer': {
             type: 'number',
@@ -12,25 +12,19 @@ function createDefaults(): Record<string, any> {
             def: false,
             type: 'boolean',
             read: true,
-            write: false,
-            min: false,
-            max: true
+            write: false
         },
         'indicator.maintenance': {
             def: false,
             type: 'boolean',
             read: true,
-            write: false,
-            min: false,
-            max: true
+            write: false
         },
         'indicator.maintenance.lowbat': {
             def: false,
             type: 'boolean',
             read: true,
             write: false,
-            min: false,
-            max: true,
             desc: 'Low battery'
         },
         'indicator.maintenance.unreach': {
@@ -38,8 +32,6 @@ function createDefaults(): Record<string, any> {
             type: 'boolean',
             read: true,
             write: false,
-            min: false,
-            max: true,
             desc: 'Device unreachable'
         },
         switch: {
@@ -47,7 +39,7 @@ function createDefaults(): Record<string, any> {
             read: true,
             write: true
         }
-    };
+    } as const;
 }
 
 export = createDefaults;

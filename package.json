@@ -54,7 +54,7 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "prebuild": "rimraf packages/**/build",
+    "prebuild": "rimraf packages/*/build",
     "build:ts": "lerna run build",
     "build": "npm run build:ts",
     "release": "release-script",

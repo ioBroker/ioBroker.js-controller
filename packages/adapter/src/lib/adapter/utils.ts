@@ -1,15 +1,21 @@
-const { SYSTEM_ADMIN_USER } = require('./constants');
+import { SYSTEM_ADMIN_USER } from './constants';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 
 class Utils {
+    private readonly objects: any;
+    private readonly states: any;
+    private readonly namespaceLog: string;
+    private readonly log: any;
+
     /**
      * Utils for internal adapter.js usage
-     * @param {object} objects - Objects DB
-     * @param {object} states - States DB
-     * @param {string} namespaceLog - Log prefix
-     * @param {object} logger - Logger instance
+     * @param objects - Objects DB
+     * @param states - States DB
+     * @param namespaceLog - Log prefix
+     * @param logger - Logger instance
      */
-    constructor(objects, states, namespaceLog, logger) {
+    constructor(objects: any, states: any, namespaceLog: string, logger: any) {
         this.objects = objects;
         this.states = states;
         this.namespaceLog = namespaceLog;
@@ -20,11 +26,10 @@ class Utils {
      * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
      * additionally it rounds state values whose objects have a common.step attribute defined
      *
-     * @param {string} id - id of the state
-     * @param {object} state - ioBroker setState object
-     * @return {Promise<void>}
+     * @param id - id of the state
+     * @param state - ioBroker setState object
      */
-    async performStrictObjectCheck(id, state) {
+    async performStrictObjectCheck(id: string, state: ioBroker.State): Promise<void> {
         // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
         // can already let the non existing object case throw with 3.4 because this is already producing a warning
         try {
@@ -34,7 +39,7 @@ class Utils {
                 return;
             }
 
-            const obj = await this.objects.getObjectAsync(id);
+            const obj: any = await this.objects.getObjectAsync(id);
             // at first check object existence
             if (!obj) {
                 this.log.warn(
@@ -114,7 +119,7 @@ class Utils {
                     `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`
                 );
             }
-        } catch (e) {
+        } catch (e: any) {
             this.log.warn(`${this.namespaceLog} Could not perform strict object check of state ${id}: ${e.message}`);
         }
     }
@@ -122,12 +127,12 @@ class Utils {
     /**
      * Checks if a passed ID is valid. Throws an error if id is invalid
      *
-     * @param {string|object} id id to check or object with properties device, channel and state
-     * @param {boolean} isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
-     * @param {object} options optional
+     * @param id id to check or object with properties device, channel and state
+     * @param isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
+     * @param options optional
      * @throws Error when id is invalid
      */
-    validateId(id, isForeignId, options) {
+    validateId(id: string | any, isForeignId: boolean, options: any): void {
         // there is special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;
@@ -156,9 +161,10 @@ class Utils {
             let found = false;
             for (const reqProperty of reqProperties) {
                 if (reqProperty !== undefined) {
+                    // TODO: these checks make no sense
                     if (typeof reqProperty !== 'string') {
                         throw new Error(
-                            `The id's property "${reqProperty}" of "${JSON.stringify(
+                            `The id's property "${JSON.stringify(reqProperty)}" of "${JSON.stringify(
                                 id
                             )}" has an invalid type! Expected "string", received "${typeof reqProperty}".`
                         );
@@ -174,7 +180,7 @@ class Utils {
                     found = true;
                 }
             }
-            if (found === false) {
+            if (!found) {
                 throw new Error(
                     `The id "${JSON.stringify(
                         id
@@ -196,10 +202,10 @@ class Utils {
     /**
      * Look up the error description for an error code
      *
-     * @param {number} code error code
-     * @return {string} error description
+     * @param code error code
+     * @return error description
      */
-    getErrorText(code) {
+    getErrorText(code: number): string {
         code = code || 0;
         return (EXIT_CODES[code] || code).toString();
     }
