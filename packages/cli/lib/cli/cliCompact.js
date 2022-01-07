@@ -16,8 +16,6 @@ module.exports = class CLICompact extends CLICommand {
      * @param {any[]} args
      */
     execute(args) {
-        const test = 'doesnt like it';
-
         const { callback, showHelp } = this.options;
         const command = args[0];
         switch (command) {
