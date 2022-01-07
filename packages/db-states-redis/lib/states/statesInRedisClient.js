@@ -330,16 +330,11 @@ class StateRedisClient {
                     // subscribe on key expired or evicted (auto removed because of memory full) message
                     this.subSystem.on('message', (channel, message) =>
                         setImmediate(() => {
-                            this.log.silly(
-                                this.namespace + ' redis message expired/evicted ' + channel + ':' + message
-                            );
+                            this.log.silly(`${this.namespace} redis message expired/evicted ${channel}:${message}`);
                             try {
                                 if (channel === `__keyevent@${this.settings.connection.options.db}__:evicted`) {
                                     this.log.warn(
-                                        this.namespace +
-                                            ' Redis has evicted state ' +
-                                            message +
-                                            '. Please check your maxMemory settings for your redis instance!'
+                                        `${this.namespace} Redis has evicted state ${message}. Please check your maxMemory settings for your redis instance!`
                                     );
                                 } else if (channel !== `__keyevent@${this.settings.connection.options.db}__:expired`) {
                                     this.log.warn(`${this.namespace} Unknown user message ${channel} ${message}`);

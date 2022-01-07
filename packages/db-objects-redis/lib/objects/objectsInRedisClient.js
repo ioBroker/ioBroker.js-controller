@@ -18,7 +18,7 @@
 
 const extend = require('node.extend');
 const Redis = require('ioredis');
-const tools = require('@iobroker/db-base').tools;
+const { tools } = require('@iobroker/db-base');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -305,6 +305,18 @@ class ObjectsInRedisClient {
                 this.subSystem = new Redis(this.settings.connection.options);
                 this.subSystem.ioBrokerSubscriptions = {};
 
+                if (typeof this.settings.primaryHostLost === 'function') {
+                    this.subSystem.on('message', (channel, message) => {
+                        if (channel === `__keyevent@${this.settings.connection.options.db}__:expired`) {
+                            this.log.silly(`${this.namespace} redis message expired ${channel}:${message}`);
+
+                            if (message === `${this.metaNamespace}objects.primaryHost`) {
+                                this.settings.primaryHostLost();
+                            }
+                        }
+                    });
+                }
+
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) =>
                         setImmediate(() => {
@@ -415,21 +427,15 @@ class ObjectsInRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'system re' : '') +
-                                    'connected to redis: ' +
+                                `${this.namespace} Objects ${ready ? 'system re' : ''}connected to redis: ${
                                     this.settings.connection.host
+                                }`
                             );
                         } else {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'system re' : '') +
-                                    'connected to redis: ' +
-                                    this.settings.connection.host +
-                                    ':' +
-                                    this.settings.connection.port
+                                `${this.namespace} Objects ${ready ? 'system re' : ''}connected to redis: ${
+                                    this.settings.connection.host
+                                }:${this.settings.connection.port}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -4542,6 +4548,16 @@ class ObjectsInRedisClient {
             await this.client.publish(`${this.metaNamespace}objects.protocolVersion`, version);
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
+        }
+    }
+
+    /**
+     * Subscribe to expired events to get expiration of primary host
+     * @return {Promise<void>}
+     */
+    async subscribePrimaryHost() {
+        if (this.subSystem) {
+            await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:expired`);
         }
     }
 }

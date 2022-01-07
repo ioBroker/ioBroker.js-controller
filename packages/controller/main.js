@@ -67,6 +67,7 @@ let lastDiskSizeCheck = 0;
 let restartTimeout = null;
 let connectTimeout = null;
 let reportInterval = null;
+let primaryHostInterval = null;
 
 const procs = {};
 const hostAdapter = {};
@@ -523,7 +524,7 @@ function createStates(onConnect) {
             }
              */
         },
-        connected: () => {
+        connected: async () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -532,6 +533,16 @@ function createStates(onConnect) {
             if (!compactGroupController) {
                 states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
+                // subscribe to primary host expiration
+                try {
+                    await objects.subscribePrimaryHost();
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
+                }
+                primaryHostInterval = setInterval(checkPrimaryHost, 30000);
+
+                // first execution now
+                checkPrimaryHost();
             }
             initMessageQueue();
             startAliveInterval();
@@ -844,6 +855,10 @@ function createObjects(onConnect) {
                     logger.error(`${hostLogPrefix} cannot process: ${id}: ${err} / ${err.stack}`);
                 }
             }
+        },
+        primaryHostLost: () => {
+            logger.warn('host expired');
+            checkPrimaryHost();
         }
     });
     return true;
@@ -863,11 +878,26 @@ function startAliveInterval() {
         });
     }
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
+
     reportStatus();
     tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag));
 }
 
-async function reportStatus() {
+/**
+ * Ensures that we take over primary host if no other is doing the job
+ *
+ * @return {Promise<void>}
+ */
+async function checkPrimaryHost() {
+    // let our host value live 60 seconds, while it should be renewed every 30
+    try {
+        await objects.setPrimaryHost(60000);
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Could not execute primary host determination: ${e.message}`);
+    }
+}
+
+function reportStatus() {
     if (!states) {
         return;
     }
@@ -900,13 +930,6 @@ async function reportStatus() {
             outputCount += 2;
         }
     });
-
-    // let our host value live two times the report interval
-    try {
-        await objects.setPrimaryHost(config.system.statisticsInterval * 2);
-    } catch (e) {
-        logger.error(`${hostLogPrefix} Could not execute primary host determination: ${e.message}`);
-    }
 
     const mem = process.memoryUsage();
     states.setState(`${id}.memRss`, { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
@@ -5198,6 +5221,11 @@ function stop(force, callback) {
         mhService = null;
     }
 
+    if (primaryHostInterval) {
+        clearInterval(primaryHostInterval);
+        primaryHostInterval = null;
+    }
+
     if (updateIPsTimer) {
         clearInterval(updateIPsTimer);
         updateIPsTimer = null;
@@ -5680,7 +5708,7 @@ function init(compactGroupId) {
     });
 
     process.on('SIGTERM', () => {
-        logger.info(hostLogPrefix + ' received SIGTERM');
+        logger.info(`${hostLogPrefix} received SIGTERM`);
         stop(false);
     });
 
