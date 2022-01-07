@@ -160,17 +160,16 @@ class Utils {
             const reqProperties = ['device', 'channel', 'state'];
             let found = false;
             for (const reqProperty of reqProperties) {
-                if (reqProperty !== undefined) {
-                    // TODO: these checks make no sense
-                    if (typeof reqProperty !== 'string') {
+                if (id[reqProperty] !== undefined) {
+                    if (typeof id[reqProperty] !== 'string') {
                         throw new Error(
-                            `The id's property "${JSON.stringify(reqProperty)}" of "${JSON.stringify(
+                            `The id's property "${reqProperty}" of "${JSON.stringify(
                                 id
-                            )}" has an invalid type! Expected "string", received "${typeof reqProperty}".`
+                            )}" has an invalid type! Expected "string", received "${typeof id[reqProperty]}".`
                         );
                     }
 
-                    if (reqProperty.includes('.')) {
+                    if (id[reqProperty].includes('.')) {
                         throw new Error(
                             `The id's property "${reqProperty}" of "${JSON.stringify(
                                 id
