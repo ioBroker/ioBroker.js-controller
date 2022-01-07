@@ -4534,7 +4534,7 @@ class ObjectsInRedisClient {
         // try to acquire lock
         return this.client.evalsha([
             this.scripts['redlock_release'],
-            3,
+            4,
             `${this.metaNamespace}objects.primaryHost`,
             this.settings.hostname,
             this.settings.options.db,
