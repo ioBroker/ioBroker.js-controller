@@ -13,6 +13,23 @@ on:
     - cron: '0 0 * * 0' # weekly
 
 jobs:
+  lint:
+    name: Eslint
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 14
+
+      - name: NPM install
+        run: npm i --ignore-scripts # install typescript and @types do not `setup first`
+
+      - name: Eslint
+        run: npm run lint
+
   ci:
     name: ${{ matrix.os }} on node v${{ matrix.node }}
     runs-on: ${{ matrix.os }}
