@@ -1,7 +1,5 @@
-'use strict';
-
-function createDefaults(_lang, _temperature, _currency) {
-    const defaults = {
+function createDefaults(): Record<string, any> {
+    return {
         'level.dimmer': {
             type: 'number',
             read: true,
@@ -50,8 +48,6 @@ function createDefaults(_lang, _temperature, _currency) {
             write: true
         }
     };
-
-    return defaults;
 }
 
-module.exports = createDefaults;
+export = createDefaults;

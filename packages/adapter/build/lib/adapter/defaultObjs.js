@@ -1,6 +1,6 @@
-'use strict';
-function createDefaults(_lang, _temperature, _currency) {
-    const defaults = {
+"use strict";
+function createDefaults() {
+    return {
         'level.dimmer': {
             type: 'number',
             read: true,
@@ -49,7 +49,6 @@ function createDefaults(_lang, _temperature, _currency) {
             write: true
         }
     };
-    return defaults;
 }
 module.exports = createDefaults;
 //# sourceMappingURL=defaultObjs.js.map

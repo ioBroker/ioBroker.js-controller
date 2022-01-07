@@ -1598,82 +1598,6 @@ function Adapter(options) {
             }
         });
         /**
-         * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
-         * additionally it rounds state values whose objects have a common.step attribute defined
-         *
-         * @param {string} id - id of the state
-         * @param {object} state - ioBroker setState object
-         * @return {Promise<void>}
-         */
-        this._performStrictObjectCheck = async (id, state) => {
-            // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
-            // can already let the non existing object case throw with 3.4 because this is already producing a warning
-            try {
-                if (state.val === undefined) {
-                    // only ack etc. is also possible to acknowledge the current value,
-                    // if only undefined provided, it should have thrown before
-                    return;
-                }
-                const obj = await adapterObjects.getObjectAsync(id);
-                // at first check object existence
-                if (!obj) {
-                    logger.warn(`${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`);
-                    return;
-                }
-                // for a state object we require common.type to exist
-                if (obj.common && obj.common.type) {
-                    // check if we are allowed to write (read-only can only be written with ack: true)
-                    if (!state.ack && obj.common.write === false) {
-                        logger.warn(`${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`);
-                    }
-                    if (state.val !== null) {
-                        // now check if type is correct, null is always allowed
-                        if (obj.common.type === 'file') {
-                            // file has to be set with setBinaryState
-                            logger.warn(`${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`);
-                        }
-                        else if (!((obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                            (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                            (obj.common.type === 'array' && typeof state.val === 'string') ||
-                            (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'file' && typeof state.val === 'string') ||
-                            (obj.common.type === 'object' && typeof state.val === 'string'))) {
-                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'
-                            // array, object, json need to be string
-                            if (['object', 'json', 'array'].includes(obj.common.type)) {
-                                logger.info(`${this.namespaceLog} State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`);
-                            }
-                            else {
-                                logger.info(`${this.namespaceLog} State value to set for "${id}" has to be ${obj.common.type === 'mixed'
-                                    ? `one of type "string", "number", "boolean"`
-                                    : `type "${obj.common.type}"`} but received type "${typeof state.val}" `);
-                            }
-                        }
-                        // now round step and check min/max if it's a number
-                        if (typeof state.val === 'number') {
-                            if (typeof obj.common.step === 'number' && obj.common.step > 0) {
-                                // round to next step
-                                const inv = 1 / obj.common.step;
-                                state.val = Math.round(state.val * inv) / inv;
-                            }
-                            if (obj.common.max !== undefined && state.val > obj.common.max) {
-                                logger.warn(`${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`);
-                            }
-                            if (obj.common.min !== undefined && state.val < obj.common.min) {
-                                logger.warn(`${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`);
-                            }
-                        }
-                    }
-                }
-                else {
-                    logger.warn(`${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`);
-                }
-            }
-            catch (e) {
-                logger.warn(`${this.namespaceLog} Could not perform strict object check of state ${id}: ${e.message}`);
-            }
-        };
-        /**
          * @param {string | {device?: string, channel?: string, state?: string}} id
          * @param {boolean} [isPattern=false]
          */
@@ -1792,7 +1716,7 @@ function Adapter(options) {
                 options = null;
             }
             if (!defaultObjs) {
-                defaultObjs = require('./defaultObjs.js')('de', '°C', 'EUR');
+                defaultObjs = require('./defaultObjs.js')();
             }
             if (!obj) {
                 logger.error(`${this.namespaceLog} setObject: try to set null object for ${id}`);
@@ -5185,7 +5109,7 @@ function Adapter(options) {
                     if (differ) {
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
                         this.outputCount++;
                         adapterStates.setState(id, state, ( /* err */) => {
@@ -5872,7 +5796,7 @@ function Adapter(options) {
                         }
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
                             // write alias
@@ -5956,7 +5880,7 @@ function Adapter(options) {
                 else {
                     if (this.performStrictObjectChecks) {
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._performStrictObjectCheck(id, state);
+                        await utils.performStrictObjectCheck(id, state);
                     }
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to set
@@ -6168,7 +6092,7 @@ function Adapter(options) {
                         }
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
                             // write alias
@@ -6270,7 +6194,7 @@ function Adapter(options) {
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this.performStrictObjectCheck(id, state);
+                        await utils.performStrictObjectCheck(id, state);
                     }
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe

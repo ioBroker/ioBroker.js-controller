@@ -390,15 +390,6 @@ declare class Adapter {
     longitude: any;
     latitude: any;
     /**
-     * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
-     * additionally it rounds state values whose objects have a common.step attribute defined
-     *
-     * @param {string} id - id of the state
-     * @param {object} state - ioBroker setState object
-     * @return {Promise<void>}
-     */
-    _performStrictObjectCheck: (id: string, state: object) => Promise<void>;
-    /**
      * @param {string | {device?: string, channel?: string, state?: string}} id
      * @param {boolean} [isPattern=false]
      */

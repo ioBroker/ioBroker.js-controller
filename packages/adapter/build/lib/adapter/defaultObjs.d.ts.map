@@ -1,1 +1,1 @@
-{"version":3,"file":"defaultObjs.d.ts","sourceRoot":"","sources":["../../../src/lib/adapter/defaultObjs.js"],"names":[],"mappings":";AAEA;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAoDC"}
+{"version":3,"file":"defaultObjs.d.ts","sourceRoot":"","sources":["../../../src/lib/adapter/defaultObjs.ts"],"names":[],"mappings":"AAAA,iBAAS,cAAc,IAAI,MAAM,CAAC,MAAM,EAAE,GAAG,CAAC,CAkD7C;AAED,SAAS,cAAc,CAAC"}

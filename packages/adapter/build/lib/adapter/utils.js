@@ -15,7 +15,6 @@ class Utils {
         this.namespaceLog = namespaceLog;
         this.log = logger;
     }
-
     /**
      * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
      * additionally it rounds state values whose objects have a common.step attribute defined
@@ -33,61 +32,41 @@ class Utils {
                 // if only undefined provided, it should have thrown before
                 return;
             }
-
             const obj = await this.objects.getObjectAsync(id);
             // at first check object existence
             if (!obj) {
-                this.log.warn(
-                    `${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`
-                );
+                this.log.warn(`${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`);
                 return;
             }
-
             // for a state object we require common.type to exist
             if (obj.common && obj.common.type) {
                 // check if we are allowed to write (read-only can only be written with ack: true)
                 if (!state.ack && obj.common.write === false) {
-                    this.log.warn(
-                        `${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`
-                    );
+                    this.log.warn(`${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`);
                 }
-
                 if (state.val !== null) {
                     // now check if type is correct, null is always allowed
                     if (obj.common.type === 'file') {
                         // file has to be set with setBinaryState
-                        this.log.warn(
-                            `${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`
-                        );
-                    } else if (
-                        !(
-                            (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                            (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                            (obj.common.type === 'array' && typeof state.val === 'string') ||
-                            (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'file' && typeof state.val === 'string') ||
-                            (obj.common.type === 'object' && typeof state.val === 'string')
-                        )
-                    ) {
+                        this.log.warn(`${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`);
+                    }
+                    else if (!((obj.common.type === 'mixed' && typeof state.val !== 'object') ||
+                        (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
+                        (obj.common.type === 'array' && typeof state.val === 'string') ||
+                        (obj.common.type === 'json' && typeof state.val === 'string') ||
+                        (obj.common.type === 'file' && typeof state.val === 'string') ||
+                        (obj.common.type === 'object' && typeof state.val === 'string'))) {
                         // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'
                         // array, object, json need to be string
                         if (['object', 'json', 'array'].includes(obj.common.type)) {
-                            this.log.info(
-                                `${
-                                    this.namespaceLog
-                                } State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`
-                            );
-                        } else {
-                            this.log.info(
-                                `${this.namespaceLog} State value to set for "${id}" has to be ${
-                                    obj.common.type === 'mixed'
-                                        ? `one of type "string", "number", "boolean"`
-                                        : `type "${obj.common.type}"`
-                                } but received type "${typeof state.val}" `
-                            );
+                            this.log.info(`${this.namespaceLog} State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`);
+                        }
+                        else {
+                            this.log.info(`${this.namespaceLog} State value to set for "${id}" has to be ${obj.common.type === 'mixed'
+                                ? `one of type "string", "number", "boolean"`
+                                : `type "${obj.common.type}"`} but received type "${typeof state.val}" `);
                         }
                     }
-
                     // now round step and check min/max if it's a number
                     if (typeof state.val === 'number') {
                         if (typeof obj.common.step === 'number' && obj.common.step > 0) {
@@ -95,30 +74,23 @@ class Utils {
                             const inv = 1 / obj.common.step;
                             state.val = Math.round(state.val * inv) / inv;
                         }
-
                         if (obj.common.max !== undefined && state.val > obj.common.max) {
-                            this.log.warn(
-                                `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`
-                            );
+                            this.log.warn(`${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`);
                         }
-
                         if (obj.common.min !== undefined && state.val < obj.common.min) {
-                            this.log.warn(
-                                `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`
-                            );
+                            this.log.warn(`${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`);
                         }
                     }
                 }
-            } else {
-                this.log.warn(
-                    `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`
-                );
             }
-        } catch (e) {
+            else {
+                this.log.warn(`${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`);
+            }
+        }
+        catch (e) {
             this.log.warn(`${this.namespaceLog} Could not perform strict object check of state ${id}: ${e.message}`);
         }
     }
-
     /**
      * Checks if a passed ID is valid. Throws an error if id is invalid
      *

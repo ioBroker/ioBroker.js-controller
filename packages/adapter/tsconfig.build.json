@@ -8,7 +8,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.js"
+    "src/**/*.js" // currently, we have js too
   ],
   "exclude": [
     "src/**/*.test.ts"

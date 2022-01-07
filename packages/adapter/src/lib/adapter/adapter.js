@@ -1880,7 +1880,7 @@ function Adapter(options) {
                 options = null;
             }
             if (!defaultObjs) {
-                defaultObjs = require('./defaultObjs.js')('de', '°C', 'EUR');
+                defaultObjs = require('./defaultObjs.js')();
             }
 
             if (!obj) {
