@@ -306,6 +306,15 @@ class ObjectsInRedisClient {
                 this.subSystem.ioBrokerSubscriptions = {};
 
                 if (typeof this.settings.primaryHostLost === 'function') {
+                    try {
+                        // enable Expiry/Evicted events in server - same as states (could be same db)
+                        await this.client.config('set', ['notify-keyspace-events', 'Exe']);
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to enable Expiry Keyspace events from Redis Server: ${e.message}`
+                        );
+                    }
+
                     this.subSystem.on('message', (channel, message) => {
                         if (channel === `__keyevent@${this.settings.connection.options.db}__:expired`) {
                             this.log.silly(`${this.namespace} redis message expired ${channel}:${message}`);
@@ -4525,9 +4534,11 @@ class ObjectsInRedisClient {
         // try to acquire lock
         return this.client.evalsha([
             this.scripts['redlock_release'],
-            2,
+            3,
             `${this.metaNamespace}objects.primaryHost`,
-            this.settings.hostname
+            this.settings.hostname,
+            this.settings.options.db,
+            `${this.metaNamespace}objects.primaryHost`
         ]);
     }
 

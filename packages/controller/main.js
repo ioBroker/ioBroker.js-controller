@@ -857,7 +857,7 @@ function createObjects(onConnect) {
             }
         },
         primaryHostLost: () => {
-            logger.warn('host expired');
+            logger.info('The primary host is no longer active. Checking responsibilities.');
             checkPrimaryHost();
         }
     });
