@@ -54,11 +54,14 @@ jobs:
       - name: NPM version
         run: npm -v
 
-      - name: Install js-controller
-        run: npm ci
+      - name: Prepare build
+        run: npm i --ignore-scripts # install typescript and @types do not `setup first`
 
       - name: Build TS files
         run: npm run build
+
+      - name: Install js-controller
+        run: npm ci
 
       - name: Execute Standard Tests
         run: npm test
