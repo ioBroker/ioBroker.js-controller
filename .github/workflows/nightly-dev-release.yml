@@ -51,15 +51,17 @@ jobs:
         sudo apt-get install redis-server redis-sentinel -y
         sudo systemctl start redis-server
 
-    - name: Prepare build
-      run: npm i --ignore-scripts # install typescript and @types do not `setup first`
-
-    - name: Build TS files
-      run: npm run build
-
     - name: Install dependencies
       if: steps.changes.outputs.result == 'ok'
-      run: npm ci
+      run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
+
+    - name: Build TS files
+      if: steps.changes.outputs.result == 'ok'
+      run: npm run build
+
+    - name: Run scripts
+      if: steps.changes.outputs.result == 'ok'
+      run: npm i
 
     - name: Build TS files
       if: steps.changes.outputs.result == 'ok'
