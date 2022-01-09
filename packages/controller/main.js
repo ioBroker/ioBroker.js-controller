@@ -68,6 +68,7 @@ let restartTimeout = null;
 let connectTimeout = null;
 let reportInterval = null;
 let primaryHostInterval = null;
+const PRIMARY_HOST_TIMEOUT = 60000;
 
 const procs = {};
 const hostAdapter = {};
@@ -539,7 +540,7 @@ function createStates(onConnect) {
                 } catch (e) {
                     logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
                 }
-                primaryHostInterval = setInterval(checkPrimaryHost, 30000);
+                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_TIMEOUT / 2);
 
                 // first execution now
                 checkPrimaryHost();
@@ -893,7 +894,7 @@ function startAliveInterval() {
 async function checkPrimaryHost() {
     // let our host value live 60 seconds, while it should be renewed every 30
     try {
-        await objects.setPrimaryHost(60000);
+        await objects.setPrimaryHost(PRIMARY_HOST_TIMEOUT);
     } catch (e) {
         logger.error(`${hostLogPrefix} Could not execute primary host determination: ${e.message}`);
     }
