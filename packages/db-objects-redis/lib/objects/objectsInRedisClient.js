@@ -606,7 +606,8 @@ class ObjectsInRedisClient {
 
             // filter out obvious non-host objects
             keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
-            this.useSets = true;
+            /** if false we have a host smaller 4 (no proto version for this existing) */
+            this.noLegacyMultihost = true;
 
             try {
                 if (keys.length) {
@@ -622,7 +623,7 @@ class ObjectsInRedisClient {
                             semver.lt(obj.common.installedVersion, '4.0.0')
                         ) {
                             // one of the host has a version smaller 4, we have to use legacy db
-                            this.useSets = false;
+                            this.noLegacyMultihost = false;
                             this.log.info('Sets unsupported');
                         }
                     }
@@ -2352,7 +2353,7 @@ class ObjectsInRedisClient {
                 const message = JSON.stringify(obj);
                 try {
                     const commands = [];
-                    if (this.useSets) {
+                    if (this.noLegacyMultihost) {
                         if (obj.type) {
                             // e.g. _design/ has no type
                             // add the object to the set + set object atomic
@@ -3094,7 +3095,7 @@ class ObjectsInRedisClient {
             const message = JSON.stringify(obj);
 
             const commands = [];
-            if (this.useSets) {
+            if (this.noLegacyMultihost) {
                 if (obj.type && (!oldObj || !oldObj.type)) {
                     // new object or oldObj had no type -> add to set + set object
                     commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
@@ -3216,7 +3217,7 @@ class ObjectsInRedisClient {
             try {
                 const commands = [];
 
-                if (this.useSets) {
+                if (this.noLegacyMultihost) {
                     if (oldObj.type) {
                         // e.g. _design/ has no type
                         // del the object from the set + del object atomic
@@ -4052,7 +4053,7 @@ class ObjectsInRedisClient {
 
         try {
             const commands = [];
-            if (this.useSets) {
+            if (this.noLegacyMultihost) {
                 // what is called oldObj is acutally the obj we set, because it has been extended
                 if (oldObj.type && !oldType) {
                     // new object or oldObj had no type -> add to set + set object
@@ -4328,7 +4329,7 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
+        const luaPath = path.join(__dirname, this.noLegacyMultihost ? 'lua' : 'lua-v3');
         const scripts = fs.readdirSync(luaPath).map(name => {
             const shasum = crypto.createHash('sha1');
             const script = fs.readFileSync(path.join(luaPath, name));
@@ -4421,7 +4422,7 @@ class ObjectsInRedisClient {
      * @return {Promise<number>}
      */
     async migrateToSets() {
-        if (!this.useSets) {
+        if (!this.noLegacyMultihost) {
             return 0;
         }
 
@@ -4486,6 +4487,11 @@ class ObjectsInRedisClient {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
 
+        // we have a host version smaller 3 no one can be primary
+        if (!this.noLegacyMultihost) {
+            return 0;
+        }
+
         // try to acquire lock
         const lockAquired = await this.client.evalsha([
             this.scripts['redlock_acquire'],
@@ -4521,6 +4527,11 @@ class ObjectsInRedisClient {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
 
+        // we have a host version smaller 3 no one can be primary
+        if (!this.noLegacyMultihost) {
+            return new Promise.resolve('');
+        }
+
         return this.client.get(`${this.metaNamespace}objects.primaryHost`);
     }
 
@@ -4532,6 +4543,10 @@ class ObjectsInRedisClient {
     releasePrimaryHost() {
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (!this.noLegacyMultihost) {
+            return new Promise.resolve();
         }
 
         // try to acquire lock
