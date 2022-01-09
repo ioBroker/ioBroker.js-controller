@@ -316,8 +316,11 @@ class ObjectsInRedisClient {
                     }
 
                     this.subSystem.on('message', (channel, message) => {
-                        if (channel === `__keyevent@${this.settings.connection.options.db}__:expired`) {
-                            this.log.silly(`${this.namespace} redis message expired ${channel}:${message}`);
+                        if (
+                            channel === `__keyevent@${this.settings.connection.options.db}__:expired` ||
+                            channel === `__keyevent@${this.settings.connection.options.db}__:evicted`
+                        ) {
+                            this.log.silly(`${this.namespace} redis message expired/evicted ${channel}:${message}`);
 
                             if (message === `${this.metaNamespace}objects.primaryHost`) {
                                 this.settings.primaryHostLost();
@@ -4569,6 +4572,7 @@ class ObjectsInRedisClient {
     async subscribePrimaryHost() {
         if (this.subSystem) {
             await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:expired`);
+            await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:evicted`);
         }
     }
 }

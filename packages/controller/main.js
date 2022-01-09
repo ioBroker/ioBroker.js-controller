@@ -857,8 +857,10 @@ function createObjects(onConnect) {
             }
         },
         primaryHostLost: () => {
-            logger.info('The primary host is no longer active. Checking responsibilities.');
-            checkPrimaryHost();
+            if (!isStopping) {
+                logger.info('The primary host is no longer active. Checking responsibilities.');
+                checkPrimaryHost();
+            }
         }
     });
     return true;
