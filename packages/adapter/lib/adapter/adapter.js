@@ -1686,7 +1686,7 @@ function Adapter(options) {
                 adapterObjects.subscribe('system.user.*');
 
                 // get all enums and register for enum changes
-                this.enums = await this.getEnumsAsync();
+                this.enums = await tools.getAllEnums(adapterObjects);
                 adapterObjects.subscribe('enum.*');
 
                 // Read dateformat if using of formatDate is announced
