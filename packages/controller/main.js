@@ -68,7 +68,8 @@ let restartTimeout = null;
 let connectTimeout = null;
 let reportInterval = null;
 let primaryHostInterval = null;
-const PRIMARY_HOST_TIMEOUT = 60000;
+let isPrimary = false;
+const PRIMARY_HOST_LOCK_TIME = 60000;
 
 const procs = {};
 const hostAdapter = {};
@@ -540,7 +541,7 @@ function createStates(onConnect) {
                 } catch (e) {
                     logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
                 }
-                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_TIMEOUT / 2);
+                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
 
                 // first execution now
                 checkPrimaryHost();
@@ -892,9 +893,17 @@ function startAliveInterval() {
  * @return {Promise<void>}
  */
 async function checkPrimaryHost() {
-    // let our host value live 60 seconds, while it should be renewed every 30
+    // let our host value live PRIMARY_HOST_LOCK_TIME seconds, while it should be renewed lock time / 2
     try {
-        await objects.setPrimaryHost(PRIMARY_HOST_TIMEOUT);
+        if (!isPrimary) {
+            isPrimary = !!(await objects.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
+        } else {
+            const lockExtended = !!(await objects.extendPrimaryHostLock(PRIMARY_HOST_LOCK_TIME));
+            if (!lockExtended) {
+                // if we are host, lock extension should always work, fallback to acquire lock
+                isPrimary = !!(await objects.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
+            }
+        }
     } catch (e) {
         logger.error(`${hostLogPrefix} Could not execute primary host determination: ${e.message}`);
     }
@@ -5246,6 +5255,7 @@ function stop(force, callback) {
         try {
             // if we are the host we should now let someone else take over
             await objects.releasePrimaryHost();
+            isPrimary = false;
         } catch {
             // ignore
         }

@@ -4476,45 +4476,57 @@ class ObjectsInRedisClient {
     }
 
     /**
-     * Sets current host as primary if no primary host missing
-     * Value will expire after sec seconds
+     * Extend the primary host lock time
+     * Value will expire after ms milliseconds
      *
      * {number} ms - ms until value expires
-     * @return {Promise<number>}
+     * @return {Promise<number>} 1 if extended else 0
      */
-    async setPrimaryHost(ms) {
+    extendPrimaryHostLock(ms) {
         if (!this.client) {
             throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
         }
 
         // we have a host version smaller 3 no one can be primary
         if (!this.noLegacyMultihost) {
-            return 0;
+            return Promise.resolve(0);
+        }
+
+        // try to extend lock
+        return this.client.evalsha([
+            this.scripts['redlock_extend'],
+            3,
+            `${this.metaNamespace}objects.primaryHost`,
+            this.settings.hostname,
+            ms
+        ]);
+    }
+
+    /**
+     * Sets current host as primary if no primary host active
+     * Value will expire after ms milliseconds
+     *
+     * {number} ms - ms until value expires
+     * @return {Promise<number>} 1 if lock acquired else 0
+     */
+    setPrimaryHost(ms) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // we have a host version smaller 3 no one can be primary
+        if (!this.noLegacyMultihost) {
+            return Promise.resolve(0);
         }
 
         // try to acquire lock
-        const lockAquired = await this.client.evalsha([
+        return this.client.evalsha([
             this.scripts['redlock_acquire'],
             3,
             `${this.metaNamespace}objects.primaryHost`,
             this.settings.hostname,
             ms
         ]);
-
-        // we have not acquired lock, maybe we are already master so we should try to extend
-        if (!lockAquired) {
-            const lockExtended = await this.client.evalsha([
-                this.scripts['redlock_extend'],
-                3,
-                `${this.metaNamespace}objects.primaryHost`,
-                this.settings.hostname,
-                ms
-            ]);
-
-            return lockExtended;
-        }
-
-        return lockAquired;
     }
 
     /**
@@ -4549,7 +4561,7 @@ class ObjectsInRedisClient {
             return new Promise.resolve();
         }
 
-        // try to acquire lock
+        // try to release lock
         return this.client.evalsha([
             this.scripts['redlock_release'],
             4,
