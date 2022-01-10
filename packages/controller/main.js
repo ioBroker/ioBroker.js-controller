@@ -4355,17 +4355,7 @@ async function startInstance(id, wakeUp) {
                             ) {
                                 // only try this at second rebuild
                                 if (procs[id].rebuildCounter === 1) {
-                                    // extract rebuild path - it is always between the only two single quotes
-                                    const matches = text.match(/'.+'/g);
-
-                                    if (matches && matches.length === 1) {
-                                        // remove the quotes
-                                        const rebuildPath = matches[0].replace(/'/g, '');
-                                        if (path.isAbsolute(rebuildPath)) {
-                                            // we have found a module which needs rebuild
-                                            procs[id].rebuildPath = rebuildPath;
-                                        }
-                                    }
+                                    procs[id].rebuildPath = _determineRebuildPathFromLog(text);
                                 }
                                 procs[id].needsRebuild = true;
                             }
@@ -5377,7 +5367,7 @@ function init(compactGroupId) {
         logger.info(
             `${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`
         );
-        logger.info(`${hostLogPrefix} Copyright (c) 2014-2021 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2022 bluefox, 2014 hobbyquaker`);
         logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
@@ -5389,9 +5379,9 @@ function init(compactGroupId) {
                 .indexOf('/node_modules/' + title.toLowerCase()) !== -1
         ) {
             try {
-                if (!fs.existsSync(__dirname + '/../../package.json')) {
+                if (!fs.existsSync(`${__dirname}/../../package.json`)) {
                     fs.writeFileSync(
-                        __dirname + '/../../package.json',
+                        `${__dirname}/../../package.json`,
                         JSON.stringify(
                             {
                                 name: 'iobroker.core',
@@ -5404,10 +5394,10 @@ function init(compactGroupId) {
                     );
                 } else {
                     // npm3 requires version attribute
-                    const p = fs.readJSONSync(__dirname + '/../../package.json');
+                    const p = fs.readJSONSync(`${__dirname}/../../package.json`);
                     if (!p.version) {
                         fs.writeFileSync(
-                            __dirname + '/../../package.json',
+                            `${__dirname}/../../package.json`,
                             JSON.stringify(
                                 {
                                     name: 'iobroker.core',
@@ -5434,7 +5424,7 @@ function init(compactGroupId) {
     try {
         packageJson = fs.readJSONSync(`${__dirname}/package.json`);
     } catch {
-        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
+        logger.error(`${hostLogPrefix} Can not read js-controller package.json`);
     }
 
     if (packageJson && packageJson.engines && packageJson.engines.node) {
@@ -5677,6 +5667,36 @@ function init(compactGroupId) {
 
     process.on('uncaughtException', exceptionHandler);
     process.on('unhandledRejection', exceptionHandler);
+}
+
+/**
+ * Parses out the rebuild path from an error log
+ *
+ * @param {string} text - log text
+ * @return {string | undefined}
+ * @private
+ */
+function _determineRebuildPathFromLog(text) {
+    // extract rebuild path - it is always between the only two single quotes
+    const matches = text.match(/'.+'/g);
+
+    if (matches && matches.length === 1) {
+        // remove the quotes
+        let rebuildPath = matches[0].replace(/'/g, '');
+        if (path.isAbsolute(rebuildPath)) {
+            // we have found a module which needs rebuild - we need to find deepest pack.json
+            rebuildPath = path.dirname(rebuildPath);
+            const rootDir = path.parse(process.cwd()).root;
+
+            while (rebuildPath !== rootDir) {
+                if (fs.pathExistsSync(path.join(rebuildPath, 'package.json'))) {
+                    return rebuildPath;
+                } else {
+                    rebuildPath = path.join(rebuildPath, '..');
+                }
+            }
+        }
+    }
 }
 
 if (typeof module !== 'undefined' && module.parent) {
