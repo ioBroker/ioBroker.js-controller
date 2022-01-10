@@ -5254,8 +5254,10 @@ function stop(force, callback) {
 
         try {
             // if we are the host we should now let someone else take over
-            await objects.releasePrimaryHost();
-            isPrimary = false;
+            if (isPrimary) {
+                await objects.releasePrimaryHost();
+                isPrimary = false;
+            }
         } catch {
             // ignore
         }
