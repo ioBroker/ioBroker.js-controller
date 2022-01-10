@@ -317,7 +317,7 @@ The logging is configured in the `iobroker.json` file and can be changed there:
 }
 ```
 
-If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control are possible.
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
 Since js-controller 3.0 Logfiles on non-Windows based systems are compressed on rotation, so that the older Files need less space on your storage. 
 
@@ -374,13 +374,13 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
 }
 ```
 
-If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control are possible.
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
 #### Other Log transports
 
 See the iobroker.json and Admin for more transports and their settings.
 
-If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control are possible.
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
 #### Adapters allow to subscribe to logs
 **Feature status:** stable
