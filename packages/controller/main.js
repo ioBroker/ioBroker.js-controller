@@ -460,7 +460,10 @@ function createStates(onConnect) {
                 ) {
                     config.log.level = state.val;
                     for (const transport of Object.keys(logger.transports)) {
-                        if (logger.transports[transport].level === currentLevel) {
+                        if (
+                            logger.transports[transport].level === currentLevel &&
+                            !logger.transports[transport]._defaultConfigLoglevel
+                        ) {
                             logger.transports[transport].level = state.val;
                         }
                     }
