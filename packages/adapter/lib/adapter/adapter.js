@@ -6007,7 +6007,10 @@ function Adapter(options) {
                                 if (!Object.prototype.hasOwnProperty.call(logger.transports, transport)) {
                                     continue;
                                 }
-                                logger.transports[transport].level = state.val;
+                                // set the loglevel on transport only if no loglevel was pinned in log config
+                                if (!logger.transports[transport]._defaultConfigLoglevel) {
+                                    logger.transports[transport].level = state.val;
+                                }
                             }
                             logger.info(
                                 `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`
@@ -9093,7 +9096,10 @@ function Adapter(options) {
                     if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
                         // set configured in DB log level
                         for (const trans of Object.keys(logger.transports)) {
-                            logger.transports[trans].level = adapterConfig.common.loglevel;
+                            // set the loglevel on transport only if no loglevel was pinned in log config
+                            if (!logger.transports[trans]._defaultConfigLoglevel) {
+                                logger.transports[trans].level = adapterConfig.common.loglevel;
+                            }
                         }
                         config.log.level = adapterConfig.common.loglevel;
                     }
