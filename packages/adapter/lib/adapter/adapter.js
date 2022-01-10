@@ -200,8 +200,12 @@ function Adapter(options) {
     this.overwriteLogLevel = false;
     this.adapterReady = false;
 
-    // Provide tools for use in adapter
-    this.tools = tools;
+    // TODO: remove shim
+    // Provide selected tools methods for backward compatibility use in adapter
+    this.tools = {
+        encrypt: tools.encrypt,
+        decrypt: tools.decrypt
+    };
 
     // possible arguments
     // 0,1,.. - instance
