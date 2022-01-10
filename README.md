@@ -285,6 +285,8 @@ The log level can be changed dynamically for adapter-instance and host (main con
 
 The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured log level and can afterwards be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
 
+The Loglevel change is only effective if there is no loglevel (property "level") defined on the transport configuration.
+
 This possibility allows to debug adapters better and during runtime.
 
 #### File based logging
@@ -314,6 +316,8 @@ The logging is configured in the `iobroker.json` file and can be changed there:
   ...
 }
 ```
+
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control are possible.
 
 Since js-controller 3.0 Logfiles on non-Windows based systems are compressed on rotation, so that the older Files need less space on your storage. 
 
@@ -369,6 +373,14 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
   ...
 }
 ```
+
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control are possible.
+
+#### Other Log transports
+
+See the iobroker.json and Admin for more transports and their settings.
+
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control are possible.
 
 #### Adapters allow to subscribe to logs
 **Feature status:** stable
