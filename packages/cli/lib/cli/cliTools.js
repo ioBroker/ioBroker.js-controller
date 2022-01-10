@@ -51,6 +51,7 @@ function validateAdapterOrInstanceIdentifier(name) {
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
  * @param {string} name
+ * @return {{name: string, instance:string|null, version: string|null, nameWithVersion:string}|null}
  */
 function splitAdapterOrInstanceIdentifierWithVersion(name) {
     const res = name.match(/^([a-z0-9\-_]+)\.?(\d+)?@?([a-z0-9\-_.]*)?$/);
