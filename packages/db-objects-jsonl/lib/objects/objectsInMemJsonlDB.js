@@ -140,18 +140,17 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             // ignore
         }
 
-        // If there is nothing to restore, we're done
-        if (jsonTimeStamp === 0 && bakTimeStamp === 0) {
-            return false;
-        }
-
         // Figure out which file needs to be imported
         /** @type {string} */
         let importFilename;
-        if (bakTimeStamp > 0 && bakTimeStamp > jsonTimeStamp && bakTimeStamp > jsonlTimeStamp) {
-            importFilename = bakFileName;
-        } else if (jsonTimeStamp > 0 && jsonTimeStamp > bakTimeStamp && jsonTimeStamp > jsonlTimeStamp) {
+        if (jsonTimeStamp > 0 && jsonTimeStamp >= bakTimeStamp && jsonTimeStamp >= jsonlTimeStamp) {
             importFilename = jsonFileName;
+        } else if (bakTimeStamp > 0 && bakTimeStamp >= jsonTimeStamp && bakTimeStamp >= jsonlTimeStamp) {
+            importFilename = bakFileName;
+        } else {
+            // None of the File DB files are newer than the JSONL file
+            // There is nothing to restore, we're done
+            return false;
         }
 
         await this._db.open();
@@ -161,14 +160,14 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         // And rename the existing files to avoid redoing the work next time
         if (fs.existsSync(jsonFileName)) {
             try {
-                fs.renameSync(jsonFileName, jsonFileName + '.migrated');
+                fs.renameSync(jsonFileName, `${jsonFileName}.migrated`);
             } catch {
                 // ignore
             }
         }
         if (fs.existsSync(bakFileName)) {
             try {
-                fs.renameSync(bakFileName, bakFileName + '.migrated');
+                fs.renameSync(bakFileName, `${bakFileName}.migrated`);
             } catch {
                 // ignore
             }
@@ -185,10 +184,10 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     // Is regularly called and stores a compressed backup of the DB
     async saveBackup() {
         const now = Date.now();
-        const tmpBackupFileName = path.join(os.tmpdir(), this.getTimeStr(now) + '_' + this.settings.jsonlDB.fileName);
+        const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
         const backupFileName = path.join(
             this.backupDir,
-            this.getTimeStr(now) + '_' + this.settings.jsonlDB.fileName + '.gz'
+            `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`
         );
         try {
             if (fs.existsSync(backupFileName)) {
