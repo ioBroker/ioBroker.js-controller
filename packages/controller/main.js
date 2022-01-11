@@ -1233,6 +1233,8 @@ async function collectDiagInfo(type) {
             err = e;
         }
 
+        const { noCompactInstances, noInstances } = await _getNumberOfInstances();
+
         // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
         const diag = {
             uuid: obj.native.uuid,
@@ -1244,8 +1246,12 @@ async function collectDiagInfo(type) {
             arch: os.arch(),
             adapters: {},
             statesType: config.states.type, // redis or file
-            objectsType: config.objects.type // redis or file
+            objectsType: config.objects.type, // redis or file
+            noInstances,
+            compactMode: config.system.compact,
+            noCompactInstances
         };
+
         if (type === 'extended' || type === 'no-city') {
             const cpus = os.cpus();
 
@@ -5699,6 +5705,37 @@ function _determineRebuildPathFromLog(text) {
                 }
             }
         }
+    }
+}
+
+/**
+ * Returns number of instances and how many of them are compact instances if compact mode is enabled
+ *
+ * @return {Promise<{noCompactInstances: null, noInstances: null}|{noCompactInstances: number, noInstances: number}>}
+ * @private
+ */
+async function _getNumberOfInstances() {
+    try {
+        let noCompactInstances = 0;
+        const instancesView = await objects.getObjectViewAsync('system', 'instance', {
+            startkey: 'system.adapter.',
+            endkey: 'system.adapter.\u9999'
+        });
+
+        const noInstances = instancesView.rows.length;
+
+        if (config.system.compact) {
+            for (const row of instancesView.rows) {
+                const state = await states.getStateAsync(`${row.id}.compactMode`);
+                if (state && state.val) {
+                    noCompactInstances++;
+                }
+            }
+        }
+
+        return { noInstances, noCompactInstances };
+    } catch {
+        return { noInstances: null, noCompactInstances: null };
     }
 }
 
