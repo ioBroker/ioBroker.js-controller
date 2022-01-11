@@ -2932,8 +2932,8 @@ async function processMessage(msg) {
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
                 const installObj = { id: msg.message.id, rebuild: true };
-                if (msg.message.path) {
-                    installObj.path = msg.message.path;
+                if (msg.message.rebuildArgs) {
+                    installObj.rebuildArgs = msg.message.rebuildArgs;
                 }
 
                 installQueue.push(installObj);
@@ -3525,6 +3525,7 @@ function installAdapters() {
         }
 
         const installArgs = [];
+        const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
             if (tools.isShortGithubUrl(task.installedFrom) || task.installedFrom.includes('://')) {
@@ -3544,23 +3545,25 @@ function installAdapters() {
             installArgs.push(commandScope);
             if (!task.rebuild) {
                 installArgs.push(name);
-            } else if (task.path) {
-                installArgs.push(task.path);
+            } else if (task.rebuildArgs) {
+                installArgs.push(`${task.rebuildArgs.module}@${task.rebuildArgs.version}`);
+                installOptions.cwd = task.rebuildArgs.path;
             }
         }
         logger.info(
             `${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${
                 task.rebuild
                     ? ''
-                    : ' using ' +
-                      (procs[task.id].downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion')
+                    : ` using ${
+                          procs[task.id].downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion'
+                      }`
             }`
         );
         installArgs.unshift(`${__dirname}/${tools.appName}.js`);
 
         try {
             task.inProgress = true;
-            const child = spawn('node', installArgs, { windowsHide: true });
+            const child = spawn('node', installArgs, installOptions);
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
@@ -4164,7 +4167,7 @@ async function startInstance(id, wakeUp) {
                             if (procs[id].rebuildCounter < 4) {
                                 logger.info(
                                     `${hostLogPrefix} Adapter ${id} needs rebuild ${
-                                        procs[id].rebuildPath ? `of ${procs[id].rebuildPath} ` : ''
+                                        procs[id].rebuildArgs ? `of ${procs[id].rebuildArgs.module} ` : ''
                                     }and will be restarted afterwards.`
                                 );
                                 const msg = {
@@ -4172,10 +4175,10 @@ async function startInstance(id, wakeUp) {
                                     message: { id: instance._id }
                                 };
 
-                                // if rebuild path given send it
-                                if (procs[id].rebuildPath) {
-                                    msg.message.path = procs[id].rebuildPath;
-                                    delete procs[id].rebuildPath;
+                                // if rebuild args are given, send them
+                                if (procs[id].rebuildArgs) {
+                                    msg.message.rebuildArgs = procs[id].rebuildArgs;
+                                    delete procs[id].rebuildArgs;
                                 }
 
                                 if (!compactGroupController) {
@@ -4358,7 +4361,7 @@ async function startInstance(id, wakeUp) {
                             ) {
                                 // only try this at second rebuild
                                 if (procs[id].rebuildCounter === 1) {
-                                    procs[id].rebuildPath = _determineRebuildPathFromLog(text);
+                                    procs[id].rebuildArgs = _determineRebuildArgsFromLog(text);
                                 }
                                 procs[id].needsRebuild = true;
                             }
@@ -5673,13 +5676,13 @@ function init(compactGroupId) {
 }
 
 /**
- * Parses out the rebuild path from an error log
+ * Parses out the rebuild path, name and version from an error log
  *
  * @param {string} text - log text
- * @return {string | undefined}
+ * @return {{module: string, path: string, version: string} | undefined}
  * @private
  */
-function _determineRebuildPathFromLog(text) {
+function _determineRebuildArgsFromLog(text) {
     // extract rebuild path - it is always between the only two single quotes
     const matches = text.match(/'.+'/g);
 
@@ -5692,8 +5695,18 @@ function _determineRebuildPathFromLog(text) {
             const rootDir = path.parse(process.cwd()).root;
 
             while (rebuildPath !== rootDir) {
-                if (fs.pathExistsSync(path.join(rebuildPath, 'package.json'))) {
-                    return rebuildPath;
+                const packPath = path.join(rebuildPath, 'package.json');
+                if (fs.pathExistsSync(packPath)) {
+                    try {
+                        const packJson = fs.readJsonSync(packPath);
+                        // step outside the module dir itself
+                        rebuildPath = path.join(rebuildPath, '..');
+
+                        return { path: rebuildPath, module: packJson.name, version: packJson.version };
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Could not determine rebuild arguments: ${e.message}`);
+                        return;
+                    }
                 } else {
                     rebuildPath = path.join(rebuildPath, '..');
                 }
