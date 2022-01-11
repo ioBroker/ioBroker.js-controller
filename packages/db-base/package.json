@@ -8,7 +8,6 @@
     "@iobroker/js-controller-common": "file:../common",
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.0.0",
-    "node.extend": "^2.0.2",
     "respjs": "^4.2.0"
   },
   "keywords": [
