@@ -114,6 +114,20 @@ If needed, especially for low memory situations the memory limit for all adapter
 }
 ```
 
+### Directly exeuting Typescript adapters
+**Feature status:** Technology preview since js-controller 3.3.0
+
+The js-controller is able to execute `.ts` files, which removes the need of compiling to Javascript first.
+To use this feature, simply define the adapter main file as the required `.ts` file.
+
+E.g. in `package.json`:
+
+```json
+{
+  "main": "src/main.ts"
+}
+```
+
 ### Statistics
 **Feature status:** stable
 
@@ -213,7 +227,8 @@ The js-controller defines in its io-package the system scope together with all d
   ]
 }
 ```
-### How to define own scopes?
+
+#### How to define own scopes?
 Each adapter can define its own "scopes" for own notifiations with its own categories which then will be available in the system. 
 Please contact the core development group if you plan to add an own scoe so that scope names can be checked to stay unique.
 The same applies if you see the need to enhance the system scope by additional categories. 
@@ -382,10 +397,10 @@ See the iobroker.json and Admin for more transports and their settings.
 
 If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
-#### Adapters allow to subscribe to logs
+#### Adapters are allowed to subscribe log messages
 **Feature status:** stable
 
-ioBroker allows adapters to subscribe to logs from the whole system. E.g. admin adapter is using this logic
+ioBroker allows adapters to subscribe to log messages from the whole system. E.g. admin adapter is using this logic
 
 More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
 
