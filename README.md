@@ -114,10 +114,10 @@ If needed, especially for low memory situations the memory limit for all adapter
 }
 ```
 
-### Directly exeuting Typescript adapters
+### Directly executing TypeScript adapters
 **Feature status:** Technology preview since js-controller 3.3.0
 
-The js-controller is able to execute `.ts` files, which removes the need of compiling to Javascript first.
+The js-controller is able to execute `.ts` files, which removes the need of compiling to JavaScript first.
 To use this feature, simply define the adapter main file as the required `.ts` file.
 
 E.g. in `package.json`:
@@ -127,6 +127,12 @@ E.g. in `package.json`:
   "main": "src/main.ts"
 }
 ```
+
+Note, that the sources need to be presence on every installation and thus need to be included in the npm package.
+Vice versa, the build folder is no longer required and should not be published to npm any longer.
+
+Technically, the sources are compiled with ESBuild at every startup, hence this feature should not be used on adapters 
+cosisting of many sources to prevent noticeably delayed adapter starts.
 
 ### Statistics
 **Feature status:** stable
