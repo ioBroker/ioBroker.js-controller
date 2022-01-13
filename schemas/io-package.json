@@ -1100,6 +1100,62 @@
           "minimum": 1,
           "maximum": 3,
           "default": 3
+        },
+        "messages": {
+          "description": "Messages can be shown on adapter installation, update and instance creation",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["title", "text", "level", "buttons"],
+            "properties": {
+              "condition": {
+                "description": "Message will only be shown if condition matches",
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "operand": {
+                    "description": "Operand to connect multiple rules",
+                    "enum": ["or", "and"]
+                  },
+                  "rules": {
+                    "description": "Rules which need to be true, e.g. [\"oldVersion<2.0.0\", \"newVersion>=2.0.0\"]",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "title": {
+                "description": "Title of the shown message",
+                "$ref": "#/definitions/multilingual"
+              },
+              "text": {
+                "description": "Text of the shown message",
+                "$ref": "#/definitions/multilingual"
+              },
+              "link": {
+                "description": "You can define a hyperlink, which will be shown, define its text with `linkText`",
+                "type": "string"
+              },
+              "level": {
+                "description": "The importance of the message",
+                "enum": ["info", "warn", "error"]
+              },
+              "linkText": {
+                "description": "If a link is defined and should be embedded in text, you can define the text here",
+                "$ref": "#/definitions/multilingual"
+              },
+              "buttons": {
+                "description": "Predefined buttons of the message window",
+                "type": "array",
+                "items": {
+                  "enum": ["agree", "cancel"]
+                }
+              }
+            }
+          }
         }
       }
     },
