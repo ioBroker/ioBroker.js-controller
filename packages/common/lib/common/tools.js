@@ -2583,7 +2583,7 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
  * @alias parseDependencies
  * @memberof tools
  * @param {string[]|object[]|string} dependencies dependencies array or single dependency
- * @returns {object} parsed dependencies
+ * @returns {Record<string, string>} parsed dependencies
  */
 function parseDependencies(dependencies) {
     let adapters = {};

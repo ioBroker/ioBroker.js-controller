@@ -109,8 +109,8 @@ function Install(options) {
         }
 
         let debug = false;
-        for (let i = 0; i < process.argv.length; i++) {
-            if (process.argv[i] === '--debug') {
+        for (const arg of process.argv) {
+            if (arg === '--debug') {
                 debug = true;
                 break;
             }
@@ -162,7 +162,7 @@ function Install(options) {
         // try to extract the information from local sources-dist.json
         if (!sources[packetName]) {
             try {
-                const sourcesDist = fs.readJSONSync(__dirname + '/../../conf/sources-dist.json');
+                const sourcesDist = fs.readJSONSync(`${__dirname}/../../conf/sources-dist.json`);
                 sources[packetName] = sourcesDist[packetName];
             } catch {
                 // OK
@@ -457,7 +457,7 @@ function Install(options) {
     this._uploadStaticObjects = async function (adapter, adapterConf) {
         if (!adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
-            if (!fs.existsSync(adapterDir + '/io-package.json')) {
+            if (!fs.existsSync(`${adapterDir}/io-package.json`)) {
                 console.error(`host.${hostname} Adapter directory "${adapterDir}" does not exists`);
                 throw new Error(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
@@ -1416,14 +1416,24 @@ function Install(options) {
             }
         };
 
+        // we are not allowed to delete from fs if another adapter depends on us
+        const dependentAdapter = await this._hasDependentAdapters(adapter);
+
+        if (dependentAdapter) {
+            console.log(
+                `Cannot uninstall adapter "${adapter}", because installed adapter "${dependentAdapter}" depends on it!`
+            );
+            return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
+        }
+
         try {
             // detect if all instances on this host, if not so the www and admin must not be deleted
             await this._enumerateAdapterInstances(knownObjectIDs, notDeletedObjectIDs, adapter);
 
             if (notDeletedObjectIDs.length) {
                 // just delete all instances on this host and then delete npm
-                for (let i = 0; i < knownObjectIDs.length; i++) {
-                    await this.deleteInstance(adapter, knownObjectIDs[i].split('.').pop());
+                for (const knownObjectID of knownObjectIDs) {
+                    await this.deleteInstance(adapter, knownObjectID.split('.').pop());
                 }
 
                 // remove adapter from custom
@@ -1647,6 +1657,45 @@ function Install(options) {
                 await upload.uploadAdapter(name, false, true);
                 await upload.upgradeAdapterObjects(name);
             }
+        }
+    };
+
+    /**
+     * Checks if other adapters depend on this adapter
+     *
+     * @param {string} adapter adapter name
+     * @return {Promise<void|string>} if dependent exists returns adapter name
+     * @private
+     */
+    this._hasDependentAdapters = async adapter => {
+        try {
+            // lets get all instances
+            const doc = await objects.getObjectViewAsync('system', 'instance', {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            });
+
+            for (const row of doc.rows) {
+                const localDeps = tools.parseDependencies(row.value.common.dependencies);
+
+                for (const localDep of Object.keys(localDeps)) {
+                    if (row.value.common.host === hostname && localDep === adapter) {
+                        // the adapter needs us locally
+                        return row.value.common.name;
+                    }
+                }
+
+                const globalDeps = tools.parseDependencies(row.value.common.globalDependencies);
+
+                for (const globalDep of Object.keys(globalDeps)) {
+                    if (globalDep === adapter) {
+                        // TODO: check if another host has a satisfying instance
+                        return row.value.common.name;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error(`Could not check dependent adapters for "${adapter}": ${e.message}`);
         }
     };
 }
