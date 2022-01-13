@@ -40,7 +40,7 @@ class RedisHandler extends EventEmitter {
         this.resp.on('error', err => {
             this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error:${err}`);
             if (this.initialized) {
-                this.sendError(null, new Error('PARSER ERROR ' + err)); // TODO
+                this.sendError(null, new Error(`PARSER ERROR ${err}`)); // TODO
             } else {
                 this.close();
             }
@@ -53,13 +53,10 @@ class RedisHandler extends EventEmitter {
                 this.log.silly(
                     `${this.socketId} New Redis request: ${
                         data.length > 1024
-                            ? data
+                            ? `${data
                                   .toString()
                                   .replace(/[\r\n]+/g, '')
-                                  .substring(0, 100) +
-                              ' -- ' +
-                              data.length +
-                              ' bytes'
+                                  .substring(0, 100)} -- ${data.length} bytes`
                             : data.toString().replace(/[\r\n]+/g, '')
                     }`
                 );
@@ -199,7 +196,7 @@ class RedisHandler extends EventEmitter {
         }
         if (!data) {
             this.log.warn(`${this.socketId} Not able to write ${JSON.stringify(data)}`);
-            data = Resp.encodeError(new Error('INVALID RESPONSE: ' + JSON.stringify(data)));
+            data = Resp.encodeError(new Error(`INVALID RESPONSE: ${JSON.stringify(data)}`));
         }
         setImmediate(() => this._sendQueued(responseId, data));
     }

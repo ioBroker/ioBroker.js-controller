@@ -660,14 +660,14 @@ function Install(options) {
         let doc;
         let err;
         try {
-            doc = await objects.getObjectAsync('system.adapter.' + adapter);
+            doc = await objects.getObjectAsync(`system.adapter.${adapter}`);
         } catch (_err) {
             err = _err;
         }
         // Adapter is not installed - install it now
         if (err || !doc || !doc.common.installedVersion) {
             await this.installAdapter(adapter);
-            doc = await objects.getObjectAsync('system.adapter.' + adapter);
+            doc = await objects.getObjectAsync(`system.adapter.${adapter}`);
         }
 
         // Check if some web pages should be uploaded
@@ -1416,13 +1416,11 @@ function Install(options) {
             }
         };
 
-        // we are not allowed to delete from fs if another adapter depends on us
-        const dependentAdapter = await this._hasDependentAdapters(adapter);
+        // we are not allowed to delete from fs if another instance depends on us
+        const dependentAdapter = await this._hasDependentInstances(adapter);
 
         if (dependentAdapter) {
-            console.log(
-                `Cannot uninstall adapter "${adapter}", because installed adapter "${dependentAdapter}" depends on it!`
-            );
+            console.log(`Cannot uninstall adapter "${adapter}", because instance "${dependentAdapter}" depends on it!`);
             return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
         }
 
@@ -1667,7 +1665,7 @@ function Install(options) {
      * @return {Promise<void|string>} if dependent exists returns adapter name
      * @private
      */
-    this._hasDependentAdapters = async adapter => {
+    this._hasDependentInstances = async adapter => {
         try {
             // lets get all instances
             const doc = await objects.getObjectViewAsync('system', 'instance', {
@@ -1681,7 +1679,7 @@ function Install(options) {
                 for (const localDep of Object.keys(localDeps)) {
                     if (row.value.common.host === hostname && localDep === adapter) {
                         // the adapter needs us locally
-                        return row.value.common.name;
+                        return `${row.value.common.name}.${row.id.split('.').pop()}`;
                     }
                 }
 
@@ -1689,14 +1687,36 @@ function Install(options) {
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
-                        // TODO: check if another host has a satisfying instance
-                        return row.value.common.name;
+                        if (this._checkDependencyFullfilledForeignHosts(adapter, doc.rows)) {
+                            // adapter is on another host too, no need to search further
+                            break;
+                        } else {
+                            return row.value.common.name;
+                        }
                     }
                 }
             }
         } catch (e) {
-            console.error(`Could not check dependent adapters for "${adapter}": ${e.message}`);
+            console.error(`Could not check dependent instances for "${adapter}": ${e.message}`);
         }
+    };
+
+    /**
+     * Checks if adapter can also be found on another host than this
+     *
+     * @param {string} adapter adapter name
+     * @param {object[]} instancesRows all instances objects view rows
+     * @return {boolean} true if an instance is present on other host
+     * @private
+     */
+    this._checkDependencyFullfilledForeignHosts = (adapter, instancesRows) => {
+        for (const row of instancesRows) {
+            if (row.value.common.name === adapter && row.value.common.host !== hostname) {
+                return true;
+            }
+        }
+
+        return false;
     };
 }
 
