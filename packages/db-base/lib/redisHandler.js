@@ -132,6 +132,8 @@ class RedisHandler extends EventEmitter {
         if (this.multiActive && !this.execCalled) {
             // store all response ids so we know which need to be in the multi call
             this.multiResponseIds.push(responseId);
+            // add it for the correct order will be overwritten with correct response
+            this.multiResponseObj[responseId] = null;
             this.sendQueuedStr(responseId);
         }
 
@@ -251,7 +253,7 @@ class RedisHandler extends EventEmitter {
      */
     sendNull(responseId) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeNull());
+            this._handleMultiResponse(responseId, Resp.encodeNull());
             return;
         }
 
@@ -264,7 +266,7 @@ class RedisHandler extends EventEmitter {
      */
     sendNullArray(responseId) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeNullArray());
+            this._handleMultiResponse(responseId, Resp.encodeNullArray());
             return;
         }
 
@@ -278,7 +280,7 @@ class RedisHandler extends EventEmitter {
      */
     sendString(responseId, str) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeString(str));
+            this._handleMultiResponse(responseId, Resp.encodeString(str));
             return;
         }
 
@@ -302,7 +304,7 @@ class RedisHandler extends EventEmitter {
         this.log.warn(`${this.socketId} Error from InMemDB: ${error}`);
 
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeError(error));
+            this._handleMultiResponse(responseId, Resp.encodeError(error));
             return;
         }
 
@@ -316,7 +318,7 @@ class RedisHandler extends EventEmitter {
      */
     sendInteger(responseId, num) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeInteger(num));
+            this._handleMultiResponse(responseId, Resp.encodeInteger(num));
             return;
         }
 
@@ -330,7 +332,7 @@ class RedisHandler extends EventEmitter {
      */
     sendBulk(responseId, str) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeBulk(str));
+            this._handleMultiResponse(responseId, Resp.encodeBulk(str));
             return;
         }
 
@@ -344,7 +346,7 @@ class RedisHandler extends EventEmitter {
      */
     sendBufBulk(responseId, buf) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeBufBulk(buf));
+            this._handleMultiResponse(responseId, Resp.encodeBufBulk(buf));
             return;
         }
 
@@ -380,7 +382,7 @@ class RedisHandler extends EventEmitter {
      */
     sendArray(responseId, arr) {
         if (this.multiActive && this.multiResponseIds.includes(responseId)) {
-            this._handleMultiResponse(Resp.encodeArray(this.encodeRespArray(arr)));
+            this._handleMultiResponse(responseId, Resp.encodeArray(this.encodeRespArray(arr)));
             return;
         }
 
@@ -399,9 +401,10 @@ class RedisHandler extends EventEmitter {
         }
         this.sendString(responseId, 'OK');
         this.multiActive = true;
-        this.multiResponse = [];
         this.execCalled = false;
         this.multiResponseIds = [];
+        this.multiResponseCount = 0;
+        this.multiResponseObj = {};
     }
 
     /**
@@ -415,23 +418,25 @@ class RedisHandler extends EventEmitter {
         this.execId = responseId;
 
         // maybe we have all fullfilled yet
-        if (this.multiResponse.length === this.multiResponseIds.length) {
+        if (this.multiResponseCount === this.multiResponseIds.length) {
             this.multiActive = false;
-            this._sendQueued(this.execId, Resp.encodeArray(this.multiResponse));
+            this._sendQueued(this.execId, Resp.encodeArray(Object.values(this.multiResponseObj)));
         }
     }
 
     /**
      * Handles a multi response
      *
+     * @param {number} responseId ID of the response
      * @param {Buffer} buf buffer to include in response
      * @private
      */
-    _handleMultiResponse(buf) {
-        this.multiResponse.push(buf);
-        if (this.execCalled && this.multiResponse.length === this.multiResponseIds.length) {
+    _handleMultiResponse(responseId, buf) {
+        this.multiResponseObj[responseId] = buf;
+        this.multiResponseCount++;
+        if (this.execCalled && this.multiResponseCount === this.multiResponseIds.length) {
             this.multiActive = false;
-            this._sendQueued(this.execId, Resp.encodeArray(this.multiResponse));
+            this._sendQueued(this.execId, Resp.encodeArray(Object.values(this.multiResponseObj)));
         }
     }
 }
