@@ -2376,7 +2376,11 @@ class ObjectsInRedisClient {
                     } else {
                         // set all commands atomic
                         commands.push(['set', id, message]);
-                        await this.client.multi(commands).exec();
+                        await this.client.multi({ pipeline: false });
+                        for (const command of commands) {
+                            await this.client[command.shift()](...command);
+                        }
+                        await this.client.exec();
                     }
                     await this.client.publish(id, message);
                 } catch (e) {
@@ -3128,7 +3132,11 @@ class ObjectsInRedisClient {
             } else {
                 // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
-                await this.client.multi(commands).exec();
+                await this.client.multi({ pipeline: false });
+                for (const command of commands) {
+                    await this.client[command.shift()](...command);
+                }
+                await this.client.exec();
             }
 
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
@@ -3244,7 +3252,11 @@ class ObjectsInRedisClient {
                 } else {
                     // set all commands atomic
                     commands.push(['del', this.objNamespace + id]);
-                    await this.client.multi(commands).exec();
+                    await this.client.multi({ pipeline: false });
+                    for (const command of commands) {
+                        await this.client[command.shift()](...command);
+                    }
+                    await this.client.exec();
                 }
 
                 // object has been deleted -> remove from cached meta if there
@@ -4087,7 +4099,11 @@ class ObjectsInRedisClient {
             } else {
                 // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
-                await this.client.multi(commands).exec();
+                await this.client.multi({ pipeline: false });
+                for (const command of commands) {
+                    await this.client[command.shift()](...command);
+                }
+                await this.client.exec();
             }
 
             // extended -> if its now type meta and currently marked as not -> cache
