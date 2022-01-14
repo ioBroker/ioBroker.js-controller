@@ -2376,9 +2376,9 @@ class ObjectsInRedisClient {
                     } else {
                         // set all commands atomic
                         commands.push(['set', id, message]);
-                        await this.client.multi({ pipeline: false });
+                        this.client.multi({ pipeline: false });
                         for (const command of commands) {
-                            await this.client[command.shift()](...command);
+                            this.client[command.shift()](...command);
                         }
                         await this.client.exec();
                     }
@@ -3132,9 +3132,9 @@ class ObjectsInRedisClient {
             } else {
                 // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
-                await this.client.multi({ pipeline: false });
+                this.client.multi({ pipeline: false });
                 for (const command of commands) {
-                    await this.client[command.shift()](...command);
+                    this.client[command.shift()](...command);
                 }
                 await this.client.exec();
             }
@@ -3252,9 +3252,9 @@ class ObjectsInRedisClient {
                 } else {
                     // set all commands atomic
                     commands.push(['del', this.objNamespace + id]);
-                    await this.client.multi({ pipeline: false });
+                    this.client.multi({ pipeline: false });
                     for (const command of commands) {
-                        await this.client[command.shift()](...command);
+                        this.client[command.shift()](...command);
                     }
                     await this.client.exec();
                 }
@@ -4099,9 +4099,9 @@ class ObjectsInRedisClient {
             } else {
                 // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
-                await this.client.multi({ pipeline: false });
+                this.client.multi({ pipeline: false });
                 for (const command of commands) {
-                    await this.client[command.shift()](...command);
+                    this.client[command.shift()](...command);
                 }
                 await this.client.exec();
             }
