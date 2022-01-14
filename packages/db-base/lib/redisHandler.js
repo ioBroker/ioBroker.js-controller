@@ -290,7 +290,6 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID od the response
      */
     sendQueuedStr(responseId) {
-        this.noMultiQueued++;
         this.sendResponse(responseId, Resp.encodeString('QEUEUED'));
     }
 
@@ -399,7 +398,6 @@ class RedisHandler extends EventEmitter {
             this.log.warn(`${this.socket} Conflicting multi call`);
         }
         this.sendString(responseId, 'OK');
-        this.noMultiQueued = 0;
         this.multiActive = true;
         this.multiResponse = [];
         this.execCalled = false;
@@ -417,7 +415,7 @@ class RedisHandler extends EventEmitter {
         this.execId = responseId;
 
         // maybe we have all fullfilled yet
-        if (this.multiResponse.length === this.noMultiQueued) {
+        if (this.multiResponse.length === this.multiResponseIds.length) {
             this.multiActive = false;
             this._sendQueued(this.execId, Resp.encodeArray(this.multiResponse));
         }
@@ -431,7 +429,7 @@ class RedisHandler extends EventEmitter {
      */
     _handleMultiResponse(buf) {
         this.multiResponse.push(buf);
-        if (this.execCalled && this.multiResponse.length === this.noMultiQueued) {
+        if (this.execCalled && this.multiResponse.length === this.multiResponseIds.length) {
             this.multiActive = false;
             this._sendQueued(this.execId, Resp.encodeArray(this.multiResponse));
         }
