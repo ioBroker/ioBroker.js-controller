@@ -103,6 +103,52 @@ module.exports = class CLIStates extends CLICommand {
     }
 
     /**
+     * Checks if state is a binary state
+     * @param {string} id id of the state
+     * @param {object} objects the objects db
+     * @param {ioBroker.OtherObject?} obj cached object
+     * @return {Promise<boolean>}
+     * @private
+     */
+    async _isBinary(id, objects, obj) {
+        obj = obj || (await objects.getObjectAsync(id));
+
+        if (obj && (obj.binary || (obj.common && obj.common.type === 'file'))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get and show binary state
+     *
+     * @param {string} id if of the state
+     * @param {object} states states db
+     * @return Promise<void>
+     * @private
+     */
+    async _getBinary(id, states) {
+        try {
+            /** @type Buffer | null */
+            const state = await states.getBinaryState(id);
+
+            if (!state) {
+                CLI.error.stateNotFound(id);
+                return;
+            }
+
+            if (Buffer.isBuffer(state)) {
+                console.log(state.toString('utf-8'));
+            } else {
+                CLI.error.stateNotBinary(id);
+            }
+        } catch (e) {
+            CLI.error.unknown(e);
+        }
+    }
+
+    /**
      * Returns the value of a state
      * @param {any[]} args
      * @param {(input: any) => any} resultTransform
@@ -111,7 +157,7 @@ module.exports = class CLIStates extends CLICommand {
         const { callback, dbConnect } = this.options;
         const id = args[1];
 
-        dbConnect((objects, states) => {
+        dbConnect(async (objects, states) => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 objects.getObject(id, (err, targetObj) => {
                     // alias
@@ -121,8 +167,14 @@ module.exports = class CLIStates extends CLICommand {
                                 ? targetObj.common.alias.id.read
                                 : targetObj.common.alias.id;
                         objects.getObject(aliasId, async (err, sourceObj) => {
-                            // write target
+                            // read target
                             try {
+                                if (await this._isBinary(aliasId, objects, targetObj)) {
+                                    // let getBinary handle this
+                                    await this._getBinary(aliasId, states);
+                                    return void callback();
+                                }
+
                                 const state = await states.getStateAsync(aliasId);
                                 if (!state) {
                                     CLI.error.stateNotFound(id);
@@ -142,7 +194,12 @@ module.exports = class CLIStates extends CLICommand {
                 });
             } else {
                 try {
-                    const state = states.getStateAsync(id);
+                    if (await this._isBinary(id, objects)) {
+                        // let getBinary handle this
+                        await this._getBinary(id, states);
+                        return void callback();
+                    }
+                    const state = await states.getStateAsync(id);
                     if (!state) {
                         CLI.error.stateNotFound(id);
                     } else {

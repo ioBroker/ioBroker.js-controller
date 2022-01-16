@@ -4,6 +4,7 @@ const { tools } = require('@iobroker/js-controller-common');
 const errorMessages = Object.freeze({
     stateNotFound: (/** @type {string} */ stateID, /** @type {string?} */ error) =>
         `The state ${stateID} was not found!` + (error ? ` Reason: ${error}` : ''),
+    stateNotBinary: (/** @type {string} */ stateId) => `State "${stateId}" is not binary`,
     objectNotFound: (/** @type {string} */ objectID, /** @type {string?} */ error) =>
         `The object ${objectID} was not found!` + (error ? ` Reason: ${error}` : ''),
     cannotUpdateObject: (/** @type {string} */ objectID, /** @type {string?} */ error) =>

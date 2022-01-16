@@ -470,9 +470,9 @@ async function processCommand(command, args, params, callback) {
         callback = processExit;
     }
 
-    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandContext} */
+    /** @type {CLICommandContext} */
     const commandContext = { dbConnect, callback, showHelp };
-    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandOptions} */
+    /** @type {CLICommandOptions} */
     const commandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
     debug(`args: ${args}`);
