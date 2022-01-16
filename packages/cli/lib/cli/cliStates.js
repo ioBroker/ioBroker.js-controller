@@ -113,11 +113,7 @@ module.exports = class CLIStates extends CLICommand {
     async _isBinary(id, objects, obj) {
         obj = obj || (await objects.getObjectAsync(id));
 
-        if (obj && (obj.binary || (obj.common && obj.common.type === 'file'))) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!(obj && (obj.binary || (obj.common && obj.common.type === 'file')));
     }
 
     /**
