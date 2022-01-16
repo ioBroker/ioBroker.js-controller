@@ -7,7 +7,7 @@ const ALIAS_STARTS_WITH = 'alias.';
 
 /** Command iobroker state ... */
 module.exports = class CLIStates extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
+    /** @param {CLICommandOptions} options */
     constructor(options) {
         super(options);
     }
@@ -120,17 +120,20 @@ module.exports = class CLIStates extends CLICommand {
                             typeof targetObj.common.alias.id.read === 'string'
                                 ? targetObj.common.alias.id.read
                                 : targetObj.common.alias.id;
-                        objects.getObject(aliasId, (err, sourceObj) => {
+                        objects.getObject(aliasId, async (err, sourceObj) => {
                             // write target
-                            states.getState(aliasId, (err, state) => {
-                                if (err || !targetObj) {
-                                    CLI.error.unknown(err);
+                            try {
+                                const state = await states.getStateAsync(aliasId);
+                                if (!state) {
+                                    CLI.error.stateNotFound(id);
                                 } else {
                                     tools.formatAliasValue(sourceObj.common, targetObj.common, state, console, '');
                                     console.log(resultTransform(state));
                                 }
-                                return void callback();
-                            });
+                            } catch (e) {
+                                CLI.error.unknown(e);
+                            }
+                            return void callback();
                         });
                     } else {
                         CLI.error.unknown(err || `Alias ${id} has no target`);
@@ -138,14 +141,17 @@ module.exports = class CLIStates extends CLICommand {
                     }
                 });
             } else {
-                states.getState(id, (err, state) => {
-                    if (err || !state) {
-                        CLI.error.stateNotFound(id, err);
+                try {
+                    const state = states.getStateAsync(id);
+                    if (!state) {
+                        CLI.error.stateNotFound(id);
                     } else {
                         console.log(resultTransform(state));
                     }
-                    return void callback();
-                });
+                } catch (e) {
+                    CLI.error.unknown(e);
+                }
+                return void callback();
             }
         });
     }
