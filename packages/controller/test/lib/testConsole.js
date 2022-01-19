@@ -240,7 +240,7 @@ function register(it, expect, context) {
         // user can be disabled
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user get user1`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(25000);
 
     // ud udel userdel deluser user del
     it(testName + 'user del', async () => {
@@ -438,7 +438,7 @@ function register(it, expect, context) {
         // group can be disabled
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group get group1`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(25000);
 
     // group useradd
     it(testName + 'group useradd', async () => {

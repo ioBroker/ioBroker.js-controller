@@ -63,7 +63,7 @@ function checkNpmVersion() {
 
 checkNpmVersion()
     .catch(err => {
-        console.error('Could not check npm version: ' + err);
+        console.error(`Could not check npm version: ${err}`);
         console.error('Assuming that correct version is installed.');
     })
     .then(() => {

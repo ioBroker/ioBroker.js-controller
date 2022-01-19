@@ -174,7 +174,7 @@ function Upload(options) {
             const liveHosts = await getHosts(true);
             for (const adapter of adapters) {
                 // Find the host which has this adapter
-                const instances = await tools.getInstancesAsync(adapter, objects, true);
+                const instances = await tools.getInstances(adapter, objects, true);
                 // try to find instance on this host
                 let instance = instances.find(obj => obj && obj.common && obj.common.host === hostname);
 

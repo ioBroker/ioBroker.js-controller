@@ -1,7 +1,5 @@
-'use strict';
-
-function createDefaults(_lang, _temperature, _currency) {
-    const defaults = {
+function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> {
+    return {
         'level.dimmer': {
             type: 'number',
             read: true,
@@ -14,25 +12,19 @@ function createDefaults(_lang, _temperature, _currency) {
             def: false,
             type: 'boolean',
             read: true,
-            write: false,
-            min: false,
-            max: true
+            write: false
         },
         'indicator.maintenance': {
             def: false,
             type: 'boolean',
             read: true,
-            write: false,
-            min: false,
-            max: true
+            write: false
         },
         'indicator.maintenance.lowbat': {
             def: false,
             type: 'boolean',
             read: true,
             write: false,
-            min: false,
-            max: true,
             desc: 'Low battery'
         },
         'indicator.maintenance.unreach': {
@@ -40,8 +32,6 @@ function createDefaults(_lang, _temperature, _currency) {
             type: 'boolean',
             read: true,
             write: false,
-            min: false,
-            max: true,
             desc: 'Device unreachable'
         },
         switch: {
@@ -49,9 +39,7 @@ function createDefaults(_lang, _temperature, _currency) {
             read: true,
             write: true
         }
-    };
-
-    return defaults;
+    } as const;
 }
 
-module.exports = createDefaults;
+export = createDefaults;
