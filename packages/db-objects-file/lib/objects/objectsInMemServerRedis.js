@@ -295,18 +295,29 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         );
                     }
                     handler.sendBulk(responseId, scriptChecksum);
+                } else if (data[1].includes('-- REDLOCK SCRIPT')) {
+                    // redlock scripts are currently not needed for Simulator
+                    this.knownScripts[scriptChecksum] = { redlock: true };
+                    if (this.settings.connection.enhancedLogging) {
+                        this.log.silly(
+                            `${namespaceLog} Register Func LUA Script: ${scriptChecksum} = ${JSON.stringify(
+                                this.knownScripts[scriptChecksum]
+                            )}`
+                        );
+                    }
+                    handler.sendBulk(responseId, scriptChecksum);
                 } else {
-                    handler.sendError(responseId, new Error('Unknown LUA script ' + data[0]));
+                    handler.sendError(responseId, new Error(`Unknown LUA script ${data[1]}`));
                 }
             } else {
-                handler.sendError(responseId, new Error('Unsupported Script command ' + data[0]));
+                handler.sendError(responseId, new Error(`Unsupported Script command ${data[0]}`));
             }
         });
 
         // Handle Redis "EVALSHA" request
         handler.on('evalsha', (data, responseId) => {
             if (!this.knownScripts[data[0]]) {
-                return void handler.sendError(responseId, new Error('Unknown Script ' + data[0]));
+                return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
             }
             if (this.knownScripts[data[0]].design) {
                 const scriptDesign = this.knownScripts[data[0]].design;
@@ -354,8 +365,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
 
                 return void handler.sendArray(responseId, res);
+            } else if (this.knownScripts[data[0]].redlock) {
+                // just return a dummy
+                return void handler.sendArray(responseId, [0]);
             } else {
-                handler.sendError(responseId, new Error('Unknown LUA script eval call ' + JSON.stringify(data)));
+                handler.sendError(responseId, new Error(`Unknown LUA script eval call ${JSON.stringify(data)}`));
             }
         });
 
@@ -522,11 +536,17 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
             } else if (namespace === this.metaNamespace) {
-                const result = this.getMeta(id);
-                if (result === undefined || result === null) {
-                    handler.sendNull(responseId);
+                // special handling for the primaryHost
+                if (id === 'objects.primaryHost') {
+                    // we are the server -> we are primary
+                    handler.sendString(this.settings.hostname);
                 } else {
-                    handler.sendBulk(responseId, result);
+                    const result = this.getMeta(id);
+                    if (result === undefined || result === null) {
+                        handler.sendNull(responseId);
+                    } else {
+                        handler.sendBulk(responseId, result);
+                    }
                 }
             } else {
                 handler.sendError(
@@ -762,9 +782,22 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
         });
 
+        // Handle Redis "SUBSCRIBE" ... currently mainly ignored
+        handler.on('subscribe', (data, responseId) => {
+            if (data[0].startsWith('__keyevent@')) {
+                // we ignore these type of events because we publish expires anyway directly
+                handler.sendArray(responseId, ['subscribe', data[0], 1]);
+            } else {
+                handler.sendError(responseId, new Error(`SUBSCRIBE-UNSUPPORTED for ${data[0]}`));
+            }
+        });
+
         // Handle Redis "CONFIG" ... currently mainly ignored
         handler.on('config', (data, responseId) => {
-            if (data[0] === 'set' && data[1] === 'lua-time-limit') {
+            if (data[0] === 'set' && data[1] === 'notify-keyspace-events') {
+                // we ignore these type of commands for now, should only be to subscribe to keyspace events
+                handler.sendString(responseId, 'OK');
+            } else if (data[0] === 'set' && data[1] === 'lua-time-limit') {
                 // we ignore these type of commands for now, irrelevant
                 handler.sendString(responseId, 'OK');
             } else {

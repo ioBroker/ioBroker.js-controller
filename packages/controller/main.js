@@ -67,6 +67,9 @@ let lastDiskSizeCheck = 0;
 let restartTimeout = null;
 let connectTimeout = null;
 let reportInterval = null;
+let primaryHostInterval = null;
+let isPrimary = false;
+const PRIMARY_HOST_LOCK_TIME = 60000;
 
 const procs = {};
 const hostAdapter = {};
@@ -489,7 +492,7 @@ function createStates(onConnect) {
                 }
             }
         },
-        connected: () => {
+        connected: async () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -498,6 +501,16 @@ function createStates(onConnect) {
             if (!compactGroupController) {
                 states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
+                // subscribe to primary host expiration
+                try {
+                    await objects.subscribePrimaryHost();
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
+                }
+                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
+
+                // first execution now
+                checkPrimaryHost();
             }
             initMessageQueue();
             startAliveInterval();
@@ -810,6 +823,12 @@ function createObjects(onConnect) {
                     logger.error(`${hostLogPrefix} cannot process: ${id}: ${err} / ${err.stack}`);
                 }
             }
+        },
+        primaryHostLost: () => {
+            if (!isStopping) {
+                logger.info('The primary host is no longer active. Checking responsibilities.');
+                checkPrimaryHost();
+            }
         }
     });
     return true;
@@ -829,8 +848,31 @@ function startAliveInterval() {
         });
     }
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
+
     reportStatus();
     tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag));
+}
+
+/**
+ * Ensures that we take over primary host if no other is doing the job
+ *
+ * @return {Promise<void>}
+ */
+async function checkPrimaryHost() {
+    // let our host value live PRIMARY_HOST_LOCK_TIME seconds, while it should be renewed lock time / 2
+    try {
+        if (!isPrimary) {
+            isPrimary = !!(await objects.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
+        } else {
+            const lockExtended = !!(await objects.extendPrimaryHostLock(PRIMARY_HOST_LOCK_TIME));
+            if (!lockExtended) {
+                // if we are host, lock extension should always work, fallback to acquire lock
+                isPrimary = !!(await objects.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
+            }
+        }
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Could not execute primary host determination: ${e.message}`);
+    }
 }
 
 function reportStatus() {
@@ -868,8 +910,8 @@ function reportStatus() {
     });
 
     const mem = process.memoryUsage();
-    states.setState(id + '.memRss', { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
-    states.setState(id + '.memHeapTotal', {
+    states.setState(`${id}.memRss`, { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
+    states.setState(`${id}.memHeapTotal`, {
         val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
         ack: true,
         from: id
@@ -5144,6 +5186,11 @@ function stop(force, callback) {
         mhService = null;
     }
 
+    if (primaryHostInterval) {
+        clearInterval(primaryHostInterval);
+        primaryHostInterval = null;
+    }
+
     if (updateIPsTimer) {
         clearInterval(updateIPsTimer);
         updateIPsTimer = null;
@@ -5157,6 +5204,16 @@ function stop(force, callback) {
     stopInstances(force, async wasForced => {
         pluginHandler.destroyAll();
         notificationHandler && notificationHandler.storeNotifications();
+
+        try {
+            // if we are the host we should now let someone else take over
+            if (isPrimary) {
+                await objects.releasePrimaryHost();
+                isPrimary = false;
+            }
+        } catch {
+            // ignore
+        }
 
         if (objects && objects.destroy) {
             await objects.destroy();
@@ -5623,7 +5680,7 @@ function init(compactGroupId) {
     });
 
     process.on('SIGTERM', () => {
-        logger.info(hostLogPrefix + ' received SIGTERM');
+        logger.info(`${hostLogPrefix} received SIGTERM`);
         stop(false);
     });
 
