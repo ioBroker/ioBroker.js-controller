@@ -1107,7 +1107,7 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["title", "text", "level", "buttons"],
+            "required": ["title", "text", "buttons"],
             "properties": {
               "condition": {
                 "description": "Message will only be shown if condition matches",
@@ -1116,7 +1116,8 @@
                 "properties": {
                   "operand": {
                     "description": "Operand to connect multiple rules",
-                    "enum": ["or", "and"]
+                    "enum": ["or", "and"],
+                    "default": "and"
                   },
                   "rules": {
                     "description": "Rules which need to be true, e.g. [\"oldVersion<2.0.0\", \"newVersion>=2.0.0\"]",
@@ -1141,7 +1142,8 @@
               },
               "level": {
                 "description": "The importance of the message",
-                "enum": ["info", "warn", "error"]
+                "enum": ["info", "warn", "error"],
+                "default": "warn"
               },
               "linkText": {
                 "description": "If a link is defined and should be embedded in text, you can define the text here",
@@ -1151,7 +1153,7 @@
                 "description": "Predefined buttons of the message window",
                 "type": "array",
                 "items": {
-                  "enum": ["agree", "cancel"]
+                  "enum": ["ok", "agree", "cancel"]
                 }
               }
             }
