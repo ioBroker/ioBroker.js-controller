@@ -1,5 +1,6 @@
 const Resp = require('respjs');
 const { EventEmitter } = require('events');
+const { QUEUED_STR_BUF, OK_STR_BUF } = require('./constants');
 
 /**
  * Class to handle a redis connection and provide events to react on for
@@ -112,20 +113,10 @@ class RedisHandler extends EventEmitter {
                 }`
             );
         }
-        this.writeQueue.push({ id: responseId, data: false });
 
         if (command === 'multi') {
-            this._handleMulti(responseId);
+            this._handleMulti();
             return;
-        }
-
-        if (command === 'exec') {
-            this._handleExec(responseId);
-            return;
-        }
-
-        if (command === 'info') {
-            this.initialized = true;
         }
 
         // multi active and exec not called yet
@@ -134,7 +125,19 @@ class RedisHandler extends EventEmitter {
             this.multiResponseIds.push(responseId);
             // add it for the correct order will be overwritten with correct response
             this.multiResponseMap.set(responseId, null);
-            this.sendQueuedStr(responseId);
+            return;
+        }
+
+        // multi response ids should not be pushed - we will answer combined
+        this.writeQueue.push({ id: responseId, data: false });
+
+        if (command === 'exec') {
+            this._handleExec(responseId);
+            return;
+        }
+
+        if (command === 'info') {
+            this.initialized = true;
         }
 
         if (this.listenerCount(command) !== 0) {
@@ -288,14 +291,6 @@ class RedisHandler extends EventEmitter {
     }
 
     /**
-     * Send out QUEUED string response bypasses the multi caching
-     * @param responseId ID od the response
-     */
-    sendQueuedStr(responseId) {
-        this.sendResponse(responseId, Resp.encodeString('QEUEUED'));
-    }
-
-    /**
      * Encode error object to RESP buffer and send out
      * @param responseId ID of the response
      * @param error Error object with error details to send out
@@ -392,14 +387,13 @@ class RedisHandler extends EventEmitter {
     /**
      * Handles a 'multi' command
      *
-     * @param {number} responseId ID of the response
      * @private
      */
-    _handleMulti(responseId) {
+    _handleMulti() {
         if (this.multiActive) {
             this.log.warn(`${this.socket} Conflicting multi call`);
         }
-        this.sendString(responseId, 'OK');
+
         this.multiActive = true;
         this.execCalled = false;
         this.multiResponseIds = [];
@@ -419,9 +413,24 @@ class RedisHandler extends EventEmitter {
 
         // maybe we have all fullfilled yet
         if (this.multiResponseCount === this.multiResponseIds.length) {
-            this.multiActive = false;
-            this._sendQueued(this.execId, Resp.encodeArray(Array.from(this.multiResponseMap.values())));
+            this._sendExecReponse();
         }
+    }
+
+    /**
+     * Builds up the exec response and sends it
+     *
+     * @private
+     */
+    _sendExecReponse() {
+        this.multiActive = false;
+        // collect all 'QUEUED' answers
+        const queuedStrArr = new Array(this.multiResponseCount).fill(QUEUED_STR_BUF);
+
+        this._sendQueued(
+            this.execId,
+            Buffer.concat([OK_STR_BUF, ...queuedStrArr, Resp.encodeArray(Array.from(this.multiResponseMap.values()))])
+        );
     }
 
     /**
@@ -435,8 +444,7 @@ class RedisHandler extends EventEmitter {
         this.multiResponseMap.set(responseId, buf);
         this.multiResponseCount++;
         if (this.execCalled && this.multiResponseCount === this.multiResponseIds.length) {
-            this.multiActive = false;
-            this._sendQueued(this.execId, Resp.encodeArray(Array.from(this.multiResponseMap.values())));
+            this._sendExecReponse();
         }
     }
 }
