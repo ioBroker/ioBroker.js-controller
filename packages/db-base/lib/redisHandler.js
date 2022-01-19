@@ -120,16 +120,15 @@ class RedisHandler extends EventEmitter {
         }
 
         // multi active and exec not called yet
-        if (this.multiActive && !this.execCalled) {
+        if (this.multiActive && !this.execCalled && command !== 'exec') {
             // store all response ids so we know which need to be in the multi call
             this.multiResponseIds.push(responseId);
             // add it for the correct order will be overwritten with correct response
             this.multiResponseMap.set(responseId, null);
-            return;
+        } else {
+            // multi response ids should not be pushed - we will answer combined
+            this.writeQueue.push({ id: responseId, data: false });
         }
-
-        // multi response ids should not be pushed - we will answer combined
-        this.writeQueue.push({ id: responseId, data: false });
 
         if (command === 'exec') {
             this._handleExec(responseId);
@@ -391,7 +390,7 @@ class RedisHandler extends EventEmitter {
      */
     _handleMulti() {
         if (this.multiActive) {
-            this.log.warn(`${this.socket} Conflicting multi call`);
+            this.log.warn(`${this.socketId} Conflicting multi call`);
         }
 
         this.multiActive = true;
