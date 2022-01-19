@@ -13,6 +13,23 @@
         }
       },
       "additionalProperties": false
+    },
+    "iobrokerObject": {
+      "type": "object",
+      "required": [
+        "_id"
+      ],
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "common": {
+          "type": "object"
+        }
+      }
     }
   },
   "type": "object",
@@ -1107,30 +1124,14 @@
       "description": "Objects which will be created for the adapter",
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "_id"
-        ],
-        "properties": {
-          "_id": {
-            "type": "string"
-          }
-        }
+        "$ref": "#/definitions/iobrokerObject"
       }
     },
     "instanceObjects": {
       "description": "Objects which will be created for each instance",
       "type": "array",
       "items": {
-        "type": "object",
-        "required": [
-          "_id"
-        ],
-        "properties": {
-          "_id": {
-            "type": "string"
-          }
-        }
+        "$ref": "#/definitions/iobrokerObject"
       }
     },
     "notifications": {

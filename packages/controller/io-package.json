@@ -1,5 +1,4 @@
 {
-  "$schema": "./schemas/io-package.json",
   "common": {
     "name": "js-controller",
     "version": "4.0.0",
@@ -236,7 +235,7 @@
           "pl": "Administrator",
           "zh-cn": "管理员"
         },
-        "description": {
+        "desc": {
           "en": "Can do everything with System",
           "de": "Darf alles mit dem System machen",
           "ru": "Может делать все с помощью системы",
@@ -310,7 +309,7 @@
           "pl": "Użytkownik",
           "zh-cn": "用户"
         },
-        "description": {
+        "desc": {
           "en": "Cannot modify everything",
           "de": "Darf nicht alles ändern",
           "ru": "Не может изменять все",
