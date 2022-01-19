@@ -376,6 +376,7 @@ function Setup(options) {
         const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
         const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
         const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
+
         if (
             oldConfig &&
             (oldConfig.states.type !== newConfig.states.type ||
@@ -457,6 +458,17 @@ function Setup(options) {
                     console.log('directory!');
                 }
                 console.log(COLOR_RESET);
+            }
+
+            // FileDB -> JSONL migration is handled in the DB classes. Skip migration if both DBs are changed from File -> JsonL
+            if (
+                (oldConfig.states.type === newConfig.states.type ||
+                    (oldConfig.states.type === 'file' && newConfig.states.type === 'jsonl')) &&
+                (oldConfig.objects.type === newConfig.objects.type ||
+                    (oldConfig.objects.type === 'file' && newConfig.objects.type === 'jsonl'))
+            ) {
+                console.log('Explicit migration from file to jsonl is not necessary, skipping...');
+                allowMigration = false;
             }
 
             let answer = 'N';
