@@ -1404,7 +1404,14 @@ function Adapter(options) {
      * Called if states and objects successfully initalized
      */
     const prepareInitAdapter = () => {
-        utils = new Utils(adapterObjects, adapterStates, this.namespaceLog, logger);
+        utils = new Utils(
+            adapterObjects,
+            adapterStates,
+            this.namespaceLog,
+            logger,
+            this.namespace,
+            this._namespaceRegExp
+        );
 
         if (options.instance !== undefined) {
             initAdapter(options);
