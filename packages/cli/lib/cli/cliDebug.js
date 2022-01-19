@@ -2,7 +2,7 @@
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const CLITools = require('./cliTools');
-const { tools } = require('@iobroker/js-controller-common');
+const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 const child_process = require('child_process');
 
 /** Command ioBroker debug ... */
@@ -10,6 +10,32 @@ module.exports = class CLICompact extends CLICommand {
     /** @param {import('./cliCommand.js').CLICommandOptions} options */
     constructor(options) {
         super(options);
+    }
+
+    /**
+     * Cehcks if the adpter instance is running
+     *
+     * @param {string} adapter
+     * @param {string} instance
+     * @return {Promise<boolean>}
+     * @private
+     */
+    _isInstanceRunning(adapter, instance) {
+        const { dbConnect } = this.options;
+        return new Promise(resolve => {
+            dbConnect(async (objects, states) => {
+                try {
+                    const state = await states.getStateAsync(`system.adapter.${adapter}.${instance}.alive`);
+                    if (state && state.val) {
+                        resolve(true);
+                        return;
+                    }
+                } catch {
+                    // ignore
+                }
+                resolve(false);
+            });
+        });
     }
 
     /**
@@ -24,7 +50,12 @@ module.exports = class CLICompact extends CLICommand {
             return void callback(34);
         }
 
-        const { instance } = CLITools.splitAdapterOrInstanceIdentifierWithVersion(adapter);
+        const { name, instance } = CLITools.splitAdapterOrInstanceIdentifierWithVersion(adapter);
+
+        if (await this._isInstanceRunning(name, instance || '0')) {
+            CLI.error.instanceAlreadyRunning(`${name}.${instance || '0'}`);
+            return void callback(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
+        }
 
         const adapterDir = tools.getAdapterDir(adapter);
         if (!adapterDir) {

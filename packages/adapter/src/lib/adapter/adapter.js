@@ -116,8 +116,12 @@ function Adapter(options) {
     this.overwriteLogLevel = false;
     this.adapterReady = false;
 
-    // Provide tools for use in adapter
-    this.tools = tools;
+    // TODO: remove shim
+    // Provide selected tools methods for backward compatibility use in adapter
+    this.tools = {
+        encrypt: tools.encrypt,
+        decrypt: tools.decrypt
+    };
 
     // possible arguments
     // 0,1,.. - instance
@@ -1526,7 +1530,7 @@ function Adapter(options) {
                 adapterObjects.subscribe('system.user.*');
 
                 // get all enums and register for enum changes
-                this.enums = await this.getEnumsAsync();
+                this.enums = await tools.getAllEnums(adapterObjects);
                 adapterObjects.subscribe('enum.*');
 
                 // Read dateformat if using of formatDate is announced
@@ -5743,7 +5747,10 @@ function Adapter(options) {
                                 if (!Object.prototype.hasOwnProperty.call(logger.transports, transport)) {
                                     continue;
                                 }
-                                logger.transports[transport].level = state.val;
+                                // set the loglevel on transport only if no loglevel was pinned in log config
+                                if (!logger.transports[transport]._defaultConfigLoglevel) {
+                                    logger.transports[transport].level = state.val;
+                                }
                             }
                             logger.info(
                                 `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`
@@ -8829,7 +8836,10 @@ function Adapter(options) {
                     if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
                         // set configured in DB log level
                         for (const trans of Object.keys(logger.transports)) {
-                            logger.transports[trans].level = adapterConfig.common.loglevel;
+                            // set the loglevel on transport only if no loglevel was pinned in log config
+                            if (!logger.transports[trans]._defaultConfigLoglevel) {
+                                logger.transports[trans].level = adapterConfig.common.loglevel;
+                            }
                         }
                         config.log.level = adapterConfig.common.loglevel;
                     }

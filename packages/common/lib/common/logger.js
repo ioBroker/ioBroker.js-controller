@@ -162,6 +162,10 @@ const logger = function (level, files, noStdout, prefix) {
             const isWindows = os.platform().startsWith('win');
             Object.keys(userOptions.transport).forEach(f => {
                 const transport = userOptions.transport[f];
+
+                transport._defaultConfigLoglevel = transport.level; // remember Loglevel if set
+                transport.level = transport.level || level;
+
                 if (transport.type === 'file' && transport.enabled !== false) {
                     transport.filename = transport.filename || 'log/' + tools.appName;
 
@@ -195,7 +199,6 @@ const logger = function (level, files, noStdout, prefix) {
 
                     transport.filename += '.%DATE%' + (transport.fileext || '');
                     //transport.label       = prefix || ''; //TODO format.label()
-                    transport.level = transport.level || level;
                     //                    transport.json        = (transport.json      !== undefined) ? transport.json      : false; // TODO format.json(), new Default!!
                     transport.silent = transport.silent !== undefined ? transport.silent : false;
                     //                    transport.colorize    = (transport.colorize  !== undefined) ? transport.colorize  : ((userOptions.colorize  === undefined) ? true : userOptions.colorize); //TODO format.colorize()

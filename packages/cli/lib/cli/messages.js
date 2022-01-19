@@ -53,7 +53,8 @@ const errorMessages = Object.freeze({
     pluginNotDefined: (pluginName, host, instance) =>
         `The plugin "${pluginName}" does not exist for ${host ? `host "${host}"` : `instance "${instance}"`}!`,
 
-    cert: certName => `Certificate "${certName}" not found or error parsing certificate information.`
+    cert: certName => `Certificate "${certName}" not found or error parsing certificate information.`,
+    instanceAlreadyRunning: instance => `The instance "${instance}" is already running, please stop instance first.`
 });
 
 const successMessages = Object.freeze({

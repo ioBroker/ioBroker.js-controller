@@ -711,15 +711,6 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             return this._handleScanOrKeys(handler, data[0], responseId);
         });
 
-        // MULTI/EXEC is never used with return values, thus we just answer with syntactic correct responses
-        handler.on('multi', (data, responseId) => {
-            return void handler.sendString(responseId, 'OK');
-        });
-
-        handler.on('exec', (data, reponseId) => {
-            return void handler.sendArray(reponseId, []);
-        });
-
         // commands for redis SETS, just dummies
         handler.on('sadd', (data, responseId) => {
             return void handler.sendInteger(responseId, 1);

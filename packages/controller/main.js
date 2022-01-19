@@ -438,7 +438,10 @@ function createStates(onConnect) {
                 ) {
                     config.log.level = state.val;
                     for (const transport of Object.keys(logger.transports)) {
-                        if (logger.transports[transport].level === currentLevel) {
+                        if (
+                            logger.transports[transport].level === currentLevel &&
+                            !logger.transports[transport]._defaultConfigLoglevel
+                        ) {
                             logger.transports[transport].level = state.val;
                         }
                     }
@@ -2580,8 +2583,7 @@ async function processMessage(msg) {
                                 const parts = ['..', '..', '..', '..'];
                                 do {
                                     parts.pop();
-                                    const _filename =
-                                        path.normalize(__dirname + '/' + parts.join('/') + '/') + filename;
+                                    const _filename = path.normalize(`${__dirname}/${parts.join('/')}/`) + filename;
                                     if (fs.existsSync(_filename)) {
                                         filename = _filename;
                                         break;
@@ -2592,13 +2594,13 @@ async function processMessage(msg) {
                             if (fs.existsSync(filename)) {
                                 const files = fs.readdirSync(filename);
 
-                                for (let f = 0; f < files.length; f++) {
+                                for (const file of files) {
                                     try {
-                                        if (!files[f].endsWith('-audit.json')) {
-                                            const stat = fs.lstatSync(filename + '/' + files[f]);
+                                        if (!file.endsWith('-audit.json')) {
+                                            const stat = fs.lstatSync(path.join(filename, file));
                                             if (!stat.isDirectory()) {
                                                 result.list.push({
-                                                    fileName: `log/${hostname}/${transport}/${files[f]}`,
+                                                    fileName: `log/${hostname}/${transport}/${file}`,
                                                     size: stat.size
                                                 });
                                             }
@@ -2607,7 +2609,9 @@ async function processMessage(msg) {
                                         // push unchecked
                                         // result.list.push('log/' + transport + '/' + files[f]);
                                         logger.error(
-                                            `${hostLogPrefix} cannot check file: ${filename}/${files[f]} - ${e}`
+                                            `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
+                                                e.message
+                                            }`
                                         );
                                     }
                                 }
@@ -2882,8 +2886,8 @@ async function processMessage(msg) {
             if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
                 const installObj = { id: msg.message.id, rebuild: true };
-                if (msg.message.path) {
-                    installObj.path = msg.message.path;
+                if (msg.message.rebuildArgs) {
+                    installObj.rebuildArgs = msg.message.rebuildArgs;
                 }
 
                 installQueue.push(installObj);
@@ -3477,6 +3481,7 @@ function installAdapters() {
         }
 
         const installArgs = [];
+        const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
             if (tools.isShortGithubUrl(task.installedFrom) || task.installedFrom.includes('://')) {
@@ -3496,23 +3501,25 @@ function installAdapters() {
             installArgs.push(commandScope);
             if (!task.rebuild) {
                 installArgs.push(name);
-            } else if (task.path) {
-                installArgs.push(task.path);
+            } else if (task.rebuildArgs) {
+                installArgs.push(`${task.rebuildArgs.module}@${task.rebuildArgs.version}`);
+                installOptions.cwd = task.rebuildArgs.path;
             }
         }
         logger.info(
             `${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${
                 task.rebuild
                     ? ''
-                    : ' using ' +
-                      (procs[task.id].downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion')
+                    : ` using ${
+                          procs[task.id].downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion'
+                      }`
             }`
         );
         installArgs.unshift(`${__dirname}/${tools.appName}.js`);
 
         try {
             task.inProgress = true;
-            const child = spawn('node', installArgs, { windowsHide: true });
+            const child = spawn('node', installArgs, installOptions);
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
@@ -4116,7 +4123,7 @@ async function startInstance(id, wakeUp) {
                             if (procs[id].rebuildCounter < 4) {
                                 logger.info(
                                     `${hostLogPrefix} Adapter ${id} needs rebuild ${
-                                        procs[id].rebuildPath ? `of ${procs[id].rebuildPath} ` : ''
+                                        procs[id].rebuildArgs ? `of ${procs[id].rebuildArgs.module} ` : ''
                                     }and will be restarted afterwards.`
                                 );
                                 const msg = {
@@ -4124,10 +4131,10 @@ async function startInstance(id, wakeUp) {
                                     message: { id: instance._id }
                                 };
 
-                                // if rebuild path given send it
-                                if (procs[id].rebuildPath) {
-                                    msg.message.path = procs[id].rebuildPath;
-                                    delete procs[id].rebuildPath;
+                                // if rebuild args are given, send them
+                                if (procs[id].rebuildArgs) {
+                                    msg.message.rebuildArgs = procs[id].rebuildArgs;
+                                    delete procs[id].rebuildArgs;
                                 }
 
                                 if (!compactGroupController) {
@@ -4310,17 +4317,7 @@ async function startInstance(id, wakeUp) {
                             ) {
                                 // only try this at second rebuild
                                 if (procs[id].rebuildCounter === 1) {
-                                    // extract rebuild path - it is always between the only two single quotes
-                                    const matches = text.match(/'.+'/g);
-
-                                    if (matches && matches.length === 1) {
-                                        // remove the quotes
-                                        const rebuildPath = matches[0].replace(/'/g, '');
-                                        if (path.isAbsolute(rebuildPath)) {
-                                            // we have found a module which needs rebuild
-                                            procs[id].rebuildPath = rebuildPath;
-                                        }
-                                    }
+                                    procs[id].rebuildArgs = _determineRebuildArgsFromLog(text);
                                 }
                                 procs[id].needsRebuild = true;
                             }
@@ -5308,7 +5305,9 @@ function init(compactGroupId) {
                 `${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`
             );
         } else {
-            console.error(`Error initializing logger: ${e.message}`);
+            // without logger multiple things will have undefined behavior and probably more is wrong -> do not start
+            console.error(`Error initializing logger: ${e.stack}`);
+            process.exit(EXIT_CODES.UNKNOWN_ERROR);
         }
     }
 
@@ -5330,7 +5329,7 @@ function init(compactGroupId) {
         logger.info(
             `${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`
         );
-        logger.info(`${hostLogPrefix} Copyright (c) 2014-2021 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2022 bluefox, 2014 hobbyquaker`);
         logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
@@ -5342,9 +5341,9 @@ function init(compactGroupId) {
                 .indexOf('/node_modules/' + title.toLowerCase()) !== -1
         ) {
             try {
-                if (!fs.existsSync(__dirname + '/../../package.json')) {
+                if (!fs.existsSync(`${__dirname}/../../package.json`)) {
                     fs.writeFileSync(
-                        __dirname + '/../../package.json',
+                        `${__dirname}/../../package.json`,
                         JSON.stringify(
                             {
                                 name: 'iobroker.core',
@@ -5357,10 +5356,10 @@ function init(compactGroupId) {
                     );
                 } else {
                     // npm3 requires version attribute
-                    const p = fs.readJSONSync(__dirname + '/../../package.json');
+                    const p = fs.readJSONSync(`${__dirname}/../../package.json`);
                     if (!p.version) {
                         fs.writeFileSync(
-                            __dirname + '/../../package.json',
+                            `${__dirname}/../../package.json`,
                             JSON.stringify(
                                 {
                                     name: 'iobroker.core',
@@ -5387,7 +5386,7 @@ function init(compactGroupId) {
     try {
         packageJson = fs.readJSONSync(`${__dirname}/package.json`);
     } catch {
-        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
+        logger.error(`${hostLogPrefix} Can not read js-controller package.json`);
     }
 
     if (packageJson && packageJson.engines && packageJson.engines.node) {
@@ -5489,7 +5488,9 @@ function init(compactGroupId) {
                 if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
                     // detected a change in the nodejs version (or state non existing - upgrade from below v4)
                     logger.info(
-                        `${hostLogPrefix} Node.js version has changed from ${prevNodeVersionState.val} to ${nodeVersion}`
+                        `${hostLogPrefix} Node.js version has changed from ${
+                            prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
+                        } to ${nodeVersion}`
                     );
                     if (os.platform() === 'linux') {
                         // ensure capabilities are set
@@ -5628,6 +5629,46 @@ function init(compactGroupId) {
 
     process.on('uncaughtException', exceptionHandler);
     process.on('unhandledRejection', exceptionHandler);
+}
+
+/**
+ * Parses out the rebuild path, name and version from an error log
+ *
+ * @param {string} text - log text
+ * @return {{module: string, path: string, version: string} | undefined}
+ * @private
+ */
+function _determineRebuildArgsFromLog(text) {
+    // extract rebuild path - it is always between the only two single quotes
+    const matches = text.match(/'.+'/g);
+
+    if (matches && matches.length === 1) {
+        // remove the quotes
+        let rebuildPath = matches[0].replace(/'/g, '');
+        if (path.isAbsolute(rebuildPath)) {
+            // we have found a module which needs rebuild - we need to find deepest pack.json
+            rebuildPath = path.dirname(rebuildPath);
+            const rootDir = path.parse(process.cwd()).root;
+
+            while (rebuildPath !== rootDir) {
+                const packPath = path.join(rebuildPath, 'package.json');
+                if (fs.pathExistsSync(packPath)) {
+                    try {
+                        const packJson = fs.readJsonSync(packPath);
+                        // step outside the module dir itself
+                        rebuildPath = path.join(rebuildPath, '..');
+
+                        return { path: rebuildPath, module: packJson.name, version: packJson.version };
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Could not determine rebuild arguments: ${e.message}`);
+                        return;
+                    }
+                } else {
+                    rebuildPath = path.join(rebuildPath, '..');
+                }
+            }
+        }
+    }
 }
 
 if (typeof module !== 'undefined' && module.parent) {

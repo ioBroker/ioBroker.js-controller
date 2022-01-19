@@ -114,6 +114,26 @@ If needed, especially for low memory situations the memory limit for all adapter
 }
 ```
 
+### Directly executing TypeScript adapters
+**Feature status:** Technology preview since js-controller 3.3.0
+
+The js-controller is able to execute `.ts` files, which removes the need of compiling to JavaScript first.
+To use this feature, simply define the adapter main file as the required `.ts` file.
+
+E.g. in `package.json`:
+
+```json
+{
+  "main": "src/main.ts"
+}
+```
+
+Note, that the sources need to be presence on every installation and thus need to be included in the npm package.
+Vice versa, the build folder is no longer required and should not be published to npm any longer.
+
+Technically, the sources are compiled with ESBuild at every startup, hence this feature should not be used on adapters 
+cosisting of many sources to prevent noticeably delayed adapter starts.
+
 ### Statistics
 **Feature status:** stable
 
@@ -213,7 +233,8 @@ The js-controller defines in its io-package the system scope together with all d
   ]
 }
 ```
-### How to define own scopes?
+
+#### How to define own scopes?
 Each adapter can define its own "scopes" for own notifiations with its own categories which then will be available in the system. 
 Please contact the core development group if you plan to add an own scoe so that scope names can be checked to stay unique.
 The same applies if you see the need to enhance the system scope by additional categories. 
@@ -285,6 +306,8 @@ The log level can be changed dynamically for adapter-instance and host (main con
 
 The states `system.adapter.xy.logLevel` and `system.host.hostname.logLevel` are updated on instance/controller start with the configured log level and can afterwards be used to change the loglevel during runtime. These changes are __not__ persisted, so the next restarts resets the loglevel to the configured one.
 
+The Loglevel change is only effective if there is no loglevel (property "level") defined on the transport configuration.
+
 This possibility allows to debug adapters better and during runtime.
 
 #### File based logging
@@ -314,6 +337,8 @@ The logging is configured in the `iobroker.json` file and can be changed there:
   ...
 }
 ```
+
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
 
 Since js-controller 3.0 Logfiles on non-Windows based systems are compressed on rotation, so that the older Files need less space on your storage. 
 
@@ -370,10 +395,18 @@ ioBroker also supports logging to a syslog server. The configuration is also sto
 }
 ```
 
-#### Adapters allow to subscribe to logs
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
+
+#### Other Log transports
+
+See the iobroker.json and Admin for more transports and their settings.
+
+If you want to pin a special loglevel for the file transport you can add a property "level" with a hard defined loglevel. Then no dynamic control is possible.
+
+#### Adapters are allowed to subscribe log messages
 **Feature status:** stable
 
-ioBroker allows adapters to subscribe to logs from the whole system. E.g. admin adapter is using this logic
+ioBroker allows adapters to subscribe to log messages from the whole system. E.g. admin adapter is using this logic
 
 More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
 
