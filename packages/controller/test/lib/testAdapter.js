@@ -53,7 +53,7 @@ function testAdapter(options) {
     };
 
     function startAdapter(callback) {
-        const Adapter = require('@iobroker/js-controller-adapter');
+        const { Adapter } = require('@iobroker/js-controller-adapter');
 
         context.adapter = new Adapter({
             config: {

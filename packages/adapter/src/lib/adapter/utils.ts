@@ -8,7 +8,7 @@ interface idObject {
     state?: string;
 }
 
-class Utils {
+export class Utils {
     private readonly objects: any;
     private readonly states: any;
     private readonly namespaceLog: string;
