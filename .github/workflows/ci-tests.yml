@@ -78,7 +78,7 @@ jobs:
         run: npm run build
 
       - name: Run scripts
-        run: npm i
+        run: lerna run preinstall && lerna run install
 
       - name: Execute Standard Tests
         run: npm test
