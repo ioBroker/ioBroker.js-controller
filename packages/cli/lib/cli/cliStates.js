@@ -39,6 +39,9 @@ module.exports = class CLIStates extends CLICommand {
             case 'getvalue':
                 resultTransform = obj => (obj ? formatValue(obj.val, pretty) : 'null');
                 return this.get_(args, resultTransform);
+            case 'getBinary':
+            case 'getbinary':
+                return this._getBinary(args);
             case 'set':
                 return this.set_(args);
             case 'chmod':
@@ -119,29 +122,33 @@ module.exports = class CLIStates extends CLICommand {
     /**
      * Get and show binary state
      *
-     * @param {string} id if of the state
-     * @param {object} states states db
-     * @return Promise<void>
+     * @param {any[]} args
      * @private
      */
-    async _getBinary(id, states) {
-        try {
-            /** @type Buffer | null */
-            const state = await states.getBinaryState(id);
+    _getBinary(args) {
+        const { callback, dbConnect } = this.options;
+        const id = args[1];
+        dbConnect(async (objects, states) => {
+            try {
+                /** @type Buffer | null */
+                const state = await states.getBinaryState(id);
 
-            if (!state) {
-                CLI.error.stateNotFound(id);
-                return;
-            }
+                if (!state) {
+                    CLI.error.stateNotFound(id);
+                    return void callback();
+                }
 
-            if (Buffer.isBuffer(state)) {
-                console.log(state.toString('utf-8'));
-            } else {
-                CLI.error.stateNotBinary(id);
+                if (Buffer.isBuffer(state)) {
+                    console.log(state.toString(this.options.encoding || 'utf-8'));
+                } else {
+                    CLI.error.stateNotBinary(id);
+                }
+            } catch (e) {
+                CLI.error.unknown(e);
+                return void callback();
             }
-        } catch (e) {
-            CLI.error.unknown(e);
-        }
+            return void callback();
+        });
     }
 
     /**
@@ -166,8 +173,7 @@ module.exports = class CLIStates extends CLICommand {
                             // read target
                             try {
                                 if (await this._isBinary(aliasId, objects, targetObj)) {
-                                    // let getBinary handle this
-                                    await this._getBinary(aliasId, states);
+                                    CLI.error.stateBinaryUnsupported(aliasId);
                                     return void callback();
                                 }
 
@@ -191,8 +197,7 @@ module.exports = class CLIStates extends CLICommand {
             } else {
                 try {
                     if (await this._isBinary(id, objects)) {
-                        // let getBinary handle this
-                        await this._getBinary(id, states);
+                        CLI.error.stateBinaryUnsupported(id);
                         return void callback();
                     }
                     const state = await states.getStateAsync(id);
