@@ -18,7 +18,7 @@
 
 const extend = require('node.extend');
 const Redis = require('ioredis');
-const tools = require('@iobroker/db-base').tools;
+const { tools } = require('@iobroker/db-base');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -305,6 +305,30 @@ class ObjectsInRedisClient {
                 this.subSystem = new Redis(this.settings.connection.options);
                 this.subSystem.ioBrokerSubscriptions = {};
 
+                if (typeof this.settings.primaryHostLost === 'function') {
+                    try {
+                        // enable Expiry/Evicted events in server - same as states (could be same db)
+                        await this.client.config('set', ['notify-keyspace-events', 'Exe']);
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to enable Expiry Keyspace events from Redis Server: ${e.message}`
+                        );
+                    }
+
+                    this.subSystem.on('message', (channel, message) => {
+                        if (
+                            channel === `__keyevent@${this.settings.connection.options.db}__:expired` ||
+                            channel === `__keyevent@${this.settings.connection.options.db}__:evicted`
+                        ) {
+                            this.log.silly(`${this.namespace} redis message expired/evicted ${channel}:${message}`);
+
+                            if (message === `${this.metaNamespace}objects.primaryHost`) {
+                                this.settings.primaryHostLost();
+                            }
+                        }
+                    });
+                }
+
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) =>
                         setImmediate(() => {
@@ -394,27 +418,19 @@ class ObjectsInRedisClient {
                 if (this.settings.connection.enhancedLogging) {
                     this.subSystem.on('connect', () =>
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub System client Objects-Redis Event connect (stop=' +
-                                this.stop +
-                                ')'
+                            `${this.namespace} PubSub System client Objects-Redis Event connect (stop=${this.stop})`
                         )
                     );
 
                     this.subSystem.on('close', () =>
                         this.log.silly(
-                            this.namespace + ' PubSub System client Objects-Redis Event close (stop=' + this.stop + ')'
+                            `${this.namespace} PubSub System client Objects-Redis Event close (stop=${this.stop})`
                         )
                     );
 
                     this.subSystem.on('reconnecting', reconnectCounter =>
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub System client Objects-Redis Event reconnect (reconnectCounter=' +
-                                reconnectCounter +
-                                ', stop=' +
-                                this.stop +
-                                ')'
+                            `${this.namespace} PubSub System client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
                         )
                     );
                 }
@@ -423,21 +439,15 @@ class ObjectsInRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'system re' : '') +
-                                    'connected to redis: ' +
+                                `${this.namespace} Objects ${ready ? 'system re' : ''}connected to redis: ${
                                     this.settings.connection.host
+                                }`
                             );
                         } else {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'system re' : '') +
-                                    'connected to redis: ' +
-                                    this.settings.connection.host +
-                                    ':' +
-                                    this.settings.connection.port
+                                `${this.namespace} Objects ${ready ? 'system re' : ''}connected to redis: ${
+                                    this.settings.connection.host
+                                }:${this.settings.connection.port}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -473,14 +483,14 @@ class ObjectsInRedisClient {
 
             if (!this.sub && typeof onChangeUser === 'function') {
                 initCounter++;
-                this.log.debug(this.namespace + ' Objects create User PubSub Client');
+                this.log.debug(`${this.namespace} Objects create User PubSub Client`);
                 this.sub = new Redis(this.settings.connection.options);
                 this.sub.ioBrokerSubscriptions = {};
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
                         this.log.silly(
-                            this.namespace + ' Objects user redis pmessage ' + pattern + '/' + channel + ':' + message
+                            `${this.namespace} Objects user redis pmessage ${pattern}/${channel}:${message}`
                         );
                         try {
                             if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
@@ -502,15 +512,11 @@ class ObjectsInRedisClient {
                             }
                         } catch (e) {
                             this.log.warn(
-                                this.namespace +
-                                    ' Objects user pmessage ' +
-                                    channel +
-                                    ' ' +
-                                    JSON.stringify(message) +
-                                    ' ' +
+                                `${this.namespace} Objects user pmessage ${channel} ${JSON.stringify(message)} ${
                                     e.message
+                                }`
                             );
-                            this.log.warn(this.namespace + ' ' + e.stack);
+                            this.log.warn(`${this.namespace} ${e.stack}`);
                         }
                     });
                 });
@@ -534,24 +540,19 @@ class ObjectsInRedisClient {
                 if (this.settings.connection.enhancedLogging) {
                     this.sub.on('connect', () =>
                         this.log.silly(
-                            this.namespace + ' PubSub user client Objects-Redis Event connect (stop=' + this.stop + ')'
+                            `${this.namespace} PubSub user client Objects-Redis Event connect (stop=${this.stop})`
                         )
                     );
 
                     this.sub.on('close', () =>
                         this.log.silly(
-                            this.namespace + ' PubSub user client Objects-Redis Event close (stop=' + this.stop + ')'
+                            `${this.namespace} PubSub user client Objects-Redis Event close (stop=${this.stop})`
                         )
                     );
 
                     this.sub.on('reconnecting', reconnectCounter =>
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub user client Objects-Redis Event reconnect (reconnectCounter=' +
-                                reconnectCounter +
-                                ', stop=' +
-                                this.stop +
-                                ')'
+                            `${this.namespace} PubSub user client Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
                         )
                     );
                 }
@@ -560,21 +561,15 @@ class ObjectsInRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'user re' : '') +
-                                    'connected to redis: ' +
+                                `${this.namespace} Objects ${ready ? 'user re' : ''}connected to redis: ${
                                     this.settings.connection.host
+                                }`
                             );
                         } else {
                             this.log.debug(
-                                this.namespace +
-                                    ' Objects ' +
-                                    (ready ? 'user re' : '') +
-                                    'connected to redis: ' +
-                                    this.settings.connection.host +
-                                    ':' +
-                                    this.settings.connection.port
+                                `${this.namespace} Objects ${ready ? 'user re' : ''}connected to redis: ${
+                                    this.settings.connection.host
+                                }:${this.settings.connection.port}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -611,7 +606,8 @@ class ObjectsInRedisClient {
 
             // filter out obvious non-host objects
             keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
-            this.useSets = true;
+            /** if false we have a host smaller 4 (no proto version for this existing) */
+            this.noLegacyMultihost = true;
 
             try {
                 if (keys.length) {
@@ -627,7 +623,7 @@ class ObjectsInRedisClient {
                             semver.lt(obj.common.installedVersion, '4.0.0')
                         ) {
                             // one of the host has a version smaller 4, we have to use legacy db
-                            this.useSets = false;
+                            this.noLegacyMultihost = false;
                             this.log.info('Sets unsupported');
                         }
                     }
@@ -2357,7 +2353,7 @@ class ObjectsInRedisClient {
                 const message = JSON.stringify(obj);
                 try {
                     const commands = [];
-                    if (this.useSets) {
+                    if (this.noLegacyMultihost) {
                         if (obj.type) {
                             // e.g. _design/ has no type
                             // add the object to the set + set object atomic
@@ -2376,12 +2372,7 @@ class ObjectsInRedisClient {
                     } else {
                         // set all commands atomic
                         commands.push(['set', id, message]);
-                        // if we are sending all together as a pipeline it is slow for sim
-                        this.client.multi({ pipeline: false });
-                        for (const command of commands) {
-                            this.client[command.shift()](...command);
-                        }
-                        await this.client.exec();
+                        await this.client.multi(commands).exec();
                     }
                     await this.client.publish(id, message);
                 } catch (e) {
@@ -3104,7 +3095,7 @@ class ObjectsInRedisClient {
             const message = JSON.stringify(obj);
 
             const commands = [];
-            if (this.useSets) {
+            if (this.noLegacyMultihost) {
                 if (obj.type && (!oldObj || !oldObj.type)) {
                     // new object or oldObj had no type -> add to set + set object
                     commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
@@ -3133,12 +3124,7 @@ class ObjectsInRedisClient {
             } else {
                 // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
-                // if we are sending all together as a pipeline it is slow for sim
-                this.client.multi({ pipeline: false });
-                for (const command of commands) {
-                    this.client[command.shift()](...command);
-                }
-                await this.client.exec();
+                await this.client.multi(commands).exec();
             }
 
             //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
@@ -3231,7 +3217,7 @@ class ObjectsInRedisClient {
             try {
                 const commands = [];
 
-                if (this.useSets) {
+                if (this.noLegacyMultihost) {
                     if (oldObj.type) {
                         // e.g. _design/ has no type
                         // del the object from the set + del object atomic
@@ -3254,12 +3240,7 @@ class ObjectsInRedisClient {
                 } else {
                     // set all commands atomic
                     commands.push(['del', this.objNamespace + id]);
-                    // if we are sending all together as a pipeline it is slow for sim
-                    this.client.multi({ pipeline: false });
-                    for (const command of commands) {
-                        this.client[command.shift()](...command);
-                    }
-                    await this.client.exec();
+                    await this.client.multi(commands).exec();
                 }
 
                 // object has been deleted -> remove from cached meta if there
@@ -4072,7 +4053,7 @@ class ObjectsInRedisClient {
 
         try {
             const commands = [];
-            if (this.useSets) {
+            if (this.noLegacyMultihost) {
                 // what is called oldObj is acutally the obj we set, because it has been extended
                 if (oldObj.type && !oldType) {
                     // new object or oldObj had no type -> add to set + set object
@@ -4102,12 +4083,7 @@ class ObjectsInRedisClient {
             } else {
                 // set all commands atomic
                 commands.push(['set', this.objNamespace + id, message]);
-                // if we are sending all together as a pipeline it is slow for sim
-                this.client.multi({ pipeline: false });
-                for (const command of commands) {
-                    this.client[command.shift()](...command);
-                }
-                await this.client.exec();
+                await this.client.multi(commands).exec();
             }
 
             // extended -> if its now type meta and currently marked as not -> cache
@@ -4353,7 +4329,7 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        const luaPath = path.join(__dirname, this.useSets ? 'lua' : 'lua-v3');
+        const luaPath = path.join(__dirname, this.noLegacyMultihost ? 'lua' : 'lua-v3');
         const scripts = fs.readdirSync(luaPath).map(name => {
             const shasum = crypto.createHash('sha1');
             const script = fs.readFileSync(path.join(luaPath, name));
@@ -4446,7 +4422,7 @@ class ObjectsInRedisClient {
      * @return {Promise<number>}
      */
     async migrateToSets() {
-        if (!this.useSets) {
+        if (!this.noLegacyMultihost) {
             return 0;
         }
 
@@ -4500,6 +4476,103 @@ class ObjectsInRedisClient {
     }
 
     /**
+     * Extend the primary host lock time
+     * Value will expire after ms milliseconds
+     *
+     * {number} ms - ms until value expires
+     * @return {Promise<number>} 1 if extended else 0
+     */
+    extendPrimaryHostLock(ms) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // we have a host version smaller 3 no one can be primary
+        if (!this.noLegacyMultihost) {
+            return Promise.resolve(0);
+        }
+
+        // try to extend lock
+        return this.client.evalsha([
+            this.scripts['redlock_extend'],
+            3,
+            `${this.metaNamespace}objects.primaryHost`,
+            this.settings.hostname,
+            ms
+        ]);
+    }
+
+    /**
+     * Sets current host as primary if no primary host active
+     * Value will expire after ms milliseconds
+     *
+     * {number} ms - ms until value expires
+     * @return {Promise<number>} 1 if lock acquired else 0
+     */
+    setPrimaryHost(ms) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // we have a host version smaller 3 no one can be primary
+        if (!this.noLegacyMultihost) {
+            return Promise.resolve(0);
+        }
+
+        // try to acquire lock
+        return this.client.evalsha([
+            this.scripts['redlock_acquire'],
+            3,
+            `${this.metaNamespace}objects.primaryHost`,
+            this.settings.hostname,
+            ms
+        ]);
+    }
+
+    /**
+     * Get name of the primary host
+     *
+     * @return {Promise<string>}
+     */
+    getPrimaryHost() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // we have a host version smaller 3 no one can be primary
+        if (!this.noLegacyMultihost) {
+            return new Promise.resolve('');
+        }
+
+        return this.client.get(`${this.metaNamespace}objects.primaryHost`);
+    }
+
+    /**
+     * Ensure we are no longer the primary host
+     *
+     * @return Promise<void>
+     */
+    releasePrimaryHost() {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (!this.noLegacyMultihost) {
+            return new Promise.resolve();
+        }
+
+        // try to release lock
+        return this.client.evalsha([
+            this.scripts['redlock_release'],
+            4,
+            `${this.metaNamespace}objects.primaryHost`,
+            this.settings.hostname,
+            this.settings.options.db,
+            `${this.metaNamespace}objects.primaryHost`
+        ]);
+    }
+
+    /**
      * Sets the protocol version to the DB
      * @param {number|string} version - protocol version
      * @returns {Promise<void>}
@@ -4516,6 +4589,17 @@ class ObjectsInRedisClient {
             await this.client.publish(`${this.metaNamespace}objects.protocolVersion`, version);
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
+        }
+    }
+
+    /**
+     * Subscribe to expired events to get expiration of primary host
+     * @return {Promise<void>}
+     */
+    async subscribePrimaryHost() {
+        if (this.subSystem) {
+            await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:expired`);
+            await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:evicted`);
         }
     }
 }

@@ -283,24 +283,19 @@ module.exports = class CLIHost extends CLICommand {
  * @param {any} objects The objects DB to use
  * @param {any} instance The instance object
  * @param {string} newHostname The new hostname the instance should be running on
+ * @return Promise<void>
  */
-function changeInstanceHost(objects, instance, newHostname) {
-    return new Promise(resolve => {
-        const oldInstanceHost = instance.common.host;
-        instance.from = getObjectFrom();
-        instance.ts = Date.now();
-        instance.common.host = newHostname;
-        // and save it
-        objects
-            .setObjectAsync(instance._id, instance)
-            .then(() => {
-                CLI.success.instanceHostChanged(instance._id, oldInstanceHost, newHostname);
-                resolve();
-            })
-            .catch(err => {
-                CLI.error.cannotChangeObject(instance._id, err.message);
-                // resolve anyways, we don't want to cause errors
-                resolve();
-            });
-    });
+async function changeInstanceHost(objects, instance, newHostname) {
+    const oldInstanceHost = instance.common.host;
+    instance.from = getObjectFrom();
+    instance.ts = Date.now();
+    instance.common.host = newHostname;
+    // and save it
+    try {
+        await objects.setObjectAsync(instance._id, instance);
+        CLI.success.instanceHostChanged(instance._id, oldInstanceHost, newHostname);
+    } catch (e) {
+        CLI.error.cannotChangeObject(instance._id, e.message);
+        // resolve anyways, we don't want to cause errors
+    }
 }

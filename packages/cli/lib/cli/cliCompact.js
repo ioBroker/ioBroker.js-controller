@@ -11,7 +11,6 @@ module.exports = class CLICompact extends CLICommand {
         super(options);
         this.config = fs.readJSONSync(tools.getConfigFileName());
     }
-
     /**
      * Executes a command
      * @param {any[]} args

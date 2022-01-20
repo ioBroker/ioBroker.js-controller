@@ -1,5 +1,6 @@
 const Resp = require('respjs');
 const { EventEmitter } = require('events');
+const { QUEUED_STR_BUF, OK_STR_BUF } = require('./constants');
 
 /**
  * Class to handle a redis connection and provide events to react on for
@@ -40,7 +41,7 @@ class RedisHandler extends EventEmitter {
         this.resp.on('error', err => {
             this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error:${err}`);
             if (this.initialized) {
-                this.sendError(null, new Error('PARSER ERROR ' + err)); // TODO
+                this.sendError(null, new Error(`PARSER ERROR ${err}`)); // TODO
             } else {
                 this.close();
             }
@@ -99,25 +100,49 @@ class RedisHandler extends EventEmitter {
                 }
             }
         }
-        if (command === 'info') {
-            this.initialized = true;
-        }
+
         const t = process.hrtime();
         const responseId = t[0] * 1e3 + t[1] / 1e6;
+
         if (this.options.enhancedLogging) {
             this.log.silly(
                 `${this.socketId} Parser result: id=${responseId}, command=${command}, data=${
                     JSON.stringify(data).length > 1024
-                        ? JSON.stringify(data).substring(0, 100) + ' -- ' + JSON.stringify(data).length + ' bytes'
+                        ? `${JSON.stringify(data).substring(0, 100)} -- ${JSON.stringify(data).length} bytes`
                         : JSON.stringify(data)
                 }`
             );
         }
-        this.writeQueue.push({ id: responseId, data: false });
+
+        if (command === 'multi') {
+            this._handleMulti();
+            return;
+        }
+
+        // multi active and exec not called yet
+        if (this.multiActive && !this.execCalled && command !== 'exec') {
+            // store all response ids so we know which need to be in the multi call
+            this.multiResponseIds.push(responseId);
+            // add it for the correct order will be overwritten with correct response
+            this.multiResponseMap.set(responseId, null);
+        } else {
+            // multi response ids should not be pushed - we will answer combined
+            this.writeQueue.push({ id: responseId, data: false });
+        }
+
+        if (command === 'exec') {
+            this._handleExec(responseId);
+            return;
+        }
+
+        if (command === 'info') {
+            this.initialized = true;
+        }
+
         if (this.listenerCount(command) !== 0) {
             setImmediate(() => this.emit(command, data, responseId));
         } else {
-            this.sendError(responseId, new Error(command + ' NOT SUPPORTED'));
+            this.sendError(responseId, new Error(`${command} NOT SUPPORTED`));
         }
     }
 
@@ -130,6 +155,7 @@ class RedisHandler extends EventEmitter {
      */
     _sendQueued(responseId, data) {
         let idx = 0;
+
         while (this.writeQueue.length && idx < this.writeQueue.length) {
             // we found the queue entry that matches with the responseId, so store the data so be sent out
             if (this.writeQueue[idx].id === responseId) {
@@ -148,11 +174,12 @@ class RedisHandler extends EventEmitter {
                     this.log.silly(
                         `${this.socketId} Redis response (${response.id}): ${
                             response.data.length > 1024
-                                ? data.length + ' bytes'
+                                ? `${data.length} bytes`
                                 : response.data.toString().replace(/[\r\n]+/g, '')
                         }`
                     );
                 }
+
                 this._write(response.data);
                 // We sended out first queue entry but no further response is ready
                 // and we do not need to check the whole queue, so we are done here
@@ -199,8 +226,9 @@ class RedisHandler extends EventEmitter {
         }
         if (!data) {
             this.log.warn(`${this.socketId} Not able to write ${JSON.stringify(data)}`);
-            data = Resp.encodeError(new Error('INVALID RESPONSE: ' + JSON.stringify(data)));
+            data = Resp.encodeError(new Error(`INVALID RESPONSE: ${JSON.stringify(data)}`));
         }
+
         setImmediate(() => this._sendQueued(responseId, data));
     }
 
@@ -226,6 +254,11 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      */
     sendNull(responseId) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeNull());
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeNull());
     }
 
@@ -234,6 +267,11 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      */
     sendNullArray(responseId) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeNullArray());
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeNullArray());
     }
 
@@ -243,6 +281,11 @@ class RedisHandler extends EventEmitter {
      * @param str String to encode
      */
     sendString(responseId, str) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeString(str));
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeString(str));
     }
 
@@ -253,6 +296,12 @@ class RedisHandler extends EventEmitter {
      */
     sendError(responseId, error) {
         this.log.warn(`${this.socketId} Error from InMemDB: ${error}`);
+
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeError(error));
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeError(error));
     }
 
@@ -262,6 +311,11 @@ class RedisHandler extends EventEmitter {
      * @param num Integer to send out
      */
     sendInteger(responseId, num) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeInteger(num));
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeInteger(num));
     }
 
@@ -271,6 +325,11 @@ class RedisHandler extends EventEmitter {
      * @param str String to send out
      */
     sendBulk(responseId, str) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeBulk(str));
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeBulk(str));
     }
 
@@ -280,6 +339,11 @@ class RedisHandler extends EventEmitter {
      * @param buf Buffer to send out
      */
     sendBufBulk(responseId, buf) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeBufBulk(buf));
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeBufBulk(buf));
     }
 
@@ -307,11 +371,80 @@ class RedisHandler extends EventEmitter {
 
     /**
      * Encode a array values to buffers and send out
-     * @param responseId ID of the response
-     * @param arr Array to send out
+     * @param {string} responseId ID of the response
+     * @param {any[]} arr Array to send out
      */
     sendArray(responseId, arr) {
+        if (this.multiActive && this.multiResponseIds.includes(responseId)) {
+            this._handleMultiResponse(responseId, Resp.encodeArray(this.encodeRespArray(arr)));
+            return;
+        }
+
         this.sendResponse(responseId, Resp.encodeArray(this.encodeRespArray(arr)));
+    }
+
+    /**
+     * Handles a 'multi' command
+     *
+     * @private
+     */
+    _handleMulti() {
+        if (this.multiActive) {
+            this.log.warn(`${this.socketId} Conflicting multi call`);
+        }
+
+        this.multiActive = true;
+        this.execCalled = false;
+        this.multiResponseIds = [];
+        this.multiResponseCount = 0;
+        this.multiResponseMap = new Map();
+    }
+
+    /**
+     * Handles an 'exec' command
+     *
+     * @param {number} responseId ID of the response
+     * @private
+     */
+    _handleExec(responseId) {
+        this.execCalled = true;
+        this.execId = responseId;
+
+        // maybe we have all fullfilled yet
+        if (this.multiResponseCount === this.multiResponseIds.length) {
+            this._sendExecReponse();
+        }
+    }
+
+    /**
+     * Builds up the exec response and sends it
+     *
+     * @private
+     */
+    _sendExecReponse() {
+        this.multiActive = false;
+        // collect all 'QUEUED' answers
+        const queuedStrArr = new Array(this.multiResponseCount).fill(QUEUED_STR_BUF);
+
+        this._sendQueued(
+            this.execId,
+            Buffer.concat([OK_STR_BUF, ...queuedStrArr, Resp.encodeArray(Array.from(this.multiResponseMap.values()))])
+        );
+    }
+
+    /**
+     * Handles a multi response
+     *
+     * @param {number} responseId ID of the response
+     * @param {Buffer} buf buffer to include in response
+     * @private
+     */
+    _handleMultiResponse(responseId, buf) {
+        this.multiResponseMap.set(responseId, buf);
+        this.multiResponseCount++;
+        if (this.execCalled && this.multiResponseCount === this.multiResponseIds.length) {
+            this._sendExecReponse();
+        }
     }
 }
 

@@ -55,8 +55,11 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
+    "prebuild": "rimraf packages/*/build packages/*/*.tsbuildinfo",
     "build:ts": "lerna run build",
     "build": "npm run build:ts",
+    "preinstall": "lerna run preinstall",
+    "install": "lerna run install",
     "release": "release-script",
     "lint": "eslint .",
     "prettier": "eslint . --fix",

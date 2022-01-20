@@ -434,9 +434,15 @@ function updateUuid(newUuid, _objects, callback) {
     });
 }
 
-function createUuid(_objects, callback) {
+/**
+ * Generates a new uuid if non existing
+ *
+ * @param {object} objects - objects DB
+ * @return {Promise<void|string>} uuid if successfully created/updated
+ */
+async function createUuid(objects) {
     const promiseCheckPassword = new Promise(resolve =>
-        _objects.getObject('system.user.admin', (err, obj) => {
+        objects.getObject('system.user.admin', (err, obj) => {
             if (err || !obj) {
                 password = password || require('./password');
 
@@ -445,7 +451,7 @@ function createUuid(_objects, callback) {
                     err && console.error(err);
 
                     // Create user here and not in io-package.js because of hash password
-                    _objects.setObject(
+                    objects.setObject(
                         'system.user.admin',
                         {
                             type: 'user',
@@ -456,7 +462,7 @@ function createUuid(_objects, callback) {
                                 enabled: true
                             },
                             ts: new Date().getTime(),
-                            from: 'system.host.' + getHostName() + '.tools',
+                            from: `system.host.${getHostName()}.tools`,
                             native: {}
                         },
                         () => {
@@ -471,7 +477,7 @@ function createUuid(_objects, callback) {
         })
     );
     const promiseCheckUuid = new Promise(resolve =>
-        _objects.getObject('system.meta.uuid', (err, obj) => {
+        objects.getObject('system.meta.uuid', (err, obj) => {
             if (!err && obj && obj.native && obj.native.uuid) {
                 const PROBLEM_UUIDS = [
                     'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
@@ -485,10 +491,10 @@ function createUuid(_objects, callback) {
                 // if COMMON invalid docker uuid
                 if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
                     // Read vis license
-                    _objects.getObject('system.adapter.vis.0', (err, licObj) => {
+                    objects.getObject('system.adapter.vis.0', (err, licObj) => {
                         if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
-                            updateUuid('', _objects, _uuid => resolve(_uuid));
+                            updateUuid('', objects, _uuid => resolve(_uuid));
                         } else {
                             // decode obj.native.license
                             let data;
@@ -500,10 +506,10 @@ function createUuid(_objects, callback) {
 
                             if (!data || !data.uuid) {
                                 // generate new UUID
-                                updateUuid('', _objects, __uuid => resolve(__uuid));
+                                updateUuid('', objects, __uuid => resolve(__uuid));
                             } else {
                                 if (data.uuid !== obj.native.uuid) {
-                                    updateUuid(data.correct ? data.uuid : '', _objects, _uuid => resolve(_uuid));
+                                    updateUuid(data.correct ? data.uuid : '', objects, _uuid => resolve(_uuid));
                                 } else {
                                     // Show error
                                     console.warn(
@@ -522,12 +528,13 @@ function createUuid(_objects, callback) {
                 }
             } else {
                 // generate new UUID
-                updateUuid('', _objects, _uuid => resolve(_uuid));
+                updateUuid('', objects, _uuid => resolve(_uuid));
             }
         })
     );
 
-    return Promise.all([promiseCheckPassword, promiseCheckUuid]).then(result => callback && callback(result[1]));
+    const result = await Promise.all([promiseCheckPassword, promiseCheckUuid]);
+    return result[1];
 }
 
 // Download file to tmp or return file name directly
@@ -1278,23 +1285,28 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     };
 }
 
-function sendDiagInfo(obj, callback) {
-    console.log(`Send diag info: ${JSON.stringify(obj)}`);
+/**
+ * Sends the given object to the diagnosis server
+ *
+ * @param {object} obj - diagnosis object
+ * @return {Promise<void>}
+ */
+async function sendDiagInfo(obj) {
+    const objStr = JSON.stringify(obj);
+    console.log(`Send diag info: ${objStr}`);
     axios = axios || require('axios');
     const params = new URLSearchParams();
-    params.append('data', JSON.stringify(obj));
+    params.append('data', objStr);
     const config = {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         timeout: 4000
     };
 
-    return axios
-        .post(`http://download.${module.exports.appName}.net/diag.php`, params, config)
-        .then(() => typeof callback === 'function' && callback())
-        .catch(error => {
-            console.log(`Cannot send diag info: ${error.message}`);
-            typeof callback === 'function' && callback(error);
-        });
+    try {
+        await axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config);
+    } catch (e) {
+        console.log(`Cannot send diag info: ${e.message}`);
+    }
 }
 
 /**
@@ -2817,7 +2829,7 @@ async function getAllInstances(adapters, objects) {
             continue;
         }
         if (!adapters[i].includes('.')) {
-            const inst = await getInstancesAsync(adapters[i], objects, false);
+            const inst = await getInstances(adapters[i], objects, false);
             for (let j = 0; j < inst.length; j++) {
                 if (!instances.includes(inst[j])) {
                     instances.push(inst[j]);
@@ -2855,34 +2867,14 @@ async function getAllEnums(objects) {
 }
 
 /**
- * get all instances of one adapter
- *
- * @alias getInstances
- * @param {string }adapter name of the adapter
- * @param {object }objects objects DB
- * @param {boolean} withObjects return objects instead of only ids
- * @param {function} callback callback to be executed
- */
-function getInstances(adapter, objects, withObjects, callback) {
-    if (typeof withObjects === 'function') {
-        callback = withObjects;
-        withObjects = false;
-    }
-
-    return getInstancesAsync(adapter, objects, withObjects)
-        .then(instances => callback(null, instances))
-        .catch(error => callback(error));
-}
-
-/**
  * get async all instances of one adapter
  *
- * @alias getInstancesAsync
- * @param {string }adapter name of the adapter
- * @param {object }objects objects DB
+ * @alias getInstances
+ * @param {string} adapter name of the adapter
+ * @param {object}objects objects DB
  * @param {boolean} withObjects return objects instead of only ids
  */
-async function getInstancesAsync(adapter, objects, withObjects) {
+async function getInstances(adapter, objects, withObjects) {
     const arr = await objects.getObjectListAsync({
         startkey: 'system.adapter.' + adapter + '.',
         endkey: 'system.adapter.' + adapter + '.\u9999'
@@ -3625,7 +3617,6 @@ module.exports = {
     generateDefaultCertificates,
     getAdapterDir,
     getInstances,
-    getInstancesAsync,
     getAllInstances,
     getCertificateInfo,
     getConfigFileName,

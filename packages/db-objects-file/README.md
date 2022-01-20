@@ -35,8 +35,7 @@ The simulator supports four different namespaces:
 | punsubscribe      | full       | objects |
 | config      | dummy       | independent |
 | client      | partial       | independent |
-| multi | dummy | independent |
-| exec | dummy | independent |
+| multi/exec | partial | independent |
 | sadd | dummy | independent |
 | srem | dummy | independent |
 | sscan |full | objects, files, sets |
@@ -102,11 +101,9 @@ Mainly a dummy, just sends a positive response if `lua-time-limit` change receiv
 ### client
 Is used to handle `setname` and `getname` requests. `setname` is used to change the logging namespace. On `getname` the server will respond with the current connection name, which has been set via `getname`.
 
-### multi
-Just a dummy, responds with `OK`.
-
-### exec
-Just a dummy, responds with `OK`.
+### multi/exec
+Multi/exec is fully integrated but only works with pipelines and will give a piped response. It will not respond until `exec` is called.
+On `exec` the simulator responds with `OK` (for `multi`), `QUEUED` for every command and the real results as an array for `exec`.
 
 ### sadd
 Just a dummy, always responds with `1`, which means we have added the item to the set.
