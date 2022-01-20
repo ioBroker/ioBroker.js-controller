@@ -61,7 +61,7 @@ jobs:
 
     - name: Run scripts
       if: steps.changes.outputs.result == 'ok'
-      run: lerna run preinstall && lerna run install
+      run: npm run preinstall && npm run install
 
     - name: Test
       if: steps.changes.outputs.result == 'ok'
