@@ -2,11 +2,19 @@ import { SYSTEM_ADMIN_USER } from './constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 
-class Utils {
+interface idObject {
+    device?: string;
+    channel?: string;
+    state?: string;
+}
+
+export class Utils {
     private readonly objects: any;
     private readonly states: any;
     private readonly namespaceLog: string;
     private readonly log: any;
+    private readonly namespace: string;
+    private readonly namespaceRegExp: RegExp;
 
     /**
      * Utils for internal adapter.js usage
@@ -14,11 +22,22 @@ class Utils {
      * @param states - States DB
      * @param namespaceLog - Log prefix
      * @param logger - Logger instance
+     * @param namespace - the namespace of the adapter
+     * @param namespaceRegExp - the namespace RegExp of the adapter adapter.0
      */
-    constructor(objects: any, states: any, namespaceLog: string, logger: any) {
+    constructor(
+        objects: any,
+        states: any,
+        namespaceLog: string,
+        logger: any,
+        namespace: string,
+        namespaceRegExp: RegExp
+    ) {
         this.objects = objects;
         this.states = states;
         this.namespaceLog = namespaceLog;
+        this.namespace = namespace;
+        this.namespaceRegExp = namespaceRegExp;
         this.log = logger;
     }
 
@@ -208,6 +227,37 @@ class Utils {
         code = code || 0;
         return (EXIT_CODES[code] || code).toString();
     }
-}
 
-module.exports = Utils;
+    /**
+     * Adds the namespace to the id if it is missing, if an object is passed it will be converted to an id string
+     *
+     * @param id id which will be fixed
+     * @param isPattern if the id is a pattern
+     */
+    fixId(id: string | idObject, isPattern = false): string {
+        if (!id) {
+            id = '';
+        }
+
+        let result = '';
+        if (typeof id === 'string') {
+            result = id;
+
+            // if not instance name itself and also not starts with namespace and "."
+            if (id !== this.namespace && !this.namespaceRegExp.test(id)) {
+                if (!isPattern) {
+                    result = this.namespace + (id ? `.${id}` : '');
+                } else {
+                    result = `${this.namespace}.${id ? id : ''}`;
+                }
+            }
+        } else if (tools.isObject(id)) {
+            // If id is an object
+            // Add namespace + device + channel
+            result = `${this.namespace}.${id.device ? id.device + '.' : ''}${id.channel ? id.channel + '.' : ''}${
+                id.state ? id.state : ''
+            }`;
+        }
+        return result;
+    }
+}

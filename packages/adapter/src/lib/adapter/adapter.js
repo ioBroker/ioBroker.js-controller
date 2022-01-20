@@ -34,7 +34,7 @@ const controllerVersion = require('@iobroker/js-controller-adapter/package.json'
 
 const { password } = require('@iobroker/js-controller-common');
 const Log = require('./log');
-const Utils = require('./utils');
+const { Utils } = require('./utils');
 
 const { FORBIDDEN_CHARS } = tools;
 const {
@@ -1404,7 +1404,14 @@ function Adapter(options) {
      * Called if states and objects successfully initalized
      */
     const prepareInitAdapter = () => {
-        utils = new Utils(adapterObjects, adapterStates, this.namespaceLog, logger);
+        utils = new Utils(
+            adapterObjects,
+            adapterStates,
+            this.namespaceLog,
+            logger,
+            this.namespace,
+            this._namespaceRegExp
+        );
 
         if (options.instance !== undefined) {
             initAdapter(options);
@@ -1762,40 +1769,6 @@ function Adapter(options) {
         });
 
         /**
-         * @param {string | {device?: string, channel?: string, state?: string}} id
-         * @param {boolean} [isPattern=false]
-         */
-        this._fixId = (id, isPattern /* , type */) => {
-            if (!id) {
-                id = '';
-            }
-
-            let result = '';
-            // If id is an object
-            if (tools.isObject(id)) {
-                // Add namespace + device + channel
-                result =
-                    this.namespace +
-                    '.' +
-                    (id.device ? id.device + '.' : '') +
-                    (id.channel ? id.channel + '.' : '') +
-                    (id.state ? id.state : '');
-            } else if (typeof id === 'string') {
-                result = id;
-
-                // if not instance name itself and also not starts with namespace and "."
-                if (id !== this.namespace && !this._namespaceRegExp.test(id)) {
-                    if (!isPattern) {
-                        result = this.namespace + (id ? '.' + id : '');
-                    } else {
-                        result = this.namespace + '.' + (id ? id : '');
-                    }
-                }
-            }
-            return result;
-        };
-
-        /**
          * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one is configured
          * @param {string} id of the object
          * @param obj The object to set
@@ -1967,7 +1940,7 @@ function Adapter(options) {
                     );
                 }
 
-                id = this._fixId(id, false /*, obj.type*/);
+                id = utils.fixId(id, false);
 
                 if (obj.children || obj.parent) {
                     logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
@@ -2153,7 +2126,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id, false /*, obj.type*/);
+            id = utils.fixId(id, false);
 
             const mId = id.replace(FORBIDDEN_CHARS, '_');
             if (mId !== id) {
@@ -2606,7 +2579,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            adapterObjects.getObject(this._fixId(id), options, callback);
+            adapterObjects.getObject(utils.fixId(id), options, callback);
         };
         /**
          * Promise-version of Adapter.getObject
@@ -3214,7 +3187,7 @@ function Adapter(options) {
          */
         this.delObject = (id, options, callback) => {
             // delObject does the same as delForeignObject, but fixes the ID first
-            id = this._fixId(id);
+            id = utils.fixId(id);
             this.delForeignObject(id, options, callback);
         };
         /**
@@ -3367,7 +3340,7 @@ function Adapter(options) {
             if (pattern === '*') {
                 adapterObjects.subscribeUser(this.namespace + '.*', options, callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterObjects.subscribeUser(pattern, options, callback);
             }
         };
@@ -3403,7 +3376,7 @@ function Adapter(options) {
             if (pattern === '*') {
                 adapterObjects.unsubscribeUser(this.namespace + '.*', options, callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterObjects.unsubscribeUser(pattern, options, callback);
             }
         };
@@ -3513,7 +3486,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id);
+            id = utils.fixId(id);
 
             if (obj.children || obj.parent) {
                 logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
@@ -3787,7 +3760,7 @@ function Adapter(options) {
                 parentChannel = parentChannel.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
-            const id = this._fixId({ device: parentDevice, channel: parentChannel, state: stateName });
+            const id = utils.fixId({ device: parentDevice, channel: parentChannel, state: stateName });
 
             // Check min, max and def values for number
             if (common.type !== undefined && common.type === 'number') {
@@ -4488,7 +4461,7 @@ function Adapter(options) {
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            const objId = this._fixId({ device: parentDevice, channel: parentChannel, state: stateName });
+            const objId = utils.fixId({ device: parentDevice, channel: parentChannel, state: stateName });
 
             if (addTo.startsWith('enum.')) {
                 adapterObjects.getObject(addTo, options, (err, obj) => {
@@ -4591,7 +4564,7 @@ function Adapter(options) {
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            const objId = this._fixId(
+            const objId = utils.fixId(
                 {
                     device: parentDevice,
                     channel: parentChannel,
@@ -6320,7 +6293,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id, false);
+            id = utils.fixId(id, false);
 
             if (tools.isObject(state)) {
                 // Verify that the passed state object is valid
@@ -6549,7 +6522,7 @@ function Adapter(options) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id, false /*, 'state'*/);
+            id = utils.fixId(id, false);
 
             if (tools.isObject(state)) {
                 // Verify that the passed state object is valid
@@ -7001,7 +6974,7 @@ function Adapter(options) {
          */
         this.getState = (id, options, callback) => {
             // get state does the same as getForeignState but fixes the id first
-            id = this._fixId(id, false);
+            id = utils.fixId(id, false);
             return this.getForeignState(id, options, callback);
         };
         /**
@@ -7334,7 +7307,7 @@ function Adapter(options) {
             }
 
             // delState does the same as delForeignState, but fixes the ID first
-            id = this._fixId(id);
+            id = utils.fixId(id);
             this.delForeignState(id, options, callback);
         };
         /**
@@ -7412,7 +7385,7 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
-            pattern = this._fixId(pattern, true);
+            pattern = utils.fixId(pattern, true);
             this.getForeignStates(pattern, options, callback);
         };
         /**
@@ -8142,7 +8115,7 @@ function Adapter(options) {
             if (!pattern || pattern === '*') {
                 adapterStates.subscribeUser(this.namespace + '.*', callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterStates.subscribeUser(pattern, callback);
             }
         };
@@ -8184,7 +8157,7 @@ function Adapter(options) {
             if (!pattern || pattern === '*') {
                 adapterStates.unsubscribeUser(this.namespace + '.*', callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterStates.unsubscribeUser(pattern, callback);
             }
         };
