@@ -254,6 +254,7 @@ function register(it, expect, context) {
         const utils = new Utils(
             context.objects,
             context.states,
+            context.adapter.namespaceLog,
             console,
             context.adapter.namespace,
             context.adapter._namespaceRegExp

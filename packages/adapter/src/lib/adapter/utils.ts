@@ -261,5 +261,3 @@ export class Utils {
         return result;
     }
 }
-
-module.exports = Utils;

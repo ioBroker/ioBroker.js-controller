@@ -34,7 +34,7 @@ const controllerVersion = require('@iobroker/js-controller-adapter/package.json'
 
 const { password } = require('@iobroker/js-controller-common');
 const Log = require('./log');
-const Utils = require('./utils');
+const { Utils } = require('./utils');
 
 const { FORBIDDEN_CHARS } = tools;
 const {
