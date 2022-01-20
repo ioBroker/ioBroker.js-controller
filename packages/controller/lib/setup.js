@@ -224,13 +224,20 @@ function initYargs() {
         .command(['state', 's'], 'State management', yargs => {
             yargs
                 .command('get <id>', 'Get state, specified by id', {})
-                .command('getplain <id>', 'Get plain state, specified by id', {
+                .command('getPlain <id>', 'Get plain state, specified by id', {
                     pretty: {
                         describe: 'Prettify output',
                         type: 'boolean'
                     }
                 })
-                .command('getvalue <id>', 'Get state value, specified by id', {})
+                .command('getBinary <id>', 'Get binary state, specified by id', {
+                    encoding: {
+                        describe: 'Encoding for the binary state, like utf-8, ascii, hex, base64, binary',
+                        type: 'string',
+                        default: 'binary'
+                    }
+                })
+                .command('getValue <id>', 'Get state value, specified by id', {})
                 .command('set <id> <value> [<ack>]', 'Set state, specified by id', {})
                 .command('del <id>', 'Delete state, specified by id', {})
                 .command('setDBVersion <version>', 'Sets the protocol version of the states database')
@@ -470,9 +477,9 @@ async function processCommand(command, args, params, callback) {
         callback = processExit;
     }
 
-    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandContext} */
+    /** @type {CLICommandContext} */
     const commandContext = { dbConnect, callback, showHelp };
-    /** @type {import('@iobroker/js-controller-cli/lib/cli/cliCommand').CLICommandOptions} */
+    /** @type {CLICommandOptions} */
     const commandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
     debug(`args: ${args}`);
