@@ -230,7 +230,7 @@ function initYargs() {
                         type: 'boolean'
                     }
                 })
-                .command('getBinary <id> [<encoding>]', 'Get binary state, specified by id', {
+                .command('getBinary <id>', 'Get binary state, specified by id', {
                     encoding: {
                         describe: 'Encoding for the binary state, like utf-8, ascii, hex, base64, binary',
                         type: 'string',

@@ -135,19 +135,20 @@ module.exports = class CLIStates extends CLICommand {
 
                 if (!state) {
                     CLI.error.stateNotFound(id);
-                    return void callback();
+                    return void callback(1);
                 }
 
                 if (Buffer.isBuffer(state)) {
                     console.log(state.toString(this.options.encoding));
+                    return void callback();
                 } else {
                     CLI.error.stateNotBinary(id);
+                    return void callback(1);
                 }
             } catch (e) {
                 CLI.error.unknown(e);
-                return void callback();
+                return void callback(1);
             }
-            return void callback();
         });
     }
 
@@ -173,8 +174,8 @@ module.exports = class CLIStates extends CLICommand {
                             // read target
                             try {
                                 if (await this._isBinary(aliasId, objects, targetObj)) {
-                                    CLI.error.stateBinaryUnsupported(aliasId);
-                                    return void callback();
+                                    CLI.error.stateBinaryGetUnsupported(aliasId);
+                                    return void callback(1);
                                 }
 
                                 const state = await states.getStateAsync(aliasId);
@@ -197,8 +198,8 @@ module.exports = class CLIStates extends CLICommand {
             } else {
                 try {
                     if (await this._isBinary(id, objects)) {
-                        CLI.error.stateBinaryUnsupported(id);
-                        return void callback();
+                        CLI.error.stateBinaryGetUnsupported(id);
+                        return void callback(1);
                     }
                     const state = await states.getStateAsync(id);
                     if (!state) {
@@ -237,7 +238,11 @@ module.exports = class CLIStates extends CLICommand {
             const newVal = ack === undefined ? { val, ack: false } : { val, ack: !!ack };
 
             if (id.startsWith(ALIAS_STARTS_WITH)) {
-                objects.getObject(id, (err, obj) => {
+                objects.getObject(id, async (err, obj) => {
+                    if (await this._isBinary(id, objects, obj)) {
+                        CLI.error.stateBinarySetUnsupported(id);
+                        return void callback(1);
+                    }
                     // alias
                     if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
                         const aliasId =
@@ -291,11 +296,17 @@ module.exports = class CLIStates extends CLICommand {
                     }
                 });
             } else {
-                objects.getObject(id, (err, obj) => {
+                objects.getObject(id, async (err, obj) => {
                     if (err) {
                         CLI.error.unknown(err);
                         return void callback(1); // access error
                     }
+
+                    if (await this._isBinary(id, objects, obj)) {
+                        CLI.error.stateBinarySetUnsupported(id);
+                        return void callback(1);
+                    }
+
                     if (!obj && !force) {
                         CLI.error.objectNotFound(id, 'null');
                         return void callback(1); // object not exists
