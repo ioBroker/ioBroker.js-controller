@@ -139,7 +139,7 @@ module.exports = class CLIStates extends CLICommand {
                 }
 
                 if (Buffer.isBuffer(state)) {
-                    console.log(state.toString(this.options.encoding || 'utf-8'));
+                    console.log(state.toString(this.options.encoding));
                 } else {
                     CLI.error.stateNotBinary(id);
                 }
