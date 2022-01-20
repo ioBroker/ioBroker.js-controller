@@ -48,8 +48,9 @@
     "access": "public"
   },
   "files": [
-    "cert/",
-    "lib/",
-    "index.js"
+    "build/cert/",
+    "build/lib/",
+    "build/index.js",
+    "build/index.d.ts"
   ]
 }
