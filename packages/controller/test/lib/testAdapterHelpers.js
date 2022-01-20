@@ -247,7 +247,7 @@ function register(it, expect, context) {
         done();
     });
 
-    //_fixId
+    // Utils.fixId
     it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', done => {
         const { Utils } = require('@iobroker/js-controller-adapter');
 
@@ -260,7 +260,6 @@ function register(it, expect, context) {
             context.adapter._namespaceRegExp
         );
 
-        this.timeout(1000);
         const adapterName = context.adapter.name;
         expect(adapterName).to.equal('test');
         const adapterInstance = context.adapter.instance;
@@ -329,12 +328,12 @@ function register(it, expect, context) {
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         //test composition
-        testString = utils.fixId(context.adapter._fixId('foo.bar.baz'));
+        testString = utils.fixId(utils.fixId('foo.bar.baz'));
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         done();
-    });
+    }).timeout(1000);
 
     // idToDCS
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check idToDCS', function (done) {
