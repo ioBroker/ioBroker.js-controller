@@ -22,7 +22,7 @@
     "request": "^2.88.2",
     "semver": "^7.3.5",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.5"
+    "winston-daily-rotate-file": "^4.6.0"
   },
   "keywords": [
     "ioBroker"

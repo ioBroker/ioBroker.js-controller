@@ -11,8 +11,8 @@
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
 * CLI command `iob update --updateable` changed to `iob update --updatable`
 * CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore
-* CLI command `iob rebuild adaptername` is no longer supported because of the new way of automatic rebuilds because it had unwanted side effects
-* PENDING CLI command `iob state get <id>` will no longer handle binary state values (which was never really working before). ???We added `iob state get-binary <id> <encoding>` as new way.
+* CLI command `iob rebuild adaptername` is no longer supported because of the new way of automatic rebuilds and some unwanted side effects
+* CLI command `iob state get <id>` will no longer handle binary state values (which was never really working before). We added `iob state getBinary <id> <encoding>` as new way.
 * Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. ALso check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
 * PENDING: The "file" database will be automatically converted into JSONL and the database types that use "file" are adjusted to "jsonl" on installation (and backup restore). This means that a rollback of js-controller is only possible to 3.3 after 4.0 was installed! Rollback to former versions require a manual migration to "file" DB before the downgrade! (COMMUNICATION, TESTFOKUS)
 
