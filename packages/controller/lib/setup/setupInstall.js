@@ -1416,14 +1416,6 @@ function Install(options) {
             }
         };
 
-        // we are not allowed to delete from fs if another instance depends on us
-        const dependentAdapter = await this._hasDependentInstances(adapter);
-
-        if (dependentAdapter) {
-            console.log(`Cannot uninstall adapter "${adapter}", because instance "${dependentAdapter}" depends on it!`);
-            return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
-        }
-
         try {
             // detect if all instances on this host, if not so the www and admin must not be deleted
             await this._enumerateAdapterInstances(knownObjectIDs, notDeletedObjectIDs, adapter);
@@ -1438,6 +1430,16 @@ function Install(options) {
                 await this._removeCustomFromObjects([adapter]);
                 await _uninstallNpm();
             } else {
+                // we are not allowed to delete last instance if another instance depends on us
+                const dependentInstance = await this._hasDependentInstances(adapter);
+
+                if (dependentInstance) {
+                    console.log(
+                        `Cannot remove adapter "${adapter}", because instance "${dependentInstance}" depends on it!`
+                    );
+                    return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
+                }
+
                 const instances = knownObjectIDs.map(id => `${adapter}.${id.split('.').pop()}`);
                 await this._enumerateAdapterMeta(knownObjectIDs, adapter, metaFilesToDelete);
                 resultCode = await this._enumerateAdapters(knownObjectIDs, adapter);
@@ -1468,13 +1470,23 @@ function Install(options) {
     /**
      * Deletes given instance of an adapter
      *
-     * @param {string} adapter
-     * @param {string?} instance
+     * @param {string} adapter adapter name like hm-rpc
+     * @param {string?} instance e.g. 1
      * @return {Promise<void>}
      */
     this.deleteInstance = async (adapter, instance) => {
         const knownObjectIDs = [];
         const knownStateIDs = [];
+
+        // we are not allowed to delete last instance if another instance depends on us
+        const dependentInstance = await this._hasDependentInstances(adapter, instance);
+
+        if (dependentInstance) {
+            console.log(
+                `Cannot remove instance "${adapter}.${instance}", because instance "${dependentInstance}" depends on it!`
+            );
+            return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
+        }
 
         await this._enumerateAdapterInstances(knownObjectIDs, null, adapter, instance);
         await this._enumerateAdapterDevices(knownObjectIDs, adapter, instance);
@@ -1662,10 +1674,11 @@ function Install(options) {
      * Checks if other adapters depend on this adapter
      *
      * @param {string} adapter adapter name
+     * @param {string?} instance instance, like 1
      * @return {Promise<void|string>} if dependent exists returns adapter name
      * @private
      */
-    this._hasDependentInstances = async adapter => {
+    this._hasDependentInstances = async (adapter, instance) => {
         try {
             // lets get all instances
             const doc = await objects.getObjectViewAsync('system', 'instance', {
@@ -1678,8 +1691,18 @@ function Install(options) {
 
                 for (const localDep of Object.keys(localDeps)) {
                     if (row.value.common.host === hostname && localDep === adapter) {
-                        // the adapter needs us locally
-                        return `${row.value.common.name}.${row.id.split('.').pop()}`;
+                        if (!instance) {
+                            // this adapter needs us locally and all instances should be deleted
+                            return `${row.value.common.name}.${row.id.split('.').pop()}`;
+                        } else {
+                            // check if other instance of us exists on this host
+                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows)) {
+                                // there are other instances of our adapter - ok
+                                break;
+                            } else {
+                                return `${row.value.common.name}.${row.id.split('.').pop()}`;
+                            }
+                        }
                     }
                 }
 
@@ -1687,7 +1710,7 @@ function Install(options) {
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
-                        if (this._checkDependencyFullfilledForeignHosts(adapter, doc.rows)) {
+                        if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows)) {
                             // adapter is on another host too, no need to search further
                             break;
                         } else {
@@ -1709,9 +1732,32 @@ function Install(options) {
      * @return {boolean} true if an instance is present on other host
      * @private
      */
-    this._checkDependencyFullfilledForeignHosts = (adapter, instancesRows) => {
+    this._checkDependencyFulfilledForeignHosts = (adapter, instancesRows) => {
         for (const row of instancesRows) {
             if (row.value.common.name === adapter && row.value.common.host !== hostname) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    /**
+     * Checks if another instance then the given is present on this host
+     *
+     * @param {string} adapter adapter name
+     * @param {string} instance instance number like 1
+     * @param {object[]} instancesRows all instances objects view rows
+     * @return {boolean} true if another instance is present on this host
+     * @private
+     */
+    this._checkDependencyFulfilledThisHost = (adapter, instance, instancesRows) => {
+        for (const row of instancesRows) {
+            if (
+                row.value.common.name === adapter &&
+                row.value.common.host === hostname &&
+                row.value._id.split('.').pop() !== instance
+            ) {
                 return true;
             }
         }
