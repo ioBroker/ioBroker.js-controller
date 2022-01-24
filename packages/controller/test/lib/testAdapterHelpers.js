@@ -247,9 +247,19 @@ function register(it, expect, context) {
         done();
     });
 
-    //_fixId
-    it(context.name + ' ' + context.adapterShortName + ' adapter: Check _fixId', function (done) {
-        this.timeout(1000);
+    // Utils.fixId
+    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', done => {
+        const { Utils } = require('@iobroker/js-controller-adapter');
+
+        const utils = new Utils(
+            context.objects,
+            context.states,
+            context.adapter.namespaceLog,
+            console,
+            context.adapter.namespace,
+            context.adapter._namespaceRegExp
+        );
+
         const adapterName = context.adapter.name;
         expect(adapterName).to.equal('test');
         const adapterInstance = context.adapter.instance;
@@ -259,19 +269,19 @@ function register(it, expect, context) {
 
         let testString;
         //test with Object empty
-        testString = context.adapter._fixId({});
+        testString = utils.fixId({});
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.');
 
         //test with Object state
-        testString = context.adapter._fixId({
+        testString = utils.fixId({
             state: 'baz'
         });
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.baz');
 
         //test with Object state + channel
-        testString = context.adapter._fixId({
+        testString = utils.fixId({
             state: 'baz',
             channel: 'bar'
         });
@@ -279,7 +289,7 @@ function register(it, expect, context) {
         expect(testString).to.equal(adapterNamespace + '.bar.baz');
 
         //test with Object state + channel + device
-        testString = context.adapter._fixId({
+        testString = utils.fixId({
             state: 'baz',
             channel: 'bar',
             device: 'foo'
@@ -288,42 +298,42 @@ function register(it, expect, context) {
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         //test with string empty as state
-        testString = context.adapter._fixId('');
+        testString = utils.fixId('');
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace);
 
         //test with string empty as subscribe
-        testString = context.adapter._fixId('', true);
+        testString = utils.fixId('', true);
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.');
 
         //test with string state
-        testString = context.adapter._fixId('baz');
+        testString = utils.fixId('baz');
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.baz');
 
         //test with string state + channel
-        testString = context.adapter._fixId('bar.baz');
+        testString = utils.fixId('bar.baz');
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.bar.baz');
 
         //test with string state + channel + device
-        testString = context.adapter._fixId('foo.bar.baz');
+        testString = utils.fixId('foo.bar.baz');
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         //test with already fixed ID
-        testString = context.adapter._fixId(adapterNamespace + '.foo.bar.baz');
+        testString = utils.fixId(adapterNamespace + '.foo.bar.baz');
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         //test composition
-        testString = context.adapter._fixId(context.adapter._fixId('foo.bar.baz'));
+        testString = utils.fixId(utils.fixId('foo.bar.baz'));
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         done();
-    });
+    }).timeout(1000);
 
     // idToDCS
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check idToDCS', function (done) {

@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-adapter",
-  "version": "4.0.0-alpha.44-20220112-9d71e247",
+  "version": "4.0.0-alpha.50-20220123-bedb0512",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -37,15 +37,20 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/adapter"
   },
-  "scripts": {},
-  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json && npm run copy-files",
+    "copy-files": "cp -r ./src/cert/ ./build/"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "cert/",
-    "lib/",
-    "index.js"
+    "build/cert/",
+    "build/lib/",
+    "build/index.js",
+    "build/index.d.ts"
   ]
 }

@@ -53,11 +53,15 @@ jobs:
 
     - name: Install dependencies
       if: steps.changes.outputs.result == 'ok'
-      run: npm ci
+      run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
 
     - name: Build TS files
       if: steps.changes.outputs.result == 'ok'
       run: npm run build
+
+    - name: Run scripts
+      if: steps.changes.outputs.result == 'ok'
+      run: npm run preinstall && npm run install
 
     - name: Test
       if: steps.changes.outputs.result == 'ok'

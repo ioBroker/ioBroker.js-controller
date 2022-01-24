@@ -33,110 +33,25 @@ const path = require('path');
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
 const { password } = require('@iobroker/js-controller-common');
+const Log = require('./log');
+const { Utils } = require('./utils');
 
 const { FORBIDDEN_CHARS } = tools;
-const DEFAULT_SECRET = 'Zgfr56gFe87jJOM';
-const ALIAS_STARTS_WITH = 'alias.';
-
-const SYSTEM_ADMIN_USER = 'system.user.admin';
-const SYSTEM_ADMIN_GROUP = 'system.group.administrator';
-const QUALITY_SUBS_INITIAL = 0x20;
-
-const supportedFeatures = [
-    'ALIAS', // Alias Feature supported, Since js-controller 2.0
-    'ALIAS_SEPARATE_READ_WRITE_ID', // Alias support separated ids for read and write, Since js-controller 3.0
-    'ADAPTER_GETPORT_BIND', // getPort method of adapter supports second parameter to bind to a special network interface, Since js-controller 2.0
-    'ADAPTER_DEL_OBJECT_RECURSIVE', // delObject supports options.recursive flag to delete objects structures recursive, Since js-controller 2.2
-    'ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE', // setObject(*) methods set the default (def) value via setState after the object is created. Since js-controller 2.0
-    'ADAPTER_AUTO_DECRYPT_NATIVE', // all native attributes, that are listed in an array `encryptedNative` in io-pack will be automatically decrypted and encrypted. Since js-controller 3.0
-    'PLUGINS', // configurable plugins supported. Since js-controller 3.0
-    'CONTROLLER_NPM_AUTO_REBUILD', // Automatic rebuild when node version mismatch is detected. Since js-controller 3.0
-    'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
-    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
-    'CONTROLLER_LICENSE_MANAGER', // Controller can read licenses from iobroker.net. Since js-controller 4.0    'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
-    'DEL_INSTANCE_CUSTOM' // instances/adapter can be deleted with --custom flag to remove corresponding custom of all objects. Since js-controller 4.0
-];
-
-//const ACCESS_EVERY_EXEC  = 0x1;
-const ACCESS_EVERY_WRITE = 0x2;
-const ACCESS_EVERY_READ = 0x4;
-//const ACCESS_EVERY_RW    = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ;
-//const ACCESS_EVERY_ALL   = ACCESS_EVERY_WRITE | ACCESS_EVERY_READ | ACCESS_EVERY_EXEC;
-
-//const ACCESS_GROUP_EXEC  = 0x10;
-const ACCESS_GROUP_WRITE = 0x20;
-const ACCESS_GROUP_READ = 0x40;
-//const ACCESS_GROUP_RW    = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ;
-//const ACCESS_GROUP_ALL   = ACCESS_GROUP_WRITE | ACCESS_GROUP_READ | ACCESS_GROUP_EXEC;
-
-//const ACCESS_USER_EXEC   = 0x100;
-const ACCESS_USER_WRITE = 0x200;
-const ACCESS_USER_READ = 0x400;
-//const ACCESS_USER_RW     = ACCESS_USER_WRITE | ACCESS_USER_READ;
-//const ACCESS_USER_ALL    = ACCESS_USER_WRITE | ACCESS_USER_READ | ACCESS_USER_EXEC;
-
-// const ACCESS_EXEC        = 0x1;
-// const ACCESS_WRITE       = 0x2;
-// const ACCESS_READ        = 0x4;
-// const ACCESS_LIST        = 'list';
-// const ACCESS_DELETE      = 'delete';
-// const ACCESS_CREATE      = 'create';
-
-const ERROR_PERMISSION = 'permissionError';
-
-/**
- * Look up the error description for an error code
- *
- * @param {number} code error code
- * @return {string} error description
- */
-function getErrorText(code) {
-    code = code || 0;
-    return (EXIT_CODES[code] || code).toString();
-}
-
-class Log {
-    /**
-     * @param {string} namespaceLog Logging namespace to prefix
-     * @param {string} level The log level
-     * @param {object} logger logger instance
-     */
-    constructor(namespaceLog, level, logger) {
-        this.namespaceLog = namespaceLog;
-        this.level = level;
-        // We have to bind the this context here or it is possible that `this` is
-        // undefined when passing around the logger methods. This happens e.g. when doing this:
-        //   const log = new Log(...);
-        //   const test = log.info;
-        //   test();
-        this.logger = logger;
-        this.silly = this.silly.bind(this);
-        this.debug = this.debug.bind(this);
-        this.info = this.info.bind(this);
-        this.error = this.error.bind(this);
-        this.warn = this.warn.bind(this);
-    }
-
-    silly(msg) {
-        this.logger.silly(this.namespaceLog + ' ' + msg);
-    }
-
-    debug(msg) {
-        this.logger.debug(this.namespaceLog + ' ' + msg);
-    }
-
-    info(msg) {
-        this.logger.info(this.namespaceLog + ' ' + msg);
-    }
-
-    error(msg) {
-        this.logger.error(this.namespaceLog + ' ' + msg);
-    }
-
-    warn(msg) {
-        this.logger.warn(this.namespaceLog + ' ' + msg);
-    }
-}
+const {
+    DEFAULT_SECRET,
+    ALIAS_STARTS_WITH,
+    SYSTEM_ADMIN_USER,
+    SYSTEM_ADMIN_GROUP,
+    QUALITY_SUBS_INITIAL,
+    SUPPORTED_FEATURES,
+    ERROR_PERMISSION,
+    ACCESS_EVERY_READ,
+    ACCESS_EVERY_WRITE,
+    ACCESS_GROUP_WRITE,
+    ACCESS_GROUP_READ,
+    ACCESS_USER_WRITE,
+    ACCESS_USER_READ
+} = require('./constants');
 
 /**
  * Adapter class
@@ -170,6 +85,7 @@ function Adapter(options) {
         throw new Error('Configuration not set!');
     }
 
+    let utils;
     let schedule;
     let restartScheduleJob;
     let initializeTimeout;
@@ -261,7 +177,7 @@ function Adapter(options) {
         logger.silly = logger.debug;
     }
 
-    // enable "var adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
+    // enable "const adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
     if (typeof options === 'string') {
         options = { name: options };
     }
@@ -271,6 +187,31 @@ function Adapter(options) {
     }
 
     this.performStrictObjectChecks = options.strictObjectChecks !== false;
+
+    /**
+     * Initiates the databases
+     */
+    const _init = () => {
+        initObjects(() => {
+            if (this.inited) {
+                this.log && logger.warn(`${this.namespaceLog} Reconnection to DB.`);
+                return;
+            }
+
+            this.inited = true;
+
+            // auto oObjects
+            if (options.objects) {
+                this.getAdapterObjects(objs => {
+                    this.oObjects = objs;
+                    this.subscribeObjects('*');
+                    initStates(prepareInitAdapter);
+                });
+            } else {
+                initStates(prepareInitAdapter);
+            }
+        });
+    };
 
     this._getObjectsByArray = (keys, objects, options, cb, _index, _result, _errors) => {
         if (objects) {
@@ -338,7 +279,7 @@ function Adapter(options) {
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${getErrorText(exitCode)}): ${
+        const text = `${this.namespaceLog} Terminated (${utils.getErrorText(exitCode)}): ${
             reason ? reason : 'Without reason'
         }`;
         if (isNotCritical) {
@@ -383,44 +324,6 @@ function Adapter(options) {
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
     }
-
-    // remove "lib"
-    /*
-    this.adapterDir.pop();
-    const jsc = this.adapterDir.pop();
-    if ((jsc === tools.appName + '.js-controller' || jsc === tools.appName.toLowerCase() + '.js-controller') && this.adapterDir.pop() === 'node_modules') {
-        // js-controller is installed as npm
-        const appName = tools.appName.toLowerCase();
-        this.adapterDir = this.adapterDir.join('/');
-        if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + appName + '.' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + appName + '.js-controller/node_modules/' + appName + '.' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + appName + '.js-controller/adapter/' + options.name)) {
-            this.adapterDir += '/node_modules/' + appName + '.js-controller/adapter/' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + tools.appName + '.js-controller/node_modules/' + appName + '.' + options.name;
-        } else {
-            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
-            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-        }
-    } else {
-        this.adapterDir = __dirname.replace(/\\/g, '/');
-        // remove "/lib"
-        this.adapterDir = this.adapterDir.substring(0, this.adapterDir.length - 4);
-        if (fs.existsSync(this.adapterDir + '/node_modules/' + tools.appName + '.' + options.name)) {
-            this.adapterDir += '/node_modules/' + tools.appName + '.' + options.name;
-        } else if (fs.existsSync(this.adapterDir + '/../node_modules/' + tools.appName + '.' + options.name)) {
-            const parts = this.adapterDir.split('/');
-            parts.pop();
-            this.adapterDir = parts.join('/') + '/node_modules/' + tools.appName + '.' + options.name;
-        } else {
-            logger.error(this.namespaceLog + ' Cannot find directory of adapter ' + options.name);
-            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-        }
-    }
-}
- */
 
     if (fs.existsSync(this.adapterDir + '/package.json')) {
         this.pack = fs.readJSONSync(this.adapterDir + '/package.json');
@@ -514,80 +417,6 @@ function Adapter(options) {
     this.getPortRunning = null;
 
     /**
-     * Checks if a passed ID is valid. Throws an error if id is invalid
-     *
-     * @param {string|object} id id to check or object with properties device, channel and state
-     * @param {boolean} isForeignId true&false if the ID is a foreign/full ID or only an "adapter local" id
-     * @param {object} options optional
-     * @throws Error when id is invalid
-     */
-    const validateId = (id, isForeignId, options) => {
-        // there is special maintenance mode to clear the DB from invalid IDs
-        if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
-            return;
-        }
-
-        if (!id && id !== 0) {
-            throw new Error('The id is empty! Please provide a valid id.');
-        }
-
-        const type = typeof id;
-
-        if (!isForeignId && type === 'number') {
-            logger.warn(
-                `${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`
-            );
-            logger.warn(
-                `${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`
-            );
-        } else if (type !== 'string' && !tools.isObject(id)) {
-            throw new Error(`The id "${id}" has an invalid type! Expected "string" or "object", received "${type}".`);
-        }
-
-        if (tools.isObject(id)) {
-            // id can be an object, at least one of the following properties has to exist
-            const reqProperties = ['device', 'channel', 'state'];
-            let found = false;
-            for (const reqProperty of reqProperties) {
-                if (reqProperty !== undefined) {
-                    if (typeof reqProperty !== 'string') {
-                        throw new Error(
-                            `The id's property "${reqProperty}" of "${JSON.stringify(
-                                id
-                            )}" has an invalid type! Expected "string", received "${typeof reqProperty}".`
-                        );
-                    }
-
-                    if (reqProperty.includes('.')) {
-                        throw new Error(
-                            `The id's property "${reqProperty}" of "${JSON.stringify(
-                                id
-                            )}" contains the invalid character "."!`
-                        );
-                    }
-                    found = true;
-                }
-            }
-            if (found === false) {
-                throw new Error(
-                    `The id "${JSON.stringify(
-                        id
-                    )}" is an invalid object! Expected at least one of the properties "device", "channel" or "state" to exist.`
-                );
-            }
-        } else {
-            if (type !== 'string') {
-                throw new Error(
-                    `The id "${JSON.stringify(id)}" has an invalid type! Expected "string", received "${type}".`
-                );
-            }
-            if (id.endsWith('.')) {
-                throw new Error(`The id "${id}" is invalid. Ids are not allowed to end in "."`);
-            }
-        }
-    };
-
-    /**
      * Helper function to find next free port
      *
      * Looks for first free TCP port starting with given one:
@@ -658,7 +487,7 @@ function Adapter(options) {
      * @returns {boolean} true/false if the feature is in the list of supported features
      */
     this.supportsFeature = featureName => {
-        return supportedFeatures.includes(featureName);
+        return SUPPORTED_FEATURES.includes(featureName);
     };
 
     /**
@@ -1235,9 +1064,9 @@ function Adapter(options) {
                         '-----END CERTIFICATE-----\r\n'
                     );
                     ca = [];
-                    for (let c = 0; c < chained.length; c++) {
-                        if (chained[c].replace(/(\r\n|\r|\n)/g, '').trim()) {
-                            ca.push(chained[c] + '-----END CERTIFICATE-----\r\n');
+                    for (const cert of chained) {
+                        if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
+                            ca.push(cert + '-----END CERTIFICATE-----\r\n');
                         }
                     }
                 }
@@ -1279,38 +1108,49 @@ function Adapter(options) {
      * After updating the configuration, the adapter is automatically restarted.
      *
      * @param {Record<string, any>} newConfig The new config values to be stored
+     * @return Promise<void>
      */
-    this.updateConfig = newConfig => {
+    this.updateConfig = async newConfig => {
         // merge the old and new configuration
         const _config = Object.assign({}, this.config, newConfig);
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
-        this.getForeignObjectAsync(configObjId)
-            .then(obj => {
-                if (!obj) {
-                    return Promise.reject(new Error(tools.ERRORS.ERROR_DB_CLOSED));
-                }
-                obj.native = _config;
-                return this.setForeignObjectAsync(configObjId, obj);
-            })
-            .catch(err => logger.error(`${this.namespaceLog} Updating the adapter config failed: ${err.message}`));
+        let obj;
+        try {
+            obj = await this.getForeignObjectAsync(configObjId);
+        } catch (e) {
+            logger.error(`${this.namespaceLog} Updating the adapter config failed: ${e.message}`);
+        }
+
+        if (!obj) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        obj.native = _config;
+        return this.setForeignObjectAsync(configObjId, obj);
     };
 
     /**
      * Disables and stops the adapter instance.
+     *
+     * @return Promise<void>
      */
-    this.disable = () => {
+    this.disable = async () => {
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
-        this.getForeignObjectAsync(configObjId)
-            .then(obj => {
-                if (!obj) {
-                    return Promise.reject(new Error(tools.ERRORS.ERROR_DB_CLOSED));
-                }
-                obj.common.enabled = false;
-                return this.setForeignObjectAsync(configObjId, obj);
-            })
-            .catch(err => logger.error(`${this.namespaceLog} Disabling the adapter instance failed: ${err.message}`));
+        let obj;
+        try {
+            obj = await this.getForeignObjectAsync(configObjId);
+        } catch (e) {
+            logger.error(`${this.namespaceLog} Disabling the adapter instance failed: ${e.message}`);
+        }
+
+        if (!obj) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        obj.common.enabled = false;
+        return this.setForeignObjectAsync(configObjId, obj);
     };
 
     /**
@@ -1560,7 +1400,19 @@ function Adapter(options) {
         extendObjects(objs, callback);
     };
 
+    /**
+     * Called if states and objects successfully initalized
+     */
     const prepareInitAdapter = () => {
+        utils = new Utils(
+            adapterObjects,
+            adapterStates,
+            this.namespaceLog,
+            logger,
+            this.namespace,
+            this._namespaceRegExp
+        );
+
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
@@ -1577,12 +1429,7 @@ function Adapter(options) {
                         killRes.val === -1
                     ) {
                         logger.error(
-                            this.namespaceLog +
-                                ' ' +
-                                options.name +
-                                '.' +
-                                instance +
-                                ' needs to be stopped because not correctly started in compact mode'
+                            `${this.namespaceLog} ${options.name}.${instance} needs to be stopped because not correctly started in compact mode`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -1922,143 +1769,6 @@ function Adapter(options) {
         });
 
         /**
-         * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
-         * additionally it rounds state values whose objects have a common.step attribute defined
-         *
-         * @param {string} id - id of the state
-         * @param {object} state - ioBroker setState object
-         * @return {Promise<void>}
-         */
-        this._performStrictObjectCheck = async (id, state) => {
-            // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
-            // can already let the non existing object case throw with 3.4 because this is already producing a warning
-            try {
-                if (state.val === undefined) {
-                    // only ack etc. is also possible to acknowledge the current value,
-                    // if only undefined provided, it should have thrown before
-                    return;
-                }
-
-                const obj = await adapterObjects.getObjectAsync(id);
-                // at first check object existence
-                if (!obj) {
-                    logger.warn(
-                        `${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`
-                    );
-                    return;
-                }
-
-                // for a state object we require common.type to exist
-                if (obj.common && obj.common.type) {
-                    // check if we are allowed to write (read-only can only be written with ack: true)
-                    if (!state.ack && obj.common.write === false) {
-                        logger.warn(
-                            `${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`
-                        );
-                    }
-
-                    if (state.val !== null) {
-                        // now check if type is correct, null is always allowed
-                        if (obj.common.type === 'file') {
-                            // file has to be set with setBinaryState
-                            logger.warn(
-                                `${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`
-                            );
-                        } else if (
-                            !(
-                                (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
-                                (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
-                                (obj.common.type === 'array' && typeof state.val === 'string') ||
-                                (obj.common.type === 'json' && typeof state.val === 'string') ||
-                                (obj.common.type === 'file' && typeof state.val === 'string') ||
-                                (obj.common.type === 'object' && typeof state.val === 'string')
-                            )
-                        ) {
-                            // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'
-                            // array, object, json need to be string
-                            if (['object', 'json', 'array'].includes(obj.common.type)) {
-                                logger.info(
-                                    `${
-                                        this.namespaceLog
-                                    } State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`
-                                );
-                            } else {
-                                logger.info(
-                                    `${this.namespaceLog} State value to set for "${id}" has to be ${
-                                        obj.common.type === 'mixed'
-                                            ? `one of type "string", "number", "boolean"`
-                                            : `type "${obj.common.type}"`
-                                    } but received type "${typeof state.val}" `
-                                );
-                            }
-                        }
-
-                        // now round step and check min/max if it's a number
-                        if (typeof state.val === 'number') {
-                            if (typeof obj.common.step === 'number' && obj.common.step > 0) {
-                                // round to next step
-                                const inv = 1 / obj.common.step;
-                                state.val = Math.round(state.val * inv) / inv;
-                            }
-
-                            if (obj.common.max !== undefined && state.val > obj.common.max) {
-                                logger.warn(
-                                    `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`
-                                );
-                            }
-
-                            if (obj.common.min !== undefined && state.val < obj.common.min) {
-                                logger.warn(
-                                    `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`
-                                );
-                            }
-                        }
-                    }
-                } else {
-                    logger.warn(
-                        `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`
-                    );
-                }
-            } catch (e) {
-                logger.warn(`${this.namespaceLog} Could not perform strict object check of state ${id}: ${e.message}`);
-            }
-        };
-
-        /**
-         * @param {string | {device?: string, channel?: string, state?: string}} id
-         * @param {boolean} [isPattern=false]
-         */
-        this._fixId = (id, isPattern /* , type */) => {
-            if (!id) {
-                id = '';
-            }
-
-            let result = '';
-            // If id is an object
-            if (tools.isObject(id)) {
-                // Add namespace + device + channel
-                result =
-                    this.namespace +
-                    '.' +
-                    (id.device ? id.device + '.' : '') +
-                    (id.channel ? id.channel + '.' : '') +
-                    (id.state ? id.state : '');
-            } else if (typeof id === 'string') {
-                result = id;
-
-                // if not instance name itself and also not starts with namespace and "."
-                if (id !== this.namespace && !this._namespaceRegExp.test(id)) {
-                    if (!isPattern) {
-                        result = this.namespace + (id ? '.' + id : '');
-                    } else {
-                        result = this.namespace + '.' + (id ? id : '');
-                    }
-                }
-            }
-            return result;
-        };
-
-        /**
          * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one is configured
          * @param {string} id of the object
          * @param obj The object to set
@@ -2086,7 +1796,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -2147,7 +1857,7 @@ function Adapter(options) {
                 options = null;
             }
             if (!defaultObjs) {
-                defaultObjs = require('./defaultObjs.js')('de', '°C', 'EUR');
+                defaultObjs = require('./defaultObjs.js')();
             }
 
             if (!obj) {
@@ -2166,7 +1876,7 @@ function Adapter(options) {
 
             if (obj.type !== 'meta') {
                 try {
-                    validateId(id, false, null);
+                    utils.validateId(id, false, null);
                 } catch (err) {
                     logger.error(tools.appendStackTrace(`${this.namespaceLog} ${err.message}`));
                     return;
@@ -2230,7 +1940,7 @@ function Adapter(options) {
                     );
                 }
 
-                id = this._fixId(id, false /*, obj.type*/);
+                id = utils.fixId(id, false);
 
                 if (obj.children || obj.parent) {
                     logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
@@ -2411,12 +2121,12 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id, false /*, obj.type*/);
+            id = utils.fixId(id, false);
 
             const mId = id.replace(FORBIDDEN_CHARS, '_');
             if (mId !== id) {
@@ -2623,8 +2333,8 @@ function Adapter(options) {
                 // if alias is object validate read and write
                 if (typeof obj.common.alias.id === 'object') {
                     try {
-                        validateId(obj.common.alias.id.write, true, null);
-                        validateId(obj.common.alias.id.read, true, null);
+                        utils.validateId(obj.common.alias.id.write, true, null);
+                        utils.validateId(obj.common.alias.id.read, true, null);
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, `Alias id is invalid: ${e.message}`);
                     }
@@ -2637,7 +2347,7 @@ function Adapter(options) {
                     }
                 } else {
                     try {
-                        validateId(obj.common.alias.id, true, null);
+                        utils.validateId(obj.common.alias.id, true, null);
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, `Alias id is invalid: ${e.message}`);
                     }
@@ -2686,7 +2396,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -2864,12 +2574,12 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            adapterObjects.getObject(this._fixId(id), options, callback);
+            adapterObjects.getObject(utils.fixId(id), options, callback);
         };
         /**
          * Promise-version of Adapter.getObject
@@ -3125,7 +2835,7 @@ function Adapter(options) {
          *            }
          *        </code></pre>
          */
-        this.getEnums = (_enumList, options, callback) => {
+        this.getEnums = async (_enumList, options, callback) => {
             if (typeof _enumList === 'function') {
                 callback = _enumList;
                 _enumList = null;
@@ -3161,9 +2871,12 @@ function Adapter(options) {
                     );
                 }
 
-                Promise.all(promises)
-                    .then(() => tools.maybeCallbackWithError(callback, null, _enums))
-                    .catch(e => tools.maybeCallbackWithError(callback, e));
+                try {
+                    await Promise.all(promises);
+                    return tools.maybeCallbackWithError(callback, null, _enums);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 // Read all enums
                 adapterObjects.getObjectView(
@@ -3384,7 +3097,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3423,7 +3136,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3474,7 +3187,7 @@ function Adapter(options) {
          */
         this.delObject = (id, options, callback) => {
             // delObject does the same as delForeignObject, but fixes the ID first
-            id = this._fixId(id);
+            id = utils.fixId(id);
             this.delForeignObject(id, options, callback);
         };
         /**
@@ -3533,7 +3246,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -3627,7 +3340,7 @@ function Adapter(options) {
             if (pattern === '*') {
                 adapterObjects.subscribeUser(this.namespace + '.*', options, callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterObjects.subscribeUser(pattern, options, callback);
             }
         };
@@ -3663,7 +3376,7 @@ function Adapter(options) {
             if (pattern === '*') {
                 adapterObjects.unsubscribeUser(this.namespace + '.*', options, callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterObjects.unsubscribeUser(pattern, options, callback);
             }
         };
@@ -3768,12 +3481,12 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id);
+            id = utils.fixId(id);
 
             if (obj.children || obj.parent) {
                 logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
@@ -3842,7 +3555,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -4047,7 +3760,7 @@ function Adapter(options) {
                 parentChannel = parentChannel.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
-            const id = this._fixId({ device: parentDevice, channel: parentChannel, state: stateName });
+            const id = utils.fixId({ device: parentDevice, channel: parentChannel, state: stateName });
 
             // Check min, max and def values for number
             if (common.type !== undefined && common.type === 'number') {
@@ -4748,7 +4461,7 @@ function Adapter(options) {
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            const objId = this._fixId({ device: parentDevice, channel: parentChannel, state: stateName });
+            const objId = utils.fixId({ device: parentDevice, channel: parentChannel, state: stateName });
 
             if (addTo.startsWith('enum.')) {
                 adapterObjects.getObject(addTo, options, (err, obj) => {
@@ -4851,7 +4564,7 @@ function Adapter(options) {
             }
             stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-            const objId = this._fixId(
+            const objId = utils.fixId(
                 {
                     device: parentDevice,
                     channel: parentChannel,
@@ -5873,7 +5586,7 @@ function Adapter(options) {
                     if (differ) {
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
                         this.outputCount++;
                         adapterStates.setState(id, state, (/* err */) => {
@@ -6575,12 +6288,12 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id, false);
+            id = utils.fixId(id, false);
 
             if (tools.isObject(state)) {
                 // Verify that the passed state object is valid
@@ -6623,7 +6336,7 @@ function Adapter(options) {
 
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
 
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -6637,7 +6350,7 @@ function Adapter(options) {
 
                                 // validate here because we use objects/states db directly
                                 try {
-                                    validateId(aliasId, true, null);
+                                    utils.validateId(aliasId, true, null);
                                 } catch (e) {
                                     logger.warn(
                                         `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
@@ -6705,7 +6418,7 @@ function Adapter(options) {
 
                             // validate here because we use objects/states db directly
                             try {
-                                validateId(aliasId, true, null);
+                                utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                                 return tools.maybeCallbackWithError(
@@ -6741,7 +6454,7 @@ function Adapter(options) {
                 } else {
                     if (this.performStrictObjectChecks) {
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._performStrictObjectCheck(id, state);
+                        await utils.performStrictObjectCheck(id, state);
                     }
 
                     if (!adapterStates) {
@@ -6804,12 +6517,12 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            id = this._fixId(id, false /*, 'state'*/);
+            id = utils.fixId(id, false);
 
             if (tools.isObject(state)) {
                 // Verify that the passed state object is valid
@@ -6910,7 +6623,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -6968,7 +6681,7 @@ function Adapter(options) {
 
                         if (this.performStrictObjectChecks) {
                             // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._performStrictObjectCheck(id, state);
+                            await utils.performStrictObjectCheck(id, state);
                         }
 
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -6982,7 +6695,7 @@ function Adapter(options) {
 
                                 // validate here because we use objects/states db directly
                                 try {
-                                    validateId(aliasId, true, null);
+                                    utils.validateId(aliasId, true, null);
                                 } catch (e) {
                                     logger.warn(
                                         `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
@@ -7055,7 +6768,7 @@ function Adapter(options) {
 
                             // validate here because we use objects/states db directly
                             try {
-                                validateId(aliasId, true, null);
+                                utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                                 return tools.maybeCallbackWithError(
@@ -7110,7 +6823,7 @@ function Adapter(options) {
                         }
 
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._performStrictObjectCheck(id, state);
+                        await utils.performStrictObjectCheck(id, state);
                     }
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
@@ -7184,7 +6897,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7261,7 +6974,7 @@ function Adapter(options) {
          */
         this.getState = (id, options, callback) => {
             // get state does the same as getForeignState but fixes the id first
-            id = this._fixId(id, false);
+            id = utils.fixId(id, false);
             return this.getForeignState(id, options, callback);
         };
         /**
@@ -7305,7 +7018,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7325,7 +7038,7 @@ function Adapter(options) {
 
                                 // validate here because we use objects/states db directly
                                 try {
-                                    validateId(aliasId, true, null);
+                                    utils.validateId(aliasId, true, null);
                                 } catch (e) {
                                     logger.warn(
                                         `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
@@ -7404,7 +7117,7 @@ function Adapter(options) {
 
                             // validate here because we use objects/states db directly
                             try {
-                                validateId(aliasId, true, null);
+                                utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                                 return tools.maybeCallbackWithError(
@@ -7514,7 +7227,7 @@ function Adapter(options) {
          */
         this.getHistory = (id, options, callback) => {
             try {
-                validateId(id, true, null);
+                utils.validateId(id, true, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7588,13 +7301,13 @@ function Adapter(options) {
          */
         this.delState = (id, options, callback) => {
             try {
-                validateId(id, false, null);
+                utils.validateId(id, false, null);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
             // delState does the same as delForeignState, but fixes the ID first
-            id = this._fixId(id);
+            id = utils.fixId(id);
             this.delForeignState(id, options, callback);
         };
         /**
@@ -7627,7 +7340,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -7672,7 +7385,7 @@ function Adapter(options) {
                 callback = options;
                 options = {};
             }
-            pattern = this._fixId(pattern, true);
+            pattern = utils.fixId(pattern, true);
             this.getForeignStates(pattern, options, callback);
         };
         /**
@@ -7920,7 +7633,7 @@ function Adapter(options) {
 
                 // validate here because we use objects/states db directly
                 try {
-                    validateId(sourceId, true, null);
+                    utils.validateId(sourceId, true, null);
                 } catch (e) {
                     logger.warn(`${this.namespaceLog} Error validating alias id of ${aliasObj._id}: ${e.message}`);
                     return tools.maybeCallbackWithError(
@@ -8402,7 +8115,7 @@ function Adapter(options) {
             if (!pattern || pattern === '*') {
                 adapterStates.subscribeUser(this.namespace + '.*', callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterStates.subscribeUser(pattern, callback);
             }
         };
@@ -8444,7 +8157,7 @@ function Adapter(options) {
             if (!pattern || pattern === '*') {
                 adapterStates.unsubscribeUser(this.namespace + '.*', callback);
             } else {
-                pattern = this._fixId(pattern, true);
+                pattern = utils.fixId(pattern, true);
                 adapterStates.unsubscribeUser(pattern, callback);
             }
         };
@@ -8530,7 +8243,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -8658,7 +8371,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -8729,7 +8442,7 @@ function Adapter(options) {
             }
 
             try {
-                validateId(id, true, options);
+                utils.validateId(id, true, options);
             } catch (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -9021,7 +8734,7 @@ function Adapter(options) {
     const initAdapter = adapterConfig => {
         initLogging(() => {
             this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
-            this.pluginHandler.initPlugins(adapterConfig, () => {
+            this.pluginHandler.initPlugins(adapterConfig, async () => {
                 if (!adapterStates) {
                     // if adapterState was destroyed,we should not continue
                     return;
@@ -9166,147 +8879,136 @@ function Adapter(options) {
                                 this.getEncryptedConfig(attr)
                                     .then(decryptedValue => (this.config[attr] = decryptedValue))
                                     .catch(e =>
-                                        logger.error(`${this.namespaceLog} Can not decrypt attribute ${attr}: ${e}`)
+                                        logger.error(
+                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
+                                        )
                                     )
                             );
                         }
                     }
                 } else {
                     // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
-                    const idx = supportedFeatures.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
+                    const idx = SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
                     if (idx !== -1) {
-                        supportedFeatures.splice(idx, 1);
+                        SUPPORTED_FEATURES.splice(idx, 1);
                     }
                 }
 
-                let promiseReadSecret;
-
                 // read the systemSecret
-                if (systemSecret !== null) {
-                    promiseReadSecret = Promise.resolve();
-                } else {
-                    promiseReadSecret = new Promise(resolve => {
-                        this.getForeignObject('system.config', null, (err, data) => {
-                            if (data && data.native) {
-                                systemSecret = data.native.secret;
-                            }
-                            systemSecret = systemSecret || DEFAULT_SECRET;
-                            resolve();
-                        });
-                    });
+                if (systemSecret === null) {
+                    try {
+                        const data = await this.getForeignObjectAsync('system.config', null);
+                        if (data && data.native) {
+                            systemSecret = data.native.secret;
+                        }
+                    } catch {
+                        // ignore
+                    }
+                    systemSecret = systemSecret || DEFAULT_SECRET;
                 }
 
-                // Wait till secret read and all attributes decrypted
-                promiseReadSecret
-                    .then(() => Promise.all(promises))
-                    .then(() => {
-                        this.log = new Log(this.namespaceLog, config.log.level, logger);
+                // Wait till all attributes decrypted
+                await Promise.all(promises);
+                this.log = new Log(this.namespaceLog, config.log.level, logger);
 
-                        if (!adapterStates) {
-                            // if adapterState was destroyed,we should not continue
-                            return;
-                        }
+                if (!adapterStates) {
+                    // if adapterStates was destroyed, we should not continue
+                    return;
+                }
 
-                        this.outputCount++;
-                        // set current loglevel
-                        adapterStates.setState('system.adapter.' + this.namespace + '.logLevel', {
-                            val: config.log.level,
+                this.outputCount++;
+                // set current loglevel
+                adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
+                    val: config.log.level,
+                    ack: true,
+                    from: `system.adapter.${this.namespace}`
+                });
+
+                if (options.instance === undefined) {
+                    this.version =
+                        this.pack && this.pack.version
+                            ? this.pack.version
+                            : this.ioPack && this.ioPack.common
+                            ? this.ioPack.common.version
+                            : 'unknown';
+                    // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                    const isNpmVersion =
+                        !this.ioPack ||
+                        !this.ioPack.common ||
+                        typeof this.ioPack.common.installedFrom !== 'string' ||
+                        this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+
+                    logger.info(
+                        `${this.namespaceLog} starting. Version ${this.version} ${
+                            !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
+                        }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                    );
+                    config.system = config.system || {};
+                    config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+                    if (!config.isInstall) {
+                        reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
+                        reportStatus();
+                        const id = 'system.adapter.' + this.namespace;
+                        adapterStates.setState(id + '.compactMode', {
                             ack: true,
-                            from: 'system.adapter.' + this.namespace
+                            from: id,
+                            val: !!this.startedInCompactMode
                         });
 
-                        if (options.instance === undefined) {
-                            this.version =
-                                this.pack && this.pack.version
-                                    ? this.pack.version
-                                    : this.ioPack && this.ioPack.common
-                                    ? this.ioPack.common.version
-                                    : 'unknown';
-                            // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
-                            const isNpmVersion =
-                                !this.ioPack ||
-                                !this.ioPack.common ||
-                                typeof this.ioPack.common.installedFrom !== 'string' ||
-                                this.ioPack.common.installedFrom.startsWith(
-                                    `${tools.appName.toLowerCase()}.${this.name}`
-                                );
+                        this.outputCount++;
 
-                            logger.info(
-                                `${this.namespaceLog} starting. Version ${this.version} ${
-                                    !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
-                                }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
-                            );
-                            config.system = config.system || {};
-                            config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
-                            if (!config.isInstall) {
-                                reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
-                                reportStatus();
-                                const id = 'system.adapter.' + this.namespace;
-                                adapterStates.setState(id + '.compactMode', {
-                                    ack: true,
-                                    from: id,
-                                    val: !!this.startedInCompactMode
-                                });
-
-                                this.outputCount++;
-
-                                if (this.startedInCompactMode) {
-                                    adapterStates.setState(id + '.cpu', { ack: true, from: id, val: 0 });
-                                    adapterStates.setState(id + '.cputime', { ack: true, from: id, val: 0 });
-                                    adapterStates.setState(id + '.memRss', { val: 0, ack: true, from: id });
-                                    adapterStates.setState(id + '.memHeapTotal', { val: 0, ack: true, from: id });
-                                    adapterStates.setState(id + '.memHeapUsed', { val: 0, ack: true, from: id });
-                                    adapterStates.setState(id + '.eventLoopLag', { val: 0, ack: true, from: id });
-                                    this.outputCount += 6;
-                                } else {
-                                    tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
-                                }
-                            }
-                        }
-
-                        if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
-                            try {
-                                schedule = require('node-schedule');
-                            } catch {
-                                logger.error(
-                                    this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled'
-                                );
-                            }
-                            if (schedule) {
-                                logger.debug(
-                                    `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
-                                );
-                                restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
-                                    logger.info(this.namespaceLog + ' Scheduled restart.');
-                                    stop(false, true);
-                                });
-                            }
-                        }
-
-                        // auto oStates
-                        if (options.states) {
-                            this.getStates('*', null, (err, _states) => {
-                                this.oStates = _states;
-                                this.subscribeStates('*');
-                                if (firstConnection) {
-                                    firstConnection = false;
-                                    typeof options.ready === 'function' && options.ready();
-                                    this.emit('ready');
-                                } else {
-                                    typeof options.reconnect === 'function' && options.reconnect();
-                                    this.emit('reconnect');
-                                }
-                                this.adapterReady = true;
-                            });
+                        if (this.startedInCompactMode) {
+                            adapterStates.setState(id + '.cpu', { ack: true, from: id, val: 0 });
+                            adapterStates.setState(id + '.cputime', { ack: true, from: id, val: 0 });
+                            adapterStates.setState(id + '.memRss', { val: 0, ack: true, from: id });
+                            adapterStates.setState(id + '.memHeapTotal', { val: 0, ack: true, from: id });
+                            adapterStates.setState(id + '.memHeapUsed', { val: 0, ack: true, from: id });
+                            adapterStates.setState(id + '.eventLoopLag', { val: 0, ack: true, from: id });
+                            this.outputCount += 6;
                         } else {
+                            tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
+                        }
+                    }
+                }
+
+                if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
+                    try {
+                        schedule = require('node-schedule');
+                    } catch {
+                        logger.error(this.namespaceLog + ' Cannot load node-schedule. Scheduled restart is disabled');
+                    }
+                    if (schedule) {
+                        logger.debug(`${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`);
+                        restartScheduleJob = schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
+                            logger.info(this.namespaceLog + ' Scheduled restart.');
+                            stop(false, true);
+                        });
+                    }
+                }
+
+                // auto oStates
+                if (options.states) {
+                    this.getStates('*', null, (err, _states) => {
+                        this.oStates = _states;
+                        this.subscribeStates('*');
+                        if (firstConnection) {
+                            firstConnection = false;
                             typeof options.ready === 'function' && options.ready();
                             this.emit('ready');
-                            this.adapterReady = true;
-
-                            // todo remove it later, when the error is fixed
-                            adapterStates.subscribe(`${this.namespace}.checkLogging`);
+                        } else {
+                            typeof options.reconnect === 'function' && options.reconnect();
+                            this.emit('reconnect');
                         }
+                        this.adapterReady = true;
                     });
+                } else {
+                    typeof options.ready === 'function' && options.ready();
+                    this.emit('ready');
+                    this.adapterReady = true;
+
+                    // todo remove it later, when the error is fixed
+                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
+                }
             });
         });
     };
@@ -9396,7 +9098,7 @@ function Adapter(options) {
         this.outputCount = 0;
     };
 
-    const stop = (isPause, isScheduled, exitCode, updateAliveState) => {
+    const stop = async (isPause, isScheduled, exitCode, updateAliveState) => {
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -9457,7 +9159,11 @@ function Adapter(options) {
                     const unloadPromise = options.unload();
                     if (unloadPromise instanceof Promise) {
                         // Call finishUnload in the case of success and failure
-                        unloadPromise.then(finishUnload, finishUnload);
+                        try {
+                            await unloadPromise;
+                        } finally {
+                            finishUnload();
+                        }
                     } else {
                         // No callback accepted and no Promise returned - force unload
                         logger.error(
@@ -9673,26 +9379,8 @@ function Adapter(options) {
         return licenses;
     };
 
-    initObjects(() => {
-        if (this.inited) {
-            this.log && logger.warn(this.namespaceLog + ' Reconnection to DB.');
-            return;
-        }
-
-        this.inited = true;
-
-        // auto oObjects
-        if (options.objects) {
-            this.getAdapterObjects(objs => {
-                this.oObjects = objs;
-                this.subscribeObjects('*');
-                initStates(prepareInitAdapter);
-            });
-        } else {
-            initStates(prepareInitAdapter);
-        }
-    });
-
+    // finally init
+    _init();
     return this;
 }
 

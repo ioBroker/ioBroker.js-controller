@@ -35,7 +35,7 @@ function register(it, expect, context) {
                 });
             }
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'should create object async', done => {
         const objects = context.objects;

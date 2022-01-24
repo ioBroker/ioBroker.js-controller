@@ -4,13 +4,17 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 4.0.0 (2021-xx-xx) Release I... [Cut off: 13.12.2021 11:00]
+## 4.0.0 (2021-xx-xx) Release I... [Cut off: 19.01.2022 17:30]
 **WORK IN PROGRESS - Use at own risk!**
 
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
 * CLI command `iob update --updateable` changed to `iob update --updatable`
 * CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore
+* CLI command `iob rebuild adaptername` is no longer supported because of the new way of automatic rebuilds and some unwanted side effects
+* CLI command `iob state get <id>` will no longer handle binary state values (which was never really working before). We added `iob state getBinary <id> <encoding>` as new way.
+* Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. ALso check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
+* PENDING: The "file" database will be automatically converted into JSONL and the database types that use "file" are adjusted to "jsonl" on installation (and backup restore). This means that a rollback of js-controller is only possible to 3.3 after 4.0 was installed! Rollback to former versions require a manual migration to "file" DB before the downgrade! (COMMUNICATION, TESTFOKUS)
 
 **Features**
 * (bluefox) Added complexity rules for user passwords: New created passwords need to follow the following rules (TODO ADMIN UI INFO ISSUE):
@@ -20,19 +24,21 @@
   * contains at least one upper case letter 
 * (foxriver76) Introduce option "--custom" when deleting instances or adapter to also clean up relevant custom entries from all objects (TODO ADMIN ISSUE ADD CHECKBOX!, TESTFOKUS)
 * (foxriver76) Added new host objects to provide Node.js version and PID
-* (foxriver76) Updated the Linux capabilities on js-controller start when a Node.js version change was detected (TESTFOKUS)
-* (AlCalzone/foxriver76) Further optimize strategy for required Node.js module rebuilds. We first try to rebuild the really affected module and also try to run rebuild in root package. Should give better results then former strategy (TESTFOKUS)
+* (foxriver76) Updated the Linux capabilities on js-controller start when a Node.js version change was detected (and initial on first run)
+* (AlCalzone/foxriver76) Further optimize strategy for required Node.js module rebuilds. We first try to run rebuild in root package and if still packages are left (or it fails) we try to rebuild the really affected modules alone. Should give better results then former strategy (TESTFOKUS)
 * (bluefox) Added support for configuring multiple repositories (TODO LINK+INFO FLAG)
+* (Apollon77) Streamline logging configuration for all available transports: A set Loglevel in config means that this loglevel is pinned for the transport for all cases. An Empty/not set level ("Default" in Admin) means that logging is dynamic and can be adjusted per Instance controller or loglevel state on the fly.
 * (foxriver76) Added installedFrom info to adapter start log line when not installed from npm normally
 
 **Optimizations and Fixes**
 * (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 300% faster, redis 46.000% !! faster)
+* (foxriver76/Apollon77) Improve performance for redis object searches by 90-3.000% by using lookup structures for object types and custom object properties (TODO DOCS)
 * (foxriver76/Apollon77) Improve performance for object searches in general by limiting search namespaces to the relevant ones automatically
-* (foxriver76/Apollon77) Improve performance for redis object searches by 90-3.000% by using lookup structures for object types (TODO DOCS)
 * (foxriver76) Improve handling of backup restores when custom hostnames were used (especially relevant for Docker usage)
 * (foxriver76) Optimize backup to make sure invalid user-generated JSONs do not prevent backups from being considered valid
 * (foxriver76/klein0r) Improved CLI help
 * (foxriver76) Preserve changed instance names also when updating adapter (name was reset before)
+* (foxriver76) stop adapters on win prior update to prevent EBUSY
 * (foxriver76) Prevent crashes for uploads with invalid adapter installations
 * (bluefox) Removed news from instance/adapter objects on install/update because taken from repository in Admin5 (TODO CHECK ADMIN4 EFFECTS)
 * (AlCalzone) Removed extraneous "npm install" inside adapter directory
@@ -41,23 +47,37 @@
 * (foxriver76) prevent crash when multihost password is invalid  and multihost active
 * (bluefox/foxriver76) bigger internal refactorings in cli commands (TESTFOKUS)
 * (foxriver76) made logging of not fulfilled adapter dependencies more user-friendly
-* (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 * (foxriver76) Check user and group assignments and remove unknown users from groups (could have happened in earlier versions) in setup first
+* (foxriver76) Prevent crash on adapter install/update if version string in repo is invalid
+* (AlCalzone) Update and optimize JSONL database integration and configuration options
+* (foxriver76) make sure that settings for file/jsonl DB in configfile are also respected
+* (foxriver76) Update seq integration for logging
+* (foxriver76) If logging can not be initialized because of a fatal error do not start js-controller
+* (foxriver76) Prevent start of a debug session for an instance that is already running
+* (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
 * **js-controller is no longer installable from GitHub because is now a monorepo. Use `@dev` tag on npm to get the nightly build of master js-controller!**
 * log info when `setState` is used for an object of type file - use `setBinaryState` instead!
 * log info when default value of an object is invalid (e.g. does not match object type)
 * log info when `common.states` is used and not an object (deprecate String usage)
-* Enhanced object checks: user, adapter, group need to have a name as string (TODO VERIFY!!)
+* log info when `common.min`/`common.max` exists on non numbers and contain invalid values/types
+* Enhanced object checks: adapter need to have a name as string
 * Decline calls for getForeignObjects with non string pattern (was pot. crashing before)
+* adapter.tools is deprecated and replaced by a shim. Use methods in adapter class or adapter-core instead or open issues if you need more internal functions
+* PENDING The object view definition "custom/state" is now removed from js-controller after being replaced by "system/custom" in js-controller 3.3. All relevant adapters are updated (COMMUNICATION)
 * remove all *Fifo* Methods from adapter.js because deprecated since 1.x
 * remove adapter.objects.* methods because deprecated since 2.x
 
 **Developer relevant new Features**
+* (jogibear9988) PENDING Add new "unload-safe" promise based "adapter.delay" method to delay further code execution, but still make sure code do not continue after unload was called. This method can **not** be used inside the "unload" method itself!
+* (jogibear9988/AlCalzone/foxriver76/Apollon77) PENDING Revamp adapter.*Timeout and adapter.*Interval methods to be "unload-safe" and also clear missing timeouts without warnings for more developer convenience! The methods to set a timeout or interval can **not** be used inside the "unload" method itself!
 * (AlCalzone) Introduce new methods in tools for Node.js module management: installNodeModule, uninstallNodeModule (TODO Issues adapter that use npm install -> Move))
+* (bluefox) Add license management functionality to host. Adapters can use adapter.getSuitableLicenses to get available relevant licenses (TODO DOCS)
 * (AlCalzone) Switch NPM relevant handling to library pak to be more flexible for the future which package manager we want to use. Important: There are still parts that rely on npm for now!
-* (bluefox) Also report docker info when sending diag data 
+* (bluefox) Also report docker info when sending diag data
+* (foxriver76) Add server time to getHostInfo message
+* (foxriver76) For multihost clusters with js-controller 4.0+ the hosts automatically determine a "primary" host that can be used js-controller internally (right now, preparation for future topics)
 
 **Developer relevant Optimizations and Fixes**
 * (foxriver76) fixed permissionError on setBinaryState
@@ -66,6 +86,9 @@
 * (foxriver76) Optimize deleteDevice/deleteChannel methods to just delete all objects the relevant device/channel
 * (foxriver76) Removed some magic path lookups  to be compatible to npm 7/8. `Appname` of controller is now always "iobroker" ("ioBroker" in dev cases)
 * (foxriver76) Also use Sentry (if enabled/allowed) in CLI commands whenever database is initialized to report crashes from CLI if they happen
+* (foxriver76) Introduce a database protocol version number to allow detection of the available database features in multihost environments
+* (bluefox) Prevent issues when using adapter.addChannelToEnum because of missing callback
+* (foxriver76) make sure autoSubscribe works as expected in all cases
 
 * general dependency updates
 * code style optimizations and streamline code
