@@ -348,7 +348,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                             )
                         );
                     }
-                    const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
+                    const res = objs.rows.map(obj => JSON.stringify(obj.value));
                     handler.sendArray(responseId, res);
                 }
             } else if (this.knownScripts[data[0]].func && data.length > 4) {
@@ -361,7 +361,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     endkey: data[4],
                     include_docs: true
                 });
-                const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
+                const res = objs.rows.map(obj => JSON.stringify(obj.value));
 
                 return void handler.sendArray(responseId, res);
             } else if (this.knownScripts[data[0]].redlock) {

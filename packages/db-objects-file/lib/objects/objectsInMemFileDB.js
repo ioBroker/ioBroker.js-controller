@@ -58,24 +58,18 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         // Handle some < js-controller 2.0 broken objects and correct them
         for (const key of Object.keys(this.dataset)) {
-            if (
-                typeof this.dataset[key] === 'object' &&
-                this.dataset[key].acl &&
-                this.dataset[key].acl.permissions &&
-                !this.dataset[key].acl.object
-            ) {
-                this.dataset[key].acl.object = this.dataset[key].acl.permissions;
-                delete this.dataset[key].acl.permissions;
+            const obj = this.dataset[key];
+            if (tools.isObject(obj) && obj.acl && obj.acl.permissions && !obj.acl.object) {
+                obj.acl.object = obj.acl.permissions;
+                delete obj.acl.permissions;
+                this.dataset[key] = obj;
             }
         }
 
         // init default new acl
-        if (
-            this.dataset['system.config'] &&
-            this.dataset['system.config'].common &&
-            this.dataset['system.config'].common.defaultNewAcl
-        ) {
-            this.defaultNewAcl = deepClone(this.dataset['system.config'].common.defaultNewAcl);
+        const configObj = this.dataset['system.config'];
+        if (configObj && configObj.common && configObj.common.defaultNewAcl) {
+            this.defaultNewAcl = deepClone(configObj.common.defaultNewAcl);
         }
     }
 
@@ -835,6 +829,15 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         return keys.map(id => this.dataset[id]);
     }
 
+    _ensureMetaDict() {
+        let meta = this.dataset['**META**'];
+        if (!meta) {
+            meta = {};
+            this.dataset['**META**'] = meta;
+        }
+        return meta;
+    }
+
     /**
      * Get value of given meta id
      *
@@ -842,11 +845,8 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @returns {*}
      */
     getMeta(id) {
-        if (!this.dataset['**META**']) {
-            this.dataset['**META**'] = {};
-        }
-
-        return this.dataset['**META**'][id];
+        const meta = this._ensureMetaDict();
+        return meta[id];
     }
 
     /**
@@ -856,11 +856,10 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
      * @param {string} value
      */
     setMeta(id, value) {
-        if (!this.dataset['**META**']) {
-            this.dataset['**META**'] = {};
-        }
-
-        this.dataset['**META**'][id] = value;
+        const meta = this._ensureMetaDict();
+        meta[id] = value;
+        // Make sure the object gets re-written, especially when using an external DB
+        this.dataset['**META**'] = meta;
 
         setImmediate(() => {
             // publish event in states
@@ -878,7 +877,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.dataset[id] = obj;
 
         // object updated -> if type changed to meta -> cache
-        if (this.dataset[id].type === 'meta' && this.existingMetaObjects[id] === false) {
+        if (obj.type === 'meta' && this.existingMetaObjects[id] === false) {
             this.existingMetaObjects[id] = true;
         }
 
@@ -889,11 +888,12 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
     // needed by server
     _delObject(id) {
-        if (!this.dataset[id]) {
+        const obj = this.dataset[id];
+        if (!obj) {
             throw new Error(utils.ERRORS.ERROR_NOT_FOUND);
         }
 
-        if (this.dataset[id].common && this.dataset[id].common.dontDelete) {
+        if (obj.common && obj.common.dontDelete) {
             throw new Error('Object is marked as non deletable');
         }
 
@@ -933,9 +933,10 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     continue;
                 }
             }
-            if (this.dataset[id]) {
+            const obj = this.dataset[id];
+            if (obj) {
                 try {
-                    f(this.dataset[id]);
+                    f(obj);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot execute map: ${e.message}`);
                 }
@@ -961,15 +962,16 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
     // needed by server
     _getObjectView(design, search, params) {
-        if (!this.dataset['_design/' + design]) {
+        const designObj = this.dataset[`_design/${design}`];
+        if (!designObj) {
             this.log.error(`${this.namespace} Cannot find view "${design}"`);
             throw new Error(`Cannot find view "${design}"`);
         }
-        if (!this.dataset[`_design/${design}`].views && this.dataset['_design/' + design].views[search]) {
+        if (!(designObj.views && designObj.views[search])) {
             this.log.warn(`${this.namespace} Cannot find search "${search}" in "${design}"`);
             throw new Error(`Cannot find search "${search}" in "${design}"`);
         }
-        return this._applyView(this.dataset[`_design/${design}`].views[search], params);
+        return this._applyView(designObj.views[search], params);
     }
 
     // Destructor of the class. Called by shutting down.

@@ -78,11 +78,8 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
             this._expireState(id);
         });
         // Set as expire all states that could expire
-        Object.keys(this.dataset).forEach(id => {
-            if (this.dataset[id] === undefined) {
-                return;
-            }
-            if (this.dataset[id].expire) {
+        Object.entries(this.dataset).forEach(([id, obj]) => {
+            if (obj && obj.expire) {
                 this._expireState(id, true);
             }
         });
@@ -138,12 +135,24 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         if (!keys || !Array.isArray(keys)) {
             throw new Error('no keys');
         }
-        return keys.map(el => (this.dataset[el] !== undefined ? this.dataset[el] : null));
+        return keys.map(el => {
+            const obj = this.dataset[el];
+            return obj !== undefined ? obj : null;
+        });
     }
 
     // needed by Server
     _getState(id) {
         return this.dataset[id];
+    }
+
+    _ensureMetaDict() {
+        let meta = this.dataset['**META**'];
+        if (!meta) {
+            meta = {};
+            this.dataset['**META**'] = meta;
+        }
+        return meta;
     }
 
     /**
@@ -153,11 +162,8 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
      * @returns {*}
      */
     getMeta(id) {
-        if (!this.dataset['**META**']) {
-            this.dataset['**META**'] = {};
-        }
-
-        return this.dataset['**META**'][id];
+        const meta = this._ensureMetaDict();
+        return meta[id];
     }
 
     /**
@@ -167,11 +173,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
      * @param {string} value
      */
     setMeta(id, value) {
-        if (!this.dataset['**META**']) {
-            this.dataset['**META**'] = {};
-        }
-
-        this.dataset['**META**'][id] = value;
+        const meta = this._ensureMetaDict();
+        meta[id] = value;
+        // Make sure the object gets re-written, especially when using an external DB
+        this.dataset['**META**'] = meta;
 
         setImmediate(() => {
             // publish event in states
@@ -219,8 +224,9 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
             delete this.stateExpires[id];
         }
 
-        if (this.dataset[id]) {
-            const isBinary = Buffer.isBuffer(this.dataset[id]);
+        const state = this.dataset[id];
+        if (state) {
+            const isBinary = Buffer.isBuffer(state);
             delete this.dataset[id];
 
             !isBinary && setImmediate(() => this.publishAll('state', id, null));
