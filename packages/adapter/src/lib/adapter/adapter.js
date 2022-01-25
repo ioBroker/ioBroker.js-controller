@@ -8479,7 +8479,7 @@ function Adapter(options) {
          * @memberof Adapter
          *
          */
-        this.getForeignBinaryStateAsync = tools.promisify(this.getBinaryState, this);
+        this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
 
         /**
          * Same as getForeignBinaryState but prefixes the own namespace to the id
