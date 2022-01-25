@@ -1193,7 +1193,8 @@ function Adapter(options) {
 
     /**
      * Same as setTimeout
-     * but it check the running timers on unload
+     * but it clears the running timers on unload
+     * does not work after unload has been called
      *
      * @param {function} cb - timer callback
      * @param {number} timeout - timeout in milliseconds
@@ -1207,14 +1208,17 @@ function Adapter(options) {
         }
 
         if (stopInProgress) {
-            this.log.warn(`setTimeout called, but adapter is shutting down`);
             return;
         }
 
-        const id = setTimeout.call(null, () => {
-            timers.delete(id);
-            cb(...args);
-        }, timeout);
+        const id = setTimeout.call(
+            null,
+            () => {
+                timers.delete(id);
+                cb(...args);
+            },
+            timeout
+        );
         timers.add(id);
 
         return id;
@@ -1244,7 +1248,7 @@ function Adapter(options) {
      */
     this.delay = timeout => {
         return new Promise(resolve => {
-            const id = setTimeout(() => { 
+            const id = setTimeout(() => {
                 delays.delete(id);
                 if (!stopInProgress) {
                     resolve();
@@ -1256,7 +1260,8 @@ function Adapter(options) {
 
     /**
      * Same as setInterval
-     * but it check the running intervals on unload
+     * but it clears the running intervals on unload
+     * does not work after unload has been called
      *
      * @param {function} cb - interval callback
      * @param {number} timeout - interval in milliseconds
@@ -1270,10 +1275,9 @@ function Adapter(options) {
         }
 
         if (stopInProgress) {
-            this.log.warn(`setInterval called, but adapter is shutting down`);
             return;
         }
-        
+
         const id = setInterval(() => cb(...args));
         intervals.add(id);
 
@@ -9135,9 +9139,7 @@ function Adapter(options) {
 
             const finishUnload = () => {
                 if (timers.size) {
-                    logger.warn(
-                        `${this.namespaceLog} Found ${timers.size} uncleared timeouts (report to developer)`
-                    );
+                    logger.warn(`${this.namespaceLog} Found ${timers.size} uncleared timeouts (report to developer)`);
                     timers.forEach(id => clearTimeout(id));
                     timers.clear();
                 }
