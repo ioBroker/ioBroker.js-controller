@@ -54,13 +54,10 @@ class RedisHandler extends EventEmitter {
                 this.log.silly(
                     `${this.socketId} New Redis request: ${
                         data.length > 1024
-                            ? data
+                            ? `${data
                                   .toString()
                                   .replace(/[\r\n]+/g, '')
-                                  .substring(0, 100) +
-                              ' -- ' +
-                              data.length +
-                              ' bytes'
+                                  .substring(0, 100)} -- ${data.length} bytes`
                             : data.toString().replace(/[\r\n]+/g, '')
                     }`
                 );
