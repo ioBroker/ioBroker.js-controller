@@ -8385,7 +8385,7 @@ function Adapter(options) {
         this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
 
         /**
-         * Same as setForeignBinaryState but calls fixId first
+         * Same as setForeignBinaryState but prefixes the own namespace to the id
          *
          * @alias setBinaryState
          * @memberof Adapter
@@ -8396,9 +8396,9 @@ function Adapter(options) {
          * @param {ioBroker.ErrorCallback} [callback]
          */
         this.setBinaryState = (id, binary, options, callback) => {
-            // TODO: call fix id as soon as adapters are migrated to setForeignBinaryState
+            // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
             // id = utils.fixId(id, false);
-            return this.setBinaryState(id, binary, options, callback);
+            return this.setForeignBinaryState(id, binary, options, callback);
         };
 
         /**
@@ -8482,7 +8482,7 @@ function Adapter(options) {
         this.getForeignBinaryStateAsync = tools.promisify(this.getBinaryState, this);
 
         /**
-         * Same as getForeignBinaryState but calls fixId first
+         * Same as getForeignBinaryState but prefixes the own namespace to the id
          *
          * @param {string} id The state ID
          * @param {object} options optional
