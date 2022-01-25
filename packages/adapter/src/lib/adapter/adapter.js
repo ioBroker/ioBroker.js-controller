@@ -91,9 +91,9 @@ function Adapter(options) {
     let initializeTimeout;
     let adapterStates;
     let adapterObjects;
-    let timers = {};
-    let timerId = 1;
-    let intervals = {};
+    const timers = new Set();
+    const intervals = new Set();
+    const delays = new Set();
     let stopInProgress = false;
 
     if (options.config && !options.config.log) {
@@ -1193,9 +1193,9 @@ function Adapter(options) {
 
     /**
      * Same as setTimeout
-     * but it check the running timers on unload
+     * but it clears the running timers on unload
+     * does not work after unload has been called
      *
-     * It returns promise if no callback is provided.
      * @param {function} cb - timer callback
      * @param {number} timeout - timeout in milliseconds
      * @param {any[]} args - as many arguments as needed, which will be passed to setTimeout
@@ -1207,40 +1207,67 @@ function Adapter(options) {
             return;
         }
 
-        timerId = (timerId + 1) % 0xffffffff;
+        if (stopInProgress) {
+            this.log.warn(`setTimeout called, but adapter is shutting down`);
+            return;
+        }
 
-        const _cb = (function (id, _cb) {
-            return function (...args) {
-                delete timers[id];
-                _cb(...args);
-            };
-        })(timerId, cb);
+        const id = setTimeout.call(
+            null,
+            () => {
+                timers.delete(id);
+                cb(...args);
+            },
+            timeout
+        );
+        timers.add(id);
 
-        timers[timerId] = setTimeout.call(null, _cb, timeout, ...args);
-        return timerId;
+        return id;
     };
 
     /**
      * Same as clearTimeout
      * but it check the running timers on unload
      *
-     * It returns promise if no callback is provided.
      * @param {number} id - timer id
      */
     this.clearTimeout = id => {
-        if (!timers[id]) {
-            logger.warn(`${this.namespaceLog} Clear yet terminated timer ${id}`);
+        if (!timers.has(id)) {
+            logger.warn(`${this.namespaceLog} Clear already terminated timer ${id}`);
         } else {
-            clearTimeout(timers[id]);
-            delete timers[id];
+            clearTimeout(id);
+            timers.delete(id);
         }
     };
 
     /**
-     * Same as setInterval
-     * but it check the running intervals on unload
+     * delays the fullfillment of the promise the amount of time.
+     * it will not fullfill during and after adapter shutdown
      *
-     * It returns promise if no callback is provided.
+     * @param {number} timeout - timeout in milliseconds
+     * @returns {Promise<void>} promise when timeout is over
+     */
+    this.delay = timeout => {
+        if (stopInProgress) {
+            this.log.warn(`delay called, but adapter is shutting down`);
+        }
+
+        return new Promise(resolve => {
+            const id = setTimeout(() => {
+                delays.delete(id);
+                if (!stopInProgress) {
+                    resolve();
+                }
+            }, timeout);
+            delays.add(id);
+        });
+    };
+
+    /**
+     * Same as setInterval
+     * but it clears the running intervals on unload
+     * does not work after unload has been called
+     *
      * @param {function} cb - interval callback
      * @param {number} timeout - interval in milliseconds
      * @param {any[]} args - as many arguments as needed, which will be passed to setTimeout
@@ -1251,25 +1278,30 @@ function Adapter(options) {
             this.log.error(`setInterval expected callback to be of type "function", but got "${typeof cb}"`);
             return;
         }
-        timerId = (timerId + 1) % 0xffffffff;
-        intervals[timerId] = setInterval.call(null, cb, timeout, ...args);
 
-        return timerId;
+        if (stopInProgress) {
+            this.log.warn(`setInterval called, but adapter is shutting down`);
+            return;
+        }
+
+        const id = setInterval(() => cb(...args));
+        intervals.add(id);
+
+        return id;
     };
 
     /**
      * Same as clearInterval
      * but it check the running intervals on unload
      *
-     * It returns promise if no callback is provided.
      * @param {number} id - interval id
      */
     this.clearInterval = id => {
-        if (!intervals[id]) {
-            logger.warn(`${this.namespaceLog} Clear yet terminated interval ${id}`);
+        if (!intervals.has(id)) {
+            logger.warn(`${this.namespaceLog} Clear already terminated interval ${id}`);
         } else {
-            clearInterval(intervals[id]);
-            delete intervals[id];
+            clearInterval(id);
+            intervals.delete(id);
         }
     };
 
@@ -9112,22 +9144,19 @@ function Adapter(options) {
             const id = 'system.adapter.' + this.namespace;
 
             const finishUnload = () => {
-                let tIDs = Object.keys(timers);
-                if (tIDs.length) {
-                    logger.warn(
-                        `${this.namespaceLog} Found uncleared timeouts (report to developer): ${tIDs.join(', ')}`
-                    );
-                    tIDs.forEach(id => clearTimeout(timers[id]));
-                    timers = {};
+                if (timers.size) {
+                    timers.forEach(id => clearTimeout(id));
+                    timers.clear();
                 }
 
-                tIDs = Object.keys(intervals);
-                if (tIDs.length) {
-                    logger.warn(
-                        `${this.namespaceLog} Found uncleared intervals (report to developer): ${tIDs.join(', ')}`
-                    );
-                    tIDs.forEach(id => clearInterval(intervals[id]));
-                    intervals = {};
+                if (intervals.size) {
+                    intervals.forEach(id => clearInterval(id));
+                    intervals.clear();
+                }
+
+                if (delays.size) {
+                    delays.forEach(id => clearTimeout(id));
+                    delays.clear();
                 }
 
                 if (this.terminated) {
