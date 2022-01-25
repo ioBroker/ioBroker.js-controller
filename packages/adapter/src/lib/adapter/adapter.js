@@ -1208,6 +1208,7 @@ function Adapter(options) {
         }
 
         if (stopInProgress) {
+            this.log.warn(`setTimeout called, but adapter is shutting down`);
             return;
         }
 
@@ -1247,6 +1248,10 @@ function Adapter(options) {
      * @returns {Promise<void>} promise when timeout is over
      */
     this.delay = timeout => {
+        if (stopInProgress) {
+            this.log.warn(`delay called, but adapter is shutting down`);
+        }
+
         return new Promise(resolve => {
             const id = setTimeout(() => {
                 delays.delete(id);
@@ -1275,6 +1280,7 @@ function Adapter(options) {
         }
 
         if (stopInProgress) {
+            this.log.warn(`setInterval called, but adapter is shutting down`);
             return;
         }
 
