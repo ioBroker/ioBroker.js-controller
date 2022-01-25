@@ -85,6 +85,7 @@ function Adapter(options) {
         throw new Error('Configuration not set!');
     }
 
+    /** @type Utils*/
     let utils;
     let schedule;
     let restartScheduleJob;
@@ -8259,7 +8260,7 @@ function Adapter(options) {
         /**
          * Write binary block into redis, e.g image
          *
-         * @alias setBinaryState
+         * @alias setForeignBinaryState
          * @memberof Adapter
          *
          * @param {string} id of state
@@ -8268,7 +8269,7 @@ function Adapter(options) {
          * @param {ioBroker.ErrorCallback} [callback]
          *
          */
-        this.setBinaryState = async (id, binary, options, callback) => {
+        this.setForeignBinaryState = async (id, binary, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
@@ -8369,20 +8370,50 @@ function Adapter(options) {
                 adapterStates.setBinaryState(id, binary, callback);
             }
         };
+
         /**
          * Promise-version of Adapter.setBinaryState
          *
-         * @alias setBinaryStateAsync
+         * @alias setForeignBinaryStateAsync
          * @memberof Adapter
          * @param {string} id of state
          * @param {Buffer} binary data
          * @param {object} [options] optional
-         * @return promise
+         * @return {Promise}
          *
+         */
+        this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
+
+        /**
+         * Same as setForeignBinaryState but prefixes the own namespace to the id
+         *
+         * @alias setBinaryState
+         * @memberof Adapter
+         *
+         * @param {string} id of state
+         * @param {Buffer} binary data
+         * @param {object} [options] optional
+         * @param {ioBroker.ErrorCallback} [callback]
+         */
+        this.setBinaryState = (id, binary, options, callback) => {
+            // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
+            // id = utils.fixId(id, false);
+            return this.setForeignBinaryState(id, binary, options, callback);
+        };
+
+        /**
+         * Async version of setBinaryState
+         *
+         * @alias setBinaryStateAsync
+         * @memberof Adapter
+         *
+         * @param {string} id of state
+         * @param {Buffer} binary data
+         * @param {object} [options] optional
+         * @param {Promise<void>}
          */
         this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
 
-        // Read binary block from redis, e.g. image
         /**
          * Read a binary block from redis, e.g. an image
          *
@@ -8390,7 +8421,7 @@ function Adapter(options) {
          * @param {object} options optional
          * @param {ioBroker.GetBinaryStateCallback} callback
          */
-        this.getBinaryState = (id, options, callback) => {
+        this.getForeignBinaryState = (id, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
@@ -8444,9 +8475,31 @@ function Adapter(options) {
         /**
          * Promise-version of Adapter.getBinaryState
          *
-         * @alias getBinaryStateAsync
+         * @alias getForeignBinaryStateAsync
          * @memberof Adapter
          *
+         */
+        this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
+
+        /**
+         * Same as getForeignBinaryState but prefixes the own namespace to the id
+         *
+         * @param {string} id The state ID
+         * @param {object} options optional
+         * @param {ioBroker.GetBinaryStateCallback} callback
+         */
+        this.getBinaryState = (id, options, callback) => {
+            // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
+            // id = utils.fixId(id);
+            return this.getForeignBinaryState(id, options, callback);
+        };
+
+        /**
+         * Promisified version of getBinaryState
+         *
+         * @param {string} id The state ID
+         * @param {object} options optional
+         * @return {Promise<Buffer>}
          */
         this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
 
