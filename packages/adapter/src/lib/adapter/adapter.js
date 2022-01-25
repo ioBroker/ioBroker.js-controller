@@ -9139,15 +9139,11 @@ function Adapter(options) {
 
             const finishUnload = () => {
                 if (timers.size) {
-                    logger.warn(`${this.namespaceLog} Found ${timers.size} uncleared timeouts (report to developer)`);
                     timers.forEach(id => clearTimeout(id));
                     timers.clear();
                 }
 
                 if (intervals.size) {
-                    logger.warn(
-                        `${this.namespaceLog} Found ${intervals.size} uncleared intervals (report to developer)`
-                    );
                     intervals.forEach(id => clearInterval(id));
                     intervals.clear();
                 }
