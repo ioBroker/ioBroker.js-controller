@@ -1687,6 +1687,11 @@ function Install(options) {
             });
 
             for (const row of doc.rows) {
+                if (!row.value.common) {
+                    // this object seems to be corrupted so it will not need our adapter
+                    continue;
+                }
+
                 const localDeps = tools.parseDependencies(row.value.common.dependencies);
 
                 for (const localDep of Object.keys(localDeps)) {
