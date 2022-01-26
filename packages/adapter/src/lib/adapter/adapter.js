@@ -8506,7 +8506,7 @@ function Adapter(options) {
         /**
          * Deletes binary state
          *
-         * @alias delBinaryState
+         * @alias delForeignBinaryState
          * @memberof Adapter
          *
          * @param {string} id
@@ -8514,7 +8514,7 @@ function Adapter(options) {
          * @param {ioBroker.ErrorCallback} [callback]
          *
          */
-        this.delBinaryState = (id, options, callback) => {
+        this.delForeignBinaryState = (id, options, callback) => {
             if (typeof options === 'function') {
                 callback = options;
                 options = {};
@@ -8546,13 +8546,42 @@ function Adapter(options) {
         };
 
         /**
+         * Promise-version of Adapter.delForeignBinaryState
+         *
+         * @alias delForeignBinaryStateAsync
+         * @memberof Adapter
+         * @param {string} id
+         * @param {object} [options]
+         * @return {Promise<void>}
+         *
+         */
+        this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
+
+        /**
+         * Deletes binary state but prefixes the own namespace to the id
+         *
+         * @alias delBinaryState
+         * @memberof Adapter
+         *
+         * @param {string} id
+         * @param {object} [options]
+         * @param {ioBroker.ErrorCallback} [callback]
+         *
+         */
+        this.delBinaryState = (id, options, callback) => {
+            // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
+            // id = utils.fixId(id, false);
+            return this.delForeignBinaryState(id, options, callback);
+        };
+
+        /**
          * Promise-version of Adapter.delBinaryState
          *
          * @alias delBinaryStateAsync
          * @memberof Adapter
          * @param {string} id
          * @param {object} [options]
-         * @return promise
+         * @return {Promise<void>}
          *
          */
         this.delBinaryStateAsync = tools.promisify(this.delBinaryState, this);
