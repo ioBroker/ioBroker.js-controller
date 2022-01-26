@@ -267,7 +267,7 @@ export class Utils {
      */
     validateSetStateObjectArgument(obj: Record<string, any>): void {
         // Check that we have at least one existing non-undefined property at all, else invalid
-        if (!Object.keys(obj).some(key => obj[key] !== undefined)) {
+        if (!Object.values(obj).some(prop => prop !== undefined)) {
             throw new Error(`The state contains no properties! At least one property is expected!`);
         }
 
