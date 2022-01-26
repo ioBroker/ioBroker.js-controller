@@ -563,7 +563,7 @@ async function processCommand(command, args, params, callback) {
                 isFirst = params.first || isFirst;
 
                 setup.setup(
-                    async (isFirst, _isRedis) => {
+                    async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
                             const Install = require('./setup/setupInstall.js');
@@ -579,7 +579,7 @@ async function processCommand(command, args, params, callback) {
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    const path = require.resolve(tools.appName + '.' + instance);
+                                    const path = require.resolve(`${tools.appName}.${instance}`);
                                     if (path) {
                                         await install.createInstance(instance, {
                                             enabled: true,
