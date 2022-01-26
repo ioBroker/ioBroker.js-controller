@@ -621,7 +621,7 @@ async function processCommand(command, args, params, callback) {
                                 console.warn(`Cannot rename: ${err.message}`);
                             }
 
-                            // there has been a bug that user can uplaod js-controller
+                            // there has been a bug that user can upload js-controller
                             try {
                                 await objects.delObjectAsync('system.adapter.js-controller');
                             } catch {
@@ -653,6 +653,17 @@ async function processCommand(command, args, params, callback) {
                                     !config.states.options.retry_max_delay
                                 ) {
                                     config.states.options.retry_max_delay = 5000;
+                                }
+
+                                // We migrate file to jsonl
+                                if (config.states.type === 'file') {
+                                    config.states.type = 'jsonl';
+                                    console.log('States DB type migrated from "file" to "jsonl"');
+                                }
+
+                                if (config.objects.type === 'file') {
+                                    config.objects.type = 'jsonl';
+                                    console.log('Objects DB type migrated from "file" to "jsonl"');
                                 }
 
                                 if (!isDeepStrictEqual(config, configOrig)) {
