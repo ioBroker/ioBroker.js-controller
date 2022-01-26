@@ -52,6 +52,26 @@ const {
     ACCESS_USER_READ
 } = require('./constants');
 
+/** @type Utils*/
+let utils;
+let schedule;
+let restartScheduleJob;
+let initializeTimeout;
+let adapterStates;
+let adapterObjects;
+const timers = new Set();
+const intervals = new Set();
+const delays = new Set();
+let stopInProgress = false;
+/** @type {Record<string, any>} */
+let config = null;
+let defaultObjs;
+let firstConnection = true;
+let systemSecret = null;
+
+let reportInterval;
+let logger;
+
 /**
  * Adapter class
  *
@@ -65,17 +85,11 @@ const {
 class Adapter extends EventEmitter {
     constructor(options) {
         super();
-        this._init(options);
-    }
 
-    _init(options) {
-        /** @type {Record<string, any>} */
-        let config = null;
-        let defaultObjs;
         const configFileName = tools.getConfigFileName();
 
-        if (fs.existsSync(configFileName)) {
-            config = fs.readJSONSync(configFileName);
+        if (fs.pathExistsSync(configFileName)) {
+            config = fs.readJsonSync(configFileName);
             config.states = config.states || { type: 'file' };
             config.objects = config.objects || { type: 'file' };
         } else {
@@ -86,28 +100,12 @@ class Adapter extends EventEmitter {
             throw new Error('Configuration not set!');
         }
 
-        /** @type Utils*/
-        let utils;
-        let schedule;
-        let restartScheduleJob;
-        let initializeTimeout;
-        let adapterStates;
-        let adapterObjects;
-        const timers = new Set();
-        const intervals = new Set();
-        const delays = new Set();
-        let stopInProgress = false;
-
         if (options.config && !options.config.log) {
             options.config.log = config.log;
         }
 
         config = options.config || config;
         this.startedInCompactMode = options.compact;
-        let firstConnection = true;
-        let systemSecret = null;
-
-        let reportInterval;
 
         this.logList = [];
         this.aliases = {};
@@ -172,12 +170,7 @@ class Adapter extends EventEmitter {
 
         config.log.noStdout = !config.consoleOutput;
 
-        const logger = require('@iobroker/js-controller-common').logger(config.log);
-
-        // compatibility
-        if (!logger.silly) {
-            logger.silly = logger.debug;
-        }
+        this.performStrictObjectChecks = options.strictObjectChecks !== false;
 
         // enable "const adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
         if (typeof options === 'string') {
@@ -188,12 +181,445 @@ class Adapter extends EventEmitter {
             throw new Error('No name of adapter!');
         }
 
-        this.performStrictObjectChecks = options.strictObjectChecks !== false;
+        logger = require('@iobroker/js-controller-common').logger(config.log);
 
+        // compatibility
+        if (!logger.silly) {
+            logger.silly = logger.debug;
+        }
+
+        this._init(options);
+    }
+
+    /**
+     * Decrypt the password/value with given key
+     * @param {string} secretVal to use for decrypt (or value if only one parameter is given)
+     * @param {string} [value] value to decrypt (if secret is provided)
+     * @returns {string}
+     */
+    decrypt(secretVal, value) {
+        if (value === undefined) {
+            value = secretVal;
+            secretVal = systemSecret;
+        }
+        return tools.decrypt(secretVal, value);
+    }
+
+    /**
+     * Encrypt the password/value with given key
+     * @param {string} secretVal to use for encrypt (or value if only one parameter is given)
+     * @param {string} [value] value to encrypt (if secret is provided)
+     * @returns {string}
+     */
+    encrypt(secretVal, value) {
+        if (value === undefined) {
+            value = secretVal;
+            secretVal = systemSecret;
+        }
+        return tools.encrypt(secretVal, value);
+    }
+
+    getSession(id, callback) {
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('getSession not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterStates.getSession(id, callback);
+    }
+
+    setSession(id, ttl, data, callback) {
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('setSession not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterStates.setSession(id, ttl, data, callback);
+    }
+
+    destroySession(id, callback) {
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('destroySession not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterStates.destroySession(id, callback);
+    }
+
+    _getObjectsByArray(keys, objects, options, cb, _index, _result, _errors) {
+        if (objects) {
+            return tools.maybeCallbackWithError(cb, null, objects);
+        }
+        _index = _index || 0;
+        _result = _result || [];
+        _errors = _errors || [];
+
+        while (!keys[_index] && _index < keys.length) {
+            _index++;
+        }
+
+        if (_index >= keys.length) {
+            return tools.maybeCallbackWithError(cb, _errors.find(e => e) ? _errors : null, _result);
+        }
+
+        // if empty => skip immediately
+        this.getForeignObject(keys[_index], options, (err, obj) => {
+            _result[_index] = obj;
+            setImmediate(() => this._getObjectsByArray(keys, objects, options, cb, _index + 1, _result, _errors));
+        });
+    }
+
+    /**
+     * stops the execution of adapter, but not disables it.
+     *
+     * Sometimes, the adapter must be stopped if some libraries are missing.
+     *
+     * @alias terminate
+     * @memberof Adapter
+     * @param {string | number} [reason] optional termination description
+     * @param {number} [exitCode] optional exit code
+     */
+    terminate(reason, exitCode) {
+        // This function must be defined very first, because in the next lines will be yet used.
+        if (this.terminated) {
+            return;
+        }
+        this.terminated = true;
+
+        this.pluginHandler && this.pluginHandler.destroyAll();
+
+        if (reportInterval) {
+            clearInterval(reportInterval);
+            reportInterval = null;
+        }
+        if (restartScheduleJob) {
+            restartScheduleJob.cancel();
+            restartScheduleJob = null;
+        }
+        if (typeof reason === 'number') {
+            // Only the exit code was passed
+            exitCode = reason;
+            reason = null;
+        }
+        if (typeof exitCode !== 'number') {
+            exitCode =
+                process.argv.indexOf('--install') === -1
+                    ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION
+                    : EXIT_CODES.NO_ERROR;
+        }
+
+        const isNotCritical =
+            exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+            exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
+            exitCode === EXIT_CODES.NO_ERROR;
+        const text = `${this.namespaceLog} Terminated (${utils.getErrorText(exitCode)}): ${
+            reason ? reason : 'Without reason'
+        }`;
+        if (isNotCritical) {
+            logger.info(text);
+        } else {
+            logger.warn(text);
+        }
+        setTimeout(async () => {
+            // give last states some time to get handled
+            if (adapterStates) {
+                try {
+                    await adapterStates.destroy();
+                } catch {
+                    // ignore
+                }
+            }
+            if (adapterObjects) {
+                try {
+                    await adapterObjects.destroy();
+                } catch {
+                    //ignore
+                }
+            }
+            if (this.startedInCompactMode) {
+                this.emit('exit', exitCode, reason);
+                adapterStates = null;
+                adapterObjects = null;
+            } else {
+                process.exit(exitCode === undefined ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : exitCode);
+            }
+        }, 500);
+    }
+
+    /**
+     * Helper function to find next free port
+     *
+     * Looks for first free TCP port starting with given one:
+     * <pre><code>
+     *     adapter.getPort(8081, function (port) {
+     *         adapter.log.debug('Following port is free: ' + port);
+     *     });
+     * </code></pre>
+     *
+     * @alias getPort
+     * @memberof Adapter
+     * @param {number} port port number to start the search for free port
+     * @param {string} [host] optional hostname for the port search
+     * @param {(port: number) => void} callback return result
+     *        <pre><code>function (port) {}</code></pre>
+     */
+    getPort(port, host, callback) {
+        if (!port) {
+            throw new Error('adapterGetPort: no port');
+        }
+
+        if (typeof host === 'function') {
+            callback = host;
+            host = null;
+        }
+        if (!host) {
+            host = undefined;
+        }
+
+        if (typeof port === 'string') {
+            port = parseInt(port, 10);
+        }
+        this.getPortRunning = { port, host, callback };
+        const server = net.createServer();
+        try {
+            server.listen({ port, host }, (/* err */) => {
+                server.once('close', () => {
+                    return tools.maybeCallback(callback, port);
+                });
+                server.close();
+            });
+            server.on('error', (/* err */) => {
+                setTimeout(() => this.getPort(port + 1, host, callback), 100);
+            });
+        } catch {
+            setImmediate(() => this.getPort(port + 1, host, callback));
+        }
+    }
+
+    /**
+     * Method to check for available Features for adapter development
+     *
+     * Use it like ...
+     * <pre><code>
+     *     if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
+     *         ...
+     *     }
+     * </code></pre>
+
+     * @alias supportsFeature
+     * @memberof Adapter
+     * @param {string} featureName the name of the feature to check
+     * @returns {boolean} true/false if the feature is in the list of supported features
+     */
+    supportsFeature(featureName) {
+        return SUPPORTED_FEATURES.includes(featureName);
+    }
+
+    /**
+     * validates user and password
+     *
+     *
+     * @alias checkPassword
+     * @memberof Adapter
+     * @param {string} user user name as text
+     * @param {string} pw password as text
+     * @param {object} [options] optional user context
+     * @param {(success: boolean, user: string) => void} callback return result
+     *        <pre><code>
+     *            function (result) {
+     *              if (result) adapter.log.debug('User is valid');
+     *            }
+     *        </code></pre>
+     */
+    async checkPassword(user, pw, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (!callback) {
+            throw new Error('checkPassword: no callback');
+        }
+
+        if (user && !user.startsWith('system.user.')) {
+            // its not yet a `system.user.xy` id, thus we assume it's a username
+            if (!this.usernames[user]) {
+                // we did not find the id of the username in our cache -> update cache
+                try {
+                    await this._updateUsernameCache();
+                } catch (e) {
+                    this.log.error(e.message);
+                }
+                if (!this.usernames[user]) {
+                    // user still not there, its no valid user -> fallback to legacy check
+                    user = `system.user.${user
+                        .toString()
+                        .replace(this.FORBIDDEN_CHARS, '_')
+                        .replace(/\s/g, '_')
+                        .replace(/\./g, '_')
+                        .toLowerCase()}`;
+                } else {
+                    user = this.usernames[user].id;
+                }
+            } else {
+                user = this.usernames[user].id;
+            }
+        }
+
+        this.getForeignObject(user, options, (err, obj) => {
+            if (err || !obj || !obj.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
+                return tools.maybeCallback(callback, false, user);
+            } else {
+                password(pw).check(obj.common.password, (err, res) => {
+                    return tools.maybeCallback(callback, res, user);
+                });
+            }
+        });
+    }
+
+    /**
+     * This method update the cached values in this.usernames
+     *
+     * @returns {Promise<void>}
+     */
+    async _updateUsernameCache() {
+        // TODO: ok if available on the class?
+        // make sure cache is cleared
+        try {
+            // get all users
+            const obj = await this.getObjectListAsync({ startkey: 'system.user.', endkey: 'system.user.\u9999' });
+            this.usernames = {};
+            for (const row of obj.rows) {
+                if (row.value.common && typeof row.value.common.name === 'string') {
+                    this.usernames[row.value.common.name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
+                } else {
+                    logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
+                }
+            }
+        } catch (e) {
+            throw new Error(`Could not update user cache: ${e.message}`);
+        }
+    }
+
+    /**
+     * Return ID of given username
+     *
+     * @param {string} username - name of the user
+     * @return {Promise<undefined|string>}
+     */
+    async getUserID(username) {
+        if (!this.usernames[username]) {
+            try {
+                // did not find username, we should have a look in the cache
+                await this._updateUsernameCache();
+
+                if (!this.usernames[username]) {
+                    return;
+                }
+            } catch (e) {
+                this.log.error(e.message);
+                return;
+            }
+        }
+
+        return this.usernames[username].id;
+    }
+
+    /**
+     * sets the user's password
+     *
+     * @alias setPassword
+     * @memberof Adapter
+     * @param {string} user user name as text
+     * @param {string} pw password as text
+     * @param {object} [options] optional user context
+     * @param {ioBroker.ErrorCallback} [callback] return result
+     *        <pre><code>
+     *            function (err) {
+     *              if (err) adapter.log.error('Cannot set password: ' + err);
+     *            }
+     *        </code></pre>
+     */
+    async setPassword(user, pw, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (user && !user.startsWith('system.user.')) {
+            // its not yet a `system.user.xy` id, thus we assume it's a username
+            if (!this.usernames[user]) {
+                // we did not find the id of the username in our cache -> update cache
+                try {
+                    await this._updateUsernameCache();
+                } catch (e) {
+                    this.log.error(e);
+                }
+                if (!this.usernames[user]) {
+                    // user still not there, fallback to legacy check
+                    user = `system.user.${user
+                        .toString()
+                        .replace(this.FORBIDDEN_CHARS, '_')
+                        .replace(/\s/g, '_')
+                        .replace(/\./g, '_')
+                        .toLowerCase()}`;
+                } else {
+                    user = this.usernames[user].id;
+                }
+            } else {
+                user = this.usernames[user].id;
+            }
+        }
+
+        this.getForeignObject(user, options, (err, obj) => {
+            if (err || !obj) {
+                return tools.maybeCallbackWithError(callback, 'User does not exist');
+            }
+
+            // BF: (2020.05.22) are the empty passwords allowed??
+            if (!pw) {
+                this.extendForeignObject(
+                    user,
+                    {
+                        common: {
+                            password: ''
+                        }
+                    },
+                    options,
+                    () => {
+                        return tools.maybeCallback(callback);
+                    }
+                );
+            } else {
+                password(pw).hash(null, null, (err, res) => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    }
+                    this.extendForeignObject(
+                        user,
+                        {
+                            common: {
+                                password: res
+                            }
+                        },
+                        options,
+                        () => {
+                            return tools.maybeCallbackWithError(callback, null);
+                        }
+                    );
+                });
+            }
+        });
+    }
+
+    _init(options) {
         /**
          * Initiates the databases
          */
-        const _init = () => {
+        const _initDBs = () => {
             initObjects(() => {
                 if (this.inited) {
                     this.log && logger.warn(`${this.namespaceLog} Reconnection to DB.`);
@@ -215,106 +641,6 @@ class Adapter extends EventEmitter {
             });
         };
 
-        this._getObjectsByArray = (keys, objects, options, cb, _index, _result, _errors) => {
-            if (objects) {
-                return tools.maybeCallbackWithError(cb, null, objects);
-            }
-            _index = _index || 0;
-            _result = _result || [];
-            _errors = _errors || [];
-
-            while (!keys[_index] && _index < keys.length) {
-                _index++;
-            }
-
-            if (_index >= keys.length) {
-                return tools.maybeCallbackWithError(cb, _errors.find(e => e) ? _errors : null, _result);
-            }
-
-            // if empty => skip immediately
-            this.getForeignObject(keys[_index], options, (err, obj) => {
-                _result[_index] = obj;
-                setImmediate(() => this._getObjectsByArray(keys, objects, options, cb, _index + 1, _result, _errors));
-            });
-        };
-
-        /**
-         * stops the execution of adapter, but not disables it.
-         *
-         * Sometimes, the adapter must be stopped if some libraries are missing.
-         *
-         * @alias terminate
-         * @memberof Adapter
-         * @param {string | number} [reason] optional termination description
-         * @param {number} [exitCode] optional exit code
-         */
-        this.terminate = (reason, exitCode) => {
-            // This function must be defined very first, because in the next lines will be yet used.
-            if (this.terminated) {
-                return;
-            }
-            this.terminated = true;
-
-            this.pluginHandler && this.pluginHandler.destroyAll();
-
-            if (reportInterval) {
-                clearInterval(reportInterval);
-                reportInterval = null;
-            }
-            if (restartScheduleJob) {
-                restartScheduleJob.cancel();
-                restartScheduleJob = null;
-            }
-            if (typeof reason === 'number') {
-                // Only the exit code was passed
-                exitCode = reason;
-                reason = null;
-            }
-            if (typeof exitCode !== 'number') {
-                exitCode =
-                    process.argv.indexOf('--install') === -1
-                        ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION
-                        : EXIT_CODES.NO_ERROR;
-            }
-
-            const isNotCritical =
-                exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-                exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
-                exitCode === EXIT_CODES.NO_ERROR;
-            const text = `${this.namespaceLog} Terminated (${utils.getErrorText(exitCode)}): ${
-                reason ? reason : 'Without reason'
-            }`;
-            if (isNotCritical) {
-                logger.info(text);
-            } else {
-                logger.warn(text);
-            }
-            setTimeout(async () => {
-                // give last states some time to get handled
-                if (adapterStates) {
-                    try {
-                        await adapterStates.destroy();
-                    } catch {
-                        // ignore
-                    }
-                }
-                if (adapterObjects) {
-                    try {
-                        await adapterObjects.destroy();
-                    } catch {
-                        //ignore
-                    }
-                }
-                if (this.startedInCompactMode) {
-                    this.emit('exit', exitCode, reason);
-                    adapterStates = null;
-                    adapterObjects = null;
-                } else {
-                    process.exit(exitCode === undefined ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : exitCode);
-                }
-            }, 500);
-        };
-
         // If installed as npm module
         if (options.dirname) {
             this.adapterDir = options.dirname.replace(/\\/g, '/');
@@ -327,17 +653,17 @@ class Adapter extends EventEmitter {
             }
         }
 
-        if (fs.existsSync(this.adapterDir + '/package.json')) {
-            this.pack = fs.readJSONSync(this.adapterDir + '/package.json');
+        if (fs.existsSync(`${this.adapterDir}/package.json`)) {
+            this.pack = fs.readJSONSync(`${this.adapterDir}/package.json`);
         } else {
-            logger.info(this.namespaceLog + ' Non npm module. No package.json');
+            logger.info(`${this.namespaceLog} Non npm module. No package.json`);
         }
 
         if (!this.pack || !this.pack.io) {
-            if (fs.existsSync(this.adapterDir + '/io-package.json')) {
-                this.ioPack = fs.readJSONSync(this.adapterDir + '/io-package.json');
+            if (fs.existsSync(`${this.adapterDir}/io-package.json`)) {
+                this.ioPack = fs.readJSONSync(`${this.adapterDir}/io-package.json`);
             } else {
-                logger.error(this.namespaceLog + ' Cannot find: ' + this.adapterDir + '/io-package.json');
+                logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
                 this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
         } else {
@@ -378,10 +704,7 @@ class Adapter extends EventEmitter {
 
         const ifaces = os.networkInterfaces();
         const ipArr = [];
-        for (const dev in ifaces) {
-            if (!Object.prototype.hasOwnProperty.call(ifaces, dev)) {
-                continue;
-            }
+        for (const dev of Object.keys(ifaces)) {
             ifaces[dev].forEach(details => !details.internal && ipArr.push(details.address));
         }
 
@@ -419,255 +742,14 @@ class Adapter extends EventEmitter {
         this.getPortRunning = null;
 
         /**
-         * Helper function to find next free port
-         *
-         * Looks for first free TCP port starting with given one:
-         * <pre><code>
-         *     adapter.getPort(8081, function (port) {
-         *         adapter.log.debug('Following port is free: ' + port);
-         *     });
-         * </code></pre>
-         *
-         * @alias getPort
-         * @memberof Adapter
-         * @param {number} port port number to start the search for free port
-         * @param {string} [host] optional hostname for the port search
-         * @param {(port: number) => void} callback return result
-         *        <pre><code>function (port) {}</code></pre>
-         */
-        this.getPort = (port, host, callback) => {
-            if (!port) {
-                throw new Error('adapterGetPort: no port');
-            }
-
-            if (typeof host === 'function') {
-                callback = host;
-                host = null;
-            }
-            if (!host) {
-                host = undefined;
-            }
-
-            if (typeof port === 'string') {
-                port = parseInt(port, 10);
-            }
-            this.getPortRunning = { port, host, callback };
-            const server = net.createServer();
-            try {
-                server.listen({ port, host }, (/* err */) => {
-                    server.once('close', () => {
-                        return tools.maybeCallback(callback, port);
-                    });
-                    server.close();
-                });
-                server.on('error', (/* err */) => {
-                    setTimeout(() => this.getPort(port + 1, host, callback), 100);
-                });
-            } catch {
-                setImmediate(() => this.getPort(port + 1, host, callback));
-            }
-        };
-
-        /**
          * Promise-version of Adapter.getPort
          */
         this.getPortAsync = tools.promisifyNoError(this.getPort, this);
 
         /**
-     * Method to check for available Features for adapter development
-     *
-     * Use it like ...
-     * <pre><code>
-     *     if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
-     *         ...
-     *     }
-     * </code></pre>
-
-     * @alias supportsFeature
-     * @memberof Adapter
-     * @param {string} featureName the name of the feature to check
-     * @returns {boolean} true/false if the feature is in the list of supported features
-     */
-        this.supportsFeature = featureName => {
-            return SUPPORTED_FEATURES.includes(featureName);
-        };
-
-        /**
-         * validates user and password
-         *
-         *
-         * @alias checkPassword
-         * @memberof Adapter
-         * @param {string} user user name as text
-         * @param {string} pw password as text
-         * @param {object} [options] optional user context
-         * @param {(success: boolean, user: string) => void} callback return result
-         *        <pre><code>
-         *            function (result) {
-         *              if (result) adapter.log.debug('User is valid');
-         *            }
-         *        </code></pre>
-         */
-        this.checkPassword = async (user, pw, options, callback) => {
-            if (typeof options === 'function') {
-                callback = options;
-                options = null;
-            }
-
-            if (!callback) {
-                throw new Error('checkPassword: no callback');
-            }
-
-            if (user && !user.startsWith('system.user.')) {
-                // its not yet a `system.user.xy` id, thus we assume it's a username
-                if (!this.usernames[user]) {
-                    // we did not find the id of the username in our cache -> update cache
-                    try {
-                        await updateUsernameCache();
-                    } catch (e) {
-                        this.log.error(e.message);
-                    }
-                    if (!this.usernames[user]) {
-                        // user still not there, its no valid user -> fallback to legacy check
-                        user = `system.user.${user
-                            .toString()
-                            .replace(this.FORBIDDEN_CHARS, '_')
-                            .replace(/\s/g, '_')
-                            .replace(/\./g, '_')
-                            .toLowerCase()}`;
-                    } else {
-                        user = this.usernames[user].id;
-                    }
-                } else {
-                    user = this.usernames[user].id;
-                }
-            }
-
-            this.getForeignObject(user, options, (err, obj) => {
-                if (err || !obj || !obj.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
-                    return tools.maybeCallback(callback, false, user);
-                } else {
-                    password(pw).check(obj.common.password, (err, res) => {
-                        return tools.maybeCallback(callback, res, user);
-                    });
-                }
-            });
-        };
-        /**
          * Promise-version of Adapter.checkPassword
          */
         this.checkPasswordAsync = tools.promisifyNoError(this.checkPassword, this);
-
-        /**
-         * Return ID of given username
-         *
-         * @param {string} username - name of the user
-         * @return {Promise<undefined|string>}
-         */
-        this.getUserID = async username => {
-            if (!this.usernames[username]) {
-                try {
-                    // did not find username, we should have a look in the cache
-                    await updateUsernameCache();
-
-                    if (!this.usernames[username]) {
-                        return;
-                    }
-                } catch (e) {
-                    this.log.error(e.message);
-                    return;
-                }
-            }
-
-            return this.usernames[username].id;
-        };
-
-        /**
-         * sets the user's password
-         *
-         * @alias setPassword
-         * @memberof Adapter
-         * @param {string} user user name as text
-         * @param {string} pw password as text
-         * @param {object} [options] optional user context
-         * @param {ioBroker.ErrorCallback} [callback] return result
-         *        <pre><code>
-         *            function (err) {
-         *              if (err) adapter.log.error('Cannot set password: ' + err);
-         *            }
-         *        </code></pre>
-         */
-        this.setPassword = async (user, pw, options, callback) => {
-            if (typeof options === 'function') {
-                callback = options;
-                options = null;
-            }
-
-            if (user && !user.startsWith('system.user.')) {
-                // its not yet a `system.user.xy` id, thus we assume it's a username
-                if (!this.usernames[user]) {
-                    // we did not find the id of the username in our cache -> update cache
-                    try {
-                        await updateUsernameCache();
-                    } catch (e) {
-                        this.log.error(e);
-                    }
-                    if (!this.usernames[user]) {
-                        // user still not there, fallback to legacy check
-                        user = `system.user.${user
-                            .toString()
-                            .replace(this.FORBIDDEN_CHARS, '_')
-                            .replace(/\s/g, '_')
-                            .replace(/\./g, '_')
-                            .toLowerCase()}`;
-                    } else {
-                        user = this.usernames[user].id;
-                    }
-                } else {
-                    user = this.usernames[user].id;
-                }
-            }
-
-            this.getForeignObject(user, options, (err, obj) => {
-                if (err || !obj) {
-                    return tools.maybeCallbackWithError(callback, 'User does not exist');
-                }
-
-                // BF: (2020.05.22) are the empty passwords allowed??
-                if (!pw) {
-                    this.extendForeignObject(
-                        user,
-                        {
-                            common: {
-                                password: ''
-                            }
-                        },
-                        options,
-                        () => {
-                            return tools.maybeCallback(callback);
-                        }
-                    );
-                } else {
-                    password(pw).hash(null, null, (err, res) => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
-                        this.extendForeignObject(
-                            user,
-                            {
-                                common: {
-                                    password: res
-                                }
-                            },
-                            options,
-                            () => {
-                                return tools.maybeCallbackWithError(callback, null);
-                            }
-                        );
-                    });
-                }
-            });
-        };
 
         /**
          * Promise-version of Adapter.setPassword
@@ -704,7 +786,7 @@ class Adapter extends EventEmitter {
                 if (!this.usernames[user]) {
                     // we did not find the id of the username in our cache -> update cache
                     try {
-                        await updateUsernameCache();
+                        await this._updateUsernameCache();
                     } catch (e) {
                         this.log.error(e);
                     }
@@ -858,7 +940,7 @@ class Adapter extends EventEmitter {
                 if (!this.usernames[user]) {
                     // we did not find the id of the username in our cache -> update cache
                     try {
-                        await updateUsernameCache();
+                        await this._updateUsernameCache();
                     } catch (e) {
                         this.log.error(e.message);
                     }
@@ -5352,29 +5434,6 @@ class Adapter extends EventEmitter {
             });
         };
 
-        /**
-         * This method update the cached values in this.usernames
-         *
-         * @returns {Promise<void>}
-         */
-        const updateUsernameCache = async () => {
-            // make sure cache is cleared
-            try {
-                // get all users
-                const obj = await this.getObjectListAsync({ startkey: 'system.user.', endkey: 'system.user.\u9999' });
-                this.usernames = {};
-                for (const row of obj.rows) {
-                    if (row.value.common && typeof row.value.common.name === 'string') {
-                        this.usernames[row.value.common.name] = { id: row.id.replace(FORBIDDEN_CHARS, '_') };
-                    } else {
-                        logger.warn(`${this.namespaceLog} Invalid username for id "${row.id}"`);
-                    }
-                }
-            } catch (e) {
-                throw new Error(`Could not update user cache: ${e.message}`);
-            }
-        };
-
         const checkState = (obj, options, command) => {
             const limitToOwnerRights = options.limitToOwnerRights === true;
             if (obj && obj.acl) {
@@ -8297,64 +8356,6 @@ class Adapter extends EventEmitter {
             this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
             /**
-             * Decrypt the password/value with given key
-             * @param {string} secretVal to use for decrypt (or value if only one parameter is given)
-             * @param {string} [value] value to decrypt (if secret is provided)
-             * @returns {string}
-             */
-            this.decrypt = (secretVal, value) => {
-                if (value === undefined) {
-                    value = secretVal;
-                    secretVal = systemSecret;
-                }
-                return tools.decrypt(secretVal, value);
-            };
-
-            /**
-             * Encrypt the password/value with given key
-             * @param {string} secretVal to use for encrypt (or value if only one parameter is given)
-             * @param {string} [value] value to encrypt (if secret is provided)
-             * @returns {string}
-             */
-            this.encrypt = (secretVal, value) => {
-                if (value === undefined) {
-                    value = secretVal;
-                    secretVal = systemSecret;
-                }
-                return tools.encrypt(secretVal, value);
-            };
-
-            this.getSession = (id, callback) => {
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('getSession not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                adapterStates.getSession(id, callback);
-            };
-
-            this.setSession = (id, ttl, data, callback) => {
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('setSession not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                adapterStates.setSession(id, ttl, data, callback);
-            };
-
-            this.destroySession = (id, callback) => {
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('destroySession not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                adapterStates.destroySession(id, callback);
-            };
-
-            /**
              * Write binary block into redis, e.g image
              *
              * @alias setForeignBinaryState
@@ -9605,7 +9606,7 @@ class Adapter extends EventEmitter {
         };
 
         // finally init
-        _init();
+        _initDBs();
     }
 }
 
