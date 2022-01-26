@@ -1444,7 +1444,7 @@ class Adapter extends EventEmitter {
                 this._logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
             }
 
-            obj.from = obj.from || 'system.adapter.' + this.namespace;
+            obj.from = obj.from || `system.adapter.${this.namespace}`;
             obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
             obj.ts = obj.ts || Date.now();
 
@@ -9047,12 +9047,12 @@ class Adapter extends EventEmitter {
                             }
 
                             if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
-                                const id = 'system.adapter.' + this.namespace;
+                                const id = `system.adapter.${this.namespace}`;
                                 this.outputCount += 2;
-                                adapterStates.setState(id + '.alive', { val: true, ack: true, expire: 30, from: id });
+                                adapterStates.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
                                 let done = false;
                                 adapterStates.setState(
-                                    id + '.connected',
+                                    `${id}.connected`,
                                     {
                                         val: true,
                                         ack: true,
@@ -9192,7 +9192,7 @@ class Adapter extends EventEmitter {
                     }
 
                     // read the systemSecret
-                    if (this._systemSecret === null) {
+                    if (this._systemSecret === undefined) {
                         try {
                             const data = await this.getForeignObjectAsync('system.config', null);
                             if (data && data.native) {
