@@ -72,9 +72,9 @@ class Adapter extends EventEmitter {
         this._options = options;
         const configFileName = tools.getConfigFileName();
 
-        if (fs.pathExistsSync(this._configFileName)) {
+        if (fs.pathExistsSync(configFileName)) {
             /** @type {Record<string, any>} */
-            this._config = fs.readJsonSync(this._configFileName);
+            this._config = fs.readJsonSync(configFileName);
             this._config.states = this._config.states || { type: 'file' };
             this._config.objects = this._config.objects || { type: 'file' };
         } else {
