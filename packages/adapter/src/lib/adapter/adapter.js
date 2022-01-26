@@ -20,7 +20,7 @@ const fs = require('fs-extra');
 const extend = require('node.extend');
 const os = require('os');
 const jwt = require('jsonwebtoken');
-const EventEmitter = require('events').EventEmitter;
+const { EventEmitter } = require('events');
 const { tools } = require('@iobroker/js-controller-common');
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
@@ -62,7 +62,6 @@ let adapterObjects;
 const timers = new Set();
 const intervals = new Set();
 const delays = new Set();
-let stopInProgress = false;
 /** @type {Record<string, any>} */
 let config = null;
 let defaultObjs;
@@ -117,6 +116,7 @@ class Adapter extends EventEmitter {
         this.eventLoopLags = [];
         this.overwriteLogLevel = false;
         this.adapterReady = false;
+        this._stopInProgress = false;
 
         // TODO: remove shim
         // Provide selected tools methods for backward compatibility use in adapter
@@ -920,9 +920,9 @@ class Adapter extends EventEmitter {
             updateAliveState = true;
         }
 
-        if (!stopInProgress || config.isInstall) {
+        if (!this._stopInProgress || config.isInstall) {
             // when interval is deleted we already had a stop call before
-            stopInProgress = true;
+            this._stopInProgress = true;
             reportInterval && clearInterval(reportInterval);
             reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
@@ -1232,7 +1232,7 @@ class Adapter extends EventEmitter {
             return;
         }
 
-        if (stopInProgress) {
+        if (this._stopInProgress) {
             this.log.warn(`setTimeout called, but adapter is shutting down`);
             return;
         }
@@ -1273,14 +1273,14 @@ class Adapter extends EventEmitter {
      * @returns {Promise<void>} promise when timeout is over
      */
     delay(timeout) {
-        if (stopInProgress) {
+        if (this._stopInProgress) {
             this.log.warn(`delay called, but adapter is shutting down`);
         }
 
         return new Promise(resolve => {
             const id = setTimeout(() => {
                 delays.delete(id);
-                if (!stopInProgress) {
+                if (!this._stopInProgress) {
                     resolve();
                 }
             }, timeout);
@@ -1304,7 +1304,7 @@ class Adapter extends EventEmitter {
             return;
         }
 
-        if (stopInProgress) {
+        if (this._stopInProgress) {
             this.log.warn(`setInterval called, but adapter is shutting down`);
             return;
         }
@@ -6999,9 +6999,9 @@ class Adapter extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        // Exception. Threat the '*' case automatically
+        // Exception. Handle the '*' case automatically
         if (!pattern || pattern === '*') {
-            adapterStates.subscribeUser(this.namespace + '.*', callback);
+            adapterStates.subscribeUser(`${this.namespace}.*`, callback);
         } else {
             pattern = utils.fixId(pattern, true);
             adapterStates.subscribeUser(pattern, callback);
@@ -8195,7 +8195,7 @@ class Adapter extends EventEmitter {
                             resAlive.ack &&
                             !config.forceIfDisabled
                         ) {
-                            logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' already running');
+                            logger.error(`${this.namespaceLog} ${options.name}.${instance} already running`);
                             this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                         } else {
                             this.getForeignObject('system.adapter.' + this.namespace, null, (err, res) => {
@@ -8293,7 +8293,7 @@ class Adapter extends EventEmitter {
                         obj.common &&
                         obj.common.enabled === false
                     ) {
-                        logger.info(this.namespaceLog + ' Adapter is disabled => stop');
+                        logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
                         this._stop();
                         setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
                         return;
@@ -8467,7 +8467,7 @@ class Adapter extends EventEmitter {
                             }
                         }
 
-                        if (!stopInProgress) {
+                        if (!this._stopInProgress) {
                             typeof options.objectChange === 'function' && setImmediate(options.objectChange, id, obj);
                             // emit 'objectChange' event instantly
                             setImmediate(() => this.emit('objectChange', id, obj));
@@ -8549,12 +8549,12 @@ class Adapter extends EventEmitter {
                     }
 
                     if (!id || typeof id !== 'string') {
-                        console.log('Something is wrong! ' + JSON.stringify(id));
+                        console.log(`Something is wrong! ${JSON.stringify(id)}`);
                         return;
                     }
 
                     if (
-                        id === 'system.adapter.' + this.namespace + '.sigKill' &&
+                        id === `system.adapter.${this.namespace}.sigKill` &&
                         state &&
                         state.ts > this.statesConnectedTime &&
                         state.from &&
@@ -8564,17 +8564,13 @@ class Adapter extends EventEmitter {
                         if (!isNaN(sigKillVal)) {
                             if (this.startedInCompactMode || sigKillVal === -1) {
                                 logger.info(
-                                    this.namespaceLog +
-                                        ' Got terminate signal ' +
-                                        (sigKillVal === -1 ? 'TERMINATE_YOURSELF' : ' TERMINATE ' + sigKillVal)
+                                    `${this.namespaceLog} Got terminate signal ${
+                                        sigKillVal === -1 ? 'TERMINATE_YOURSELF' : ` TERMINATE ${sigKillVal}`
+                                    }`
                                 );
                             } else {
                                 logger.warn(
-                                    this.namespaceLog +
-                                        ' Got terminate signal. Checking desired PID: ' +
-                                        sigKillVal +
-                                        ' vs own PID ' +
-                                        process.pid
+                                    `${this.namespaceLog} Got terminate signal. Checking desired PID: ${sigKillVal} vs own PID ${process.pid}`
                                 );
                             }
                             // by deletion of state, stop this instance
@@ -8637,7 +8633,7 @@ class Adapter extends EventEmitter {
                         }
 
                         this.patterns = subs;
-                        if (!stopInProgress) {
+                        if (!this._stopInProgress) {
                             if (typeof options.subscribesChange === 'function') {
                                 options.subscribesChange(subs);
                             } else {
@@ -8657,6 +8653,7 @@ class Adapter extends EventEmitter {
                     } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                         // If this is messagebox
                         const obj = state;
+
                         if (obj) {
                             // If callback stored for this request
                             if (
@@ -8664,12 +8661,12 @@ class Adapter extends EventEmitter {
                                 obj.callback.ack &&
                                 obj.callback.id &&
                                 this.callbacks &&
-                                this.callbacks['_' + obj.callback.id]
+                                this.callbacks[`_${obj.callback.id}`]
                             ) {
                                 // Call callback function
-                                if (this.callbacks['_' + obj.callback.id].cb) {
-                                    this.callbacks['_' + obj.callback.id].cb(obj.message);
-                                    delete this.callbacks['_' + obj.callback.id];
+                                if (this.callbacks[`_${obj.callback.id}`].cb) {
+                                    this.callbacks[`_${obj.callback.id}`].cb(obj.message);
+                                    delete this.callbacks[`_${obj.callback.id}`];
                                 }
                                 // delete too old callbacks IDs, like garbage collector
                                 const now = Date.now();
@@ -8678,7 +8675,7 @@ class Adapter extends EventEmitter {
                                         delete this.callbacks[_id];
                                     }
                                 }
-                            } else if (!stopInProgress) {
+                            } else if (!this._stopInProgress) {
                                 if (options.message) {
                                     // Else inform about new message the adapter
                                     options.message(obj);
@@ -8686,10 +8683,7 @@ class Adapter extends EventEmitter {
                                 this.emit('message', obj);
                             }
                         }
-                    } else if (
-                        id.startsWith('system.adapter.' + this.namespace + '.plugins.') &&
-                        id.endsWith('.enabled')
-                    ) {
+                    } else if (id.startsWith(`system.adapter.${this.namespace}.plugins.`) && id.endsWith('.enabled')) {
                         if (!state || state.ack) {
                             return;
                         }
@@ -8716,10 +8710,7 @@ class Adapter extends EventEmitter {
                             } else {
                                 if (!this.pluginHandler.destroy(pluginName)) {
                                     logger.info(
-                                        this.namespaceLog +
-                                            ' Plugin ' +
-                                            pluginName +
-                                            ' could not be disabled. Please restart adapter to disable it.'
+                                        `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`
                                     );
                                 }
                             }
@@ -8738,7 +8729,7 @@ class Adapter extends EventEmitter {
                                 : null;
                             const targetId = target.id.read === 'string' ? target.id.read : target.id;
 
-                            if (!stopInProgress && (aState || !state)) {
+                            if (!this._stopInProgress && (aState || !state)) {
                                 if (typeof options.stateChange === 'function') {
                                     options.stateChange(targetId, aState);
                                 } else {
@@ -8756,7 +8747,7 @@ class Adapter extends EventEmitter {
                     }
 
                     if (!id || typeof id !== 'string') {
-                        console.log('Something is wrong! ' + JSON.stringify(id));
+                        console.log(`Something is wrong! ${JSON.stringify(id)}`);
                         return;
                     }
 
@@ -8769,7 +8760,7 @@ class Adapter extends EventEmitter {
                             }
                         }
 
-                        if (!stopInProgress) {
+                        if (!this._stopInProgress) {
                             if (typeof options.stateChange === 'function') {
                                 setImmediate(() => options.stateChange(id, state));
                             } else {
@@ -8950,7 +8941,7 @@ class Adapter extends EventEmitter {
             ts.on('logged', info => {
                 info.from = this.namespace;
                 // emit to itself
-                if (options.logTransporter && this.logRequired && !stopInProgress) {
+                if (options.logTransporter && this.logRequired && !this._stopInProgress) {
                     this.emit('log', info);
                 }
 
@@ -9013,7 +9004,7 @@ class Adapter extends EventEmitter {
                 };
 
                 this.processLog = msg => {
-                    msg && !stopInProgress && this.emit('log', msg);
+                    msg && !this._stopInProgress && this.emit('log', msg);
                 };
 
                 readLogs();
