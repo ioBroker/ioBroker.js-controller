@@ -6057,6 +6057,1409 @@ class Adapter extends EventEmitter {
         }
     }
 
+    // find out default history instance
+    _getDefaultHistory(callback) {
+        // TODO: okay if available?
+        if (!this.defaultHistory) {
+            // read default history instance from system.config
+            return this.getForeignObject('system.config', null, (err, data) => {
+                if (data && data.common) {
+                    this.defaultHistory = data.common.defaultHistory;
+                }
+                if (data && data.native) {
+                    systemSecret = data.native.secret;
+                }
+
+                // if no default history set
+                if (!this.defaultHistory) {
+                    // read all adapters
+                    adapterObjects.getObjectView(
+                        'system',
+                        'instance',
+                        {
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
+                        },
+                        (err, _obj) => {
+                            if (_obj && _obj.rows) {
+                                for (let i = 0; i < _obj.rows.length; i++) {
+                                    if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
+                                        this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!this.defaultHistory) {
+                                this.defaultHistory = 'history.0';
+                            }
+                            return tools.maybeCallback(callback);
+                        }
+                    );
+                } else {
+                    return tools.maybeCallback(callback);
+                }
+            });
+        } else {
+            return tools.maybeCallback(callback);
+        }
+    }
+
+    /**
+     * Read historian data for states of any instance or system state.
+     *
+     * This function can read values from history adapters like: history, sql, influxdb. It expects the full path of object ID.
+     * Normally only foreign history has interest, so there is no getHistory and getForeignHistory
+     *
+     * Possible options:
+     *
+     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default will be taken from system settings.
+     *  - start - (optional) time in ms - Date.now()', by default is (now - 1 week)
+     *  - end - (optional) time in ms - Date.now()', by default is (now + 5000 seconds)
+     *  - step - (optional) used in aggregate (m4, max, min, average, total) step in ms of intervals
+     *  - count - number of values if aggregate is 'onchange' or number of intervals if other aggregate method. Count will be ignored if step is set.
+     *  - from - if from field should be included in answer
+     *  - ack - if ack field should be included in answer
+     *  - q - if q field should be included in answer
+     *  - addId - if id field should be included in answer
+     *  - limit - do not return more entries than limit
+     *  - ignoreNull - if null values should be include (false), replaced by last not null value (true) or replaced with 0 (0)
+     *  - sessionId - (optional) identifier of request, will be returned back in the answer
+     *  - aggregate - aggregate method:
+     *      - minmax - used special algorithm. Splice the whole time range in small intervals and find for every interval max, min, start and end values.
+     *      - max - Splice the whole time range in small intervals and find for every interval max value and use it for this interval (nulls will be ignored).
+     *      - min - Same as max, but take minimal value.
+     *      - average - Same as max, but take average value.
+     *      - total - Same as max, but calculate total value.
+     *      - count - Same as max, but calculate number of values (nulls will be calculated).
+     *      - none - No aggregation at all. Only raw values in given period.
+     *
+     * @alias getHistory
+     * @memberof Adapter
+     * @param {string} id object ID of the state.
+     * @param {object} options see function description
+     * @param {ioBroker.GetHistoryCallback} callback return result
+     *        <pre><code>
+     *            function (error, result, step, sessionId) {
+     *              if (error) adapter.log.error('Cannot read value: ' + err);
+     *            }
+     *        </code></pre>
+     *
+     *        See possible attributes of the state in @setState explanation
+     */
+    getHistory(id, options, callback) {
+        try {
+            utils.validateId(id, true, null);
+        } catch (err) {
+            return tools.maybeCallbackWithError(callback, err);
+        }
+
+        options = options || {};
+        options.end = options.end || Date.now() + 5000000;
+        if (!options.count && !options.start) {
+            options.start = options.start || Date.now() - 604800000; // - 1 week
+        }
+
+        if (!options.instance) {
+            if (!this.defaultHistory) {
+                // read default history instance from system.config
+                return this._getDefaultHistory(() => this.getHistory(id, options, callback));
+            } else {
+                options.instance = this.defaultHistory;
+            }
+        }
+
+        this.sendTo(options.instance || 'history.0', 'getHistory', { id: id, options: options }, res =>
+            tools.maybeCallbackWithError(callback, res.error, res.result, res.step, res.sessionId)
+        );
+    }
+
+    /**
+     * Convert ID into object with device's, channel's and state's name.
+     *
+     * Convert "adapter.instance.D.C.S" in object {device: D, channel: C, state: S}
+     * Convert ID to {device: D, channel: C, state: S}
+     *
+     * @alias idToDCS
+     * @memberof Adapter
+     * @param {string} id short or long string of ID like "stateID" or "adapterName.0.stateID".
+     * @return {object} parsed ID as an object
+     */
+    idToDCS(id) {
+        if (!id) {
+            return null;
+        }
+        const parts = id.split('.');
+        if (parts[0] + '.' + parts[1] !== this.namespace) {
+            logger.warn(`${this.namespaceLog} Try to decode id not from this adapter`);
+            return null;
+        }
+        return { device: parts[2], channel: parts[3], state: parts[4] };
+    }
+
+    /**
+     * Deletes a state of this instance.
+     * The object will NOT be deleted. If you want to delete it too, use @delObject instead.
+     *
+     * It is not required to provice the adapter namespace, because it will automatically be added.
+     * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
+     *
+     * No error is returned if state does not exist.
+     *
+     * @alias delState
+     * @memberof Adapter
+     * @param {string} id exactly object ID (without namespace)
+     * @param {object} [options] optional user context
+     * @param {ioBroker.ErrorCallback} [callback] return result
+     *        <pre><code>
+     *            function (err) {
+     *              if (err) adapter.log.error('Cannot delete object: ' + err);
+     *            }
+     *        </code></pre>
+     */
+    delState(id, options, callback) {
+        try {
+            utils.validateId(id, false, null);
+        } catch (err) {
+            return tools.maybeCallbackWithError(callback, err);
+        }
+
+        // delState does the same as delForeignState, but fixes the ID first
+        id = utils.fixId(id);
+        this.delForeignState(id, options, callback);
+    }
+
+    /**
+     * Deletes a state of any adapter.
+     * The object is NOT deleted. If you want to delete it too, use @delForeignObject instead.
+     *
+     * No error is returned if state does not exist.
+     *
+     * @alias delForeignState
+     * @memberof Adapter
+     * @param {string} id long string for ID like "adapterName.0.stateID".
+     * @param {object} [options] optional argument to describe the user context
+     * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
+     */
+    delForeignState(id, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('delForeignState not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        try {
+            utils.validateId(id, true, options);
+        } catch (err) {
+            return tools.maybeCallbackWithError(callback, err);
+        }
+
+        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+            this._checkStates(id, options, 'delState', err => {
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                } else {
+                    adapterStates.delState(id, callback);
+                }
+            });
+        } else {
+            adapterStates.delState(id, callback);
+        }
+    }
+
+    /**
+     * Read all states of this adapter, that pass the pattern
+     *
+     * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
+     * <pre><code>
+     *     adapter.getStates('*', function (err, states) {
+     *         for (var id in states) {
+     *              adapter.log.debug('"' + id + '" = "' + states[id].val);
+     *         }
+     *     });
+     * </code></pre>
+     *
+     * @alias getStates
+     * @memberof Adapter
+     * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param {object} options optional argument to describe the user context
+     * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+     */
+    getStates(pattern, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+        pattern = utils.fixId(pattern, true);
+        this.getForeignStates(pattern, options, callback);
+    }
+
+    _processStatesSecondary(keys, targetObjs, srcObjs, callback) {
+        adapterStates.getStates(keys, (err, arr) => {
+            if (err) {
+                return tools.maybeCallbackWithError(callback, err);
+            }
+
+            const result = {};
+
+            for (let i = 0; i < keys.length; i++) {
+                const obj = targetObjs && targetObjs[i];
+                if (typeof arr[i] === 'string') {
+                    try {
+                        arr[i] = JSON.parse(arr[i]);
+                    } catch {
+                        // if it is not binary state
+                        arr[i] < 2000 &&
+                            logger.error(this.namespaceLog + ' Cannot parse state "' + keys[i] + ': ' + arr[i]);
+                    }
+                }
+
+                if (obj && obj.common && obj.common.alias) {
+                    if (obj.common.alias.val !== undefined) {
+                        result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
+                    } else if (srcObjs[i]) {
+                        result[obj._id] =
+                            tools.formatAliasValue(
+                                srcObjs[i].common,
+                                obj.common,
+                                arr[i] || null,
+                                logger,
+                                this.namespaceLog
+                            ) || null;
+                    } else {
+                        result[obj._id || keys[i]] = arr[i] || null;
+                    }
+                } else {
+                    result[(obj && obj._id) || keys[i]] = arr[i] || null;
+                }
+            }
+            return tools.maybeCallbackWithError(callback, null, result);
+        });
+    }
+
+    _processStates(keys, targetObjs, callback) {
+        let aliasFound;
+        const aIds = keys.map(id => {
+            if (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH)) {
+                aliasFound = true;
+                return id;
+            } else {
+                return null;
+            }
+        });
+
+        // if any ID from aliases found
+        if (aliasFound) {
+            // make a copy of original array
+            keys = [...keys];
+
+            // read aliases objects
+            this._getObjectsByArray(aIds, targetObjs, options, (errors, targetObjs) => {
+                const srcIds = [];
+                // replace aliases ID with targets
+                targetObjs.forEach((obj, i) => {
+                    if (obj && obj.common && obj.common.alias) {
+                        // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
+                        const aliasId =
+                            obj.common.alias.id && typeof obj.common.alias.id.read === 'string'
+                                ? obj.common.alias.id.read
+                                : obj.common.alias.id;
+
+                        keys[i] = aliasId || null;
+                        srcIds[i] = keys[i];
+                    }
+                });
+
+                // srcObjs and targetObjs could be merged
+                this._getObjectsByArray(srcIds, null, options, (errors, srcObjs) =>
+                    this._processStatesSecondary(keys, targetObjs, srcObjs, callback)
+                );
+            });
+        } else {
+            this._processStatesSecondary(keys, null, null, callback);
+        }
+    }
+
+    /**
+     * Read all states of all adapters (and system states), that pass the pattern
+     *
+     * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
+     * <pre><code>
+     *     adapter.getStates('*', function (err, states) {
+     *         for (var id in states) {
+     *              adapter.log.debug('"' + id + '" = "' + states[id].val);
+     *         }
+     *     });
+     * </code></pre>
+     *
+     * @alias getForeignStates
+     * @memberof Adapter
+     * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param {object} options optional argument to describe the user context
+     * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+     */
+    getForeignStates(pattern, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+        if (typeof pattern === 'function') {
+            callback = pattern;
+            pattern = '*';
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('getForeignStates not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (!adapterObjects) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('getForeignStates not processed because Objects database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (pattern instanceof RegExp) {
+            logger.error(`${this.namespaceLog} Regexp is not supported for "getForeignStates"`);
+            return tools.maybeCallbackWithError(callback, 'Regexp is not supported for "getForeignStates"');
+        }
+
+        if (!Array.isArray(pattern) && typeof pattern !== 'string') {
+            logger.error(
+                `${
+                    this.namespaceLog
+                } The Pattern for "getForeignStates" needs to be an Array or an String. ${typeof pattern} provided.`
+            );
+            return tools.maybeCallbackWithError(
+                callback,
+                `The Pattern for "getForeignStates" needs to be an Array or an String. ${typeof pattern} provided.`
+            );
+        }
+
+        // if pattern is array
+        if (Array.isArray(pattern)) {
+            if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+                this._checkStates(pattern, options, 'getState', (err, keys, objs) => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else {
+                        this._processStates(keys, objs, callback);
+                    }
+                });
+            } else {
+                this._processStates(pattern, options && options._objects, callback);
+            }
+        } else {
+            // read first the keys for pattern
+            let params = {};
+            if (pattern && pattern !== '*') {
+                params = {
+                    startkey: pattern.replace(/\*/g, ''),
+                    endkey: pattern.replace(/\*/g, '\u9999')
+                };
+            }
+            let originalChecked = undefined;
+            if (options.checked !== undefined) {
+                originalChecked = options.checked;
+            }
+            options.checked = true;
+
+            // in special maintenance mode, just returns all states. Aliases are not supported in this mode
+            if (options.user === SYSTEM_ADMIN_USER && options.maintenance) {
+                adapterStates.getKeys(pattern, (err, keys) => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else {
+                        this._processStatesSecondary(keys, null, null, callback);
+                    }
+                });
+            }
+
+            adapterObjects.getObjectView('system', 'state', params, options, (err, res) => {
+                if (originalChecked !== undefined) {
+                    options.checked = originalChecked;
+                } else {
+                    options.checked = undefined;
+                }
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+                if (!res || !res.rows) {
+                    return tools.maybeCallbackWithError(callback, null, {});
+                }
+                const keys = [];
+                const objs = [];
+
+                // filter out
+                let regEx;
+                // process patterns like "*.someValue". The patterns "someValue.*" will be processed by getObjectView
+                if (pattern !== '*' && pattern[pattern.length - 1] !== '*') {
+                    regEx = new RegExp(tools.pattern2RegEx(pattern));
+                }
+                for (let i = 0; i < res.rows.length; i++) {
+                    const id = res.rows[i].id;
+                    if (id && (!regEx || regEx.test(id))) {
+                        keys.push(id);
+                        objs.push(res.rows[i].value);
+                    }
+                }
+                options._objects = objs;
+                this.getForeignStates(keys, options, callback);
+            });
+        }
+    }
+
+    _addAliasSubscribe(aliasObj, pattern, callback) {
+        if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
+            if (aliasObj.type !== 'state') {
+                logger.warn(
+                    `${this.namespaceLog} Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`
+                );
+                return tools.maybeCallbackWithError(
+                    callback,
+                    new Error(`Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`)
+                );
+            }
+
+            // id can be string or can have attribute read
+            const sourceId =
+                typeof aliasObj.common.alias.id.read === 'string'
+                    ? aliasObj.common.alias.id.read
+                    : aliasObj.common.alias.id;
+
+            // validate here because we use objects/states db directly
+            try {
+                utils.validateId(sourceId, true, null);
+            } catch (e) {
+                logger.warn(`${this.namespaceLog} Error validating alias id of ${aliasObj._id}: ${e.message}`);
+                return tools.maybeCallbackWithError(
+                    callback,
+                    new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`)
+                );
+            }
+
+            this.aliases[sourceId] = this.aliases[sourceId] || { source: null, targets: [] };
+
+            const targetEntry = {
+                alias: deepClone(aliasObj.common.alias),
+                id: aliasObj._id,
+                pattern,
+                type: aliasObj.common.type,
+                max: aliasObj.common.max,
+                min: aliasObj.common.min,
+                unit: aliasObj.common.unit
+            };
+
+            this.aliases[sourceId].targets.push(targetEntry);
+
+            if (!this.aliases[sourceId].source) {
+                adapterStates.subscribe(sourceId, () =>
+                    adapterObjects.getObject(sourceId, options, (err, sourceObj) => {
+                        if (sourceObj && sourceObj.common) {
+                            if (!this.aliases[sourceObj._id]) {
+                                logger.error(
+                                    `${
+                                        this.namespaceLog
+                                    } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
+                                        sourceObj
+                                    )}`
+                                );
+                            } else {
+                                this.aliases[sourceObj._id].source = {};
+                                this.aliases[sourceObj._id].source.min = sourceObj.common.min;
+                                this.aliases[sourceObj._id].source.max = sourceObj.common.max;
+                                this.aliases[sourceObj._id].source.type = sourceObj.common.type;
+                                this.aliases[sourceObj._id].source.unit = sourceObj.common.unit;
+                            }
+                        }
+                        return tools.maybeCallbackWithError(callback, err);
+                    })
+                );
+            } else {
+                return tools.maybeCallback(callback);
+            }
+        } else if (aliasObj && aliasObj.type === 'state') {
+            // if state and no id given -> if no state just ignore it
+            logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 12`);
+            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target 12`));
+        } else {
+            return tools.maybeCallback(callback);
+        }
+    }
+
+    async _removeAliasSubscribe(sourceId, aliasObj, pattern, callback) {
+        if (typeof pattern === 'function') {
+            callback = pattern;
+            pattern = null;
+        }
+
+        if (!this.aliases[sourceId]) {
+            return tools.maybeCallback(callback);
+        }
+
+        // remove from targets array
+        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases[sourceId].targets.indexOf(aliasObj);
+
+        if (pos !== -1) {
+            this.aliases[sourceId].targets.splice(pos, 1);
+
+            // unsubscribe if no more aliases exists
+            if (!this.aliases[sourceId].targets.length) {
+                delete this.aliases[sourceId];
+                await adapterStates.unsubscribe(sourceId);
+            }
+        }
+        return tools.maybeCallback(callback);
+    }
+
+    /**
+     * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
+     *
+     * Allows to Subscribe on changes all states of all instances according to pattern. E.g. to read all states of 'adapterName.X' instance use:
+     * <pre><code>
+     *     adapter.subscribeForeignStates('adapterName.X.*');
+     * </code></pre>
+     *
+     * @alias subscribeForeignStates
+     * @memberof Adapter
+     * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param {object} [options] optional argument to describe the user context
+     * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
+     */
+    async subscribeForeignStates(pattern, options, callback) {
+        pattern = pattern || '*';
+
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (pattern instanceof RegExp) {
+            return tools.maybeCallbackWithError(
+                callback,
+                `Regexp is not supported for "subscribeForeignStates", received "${pattern.toString()}"`
+            );
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('subscribeForeignStates not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // Todo check rights for options
+        await this._autoSubscribeOn();
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('subscribeForeignStates not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+        if (!adapterObjects) {
+            this.log.info('subscribeForeignStates not processed because Objects database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // compare if this pattern for one of auto-subscribe adapters
+        for (const autoSubEntry of this.autoSubscribe) {
+            if (typeof pattern === 'string' && (pattern === '*' || pattern.startsWith(`${autoSubEntry}.`))) {
+                // put this pattern into adapter list
+                let state;
+                try {
+                    state = await adapterStates.getState(`system.adapter.${autoSubEntry}.subscribes`);
+                } catch {
+                    // ignore
+                }
+                state = state || {};
+                state.val = state.val || '{}';
+                let subs;
+                try {
+                    subs = JSON.parse(state.val);
+                } catch {
+                    logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSubEntry}.subscribes"`);
+                }
+
+                // validate that correct structure read from state.val
+                if (!tools.isObject(subs)) {
+                    subs = {};
+                }
+
+                if (!tools.isObject(subs[pattern])) {
+                    subs[pattern] = {};
+                }
+
+                if (typeof subs[pattern][this.namespace] !== 'number') {
+                    subs[pattern][this.namespace] = 0;
+                }
+
+                subs[pattern][this.namespace]++;
+                this.outputCount++;
+                adapterStates.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
+            }
+        }
+
+        if (Array.isArray(pattern)) {
+            // get all aliases
+            const aliasesIds = pattern
+                .map(id => (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH) ? id : null))
+                .filter(id => id);
+
+            // get all non aliases
+            const nonAliasesIds = pattern
+                .map(id => (typeof id === 'string' && !id.startsWith(ALIAS_STARTS_WITH) ? id : null))
+                .filter(id => id);
+
+            for (const aliasPattern of pattern) {
+                if (
+                    typeof aliasPattern === 'string' &&
+                    (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
+                    !this.aliasPatterns.includes(aliasPattern)
+                ) {
+                    // its a new alias conform pattern to store
+                    this.aliasPatterns.push(aliasPattern);
+                }
+            }
+
+            const promises = [];
+
+            if (aliasesIds.length) {
+                if (!this._aliasObjectsSubscribed) {
+                    this._aliasObjectsSubscribed = true;
+                    adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
+                }
+
+                const aliasObjs = await new Promise(resolve =>
+                    this._getObjectsByArray(aliasesIds, null, options, (errors, aliasObjs) => resolve(aliasObjs))
+                );
+
+                for (const aliasObj of aliasObjs) {
+                    promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
+                }
+            }
+
+            if (nonAliasesIds.length) {
+                for (const id of nonAliasesIds) {
+                    promises.push(new Promise(resolve => adapterStates.subscribeUser(id, resolve)));
+                }
+            }
+
+            try {
+                await Promise.all(promises);
+            } catch (e) {
+                logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
+            }
+            return tools.maybeCallback(callback);
+        } else if (typeof pattern === 'string' && pattern.includes('*')) {
+            if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
+                if (!this._aliasObjectsSubscribed) {
+                    this._aliasObjectsSubscribed = true;
+                    adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
+                }
+
+                // read all aliases
+                try {
+                    const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
+                    const promises = [];
+                    if (!this.aliasPatterns.includes(pattern)) {
+                        // its a new pattern to store
+                        this.aliasPatterns.push(pattern);
+                    }
+
+                    for (const id of Object.keys(objs)) {
+                        // If alias
+                        if (id.startsWith(ALIAS_STARTS_WITH)) {
+                            const aliasObj = objs[id];
+                            promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, pattern, resolve)));
+                        }
+                    }
+
+                    try {
+                        await Promise.all(promises);
+                    } catch (e) {
+                        logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
+                    }
+
+                    if (!adapterStates) {
+                        // if states is no longer existing, we do not need to unsubscribe
+                        this.log.info('subscribeForeignStates not processed because States database not connected');
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    if (promises.length && pattern !== '*') {
+                        return tools.maybeCallback(callback);
+                    } else {
+                        // no alias objects found or pattern *
+                        adapterStates.subscribeUser(pattern, callback);
+                    }
+                } catch (e) {
+                    logger.warn(`${this.namespaceLog} Cannot subscribe to ${pattern}: ${e.message}`);
+                    return tools.maybeCallbackWithError(callback, e);
+                }
+            } else {
+                adapterStates.subscribeUser(pattern, callback);
+            }
+        } else if (typeof pattern === 'string' && pattern.startsWith(ALIAS_STARTS_WITH)) {
+            if (!this._aliasObjectsSubscribed) {
+                this._aliasObjectsSubscribed = true;
+                adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
+            }
+
+            // aliases['sourceId'] = {
+            //     source: {common attributes},
+            //     targets: [
+            //         {
+            //             alias: {},
+            //             id: 'aliasId',
+            //             pattern: 'some pattern',
+            //             type: stateType,
+            //             max: number,
+            //             min: number,
+            //         }
+            //     ]
+            // };
+
+            // just read one alias Object
+            try {
+                const aliasObj = await adapterObjects.getObjectAsync(pattern, options);
+                if (aliasObj) {
+                    // cb will be called, but await for catching promisified part
+                    await this._addAliasSubscribe(aliasObj, pattern, callback);
+                } else {
+                    return tools.maybeCallback(callback);
+                }
+            } catch (e) {
+                logger.warn(`${this.namespaceLog} cannot subscribe on alias "${pattern}": ${e.message}`);
+            }
+        } else {
+            adapterStates.subscribeUser(pattern, callback);
+        }
+    }
+
+    /**
+     * Unsubscribe for changes for given pattern
+     *
+     * This function allows to unsubscribe from changes. The pattern must be equal to requested one.
+     *
+     * <pre><code>
+     *     adapter.subscribeForeignStates('adapterName.X.*');
+     *     adapter.unsubscribeForeignStates('adapterName.X.abc*'); // This will not work
+     *     adapter.unsubscribeForeignStates('adapterName.X.*'); // Valid unsubscribe
+     * </code></pre>
+     *
+     * @alias unsubscribeForeignStates
+     * @memberof Adapter
+     * @param {string | string[]} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param {object} [options] optional argument to describe the user context
+     * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
+     */
+    async unsubscribeForeignStates(pattern, options, callback) {
+        pattern = pattern || '*';
+
+        // Todo check rights for options
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (pattern instanceof RegExp) {
+            return tools.maybeCallbackWithError(
+                callback,
+                `Regexp is not supported for "unsubscribeForeignStates", received "${pattern.toString()}"`
+            );
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('unsubscrubeForeignStates not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (this.autoSubscribe && typeof pattern === 'string') {
+            for (const autoSub of this.autoSubscribe) {
+                if (pattern === '*' || pattern.substring(0, autoSub.length + 1) === `${autoSub}.`) {
+                    // remove this pattern from adapter list
+                    let state;
+                    try {
+                        state = await adapterStates.getState(`system.adapter.${autoSub}.subscribes`);
+                    } catch {
+                        // ignore
+                    }
+                    if (!state || !state.val) {
+                        continue;
+                    }
+                    let subs;
+                    try {
+                        subs = JSON.parse(state.val);
+                    } catch {
+                        logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`);
+                        continue;
+                    }
+
+                    if (
+                        !tools.isObject(subs) ||
+                        !tools.isObject(subs[pattern]) ||
+                        subs[pattern][this.namespace] === undefined
+                    ) {
+                        // check subs is a valid object, because it comes from state.val
+                        continue;
+                    }
+
+                    if (typeof subs[pattern][this.namespace] === 'number') {
+                        subs[pattern][this.namespace]--;
+                        if (subs[pattern][this.namespace] <= 0) {
+                            delete subs[pattern][this.namespace];
+                        }
+                    } else {
+                        // corrupted info, we can only delete
+                        delete subs[pattern][this.namespace];
+                    }
+
+                    // if no other subs are there
+                    if (!Object.keys(subs[pattern]).length) {
+                        delete subs[pattern];
+                    }
+                    this.outputCount++;
+                    adapterStates.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
+                }
+            }
+        }
+
+        let aliasPattern;
+        const promises = [];
+
+        if (Array.isArray(pattern)) {
+            // process every entry as single unsubscribe
+            for (const _pattern of pattern) {
+                promises.push(this.unsubscribeForeignStatesAsync(_pattern));
+            }
+        } else if (typeof pattern === 'string' && (pattern.includes('*') || pattern.startsWith(ALIAS_STARTS_WITH))) {
+            if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
+                aliasPattern = pattern; // check all aliases
+                if (pattern === '*') {
+                    promises.push(adapterStates.unsubscribeUser(pattern));
+                }
+            } else {
+                promises.push(adapterStates.unsubscribeUser(pattern));
+            }
+        } else {
+            promises.push(adapterStates.unsubscribeUser(pattern));
+        }
+
+        // if pattern known, remove it from alias patterns to not subscribe to further matching aliases
+        this.aliasPatterns = this.aliasPatterns.filter(pattern => pattern !== aliasPattern);
+
+        if (aliasPattern) {
+            for (const [sourceId, alias] of Object.entries(this.aliases)) {
+                for (let i = alias.targets.length - 1; i >= 0; i--) {
+                    if (alias.targets[i].pattern === aliasPattern) {
+                        promises.push(this._removeAliasSubscribe(sourceId, i));
+                    }
+                }
+            }
+        }
+
+        await Promise.all(promises);
+        // if no alias subscribed any longer, remove subscription
+        if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
+            this._aliasObjectsSubscribed = false;
+            adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
+        }
+        return tools.maybeCallback(callback);
+    }
+
+    /**
+     * Subscribe for changes on all states of this instance, that pass the pattern
+     *
+     * Allows to Subscribe on changes all states of current adapter according to pattern. To read all states of current adapter use:
+     * <pre><code>
+     *     adapter.subscribeStates('*'); // subscribe for all states of this adapter
+     * </code></pre>
+     *
+     * @alias subscribeStates
+     * @memberof Adapter
+     * @param {string} pattern string in form 'adapter.0.*' or like this. Only string allowed
+     * @param {object} [options] optional argument to describe the user context
+     * @param {ioBroker.ErrorCallback} [callback]
+     */
+    subscribeStates(pattern, options, callback) {
+        // Todo check rights for options
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('subscribeStates not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // Exception. Threat the '*' case automatically
+        if (!pattern || pattern === '*') {
+            adapterStates.subscribeUser(this.namespace + '.*', callback);
+        } else {
+            pattern = utils.fixId(pattern, true);
+            adapterStates.subscribeUser(pattern, callback);
+        }
+    }
+
+    /**
+     * Unsubscribe for changes for given pattern for own states.
+     *
+     * This function allows to unsubscribe from changes. The pattern must be equal to requested one.
+     *
+     * <pre><code>
+     *     adapter.subscribeForeignStates('*');
+     *     adapter.unsubscribeForeignStates('abc*'); // This will not work
+     *     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
+     * </code></pre>
+     *
+     * @alias unsubscribeStates
+     * @memberof Adapter
+     * @param {string} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param {object} [options] optional argument to describe the user context
+     * @param {ioBroker.ErrorCallback} [callback]
+     */
+    unsubscribeStates(pattern, options, callback) {
+        // Todo check rights for options
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('unsubscribeStates not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (!pattern || pattern === '*') {
+            adapterStates.unsubscribeUser(this.namespace + '.*', callback);
+        } else {
+            pattern = utils.fixId(pattern, true);
+            adapterStates.unsubscribeUser(pattern, callback);
+        }
+    }
+
+    /**
+     * Write binary block into redis, e.g image
+     *
+     * @alias setForeignBinaryState
+     * @memberof Adapter
+     *
+     * @param {string} id of state
+     * @param {Buffer} binary data
+     * @param {object} [options] optional
+     * @param {ioBroker.ErrorCallback} [callback]
+     *
+     */
+    async setForeignBinaryState(id, binary, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+
+        try {
+            utils.validateId(id, true, options);
+        } catch (err) {
+            return tools.maybeCallbackWithError(callback, err);
+        }
+
+        if (this.performStrictObjectChecks) {
+            // obj needs to exist and has to be of type "file" - custom check for binary state
+            try {
+                if (!adapterObjects) {
+                    this.log.info('setBinaryState not processed because Objects database not connected');
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                }
+
+                const obj = await adapterObjects.getObjectAsync(id);
+
+                // at first check object existence
+                if (!obj) {
+                    logger.warn(
+                        `${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`
+                    );
+                }
+
+                // for a state object we require common.type to exist
+                if (obj.common && obj.common.type) {
+                    if (obj.common.type !== 'file') {
+                        logger.info(
+                            `${this.namespaceLog} Binary state object has to be type "file" but is "${obj.common.type}"`
+                        );
+                    }
+                }
+            } catch (e) {
+                logger.warn(
+                    `${this.namespaceLog} Could not perform strict object check of binary state ${id}: ${e.message}`
+                );
+            }
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('setBinaryState not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // we need at least user or group for checkStates - if no given assume admin
+        if (!options || !options.user) {
+            options = options || {};
+            options.user = SYSTEM_ADMIN_USER;
+        }
+
+        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+            // always read according object to set the binary flag
+            this._checkStates(id, options, 'setState', (err, obj) => {
+                if (!err && !obj) {
+                    return tools.maybeCallbackWithError(callback, 'Object does not exist');
+                } else if (!err && !obj.binary) {
+                    obj.binary = true;
+
+                    if (!adapterObjects) {
+                        this.log.info('setBinaryState not processed because Objects database not connected');
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    adapterObjects.setObject(id, obj, err => {
+                        if (err) {
+                            return tools.maybeCallbackWithError(callback, err);
+                        } else {
+                            if (!adapterStates) {
+                                // if states is no longer existing, we do not need to unsubscribe
+                                this.log.info('setBinaryState not processed because States database not connected');
+                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                            }
+
+                            this.outputCount++;
+                            adapterStates.setBinaryState(id, binary, callback);
+                        }
+                    });
+                } else if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                } else {
+                    if (!adapterStates) {
+                        // if states is no longer existing, we do not need to unsubscribe
+                        this.log.info('setBinaryState not processed because States database not connected');
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    this.outputCount++;
+                    adapterStates.setBinaryState(id, binary, callback);
+                }
+            });
+        } else {
+            this.outputCount++;
+            adapterStates.setBinaryState(id, binary, callback);
+        }
+    }
+
+    /**
+     * Same as setForeignBinaryState but prefixes the own namespace to the id
+     *
+     * @alias setBinaryState
+     * @memberof Adapter
+     *
+     * @param {string} id of state
+     * @param {Buffer} binary data
+     * @param {object} [options] optional
+     * @param {ioBroker.ErrorCallback} [callback]
+     */
+    setBinaryState(id, binary, options, callback) {
+        // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
+        // id = utils.fixId(id, false);
+        return this.setForeignBinaryState(id, binary, options, callback);
+    }
+
+    /**
+     * Read a binary block from redis, e.g. an image
+     *
+     * @param {string} id The state ID
+     * @param {object} options optional
+     * @param {ioBroker.GetBinaryStateCallback} callback
+     */
+    getForeignBinaryState(id, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('getBinaryState not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        try {
+            utils.validateId(id, true, options);
+        } catch (err) {
+            return tools.maybeCallbackWithError(callback, err);
+        }
+
+        // we need at least user or group for checkStates - if no given assume admin
+        if (!options || !options.user) {
+            options = options || {};
+            options.user = SYSTEM_ADMIN_USER;
+        }
+        // always read according object to set the binary flag
+        this._checkStates(id, options, 'getState', (err, obj) => {
+            if (err) {
+                return tools.maybeCallbackWithError(callback, err);
+            } else {
+                adapterStates.getBinaryState(id, (err, data) => {
+                    if (!err && data && obj && !obj.binary) {
+                        obj.binary = true;
+                        adapterObjects.setObject(id, obj, err => {
+                            if (err) {
+                                return tools.maybeCallbackWithError(callback, err);
+                            } else {
+                                return tools.maybeCallbackWithError(callback, null, data);
+                            }
+                        });
+                    } else {
+                        // if no buffer, and state marked as not binary
+                        if (!err && !data && obj && !obj.binary) {
+                            return tools.maybeCallbackWithError(callback, 'State is not binary');
+                        } else {
+                            return tools.maybeCallbackWithError(callback, err, data);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Same as getForeignBinaryState but prefixes the own namespace to the id
+     *
+     * @param {string} id The state ID
+     * @param {object} options optional
+     * @param {ioBroker.GetBinaryStateCallback} callback
+     */
+    getBinaryState(id, options, callback) {
+        // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
+        // id = utils.fixId(id);
+        return this.getForeignBinaryState(id, options, callback);
+    }
+
+    /**
+     * Deletes binary state
+     *
+     * @alias delForeignBinaryState
+     * @memberof Adapter
+     *
+     * @param {string} id
+     * @param {object} [options]
+     * @param {ioBroker.ErrorCallback} [callback]
+     *
+     */
+    delForeignBinaryState(id, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to unsubscribe
+            this.log.info('delBinaryState not processed because States database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        try {
+            utils.validateId(id, true, options);
+        } catch (err) {
+            return tools.maybeCallbackWithError(callback, err);
+        }
+
+        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+            this._checkStates(id, options, 'delState', err => {
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                } else {
+                    adapterStates.delBinaryState(id, callback);
+                }
+            });
+        } else {
+            adapterStates.delBinaryState(id, callback);
+        }
+    }
+
+    /**
+     * Deletes binary state but prefixes the own namespace to the id
+     *
+     * @alias delBinaryState
+     * @memberof Adapter
+     *
+     * @param {string} id
+     * @param {object} [options]
+     * @param {ioBroker.ErrorCallback} [callback]
+     *
+     */
+    delBinaryState(id, options, callback) {
+        // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
+        // id = utils.fixId(id, false);
+        return this.delForeignBinaryState(id, options, callback);
+    }
+
+    /**
+     * Return plugin instance
+     *
+     * @param name {string} name of the plugin to return
+     * @returns {object} plugin instance or null if not existent or not isActive
+     */
+    getPluginInstance(name) {
+        if (!this.pluginHandler) {
+            return null;
+        }
+        return this.pluginHandler.getPluginInstance(name);
+    }
+
+    /**
+     * Return plugin configuration
+     *
+     * @param name {string} name of the plugin to return
+     * @returns {object} plugin configuration or null if not existent or not isActive
+     */
+    getPluginConfig(name) {
+        if (!this.pluginHandler) {
+            return null;
+        }
+        return this.pluginHandler.getPluginConfig(name);
+    }
+
+    // TODO: ok if available?
+    async _autoSubscribeOn() {
+        if (!this.autoSubscribe && adapterObjects) {
+            try {
+                // collect all
+                const res = await adapterObjects.getObjectViewAsync('system', 'instance', {
+                    startkey: 'system.adapter.',
+                    endkey: 'system.adapter.\u9999'
+                });
+
+                if (res && res.rows) {
+                    this.autoSubscribe = [];
+                    for (const row of res.rows) {
+                        if (row.value.common.subscribable) {
+                            const _id = row.id.substring(15); // cut system.adapter.
+                            if (!this.autoSubscribe.includes(_id)) {
+                                this.autoSubscribe.push(_id);
+                            }
+                        }
+                    }
+                }
+
+                // because of autoSubscribe
+                await adapterObjects.subscribeAsync('system.adapter.*');
+            } catch {
+                // ignore
+            }
+        }
+    }
+
+    /**
+     * This method returns the list of license that can be used by this adapter
+     * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @returns {Promise<object[]>} list of suitable licenses
+     */
+    async getSuitableLicenses(all) {
+        const licenses = [];
+        try {
+            const obj = await this.getForeignObjectAsync('system.licenses');
+            const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
+            let uuid;
+            if (!uuidObj || !uuidObj.native || !uuidObj.native.uuid) {
+                logger.warn(this.namespaceLog + ' No UUID found!');
+                return licenses;
+            } else {
+                uuid = uuidObj.native.uuid;
+            }
+
+            if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
+                const now = Date.now();
+                const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
+                const version = semver.major(this.pack.version);
+
+                obj.native.licenses.forEach(license => {
+                    try {
+                        const decoded = jwt.verify(license.json, cert);
+                        if (
+                            decoded.name &&
+                            (!decoded.valid_till ||
+                                decoded.valid_till === '0000-00-00 00:00:00' ||
+                                new Date(decoded.valid_till).getTime() > now)
+                        ) {
+                            if (
+                                decoded.name.startsWith(`iobroker.${this.name}`) &&
+                                (all || !license.usedBy || license.usedBy === this.namespace)
+                            ) {
+                                // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
+                                //
+                                // If license is for adapter with version 0 or 1
+                                if (
+                                    decoded.version === '&lt;2' ||
+                                    decoded.version === '<2' ||
+                                    decoded.version === '<1' ||
+                                    decoded.version === '<=1'
+                                ) {
+                                    // check the current adapter major version
+                                    if (version !== 0 && version !== 1) {
+                                        return;
+                                    }
+                                } else if (decoded.version && decoded.version !== version) {
+                                    // Licenses for adapter versions >=2 need to match to the adapter major version
+                                    // which means that a new major version requires new licenses if it would be "included"
+                                    // in last purchase
+
+                                    // decoded.version could be only '<2' or direct version, like "2", "3" and so on
+                                    return;
+                                }
+                                if (decoded.uuid && decoded.uuid !== uuid) {
+                                    // License is not for this server
+                                    return;
+                                }
+
+                                // remove free license if commercial license found
+                                if (decoded.invoice !== 'free') {
+                                    const pos = licenses.findIndex(item => item.invoice === 'free');
+                                    if (pos !== -1) {
+                                        licenses.splice(pos, 1);
+                                    }
+                                }
+                                license.decoded = decoded;
+                                licenses.push(license);
+                            }
+                        }
+                    } catch (err) {
+                        logger.error(`${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`);
+                    }
+                });
+            }
+        } catch {
+            // ignore
+        }
+
+        licenses.sort((a, b) => {
+            const aInvoice = a.decoded.invoice !== 'free';
+            const bInvoice = b.decoded.invoice !== 'free';
+            if (aInvoice === bInvoice) {
+                return 0;
+            } else if (aInvoice) {
+                return -1;
+            } else if (bInvoice) {
+                return 1;
+            }
+        });
+
+        return licenses;
+    }
+
     _init(options) {
         /**
          * Initiates the databases
@@ -6444,6 +7847,149 @@ class Adapter extends EventEmitter {
          */
         this.sendToHostAsync = tools.promisifyNoError(this.sendToHost, this);
 
+        /**
+         * Promise-version of Adapter.setState
+         */
+        this.setStateAsync = tools.promisify(this.setState, this);
+
+        /**
+         * Promise-version of Adapter.setStateChanged
+         */
+        this.setStateChangedAsync = tools.promisify(this.setStateChanged, this, ['id', 'notChanged']);
+
+        /**
+         * Promise-version of Adapter.setForeignState
+         */
+        this.setForeignStateAsync = tools.promisify(this.setForeignState, this);
+
+        /**
+         * Promise-version of Adapter.setForeignStateChanged
+         */
+        this.setForeignStateChangedAsync = tools.promisify(this.setForeignStateChanged, this);
+
+        /**
+         * Promise-version of Adapter.getState
+         */
+        this.getStateAsync = tools.promisify(this.getState, this);
+
+        /**
+         * Promise-version of Adapter.getForeignState
+         */
+        this.getForeignStateAsync = tools.promisify(this.getForeignState, this);
+
+        /**
+         * Promise-version of Adapter.getHistory
+         */
+        this.getHistoryAsync = tools.promisify(this.getHistory, this, ['result', 'step', 'sessionId']);
+
+        /**
+         * Promise-version of Adapter.delState
+         */
+        this.delStateAsync = tools.promisify(this.delState, this);
+
+        /**
+         * Promise-version of Adapter.delForeignState
+         */
+        this.delForeignStateAsync = tools.promisify(this.delForeignState, this);
+
+        /**
+         * Promise-version of Adapter.getStates
+         */
+        this.getStatesAsync = tools.promisify(this.getStates, this);
+
+        /**
+         * Promise-version of Adapter.getForeignStates
+         */
+        this.getForeignStatesAsync = tools.promisify(this.getForeignStates, this);
+
+        /**
+         * Promise-version of Adapter.subscribeForeignStates
+         */
+        this.subscribeForeignStatesAsync = tools.promisify(this.subscribeForeignStates, this);
+
+        /**
+         * Promise-version of Adapter.unsubscribeForeignStates
+         */
+        this.unsubscribeForeignStatesAsync = tools.promisify(this.unsubscribeForeignStates, this);
+
+        /**
+         * Promise-version of Adapter.subscribeStates
+         */
+        this.subscribeStatesAsync = tools.promisify(this.subscribeStates, this);
+
+        /**
+         * Promise-version of Adapter.unsubscribeStates
+         */
+        this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
+
+        /**
+         * Promise-version of Adapter.setBinaryState
+         *
+         * @alias setForeignBinaryStateAsync
+         * @memberof Adapter
+         * @param {string} id of state
+         * @param {Buffer} binary data
+         * @param {object} [options] optional
+         * @return {Promise}
+         *
+         */
+        this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
+
+        /**
+         * Async version of setBinaryState
+         *
+         * @alias setBinaryStateAsync
+         * @memberof Adapter
+         *
+         * @param {string} id of state
+         * @param {Buffer} binary data
+         * @param {object} [options] optional
+         * @param {Promise<void>}
+         */
+        this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
+
+        /**
+         * Promise-version of Adapter.getBinaryState
+         *
+         * @alias getForeignBinaryStateAsync
+         * @memberof Adapter
+         *
+         */
+        this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
+
+        /**
+         * Promisified version of getBinaryState
+         *
+         * @param {string} id The state ID
+         * @param {object} options optional
+         * @return {Promise<Buffer>}
+         */
+        this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
+
+        /**
+         * Promise-version of Adapter.delForeignBinaryState
+         *
+         * @alias delForeignBinaryStateAsync
+         * @memberof Adapter
+         * @param {string} id
+         * @param {object} [options]
+         * @return {Promise<void>}
+         *
+         */
+        this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
+
+        /**
+         * Promise-version of Adapter.delBinaryState
+         *
+         * @alias delBinaryStateAsync
+         * @memberof Adapter
+         * @param {string} id
+         * @param {object} [options]
+         * @return {Promise<void>}
+         *
+         */
+        this.delBinaryStateAsync = tools.promisify(this.delBinaryState, this);
+
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
 
         // Can be later deleted if no more appears TODO: check
@@ -6665,35 +8211,6 @@ class Adapter extends EventEmitter {
                         }
                     });
                 });
-            }
-        };
-
-        const autoSubscribeOn = async () => {
-            if (!this.autoSubscribe && adapterObjects) {
-                try {
-                    // collect all
-                    const res = await adapterObjects.getObjectViewAsync('system', 'instance', {
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
-                    });
-
-                    if (res && res.rows) {
-                        this.autoSubscribe = [];
-                        for (const row of res.rows) {
-                            if (row.value.common.subscribable) {
-                                const _id = row.id.substring(15); // cut system.adapter.
-                                if (!this.autoSubscribe.includes(_id)) {
-                                    this.autoSubscribe.push(_id);
-                                }
-                            }
-                        }
-                    }
-
-                    // because of autoSubscribe
-                    await adapterObjects.subscribeAsync('system.adapter.*');
-                } catch {
-                    // ignore
-                }
             }
         };
 
@@ -6958,52 +8475,6 @@ class Adapter extends EventEmitter {
                     }
                 }
             });
-        };
-
-        // find out default history instance
-        const getDefaultHistory = callback => {
-            if (!this.defaultHistory) {
-                // read default history instance from system.config
-                return this.getForeignObject('system.config', null, (err, data) => {
-                    if (data && data.common) {
-                        this.defaultHistory = data.common.defaultHistory;
-                    }
-                    if (data && data.native) {
-                        systemSecret = data.native.secret;
-                    }
-
-                    // if no default history set
-                    if (!this.defaultHistory) {
-                        // read all adapters
-                        adapterObjects.getObjectView(
-                            'system',
-                            'instance',
-                            {
-                                startkey: 'system.adapter.',
-                                endkey: 'system.adapter.\u9999'
-                            },
-                            (err, _obj) => {
-                                if (_obj && _obj.rows) {
-                                    for (let i = 0; i < _obj.rows.length; i++) {
-                                        if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
-                                            this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
-                                            break;
-                                        }
-                                    }
-                                }
-                                if (!this.defaultHistory) {
-                                    this.defaultHistory = 'history.0';
-                                }
-                                return tools.maybeCallback(callback);
-                            }
-                        );
-                    } else {
-                        return tools.maybeCallback(callback);
-                    }
-                });
-            } else {
-                return tools.maybeCallback(callback);
-            }
         };
 
         // initStates is called from initAdapter
@@ -7321,1386 +8792,6 @@ class Adapter extends EventEmitter {
                         }, 5000);
                 }
             });
-
-            /**
-             * Promise-version of Adapter.setState
-             */
-            this.setStateAsync = tools.promisify(this.setState, this);
-
-            /**
-             * Promise-version of Adapter.setStateChanged
-             */
-            this.setStateChangedAsync = tools.promisify(this.setStateChanged, this, ['id', 'notChanged']);
-
-            /**
-             * Promise-version of Adapter.setForeignState
-             */
-            this.setForeignStateAsync = tools.promisify(this.setForeignState, this);
-
-            /**
-             * Promise-version of Adapter.setForeignStateChanged
-             */
-            this.setForeignStateChangedAsync = tools.promisify(this.setForeignStateChanged, this);
-
-            /**
-             * Promise-version of Adapter.getState
-             */
-            this.getStateAsync = tools.promisify(this.getState, this);
-
-            /**
-             * Promise-version of Adapter.getForeignState
-             */
-            this.getForeignStateAsync = tools.promisify(this.getForeignState, this);
-
-            /**
-             * Read historian data for states of any instance or system state.
-             *
-             * This function can read values from history adapters like: history, sql, influxdb. It expects the full path of object ID.
-             * Normally only foreign history has interest, so there is no getHistory and getForeignHistory
-             *
-             * Possible options:
-             *
-             *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default will be taken from system settings.
-             *  - start - (optional) time in ms - Date.now()', by default is (now - 1 week)
-             *  - end - (optional) time in ms - Date.now()', by default is (now + 5000 seconds)
-             *  - step - (optional) used in aggregate (m4, max, min, average, total) step in ms of intervals
-             *  - count - number of values if aggregate is 'onchange' or number of intervals if other aggregate method. Count will be ignored if step is set.
-             *  - from - if from field should be included in answer
-             *  - ack - if ack field should be included in answer
-             *  - q - if q field should be included in answer
-             *  - addId - if id field should be included in answer
-             *  - limit - do not return more entries than limit
-             *  - ignoreNull - if null values should be include (false), replaced by last not null value (true) or replaced with 0 (0)
-             *  - sessionId - (optional) identifier of request, will be returned back in the answer
-             *  - aggregate - aggregate method:
-             *      - minmax - used special algorithm. Splice the whole time range in small intervals and find for every interval max, min, start and end values.
-             *      - max - Splice the whole time range in small intervals and find for every interval max value and use it for this interval (nulls will be ignored).
-             *      - min - Same as max, but take minimal value.
-             *      - average - Same as max, but take average value.
-             *      - total - Same as max, but calculate total value.
-             *      - count - Same as max, but calculate number of values (nulls will be calculated).
-             *      - none - No aggregation at all. Only raw values in given period.
-             *
-             * @alias getHistory
-             * @memberof Adapter
-             * @param {string} id object ID of the state.
-             * @param {object} options see function description
-             * @param {ioBroker.GetHistoryCallback} callback return result
-             *        <pre><code>
-             *            function (error, result, step, sessionId) {
-             *              if (error) adapter.log.error('Cannot read value: ' + err);
-             *            }
-             *        </code></pre>
-             *
-             *        See possible attributes of the state in @setState explanation
-             */
-            this.getHistory = (id, options, callback) => {
-                try {
-                    utils.validateId(id, true, null);
-                } catch (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                options = options || {};
-                options.end = options.end || Date.now() + 5000000;
-                if (!options.count && !options.start) {
-                    options.start = options.start || Date.now() - 604800000; // - 1 week
-                }
-
-                if (!options.instance) {
-                    if (!this.defaultHistory) {
-                        // read default history instance from system.config
-                        return getDefaultHistory(() => this.getHistory(id, options, callback));
-                    } else {
-                        options.instance = this.defaultHistory;
-                    }
-                }
-
-                this.sendTo(options.instance || 'history.0', 'getHistory', { id: id, options: options }, res =>
-                    tools.maybeCallbackWithError(callback, res.error, res.result, res.step, res.sessionId)
-                );
-            };
-            /**
-             * Promise-version of Adapter.getHistory
-             */
-            this.getHistoryAsync = tools.promisify(this.getHistory, this, ['result', 'step', 'sessionId']);
-
-            /**
-             * Convert ID into object with device's, channel's and state's name.
-             *
-             * Convert "adapter.instance.D.C.S" in object {device: D, channel: C, state: S}
-             * Convert ID to {device: D, channel: C, state: S}
-             *
-             * @alias idToDCS
-             * @memberof Adapter
-             * @param {string} id short or long string of ID like "stateID" or "adapterName.0.stateID".
-             * @return {object} parsed ID as an object
-             */
-            this.idToDCS = id => {
-                if (!id) {
-                    return null;
-                }
-                const parts = id.split('.');
-                if (parts[0] + '.' + parts[1] !== this.namespace) {
-                    logger.warn(`${this.namespaceLog} Try to decode id not from this adapter`);
-                    return null;
-                }
-                return { device: parts[2], channel: parts[3], state: parts[4] };
-            };
-
-            /**
-             * Deletes a state of this instance.
-             * The object will NOT be deleted. If you want to delete it too, use @delObject instead.
-             *
-             * It is not required to provice the adapter namespace, because it will automatically be added.
-             * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
-             *
-             * No error is returned if state does not exist.
-             *
-             * @alias delState
-             * @memberof Adapter
-             * @param {string} id exactly object ID (without namespace)
-             * @param {object} [options] optional user context
-             * @param {ioBroker.ErrorCallback} [callback] return result
-             *        <pre><code>
-             *            function (err) {
-             *              if (err) adapter.log.error('Cannot delete object: ' + err);
-             *            }
-             *        </code></pre>
-             */
-            this.delState = (id, options, callback) => {
-                try {
-                    utils.validateId(id, false, null);
-                } catch (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                // delState does the same as delForeignState, but fixes the ID first
-                id = utils.fixId(id);
-                this.delForeignState(id, options, callback);
-            };
-            /**
-             * Promise-version of Adapter.delState
-             */
-            this.delStateAsync = tools.promisify(this.delState, this);
-
-            /**
-             * Deletes a state of any adapter.
-             * The object is NOT deleted. If you want to delete it too, use @delForeignObject instead.
-             *
-             * No error is returned if state does not exist.
-             *
-             * @alias delForeignState
-             * @memberof Adapter
-             * @param {string} id long string for ID like "adapterName.0.stateID".
-             * @param {object} [options] optional argument to describe the user context
-             * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
-             */
-            this.delForeignState = (id, options, callback) => {
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = null;
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('delForeignState not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                try {
-                    utils.validateId(id, true, options);
-                } catch (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-                    this._checkStates(id, options, 'delState', err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            adapterStates.delState(id, callback);
-                        }
-                    });
-                } else {
-                    adapterStates.delState(id, callback);
-                }
-            };
-            /**
-             * Promise-version of Adapter.delForeignState
-             */
-            this.delForeignStateAsync = tools.promisify(this.delForeignState, this);
-
-            /**
-             * Read all states of this adapter, that pass the pattern
-             *
-             * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-             * <pre><code>
-             *     adapter.getStates('*', function (err, states) {
-             *         for (var id in states) {
-             *              adapter.log.debug('"' + id + '" = "' + states[id].val);
-             *         }
-             *     });
-             * </code></pre>
-             *
-             * @alias getStates
-             * @memberof Adapter
-             * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
-             * @param {object} options optional argument to describe the user context
-             * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
-             */
-            this.getStates = (pattern, options, callback) => {
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = {};
-                }
-                pattern = utils.fixId(pattern, true);
-                this.getForeignStates(pattern, options, callback);
-            };
-            /**
-             * Promise-version of Adapter.getStates
-             */
-            this.getStatesAsync = tools.promisify(this.getStates, this);
-
-            this._processStatesSecondary = function (keys, targetObjs, srcObjs, callback) {
-                adapterStates.getStates(keys, (err, arr) => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-
-                    const result = {};
-
-                    for (let i = 0; i < keys.length; i++) {
-                        const obj = targetObjs && targetObjs[i];
-                        if (typeof arr[i] === 'string') {
-                            try {
-                                arr[i] = JSON.parse(arr[i]);
-                            } catch {
-                                // if it is not binary state
-                                arr[i] < 2000 &&
-                                    logger.error(this.namespaceLog + ' Cannot parse state "' + keys[i] + ': ' + arr[i]);
-                            }
-                        }
-
-                        if (obj && obj.common && obj.common.alias) {
-                            if (obj.common.alias.val !== undefined) {
-                                result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
-                            } else if (srcObjs[i]) {
-                                result[obj._id] =
-                                    tools.formatAliasValue(
-                                        srcObjs[i].common,
-                                        obj.common,
-                                        arr[i] || null,
-                                        logger,
-                                        this.namespaceLog
-                                    ) || null;
-                            } else {
-                                result[obj._id || keys[i]] = arr[i] || null;
-                            }
-                        } else {
-                            result[(obj && obj._id) || keys[i]] = arr[i] || null;
-                        }
-                    }
-                    return tools.maybeCallbackWithError(callback, null, result);
-                });
-            };
-
-            this._processStates = function (keys, targetObjs, callback) {
-                let aliasFound;
-                const aIds = keys.map(id => {
-                    if (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH)) {
-                        aliasFound = true;
-                        return id;
-                    } else {
-                        return null;
-                    }
-                });
-
-                // if any ID from aliases found
-                if (aliasFound) {
-                    // make a copy of original array
-                    keys = [...keys];
-
-                    // read aliases objects
-                    this._getObjectsByArray(aIds, targetObjs, options, (errors, targetObjs) => {
-                        const srcIds = [];
-                        // replace aliases ID with targets
-                        targetObjs.forEach((obj, i) => {
-                            if (obj && obj.common && obj.common.alias) {
-                                // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
-                                const aliasId =
-                                    obj.common.alias.id && typeof obj.common.alias.id.read === 'string'
-                                        ? obj.common.alias.id.read
-                                        : obj.common.alias.id;
-
-                                keys[i] = aliasId || null;
-                                srcIds[i] = keys[i];
-                            }
-                        });
-
-                        // srcObjs and targetObjs could be merged
-                        this._getObjectsByArray(srcIds, null, options, (errors, srcObjs) =>
-                            this._processStatesSecondary(keys, targetObjs, srcObjs, callback)
-                        );
-                    });
-                } else {
-                    this._processStatesSecondary(keys, null, null, callback);
-                }
-            };
-
-            /**
-             * Read all states of all adapters (and system states), that pass the pattern
-             *
-             * Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-             * <pre><code>
-             *     adapter.getStates('*', function (err, states) {
-             *         for (var id in states) {
-             *              adapter.log.debug('"' + id + '" = "' + states[id].val);
-             *         }
-             *     });
-             * </code></pre>
-             *
-             * @alias getForeignStates
-             * @memberof Adapter
-             * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
-             * @param {object} options optional argument to describe the user context
-             * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
-             */
-            this.getForeignStates = (pattern, options, callback) => {
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = {};
-                }
-                if (typeof pattern === 'function') {
-                    callback = pattern;
-                    pattern = '*';
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('getForeignStates not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                if (!adapterObjects) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('getForeignStates not processed because Objects database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                if (pattern instanceof RegExp) {
-                    logger.error(`${this.namespaceLog} Regexp is not supported for "getForeignStates"`);
-                    return tools.maybeCallbackWithError(callback, 'Regexp is not supported for "getForeignStates"');
-                }
-
-                if (!Array.isArray(pattern) && typeof pattern !== 'string') {
-                    logger.error(
-                        `${
-                            this.namespaceLog
-                        } The Pattern for "getForeignStates" needs to be an Array or an String. ${typeof pattern} provided.`
-                    );
-                    return tools.maybeCallbackWithError(
-                        callback,
-                        `The Pattern for "getForeignStates" needs to be an Array or an String. ${typeof pattern} provided.`
-                    );
-                }
-
-                // if pattern is array
-                if (Array.isArray(pattern)) {
-                    if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-                        this._checkStates(pattern, options, 'getState', (err, keys, objs) => {
-                            if (err) {
-                                return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                this._processStates(keys, objs, callback);
-                            }
-                        });
-                    } else {
-                        this._processStates(pattern, options && options._objects, callback);
-                    }
-                } else {
-                    // read first the keys for pattern
-                    let params = {};
-                    if (pattern && pattern !== '*') {
-                        params = {
-                            startkey: pattern.replace(/\*/g, ''),
-                            endkey: pattern.replace(/\*/g, '\u9999')
-                        };
-                    }
-                    let originalChecked = undefined;
-                    if (options.checked !== undefined) {
-                        originalChecked = options.checked;
-                    }
-                    options.checked = true;
-
-                    // in special maintenance mode, just returns all states. Aliases are not supported in this mode
-                    if (options.user === SYSTEM_ADMIN_USER && options.maintenance) {
-                        adapterStates.getKeys(pattern, (err, keys) => {
-                            if (err) {
-                                return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                this._processStatesSecondary(keys, null, null, callback);
-                            }
-                        });
-                    }
-
-                    adapterObjects.getObjectView('system', 'state', params, options, (err, res) => {
-                        if (originalChecked !== undefined) {
-                            options.checked = originalChecked;
-                        } else {
-                            options.checked = undefined;
-                        }
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
-                        if (!res || !res.rows) {
-                            return tools.maybeCallbackWithError(callback, null, {});
-                        }
-                        const keys = [];
-                        const objs = [];
-
-                        // filter out
-                        let regEx;
-                        // process patterns like "*.someValue". The patterns "someValue.*" will be processed by getObjectView
-                        if (pattern !== '*' && pattern[pattern.length - 1] !== '*') {
-                            regEx = new RegExp(tools.pattern2RegEx(pattern));
-                        }
-                        for (let i = 0; i < res.rows.length; i++) {
-                            const id = res.rows[i].id;
-                            if (id && (!regEx || regEx.test(id))) {
-                                keys.push(id);
-                                objs.push(res.rows[i].value);
-                            }
-                        }
-                        options._objects = objs;
-                        this.getForeignStates(keys, options, callback);
-                    });
-                }
-            };
-            /**
-             * Promise-version of Adapter.getForeignStates
-             */
-            this.getForeignStatesAsync = tools.promisify(this.getForeignStates, this);
-
-            this._addAliasSubscribe = (aliasObj, pattern, callback) => {
-                if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
-                    if (aliasObj.type !== 'state') {
-                        logger.warn(
-                            `${this.namespaceLog} Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`
-                        );
-                        return tools.maybeCallbackWithError(
-                            callback,
-                            new Error(`Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`)
-                        );
-                    }
-
-                    // id can be string or can have attribute read
-                    const sourceId =
-                        typeof aliasObj.common.alias.id.read === 'string'
-                            ? aliasObj.common.alias.id.read
-                            : aliasObj.common.alias.id;
-
-                    // validate here because we use objects/states db directly
-                    try {
-                        utils.validateId(sourceId, true, null);
-                    } catch (e) {
-                        logger.warn(`${this.namespaceLog} Error validating alias id of ${aliasObj._id}: ${e.message}`);
-                        return tools.maybeCallbackWithError(
-                            callback,
-                            new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`)
-                        );
-                    }
-
-                    this.aliases[sourceId] = this.aliases[sourceId] || { source: null, targets: [] };
-
-                    const targetEntry = {
-                        alias: deepClone(aliasObj.common.alias),
-                        id: aliasObj._id,
-                        pattern,
-                        type: aliasObj.common.type,
-                        max: aliasObj.common.max,
-                        min: aliasObj.common.min,
-                        unit: aliasObj.common.unit
-                    };
-
-                    this.aliases[sourceId].targets.push(targetEntry);
-
-                    if (!this.aliases[sourceId].source) {
-                        adapterStates.subscribe(sourceId, () =>
-                            adapterObjects.getObject(sourceId, options, (err, sourceObj) => {
-                                if (sourceObj && sourceObj.common) {
-                                    if (!this.aliases[sourceObj._id]) {
-                                        logger.error(
-                                            `${
-                                                this.namespaceLog
-                                            } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
-                                                sourceObj
-                                            )}`
-                                        );
-                                    } else {
-                                        this.aliases[sourceObj._id].source = {};
-                                        this.aliases[sourceObj._id].source.min = sourceObj.common.min;
-                                        this.aliases[sourceObj._id].source.max = sourceObj.common.max;
-                                        this.aliases[sourceObj._id].source.type = sourceObj.common.type;
-                                        this.aliases[sourceObj._id].source.unit = sourceObj.common.unit;
-                                    }
-                                }
-                                return tools.maybeCallbackWithError(callback, err);
-                            })
-                        );
-                    } else {
-                        return tools.maybeCallback(callback);
-                    }
-                } else if (aliasObj && aliasObj.type === 'state') {
-                    // if state and no id given -> if no state just ignore it
-                    logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 12`);
-                    return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target 12`));
-                } else {
-                    return tools.maybeCallback(callback);
-                }
-            };
-
-            this._removeAliasSubscribe = async (sourceId, aliasObj, pattern, callback) => {
-                if (typeof pattern === 'function') {
-                    callback = pattern;
-                    pattern = null;
-                }
-
-                if (!this.aliases[sourceId]) {
-                    return tools.maybeCallback(callback);
-                }
-
-                // remove from targets array
-                const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases[sourceId].targets.indexOf(aliasObj);
-
-                if (pos !== -1) {
-                    this.aliases[sourceId].targets.splice(pos, 1);
-
-                    // unsubscribe if no more aliases exists
-                    if (!this.aliases[sourceId].targets.length) {
-                        delete this.aliases[sourceId];
-                        await adapterStates.unsubscribe(sourceId);
-                    }
-                }
-                return tools.maybeCallback(callback);
-            };
-
-            /**
-             * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
-             *
-             * Allows to Subscribe on changes all states of all instances according to pattern. E.g. to read all states of 'adapterName.X' instance use:
-             * <pre><code>
-             *     adapter.subscribeForeignStates('adapterName.X.*');
-             * </code></pre>
-             *
-             * @alias subscribeForeignStates
-             * @memberof Adapter
-             * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
-             * @param {object} [options] optional argument to describe the user context
-             * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
-             */
-            this.subscribeForeignStates = async (pattern, options, callback) => {
-                pattern = pattern || '*';
-
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = null;
-                }
-
-                if (pattern instanceof RegExp) {
-                    return tools.maybeCallbackWithError(
-                        callback,
-                        `Regexp is not supported for "subscribeForeignStates", received "${pattern.toString()}"`
-                    );
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('subscribeForeignStates not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                // Todo check rights for options
-                await autoSubscribeOn();
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('subscribeForeignStates not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-                if (!adapterObjects) {
-                    this.log.info('subscribeForeignStates not processed because Objects database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                // compare if this pattern for one of auto-subscribe adapters
-                for (const autoSubEntry of this.autoSubscribe) {
-                    if (typeof pattern === 'string' && (pattern === '*' || pattern.startsWith(`${autoSubEntry}.`))) {
-                        // put this pattern into adapter list
-                        let state;
-                        try {
-                            state = await adapterStates.getState(`system.adapter.${autoSubEntry}.subscribes`);
-                        } catch {
-                            // ignore
-                        }
-                        state = state || {};
-                        state.val = state.val || '{}';
-                        let subs;
-                        try {
-                            subs = JSON.parse(state.val);
-                        } catch {
-                            logger.error(
-                                `${this.namespaceLog} Cannot parse subscribes for "${autoSubEntry}.subscribes"`
-                            );
-                        }
-
-                        // validate that correct structure read from state.val
-                        if (!tools.isObject(subs)) {
-                            subs = {};
-                        }
-
-                        if (!tools.isObject(subs[pattern])) {
-                            subs[pattern] = {};
-                        }
-
-                        if (typeof subs[pattern][this.namespace] !== 'number') {
-                            subs[pattern][this.namespace] = 0;
-                        }
-
-                        subs[pattern][this.namespace]++;
-                        this.outputCount++;
-                        adapterStates.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
-                    }
-                }
-
-                if (Array.isArray(pattern)) {
-                    // get all aliases
-                    const aliasesIds = pattern
-                        .map(id => (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH) ? id : null))
-                        .filter(id => id);
-
-                    // get all non aliases
-                    const nonAliasesIds = pattern
-                        .map(id => (typeof id === 'string' && !id.startsWith(ALIAS_STARTS_WITH) ? id : null))
-                        .filter(id => id);
-
-                    for (const aliasPattern of pattern) {
-                        if (
-                            typeof aliasPattern === 'string' &&
-                            (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
-                            !this.aliasPatterns.includes(aliasPattern)
-                        ) {
-                            // its a new alias conform pattern to store
-                            this.aliasPatterns.push(aliasPattern);
-                        }
-                    }
-
-                    const promises = [];
-
-                    if (aliasesIds.length) {
-                        if (!this._aliasObjectsSubscribed) {
-                            this._aliasObjectsSubscribed = true;
-                            adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
-                        }
-
-                        const aliasObjs = await new Promise(resolve =>
-                            this._getObjectsByArray(aliasesIds, null, options, (errors, aliasObjs) =>
-                                resolve(aliasObjs)
-                            )
-                        );
-
-                        for (const aliasObj of aliasObjs) {
-                            promises.push(
-                                new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve))
-                            );
-                        }
-                    }
-
-                    if (nonAliasesIds.length) {
-                        for (const id of nonAliasesIds) {
-                            promises.push(new Promise(resolve => adapterStates.subscribeUser(id, resolve)));
-                        }
-                    }
-
-                    try {
-                        await Promise.all(promises);
-                    } catch (e) {
-                        logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
-                    }
-                    return tools.maybeCallback(callback);
-                } else if (typeof pattern === 'string' && pattern.includes('*')) {
-                    if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
-                        if (!this._aliasObjectsSubscribed) {
-                            this._aliasObjectsSubscribed = true;
-                            adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
-                        }
-
-                        // read all aliases
-                        try {
-                            const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
-                            const promises = [];
-                            if (!this.aliasPatterns.includes(pattern)) {
-                                // its a new pattern to store
-                                this.aliasPatterns.push(pattern);
-                            }
-
-                            for (const id of Object.keys(objs)) {
-                                // If alias
-                                if (id.startsWith(ALIAS_STARTS_WITH)) {
-                                    const aliasObj = objs[id];
-                                    promises.push(
-                                        new Promise(resolve => this._addAliasSubscribe(aliasObj, pattern, resolve))
-                                    );
-                                }
-                            }
-
-                            try {
-                                await Promise.all(promises);
-                            } catch (e) {
-                                logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
-                            }
-
-                            if (!adapterStates) {
-                                // if states is no longer existing, we do not need to unsubscribe
-                                this.log.info(
-                                    'subscribeForeignStates not processed because States database not connected'
-                                );
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            if (promises.length && pattern !== '*') {
-                                return tools.maybeCallback(callback);
-                            } else {
-                                // no alias objects found or pattern *
-                                adapterStates.subscribeUser(pattern, callback);
-                            }
-                        } catch (e) {
-                            logger.warn(`${this.namespaceLog} Cannot subscribe to ${pattern}: ${e.message}`);
-                            return tools.maybeCallbackWithError(callback, e);
-                        }
-                    } else {
-                        adapterStates.subscribeUser(pattern, callback);
-                    }
-                } else if (typeof pattern === 'string' && pattern.startsWith(ALIAS_STARTS_WITH)) {
-                    if (!this._aliasObjectsSubscribed) {
-                        this._aliasObjectsSubscribed = true;
-                        adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
-                    }
-
-                    // aliases['sourceId'] = {
-                    //     source: {common attributes},
-                    //     targets: [
-                    //         {
-                    //             alias: {},
-                    //             id: 'aliasId',
-                    //             pattern: 'some pattern',
-                    //             type: stateType,
-                    //             max: number,
-                    //             min: number,
-                    //         }
-                    //     ]
-                    // };
-
-                    // just read one alias Object
-                    try {
-                        const aliasObj = await adapterObjects.getObjectAsync(pattern, options);
-                        if (aliasObj) {
-                            // cb will be called, but await for catching promisified part
-                            await this._addAliasSubscribe(aliasObj, pattern, callback);
-                        } else {
-                            return tools.maybeCallback(callback);
-                        }
-                    } catch (e) {
-                        logger.warn(`${this.namespaceLog} cannot subscribe on alias "${pattern}": ${e.message}`);
-                    }
-                } else {
-                    adapterStates.subscribeUser(pattern, callback);
-                }
-            };
-            /**
-             * Promise-version of Adapter.subscribeForeignStates
-             */
-            this.subscribeForeignStatesAsync = tools.promisify(this.subscribeForeignStates, this);
-
-            /**
-             * Unsubscribe for changes for given pattern
-             *
-             * This function allows to unsubscribe from changes. The pattern must be equal to requested one.
-             *
-             * <pre><code>
-             *     adapter.subscribeForeignStates('adapterName.X.*');
-             *     adapter.unsubscribeForeignStates('adapterName.X.abc*'); // This will not work
-             *     adapter.unsubscribeForeignStates('adapterName.X.*'); // Valid unsubscribe
-             * </code></pre>
-             *
-             * @alias unsubscribeForeignStates
-             * @memberof Adapter
-             * @param {string | string[]} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-             * @param {object} [options] optional argument to describe the user context
-             * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
-             */
-            this.unsubscribeForeignStates = async (pattern, options, callback) => {
-                pattern = pattern || '*';
-
-                // Todo check rights for options
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = null;
-                }
-
-                if (pattern instanceof RegExp) {
-                    return tools.maybeCallbackWithError(
-                        callback,
-                        `Regexp is not supported for "unsubscribeForeignStates", received "${pattern.toString()}"`
-                    );
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('unsubscrubeForeignStates not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                if (this.autoSubscribe && typeof pattern === 'string') {
-                    for (const autoSub of this.autoSubscribe) {
-                        if (pattern === '*' || pattern.substring(0, autoSub.length + 1) === `${autoSub}.`) {
-                            // remove this pattern from adapter list
-                            let state;
-                            try {
-                                state = await adapterStates.getState(`system.adapter.${autoSub}.subscribes`);
-                            } catch {
-                                // ignore
-                            }
-                            if (!state || !state.val) {
-                                continue;
-                            }
-                            let subs;
-                            try {
-                                subs = JSON.parse(state.val);
-                            } catch {
-                                logger.error(
-                                    `${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`
-                                );
-                                continue;
-                            }
-
-                            if (
-                                !tools.isObject(subs) ||
-                                !tools.isObject(subs[pattern]) ||
-                                subs[pattern][this.namespace] === undefined
-                            ) {
-                                // check subs is a valid object, because it comes from state.val
-                                continue;
-                            }
-
-                            if (typeof subs[pattern][this.namespace] === 'number') {
-                                subs[pattern][this.namespace]--;
-                                if (subs[pattern][this.namespace] <= 0) {
-                                    delete subs[pattern][this.namespace];
-                                }
-                            } else {
-                                // corrupted info, we can only delete
-                                delete subs[pattern][this.namespace];
-                            }
-
-                            // if no other subs are there
-                            if (!Object.keys(subs[pattern]).length) {
-                                delete subs[pattern];
-                            }
-                            this.outputCount++;
-                            adapterStates.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
-                        }
-                    }
-                }
-
-                let aliasPattern;
-                const promises = [];
-
-                if (Array.isArray(pattern)) {
-                    // process every entry as single unsubscribe
-                    for (const _pattern of pattern) {
-                        promises.push(this.unsubscribeForeignStatesAsync(_pattern));
-                    }
-                } else if (
-                    typeof pattern === 'string' &&
-                    (pattern.includes('*') || pattern.startsWith(ALIAS_STARTS_WITH))
-                ) {
-                    if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
-                        aliasPattern = pattern; // check all aliases
-                        if (pattern === '*') {
-                            promises.push(adapterStates.unsubscribeUser(pattern));
-                        }
-                    } else {
-                        promises.push(adapterStates.unsubscribeUser(pattern));
-                    }
-                } else {
-                    promises.push(adapterStates.unsubscribeUser(pattern));
-                }
-
-                // if pattern known, remove it from alias patterns to not subscribe to further matching aliases
-                this.aliasPatterns = this.aliasPatterns.filter(pattern => pattern !== aliasPattern);
-
-                if (aliasPattern) {
-                    for (const [sourceId, alias] of Object.entries(this.aliases)) {
-                        for (let i = alias.targets.length - 1; i >= 0; i--) {
-                            if (alias.targets[i].pattern === aliasPattern) {
-                                promises.push(this._removeAliasSubscribe(sourceId, i));
-                            }
-                        }
-                    }
-                }
-
-                await Promise.all(promises);
-                // if no alias subscribed any longer, remove subscription
-                if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
-                    this._aliasObjectsSubscribed = false;
-                    adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
-                }
-                return tools.maybeCallback(callback);
-            };
-            /**
-             * Promise-version of Adapter.unsubscribeForeignStates
-             */
-            this.unsubscribeForeignStatesAsync = tools.promisify(this.unsubscribeForeignStates, this);
-
-            /**
-             * Subscribe for changes on all states of this instance, that pass the pattern
-             *
-             * Allows to Subscribe on changes all states of current adapter according to pattern. To read all states of current adapter use:
-             * <pre><code>
-             *     adapter.subscribeStates('*'); // subscribe for all states of this adapter
-             * </code></pre>
-             *
-             * @alias subscribeStates
-             * @memberof Adapter
-             * @param {string} pattern string in form 'adapter.0.*' or like this. Only string allowed
-             * @param {object} [options] optional argument to describe the user context
-             * @param {ioBroker.ErrorCallback} [callback]
-             */
-            this.subscribeStates = (pattern, options, callback) => {
-                // Todo check rights for options
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = null;
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('subscribeStates not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                // Exception. Threat the '*' case automatically
-                if (!pattern || pattern === '*') {
-                    adapterStates.subscribeUser(this.namespace + '.*', callback);
-                } else {
-                    pattern = utils.fixId(pattern, true);
-                    adapterStates.subscribeUser(pattern, callback);
-                }
-            };
-            /**
-             * Promise-version of Adapter.subscribeStates
-             */
-            this.subscribeStatesAsync = tools.promisify(this.subscribeStates, this);
-
-            /**
-             * Unsubscribe for changes for given pattern for own states.
-             *
-             * This function allows to unsubscribe from changes. The pattern must be equal to requested one.
-             *
-             * <pre><code>
-             *     adapter.subscribeForeignStates('*');
-             *     adapter.unsubscribeForeignStates('abc*'); // This will not work
-             *     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
-             * </code></pre>
-             *
-             * @alias unsubscribeStates
-             * @memberof Adapter
-             * @param {string} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-             * @param {object} [options] optional argument to describe the user context
-             * @param {ioBroker.ErrorCallback} [callback]
-             */
-            this.unsubscribeStates = (pattern, options, callback) => {
-                // Todo check rights for options
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = null;
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('unsubscribeStates not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                if (!pattern || pattern === '*') {
-                    adapterStates.unsubscribeUser(this.namespace + '.*', callback);
-                } else {
-                    pattern = utils.fixId(pattern, true);
-                    adapterStates.unsubscribeUser(pattern, callback);
-                }
-            };
-            /**
-             * Promise-version of Adapter.unsubscribeStates
-             */
-            this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
-
-            /**
-             * Write binary block into redis, e.g image
-             *
-             * @alias setForeignBinaryState
-             * @memberof Adapter
-             *
-             * @param {string} id of state
-             * @param {Buffer} binary data
-             * @param {object} [options] optional
-             * @param {ioBroker.ErrorCallback} [callback]
-             *
-             */
-            this.setForeignBinaryState = async (id, binary, options, callback) => {
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = {};
-                }
-
-                try {
-                    utils.validateId(id, true, options);
-                } catch (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                if (this.performStrictObjectChecks) {
-                    // obj needs to exist and has to be of type "file" - custom check for binary state
-                    try {
-                        if (!adapterObjects) {
-                            this.log.info('setBinaryState not processed because Objects database not connected');
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        const obj = await adapterObjects.getObjectAsync(id);
-
-                        // at first check object existence
-                        if (!obj) {
-                            logger.warn(
-                                `${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`
-                            );
-                        }
-
-                        // for a state object we require common.type to exist
-                        if (obj.common && obj.common.type) {
-                            if (obj.common.type !== 'file') {
-                                logger.info(
-                                    `${this.namespaceLog} Binary state object has to be type "file" but is "${obj.common.type}"`
-                                );
-                            }
-                        }
-                    } catch (e) {
-                        logger.warn(
-                            `${this.namespaceLog} Could not perform strict object check of binary state ${id}: ${e.message}`
-                        );
-                    }
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('setBinaryState not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                // we need at least user or group for checkStates - if no given assume admin
-                if (!options || !options.user) {
-                    options = options || {};
-                    options.user = SYSTEM_ADMIN_USER;
-                }
-
-                if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-                    // always read according object to set the binary flag
-                    this._checkStates(id, options, 'setState', (err, obj) => {
-                        if (!err && !obj) {
-                            return tools.maybeCallbackWithError(callback, 'Object does not exist');
-                        } else if (!err && !obj.binary) {
-                            obj.binary = true;
-
-                            if (!adapterObjects) {
-                                this.log.info('setBinaryState not processed because Objects database not connected');
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            adapterObjects.setObject(id, obj, err => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else {
-                                    if (!adapterStates) {
-                                        // if states is no longer existing, we do not need to unsubscribe
-                                        this.log.info(
-                                            'setBinaryState not processed because States database not connected'
-                                        );
-                                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                                    }
-
-                                    this.outputCount++;
-                                    adapterStates.setBinaryState(id, binary, callback);
-                                }
-                            });
-                        } else if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            if (!adapterStates) {
-                                // if states is no longer existing, we do not need to unsubscribe
-                                this.log.info('setBinaryState not processed because States database not connected');
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            this.outputCount++;
-                            adapterStates.setBinaryState(id, binary, callback);
-                        }
-                    });
-                } else {
-                    this.outputCount++;
-                    adapterStates.setBinaryState(id, binary, callback);
-                }
-            };
-
-            /**
-             * Promise-version of Adapter.setBinaryState
-             *
-             * @alias setForeignBinaryStateAsync
-             * @memberof Adapter
-             * @param {string} id of state
-             * @param {Buffer} binary data
-             * @param {object} [options] optional
-             * @return {Promise}
-             *
-             */
-            this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
-
-            /**
-             * Same as setForeignBinaryState but prefixes the own namespace to the id
-             *
-             * @alias setBinaryState
-             * @memberof Adapter
-             *
-             * @param {string} id of state
-             * @param {Buffer} binary data
-             * @param {object} [options] optional
-             * @param {ioBroker.ErrorCallback} [callback]
-             */
-            this.setBinaryState = (id, binary, options, callback) => {
-                // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-                // id = utils.fixId(id, false);
-                return this.setForeignBinaryState(id, binary, options, callback);
-            };
-
-            /**
-             * Async version of setBinaryState
-             *
-             * @alias setBinaryStateAsync
-             * @memberof Adapter
-             *
-             * @param {string} id of state
-             * @param {Buffer} binary data
-             * @param {object} [options] optional
-             * @param {Promise<void>}
-             */
-            this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
-
-            /**
-             * Read a binary block from redis, e.g. an image
-             *
-             * @param {string} id The state ID
-             * @param {object} options optional
-             * @param {ioBroker.GetBinaryStateCallback} callback
-             */
-            this.getForeignBinaryState = (id, options, callback) => {
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = {};
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('getBinaryState not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                try {
-                    utils.validateId(id, true, options);
-                } catch (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                // we need at least user or group for checkStates - if no given assume admin
-                if (!options || !options.user) {
-                    options = options || {};
-                    options.user = SYSTEM_ADMIN_USER;
-                }
-                // always read according object to set the binary flag
-                this._checkStates(id, options, 'getState', (err, obj) => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        adapterStates.getBinaryState(id, (err, data) => {
-                            if (!err && data && obj && !obj.binary) {
-                                obj.binary = true;
-                                adapterObjects.setObject(id, obj, err => {
-                                    if (err) {
-                                        return tools.maybeCallbackWithError(callback, err);
-                                    } else {
-                                        return tools.maybeCallbackWithError(callback, null, data);
-                                    }
-                                });
-                            } else {
-                                // if no buffer, and state marked as not binary
-                                if (!err && !data && obj && !obj.binary) {
-                                    return tools.maybeCallbackWithError(callback, 'State is not binary');
-                                } else {
-                                    return tools.maybeCallbackWithError(callback, err, data);
-                                }
-                            }
-                        });
-                    }
-                });
-            };
-
-            /**
-             * Promise-version of Adapter.getBinaryState
-             *
-             * @alias getForeignBinaryStateAsync
-             * @memberof Adapter
-             *
-             */
-            this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
-
-            /**
-             * Same as getForeignBinaryState but prefixes the own namespace to the id
-             *
-             * @param {string} id The state ID
-             * @param {object} options optional
-             * @param {ioBroker.GetBinaryStateCallback} callback
-             */
-            this.getBinaryState = (id, options, callback) => {
-                // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
-                // id = utils.fixId(id);
-                return this.getForeignBinaryState(id, options, callback);
-            };
-
-            /**
-             * Promisified version of getBinaryState
-             *
-             * @param {string} id The state ID
-             * @param {object} options optional
-             * @return {Promise<Buffer>}
-             */
-            this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
-
-            /**
-             * Deletes binary state
-             *
-             * @alias delForeignBinaryState
-             * @memberof Adapter
-             *
-             * @param {string} id
-             * @param {object} [options]
-             * @param {ioBroker.ErrorCallback} [callback]
-             *
-             */
-            this.delForeignBinaryState = (id, options, callback) => {
-                if (typeof options === 'function') {
-                    callback = options;
-                    options = {};
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('delBinaryState not processed because States database not connected');
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                try {
-                    utils.validateId(id, true, options);
-                } catch (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
-
-                if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-                    this._checkStates(id, options, 'delState', err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            adapterStates.delBinaryState(id, callback);
-                        }
-                    });
-                } else {
-                    adapterStates.delBinaryState(id, callback);
-                }
-            };
-
-            /**
-             * Promise-version of Adapter.delForeignBinaryState
-             *
-             * @alias delForeignBinaryStateAsync
-             * @memberof Adapter
-             * @param {string} id
-             * @param {object} [options]
-             * @return {Promise<void>}
-             *
-             */
-            this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
-
-            /**
-             * Deletes binary state but prefixes the own namespace to the id
-             *
-             * @alias delBinaryState
-             * @memberof Adapter
-             *
-             * @param {string} id
-             * @param {object} [options]
-             * @param {ioBroker.ErrorCallback} [callback]
-             *
-             */
-            this.delBinaryState = (id, options, callback) => {
-                // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-                // id = utils.fixId(id, false);
-                return this.delForeignBinaryState(id, options, callback);
-            };
-
-            /**
-             * Promise-version of Adapter.delBinaryState
-             *
-             * @alias delBinaryStateAsync
-             * @memberof Adapter
-             * @param {string} id
-             * @param {object} [options]
-             * @return {Promise<void>}
-             *
-             */
-            this.delBinaryStateAsync = tools.promisify(this.delBinaryState, this);
-
-            /**
-             * Return plugin instance
-             *
-             * @param name {string} name of the plugin to return
-             * @returns {object} plugin instance or null if not existent or not isActive
-             */
-            this.getPluginInstance = name => {
-                if (!this.pluginHandler) {
-                    return null;
-                }
-                return this.pluginHandler.getPluginInstance(name);
-            };
-
-            /**
-             * Return plugin configuration
-             *
-             * @param name {string} name of the plugin to return
-             * @returns {object} plugin configuration or null if not existent or not isActive
-             */
-            this.getPluginConfig = name => {
-                if (!this.pluginHandler) {
-                    return null;
-                }
-                return this.pluginHandler.getPluginConfig(name);
-            };
         };
 
         // read all logs prepared for this adapter at start
@@ -9398,105 +9489,6 @@ class Adapter extends EventEmitter {
         };
         this.pluginHandler = new PluginHandler(pluginSettings);
         this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
-
-        /**
-         * This method returns the list of license that can be used by this adapter
-         * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
-         * @returns {Promise<object[]>} list of suitable licenses
-         */
-        this.getSuitableLicenses = async all => {
-            const licenses = [];
-            try {
-                const obj = await this.getForeignObjectAsync('system.licenses');
-                const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
-                let uuid;
-                if (!uuidObj || !uuidObj.native || !uuidObj.native.uuid) {
-                    logger.warn(this.namespaceLog + ' No UUID found!');
-                    return licenses;
-                } else {
-                    uuid = uuidObj.native.uuid;
-                }
-
-                if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
-                    const now = Date.now();
-                    const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
-                    const version = semver.major(this.pack.version);
-
-                    obj.native.licenses.forEach(license => {
-                        try {
-                            const decoded = jwt.verify(license.json, cert);
-                            if (
-                                decoded.name &&
-                                (!decoded.valid_till ||
-                                    decoded.valid_till === '0000-00-00 00:00:00' ||
-                                    new Date(decoded.valid_till).getTime() > now)
-                            ) {
-                                if (
-                                    decoded.name.startsWith('iobroker.' + this.name) &&
-                                    (all || !license.usedBy || license.usedBy === this.namespace)
-                                ) {
-                                    // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
-                                    //
-                                    // If license is for adapter with version 0 or 1
-                                    if (
-                                        decoded.version === '&lt;2' ||
-                                        decoded.version === '<2' ||
-                                        decoded.version === '<1' ||
-                                        decoded.version === '<=1'
-                                    ) {
-                                        // check the current adapter major version
-                                        if (version !== 0 && version !== 1) {
-                                            return;
-                                        }
-                                    } else if (decoded.version && decoded.version !== version) {
-                                        // Licenses for adapter versions >=2 need to match to the adapter major version
-                                        // which means that a new major version requires new licenses if it would be "included"
-                                        // in last purchase
-
-                                        // decoded.version could be only '<2' or direct version, like "2", "3" and so on
-                                        return;
-                                    }
-                                    if (decoded.uuid && decoded.uuid !== uuid) {
-                                        // License is not for this server
-                                        return;
-                                    }
-
-                                    // remove free license if commercial license found
-                                    if (decoded.invoice !== 'free') {
-                                        const pos = licenses.findIndex(item => item.invoice === 'free');
-                                        if (pos !== -1) {
-                                            licenses.splice(pos, 1);
-                                        }
-                                    }
-                                    license.decoded = decoded;
-                                    licenses.push(license);
-                                }
-                            }
-                        } catch (err) {
-                            logger.error(
-                                `${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`
-                            );
-                        }
-                    });
-                }
-            } catch {
-                // ignore
-            }
-
-            licenses.sort((a, b) => {
-                const aInvoice = a.decoded.invoice !== 'free';
-                const bInvoice = b.decoded.invoice !== 'free';
-                if (aInvoice === bInvoice) {
-                    return 0;
-                } else if (aInvoice) {
-                    return -1;
-                } else if (bInvoice) {
-                    return 1;
-                }
-            });
-
-            return licenses;
-        };
 
         // finally init
         _initDBs();
