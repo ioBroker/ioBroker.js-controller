@@ -1181,7 +1181,7 @@ class Adapter extends EventEmitter {
      */
     async getEncryptedConfig(attribute, callback) {
         if (Object.prototype.hasOwnProperty.call(this.config, attribute)) {
-            if (this._systemSecret !== null) {
+            if (this._systemSecret !== undefined) {
                 return tools.maybeCallbackWithError(
                     callback,
                     null,
