@@ -116,11 +116,26 @@ class InMemoryFileDB {
         let ret = {};
         try {
             ret = await this.loadDatasetFile(datasetName);
+
+            // loading worked, make sure that "bak" File is not broken
+            try {
+                await fs.readJSON(`${datasetName}.bak`);
+            } catch (e) {
+                this.log.info(
+                    `${this.namespace} Rewrite bak file, because error on verify ${datasetName}.bak: ${e.message}`
+                );
+                try {
+                    const jsonString = JSON.stringify(ret);
+                    await fs.writeFile(`${datasetName}.bak`, jsonString);
+                } catch (e) {
+                    this.log.error(`${this.namespace} Cannot save ${datasetName}.bak: ${e.message}`);
+                }
+            }
         } catch (err) {
             this.log.error(`${this.namespace} Cannot load ${datasetName}: ${err.message}. We try last Backup!`);
 
             try {
-                ret = await this.loadDatasetFile(datasetName + '.bak');
+                ret = await this.loadDatasetFile(`${datasetName}.bak`);
 
                 // it worked, lets overwrite old file and store the broken one for pot. forensic check
                 try {
