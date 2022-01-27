@@ -691,6 +691,8 @@ async function processCommand(command, args, params, callback) {
                                         `Migrated: ${migrated}`,
                                         `system.host.${hostname}`
                                     );
+
+                                    notificationHandler.storeNotifications();
                                 } catch (e) {
                                     console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
                                 }

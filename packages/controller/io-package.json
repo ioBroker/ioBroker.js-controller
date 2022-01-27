@@ -948,7 +948,7 @@
             "pl": "Automatyczna migracja do JSONL",
             "zh-cn": "自动迁移到 JSONL"
           },
-          "severity": "info",
+          "severity": "notify",
           "description": {
             "en": "The used database type in your system was automatically changed from \"file\" to \"jsonl\". <b>This means that a normal downgrade is only possible to js-controller 3.3 or higher!</b> Additionally the database file now have \".jsonl\" as file ending. For further questions please check in our forums.",
             "de": "Der verwendete Datenbanktyp in Ihrem System wurde automatisch von „file“ auf „jsonl“ geändert. <b>Das bedeutet, dass ein normales Downgrade nur auf js-controller 3.3 oder höher möglich ist!</b> Zusätzlich hat die Datenbankdatei jetzt \".jsonl\" als Dateiendung. Für weitere Fragen besuchen Sie bitte unser Forum.",
