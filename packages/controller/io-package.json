@@ -924,6 +924,36 @@
           },
           "regex": [],
           "limit": 1
+        },
+        {
+          "category": "fileToJsonl",
+          "name": {
+            "en": "Auto migration to JSONL",
+            "de": "Automatische Migration zu JSONL",
+            "ru": "Автоматическая миграция на JSONL",
+            "pt": "Migração automática para JSONL",
+            "nl": "Automatische migratie naar JSONL",
+            "fr": "Migration automatique vers JSONL",
+            "it": "Migrazione automatica a JSONL",
+            "es": "Migración automática a JSONL",
+            "pl": "Automatyczna migracja do JSONL",
+            "zh-cn": "自动迁移到 JSONL"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "The used database type in your system was automatically changed from \"file\" to \"jsonl\". This means that a normal downgrade is only possible to js-controller 3.3 or higher! Additionally the database file now have \".jsonl\" as file ending. For further questions please check in our forums.",
+            "de": "Der verwendete Datenbanktyp in Ihrem System wurde automatisch von „file“ auf „jsonl“ geändert. Das bedeutet, dass ein normales Downgrade nur auf js-controller 3.3 oder höher möglich ist! Zusätzlich hat die Datenbankdatei jetzt \".jsonl\" als Dateiendung. Für weitere Fragen besuchen Sie bitte unser Forum.",
+            "ru": "Используемый тип базы данных в вашей системе был автоматически изменен с \"file\" на \"jsonl\". Это значит, что нормальный даунгрейд возможен только до js-controller 3.3 и выше! Кроме того, файл базы данных теперь имеет расширение «.jsonl». Если у вас возникнут дополнительные вопросы, пожалуйста, посетите наш форум.",
+            "pt": "O tipo de banco de dados usado em seu sistema foi alterado automaticamente de \"file\" para \"jsonl\". Isso significa que um downgrade normal só é possível para js-controller 3.3 ou superior! Além disso, o arquivo de banco de dados agora tem \".jsonl\" como final de arquivo. Para mais perguntas, por favor, verifique em nossos fóruns.",
+            "nl": "Het gebruikte databasetype in uw systeem is automatisch gewijzigd van \"file\" naar \"jsonl\". Dit betekent dat een normale downgrade alleen mogelijk is naar js-controller 3.3 of hoger! Bovendien heeft het databasebestand nu \".jsonl\" als bestandsuitgang. Voor verdere vragen kunt u terecht op onze forums.",
+            "fr": "Le type de base de données utilisé dans votre système a été automatiquement modifié de \"file\" à \"jsonl\". Cela signifie qu'une rétrogradation normale n'est possible que vers js-controller 3.3 ou supérieur ! De plus, le fichier de base de données a maintenant \".jsonl\" comme fin de fichier. Pour d'autres questions, veuillez consulter nos forums.",
+            "it": "Il tipo di database utilizzato nel sistema è stato automaticamente modificato da \"file\" a \"jsonl\". Ciò significa che un normale downgrade è possibile solo a js-controller 3.3 o versioni successive! Inoltre, il file di database ora ha \".jsonl\" come fine del file. Per ulteriori domande, controlla nei nostri forum.",
+            "es": "El tipo de base de datos utilizado en su sistema se cambió automáticamente de \"file\" a \"jsonl\". ¡Esto significa que una degradación normal solo es posible a js-controller 3.3 o superior! Además, el archivo de la base de datos ahora tiene \".jsonl\" como final de archivo. Si tiene más preguntas, consulte nuestros foros.",
+            "pl": "Używany typ bazy danych w twoim systemie został automatycznie zmieniony z \"file\" na \"jsonl\". Oznacza to, że normalny downgrade jest możliwy tylko do js-controller 3.3 lub nowszego! Dodatkowo plik bazy danych ma teraz końcówkę „.jsonl”. W przypadku dalszych pytań odwiedź nasze fora.",
+            "zh-cn": "您系统中使用的数据库类型已自动从“文件”更改为“jsonl”。这意味着只能正常降级到 js-controller 3.3 或更高版本！此外，数据库文件现在以“.jsonl”作为文件结尾。如有更多问题，请查看我们的论坛。"
+          },
+          "regex": [],
+          "limit": 1
         }
       ]
     }
