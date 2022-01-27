@@ -652,22 +652,22 @@ async function processCommand(command, args, params, callback) {
                                 config.states.options.retry_max_delay = 5000;
                             }
 
-                            let migrated = false;
+                            let migrated = '';
                             // We migrate file to jsonl
                             if (config.states.type === 'file') {
                                 config.states.type = 'jsonl';
                                 console.log('States DB type migrated from "file" to "jsonl"');
-                                migrated = true;
+                                migrated += 'States';
                             }
 
                             if (config.objects.type === 'file') {
                                 config.objects.type = 'jsonl';
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
-                                migrated = true;
+                                migrated += migrated ? ' and Objects' : 'Objects';
                             }
 
                             if (migrated) {
-                                const NotificationHandler = require('./lib/notificationHandler');
+                                const NotificationHandler = require('./../lib/notificationHandler');
 
                                 const hostname = tools.getHostName();
 
@@ -682,15 +682,17 @@ async function processCommand(command, args, params, callback) {
                                 const notificationHandler = new NotificationHandler(notificationSettings);
 
                                 try {
-                                    // TODO
+                                    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
+                                    await notificationHandler.addConfig(ioPackage.notifications);
+
                                     await notificationHandler.addMessage(
                                         'system',
-                                        'memIssues',
-                                        '',
+                                        'fileToJsonl',
+                                        `Migrated: ${migrated}`,
                                         `system.host.${hostname}`
                                     );
                                 } catch (e) {
-                                    console.warn(`Could not add OOM notification: ${e.message}`);
+                                    console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
                                 }
                             }
 
