@@ -600,82 +600,109 @@ async function processCommand(command, args, params, callback) {
                                 cert.create();
                             });
                             callback && callback();
-                        } else {
-                            // else we update existing stuff (this is executed on installation)
-                            // Rename repositories
-                            const Repo = require('./setup/setupRepo.js');
-                            const repo = new Repo({ objects, states });
-
-                            try {
-                                await repo.rename(
-                                    'default',
-                                    'stable',
-                                    'http://download.iobroker.net/sources-dist.json'
-                                );
-                                await repo.rename(
-                                    'latest',
-                                    'beta',
-                                    'http://download.iobroker.net/sources-dist-latest.json'
-                                );
-                            } catch (err) {
-                                console.warn(`Cannot rename: ${err.message}`);
-                            }
-
-                            // there has been a bug that user can upload js-controller
-                            try {
-                                await objects.delObjectAsync('system.adapter.js-controller');
-                            } catch {
-                                // ignore
-                            }
-
-                            try {
-                                const configFile = tools.getConfigFileName();
-
-                                const configOrig = fs.readJSONSync(configFile);
-                                const config = deepClone(configOrig);
-
-                                config.objects.options = config.objects.options || {
-                                    auth_pass: null,
-                                    retry_max_delay: 5000
-                                };
-                                if (
-                                    config.objects.options.retry_max_delay === 15000 ||
-                                    !config.objects.options.retry_max_delay
-                                ) {
-                                    config.objects.options.retry_max_delay = 5000;
-                                }
-                                config.states.options = config.states.options || {
-                                    auth_pass: null,
-                                    retry_max_delay: 5000
-                                };
-                                if (
-                                    config.states.options.retry_max_delay === 15000 ||
-                                    !config.states.options.retry_max_delay
-                                ) {
-                                    config.states.options.retry_max_delay = 5000;
-                                }
-
-                                // We migrate file to jsonl
-                                if (config.states.type === 'file') {
-                                    config.states.type = 'jsonl';
-                                    console.log('States DB type migrated from "file" to "jsonl"');
-                                }
-
-                                if (config.objects.type === 'file') {
-                                    config.objects.type = 'jsonl';
-                                    console.log('Objects DB type migrated from "file" to "jsonl"');
-                                }
-
-                                if (!isDeepStrictEqual(config, configOrig)) {
-                                    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                                    console.log('ioBroker configuration updated');
-                                }
-                            } catch (err) {
-                                console.log(`Could not update ioBroker configuration: ${err.message}`);
-                            }
-
-                            return void callback();
                         }
+
+                        // we update existing things, in first as well as normnal setup
+                        // Rename repositories
+                        const Repo = require('./setup/setupRepo.js');
+                        const repo = new Repo({ objects, states });
+
+                        try {
+                            await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
+                            await repo.rename(
+                                'latest',
+                                'beta',
+                                'http://download.iobroker.net/sources-dist-latest.json'
+                            );
+                        } catch (err) {
+                            console.warn(`Cannot rename: ${err.message}`);
+                        }
+
+                        // there has been a bug that user can upload js-controller
+                        try {
+                            await objects.delObjectAsync('system.adapter.js-controller');
+                        } catch {
+                            // ignore
+                        }
+
+                        try {
+                            const configFile = tools.getConfigFileName();
+
+                            const configOrig = fs.readJSONSync(configFile);
+                            const config = deepClone(configOrig);
+
+                            config.objects.options = config.objects.options || {
+                                auth_pass: null,
+                                retry_max_delay: 5000
+                            };
+                            if (
+                                config.objects.options.retry_max_delay === 15000 ||
+                                !config.objects.options.retry_max_delay
+                            ) {
+                                config.objects.options.retry_max_delay = 5000;
+                            }
+                            config.states.options = config.states.options || {
+                                auth_pass: null,
+                                retry_max_delay: 5000
+                            };
+                            if (
+                                config.states.options.retry_max_delay === 15000 ||
+                                !config.states.options.retry_max_delay
+                            ) {
+                                config.states.options.retry_max_delay = 5000;
+                            }
+
+                            let migrated = false;
+                            // We migrate file to jsonl
+                            if (config.states.type === 'file') {
+                                config.states.type = 'jsonl';
+                                console.log('States DB type migrated from "file" to "jsonl"');
+                                migrated = true;
+                            }
+
+                            if (config.objects.type === 'file') {
+                                config.objects.type = 'jsonl';
+                                console.log('Objects DB type migrated from "file" to "jsonl"');
+                                migrated = true;
+                            }
+
+                            if (migrated) {
+                                const NotificationHandler = require('./lib/notificationHandler');
+
+                                const hostname = tools.getHostName();
+
+                                const notificationSettings = {
+                                    states: states,
+                                    objects: objects,
+                                    log: console,
+                                    logPrefix: '',
+                                    host: hostname
+                                };
+
+                                const notificationHandler = new NotificationHandler(notificationSettings);
+
+                                try {
+                                    // TODO
+                                    await notificationHandler.addMessage(
+                                        'system',
+                                        'memIssues',
+                                        '',
+                                        `system.host.${hostname}`
+                                    );
+                                } catch (e) {
+                                    console.warn(`Could not add OOM notification: ${e.message}`);
+                                }
+                            }
+
+                            if (!isDeepStrictEqual(config, configOrig)) {
+                                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                                console.log('ioBroker configuration updated');
+                            }
+                        } catch (err) {
+                            console.log(`Could not update ioBroker configuration: ${err.message}`);
+                        }
+
+                        return void callback();
                     },
                     isFirst,
                     isRedis
