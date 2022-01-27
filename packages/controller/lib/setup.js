@@ -656,14 +656,21 @@ async function processCommand(command, args, params, callback) {
                             // We migrate file to jsonl
                             if (config.states.type === 'file') {
                                 config.states.type = 'jsonl';
-                                console.log('States DB type migrated from "file" to "jsonl"');
-                                migrated += 'States';
+
+                                if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                                    // silent config change on secondaries
+                                    console.log('States DB type migrated from "file" to "jsonl"');
+                                    migrated += 'States';
+                                }
                             }
 
                             if (config.objects.type === 'file') {
                                 config.objects.type = 'jsonl';
-                                console.log('Objects DB type migrated from "file" to "jsonl"');
-                                migrated += migrated ? ' and Objects' : 'Objects';
+                                if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+                                    // silent config change on secondaries
+                                    console.log('Objects DB type migrated from "file" to "jsonl"');
+                                    migrated += migrated ? ' and Objects' : 'Objects';
+                                }
                             }
 
                             if (migrated) {
