@@ -3373,15 +3373,15 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
             endkey: 'system.adapter.\u9999'
         });
     } catch (e) {
-        if (e.message.startsWith('Cannot find ')) {
-            logger.error(`${logPrefix}_design/system missing - call node ${module.exports.appName}.js setup`);
+        if (e.message && e.message.startsWith('Cannot find ')) {
+            logger.error(`${logPrefix} _design/system missing - call node ${module.exports.appName}.js setup`);
         } else {
-            logger.error(`${logPrefix}Can not get instances: ${e.message}`);
+            logger.error(`${logPrefix} Can not get instances: ${e.message}`);
         }
     }
 
     if (!doc.rows || doc.rows.length === 0) {
-        logger.info(`${logPrefix}no instances found`);
+        logger.info(`${logPrefix} no instances found`);
     } else {
         for (const row of doc.rows) {
             if (row && row.value) {
@@ -3594,7 +3594,11 @@ function compressFileGZip(inputFilename, outputFilename, options = {}) {
         });
         output.on('close', () => {
             if (deleteInput) {
-                fs.unlinkSync(inputFilename);
+                try {
+                    fs.unlinkSync(inputFilename);
+                } catch {
+                    // Ignore
+                }
             }
             resolve();
         });

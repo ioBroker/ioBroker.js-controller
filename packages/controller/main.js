@@ -685,6 +685,9 @@ function createObjects(onConnect) {
                     ) {
                         procs[id].restartExpected = true;
                         stopInstance(id, async () => {
+                            if (!procs[id]) {
+                                return;
+                            }
                             const _ipArr = tools.findIPs();
 
                             if (checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -900,27 +903,43 @@ function reportStatus() {
     //   elapsed: 6650000,     // ms since the start of the process
     //   timestamp: 864000000  // ms since epoch
     // }
-    pidUsage(process.pid, (err, stats) => {
-        // controller.s might be stopped, but this is still running
-        if (!err && states && states.setState && stats) {
-            states.setState(id + '.cpu', { ack: true, from: id, val: Math.round(100 * parseFloat(stats.cpu)) / 100 });
-            states.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
-            outputCount += 2;
-        }
-    });
+    try {
+        pidUsage(process.pid, (err, stats) => {
+            // controller.s might be stopped, but this is still running
+            if (!err && states && states.setState && stats) {
+                states.setState(id + '.cpu', {
+                    ack: true,
+                    from: id,
+                    val: Math.round(100 * parseFloat(stats.cpu)) / 100
+                });
+                states.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
+                outputCount += 2;
+            }
+        });
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Cannot read pidUsage data : ${e.message}`);
+    }
 
-    const mem = process.memoryUsage();
-    states.setState(`${id}.memRss`, { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
-    states.setState(`${id}.memHeapTotal`, {
-        val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
-        ack: true,
-        from: id
-    });
-    states.setState(id + '.memHeapUsed', {
-        val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
-        ack: true,
-        from: id
-    });
+    try {
+        const mem = process.memoryUsage();
+        states.setState(`${id}.memRss`, {
+            val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
+            ack: true,
+            from: id
+        });
+        states.setState(`${id}.memHeapTotal`, {
+            val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
+            ack: true,
+            from: id
+        });
+        states.setState(id + '.memHeapUsed', {
+            val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
+            ack: true,
+            from: id
+        });
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Cannot read memoryUsage data : ${e.message}`);
+    }
 
     // provide machine infos
 
@@ -941,8 +960,8 @@ function reportStatus() {
                 });
                 outputCount++;
             }
-        } catch (err) {
-            logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${e.message}`);
         }
     }
 
@@ -967,7 +986,7 @@ function reportStatus() {
                     outputCount += 2;
                 }
             } catch (e) {
-                logger.error(`${hostLogPrefix} Cannot read disk information: ${e}`);
+                logger.error(`${hostLogPrefix} Cannot read disk information: ${e.message}`);
             }
         });
     }
@@ -1082,7 +1101,7 @@ function cleanAutoSubscribes(instance, callback) {
             if (res && res.rows) {
                 for (let c = res.rows.length - 1; c >= 0; c--) {
                     // remove this instance from autoSubscribe
-                    if (res.rows[c].value && res.rows[c].value.common.subscribable) {
+                    if (res.rows[c].value && res.rows[c].value.common && res.rows[c].value.common.subscribable) {
                         count++;
                         cleanAutoSubscribe(instance, res.rows[c].id, () => !--count && callback && callback());
                     }
@@ -2230,31 +2249,36 @@ async function processMessage(msg) {
                 }
                 logger.info(`${hostLogPrefix} ${tools.appName} ${args.slice(1).join(' ')}`);
 
-                const child = spawn('node', args, { windowsHide: true });
-                if (child.stdout) {
-                    child.stdout.on('data', data => {
-                        data = data.toString().replace(/\n/g, '');
-                        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + data);
-                        msg.from && sendTo(msg.from, 'cmdStdout', { id: msg.message.id, data: data });
-                    });
-                }
-
-                if (child.stderr) {
-                    child.stderr.on('data', data => {
-                        data = data.toString().replace(/\n/g, '');
-                        logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
-                        msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: data });
-                    });
-                }
-
-                child.on('exit', exitCode => {
-                    logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
-                    if (msg.from) {
-                        sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
-                        // Sometimes finished command is lost, recent it
-                        setTimeout(() => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }), 1000);
+                try {
+                    const child = spawn('node', args, { windowsHide: true });
+                    if (child.stdout) {
+                        child.stdout.on('data', data => {
+                            data = data.toString().replace(/\n/g, '');
+                            logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
+                            msg.from && sendTo(msg.from, 'cmdStdout', { id: msg.message.id, data: data });
+                        });
                     }
-                });
+
+                    if (child.stderr) {
+                        child.stderr.on('data', data => {
+                            data = data.toString().replace(/\n/g, '');
+                            logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
+                            msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: data });
+                        });
+                    }
+
+                    child.on('exit', exitCode => {
+                        logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
+                        if (msg.from) {
+                            sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
+                            // Sometimes finished command is lost, recent it
+                            setTimeout(() => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }), 1000);
+                        }
+                    });
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} ${tools.appName} ${e.message}`);
+                    msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: e.message });
+                }
             }
 
             break;
@@ -2639,30 +2663,34 @@ async function processMessage(msg) {
                                 } while (parts.length);
                             }
 
-                            if (fs.existsSync(filename)) {
-                                const files = fs.readdirSync(filename);
+                            try {
+                                if (fs.existsSync(filename)) {
+                                    const files = fs.readdirSync(filename);
 
-                                for (const file of files) {
-                                    try {
-                                        if (!file.endsWith('-audit.json')) {
-                                            const stat = fs.lstatSync(path.join(filename, file));
-                                            if (!stat.isDirectory()) {
-                                                result.list.push({
-                                                    fileName: `log/${hostname}/${transport}/${file}`,
-                                                    size: stat.size
-                                                });
+                                    for (const file of files) {
+                                        try {
+                                            if (!file.endsWith('-audit.json')) {
+                                                const stat = fs.lstatSync(path.join(filename, file));
+                                                if (!stat.isDirectory()) {
+                                                    result.list.push({
+                                                        fileName: `log/${hostname}/${transport}/${file}`,
+                                                        size: stat.size
+                                                    });
+                                                }
                                             }
+                                        } catch (e) {
+                                            // push unchecked
+                                            // result.list.push('log/' + transport + '/' + files[f]);
+                                            logger.error(
+                                                `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
+                                                    e.message
+                                                }`
+                                            );
                                         }
-                                    } catch (e) {
-                                        // push unchecked
-                                        // result.list.push('log/' + transport + '/' + files[f]);
-                                        logger.error(
-                                            `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
-                                                e.message
-                                            }`
-                                        );
                                     }
                                 }
+                            } catch (e) {
+                                logger.error(`${hostLogPrefix} cannot check files: ${filename} - ${e.message}`);
                             }
                         }
                     }
@@ -2730,8 +2758,8 @@ async function processMessage(msg) {
                     os: process.platform,
                     Architecture: os.arch(),
                     CPUs: cpus.length,
-                    Speed: cpus[0].speed,
-                    Model: cpus[0].model,
+                    Speed: tools.isObject(cpus[0]) ? cpus[0].speed : undefined,
+                    Model: tools.isObject(cpus[0]) ? cpus[0].model : undefined,
                     RAM: os.totalmem(),
                     'System uptime': Math.round(os.uptime()),
                     'Node.js': process.version,
@@ -2842,7 +2870,7 @@ async function processMessage(msg) {
                 objects,
                 msg.message.id,
                 msg.message.adapter,
-                Buffer.from(msg.message.data, 'base64'),
+                Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
                 error => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
             );
@@ -2931,7 +2959,11 @@ async function processMessage(msg) {
         }
 
         case 'rebuildAdapter':
-            if (!installQueue.some(entry => entry.id === msg.message.id)) {
+            if (!msg.message.id) {
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: 'Adapter to rebuild not provided.' }, msg.callback);
+                }
+            } else if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
                 const installObj = { id: msg.message.id, rebuild: true };
                 if (msg.message.rebuildArgs) {
@@ -4473,6 +4505,9 @@ async function startInstance(id, wakeUp) {
                         });
                     } else {
                         // a group controller for this group is not yet started, execute one
+                        compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
+                            instances: []
+                        };
                         if (!compactProcs[instance.common.compactGroup].process) {
                             const compactControllerArgs = [instance.common.compactGroup];
 
