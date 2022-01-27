@@ -938,7 +938,7 @@ function reportStatus() {
             from: id
         });
     } catch (e) {
-        logger.error(`${hostLogPrefix} Cannot read memoryUsage data : ${e.message}`);
+        logger.error(`${hostLogPrefix} Cannot read memoryUsage data: ${e.message}`);
     }
 
     // provide machine infos
