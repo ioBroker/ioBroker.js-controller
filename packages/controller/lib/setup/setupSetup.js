@@ -281,7 +281,7 @@ function Setup(options) {
             } catch (e) {
                 // Cannot find view happens on very first installation,
                 // so ignore this case because no users can be invalid
-                if (!e.message.contains('Cannot find view')) {
+                if (!e.message.includes('Cannot find view')) {
                     console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
                 }
             }
