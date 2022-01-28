@@ -113,6 +113,10 @@ class RedisHandler extends EventEmitter {
         }
 
         if (command === 'multi') {
+            if (this.activeMultiCalls.length && !this.activeMultiCalls[0].execCalled) {
+                // should never happen
+                this.log.warn(`${this.socketId} Conflicting multi call`);
+            }
             this._handleMulti();
             return;
         }
@@ -455,10 +459,7 @@ class RedisHandler extends EventEmitter {
     _handleMultiResponse(responseId, index, buf) {
         this.activeMultiCalls[index].responseMap.set(responseId, buf);
         this.activeMultiCalls[index].responseCount++;
-        if (
-            this.activeMultiCalls[index] &&
-            this.activeMultiCalls[index].responseCount === this.activeMultiCalls[index].responseIds.length
-        ) {
+        if (this.activeMultiCalls[index].responseCount === this.activeMultiCalls[index].responseIds.length) {
             const multiRespObj = this.activeMultiCalls.splice(index, 1)[0];
             this._sendExecResponse(multiRespObj);
         }
