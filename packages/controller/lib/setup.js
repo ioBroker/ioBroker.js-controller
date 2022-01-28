@@ -579,23 +579,23 @@ async function processCommand(command, args, params, callback) {
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    let otherInstanceExists = false;
-                                    try {
-                                        // check if another instance exists
-                                        const res = await objects.getObjectViewAsync('system', 'instance', {
-                                            startkey: `system.adapter.${instance}`,
-                                            endkey: `system.adapter.${instance}\u9999`
-                                        });
+                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`);
 
-                                        otherInstanceExists = res && res.rows && res.rows.length;
-                                    } catch {
-                                        // ignore - on install we have no object views
-                                    }
+                                    if (adapterInstalled) {
+                                        let otherInstanceExists = false;
+                                        try {
+                                            // check if another instance exists
+                                            const res = await objects.getObjectViewAsync('system', 'instance', {
+                                                startkey: `system.adapter.${instance}`,
+                                                endkey: `system.adapter.${instance}\u9999`
+                                            });
 
-                                    if (!otherInstanceExists) {
-                                        const path = require.resolve(`${tools.appName}.${instance}`);
+                                            otherInstanceExists = res && res.rows && res.rows.length;
+                                        } catch {
+                                            // ignore - on install we have no object views
+                                        }
 
-                                        if (path) {
+                                        if (!otherInstanceExists) {
                                             await install.createInstance(instance, {
                                                 enabled: true,
                                                 ignoreIfExists: true
