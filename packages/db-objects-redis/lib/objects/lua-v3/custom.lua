@@ -1,5 +1,5 @@
--- design: custom
--- search: state
+-- design: system
+-- search: custom
 local rep = {}
 -- local keys=redis.call("keys", KEYS[1].."*")
 local cursor = KEYS[4];
