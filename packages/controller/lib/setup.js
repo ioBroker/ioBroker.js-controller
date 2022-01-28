@@ -651,56 +651,61 @@ async function processCommand(command, args, params, callback) {
                                 config.states.options.retry_max_delay = 5000;
                             }
 
-                            let migrated = '';
-                            // We migrate file to jsonl
-                            if (config.states.type === 'file') {
-                                config.states.type = 'jsonl';
+                            // skip migration for now until we prepare testing update
+                            if (!require('ci-info').isCI) {
+                                let migrated = '';
+                                // We migrate file to jsonl
+                                if (config.states.type === 'file') {
+                                    config.states.type = 'jsonl';
 
-                                if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
-                                    // silent config change on secondaries
-                                    console.log('States DB type migrated from "file" to "jsonl"');
-                                    migrated += 'States';
+                                    if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                                        // silent config change on secondaries
+                                        console.log('States DB type migrated from "file" to "jsonl"');
+                                        migrated += 'States';
+                                    }
                                 }
-                            }
 
-                            if (config.objects.type === 'file') {
-                                config.objects.type = 'jsonl';
-                                if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
-                                    // silent config change on secondaries
-                                    console.log('Objects DB type migrated from "file" to "jsonl"');
-                                    migrated += migrated ? ' and Objects' : 'Objects';
+                                if (config.objects.type === 'file') {
+                                    config.objects.type = 'jsonl';
+                                    if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+                                        // silent config change on secondaries
+                                        console.log('Objects DB type migrated from "file" to "jsonl"');
+                                        migrated += migrated ? ' and Objects' : 'Objects';
+                                    }
                                 }
-                            }
 
-                            if (migrated) {
-                                const NotificationHandler = require('./../lib/notificationHandler');
+                                if (migrated) {
+                                    const NotificationHandler = require('./../lib/notificationHandler');
 
-                                const hostname = tools.getHostName();
+                                    const hostname = tools.getHostName();
 
-                                const notificationSettings = {
-                                    states: states,
-                                    objects: objects,
-                                    log: console,
-                                    logPrefix: '',
-                                    host: hostname
-                                };
+                                    const notificationSettings = {
+                                        states: states,
+                                        objects: objects,
+                                        log: console,
+                                        logPrefix: '',
+                                        host: hostname
+                                    };
 
-                                const notificationHandler = new NotificationHandler(notificationSettings);
+                                    const notificationHandler = new NotificationHandler(notificationSettings);
 
-                                try {
-                                    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
-                                    await notificationHandler.addConfig(ioPackage.notifications);
+                                    try {
+                                        const ioPackage = fs.readJsonSync(
+                                            path.join(__dirname, '..', 'io-package.json')
+                                        );
+                                        await notificationHandler.addConfig(ioPackage.notifications);
 
-                                    await notificationHandler.addMessage(
-                                        'system',
-                                        'fileToJsonl',
-                                        `Migrated: ${migrated}`,
-                                        `system.host.${hostname}`
-                                    );
+                                        await notificationHandler.addMessage(
+                                            'system',
+                                            'fileToJsonl',
+                                            `Migrated: ${migrated}`,
+                                            `system.host.${hostname}`
+                                        );
 
-                                    notificationHandler.storeNotifications();
-                                } catch (e) {
-                                    console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                                        notificationHandler.storeNotifications();
+                                    } catch (e) {
+                                        console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                                    }
                                 }
                             }
 
