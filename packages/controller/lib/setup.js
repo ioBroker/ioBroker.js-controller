@@ -579,12 +579,28 @@ async function processCommand(command, args, params, callback) {
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    const path = require.resolve(`${tools.appName}.${instance}`);
-                                    if (path) {
-                                        await install.createInstance(instance, {
-                                            enabled: true,
-                                            ignoreIfExists: true
+                                    let otherInstanceExists = false;
+                                    try {
+                                        // check if another instance exists
+                                        const res = await objects.getObjectViewAsync('system', 'instance', {
+                                            startkey: `system.adapter.${instance}`,
+                                            endkey: `system.adapter.${instance}\u9999`
                                         });
+
+                                        otherInstanceExists = res && res.rows && res.rows.length;
+                                    } catch {
+                                        // ignore - on install we have no object views
+                                    }
+
+                                    if (!otherInstanceExists) {
+                                        const path = require.resolve(`${tools.appName}.${instance}`);
+
+                                        if (path) {
+                                            await install.createInstance(instance, {
+                                                enabled: true,
+                                                ignoreIfExists: true
+                                            });
+                                        }
                                     }
                                 } catch {
                                     // not found, just continue

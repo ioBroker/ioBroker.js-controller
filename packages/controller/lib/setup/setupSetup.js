@@ -590,14 +590,12 @@ function Setup(options) {
                 console.log('');
                 console.log('No Database migration was done.');
                 console.log(
-                    COLOR_YELLOW +
-                        'If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.' +
-                        COLOR_RESET
+                    `${COLOR_YELLOW}If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.${COLOR_RESET}`
                 );
                 console.log('');
             }
         }
-        console.log('updating conf/' + tools.appName + '.json');
+        console.log(`updating conf/${tools.appName}.json`);
         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
         callback();
     }
