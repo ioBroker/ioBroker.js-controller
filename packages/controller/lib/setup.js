@@ -599,7 +599,6 @@ async function processCommand(command, args, params, callback) {
                                 const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
                                 cert.create();
                             });
-                            callback && callback();
                         }
 
                         // we update existing things, in first as well as normnal setup

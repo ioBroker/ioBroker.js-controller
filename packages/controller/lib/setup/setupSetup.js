@@ -240,7 +240,7 @@ function Setup(options) {
             states = _states;
             const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
 
-            // in all casses we need to ensure that existing objects are migrated to sets
+            // in all cases we need to ensure that existing objects are migrated to sets
             try {
                 const noMigrated = await objects.migrateToSets();
 
@@ -248,7 +248,7 @@ function Setup(options) {
                     console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
                 }
             } catch (e) {
-                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
+                console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
             }
 
             // clean up invalid user group assignments (non-existing user in a group)
