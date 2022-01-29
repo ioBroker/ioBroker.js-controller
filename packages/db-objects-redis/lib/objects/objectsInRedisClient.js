@@ -464,12 +464,14 @@ class ObjectsInRedisClient {
                     }
 
                     // subscribe to meta changes
-                    try {
-                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
-                    } catch (e) {
-                        this.log.warn(
-                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
-                        );
+                    if (this.noLegacyMultihost) {
+                        try {
+                            this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                        } catch (e) {
+                            this.log.warn(
+                                `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
+                            );
+                        }
                     }
 
                     if (this.subSystem) {
@@ -608,7 +610,8 @@ class ObjectsInRedisClient {
             let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
 
             // filter out obvious non-host objects
-            keys = keys.filter(id => /^system\.host\.[^.]+$/.test(id));
+            const hostRegex = new RegExp(`^${this.objNamespace}system\\.host\\.[^.]+$`);
+            keys = keys.filter(id => hostRegex.test(id));
             /** if false we have a host smaller 4 (no proto version for this existing) */
             this.noLegacyMultihost = true;
 
