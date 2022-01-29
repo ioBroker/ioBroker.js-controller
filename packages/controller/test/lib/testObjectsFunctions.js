@@ -724,6 +724,19 @@ function register(it, expect, context) {
             common: {}
         });
 
+        const customObj = {
+            'history.0': {
+                enabled: true,
+                aliasId: '',
+                changesOnly: false,
+                debounce: 0,
+                changesRelogInterval: 0,
+                changesMinDelta: 0,
+                maxLength: 10,
+                retention: 31536000
+            }
+        };
+
         // lets create an object matching the view
         await context.adapter.setForeignObjectAsync(`${context.adapterShortName}.1.device.channel.testState`, {
             type: 'state',
@@ -733,18 +746,7 @@ function register(it, expect, context) {
                 type: 'boolean',
                 read: false,
                 write: true,
-                custom: {
-                    'history.0': {
-                        enabled: true,
-                        aliasId: '',
-                        changesOnly: false,
-                        debounce: 0,
-                        changesRelogInterval: 0,
-                        changesMinDelta: 0,
-                        maxLength: 10,
-                        retention: 31536000
-                    }
-                }
+                custom: customObj
             },
             native: {}
         });
@@ -758,6 +760,7 @@ function register(it, expect, context) {
         expect(doc.rows).to.be.an('array');
         expect(doc.rows.length).to.be.equal(1);
         expect(doc.rows[0].id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
+        expect(doc.rows[0].value).to.deep.equal(customObj);
     });
 
     // getObjectList
