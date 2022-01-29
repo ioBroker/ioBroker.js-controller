@@ -712,6 +712,54 @@ function register(it, expect, context) {
         expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
+    it(testName + 'Try to get object view with custom', async () => {
+        // create the view
+        await context.adapter.extendForeignObjectAsync('_design/system', {
+            language: 'javascript',
+            views: {
+                custom: {
+                    map: "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
+                }
+            },
+            common: {}
+        });
+
+        // lets create an object matching the view
+        await context.adapter.setForeignObjectAsync(`${context.adapterShortName}.1.device.channel.testState`, {
+            type: 'state',
+            common: {
+                role: 'switch',
+                name: 'Test',
+                type: 'boolean',
+                read: false,
+                write: true,
+                custom: {
+                    'history.0': {
+                        enabled: true,
+                        aliasId: '',
+                        changesOnly: false,
+                        debounce: 0,
+                        changesRelogInterval: 0,
+                        changesMinDelta: 0,
+                        maxLength: 10,
+                        retention: 31536000
+                    }
+                }
+            },
+            native: {}
+        });
+
+        const doc = await context.adapter.getObjectViewAsync('system', 'custom', {
+            startkey: `${context.adapterShortName}.1.device.channel.`,
+            endkey: `${context.adapterShortName}.1.device.channel.\u9999`
+        });
+
+        // now check that our object view contains our object
+        expect(doc.rows).to.be.an('array');
+        expect(doc.rows.length).to.be.equal(1);
+        expect(doc.rows[0].value._id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
+    });
+
     // getObjectList
     it(testName + 'Try to get object list', done => {
         // lets create an object matching the list
