@@ -237,29 +237,29 @@ class ObjectsInRedisClient {
                 }
                 return;
             }
-            this.log.error(this.namespace + ' Objects database error: ' + error.message);
+            this.log.error(`${this.namespace} Objects database error: ${error.message}`);
             errorLogged = true;
         });
 
         this.client.on('end', () => {
             this.settings.connection.enhancedLogging &&
-                this.log.silly(this.namespace + ' Objects-Redis Event end (stop=' + this.stop + ')');
+                this.log.silly(`${this.namespace} Objects-Redis Event end (stop=${this.stop})`);
             ready && typeof this.settings.disconnected === 'function' && this.settings.disconnected();
         });
 
         this.client.on('connect', () => {
             this.settings.connection.enhancedLogging &&
-                this.log.silly(this.namespace + ' Objects-Redis Event connect (stop=' + this.stop + ')');
+                this.log.silly(`${this.namespace} Objects-Redis Event connect (stop=${this.stop})`);
             connected = true;
             if (errorLogged) {
-                this.log.info(this.namespace + ' Objects database successfully reconnected');
+                this.log.info(`${this.namespace} Objects database successfully reconnected`);
                 errorLogged = false;
             }
         });
 
         this.client.on('close', () => {
             this.settings.connection.enhancedLogging &&
-                this.log.silly(this.namespace + ' Objects-Redis Event close (stop=' + this.stop + ')');
+                this.log.silly(`${this.namespace} Objects-Redis Event close (stop=${this.stop})`);
             //if (ready && typeof this.settings.disconnected === 'function') this.settings.disconnected();
         });
 
@@ -270,12 +270,7 @@ class ObjectsInRedisClient {
 
             this.settings.connection.enhancedLogging &&
                 this.log.silly(
-                    this.namespace +
-                        ' Objects-Redis Event reconnect (reconnectCounter=' +
-                        reconnectCounter +
-                        ', stop=' +
-                        this.stop +
-                        ')'
+                    `${this.namespace} Objects-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
                 );
 
             if (reconnectCounter > 2) {
@@ -632,12 +627,14 @@ class ObjectsInRedisClient {
                         ) {
                             // one of the host has a version smaller 4, we have to use legacy db
                             this.noLegacyMultihost = false;
-                            this.log.info('Sets unsupported');
+                            this.log.info(`${this.namespace} Sets unsupported`);
                         }
                     }
                 }
             } catch (e) {
-                this.log.error(`Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`);
+                this.log.error(
+                    `${this.namespace} Cannot determine Lua scripts strategy: ${e.message} ${JSON.stringify(keys)}`
+                );
                 return;
             }
 
