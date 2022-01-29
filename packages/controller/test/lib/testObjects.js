@@ -10,7 +10,8 @@ function register(it, expect, context) {
     const namespace = 'testObject.0';
     const testId = namespace + '.test2';
 
-    it(testName + 'should create and read object', done => {
+    it(testName + 'should create and read object', function (done) {
+        this.timeout(3000);
         const objects = context.objects;
         objects.setObject(
             testId,
@@ -35,7 +36,7 @@ function register(it, expect, context) {
                 });
             }
         );
-    }).timeout(3000);
+    });
 
     it(testName + 'should create object async', done => {
         const objects = context.objects;
