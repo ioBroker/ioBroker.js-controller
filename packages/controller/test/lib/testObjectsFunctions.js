@@ -757,7 +757,7 @@ function register(it, expect, context) {
         // now check that our object view contains our object
         expect(doc.rows).to.be.an('array');
         expect(doc.rows.length).to.be.equal(1);
-        expect(doc.rows[0].value._id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
+        expect(doc.rows[0].id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
     });
 
     // getObjectList
