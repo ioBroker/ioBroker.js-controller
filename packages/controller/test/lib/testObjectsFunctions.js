@@ -712,7 +712,8 @@ function register(it, expect, context) {
         expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
-    it(testName + 'Try to get object view with custom', async () => {
+    it(testName + 'Try to get object view with custom', async function () {
+        this.timeout(3000);
         // create the view
         await context.adapter.extendForeignObjectAsync('_design/system', {
             language: 'javascript',
@@ -761,7 +762,7 @@ function register(it, expect, context) {
         expect(doc.rows.length).to.be.equal(1);
         expect(doc.rows[0].id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
         expect(doc.rows[0].value).to.deep.equal(customObj);
-    }).timeout(3000);
+    });
 
     // getObjectList
     it(testName + 'Try to get object list', done => {
@@ -1266,7 +1267,8 @@ function register(it, expect, context) {
     });
 
     // should use def as default state value on extendObject when obj non existing
-    it(testName + 'Check extendObject state with def', async () => {
+    it(testName + 'Check extendObject state with def', async function () {
+        this.timeout(3000);
         let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             type: 'state',
             common: {
@@ -1307,7 +1309,7 @@ function register(it, expect, context) {
         state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val.hello).to.equal('world');
         expect(state.ack).to.equal(true);
-    }).timeout(3000);
+    });
 
     // should use def as default state value on extendForeignObject when obj non existing
     it(testName + 'Check extendForeignObject state with def', async () => {
