@@ -761,7 +761,7 @@ function register(it, expect, context) {
         expect(doc.rows.length).to.be.equal(1);
         expect(doc.rows[0].id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
         expect(doc.rows[0].value).to.deep.equal(customObj);
-    });
+    }).timeout(3000);
 
     // getObjectList
     it(testName + 'Try to get object list', done => {
@@ -1307,7 +1307,7 @@ function register(it, expect, context) {
         state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val.hello).to.equal('world');
         expect(state.ack).to.equal(true);
-    });
+    }).timeout(3000);
 
     // should use def as default state value on extendForeignObject when obj non existing
     it(testName + 'Check extendForeignObject state with def', async () => {
