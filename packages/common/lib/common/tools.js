@@ -2594,7 +2594,7 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
  *
  * @alias parseDependencies
  * @memberof tools
- * @param {string[]|object[]|string} dependencies dependencies array or single dependency
+ * @param {string[]|Record<string, string>[]|string|Record<string, string>} dependencies dependencies array or single dependency
  * @returns {Record<string, string>} parsed dependencies
  */
 function parseDependencies(dependencies) {
