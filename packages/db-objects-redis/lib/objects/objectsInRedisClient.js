@@ -464,14 +464,12 @@ class ObjectsInRedisClient {
                     }
 
                     // subscribe to meta changes
-                    if (this.noLegacyMultihost) {
-                        try {
-                            this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
-                        } catch (e) {
-                            this.log.warn(
-                                `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
-                            );
-                        }
+                    try {
+                        this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
+                    } catch (e) {
+                        this.log.warn(
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
+                        );
                     }
 
                     if (this.subSystem) {
