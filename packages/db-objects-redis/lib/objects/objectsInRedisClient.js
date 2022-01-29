@@ -610,7 +610,7 @@ class ObjectsInRedisClient {
             let keys = await this._getKeysViaScan(`${this.objNamespace}system.host.*`);
 
             // filter out obvious non-host objects
-            const hostRegex = new RegExp(`^${this.objNamespace}system\\.host\\.[^.]+$`);
+            const hostRegex = new RegExp(`^${this.objNamespace.replace(/\./g, '\\.')}system\\.host\\.[^.]+$`);
             keys = keys.filter(id => hostRegex.test(id));
             /** if false we have a host smaller 4 (no proto version for this existing) */
             this.noLegacyMultihost = true;
