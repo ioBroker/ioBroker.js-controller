@@ -349,7 +349,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             )
                         );
                     }
-                    const res = objs.rows.map(obj => JSON.stringify(obj.value));
+                    const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
                     handler.sendArray(responseId, res);
                 }
             } else if (this.knownScripts[data[0]].func && data.length > 4) {
@@ -362,7 +362,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     endkey: data[4],
                     include_docs: true
                 });
-                const res = objs.rows.map(obj => JSON.stringify(obj.value));
+                const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
 
                 return void handler.sendArray(responseId, res);
             } else if (this.knownScripts[data[0]].redlock) {

@@ -343,12 +343,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     } catch (err) {
                         return void handler.sendError(
                             responseId,
-                            new Error(
-                                '_getObjectView Error for ' + scriptDesign + '/' + scriptSearch + ': ' + err.message
-                            )
+                            new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`)
                         );
                     }
-                    const res = objs.rows.map(obj => JSON.stringify(obj.value));
+
+                    const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
                     handler.sendArray(responseId, res);
                 }
             } else if (this.knownScripts[data[0]].func && data.length > 4) {
@@ -361,7 +360,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     endkey: data[4],
                     include_docs: true
                 });
-                const res = objs.rows.map(obj => JSON.stringify(obj.value));
+                const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
 
                 return void handler.sendArray(responseId, res);
             } else if (this.knownScripts[data[0]].redlock) {

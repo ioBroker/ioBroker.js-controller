@@ -279,7 +279,11 @@ function Setup(options) {
                     }
                 }
             } catch (e) {
-                console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+                // Cannot find view happens on very first installation,
+                // so ignore this case because no users can be invalid
+                if (!e.message.includes('Cannot find view')) {
+                    console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+                }
             }
 
             if (checkCertificateOnly) {
@@ -590,14 +594,12 @@ function Setup(options) {
                 console.log('');
                 console.log('No Database migration was done.');
                 console.log(
-                    COLOR_YELLOW +
-                        'If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.' +
-                        COLOR_RESET
+                    `${COLOR_YELLOW}If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.${COLOR_RESET}`
                 );
                 console.log('');
             }
         }
-        console.log('updating conf/' + tools.appName + '.json');
+        console.log(`updating conf/${tools.appName}.json`);
         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
         callback();
     }
