@@ -951,7 +951,7 @@ function register(it, expect, context) {
                 }
             );
         });
-    });
+    }).timeout(3000);
 
     it(testName + 'should respect alias read id on getForeignStates', async () => {
         // set our alias read obj
@@ -1005,7 +1005,7 @@ function register(it, expect, context) {
 
         // read def is 5
         expect(states[`${gAliasID}aliasReadWriteGetStates`].val).to.be.equal(5);
-    });
+    }).timeout(3000);
 }
 
 module.exports.register = register;
