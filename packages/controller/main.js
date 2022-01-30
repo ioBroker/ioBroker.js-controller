@@ -15,6 +15,8 @@ const os = require('os');
 const fs = require('fs-extra');
 const path = require('path');
 const cp = require('child_process');
+const semver = require('semver');
+const restart = require('./lib/restart');
 const ioPackage = require('./io-package.json');
 const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const version = ioPackage.common.version;
@@ -49,8 +51,6 @@ let Objects;
 let States;
 let decache;
 
-const semver = require('semver');
-const restart = require('./lib/restart');
 let logger;
 let isDaemon = false;
 let callbackId = 1;
@@ -776,7 +776,6 @@ function createObjects(onConnect) {
                         ) {
                             // old version lower 4 new version greater 4, restart needed
                             logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
-                            const restart = require('./lib/restart');
                             restart();
                         } else if (
                             semver.gte(controllerVersions[id], '4.0.0') &&
@@ -784,7 +783,6 @@ function createObjects(onConnect) {
                         ) {
                             // controller was above 4 and now below 4
                             logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
-                            const restart = require('./lib/restart');
                             restart();
                         }
                     } else {
@@ -812,7 +810,6 @@ function createObjects(onConnect) {
 
                         if (restartRequired) {
                             logger.info(`${hostLogPrefix} New multihost participant detected, restarting ...`);
-                            const restart = require('./lib/restart');
                             restart();
                         }
                     }
@@ -831,7 +828,6 @@ function createObjects(onConnect) {
                             }
                         }
                         logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
-                        const restart = require('./lib/restart');
                         restart();
                     }
                 } else if (obj && obj.common) {
@@ -3174,7 +3170,6 @@ async function processMessage(msg) {
         }
 
         case 'restartController': {
-            const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
             setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer to be sent
             break;
