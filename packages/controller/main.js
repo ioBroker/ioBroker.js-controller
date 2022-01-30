@@ -789,23 +789,29 @@ function createObjects(onConnect) {
                         //  we don't know this host yet, so it is new to the mh system
                         let restartRequired = true;
 
-                        if (semver.lt(obj.common.installedVersion, '4.0.0')) {
-                            for (const controllerVersion of controllerVersions) {
-                                if (semver.lt(controllerVersion, '4.0.0')) {
-                                    // there was another host < 4 so no restart required
-                                    restartRequired = false;
-                                    break;
+                        // if we are a already a multihost make the version check else restart in all cases
+                        if (Object.keys(controllerVersions).length > 1) {
+                            if (semver.lt(obj.common.installedVersion, '4.0.0')) {
+                                for (const controllerVersion of controllerVersions) {
+                                    if (semver.lt(controllerVersion, '4.0.0')) {
+                                        // there was another host < 4 so no restart required
+                                        restartRequired = false;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // version is greater equal 4
+                                for (const controllerVersion of controllerVersions) {
+                                    if (semver.gte(controllerVersion, '4.0.0')) {
+                                        // there was already another host greater equal 4 -> no restart needed
+                                        restartRequired = false;
+                                        break;
+                                    }
                                 }
                             }
                         } else {
-                            // version is greater equal 4
-                            for (const controllerVersion of controllerVersions) {
-                                if (semver.gte(controllerVersion, '4.0.0')) {
-                                    // there was already another host greater equal 4 -> no restart needed
-                                    restartRequired = false;
-                                    break;
-                                }
-                            }
+                            // change from single to multihost now but also restart
+                            await objects.deactivateSets();
                         }
 
                         if (restartRequired) {
