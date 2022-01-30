@@ -622,6 +622,7 @@ class ObjectsInRedisClient {
                         if (
                             obj &&
                             obj.type === 'host' &&
+                            obj._id !== `system.host.${this.settings.hostname}` &&
                             obj.common &&
                             obj.common.installedVersion &&
                             semver.lt(obj.common.installedVersion, '4.0.0')

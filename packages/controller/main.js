@@ -1580,7 +1580,7 @@ function setMeta() {
 
     if (!compactGroupController) {
         obj = {
-            _id: id + '.compactModeEnabled',
+            _id: `${id}.compactModeEnabled`,
             type: 'state',
             common: {
                 name: 'Controller - compact mode enabled',
@@ -1594,7 +1594,7 @@ function setMeta() {
         tasks.push(obj);
 
         obj = {
-            _id: id + '.compactgroupProcesses',
+            _id: `${id}.compactgroupProcesses`,
             type: 'state',
             common: {
                 name: 'Controller - number of compact group controllers',
@@ -1604,6 +1604,21 @@ function setMeta() {
                 min: 0,
                 role: 'value',
                 unit: 'processes'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id: `${id}.nodeVersion`,
+            type: 'state',
+            common: {
+                name: 'Controller - Node.js version',
+                type: 'string',
+                read: true,
+                write: false,
+                desc: 'Node.js version of the host process.',
+                role: 'state'
             },
             native: {}
         };
@@ -1886,21 +1901,6 @@ function setMeta() {
             read: true,
             write: true,
             desc: 'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
-            role: 'state'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: id + '.nodeVersion',
-        type: 'state',
-        common: {
-            name: 'Controller - Node.js version',
-            type: 'string',
-            read: true,
-            write: false,
-            desc: 'Node.js version of the host process.',
             role: 'state'
         },
         native: {}
@@ -5579,39 +5579,41 @@ function init(compactGroupId) {
             });
             states.subscribe(`${hostObjectPrefix}.logLevel`);
 
-            try {
-                const nodeVersion = process.version.replace(/^v/, '');
-                const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
+            if (!compactGroupController) {
+                try {
+                    const nodeVersion = process.version.replace(/^v/, '');
+                    const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
 
-                if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
-                    // detected a change in the nodejs version (or state non existing - upgrade from below v4)
-                    logger.info(
-                        `${hostLogPrefix} Node.js version has changed from ${
-                            prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
-                        } to ${nodeVersion}`
-                    );
-                    if (os.platform() === 'linux') {
-                        // ensure capabilities are set
-                        const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
-                        await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
+                    if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
+                        // detected a change in the nodejs version (or state non existing - upgrade from below v4)
                         logger.info(
-                            `${hostLogPrefix} Successfully updated capabilities "${capabilities.join(', ')}" for ${
-                                process.execPath
-                            }`
+                            `${hostLogPrefix} Node.js version has changed from ${
+                                prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
+                            } to ${nodeVersion}`
                         );
+                        if (os.platform() === 'linux') {
+                            // ensure capabilities are set
+                            const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
+                            await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
+                            logger.info(
+                                `${hostLogPrefix} Successfully updated capabilities "${capabilities.join(', ')}" for ${
+                                    process.execPath
+                                }`
+                            );
+                        }
                     }
-                }
 
-                // set current node version
-                await states.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
-                    val: nodeVersion,
-                    ack: true,
-                    from: hostObjectPrefix
-                });
-            } catch (e) {
-                logger.warn(
-                    `${hostLogPrefix} Error while trying to update capabilities after detecting new Node.js version: ${e.message}`
-                );
+                    // set current node version
+                    await states.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
+                        val: nodeVersion,
+                        ack: true,
+                        from: hostObjectPrefix
+                    });
+                } catch (e) {
+                    logger.warn(
+                        `${hostLogPrefix} Error while trying to update capabilities after detecting new Node.js version: ${e.message}`
+                    );
+                }
             }
 
             // Read current state of all log subscribers
