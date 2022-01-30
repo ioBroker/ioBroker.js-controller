@@ -4665,6 +4665,20 @@ class ObjectsInRedisClient {
         this.useSets = false;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '0');
     }
+
+    /**
+     * Get value from meta namespace
+     *
+     * @param {string} id redis key
+     * @return {Promise<string>}
+     */
+    getMeta(id) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(this.metaNamespace + id);
+    }
 }
 
 module.exports = ObjectsInRedisClient;

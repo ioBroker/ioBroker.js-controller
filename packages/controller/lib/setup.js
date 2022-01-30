@@ -219,7 +219,9 @@ function initYargs() {
                 .command('chown <user> <group> <id>', 'Change object ownership', {})
                 .command('list <pattern>', 'List object matching given pattern', {})
                 .command('setDBVersion <version>', 'Sets the protocol version of the objects database')
-                .command('getDBVersion', 'Get the protocol version of the objects database');
+                .command('getDBVersion', 'Get the protocol version of the objects database')
+                .command('activateSets', 'Activate the usage of Redis Sets')
+                .command('deactivateSets', 'Deactivate the usage of Redis Sets');
         })
         .command(['state', 's'], 'State management', yargs => {
             yargs
