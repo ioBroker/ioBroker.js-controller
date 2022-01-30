@@ -1580,7 +1580,7 @@ function setMeta() {
 
     if (!compactGroupController) {
         obj = {
-            _id: id + '.compactModeEnabled',
+            _id: `${id}.compactModeEnabled`,
             type: 'state',
             common: {
                 name: 'Controller - compact mode enabled',
@@ -1594,7 +1594,7 @@ function setMeta() {
         tasks.push(obj);
 
         obj = {
-            _id: id + '.compactgroupProcesses',
+            _id: `${id}.compactgroupProcesses`,
             type: 'state',
             common: {
                 name: 'Controller - number of compact group controllers',
@@ -1604,6 +1604,21 @@ function setMeta() {
                 min: 0,
                 role: 'value',
                 unit: 'processes'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id: `${id}.nodeVersion`,
+            type: 'state',
+            common: {
+                name: 'Controller - Node.js version',
+                type: 'string',
+                read: true,
+                write: false,
+                desc: 'Node.js version of the host process.',
+                role: 'state'
             },
             native: {}
         };
@@ -1886,21 +1901,6 @@ function setMeta() {
             read: true,
             write: true,
             desc: 'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
-            role: 'state'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: id + '.nodeVersion',
-        type: 'state',
-        common: {
-            name: 'Controller - Node.js version',
-            type: 'string',
-            read: true,
-            write: false,
-            desc: 'Node.js version of the host process.',
             role: 'state'
         },
         native: {}
