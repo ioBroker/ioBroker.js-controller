@@ -810,7 +810,7 @@ function createObjects(onConnect) {
                                 }
                             }
                         } else {
-                            // change from single to multihost now but also restart
+                            // change from single to multihost - deactivate sets asap but also restart
                             await objects.deactivateSets();
                         }
 
