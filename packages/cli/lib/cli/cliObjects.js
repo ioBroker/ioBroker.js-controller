@@ -6,7 +6,7 @@ const { tools } = require('@iobroker/js-controller-common');
 
 /** Command iobroker object ... */
 module.exports = class CLIObjects extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
+    /** @param {CLICommandOptions} options */
     constructor(options) {
         super(options);
     }
@@ -40,8 +40,8 @@ module.exports = class CLIObjects extends CLICommand {
                 return this.getDBVersion(args);
             case 'setDBVersion':
                 return this.setDBVersion();
-                case 'activateSets'
-                    return this.activateSets();
+            case 'activateSets':
+                return this.activateSets();
             case 'deactivateSets':
                 return this.deactivateSets();
             default:
@@ -61,7 +61,7 @@ module.exports = class CLIObjects extends CLICommand {
                 await objects.activateSets();
                 console.log(`Successfully activated the usage of Redis Sets`);
             } else {
-                console.log('Redis Sets are already activated.')
+                console.log('Redis Sets are already activated.');
             }
             return void callback();
         });
@@ -73,17 +73,15 @@ module.exports = class CLIObjects extends CLICommand {
     deactivateSets() {
         const { callback, dbConnect } = this.options;
         dbConnect(async objects => {
-            if (!!parseInt(await objects.getMeta('objects.features.useSets'))) {
+            if (parseInt(await objects.getMeta('objects.features.useSets'))) {
                 await objects.deactivateSets();
                 console.log(`Successfully deactivated the usage of Redis Sets.`);
             } else {
-                console.log('Redis Sets are already deactivated.')
+                console.log('Redis Sets are already deactivated.');
             }
             return void callback();
         });
     }
-
-
 
     /**
      * Get the protocol version
