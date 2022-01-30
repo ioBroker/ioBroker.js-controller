@@ -4356,7 +4356,17 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        const luaPath = path.join(__dirname, this.noLegacyMultihost ? 'lua' : 'lua-v3');
+        let luaDirName;
+
+        if (this.noLegacyMultihost && this.useSets) {
+            luaDirName = 'lua-v4';
+        } else if (this.noLegacyMultihost) {
+            luaDirName = 'lua-v4-no-sets';
+        } else {
+            luaDirName = 'lua-v3';
+        }
+
+        const luaPath = path.join(__dirname, luaDirName);
         const scripts = fs.readdirSync(luaPath).map(name => {
             const shasum = crypto.createHash('sha1');
             const script = fs.readFileSync(path.join(luaPath, name));
