@@ -70,6 +70,8 @@ function startController(options, callback) {
             // clear all objects
             objects.destroyDB(async () => {
                 await objects.activateSets();
+                // we need to read the sets lua scripts
+                await objects.loadLuaScripts();
                 isObjectConnected = true;
                 if (isStatesConnected && states) {
                     console.log('startController: started!');
