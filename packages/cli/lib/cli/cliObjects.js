@@ -59,7 +59,9 @@ module.exports = class CLIObjects extends CLICommand {
         dbConnect(async objects => {
             if (!parseInt(await objects.getMeta('objects.features.useSets'))) {
                 await objects.activateSets();
-                console.log(`Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`);
+                console.log(
+                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`
+                );
             } else {
                 console.log('Redis Sets are already activated.');
             }
