@@ -50,6 +50,7 @@ let States;
 let decache;
 
 const semver = require('semver');
+const restart = require('./lib/restart');
 let logger;
 let isDaemon = false;
 let callbackId = 1;
@@ -783,6 +784,34 @@ function createObjects(onConnect) {
                         ) {
                             // controller was above 4 and now below 4
                             logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
+                            const restart = require('./lib/restart');
+                            restart();
+                        }
+                    } else {
+                        //  we don't know this host yet, so it is new to the mh system
+                        let restartRequired = true;
+
+                        if (semver.lt(obj.common.installedVersion, '4.0.0')) {
+                            for (const controllerVersion of controllerVersions) {
+                                if (semver.lt(controllerVersion, '4.0.0')) {
+                                    // there was another host < 4 so no restart required
+                                    restartRequired = false;
+                                    break;
+                                }
+                            }
+                        } else {
+                            // version is greater equal 4
+                            for (const controllerVersion of controllerVersions) {
+                                if (semver.gte(controllerVersion, '4.0.0')) {
+                                    // there was already another host greater equal 4 -> no restart needed
+                                    restartRequired = false;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (restartRequired) {
+                            logger.info(`${hostLogPrefix} New multihost participant detected, restarting ...`);
                             const restart = require('./lib/restart');
                             restart();
                         }
