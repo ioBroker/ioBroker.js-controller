@@ -357,9 +357,15 @@ class ObjectsInRedisClient {
                                     const newUseSets = !!parseInt(message);
                                     if (newUseSets !== this.useSets) {
                                         this.log.info(
-                                            `${this.namespace} Sets ${newUseSets ? 'activated' : 'deactivated'}`
+                                            `${this.namespace} Sets ${
+                                                newUseSets ? 'activated' : 'deactivated'
+                                            }: restarting ...`
                                         );
                                         this.useSets = newUseSets;
+                                        // luas are no longer up to date, lets restart
+                                        if (typeof this.settings.disconnected === 'function') {
+                                            this.settings.disconnected();
+                                        }
                                     }
                                 }
                                 return;
@@ -613,6 +619,8 @@ class ObjectsInRedisClient {
                 // if unsupported we have a legacy host
                 if (!e.message.includes('UNSUPPORTED')) {
                     throw e;
+                } else {
+                    this.useSets = false;
                 }
             }
 
