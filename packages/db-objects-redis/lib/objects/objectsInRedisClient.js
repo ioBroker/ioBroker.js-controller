@@ -49,6 +49,8 @@ class ObjectsInRedisClient {
         this.preserveSettings = ['custom', 'smartName', 'material', 'habpanel', 'mobile'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
         this.namespace = this.settings.namespace || this.settings.hostname || '';
+        /** @type {string} */
+        this.hostname = this.settings.hostname || tools.getHostName();
         this.scripts = {};
 
         // cached meta objects for file operations
@@ -622,7 +624,7 @@ class ObjectsInRedisClient {
                         if (
                             obj &&
                             obj.type === 'host' &&
-                            obj._id !== `system.host.${this.settings.hostname}` &&
+                            obj._id !== `system.host.${this.hostname}` &&
                             obj.common &&
                             obj.common.installedVersion &&
                             semver.lt(obj.common.installedVersion, '4.0.0')
@@ -4504,7 +4506,7 @@ class ObjectsInRedisClient {
             this.scripts['redlock_extend'],
             3,
             `${this.metaNamespace}objects.primaryHost`,
-            this.settings.hostname,
+            this.hostname,
             ms
         ]);
     }
@@ -4531,7 +4533,7 @@ class ObjectsInRedisClient {
             this.scripts['redlock_acquire'],
             3,
             `${this.metaNamespace}objects.primaryHost`,
-            this.settings.hostname,
+            this.hostname,
             ms
         ]);
     }
@@ -4573,8 +4575,8 @@ class ObjectsInRedisClient {
             this.scripts['redlock_release'],
             4,
             `${this.metaNamespace}objects.primaryHost`,
-            this.settings.hostname,
-            this.settings.options.db,
+            this.hostname,
+            this.settings.connection.options.db,
             `${this.metaNamespace}objects.primaryHost`
         ]);
     }
