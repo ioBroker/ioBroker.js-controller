@@ -2,7 +2,7 @@
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const { formatValue } = require('./cliTools');
-const { tools } = require('@iobroker/js-controller-common');
+const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 
 /** Command iobroker object ... */
 module.exports = class CLIObjects extends CLICommand {
@@ -56,9 +56,20 @@ module.exports = class CLIObjects extends CLICommand {
      */
     activateSets() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
+        dbConnect(async (objects, states) => {
             if (!parseInt(await objects.getMeta('objects.features.useSets'))) {
+                // all hosts need to be stopped for this
+                if (await tools.isHostRunning(objects, states)) {
+                    console.log('Cannot activate the usage of Redis Sets while one or more hosts are running');
+                    return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+                }
+
                 await objects.activateSets();
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
+                }
                 console.log(
                     `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`
                 );

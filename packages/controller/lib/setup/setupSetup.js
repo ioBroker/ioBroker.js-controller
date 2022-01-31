@@ -247,7 +247,7 @@ function Setup(options) {
                     const noMigrated = await objects.migrateToSets();
 
                     if (noMigrated) {
-                        console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                        console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
                     }
                 }
             } catch (e) {

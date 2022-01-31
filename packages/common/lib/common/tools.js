@@ -207,6 +207,25 @@ async function isSingleHost(objects) {
     return hostObjs.length <= 1; // on setup no host object is there yet
 }
 
+/**
+ * Checks if at least one host is running in a MH environment
+ *
+ * @param {object} objects the objects db
+ * @param {object} states the states db
+ * @return Promise<boolean> true if one or more hosts running else false
+ */
+async function isHostRunning(objects, states) {
+    const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+
+    for (const hostObj of res.rows) {
+        const state = await states.getState(`${hostObj.id}.alive`);
+        if (state.val) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function getAppName() {
     if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
         // dev install - GitHub folder is uppercase
@@ -2912,7 +2931,7 @@ async function getInstances(adapter, objects, withObjects) {
  * Checks if the given callback is a function and if so calls it with the given parameter immediately, else a resolved Promise is returned
  *
  * @param {(...args: any[]) => void | null | undefined} callback - callback function to be executed
- * @param {any[]} args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @param {...any} args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns {Promise<any>} - if Promise is resolved with multiple arguments, an array is returned
  */
 function maybeCallback(callback, ...args) {
@@ -2930,7 +2949,7 @@ function maybeCallback(callback, ...args) {
  * @param {((error: Error | null | undefined, ...args: any[]) => void) | null | undefined} callback - callback function to be executed
  * @param {Error | string | null | undefined} error - error which will be used by the callback function. If callback is not a function and
  * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
- * @param {any[]} args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @param {...any} args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns {Promise<any>} - if Promise is resolved with multiple arguments, an array is returned
  */
 function maybeCallbackWithError(callback, error, ...args) {
@@ -3684,6 +3703,7 @@ module.exports = {
     setExecutableCapabilities,
     isGithubPathname,
     isSingleHost,
+    isHostRunning,
     parseGithubPathname,
     removePreservedProperties,
     FORBIDDEN_CHARS,
