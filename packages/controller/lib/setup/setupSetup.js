@@ -511,7 +511,7 @@ function Setup(options) {
                         console.error(
                             'Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET
                         );
-                        return void callback(90);
+                        return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
 
                     const backup = new Backup({
@@ -557,7 +557,7 @@ function Setup(options) {
                             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                             fs.unlinkSync(tools.getConfigFileName() + '.bak');
 
-                            return void callback(78);
+                            return void callback(EXIT_CODES.MIGRATION_ERROR);
                         }
                         const backup = new Backup({
                             states,
@@ -585,7 +585,7 @@ function Setup(options) {
                                 console.log('running!' + COLOR_RESET);
                             }
 
-                            callback(err ? 78 : 0);
+                            callback(err ? EXIT_CODES.MIGRATION_ERROR : 0);
                         });
                     });
                 });
@@ -679,7 +679,7 @@ function Setup(options) {
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         if (otype === 'redis' && originalConfig.objects.type !== 'redis') {
@@ -733,14 +733,14 @@ function Setup(options) {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
                     console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
-                    return void callback(23);
+                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
                 console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
-                return void callback(23);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
         }
 
@@ -778,7 +778,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-states-${stype}`);
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
-            console.log(`${COLOR_RED}Unknown objects type: ${stype}${COLOR_RESET}`);
+            console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
             if (stype !== 'file' && stype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the states db type you entered is really correct!`);
@@ -786,7 +786,7 @@ function Setup(options) {
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         if (stype === 'redis' && originalConfig.states.type !== 'redis' && otype !== 'redis') {
@@ -842,14 +842,14 @@ function Setup(options) {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
                     console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
-                    return void callback(23);
+                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
                 console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
-                return void callback(23);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
         }
 
@@ -891,7 +891,7 @@ function Setup(options) {
 
         if (hname.match(/\s/)) {
             console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         config.system = config.system || {};
