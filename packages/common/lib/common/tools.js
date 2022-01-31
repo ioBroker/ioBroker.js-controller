@@ -207,6 +207,25 @@ async function isSingleHost(objects) {
     return hostObjs.length <= 1; // on setup no host object is there yet
 }
 
+/**
+ * Checks if at least one host is running in a MH environment
+ *
+ * @param {object} objects the objects db
+ * @param {object} states the states db
+ * @return Promise<boolean> true if one or more hosts running else false
+ */
+async function isHostRunning(objects, states) {
+    const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+
+    for (const hostObj of res.rows) {
+        const state = await states.getState(`${hostObj.id}.alive`);
+        if (state.val) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function getAppName() {
     if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
         // dev install - GitHub folder is uppercase
@@ -3684,6 +3703,7 @@ module.exports = {
     setExecutableCapabilities,
     isGithubPathname,
     isSingleHost,
+    isHostRunning,
     parseGithubPathname,
     removePreservedProperties,
     FORBIDDEN_CHARS,

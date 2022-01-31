@@ -59,18 +59,12 @@ module.exports = class CLIObjects extends CLICommand {
         dbConnect(async (objects, states) => {
             if (!parseInt(await objects.getMeta('objects.features.useSets'))) {
                 // all hosts need to be stopped for this
-                const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
-
-                for (const hostObj of res.rows) {
-                    const state = await states.getState(`${hostObj.id}.alive`);
-                    if (state.val) {
-                        console.log('Cannot activate the usage of Redis Sets while one or more hosts are running');
-                        return void callback();
-                    }
+                if (await tools.isHostRunning(objects, states)) {
+                    console.log('Cannot activate the usage of Redis Sets while one or more hosts are running');
+                    return void callback();
                 }
 
                 await objects.activateSets();
-
                 const noMigrated = await objects.migrateToSets();
 
                 if (noMigrated) {
