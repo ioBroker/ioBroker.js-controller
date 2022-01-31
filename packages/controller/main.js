@@ -22,7 +22,7 @@ const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const version = ioPackage.common.version;
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
-const { isDeepStrictEqual } = require('util');
+const { isDeepStrictEqual, inspect } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
@@ -2122,8 +2122,16 @@ function initMessageQueue() {
     states.subscribeMessage(hostObjectPrefix);
 }
 
-// Send message to other adapter instance
-function sendTo(objName, command, message, callback) {
+/**
+ * Send message to other adapter instance
+ *
+ * @param {string} objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param command
+ * @param message
+ * @param {() => void} callback
+ * @return {Promise<void>}
+ */
+async function sendTo(objName, command, message, callback) {
     if (typeof message === 'undefined') {
         message = command;
         command = 'send';
@@ -2132,7 +2140,7 @@ function sendTo(objName, command, message, callback) {
     const obj = { command, message, from: hostObjectPrefix };
 
     if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
-        objName = 'system.adapter.' + objName;
+        objName = `system.adapter.${objName}`;
     }
 
     if (callback) {
@@ -2153,12 +2161,18 @@ function sendTo(objName, command, message, callback) {
             obj.callback.ack = true;
         }
     }
-
-    states.pushMessage(objName, obj);
+    try {
+        await states.pushMessage(objName, obj);
+    } catch (e) {
+        // do not stringify the object, we had issue invalid string length on serialization
+        logger.error(
+            `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
+        );
+    }
 }
 
 async function getVersionFromHost(hostId) {
-    const state = await states.getState(hostId + '.alive');
+    const state = await states.getState(`${hostId}.alive`);
     if (state && state.val) {
         return new Promise(resolve => {
             let timeout = setTimeout(() => {
