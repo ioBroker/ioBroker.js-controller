@@ -22,7 +22,7 @@ const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const version = ioPackage.common.version;
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
-const { isDeepStrictEqual } = require('util');
+const { isDeepStrictEqual, inspect } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
@@ -370,12 +370,12 @@ function createStates(onConnect) {
                         obj.callback.ack &&
                         obj.callback.id &&
                         callbacks &&
-                        callbacks['_' + obj.callback.id]
+                        callbacks[`_${obj.callback.id}`]
                     ) {
                         // Call callback function
-                        if (callbacks['_' + obj.callback.id].cb) {
-                            callbacks['_' + obj.callback.id].cb(obj.message);
-                            delete callbacks['_' + obj.callback.id];
+                        if (callbacks[`_${obj.callback.id}`].cb) {
+                            callbacks[`_${obj.callback.id}`].cb(obj.message);
+                            delete callbacks[`_${obj.callback.id}`];
                         }
 
                         // delete too old callbacks IDs
@@ -2122,9 +2122,17 @@ function initMessageQueue() {
     states.subscribeMessage(hostObjectPrefix);
 }
 
-// Send message to other adapter instance
-function sendTo(objName, command, message, callback) {
-    if (typeof message === 'undefined') {
+/**
+ * Send message to other adapter instance
+ *
+ * @param {string} objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param {string} command
+ * @param {Record<string, any>?} message
+ * @param {() => void?} callback
+ * @return {Promise<void>}
+ */
+async function sendTo(objName, command, message, callback) {
+    if (message === undefined) {
         message = command;
         command = 'send';
     }
@@ -2132,7 +2140,7 @@ function sendTo(objName, command, message, callback) {
     const obj = { command, message, from: hostObjectPrefix };
 
     if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
-        objName = 'system.adapter.' + objName;
+        objName = `system.adapter.${objName}`;
     }
 
     if (callback) {
@@ -2147,18 +2155,28 @@ function sendTo(objName, command, message, callback) {
                 callbackId = 1;
             }
             callbacks = callbacks || {};
-            callbacks['_' + obj.callback.id] = { cb: callback };
+            callbacks[`_${obj.callback.id}`] = { cb: callback };
         } else {
             obj.callback = callback;
             obj.callback.ack = true;
         }
     }
-
-    states.pushMessage(objName, obj);
+    try {
+        await states.pushMessage(objName, obj);
+    } catch (e) {
+        // do not stringify the object, we had issue invalid string length on serialization
+        logger.error(
+            `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
+        );
+        if (obj.callback && obj.callback.id) {
+            obj.callback(e);
+            delete callbacks[`_${obj.callback.id}`];
+        }
+    }
 }
 
 async function getVersionFromHost(hostId) {
-    const state = await states.getState(hostId + '.alive');
+    const state = await states.getState(`${hostId}.alive`);
     if (state && state.val) {
         return new Promise(resolve => {
             let timeout = setTimeout(() => {
