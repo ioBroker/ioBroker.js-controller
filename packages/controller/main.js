@@ -370,12 +370,12 @@ function createStates(onConnect) {
                         obj.callback.ack &&
                         obj.callback.id &&
                         callbacks &&
-                        callbacks['_' + obj.callback.id]
+                        callbacks[`_${obj.callback.id}`]
                     ) {
                         // Call callback function
-                        if (callbacks['_' + obj.callback.id].cb) {
-                            callbacks['_' + obj.callback.id].cb(obj.message);
-                            delete callbacks['_' + obj.callback.id];
+                        if (callbacks[`_${obj.callback.id}`].cb) {
+                            callbacks[`_${obj.callback.id}`].cb(obj.message);
+                            delete callbacks[`_${obj.callback.id}`];
                         }
 
                         // delete too old callbacks IDs
@@ -2126,13 +2126,13 @@ function initMessageQueue() {
  * Send message to other adapter instance
  *
  * @param {string} objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
- * @param command
- * @param message
- * @param {() => void} callback
+ * @param {string} command
+ * @param {Record<string, any>?} message
+ * @param {() => void?} callback
  * @return {Promise<void>}
  */
 async function sendTo(objName, command, message, callback) {
-    if (typeof message === 'undefined') {
+    if (message === undefined) {
         message = command;
         command = 'send';
     }
@@ -2155,7 +2155,7 @@ async function sendTo(objName, command, message, callback) {
                 callbackId = 1;
             }
             callbacks = callbacks || {};
-            callbacks['_' + obj.callback.id] = { cb: callback };
+            callbacks[`_${obj.callback.id}`] = { cb: callback };
         } else {
             obj.callback = callback;
             obj.callback.ack = true;
@@ -2168,6 +2168,10 @@ async function sendTo(objName, command, message, callback) {
         logger.error(
             `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
         );
+        if (obj.callback && obj.callback.id) {
+            obj.callback(e);
+            delete callbacks[`_${obj.callback.id}`];
+        }
     }
 }
 
