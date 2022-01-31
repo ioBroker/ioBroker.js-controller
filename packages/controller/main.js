@@ -15,6 +15,8 @@ const os = require('os');
 const fs = require('fs-extra');
 const path = require('path');
 const cp = require('child_process');
+const semver = require('semver');
+const restart = require('./lib/restart');
 const ioPackage = require('./io-package.json');
 const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const version = ioPackage.common.version;
@@ -49,7 +51,6 @@ let Objects;
 let States;
 let decache;
 
-const semver = require('semver');
 let logger;
 let isDaemon = false;
 let callbackId = 1;
@@ -775,7 +776,6 @@ function createObjects(onConnect) {
                         ) {
                             // old version lower 4 new version greater 4, restart needed
                             logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
-                            const restart = require('./lib/restart');
                             restart();
                         } else if (
                             semver.gte(controllerVersions[id], '4.0.0') &&
@@ -783,7 +783,39 @@ function createObjects(onConnect) {
                         ) {
                             // controller was above 4 and now below 4
                             logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
-                            const restart = require('./lib/restart');
+                            restart();
+                        }
+                    } else {
+                        //  we don't know this host yet, so it is new to the mh system
+                        let restartRequired = true;
+
+                        // if we are a already a multihost make the version check else restart in all cases
+                        if (Object.keys(controllerVersions).length > 1) {
+                            if (semver.lt(obj.common.installedVersion, '4.0.0')) {
+                                for (const controllerVersion of controllerVersions) {
+                                    if (semver.lt(controllerVersion, '4.0.0')) {
+                                        // there was another host < 4 so no restart required
+                                        restartRequired = false;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // version is greater equal 4
+                                for (const controllerVersion of controllerVersions) {
+                                    if (semver.gte(controllerVersion, '4.0.0')) {
+                                        // there was already another host greater equal 4 -> no restart needed
+                                        restartRequired = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            // change from single to multihost - deactivate sets asap but also restart
+                            await objects.deactivateSets();
+                        }
+
+                        if (restartRequired) {
+                            logger.info(`${hostLogPrefix} New multihost participant detected, restarting ...`);
                             restart();
                         }
                     }
@@ -802,7 +834,6 @@ function createObjects(onConnect) {
                             }
                         }
                         logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
-                        const restart = require('./lib/restart');
                         restart();
                     }
                 } else if (obj && obj.common) {
@@ -3145,7 +3176,6 @@ async function processMessage(msg) {
         }
 
         case 'restartController': {
-            const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
             setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer to be sent
             break;

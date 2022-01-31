@@ -238,14 +238,17 @@ function Setup(options) {
         dbConnect(params, async (_objects, _states) => {
             objects = _objects;
             states = _states;
-            const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+            const iopkg = fs.readJsonSync(`${__dirname}/../../io-package.json`);
 
-            // in all cases we need to ensure that existing objects are migrated to sets
             try {
-                const noMigrated = await objects.migrateToSets();
+                // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
+                if (await tools.isSingleHost(objects)) {
+                    await objects.activateSets();
+                    const noMigrated = await objects.migrateToSets();
 
-                if (noMigrated) {
-                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                    if (noMigrated) {
+                        console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                    }
                 }
             } catch (e) {
                 console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);

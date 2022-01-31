@@ -190,9 +190,21 @@ function decryptPhrase(password, data, callback) {
         decipher.write(data, 'hex');
         decipher.end();
     } catch (e) {
-        console.error('Cannot decode secret: ' + e.message);
+        console.error(`Cannot decode secret: ${e.message}`);
         callback(null);
     }
+}
+
+/**
+ * Checks if multiple host objects exists, without using object views
+ *
+ * @param {object} objects the objects db
+ * @return {Promise<boolean>} true if only one host object exists
+ */
+async function isSingleHost(objects) {
+    const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
+    const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
+    return hostObjs.length <= 1; // on setup no host object is there yet
 }
 
 function getAppName() {
@@ -3671,6 +3683,7 @@ module.exports = {
     parseShortGithubUrl,
     setExecutableCapabilities,
     isGithubPathname,
+    isSingleHost,
     parseGithubPathname,
     removePreservedProperties,
     FORBIDDEN_CHARS,

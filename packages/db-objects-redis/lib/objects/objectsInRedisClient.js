@@ -353,6 +353,20 @@ class ObjectsInRedisClient {
                                         );
                                         this.settings.disconnected();
                                     }
+                                } else if (channel === `${this.metaNamespace}objects.features.useSets`) {
+                                    const newUseSets = !!parseInt(message);
+                                    if (newUseSets !== this.useSets) {
+                                        this.log.info(
+                                            `${this.namespace} Sets ${
+                                                newUseSets ? 'activated' : 'deactivated'
+                                            }: restarting ...`
+                                        );
+                                        this.useSets = newUseSets;
+                                        // luas are no longer up to date, lets restart
+                                        if (typeof this.settings.disconnected === 'function') {
+                                            this.settings.disconnected();
+                                        }
+                                    }
                                 }
                                 return;
                             }
@@ -597,6 +611,18 @@ class ObjectsInRedisClient {
 
             // do this before starting with async calls ;-)
             initCounter++;
+
+            try {
+                // check if we are allowed to use sets
+                this.useSets = !!parseInt(await this.client.get(`${this.metaNamespace}objects.features.useSets`));
+            } catch (e) {
+                // if unsupported we have a legacy host
+                if (!e.message.includes('UNSUPPORTED')) {
+                    throw e;
+                } else {
+                    this.useSets = false;
+                }
+            }
 
             try {
                 await this._determineProtocolVersion();
@@ -2362,7 +2388,7 @@ class ObjectsInRedisClient {
                 const message = JSON.stringify(obj);
                 try {
                     const commands = [];
-                    if (this.noLegacyMultihost) {
+                    if (this.useSets) {
                         if (obj.type) {
                             // e.g. _design/ has no type
                             // add the object to the set + set object atomic
@@ -3104,7 +3130,7 @@ class ObjectsInRedisClient {
             const message = JSON.stringify(obj);
 
             const commands = [];
-            if (this.noLegacyMultihost) {
+            if (this.useSets) {
                 if (obj.type && (!oldObj || !oldObj.type)) {
                     // new object or oldObj had no type -> add to set + set object
                     commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
@@ -3226,7 +3252,7 @@ class ObjectsInRedisClient {
             try {
                 const commands = [];
 
-                if (this.noLegacyMultihost) {
+                if (this.useSets) {
                     if (oldObj.type) {
                         // e.g. _design/ has no type
                         // del the object from the set + del object atomic
@@ -4062,7 +4088,7 @@ class ObjectsInRedisClient {
 
         try {
             const commands = [];
-            if (this.noLegacyMultihost) {
+            if (this.useSets) {
                 // what is called oldObj is acutally the obj we set, because it has been extended
                 if (oldObj.type && !oldType) {
                     // new object or oldObj had no type -> add to set + set object
@@ -4338,7 +4364,17 @@ class ObjectsInRedisClient {
     }
 
     async loadLuaScripts() {
-        const luaPath = path.join(__dirname, this.noLegacyMultihost ? 'lua' : 'lua-v3');
+        let luaDirName;
+
+        if (this.noLegacyMultihost && this.useSets) {
+            luaDirName = 'lua-v4';
+        } else if (this.noLegacyMultihost) {
+            luaDirName = 'lua-v4-no-sets';
+        } else {
+            luaDirName = 'lua-v3';
+        }
+
+        const luaPath = path.join(__dirname, luaDirName);
         const scripts = fs.readdirSync(luaPath).map(name => {
             const shasum = crypto.createHash('sha1');
             const script = fs.readFileSync(path.join(luaPath, name));
@@ -4431,7 +4467,7 @@ class ObjectsInRedisClient {
      * @return {Promise<number>}
      */
     async migrateToSets() {
-        if (!this.noLegacyMultihost) {
+        if (!this.useSets) {
             return 0;
         }
 
@@ -4610,6 +4646,38 @@ class ObjectsInRedisClient {
             await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:expired`);
             await this.subSystem.subscribe(`__keyevent@${this.settings.connection.options.db}__:evicted`);
         }
+    }
+
+    /**
+     * Activates the usage of sets
+     * @return {Promise<void>}
+     */
+    async activateSets() {
+        this.useSets = true;
+        await this.client.set(`${this.metaNamespace}objects.features.useSets`, '1');
+    }
+
+    /**
+     * Deactivates the usage of sets
+     * @return {Promise<void>}
+     */
+    async deactivateSets() {
+        this.useSets = false;
+        await this.client.set(`${this.metaNamespace}objects.features.useSets`, '0');
+    }
+
+    /**
+     * Get value from meta namespace
+     *
+     * @param {string} id redis key
+     * @return {Promise<string>}
+     */
+    getMeta(id) {
+        if (!this.client) {
+            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        return this.client.get(this.metaNamespace + id);
     }
 }
 
