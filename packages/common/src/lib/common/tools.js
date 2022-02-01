@@ -2041,9 +2041,9 @@ function getConfigFileName() {
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
-    if (fs.existsSync(__dirname + '/../../../../../packages/controller')) {
+    if (fs.existsSync(`${__dirname}/../../../../../packages/controller`)) {
         // dev install -> Remove /lib
-        configDir.splice(configDir.length - 3, 3);
+        configDir.splice(configDir.length - 4, 4);
         configDir = configDir.join('/');
         configDir += '/controller'; // go inside controller dir
         if (fs.existsSync(`${configDir}/conf/${appName}.json`)) {
@@ -2059,11 +2059,11 @@ function getConfigFileName() {
         fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
     ) {
         // remove /node_modules/' + appName + '.js-controller/lib
-        configDir.splice(configDir.length - 7, 7);
+        configDir.splice(configDir.length - 8, 8);
         configDir = configDir.join('/');
     } else {
         // If installed with npm -> remove node_modules/@iobroker/js-controller-common/lib/common
-        configDir.splice(configDir.length - 5, 5);
+        configDir.splice(configDir.length - 6, 6);
         configDir = configDir.join('/');
     }
 
