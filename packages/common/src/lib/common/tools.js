@@ -226,8 +226,17 @@ async function isHostRunning(objects, states) {
     return false;
 }
 
+/**
+ * Checks if ioBroker is installed in a dev environment
+ * @private
+ * @return {boolean}
+ */
+function _isDevInstallation() {
+    return fs.pathExistsSync(__dirname + '/../../../../../packages/controller');
+}
+
 function getAppName() {
-    if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
+    if (_isDevInstallation()) {
         // dev install - GitHub folder is uppercase
         return 'ioBroker';
     }
@@ -238,7 +247,7 @@ function getAppName() {
 function rmdirRecursiveSync(path) {
     if (fs.existsSync(path)) {
         fs.readdirSync(path).forEach(file => {
-            const curPath = path + '/' + file;
+            const curPath = `${path}/${file}`;
             if (fs.statSync(curPath).isDirectory()) {
                 // recurse
                 rmdirRecursiveSync(curPath);
@@ -288,9 +297,9 @@ function findPath(path, url) {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
             if (url[0] === '/') {
-                return __dirname + '/..' + url;
+                return `${__dirname}/..${url}`;
             } else {
-                return __dirname + '/../' + path + url;
+                return `${__dirname}/../${path}${url}`;
             }
         }
     }
@@ -884,11 +893,11 @@ function getInstalledInfo(hostRunningVersion) {
     // Warning! Do not checkin this code
     if (
         fs.existsSync(
-            path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)
+            path.join(__dirname, `../../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)
         ) ||
-        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName}.js-controller`))
+        fs.existsSync(path.join(__dirname, `../../../../../../node_modules/${module.exports.appName}.js-controller`))
     ) {
-        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
+        scanDirectory(path.join(__dirname, '../../../../../../node_modules'), result, regExp);
     }
 
     return result;
@@ -2014,7 +2023,7 @@ function getControllerDir() {
 // All paths are returned always relative to /node_modules/' + module.exports.appName + '.js-controller
 // the result has always "/" as last symbol
 function getDefaultDataDir() {
-    if (fs.existsSync(`${__dirname}/../../../../../packages/controller`)) {
+    if (_isDevInstallation()) {
         // dev install
         return './data/';
     }
@@ -2041,7 +2050,7 @@ function getConfigFileName() {
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
-    if (fs.existsSync(`${__dirname}/../../../../../packages/controller`)) {
+    if (_isDevInstallation()) {
         // dev install -> Remove /lib
         configDir.splice(configDir.length - 4, 4);
         configDir = configDir.join('/');
