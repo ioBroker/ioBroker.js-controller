@@ -1,6 +1,6 @@
 'use strict';
 
-const EXIT_CODES = {
+const EXIT_CODES: Record<string | number, string | number> = {
     NO_ERROR: 0,
     JS_CONTROLLER_STOPPED: 1, // planned stop
     INVALID_ADAPTER_CONFIG: 2,
@@ -62,4 +62,4 @@ for (const [name, code] of Object.entries(EXIT_CODES)) {
     EXIT_CODES[code] = name;
 }
 
-module.exports = EXIT_CODES;
+export { EXIT_CODES };

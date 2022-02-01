@@ -4,26 +4,29 @@
 /* jslint esversion: 6 */
 'use strict';
 
-const winston = require('winston');
-const DailyRotateFile = require('winston-daily-rotate-file');
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+import winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const tools = require('./tools');
 const hostname = tools.getHostName();
-const Transport = require('winston-transport');
-const { LEVEL } = require('triple-beam');
-const deepClone = require('deep-clone');
+import Transport from 'winston-transport';
+import { LEVEL } from 'triple-beam';
+import deepClone from 'deep-clone';
 
-let SysLog;
+let SysLog: any;
 try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     SysLog = require('winston-syslog').Syslog;
 } catch {
     //console.log('No syslog support');
 }
 
-let Seq;
+let Seq: any;
 try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     Seq = require('@datalust/winston-seq').SeqTransport;
 } catch {
     //console.log('No seq support');
@@ -33,23 +36,30 @@ try {
 const IoSysLog =
     SysLog &&
     class extends SysLog {
-        constructor(options) {
+        constructor(options: any) {
             super(options);
         }
-
-        log(info, callback) {
+        log(info: Record<string, any>, callback: () => void) {
             // we need to map the ioBroker loglevels to the Syslog ones
             const ioInfo = info;
+            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'warn') {
+                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'warning';
             }
+            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'info') {
+                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'notice';
             }
+            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'debug') {
+                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'info';
             }
+            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'silly') {
+                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'debug';
             }
             super.log(ioInfo, callback);
@@ -60,7 +70,7 @@ const IoSysLog =
 const IoSeq =
     Seq &&
     class extends Seq {
-        log(info, callback) {
+        log(info: Record<string, any>, callback: () => void) {
             const ioInfo = info;
             ioInfo.props = ioInfo.props || {};
 
@@ -97,13 +107,15 @@ const IoSeq =
 
 // Class used to inform adapter about new log entry
 class NotifierTransport extends Transport {
-    constructor(opts) {
+    private name: string;
+    constructor(opts: any) {
         super(opts);
         this.name = 'NT'; // NotifierTransport
     }
 
-    log(info, callback) {
+    log(info: Record<string, any>, callback: () => void) {
         const msg = {
+            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             severity: info[LEVEL],
             ts: new Date(info.timestamp).getTime(),
             message: info.message
@@ -113,9 +125,29 @@ class NotifierTransport extends Transport {
     }
 }
 
-const logger = function (level, files, noStdout, prefix) {
-    let userOptions = {};
-    const options = {
+interface UserOptions {
+    level: string;
+    maxDays: number;
+    noStdout: boolean;
+    localTime?: string;
+    colorize?: boolean;
+    json?: boolean;
+    prefix?: string;
+    transport: Record<string, any>;
+}
+
+interface Options {
+    format?: winston.Logform.Format;
+    transports: Transport[];
+}
+
+export const logger = function (
+    level: string | UserOptions,
+    files?: string[] | string,
+    noStdout?: boolean,
+    prefix?: string
+): winston.Logger {
+    const options: Options = {
         transports: []
     };
 
@@ -125,7 +157,7 @@ const logger = function (level, files, noStdout, prefix) {
         files = [files];
     }
 
-    const formatter = info => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
+    const formatter = (info: Record<string, any>) => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
 
     files = files || [];
 
@@ -133,16 +165,16 @@ const logger = function (level, files, noStdout, prefix) {
     const isNpm = !__dirname
         .replace(/\\/g, '/')
         .toLowerCase()
-        .includes(tools.appName.toLowerCase() + `.js-controller/packages/`);
+        .includes(`${tools.appName.toLowerCase()}.js-controller/packages/`);
 
     if (typeof level === 'object') {
-        userOptions = deepClone(level);
+        const userOptions: UserOptions = deepClone(level);
 
         level = userOptions.level;
-        prefix = userOptions.prefix;
+        prefix = userOptions.prefix || '';
         noStdout = userOptions.noStdout;
-
         const winstonFormats = [];
+        /** @ts-expect-error formatter arg wrongly documented */
         winstonFormats.push(winston.format.timestamp({ format: timestamp }));
         if (userOptions.json === undefined || userOptions.json) {
             winstonFormats.push(winston.format.json());
@@ -180,7 +212,7 @@ const logger = function (level, files, noStdout, prefix) {
                     }
 
                     transport.handleExceptions = false;
-                    transport.name = !fName ? tools.appName : 'dailyRotateFile' + fName;
+                    transport.name = !fName ? tools.appName : `dailyRotateFile${fName}`;
                     fName++;
                     transport.filename = transport.filename.replace(/\\/g, '/');
                     if (transport.filename.match(/^\w:\/|^\//)) {
@@ -190,14 +222,14 @@ const logger = function (level, files, noStdout, prefix) {
                             `${tools.getControllerDir()}${isNpm ? '/../../' : '/'}${transport.filename}`
                         );
                     }
-                    transport.auditFile = transport.filename + '-audit.json';
+                    transport.auditFile = `${transport.filename}-audit.json`;
 
                     transport.createSymlink =
                         transport.createSymlink !== undefined ? transport.createSymlink : !isWindows;
                     transport.symlinkName =
                         transport.symlinkName !== undefined
                             ? transport.symlinkName
-                            : path.basename(transport.filename + '.current.log');
+                            : path.basename(`${transport.filename}.current.log`);
 
                     transport.filename += '.%DATE%' + (transport.fileext || '');
                     //transport.label       = prefix || ''; //TODO format.label()
@@ -228,7 +260,7 @@ const logger = function (level, files, noStdout, prefix) {
                     try {
                         const _log = new DailyRotateFile(transport);
                         options.transports.push(_log);
-                    } catch (e) {
+                    } catch (e: any) {
                         if (e.code === 'EACCES') {
                             // modify error code to make it unique for handling
                             e.code = 'EACCES_LOG';
@@ -263,7 +295,7 @@ const logger = function (level, files, noStdout, prefix) {
                     }
                     try {
                         options.transports.push(new IoSysLog(transport));
-                    } catch (err) {
+                    } catch (err: any) {
                         console.log(`Cannot activate Syslog: ${err.message}`);
                     }
                 } else if (transport.type === 'http' && transport.enabled !== false) {
@@ -278,7 +310,7 @@ const logger = function (level, files, noStdout, prefix) {
 
                     try {
                         options.transports.push(new winston.transports.Http(transport));
-                    } catch (err) {
+                    } catch (err: any) {
                         console.log(`Cannot activate HTTP: ${err.message}`);
                     }
                 } else if (transport.type === 'stream' && transport.enabled !== false) {
@@ -293,14 +325,14 @@ const logger = function (level, files, noStdout, prefix) {
                     try {
                         if (typeof transport.stream === 'string') {
                             transport.stream = fs.createWriteStream(transport.stream);
-                            transport.stream.on('error', err => {
-                                console.log(`Error in Stream: ${err}`);
+                            transport.stream.on('error', (err: Error) => {
+                                console.log(`Error in Stream: ${err.message}`);
                             });
                         }
 
                         options.transports.push(new winston.transports.Stream(transport));
-                    } catch (err) {
-                        console.log(`Cannot activate Stream: ${err}`);
+                    } catch (err: any) {
+                        console.log(`Cannot activate Stream: ${err.message}`);
                     }
                 } else if (transport.type === 'seq' && transport.enabled !== false) {
                     // serverUrl?:       string;
@@ -312,12 +344,12 @@ const logger = function (level, files, noStdout, prefix) {
                     // Add only if serverUrl is configured at least
                     if (transport.serverUrl) {
                         try {
-                            transport.onError = e => {
-                                console.log(`SEQ error: ${e}`);
+                            transport.onError = (e: Error) => {
+                                console.log(`SEQ error: ${e.message}`);
                             };
                             const seqLogger = new IoSeq(transport);
                             options.transports.push(seqLogger);
-                        } catch (err) {
+                        } catch (err: any) {
                             console.log(`Cannot activate SEQ: ${err.message}`);
                         }
                     } else {
@@ -373,10 +405,14 @@ const logger = function (level, files, noStdout, prefix) {
 
     const log = winston.createLogger(options);
 
+    /** @ts-expect-error why do we override/add method to foreign instance? TODO */
     log.getFileName = function () {
+        /** @ts-expect-error we use undocumented stuff here TODO */
         let transport = this.transports.find(t => (t.transport && t.transport.dirname) || t.dirname);
         if (transport) {
+            /** @ts-expect-error we use undocumented stuff here TODO */
             transport = transport.transport ? transport.transport : transport;
+            /** @ts-expect-error we use undocumented stuff here TODO */
             return transport.dirname + '/' + transport.filename.replace('%DATE%', getDate());
         } else {
             return '';
@@ -389,30 +425,40 @@ const logger = function (level, files, noStdout, prefix) {
 
     // This cannot be deleted, because file rotate works with the size of files and not with the time
     // TODO research and open new issue in winston-daily-rotate-file repo
+    /** @ts-expect-error why do we override/add method to foreign instance? TODO */
     log.activateDateChecker = function (isEnabled, daysCount) {
+        /** @ts-expect-error we use undocumented stuff here TODO */
         if (!isEnabled && this._fileChecker) {
+            /** @ts-expect-error we use undocumented stuff here TODO */
             clearInterval(this._fileChecker);
+            /** @ts-expect-error we use undocumented stuff here TODO */
         } else if (isEnabled && !this._fileChecker) {
             if (!daysCount) {
                 daysCount = 3;
             }
 
             // Check every hour
+            /** @ts-expect-error we use undocumented stuff here TODO */
             this._fileChecker = setInterval(() => {
                 this.transports.forEach(transport => {
                     if (
+                        /** @ts-expect-error we use undocumented stuff here TODO */
                         transport.name !== 'dailyRotateFile' ||
+                        /** @ts-expect-error we use undocumented stuff here TODO */
                         !transport.options ||
+                        /** @ts-expect-error we use undocumented stuff here TODO */
                         transport.options.name !== tools.appName
                     ) {
                         return;
                     }
 
+                    /** @ts-expect-error we use undocumented stuff here TODO */
                     if (transport && fs.existsSync(transport.dirname)) {
                         let files;
                         try {
+                            /** @ts-expect-error we use undocumented stuff here TODO */
                             files = fs.readdirSync(transport.dirname);
-                        } catch (err) {
+                        } catch (err: any) {
                             console.log(`host.${hostname} Cannot read log directory: ${err}`);
                             return;
                         }
@@ -431,19 +477,22 @@ const logger = function (level, files, noStdout, prefix) {
                                             message: `host.${hostname} Delete log file ${files[i]}`
                                         });
                                         console.log(`host.${hostname} Delete log file ${files[i]}`);
+                                        /** @ts-expect-error we use undocumented stuff here TODO */
                                         fs.unlinkSync(transport.dirname + '/' + files[i]);
-                                    } catch (e) {
+                                    } catch (e: any) {
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
                                             level: os.platform().startsWith('win') ? 'info' : 'error',
                                             message: `host.${hostname} Cannot delete file "${path.normalize(
+                                                /** @ts-expect-error we use undocumented stuff here TODO */
                                                 transport.dirname + '/' + files[i]
                                             )}": ${e}`
                                         });
                                         console.log(
                                             `host.${hostname} Cannot delete file "${path.normalize(
+                                                /** @ts-expect-error we use undocumented stuff here TODO */
                                                 transport.dirname + '/' + files[i]
-                                            )}": ${e}`
+                                            )}": ${e.message}`
                                         );
                                     }
                                 }
@@ -464,8 +513,7 @@ const logger = function (level, files, noStdout, prefix) {
 function getDate() {
     const ts = new Date();
     let result = ts.getFullYear() + '-';
-    /** @type {number | string} */
-    let value = ts.getMonth() + 1;
+    let value: number | string = ts.getMonth() + 1;
     if (value < 10) {
         value = '0' + value;
     }
@@ -479,12 +527,11 @@ function getDate() {
     return result;
 }
 
-function timestamp(date) {
+function timestamp(date: string) {
     const ts = date ? new Date(date) : new Date();
     let result = ts.getFullYear() + '-';
 
-    /** @type {number | string} */
-    let value = ts.getMonth() + 1;
+    let value: string | number = ts.getMonth() + 1;
     if (value < 10) {
         value = '0' + value;
     }
@@ -525,5 +572,3 @@ function timestamp(date) {
 
     return result;
 }
-
-module.exports = logger;

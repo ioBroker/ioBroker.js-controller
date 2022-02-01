@@ -29,27 +29,28 @@
  *
  */
 
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-'use strict';
+import * as crypto from 'crypto';
+let versionOk: boolean;
 
-const crypto = require('crypto');
-let version = null;
-
-const password = pw => {
+export const password = (
+    pw: string
+): {
+    complexity: (password: string, callback: (isComplex: boolean) => void) => boolean;
+    check: (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) => void;
+    hash: (salt: string, iterations: number, callback: (err?: Error | null, hash?: string) => void) => void;
+} => {
     return {
-        hash: (salt, iterations, callback) => {
+        hash: (salt: string, iterations: number, callback: (err?: Error | null, hash?: string) => void) => {
             salt = salt || crypto.randomBytes(16).toString('hex');
             iterations = iterations || 10000;
 
             // version 0.10 has no 'sha256' and this option must be ignored
-            if (version === null) {
-                version = process.version.replace('v', '');
-                version = !version.startsWith('0.10.');
+            if (versionOk === undefined) {
+                const version = process.version.replace('v', '');
+                versionOk = !version.startsWith('0.10.');
             }
 
-            if (version) {
+            if (versionOk) {
                 crypto.pbkdf2(pw, salt, iterations, 256, 'sha256', (err, key) => {
                     if (err) {
                         return callback(err);
@@ -67,16 +68,16 @@ const password = pw => {
                 });
             }
         },
-        check: function (hashedPassword, callback) {
+        check: function (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) {
             if (!hashedPassword || !password) {
                 return callback(null, false);
             }
             const key = hashedPassword.split('$');
             if (key.length !== 4 || !key[2] || !key[3]) {
-                return callback('Hash not formatted correctly');
+                return callback(new Error('Hash not formatted correctly'));
             }
             if (key[0] !== 'pbkdf2') {
-                return callback('Unknown');
+                return callback(new Error('Unknown'));
             }
 
             this.hash(key[3], parseInt(key[1], 10), (error, newHash) => {
@@ -87,19 +88,18 @@ const password = pw => {
                 }
             });
         },
-        complexity: (password, callback) => {
+        complexity: (password: string, callback: (isComplex: boolean) => void): boolean => {
             let result = false;
             if (typeof password === 'string') {
-                result =
+                result = !!(
                     password.length >= 8 && // minimum length is 8
                     password.match(/\d/) && // contains at least one digit
                     password.match(/[a-z]/) && // contains at least one lower case letter
-                    password.match(/[A-Z]/); // contains at least one upper case letter
+                    password.match(/[A-Z]/)
+                ); // contains at least one upper case letter
             }
             typeof callback === 'function' && callback(result);
             return result; // true if the complexity OK
         }
     };
 };
-
-module.exports = password;
