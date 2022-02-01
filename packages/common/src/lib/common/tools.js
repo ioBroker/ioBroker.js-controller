@@ -13,13 +13,13 @@ const { PassThrough } = require('stream');
 const { detectPackageManager } = require('@alcalzone/pak');
 const EXIT_CODES = require('./exitCodes');
 const zlib = require('zlib');
+const { password } = require('./password');
 
 // @ts-ignore
 require('events').EventEmitter.prototype._maxListeners = 100;
 let request;
 let axios;
 let extend;
-let password;
 let npmVersion;
 let crypto;
 let diskusage;
@@ -475,8 +475,6 @@ async function createUuid(objects) {
     const promiseCheckPassword = new Promise(resolve =>
         objects.getObject('system.user.admin', (err, obj) => {
             if (err || !obj) {
-                password = password || require('./password').password;
-
                 // Default Password for user 'admin' is application name in lower case
                 password(module.exports.appName).hash(null, null, (err, res) => {
                     err && console.error(err);
@@ -1969,7 +1967,7 @@ async function getHostInfo(objects, callback) {
 
 /**
  * Finds the controller root directory
- * @returns {string}
+ * @returns {string} absolute path to controller dir
  */
 function getControllerDir() {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
@@ -2016,7 +2014,7 @@ function getControllerDir() {
 // All paths are returned always relative to /node_modules/' + module.exports.appName + '.js-controller
 // the result has always "/" as last symbol
 function getDefaultDataDir() {
-    if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
+    if (fs.existsSync(`${__dirname}/../../../../../packages/controller`)) {
         // dev install
         return './data/';
     }
@@ -2024,11 +2022,11 @@ function getDefaultDataDir() {
     const appName = module.exports.appName.toLowerCase();
 
     // if debugging with npm5
-    if (fs.existsSync(__dirname + '/../../node_modules/' + appName + '.js-controller')) {
-        return '../' + appName + '-data/';
+    if (fs.existsSync(`${__dirname}/../../../node_modules/${appName}.js-controller`)) {
+        return `../${appName}-data/`;
     } else {
         // If installed with npm
-        return '../../' + appName + '-data/';
+        return `../../${appName}-data/`;
     }
 }
 

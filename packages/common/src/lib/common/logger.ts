@@ -16,7 +16,7 @@ import Transport from 'winston-transport';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
 
-let SysLog: any;
+let SysLog: typeof import('winston-syslog').Syslog | undefined;
 try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     SysLog = require('winston-syslog').Syslog;
@@ -24,7 +24,7 @@ try {
     //console.log('No syslog support');
 }
 
-let Seq: any;
+let Seq: typeof import('@datalust/winston-seq').SeqTransport | undefined;
 try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     Seq = require('@datalust/winston-seq').SeqTransport;
@@ -62,6 +62,8 @@ const IoSysLog =
                 /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'debug';
             }
+
+            /** @ts-expect-error TODO ts says it can be undefined */
             super.log(ioInfo, callback);
         }
     };
@@ -268,7 +270,7 @@ export const logger = function (
                         throw e;
                     }
                 } else if (transport.type === 'syslog' && transport.enabled !== false) {
-                    if (!SysLog) {
+                    if (!IoSysLog) {
                         console.error('Syslog configured, but not installed! Ignore');
                         return;
                     }
@@ -335,6 +337,10 @@ export const logger = function (
                         console.log(`Cannot activate Stream: ${err.message}`);
                     }
                 } else if (transport.type === 'seq' && transport.enabled !== false) {
+                    if (!IoSeq) {
+                        console.error('Seq configured, but not installed! Ignore');
+                        return;
+                    }
                     // serverUrl?:       string;
                     // apiKey?:          string;
                     // maxBatchingTime?: number;
