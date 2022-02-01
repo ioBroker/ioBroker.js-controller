@@ -1278,7 +1278,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
             data = _actualRepo;
         } else {
             const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
-                require('../../package.json').version
+                require('../../../package.json').version
             }`;
             data = await axios({
                 url,
@@ -2826,7 +2826,9 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     // common.states needs to be a real object or an array
-    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+    if (!extend && obj.common.states === null) {
+        throw new Error(`obj.common.states has an invalid type! Expected a non-null "object", received "null"`);
+    } else if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
         );
