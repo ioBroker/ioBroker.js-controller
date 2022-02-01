@@ -32,6 +32,8 @@ try {
     //console.log('No seq support');
 }
 
+export type LogInfo = Record<string | symbol, any>;
+
 // We must check if SysLog is defined before extending it
 const IoSysLog =
     SysLog &&
@@ -39,32 +41,24 @@ const IoSysLog =
         constructor(options: any) {
             super(options);
         }
-        log(info: Record<string, any>, callback: () => void) {
+        log(info: LogInfo, callback: () => void) {
             // we need to map the ioBroker loglevels to the Syslog ones
             const ioInfo = info;
-            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'warn') {
-                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'warning';
             }
-            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'info') {
-                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'notice';
             }
-            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'debug') {
-                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'info';
             }
-            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             if (ioInfo[LEVEL] === 'silly') {
-                /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
                 ioInfo[LEVEL] = 'debug';
             }
 
-            /** @ts-expect-error TODO ts says it can be undefined */
-            super.log(ioInfo, callback);
+            // No clue why log could ever be undefined, but hey...
+            super.log?.(ioInfo, callback);
         }
     };
 
@@ -72,7 +66,7 @@ const IoSysLog =
 const IoSeq =
     Seq &&
     class extends Seq {
-        log(info: Record<string, any>, callback: () => void) {
+        log(info: LogInfo, callback: () => void) {
             const ioInfo = info;
             ioInfo.props = ioInfo.props || {};
 
@@ -115,9 +109,8 @@ class NotifierTransport extends Transport {
         this.name = 'NT'; // NotifierTransport
     }
 
-    log(info: Record<string, any>, callback: () => void) {
+    log(info: LogInfo, callback: () => void) {
         const msg = {
-            /** @ts-expect-error https://github.com/microsoft/TypeScript/issues/1863 */
             severity: info[LEVEL],
             ts: new Date(info.timestamp).getTime(),
             message: info.message
@@ -159,7 +152,7 @@ export const logger = function (
         files = [files];
     }
 
-    const formatter = (info: Record<string, any>) => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
+    const formatter = (info: LogInfo) => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
 
     files = files || [];
 
