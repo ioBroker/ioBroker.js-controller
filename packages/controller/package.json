@@ -43,7 +43,7 @@
     "node-schedule": "^2.1.0",
     "pidusage": "^3.0.0",
     "promisify-child-process": "^4.1.1",
-    "prompt": "^1.2.0",
+    "prompt": "^1.2.1",
     "readline-sync": "^1.4.10",
     "request": "^2.88.2",
     "semver": "^7.3.5",
