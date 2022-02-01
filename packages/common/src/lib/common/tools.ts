@@ -1,33 +1,36 @@
 'use strict';
 
-const fs = require('fs-extra');
-const path = require('path');
-const semver = require('semver');
-const os = require('os');
-const forge = require('node-forge');
-const deepClone = require('deep-clone');
-const cpPromise = require('promisify-child-process');
-const jwt = require('jsonwebtoken');
-const { createInterface } = require('readline');
-const { PassThrough } = require('stream');
-const { detectPackageManager } = require('@alcalzone/pak');
-const EXIT_CODES = require('./exitCodes');
-const zlib = require('zlib');
-const { password } = require('./password');
+import fs from 'fs-extra';
+import path from 'path';
+import semver from 'semver';
+import os from 'os';
+import forge, { tls } from 'node-forge';
+import deepClone from 'deep-clone';
+import cpPromise, { ChildProcessPromise } from 'promisify-child-process';
+import { createInterface } from 'readline';
+import { PassThrough } from 'stream';
+import { detectPackageManager } from '@alcalzone/pak';
+import { EXIT_CODES } from './exitCodes';
+import zlib from 'zlib';
+import { password } from './password';
+import jwt from 'jsonwebtoken';
+import request from 'request';
+import axios from 'axios';
+import crypto from 'crypto';
+import type { ExecOptions } from 'child_process';
+import Record = module;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const extend = require('node.extend');
 
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('events').EventEmitter.prototype._maxListeners = 100;
-let request;
-let axios;
-let extend;
-let npmVersion;
-let crypto;
-let diskusage;
+let npmVersion: string;
+let diskusage: any;
 const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
-let lastCalculationOfIps;
-let ownIpArr = [];
+let lastCalculationOfIps: number;
+let ownIpArr: string[] = [];
 // Here we define all characters that are forbidden in IDs. Since we want to allow multiple
 // unicode character classes, we do that by OR-ing the character classes and negating the result.
 // Also, we can easily whitelist characters this way.
@@ -48,13 +51,18 @@ const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  *
  * @alias copyAttributes
  * @memberof tools
- * @param {object} oldObj source object
- * @param {object} newObj destination object
- * @param {object} [originalObj] optional object for read __no_change__ values
- * @param {boolean} [isNonEdit] optional indicator if copy is in nonEdit part
+ * @param oldObj source object
+ * @param newObj destination object
+ * @param object originalObj optional object for read __no_change__ values
+ * @param isNonEdit optional indicator if copy is in nonEdit part
  *
  */
-function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
+function copyAttributes(
+    oldObj: Record<string, any>,
+    newObj: Record<string, any>,
+    originalObj?: Record<string, any>,
+    isNonEdit?: boolean
+) {
     for (const attr of Object.keys(oldObj)) {
         if (
             oldObj[attr] === undefined ||
@@ -92,11 +100,11 @@ function copyAttributes(oldObj, newObj, originalObj, isNonEdit) {
  *
  * @alias checkNonEditable
  * @memberof tools
- * @param {object} oldObject source object
- * @param {object} newObject destination object
+ * @param oldObject source object
+ * @param newObject destination object
  *
  */
-function checkNonEditable(oldObject, newObject) {
+function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>) {
     if (!oldObject) {
         return true;
     }
@@ -108,7 +116,6 @@ function checkNonEditable(oldObject, newObject) {
     if (oldObject.nonEdit && oldObject.nonEdit.passHash) {
         // If new Object wants to update the nonEdit information
         if (newObject.nonEdit && newObject.nonEdit.password) {
-            crypto = crypto || require('crypto');
             const hash = crypto.createHash('sha256').update(newObject.nonEdit.password.toString()).digest('base64');
             if (oldObject.nonEdit.passHash !== hash) {
                 delete newObject.nonEdit;
@@ -136,7 +143,6 @@ function checkNonEditable(oldObject, newObject) {
     } else if (newObject.nonEdit) {
         oldObject.nonEdit = deepClone(newObject.nonEdit);
         if (newObject.nonEdit.password) {
-            crypto = crypto || require('crypto');
             const hash = crypto.createHash('sha256').update(newObject.nonEdit.password.toString()).digest('base64');
             delete oldObject.nonEdit.password;
             delete newObject.nonEdit.password;
@@ -158,18 +164,17 @@ function checkNonEditable(oldObject, newObject) {
 }
 
 /**
- * @param {string} repoVersion
- * @param {string} installedVersion
+ * @param repoVersion
+ * @param installedVersion
  * @throws {Error} if version is invalid
  */
-function upToDate(repoVersion, installedVersion) {
+function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version
     return semver.gte(installedVersion, repoVersion);
 }
 
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
 function decryptPhrase(password, data, callback) {
-    crypto = crypto || require('crypto');
     const decipher = crypto.createDecipher('aes192', password);
 
     try {
@@ -210,11 +215,11 @@ async function isSingleHost(objects) {
 /**
  * Checks if at least one host is running in a MH environment
  *
- * @param {object} objects the objects db
- * @param {object} states the states db
- * @return Promise<boolean> true if one or more hosts running else false
+ * @param objects the objects db
+ * @param states the states db
+ * @return true if one or more hosts running else false
  */
-async function isHostRunning(objects, states) {
+async function isHostRunning(objects: any, states: any): Promise<boolean> {
     const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
 
     for (const hostObj of res.rows) {
@@ -244,7 +249,7 @@ function getAppName() {
     return 'iobroker';
 }
 
-function rmdirRecursiveSync(path) {
+function rmdirRecursiveSync(path: string) {
     if (fs.existsSync(path)) {
         fs.readdirSync(path).forEach(file => {
             const curPath = `${path}/${file}`;
@@ -259,8 +264,8 @@ function rmdirRecursiveSync(path) {
         // delete (hopefully) empty folder
         try {
             fs.rmdirSync(path);
-        } catch (e) {
-            console.log('Cannot delete directory ' + path + ': ' + e.message);
+        } catch (e: any) {
+            console.log(`Cannot delete directory ${path}: ${e.message}`);
         }
     }
 }
@@ -270,15 +275,12 @@ function findIPs() {
         lastCalculationOfIps = Date.now();
         ownIpArr = [];
         try {
-            const ifaces = require('os').networkInterfaces();
-            Object.keys(ifaces).forEach(dev =>
-                ifaces[dev].forEach(
-                    details =>
-                        // noinspection JSUnresolvedVariable
-                        !details.internal && ownIpArr.push(details.address)
-                )
-            );
-        } catch (e) {
+            const ifaces = os.networkInterfaces();
+            for (const dev of Object.keys(ifaces)) {
+                // @ts-expect-error TODO: typings messed here or error
+                ifaces[dev].forEach(details => !details.internal && ownIpArr.push(details.address));
+            }
+        } catch (e: any) {
             console.error(`Can not find local IPs: ${e.message}`);
         }
     }
@@ -286,7 +288,7 @@ function findIPs() {
     return ownIpArr;
 }
 
-function findPath(path, url) {
+function findPath(path: string, url: string) {
     if (!url) {
         return '';
     }
@@ -305,7 +307,7 @@ function findPath(path, url) {
     }
 }
 
-function getMac(callback) {
+function getMac(callback: () => void) {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
@@ -577,8 +579,6 @@ async function createUuid(objects) {
 
 // Download file to tmp or return file name directly
 function getFile(urlOrPath, fileName, callback) {
-    request = request || require('request');
-
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -627,7 +627,6 @@ function getJson(urlOrPath, agent, callback) {
     }
     agent = agent || '';
 
-    request = request || require('request');
     let sources = {};
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
@@ -740,7 +739,6 @@ function getJson(urlOrPath, agent, callback) {
 async function getJsonAsync(urlOrPath, agent) {
     agent = agent || '';
 
-    axios = axios || require('axios');
     let sources = {};
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
@@ -1101,8 +1099,6 @@ function _getRepositoryFile(sources, path, callback) {
 }
 
 function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
-    request = request || require('request');
-
     // read hash of file
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
         urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
@@ -1164,8 +1160,6 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
     }
 
     additionalInfo = additionalInfo || {};
-
-    extend = extend || require('node.extend');
 
     if (urlOrPath) {
         const parts = urlOrPath.split('/');
@@ -1266,7 +1260,6 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
 async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
-        axios = axios || require('axios');
         _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
         if (_hash && _hash.data && hash === _hash.data.hash) {
             return _actualRepo;
@@ -1276,7 +1269,6 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let data;
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
-        axios = axios || require('axios');
         if (!_hash) {
             _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
         }
@@ -1322,7 +1314,6 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
 async function sendDiagInfo(obj) {
     const objStr = JSON.stringify(obj);
     console.log(`Send diag info: ${objStr}`);
-    axios = axios || require('axios');
     const params = new URLSearchParams();
     params.append('data', objStr);
     const config = {
@@ -1891,8 +1882,6 @@ function makeid(length) {
  *        </code></pre>
  */
 async function getHostInfo(objects, callback) {
-    const os = require('os');
-
     if (diskusage !== false) {
         try {
             diskusage = diskusage || require('diskusage');
@@ -1943,13 +1932,13 @@ async function getHostInfo(objects, callback) {
     if (!npmVersion) {
         try {
             const version = await getSystemNpmVersionAsync();
-            data['NPM'] = 'v' + (version || ' ---');
+            data.NPM = 'v' + (version || ' ---');
             npmVersion = version;
         } catch (e) {
             console.error('Cannot get NPM version: ' + e);
         }
     } else {
-        data['NPM'] = npmVersion;
+        data.NPM = npmVersion;
     }
     try {
         const info = await getDiskInfoAsync(data.Platform);
@@ -2353,8 +2342,6 @@ function encrypt(key, value) {
         return encryptLegacy(key, value);
     }
 
-    crypto = crypto || require('crypto');
-
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv('aes-192-cbc', Buffer.from(key, 'hex'), iv);
 
@@ -2376,8 +2363,6 @@ function decrypt(key, value) {
         return decryptLegacy(key, value);
     }
 
-    crypto = crypto || require('crypto');
-
     const textParts = value.split(':');
     const iv = Buffer.from(textParts[1], 'hex');
     const encryptedText = Buffer.from(textParts.pop(), 'hex');
@@ -2390,10 +2375,10 @@ function decrypt(key, value) {
 
 /**
  * Tests whether the given variable is a real object and not an Array
- * @param {any} it The variable to test
- * @returns {it is Record<string, any>}
+ * @param it The variable to test
+ * @returns true  if it is Record<string, any>
  */
-function isObject(it) {
+function isObject(it: any): it is Record<string, any> {
     // This is necessary because:
     // typeof null === 'object'
     // typeof [] === 'object'
@@ -2404,18 +2389,18 @@ function isObject(it) {
 
 /**
  * Tests whether the given variable is really an Array
- * @param {any} it The variable to test
+ * @param it The variable to test
  */
-function isArray(it) {
+function isArray(it: any): it is any[] {
     return Array.isArray(it); // from node 0.1 is a part of engine
 }
 
 /**
  * Measure the Node.js event loop lag and repeatedly call the provided callback function with the updated results
- * @param {number} ms The number of milliseconds for monitoring
- * @param {function} cb Callback function to call for each new value
+ * @param ms The number of milliseconds for monitoring
+ * @param cb Callback function to call for each new value
  */
-function measureEventLoopLag(ms, cb) {
+function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => void) {
     let start = hrtime();
 
     let timeout = setTimeout(check, ms);
@@ -2450,13 +2435,19 @@ function measureEventLoopLag(ms, cb) {
 /**
  * This function convert state values by read and write of aliases. Function is synchron.
  *
- * @param {object} sourceObj
- * @param {object} targetObj
- * @param {object} state Object with val, ack and so on
- * @param {object} logger Logging object
- * @param {string} logNamespace optional Logging namespace
+ * @param sourceObj
+ * @param targetObj
+ * @param state Object with val, ack and so on
+ * @param logger Logging object
+ * @param logNamespace optional Logging namespace
  */
-function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
+function formatAliasValue(
+    sourceObj: Record<string, any>,
+    targetObj: Record<string, any>,
+    state: Record<string, any>,
+    logger: any,
+    logNamespace?: string
+) {
     logNamespace = logNamespace ? logNamespace + ' ' : '';
 
     if (!state) {
@@ -2478,7 +2469,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
                 'sType',
                 'sMin',
                 'sMax',
-                'return ' + targetObj.alias.read
+                `return ${targetObj.alias.read}`
             );
             state.val = func(
                 state.val,
@@ -2508,7 +2499,7 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
                 'tType',
                 'tMin',
                 'tMax',
-                'return ' + sourceObj.alias.write
+                `return ${sourceObj.alias.write}`
             );
             state.val = func(
                 state.val,
@@ -2584,15 +2575,15 @@ function formatAliasValue(sourceObj, targetObj, state, logger, logNamespace) {
  *
  * @alias removeIdFromAllEnums
  * @memberof tools
- * @param {object} objects object to access objects db
- * @param {string} id the object id which will be deleted from enums
- * @param {object} [allEnums] objects with all enums to use - if not provided all enums will be queried
- * @returns {Promise} All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
+ * @param objects object to access objects db
+ * @param id the object id which will be deleted from enums
+ * @param allEnums objects with all enums to use - if not provided all enums will be queried
+ * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  *
  */
-async function removeIdFromAllEnums(objects, id, allEnums) {
+async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
     if (!allEnums) {
-        allEnums = await this.getAllEnums(objects);
+        allEnums = await getAllEnums(objects);
     }
 
     let error = null;
@@ -2622,11 +2613,13 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
  *
  * @alias parseDependencies
  * @memberof tools
- * @param {string[]|Record<string, string>[]|string|Record<string, string>} dependencies dependencies array or single dependency
- * @returns {Record<string, string>} parsed dependencies
+ * @param dependencies dependencies array or single dependency
+ * @returns parsedDeps parsed dependencies
  */
-function parseDependencies(dependencies) {
-    let adapters = {};
+function parseDependencies(
+    dependencies: string[] | Record<string, string>[] | string | Record<string, string>
+): Record<string, string> {
+    let adapters: Record<string, string> = {};
     if (Array.isArray(dependencies)) {
         dependencies.forEach(rule => {
             if (typeof rule === 'string') {
@@ -2653,11 +2646,11 @@ function parseDependencies(dependencies) {
  * Validates types of obj.common properties and object.type, if invalid types are used, an error is thrown.
  * If attributes of obj.common are not provided, no error is thrown. obj.type has to be there and has to be valid.
  *
- * @param {object} obj an object which will be validated
- * @param {boolean} [extend] (optional) if true checks will allow more optional cases for extendObject calls
+ * @param obj an object which will be validated
+ * @param extend (optional) if true checks will allow more optional cases for extendObject calls
  * @throws Error if a property has the wrong type or obj.type is non existing
  */
-function validateGeneralObjectProperties(obj, extend) {
+function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
     // designs have no type but have attribute views
     if (obj && obj.type === undefined && obj.views !== undefined) {
         return;
@@ -2845,12 +2838,12 @@ function validateGeneralObjectProperties(obj, extend) {
  *
  * @alias getAllInstances
  * @memberof tools
- * @param {string[]} adapters list of adapter names to get instances for
- * @param {object} objects class redis objects
- * @returns {Promise<string[]>} - array of IDs
+ * @param adapters list of adapter names to get instances for
+ * @param objects class redis objects
+ * @returns array of IDs
  */
-async function getAllInstances(adapters, objects) {
-    const instances = [];
+async function getAllInstances(adapters: string[], objects: any): Promise<string[]> {
+    const instances: string[] = [];
 
     for (let i = 0; i < adapters.length; i++) {
         if (!adapters[i]) {
@@ -2876,11 +2869,11 @@ async function getAllInstances(adapters, objects) {
 /**
  * Get all existing enums
  *
- * @param {object} objects - objects db
- * @returns {Promise<{}>}
+ * @param objects - objects db
+ * @returns Promise
  */
-async function getAllEnums(objects) {
-    const allEnums = {};
+async function getAllEnums(objects: any): Promise<Record<string, any>> {
+    const allEnums: Record<string, any> = {};
     const res = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999'
@@ -2898,14 +2891,14 @@ async function getAllEnums(objects) {
  * get async all instances of one adapter
  *
  * @alias getInstances
- * @param {string} adapter name of the adapter
- * @param {object}objects objects DB
- * @param {boolean} withObjects return objects instead of only ids
+ * @param adapter name of the adapter
+ * @param objects objects DB
+ * @param withObjects return objects instead of only ids
  */
-async function getInstances(adapter, objects, withObjects) {
+async function getInstances(adapter: string, objects: any, withObjects: boolean): Promise<any[] | string[]> {
     const arr = await objects.getObjectListAsync({
-        startkey: 'system.adapter.' + adapter + '.',
-        endkey: 'system.adapter.' + adapter + '.\u9999'
+        startkey: `system.adapter.${adapter}.`,
+        endkey: `system.adapter.${adapter}.\u9999`
     });
     const instances = [];
     if (arr && arr.rows) {
@@ -2927,11 +2920,11 @@ async function getInstances(adapter, objects, withObjects) {
 /**
  * Checks if the given callback is a function and if so calls it with the given parameter immediately, else a resolved Promise is returned
  *
- * @param {(...args: any[]) => void | null | undefined} callback - callback function to be executed
- * @param {...any} args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns {Promise<any>} - if Promise is resolved with multiple arguments, an array is returned
+ * @param callback - callback function to be executed
+ * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-function maybeCallback(callback, ...args) {
+function maybeCallback(callback?: (...args: any[]) => void | null | undefined, ...args: any[]): Promise<any> | void {
     if (typeof callback === 'function') {
         // if function we call it with given param
         setImmediate(callback, ...args);
@@ -2943,13 +2936,17 @@ function maybeCallback(callback, ...args) {
 /**
  * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Error ERROR_DB_CLOSED are not rejecting the promise
  *
- * @param {((error: Error | null | undefined, ...args: any[]) => void) | null | undefined} callback - callback function to be executed
- * @param {Error | string | null | undefined} error - error which will be used by the callback function. If callback is not a function and
+ * @param callback - callback function to be executed
+ * @param error - error which will be used by the callback function. If callback is not a function and
  * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
- * @param {...any} args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns {Promise<any>} - if Promise is resolved with multiple arguments, an array is returned
+ * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-function maybeCallbackWithError(callback, error, ...args) {
+function maybeCallbackWithError(
+    callback: ((error: Error | null | undefined, ...args: any[]) => void) | null | undefined,
+    error: Error | string | null | undefined,
+    ...args: any[]
+): Promise<any> | void {
     if (error !== undefined && error !== null && !(error instanceof Error)) {
         // if it's not a real Error, we convert it into one
         error = new Error(error);
@@ -2968,27 +2965,27 @@ function maybeCallbackWithError(callback, error, ...args) {
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
- * @param {string} command The command to execute
- * @param {import('child_process').ExecOptions} [execOptions] The options for child_process.exec
- * @returns {import('child_process').ChildProcess & Promise<{stdout?: string; stderr?: string}>}
+ * @param command The command to execute
+ * @param execOptions The options for child_process.exec
+ * @returns child process promise
  */
-function execAsync(command, execOptions) {
+function execAsync(command: string, execOptions?: ExecOptions): ChildProcessPromise {
     const defaultOptions = {
         // we do not want to show the node.js window on Windows
         windowsHide: true,
         // And we want to capture stdout/stderr
         encoding: 'utf8'
     };
-    // @ts-ignore We set the encoding, so stdout/stdrr must be a string
+
     return cpPromise.exec(command, { ...defaultOptions, ...execOptions });
 }
 
 /**
  * Takes input from one stream and writes it to another as soon as a complete line was read.
- * @param {NodeJS.ReadableStream} input The stream to read from
- * @param {NodeJS.WritableStream} output The stream to write into
+ * @param input The stream to read from
+ * @param output The stream to write into
  */
-function pipeLinewise(input, output) {
+function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream) {
     const rl = createInterface({
         input,
         crlfDelay: Infinity
@@ -3000,10 +2997,10 @@ function pipeLinewise(input, output) {
  * Find the adapter main file as full path
  *
  * @memberof tools
- * @param {string} adapter - adapter name of the adapter, e.g. hm-rpc
- * @returns {Promise<string>}
+ * @param adapter - adapter name of the adapter, e.g. hm-rpc
+ * @returns full file name
  */
-async function resolveAdapterMainFile(adapter) {
+async function resolveAdapterMainFile(adapter: string): Promise<string> {
     const adapterDir = getAdapterDir(adapter);
     if (!adapterDir) {
         throw new Error(`Could not find adapter dir of ${adapter}`);
@@ -3044,10 +3041,10 @@ async function resolveAdapterMainFile(adapter) {
 
 /**
  * Returns the default nodeArgs required to execute the main file, e.g. transpile hooks for TypeScript
- * @param {string} mainFile
- * @returns {string[]}
+ * @param mainFile
+ * @returns default node args for cli
  */
-function getDefaultNodeArgs(mainFile) {
+function getDefaultNodeArgs(mainFile: string): string[] {
     if (mainFile.endsWith('.ts')) {
         return ['-r', '@alcalzone/esbuild-register'];
     }
@@ -3059,18 +3056,23 @@ const shortGithubUrlRegex = /^(?<user>[^/]+)\/(?<repo>[^#]+)(?:#(?<commit>.+))?$
 
 /**
  * Tests if the given URL matches the format <githubname>/<githubrepo>[#<commit-ish>]
- * @param {string} url The URL to parse
+ * @param url The URL to parse
  */
-function isShortGithubUrl(url) {
+function isShortGithubUrl(url: string): boolean {
     return shortGithubUrlRegex.test(url);
+}
+
+interface ParsedGithubUrl {
+    user: string;
+    repo: string;
+    commit?: string;
 }
 
 /**
  * Tries to parse an URL in the format <githubname>/<githubrepo>[#<commit-ish>] into its separate parts
- * @param {string} url The URL to parse
- * @returns {{user: string; repo: string; commit?: string} | null}
+ * @param url The URL to parse
  */
-function parseShortGithubUrl(url) {
+function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
     const match = shortGithubUrlRegex.exec(url);
     if (!match || !match.groups) {
         return null;
@@ -3088,18 +3090,17 @@ const githubPathnameRegex =
 
 /**
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
- * @param {string} pathname The pathname part of a Github URL
+ * @param pathname The pathname part of a Github URL
  */
-function isGithubPathname(pathname) {
+function isGithubPathname(pathname: string): boolean {
     return githubPathnameRegex.test(pathname);
 }
 
 /**
  * Tries to a github pathname format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz|.tar.gz]] into its separate parts
- * @param {string} pathname The pathname part of a Github URL
- * @returns {{user: string; repo: string; commit: string} | null}
+ * @param pathname The pathname part of a Github URL
  */
-function parseGithubPathname(pathname) {
+function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
     const match = githubPathnameRegex.exec(pathname);
     if (!match || !match.groups) {
         return null;
@@ -3113,11 +3114,15 @@ function parseGithubPathname(pathname) {
 
 /**
  * Removes properties which are given by preserve
- * @param {object} preserve - object which has true entries (or array of selected attributes) for all attributes which should be removed from currObj
- * @param {object} oldObj - old object
- * @param {object} newObj - new object
+ * @param preserve - object which has true entries (or array of selected attributes) for all attributes which should be removed from currObj
+ * @param oldObj - old object
+ * @param newObj - new object
  */
-function removePreservedProperties(preserve, oldObj, newObj) {
+function removePreservedProperties(
+    preserve: Record<string, any>,
+    oldObj: Record<string, any>,
+    newObj: Record<string, any>
+) {
     for (const prop of Object.keys(preserve)) {
         if (isObject(preserve[prop]) && isObject(newObj[prop])) {
             // we have to go one step deeper
@@ -3142,11 +3147,10 @@ function removePreservedProperties(preserve, oldObj, newObj) {
 /**
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
  *
- * @param {string} namespace - adapter namespace + id, e.g. hm-rpc.0
- * @param {boolean} createWakeup - indicator to create wakeup object too
- * @returns {object[]}
+ * @param namespace - adapter namespace + id, e.g. hm-rpc.0
+ * @param createWakeup - indicator to create wakeup object too
  */
-function getInstanceIndicatorObjects(namespace, createWakeup) {
+function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): any[] {
     const id = `system.adapter.${namespace}`;
     const objs = [
         {
@@ -3352,22 +3356,22 @@ function getInstanceIndicatorObjects(namespace, createWakeup) {
     return objs;
 }
 
-function getLogger(log) {
+function getLogger(log: any) {
     if (!log) {
         log = {
-            silly: function (_msg) {
+            silly: function (_msg: string) {
                 /*console.log(msg);*/
             },
-            debug: function (_msg) {
+            debug: function (_msg: string) {
                 /*console.log(msg);*/
             },
-            info: function (_msg) {
+            info: function (_msg: string) {
                 /*console.log(msg);*/
             },
-            warn: function (msg) {
+            warn: function (msg: string) {
                 console.log(msg);
             },
-            error: function (msg) {
+            error: function (msg: string) {
                 console.log(msg);
             }
         };
@@ -3380,12 +3384,11 @@ function getLogger(log) {
 /**
  * Get ordered instances according to tier level
  *
- * @param {object} objects - Objects DB
- * @param {object} logger - logger object
- * @param {string} [logPrefix] - prefix for logging
- * @return {Promise<object[]>}
+ * @param objects - Objects DB
+ * @param logger - logger object
+ * @param logPrefix prefix for logging
  */
-async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
+async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPrefix = ''): Promise<any[]> {
     const instances = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
@@ -3394,13 +3397,13 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
         logPrefix += ' ';
     }
 
-    let doc = {};
+    let doc: { rows: GetObjectViewItem[] } = { rows: [] };
     try {
         doc = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
             endkey: 'system.adapter.\u9999'
         });
-    } catch (e) {
+    } catch (e: any) {
         if (e.message && e.message.startsWith('Cannot find ')) {
             logger.error(`${logPrefix} _design/system missing - call node ${module.exports.appName}.js setup`);
         } else {
@@ -3475,7 +3478,6 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
  * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
  */
 async function _readLicenses(login, password) {
-    axios = axios || require('axios');
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(login + ':' + password).toString('base64')}` },
         timeout: 4000
