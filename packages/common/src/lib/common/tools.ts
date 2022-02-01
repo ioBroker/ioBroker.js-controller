@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import semver from 'semver';
 import os from 'os';
-import forge, { tls } from 'node-forge';
+import forge from 'node-forge';
 import deepClone from 'deep-clone';
 import cpPromise, { ChildProcessPromise } from 'promisify-child-process';
 import { createInterface } from 'readline';
@@ -18,7 +18,7 @@ import request from 'request';
 import axios from 'axios';
 import crypto from 'crypto';
 import type { ExecOptions } from 'child_process';
-import Record = module;
+import { URLSearchParams } from 'url';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 
@@ -634,7 +634,7 @@ function getFile(urlOrPath: string, fileName: string, callback: (file?: string) 
 function getJson(
     urlOrPath: string,
     agent: string,
-    callback: (sources?: Record<string, any>, urlOrPath?: string | null) => void
+    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void
 ) {
     if (typeof agent === 'function') {
         callback = agent;
@@ -646,7 +646,7 @@ function getJson(
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
         if (callback) {
-            callback(null, urlOrPath);
+            callback(urlOrPath);
         }
     } else if (!urlOrPath) {
         console.log('Empty url!');
@@ -747,7 +747,7 @@ function getJson(
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
  */
-async function getJsonAsync(urlOrPath: string, agent: string): Record<string, any> {
+async function getJsonAsync(urlOrPath: string, agent: string): Promise<Record<string, any> | null> {
     agent = agent || '';
 
     let sources = {};
@@ -912,8 +912,8 @@ function getInstalledInfo(hostRunningVersion?: string): Record<string, any> {
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
  * @param callback
  */
-function getNpmVersion(adapter: string | null, callback?: (err: Error | null, version?: string | null) => void) {
-    adapter = adapter ? module.exports.appName + '.' + adapter : module.exports.appName;
+function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void) {
+    adapter = adapter ? `${module.exports.appName}.${adapter}` : module.exports.appName;
     adapter = adapter.toLowerCase();
 
     const cliCommand = `npm view ${adapter}@latest version`;
@@ -1123,11 +1123,15 @@ function _getRepositoryFile(
     }
 }
 
-function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
+function _checkRepositoryFileHash(
+    urlOrPath: string,
+    additionalInfo: Record<string, any>,
+    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void
+) {
     // read hash of file
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
         urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
-        let json = null;
+        let json: null | Record<string, any> = null;
         request({ url: urlOrPath, timeout: 10000, gzip: true }, (error, response, body) => {
             if (error || !body || response.statusCode !== 200) {
                 console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
@@ -1135,7 +1139,7 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
                 try {
                     json = JSON.parse(body);
                 } catch {
-                    console.error('Json file is invalid on ' + urlOrPath);
+                    console.error(`Json file is invalid on ${urlOrPath}`);
                 }
             }
             if (json && json.hash) {
@@ -1170,16 +1174,25 @@ function _checkRepositoryFileHash(urlOrPath, additionalInfo, callback) {
  *
  * @alias getRepositoryFile
  * @memberof tools
- * @param {string} urlOrPath URL starting with http:// or https:// or local file link
- * @param {object} additionalInfo destination object
- * @param {function} callback function (err, sources, actualHash) { }
+ * @param urlOrPath URL starting with http:// or https:// or local file link
+ * @param additionalInfo destination object
+ * @param callback function (err, sources, actualHash) { }
  *
  */
-function getRepositoryFile(urlOrPath, additionalInfo, callback) {
-    let sources = {};
+function getRepositoryFile(
+    urlOrPath: string,
+    additionalInfo: Record<string, any>,
+    callback: (
+        err?: undefined | Error | null,
+        sources?: Record<string, any>,
+        actualHash?: string | number | undefined
+    ) => void
+) {
+    let sources: Record<string, any> = {};
     let path = '';
 
     if (typeof additionalInfo === 'function') {
+        // @ts-expect-error: fix all fun calls then remove
         callback = additionalInfo;
         additionalInfo = {};
     }
@@ -1217,7 +1230,7 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
 
         _getRepositoryFile(sources, path, err => {
             if (err) {
-                console.error(`[${new Date()}] ${err}`);
+                console.error(`[${new Date().toString()}] ${err.message}`);
             }
             if (typeof callback === 'function') {
                 callback(err, sources);
@@ -1247,7 +1260,7 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
                         }
                         setImmediate(() =>
                             _getRepositoryFile(sources, path, err => {
-                                err && console.error(`[${new Date()}] ${err}`);
+                                err && console.error(`[${new Date().toString()}] ${err.message}`);
                                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
                             })
                         );
@@ -1276,13 +1289,13 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
  *
  * @alias getRepositoryFileAsync
  * @memberof tools
- * @param {string} url URL starting with http:// or https:// or local file link
- * @param {string} hash actual hash
- * @param {boolean} force Force repository update despite on hash
- * @param {object} _actualRepo Actual repository
+ * @param url URL starting with http:// or https:// or local file link
+ * @param hash actual hash
+ * @param force Force repository update despite on hash
+ * @param _actualRepo Actual repository
  *
  */
-async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
+async function getRepositoryFileAsync(url: string, hash: string, force: boolean, _actualRepo: Record<string, any>) {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
@@ -1302,7 +1315,8 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
             data = _actualRepo;
         } else {
             const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
-                require('../../package.json').version
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
+                require('../../../package.json').version
             }`;
             data = await axios({
                 url,
@@ -1315,7 +1329,7 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
         if (fs.existsSync(url)) {
             try {
                 data = JSON.parse(fs.readFileSync(url).toString('utf8'));
-            } catch (e) {
+            } catch (e: any) {
                 throw new Error(`Error: Cannot read or parse file "${url}": ${e}`);
             }
         } else {
@@ -1333,10 +1347,9 @@ async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
 /**
  * Sends the given object to the diagnosis server
  *
- * @param {object} obj - diagnosis object
- * @return {Promise<void>}
+ * @param obj - diagnosis object
  */
-async function sendDiagInfo(obj) {
+async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
     const objStr = JSON.stringify(obj);
     console.log(`Send diag info: ${objStr}`);
     const params = new URLSearchParams();
@@ -1348,7 +1361,7 @@ async function sendDiagInfo(obj) {
 
     try {
         await axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config);
-    } catch (e) {
+    } catch (e: any) {
         console.log(`Cannot send diag info: ${e.message}`);
     }
 }
@@ -1358,10 +1371,10 @@ async function sendDiagInfo(obj) {
  *
  * @alias getAdapterDir
  * @memberof tools
- * @param {string} adapter name of the adapter, e.g. hm-rpc
- * @returns {string|null} path to adapter directory or null if no directory found
+ * @param adapter name of the adapter, e.g. hm-rpc
+ * @returns path to adapter directory or null if no directory found
  */
-function getAdapterDir(adapter) {
+function getAdapterDir(adapter: string): string | null {
     const appName = module.exports.appName;
 
     // snip off 'iobroker.'
@@ -1415,9 +1428,9 @@ function getHostName() {
     try {
         const configName = getConfigFileName();
         const config = fs.readJSONSync(configName);
-        return config.system ? config.system.hostname || require('os').hostname() : require('os').hostname();
+        return config.system ? config.system.hostname || os.hostname() : os.hostname();
     } catch {
-        return require('os').hostname();
+        return os.hostname();
     }
 }
 
