@@ -125,8 +125,6 @@ function Upgrade(options) {
 
             debug(`upgrade order is "${sortedAdapters.join(', ')}"`);
 
-            await this.upgradeAdapterHelper(repo, sortedAdapters, forceDowngrade, autoConfirm);
-
             for (let i = 0; i < sortedAdapters.length; i++) {
                 if (repo[sortedAdapters[i]] && repo[sortedAdapters[i]].controller) {
                     continue;
