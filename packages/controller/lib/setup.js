@@ -219,7 +219,9 @@ function initYargs() {
                 .command('chown <user> <group> <id>', 'Change object ownership', {})
                 .command('list <pattern>', 'List object matching given pattern', {})
                 .command('setDBVersion <version>', 'Sets the protocol version of the objects database')
-                .command('getDBVersion', 'Get the protocol version of the objects database');
+                .command('getDBVersion', 'Get the protocol version of the objects database')
+                .command('activateSets', 'Activate the usage of Redis Sets')
+                .command('deactivateSets', 'Deactivate the usage of Redis Sets');
         })
         .command(['state', 's'], 'State management', yargs => {
             yargs
@@ -563,7 +565,7 @@ async function processCommand(command, args, params, callback) {
                 isFirst = params.first || isFirst;
 
                 setup.setup(
-                    async (isFirst, _isRedis) => {
+                    async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
                             const Install = require('./setup/setupInstall.js');
@@ -579,12 +581,28 @@ async function processCommand(command, args, params, callback) {
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    const path = require.resolve(tools.appName + '.' + instance);
-                                    if (path) {
-                                        await install.createInstance(instance, {
-                                            enabled: true,
-                                            ignoreIfExists: true
-                                        });
+                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`);
+
+                                    if (adapterInstalled) {
+                                        let otherInstanceExists = false;
+                                        try {
+                                            // check if another instance exists
+                                            const res = await objects.getObjectViewAsync('system', 'instance', {
+                                                startkey: `system.adapter.${instance}`,
+                                                endkey: `system.adapter.${instance}\u9999`
+                                            });
+
+                                            otherInstanceExists = res && res.rows && res.rows.length;
+                                        } catch {
+                                            // ignore - on install we have no object views
+                                        }
+
+                                        if (!otherInstanceExists) {
+                                            await install.createInstance(instance, {
+                                                enabled: true,
+                                                ignoreIfExists: true
+                                            });
+                                        }
                                     }
                                 } catch {
                                     // not found, just continue
@@ -599,72 +617,125 @@ async function processCommand(command, args, params, callback) {
                                 const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
                                 cert.create();
                             });
-                            callback && callback();
-                        } else {
-                            // else we update existing stuff (this is executed on installation)
-                            // Rename repositories
-                            const Repo = require('./setup/setupRepo.js');
-                            const repo = new Repo({ objects, states });
-
-                            try {
-                                await repo.rename(
-                                    'default',
-                                    'stable',
-                                    'http://download.iobroker.net/sources-dist.json'
-                                );
-                                await repo.rename(
-                                    'latest',
-                                    'beta',
-                                    'http://download.iobroker.net/sources-dist-latest.json'
-                                );
-                            } catch (err) {
-                                console.warn(`Cannot rename: ${err.message}`);
-                            }
-
-                            // there has been a bug that user can uplaod js-controller
-                            try {
-                                await objects.delObjectAsync('system.adapter.js-controller');
-                            } catch {
-                                // ignore
-                            }
-
-                            try {
-                                const configFile = tools.getConfigFileName();
-
-                                const configOrig = fs.readJSONSync(configFile);
-                                const config = deepClone(configOrig);
-
-                                config.objects.options = config.objects.options || {
-                                    auth_pass: null,
-                                    retry_max_delay: 5000
-                                };
-                                if (
-                                    config.objects.options.retry_max_delay === 15000 ||
-                                    !config.objects.options.retry_max_delay
-                                ) {
-                                    config.objects.options.retry_max_delay = 5000;
-                                }
-                                config.states.options = config.states.options || {
-                                    auth_pass: null,
-                                    retry_max_delay: 5000
-                                };
-                                if (
-                                    config.states.options.retry_max_delay === 15000 ||
-                                    !config.states.options.retry_max_delay
-                                ) {
-                                    config.states.options.retry_max_delay = 5000;
-                                }
-
-                                if (!isDeepStrictEqual(config, configOrig)) {
-                                    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                                    console.log('ioBroker configuration updated');
-                                }
-                            } catch (err) {
-                                console.log(`Could not update ioBroker configuration: ${err.message}`);
-                            }
-
-                            return void callback();
                         }
+
+                        // we update existing things, in first as well as normnal setup
+                        // Rename repositories
+                        const Repo = require('./setup/setupRepo.js');
+                        const repo = new Repo({ objects, states });
+
+                        try {
+                            await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
+                            await repo.rename(
+                                'latest',
+                                'beta',
+                                'http://download.iobroker.net/sources-dist-latest.json'
+                            );
+                        } catch (err) {
+                            console.warn(`Cannot rename: ${err.message}`);
+                        }
+
+                        // there has been a bug that user can upload js-controller
+                        try {
+                            await objects.delObjectAsync('system.adapter.js-controller');
+                        } catch {
+                            // ignore
+                        }
+
+                        try {
+                            const configFile = tools.getConfigFileName();
+
+                            const configOrig = fs.readJSONSync(configFile);
+                            const config = deepClone(configOrig);
+
+                            config.objects.options = config.objects.options || {
+                                auth_pass: null,
+                                retry_max_delay: 5000
+                            };
+                            if (
+                                config.objects.options.retry_max_delay === 15000 ||
+                                !config.objects.options.retry_max_delay
+                            ) {
+                                config.objects.options.retry_max_delay = 5000;
+                            }
+                            config.states.options = config.states.options || {
+                                auth_pass: null,
+                                retry_max_delay: 5000
+                            };
+                            if (
+                                config.states.options.retry_max_delay === 15000 ||
+                                !config.states.options.retry_max_delay
+                            ) {
+                                config.states.options.retry_max_delay = 5000;
+                            }
+
+                            // skip migration for now until we prepare testing update
+                            if (!require('ci-info').isCI) {
+                                let migrated = '';
+                                // We migrate file to jsonl
+                                if (config.states.type === 'file') {
+                                    config.states.type = 'jsonl';
+
+                                    if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                                        // silent config change on secondaries
+                                        console.log('States DB type migrated from "file" to "jsonl"');
+                                        migrated += 'States';
+                                    }
+                                }
+
+                                if (config.objects.type === 'file') {
+                                    config.objects.type = 'jsonl';
+                                    if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+                                        // silent config change on secondaries
+                                        console.log('Objects DB type migrated from "file" to "jsonl"');
+                                        migrated += migrated ? ' and Objects' : 'Objects';
+                                    }
+                                }
+
+                                if (migrated) {
+                                    const NotificationHandler = require('./../lib/notificationHandler');
+
+                                    const hostname = tools.getHostName();
+
+                                    const notificationSettings = {
+                                        states: states,
+                                        objects: objects,
+                                        log: console,
+                                        logPrefix: '',
+                                        host: hostname
+                                    };
+
+                                    const notificationHandler = new NotificationHandler(notificationSettings);
+
+                                    try {
+                                        const ioPackage = fs.readJsonSync(
+                                            path.join(__dirname, '..', 'io-package.json')
+                                        );
+                                        await notificationHandler.addConfig(ioPackage.notifications);
+
+                                        await notificationHandler.addMessage(
+                                            'system',
+                                            'fileToJsonl',
+                                            `Migrated: ${migrated}`,
+                                            `system.host.${hostname}`
+                                        );
+
+                                        notificationHandler.storeNotifications();
+                                    } catch (e) {
+                                        console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                                    }
+                                }
+                            }
+
+                            if (!isDeepStrictEqual(config, configOrig)) {
+                                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                                console.log('ioBroker configuration updated');
+                            }
+                        } catch (err) {
+                            console.log(`Could not update ioBroker configuration: ${err.message}`);
+                        }
+
+                        return void callback();
                     },
                     isFirst,
                     isRedis

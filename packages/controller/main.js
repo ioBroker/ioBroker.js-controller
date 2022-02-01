@@ -15,12 +15,14 @@ const os = require('os');
 const fs = require('fs-extra');
 const path = require('path');
 const cp = require('child_process');
+const semver = require('semver');
+const restart = require('./lib/restart');
 const ioPackage = require('./io-package.json');
 const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const version = ioPackage.common.version;
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
-const { isDeepStrictEqual } = require('util');
+const { isDeepStrictEqual, inspect } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
@@ -49,7 +51,6 @@ let Objects;
 let States;
 let decache;
 
-const semver = require('semver');
 let logger;
 let isDaemon = false;
 let callbackId = 1;
@@ -369,12 +370,12 @@ function createStates(onConnect) {
                         obj.callback.ack &&
                         obj.callback.id &&
                         callbacks &&
-                        callbacks['_' + obj.callback.id]
+                        callbacks[`_${obj.callback.id}`]
                     ) {
                         // Call callback function
-                        if (callbacks['_' + obj.callback.id].cb) {
-                            callbacks['_' + obj.callback.id].cb(obj.message);
-                            delete callbacks['_' + obj.callback.id];
+                        if (callbacks[`_${obj.callback.id}`].cb) {
+                            callbacks[`_${obj.callback.id}`].cb(obj.message);
+                            delete callbacks[`_${obj.callback.id}`];
                         }
 
                         // delete too old callbacks IDs
@@ -685,6 +686,9 @@ function createObjects(onConnect) {
                     ) {
                         procs[id].restartExpected = true;
                         stopInstance(id, async () => {
+                            if (!procs[id]) {
+                                return;
+                            }
                             const _ipArr = tools.findIPs();
 
                             if (checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -772,7 +776,6 @@ function createObjects(onConnect) {
                         ) {
                             // old version lower 4 new version greater 4, restart needed
                             logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
-                            const restart = require('./lib/restart');
                             restart();
                         } else if (
                             semver.gte(controllerVersions[id], '4.0.0') &&
@@ -780,7 +783,39 @@ function createObjects(onConnect) {
                         ) {
                             // controller was above 4 and now below 4
                             logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
-                            const restart = require('./lib/restart');
+                            restart();
+                        }
+                    } else {
+                        //  we don't know this host yet, so it is new to the mh system
+                        let restartRequired = true;
+
+                        // if we are a already a multihost make the version check else restart in all cases
+                        if (Object.keys(controllerVersions).length > 1) {
+                            if (semver.lt(obj.common.installedVersion, '4.0.0')) {
+                                for (const controllerVersion of controllerVersions) {
+                                    if (semver.lt(controllerVersion, '4.0.0')) {
+                                        // there was another host < 4 so no restart required
+                                        restartRequired = false;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // version is greater equal 4
+                                for (const controllerVersion of controllerVersions) {
+                                    if (semver.gte(controllerVersion, '4.0.0')) {
+                                        // there was already another host greater equal 4 -> no restart needed
+                                        restartRequired = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            // change from single to multihost - deactivate sets asap but also restart
+                            await objects.deactivateSets();
+                        }
+
+                        if (restartRequired) {
+                            logger.info(`${hostLogPrefix} New multihost participant detected, restarting ...`);
                             restart();
                         }
                     }
@@ -799,7 +834,6 @@ function createObjects(onConnect) {
                             }
                         }
                         logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
-                        const restart = require('./lib/restart');
                         restart();
                     }
                 } else if (obj && obj.common) {
@@ -900,27 +934,43 @@ function reportStatus() {
     //   elapsed: 6650000,     // ms since the start of the process
     //   timestamp: 864000000  // ms since epoch
     // }
-    pidUsage(process.pid, (err, stats) => {
-        // controller.s might be stopped, but this is still running
-        if (!err && states && states.setState && stats) {
-            states.setState(id + '.cpu', { ack: true, from: id, val: Math.round(100 * parseFloat(stats.cpu)) / 100 });
-            states.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
-            outputCount += 2;
-        }
-    });
+    try {
+        pidUsage(process.pid, (err, stats) => {
+            // controller.s might be stopped, but this is still running
+            if (!err && states && states.setState && stats) {
+                states.setState(id + '.cpu', {
+                    ack: true,
+                    from: id,
+                    val: Math.round(100 * parseFloat(stats.cpu)) / 100
+                });
+                states.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
+                outputCount += 2;
+            }
+        });
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Cannot read pidUsage data : ${e.message}`);
+    }
 
-    const mem = process.memoryUsage();
-    states.setState(`${id}.memRss`, { val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100, ack: true, from: id });
-    states.setState(`${id}.memHeapTotal`, {
-        val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
-        ack: true,
-        from: id
-    });
-    states.setState(id + '.memHeapUsed', {
-        val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
-        ack: true,
-        from: id
-    });
+    try {
+        const mem = process.memoryUsage();
+        states.setState(`${id}.memRss`, {
+            val: Math.round(mem.rss / 10485.76 /* 1MB / 100 */) / 100,
+            ack: true,
+            from: id
+        });
+        states.setState(`${id}.memHeapTotal`, {
+            val: Math.round(mem.heapTotal / 10485.76 /* 1MB / 100 */) / 100,
+            ack: true,
+            from: id
+        });
+        states.setState(id + '.memHeapUsed', {
+            val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
+            ack: true,
+            from: id
+        });
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Cannot read memoryUsage data: ${e.message}`);
+    }
 
     // provide machine infos
 
@@ -941,8 +991,8 @@ function reportStatus() {
                 });
                 outputCount++;
             }
-        } catch (err) {
-            logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot read /proc/meminfo: ${e.message}`);
         }
     }
 
@@ -967,7 +1017,7 @@ function reportStatus() {
                     outputCount += 2;
                 }
             } catch (e) {
-                logger.error(`${hostLogPrefix} Cannot read disk information: ${e}`);
+                logger.error(`${hostLogPrefix} Cannot read disk information: ${e.message}`);
             }
         });
     }
@@ -1082,7 +1132,7 @@ function cleanAutoSubscribes(instance, callback) {
             if (res && res.rows) {
                 for (let c = res.rows.length - 1; c >= 0; c--) {
                     // remove this instance from autoSubscribe
-                    if (res.rows[c].value && res.rows[c].value.common.subscribable) {
+                    if (res.rows[c].value && res.rows[c].value.common && res.rows[c].value.common.subscribable) {
                         count++;
                         cleanAutoSubscribe(instance, res.rows[c].id, () => !--count && callback && callback());
                     }
@@ -1561,7 +1611,7 @@ function setMeta() {
 
     if (!compactGroupController) {
         obj = {
-            _id: id + '.compactModeEnabled',
+            _id: `${id}.compactModeEnabled`,
             type: 'state',
             common: {
                 name: 'Controller - compact mode enabled',
@@ -1575,7 +1625,7 @@ function setMeta() {
         tasks.push(obj);
 
         obj = {
-            _id: id + '.compactgroupProcesses',
+            _id: `${id}.compactgroupProcesses`,
             type: 'state',
             common: {
                 name: 'Controller - number of compact group controllers',
@@ -1585,6 +1635,21 @@ function setMeta() {
                 min: 0,
                 role: 'value',
                 unit: 'processes'
+            },
+            native: {}
+        };
+        tasks.push(obj);
+
+        obj = {
+            _id: `${id}.nodeVersion`,
+            type: 'state',
+            common: {
+                name: 'Controller - Node.js version',
+                type: 'string',
+                read: true,
+                write: false,
+                desc: 'Node.js version of the host process.',
+                role: 'state'
             },
             native: {}
         };
@@ -1874,21 +1939,6 @@ function setMeta() {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.nodeVersion',
-        type: 'state',
-        common: {
-            name: 'Controller - Node.js version',
-            type: 'string',
-            read: true,
-            write: false,
-            desc: 'Node.js version of the host process.',
-            role: 'state'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
         _id: `${id}.pid`,
         type: 'state',
         common: {
@@ -2072,9 +2122,17 @@ function initMessageQueue() {
     states.subscribeMessage(hostObjectPrefix);
 }
 
-// Send message to other adapter instance
-function sendTo(objName, command, message, callback) {
-    if (typeof message === 'undefined') {
+/**
+ * Send message to other adapter instance
+ *
+ * @param {string} objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param {string} command
+ * @param {Record<string, any>?} message
+ * @param {() => void?} callback
+ * @return {Promise<void>}
+ */
+async function sendTo(objName, command, message, callback) {
+    if (message === undefined) {
         message = command;
         command = 'send';
     }
@@ -2082,7 +2140,7 @@ function sendTo(objName, command, message, callback) {
     const obj = { command, message, from: hostObjectPrefix };
 
     if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
-        objName = 'system.adapter.' + objName;
+        objName = `system.adapter.${objName}`;
     }
 
     if (callback) {
@@ -2097,18 +2155,28 @@ function sendTo(objName, command, message, callback) {
                 callbackId = 1;
             }
             callbacks = callbacks || {};
-            callbacks['_' + obj.callback.id] = { cb: callback };
+            callbacks[`_${obj.callback.id}`] = { cb: callback };
         } else {
             obj.callback = callback;
             obj.callback.ack = true;
         }
     }
-
-    states.pushMessage(objName, obj);
+    try {
+        await states.pushMessage(objName, obj);
+    } catch (e) {
+        // do not stringify the object, we had issue invalid string length on serialization
+        logger.error(
+            `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
+        );
+        if (obj.callback && obj.callback.id) {
+            obj.callback(e);
+            delete callbacks[`_${obj.callback.id}`];
+        }
+    }
 }
 
 async function getVersionFromHost(hostId) {
-    const state = await states.getState(hostId + '.alive');
+    const state = await states.getState(`${hostId}.alive`);
     if (state && state.val) {
         return new Promise(resolve => {
             let timeout = setTimeout(() => {
@@ -2230,31 +2298,36 @@ async function processMessage(msg) {
                 }
                 logger.info(`${hostLogPrefix} ${tools.appName} ${args.slice(1).join(' ')}`);
 
-                const child = spawn('node', args, { windowsHide: true });
-                if (child.stdout) {
-                    child.stdout.on('data', data => {
-                        data = data.toString().replace(/\n/g, '');
-                        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + data);
-                        msg.from && sendTo(msg.from, 'cmdStdout', { id: msg.message.id, data: data });
-                    });
-                }
-
-                if (child.stderr) {
-                    child.stderr.on('data', data => {
-                        data = data.toString().replace(/\n/g, '');
-                        logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
-                        msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: data });
-                    });
-                }
-
-                child.on('exit', exitCode => {
-                    logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
-                    if (msg.from) {
-                        sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
-                        // Sometimes finished command is lost, recent it
-                        setTimeout(() => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }), 1000);
+                try {
+                    const child = spawn('node', args, { windowsHide: true });
+                    if (child.stdout) {
+                        child.stdout.on('data', data => {
+                            data = data.toString().replace(/\n/g, '');
+                            logger.info(`${hostLogPrefix} ${tools.appName} ${data}`);
+                            msg.from && sendTo(msg.from, 'cmdStdout', { id: msg.message.id, data: data });
+                        });
                     }
-                });
+
+                    if (child.stderr) {
+                        child.stderr.on('data', data => {
+                            data = data.toString().replace(/\n/g, '');
+                            logger.error(`${hostLogPrefix} ${tools.appName} ${data}`);
+                            msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: data });
+                        });
+                    }
+
+                    child.on('exit', exitCode => {
+                        logger.info(`${hostLogPrefix} ${tools.appName} exit ${exitCode}`);
+                        if (msg.from) {
+                            sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
+                            // Sometimes finished command is lost, recent it
+                            setTimeout(() => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }), 1000);
+                        }
+                    });
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} ${tools.appName} ${e.message}`);
+                    msg.from && sendTo(msg.from, 'cmdStderr', { id: msg.message.id, data: e.message });
+                }
             }
 
             break;
@@ -2639,30 +2712,34 @@ async function processMessage(msg) {
                                 } while (parts.length);
                             }
 
-                            if (fs.existsSync(filename)) {
-                                const files = fs.readdirSync(filename);
+                            try {
+                                if (fs.existsSync(filename)) {
+                                    const files = fs.readdirSync(filename);
 
-                                for (const file of files) {
-                                    try {
-                                        if (!file.endsWith('-audit.json')) {
-                                            const stat = fs.lstatSync(path.join(filename, file));
-                                            if (!stat.isDirectory()) {
-                                                result.list.push({
-                                                    fileName: `log/${hostname}/${transport}/${file}`,
-                                                    size: stat.size
-                                                });
+                                    for (const file of files) {
+                                        try {
+                                            if (!file.endsWith('-audit.json')) {
+                                                const stat = fs.lstatSync(path.join(filename, file));
+                                                if (!stat.isDirectory()) {
+                                                    result.list.push({
+                                                        fileName: `log/${hostname}/${transport}/${file}`,
+                                                        size: stat.size
+                                                    });
+                                                }
                                             }
+                                        } catch (e) {
+                                            // push unchecked
+                                            // result.list.push('log/' + transport + '/' + files[f]);
+                                            logger.error(
+                                                `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
+                                                    e.message
+                                                }`
+                                            );
                                         }
-                                    } catch (e) {
-                                        // push unchecked
-                                        // result.list.push('log/' + transport + '/' + files[f]);
-                                        logger.error(
-                                            `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
-                                                e.message
-                                            }`
-                                        );
                                     }
                                 }
+                            } catch (e) {
+                                logger.error(`${hostLogPrefix} cannot check files: ${filename} - ${e.message}`);
                             }
                         }
                     }
@@ -2730,8 +2807,8 @@ async function processMessage(msg) {
                     os: process.platform,
                     Architecture: os.arch(),
                     CPUs: cpus.length,
-                    Speed: cpus[0].speed,
-                    Model: cpus[0].model,
+                    Speed: tools.isObject(cpus[0]) ? cpus[0].speed : undefined,
+                    Model: tools.isObject(cpus[0]) ? cpus[0].model : undefined,
                     RAM: os.totalmem(),
                     'System uptime': Math.round(os.uptime()),
                     'Node.js': process.version,
@@ -2842,7 +2919,7 @@ async function processMessage(msg) {
                 objects,
                 msg.message.id,
                 msg.message.adapter,
-                Buffer.from(msg.message.data, 'base64'),
+                Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
                 error => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
             );
@@ -2931,7 +3008,11 @@ async function processMessage(msg) {
         }
 
         case 'rebuildAdapter':
-            if (!installQueue.some(entry => entry.id === msg.message.id)) {
+            if (!msg.message.id) {
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { error: 'Adapter to rebuild not provided.' }, msg.callback);
+                }
+            } else if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
                 const installObj = { id: msg.message.id, rebuild: true };
                 if (msg.message.rebuildArgs) {
@@ -3113,7 +3194,6 @@ async function processMessage(msg) {
         }
 
         case 'restartController': {
-            const restart = require('./lib/restart');
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
             setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer to be sent
             break;
@@ -4473,6 +4553,9 @@ async function startInstance(id, wakeUp) {
                         });
                     } else {
                         // a group controller for this group is not yet started, execute one
+                        compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
+                            instances: []
+                        };
                         if (!compactProcs[instance.common.compactGroup].process) {
                             const compactControllerArgs = [instance.common.compactGroup];
 
@@ -5064,59 +5147,17 @@ function stopInstance(id, force, callback) {
         default:
     }
 }
-/*
- //test disconnect
- setTimeout(function () {
- if (objectsDisconnectTimeout) clearTimeout(objectsDisconnectTimeout);
- objectsDisconnectTimeout = setTimeout(function () {
- console.log('TEST !!!!! STOP!!!! ===============================================');
- connected = false;
- objectsDisconnectTimeout = null;
- logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
- stopInstances(true, function () {
- // if during stopping the DB has connection again
- if (connected && !isStopping) {
- getInstances();
- startAliveInterval();
- initMessageQueue();
- }
- });
- }, config.objects.connectTimeout || 2000);
-
- }, 60000);
-
- setTimeout(function () {
- console.log('TEST !!!!! START AGAIN!!!! ===============================================');
- // stop disconnect timeout
- if (objectsDisconnectTimeout) {
- clearTimeout(objectsDisconnectTimeout);
- objectsDisconnectTimeout = null;
- }
-
- if (!connected) {
- if (connected === null) setMeta();
-
- connected = true;
- logger.info(hostLogPrefix + ' ' + ' connected');
-
- // Do not start if we still stopping the instances
- if (!isStopping) {
- getInstances();
- startAliveInterval();
- initMessageQueue();
- }
- }
- }, 63000);
- */
 
 function stopInstances(forceStop, callback) {
-    let timeout;
+    let maxTimeout;
+    let waitTimeout;
     function waitForInstances() {
+        waitTimeout = null;
         if (!allInstancesStopped) {
-            setTimeout(waitForInstances, 200);
+            waitTimeout = setTimeout(waitForInstances, 200);
         } else {
-            if (timeout) {
-                clearTimeout(timeout);
+            if (maxTimeout) {
+                clearTimeout(maxTimeout);
             }
             typeof callback === 'function' && callback();
             callback = null;
@@ -5127,17 +5168,11 @@ function stopInstances(forceStop, callback) {
         isStopping = isStopping || Date.now(); // Sometimes process receives SIGTERM twice
         const elapsed = Date.now() - isStopping;
         logger.debug(
-            hostLogPrefix +
-                ' stop isStopping=' +
-                elapsed +
-                ' isDaemon=' +
-                isDaemon +
-                ' allInstancesStopped=' +
-                allInstancesStopped
+            `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${allInstancesStopped}`
         );
         if (elapsed >= stopTimeout) {
-            if (timeout) {
-                clearTimeout(timeout);
+            if (maxTimeout) {
+                clearTimeout(maxTimeout);
             }
             typeof callback === 'function' && callback(true);
             callback = null;
@@ -5161,17 +5196,23 @@ function stopInstances(forceStop, callback) {
 
         waitForInstances();
     } catch (e) {
-        logger.error(hostLogPrefix + ' ' + e.message);
-        if (timeout) {
-            clearTimeout(timeout);
+        logger.error(`${hostLogPrefix} ${e.message}`);
+        if (maxTimeout) {
+            clearTimeout(maxTimeout);
+        }
+        if (waitTimeout) {
+            clearTimeout(waitTimeout);
         }
         typeof callback === 'function' && callback();
         callback = null;
     }
 
     // force after Xs
-    timeout = setTimeout(() => {
-        timeout = null;
+    maxTimeout = setTimeout(() => {
+        maxTimeout = null;
+        if (waitTimeout) {
+            clearTimeout(waitTimeout);
+        }
         typeof callback === 'function' && callback(true);
         callback = null;
     }, stopTimeout);
@@ -5205,6 +5246,10 @@ function stop(force, callback) {
     if (reportInterval) {
         clearInterval(reportInterval);
         reportInterval = null;
+    }
+
+    if (isStopping) {
+        return;
     }
 
     stopInstances(force, async wasForced => {
@@ -5544,39 +5589,41 @@ function init(compactGroupId) {
             });
             states.subscribe(`${hostObjectPrefix}.logLevel`);
 
-            try {
-                const nodeVersion = process.version.replace(/^v/, '');
-                const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
+            if (!compactGroupController) {
+                try {
+                    const nodeVersion = process.version.replace(/^v/, '');
+                    const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
 
-                if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
-                    // detected a change in the nodejs version (or state non existing - upgrade from below v4)
-                    logger.info(
-                        `${hostLogPrefix} Node.js version has changed from ${
-                            prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
-                        } to ${nodeVersion}`
-                    );
-                    if (os.platform() === 'linux') {
-                        // ensure capabilities are set
-                        const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
-                        await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
+                    if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
+                        // detected a change in the nodejs version (or state non existing - upgrade from below v4)
                         logger.info(
-                            `${hostLogPrefix} Successfully updated capabilities "${capabilities.join(', ')}" for ${
-                                process.execPath
-                            }`
+                            `${hostLogPrefix} Node.js version has changed from ${
+                                prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
+                            } to ${nodeVersion}`
                         );
+                        if (os.platform() === 'linux') {
+                            // ensure capabilities are set
+                            const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
+                            await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
+                            logger.info(
+                                `${hostLogPrefix} Successfully updated capabilities "${capabilities.join(', ')}" for ${
+                                    process.execPath
+                                }`
+                            );
+                        }
                     }
-                }
 
-                // set current node version
-                await states.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
-                    val: nodeVersion,
-                    ack: true,
-                    from: hostObjectPrefix
-                });
-            } catch (e) {
-                logger.warn(
-                    `${hostLogPrefix} Error while trying to update capabilities after detecting new Node.js version: ${e.message}`
-                );
+                    // set current node version
+                    await states.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
+                        val: nodeVersion,
+                        ack: true,
+                        from: hostObjectPrefix
+                    });
+                } catch (e) {
+                    logger.warn(
+                        `${hostLogPrefix} Error while trying to update capabilities after detecting new Node.js version: ${e.message}`
+                    );
+                }
             }
 
             // Read current state of all log subscribers

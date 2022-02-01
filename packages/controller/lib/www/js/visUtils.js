@@ -235,7 +235,7 @@ function getUsedObjectIDs(views, isByViews) {
                 _views[view] = [];
             }
 
-            if (!tools.isObject(views[view].widgets)) {
+            if (!tools.isObject(views[view]) || !tools.isObject(views[view].widgets)) {
                 continue;
             }
             for (id of Object.keys(views[view].widgets)) {

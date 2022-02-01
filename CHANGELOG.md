@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 4.0.0 (2021-xx-xx) Release I... [Cut off: 19.01.2022 17:30]
+## 4.0.0 (2021-xx-xx) Release I... [Cut off: 27.01.2022 23:30]
 **WORK IN PROGRESS - Use at own risk!**
 
 **BREAKING CHANGES**
@@ -14,7 +14,7 @@
 * CLI command `iob rebuild adaptername` is no longer supported because of the new way of automatic rebuilds and some unwanted side effects
 * CLI command `iob state get <id>` will no longer handle binary state values (which was never really working before). We added `iob state getBinary <id> <encoding>` as new way.
 * Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. ALso check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
-* PENDING: The "file" database will be automatically converted into JSONL and the database types that use "file" are adjusted to "jsonl" on installation (and backup restore). This means that a rollback of js-controller is only possible to 3.3 after 4.0 was installed! Rollback to former versions require a manual migration to "file" DB before the downgrade! (COMMUNICATION, TESTFOKUS)
+* The "file" database will be automatically converted into JSONL and the database types that use "file" are adjusted to "jsonl" on installation (and backup restore). This means that a rollback of js-controller is only possible to 3.3 after 4.0 was installed! Rollback to former versions require a manual migration to "file" DB before the downgrade! (COMMUNICATION, TESTFOKUS)
 
 **Features**
 * (bluefox) Added complexity rules for user passwords: New created passwords need to follow the following rules (TODO ADMIN UI INFO ISSUE):
@@ -54,6 +54,7 @@
 * (foxriver76) Update seq integration for logging
 * (foxriver76) If logging can not be initialized because of a fatal error do not start js-controller
 * (foxriver76) Prevent start of a debug session for an instance that is already running
+* (Apollon77) Fix an edge case for file db which could lead to main and backup file being broken in strange situations with multiple crashes in a row
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -62,16 +63,17 @@
 * log info when default value of an object is invalid (e.g. does not match object type)
 * log info when `common.states` is used and not an object (deprecate String usage)
 * log info when `common.min`/`common.max` exists on non numbers and contain invalid values/types
+* add get/setForeignBinaryState methods as copy from get/setBinaryState allow adapter to migrate; get/setBinaryState will be changed in 4.1 to be "non Foreign"
 * Enhanced object checks: adapter need to have a name as string
 * Decline calls for getForeignObjects with non string pattern (was pot. crashing before)
 * adapter.tools is deprecated and replaced by a shim. Use methods in adapter class or adapter-core instead or open issues if you need more internal functions
-* PENDING The object view definition "custom/state" is now removed from js-controller after being replaced by "system/custom" in js-controller 3.3. All relevant adapters are updated (COMMUNICATION)
+The object view definition "custom/state" is now removed from js-controller after being replaced by "system/custom" in js-controller 3.3. All relevant adapters are updated (COMMUNICATION)
 * remove all *Fifo* Methods from adapter.js because deprecated since 1.x
 * remove adapter.objects.* methods because deprecated since 2.x
 
 **Developer relevant new Features**
-* (jogibear9988) PENDING Add new "unload-safe" promise based "adapter.delay" method to delay further code execution, but still make sure code do not continue after unload was called. This method can **not** be used inside the "unload" method itself!
-* (jogibear9988/AlCalzone/foxriver76/Apollon77) PENDING Revamp adapter.*Timeout and adapter.*Interval methods to be "unload-safe" and also clear missing timeouts without warnings for more developer convenience! The methods to set a timeout or interval can **not** be used inside the "unload" method itself!
+* (jogibear9988) Add new "unload-safe" promise based "adapter.delay" method to delay further code execution, but still make sure code do not continue after unload was called. This method can **not** be used inside the "unload" method itself!
+* (jogibear9988/AlCalzone/foxriver76/Apollon77) Revamp adapter.*Timeout and adapter.*Interval methods to be "unload-safe" and also clear missing timeouts without warnings for more developer convenience! The methods to set a timeout or interval can **not** be used inside the "unload" method itself!
 * (AlCalzone) Introduce new methods in tools for Node.js module management: installNodeModule, uninstallNodeModule (TODO Issues adapter that use npm install -> Move))
 * (bluefox) Add license management functionality to host. Adapters can use adapter.getSuitableLicenses to get available relevant licenses (TODO DOCS)
 * (AlCalzone) Switch NPM relevant handling to library pak to be more flexible for the future which package manager we want to use. Important: There are still parts that rely on npm for now!

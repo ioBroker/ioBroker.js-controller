@@ -229,6 +229,8 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     }
 
     async destroy() {
+        await super.destroy();
+
         if (this._db) {
             await this._db.close();
         }

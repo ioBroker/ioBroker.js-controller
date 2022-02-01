@@ -238,17 +238,20 @@ function Setup(options) {
         dbConnect(params, async (_objects, _states) => {
             objects = _objects;
             states = _states;
-            const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+            const iopkg = fs.readJsonSync(`${__dirname}/../../io-package.json`);
 
-            // in all casses we need to ensure that existing objects are migrated to sets
             try {
-                const noMigrated = await objects.migrateToSets();
+                // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
+                if (await tools.isSingleHost(objects)) {
+                    await objects.activateSets();
+                    const noMigrated = await objects.migrateToSets();
 
-                if (noMigrated) {
-                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
+                    if (noMigrated) {
+                        console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
+                    }
                 }
             } catch (e) {
-                console.warn(`Could not migrate objects to coresponding sets: ${e.message}`);
+                console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
             }
 
             // clean up invalid user group assignments (non-existing user in a group)
@@ -279,7 +282,11 @@ function Setup(options) {
                     }
                 }
             } catch (e) {
-                console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+                // Cannot find view happens on very first installation,
+                // so ignore this case because no users can be invalid
+                if (!e.message.includes('Cannot find view')) {
+                    console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+                }
             }
 
             if (checkCertificateOnly) {
@@ -507,7 +514,7 @@ function Setup(options) {
                         console.error(
                             'Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET
                         );
-                        return void callback(90);
+                        return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
 
                     const backup = new Backup({
@@ -553,7 +560,7 @@ function Setup(options) {
                             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                             fs.unlinkSync(tools.getConfigFileName() + '.bak');
 
-                            return void callback(78);
+                            return void callback(EXIT_CODES.MIGRATION_ERROR);
                         }
                         const backup = new Backup({
                             states,
@@ -581,7 +588,7 @@ function Setup(options) {
                                 console.log('running!' + COLOR_RESET);
                             }
 
-                            callback(err ? 78 : 0);
+                            callback(err ? EXIT_CODES.MIGRATION_ERROR : 0);
                         });
                     });
                 });
@@ -590,14 +597,12 @@ function Setup(options) {
                 console.log('');
                 console.log('No Database migration was done.');
                 console.log(
-                    COLOR_YELLOW +
-                        'If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.' +
-                        COLOR_RESET
+                    `${COLOR_YELLOW}If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.${COLOR_RESET}`
                 );
                 console.log('');
             }
         }
-        console.log('updating conf/' + tools.appName + '.json');
+        console.log(`updating conf/${tools.appName}.json`);
         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
         callback();
     }
@@ -677,7 +682,7 @@ function Setup(options) {
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         if (otype === 'redis' && originalConfig.objects.type !== 'redis') {
@@ -731,14 +736,14 @@ function Setup(options) {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
                     console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
-                    return void callback(23);
+                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
                 console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
-                return void callback(23);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
         }
 
@@ -776,7 +781,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-states-${stype}`);
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
-            console.log(`${COLOR_RED}Unknown objects type: ${stype}${COLOR_RESET}`);
+            console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
             if (stype !== 'file' && stype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the states db type you entered is really correct!`);
@@ -784,7 +789,7 @@ function Setup(options) {
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         if (stype === 'redis' && originalConfig.states.type !== 'redis' && otype !== 'redis') {
@@ -840,14 +845,14 @@ function Setup(options) {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
                     console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
-                    return void callback(23);
+                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
                 console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
-                return void callback(23);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
         }
 
@@ -889,7 +894,7 @@ function Setup(options) {
 
         if (hname.match(/\s/)) {
             console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         config.system = config.system || {};

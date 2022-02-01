@@ -1715,8 +1715,11 @@ function Install(options) {
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
-                        if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows)) {
-                            // adapter is on another host too, no need to search further
+                        if (
+                            this._checkDependencyFulfilledForeignHosts(adapter, doc.rows) ||
+                            this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows)
+                        ) {
+                            // another instance of our adapter is on another host or on ours, no need to search further
                             break;
                         } else {
                             return row.value.common.name;

@@ -24,12 +24,12 @@ export function statesDbHasServer(dbType: string): boolean {
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
 export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLocalOnly: boolean = false): boolean {
-    const ownIps = tools.findIPs();
     if (!objectsDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
     }
     let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
     if (!checkIfLocalOnly) {
+        const ownIps = tools.findIPs();
         result = result || host === '0.0.0.0' || ownIps.includes(host);
     }
     return result;
@@ -43,12 +43,12 @@ export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLoca
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
 export function isLocalStatesDbServer(dbType: string, host: string, checkIfLocalOnly = false): boolean {
-    const ownIps = tools.findIPs();
     if (!statesDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
     }
     let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
     if (!checkIfLocalOnly) {
+        const ownIps = tools.findIPs();
         result = result || host === '0.0.0.0' || ownIps.includes(host);
     }
     return result;

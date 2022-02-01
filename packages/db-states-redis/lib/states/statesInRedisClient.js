@@ -70,7 +70,15 @@ class StateRedisClient {
      * @private
      */
     async _determineProtocolVersion() {
-        const protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
+        let protoVersion;
+        try {
+            protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
+        } catch (e) {
+            if (e.message.includes('GET-UNSUPPORTED')) {
+                // secondary updated and primary < 4.0
+                return;
+            }
+        }
 
         if (!protoVersion) {
             // if no proto version existent yet, we set ours

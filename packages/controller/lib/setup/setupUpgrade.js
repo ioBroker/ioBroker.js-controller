@@ -86,25 +86,25 @@ function Upgrade(options) {
                         relevantAdapters.splice(relevantAdapters.indexOf(relAdapter), 1);
                         oneAdapterAdded = true;
                     } else {
-                        const deps = repo[relAdapter].dependencies || [];
-                        const globalDeps = repo[relAdapter].globalDependencies || [];
+                        /** @type {Record<string, string>} */
+                        const allDeps = {
+                            ...tools.parseDependencies(repo[relAdapter].dependencies),
+                            ...tools.parseDependencies(repo[relAdapter].globalDependencies)
+                        };
 
                         // we have to check if the deps are there
                         let conflict = false;
-                        for (const dep of [...deps, ...globalDeps]) {
-                            debug(`adapter "${relAdapter}" has dependency "${JSON.stringify(dep)}"`);
-                            if (tools.isObject(dep)) {
-                                // object -> dependency is important, because it affects version range
-                                for (const depName of Object.keys(dep)) {
-                                    if (relevantAdapters.includes(depName)) {
-                                        // the dependency is also in the upgrade list and not previously added, we should add the dependency first
-                                        debug(`conflict for dependency "${depName}" at adapter "${relAdapter}"`);
-                                        conflict = true;
-                                        break;
-                                    }
+                        for (const [depName, version] of Object.entries(allDeps)) {
+                            debug(`adapter "${relAdapter}" has dependency "${depName}": "${version}"`);
+                            if (version !== '*') {
+                                // dependency is important, because it affects version range
+                                if (relevantAdapters.includes(depName)) {
+                                    // the dependency is also in the upgrade list and not previously added, we should add the dependency first
+                                    debug(`conflict for dependency "${depName}" at adapter "${relAdapter}"`);
+                                    conflict = true;
+                                    break;
                                 }
                             }
-                            // else it is a string, so doesn't matter because dep is also there before upgrade
                         }
                         // we reached here and no conflict so every dep is satisfied
                         if (!conflict) {
@@ -124,8 +124,6 @@ function Upgrade(options) {
             }
 
             debug(`upgrade order is "${sortedAdapters.join(', ')}"`);
-
-            await this.upgradeAdapterHelper(repo, sortedAdapters, forceDowngrade, autoConfirm);
 
             for (let i = 0; i < sortedAdapters.length; i++) {
                 if (repo[sortedAdapters[i]] && repo[sortedAdapters[i]].controller) {

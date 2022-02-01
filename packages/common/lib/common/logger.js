@@ -82,12 +82,14 @@ const IoSeq =
 
             // we add own properties
             ioInfo.props.Hostname = tools.getHostName();
-            const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
-            if (msgParts) {
-                ioInfo.props.Source = msgParts[1];
-                ioInfo.props.Pid = msgParts[2];
-            } else {
-                ioInfo.props.Source = 'js-controller';
+            if (ioInfo.message) {
+                const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
+                if (msgParts) {
+                    ioInfo.props.Source = msgParts[1];
+                    ioInfo.props.Pid = msgParts[2];
+                } else {
+                    ioInfo.props.Source = 'js-controller';
+                }
             }
             super.log(ioInfo, callback);
         }

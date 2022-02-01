@@ -307,7 +307,7 @@ class Adapter extends EventEmitter {
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${this._utils.getErrorText(exitCode)}): ${
+        const text = `${this.namespaceLog} Terminated (${Utils.getErrorText(exitCode)}): ${
             reason ? reason : 'Without reason'
         }`;
         if (isNotCritical) {

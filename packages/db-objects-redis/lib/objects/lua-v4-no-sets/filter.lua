@@ -1,24 +1,22 @@
--- design: system
--- search: custom
+-- func: function(doc) { if (doc.type === "%1") emit(doc._id, doc); }
 local rep = {}
 -- local keys=redis.call("keys", KEYS[1].."*")
-local cursor = KEYS[4];
+local cursor = KEYS[5];
 local result = redis.call("SCAN", cursor, "MATCH", KEYS[1] .. "*", "COUNT", 500)
 cursor = result[1]
 local keys = result[2]
 local argStart = KEYS[1] .. KEYS[2]
 local argEnd = KEYS[1] .. KEYS[3]
-local checkStr = string.format("%q:{", "custom")
---  function(doc) {
---      if (doc.type==="state" && (doc.common.custom || doc.common.history))
---          emit(doc._id, doc.common.custom || doc.common.history)
---   }
+local type = KEYS[4]
+local checkStr = string.format("%q:%q", "type", type)
+local skipCheck = not (type == "channel" or type == "device" or type == "folder")
+-- function(doc) { if (doc.type === "chart") emit(doc._id, doc); }
 for _, key in ipairs(keys) do
     if (key >= argStart and key < argEnd) then
         local obj = redis.call("get", key)
-        if (obj:find(checkStr) ~= nil) then
+        if (skipCheck or obj:find(checkStr) ~= nil) then
             local success, decoded = pcall(cjson.decode, obj)
-            if (success and decoded.type == "state" and decoded.common ~= nil and decoded.common.custom ~= nil) then
+            if (success and decoded.type == type) then
                 rep[#rep + 1] = obj
             end
         end

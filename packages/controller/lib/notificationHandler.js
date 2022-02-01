@@ -99,7 +99,7 @@ class NotificationHandler {
         for (const scope of Object.keys(this.currentNotifications)) {
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {
-                    if (!instancesOnHost.includes(instance)) {
+                    if (!instancesOnHost.includes(instance) && instance !== `system.host.${this.host}`) {
                         // instance no longer on host
                         this.log.info(`${this.logPrefix} Instance ${instance} removed from host, clear notifications`);
                         await this.clearNotifications(null, null, instance);
@@ -193,7 +193,7 @@ class NotificationHandler {
      * @param {string} scope - scope of the message
      * @param {string|null|undefined} category - category of the message, if non we check against regex of scope
      * @param {string} message - message to add
-     * @param {string} instance - instance e.g. hm-rpc.1
+     * @param {string} instance - instance e.g. hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
      * @return Promise <void>
      */
     async addMessage(scope, category, message, instance) {
@@ -204,7 +204,7 @@ class NotificationHandler {
             return;
         }
 
-        if (!instance.startsWith('system.adapter.')) {
+        if (!instance.startsWith('system.adapter.') && !instance.startsWith('system.host.')) {
             instance = `system.adapter.${instance}`;
         }
 

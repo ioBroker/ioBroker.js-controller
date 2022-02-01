@@ -67,8 +67,11 @@ function startController(options, callback) {
                 error: msg => console.error(msg)
             },
         connected: () => {
-            // clear all states
-            objects.destroyDB(() => {
+            // clear all objects
+            objects.destroyDB(async () => {
+                await objects.activateSets();
+                // we need to read the sets lua scripts
+                await objects.loadLuaScripts();
                 isObjectConnected = true;
                 if (isStatesConnected && states) {
                     console.log('startController: started!');
@@ -89,8 +92,8 @@ function startController(options, callback) {
             console.log('Used class for Objects: Objects Redis Client');
             Objects = require('@iobroker/db-objects-redis').Client;
         } else {
-            console.log('Used custom class for Objects (assume Server available): Objects ' + options.objects.type);
-            Objects = require('@iobroker/db-objects-' + options.objects.type).Server;
+            console.log(`Used custom class for Objects (assume Server available): Objects ${options.objects.type}`);
+            Objects = require(`@iobroker/db-objects-${options.objects.type}`).Server;
         }
     } else {
         console.log('Used class for Objects: Objects Server');
@@ -109,8 +112,8 @@ function startController(options, callback) {
             console.log('Used class for States: States Redis Client');
             States = require('@iobroker/db-states-redis').Client;
         } else {
-            console.log('Used custom class for States (assume Server available): States ' + options.states.type);
-            States = require('@iobroker/db-states-' + options.states.type).Server;
+            console.log(`Used custom class for States (assume Server available): States ${options.states.type}`);
+            States = require(`@iobroker/db-states-${options.states.type}`).Server;
         }
     } else {
         console.log('Used class for States: States Server');

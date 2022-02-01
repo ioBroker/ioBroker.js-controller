@@ -18,7 +18,7 @@ function register(it, expect, context) {
 
     // setObject positive
     it(testName + 'Check if objects will be created', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         context.adapter.setObject(
             gid,
             {
@@ -54,7 +54,7 @@ function register(it, expect, context) {
 
     // // setObject positive (async)
     // it(testName + 'Check if objects will be created (ASYNC)', function () {
-    //     this.timeout(1000);
+    //     this.timeout(2000);
 
     //     const tests = [
     //         // Creating an object works
@@ -88,7 +88,7 @@ function register(it, expect, context) {
 
     // setObject negative
     it(testName + 'Check if objects will not be created without mandatory attribute type', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         const id = 'myTestObjectNoType';
         context.adapter.setObject(
             id,
@@ -152,7 +152,7 @@ function register(it, expect, context) {
 
     // setForeignObject
     it(testName + 'Check if foreign objects will be created', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject(
@@ -304,7 +304,7 @@ function register(it, expect, context) {
 
     // protection check for getForeignObject
     it(testName + 'Check if foreign system adapters protectedNative is not accessible', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         // create a system.adapter object of another adapter
         context.adapter.setForeignObject(
             'system.adapter.tesla.0',
@@ -342,7 +342,7 @@ function register(it, expect, context) {
 
     // own protectedNative should be available
     it(testName + 'Check if own system adapters protectedNative is available via getForeignObject', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         // create a system.adapter object of own adapter
         context.adapter.setForeignObject(
             'system.adapter.' + context.adapterShortName + '.0',
@@ -712,6 +712,48 @@ function register(it, expect, context) {
         expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
+    it(testName + 'Try to get object view with custom', async function () {
+        this.timeout(3000);
+
+        const customObj = {
+            'history.0': {
+                enabled: true,
+                aliasId: '',
+                changesOnly: false,
+                debounce: 0,
+                changesRelogInterval: 0,
+                changesMinDelta: 0,
+                maxLength: 10,
+                retention: 31536000
+            }
+        };
+
+        // lets create an object matching the view
+        await context.adapter.setForeignObjectAsync(`${context.adapterShortName}.1.device.channel.testState`, {
+            type: 'state',
+            common: {
+                role: 'switch',
+                name: 'Test',
+                type: 'boolean',
+                read: false,
+                write: true,
+                custom: customObj
+            },
+            native: {}
+        });
+
+        const doc = await context.adapter.getObjectViewAsync('system', 'custom', {
+            startkey: `${context.adapterShortName}.1.device.channel.`,
+            endkey: `${context.adapterShortName}.1.device.channel.\u9999`
+        });
+
+        // now check that our object view contains our object
+        expect(doc.rows).to.be.an('array');
+        expect(doc.rows.length).to.be.equal(1);
+        expect(doc.rows[0].id).to.be.equal(`${context.adapterShortName}.1.device.channel.testState`);
+        expect(doc.rows[0].value).to.deep.equal(customObj);
+    });
+
     // getObjectList
     it(testName + 'Try to get object list', done => {
         // lets create an object matching the list
@@ -1073,7 +1115,7 @@ function register(it, expect, context) {
 
     // getObject with acls
     it(testName + 'Check getObjects with ACLs', function (done) {
-        this.timeout(1000);
+        this.timeout(2000);
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject(
@@ -1215,7 +1257,8 @@ function register(it, expect, context) {
     });
 
     // should use def as default state value on extendObject when obj non existing
-    it(testName + 'Check extendObject state with def', async () => {
+    it(testName + 'Check extendObject state with def', async function () {
+        this.timeout(3000);
         let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             type: 'state',
             common: {

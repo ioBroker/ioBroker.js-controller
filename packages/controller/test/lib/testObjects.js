@@ -35,7 +35,7 @@ function register(it, expect, context) {
                 });
             }
         );
-    }).timeout(3000);
+    });
 
     it(testName + 'should create object async', done => {
         const objects = context.objects;
@@ -70,7 +70,7 @@ function register(it, expect, context) {
             .catch(err => {
                 expect(err).to.be.not.ok;
             });
-    });
+    }).timeout(3000);
 
     it(testName + 'should find object', done => {
         const objects = context.objects;

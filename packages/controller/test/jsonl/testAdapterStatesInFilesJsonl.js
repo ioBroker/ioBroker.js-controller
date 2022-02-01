@@ -5,7 +5,7 @@
 'use strict';
 
 const testAdapter = require('../lib/testAdapter');
-const dataDir = __dirname + '/../tmp/data';
+const dataDir = `${__dirname}/../tmp/data`;
 
 const statesConfig = {
     options: {
