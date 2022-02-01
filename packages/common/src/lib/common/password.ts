@@ -31,13 +31,13 @@
 
 import crypto from 'crypto';
 
-export const password = (
-    pw: string
-): {
+interface PasswordReturnValue {
     complexity: (password: string, callback: (isComplex: boolean) => void) => boolean;
     check: (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) => void;
     hash: (salt: string, iterations: number, callback: (err?: Error | null, hash?: string) => void) => void;
-} => {
+}
+
+export const password = (pw: string): PasswordReturnValue => {
     return {
         hash: (salt, iterations, callback) => {
             salt = salt || crypto.randomBytes(16).toString('hex');
