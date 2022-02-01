@@ -5147,50 +5147,6 @@ function stopInstance(id, force, callback) {
         default:
     }
 }
-/*
- //test disconnect
- setTimeout(function () {
- if (objectsDisconnectTimeout) clearTimeout(objectsDisconnectTimeout);
- objectsDisconnectTimeout = setTimeout(function () {
- console.log('TEST !!!!! STOP!!!! ===============================================');
- connected = false;
- objectsDisconnectTimeout = null;
- logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
- stopInstances(true, function () {
- // if during stopping the DB has connection again
- if (connected && !isStopping) {
- getInstances();
- startAliveInterval();
- initMessageQueue();
- }
- });
- }, config.objects.connectTimeout || 2000);
-
- }, 60000);
-
- setTimeout(function () {
- console.log('TEST !!!!! START AGAIN!!!! ===============================================');
- // stop disconnect timeout
- if (objectsDisconnectTimeout) {
- clearTimeout(objectsDisconnectTimeout);
- objectsDisconnectTimeout = null;
- }
-
- if (!connected) {
- if (connected === null) setMeta();
-
- connected = true;
- logger.info(hostLogPrefix + ' ' + ' connected');
-
- // Do not start if we still stopping the instances
- if (!isStopping) {
- getInstances();
- startAliveInterval();
- initMessageQueue();
- }
- }
- }, 63000);
- */
 
 function stopInstances(forceStop, callback) {
     let maxTimeout;
@@ -5212,13 +5168,7 @@ function stopInstances(forceStop, callback) {
         isStopping = isStopping || Date.now(); // Sometimes process receives SIGTERM twice
         const elapsed = Date.now() - isStopping;
         logger.debug(
-            hostLogPrefix +
-                ' stop isStopping=' +
-                elapsed +
-                ' isDaemon=' +
-                isDaemon +
-                ' allInstancesStopped=' +
-                allInstancesStopped
+            `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${allInstancesStopped}`
         );
         if (elapsed >= stopTimeout) {
             if (maxTimeout) {
@@ -5246,7 +5196,7 @@ function stopInstances(forceStop, callback) {
 
         waitForInstances();
     } catch (e) {
-        logger.error(hostLogPrefix + ' ' + e.message);
+        logger.error(`${hostLogPrefix} ${e.message}`);
         if (maxTimeout) {
             clearTimeout(maxTimeout);
         }
