@@ -5193,13 +5193,15 @@ function stopInstance(id, force, callback) {
  */
 
 function stopInstances(forceStop, callback) {
-    let timeout;
+    let maxTimeout;
+    let waitTimeout;
     function waitForInstances() {
+        waitTimeout = null;
         if (!allInstancesStopped) {
-            setTimeout(waitForInstances, 200);
+            waitTimeout = setTimeout(waitForInstances, 200);
         } else {
-            if (timeout) {
-                clearTimeout(timeout);
+            if (maxTimeout) {
+                clearTimeout(maxTimeout);
             }
             typeof callback === 'function' && callback();
             callback = null;
@@ -5219,8 +5221,8 @@ function stopInstances(forceStop, callback) {
                 allInstancesStopped
         );
         if (elapsed >= stopTimeout) {
-            if (timeout) {
-                clearTimeout(timeout);
+            if (maxTimeout) {
+                clearTimeout(maxTimeout);
             }
             typeof callback === 'function' && callback(true);
             callback = null;
@@ -5245,16 +5247,22 @@ function stopInstances(forceStop, callback) {
         waitForInstances();
     } catch (e) {
         logger.error(hostLogPrefix + ' ' + e.message);
-        if (timeout) {
-            clearTimeout(timeout);
+        if (maxTimeout) {
+            clearTimeout(maxTimeout);
+        }
+        if (waitTimeout) {
+            clearTimeout(waitTimeout);
         }
         typeof callback === 'function' && callback();
         callback = null;
     }
 
     // force after Xs
-    timeout = setTimeout(() => {
-        timeout = null;
+    maxTimeout = setTimeout(() => {
+        maxTimeout = null;
+        if (waitTimeout) {
+            clearTimeout(waitTimeout);
+        }
         typeof callback === 'function' && callback(true);
         callback = null;
     }, stopTimeout);
@@ -5288,6 +5296,10 @@ function stop(force, callback) {
     if (reportInterval) {
         clearInterval(reportInterval);
         reportInterval = null;
+    }
+
+    if (isStopping) {
+        return;
     }
 
     stopInstances(force, async wasForced => {
