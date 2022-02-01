@@ -475,7 +475,7 @@ async function createUuid(objects) {
     const promiseCheckPassword = new Promise(resolve =>
         objects.getObject('system.user.admin', (err, obj) => {
             if (err || !obj) {
-                password = password || require('./password');
+                password = password || require('./password').password;
 
                 // Default Password for user 'admin' is application name in lower case
                 password(module.exports.appName).hash(null, null, (err, res) => {
@@ -3534,7 +3534,7 @@ async function updateLicenses(objects, login, password) {
                 try {
                     password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
                 } catch (err) {
-                    throw new Error('Cannot decode password: ' + err.message);
+                    throw new Error(`Cannot decode password: ${err.message}`);
                 }
 
                 // read licenses from iobroker.net
