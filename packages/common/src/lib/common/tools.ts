@@ -174,7 +174,7 @@ function upToDate(repoVersion: string, installedVersion: string): boolean {
 }
 
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
-function decryptPhrase(password, data, callback) {
+function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void) {
     const decipher = crypto.createDecipher('aes192', password);
 
     try {
@@ -194,7 +194,7 @@ function decryptPhrase(password, data, callback) {
 
         decipher.write(data, 'hex');
         decipher.end();
-    } catch (e) {
+    } catch (e: any) {
         console.error(`Cannot decode secret: ${e.message}`);
         callback(null);
     }
@@ -203,11 +203,14 @@ function decryptPhrase(password, data, callback) {
 /**
  * Checks if multiple host objects exists, without using object views
  *
- * @param {object} objects the objects db
- * @return {Promise<boolean>} true if only one host object exists
+ * @param objects the objects db
+ * @return true if only one host object exists
  */
-async function isSingleHost(objects) {
-    const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
+async function isSingleHost(objects: any): Promise<boolean> {
+    const res: { rows: GetObjectListItem[] } = await objects.getObjectList({
+        startkey: 'system.host.',
+        endkey: 'system.host.\u9999'
+    });
     const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
     return hostObjs.length <= 1; // on setup no host object is there yet
 }
@@ -307,37 +310,42 @@ function findPath(path: string, url: string) {
     }
 }
 
-function getMac(callback: () => void) {
+function getMac(callback: (e?: Error | null, mac?: string) => void) {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
 
-    require('child_process').exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
-        if (err) {
-            callback(err);
-        } else {
-            let macAddress;
-            let match;
-            let result = null;
-
-            while (true) {
-                match = macRegex.exec(stdout);
-                if (!match) {
-                    break;
-                }
-                macAddress = match[0];
-                if (!zeroRegex.test(macAddress) && !result) {
-                    result = macAddress;
-                }
-            }
-
-            if (result === null) {
-                callback(new Error('could not determine the mac address from:\n' + stdout));
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    require('child_process').exec(
+        command,
+        { windowsHide: true },
+        (err: Error | null, stdout: string, _stderr: string) => {
+            if (err) {
+                callback(err);
             } else {
-                callback(null, result.replace(/-/g, ':').toLowerCase());
+                let macAddress;
+                let match;
+                let result = null;
+
+                while (true) {
+                    match = macRegex.exec(stdout);
+                    if (!match) {
+                        break;
+                    }
+                    macAddress = match[0];
+                    if (!zeroRegex.test(macAddress) && !result) {
+                        result = macAddress;
+                    }
+                }
+
+                if (result === null) {
+                    callback(new Error('could not determine the mac address from:\n' + stdout));
+                } else {
+                    callback(null, result.replace(/-/g, ':').toLowerCase());
+                }
             }
         }
-    });
+    );
 }
 
 /**
@@ -361,7 +369,7 @@ function isDocker() {
 }
 
 // Build unique uuid based on MAC address if possible
-function uuid(givenMac, callback) {
+function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     if (typeof givenMac === 'function') {
         callback = givenMac;
         givenMac = '';
@@ -370,6 +378,7 @@ function uuid(givenMac, callback) {
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     if (require('ci-info').isCI) {
         return callback('55travis-pipe-line-cior-githubaction');
     }
@@ -378,14 +387,16 @@ function uuid(givenMac, callback) {
     let u;
 
     if (!_isDocker && mac === '') {
-        const ifaces = require('os').networkInterfaces();
+        const ifaces = os.networkInterfaces();
 
         // Find first not empty MAC
-        for (const n of Object.keys(ifaces)) {
-            for (let c = 0; c < ifaces[n].length; c++) {
-                if (ifaces[n][c].mac && ifaces[n][c].mac !== '00:00:00:00:00:00') {
-                    mac = ifaces[n][c].mac;
-                    break;
+        for (const iface of Object.values(ifaces)) {
+            if (iface) {
+                for (const entry of iface) {
+                    if (entry.mac !== '00:00:00:00:00:00') {
+                        mac = entry.mac;
+                        break;
+                    }
                 }
             }
 
@@ -400,7 +411,7 @@ function uuid(givenMac, callback) {
     }
 
     if (!_isDocker && mac) {
-        const md5sum = require('crypto').createHash('md5');
+        const md5sum = crypto.createHash('md5');
         md5sum.update(mac);
         mac = md5sum.digest('hex');
         u =
@@ -415,8 +426,7 @@ function uuid(givenMac, callback) {
             mac.substring(20);
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
-        /** @type {any} */
-        let a;
+        let a: any;
         let b;
         b = a = '';
         while (a++ < 36) {
@@ -428,12 +438,13 @@ function uuid(givenMac, callback) {
     callback(u);
 }
 
-function updateUuid(newUuid, _objects, callback) {
+function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) => void) {
     uuid('', _uuid => {
         _uuid = newUuid || _uuid;
         // Add vendor prefix to UUID
         if (fs.existsSync(VENDOR_FILE)) {
             try {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const vendor = require(VENDOR_FILE);
                 if (vendor.vendor && vendor.vendor.uuidPrefix && vendor.vendor.uuidPrefix.length === 2) {
                     _uuid = vendor.vendor.uuidPrefix + _uuid;
@@ -452,21 +463,21 @@ function updateUuid(newUuid, _objects, callback) {
                     type: 'uuid'
                 },
                 ts: new Date().getTime(),
-                from: 'system.host.' + getHostName() + '.tools',
+                from: `system.host.${getHostName()}.tools`,
                 native: {
                     uuid: _uuid
                 }
             },
-            err => {
+            (err: any) => {
                 if (err) {
-                    console.error('object system.meta.uuid cannot be updated: ' + err);
+                    console.error(`object system.meta.uuid cannot be updated: ${err}`);
                     callback();
                 } else {
-                    _objects.getObject('system.meta.uuid', (err, obj) => {
+                    _objects.getObject('system.meta.uuid', (err: any, obj: Record<string, any>) => {
                         if (obj.native.uuid !== _uuid) {
                             console.error('object system.meta.uuid cannot be updated: write protected');
                         } else {
-                            console.log('object system.meta.uuid created: ' + _uuid);
+                            console.log(`object system.meta.uuid created: ${_uuid}`);
                         }
                         callback(_uuid);
                     });
@@ -479,12 +490,12 @@ function updateUuid(newUuid, _objects, callback) {
 /**
  * Generates a new uuid if non existing
  *
- * @param {object} objects - objects DB
- * @return {Promise<void|string>} uuid if successfully created/updated
+ * @param objects - objects DB
+ * @return uuid if successfully created/updated
  */
-async function createUuid(objects) {
-    const promiseCheckPassword = new Promise(resolve =>
-        objects.getObject('system.user.admin', (err, obj) => {
+async function createUuid(objects: any): Promise<void | string> {
+    const promiseCheckPassword = new Promise<void>(resolve =>
+        objects.getObject('system.user.admin', (err: any, obj: Record<string, any>) => {
             if (err || !obj) {
                 // Default Password for user 'admin' is application name in lower case
                 password(module.exports.appName).hash(null, null, (err, res) => {
@@ -516,8 +527,8 @@ async function createUuid(objects) {
             }
         })
     );
-    const promiseCheckUuid = new Promise(resolve =>
-        objects.getObject('system.meta.uuid', (err, obj) => {
+    const promiseCheckUuid = new Promise<void | string>(resolve =>
+        objects.getObject('system.meta.uuid', (err: any, obj: Record<string, any>) => {
             if (!err && obj && obj.native && obj.native.uuid) {
                 const PROBLEM_UUIDS = [
                     'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
@@ -531,7 +542,7 @@ async function createUuid(objects) {
                 // if COMMON invalid docker uuid
                 if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
                     // Read vis license
-                    objects.getObject('system.adapter.vis.0', (err, licObj) => {
+                    objects.getObject('system.adapter.vis.0', (err: any, licObj: Record<string, any>) => {
                         if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
                             updateUuid('', objects, _uuid => resolve(_uuid));
@@ -544,7 +555,7 @@ async function createUuid(objects) {
                                 data = null;
                             }
 
-                            if (!data || !data.uuid) {
+                            if (!data || typeof data === 'string' || !data.uuid) {
                                 // generate new UUID
                                 updateUuid('', objects, __uuid => resolve(__uuid));
                             } else {
@@ -578,7 +589,7 @@ async function createUuid(objects) {
 }
 
 // Download file to tmp or return file name directly
-function getFile(urlOrPath, fileName, callback) {
+function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void) {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -612,7 +623,7 @@ function getFile(urlOrPath, fileName, callback) {
                 console.log('File not found: ' + urlOrPath);
                 process.exit(EXIT_CODES.FILE_NOT_FOUND);
             }
-        } catch (err) {
+        } catch (err: any) {
             console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
             process.exit(EXIT_CODES.FILE_NOT_FOUND);
         }
@@ -620,7 +631,11 @@ function getFile(urlOrPath, fileName, callback) {
 }
 
 // Return content of the json file. Download it or read directly
-function getJson(urlOrPath, agent, callback) {
+function getJson(
+    urlOrPath: string,
+    agent: string,
+    callback: (sources?: Record<string, any>, urlOrPath?: string | null) => void
+) {
     if (typeof agent === 'function') {
         callback = agent;
         agent = '';
@@ -631,7 +646,7 @@ function getJson(urlOrPath, agent, callback) {
     // If object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
         if (callback) {
-            callback(urlOrPath);
+            callback(null, urlOrPath);
         }
     } else if (!urlOrPath) {
         console.log('Empty url!');
@@ -680,8 +695,8 @@ function getJson(urlOrPath, agent, callback) {
             if (fs.existsSync(urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(urlOrPath);
-                } catch (e) {
-                    console.log('Cannot parse json file from ' + urlOrPath + '. Error: ' + e.message);
+                } catch (e: any) {
+                    console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -690,13 +705,11 @@ function getJson(urlOrPath, agent, callback) {
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(__dirname + '/../' + urlOrPath);
-                } catch (e) {
-                    console.log(
-                        'Cannot parse json file from ' + __dirname + '/../' + urlOrPath + '. Error: ' + e.message
-                    );
+                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                } catch (e: any) {
+                    console.log(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -705,13 +718,11 @@ function getJson(urlOrPath, agent, callback) {
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else if (fs.existsSync(__dirname + '/../tmp/' + urlOrPath)) {
+            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(__dirname + '/../tmp/' + urlOrPath);
-                } catch (e) {
-                    console.log(
-                        'Cannot parse json file from ' + __dirname + '/../tmp/' + urlOrPath + '. Error: ' + e.message
-                    );
+                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                } catch (e: any) {
+                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -732,11 +743,11 @@ function getJson(urlOrPath, agent, callback) {
 
 /**
  * Return content of the json file. Download it or read directly
- * @param {string|object} urlOrPath URL where the json file could be found
- * @param {string} agent optional agent identifier like "Windows Chrome 12.56"
- * @returns {object} json object
+ * @param urlOrPath URL where the json file could be found
+ * @param agent optional agent identifier like "Windows Chrome 12.56"
+ * @returns json object
  */
-async function getJsonAsync(urlOrPath, agent) {
+async function getJsonAsync(urlOrPath: string, agent: string): Record<string, any> {
     agent = agent || '';
 
     let sources = {};
@@ -755,15 +766,15 @@ async function getJsonAsync(urlOrPath, agent) {
                     validateStatus: status => status !== 200
                 });
                 return result.data;
-            } catch (error) {
-                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error}`);
+            } catch (e: any) {
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
                 return null;
             }
         } else {
             if (fs.existsSync(urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(urlOrPath);
-                } catch (e) {
+                } catch (e: any) {
                     console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
@@ -771,7 +782,7 @@ async function getJsonAsync(urlOrPath, agent) {
             } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
-                } catch (e) {
+                } catch (e: any) {
                     console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
@@ -779,7 +790,7 @@ async function getJsonAsync(urlOrPath, agent) {
             } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
                 try {
                     sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
-                } catch (e) {
+                } catch (e: any) {
                     console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
@@ -792,12 +803,12 @@ async function getJsonAsync(urlOrPath, agent) {
     }
 }
 
-function scanDirectory(dirName, list, regExp) {
+function scanDirectory(dirName: string, list: Record<string, any>, regExp: RegExp) {
     if (fs.existsSync(dirName)) {
         let dirs;
         try {
             dirs = fs.readdirSync(dirName);
-        } catch (e) {
+        } catch (e: any) {
             console.log(`Cannot read or parse ${dirName}: ${e.message}`);
             return;
         }
@@ -833,7 +844,7 @@ function scanDirectory(dirName, list, regExp) {
                         licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
                     };
                 }
-            } catch (e) {
+            } catch (e: any) {
                 console.log(
                     `Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`
                 );
@@ -844,18 +855,23 @@ function scanDirectory(dirName, list, regExp) {
 
 /**
  * Get list of all installed adapters and controller version on this host
- * @param {string} [hostRunningVersion] Version of the running js-controller, will be included in the returned information if provided
- * @returns {object} object containing information about installed host
+ * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
+ * @returns object containing information about installed host
  */
-function getInstalledInfo(hostRunningVersion) {
-    const result = {};
+function getInstalledInfo(hostRunningVersion?: string): Record<string, any> {
+    const result: Record<string, any> = {};
     const fullPath = getControllerDir();
+
+    if (!fullPath) {
+        console.error('Could not determine controller directory on getInstalledInfo.');
+        return result;
+    }
 
     // Get info about host
     let ioPackage;
     try {
         ioPackage = fs.readJSONSync(path.join(fullPath, 'io-package.json'));
-    } catch (e) {
+    } catch (e: any) {
         console.error(`Cannot get installed host information: ${e.message}`);
     }
     const package_ = fs.existsSync(path.join(fullPath, 'package.json'))
@@ -893,17 +909,18 @@ function getInstalledInfo(hostRunningVersion) {
 
 /**
  * Reads an adapter's npm version
- * @param {string | null} adapter The adapter to read the npm version from. Null for the root ioBroker packet
- * @param {(err: Error | null, version?: string) => void} [callback]
+ * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
+ * @param callback
  */
-function getNpmVersion(adapter, callback) {
+function getNpmVersion(adapter: string | null, callback?: (err: Error | null, version?: string | null) => void) {
     adapter = adapter ? module.exports.appName + '.' + adapter : module.exports.appName;
     adapter = adapter.toLowerCase();
 
     const cliCommand = `npm view ${adapter}@latest version`;
 
-    const exec = require('child_process').exec;
-    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { exec } = require('child_process');
+    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error: Error, stdout: string, _stderr: string) => {
         let version;
         if (error) {
             // command failed
@@ -920,8 +937,12 @@ function getNpmVersion(adapter, callback) {
     });
 }
 
-function getIoPack(sources, name, callback) {
-    getJson(sources[name].meta, ioPack => {
+function getIoPack(
+    sources: Record<string, any>,
+    name: string,
+    callback: (sources: Record<string, any>, name: string) => void
+) {
+    getJson(sources[name].meta, '', ioPack => {
         const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
         if (!ioPack) {
             if (sources._helper) {
@@ -932,7 +953,7 @@ function getIoPack(sources, name, callback) {
             }
         } else {
             setImmediate(() => {
-                getJson(packUrl, pack => {
+                getJson(packUrl, '', pack => {
                     const version = sources[name].version;
                     const type = sources[name].type;
                     // If installed from git or something else
@@ -1010,7 +1031,11 @@ function getIoPack(sources, name, callback) {
     });
 }
 
-function _getRepositoryFile(sources, path, callback) {
+function _getRepositoryFile(
+    sources: Record<string, any>,
+    path: string,
+    callback?: (err?: Error, sources?: Record<string, any>) => void
+) {
     if (!sources._helper) {
         let count = 0;
         for (const _name in sources) {
@@ -1030,9 +1055,9 @@ function _getRepositoryFile(sources, path, callback) {
                     }
                 }
                 if (callback) {
-                    callback(`Timeout by read all package.json (${count}) seconds`, sources);
+                    callback(new Error(`Timeout by read all package.json (${count}) seconds`), sources);
                 }
-                callback = null;
+                callback = undefined;
             }
         }, count * 1000);
     }
@@ -1065,9 +1090,9 @@ function _getRepositoryFile(sources, path, callback) {
                             }
                         }
                         if (callback) {
-                            callback('Looks like there is no internet.', sources);
+                            callback(new Error('Looks like there is no internet.'), sources);
                         }
-                        callback = null;
+                        callback = undefined;
                     } else {
                         // process next
                         setImmediate(() => _getRepositoryFile(sources, path, callback));
@@ -1082,7 +1107,7 @@ function _getRepositoryFile(sources, path, callback) {
     if (sources._helper) {
         let err;
         if (sources._helper.failCounter.length) {
-            err = 'Following packages cannot be read: ' + sources._helper.failCounter.join(', ');
+            err = new Error(`Following packages cannot be read: ${sources._helper.failCounter.join(', ')}`);
         }
         clearTimeout(sources._helper.timeout);
         delete sources._helper;
@@ -1094,7 +1119,7 @@ function _getRepositoryFile(sources, path, callback) {
         if (callback) {
             callback(err, sources);
         }
-        callback = null;
+        callback = undefined;
     }
 }
 

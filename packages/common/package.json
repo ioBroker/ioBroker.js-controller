@@ -42,6 +42,7 @@
     "build": "tsc -b tsconfig.build.json"
   },
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

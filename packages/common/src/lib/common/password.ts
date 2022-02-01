@@ -34,7 +34,11 @@ import crypto from 'crypto';
 interface PasswordReturnValue {
     complexity: (password: string, callback: (isComplex: boolean) => void) => boolean;
     check: (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) => void;
-    hash: (salt: string, iterations: number, callback: (err?: Error | null, hash?: string) => void) => void;
+    hash: (
+        salt: string | null,
+        iterations: number | null,
+        callback: (err?: Error | null, hash?: string) => void
+    ) => void;
 }
 
 export const password = (pw: string): PasswordReturnValue => {
