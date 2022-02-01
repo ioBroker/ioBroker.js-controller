@@ -2041,7 +2041,7 @@ function getConfigFileName() {
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
-    if (fs.existsSync(__dirname + '/../../../../packages/controller')) {
+    if (fs.existsSync(__dirname + '/../../../../../packages/controller')) {
         // dev install -> Remove /lib
         configDir.splice(configDir.length - 3, 3);
         configDir = configDir.join('/');
@@ -2055,8 +2055,8 @@ function getConfigFileName() {
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
     if (
-        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../node_modules/${appName}.js-controller`)
+        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
     ) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 7, 7);

@@ -29,8 +29,7 @@
  *
  */
 
-import * as crypto from 'crypto';
-let versionOk: boolean;
+import crypto from 'crypto';
 
 export const password = (
     pw: string
@@ -40,35 +39,19 @@ export const password = (
     hash: (salt: string, iterations: number, callback: (err?: Error | null, hash?: string) => void) => void;
 } => {
     return {
-        hash: (salt: string, iterations: number, callback: (err?: Error | null, hash?: string) => void) => {
+        hash: (salt, iterations, callback) => {
             salt = salt || crypto.randomBytes(16).toString('hex');
             iterations = iterations || 10000;
 
-            // version 0.10 has no 'sha256' and this option must be ignored
-            if (versionOk === undefined) {
-                const version = process.version.replace('v', '');
-                versionOk = !version.startsWith('0.10.');
-            }
+            crypto.pbkdf2(pw, salt, iterations, 256, 'sha256', (err, key) => {
+                if (err) {
+                    return callback(err);
+                }
 
-            if (versionOk) {
-                crypto.pbkdf2(pw, salt, iterations, 256, 'sha256', (err, key) => {
-                    if (err) {
-                        return callback(err);
-                    }
-
-                    callback(null, `pbkdf2$${iterations}$${key.toString('hex')}$${salt}`);
-                });
-            } else {
-                crypto.pbkdf2(pw, salt, iterations, 64, 'sha1', (err, key) => {
-                    if (err) {
-                        return callback(err);
-                    }
-
-                    callback(null, `pbkdf2$${iterations}$${key.toString('hex')}$${salt}`);
-                });
-            }
+                callback(null, `pbkdf2$${iterations}$${key.toString('hex')}$${salt}`);
+            });
         },
-        check: function (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) {
+        check: function (hashedPassword, callback) {
             if (!hashedPassword || !password) {
                 return callback(null, false);
             }
@@ -88,7 +71,7 @@ export const password = (
                 }
             });
         },
-        complexity: (password: string, callback: (isComplex: boolean) => void): boolean => {
+        complexity: (password, callback) => {
             let result = false;
             if (typeof password === 'string') {
                 result = !!(
