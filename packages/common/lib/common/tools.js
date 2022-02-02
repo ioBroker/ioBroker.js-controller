@@ -3525,14 +3525,14 @@ async function updateLicenses(objects, login, password) {
         if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
             try {
                 // get the secret to decode the password
-                const systemConfig = objects.getObjectAsync('system.config');
+                const systemConfig = await objects.getObjectAsync('system.config');
 
                 // decode the password
                 let password;
                 try {
                     password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
                 } catch (err) {
-                    throw new Error('Cannot decode password: ' + err.message);
+                    throw new Error(`Cannot decode password: ${err.message}`);
                 }
 
                 // read licenses from iobroker.net
