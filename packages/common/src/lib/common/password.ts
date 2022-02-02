@@ -56,7 +56,7 @@ export function password(pw: string): PasswordReturnValue {
             });
         },
         check: function (hashedPassword, callback) {
-            if (!hashedPassword || !password) {
+            if (!hashedPassword) {
                 return callback(null, false);
             }
             const key = hashedPassword.split('$');
