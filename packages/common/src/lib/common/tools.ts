@@ -211,7 +211,7 @@ function decryptPhrase(password: string, data: any, callback: (decrypted?: null 
  * @return true if only one host object exists
  */
 async function isSingleHost(objects: any): Promise<boolean> {
-    const res: { rows: any[] } = await objects.getObjectList({
+    const res: { rows: ioBroker.GetObjectListItem[] } = await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999'
     });
@@ -261,19 +261,8 @@ function getAppName() {
 
 function rmdirRecursiveSync(path: string): void {
     if (fs.existsSync(path)) {
-        fs.readdirSync(path).forEach(file => {
-            const curPath = `${path}/${file}`;
-            if (fs.statSync(curPath).isDirectory()) {
-                // recurse
-                rmdirRecursiveSync(curPath);
-            } else {
-                // delete file
-                fs.unlinkSync(curPath);
-            }
-        });
-        // delete (hopefully) empty folder
         try {
-            fs.rmdirSync(path);
+            fs.rmdirSync(path, { recursive: true });
         } catch (e: any) {
             console.log(`Cannot delete directory ${path}: ${e.message}`);
         }
@@ -286,9 +275,8 @@ function findIPs(): string[] {
         ownIpArr = [];
         try {
             const ifaces = os.networkInterfaces();
-            for (const dev of Object.keys(ifaces)) {
-                // @ts-expect-error TODO: typings messed here or error
-                ifaces[dev].forEach(details => !details.internal && ownIpArr.push(details.address));
+            for (const iface of Object.values(ifaces)) {
+                iface?.forEach(details => !details.internal && ownIpArr.push(details.address));
             }
         } catch (e: any) {
             console.error(`Can not find local IPs: ${e.message}`);
@@ -302,10 +290,10 @@ function findPath(path: string, url: string) {
     if (!url) {
         return '';
     }
-    if (url.substring(0, 'http://'.length) === 'http://' || url.substring(0, 'https://'.length) === 'https://') {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
         return url;
     } else {
-        if (path.substring(0, 'http://'.length) === 'http://' || path.substring(0, 'https://'.length) === 'https://') {
+        if (path.startsWith('http://') || path.startsWith('https://')) {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
             if (url[0] === '/') {
