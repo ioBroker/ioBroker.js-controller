@@ -78,12 +78,11 @@ export function password(pw: string): PasswordReturnValue {
         complexity: (password, callback) => {
             let result = false;
             if (typeof password === 'string') {
-                result = !!(
+                result =
                     password.length >= 8 && // minimum length is 8
-                    password.match(/\d/) && // contains at least one digit
-                    password.match(/[a-z]/) && // contains at least one lower case letter
-                    password.match(/[A-Z]/)
-                ); // contains at least one upper case letter
+                    /\d/.test(password) && // contains at least one digit
+                    /[a-z]/.test(password) && // contains at least one lower case letter
+                    /[A-Z]/.test(password); // contains at least one upper case letter
             }
             typeof callback === 'function' && callback(result);
             return result; // true if the complexity OK
