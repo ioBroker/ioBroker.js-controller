@@ -2727,9 +2727,9 @@ function validateGeneralObjectProperties(obj, extend) {
                     );
                 }
 
-                if (obj.common.type !== 'number') {
+                if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.min is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
                     );
                 }
             }
@@ -2741,9 +2741,9 @@ function validateGeneralObjectProperties(obj, extend) {
                     );
                 }
 
-                if (obj.common.type !== 'number') {
+                if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.max is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
                     );
                 }
 
