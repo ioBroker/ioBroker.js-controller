@@ -229,10 +229,13 @@ async function isSingleHost(objects: any): Promise<boolean> {
  * @return true if one or more hosts running else false
  */
 async function isHostRunning(objects: any, states: any): Promise<boolean> {
-    const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+    const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'host', {
+        startkey: '',
+        endkey: '\u9999'
+    });
 
     for (const hostObj of res.rows) {
-        const state = await states.getState(`${hostObj.id}.alive`);
+        const state: ioBroker.State = await states.getState(`${hostObj.id}.alive`);
         if (state.val) {
             return true;
         }
@@ -469,9 +472,9 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
                     uuid: _uuid
                 }
             },
-            (err: any) => {
+            (err: Error | null) => {
                 if (err) {
-                    console.error(`object system.meta.uuid cannot be updated: ${err}`);
+                    console.error(`object system.meta.uuid cannot be updated: ${err.message}`);
                     callback();
                 } else {
                     _objects.getObject('system.meta.uuid', (err: any, obj: Record<string, any>) => {
@@ -496,7 +499,7 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
  */
 async function createUuid(objects: any): Promise<void | string> {
     const promiseCheckPassword = new Promise<void>(resolve =>
-        objects.getObject('system.user.admin', (err: any, obj: Record<string, any>) => {
+        objects.getObject('system.user.admin', (err: Error | null, obj: ioBroker.UserObject) => {
             if (err || !obj) {
                 // Default Password for user 'admin' is application name in lower case
                 password(exports.default.appName).hash(null, null, (err, res) => {
@@ -529,7 +532,7 @@ async function createUuid(objects: any): Promise<void | string> {
         })
     );
     const promiseCheckUuid = new Promise<void | string>(resolve =>
-        objects.getObject('system.meta.uuid', (err: any, obj: Record<string, any>) => {
+        objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
             if (!err && obj && obj.native && obj.native.uuid) {
                 const PROBLEM_UUIDS = [
                     'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
@@ -1967,8 +1970,8 @@ async function getHostInfo(
         data.Platform = 'OSX';
     }
 
-    const systemConfig = await objects.getObjectAsync('system.config');
-    const systemRepos = await objects.getObjectAsync('system.repositories');
+    const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
+    const systemRepos: ioBroker.Object = await objects.getObjectAsync('system.repositories');
 
     // Check if repositories exists
     const allRepos: Record<string, any> = {};
@@ -2273,7 +2276,7 @@ function setQualityForInstance(objects: any, states: any, namespace: string, q: 
                 endkey: `${namespace}.\u9999`,
                 include_docs: false
             },
-            (err: any, _states: any) => {
+            (err: Error | null, _states?: GetObjectViewResult) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -2928,6 +2931,19 @@ async function getAllInstances(adapters: string[], objects: any): Promise<string
     return instances;
 }
 
+interface GetObjectViewResult {
+    rows: ioBroker.GetObjectViewItem[];
+}
+
+interface GetObjectViewInstanceEntry {
+    id: string;
+    value: ioBroker.InstanceObject;
+}
+
+interface GetObjectViewInstanceResult {
+    rows: GetObjectViewInstanceEntry[];
+}
+
 /**
  * Get all existing enums
  *
@@ -2936,7 +2952,7 @@ async function getAllInstances(adapters: string[], objects: any): Promise<string
  */
 async function getAllEnums(objects: any): Promise<Record<string, any>> {
     const allEnums: Record<string, any> = {};
-    const res = await objects.getObjectViewAsync('system', 'enum', {
+    const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999'
     });
@@ -3212,9 +3228,9 @@ function removePreservedProperties(
  * @param namespace - adapter namespace + id, e.g. hm-rpc.0
  * @param createWakeup - indicator to create wakeup object too
  */
-function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): Record<string, any>[] {
+function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
-    const objs = [
+    const objs: ioBroker.StateObject[] = [
         {
             _id: `${id}.alive`,
             type: 'state',
@@ -3444,10 +3460,10 @@ function getLogger(log: any): Record<string, (msg: string) => void> {
 }
 
 interface OrderedInstancesObject {
-    1: string[];
-    2: string[];
-    3: string[];
-    admin: string[];
+    1: ioBroker.InstanceObject[];
+    2: ioBroker.InstanceObject[];
+    3: ioBroker.InstanceObject[];
+    admin: ioBroker.InstanceObject[];
 }
 
 /**
@@ -3457,7 +3473,11 @@ interface OrderedInstancesObject {
  * @param logger - logger object
  * @param logPrefix prefix for logging
  */
-async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPrefix = ''): Promise<string[]> {
+async function getInstancesOrderedByStartPrio(
+    objects: any,
+    logger: any,
+    logPrefix = ''
+): Promise<Record<string, any>[]> {
     const instances: OrderedInstancesObject = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
@@ -3466,7 +3486,7 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
         logPrefix += ' ';
     }
 
-    let doc: Record<string, any> = { rows: [] };
+    let doc: GetObjectViewInstanceResult = { rows: [] };
     try {
         doc = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
@@ -3487,6 +3507,7 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
             if (row && row.value) {
                 if (row.value._id.startsWith('system.adapter.admin')) {
                     instances.admin.push(row.value);
+                    /** @ts-expect-error https://github.com/ioBroker/adapter-core/issues/427 */
                 } else if (row.value.common && allowedTiers.includes(parseInt(row.value.common.tier))) {
                     /** @ts-expect-error we have checked that it is in allowedTiers, thus it is valid */
                     instances[row.value.common.tier].push(row.value);
@@ -3596,12 +3617,12 @@ async function updateLicenses(objects: any, login: string, password: string): Pr
         return _readLicenses(login, password);
     } else {
         // get actual object
-        const systemLicenses = await objects.getObjectAsync('system.licenses');
+        const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
         // If password and login exist
         if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
             try {
                 // get the secret to decode the password
-                const systemConfig = await objects.getObjectAsync('system.config');
+                const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
 
                 // decode the password
                 let password;
