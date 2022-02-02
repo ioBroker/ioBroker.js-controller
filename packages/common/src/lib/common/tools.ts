@@ -843,12 +843,40 @@ function scanDirectory(dirName: string, list: Record<string, any>, regExp: RegEx
     }
 }
 
+interface Multilingual {
+    en: string;
+    de?: string;
+    ru?: string;
+    pt?: string;
+    nl?: string;
+    fr?: string;
+    it?: string;
+    es?: string;
+    pl?: string;
+    'zh-cn'?: string;
+}
+
+interface GetInstalledInfoReponse {
+    controller?: boolean;
+    version?: string;
+    icon?: string;
+    title?: string;
+    titleLang?: Multilingual;
+    desc?: Multilingual;
+    platform?: string;
+    keywords?: string[];
+    readme?: string;
+    runningVersion?: string;
+    license?: string;
+    licenseUrl?: string;
+}
+
 /**
  * Get list of all installed adapters and controller version on this host
  * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
  * @returns object containing information about installed host
  */
-function getInstalledInfo(hostRunningVersion?: string): Record<string, any> {
+function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoReponse {
     const result: Record<string, any> = {};
     const fullPath = getControllerDir();
 
@@ -1170,11 +1198,7 @@ function _checkRepositoryFileHash(
 function getRepositoryFile(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
-    callback: (
-        err?: undefined | Error | null,
-        sources?: Record<string, any>,
-        actualHash?: string | number | undefined
-    ) => void
+    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number | undefined) => void
 ): void {
     let sources: Record<string, any> = {};
     let path = '';
@@ -1272,6 +1296,12 @@ function getRepositoryFile(
     }
 }
 
+interface RepositoryFile {
+    json: Record<string, any>;
+    changed: boolean;
+    hash: string;
+}
+
 /**
  * Read on repository
  *
@@ -1287,8 +1317,8 @@ async function getRepositoryFileAsync(
     url: string,
     hash: string,
     force: boolean,
-    _actualRepo: Record<string, any>
-): Promise<Record<string, any>> {
+    _actualRepo: RepositoryFile
+): Promise<RepositoryFile> {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
@@ -1309,7 +1339,7 @@ async function getRepositoryFileAsync(
         } else {
             const agent = `${exports.default.appName}, RND: ${randomID}, Node:${process.version}, V:${
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
-                require('../../../package.json').version
+                require('@iobroker/js-controller-common/package.json').version
             }`;
             data = await axios({
                 url,
@@ -1420,7 +1450,7 @@ function getHostName(): string {
     try {
         const configName = getConfigFileName();
         const config = fs.readJSONSync(configName);
-        return config.system ? config.system.hostname || os.hostname() : os.hostname();
+        return config.system?.hostname || os.hostname();
     } catch {
         return os.hostname();
     }
@@ -2091,7 +2121,7 @@ function getConfigFileName(): string {
         configDir.splice(configDir.length - 8, 8);
         configDir = configDir.join('/');
     } else {
-        // If installed with npm -> remove node_modules/@iobroker/js-controller-common/lib/common
+        // If installed with npm -> remove node_modules/@iobroker/js-controller-common/src/lib/common
         configDir.splice(configDir.length - 6, 6);
         configDir = configDir.join('/');
     }
@@ -2402,10 +2432,9 @@ function decrypt(key: string, value: string): string {
         return decryptLegacy(key, value);
     }
 
-    const textParts: string[] = value.split(':');
+    const textParts = value.split(':', 3) as [algorithm: string, iv: string, encryptedText: string];
     const iv = Buffer.from(textParts[1], 'hex');
-    /** @ts-expect-error ts doesn't know if an element is in */
-    const encryptedText = Buffer.from(textParts.pop(), 'hex');
+    const encryptedText = Buffer.from(textParts[2], 'hex');
     const decipher = crypto.createDecipheriv('aes-192-cbc', Buffer.from(key, 'hex'), iv);
 
     const decrypted = Buffer.concat([decipher.update(encryptedText), decipher.final()]);
