@@ -68,7 +68,7 @@ function copyAttributes(
     newObj: Record<string, any>,
     originalObj?: Record<string, any>,
     isNonEdit?: boolean
-) {
+): void {
     for (const attr of Object.keys(oldObj)) {
         if (
             oldObj[attr] === undefined ||
@@ -110,7 +110,7 @@ function copyAttributes(
  * @param newObject destination object
  *
  */
-function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>) {
+function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>): boolean {
     if (!oldObject) {
         return true;
     }
@@ -180,7 +180,7 @@ function upToDate(repoVersion: string, installedVersion: string): boolean {
 }
 
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
-function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void) {
+function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
     const decipher = crypto.createDecipher('aes192', password);
 
     try {
@@ -258,7 +258,7 @@ function getAppName() {
     return 'iobroker';
 }
 
-function rmdirRecursiveSync(path: string) {
+function rmdirRecursiveSync(path: string): void {
     if (fs.existsSync(path)) {
         fs.readdirSync(path).forEach(file => {
             const curPath = `${path}/${file}`;
@@ -279,7 +279,7 @@ function rmdirRecursiveSync(path: string) {
     }
 }
 
-function findIPs() {
+function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
         lastCalculationOfIps = Date.now();
         ownIpArr = [];
@@ -590,7 +590,7 @@ async function createUuid(objects: any): Promise<void | string> {
 }
 
 // Download file to tmp or return file name directly
-function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void) {
+function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): void {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -604,7 +604,7 @@ function getFile(urlOrPath: string, fileName: string, callback: (file?: string) 
             headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
         })
             .on('error', error => {
-                console.log(`Cannot download "${tmpFile}": ${error}`);
+                console.log(`Cannot download "${tmpFile}": ${error.message}`);
                 callback && callback(tmpFile);
             })
             .pipe(fs.createWriteStream(tmpFile))
@@ -636,7 +636,7 @@ function getJson(
     urlOrPath: string,
     agent: string,
     callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void
-) {
+): void {
     if (typeof agent === 'function') {
         callback = agent;
         agent = '';
@@ -940,7 +940,7 @@ function getIoPack(
     sources: Record<string, any>,
     name: string,
     callback: (sources: Record<string, any>, name: string) => void
-) {
+): void {
     getJson(sources[name].meta, '', ioPack => {
         const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
         if (!ioPack) {
@@ -1186,7 +1186,7 @@ function getRepositoryFile(
         sources?: Record<string, any>,
         actualHash?: string | number | undefined
     ) => void
-) {
+): void {
     let sources: Record<string, any> = {};
     let path = '';
 
@@ -1294,7 +1294,12 @@ function getRepositoryFile(
  * @param _actualRepo Actual repository
  *
  */
-async function getRepositoryFileAsync(url: string, hash: string, force: boolean, _actualRepo: Record<string, any>) {
+async function getRepositoryFileAsync(
+    url: string,
+    hash: string,
+    force: boolean,
+    _actualRepo: Record<string, any>
+): Promise<Record<string, any>> {
     let _hash;
     if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
         _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
@@ -1417,9 +1422,8 @@ function getAdapterDir(adapter: string): string | null {
 /**
  * Returns the hostname of this host
  * @alias getHostName
- * @returns {string}
  */
-function getHostName() {
+function getHostName(): string {
     // for tests purposes
     if (process.env.IOB_HOSTNAME) {
         return process.env.IOB_HOSTNAME;
@@ -1445,7 +1449,7 @@ function getHostName() {
  *            }
  *        </code></pre>
  */
-function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void) {
+function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { exec } = require('child_process');
 
@@ -1657,7 +1661,7 @@ interface GetDiskInfoResponse {
 function getDiskInfo(
     platform: NodeJS.Platform,
     callback: (err?: Error | null, infos?: null | GetDiskInfoResponse) => void
-) {
+): void {
     platform = platform || os.platform();
     if (diskusage) {
         try {
@@ -1800,6 +1804,11 @@ function getCertificateInfo(cert: string): null | Record<string, any> {
     }
 }
 
+interface DefaultCertificates {
+    defaultPrivate: string;
+    defaultPublic: string;
+}
+
 /**
  * Returns default SSL certificates (private and public)
  *
@@ -1810,18 +1819,17 @@ function getCertificateInfo(cert: string): null | Record<string, any> {
  *
  * @alias generateDefaultCertificates
  * @memberof Tools
- * @returns {{ defaultPrivate: any[];defaultPublic: any[] }}
  *        <pre><code>
  *            const certificates = tools.generateDefaultCertificates();
  *        </code></pre>
  */
-function generateDefaultCertificates() {
+function generateDefaultCertificates(): DefaultCertificates {
     const pki = forge.pki;
     const keys = pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
     const cert = pki.createCertificate();
 
     cert.publicKey = keys.publicKey;
-    cert.serialNumber = '0' + makeid(17);
+    cert.serialNumber = `0${makeid(17)}`;
     cert.validity.notBefore = new Date();
     cert.validity.notAfter = new Date();
     cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
@@ -2004,9 +2012,9 @@ async function getHostInfo(
 
 /**
  * Finds the controller root directory
- * @returns {string} absolute path to controller dir
+ * @returns absolute path to controller dir
  */
-function getControllerDir() {
+function getControllerDir(): string | undefined {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
     for (const pkg of possibilities) {
         try {
@@ -2050,7 +2058,7 @@ function getControllerDir() {
 
 // All paths are returned always relative to /node_modules/' + module.exports.appName + '.js-controller
 // the result has always "/" as last symbol
-function getDefaultDataDir() {
+function getDefaultDataDir(): string {
     if (_isDevInstallation()) {
         // dev install
         return './data/';
@@ -2069,10 +2077,8 @@ function getDefaultDataDir() {
 
 /**
  * Returns the path of the config file
- *
- * @returns {string}
  */
-function getConfigFileName() {
+function getConfigFileName(): string {
     let configDir: string | string[] = __dirname.replace(/\\/g, '/');
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
@@ -2238,7 +2244,7 @@ function promisifyNoError(
  * Creates and executes an array of promises in sequence
  * @param promiseFactories An array of promise-returning functions
  */
-function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]) {
+function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]): any[] {
     /** @ts-expect-error don't want to touch now */
     return promiseFactories.reduce((promise, factory) => {
         return promise.then(result => factory().then(Array.prototype.concat.bind(result)));
@@ -2260,7 +2266,7 @@ function _setQualityForStates(states: any, keys: string[], quality: number, cb: 
     }
 }
 
-function setQualityForInstance(objects: any, states: any, namespace: string, q: number) {
+function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
             'system',
@@ -2451,7 +2457,7 @@ function isArray(it: any): it is any[] {
  * @param ms The number of milliseconds for monitoring
  * @param cb Callback function to call for each new value
  */
-function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => void) {
+function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => void): void {
     let start = hrtime();
 
     let timeout = setTimeout(check, ms);
@@ -2498,11 +2504,11 @@ function formatAliasValue(
     state: Record<string, any>,
     logger: any,
     logNamespace?: string
-) {
-    logNamespace = logNamespace ? logNamespace + ' ' : '';
+): Record<string, any> | null {
+    logNamespace = logNamespace ? `${logNamespace} ` : '';
 
     if (!state) {
-        return;
+        return null;
     }
     if (state.val === undefined) {
         state.val = null;
@@ -3036,7 +3042,7 @@ function execAsync(command: string, execOptions?: ExecOptions): ChildProcessProm
  * @param input The stream to read from
  * @param output The stream to write into
  */
-function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream) {
+function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream): void {
     const rl = createInterface({
         input,
         crlfDelay: Infinity
@@ -3173,7 +3179,7 @@ function removePreservedProperties(
     preserve: Record<string, any>,
     oldObj: Record<string, any>,
     newObj: Record<string, any>
-) {
+): void {
     for (const prop of Object.keys(preserve)) {
         if (isObject(preserve[prop]) && isObject(newObj[prop])) {
             // we have to go one step deeper
@@ -3407,7 +3413,7 @@ function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): 
     return objs;
 }
 
-function getLogger(log: any) {
+function getLogger(log: any): Record<string, any> {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3489,7 +3495,6 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
  * @param modeEffective - add effective mode
  * @param modePermitted - add permitted mode
  * @param modeInherited - add inherited mode
- * @returns {Promise<void>}
  */
 async function setExecutableCapabilities(
     execPath: string,
@@ -3497,7 +3502,7 @@ async function setExecutableCapabilities(
     modeEffective?: boolean,
     modePermitted?: boolean,
     modeInherited?: boolean
-) {
+): Promise<void> {
     // if not linux do nothing and silently exit
     if (os.platform() === 'linux') {
         if (Array.isArray(capabilities) && capabilities.length) {
