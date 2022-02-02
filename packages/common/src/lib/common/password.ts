@@ -31,7 +31,7 @@
 
 import crypto from 'crypto';
 
-interface PasswordReturnValue {
+export interface PasswordReturnValue {
     complexity: (password: string, callback: (isComplex: boolean) => void) => boolean;
     check: (hashedPassword: string, callback: (err?: Error | null, isOk?: boolean) => void) => void;
     hash: (

@@ -114,7 +114,7 @@ class NotifierTransport extends Transport {
     }
 }
 
-interface UserOptions {
+export interface UserOptions {
     level: string;
     maxDays: number;
     noStdout: boolean;
