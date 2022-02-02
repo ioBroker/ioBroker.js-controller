@@ -2252,18 +2252,13 @@ function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[])
     }, Promise.resolve([]));
 }
 
-function _setQualityForStates(states: any, keys: string[], quality: number, cb: () => void) {
-    if (!keys || !states || !keys.length) {
-        cb();
-    } else {
-        states.setState(
-            keys.shift(),
-            {
-                ack: null,
-                q: quality
-            },
-            () => setImmediate(_setQualityForStates, states, keys, quality, cb)
-        );
+async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
+    for (const key of keys) {
+        try {
+            await states.setState(key, { ack: null, q: quality });
+        } catch {
+            // ignore
+        }
     }
 }
 
@@ -2293,11 +2288,12 @@ function setQualityForInstance(objects: any, states: any, namespace: string, q: 
                         }
                     }
                     // read all values for IDs
-                    states.getStates(keys, (_err: Error | null, values: Record<string, ioBroker.State>) => {
+                    states.getStates(keys, async (_err: Error | null, values: Record<string, ioBroker.State>) => {
                         // Get only states, that have ack = true
                         keys = keys.filter((_id, i) => values[i] && values[i].ack);
                         // update quality code of the states to new one
-                        _setQualityForStates(states, keys, q, () => resolve());
+                        await _setQualityForStates(states, keys, q);
+                        resolve();
                     });
                 }
             }
