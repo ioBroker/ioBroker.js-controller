@@ -477,7 +477,7 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
                     console.error(`object system.meta.uuid cannot be updated: ${err.message}`);
                     callback();
                 } else {
-                    _objects.getObject('system.meta.uuid', (err: any, obj: Record<string, any>) => {
+                    _objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
                         if (obj.native.uuid !== _uuid) {
                             console.error('object system.meta.uuid cannot be updated: write protected');
                         } else {
@@ -546,7 +546,7 @@ async function createUuid(objects: any): Promise<void | string> {
                 // if COMMON invalid docker uuid
                 if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
                     // Read vis license
-                    objects.getObject('system.adapter.vis.0', (err: any, licObj: Record<string, any>) => {
+                    objects.getObject('system.adapter.vis.0', (err: Error | null, licObj: ioBroker.Object) => {
                         if (!licObj || !licObj.native || !licObj.native.license) {
                             // generate new UUID
                             updateUuid('', objects, _uuid => resolve(_uuid));
@@ -1781,6 +1781,7 @@ function getCertificateInfo(cert: string): null | Record<string, any> {
             cert = fs.readFileSync(cert, 'utf8');
         }
 
+        // cast to any we use some undocumented? properties below
         const crt: any = pki.certificateFromPem(cert);
 
         info = {
@@ -2292,7 +2293,7 @@ function setQualityForInstance(objects: any, states: any, namespace: string, q: 
                         }
                     }
                     // read all values for IDs
-                    states.getStates(keys, (_err: any, values: Record<string, any>) => {
+                    states.getStates(keys, (_err: Error | null, values: Record<string, ioBroker.State>) => {
                         // Get only states, that have ack = true
                         keys = keys.filter((_id, i) => values[i] && values[i].ack);
                         // update quality code of the states to new one
@@ -2433,7 +2434,7 @@ function decrypt(key: string, value: string): string {
 /**
  * Tests whether the given variable is a real object and not an Array
  * @param it The variable to test
- * @returns true  if it is Record<string, any>
+ * @returns true if it is Record<string, any>
  */
 function isObject(it: any): it is Record<string, any> {
     // This is necessary because:
