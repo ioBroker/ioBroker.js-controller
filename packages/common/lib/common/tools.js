@@ -2826,10 +2826,18 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     // common.states needs to be a real object or an array
-    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+    if (
+        obj.common.states !== null &&
+        obj.common.states !== undefined &&
+        !isObject(obj.common.states) &&
+        !Array.isArray(obj.common.states)
+    ) {
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
         );
+    } else if (obj.common.states === null && !extend) {
+        // extend only allowed on extend
+        throw new Error(`obj.common.states has an invalid type! Expected non-null "object", received "null"`);
     }
 }
 
