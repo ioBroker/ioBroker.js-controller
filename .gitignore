@@ -30,3 +30,4 @@ ioBroker
 /packages/controller/ioBroker.pid
 /packages/controller/iob-vendor.json
 build
+lerna-debug.log
