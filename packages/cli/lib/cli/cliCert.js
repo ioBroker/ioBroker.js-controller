@@ -36,18 +36,25 @@ module.exports = class CLICert extends CLICommand {
      * create new private certificate
      * @param {any[]} [_args]
      */
-    create(_args) {
+    async create(_args) {
         const id = 'system.certificates';
         const certPropPath = 'native.certificates';
 
         const certificates = tools.generateDefaultCertificates();
         if (certificates) {
             console.log(JSON.stringify(certificates, null, 2));
-            // use the command `iobroker object set ...` to update the certificate
-            const objectsCommandArgs = ['set', id, certPropPath + '=' + JSON.stringify(certificates)];
-            const objectsCommand = new CLIObjects(this.options);
-            objectsCommand.execute(objectsCommandArgs);
+            for (const cert of Object.keys(certificates)) {
+                await new Promise(resolve => {
+                    // use the command `iobroker object set ...` to update the certificate
+                    console.log(`Update certificate ${cert}`);
+                    const objectsCommandArgs = ['set', id, `${certPropPath}.${cert}=${certificates[cert]}`];
+                    const objectsCommand = new CLIObjects({ ...this.options, callback: resolve });
+                    objectsCommand.execute(objectsCommandArgs);
+                });
+            }
         }
+
+        this.options.callback();
     }
 
     // view-command

@@ -2727,9 +2727,9 @@ function validateGeneralObjectProperties(obj, extend) {
                     );
                 }
 
-                if (obj.common.type !== 'number') {
+                if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.min is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
                     );
                 }
             }
@@ -2741,9 +2741,9 @@ function validateGeneralObjectProperties(obj, extend) {
                     );
                 }
 
-                if (obj.common.type !== 'number') {
+                if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.max is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
                     );
                 }
 
@@ -2826,10 +2826,18 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     // common.states needs to be a real object or an array
-    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+    if (
+        obj.common.states !== null &&
+        obj.common.states !== undefined &&
+        !isObject(obj.common.states) &&
+        !Array.isArray(obj.common.states)
+    ) {
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
         );
+    } else if (obj.common.states === null && !extend) {
+        // extend only allowed on extend
+        throw new Error(`obj.common.states has an invalid type! Expected non-null "object", received "null"`);
     }
 }
 
@@ -3517,14 +3525,14 @@ async function updateLicenses(objects, login, password) {
         if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
             try {
                 // get the secret to decode the password
-                const systemConfig = objects.getObjectAsync('system.config');
+                const systemConfig = await objects.getObjectAsync('system.config');
 
                 // decode the password
                 let password;
                 try {
                     password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
                 } catch (err) {
-                    throw new Error('Cannot decode password: ' + err.message);
+                    throw new Error(`Cannot decode password: ${err.message}`);
                 }
 
                 // read licenses from iobroker.net
