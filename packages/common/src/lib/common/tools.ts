@@ -499,7 +499,7 @@ async function createUuid(objects: any): Promise<void | string> {
         objects.getObject('system.user.admin', (err: any, obj: Record<string, any>) => {
             if (err || !obj) {
                 // Default Password for user 'admin' is application name in lower case
-                password(module.exports.appName).hash(null, null, (err, res) => {
+                password(exports.default.appName).hash(null, null, (err, res) => {
                     err && console.error(err);
 
                     // Create user here and not in io-package.js because of hash password
@@ -601,7 +601,7 @@ function getFile(urlOrPath: string, fileName: string, callback: (file?: string) 
         request({
             url: urlOrPath,
             gzip: true,
-            headers: { 'User-Agent': `${module.exports.appName}, RND: ${randomID}, N: ${process.version}` }
+            headers: { 'User-Agent': `${exports.default.appName}, RND: ${randomID}, N: ${process.version}` }
         })
             .on('error', error => {
                 console.log(`Cannot download "${tmpFile}": ${error.message}`);
@@ -822,7 +822,7 @@ function scanDirectory(dirName: string, list: Record<string, any>, regExp: RegEx
                     const ioPackage = fs.readJSONSync(fileIoName);
                     const package_ = fs.existsSync(fileName) ? fs.readJSONSync(fileName) : {};
                     const localIcon = ioPackage.common.icon
-                        ? `/adapter/${dirs[i].substring(module.exports.appName.length + 1)}/${ioPackage.common.icon}`
+                        ? `/adapter/${dirs[i].substring(exports.default.appName.length + 1)}/${ioPackage.common.icon}`
                         : '';
                     //noinspection JSUnresolvedVariable
                     list[ioPackage.common.name] = {
@@ -878,7 +878,7 @@ function getInstalledInfo(hostRunningVersion?: string): Record<string, any> {
     const package_ = fs.existsSync(path.join(fullPath, 'package.json'))
         ? fs.readJSONSync(path.join(fullPath, 'package.json'))
         : {};
-    const regExp = new RegExp(`^${module.exports.appName}\\.`, 'i');
+    const regExp = new RegExp(`^${exports.default.appName}\\.`, 'i');
 
     if (ioPackage) {
         result[ioPackage.common.name] = {
@@ -914,7 +914,7 @@ function getInstalledInfo(hostRunningVersion?: string): Record<string, any> {
  * @param callback
  */
 function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void) {
-    adapter = adapter ? `${module.exports.appName}.${adapter}` : module.exports.appName;
+    adapter = adapter ? `${exports.default.appName}.${adapter}` : exports.default.appName;
     adapter = adapter.toLowerCase();
 
     const cliCommand = `npm view ${adapter}@latest version`;
@@ -1318,7 +1318,7 @@ async function getRepositoryFileAsync(
         if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
-            const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
+            const agent = `${exports.default.appName}, RND: ${randomID}, Node:${process.version}, V:${
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 require('../../../package.json').version
             }`;
@@ -1364,7 +1364,7 @@ async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
     };
 
     try {
-        await axios.post(`http://download.${module.exports.appName}.net/diag.php`, params, config);
+        await axios.post(`http://download.${exports.default.appName}.net/diag.php`, params, config);
     } catch (e: any) {
         console.log(`Cannot send diag info: ${e.message}`);
     }
@@ -1379,7 +1379,7 @@ async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
  * @returns path to adapter directory or null if no directory found
  */
 function getAdapterDir(adapter: string): string | null {
-    const appName = module.exports.appName;
+    const appName = exports.default.appName;
 
     // snip off 'iobroker.'
     if (adapter.startsWith(appName + '.')) {
@@ -1898,9 +1898,6 @@ function generateDefaultCertificates(): DefaultCertificates {
     const pem_pkey = pki.privateKeyToPem(keys.privateKey);
     const pem_cert = pki.certificateToPem(cert);
 
-    //console.log(pem_pkey);
-    //console.log(pem_cert);
-
     return {
         defaultPrivate: pem_pkey,
         defaultPublic: pem_cert
@@ -2056,7 +2053,7 @@ function getControllerDir(): string | undefined {
     }
 }
 
-// All paths are returned always relative to /node_modules/' + module.exports.appName + '.js-controller
+// All paths are returned always relative to /node_modules/' + exports.default.appName + '.js-controller
 // the result has always "/" as last symbol
 function getDefaultDataDir(): string {
     if (_isDevInstallation()) {
@@ -2064,7 +2061,7 @@ function getDefaultDataDir(): string {
         return './data/';
     }
 
-    const appName = module.exports.appName.toLowerCase();
+    const appName = exports.default.appName.toLowerCase();
 
     // if debugging with npm5
     if (fs.existsSync(`${__dirname}/../../../node_modules/${appName}.js-controller`)) {
@@ -2081,7 +2078,7 @@ function getDefaultDataDir(): string {
 function getConfigFileName(): string {
     let configDir: string | string[] = __dirname.replace(/\\/g, '/');
     configDir = configDir.split('/');
-    const appName = module.exports.appName.toLowerCase();
+    const appName = exports.default.appName.toLowerCase();
 
     if (_isDevInstallation()) {
         // dev install -> Remove /lib
@@ -3462,7 +3459,7 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
         });
     } catch (e: any) {
         if (e.message && e.message.startsWith('Cannot find ')) {
-            logger.error(`${logPrefix} _design/system missing - call node ${module.exports.appName}.js setup`);
+            logger.error(`${logPrefix} _design/system missing - call node ${exports.default.appName}.js setup`);
         } else {
             logger.error(`${logPrefix} Can not get instances: ${e.message}`);
         }
