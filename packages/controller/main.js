@@ -3486,8 +3486,8 @@ function checkVersion(name, version, instances) {
  * Chceks if alle dependencies of an adapter are satisfied
  *
  * @param {string} id - instance id of the requiring instance (only used for logging)
- * @param {string[]|object[]|string} deps - same host dependencies as defined in io-pack
- * @param {string[]|object[]|string} globalDeps - global dependencies, as defined in io-pack
+ * @param {string[] | Record<string, string>[] | string | Record<string, string>} deps - same host dependencies as defined in io-pack
+ * @param {string[] | Record<string, string>[] | string | Record<string, string>} globalDeps - global dependencies, as defined in io-pack
  * @returns {Promise<void>}
  */
 async function checkVersions(id, deps, globalDeps) {

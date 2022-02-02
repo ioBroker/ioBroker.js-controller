@@ -22,10 +22,12 @@ import events from 'events';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 
-const ERROR_NOT_FOUND = 'Not exists';
-const ERROR_EMPTY_OBJECT = 'null object';
-const ERROR_NO_OBJECT = 'no object';
-const ERROR_DB_CLOSED = 'DB closed';
+export enum ERRORS {
+    ERROR_NOT_FOUND = 'Not exists',
+    ERROR_EMPTY_OBJECT = 'null object',
+    ERROR_NO_OBJECT = 'no object',
+    ERROR_DB_CLOSED = 'DB closed'
+}
 
 events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
@@ -48,7 +50,7 @@ let ownIpArr: string[] = [];
 // · " :!#$%&()+=@^{}|~" (for legacy reasons)
 //
 /** All characters that may not appear in an object ID. */
-const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
+export const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 
 /**
  * recursively copy values from old object to new one
@@ -108,7 +110,7 @@ function copyAttributes(
  * @param newObject destination object
  *
  */
-function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>): boolean {
+export function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>): boolean {
     if (!oldObject) {
         return true;
     }
@@ -172,13 +174,13 @@ function checkNonEditable(oldObject: Record<string, any>, newObject: Record<stri
  * @param installedVersion
  * @throws {Error} if version is invalid
  */
-function upToDate(repoVersion: string, installedVersion: string): boolean {
+export function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version
     return semver.gte(installedVersion, repoVersion);
 }
 
 // TODO: this is only here for backward compatibility, if MULTIHOST password was still setup with old decryption
-function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
+export function decryptPhrase(password: string, data: any, callback: (decrypted?: null | string) => void): void {
     const decipher = crypto.createDecipher('aes192', password);
 
     try {
@@ -210,7 +212,7 @@ function decryptPhrase(password: string, data: any, callback: (decrypted?: null 
  * @param objects the objects db
  * @return true if only one host object exists
  */
-async function isSingleHost(objects: any): Promise<boolean> {
+export async function isSingleHost(objects: any): Promise<boolean> {
     const res: { rows: ioBroker.GetObjectListItem[] } = await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999'
@@ -226,7 +228,7 @@ async function isSingleHost(objects: any): Promise<boolean> {
  * @param states the states db
  * @return true if one or more hosts running else false
  */
-async function isHostRunning(objects: any, states: any): Promise<boolean> {
+export async function isHostRunning(objects: any, states: any): Promise<boolean> {
     const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'host', {
         startkey: '',
         endkey: '\u9999'
@@ -259,7 +261,9 @@ function getAppName() {
     return 'iobroker';
 }
 
-function rmdirRecursiveSync(path: string): void {
+export const appName = getAppName();
+
+export function rmdirRecursiveSync(path: string): void {
     if (fs.existsSync(path)) {
         try {
             fs.rmdirSync(path, { recursive: true });
@@ -269,7 +273,7 @@ function rmdirRecursiveSync(path: string): void {
     }
 }
 
-function findIPs(): string[] {
+export function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
         lastCalculationOfIps = Date.now();
         ownIpArr = [];
@@ -483,12 +487,12 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
  * @param objects - objects DB
  * @return uuid if successfully created/updated
  */
-async function createUuid(objects: any): Promise<void | string> {
+export async function createUuid(objects: any): Promise<void | string> {
     const promiseCheckPassword = new Promise<void>(resolve =>
         objects.getObject('system.user.admin', (err: Error | null, obj: ioBroker.UserObject) => {
             if (err || !obj) {
                 // Default Password for user 'admin' is application name in lower case
-                password(exports.default.appName).hash(null, null, (err, res) => {
+                password(appName).hash(null, null, (err, res) => {
                     err && console.error(err);
 
                     // Create user here and not in io-package.js because of hash password
@@ -579,7 +583,7 @@ async function createUuid(objects: any): Promise<void | string> {
 }
 
 // Download file to tmp or return file name directly
-function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): void {
+export function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): void {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -590,7 +594,7 @@ function getFile(urlOrPath: string, fileName: string, callback: (file?: string) 
         request({
             url: urlOrPath,
             gzip: true,
-            headers: { 'User-Agent': `${exports.default.appName}, RND: ${randomID}, N: ${process.version}` }
+            headers: { 'User-Agent': `${appName}, RND: ${randomID}, N: ${process.version}` }
         })
             .on('error', error => {
                 console.log(`Cannot download "${tmpFile}": ${error.message}`);
@@ -737,7 +741,7 @@ function getJson(
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
  */
-async function getJsonAsync(urlOrPath: string, agent: string): Promise<Record<string, any> | null> {
+export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Record<string, any> | null> {
     agent = agent || '';
 
     let sources = {};
@@ -811,7 +815,7 @@ function scanDirectory(dirName: string, list: Record<string, any>, regExp: RegEx
                     const ioPackage = fs.readJSONSync(fileIoName);
                     const package_ = fs.existsSync(fileName) ? fs.readJSONSync(fileName) : {};
                     const localIcon = ioPackage.common.icon
-                        ? `/adapter/${dirs[i].substring(exports.default.appName.length + 1)}/${ioPackage.common.icon}`
+                        ? `/adapter/${dirs[i].substring(appName.length + 1)}/${ioPackage.common.icon}`
                         : '';
                     //noinspection JSUnresolvedVariable
                     list[ioPackage.common.name] = {
@@ -876,7 +880,7 @@ interface GetInstalledInfoReponse {
  * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
  * @returns object containing information about installed host
  */
-function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoReponse {
+export function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoReponse {
     const result: Record<string, any> = {};
     const fullPath = getControllerDir();
 
@@ -895,7 +899,7 @@ function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoReponse 
     const package_ = fs.existsSync(path.join(fullPath, 'package.json'))
         ? fs.readJSONSync(path.join(fullPath, 'package.json'))
         : {};
-    const regExp = new RegExp(`^${exports.default.appName}\\.`, 'i');
+    const regExp = new RegExp(`^${appName}\\.`, 'i');
 
     if (ioPackage) {
         result[ioPackage.common.name] = {
@@ -931,7 +935,7 @@ function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoReponse 
  * @param callback
  */
 function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void) {
-    adapter = adapter ? `${exports.default.appName}.${adapter}` : exports.default.appName;
+    adapter = adapter ? `${appName}.${adapter}` : appName;
     adapter = adapter.toLowerCase();
 
     const cliCommand = `npm view ${adapter}@latest version`;
@@ -1195,7 +1199,7 @@ function _checkRepositoryFileHash(
  * @param callback function (err, sources, actualHash) { }
  *
  */
-function getRepositoryFile(
+export function getRepositoryFile(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
     callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number | undefined) => void
@@ -1313,7 +1317,7 @@ interface RepositoryFile {
  * @param _actualRepo Actual repository
  *
  */
-async function getRepositoryFileAsync(
+export async function getRepositoryFileAsync(
     url: string,
     hash: string,
     force: boolean,
@@ -1337,7 +1341,7 @@ async function getRepositoryFileAsync(
         if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
-            const agent = `${exports.default.appName}, RND: ${randomID}, Node:${process.version}, V:${
+            const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 require('@iobroker/js-controller-common/package.json').version
             }`;
@@ -1372,7 +1376,7 @@ async function getRepositoryFileAsync(
  *
  * @param obj - diagnosis object
  */
-async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
+export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
     const objStr = JSON.stringify(obj);
     console.log(`Send diag info: ${objStr}`);
     const params = new URLSearchParams();
@@ -1383,7 +1387,7 @@ async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
     };
 
     try {
-        await axios.post(`http://download.${exports.default.appName}.net/diag.php`, params, config);
+        await axios.post(`http://download.${appName}.net/diag.php`, params, config);
     } catch (e: any) {
         console.log(`Cannot send diag info: ${e.message}`);
     }
@@ -1397,9 +1401,7 @@ async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
  * @param adapter name of the adapter, e.g. hm-rpc
  * @returns path to adapter directory or null if no directory found
  */
-function getAdapterDir(adapter: string): string | null {
-    const appName = exports.default.appName;
-
+export function getAdapterDir(adapter: string): string | null {
     // snip off 'iobroker.'
     if (adapter.startsWith(appName + '.')) {
         adapter = adapter.substring(appName.length + 1);
@@ -1442,7 +1444,7 @@ function getAdapterDir(adapter: string): string | null {
  * Returns the hostname of this host
  * @alias getHostName
  */
-function getHostName(): string {
+export function getHostName(): string {
     // for tests purposes
     if (process.env.IOB_HOSTNAME) {
         return process.env.IOB_HOSTNAME;
@@ -1534,7 +1536,10 @@ interface InstallNodeModuleOptions {
  * @param npmUrl Which node module to install
  * @param options Options for the installation
  */
-async function installNodeModule(npmUrl: string, options: InstallNodeModuleOptions = {}): Promise<CommandResult> {
+export async function installNodeModule(
+    npmUrl: string,
+    options: InstallNodeModuleOptions = {}
+): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
@@ -1582,7 +1587,7 @@ interface UninstallNodeModuleOptions {
  * @param packageName Which node module to uninstall
  * @param options Options for the installation
  */
-async function uninstallNodeModule(
+export async function uninstallNodeModule(
     packageName: string,
     options: UninstallNodeModuleOptions = {}
 ): Promise<CommandResult> {
@@ -1628,7 +1633,7 @@ interface RebuildNodeModulesOptions {
  * If `options.cwd` is given, the directory must contain a lockfile.
  * @param options Options for the rebuild
  */
-async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
+export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
@@ -1781,7 +1786,7 @@ const getDiskInfoAsync = promisify(getDiskInfo);
  * @param cert
  * @return certificate information object
  */
-function getCertificateInfo(cert: string): null | Record<string, any> {
+export function getCertificateInfo(cert: string): null | Record<string, any> {
     let info: Record<string, any> | null = null;
 
     if (!cert) {
@@ -1843,7 +1848,7 @@ interface DefaultCertificates {
  *            const certificates = tools.generateDefaultCertificates();
  *        </code></pre>
  */
-function generateDefaultCertificates(): DefaultCertificates {
+export function generateDefaultCertificates(): DefaultCertificates {
     const pki = forge.pki;
     const keys = pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
     const cert = pki.createCertificate();
@@ -1952,7 +1957,7 @@ function makeid(length: number) {
  *            }
  *        </code></pre>
  */
-async function getHostInfo(
+export async function getHostInfo(
     objects: any,
     callback: (result?: Record<string, any>) => void
 ): Promise<Record<string, any>> {
@@ -2031,7 +2036,7 @@ async function getHostInfo(
  * Finds the controller root directory
  * @returns absolute path to controller dir
  */
-function getControllerDir(): string | undefined {
+export function getControllerDir(): string | undefined {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
     for (const pkg of possibilities) {
         try {
@@ -2073,49 +2078,49 @@ function getControllerDir(): string | undefined {
     }
 }
 
-// All paths are returned always relative to /node_modules/' + exports.default.appName + '.js-controller
+// All paths are returned always relative to /node_modules/' + appName + '.js-controller
 // the result has always "/" as last symbol
-function getDefaultDataDir(): string {
+export function getDefaultDataDir(): string {
     if (_isDevInstallation()) {
         // dev install
         return './data/';
     }
 
-    const appName = exports.default.appName.toLowerCase();
+    const _appName = appName.toLowerCase();
 
     // if debugging with npm5
-    if (fs.existsSync(`${__dirname}/../../../node_modules/${appName}.js-controller`)) {
-        return `../${appName}-data/`;
+    if (fs.existsSync(`${__dirname}/../../../node_modules/${_appName}.js-controller`)) {
+        return `../${_appName}-data/`;
     } else {
         // If installed with npm
-        return `../../${appName}-data/`;
+        return `../../${_appName}-data/`;
     }
 }
 
 /**
  * Returns the path of the config file
  */
-function getConfigFileName(): string {
+export function getConfigFileName(): string {
     let configDir: string | string[] = __dirname.replace(/\\/g, '/');
     configDir = configDir.split('/');
-    const appName = exports.default.appName.toLowerCase();
+    const _appName = appName.toLowerCase();
 
     if (_isDevInstallation()) {
         // dev install -> Remove /lib
         configDir.splice(configDir.length - 4, 4);
         configDir = configDir.join('/');
         configDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${configDir}/conf/${appName}.json`)) {
-            return `${configDir}/conf/${appName}.json`;
+        if (fs.existsSync(`${configDir}/conf/${_appName}.json`)) {
+            return `${configDir}/conf/${_appName}.json`;
         } else {
-            return `${configDir}/data/${appName}.json`;
+            return `${configDir}/data/${_appName}.json`;
         }
     }
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
     if (
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName.toLowerCase()}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
+        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${_appName.toLowerCase()}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${_appName}.js-controller`)
     ) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configDir.splice(configDir.length - 8, 8);
@@ -2126,7 +2131,7 @@ function getConfigFileName(): string {
         configDir = configDir.join('/');
     }
 
-    return `${configDir}/${appName}-data/${appName}.json`;
+    return `${configDir}/${_appName}-data/${_appName}.json`;
 }
 
 /**
@@ -2153,7 +2158,7 @@ function sliceArgs(argsObj: IArguments, startIndex = 0) {
  * you can combine them into one object by passing the names as an array.
  * Otherwise the Promise will resolve with an array
  */
-function promisify(
+export function promisify(
     fn: (...args: any[]) => void,
     context?: any,
     returnArgNames?: string[]
@@ -2211,7 +2216,7 @@ function promisify(
  * you can combine them into one object by passing the names as an array.
  * Otherwise the Promise will resolve with an array
  */
-function promisifyNoError(
+export function promisifyNoError(
     fn: (...args: any[]) => void,
     context?: any,
     returnArgNames?: string[]
@@ -2261,7 +2266,7 @@ function promisifyNoError(
  * Creates and executes an array of promises in sequence
  * @param promiseFactories An array of promise-returning functions
  */
-function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]): any[] {
+export function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]): any[] {
     /** @ts-expect-error don't want to touch now */
     return promiseFactories.reduce((promise, factory) => {
         return promise.then(result => factory().then(Array.prototype.concat.bind(result)));
@@ -2278,7 +2283,7 @@ async function _setQualityForStates(states: any, keys: string[], quality: number
     }
 }
 
-function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
+export function setQualityForInstance(objects: any, states: any, namespace: string, q: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
             'system',
@@ -2321,7 +2326,7 @@ function setQualityForInstance(objects: any, states: any, namespace: string, q: 
  * Converts ioB pattern into regex.
  * @param pattern - Regex string to use it in new RegExp(pattern)
  */
-function pattern2RegEx(pattern: string): string {
+export function pattern2RegEx(pattern: string): string {
     pattern = (pattern || '').toString();
 
     const startsWithWildcard = pattern[0] === '*';
@@ -2363,7 +2368,7 @@ function captureStackTrace(wrapperName: string): string {
  * Appends the stack trace generated by `captureStackTrace` to the given string
  * @param str - The string to append the stack trace to
  */
-function appendStackTrace(str: string): string {
+export function appendStackTrace(str: string): string {
     // Convert anything that isn't a string into a string
     if (typeof str !== 'string') {
         str = String(str);
@@ -2406,7 +2411,7 @@ function decryptLegacy(key: string, value: string): string {
  * @param key - Secret key
  * @param value - value to decrypt
  */
-function encrypt(key: string, value: string): string {
+export function encrypt(key: string, value: string): string {
     if (!/^[0-9a-f]{48}$/.test(key)) {
         // key length is not matching for AES-192-CBC or key is no valid hex - fallback to old encryption
         return encryptLegacy(key, value);
@@ -2426,7 +2431,7 @@ function encrypt(key: string, value: string): string {
  * @param key - Secret key
  * @param value - value to decrypt
  */
-function decrypt(key: string, value: string): string {
+export function decrypt(key: string, value: string): string {
     // if not encrypted as aes-192 or key not a valid 48 digit hex -> fallback
     if (!value.startsWith(`$/aes-192-cbc:`) || !/^[0-9a-f]{48}$/.test(key)) {
         return decryptLegacy(key, value);
@@ -2447,7 +2452,7 @@ function decrypt(key: string, value: string): string {
  * @param it The variable to test
  * @returns true if it is Record<string, any>
  */
-function isObject(it: any): it is Record<string, any> {
+export function isObject(it: any): it is Record<string, any> {
     // This is necessary because:
     // typeof null === 'object'
     // typeof [] === 'object'
@@ -2460,7 +2465,7 @@ function isObject(it: any): it is Record<string, any> {
  * Tests whether the given variable is really an Array
  * @param it The variable to test
  */
-function isArray(it: any): it is any[] {
+export function isArray(it: any): it is any[] {
     return Array.isArray(it); // from node 0.1 is a part of engine
 }
 
@@ -2469,7 +2474,7 @@ function isArray(it: any): it is any[] {
  * @param ms The number of milliseconds for monitoring
  * @param cb Callback function to call for each new value
  */
-function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => void): void {
+export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => void): void {
     let start = hrtime();
 
     let timeout = setTimeout(check, ms);
@@ -2510,7 +2515,7 @@ function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => void): v
  * @param logger Logging object
  * @param logNamespace optional Logging namespace
  */
-function formatAliasValue(
+export function formatAliasValue(
     sourceObj: Record<string, any>,
     targetObj: Record<string, any>,
     state: Record<string, any>,
@@ -2650,7 +2655,7 @@ function formatAliasValue(
  * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
  *
  */
-async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
+export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
     if (!allEnums) {
         allEnums = await getAllEnums(objects);
     }
@@ -2685,7 +2690,7 @@ async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<
  * @param dependencies dependencies array or single dependency
  * @returns parsedDeps parsed dependencies
  */
-function parseDependencies(
+export function parseDependencies(
     dependencies: string[] | Record<string, string>[] | string | Record<string, string>
 ): Record<string, string> {
     let adapters: Record<string, string> = {};
@@ -2719,7 +2724,7 @@ function parseDependencies(
  * @param extend (optional) if true checks will allow more optional cases for extendObject calls
  * @throws Error if a property has the wrong type or obj.type is non existing
  */
-function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
+export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
     // designs have no type but have attribute views
     if (obj && obj.type === undefined && obj.views !== undefined) {
         return;
@@ -2919,7 +2924,7 @@ function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
  * @param objects class redis objects
  * @returns array of IDs
  */
-async function getAllInstances(adapters: string[], objects: any): Promise<string[]> {
+export async function getAllInstances(adapters: string[], objects: any): Promise<string[]> {
     const instances: string[] = [];
 
     for (let i = 0; i < adapters.length; i++) {
@@ -3014,7 +3019,10 @@ async function getInstances(adapter: string, objects: any, withObjects: boolean)
  * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-function maybeCallback(callback?: (...args: any[]) => void | null | undefined, ...args: any[]): Promise<any> | void {
+export function maybeCallback(
+    callback?: (...args: any[]) => void | null | undefined,
+    ...args: any[]
+): Promise<any> | void {
     if (typeof callback === 'function') {
         // if function we call it with given param
         setImmediate(callback, ...args);
@@ -3032,7 +3040,7 @@ function maybeCallback(callback?: (...args: any[]) => void | null | undefined, .
  * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-function maybeCallbackWithError(
+export function maybeCallbackWithError(
     callback: ((error: Error | null | undefined, ...args: any[]) => void) | null | undefined,
     error: Error | string | null | undefined,
     ...args: any[]
@@ -3041,7 +3049,7 @@ function maybeCallbackWithError(
         // if it's not a real Error, we convert it into one
         error = new Error(error);
     }
-    const isDbError = error ? error.message === ERROR_DB_CLOSED : false;
+    const isDbError = error ? error.message === ERRORS.ERROR_DB_CLOSED : false;
 
     if (typeof callback === 'function') {
         setImmediate(callback, error, ...args);
@@ -3059,7 +3067,7 @@ function maybeCallbackWithError(
  * @param execOptions The options for child_process.exec
  * @returns child process promise
  */
-function execAsync(command: string, execOptions?: ExecOptions): ChildProcessPromise {
+export function execAsync(command: string, execOptions?: ExecOptions): ChildProcessPromise {
     const defaultOptions = {
         // we do not want to show the node.js window on Windows
         windowsHide: true,
@@ -3090,7 +3098,7 @@ function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStrea
  * @param adapter - adapter name of the adapter, e.g. hm-rpc
  * @returns full file name
  */
-async function resolveAdapterMainFile(adapter: string): Promise<string> {
+export async function resolveAdapterMainFile(adapter: string): Promise<string> {
     const adapterDir = getAdapterDir(adapter);
     if (!adapterDir) {
         throw new Error(`Could not find adapter dir of ${adapter}`);
@@ -3134,7 +3142,7 @@ async function resolveAdapterMainFile(adapter: string): Promise<string> {
  * @param mainFile
  * @returns default node args for cli
  */
-function getDefaultNodeArgs(mainFile: string): string[] {
+export function getDefaultNodeArgs(mainFile: string): string[] {
     if (mainFile.endsWith('.ts')) {
         return ['-r', '@alcalzone/esbuild-register'];
     }
@@ -3148,7 +3156,7 @@ const shortGithubUrlRegex = /^(?<user>[^/]+)\/(?<repo>[^#]+)(?:#(?<commit>.+))?$
  * Tests if the given URL matches the format <githubname>/<githubrepo>[#<commit-ish>]
  * @param url The URL to parse
  */
-function isShortGithubUrl(url: string): boolean {
+export function isShortGithubUrl(url: string): boolean {
     return shortGithubUrlRegex.test(url);
 }
 
@@ -3162,7 +3170,7 @@ interface ParsedGithubUrl {
  * Tries to parse an URL in the format <githubname>/<githubrepo>[#<commit-ish>] into its separate parts
  * @param url The URL to parse
  */
-function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
+export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
     const match = shortGithubUrlRegex.exec(url);
     if (!match || !match.groups) {
         return null;
@@ -3182,7 +3190,7 @@ const githubPathnameRegex =
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
  * @param pathname The pathname part of a Github URL
  */
-function isGithubPathname(pathname: string): boolean {
+export function isGithubPathname(pathname: string): boolean {
     return githubPathnameRegex.test(pathname);
 }
 
@@ -3190,7 +3198,7 @@ function isGithubPathname(pathname: string): boolean {
  * Tries to a github pathname format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz|.tar.gz]] into its separate parts
  * @param pathname The pathname part of a Github URL
  */
-function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
+export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
     const match = githubPathnameRegex.exec(pathname);
     if (!match || !match.groups) {
         return null;
@@ -3208,7 +3216,7 @@ function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
  * @param oldObj - old object
  * @param newObj - new object
  */
-function removePreservedProperties(
+export function removePreservedProperties(
     preserve: Record<string, any>,
     oldObj: Record<string, any>,
     newObj: Record<string, any>
@@ -3240,7 +3248,7 @@ function removePreservedProperties(
  * @param namespace - adapter namespace + id, e.g. hm-rpc.0
  * @param createWakeup - indicator to create wakeup object too
  */
-function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): ioBroker.StateObject[] {
+export function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
     const objs: ioBroker.StateObject[] = [
         {
@@ -3446,7 +3454,7 @@ function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): 
     return objs;
 }
 
-function getLogger(log: any): Record<string, (msg: string) => void> {
+export function getLogger(log: any): Record<string, (msg: string) => void> {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3485,7 +3493,7 @@ interface OrderedInstancesObject {
  * @param logger - logger object
  * @param logPrefix prefix for logging
  */
-async function getInstancesOrderedByStartPrio(
+export async function getInstancesOrderedByStartPrio(
     objects: any,
     logger: any,
     logPrefix = ''
@@ -3506,7 +3514,7 @@ async function getInstancesOrderedByStartPrio(
         });
     } catch (e: any) {
         if (e.message && e.message.startsWith('Cannot find ')) {
-            logger.error(`${logPrefix} _design/system missing - call node ${exports.default.appName}.js setup`);
+            logger.error(`${logPrefix} _design/system missing - call node ${appName}.js setup`);
         } else {
             logger.error(`${logPrefix} Can not get instances: ${e.message}`);
         }
@@ -3542,7 +3550,7 @@ async function getInstancesOrderedByStartPrio(
  * @param modePermitted - add permitted mode
  * @param modeInherited - add inherited mode
  */
-async function setExecutableCapabilities(
+export async function setExecutableCapabilities(
     execPath: string,
     capabilities: string[],
     modeEffective?: boolean,
@@ -3623,7 +3631,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
  */
-async function updateLicenses(objects: any, login: string, password: string): Promise<any[]> {
+export async function updateLicenses(objects: any, login: string, password: string): Promise<any[]> {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
         return _readLicenses(login, password);
@@ -3712,7 +3720,11 @@ interface GZipFileOptions {
  * @param outputFilename The filename of the output file where the gzipped content should be written to
  * @param options Options for the compression
  */
-function compressFileGZip(inputFilename: string, outputFilename: string, options: GZipFileOptions = {}): Promise<void> {
+export function compressFileGZip(
+    inputFilename: string,
+    outputFilename: string,
+    options: GZipFileOptions = {}
+): Promise<void> {
     const { deleteInput = false } = options;
 
     return new Promise((resolve, reject) => {
@@ -3742,80 +3754,3 @@ function compressFileGZip(inputFilename: string, outputFilename: string, options
         input.pipe(compress).pipe(output);
     });
 }
-
-export default {
-    appName: getAppName(),
-    createUuid,
-    decryptPhrase,
-    execAsync,
-    findIPs,
-    generateDefaultCertificates,
-    getAdapterDir,
-    getInstances,
-    getAllInstances,
-    getCertificateInfo,
-    getConfigFileName,
-    getDefaultDataDir,
-    getDefaultNodeArgs,
-    getFile,
-    getHostInfo,
-    getHostName,
-    getInstalledInfo,
-    getInstanceIndicatorObjects,
-    getIoPack,
-    getJson,
-    getJsonAsync,
-    getInstancesOrderedByStartPrio,
-    getRepositoryFile,
-    getRepositoryFileAsync,
-    getSystemNpmVersion,
-    installNodeModule,
-    uninstallNodeModule,
-    rebuildNodeModules,
-    isObject,
-    isArray,
-    maybeCallback,
-    maybeCallbackWithError,
-    promisify,
-    promisifyNoError,
-    promiseSequence,
-    removeIdFromAllEnums,
-    resolveAdapterMainFile,
-    rmdirRecursiveSync,
-    parseDependencies,
-    sendDiagInfo,
-    upToDate,
-    validateGeneralObjectProperties,
-    checkNonEditable,
-    copyAttributes,
-    getDiskInfo,
-    setQualityForInstance,
-    appendStackTrace,
-    captureStackTrace,
-    pattern2RegEx,
-    encrypt,
-    decrypt,
-    measureEventLoopLag,
-    formatAliasValue,
-    pipeLinewise,
-    isShortGithubUrl,
-    parseShortGithubUrl,
-    setExecutableCapabilities,
-    isGithubPathname,
-    isSingleHost,
-    isHostRunning,
-    parseGithubPathname,
-    removePreservedProperties,
-    FORBIDDEN_CHARS,
-    getControllerDir,
-    getLogger,
-    getAllEnums,
-    updateLicenses,
-    compressFileGZip,
-    ERRORS: {
-        ERROR_NOT_FOUND: ERROR_NOT_FOUND,
-        ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,
-        ERROR_NO_OBJECT: ERROR_NO_OBJECT,
-        ERROR_DB_CLOSED: ERROR_DB_CLOSED
-    }
-};
