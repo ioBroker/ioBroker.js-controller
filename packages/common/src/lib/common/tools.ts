@@ -265,8 +265,19 @@ export const appName = getAppName();
 
 export function rmdirRecursiveSync(path: string): void {
     if (fs.existsSync(path)) {
+        fs.readdirSync(path).forEach(file => {
+            const curPath = path + '/' + file;
+            if (fs.statSync(curPath).isDirectory()) {
+                // recurse
+                rmdirRecursiveSync(curPath);
+            } else {
+                // delete file
+                fs.unlinkSync(curPath);
+            }
+        });
+        // delete (hopefully) empty folder
         try {
-            fs.rmdirSync(path, { recursive: true });
+            fs.rmdirSync(path);
         } catch (e: any) {
             console.log(`Cannot delete directory ${path}: ${e.message}`);
         }
