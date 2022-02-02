@@ -9,12 +9,12 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const tools = require('./tools');
-const hostname = tools.getHostName();
+import tools from './tools';
 import Transport from 'winston-transport';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
+
+const hostname = tools.getHostName();
 
 let SysLog: typeof import('winston-syslog').Syslog | undefined;
 try {
