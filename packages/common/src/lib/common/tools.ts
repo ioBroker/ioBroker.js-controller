@@ -20,11 +20,16 @@ import crypto from 'crypto';
 import type { ExecOptions } from 'child_process';
 import { exec } from 'child_process';
 import { URLSearchParams } from 'url';
+import events from 'events';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('events').EventEmitter.prototype._maxListeners = 100;
+const ERROR_NOT_FOUND = 'Not exists';
+const ERROR_EMPTY_OBJECT = 'null object';
+const ERROR_NO_OBJECT = 'no object';
+const ERROR_DB_CLOSED = 'DB closed';
+
+events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
 let diskusage: typeof import('diskusage');
 const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
@@ -54,7 +59,7 @@ const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  * @memberof tools
  * @param oldObj source object
  * @param newObj destination object
- * @param object originalObj optional object for read __no_change__ values
+ * @param originalObj optional object for read __no_change__ values
  * @param isNonEdit optional indicator if copy is in nonEdit part
  *
  */
@@ -208,7 +213,7 @@ function decryptPhrase(password: string, data: any, callback: (decrypted?: null 
  * @return true if only one host object exists
  */
 async function isSingleHost(objects: any): Promise<boolean> {
-    const res: { rows: GetObjectListItem[] } = await objects.getObjectList({
+    const res: { rows: any[] } = await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999'
     });
@@ -1753,14 +1758,13 @@ const getDiskInfoAsync = promisify(getDiskInfo);
  * @param cert
  * @return certificate information object
  */
-function getCertificateInfo(cert: string) {
-    let info = null;
+function getCertificateInfo(cert: string): null | Record<string, any> {
+    let info: Record<string, any> | null = null;
 
     if (!cert) {
         return null;
     }
-    // https://github.com/digitalbazaar/forge
-    forge.options.usePureJavaScript = false;
+
     const pki = forge.pki;
 
     let certFile = null;
@@ -1770,7 +1774,7 @@ function getCertificateInfo(cert: string) {
             cert = fs.readFileSync(cert, 'utf8');
         }
 
-        const crt = pki.certificateFromPem(cert);
+        const crt: any = pki.certificateFromPem(cert);
 
         info = {
             certificateFilename: certFile,
@@ -1916,6 +1920,7 @@ function makeid(length: number) {
  * @alias getHostInfo
  * @memberof Tools
  * @param objects db
+ * @param callback
  *        <pre><code>
  *            function (result) {
  *              adapter.log.debug('Info about host: ' + JSON.stringify(result, null, 2);
@@ -2255,21 +2260,21 @@ function _setQualityForStates(states: any, keys: string[], quality: number, cb: 
     }
 }
 
-function setQualityForInstance(objects, states, namespace, q) {
-    return new Promise((resolve, reject) => {
+function setQualityForInstance(objects: any, states: any, namespace: string, q: number) {
+    return new Promise<void>((resolve, reject) => {
         objects.getObjectView(
             'system',
             'state',
             {
-                startkey: namespace + '.',
-                endkey: namespace + '.\u9999',
+                startkey: `${namespace}.`,
+                endkey: `${namespace}.\u9999`,
                 include_docs: false
             },
-            (err, _states) => {
+            (err: any, _states: any) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let keys = [];
+                    let keys: string[] = [];
                     if (_states && _states.rows) {
                         for (let s = 0; s < _states.rows.length; s++) {
                             const id = _states.rows[s].id;
@@ -2281,11 +2286,11 @@ function setQualityForInstance(objects, states, namespace, q) {
                         }
                     }
                     // read all values for IDs
-                    states.getStates(keys, (_err, values) => {
+                    states.getStates(keys, (_err: any, values: Record<string, any>) => {
                         // Get only states, that have ack = true
                         keys = keys.filter((_id, i) => values[i] && values[i].ack);
                         // update quality code of the states to new one
-                        _setQualityForStates(states, keys, q, err => (err ? reject(err) : resolve()));
+                        _setQualityForStates(states, keys, q, () => resolve());
                     });
                 }
             }
@@ -2295,10 +2300,9 @@ function setQualityForInstance(objects, states, namespace, q) {
 
 /**
  * Converts ioB pattern into regex.
- * @param {string} pattern - Regex string to use it in new RegExp(pattern)
- * @returns {string}
+ * @param pattern - Regex string to use it in new RegExp(pattern)
  */
-function pattern2RegEx(pattern) {
+function pattern2RegEx(pattern: string): string {
     pattern = (pattern || '').toString();
 
     const startsWithWildcard = pattern[0] === '*';
@@ -2311,10 +2315,9 @@ function pattern2RegEx(pattern) {
 
 /**
  * Generates a stack trace that can be added to log outputs to trace their source
- * @param {string} [wrapperName = 'captureStackTrace'] The wrapper function after which the stack trace should begin
- * @returns {string}
+ * @param [wrapperName = 'captureStackTrace'] The wrapper function after which the stack trace should begin
  */
-function captureStackTrace(wrapperName) {
+function captureStackTrace(wrapperName: string): string {
     if (typeof wrapperName !== 'string') {
         wrapperName = 'captureStackTrace';
     }
@@ -2339,10 +2342,9 @@ function captureStackTrace(wrapperName) {
 
 /**
  * Appends the stack trace generated by `captureStackTrace` to the given string
- * @param {string} str - The string to append the stack trace to
- * @returns {string}
+ * @param str - The string to append the stack trace to
  */
-function appendStackTrace(str) {
+function appendStackTrace(str: string): string {
     // Convert anything that isn't a string into a string
     if (typeof str !== 'string') {
         str = String(str);
@@ -2355,11 +2357,10 @@ function appendStackTrace(str) {
 
 /**
  * Encrypt the password/value with given key
- * @param {string} key - Secret key
- * @param {string} value - value to encrypt
- * @returns {string}
+ * @param key - Secret key
+ * @param value - value to encrypt
  */
-function encryptLegacy(key, value) {
+function encryptLegacy(key: string, value: string): string {
     let result = '';
     for (let i = 0; i < value.length; i++) {
         result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
@@ -2369,11 +2370,10 @@ function encryptLegacy(key, value) {
 
 /**
  * Decrypt the password/value with given key
- * @param {string} key - Secret key
- * @param {string} value - value to decrypt
- * @returns {string}
+ * @param key - Secret key
+ * @param value - value to decrypt
  */
-function decryptLegacy(key, value) {
+function decryptLegacy(key: string, value: string): string {
     let result = '';
     for (let i = 0; i < value.length; i++) {
         result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
@@ -2384,11 +2384,10 @@ function decryptLegacy(key, value) {
 /**
  * encrypts a value by a given key via AES-192-CBC
  *
- * @param {string} key - Secret key
- * @param {string} value - value to decrypt
- * @returns {string}
+ * @param key - Secret key
+ * @param value - value to decrypt
  */
-function encrypt(key, value) {
+function encrypt(key: string, value: string): string {
     if (!/^[0-9a-f]{48}$/.test(key)) {
         // key length is not matching for AES-192-CBC or key is no valid hex - fallback to old encryption
         return encryptLegacy(key, value);
@@ -2405,18 +2404,18 @@ function encrypt(key, value) {
 /**
  * encrypts a value by a given key via AES-192-CBC
  *
- * @param {string} key - Secret key
- * @param {string} value - value to decrypt
- * @returns {string}
+ * @param key - Secret key
+ * @param value - value to decrypt
  */
-function decrypt(key, value) {
+function decrypt(key: string, value: string): string {
     // if not encrypted as aes-192 or key not a valid 48 digit hex -> fallback
     if (!value.startsWith(`$/aes-192-cbc:`) || !/^[0-9a-f]{48}$/.test(key)) {
         return decryptLegacy(key, value);
     }
 
-    const textParts = value.split(':');
+    const textParts: string[] = value.split(':');
     const iv = Buffer.from(textParts[1], 'hex');
+    /** @ts-expect-error ts doesn't know if an element is in */
     const encryptedText = Buffer.from(textParts.pop(), 'hex');
     const decipher = crypto.createDecipheriv('aes-192-cbc', Buffer.from(key, 'hex'), iv);
 
@@ -2532,7 +2531,7 @@ function formatAliasValue(
                 sourceObj.min,
                 sourceObj.max
             );
-        } catch (e) {
+        } catch (e: any) {
             logger.error(
                 `${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`
             );
@@ -2562,7 +2561,7 @@ function formatAliasValue(
                 targetObj.min,
                 targetObj.max
             );
-        } catch (e) {
+        } catch (e: any) {
             logger.error(
                 `${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`
             );
@@ -3441,7 +3440,7 @@ function getLogger(log: any) {
  * @param logPrefix prefix for logging
  */
 async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPrefix = ''): Promise<any[]> {
-    const instances = { 1: [], 2: [], 3: [], admin: [] };
+    const instances: Record<string, any> = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
     if (logPrefix) {
@@ -3449,7 +3448,7 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
         logPrefix += ' ';
     }
 
-    let doc: { rows: GetObjectViewItem[] } = { rows: [] };
+    let doc: Record<string, any> = { rows: [] };
     try {
         doc = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
@@ -3485,14 +3484,20 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
 
 /**
  * Set capabilities of the given executable on Linux systems
- * @param {string} execPath - path to the executable for node you can determine it via process.execPath
- * @param {string[]} capabilities - capabilities to set, e.g. ['cap_net_admin', 'cap_net_bind_service']
- * @param {boolean} [modeEffective] - add effective mode
- * @param {boolean} [modePermitted] - add permitted mode
- * @param {boolean} [modeInherited] - add inherited mode
+ * @param execPath - path to the executable for node you can determine it via process.execPath
+ * @param capabilities - capabilities to set, e.g. ['cap_net_admin', 'cap_net_bind_service']
+ * @param modeEffective - add effective mode
+ * @param modePermitted - add permitted mode
+ * @param modeInherited - add inherited mode
  * @returns {Promise<void>}
  */
-async function setExecutableCapabilities(execPath, capabilities, modeEffective, modePermitted, modeInherited) {
+async function setExecutableCapabilities(
+    execPath: string,
+    capabilities: string[],
+    modeEffective?: boolean,
+    modePermitted?: boolean,
+    modeInherited?: boolean
+) {
     // if not linux do nothing and silently exit
     if (os.platform() === 'linux') {
         if (Array.isArray(capabilities) && capabilities.length) {
@@ -3525,13 +3530,13 @@ async function setExecutableCapabilities(execPath, capabilities, modeEffective, 
 
 /**
  * Requests the licenses from ioBroker.net
- * @param {string} login Login for ioBroker.net
- * @param {string} password Decoded password for ioBroker.net
- * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
+ * @param login Login for ioBroker.net
+ * @param password Decoded password for ioBroker.net
+ * @returns array of all licenses stored on iobroker.net
  */
-async function _readLicenses(login, password) {
+async function _readLicenses(login: string, password: string): Promise<any[]> {
     const config = {
-        headers: { Authorization: `Basic ${Buffer.from(login + ':' + password).toString('base64')}` },
+        headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
         timeout: 4000
     };
 
@@ -3540,7 +3545,7 @@ async function _readLicenses(login, password) {
         if (response.data && response.data.length) {
             const now = Date.now();
             response.data = response.data.filter(
-                license =>
+                (license: { validTill: string | number }) =>
                     !license.validTill ||
                     license.validTill === '0000-00-00 00:00:00' ||
                     new Date(license.validTill).getTime() > now
@@ -3548,7 +3553,7 @@ async function _readLicenses(login, password) {
         }
 
         return response.data;
-    } catch (err) {
+    } catch (err: any) {
         if (err.response) {
             throw new Error((err.response.data && err.response.data.error) || err.response.data || err.response.status);
         } else if (err.request) {
@@ -3562,12 +3567,12 @@ async function _readLicenses(login, password) {
 /**
  * Reads the licenses from iobroker.net
  * Reads the licenses from iobroker.net and if no login/password provided stores it in system.licenses
- * @param {object} objects Object store instance
- * @param {string} login Login for ioBroker.net
- * @param {string} password Decoded password for ioBroker.net
- * @returns {Promise<object[]>} array of all licenses stored on iobroker.net
+ * @param objects Object store instance
+ * @param login Login for ioBroker.net
+ * @param password Decoded password for ioBroker.net
+ * @returns array of all licenses stored on iobroker.net
  */
-async function updateLicenses(objects, login, password) {
+async function updateLicenses(objects: any, login: string, password: string): Promise<any[]> {
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
         return _readLicenses(login, password);
@@ -3584,7 +3589,7 @@ async function updateLicenses(objects, login, password) {
                 let password;
                 try {
                     password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
-                } catch (err) {
+                } catch (err: any) {
                     throw new Error(`Cannot decode password: ${err.message}`);
                 }
 
@@ -3592,7 +3597,7 @@ async function updateLicenses(objects, login, password) {
                 const licenses = await _readLicenses(systemLicenses.native.login, password);
                 // save licenses to system.licenses and remember the time
                 // merge the information together
-                const oldLicenses = systemLicenses.native.licenses || [];
+                const oldLicenses: any[] = systemLicenses.native.licenses || [];
                 systemLicenses.native.licenses = licenses;
                 oldLicenses.forEach(oldLicense => {
                     if (oldLicense.usedBy) {
@@ -3608,7 +3613,7 @@ async function updateLicenses(objects, login, password) {
                 // update read time
                 await objects.setObjectAsync('system.licenses', systemLicenses);
                 return licenses;
-            } catch (err) {
+            } catch (err: any) {
                 // if password is invalid
                 if (
                     err.message.includes('Authentication required') ||
@@ -3646,19 +3651,17 @@ async function updateLicenses(objects, login, password) {
     }
 }
 
-/**
- * @typedef {object} GZipFileOptions
- * @property {boolean} [deleteInput] Delete the input file after compression. Default: false.
- */
-
+interface GZipFileOptions {
+    // Delete the input file after compression. Default: false.
+    deleteInput?: boolean;
+}
 /**
  * Compresses an input file using GZip and writes it somewhere else
- * @param {string} inputFilename The filename of the input file that should be gzipped
- * @param {string} outputFilename The filename of the output file where the gzipped content should be written to
- * @param {GZipFileOptions} [options] Options for the compression
- * @returns {Promise<void>}
+ * @param inputFilename The filename of the input file that should be gzipped
+ * @param outputFilename The filename of the output file where the gzipped content should be written to
+ * @param options Options for the compression
  */
-function compressFileGZip(inputFilename, outputFilename, options = {}) {
+function compressFileGZip(inputFilename: string, outputFilename: string, options: GZipFileOptions = {}): Promise<void> {
     const { deleteInput = false } = options;
 
     return new Promise((resolve, reject) => {
@@ -3689,12 +3692,7 @@ function compressFileGZip(inputFilename, outputFilename, options = {}) {
     });
 }
 
-const ERROR_NOT_FOUND = 'Not exists';
-const ERROR_EMPTY_OBJECT = 'null object';
-const ERROR_NO_OBJECT = 'no object';
-const ERROR_DB_CLOSED = 'DB closed';
-
-module.exports = {
+export default {
     appName: getAppName(),
     createUuid,
     decryptPhrase,

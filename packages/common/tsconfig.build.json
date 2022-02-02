@@ -2,13 +2,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
+    "allowJs": false,
     "checkJs": false,
     "noEmit": false
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.js" // currently, we have js too
+    "src/**/*.ts"
   ],
   "exclude": [
     "src/**/*.test.ts"
