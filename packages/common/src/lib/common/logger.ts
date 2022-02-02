@@ -1,9 +1,3 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-/* jslint esversion: 6 */
-'use strict';
-
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
 import fs from 'fs';
@@ -136,7 +130,7 @@ interface Options {
     transports: Transport[];
 }
 
-export const logger = function (
+export function logger(
     level: string | UserOptions,
     files?: string[] | string,
     noStdout?: boolean,
@@ -162,7 +156,7 @@ export const logger = function (
         .toLowerCase()
         .includes(`${tools.appName.toLowerCase()}.js-controller/packages/`);
 
-    if (typeof level === 'object') {
+    if (tools.isObject(level)) {
         const userOptions: UserOptions = deepClone(level);
 
         level = userOptions.level;
@@ -207,7 +201,7 @@ export const logger = function (
                     }
 
                     transport.handleExceptions = false;
-                    transport.name = !fName ? tools.appName : `dailyRotateFile${fName}`;
+                    transport.name = fName ? `dailyRotateFile${fName}` : tools.appName;
                     fName++;
                     transport.filename = transport.filename.replace(/\\/g, '/');
                     if (transport.filename.match(/^\w:\/|^\//)) {
@@ -507,7 +501,7 @@ export const logger = function (
     //log.unexceptions.handle();
 
     return log;
-};
+}
 
 function getDate() {
     const ts = new Date();

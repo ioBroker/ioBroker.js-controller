@@ -1,5 +1,3 @@
-'use strict';
-
 export enum EXIT_CODES {
     NO_ERROR = 0,
     JS_CONTROLLER_STOPPED = 1, // planned stop

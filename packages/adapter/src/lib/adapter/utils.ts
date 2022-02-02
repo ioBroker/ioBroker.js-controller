@@ -1,6 +1,5 @@
 import { SYSTEM_ADMIN_USER } from './constants';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 interface idObject {
     device?: string;

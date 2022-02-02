@@ -41,7 +41,7 @@ interface PasswordReturnValue {
     ) => void;
 }
 
-export const password = (pw: string): PasswordReturnValue => {
+export function password(pw: string): PasswordReturnValue {
     return {
         hash: (salt, iterations, callback) => {
             salt = salt || crypto.randomBytes(16).toString('hex');
@@ -89,4 +89,4 @@ export const password = (pw: string): PasswordReturnValue => {
             return result; // true if the complexity OK
         }
     };
-};
+}
