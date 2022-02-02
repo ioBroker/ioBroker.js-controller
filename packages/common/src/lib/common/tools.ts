@@ -636,7 +636,7 @@ export function getFile(urlOrPath: string, fileName: string, callback: (file?: s
 }
 
 // Return content of the json file. Download it or read directly
-function getJson(
+export function getJson(
     urlOrPath: string,
     agent: string,
     callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void
@@ -1693,7 +1693,7 @@ interface GetDiskInfoResponse {
  *            }
  *        </code></pre>
  */
-function getDiskInfo(
+export function getDiskInfo(
     platform: NodeJS.Platform,
     callback: (err?: Error | null, infos?: null | GetDiskInfoResponse) => void
 ): void {
@@ -3094,7 +3094,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
  * @param input The stream to read from
  * @param output The stream to write into
  */
-function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream): void {
+export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream): void {
     const rl = createInterface({
         input,
         crlfDelay: Infinity
