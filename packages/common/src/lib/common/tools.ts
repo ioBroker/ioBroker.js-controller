@@ -9,7 +9,7 @@ import deepClone from 'deep-clone';
 import cpPromise, { ChildProcessPromise } from 'promisify-child-process';
 import { createInterface } from 'readline';
 import { PassThrough } from 'stream';
-import { detectPackageManager } from '@alcalzone/pak';
+import { CommandResult, detectPackageManager, InstallOptions } from '@alcalzone/pak';
 import { EXIT_CODES } from './exitCodes';
 import zlib from 'zlib';
 import { password } from './password';
@@ -18,6 +18,7 @@ import request from 'request';
 import axios from 'axios';
 import crypto from 'crypto';
 import type { ExecOptions } from 'child_process';
+import { exec } from 'child_process';
 import { URLSearchParams } from 'url';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
@@ -25,7 +26,7 @@ const extend = require('node.extend');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('events').EventEmitter.prototype._maxListeners = 100;
 let npmVersion: string;
-let diskusage: any;
+let diskusage: typeof import('diskusage');
 const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
@@ -315,37 +316,32 @@ function getMac(callback: (e?: Error | null, mac?: string) => void) {
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    require('child_process').exec(
-        command,
-        { windowsHide: true },
-        (err: Error | null, stdout: string, _stderr: string) => {
-            if (err) {
-                callback(err);
-            } else {
-                let macAddress;
-                let match;
-                let result = null;
+    exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
+        if (err) {
+            callback(err);
+        } else {
+            let macAddress;
+            let match;
+            let result = null;
 
-                while (true) {
-                    match = macRegex.exec(stdout);
-                    if (!match) {
-                        break;
-                    }
-                    macAddress = match[0];
-                    if (!zeroRegex.test(macAddress) && !result) {
-                        result = macAddress;
-                    }
+            while (true) {
+                match = macRegex.exec(stdout);
+                if (!match) {
+                    break;
                 }
-
-                if (result === null) {
-                    callback(new Error('could not determine the mac address from:\n' + stdout));
-                } else {
-                    callback(null, result.replace(/-/g, ':').toLowerCase());
+                macAddress = match[0];
+                if (!zeroRegex.test(macAddress) && !result) {
+                    result = macAddress;
                 }
             }
+
+            if (result === null) {
+                callback(new Error('could not determine the mac address from:\n' + stdout));
+            } else {
+                callback(null, result.replace(/-/g, ':').toLowerCase());
+            }
         }
-    );
+    });
 }
 
 /**
@@ -918,9 +914,7 @@ function getNpmVersion(adapter: string, callback?: (err: Error | null, version?:
 
     const cliCommand = `npm view ${adapter}@latest version`;
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { exec } = require('child_process');
-    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error: Error, stdout: string, _stderr: string) => {
+    exec(cliCommand, { timeout: 2000, windowsHide: true }, (error, stdout, _stderr) => {
         let version;
         if (error) {
             // command failed
@@ -1439,19 +1433,21 @@ function getHostName() {
  *
  * @alias getSystemNpmVersion
  * @memberof Tools
- * @param {function} callback return result
+ * @param callback return result
  *        <pre><code>
  *            function (err, version) {
  *              adapter.log.debug('NPM version is: ' + version);
  *            }
  *        </code></pre>
  */
-function getSystemNpmVersion(callback) {
-    const exec = require('child_process').exec;
+function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { exec } = require('child_process');
 
     // remove local node_modules\.bin dir from path
     // or we potentially get a wrong npm version
     const newEnv = Object.assign({}, process.env);
+    // @ts-expect-error TODO
     newEnv.PATH = (newEnv.PATH || newEnv.Path || newEnv.path)
         .split(path.delimiter)
         .filter(dir => {
@@ -1460,52 +1456,57 @@ function getSystemNpmVersion(callback) {
         })
         .join(path.delimiter);
     try {
-        let timeout = setTimeout(() => {
+        let timeout: NodeJS.Timeout | null = setTimeout(() => {
             timeout = null;
             if (callback) {
-                callback('timeout');
-                callback = null;
+                callback(new Error('timeout'));
+                callback = undefined;
             }
         }, 10000);
 
-        exec('npm -v', { encoding: 'utf8', env: newEnv, windowsHide: true }, (error, stdout) => {
-            //, stderr) {
-            if (timeout) {
-                clearTimeout(timeout);
-                timeout = null;
+        exec(
+            'npm -v',
+            { encoding: 'utf8', env: newEnv, windowsHide: true },
+            (error: any, stdout: string | undefined | null) => {
+                //, stderr) {
+                if (timeout) {
+                    clearTimeout(timeout);
+                    timeout = null;
+                }
+                if (stdout) {
+                    stdout = semver.valid(stdout.trim());
+                }
+                if (callback) {
+                    callback(error, stdout);
+                    callback = undefined;
+                }
             }
-            if (stdout) {
-                stdout = semver.valid(stdout.trim());
-            }
-            if (callback) {
-                callback(error, stdout);
-                callback = null;
-            }
-        });
-    } catch (e) {
+        );
+    } catch (e: any) {
         if (callback) {
             callback(e);
-            callback = null;
+            callback = undefined;
         }
     }
 }
 
 const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
-/**
- * @typedef {object} InstallNodeModuleOptions
- * @property {boolean} [unsafePerm] Whether the `--unsafe-perm` flag should be used
- * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
- * @property {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
- */
+interface InstallNodeModuleOptions {
+    // Whether the `--unsafe-perm` flag should be used
+    unsafePerm?: boolean;
+    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    debug?: boolean;
+    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    cwd?: string;
+}
 
 /**
  * Installs a node module using npm or a similar package manager
- * @param {string} npmUrl Which node module to install
- * @param {InstallNodeModuleOptions} options Options for the installation
- * @returns {Promise<import('@alcalzone/pak').CommandResult>}
+ * @param npmUrl Which node module to install
+ * @param options Options for the installation
  */
-async function installNodeModule(npmUrl, options = {}) {
+async function installNodeModule(npmUrl: string, options: InstallNodeModuleOptions = {}): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
@@ -1534,27 +1535,29 @@ async function installNodeModule(npmUrl, options = {}) {
     }
 
     // And install the module
-    /** @type {import('@alcalzone/pak').InstallOptions} */
-    const installOpts = {};
+    const installOpts: InstallOptions = {};
     if (options.unsafePerm) {
         installOpts.additionalArgs = ['--unsafe-perm'];
     }
     return pak.install([npmUrl], installOpts);
 }
 
-/**
- * @typedef {object} UninstallNodeModuleOptions
- * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
- * @property {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
- */
+interface UninstallNodeModuleOptions {
+    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    debug?: boolean;
+    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    cwd?: string;
+}
 
 /**
  * Uninstalls a node module using npm or a similar package manager
- * @param {string} packageName Which node module to uninstall
- * @param {UninstallNodeModuleOptions} options Options for the installation
- * @returns {Promise<import('@alcalzone/pak').CommandResult>}
+ * @param packageName Which node module to uninstall
+ * @param options Options for the installation
  */
-async function uninstallNodeModule(packageName, options = {}) {
+async function uninstallNodeModule(
+    packageName: string,
+    options: UninstallNodeModuleOptions = {}
+): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
@@ -1585,19 +1588,19 @@ async function uninstallNodeModule(packageName, options = {}) {
     return pak.uninstall([packageName]);
 }
 
-/**
- * @typedef {object} RebuildNodeModulesOptions
- * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
- * @property {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
- */
+interface RebuildNodeModulesOptions {
+    // Whether to include `stderr` in the output and increase the loglevel to include more than errors
+    debug?: boolean;
+    // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+    cwd?: string;
+}
 
 /**
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
- * @param {RebuildNodeModulesOptions} options Options for the rebuild
- * @returns {Promise<import('@alcalzone/pak').CommandResult>}
+ * @param options Options for the rebuild
  */
-async function rebuildNodeModules(options = {}) {
+async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManager(
         typeof options.cwd === 'string'
@@ -1628,21 +1631,29 @@ async function rebuildNodeModules(options = {}) {
     return pak.rebuild();
 }
 
+interface GetDiskInfoResponse {
+    'Disk size': number;
+    'Disk free': number;
+}
+
 /**
  * Read disk free space
  *
  * @alias getDiskInfo
  * @memberof Tools
- * @param {string} platform result of os.platform() (win32 => Windows, darwin => OSX)
- * @param {function} callback return result
+ * @param platform result of os.platform() (win32 => Windows, darwin => OSX)
+ * @param callback return result
  *        <pre><code>
  *            function (err, infos) {
  *              adapter.log.debug('Disks sizes is: ' + info['Disk size'] + ' - ' + info['Disk free']);
  *            }
  *        </code></pre>
  */
-function getDiskInfo(platform, callback) {
-    platform = platform || require('os').platform();
+function getDiskInfo(
+    platform: NodeJS.Platform,
+    callback: (err?: Error | null, infos?: null | GetDiskInfoResponse) => void
+) {
+    platform = platform || os.platform();
     if (diskusage) {
         try {
             const path = platform === 'win32' ? __dirname.substring(0, 2) : '/';
@@ -1652,9 +1663,8 @@ function getDiskInfo(platform, callback) {
             console.log(err);
         }
     } else {
-        const exec = require('child_process').exec;
         try {
-            if (platform === 'Windows' || platform === 'win32') {
+            if (platform === 'win32') {
                 // Caption  FreeSpace     Size
                 // A:
                 // C:       66993807360   214640357376
@@ -1713,7 +1723,7 @@ function getDiskInfo(platform, callback) {
                     callback && callback(error, null);
                 });
             }
-        } catch (e) {
+        } catch (e: any) {
             callback && callback(e, null);
         }
     }
@@ -1740,10 +1750,10 @@ const getDiskInfoAsync = promisify(getDiskInfo);
  *
  * @alias getCertificateInfo
  * @memberof Tools
- * @param {string} cert
+ * @param cert
  * @return certificate information object
  */
-function getCertificateInfo(cert) {
+function getCertificateInfo(cert: string) {
     let info = null;
 
     if (!cert) {
@@ -1802,13 +1812,6 @@ function getCertificateInfo(cert) {
  *        </code></pre>
  */
 function generateDefaultCertificates() {
-    // If at any time you wish to disable the use of native code, where available, for particular forge features
-    // like its secure random number generator, you may set the forge.options.usePureJavaScript flag to true. It
-    // is not recommended that you set this flag as native code is typically more performant and may have stronger
-    // security properties. It may be useful to set this flag to test certain features that you plan to run in
-    // environments that are different from your testing environment.
-    // https://github.com/digitalbazaar/forge
-    forge.options.usePureJavaScript = false;
     const pki = forge.pki;
     const keys = pki.rsa.generateKeyPair({ bits: 2048, e: 0x10001 });
     const cert = pki.createCertificate();
@@ -1892,7 +1895,7 @@ function generateDefaultCertificates() {
     };
 }
 
-function makeid(length) {
+function makeid(length: number) {
     let result = '';
     const characters = 'abcdef0123456789';
     const charactersLength = characters.length;
@@ -1912,26 +1915,29 @@ function makeid(length) {
  *
  * @alias getHostInfo
  * @memberof Tools
- * @param {object} objects
+ * @param objects db
  *        <pre><code>
- *            function (err, result) {
+ *            function (result) {
  *              adapter.log.debug('Info about host: ' + JSON.stringify(result, null, 2);
  *            }
  *        </code></pre>
  */
-async function getHostInfo(objects, callback) {
-    if (diskusage !== false) {
+async function getHostInfo(
+    objects: any,
+    callback: (result?: Record<string, any>) => void
+): Promise<Record<string, any>> {
+    if (diskusage) {
         try {
             diskusage = diskusage || require('diskusage');
         } catch {
-            diskusage = false;
+            // ignore
         }
     }
 
     const cpus = os.cpus();
     const dateObj = new Date();
 
-    const data = {
+    const data: Record<string, any> = {
         Platform: isDocker() ? 'docker' : os.platform(),
         os: process.platform,
         Architecture: os.arch(),
@@ -1955,9 +1961,9 @@ async function getHostInfo(objects, callback) {
     const systemRepos = await objects.getObjectAsync('system.repositories');
 
     // Check if repositories exists
-    const allRepos = {};
+    const allRepos: Record<string, any> = {};
     if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
-        const repos = Array.isArray(systemConfig.common.activeRepo)
+        const repos: string[] = Array.isArray(systemConfig.common.activeRepo)
             ? systemConfig.common.activeRepo
             : [systemConfig.common.activeRepo];
         repos
@@ -1972,8 +1978,8 @@ async function getHostInfo(objects, callback) {
             const version = await getSystemNpmVersionAsync();
             data.NPM = 'v' + (version || ' ---');
             npmVersion = version;
-        } catch (e) {
-            console.error('Cannot get NPM version: ' + e);
+        } catch (e: any) {
+            console.error(`Cannot get NPM version: ${e.message}`);
         }
     } else {
         data.NPM = npmVersion;
@@ -1983,8 +1989,8 @@ async function getHostInfo(objects, callback) {
         if (info) {
             Object.assign(data, info);
         }
-    } catch (e) {
-        console.error('Cannot get disk information: ' + e);
+    } catch (e: any) {
+        console.error(`Cannot get disk information: ${e.message}`);
     }
     callback && callback(data);
 
@@ -2062,8 +2068,7 @@ function getDefaultDataDir() {
  * @returns {string}
  */
 function getConfigFileName() {
-    /** @type {string|string[]} */
-    let configDir = __dirname.replace(/\\/g, '/');
+    let configDir: string | string[] = __dirname.replace(/\\/g, '/');
     configDir = configDir.split('/');
     const appName = module.exports.appName.toLowerCase();
 
@@ -2098,10 +2103,10 @@ function getConfigFileName() {
 
 /**
  * Puts all values from an `arguments` object into an array, starting at the given index
- * @param {IArguments} argsObj An `arguments` object as passed to a function
- * @param {number} [startIndex=0] The optional index to start taking the arguments from
+ * @param argsObj An `arguments` object as passed to a function
+ * @param startIndex The optional index to start taking the arguments from
  */
-function sliceArgs(argsObj, startIndex) {
+function sliceArgs(argsObj: IArguments, startIndex = 0) {
     if (startIndex === null || startIndex === undefined) {
         startIndex = 0;
     }
@@ -2114,23 +2119,27 @@ function sliceArgs(argsObj, startIndex) {
 
 /**
  * Promisifies a function which returns an error as the first argument in its callback
- * @param {Function} fn The function to promisify
- * @param {any} [context=this] (optional) The context (value of `this` to bind the function to)
- * @param {string[]} [returnArgNames] (optional) If the callback contains multiple arguments,
+ * @param fn The function to promisify
+ * @param context (optional) The context (value of `this` to bind the function to)
+ * @param returnArgNames (optional) If the callback contains multiple arguments,
  * you can combine them into one object by passing the names as an array.
  * Otherwise the Promise will resolve with an array
- * @returns {(...args: any[]) => Promise<any>}
  */
-function promisify(fn, context, returnArgNames) {
+function promisify(
+    fn: (...args: any[]) => void,
+    context?: any,
+    returnArgNames?: string[]
+): (...args: any[]) => Promise<any> {
     return function () {
+        // eslint-disable-next-line prefer-rest-params
         const args = sliceArgs(arguments);
-        // @ts-ignore we cannot know the type of `this`
+        // @ts-expect-error we cannot know the type of `this`
         context = context || this;
-        return new Promise((resolve, reject) => {
+        return new Promise<void | Record<string, any> | any[]>((resolve, reject) => {
             fn.apply(
                 context,
                 args.concat([
-                    function (error, result) {
+                    function (error: string | Error, result: any) {
                         if (error) {
                             return reject(error instanceof Error ? error : new Error(error));
                         } else {
@@ -2142,8 +2151,8 @@ function promisify(fn, context, returnArgNames) {
                                     return resolve(result);
                                 default: {
                                     // multiple values should be returned
-                                    /** @type {{} | any[]} */
-                                    let ret;
+                                    let ret: Record<string, any> | any[];
+                                    // eslint-disable-next-line prefer-rest-params
                                     const extraArgs = sliceArgs(arguments, 1);
                                     if (returnArgNames && returnArgNames.length === extraArgs.length) {
                                         // we can build an object
@@ -2168,23 +2177,27 @@ function promisify(fn, context, returnArgNames) {
 
 /**
  * Promisifies a function which does not provide an error as the first argument in its callback
- * @param {Function} fn The function to promisify
- * @param {any} [context] (optional) The context (value of `this` to bind the function to)
- * @param {string[]} [returnArgNames] (optional) If the callback contains multiple arguments,
+ * @param fn The function to promisify
+ * @param context (optional) The context (value of `this` to bind the function to)
+ * @param returnArgNames (optional) If the callback contains multiple arguments,
  * you can combine them into one object by passing the names as an array.
  * Otherwise the Promise will resolve with an array
- * @returns {(...args: any[]) => Promise<any>}
  */
-function promisifyNoError(fn, context, returnArgNames) {
+function promisifyNoError(
+    fn: (...args: any[]) => void,
+    context?: any,
+    returnArgNames?: string[]
+): (...args: any[]) => Promise<any> {
     return function () {
+        // eslint-disable-next-line prefer-rest-params
         const args = sliceArgs(arguments);
-        // @ts-ignore we cannot know the type of `this`
+        // @ts-expect-error we cannot know the type of `this`
         context = context || this;
-        return new Promise((resolve, _reject) => {
+        return new Promise<void | Record<string, any> | any[]>((resolve, _reject) => {
             fn.apply(
                 context,
                 args.concat([
-                    function (result) {
+                    function (result: any) {
                         // decide on how we want to return the callback arguments
                         switch (arguments.length) {
                             case 0: // no arguments were given
@@ -2193,8 +2206,8 @@ function promisifyNoError(fn, context, returnArgNames) {
                                 return resolve(result);
                             default: {
                                 // multiple values should be returned
-                                /** @type {{} | any[]} */
-                                let ret;
+                                let ret: Record<string, any> | any[];
+                                // eslint-disable-next-line prefer-rest-params
                                 const extraArgs = sliceArgs(arguments, 0);
                                 if (returnArgNames && returnArgNames.length === extraArgs.length) {
                                     // we can build an object
@@ -2218,15 +2231,16 @@ function promisifyNoError(fn, context, returnArgNames) {
 
 /**
  * Creates and executes an array of promises in sequence
- * @param {((...args: any[]) => Promise<any>)[]} promiseFactories An array of promise-returning functions
+ * @param promiseFactories An array of promise-returning functions
  */
-function promiseSequence(promiseFactories) {
+function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]) {
+    /** @ts-expect-error don't want to touch now */
     return promiseFactories.reduce((promise, factory) => {
         return promise.then(result => factory().then(Array.prototype.concat.bind(result)));
     }, Promise.resolve([]));
 }
 
-function _setQualityForStates(states, keys, quality, cb) {
+function _setQualityForStates(states: any, keys: string[], quality: number, cb: () => void) {
     if (!keys || !states || !keys.length) {
         cb();
     } else {
