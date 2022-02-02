@@ -3212,7 +3212,7 @@ function removePreservedProperties(
  * @param namespace - adapter namespace + id, e.g. hm-rpc.0
  * @param createWakeup - indicator to create wakeup object too
  */
-function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): any[] {
+function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): Record<string, any>[] {
     const id = `system.adapter.${namespace}`;
     const objs = [
         {
@@ -3418,7 +3418,7 @@ function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): 
     return objs;
 }
 
-function getLogger(log: any): Record<string, any> {
+function getLogger(log: any): Record<string, (msg: string) => void> {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3443,6 +3443,13 @@ function getLogger(log: any): Record<string, any> {
     return log;
 }
 
+interface OrderedInstancesObject {
+    1: string[];
+    2: string[];
+    3: string[];
+    admin: string[];
+}
+
 /**
  * Get ordered instances according to tier level
  *
@@ -3450,8 +3457,8 @@ function getLogger(log: any): Record<string, any> {
  * @param logger - logger object
  * @param logPrefix prefix for logging
  */
-async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPrefix = ''): Promise<any[]> {
-    const instances: Record<string, any> = { 1: [], 2: [], 3: [], admin: [] };
+async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPrefix = ''): Promise<string[]> {
+    const instances: OrderedInstancesObject = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
     if (logPrefix) {
@@ -3481,6 +3488,7 @@ async function getInstancesOrderedByStartPrio(objects: any, logger: any, logPref
                 if (row.value._id.startsWith('system.adapter.admin')) {
                     instances.admin.push(row.value);
                 } else if (row.value.common && allowedTiers.includes(parseInt(row.value.common.tier))) {
+                    /** @ts-expect-error we have checked that it is in allowedTiers, thus it is valid */
                     instances[row.value.common.tier].push(row.value);
                 } else {
                     // no valid tier so put it in the last one
