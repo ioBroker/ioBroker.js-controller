@@ -5,12 +5,14 @@
 -->
 
 ## __WORK IN PROGRESS__
-* (Apollon77) Optimize Stop Handling to prevent errors
-* (Apollon77) Fix upgrade all command
-* (foxriver76) fix error if controller exits before dbs are connected
+
 
 ## 4.0.0 (2021-01-31) Release Isabelle
 **WORK IN PROGRESS - Use at own risk!**
+* (foxriver76) DO not overwrite custom certificates when updating certificates on "setup first"
+* (foxriver76) Also allow min/max to be set for "mixed" type state objects
+* (foxriver76) Allow to set "null" for common.states and not log error for object (but has no effect on extend, so value does not get deleted!)
+* (foxriver76) Fix error when using certificate manager in Admin5
 
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
@@ -61,6 +63,7 @@
 * (foxriver76) Prevent start of a debug session for an instance that is already running
 * (Apollon77) Fix an edge case for file db which could lead to main and backup file being broken in strange situations with multiple crashes in a row
 * (foxriver76) make sure that admin, backitup and discovery instances are created when update of controller happens if installed and no instance exists
+* (Apollon77) Optimize Stop Handling to prevent errors
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
