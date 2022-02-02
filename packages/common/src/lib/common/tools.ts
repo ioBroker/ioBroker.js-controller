@@ -2978,7 +2978,7 @@ interface GetObjectViewInstanceResult {
  * @param objects - objects db
  * @returns Promise
  */
-async function getAllEnums(objects: any): Promise<Record<string, any>> {
+export async function getAllEnums(objects: any): Promise<Record<string, any>> {
     const allEnums: Record<string, any> = {};
     const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
@@ -3001,7 +3001,7 @@ async function getAllEnums(objects: any): Promise<Record<string, any>> {
  * @param objects objects DB
  * @param withObjects return objects instead of only ids
  */
-async function getInstances(adapter: string, objects: any, withObjects: boolean): Promise<any[] | string[]> {
+export async function getInstances(adapter: string, objects: any, withObjects: boolean): Promise<any[] | string[]> {
     const arr = await objects.getObjectListAsync({
         startkey: `system.adapter.${adapter}.`,
         endkey: `system.adapter.${adapter}.\u9999`
