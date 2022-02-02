@@ -2352,7 +2352,7 @@ function appendStackTrace(str: string): string {
     if (typeof str !== 'string') {
         str = String(str);
     }
-    if (str.substr(-1) !== '\n') {
+    if (!str.endsWith('\n')) {
         str += '\n';
     }
     return str + captureStackTrace('appendStackTrace');
