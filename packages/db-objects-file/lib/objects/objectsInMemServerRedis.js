@@ -321,7 +321,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
             if (this.knownScripts[data[0]].design) {
                 const scriptDesign = this.knownScripts[data[0]].design;
-                if (data[2] === this.namespaceObj && data.length > 4) {
+                if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
                     let scriptSearch = this.knownScripts[data[0]].search;
                     if (scriptDesign === 'system' && !scriptSearch && data[5]) {
                         scriptSearch = data[5];
