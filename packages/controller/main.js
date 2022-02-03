@@ -3013,7 +3013,11 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, { error: 'Adapter to rebuild not provided.' }, msg.callback);
                 }
             } else if (!installQueue.some(entry => entry.id === msg.message.id)) {
-                logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
+                logger.info(
+                    `${hostLogPrefix} ${msg.message.id} will be rebuilt${
+                        msg.message.rebuildArgs ? ` (Args: ${msg.message.rebuildArgs})` : ''
+                    }`
+                );
                 const installObj = { id: msg.message.id, rebuild: true };
                 if (msg.message.rebuildArgs) {
                     installObj.rebuildArgs = msg.message.rebuildArgs;
@@ -4441,6 +4445,7 @@ async function startInstance(id, wakeUp) {
                             if (
                                 text.includes('NODE_MODULE_VERSION') ||
                                 text.includes('npm rebuild') ||
+                                text.includes("Error: The module '") ||
                                 text.includes('Cannot find module')
                             ) {
                                 // only try this at second rebuild
@@ -5752,7 +5757,8 @@ function _determineRebuildArgsFromLog(text) {
     // extract rebuild path - it is always between the only two single quotes
     const matches = text.match(/'.+'/g);
 
-    if (matches && matches.length === 1) {
+    if (matches) {
+        // We only check the first path like entry
         // remove the quotes
         let rebuildPath = matches[0].replace(/'/g, '');
         if (path.isAbsolute(rebuildPath)) {
