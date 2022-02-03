@@ -57,7 +57,7 @@ const {
  * Adapter class
  *
  * How the initialization happens:
- *  initObjects => initStates => prepareInitAdapter => createInstancesObjects => initAdapter => initLogging => ready
+ *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstanceObjects => ready
  *
  * @class
  * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
@@ -201,16 +201,7 @@ function Adapter(options) {
 
             this.inited = true;
 
-            // auto oObjects
-            if (options.objects) {
-                this.getAdapterObjects(objs => {
-                    this.oObjects = objs;
-                    this.subscribeObjects('*');
-                    initStates(prepareInitAdapter);
-                });
-            } else {
-                initStates(prepareInitAdapter);
-            }
+            initStates(prepareInitAdapter);
         });
     };
 
@@ -1363,7 +1354,7 @@ function Adapter(options) {
         }
     };
 
-    const createInstancesObjects = async (instanceObj, callback) => {
+    const createInstancesObjects = async instanceObj => {
         let objs;
 
         if (instanceObj && instanceObj.common && !instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
@@ -1430,7 +1421,11 @@ function Adapter(options) {
             }
         }
 
-        extendObjects(objs, callback);
+        return new Promise(resolve => {
+            extendObjects(objs, () => {
+                resolve();
+            });
+        });
     };
 
     /**
@@ -1449,8 +1444,8 @@ function Adapter(options) {
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
-            this.getForeignState(`system.adapter.${this.namespace}.alive`, null, (err, resAlive) => {
-                this.getForeignState(`system.adapter.${this.namespace}.sigKill`, null, (err, killRes) => {
+            adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
+                adapterStates.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
                     if (killRes && killRes.val !== undefined) {
                         killRes.val = parseInt(killRes.val, 10);
                     }
@@ -1499,14 +1494,14 @@ function Adapter(options) {
                         logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' already running');
                         this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
-                        this.getForeignObject('system.adapter.' + this.namespace, null, (err, res) => {
+                        adapterObjects.getObject('system.adapter.' + this.namespace, (err, res) => {
                             if ((err || !res) && !config.isInstall) {
                                 logger.error(
                                     this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid config'
                                 );
                                 this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                             } else {
-                                createInstancesObjects(res, () => initAdapter(res));
+                                initAdapter(res);
                             }
                         });
                     }
@@ -8983,6 +8978,34 @@ function Adapter(options) {
 
                 this.adapterConfig = adapterConfig;
 
+                this.log = new Log(this.namespaceLog, config.log.level, logger);
+
+                //
+                // From here on "this" methods can be used that might log with "this.log" !!
+                // Above this line only use logger!
+                //
+
+                await createInstancesObjects(adapterConfig);
+
+                // auto oObjects
+                if (options.objects) {
+                    this.oObjects = await this.getAdapterObjectsAsync();
+                    await this.subscribeObjectsAsync('*');
+                }
+
+                // read the systemSecret
+                if (systemSecret === null) {
+                    try {
+                        const data = await this.getForeignObjectAsync('system.config', null);
+                        if (data && data.native) {
+                            systemSecret = data.native.secret;
+                        }
+                    } catch {
+                        // ignore
+                    }
+                    systemSecret = systemSecret || DEFAULT_SECRET;
+                }
+
                 // Decrypt all attributes of encryptedNative
                 const promises = [];
                 if (Array.isArray(adapterConfig.encryptedNative)) {
@@ -9008,22 +9031,8 @@ function Adapter(options) {
                     }
                 }
 
-                // read the systemSecret
-                if (systemSecret === null) {
-                    try {
-                        const data = await this.getForeignObjectAsync('system.config', null);
-                        if (data && data.native) {
-                            systemSecret = data.native.secret;
-                        }
-                    } catch {
-                        // ignore
-                    }
-                    systemSecret = systemSecret || DEFAULT_SECRET;
-                }
-
                 // Wait till all attributes decrypted
                 await Promise.all(promises);
-                this.log = new Log(this.namespaceLog, config.log.level, logger);
 
                 if (!adapterStates) {
                     // if adapterStates was destroyed, we should not continue
