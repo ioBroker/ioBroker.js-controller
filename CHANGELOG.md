@@ -4,8 +4,15 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 4.0.0 (2021-xx-xx) Release I... [Cut off: 27.01.2022 23:30]
+## __WORK IN PROGRESS__
+
+
+## 4.0.0 (2021-01-31) Release Isabelle
 **WORK IN PROGRESS - Use at own risk!**
+* (foxriver76) DO not overwrite custom certificates when updating certificates on "setup first"
+* (foxriver76) Also allow min/max to be set for "mixed" type state objects
+* (foxriver76) Allow to set "null" for common.states and not log error for object (but has no effect on extend, so value does not get deleted!)
+* (foxriver76) Fix error when using certificate manager in Admin5
 
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
@@ -13,7 +20,7 @@
 * CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore
 * CLI command `iob rebuild adaptername` is no longer supported because of the new way of automatic rebuilds and some unwanted side effects
 * CLI command `iob state get <id>` will no longer handle binary state values (which was never really working before). We added `iob state getBinary <id> <encoding>` as new way.
-* Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. ALso check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
+* Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. Also check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
 * The "file" database will be automatically converted into JSONL and the database types that use "file" are adjusted to "jsonl" on installation (and backup restore). This means that a rollback of js-controller is only possible to 3.3 after 4.0 was installed! Rollback to former versions require a manual migration to "file" DB before the downgrade! (COMMUNICATION, TESTFOKUS)
 
 **Features**
@@ -31,14 +38,14 @@
 * (foxriver76) Added installedFrom info to adapter start log line when not installed from npm normally
 
 **Optimizations and Fixes**
-* (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 300% faster, redis 46.000% !! faster)
-* (foxriver76/Apollon77) Improve performance for redis object searches by 90-3.000% by using lookup structures for object types and custom object properties (TODO DOCS)
+* (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 4x faster, jsonl-db 14x faster, redis 360x% !! faster)
+* (foxriver76/Apollon77) Improve performance for redis object searches by up to 2,5x by using lookup structures for object types and custom object properties. This optimization is only active for single host redis systems automatically, but can be activated for multihost redis systems too after all hosts are (and stay!) on js-controller 4.0! (TODO DOCS)
 * (foxriver76/Apollon77) Improve performance for object searches in general by limiting search namespaces to the relevant ones automatically
 * (foxriver76) Improve handling of backup restores when custom hostnames were used (especially relevant for Docker usage)
 * (foxriver76) Optimize backup to make sure invalid user-generated JSONs do not prevent backups from being considered valid
 * (foxriver76/klein0r) Improved CLI help
 * (foxriver76) Preserve changed instance names also when updating adapter (name was reset before)
-* (foxriver76) stop adapters on win prior update to prevent EBUSY
+* (foxriver76) stop adapters on Windows prior update to prevent EBUSY
 * (foxriver76) Prevent crashes for uploads with invalid adapter installations
 * (bluefox) Removed news from instance/adapter objects on install/update because taken from repository in Admin5 (TODO CHECK ADMIN4 EFFECTS)
 * (AlCalzone) Removed extraneous "npm install" inside adapter directory
@@ -55,6 +62,8 @@
 * (foxriver76) If logging can not be initialized because of a fatal error do not start js-controller
 * (foxriver76) Prevent start of a debug session for an instance that is already running
 * (Apollon77) Fix an edge case for file db which could lead to main and backup file being broken in strange situations with multiple crashes in a row
+* (foxriver76) make sure that admin, backitup and discovery instances are created when update of controller happens if installed and no instance exists
+* (Apollon77) Optimize Stop Handling to prevent errors
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
