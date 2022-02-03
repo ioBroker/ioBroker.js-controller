@@ -285,7 +285,7 @@ function List(options) {
                         for (let i = 0; i < objs.rows.length; i++) {
                             let name =
                                 objs.rows[i].value && objs.rows[i].value.common && objs.rows[i].value.common.name;
-                            if (typeof name === 'object') {
+                            if (tools.isObject(name)) {
                                 name = name[lang] || name.en;
                             }
                             if (
