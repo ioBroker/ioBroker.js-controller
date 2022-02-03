@@ -60,7 +60,7 @@ let adapterObjects;
  * Adapter class
  *
  * How the initialization happens:
- *  initObjects => initStates => prepareInitAdapter => createInstancesObjects => initAdapter => initLogging => ready
+ *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstancesObjects => ready
  *
  * @class
  * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
@@ -7472,17 +7472,7 @@ class Adapter extends EventEmitter {
                 }
 
                 this.inited = true;
-
-                // auto oObjects
-                if (this._options.objects) {
-                    this.getAdapterObjects(objs => {
-                        this.oObjects = objs;
-                        this.subscribeObjects('*');
-                        initStates(prepareInitAdapter);
-                    });
-                } else {
-                    initStates(prepareInitAdapter);
-                }
+                initStates(prepareInitAdapter);
             });
         };
 
@@ -8053,7 +8043,7 @@ class Adapter extends EventEmitter {
             }
         };
 
-        const createInstancesObjects = async (instanceObj, callback) => {
+        const createInstancesObjects = async instanceObj => {
             let objs;
 
             if (
@@ -8131,28 +8121,20 @@ class Adapter extends EventEmitter {
                 }
             }
 
-            extendObjects(objs, callback);
+            return new Promise(resolve => {
+                extendObjects(objs, resolve);
+            });
         };
 
         /**
          * Called if states and objects successfully initalized
          */
         const prepareInitAdapter = () => {
-            /** @type Utils*/
-            this._utils = new Utils(
-                adapterObjects,
-                adapterStates,
-                this.namespaceLog,
-                this._logger,
-                this.namespace,
-                this._namespaceRegExp
-            );
-
             if (this._options.instance !== undefined) {
                 initAdapter(this._options);
             } else {
-                this.getForeignState(`system.adapter.${this.namespace}.alive`, null, (err, resAlive) => {
-                    this.getForeignState(`system.adapter.${this.namespace}.sigKill`, null, (err, killRes) => {
+                adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
+                    adapterStates.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
                         if (killRes && killRes.val !== undefined) {
                             killRes.val = parseInt(killRes.val, 10);
                         }
@@ -8194,14 +8176,14 @@ class Adapter extends EventEmitter {
                             );
                             this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                         } else {
-                            this.getForeignObject(`system.adapter.${this.namespace}`, null, (err, res) => {
+                            adapterObjects.getObject(`system.adapter.${this.namespace}`, (err, res) => {
                                 if ((err || !res) && !this._config.isInstall) {
                                     this._logger.error(
                                         `${this.namespaceLog} ${this._options.name}.${instance} invalidthis._config`
                                     );
                                     this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                                 } else {
-                                    createInstancesObjects(res, () => initAdapter(res));
+                                    initAdapter(res);
                                 }
                             });
                         }
@@ -8242,7 +8224,7 @@ class Adapter extends EventEmitter {
 
                     // Read dateformat if using of formatDate is announced
                     if (this._options.useFormatDate) {
-                        this.getForeignObject('system.config', (err, data) => {
+                        adapterObjects.getObject('system.config', (err, data) => {
                             if (data && data.common) {
                                 this.dateFormat = data.common.dateFormat;
                                 this.isFloatComma = data.common.isFloatComma;
@@ -9166,6 +9148,44 @@ class Adapter extends EventEmitter {
 
                     this.adapterConfig = adapterConfig;
 
+                    /** @type Utils*/
+                    this._utils = new Utils(
+                        adapterObjects,
+                        adapterStates,
+                        this.namespaceLog,
+                        this._logger,
+                        this.namespace,
+                        this._namespaceRegExp
+                    );
+
+                    this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
+
+                    //
+                    // From here on "this" methods can be used that might log with "this.log" !!
+                    // Above this line only use logger!
+                    //
+
+                    await createInstancesObjects(adapterConfig);
+
+                    // auto oObjects
+                    if (this._options.objects) {
+                        this.oObjects = await this.getAdapterObjectsAsync();
+                        await this.subscribeObjectsAsync('*');
+                    }
+
+                    // read the systemSecret
+                    if (this._systemSecret === undefined) {
+                        try {
+                            const data = await adapterObjects.getObjectAsync('system.config');
+                            if (data && data.native) {
+                                this._systemSecret = data.native.secret;
+                            }
+                        } catch {
+                            // ignore
+                        }
+                        this._systemSecret = this._systemSecret || DEFAULT_SECRET;
+                    }
+
                     // Decrypt all attributes of encryptedNative
                     const promises = [];
                     if (Array.isArray(adapterConfig.encryptedNative)) {
@@ -9191,22 +9211,8 @@ class Adapter extends EventEmitter {
                         }
                     }
 
-                    // read the systemSecret
-                    if (this._systemSecret === undefined) {
-                        try {
-                            const data = await this.getForeignObjectAsync('system.config', null);
-                            if (data && data.native) {
-                                this._systemSecret = data.native.secret;
-                            }
-                        } catch {
-                            // ignore
-                        }
-                        this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                    }
-
                     // Wait till all attributes decrypted
                     await Promise.all(promises);
-                    this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
 
                     if (!adapterStates) {
                         // if adapterStates was destroyed, we should not continue
