@@ -179,17 +179,8 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         const res = this._getObjectView('system', 'meta', null);
 
-        // collect Meta objects
-        const metaObjects = {};
-        res.rows.forEach(obj => {
-            if (!obj || !obj.value || !obj.value.common || !obj.value.common.type) {
-                return;
-            }
-            if (limitId && obj.id !== limitId) {
-                return;
-            }
-            metaObjects[obj.id] = obj.value.common.type;
-        });
+        // collect meta ids to generate warning if non existing
+        const metaIds = res.rows.map(obj => obj.id).filter(id => !limitId || limitId === id);
 
         if (!fs.existsSync(this.objectsDir)) {
             return {
@@ -211,7 +202,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (limitId && dir !== limitId) {
                 return;
             }
-            if (!metaObjects[dir]) {
+            if (!metaIds.includes(dir)) {
                 resNotifies.push(
                     `Ignoring Directory "${dir}" because officially not created as meta object. Please remove directory!`
                 );
