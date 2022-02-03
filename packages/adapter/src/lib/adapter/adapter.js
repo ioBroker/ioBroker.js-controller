@@ -1432,15 +1432,6 @@ function Adapter(options) {
      * Called if states and objects successfully initalized
      */
     const prepareInitAdapter = () => {
-        utils = new Utils(
-            adapterObjects,
-            adapterStates,
-            this.namespaceLog,
-            logger,
-            this.namespace,
-            this._namespaceRegExp
-        );
-
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
@@ -1570,7 +1561,7 @@ function Adapter(options) {
 
                 // Read dateformat if using of formatDate is announced
                 if (options.useFormatDate) {
-                    this.getForeignObject('system.config', (err, data) => {
+                    adapterObjects.getObject('system.config', (err, data) => {
                         if (data && data.common) {
                             this.dateFormat = data.common.dateFormat;
                             this.isFloatComma = data.common.isFloatComma;
@@ -8977,6 +8968,15 @@ function Adapter(options) {
                 }
 
                 this.adapterConfig = adapterConfig;
+
+                utils = new Utils(
+                    adapterObjects,
+                    adapterStates,
+                    this.namespaceLog,
+                    logger,
+                    this.namespace,
+                    this._namespaceRegExp
+                );
 
                 this.log = new Log(this.namespaceLog, config.log.level, logger);
 
