@@ -179,17 +179,17 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         const res = this._getObjectView('system', 'meta', null);
 
-        // collect Meta objects
+        // collect meta objects to generate warning if non existing
         const metaObjects = {};
-        res.rows.forEach(obj => {
-            if (!obj || !obj.value || !obj.value.common || !obj.value.common.type) {
-                return;
+        for (const obj of res.rows) {
+            if (!obj || !obj.value || !obj.value.type) {
+                continue;
             }
             if (limitId && obj.id !== limitId) {
-                return;
+                continue;
             }
-            metaObjects[obj.id] = obj.value.common.type;
-        });
+            metaObjects[obj.id] = true;
+        }
 
         if (!fs.existsSync(this.objectsDir)) {
             return {
