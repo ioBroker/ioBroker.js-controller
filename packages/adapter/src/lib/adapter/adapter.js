@@ -8996,7 +8996,7 @@ function Adapter(options) {
                 // read the systemSecret
                 if (systemSecret === null) {
                     try {
-                        const data = await this.getForeignObjectAsync('system.config', null);
+                        const data = await adapterObjects.getObjectAsync('system.config');
                         if (data && data.native) {
                             systemSecret = data.native.secret;
                         }
