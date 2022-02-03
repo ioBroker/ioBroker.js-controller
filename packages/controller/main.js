@@ -3015,7 +3015,7 @@ async function processMessage(msg) {
             } else if (!installQueue.some(entry => entry.id === msg.message.id)) {
                 logger.info(
                     `${hostLogPrefix} ${msg.message.id} will be rebuilt${
-                        msg.message.rebuildArgs ? ` (Args: ${msg.message.rebuildArgs})` : ''
+                        msg.message.rebuildArgs ? ` (Args: ${JSON.stringify(msg.message.rebuildArgs)})` : ''
                     }`
                 );
                 const installObj = { id: msg.message.id, rebuild: true };
