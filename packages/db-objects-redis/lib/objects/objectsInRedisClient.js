@@ -1,7 +1,7 @@
 /**
  * Object DB in REDIS - Client
  *
- * Copyright (c) 2018-2021 ioBroker GmbH - All rights reserved.
+ * Copyright (c) 2018-2022 ioBroker GmbH - All rights reserved.
  *
  * You may not to use, modify or distribute this package in any form without explicit agreement from ioBroker GmbH.
  *

@@ -2,7 +2,7 @@
  *
  *  ioBroker Command Line Interface (CLI)
  *
- *  7'2014-2021 bluefox <dogafox@gmail.com>
+ *  7'2014-2022 bluefox <dogafox@gmail.com>
  *         2014 hobbyquaker <hq@ccu.io>
  *
  */

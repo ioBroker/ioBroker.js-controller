@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *

@@ -116,4 +116,4 @@ Does the same as `scan`.
 
 ## License
 Apache 2.0
-Copyright 2018-2021 bluefox <dogafox@gmail.com>  
+Copyright 2018-2022 bluefox <dogafox@gmail.com>  
