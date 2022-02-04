@@ -5,15 +5,9 @@
 -->
 
 ## __WORK IN PROGRESS__
+* see CHANGELOG.md
 
-
-## 4.0.0 (2021-01-31) Release Isabelle
-**WORK IN PROGRESS - Use at own risk!**
-* (foxriver76) DO not overwrite custom certificates when updating certificates on "setup first"
-* (foxriver76) Also allow min/max to be set for "mixed" type state objects
-* (foxriver76) Allow to set "null" for common.states and not log error for object (but has no effect on extend, so value does not get deleted!)
-* (foxriver76) Fix error when using certificate manager in Admin5
-
+## 4.0.0 (2021-02-03) Release Isabelle
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
 * CLI command `iob update --updateable` changed to `iob update --updatable`
@@ -64,6 +58,8 @@
 * (Apollon77) Fix an edge case for file db which could lead to main and backup file being broken in strange situations with multiple crashes in a row
 * (foxriver76) make sure that admin, backitup and discovery instances are created when update of controller happens if installed and no instance exists
 * (Apollon77) Optimize Stop Handling to prevent errors
+* (Apollon77) Optimize Adapter process initialization to prevent edge case errors
+* (foxriver76) Optimize meta object sync
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -83,6 +79,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 **Developer relevant new Features**
 * (jogibear9988) Add new "unload-safe" promise based "adapter.delay" method to delay further code execution, but still make sure code do not continue after unload was called. This method can **not** be used inside the "unload" method itself!
 * (jogibear9988/AlCalzone/foxriver76/Apollon77) Revamp adapter.*Timeout and adapter.*Interval methods to be "unload-safe" and also clear missing timeouts without warnings for more developer convenience! The methods to set a timeout or interval can **not** be used inside the "unload" method itself!
+* (foxriver76) Allow to set "null" for common.states and not log error for object (but has no effect on extend, so value does not get deleted!)
 * (AlCalzone) Introduce new methods in tools for Node.js module management: installNodeModule, uninstallNodeModule (TODO Issues adapter that use npm install -> Move))
 * (bluefox) Add license management functionality to host. Adapters can use adapter.getSuitableLicenses to get available relevant licenses (TODO DOCS)
 * (AlCalzone) Switch NPM relevant handling to library pak to be more flexible for the future which package manager we want to use. Important: There are still parts that rely on npm for now!
@@ -100,7 +97,6 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (foxriver76) Introduce a database protocol version number to allow detection of the available database features in multihost environments
 * (bluefox) Prevent issues when using adapter.addChannelToEnum because of missing callback
 * (foxriver76) make sure autoSubscribe works as expected in all cases
-
 * general dependency updates
 * code style optimizations and streamline code
 

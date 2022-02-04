@@ -3710,6 +3710,7 @@ module.exports = {
     getAllEnums,
     updateLicenses,
     compressFileGZip,
+    isDocker,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,
