@@ -10,7 +10,7 @@
 
 'use strict';
 const dgram = require('dgram');
-const dbTools = require('@iobroker/js-controller-common-db');
+const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
