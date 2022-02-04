@@ -19,7 +19,19 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "3.3.18": {
+      "4.0.0": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie WIJZIGING.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedere CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "zh-cn": "见 CHANGELOG.md"
+      },
+      "3.3.22": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
@@ -80,18 +92,6 @@
         "zh-cn": "看到CHANGELOG.md"
       },
       "2.1.1": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
-      },
-      "1.5.14": {
         "en": "see CHANGELOG.md",
         "de": "Siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
@@ -461,7 +461,9 @@
         "defaultHistory": "",
         "expertMode": false,
         "defaultLogLevel": "info",
-        "activeRepo": ["stable"],
+        "activeRepo": [
+          "stable"
+        ],
         "diag": "extended",
         "tabs": [
           "tab-intro",
