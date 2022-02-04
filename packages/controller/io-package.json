@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.1",
+    "version": "4.0.2",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.2": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie WIJZIGING.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedere CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "zh-cn": "见 CHANGELOG.md"
+      },
       "3.3.22": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
