@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 4.0.1 (2022-02-04) Release Isabelle - Initial Beta Release
+## __WORK IN PROGRESS__
 * see CHANGELOG.md
 
 ## 4.0.0 (2021-02-03) Release Isabelle
