@@ -6,5 +6,5 @@
 	],
 	"ioPackage": "packages/controller",
 	"ioPackageNoPrerelease": true,
-	"noUpdateLockfile": true
+	"updateLockfile": false
 }
