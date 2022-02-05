@@ -145,9 +145,9 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm whoami
           if [[ "$PRERELEASE" == "true" ]]; then
-            npm publish --tag next
+            npx lerna publish from-package --yes next
           else
-            npm publish
+            npx lerna publish from-package --yes
           fi
 
       - name: Create Github Release
