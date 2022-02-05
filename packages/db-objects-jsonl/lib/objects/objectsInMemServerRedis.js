@@ -45,8 +45,8 @@ const ObjectsInMemoryJsonlDB = require('./objectsInMemJsonlDB');
 //
 
 /**
- * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
- * to access the methods via socket.io
+ * This class inherits statesInMemoryJsonlDB class and adds redis communication layer
+ * to access the methods via redis protocol
  **/
 class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
     /**
@@ -841,28 +841,25 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * Destructor of the class. Called by shutting down.
      */
     async destroy() {
-        await super.destroy();
-
         if (this.server) {
             Object.keys(this.serverConnections).forEach(s => {
                 this.serverConnections[s].close();
                 delete this.serverConnections[s];
             });
 
-            return /** @type {Promise<void>} */ (
-                new Promise(resolve => {
-                    if (!this.server) {
-                        return void resolve();
-                    }
-                    try {
-                        this.server.close(() => resolve());
-                    } catch (e) {
-                        console.log(e.message);
-                        resolve();
-                    }
-                })
-            );
+            await new Promise(resolve => {
+                if (!this.server) {
+                    return void resolve();
+                }
+                try {
+                    this.server.close(() => resolve());
+                } catch (e) {
+                    console.log(e.message);
+                    resolve();
+                }
+            });
         }
+        await super.destroy();
     }
 
     /**
@@ -977,7 +974,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
     _initRedisServer(settings) {
         return new Promise((resolve, reject) => {
             if (settings.secure) {
-                reject(new Error('Secure Redis unsupported for File-DB'));
+                reject(new Error('Secure Redis unsupported for JSONL-DB'));
             }
             try {
                 this.server = net.createServer();

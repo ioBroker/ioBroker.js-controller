@@ -603,7 +603,7 @@ function createObjects(onConnect) {
                 logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
             }
 
-            if (!primaryHostInterval) {
+            if (!primaryHostInterval && !compactGroupController) {
                 primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
             }
 
@@ -901,7 +901,7 @@ function startAliveInterval() {
  */
 async function checkPrimaryHost() {
     // we cannot interact with db now because currently reconnecting
-    if (objectsDisconnectTimeout) {
+    if (objectsDisconnectTimeout || compactGroupController) {
         return;
     }
 

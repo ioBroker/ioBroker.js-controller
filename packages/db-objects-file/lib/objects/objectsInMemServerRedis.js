@@ -45,8 +45,8 @@ const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
 //
 
 /**
- * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
- * to access the methods via socket.io
+ * This class inherits statesInMemoryFileDB class and adds redis communication layer
+ * to access the methods via redis protocol
  **/
 class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
@@ -843,28 +843,26 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * Destructor of the class. Called by shutting down.
      */
     async destroy() {
-        await super.destroy();
-
         if (this.server) {
             Object.keys(this.serverConnections).forEach(s => {
                 this.serverConnections[s].close();
                 delete this.serverConnections[s];
             });
 
-            return /** @type {Promise<void>} */ (
-                new Promise(resolve => {
-                    if (!this.server) {
-                        return void resolve();
-                    }
-                    try {
-                        this.server.close(() => resolve());
-                    } catch (e) {
-                        console.log(e.message);
-                        resolve();
-                    }
-                })
-            );
+            await new Promise(resolve => {
+                if (!this.server) {
+                    return void resolve();
+                }
+                try {
+                    this.server.close(() => resolve());
+                } catch (e) {
+                    console.log(e.message);
+                    resolve();
+                }
+            });
         }
+
+        await super.destroy();
     }
 
     /**
