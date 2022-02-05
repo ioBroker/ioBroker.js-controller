@@ -333,7 +333,7 @@ function handleDisconnect() {
     }
 
     connected = false;
-    logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
+    logger.warn(`${hostLogPrefix} Slave controller detected disconnection. Stop all instances.`);
     if (compactGroupController) {
         stop(true);
     } else {
@@ -493,7 +493,7 @@ function createStates(onConnect) {
                 }
             }
         },
-        connected: async () => {
+        connected: () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -502,16 +502,6 @@ function createStates(onConnect) {
             if (!compactGroupController) {
                 states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
-                // subscribe to primary host expiration
-                try {
-                    await objects.subscribePrimaryHost();
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
-                }
-                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
-
-                // first execution now
-                checkPrimaryHost();
             }
             initMessageQueue();
             startAliveInterval();
@@ -599,12 +589,26 @@ function createObjects(onConnect) {
         controller: true,
         logger: logger,
         hostname: hostname,
-        connected: () => {
+        connected: async () => {
             // stop disconnect timeout
             if (objectsDisconnectTimeout) {
                 clearTimeout(objectsDisconnectTimeout);
                 objectsDisconnectTimeout = null;
             }
+
+            // subscribe to primary host expiration
+            try {
+                await objects.subscribePrimaryHost();
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
+            }
+
+            if (!primaryHostInterval) {
+                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
+            }
+
+            // first execution now
+            checkPrimaryHost();
 
             initializeController();
             onConnect && onConnect();
@@ -613,6 +617,8 @@ function createObjects(onConnect) {
             if (restartTimeout) {
                 return;
             }
+            // on reconnection this will be determiend anew
+            isPrimary = false;
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(() => {
                 objectsDisconnectTimeout = null;
@@ -860,6 +866,7 @@ function createObjects(onConnect) {
         },
         primaryHostLost: () => {
             if (!isStopping) {
+                isPrimary = false;
                 logger.info('The primary host is no longer active. Checking responsibilities.');
                 checkPrimaryHost();
             }
@@ -893,6 +900,11 @@ function startAliveInterval() {
  * @return {Promise<void>}
  */
 async function checkPrimaryHost() {
+    // we cannot interact with db now because currently reconnecting
+    if (objectsDisconnectTimeout) {
+        return;
+    }
+
     // let our host value live PRIMARY_HOST_LOCK_TIME seconds, while it should be renewed lock time / 2
     try {
         if (!isPrimary) {
