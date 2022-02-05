@@ -99,6 +99,9 @@ The object view definition "custom/state" is now removed from js-controller afte
 * general dependency updates
 * code style optimizations and streamline code
 
+## 3.3.22 (2021-12-20)
+* (bluefox) Fixed addChannelToEnum function
+
 ## 3.3.21 (2021-11-28)
 * (Apollon77/foxriver76) we fixed issues with multihost setup, that existed in 3.3.19/3.3.20
 
