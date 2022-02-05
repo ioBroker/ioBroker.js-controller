@@ -3,6 +3,12 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (Apollon77/foxriver76) Optimize database initialization and destroys
+* (Apollon77) Update winston-syslog to prevent errors
+* (Apollon77) Allow proper setup first upgrade from 3.3.x
+
 ## 4.0.3 (2022-02-05) Release Isabelle - Initial Beta Release
 * see CHANGELOG.md
 
