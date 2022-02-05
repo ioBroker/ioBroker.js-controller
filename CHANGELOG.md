@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+## __WORK IN PROGRESS__
 * (Apollon77/foxriver76) Optimize database initialization and destroys
 * (Apollon77) Update winston-syslog to prevent errors
 * (Apollon77) Allow proper setup first upgrade from 3.3.x
