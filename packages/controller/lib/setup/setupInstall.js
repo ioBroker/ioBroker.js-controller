@@ -90,7 +90,7 @@ function Install(options) {
      *
      * @param {string} repoUrl
      * @param {string} packetName
-     * @param {object?} options
+     * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade for controller, does not work with stoppedList
      * @param {object[]?} stoppedList
      * @return {Promise<void>}
      */
@@ -106,6 +106,11 @@ function Install(options) {
             } catch (err) {
                 return processExit(err);
             }
+        }
+
+        if (options.stopDb && stoppedList) {
+            console.warn('[downloadPacket] stoppedList cannot be used if stopping of databases is requested');
+            stoppedList = [];
         }
 
         let debug = false;
@@ -181,15 +186,38 @@ function Install(options) {
             }
 
             if (!url && packetName !== 'example') {
+                if (options.stopDb) {
+                    if (objects && objects.destroy) {
+                        await objects.destroy();
+                        console.log('Stopped Objects DB');
+                    }
+                    if (states && states.destroy) {
+                        await states.destroy();
+                        console.log('Stopped States DB');
+                    }
+                }
+
                 // Install node modules
                 await this._npmInstallWithCheck(
-                    `${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`,
+                    `${tools.appName.toLowerCase()}.${packetName}${version ? `@${version}` : ''}`,
                     options,
                     debug
                 );
+
                 await enableAdapters(stoppedList, true);
                 return packetName;
             } else if (url && url.match(tarballRegex)) {
+                if (options.stopDb) {
+                    if (objects && objects.destroy) {
+                        await objects.destroy();
+                        console.log('Stopped Objects DB');
+                    }
+                    if (states && states.destroy) {
+                        await states.destroy();
+                        console.log('Stopped States DB');
+                    }
+                }
+
                 // Install node modules
                 await this._npmInstallWithCheck(url, options, debug);
                 await enableAdapters(stoppedList, true);

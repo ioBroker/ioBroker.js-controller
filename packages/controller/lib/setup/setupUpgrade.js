@@ -632,7 +632,8 @@ function Upgrade(options) {
                 // Get the controller from web site
                 await install.downloadPacket(
                     repoUrl,
-                    `${installed.common.name}@${repoUrl[installed.common.name].version}`
+                    `${installed.common.name}@${repoUrl[installed.common.name].version}`,
+                    { stopDb: true }
                 );
             }
         } else {
@@ -665,7 +666,7 @@ function Upgrade(options) {
                 const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : installed.common.name;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
-                await install.downloadPacket(repoUrl, name + version);
+                await install.downloadPacket(repoUrl, name + version, { stopDb: true });
             }
         }
     };
