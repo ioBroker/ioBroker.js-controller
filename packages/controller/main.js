@@ -4458,6 +4458,7 @@ async function startInstance(id, wakeUp) {
                                 text.includes('NODE_MODULE_VERSION') ||
                                 text.includes('npm rebuild') ||
                                 text.includes("Error: The module '") ||
+                                text.includes('Could not locate the bindings file.') ||
                                 text.includes('Cannot find module')
                             ) {
                                 // only try this at second rebuild
@@ -5766,15 +5767,27 @@ function init(compactGroupId) {
  * @private
  */
 function _determineRebuildArgsFromLog(text) {
-    // extract rebuild path - it is always between the only two single quotes
-    const matches = text.match(/'.+'/g);
+    let matches;
+    // Try to get path for this case after a →
+    if (text.includes('Could not locate the bindings file.')) {
+        matches = text.match(/→ (.+)$/gm);
+        if (matches) {
+            matches.shift(); // we need to remove the first element from match
+        }
+    }
+
+    // else, extract rebuild path the standard way - it is always
+    // between the only two single quotes
+    if (!matches) {
+        matches = text.match(/'.+'/g);
+    }
 
     if (matches) {
         // We only check the first path like entry
         // remove the quotes
         let rebuildPath = matches[0].replace(/'/g, '');
         if (path.isAbsolute(rebuildPath)) {
-            // we have found a module which needs rebuild - we need to find deepest pack.json
+            // we have found a module which needs rebuild - we need to find the deepest pack.json
             rebuildPath = path.dirname(rebuildPath);
             const rootDir = path.parse(process.cwd()).root;
 

@@ -3439,6 +3439,29 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
  * @returns {Promise<void>}
  */
 async function setExecutableCapabilities(execPath, capabilities, modeEffective, modePermitted, modeInherited) {
+    // if Docker and Admin Capabilities should be set check if we are allowed to do that
+    if (isDocker() && capabilities.includes('cap_net_admin')) {
+        try {
+            const systemCaps = fs.readFileSync('/proc/$$/status', 'utf-8');
+            const capBnd = systemCaps.match(/^CapBnd: (.+)$/gm);
+            // We found a value in CapBnd line
+            if (capBnd && capBnd[1]) {
+                const { stdout } = await execAsync(`capsh --decode=${capBnd[1]}`);
+                // Stdout looks like "0x00000000a80425fb=cap_chown,cap_dac_override,..."
+                if (stdout && stdout.startsWith(`0x${capBnd[1]}=`)) {
+                    const capBndArr = stdout.substring(capBnd[1].length + 3).split(',');
+                    // if Admin Capability is not included in System Capabilities we remove it from array
+                    if (!capBndArr.includes('cap_net_admin')) {
+                        capabilities.splice(capabilities.indexOf('cap_net_admin'), 1);
+                    }
+                }
+            }
+        } catch {
+            // Ok we could not find it out, so update Caps but better without Admin Capability
+            capabilities.splice(capabilities.indexOf('cap_net_admin'), 1);
+        }
+    }
+
     // if not linux do nothing and silently exit
     if (os.platform() === 'linux') {
         if (Array.isArray(capabilities) && capabilities.length) {
