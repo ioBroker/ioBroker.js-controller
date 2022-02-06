@@ -4412,11 +4412,8 @@ class ObjectsInRedisClient {
                     script.loaded = true;
                 } catch (e) {
                     script.loaded = false;
-                    this.log.error(this.namespace + ' Cannot load "' + script.name + '": ' + e.message);
-                    if (!script.name.startsWith('redlock_')) {
-                        // for controller 3.x backward compatibility
-                        throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
-                    }
+                    this.log.error(`${this.namespace} Cannot load "${script.name}": ${e.message}`);
+                    throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
                 }
                 script.hash = hash;
             }
