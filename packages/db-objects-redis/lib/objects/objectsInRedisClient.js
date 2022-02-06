@@ -4413,7 +4413,11 @@ class ObjectsInRedisClient {
                 } catch (e) {
                     script.loaded = false;
                     this.log.error(`${this.namespace} Cannot load "${script.name}": ${e.message}`);
-                    throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
+                    if (!script.name.startsWith('redlock_')) {
+                        // beause of #1753 an upgrade from < 4.0 will run against the old db server which will not know redlock
+                        // TODO: remove if controller 4.0 is old enough
+                        throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
+                    }
                 }
                 script.hash = hash;
             }

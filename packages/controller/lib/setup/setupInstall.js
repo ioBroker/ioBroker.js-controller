@@ -90,7 +90,8 @@ function Install(options) {
      *
      * @param {string} repoUrl
      * @param {string} packetName
-     * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade for controller, does not work with stoppedList
+     * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade ONLY use it for controller upgrade -
+     * db is gone afterwards, does not work with stoppedList
      * @param {object[]?} stoppedList
      * @return {Promise<void>}
      */
