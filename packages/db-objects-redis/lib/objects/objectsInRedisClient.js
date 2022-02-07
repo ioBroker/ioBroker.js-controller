@@ -4657,8 +4657,8 @@ class ObjectsInRedisClient {
      * @return {Promise<void>}
      */
     async activateSets() {
-        this.useSets = true;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '1');
+        this.useSets = true;
     }
 
     /**
@@ -4666,8 +4666,8 @@ class ObjectsInRedisClient {
      * @return {Promise<void>}
      */
     async deactivateSets() {
-        this.useSets = false;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '0');
+        this.useSets = false;
     }
 
     /**

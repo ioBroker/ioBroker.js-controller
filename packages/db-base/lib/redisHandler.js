@@ -422,6 +422,11 @@ class RedisHandler extends EventEmitter {
      * @private
      */
     _handleExec(responseId) {
+        if (!this.activeMultiCalls[0]) {
+            this.sendError(responseId, new Error('EXEC without MULTI'));
+            return;
+        }
+
         this.activeMultiCalls[0].execId = responseId;
         this.activeMultiCalls[0].execCalled = true;
 
