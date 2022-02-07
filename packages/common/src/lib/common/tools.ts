@@ -593,28 +593,32 @@ export async function createUuid(objects: any): Promise<void | string> {
 }
 
 // Download file to tmp or return file name directly
-export function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): void {
+export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): void {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
         urlOrPath.substring(0, 'https://'.length) === 'https://'
     ) {
         const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xffffffe) + '.zip'}`;
-        // Add some information to user-agent, like chrome, IE and Firefox do
-        request({
-            url: urlOrPath,
-            gzip: true,
-            headers: { 'User-Agent': `${appName}, RND: ${randomID}, N: ${process.version}` }
-        })
-            .on('error', error => {
-                console.log(`Cannot download "${tmpFile}": ${error.message}`);
-                callback && callback(tmpFile);
-            })
-            .pipe(fs.createWriteStream(tmpFile))
-            .on('close', () => {
-                console.log('downloaded ' + tmpFile);
+
+        try {
+            // Add some information to user-agent, like chrome, IE and Firefox do
+            const res = await axios.get(urlOrPath, {
+                responseType: 'stream',
+                headers: {
+                    'User-Agent': `${appName}, RND: ${randomID}, N: ${process.version}`,
+                    'Accept-Encoding': 'gzip'
+                }
+            });
+
+            res.data.pipe(fs.createWriteStream(tmpFile)).on('close', () => {
+                console.log(`downloaded ${tmpFile}`);
                 callback && callback(tmpFile);
             });
+        } catch (e: any) {
+            console.log(`Cannot download "${tmpFile}": ${e.message}`);
+            callback && callback(tmpFile);
+        }
     } else {
         try {
             if (fs.existsSync(urlOrPath)) {
