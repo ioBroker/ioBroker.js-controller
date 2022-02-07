@@ -355,9 +355,8 @@ function getMac(callback: (e?: Error | null, mac?: string) => void) {
 
 /**
  * Checks if we are running inside a docker container
- * @returns {boolean}
  */
-export function isDocker() {
+export function isDocker(): boolean {
     try {
         fs.statSync('/.dockerenv');
         return true;
@@ -636,11 +635,11 @@ export function getFile(urlOrPath: string, fileName: string, callback: (file?: s
 }
 
 // Return content of the json file. Download it or read directly
-export function getJson(
+export async function getJson(
     urlOrPath: string,
     agent: string,
     callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void
-): void {
+): Promise<void> {
     if (typeof agent === 'function') {
         callback = agent;
         agent = '';
@@ -663,39 +662,27 @@ export function getJson(
             urlOrPath.substring(0, 'http://'.length) === 'http://' ||
             urlOrPath.substring(0, 'https://'.length) === 'https://'
         ) {
-            request(
-                {
-                    url: urlOrPath,
-                    timeout: 10000,
-                    gzip: true,
-                    headers: { 'User-Agent': agent }
-                },
-                (error, response, body) => {
-                    if (error || !body || response.statusCode !== 200) {
-                        console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
-                        if (callback) {
-                            callback(null, urlOrPath);
-                        }
-                        return;
-                    }
-                    try {
-                        sources = JSON.parse(body);
-                    } catch {
-                        console.error('Json file is invalid on ' + urlOrPath);
-                        if (callback) {
-                            callback(null, urlOrPath);
-                        }
-                        return;
-                    }
+            try {
+                const res = await axios.get(urlOrPath, {
+                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent }
+                });
 
-                    if (callback) {
-                        callback(sources, urlOrPath);
-                    }
+                if (res.status !== 200 || !res.data) {
+                    throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
                 }
-            ).on('error', _error => {
-                //console.log('Cannot download json from ' + urlOrPath + '. Error: ' + error);
-                //if (callback) callback(null, urlOrPath);
-            });
+
+                sources = res.data;
+
+                if (callback) {
+                    callback(sources, urlOrPath);
+                }
+            } catch (e: any) {
+                console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+                if (callback) {
+                    callback(null, urlOrPath);
+                }
+                return;
+            }
         } else {
             if (fs.existsSync(urlOrPath)) {
                 try {
@@ -1154,7 +1141,7 @@ function _getRepositoryFile(
     }
 }
 
-function _checkRepositoryFileHash(
+async function _checkRepositoryFileHash(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
     callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void
@@ -1163,37 +1150,34 @@ function _checkRepositoryFileHash(
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
         urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
         let json: null | Record<string, any> = null;
-        request({ url: urlOrPath, timeout: 10000, gzip: true }, (error, response, body) => {
-            if (error || !body || response.statusCode !== 200) {
-                console.warn(`Cannot download json from ${urlOrPath}. Error: ${error || body}`);
-            } else {
-                try {
-                    json = JSON.parse(body);
-                } catch {
-                    console.error(`Json file is invalid on ${urlOrPath}`);
-                }
+        try {
+            const res = await axios.get(urlOrPath, { headers: { 'Accept-Encoding': 'gzip', timeout: 10000 } });
+            if (!res.data || res.status !== 200) {
+                throw new Error(`Invalid response, body: ${res.data}, status code: ${res.status}`);
             }
-            if (json && json.hash) {
-                // The hash download was successful
-                if (additionalInfo && additionalInfo.sources && json.hash === additionalInfo.hash) {
-                    // The hash is the same as for the cached sources
-                    console.log('hash unchanged, use cached sources');
-                    callback(null, additionalInfo.sources, json.hash);
-                } else {
-                    // Either we have no sources cached or the hash changed
-                    // => force download of new sources
-                    console.log('hash changed or no sources cached => force download of new sources');
-                    callback(null, null, json.hash);
-                }
+
+            json = res.data;
+        } catch (e: any) {
+            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+        }
+
+        if (json && json.hash) {
+            // The hash download was successful
+            if (additionalInfo && additionalInfo.sources && json.hash === additionalInfo.hash) {
+                // The hash is the same as for the cached sources
+                console.log('hash unchanged, use cached sources');
+                callback(null, additionalInfo.sources, json.hash);
             } else {
-                // Could not download new sources, use the old ones
-                console.log('failed to download new sources, use cached sources');
-                callback(null, additionalInfo.sources, '');
+                // Either we have no sources cached or the hash changed
+                // => force download of new sources
+                console.log('hash changed or no sources cached => force download of new sources');
+                callback(null, null, json.hash);
             }
-        }).on('error', _error => {
-            //console.log('Cannot download json from ' + urlOrPath + '. Error: ' + error);
-            //if (callback) callback(null, urlOrPath);
-        });
+        } else {
+            // Could not download new sources, use the old ones
+            console.log('failed to download new sources, use cached sources');
+            callback(null, additionalInfo.sources, '');
+        }
     } else {
         // it is a file and file has not hash
         callback(null, null, 0);
