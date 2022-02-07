@@ -1,7 +1,7 @@
 /**
  * Object DB in REDIS - Client
  *
- * Copyright (c) 2018-2021 ioBroker GmbH - All rights reserved.
+ * Copyright (c) 2018-2022 ioBroker GmbH - All rights reserved.
  *
  * You may not to use, modify or distribute this package in any form without explicit agreement from ioBroker GmbH.
  *
@@ -4412,8 +4412,12 @@ class ObjectsInRedisClient {
                     script.loaded = true;
                 } catch (e) {
                     script.loaded = false;
-                    this.log.error(this.namespace + ' Cannot load "' + script.name + '": ' + e.message);
-                    throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
+                    this.log.error(`${this.namespace} Cannot load "${script.name}": ${e.message}`);
+                    if (!script.name.startsWith('redlock_')) {
+                        // beause of #1753 an upgrade from < 4.0 will run against the old db server which will not know redlock
+                        // TODO: remove if controller 4.0 is old enough
+                        throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
+                    }
                 }
                 script.hash = hash;
             }

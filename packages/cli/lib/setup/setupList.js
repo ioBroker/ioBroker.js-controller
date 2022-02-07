@@ -1,7 +1,7 @@
 /**
  *      List different objects for CLI
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -285,7 +285,7 @@ function List(options) {
                         for (let i = 0; i < objs.rows.length; i++) {
                             let name =
                                 objs.rows[i].value && objs.rows[i].value.common && objs.rows[i].value.common.name;
-                            if (typeof name === 'object') {
+                            if (tools.isObject(name)) {
                                 name = name[lang] || name.en;
                             }
                             if (

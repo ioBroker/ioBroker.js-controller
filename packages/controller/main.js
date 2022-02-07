@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -333,7 +333,7 @@ function handleDisconnect() {
     }
 
     connected = false;
-    logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
+    logger.warn(`${hostLogPrefix} Slave controller detected disconnection. Stop all instances.`);
     if (compactGroupController) {
         stop(true);
     } else {
@@ -493,7 +493,7 @@ function createStates(onConnect) {
                 }
             }
         },
-        connected: async () => {
+        connected: () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -502,16 +502,6 @@ function createStates(onConnect) {
             if (!compactGroupController) {
                 states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
-                // subscribe to primary host expiration
-                try {
-                    await objects.subscribePrimaryHost();
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
-                }
-                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
-
-                // first execution now
-                checkPrimaryHost();
             }
             initMessageQueue();
             startAliveInterval();
@@ -599,12 +589,26 @@ function createObjects(onConnect) {
         controller: true,
         logger: logger,
         hostname: hostname,
-        connected: () => {
+        connected: async () => {
             // stop disconnect timeout
             if (objectsDisconnectTimeout) {
                 clearTimeout(objectsDisconnectTimeout);
                 objectsDisconnectTimeout = null;
             }
+
+            // subscribe to primary host expiration
+            try {
+                await objects.subscribePrimaryHost();
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
+            }
+
+            if (!primaryHostInterval && !compactGroupController) {
+                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
+            }
+
+            // first execution now
+            checkPrimaryHost();
 
             initializeController();
             onConnect && onConnect();
@@ -613,6 +617,8 @@ function createObjects(onConnect) {
             if (restartTimeout) {
                 return;
             }
+            // on reconnection this will be determiend anew
+            isPrimary = false;
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(() => {
                 objectsDisconnectTimeout = null;
@@ -860,6 +866,7 @@ function createObjects(onConnect) {
         },
         primaryHostLost: () => {
             if (!isStopping) {
+                isPrimary = false;
                 logger.info('The primary host is no longer active. Checking responsibilities.');
                 checkPrimaryHost();
             }
@@ -893,6 +900,11 @@ function startAliveInterval() {
  * @return {Promise<void>}
  */
 async function checkPrimaryHost() {
+    // we cannot interact with db now because currently reconnecting
+    if (objectsDisconnectTimeout || compactGroupController) {
+        return;
+    }
+
     // let our host value live PRIMARY_HOST_LOCK_TIME seconds, while it should be renewed lock time / 2
     try {
         if (!isPrimary) {
@@ -3013,7 +3025,11 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, { error: 'Adapter to rebuild not provided.' }, msg.callback);
                 }
             } else if (!installQueue.some(entry => entry.id === msg.message.id)) {
-                logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
+                logger.info(
+                    `${hostLogPrefix} ${msg.message.id} will be rebuilt${
+                        msg.message.rebuildArgs ? ` (Args: ${JSON.stringify(msg.message.rebuildArgs)})` : ''
+                    }`
+                );
                 const installObj = { id: msg.message.id, rebuild: true };
                 if (msg.message.rebuildArgs) {
                     installObj.rebuildArgs = msg.message.rebuildArgs;
@@ -4441,6 +4457,7 @@ async function startInstance(id, wakeUp) {
                             if (
                                 text.includes('NODE_MODULE_VERSION') ||
                                 text.includes('npm rebuild') ||
+                                text.includes("Error: The module '") ||
                                 text.includes('Cannot find module')
                             ) {
                                 // only try this at second rebuild
@@ -5752,7 +5769,8 @@ function _determineRebuildArgsFromLog(text) {
     // extract rebuild path - it is always between the only two single quotes
     const matches = text.match(/'.+'/g);
 
-    if (matches && matches.length === 1) {
+    if (matches) {
+        // We only check the first path like entry
         // remove the quotes
         let rebuildPath = matches[0].replace(/'/g, '');
         if (path.isAbsolute(rebuildPath)) {

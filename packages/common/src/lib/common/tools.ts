@@ -357,7 +357,7 @@ function getMac(callback: (e?: Error | null, mac?: string) => void) {
  * Checks if we are running inside a docker container
  * @returns {boolean}
  */
-function isDocker() {
+export function isDocker() {
     try {
         fs.statSync('/.dockerenv');
         return true;

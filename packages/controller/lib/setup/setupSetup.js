@@ -1,7 +1,7 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -256,31 +256,7 @@ function Setup(options) {
 
             // clean up invalid user group assignments (non-existing user in a group)
             try {
-                const usersView = await objects.getObjectViewAsync('system', 'user');
-                const groupView = await objects.getObjectViewAsync('system', 'group');
-
-                const existingUsers = usersView.rows.map(obj => obj.value._id);
-
-                for (const group of groupView.rows) {
-                    // reference for readability
-                    const groupMembers = group.value.common.members;
-                    let changed = false;
-
-                    for (let i = groupMembers.length - 1; i >= 0; i--) {
-                        if (!existingUsers.includes(groupMembers[i])) {
-                            // we have found a non-existing user, so remove it
-                            changed = true;
-                            console.log(
-                                `Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`
-                            );
-                            groupMembers.splice(i, 1);
-                        }
-                    }
-
-                    if (changed) {
-                        await objects.setObjectAsync(group.value._id, group.value);
-                    }
-                }
+                await _cleanupInvalidGroupAssignments();
             } catch (e) {
                 // Cannot find view happens on very first installation,
                 // so ignore this case because no users can be invalid
@@ -922,6 +898,47 @@ function Setup(options) {
 
         migrateObjects(config, originalConfig, rl, callback);
     };
+
+    /**
+     * Removes non-existing users from groups
+     *
+     * @return {Promise<void>}
+     * @private
+     */
+    async function _cleanupInvalidGroupAssignments() {
+        const usersView = await objects.getObjectViewAsync('system', 'user');
+        const groupView = await objects.getObjectViewAsync('system', 'group');
+
+        const existingUsers = usersView.rows.map(obj => obj.value._id);
+
+        for (const group of groupView.rows) {
+            // reference for readability
+            const groupMembers = group.value.common.members;
+
+            if (!Array.isArray(groupMembers)) {
+                // fix legacy objects
+                const obj = group.value;
+                obj.common.members = [];
+                await objects.setObjectAsync(obj._id, obj);
+                continue;
+            }
+
+            let changed = false;
+
+            for (let i = groupMembers.length - 1; i >= 0; i--) {
+                if (!existingUsers.includes(groupMembers[i])) {
+                    // we have found a non-existing user, so remove it
+                    changed = true;
+                    console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`);
+                    groupMembers.splice(i, 1);
+                }
+            }
+
+            if (changed) {
+                await objects.setObjectAsync(group.value._id, group.value);
+            }
+        }
+    }
 
     this.setup = function (callback, ignoreIfExist, useRedis) {
         let config;

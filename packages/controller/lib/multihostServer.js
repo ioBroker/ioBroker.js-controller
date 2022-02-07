@@ -3,14 +3,14 @@
  *
  *      Master multihost functionality
  *
- *      Copyright 2014-2021 bluefox <dogafox@gmail.com>,
+ *      Copyright 2014-2022 bluefox <dogafox@gmail.com>,
  *      MIT License
  *
  */
 
 'use strict';
 const dgram = require('dgram');
-const dbTools = require('@iobroker/js-controller-common-db');
+const { tools: dbTools } = require('@iobroker/js-controller-common-db');
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
