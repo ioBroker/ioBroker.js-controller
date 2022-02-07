@@ -44,7 +44,6 @@
     "promisify-child-process": "^4.1.1",
     "prompt": "^1.2.1",
     "readline-sync": "^1.4.10",
-    "request": "^2.88.2",
     "semver": "^7.3.5",
     "tar": "^6.1.11",
     "yargs": "^17.3.0"
