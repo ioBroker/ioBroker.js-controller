@@ -12,7 +12,6 @@ import { EXIT_CODES } from './exitCodes';
 import zlib from 'zlib';
 import { password } from './password';
 import jwt from 'jsonwebtoken';
-import request from 'request';
 import axios from 'axios';
 import crypto from 'crypto';
 import type { ExecOptions } from 'child_process';
@@ -593,7 +592,7 @@ export async function createUuid(objects: any): Promise<void | string> {
 }
 
 // Download file to tmp or return file name directly
-export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): void {
+export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): Promise<void> {
     // If object was read
     if (
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
@@ -799,7 +798,36 @@ export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Re
     }
 }
 
-function scanDirectory(dirName: string, list: Record<string, any>, regExp: RegExp) {
+export interface AdapterInformation {
+    /** this flag is only true for the js-controller */
+    controller: boolean;
+    /** adapter version **/
+    version: string;
+    /** path to icon of the adapter */
+    icon: string;
+    /** path to local icon of the adater */
+    localIcon: string;
+    /** title of the adapter */
+    title: string;
+    /** title of the adapter in multiple languages */
+    titleLang: Multilingual;
+    /** description of the adapter in multiple languages */
+    desc: Multilingual;
+    /** platform of the adapter */
+    platform: 'Javascript/Node.js';
+    /** keywords of the adapter */
+    keywords: string[];
+    /** path to readme file */
+    readme: string;
+    /** type of the adapter */
+    type: string;
+    /** license of the adapter */
+    license: string;
+    /** url to license information */
+    licenseUrl?: string;
+}
+
+function scanDirectory(dirName: string, list: Record<string, AdapterInformation>, regExp: RegExp) {
     if (fs.existsSync(dirName)) {
         let dirs;
         try {
@@ -819,7 +847,7 @@ function scanDirectory(dirName: string, list: Record<string, any>, regExp: RegEx
                     const localIcon = ioPackage.common.icon
                         ? `/adapter/${dirs[i].substring(appName.length + 1)}/${ioPackage.common.icon}`
                         : '';
-                    //noinspection JSUnresolvedVariable
+
                     list[ioPackage.common.name] = {
                         controller: ioPackage.common.controller || false,
                         version: ioPackage.common.version,
@@ -862,7 +890,7 @@ interface Multilingual {
     'zh-cn'?: string;
 }
 
-interface GetInstalledInfoReponse {
+export interface GetInstalledInfoReponse {
     controller?: boolean;
     version?: string;
     icon?: string;
@@ -1299,7 +1327,7 @@ export function getRepositoryFile(
     }
 }
 
-interface RepositoryFile {
+export interface RepositoryFile {
     json: Record<string, any>;
     changed: boolean;
     hash: string;
@@ -1521,7 +1549,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
 
 const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
-interface InstallNodeModuleOptions {
+export interface InstallNodeModuleOptions {
     // Whether the `--unsafe-perm` flag should be used
     unsafePerm?: boolean;
     // Whether to include `stderr` in the output and increase the loglevel to include more than errors
@@ -1574,7 +1602,7 @@ export async function installNodeModule(
     return pak.install([npmUrl], installOpts);
 }
 
-interface UninstallNodeModuleOptions {
+export interface UninstallNodeModuleOptions {
     // Whether to include `stderr` in the output and increase the loglevel to include more than errors
     debug?: boolean;
     // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
@@ -1620,7 +1648,7 @@ export async function uninstallNodeModule(
     return pak.uninstall([packageName]);
 }
 
-interface RebuildNodeModulesOptions {
+export interface RebuildNodeModulesOptions {
     // Whether to include `stderr` in the output and increase the loglevel to include more than errors
     debug?: boolean;
     // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
@@ -1663,7 +1691,7 @@ export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}
     return pak.rebuild();
 }
 
-interface GetDiskInfoResponse {
+export interface GetDiskInfoResponse {
     'Disk size': number;
     'Disk free': number;
 }
@@ -1828,7 +1856,7 @@ export function getCertificateInfo(cert: string): null | Record<string, any> {
     }
 }
 
-interface DefaultCertificates {
+export interface DefaultCertificates {
     defaultPrivate: string;
     defaultPublic: string;
 }
@@ -2947,16 +2975,16 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
     return instances;
 }
 
-interface GetObjectViewResult {
+export interface GetObjectViewResult {
     rows: ioBroker.GetObjectViewItem[];
 }
 
-interface GetObjectViewInstanceEntry {
+export interface GetObjectViewInstanceEntry {
     id: string;
     value: ioBroker.InstanceObject;
 }
 
-interface GetObjectViewInstanceResult {
+export interface GetObjectViewInstanceResult {
     rows: GetObjectViewInstanceEntry[];
 }
 
@@ -3159,7 +3187,7 @@ export function isShortGithubUrl(url: string): boolean {
     return shortGithubUrlRegex.test(url);
 }
 
-interface ParsedGithubUrl {
+export interface ParsedGithubUrl {
     user: string;
     repo: string;
     commit?: string;
@@ -3478,7 +3506,7 @@ export function getLogger(log: any): Record<string, (msg: string) => void> {
     return log;
 }
 
-interface OrderedInstancesObject {
+export interface OrderedInstancesObject {
     1: ioBroker.InstanceObject[];
     2: ioBroker.InstanceObject[];
     3: ioBroker.InstanceObject[];
@@ -3709,7 +3737,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
     }
 }
 
-interface GZipFileOptions {
+export interface GZipFileOptions {
     // Delete the input file after compression. Default: false.
     deleteInput?: boolean;
 }
