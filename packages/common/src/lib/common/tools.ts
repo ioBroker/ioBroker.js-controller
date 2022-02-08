@@ -248,7 +248,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
  * @return {boolean}
  */
 function _isDevInstallation() {
-    return fs.pathExistsSync(__dirname + '/../../../../../packages/controller');
+    return fs.pathExistsSync(`${__dirname}/../../../../../packages/controller`);
 }
 
 function getAppName() {
@@ -1232,7 +1232,7 @@ export function getRepositoryFile(
     callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number | undefined) => void
 ): void {
     let sources: Record<string, any> = {};
-    let path = '';
+    let _path = '';
 
     if (typeof additionalInfo === 'function') {
         // @ts-expect-error: fix all fun calls then remove
@@ -1244,7 +1244,7 @@ export function getRepositoryFile(
 
     if (urlOrPath) {
         const parts = urlOrPath.split('/');
-        path = parts.splice(0, parts.length - 1).join('/') + '/';
+        _path = parts.splice(0, parts.length - 1).join('/') + '/';
     }
 
     // If object was read
@@ -1254,12 +1254,15 @@ export function getRepositoryFile(
         }
     } else if (!urlOrPath) {
         try {
-            sources = fs.readJSONSync(getDefaultDataDir() + 'sources.json');
+            const controllerDir = getControllerDir();
+            if (controllerDir) {
+                sources = fs.readJSONSync(path.join(controllerDir, getDefaultDataDir(), 'sources.json'));
+            }
         } catch {
             sources = {};
         }
         try {
-            const sourcesDist = fs.readJSONSync(__dirname + '/../conf/sources-dist.json');
+            const sourcesDist = fs.readJSONSync(require.resolve('iobroker.js-controller/conf/sources-dist'));
             sources = extend(true, sourcesDist, sources);
         } catch {
             // continue regardless of error
@@ -1271,7 +1274,7 @@ export function getRepositoryFile(
             }
         }
 
-        _getRepositoryFile(sources, path, err => {
+        _getRepositoryFile(sources, _path, err => {
             if (err) {
                 console.error(`[${new Date().toString()}] ${err.message}`);
             }
@@ -1302,7 +1305,7 @@ export function getRepositoryFile(
                             }
                         }
                         setImmediate(() =>
-                            _getRepositoryFile(sources, path, err => {
+                            _getRepositoryFile(sources, _path, err => {
                                 err && console.error(`[${new Date().toString()}] ${err.message}`);
                                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
                             })
