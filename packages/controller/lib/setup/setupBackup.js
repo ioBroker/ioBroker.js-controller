@@ -629,6 +629,9 @@ class BackupRestore {
     }
 
     _copyBackupedFiles(backupDir) {
+        if (!fs.existsSync(backupDir)) {
+            return;
+        }
         const dirs = fs.readdirSync(backupDir);
 
         dirs.forEach(dir => {
