@@ -79,7 +79,7 @@ function Repo(options) {
         if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
             if (!hash) {
                 try {
-                    hash = await axios({ url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+                    hash = await axios({ url: hashUrl, timeout: 10000 });
                 } catch (e) {
                     console.error(`Cannot download repository hash file ${hashUrl}: ${e.message}`);
                 }
