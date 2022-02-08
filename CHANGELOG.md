@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+## __WORK IN PROGRESS__
 * (foxriver76) stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5
 * (foxriver76) Optimize Set activation handling to prevent some error logged on upgrade
 * (Apollon77) Fix Linux Capability updating for Docker and check Admin Flag
