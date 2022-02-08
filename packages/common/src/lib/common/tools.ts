@@ -1262,8 +1262,11 @@ export function getRepositoryFile(
             sources = {};
         }
         try {
-            const sourcesDist = fs.readJSONSync(require.resolve('iobroker.js-controller/conf/sources-dist'));
-            sources = extend(true, sourcesDist, sources);
+            const controllerDir = getControllerDir();
+            if (controllerDir) {
+                const sourcesDist = fs.readJSONSync(path.join(controllerDir, 'conf', 'sources-dist.json'));
+                sources = extend(true, sourcesDist, sources);
+            }
         } catch {
             // continue regardless of error
         }
