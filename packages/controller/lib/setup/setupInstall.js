@@ -475,9 +475,7 @@ function Install(options) {
 
                 // if required dependency not found => install it
                 if (!isFound) {
-                    const name = await this.createInstance(dName, _options);
-                    await upload.uploadAdapter(name, true, false);
-                    await upload.uploadAdapter(name, false, false);
+                    await this.createInstance(dName, _options);
                 }
             }
         }
@@ -667,7 +665,6 @@ function Install(options) {
      * @return {Promise<void>}
      */
     this.createInstance = async function (adapter, options) {
-        const adapterDir = tools.getAdapterDir(adapter);
         let ignoreIfExists = false;
         options = options || {};
         options.host = options.host || tools.getHostName();
@@ -801,6 +798,8 @@ function Install(options) {
         } else {
             objs = [];
         }
+
+        const adapterDir = tools.getAdapterDir(adapter);
 
         if (fs.existsSync(path.join(adapterDir, 'www'))) {
             objs.push({
