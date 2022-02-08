@@ -3439,33 +3439,60 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
  * @returns {Promise<void>}
  */
 async function setExecutableCapabilities(execPath, capabilities, modeEffective, modePermitted, modeInherited) {
+    if (!Array.isArray(capabilities) || !capabilities.length) {
+        throw new Error('No capabilities array provided');
+    }
+
     // if not linux do nothing and silently exit
-    if (os.platform() === 'linux') {
-        if (Array.isArray(capabilities) && capabilities.length) {
-            let modes = '';
-            const capabilitiesStr = capabilities.join(',');
+    if (os.platform() !== 'linux') {
+        return;
+    }
 
-            if (modeEffective) {
-                modes += 'e';
+    // if Docker and Admin Capabilities should be set check if we are allowed to do that
+    if (isDocker() && capabilities.includes('cap_net_admin')) {
+        try {
+            const systemCaps = fs.readFileSync(`/proc/${process.pid}/status`, 'utf-8');
+            const capBnd = systemCaps.match(/^CapBnd:\s(.+)$/m);
+            // We found a value in CapBnd line
+            if (capBnd && capBnd[1]) {
+                const { stdout } = await execAsync(`capsh --decode=${capBnd[1]}`);
+                // Stdout looks like "0x00000000a80425fb=cap_chown,cap_dac_override,..."
+                if (stdout && stdout.startsWith(`0x${capBnd[1]}=`)) {
+                    const capBndArr = stdout.substring(capBnd[1].length + 3).split(',');
+                    // if Admin Capability is not included in System Capabilities we remove it from array
+                    if (!capBndArr.includes('cap_net_admin')) {
+                        capabilities = capabilities.filter(c => c !== 'cap_net_admin');
+                    }
+                }
             }
-
-            if (modePermitted) {
-                modes += 'p';
-            }
-
-            if (modeInherited) {
-                modes += 'i';
-            }
-
-            if (modes.length) {
-                modes = `+${modes}`;
-            }
-
-            // if this throws it needs to be caught outside
-            await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
-        } else {
-            throw new Error('No capabilities array provided');
+        } catch {
+            // Ok we could not find it out, so update Caps but better without Admin Capability
+            capabilities = capabilities.filter(c => c !== 'cap_net_admin');
         }
+    }
+
+    if (capabilities.length) {
+        let modes = '';
+        const capabilitiesStr = capabilities.join(',');
+
+        if (modeEffective) {
+            modes += 'e';
+        }
+
+        if (modePermitted) {
+            modes += 'p';
+        }
+
+        if (modeInherited) {
+            modes += 'i';
+        }
+
+        if (modes.length) {
+            modes = `+${modes}`;
+        }
+
+        // if this throws it needs to be caught outside
+        await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
     }
 }
 
