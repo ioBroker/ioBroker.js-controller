@@ -67,7 +67,7 @@ function Repo(options) {
             try {
                 hash = await axios({ url: hashUrl, timeout: 10000 });
             } catch (e) {
-                console.error(`Cannot download repository hash file ${hashUrl}: ${e.message}`);
+                console.error(`Cannot download repository hash file from "${hashUrl}": ${e.message}`);
             }
             if (hash && hash.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
                 return oldRepos.native.repositories[repoName].json;
