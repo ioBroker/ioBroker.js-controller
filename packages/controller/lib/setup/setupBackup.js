@@ -630,6 +630,7 @@ class BackupRestore {
 
     _copyBackupedFiles(backupDir) {
         if (!fs.existsSync(backupDir)) {
+            console.log('No additional files to restore');
             return;
         }
         const dirs = fs.readdirSync(backupDir);

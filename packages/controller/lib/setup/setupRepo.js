@@ -81,7 +81,7 @@ function Repo(options) {
                 try {
                     hash = await axios({ url: hashUrl, timeout: 10000 });
                 } catch (e) {
-                    console.error(`Cannot download repository hash file ${hashUrl}: ${e.message}`);
+                    console.error(`Cannot download repository hash file from ${hashUrl}: ${e.message}`);
                 }
             }
 
@@ -98,7 +98,7 @@ function Repo(options) {
                     data = null;
                 }
             } catch (e) {
-                console.error(`Cannot download repository file ${urlOrPath}: ${e.message}`);
+                console.error(`Cannot download repository file from ${urlOrPath}: ${e.message}`);
                 data = null;
             }
         } else {
