@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.5": {
+        "en": "stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5\nOptimize Set activation handling to prevent some error logged on upgrade\nFix Linux Capability updating for Docker and check Admin Flag\nDetect another Rebuild case and allo wautomatic rebuilding\nFix adapter installation with dependencies\nFix seq edge case \nPrevent several crash cases seen in Sentry",
+        "de": "stoppen Sie die Datenbank, bevor Sie upgrade self ausführen; Gilt für alle Upgrades >4.0.5\nOptimieren Sie die Handhabung der Set-Aktivierung, um einige beim Upgrade protokollierte Fehler zu vermeiden\nKorrigieren Sie die Aktualisierung der Linux-Funktion für Docker und überprüfen Sie das Admin-Flag\nErkennt einen weiteren Rebuild-Fall und erlaubt einen automatischen Rebuild\nAdapterinstallation mit Abhängigkeiten reparieren\nSeq-Edge-Fall behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
+        "ru": "остановить базу данных перед выполнением самообновления; Будет действовать для всех обновлений >4.0.5\nОптимизировать обработку активации Set, чтобы предотвратить некоторые ошибки, регистрируемые при обновлении.\nИсправьте обновление возможностей Linux для Docker и проверьте флаг администратора.\nОбнаружение другого случая Rebuild и разрешение автоматического восстановления\nИсправить установку адаптера с зависимостями\nИсправить пограничный случай seq\nПредотвратите несколько случаев сбоев, наблюдаемых в Sentry.",
+        "pt": "pare o banco de dados antes de executar o upgrade self; Será eficaz para todas as atualizações > 4.0.5\nOtimize o tratamento de ativação do conjunto para evitar alguns erros registrados na atualização\nCorrija a atualização de recursos do Linux para o Docker e verifique o sinalizador de administrador\nDetecte outro caso de reconstrução e permita a reconstrução automática\nCorrigir a instalação do adaptador com dependências\nCorrigir caso de borda seq\nPrevenir vários casos de acidente vistos no Sentinela",
+        "nl": "stop de database voordat u de upgrade zelf uitvoert; Zal effectief zijn voor alle upgrades >4.0.5\nOptimaliseren Activeringsafhandeling instellen om een fout te voorkomen die is aangemeld bij de upgrade\nFix Linux Capability-update voor Docker en controleer Admin Flag\nDetecteer een ander Rebuild-geval en sta automatische reconstructie toe\nInstallatie van adapter met afhankelijkheden repareren\nFix seq edge case\nVoorkom verschillende crashgevallen in Sentry",
+        "fr": "arrêtez la base de données avant d'exécuter la mise à jour automatique ; Sera efficace pour toutes les mises à jour > 4.0.5\nOptimiser Définir la gestion de l'activation pour éviter certaines erreurs enregistrées lors de la mise à niveau\nCorrection de la mise à jour des capacités Linux pour Docker et vérification de l'indicateur d'administration\nDétecter un autre cas de reconstruction et autoriser la reconstruction automatique\nCorrection de l'installation de l'adaptateur avec dépendances\nCorriger le cas de bord suivant\nEmpêcher plusieurs cas de crash vus dans Sentry",
+        "it": "fermare il database prima di eseguire l'aggiornamento automatico; Sarà efficace per tutti gli aggiornamenti >4.0.5\nOttimizza Impostare la gestione dell'attivazione per evitare errori durante l'aggiornamento\nCorreggi l'aggiornamento delle funzionalità Linux per Docker e controlla il flag amministratore\nRileva un altro caso Ricostruisci e consenti la ricostruzione automatica\nCorreggi l'installazione dell'adattatore con le dipendenze\nRisolto il problema con il seq edge case\nImpedisci diversi casi di crash visti in Sentry",
+        "es": "detenga la base de datos antes de ejecutar la actualización automática; Será efectivo para todas las actualizaciones > 4.0.5\nOptimizar Configurar el manejo de la activación para evitar algún error registrado en la actualización\nCorrija la actualización de la capacidad de Linux para Docker y verifique la bandera de administración\nDetectar otro caso de reconstrucción y permitir la reconstrucción automática\nArreglar la instalación del adaptador con dependencias\nArreglar caso de borde de secuencia\nEvitar varios casos de bloqueo vistos en Sentry",
+        "pl": "zatrzymaj bazę danych przed wykonaniem samodzielnej aktualizacji; Będzie obowiązywać dla wszystkich ulepszeń >4,0,5\nOptymalizuj Ustaw obsługę aktywacji, aby zapobiec błędom zalogowania się podczas aktualizacji\nNapraw aktualizację funkcji Linux dla platformy Docker i sprawdź flagę administratora\nWykryj inny przypadek Rebuild i zezwól na automatyczną odbudowę\nNapraw instalację adaptera z zależnościami\nNapraw przypadek krawędzi na sekwencjach\nZapobiegaj kilku przypadkom awarii w Sentry",
+        "zh-cn": "在执行升级自我之前停止数据库；将对>4.0.5的所有升级有效\n优化设置激活处理，防止一些错误登录升级\n修复 Docker 的 Linux 功能更新并检查 Admin Flag\n检测另一个重建案例并允许自动重建\n使用依赖项修复适配器安装\n修复 seq 边缘情况\n防止在 Sentry 中出现的几个崩溃案例"
+      },
       "4.0.4": {
         "en": "Optimize database initialization and destroys\nUpdate winston-syslog to prevent errors\nAllow proper setup first upgrade from 3.3.x",
         "de": "Optimieren Sie die Initialisierung und Zerstörung von Datenbanken\nAktualisieren Sie winston-syslog, um Fehler zu vermeiden\nErst-Upgrade von 3.3.x auf ordnungsgemäße Einrichtung zulassen",
@@ -80,18 +92,6 @@
         "zh-cn": "看到CHANGELOG.md"
       },
       "3.0.20": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
-      },
-      "2.2.9": {
         "en": "see CHANGELOG.md",
         "de": "Siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
