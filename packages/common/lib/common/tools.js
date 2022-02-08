@@ -2995,6 +2995,7 @@ function pipeLinewise(input, output) {
         crlfDelay: Infinity
     });
     rl.on('line', line => output.write(line + os.EOL));
+    rl.on('error', () => {}); // Ignore errors
 }
 
 /**

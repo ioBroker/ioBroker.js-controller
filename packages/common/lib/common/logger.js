@@ -65,19 +65,19 @@ const IoSeq =
             ioInfo.props = ioInfo.props || {};
 
             // map our log levels to Seq levels
-            const level = (info.level || '').toLowerCase();
+            const level = (ioInfo.level || '').toLowerCase();
             if (level.includes('error')) {
-                info.level = 'Error';
+                ioInfo.level = 'Error';
             } else if (level.includes('warn')) {
-                info.level = 'Warning';
+                ioInfo.level = 'Warning';
             } else if (level.includes('info')) {
-                info.level = 'Information';
+                ioInfo.level = 'Information';
             } else if (level.includes('debug')) {
-                info.level = 'Debug';
+                ioInfo.level = 'Debug';
             } else if (level.includes('silly')) {
-                info.level = 'Verbose';
+                ioInfo.level = 'Verbose';
             } else {
-                info.level = 'Information';
+                ioInfo.level = 'Information';
             }
 
             // we add own properties
