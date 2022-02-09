@@ -247,7 +247,7 @@ function Install(options) {
      * @return {Promise<undefined|{installDir: string, _url: string}>}
      * @private
      */
-    this._npmInstallWithCheck = function (npmUrl, options, debug) {
+    this._npmInstallWithCheck = async function (npmUrl, options, debug) {
         // Get npm version
         try {
             let npmVersion;
