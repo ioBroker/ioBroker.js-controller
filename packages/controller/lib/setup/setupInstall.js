@@ -247,7 +247,7 @@ function Install(options) {
      * @return {Promise<undefined|{installDir: string, _url: string}>}
      * @private
      */
-    this._npmInstallWithCheck = async function (npmUrl, options, debug) {
+    this._npmInstallWithCheck = function (npmUrl, options, debug) {
         // Get npm version
         try {
             let npmVersion;
@@ -283,13 +283,13 @@ function Install(options) {
                 );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return processExit(EXIT_CODES.INVALID_NPM_VERSION);
-            } else {
-                return await this._npmInstall(npmUrl, options, debug);
             }
         } catch (err) {
             console.error(`Could not check npm version: ${err.message}`);
             console.error('Assuming that correct version is installed.');
         }
+
+        return this._npmInstall(npmUrl, options, debug);
     };
 
     this._npmInstall = async function (npmUrl, options, debug) {
