@@ -477,7 +477,7 @@ class BackupRestore {
             if (
                 !this.dbMigration &&
                 _objects[i].id &&
-                _objects[i].id.startsWith('system.adapter.') &&
+                /^system\.adapter\..+\.\d$/.test(_objects[i].id) &&
                 !_objects[i].id.startsWith('system.adapter.admin.') &&
                 !_objects[i].id.startsWith('system.adapter.backitup.')
             ) {
