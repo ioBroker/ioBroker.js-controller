@@ -2437,7 +2437,7 @@ async function processMessage(msg) {
                                         }
                                     } catch (e) {
                                         logger.error(
-                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e}`
+                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
                                         );
                                     }
                                 }
