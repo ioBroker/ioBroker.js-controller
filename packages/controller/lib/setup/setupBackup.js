@@ -15,6 +15,7 @@ const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const path = require('path');
+const cpPromise = require('promisify-child-process');
 
 // We cannot use relative paths for the backup locations, as they used by both
 // require, which resolves relative paths from __dirname
@@ -49,6 +50,8 @@ class BackupRestore {
         this.restartController = options.restartController;
         this.dbMigration = options.dbMigration || false;
         this.mime = null;
+        /** these adapters will be reinstalled during restore, while others will be installed after next controller start */
+        this.PRESERVE_ADAPTERS = ['admin', 'backitup'];
 
         this.upload = new Upload(options);
 
@@ -719,11 +722,12 @@ class BackupRestore {
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(pathLib.join(tmpDir, 'backup'));
+        // reinstall preserve adapters
+        await this._restorePreservedAdapters();
 
         if (force) {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
-            const cpPromise = require('promisify-child-process');
             try {
                 await cpPromise.exec(
                     `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
@@ -751,7 +755,6 @@ class BackupRestore {
     async _removeAllAdapters(controllerDir) {
         const nodeModulePath = path.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
-
         // we need to uninstall current adapters to get exact the same system as before backup
         for (const dir of nodeModuleDirs) {
             if (
@@ -1097,6 +1100,28 @@ class BackupRestore {
                 daemon.stop();
             }
         );
+    }
+
+    /**
+     * This method checks if adapter of PRESERVE_ADAPTERS exist, and reinstalls them if this is the case
+     *
+     * @return {Promise<void>}
+     * @private
+     */
+    async _restorePreservedAdapters() {
+        for (const adapterName of this.PRESERVE_ADAPTERS) {
+            try {
+                const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
+                if (adapterObj && adapterObj.common && adapterObj.common.version) {
+                    console.log(`Reinstalling adapter "${adapterName}" in version "${adapterObj.common.version}"`);
+                    await tools.installNodeModule(
+                        `${tools.appName.toLowerCase()}.${adapterName}@${adapterObj.common.version}`
+                    );
+                }
+            } catch (e) {
+                console.error(`Could not ensure existence of "${adapterName}": ${e.message}`);
+            }
+        }
     }
 }
 
