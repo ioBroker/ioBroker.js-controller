@@ -10,7 +10,7 @@ const cpPromise = require('promisify-child-process');
 const jwt = require('jsonwebtoken');
 const { createInterface } = require('readline');
 const { PassThrough } = require('stream');
-const { detectPackageManager } = require('@alcalzone/pak');
+const { detectPackageManager, packageManagers } = require('@alcalzone/pak');
 const EXIT_CODES = require('./exitCodes');
 const zlib = require('zlib');
 
@@ -1455,6 +1455,43 @@ function getSystemNpmVersion(callback) {
 const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
 /**
+ * @private
+ * Figure out which package manager is in charge, but with a fallback to npm.
+ * @param {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+ * @returns {Promise<PackageManager>}
+ */
+async function detectPackageManagerWithFallback(cwd) {
+    try {
+        // For the first attempt, use pak's default of requiring a lockfile. This makes sure we find ioBroker's root dir
+        return await detectPackageManager(
+            typeof cwd === 'string'
+                ? // If a cwd was provided, use it
+                  { cwd }
+                : // Otherwise try to find the ioBroker root dir
+                  {
+                      cwd: __dirname,
+                      setCwdToPackageRoot: true
+                  }
+        );
+    } catch {
+        // Lockfile not found, try again without requiring a lockfile
+    }
+
+    // Since we have no lockfile to rely on, assume the root dir is 2 levels above js-controller
+    const ioBrokerRootDir = path.join(getControllerDir(), '../..');
+    try {
+        return await detectPackageManager({ cwd: ioBrokerRootDir, requireLockfile: false });
+    } catch {
+        // Lockfile not found, use default
+    }
+
+    // Fallback to npm
+    const pak = new packageManagers.npm();
+    pak.cwd = ioBrokerRootDir;
+    return pak;
+}
+
+/**
  * @typedef {object} InstallNodeModuleOptions
  * @property {boolean} [unsafePerm] Whether the `--unsafe-perm` flag should be used
  * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
@@ -1469,16 +1506,7 @@ const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
  */
 async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1518,16 +1546,7 @@ async function installNodeModule(npmUrl, options = {}) {
  */
 async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1561,16 +1580,7 @@ async function uninstallNodeModule(packageName, options = {}) {
  */
 async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
