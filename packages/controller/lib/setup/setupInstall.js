@@ -289,7 +289,11 @@ function Install(options) {
             console.error('Assuming that correct version is installed.');
         }
 
-        return this._npmInstall(npmUrl, options, debug);
+        try {
+            return await this._npmInstall(npmUrl, options, debug);
+        } catch (err) {
+            console.error(`Could not install ${npmUrl}: ${err.message}`);
+        }
     };
 
     this._npmInstall = async function (npmUrl, options, debug) {
