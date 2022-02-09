@@ -24,7 +24,7 @@
     },
     "objects" : {
         "type": "file",
-        "// type": "Possible values: 'file' - [port 9001], redis - [port 6379 or 26379 for sentinel].",
+        "// type": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel].",
         "host": "127.0.0.1",
         "port": 9001,
         "noFileCache": false,
