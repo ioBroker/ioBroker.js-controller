@@ -61,7 +61,7 @@ const IoSeq =
     Seq &&
     class extends Seq {
         log(info, callback) {
-            const ioInfo = info;
+            const ioInfo = deepClone(info);
             ioInfo.props = ioInfo.props || {};
 
             // map our log levels to Seq levels
