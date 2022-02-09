@@ -3,8 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-
-## __WORK IN PROGRESS__
+## 4.0.6 (2022-02-09)
 * (AlCalzone) Optimize some JSONL cases
 * (foxriver76) Optimize Backup restore process
 * (AlCalzone) Fix issues that prevented adapter installs/updates (npm can not be located error message)

@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.6": {
+        "en": "Optimize some JSONL cases\nOptimize Backup restore process\nFix issues that prevented adapter installs/updates (npm can not be located error message)\nFix seq Logging issue\nPrevent several crash cases seen in Sentry",
+        "de": "Optimieren Sie einige JSONL-Fälle\nOptimieren Sie den Backup-Wiederherstellungsprozess\nBehebung von Problemen, die Adapterinstallationen/-aktualisierungen verhinderten (Fehlermeldung „npm kann nicht gefunden werden“)\nSeq-Logging-Problem behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
+        "ru": "Оптимизация некоторых случаев JSONL\nОптимизировать процесс восстановления резервной копии\nУстранение проблем, препятствовавших установке/обновлению адаптера (сообщение об ошибке npm не может быть найдено)\nИсправить проблему с ведением журнала последовательностей\nПредотвратить несколько случаев сбоя в Sentry.",
+        "pt": "Otimize alguns casos JSONL\nOtimize o processo de restauração de backup\nCorrige problemas que impediam instalações/atualizações do adaptador (o npm não pode ser localizado a mensagem de erro)\nCorrigir o problema de log de seq\nPrevenir vários casos de acidente vistos no Sentinela",
+        "nl": "Optimaliseer sommige JSONL-cases\nOptimaliseer het back-upherstelproces\nProblemen oplossen die installatie/updates van adapters verhinderden (npm kan foutbericht niet worden gevonden)\nFix seq Logging probleem\nVoorkom verschillende crashgevallen in Sentry",
+        "fr": "Optimiser certains cas JSONL\nOptimiser le processus de restauration de sauvegarde\nRésoudre les problèmes qui empêchaient les installations/mises à jour de l'adaptateur (le message d'erreur npm ne peut pas être localisé)\nCorrection du problème de journalisation suivant\nEmpêcher plusieurs cas de crash vus dans Sentry",
+        "it": "Ottimizza alcuni casi JSONL\nOttimizza il processo di ripristino del backup\nRisolvi i problemi che impedivano le installazioni/gli aggiornamenti dell'adattatore (non è possibile individuare il messaggio di errore di npm)\nRisolto il problema con la registrazione della sequenza\nImpedisci diversi casi di crash visti in Sentry",
+        "es": "Optimizar algunos casos JSONL\nOptimizar el proceso de restauración de copia de seguridad\nSolucionar problemas que impedían la instalación/actualización del adaptador (mensaje de error npm no se puede ubicar)\nSolucionar el problema de registro de secuencias\nEvitar varios casos de bloqueo vistos en Sentry",
+        "pl": "Zoptymalizuj niektóre przypadki JSONL\nZoptymalizuj proces przywracania kopii zapasowej\nNapraw problemy, które uniemożliwiały instalację/aktualizację karty (nie można zlokalizować npm, komunikat o błędzie)\nNapraw kolejny problem z logowaniem\nZapobiegaj kilku przypadkom awarii w Sentry",
+        "zh-cn": "优化部分 JSONL 案例\n优化备份还原过程\n修复阻止适配器安装/更新的问题（npm 无法定位错误消息）\n修复 seq 日志记录问题\n防止在 Sentry 中出现的几个崩溃案例"
+      },
       "4.0.5": {
         "en": "stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5\nOptimize Set activation handling to prevent some error logged on upgrade\nFix Linux Capability updating for Docker and check Admin Flag\nDetect another Rebuild case and allo wautomatic rebuilding\nFix adapter installation with dependencies\nFix seq edge case \nPrevent several crash cases seen in Sentry",
         "de": "stoppen Sie die Datenbank, bevor Sie upgrade self ausführen; Gilt für alle Upgrades >4.0.5\nOptimieren Sie die Handhabung der Set-Aktivierung, um einige beim Upgrade protokollierte Fehler zu vermeiden\nKorrigieren Sie die Aktualisierung der Linux-Funktion für Docker und überprüfen Sie das Admin-Flag\nErkennt einen weiteren Rebuild-Fall und erlaubt einen automatischen Rebuild\nAdapterinstallation mit Abhängigkeiten reparieren\nSeq-Edge-Fall behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
@@ -80,18 +92,6 @@
         "zh-cn": "看到CHANGELOG.md"
       },
       "3.1.6": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
-      },
-      "3.0.20": {
         "en": "see CHANGELOG.md",
         "de": "Siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
