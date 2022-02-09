@@ -594,55 +594,62 @@ function Setup(options) {
                 config = fs.readJSONSync(tools.getConfigFileName());
                 originalConfig = deepClone(config);
             } else {
-                config = require('../../conf/' + tools.appName + '-dist.json');
+                config = require(`../../conf/${tools.appName}-dist.json`);
             }
         } catch {
-            config = require('../../conf/' + tools.appName + '-dist.json');
+            config = require(`../../conf/${tools.appName}-dist.json`);
         }
 
-        const currentObjectsType = originalConfig.objects.type || 'file';
-        const currentStatesType = originalConfig.states.type || 'file';
+        const currentObjectsType = originalConfig.objects.type || 'jsonl';
+        const currentStatesType = originalConfig.states.type || 'jsonl';
         console.log('Current configuration:');
         console.log('- Objects database:');
-        console.log('  - Type: ' + originalConfig.objects.type);
-        console.log('  - Host/Unix Socket: ' + originalConfig.objects.host);
-        console.log('  - Port: ' + originalConfig.objects.port);
+        console.log(`  - Type: ${originalConfig.objects.type}`);
+        console.log(`  - Host/Unix Socket: ${originalConfig.objects.host}`);
+        console.log(`  - Port: ${originalConfig.objects.port}`);
         if (Array.isArray(originalConfig.objects.host)) {
             console.log(
-                '  - Sentinel-Master-Name: ' +
-                    (originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster')
+                `  - Sentinel-Master-Name: ${
+                    originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster'
+                }`
             );
         }
         console.log('- States database:');
-        console.log('  - Type: ' + originalConfig.states.type);
-        console.log('  - Host/Unix Socket: ' + originalConfig.states.host);
-        console.log('  - Port: ' + originalConfig.states.port);
+        console.log(`  - Type: ${originalConfig.states.type}`);
+        console.log(`  - Host/Unix Socket: ${originalConfig.states.host}`);
+        console.log(`  - Port: ${originalConfig.states.port}`);
         if (Array.isArray(originalConfig.states.host)) {
             console.log(
-                '  - Sentinel-Master-Name: ' +
-                    (originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster')
+                `  - Sentinel-Master-Name: ${
+                    originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster'
+                }`
             );
         }
         if (
             dbTools.objectsDbHasServer(originalConfig.objects.type) ||
             dbTools.statesDbHasServer(originalConfig.states.type)
         ) {
-            console.log('- Data Directory: ' + tools.getDefaultDataDir());
+            console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
-            console.log('- Host name: ' + originalConfig.system.hostname);
+            console.log(`- Host name: ${originalConfig.system.hostname}`);
         }
         console.log('');
 
-        let otype = rl.question('Type of objects DB [(f)ile, (r)edis, ...], default [' + currentObjectsType + ']: ', {
-            defaultInput: currentObjectsType
-        });
+        let otype = rl.question(
+            `Type of objects DB [(j)sonl, (f)ile, (r)edis, ...], default [${currentObjectsType}]: `,
+            {
+                defaultInput: currentObjectsType
+            }
+        );
         otype = otype.toLowerCase();
 
         if (otype === 'r') {
             otype = 'redis';
         } else if (otype === 'f') {
             otype = 'file';
+        } else if (otype === 'j') {
+            otype = 'jsonl';
         }
 
         let getDefaultObjectsPort;
@@ -650,7 +657,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-objects-${otype}`);
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
-            console.log(COLOR_RED + 'Unknown objects type: ' + otype + COLOR_RESET);
+            console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
             if (otype !== 'file' && otype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the objects db type you entered is really correct!`);
@@ -741,15 +748,20 @@ function Setup(options) {
             // ignore, unchanged
         }
 
-        let stype = rl.question(`Type of states DB [(f)file, (r)edis, ...], default [${defaultStatesType}]: `, {
-            defaultInput: defaultStatesType
-        });
+        let stype = rl.question(
+            `Type of states DB [(j)sonl, (f)file, (r)edis, ...], default [${defaultStatesType}]: `,
+            {
+                defaultInput: defaultStatesType
+            }
+        );
         stype = stype.toLowerCase();
 
         if (stype === 'r') {
             stype = 'redis';
         } else if (stype === 'f') {
             stype = 'file';
+        } else if (stype === 'j') {
+            stype = 'jsonl';
         }
 
         let getDefaultStatesPort;
