@@ -1224,10 +1224,8 @@ function Adapter(options) {
      * @param {number} id - timer id
      */
     this.clearTimeout = id => {
-        if (timers.has(id)) {
-            clearTimeout(id);
-            timers.delete(id);
-        }
+        clearTimeout(id);
+        timers.delete(id);
     };
 
     /**
@@ -1287,10 +1285,8 @@ function Adapter(options) {
      * @param {number} id - interval id
      */
     this.clearInterval = id => {
-        if (intervals.has(id)) {
-            clearInterval(id);
-            intervals.delete(id);
-        }
+        clearInterval(id);
+        intervals.delete(id);
     };
 
     // Can be later deleted if no more appears
