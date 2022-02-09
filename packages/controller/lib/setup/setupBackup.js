@@ -1113,10 +1113,15 @@ class BackupRestore {
             try {
                 const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
                 if (adapterObj && adapterObj.common && adapterObj.common.version) {
-                    console.log(`Reinstalling adapter "${adapterName}" in version "${adapterObj.common.version}"`);
-                    await tools.installNodeModule(
-                        `${tools.appName.toLowerCase()}.${adapterName}@${adapterObj.common.version}`
-                    );
+                    let installSource;
+                    if (adapterObj.common.installedFrom) {
+                        installSource = adapterObj.common.installedFrom;
+                    } else {
+                        installSource = `${tools.appName.toLowerCase()}.${adapterName}@${adapterObj.common.version}`;
+                    }
+
+                    console.log(`Reinstalling adapter "${adapterName}" from "${installSource}"`);
+                    await tools.installNodeModule(installSource);
                 }
             } catch (e) {
                 console.error(`Could not ensure existence of adapter "${adapterName}": ${e.message}`);
