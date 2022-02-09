@@ -1119,7 +1119,7 @@ class BackupRestore {
                     );
                 }
             } catch (e) {
-                console.error(`Could not ensure existence of "${adapterName}": ${e.message}`);
+                console.error(`Could not ensure existence of adapter "${adapterName}": ${e.message}`);
             }
         }
     }
