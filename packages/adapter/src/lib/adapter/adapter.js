@@ -1224,9 +1224,7 @@ function Adapter(options) {
      * @param {number} id - timer id
      */
     this.clearTimeout = id => {
-        if (!timers.has(id)) {
-            logger.warn(`${this.namespaceLog} Clear already terminated timer ${id}`);
-        } else {
+        if (timers.has(id)) {
             clearTimeout(id);
             timers.delete(id);
         }
@@ -1289,9 +1287,7 @@ function Adapter(options) {
      * @param {number} id - interval id
      */
     this.clearInterval = id => {
-        if (!intervals.has(id)) {
-            logger.warn(`${this.namespaceLog} Clear already terminated interval ${id}`);
-        } else {
+        if (intervals.has(id)) {
             clearInterval(id);
             intervals.delete(id);
         }
