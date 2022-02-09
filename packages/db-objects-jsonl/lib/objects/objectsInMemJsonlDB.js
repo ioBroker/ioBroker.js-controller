@@ -189,6 +189,12 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             this.backupDir,
             `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`
         );
+
+        if (!this._db.isOpen) {
+            this.log.warn(`${this.namespace} Cannot save backup ${backupFileName}: DB is closed`);
+            return;
+        }
+
         try {
             if (fs.existsSync(backupFileName)) {
                 return;
@@ -208,11 +214,11 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     async destroy() {
         await super.destroy();
 
-        if (this._db) {
-            await this._db.close();
-        }
         if (this._backupInterval) {
             clearInterval(this._backupInterval);
+        }
+        if (this._db) {
+            await this._db.close();
         }
     }
 }
