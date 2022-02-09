@@ -283,12 +283,16 @@ function Install(options) {
                 );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return processExit(EXIT_CODES.INVALID_NPM_VERSION);
-            } else {
-                return await this._npmInstall(npmUrl, options, debug);
             }
         } catch (err) {
             console.error(`Could not check npm version: ${err.message}`);
             console.error('Assuming that correct version is installed.');
+        }
+
+        try {
+            return await this._npmInstall(npmUrl, options, debug);
+        } catch (err) {
+            console.error(`Could not install ${npmUrl}: ${err.message}`);
         }
     };
 
