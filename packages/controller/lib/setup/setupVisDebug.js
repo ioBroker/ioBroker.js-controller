@@ -35,7 +35,15 @@ function VisDebug(options) {
 
     // upload widget directory to vis directory
     function uploadWidgets(dir, adapter, pathW, callback) {
+        if (!fs.existsSync(dir)) {
+            console.error(`Cannot upload widgets, because folder "${dir}" does not exist`);
+            if (callback) {
+                callback();
+            }
+            return;
+        }
         const dirs = fs.readdirSync(dir);
+
         let count = 0;
         for (let d = 0; d < dirs.length; d++) {
             const stat = fs.statSync(dir + '/' + dirs[d]);
