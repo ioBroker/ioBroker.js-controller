@@ -1258,34 +1258,32 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
  */
 async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let _hash;
-    if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
-        axios = axios || require('axios');
-        _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
-        if (_hash && _hash.data && hash === _hash.data.hash) {
-            return _actualRepo;
-        }
-    }
-
     let data;
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
         axios = axios || require('axios');
-        if (!_hash) {
+        try {
             _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+        } catch {
+            // ignore missing hash file
         }
 
-        if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
                 require('../../package.json').version
             }`;
-            data = await axios({
-                url,
-                timeout: 10000,
-                headers: { 'User-Agent': agent }
-            });
-            data = data.data;
+            try {
+                data = await axios({
+                    url,
+                    timeout: 10000,
+                    headers: { 'User-Agent': agent }
+                });
+                data = data.data;
+            } catch (e) {
+                throw new Error(`Cannot download repository file from "${url}": ${e.message}`);
+            }
         }
     } else {
         if (fs.existsSync(url)) {

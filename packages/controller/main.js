@@ -2181,7 +2181,9 @@ async function sendTo(objName, command, message, callback) {
             `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
         );
         if (obj.callback && obj.callback.id) {
-            obj.callback(e);
+            if (typeof callback === 'function') {
+                callback(e);
+            }
             delete callbacks[`_${obj.callback.id}`];
         }
     }
@@ -2437,7 +2439,7 @@ async function processMessage(msg) {
                                         }
                                     } catch (e) {
                                         logger.error(
-                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e}`
+                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
                                         );
                                     }
                                 }
