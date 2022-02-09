@@ -3,6 +3,14 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+## __WORK IN PROGRESS__
+* (AlCalzone) Optimize some JSONL cases
+* (foxriver76) Optimize Backup restore process
+* (AlCalzone) Fix issues that prevented adapter installs/updates (npm can not be located error message)
+* (Apollon77) Fix seq Logging issue
+* (foxriver76/Apollon77) Prevent several crash cases seen in Sentry
+
 ## 4.0.5 (2022-02-08)
 * (foxriver76) stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5
 * (foxriver76) Optimize Set activation handling to prevent some error logged on upgrade
