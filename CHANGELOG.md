@@ -3,6 +3,15 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## 4.0.5 (2022-02-08)
+* (foxriver76) stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5
+* (foxriver76) Optimize Set activation handling to prevent some error logged on upgrade
+* (Apollon77) Fix Linux Capability updating for Docker and check Admin Flag
+* (Apollon77) Detect another Rebuild case and allo wautomatic rebuilding
+* (foxriver76) Fix adapter installation with dependencies
+* (Apollon77) Fix seq edge case 
+* (foxriver76/Apollon77) Prevent several crash cases seen in Sentry
+
 ## 4.0.4 (2022-02-05)
 * (Apollon77/foxriver76) Optimize database initialization and destroys
 * (Apollon77) Update winston-syslog to prevent errors

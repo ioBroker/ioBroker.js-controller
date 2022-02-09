@@ -96,7 +96,8 @@ function VisDebug(options) {
             }
 
             if (!adapterDir) {
-                throw new Error(`Adapter not found. Tried: ${adapterNames2Try.join(', ')}`);
+                console.error(`Adapter not found. Tried: ${adapterNames2Try.join(', ')}`);
+                return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
             }
         }
 
@@ -104,15 +105,15 @@ function VisDebug(options) {
         // copy edit.html.original to edit.html
         // correct appName.json
         // correct config.js
-        let visDir = __dirname + '/../../node_modules/' + tools.appName + '.vis';
+        let visDir = `${__dirname}/../../node_modules/${tools.appName}.vis`;
         if (!fs.existsSync(visDir)) {
-            visDir = __dirname + '/../../node_modules/' + tools.appName.toLowerCase() + '.vis';
+            visDir = `${__dirname}/../../node_modules/${tools.appName.toLowerCase()}.vis`;
             if (!fs.existsSync(visDir)) {
-                visDir = __dirname + '/../../../' + tools.appName + '.vis';
+                visDir = `${__dirname}/../../../${tools.appName}.vis`;
                 if (!fs.existsSync(visDir)) {
-                    visDir = __dirname + '/../../../' + tools.appName.toLowerCase() + '.vis';
+                    visDir = `${__dirname}/../../../${tools.appName.toLowerCase()}.vis`;
                     if (!fs.existsSync(visDir)) {
-                        console.error('Cannot find ' + tools.appName + '.vis');
+                        console.error(`Cannot find ${tools.appName}.vis`);
                         return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                     }
                 }
