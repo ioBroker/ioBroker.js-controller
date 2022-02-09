@@ -206,6 +206,11 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
 
     // Is regularly called and stores a compressed backup of the DB
     async saveBackup() {
+        if (!this._db.isOpen) {
+            this.log.warn(`${this.namespace} Cannot save backup ${backupFileName}: DB is closed`);
+            return;
+        }
+
         const now = Date.now();
         const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
         const backupFileName = path.join(
@@ -231,11 +236,11 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     async destroy() {
         await super.destroy();
 
-        if (this._db) {
-            await this._db.close();
-        }
         if (this._backupInterval) {
             clearInterval(this._backupInterval);
+        }
+        if (this._db) {
+            await this._db.close();
         }
     }
 }
