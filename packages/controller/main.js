@@ -403,7 +403,9 @@ function createStates(onConnect) {
                                 if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
                                     obj.common.enabled = !!enabled;
                                     logger.info(
-                                        `${hostLogPrefix} instance "${obj._id}" ${obj.common.enabled ? 'enabled' : 'disabled'} via .alive`
+                                        `${hostLogPrefix} instance "${obj._id}" ${
+                                            obj.common.enabled ? 'enabled' : 'disabled'
+                                        } via .alive`
                                     );
                                     setImmediate(() => {
                                         obj.from = hostObjectPrefix;
