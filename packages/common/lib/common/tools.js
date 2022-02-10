@@ -215,11 +215,15 @@ async function isSingleHost(objects) {
  * @return Promise<boolean> true if one or more hosts running else false
  */
 async function isHostRunning(objects, states) {
-    const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+    // do it without object view for now, can be reverted if no one downgrades to < 4 (redis-sets)
+    // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+
+    const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
+    res.rows = res.rows.filter(obj => obj.value && obj.value.type === 'host');
 
     for (const hostObj of res.rows) {
         const state = await states.getState(`${hostObj.id}.alive`);
-        if (state.val) {
+        if (state && state.val) {
             return true;
         }
     }
