@@ -17,7 +17,6 @@ const fs = require('fs-extra');
 const { tools } = require('@iobroker/js-controller-common');
 const cli = require('@iobroker/js-controller-cli');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const { enumHosts } = require('@iobroker/js-controller-cli').tools;
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
@@ -3009,26 +3008,7 @@ async function checkSystemOffline(onlyCheck) {
         return true;
     }
 
-    const offlineStatus = await new Promise(resolve => {
-        setTimeout(async () => {
-            // Slight delay to allow "setup first" from Pre 2.0 to 2.0
-            try {
-                const hosts = await enumHosts(objects);
-                const hostToCheck = hosts.map(host => `system.host.${host.common.hostname}.alive`);
-
-                const res = await states.getStatesAsync(hostToCheck);
-                Array.isArray(res) &&
-                    res.forEach(aliveState => {
-                        if (aliveState && aliveState.val) {
-                            resolve(false);
-                        }
-                    });
-                resolve(true);
-            } catch {
-                resolve(true);
-            }
-        }, 500);
-    });
+    const offlineStatus = await tools.isHostRunning(objects, states);
 
     return offlineStatus;
 }
