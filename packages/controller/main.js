@@ -1308,6 +1308,7 @@ async function collectDiagInfo(type) {
             hosts: [],
             node: process.version,
             arch: os.arch(),
+            docker: tools.isDocker(),
             adapters: {},
             statesType: config.states.type, // redis or file
             objectsType: config.objects.type, // redis or file
@@ -2959,8 +2960,7 @@ async function processMessage(msg) {
 
                                         if (
                                             (typeof obj[i] === 'string' &&
-                                                (obj[i].includes('"val":true') ||
-                                                    obj[i].includes('"val":"true"'))) ||
+                                                (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))) ||
                                             (typeof obj[i] === 'object' &&
                                                 (obj[i].val === true || obj[i].val === 'true'))
                                         ) {
@@ -5635,8 +5635,7 @@ function init(compactGroupId) {
                                     if (obj[i]) {
                                         if (
                                             typeof obj[i] === 'string' &&
-                                            (obj[i].includes('"val":true') ||
-                                                obj[i].includes('"val":"true"'))
+                                            (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))
                                         ) {
                                             logRedirect(
                                                 true,
