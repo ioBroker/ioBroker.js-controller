@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.7 (2022-02-10)
 * (AlCalzone) Further Optimize package manger detection
 
 ## 4.0.6 (2022-02-09)

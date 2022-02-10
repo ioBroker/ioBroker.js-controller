@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.6",
+    "version": "4.0.7",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.7": {
+        "en": "Further Optimize package manger detection",
+        "de": "Paket-Manager-Erkennung weiter optimieren",
+        "ru": "Дальнейшая оптимизация обнаружения диспетчера пакетов",
+        "pt": "Otimize ainda mais a detecção do gerenciador de pacotes",
+        "nl": "Verder Optimaliseer de detectie van pakketbeheer",
+        "fr": "Optimiser davantage la détection du gestionnaire de packages",
+        "it": "Ottimizza ulteriormente il rilevamento del gestore pacchetti",
+        "es": "Optimizar aún más la detección del administrador de paquetes",
+        "pl": "Dalsza optymalizacja wykrywania menedżera pakietów",
+        "zh-cn": "进一步优化包管理器检测"
+      },
       "4.0.6": {
         "en": "Optimize some JSONL cases\nOptimize Backup restore process\nFix issues that prevented adapter installs/updates (npm can not be located error message)\nFix seq Logging issue\nPrevent several crash cases seen in Sentry",
         "de": "Optimieren Sie einige JSONL-Fälle\nOptimieren Sie den Backup-Wiederherstellungsprozess\nBehebung von Problemen, die Adapterinstallationen/-aktualisierungen verhinderten (Fehlermeldung „npm kann nicht gefunden werden“)\nSeq-Logging-Problem behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
@@ -82,18 +94,6 @@
       "3.2.16": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
-      },
-      "3.1.6": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
         "pt": "veja CHANGELOG.md",
         "nl": "zie CHANGELOG.md",
