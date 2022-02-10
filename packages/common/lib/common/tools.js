@@ -196,18 +196,6 @@ function decryptPhrase(password, data, callback) {
 }
 
 /**
- * Wait given time
- *
- * @param ms
- * @return {Promise<void>}
- */
-async function delay(ms) {
-    await new Promise(resolve => {
-        setTimeout(resolve, ms);
-    });
-}
-
-/**
  * Checks if multiple host objects exists, without using object views
  *
  * @param {object} objects the objects db
@@ -3758,7 +3746,6 @@ module.exports = {
     updateLicenses,
     compressFileGZip,
     isDocker,
-    delay,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,
