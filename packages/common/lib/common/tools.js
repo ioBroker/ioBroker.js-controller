@@ -1474,20 +1474,15 @@ async function detectPackageManagerWithFallback(cwd) {
                   }
         );
     } catch {
-        // Lockfile not found, try again without requiring a lockfile
+        // Lockfile not found, use default to avoid picking up a wrong package manager
+        // like a globally installed yarn
     }
 
     // Since we have no lockfile to rely on, assume the root dir is 2 levels above js-controller
     const ioBrokerRootDir = path.join(getControllerDir(), '../..');
-    try {
-        return await detectPackageManager({ cwd: ioBrokerRootDir, requireLockfile: false });
-    } catch {
-        // Lockfile not found, use default
-    }
-
-    // Fallback to npm
+    // And fallback to npm
     const pak = new packageManagers.npm();
-    pak.cwd = ioBrokerRootDir;
+    pak.cwd = cwd || ioBrokerRootDir;
     return pak;
 }
 
