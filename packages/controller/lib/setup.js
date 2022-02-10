@@ -3008,6 +3008,8 @@ async function checkSystemOffline(onlyCheck) {
         return true;
     }
 
+    // Slight delay to allow "setup first" from Pre 2.0 to 2.0
+    await tools.delay(500);
     const offlineStatus = await tools.isHostRunning(objects, states);
 
     return offlineStatus;
