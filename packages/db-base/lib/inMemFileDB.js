@@ -178,6 +178,15 @@ class InMemoryFileDB {
         if (isNaN(this.settings.backup.period)) {
             this.settings.backup.period = 120;
         }
+        // Node.js timeouts overflow after roughly 24 days, defaulting to 1 millisecond, which causes chaos.
+        // If a user configured the backup this way, we use our default of 120 minutes instead.
+        const maxTimeoutMinutes = Math.floor((2 ** 31 - 1) / 60000);
+        if (this.settings.backup.period > maxTimeoutMinutes) {
+            this.settings.backup.period = 120;
+            this.log.warning(
+                `${this.namespace} Configured backup period ${this.settings.backup.period} is larger than the supported maximum of ${maxTimeoutMinutes} minutes. Defaulting to 120 minutes.`
+            );
+        }
         this.settings.backup.period *= 60000;
 
         this.settings.backup.files =
