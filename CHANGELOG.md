@@ -3,6 +3,13 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (AlCalzone) Prevent issues when backup interval is configured with invalid values
+* (Apollon77) Correctly return null when a session is expired
+* (bluefox) Add docker info to statistic values sent to server in a place where it was missing
+* (foxriver76) Prevent edge case in setup first when sets were initialized earlier already but unused in the meantime
+* (focriver76) allow instance deletion when executed from an other host
+
 ## 4.0.7 (2022-02-10)
 * (AlCalzone) Further Optimize package manger detection
 
