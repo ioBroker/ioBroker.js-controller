@@ -122,7 +122,7 @@ jobs:
         git add .
         git commit -m "v${VERSION}"
 
-        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend
+        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish
         git push
         npx lerna publish from-package --yes --dist-tag dev
 

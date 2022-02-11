@@ -1053,8 +1053,8 @@ function reportStatus() {
             }
         }
     });
-    states.setState(id + '.instancesAsProcess', { val: realProcesses, ack: true, from: id });
-    states.setState(id + '.instancesAsCompact', { val: compactProcesses, ack: true, from: id });
+    states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id });
+    states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id });
 
     inputCount = 0;
     outputCount = 0;
