@@ -1723,6 +1723,18 @@ function Install(options) {
                 endkey: 'system.adapter.\u9999'
             });
 
+            let scopedHostname;
+
+            if (instance) {
+                // we need to respect host relative to the instance
+                [scopedHostname] = doc.rows
+                    .filter(row => row.id === `system.adapter.${adapter}.${instance}`)
+                    .map(row => row.value.common.host);
+            }
+
+            // fallback is this host
+            scopedHostname = scopedHostname || hostname;
+
             for (const row of doc.rows) {
                 if (!row.value.common) {
                     // this object seems to be corrupted so it will not need our adapter
@@ -1732,13 +1744,13 @@ function Install(options) {
                 const localDeps = tools.parseDependencies(row.value.common.dependencies);
 
                 for (const localDep of Object.keys(localDeps)) {
-                    if (row.value.common.host === hostname && localDep === adapter) {
+                    if (row.value.common.host === scopedHostname && localDep === adapter) {
                         if (!instance) {
                             // this adapter needs us locally and all instances should be deleted
                             return `${row.value.common.name}.${row.id.split('.').pop()}`;
                         } else {
                             // check if other instance of us exists on this host
-                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows)) {
+                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)) {
                                 // there are other instances of our adapter - ok
                                 break;
                             } else {
@@ -1752,9 +1764,16 @@ function Install(options) {
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
-                        if (
-                            this._checkDependencyFulfilledForeignHosts(adapter, doc.rows) ||
-                            this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows)
+                        if (!instance) {
+                            // all instances on this host should be removed so check if there are some on other hosts
+                            if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
+                                break;
+                            } else {
+                                return row.value.common.name;
+                            }
+                        } else if (
+                            this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname) ||
+                            this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)
                         ) {
                             // another instance of our adapter is on another host or on ours, no need to search further
                             break;
@@ -1774,12 +1793,13 @@ function Install(options) {
      *
      * @param {string} adapter adapter name
      * @param {object[]} instancesRows all instances objects view rows
+     * @param {string} scopedHostname hostname which should be assumed as local
      * @return {boolean} true if an instance is present on other host
      * @private
      */
-    this._checkDependencyFulfilledForeignHosts = (adapter, instancesRows) => {
+    this._checkDependencyFulfilledForeignHosts = (adapter, instancesRows, scopedHostname) => {
         for (const row of instancesRows) {
-            if (row.value.common.name === adapter && row.value.common.host !== hostname) {
+            if (row.value.common.name === adapter && row.value.common.host !== scopedHostname) {
                 return true;
             }
         }
@@ -1793,14 +1813,15 @@ function Install(options) {
      * @param {string} adapter adapter name
      * @param {string} instance instance number like 1
      * @param {object[]} instancesRows all instances objects view rows
+     * @param {string} scopedHostname hostname which should be assumed as local
      * @return {boolean} true if another instance is present on this host
      * @private
      */
-    this._checkDependencyFulfilledThisHost = (adapter, instance, instancesRows) => {
+    this._checkDependencyFulfilledThisHost = (adapter, instance, instancesRows, scopedHostname) => {
         for (const row of instancesRows) {
             if (
                 row.value.common.name === adapter &&
-                row.value.common.host === hostname &&
+                row.value.common.host === scopedHostname &&
                 row.value._id.split('.').pop() !== instance
             ) {
                 return true;
