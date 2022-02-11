@@ -1748,7 +1748,7 @@ function setMeta() {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.memHeapUsed',
+        _id: `${id}.memHeapUsed`,
         type: 'state',
         common: {
             type: 'number',
