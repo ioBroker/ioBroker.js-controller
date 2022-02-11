@@ -130,7 +130,7 @@ function initYargs() {
         .command(['install <adapter>', 'i <adapter>'], 'Installs a specified adapter', {})
         .command('rebuild [<path>]', 'Rebuild all native modules or path', {})
         .command('url <url> [<name>]', 'Install adapter from specified url, e.g. GitHub', {})
-        .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter from system', {
+        .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter and all instances from this host', {
             custom: {
                 describe: 'Remove adapter custom attribute from all objects',
                 type: 'boolean'
