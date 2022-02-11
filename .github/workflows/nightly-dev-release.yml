@@ -104,7 +104,7 @@ jobs:
           const fs = require('fs');
           const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
           ioPack.common.version = semver.inc(nightlyVersion, 'patch');;
-          fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
+          fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
 
           return nightlyVersion;
 
@@ -119,7 +119,10 @@ jobs:
         git config --global user.email "moritz.heusinger@gmail.com"
         git config --global user.name "Github Action"
 
-        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes
+        git add .
+        git commit -m "v${VERSION}"
+
+        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend
         npx lerna publish from-package --yes --dist-tag dev
 
     - name: Create Github Release
