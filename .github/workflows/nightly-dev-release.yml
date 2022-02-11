@@ -123,6 +123,7 @@ jobs:
         git commit -m "v${VERSION}"
 
         npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend
+        git push
         npx lerna publish from-package --yes --dist-tag dev
 
     - name: Create Github Release

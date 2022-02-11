@@ -1037,11 +1037,11 @@ function reportStatus() {
 
     if (eventLoopLags.length) {
         const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => a + b) / eventLoopLags.length);
-        states.setState(id + '.eventLoopLag', { val: eventLoopLag, ack: true, from: id }); // average of measured values
+        states.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
         eventLoopLags = [];
     }
 
-    states.setState(id + '.compactgroupProcesses', { val: Object.keys(compactProcs).length, ack: true, from: id });
+    states.setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id });
     let realProcesses = 0;
     let compactProcesses = 0;
     Object.keys(procs).forEach(proc => {
