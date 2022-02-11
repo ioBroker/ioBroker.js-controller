@@ -1484,7 +1484,7 @@ function setIPs(ipList) {
             startUpdateIPs();
         });
     } else {
-        logger.info(hostLogPrefix + ' No IPv4 address found after 5 minutes.');
+        logger.info(`${hostLogPrefix} No IPv4 address found after 5 minutes.`);
     }
 }
 

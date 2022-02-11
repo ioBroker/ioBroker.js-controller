@@ -120,10 +120,7 @@ jobs:
         git config --global user.name "Github Action"
 
         git add .
-        git commit -m "v${VERSION}"
-
-        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish
-        git push
+        git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish && git push || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
         npx lerna publish from-package --yes --dist-tag dev
 
     - name: Create Github Release
