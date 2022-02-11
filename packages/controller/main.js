@@ -1736,7 +1736,7 @@ function setMeta() {
         common: {
             type: 'number',
             role: 'value',
-            name: hostname + ' - memory usage in %',
+            name: `${hostname} - memory usage in %`,
             unit: '%',
             read: true,
             write: false,
