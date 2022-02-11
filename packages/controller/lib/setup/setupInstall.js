@@ -966,24 +966,29 @@ function Install(options) {
                 endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            // add non-duplicates to the list (only for this host)
+            // add non-duplicates to the list (if instance not given -> only for this host)
             const newObjIDs = doc.rows
                 // only the ones with an ID that matches the pattern
                 .filter(row => row && row.value && row.value._id)
                 .filter(row => instanceRegex.test(row.value._id))
-                // only the ones on this host
+                // if instance given also delete from foreign host else only instance on this host
                 .filter(row => {
-                    if (!row.value.common || !row.value.common.host || row.value.common.host === hostname) {
+                    if (
+                        instance !== undefined ||
+                        !row.value.common ||
+                        !row.value.common.host ||
+                        row.value.common.host === hostname
+                    ) {
                         return true;
                     } else {
-                        if (notDeleted.indexOf(row.value._id) === -1) {
+                        if (!notDeleted.includes(row.value._id)) {
                             notDeleted.push(row.value._id);
                         }
                         return false;
                     }
                 })
                 .map(row => row.value._id)
-                .filter(id => knownObjIDs.indexOf(id) === -1);
+                .filter(id => !knownObjIDs.includes(id));
             knownObjIDs.push.apply(knownObjIDs, newObjIDs);
 
             if (newObjIDs.length > 0) {
