@@ -45,7 +45,7 @@ if (os.platform() === 'win32') {
     require('loadavg-windows');
 }
 
-let title = tools.appName + '.js-controller';
+let title = `${tools.appName}.js-controller`;
 
 let Objects;
 let States;
@@ -360,7 +360,7 @@ function createStates(onConnect) {
             // If some log transporter activated or deactivated
             if (id.endsWith('.logging')) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
-            } else if (!compactGroupController && id === 'messagebox.' + hostObjectPrefix) {
+            } else if (!compactGroupController && id === `messagebox.${hostObjectPrefix}`) {
                 // If this is messagebox, only the main controller is handling the host messages
                 const obj = state;
                 if (obj) {
@@ -427,7 +427,7 @@ function createStates(onConnect) {
                         logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
                 }
-            } else if (id === hostObjectPrefix + '.logLevel') {
+            } else if (id === `${hostObjectPrefix}.logLevel`) {
                 if (!config || !config.log || !state || state.ack) {
                     return;
                 }
@@ -456,11 +456,11 @@ function createStates(onConnect) {
                     ack: true,
                     from: hostObjectPrefix
                 });
-            } else if (id.startsWith(hostObjectPrefix + '.plugins.') && id.endsWith('.enabled')) {
+            } else if (id.startsWith(`${hostObjectPrefix}.plugins.`) && id.endsWith('.enabled')) {
                 if (!config || !config.log || !state || state.ack) {
                     return;
                 }
-                const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
+                const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
                 let nameEndIndex = id.indexOf('.', pluginStatesIndex + 1);
                 if (nameEndIndex === -1) {
                     nameEndIndex = undefined;
@@ -556,7 +556,7 @@ async function initializeController() {
         if (!isStopping) {
             pluginHandler.setDatabaseForPlugins(objects, states);
             pluginHandler.initPlugins(ioPackage, () => {
-                states.subscribe(hostObjectPrefix + '.plugins.*');
+                states.subscribe(`${hostObjectPrefix}.plugins.*`);
 
                 // Do not start if we still stopping the instances
                 checkHost(() => {
@@ -879,7 +879,7 @@ function startAliveInterval() {
         config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
-        states.setState(hostObjectPrefix + '.compactModeEnabled', {
+        states.setState(`${hostObjectPrefix}.compactModeEnabled`, {
             ack: true,
             from: hostObjectPrefix,
             val: config.system.compact || false
@@ -924,7 +924,7 @@ function reportStatus() {
     }
     const id = hostObjectPrefix;
     outputCount += 10;
-    states.setState(id + '.alive', {
+    states.setState(`${id}.alive`, {
         val: true,
         ack: true,
         expire: Math.floor(config.system.statisticsInterval / 1000) + 10,
@@ -947,12 +947,12 @@ function reportStatus() {
         pidUsage(process.pid, (err, stats) => {
             // controller.s might be stopped, but this is still running
             if (!err && states && states.setState && stats) {
-                states.setState(id + '.cpu', {
+                states.setState(`${id}.cpu`, {
                     ack: true,
                     from: id,
                     val: Math.round(100 * parseFloat(stats.cpu)) / 100
                 });
-                states.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
+                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
                 outputCount += 2;
             }
         });
@@ -972,7 +972,7 @@ function reportStatus() {
             ack: true,
             from: id
         });
-        states.setState(id + '.memHeapUsed', {
+        states.setState(`${id}.memHeapUsed`, {
             val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
             ack: true,
             from: id
@@ -983,17 +983,17 @@ function reportStatus() {
 
     // provide machine infos
 
-    states.setState(id + '.load', { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
-    states.setState(id + '.uptime', { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(id + '.mem', { val: Math.round((1000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
-    states.setState(id + '.freemem', { val: Math.round(os.freemem() / 1048576 /* 1MB */), ack: true, from: id });
+    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
+    states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
+    states.setState(`${id}.mem`, { val: Math.round((1000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
+    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1048576 /* 1MB */), ack: true, from: id });
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
             const text = fs.readFileSync('/proc/meminfo', 'utf8');
             const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                states.setState(id + '.memAvailable', {
+                states.setState(`${id}.memAvailable`, {
                     val: Math.round(parseInt(m[1], 10) * 0.001024),
                     ack: true,
                     from: id
@@ -1013,12 +1013,12 @@ function reportStatus() {
             }
             try {
                 if (info) {
-                    states.setState(id + '.diskSize', {
+                    states.setState(`${id}.diskSize`, {
                         val: Math.round((info['Disk size'] || 0) / (1024 * 1024)),
                         ack: true,
                         from: id
                     });
-                    states.setState(id + '.diskFree', {
+                    states.setState(`${id}.diskFree`, {
                         val: Math.round((info['Disk free'] || 0) / (1024 * 1024)),
                         ack: true,
                         from: id
@@ -1032,8 +1032,8 @@ function reportStatus() {
     }
 
     // some statistics
-    states.setState(id + '.inputCount', { val: inputCount, ack: true, from: id });
-    states.setState(id + '.outputCount', { val: outputCount, ack: true, from: id });
+    states.setState(`${id}.inputCount`, { val: inputCount, ack: true, from: id });
+    states.setState(`${id}.outputCount`, { val: outputCount, ack: true, from: id });
 
     if (eventLoopLags.length) {
         const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => a + b) / eventLoopLags.length);
@@ -3635,7 +3635,7 @@ function installAdapters() {
             } else {
                 installArgs.push('install');
                 let installedFrom = task.installedFrom;
-                if (installedFrom.startsWith(tools.appName + '.')) {
+                if (installedFrom.startsWith(`${tools.appName}.`)) {
                     installedFrom = installedFrom.substr(tools.appName.length + 1);
                 }
                 installArgs.push(installedFrom);
@@ -3692,7 +3692,7 @@ function installAdapters() {
                                     logger.info(
                                         `${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`
                                     );
-                                    states.setState(task.id + '.alive', {
+                                    states.setState(`${task.id}.alive`, {
                                         val: true,
                                         ack: false,
                                         from: hostObjectPrefix
@@ -3828,7 +3828,7 @@ function startScheduledInstance(callback) {
             procs[id].lastStart = Date.now();
             if (!procs[id].process) {
                 // reset sigKill to 0 if it was set to an other value from "once run"
-                states.setState(instance._id + '.sigKill', { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                states.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     try {
                         procs[id].process = cp.fork(fileNameFull, args, {
@@ -3850,7 +3850,7 @@ function startScheduledInstance(callback) {
 
                         procs[id].process.on('exit', (code, signal) => {
                             outputCount++;
-                            states.setState(id + '.alive', { val: false, ack: true, from: hostObjectPrefix });
+                            states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -4083,7 +4083,7 @@ async function startInstance(id, wakeUp) {
 
     //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
-        procs[id].subscribe = instance.common.subscribe || instance._id + '.wakeup';
+        procs[id].subscribe = instance.common.subscribe || `${instance._id}.wakeup`;
         const parts = instance._id.split('.');
         const instanceId = parts[parts.length - 1];
         procs[id].subscribe = procs[id].subscribe.replace('<INSTANCE>', instanceId);
@@ -4431,7 +4431,7 @@ async function startInstance(id, wakeUp) {
                     }
 
                     if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                        states.setState(id + '.sigKill', {
+                        states.setState(`${id}.sigKill`, {
                             val: procs[id].process.pid,
                             ack: true,
                             from: hostObjectPrefix
@@ -4515,7 +4515,7 @@ async function startInstance(id, wakeUp) {
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
                         // set to 0 to stop any pot. already running instances, especially broken compactModes
-                        states.setState(id + '.sigKill', { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                        states.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
                             const _instance =
                                 instance && instance._id && instance.common ? instance._id.split('.').pop() || 0 : 0;
                             const logLevel =
@@ -4549,7 +4549,7 @@ async function startInstance(id, wakeUp) {
                                     );
                                     logger.error(e.stackTrace);
                                     procs[id].process && delete procs[id].process;
-                                    states.setState(id + '.sigKill', { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
+                                    states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
                                 }
                             } else {
                                 logger.warn(
@@ -4559,7 +4559,7 @@ async function startInstance(id, wakeUp) {
 
                             if (procs[id].process && !procs[id].process.kill) {
                                 procs[id].process.kill = () =>
-                                    states.setState(id + '.sigKill', {
+                                    states.setState(`${id}.sigKill`, {
                                         val: -1,
                                         ack: false,
                                         from: hostObjectPrefix
@@ -4665,12 +4665,12 @@ async function startInstance(id, wakeUp) {
 
                                         const id = instances.shift();
                                         outputCount += 2;
-                                        states.setState(id + '.alive', {
+                                        states.setState(`${id}.alive`, {
                                             val: false,
                                             ack: true,
                                             from: hostObjectPrefix
                                         });
-                                        states.setState(id + '.connected', {
+                                        states.setState(`${id}.connected`, {
                                             val: false,
                                             ack: true,
                                             from: hostObjectPrefix
@@ -4775,7 +4775,7 @@ async function startInstance(id, wakeUp) {
                 } else {
                     // set to 0 to stop any pot. already running instances, especially broken compactModes
                     states.setState(
-                        id + '.sigKill',
+                        `${id}.sigKill`,
                         {
                             val: 0,
                             ack: false,
@@ -4845,7 +4845,7 @@ async function startInstance(id, wakeUp) {
                     procs[id].process.on('exit', (code, signal) => {
                         cleanAutoSubscribes(id, () => {
                             outputCount++;
-                            states.setState(id + '.alive', { val: false, ack: true, from: hostObjectPrefix });
+                            states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -5035,7 +5035,7 @@ function stopInstance(id, force, callback) {
                         }
                     }, timeoutDuration);
                 } else if (!procs[id].startedAsCompactGroup) {
-                    states.setState(id + '.sigKill', { val: -1, ack: false, from: hostObjectPrefix }, err => {
+                    states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }, err => {
                         // send kill signal
                         logger.info(`${hostLogPrefix} stopInstance ${instance._id} send kill signal`);
                         if (!err) {
@@ -5279,8 +5279,8 @@ function stop(force, callback) {
         }
         outputCount++;
         try {
-            await states.setStateAsync(hostObjectPrefix + '.alive', { val: false, ack: true, from: hostObjectPrefix });
-            await states.setStateAsync(hostObjectPrefix + '.pid', { val: null, ack: true, from: hostObjectPrefix });
+            await states.setStateAsync(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+            await states.setStateAsync(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
         } catch {
             // ignore
         }
@@ -5721,7 +5721,7 @@ function init(compactGroupId) {
     };
 
     process.on('SIGINT', () => {
-        logger.info(hostLogPrefix + ' received SIGINT');
+        logger.info(`${hostLogPrefix} received SIGINT`);
         stop(false);
     });
 
