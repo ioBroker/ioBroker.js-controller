@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.8 (2022-02-11)
 * (AlCalzone) Prevent issues when backup interval is configured with invalid values
 * (Apollon77) Correctly return null when a session is expired
 * (bluefox) Add docker info to statistic values sent to server in a place where it was missing
