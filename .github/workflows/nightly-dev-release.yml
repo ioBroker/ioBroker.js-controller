@@ -98,7 +98,15 @@ jobs:
           }
 
           // Figure out the next version
-          return `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+          const nightlyVersion =  `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+
+          // ensure that io-pack is in sync
+          const fs = require('fs');
+          const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
+          ioPack.common.version = semver.inc(nightlyVersion, 'patch');;
+          fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
+
+          return nightlyVersion;
 
     - name: Bump version and publish
       if: steps.changes.outputs.result == 'ok'
