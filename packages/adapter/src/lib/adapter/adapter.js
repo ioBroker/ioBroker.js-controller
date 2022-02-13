@@ -77,6 +77,10 @@ function Adapter(options) {
         config = fs.readJSONSync(configFileName);
         config.states = config.states || { type: 'file' };
         config.objects = config.objects || { type: 'file' };
+        // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
+        // because the lockfile might not have been freed.
+        config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);
+        config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5000);
     } else {
         throw new Error(`Cannot find ${configFileName}`);
     }
@@ -1531,7 +1535,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to objects DB. Still waiting ...');
             }
-        }, (config.objects.connectTimeout || 2000) * 3); // Because we do not connect only anymore, give it a bit more time
+        }, config.objects.connectTimeout * 3); // Because we do not connect only anymore, give it a bit more time
 
         adapterObjects = new Objects({
             namespace: this.namespaceLog,
@@ -5625,7 +5629,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to states DB. Still waiting ...');
             }
-        }, config.states.connectTimeout || 2000);
+        }, config.states.connectTimeout);
 
         // Internal object, but some special adapters want to access it anyway.
         adapterStates = new States({
