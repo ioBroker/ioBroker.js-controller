@@ -408,7 +408,7 @@ If you want to pin a special loglevel for the file transport you can add a prope
 
 ioBroker allows adapters to subscribe to log messages from the whole system. E.g. admin adapter is using this logic
 
-More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
+More details for this feature can be found at https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/logging.md
 
 ### Controlling and monitoring of adapter processes
 
