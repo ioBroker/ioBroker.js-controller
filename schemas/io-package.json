@@ -98,7 +98,7 @@
           "$ref": "#/definitions/multilingual"
         },
         "messagebox": {
-          "description": "true if messagebox supported. If yes, the object system.adapter.<instance>.messagebox will be created to send messages to adapter",
+          "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages.",
           "type": "boolean"
         },
         "readme": {
