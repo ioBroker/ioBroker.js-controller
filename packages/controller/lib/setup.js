@@ -3079,6 +3079,10 @@ function dbConnect(onlyCheck, params, callback) {
 
     config.states = config.states || { type: 'file' };
     config.objects = config.objects || { type: 'file' };
+    // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
+    // because the lockfile might not have been freed.
+    config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);
+    config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5000);
 
     Objects = getObjectsConstructor(); // Objects DB Client object
     States = getStatesConstructor(); // States DB Client object
@@ -3205,8 +3209,8 @@ function dbConnect(onlyCheck, params, callback) {
             } else {
                 processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
-        }, params.timeout || 10000 + config.objects.connectTimeout || 12000);
-    }, params.timeout || config.objects.connectTimeout * 2 || 4000);
+        }, (params.timeout || 10000) + config.objects.connectTimeout);
+    }, params.timeout || config.objects.connectTimeout * 2);
 
     // try to connect as client
     objects = new Objects({
