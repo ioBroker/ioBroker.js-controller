@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.9": {
+        "en": "dependency check on instance deletion: hostname has to be relative to instance if single instance is deleted\nfix setInterval method for adapters\nPrevent db-file-locking issues for jsonl database; the connectTimeout ro databases is now minimum 5s (overrides lower values from configuration)",
+        "de": "Abhängigkeitsprüfung beim Löschen einer Instanz: Hostname muss relativ zur Instanz sein, wenn eine einzelne Instanz gelöscht wird\nsetInterval-Methode für Adapter behoben\nVerhindern Sie Probleme mit der Sperrung von DB-Dateien für die jsonl-Datenbank; Das ConnectTimeout für ro-Datenbanken beträgt jetzt mindestens 5 Sekunden (setzt niedrigere Werte aus der Konfiguration außer Kraft)",
+        "ru": "проверка зависимости при удалении экземпляра: имя хоста должно относиться к экземпляру, если удаляется один экземпляр\nисправить метод setInterval для адаптеров\nПредотвращение проблем с блокировкой db-файлов для базы данных jsonl; Базы данных connectTimeout ro теперь составляют минимум 5 с (переопределяют более низкие значения из конфигурации)",
+        "pt": "verificação de dependência na exclusão da instância: o nome do host deve ser relativo à instância se uma única instância for excluída\nfix método setInterval para adaptadores\nEvite problemas de bloqueio de arquivo db para banco de dados jsonl; os bancos de dados connectTimeout ro agora são no mínimo 5s (substitui valores mais baixos da configuração)",
+        "nl": "afhankelijkheidscontrole bij verwijdering van instantie: hostnaam moet relatief zijn aan instantie als een enkele instantie wordt verwijderd\nfix setInterval-methode voor adapters\nVoorkom problemen met het vergrendelen van db-bestanden voor jsonl-database; de connectTimeout ro-databases zijn nu minimaal 5s (overschrijft lagere waarden uit de configuratie)",
+        "fr": "vérification des dépendances lors de la suppression de l'instance : le nom d'hôte doit être relatif à l'instance si une seule instance est supprimée\ncorrection de la méthode setInterval pour les adaptateurs\nEmpêcher les problèmes de verrouillage de fichier db pour la base de données jsonl ; les bases de données connectTimeout ro sont maintenant au minimum de 5 secondes (remplace les valeurs inférieures de la configuration)",
+        "it": "controllo delle dipendenze sull'eliminazione dell'istanza: il nome host deve essere relativo all'istanza se viene eliminata una singola istanza\nfix metodo setInterval per gli adattatori\nPrevenire i problemi di blocco dei file db per il database jsonl; il database di connectTimeout ro ora è minimo 5s (sostituisce i valori inferiori dalla configurazione)",
+        "es": "verificación de dependencia en la eliminación de instancias: el nombre de host debe ser relativo a la instancia si se elimina una sola instancia\ncorregir el método setInterval para adaptadores\nEvite problemas de bloqueo de archivos db para la base de datos jsonl; las bases de datos connectTimeout ro ahora tienen un mínimo de 5 s (anula los valores más bajos de la configuración)",
+        "pl": "sprawdzenie zależności przy usuwaniu instancji: nazwa hosta musi być względna do instancji, jeśli usunięta zostanie pojedyncza instancja\nfix setInterval metoda dla adapterów\nZapobiegaj problemom z blokowaniem plików db dla bazy danych jsonl; bazy danych connectTimeout ro mają teraz minimum 5s (zastępuje niższe wartości z konfiguracji)",
+        "zh-cn": "对实例删除的依赖性检查：如果删除单个实例，主机名必须与实例相关\n修复适配器的 setInterval 方法\n防止 jsonl 数据库的 db-file-locking 问题； connectTimeout ro 数据库现在至少为 5 秒（覆盖配置中的较低值）"
+      },
       "4.0.8": {
         "en": "Prevent issues when backup interval is configured with invalid values\nCorrectly return null when a session is expired\nAdd docker info to statistic values sent to server in a place where it was missing\nPrevent edge case in setup first when sets were initialized earlier already but unused in the meantime\nallow instance deletion when executed from an other host",
         "de": "Verhindern Sie Probleme, wenn das Sicherungsintervall mit ungültigen Werten konfiguriert ist\nGeben Sie null korrekt zurück, wenn eine Sitzung abgelaufen ist\nFügen Sie Docker-Informationen zu Statistikwerten hinzu, die an einer Stelle an den Server gesendet wurden, an der sie fehlten\nVerhindern Sie zuerst den Grenzfall im Setup, wenn Sets bereits früher initialisiert, aber zwischenzeitlich nicht verwendet wurden\nLöschen von Instanzen zulassen, wenn sie von einem anderen Host ausgeführt werden",
@@ -90,18 +102,6 @@
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
         "zh-cn": "见 CHANGELOG.md"
-      },
-      "3.3.22": {
-        "en": "see CHANGELOG.md",
-        "de": "siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
       }
     },
     "desc": {
