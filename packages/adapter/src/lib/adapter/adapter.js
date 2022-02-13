@@ -1272,7 +1272,7 @@ function Adapter(options) {
             return;
         }
 
-        const id = setInterval(() => cb(...args));
+        const id = setInterval(() => cb(...args), timeout);
         intervals.add(id);
 
         return id;
