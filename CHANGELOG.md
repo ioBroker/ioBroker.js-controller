@@ -3,6 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (foxriver76) dependency check on instance deletion: hostname has to be relative to instance if single instance is deleted
+* (foxriver76) fix setInterval method for adapters
+* (AlCalzone) Prevent db-file-locking issues for jsonl database; the connectTimeout ro databases is now minimum 5s (overrides lower values from configuration)
+
 ## 4.0.8 (2022-02-11)
 * (AlCalzone) Prevent issues when backup interval is configured with invalid values
 * (Apollon77) Correctly return null when a session is expired
