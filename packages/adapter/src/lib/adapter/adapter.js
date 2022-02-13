@@ -1535,7 +1535,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to objects DB. Still waiting ...');
             }
-        }, config.objects.connectTimeout * 3); // Because we do not connect only anymore, give it a bit more time
+        }, config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
         adapterObjects = new Objects({
             namespace: this.namespaceLog,
