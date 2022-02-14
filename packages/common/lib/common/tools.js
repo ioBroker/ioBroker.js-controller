@@ -1569,16 +1569,16 @@ async function uninstallNodeModule(packageName, options = {}) {
  * @typedef {object} RebuildNodeModulesOptions
  * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
  * @property {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+ * @property {string} [module] single module which needs rebuild, can contain version too like module@version
  */
 
 /**
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
- * @param {string|undefined} module module to rebuild e.g. bluetooth-hci-socket@0.5.3-8
  * @param {RebuildNodeModulesOptions} options Options for the rebuild
  * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
-async function rebuildNodeModules(module, options = {}) {
+async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
@@ -1597,7 +1597,7 @@ async function rebuildNodeModules(module, options = {}) {
         pipeLinewise(stdout, process.stdout);
     }
 
-    return pak.rebuild(module ? [module] : undefined);
+    return pak.rebuild(options.module ? [options.module] : undefined);
 }
 
 /**

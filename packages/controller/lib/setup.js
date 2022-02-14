@@ -933,6 +933,7 @@ async function processCommand(command, args, params, callback) {
             }
 
             if (commandOptions.module) {
+                options.module = commandOptions.module;
                 console.log(
                     `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`
                 );
@@ -940,7 +941,7 @@ async function processCommand(command, args, params, callback) {
                 console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
             }
 
-            const result = await tools.rebuildNodeModules(commandOptions.module, options);
+            const result = await tools.rebuildNodeModules(options);
 
             if (result.success) {
                 console.log();
