@@ -1574,10 +1574,11 @@ async function uninstallNodeModule(packageName, options = {}) {
 /**
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
+ * @param {string|undefined} module module to rebuild e.g. bluetooth-hci-socket@0.5.3-8
  * @param {RebuildNodeModulesOptions} options Options for the rebuild
  * @returns {Promise<import('@alcalzone/pak').CommandResult>}
  */
-async function rebuildNodeModules(options = {}) {
+async function rebuildNodeModules(module, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
@@ -1596,7 +1597,7 @@ async function rebuildNodeModules(options = {}) {
         pipeLinewise(stdout, process.stdout);
     }
 
-    return pak.rebuild();
+    return pak.rebuild(module ? [module] : undefined);
 }
 
 /**

@@ -3646,7 +3646,10 @@ function installAdapters() {
                 installArgs.push(name);
             } else if (task.rebuildArgs) {
                 installArgs.push(`${task.rebuildArgs.module}@${task.rebuildArgs.version}`);
-                installOptions.cwd = task.rebuildArgs.path;
+                if (task.rebuildArgs.path) {
+                    installArgs.push('--path');
+                    installArgs.push(task.rebuildArgs.path);
+                }
             }
         }
         logger.info(
