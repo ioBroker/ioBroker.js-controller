@@ -128,7 +128,12 @@ function initYargs() {
             }
         })
         .command(['install <adapter>', 'i <adapter>'], 'Installs a specified adapter', {})
-        .command('rebuild [<path>]', 'Rebuild all native modules or path', {})
+        .command('rebuild [<module>]', 'Rebuild all native modules or path', {
+            path: {
+                describe: 'Executes rebuild command in given path',
+                type: 'string'
+            }
+        })
         .command('url <url> [<name>]', 'Install adapter from specified url, e.g. GitHub', {})
         .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter and all instances from this host', {
             custom: {
@@ -927,7 +932,15 @@ async function processCommand(command, args, params, callback) {
                 }
             }
 
-            console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
+            if (commandOptions.module) {
+                options.module = commandOptions.module;
+                console.log(
+                    `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`
+                );
+            } else {
+                console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
+            }
+
             const result = await tools.rebuildNodeModules(options);
 
             if (result.success) {
@@ -935,7 +948,8 @@ async function processCommand(command, args, params, callback) {
                 console.log(`Rebuilding native modules done`);
                 return void callback();
             } else {
-                processExit(`Rebuilding native modules failed with exit code ${result.exitCode}`);
+                console.error('Rebuilding native modules failed');
+                processExit(result.exitCode);
             }
             break;
         }
@@ -2411,9 +2425,9 @@ async function processCommand(command, args, params, callback) {
             let iopckg;
             if (adapter) {
                 try {
-                    iopckg = require(tools.appName + '.' + adapter + '/package.json');
+                    iopckg = require(`${tools.appName}.${adapter}/package.json`);
                 } catch {
-                    iopckg = { version: '"' + adapter + '" not found' };
+                    iopckg = { version: `"${adapter}" not found` };
                 }
             } else {
                 iopckg = require('../package.json');
@@ -2747,7 +2761,13 @@ async function processCommand(command, args, params, callback) {
     }
 }
 
-// Save objects before exit
+/**
+ * Exits the process and saves objects before exit
+
+ *
+ * @param {number?} exitCode
+ * @return {Promise<void>}
+ */
 async function processExit(exitCode) {
     if (pluginHandler) {
         pluginHandler.destroyAll();
