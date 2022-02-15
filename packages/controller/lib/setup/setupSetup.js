@@ -240,19 +240,7 @@ function Setup(options) {
             states = _states;
             const iopkg = fs.readJsonSync(`${__dirname}/../../io-package.json`);
 
-            try {
-                // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
-                if (await tools.isSingleHost(objects)) {
-                    await objects.activateSets();
-                    const noMigrated = await objects.migrateToSets();
-
-                    if (noMigrated) {
-                        console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
-                    }
-                }
-            } catch (e) {
-                console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
-            }
+            await _maybeMigrateSets();
 
             // clean up invalid user group assignments (non-existing user in a group)
             try {
@@ -548,7 +536,7 @@ function Setup(options) {
                         });
                         console.log('Restore backup ...');
                         console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                        backup.restoreBackup(filePath, false, true, err => {
+                        backup.restoreBackup(filePath, false, true, async err => {
                             if (err) {
                                 console.log(`Error happened during restore: ${err.message}`);
                                 console.log();
@@ -556,6 +544,7 @@ function Setup(options) {
                                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                                 fs.unlinkSync(tools.getConfigFileName() + '.bak');
                             } else {
+                                await _maybeMigrateSets();
                                 console.log('Backup restored - Migration successful');
                                 console.log(COLOR_YELLOW);
                                 console.log('Important: If your system consists of multiple hosts please execute ');
@@ -910,6 +899,27 @@ function Setup(options) {
 
         migrateObjects(config, originalConfig, rl, callback);
     };
+
+    /**
+     * Checks if single host setup and if so migrates and activates Redis Sets Usage
+     * @return {Promise<void>}
+     * @private
+     */
+    async function _maybeMigrateSets() {
+        try {
+            // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
+            if (await tools.isSingleHost(objects)) {
+                await objects.activateSets();
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
+                }
+            }
+        } catch (e) {
+            console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
+        }
+    }
 
     /**
      * Removes non-existing users from groups
