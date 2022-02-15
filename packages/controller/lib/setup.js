@@ -2409,17 +2409,17 @@ async function processCommand(command, args, params, callback) {
         case 'v':
         case 'version': {
             const adapter = args[0];
-            let iopckg;
+            let pckg;
             if (adapter) {
                 try {
-                    iopckg = require(tools.appName + '.' + adapter + '/package.json');
+                    pckg = require(`${tools.appName}.${adapter}/package.json`);
                 } catch {
-                    iopckg = { version: '"' + adapter + '" not found' };
+                    pckg = { version: `"${adapter}" not found` };
                 }
             } else {
-                iopckg = require(path.join(__dirname, '../package.json'));
+                pckg = require(`${tools.appName}.js-controller/package.json`);
             }
-            console.log(iopckg.version);
+            console.log(pckg.version);
 
             return void callback();
         }

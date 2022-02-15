@@ -93,7 +93,7 @@ function Install(options) {
      * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade ONLY use it for controller upgrade -
      * db is gone afterwards, does not work with stoppedList
      * @param {object[]?} stoppedList
-     * @return {Promise<Object>}
+     * @return {Promise<Record<string, any>>}
      */
     this.downloadPacket = async function (repoUrl, packetName, options, stoppedList) {
         let url;
