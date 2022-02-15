@@ -4340,6 +4340,7 @@ class ObjectsInRedisClient {
         if (this.client) {
             try {
                 await this.client.quit();
+                this.client.removeAllListeners();
                 this.client = null;
             } catch {
                 // ignore error
@@ -4348,6 +4349,7 @@ class ObjectsInRedisClient {
         if (this.sub) {
             try {
                 await this.sub.quit();
+                this.sub.removeAllListeners();
                 this.sub = null;
             } catch {
                 // ignore error
@@ -4356,6 +4358,7 @@ class ObjectsInRedisClient {
         if (this.subSystem) {
             try {
                 await this.subSystem.quit();
+                this.subSystem.removeAllListeners();
                 this.subSystem = null;
             } catch {
                 // ignore error

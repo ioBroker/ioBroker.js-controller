@@ -894,8 +894,9 @@ async function processCommand(command, args, params, callback) {
 
                 if (!fs.existsSync(adapterDir)) {
                     try {
-                        await install.downloadPacket(repoUrl, installName);
+                        const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
+                        await install.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
                         if (command !== 'install' && command !== 'i') {
                             await install.createInstance(name, params);
                         }
@@ -2422,17 +2423,17 @@ async function processCommand(command, args, params, callback) {
         case 'v':
         case 'version': {
             const adapter = args[0];
-            let iopckg;
+            let pckg;
             if (adapter) {
                 try {
-                    iopckg = require(`${tools.appName}.${adapter}/package.json`);
+                    pckg = require(`${tools.appName}.${adapter}/package.json`);
                 } catch {
-                    iopckg = { version: `"${adapter}" not found` };
+                    pckg = { version: `"${adapter}" not found` };
                 }
             } else {
-                iopckg = require('../package.json');
+                pckg = require(`@${tools.appName.toLowerCase()}/js-controller-common/package.json`);
             }
-            console.log(iopckg.version);
+            console.log(pckg.version);
 
             return void callback();
         }

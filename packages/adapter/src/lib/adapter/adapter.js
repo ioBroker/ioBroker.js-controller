@@ -1428,6 +1428,9 @@ function Adapter(options) {
      * Called if states and objects successfully initalized
      */
     const prepareInitAdapter = () => {
+        if (this.terminated) {
+            return;
+        }
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
@@ -8831,7 +8834,7 @@ function Adapter(options) {
         initLogging(() => {
             this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
             this.pluginHandler.initPlugins(adapterConfig, async () => {
-                if (!adapterStates) {
+                if (!adapterStates || this.terminated) {
                     // if adapterState was destroyed,we should not continue
                     return;
                 }
