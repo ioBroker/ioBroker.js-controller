@@ -1569,6 +1569,7 @@ async function uninstallNodeModule(packageName, options = {}) {
  * @typedef {object} RebuildNodeModulesOptions
  * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
  * @property {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+ * @property {string} [module] single module which needs rebuild, can contain version too like module@version
  */
 
 /**
@@ -1596,7 +1597,7 @@ async function rebuildNodeModules(options = {}) {
         pipeLinewise(stdout, process.stdout);
     }
 
-    return pak.rebuild();
+    return pak.rebuild(options.module ? [options.module] : undefined);
 }
 
 /**
