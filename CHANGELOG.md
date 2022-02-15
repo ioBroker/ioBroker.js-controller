@@ -3,6 +3,13 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (foxriver76) Fix module specific rebuild command
+* (foxriver76) allow null for object.states also for extend calls for now
+* (foxriver76) enable sets on migration to redis if allowed
+* (Apollon77) Make sure adapters that are stopped on update are not enabled too early
+* (Apollon77) Optimize some special cases on adapter start
+
 ## 4.0.9 (2022-02-13)
 * (foxriver76) dependency check on instance deletion: hostname has to be relative to instance if single instance is deleted
 * (foxriver76) fix setInterval method for adapters
