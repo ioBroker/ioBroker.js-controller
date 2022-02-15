@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.10 (2022-02-15)
 * (foxriver76) Fix module specific rebuild command
 * (foxriver76) allow null for object.states also for extend calls for now
 * (foxriver76) enable sets on migration to redis if allowed

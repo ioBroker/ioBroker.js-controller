@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.10": {
+        "en": "Fix module specific rebuild command\nallow null for object.states also for extend calls for now\nenable sets on migration to redis if allowed\nMake sure adapters that are stopped on update are not enabled too early\nOptimize some special cases on adapter start",
+        "de": "Modulspezifischen Rebuild-Befehl korrigiert\nnull für object.states auch für Extend-Aufrufe zulassen\nAktivieren Sie Sätze bei der Migration zu Redis, falls zulässig\nStellen Sie sicher, dass Adapter, die beim Update angehalten werden, nicht zu früh aktiviert werden\nEinige Sonderfälle beim Adapterstart optimieren",
+        "ru": "Исправить специфичную для модуля команду перестроения\nразрешить null для object.states также для вызовов расширения на данный момент\nвключить наборы при миграции на Redis, если это разрешено\nУбедитесь, что адаптеры, остановленные при обновлении, не включаются слишком рано.\nОптимизированы некоторые особые случаи при запуске адаптера.",
+        "pt": "Corrija o comando de reconstrução específico do módulo\npermitir null para object.states também para chamadas estendidas por enquanto\nhabilitar conjuntos na migração para redis, se permitido\nCertifique-se de que os adaptadores parados na atualização não estejam ativados muito cedo\nOtimize alguns casos especiais na inicialização do adaptador",
+        "nl": "Modulespecifieke herbouwopdracht repareren\nsta null toe voor object.states ook voor verlengingsaanroepen voor nu\nschakel sets bij migratie in op redis indien toegestaan\nZorg ervoor dat adapters die worden gestopt bij de update niet te vroeg worden ingeschakeld\nOptimaliseer enkele speciale gevallen bij het starten van de adapter",
+        "fr": "Correction de la commande de reconstruction spécifique au module\nautoriser null pour object.states également pour les appels étendus pour l'instant\nactiver les ensembles lors de la migration vers redis si autorisé\nAssurez-vous que les adaptateurs arrêtés lors de la mise à jour ne sont pas activés trop tôt\nOptimiser certains cas particuliers au démarrage de l'adaptateur",
+        "it": "Risolto il problema con il comando di ricostruzione specifico del modulo\nconsenti null per object.states anche per estendere le chiamate per ora\nabilitare i set durante la migrazione a redis se consentito\nAssicurati che gli adattatori interrotti durante l'aggiornamento non siano abilitati troppo presto\nOttimizza alcuni casi speciali all'avvio dell'adattatore",
+        "es": "Arreglar el comando de reconstrucción específico del módulo\npermitir nulo para object.states también para extender llamadas por ahora\nhabilitar conjuntos en la migración a redis si está permitido\nAsegúrese de que los adaptadores que se detienen en la actualización no se habiliten demasiado pronto\nOptimice algunos casos especiales en el inicio del adaptador",
+        "pl": "Napraw polecenie przebudowy specyficzne dla modułu\nna razie zezwalaj na null dla object.states również dla połączeń rozszerzonych\nwłącz zestawy dotyczące migracji do redis, jeśli jest to dozwolone\nUpewnij się, że adaptery zatrzymane podczas aktualizacji nie są włączane zbyt wcześnie\nZoptymalizuj niektóre specjalne przypadki podczas uruchamiania adaptera",
+        "zh-cn": "修复模块特定的重建命令\n现在允许 object.states 为 null 也用于扩展调用\n如果允许，在迁移到 redis 时启用集合\n确保不会过早启用更新时停止的适配器\n优化适配器启动的一些特殊情况"
+      },
       "4.0.9": {
         "en": "dependency check on instance deletion: hostname has to be relative to instance if single instance is deleted\nfix setInterval method for adapters\nPrevent db-file-locking issues for jsonl database; the connectTimeout ro databases is now minimum 5s (overrides lower values from configuration)",
         "de": "Abhängigkeitsprüfung beim Löschen einer Instanz: Hostname muss relativ zur Instanz sein, wenn eine einzelne Instanz gelöscht wird\nsetInterval-Methode für Adapter behoben\nVerhindern Sie Probleme mit der Sperrung von DB-Dateien für die jsonl-Datenbank; Das ConnectTimeout für ro-Datenbanken beträgt jetzt mindestens 5 Sekunden (setzt niedrigere Werte aus der Konfiguration außer Kraft)",
@@ -90,18 +102,6 @@
         "es": "Optimizar la inicialización y destrucción de la base de datos.\nActualice winston-syslog para evitar errores\nPermitir la configuración adecuada primera actualización desde 3.3.x",
         "pl": "Zoptymalizuj inicjowanie i niszczenie bazy danych\nZaktualizuj winston-syslog, aby zapobiec błędom\nZezwól na prawidłową konfigurację przy pierwszej aktualizacji z wersji 3.3.x",
         "zh-cn": "优化数据库初始化和销毁\n更新 winston-syslog 以防止错误\n允许正确设置首先从 3.3.x 升级"
-      },
-      "4.0.3": {
-        "en": "see CHANGELOG.md",
-        "de": "siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie WIJZIGING.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedere CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "见 CHANGELOG.md"
       }
     },
     "desc": {
