@@ -2431,7 +2431,7 @@ async function processCommand(command, args, params, callback) {
                     pckg = { version: `"${adapter}" not found` };
                 }
             } else {
-                pckg = require(`${tools.appName}.js-controller/package.json`);
+                pckg = require(`@${tools.appName}/js-controller-common/package.json`);
             }
             console.log(pckg.version);
 
