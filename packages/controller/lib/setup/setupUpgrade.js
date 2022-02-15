@@ -513,8 +513,12 @@ function Upgrade(options) {
 
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
-                await finishUpgrade(name);
+                const { packetName, stoppedList } = await install.downloadPacket(
+                    sources,
+                    `${adapter}@${targetVersion}`
+                );
+                await finishUpgrade(packetName);
+                await install.enableAdapters(stoppedList, true);
             }
         } else if (repoUrl[adapter].meta) {
             // Read repository from url or file
@@ -555,8 +559,12 @@ function Upgrade(options) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
-                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
-                await finishUpgrade(name, ioPack);
+                const { packetName, stoppedList } = await install.downloadPacket(
+                    sources,
+                    `${adapter}@${targetVersion}`
+                );
+                await finishUpgrade(packetName, ioPack);
+                await install.enableAdapters(stoppedList, true);
             }
         } else {
             if (forceDowngrade) {
@@ -570,8 +578,9 @@ function Upgrade(options) {
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${version}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacket(sources, `${adapter}@${version}`);
-                await finishUpgrade(name);
+                const { packetName, stoppedList } = await install.downloadPacket(sources, `${adapter}@${version}`);
+                await finishUpgrade(packetName);
+                await install.enableAdapters(stoppedList, true);
             } else {
                 return console.error(`Unable to get version for "${adapter}".`);
             }

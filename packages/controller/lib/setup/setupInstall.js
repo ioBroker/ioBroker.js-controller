@@ -68,7 +68,7 @@ function Install(options) {
     const Upload = require('./setupUpload');
     const upload = new Upload(options);
 
-    async function enableAdapters(adapters, enabled) {
+    this.enableAdapters = async function (adapters, enabled) {
         if (adapters && adapters.length) {
             const ts = Date.now();
             for (let i = 0; i < adapters.length; i++) {
@@ -83,7 +83,7 @@ function Install(options) {
                 await objects.extendObjectAsync(adapters[i]._id, updatedObj);
             }
         }
-    }
+    };
 
     /**
      * Download given packet
@@ -93,7 +93,7 @@ function Install(options) {
      * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade ONLY use it for controller upgrade -
      * db is gone afterwards, does not work with stoppedList
      * @param {object[]?} stoppedList
-     * @return {Promise<void>}
+     * @return {Promise<Object>}
      */
     this.downloadPacket = async function (repoUrl, packetName, options, stoppedList) {
         let url;
@@ -162,7 +162,7 @@ function Install(options) {
                 }
             }
 
-            await enableAdapters(stoppedList, false);
+            await this.enableAdapters(stoppedList, false);
         }
 
         // try to extract the information from local sources-dist.json
@@ -205,8 +205,7 @@ function Install(options) {
                     debug
                 );
 
-                await enableAdapters(stoppedList, true);
-                return packetName;
+                return { packetName, stoppedList };
             } else if (url && url.match(tarballRegex)) {
                 if (options.stopDb) {
                     if (objects && objects.destroy) {
@@ -221,14 +220,13 @@ function Install(options) {
 
                 // Install node modules
                 await this._npmInstallWithCheck(url, options, debug);
-                await enableAdapters(stoppedList, true);
-                return packetName;
+                return { packetName, stoppedList };
             } else if (!url) {
                 // Adapter
                 console.warn(
                     `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName}.js-controller`
                 );
-                return packetName;
+                return { packetName, stoppedList };
             }
         }
 
@@ -570,8 +568,9 @@ function Install(options) {
             }
             _installCount++;
 
-            await this.downloadPacket(repoUrl, fullName);
+            const { stoppedList } = await this.downloadPacket(repoUrl, fullName);
             await this.installAdapter(adapter, null, _installCount);
+            await this.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
             return adapter;
         }
         let adapterConf;
