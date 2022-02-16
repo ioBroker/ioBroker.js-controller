@@ -677,17 +677,16 @@ class BackupRestore {
         const controllerDir = tools.getControllerDir();
 
         // check that the same controller version is installed as it is contained in backup
-        if (!force) {
-            const exitCode = this._ensureCompatibility(
-                controllerDir,
-                restore.config ? restore.config.system.hostname || hostname : hostname,
-                restore.objects
-            );
+        const exitCode = this._ensureCompatibility(
+            controllerDir,
+            restore.config ? restore.config.system.hostname || hostname : hostname,
+            restore.objects,
+            force
+        );
 
-            if (exitCode) {
-                // we had an error
-                return exitCode;
-            }
+        if (exitCode) {
+            // we had an error
+            return exitCode;
         }
 
         if (!dontDeleteAdapters) {
@@ -779,24 +778,31 @@ class BackupRestore {
      * @param {string} controllerDir - directory of js-controller
      * @param {string} backupHostname - hostname in backup file
      * @param {object[]} backupObjects - the objects contained in the backup
+     * @param {boolean} force - if force is true, only log
      * @return {undefined|number}
      * @private
      */
-    _ensureCompatibility(controllerDir, backupHostname, backupObjects) {
+    _ensureCompatibility(controllerDir, backupHostname, backupObjects, force) {
         try {
             const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
             const hostObj = backupObjects.find(obj => obj.id === `system.host.${backupHostname}`);
             if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
-                console.warn('The current version of js-controller differs from the version in the backup.');
-                console.warn('The js-controller version of the backup can not be restored automatically.');
-                console.warn(
-                    `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
-                );
-                console.warn(
-                    'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
-                );
+                if (!force) {
+                    console.warn('The current version of js-controller differs from the version in the backup.');
+                    console.warn('The js-controller version of the backup can not be restored automatically.');
+                    console.warn(
+                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
+                    );
+                    console.warn(
+                        'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
+                    );
 
-                return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+                    return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+                } else {
+                    console.info('The current version of js-controller differs from the version in the backup.');
+                    console.info('The js-controller version of the backup can not be restored automatically.');
+                    console.info('Note, that your backup might differ in behavior due to this version change!');
+                }
             }
         } catch {
             // ignore
