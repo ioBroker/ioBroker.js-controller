@@ -114,6 +114,8 @@ function Install(options) {
             stoppedList = [];
         }
 
+        stoppedList = stoppedList || [];
+
         let debug = false;
         for (const arg of process.argv) {
             if (arg === '--debug') {
@@ -150,8 +152,6 @@ function Install(options) {
                 startkey: `system.adapter.${packetName}.`,
                 endkey: `system.adapter.${packetName}.\u9999`
             });
-
-            stoppedList = [];
 
             if (arr) {
                 for (const row of arr.rows) {
