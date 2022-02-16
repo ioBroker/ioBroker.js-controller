@@ -2999,7 +2999,13 @@ function pipeLinewise(input, output) {
         input,
         crlfDelay: Infinity
     });
-    rl.on('line', line => output.write(line + os.EOL));
+    rl.on('line', line => {
+        try {
+            output.write(line + os.EOL);
+        } catch {
+            // ignore
+        }
+    });
     rl.on('error', () => {}); // Ignore errors
 }
 
