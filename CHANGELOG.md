@@ -3,6 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+## __WORK IN PROGRESS__
+* (Apollon77) make sure to really end CLI process when they should end in error cases
+* (Apollon77) catch error when streaming data to stdout and this is closed already
+
 ## 4.0.10 (2022-02-15)
 * (foxriver76) Fix module specific rebuild command
 * (foxriver76) allow null for object.states also for extend calls for now
