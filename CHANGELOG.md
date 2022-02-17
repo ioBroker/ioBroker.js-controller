@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 4.0.11 (2022-02-17)
+## __WORK IN PROGRESS__
 * (Apollon77) make sure to really end CLI process when they should end in error cases
 * (Apollon77) catch error when streaming data to stdout and this is closed already
 

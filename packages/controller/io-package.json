@@ -19,18 +19,6 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "4.0.11": {
-        "en": "make sure to really end CLI process when they should end in error cases\ncatch error when streaming data to stdout and this is closed already",
-        "de": "Stellen Sie sicher, dass der CLI-Prozess wirklich beendet wird, wenn er in Fehlerfällen enden sollte\nFehler beim Streamen von Daten nach stdout abfangen und dieser ist bereits geschlossen",
-        "ru": "убедитесь, что процесс CLI действительно завершен, когда он должен заканчиваться в случаях ошибок\nпоймать ошибку при потоковой передаче данных на стандартный вывод, и это уже закрыто",
-        "pt": "certifique-se de realmente encerrar o processo CLI quando eles devem terminar em casos de erro\nerro de captura ao transmitir dados para stdout e isso já está fechado",
-        "nl": "zorg ervoor dat u het CLI-proces echt beëindigt wanneer ze in foutgevallen zouden moeten eindigen\nvangfout bij het streamen van gegevens naar stdout en dit is al gesloten",
-        "fr": "assurez-vous de vraiment mettre fin au processus CLI lorsqu'il devrait se terminer en cas d'erreur\nattraper l'erreur lors de la diffusion de données vers stdout et cela est déjà fermé",
-        "it": "assicurati di terminare davvero il processo CLI quando dovrebbero terminare in casi di errore\nerrore di cattura durante lo streaming dei dati su stdout e questo è già chiuso",
-        "es": "asegúrese de finalizar realmente el proceso CLI cuando deberían finalizar en casos de error\nerror de captura al transmitir datos a stdout y esto ya está cerrado",
-        "pl": "upewnij się, że naprawdę zakończysz proces CLI, kiedy powinien zakończyć się w przypadkach błędów\nprzechwyć błąd podczas przesyłania danych na standardowe wyjście, które jest już zamknięte",
-        "zh-cn": "确保在 CLI 进程应该在错误情况下结束时真正结束\n将数据流式传输到标准输出时捕获错误并且这已经关闭"
-      },
       "4.0.10": {
         "en": "Fix module specific rebuild command\nallow null for object.states also for extend calls for now\nenable sets on migration to redis if allowed\nMake sure adapters that are stopped on update are not enabled too early\nOptimize some special cases on adapter start",
         "de": "Modulspezifischen Rebuild-Befehl korrigiert\nnull für object.states auch für Extend-Aufrufe zulassen\nAktivieren Sie Sätze bei der Migration zu Redis, falls zulässig\nStellen Sie sicher, dass Adapter, die beim Update angehalten werden, nicht zu früh aktiviert werden\nEinige Sonderfälle beim Adapterstart optimieren",

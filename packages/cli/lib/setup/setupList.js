@@ -832,7 +832,6 @@ function List(options) {
                         );
                         return void processExit();
                     }
-                    break;
             }
         });
     };
