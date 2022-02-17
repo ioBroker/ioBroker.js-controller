@@ -101,6 +101,8 @@ function Install(options) {
             options = {};
         }
 
+        stoppedList = stoppedList || [];
+
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
                 repoUrl = await getRepository(repoUrl, params);
@@ -113,8 +115,6 @@ function Install(options) {
             console.warn('[downloadPacket] stoppedList cannot be used if stopping of databases is requested');
             stoppedList = [];
         }
-
-        stoppedList = stoppedList || [];
 
         let debug = false;
         for (const arg of process.argv) {
@@ -233,7 +233,7 @@ function Install(options) {
         console.error(
             `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
         );
-        processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
+        return processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     };
 
     /**
@@ -360,8 +360,7 @@ function Install(options) {
             } else {
                 // TODO: revisit this - this should not happen
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-                processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
-                return;
+                return processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
             // create file that indicates, that npm was called there
             fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
@@ -369,7 +368,7 @@ function Install(options) {
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-            processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+            return processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
     };
 
@@ -569,7 +568,7 @@ function Install(options) {
             _installCount++;
 
             const { stoppedList } = await this.downloadPacket(repoUrl, fullName);
-            await this.installAdapter(adapter, null, _installCount);
+            await this.installAdapter(adapter, repoUrl, _installCount);
             await this.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
             return adapter;
         }
@@ -828,7 +827,7 @@ function Install(options) {
             adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
         } catch (err) {
             console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
-            return void processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
+            return processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
         }
 
         adapterConf.instanceObjects = adapterConf.instanceObjects || [];

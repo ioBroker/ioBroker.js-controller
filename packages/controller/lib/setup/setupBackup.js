@@ -211,7 +211,7 @@ class BackupRestore {
                 tar.create({ gzip: true, cwd: `${tmpDir}/` }, ['backup']).pipe(f);
             } catch (err) {
                 console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
-                return this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
+                return void this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
             }
         });
     }
@@ -1011,7 +1011,7 @@ class BackupRestore {
             } else {
                 console.warn('No backups found');
             }
-            return this.processExit(10);
+            return void this.processExit(10);
         }
 
         if (!this.cleanDatabase) {
@@ -1052,7 +1052,7 @@ class BackupRestore {
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${hostname} Cannot find ${name}`);
-            return this.processExit(11);
+            return void this.processExit(11);
         }
         const tar = require('tar');
 
@@ -1067,13 +1067,13 @@ class BackupRestore {
             err => {
                 if (err) {
                     console.error(`host.${hostname} Cannot extract from file "${name}"`);
-                    return this.processExit(9);
+                    return void this.processExit(9);
                 }
                 if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
                     console.error(
                         `host.${hostname} Cannot find extracted file from file "${tmpDir}/backup/backup.json"`
                     );
-                    return this.processExit(9);
+                    return void this.processExit(9);
                 }
                 // Stop controller
                 const daemon = require('daemonize2').setup({

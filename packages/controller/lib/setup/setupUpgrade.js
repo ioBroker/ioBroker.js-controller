@@ -299,7 +299,7 @@ function Upgrade(options) {
                     ioPack = fs.readJSONSync(`${adapterDir}/io-package.json`);
                 } catch {
                     console.error(`Cannot find io-package.json in ${adapterDir}`);
-                    processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                    return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                 }
             }
 
@@ -604,7 +604,7 @@ function Upgrade(options) {
                 }
                 repoUrl = result;
             } catch (err) {
-                processExit(err);
+                return processExit(err);
             }
         }
 

@@ -929,7 +929,7 @@ async function processCommand(command, args, params, callback) {
                     options.cwd = commandOptions.path;
                 } else {
                     console.log('Path argument needs to be an absolute path!');
-                    return processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                    return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             }
 
@@ -950,9 +950,8 @@ async function processCommand(command, args, params, callback) {
                 return void callback();
             } else {
                 console.error('Rebuilding native modules failed');
-                processExit(result.exitCode);
+                return void processExit(result.exitCode);
             }
-            break;
         }
 
         case 'upload':
@@ -1300,10 +1299,10 @@ async function processCommand(command, args, params, callback) {
                 try {
                     await backup.validateBackup(name);
                     console.log('Backup OK');
-                    processExit(0);
+                    return void processExit(0);
                 } catch (err) {
                     console.log(`Backup check failed: ${err.message}`);
-                    processExit(1);
+                    return void processExit(1);
                 }
             });
             break;
@@ -2742,17 +2741,17 @@ async function processCommand(command, args, params, callback) {
 
         default: {
             if (params.v || params.version) {
-                let iopckg;
+                let pckg;
                 if (command) {
                     try {
-                        iopckg = require(tools.appName + '.' + command + '/package.json');
+                        pckg = require(`${tools.appName}.${command}/package.json`);
                     } catch {
-                        iopckg = { version: '"' + command + '" not found' };
+                        pckg = { version: `"${command}" not found` };
                     }
                 } else {
-                    iopckg = require('../package.json');
+                    pckg = require(`@${tools.appName.toLowerCase()}/js-controller-common/package.json`);
                 }
-                console.log(iopckg.version);
+                console.log(pckg.version);
             } else {
                 showHelp();
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
@@ -2764,10 +2763,9 @@ async function processCommand(command, args, params, callback) {
 
 /**
  * Exits the process and saves objects before exit
-
  *
  * @param {number?} exitCode
- * @return {Promise<void>}
+ * @return {Promise<void>} Never resolves
  */
 async function processExit(exitCode) {
     if (pluginHandler) {
@@ -2780,9 +2778,9 @@ async function processExit(exitCode) {
     if (states && states.destroy) {
         await states.destroy();
     }
-    setTimeout(() => {
-        process.exit(exitCode);
-    }, 1000);
+    return new Promise(() => {
+        setTimeout(() => process.exit(exitCode), 1000);
+    });
 }
 
 const OBJECTS_THAT_CANNOT_BE_DELETED = [
@@ -3156,7 +3154,7 @@ function dbConnect(onlyCheck, params, callback) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
                 } else {
-                    processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                 }
             }
         }
@@ -3212,7 +3210,7 @@ function dbConnect(onlyCheck, params, callback) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
                 } else {
-                    processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                 }
             }
         }
@@ -3228,7 +3226,7 @@ function dbConnect(onlyCheck, params, callback) {
                 callback && callback(null, null, true, config.objects.type, config);
                 callback = null;
             } else {
-                processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
         }, (params.timeout || 10000) + config.objects.connectTimeout);
     }, params.timeout || config.objects.connectTimeout * 2);

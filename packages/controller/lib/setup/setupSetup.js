@@ -135,45 +135,44 @@ function Setup(options) {
     async function setupReady(systemConfig, callback) {
         if (!callback) {
             console.log('database setup done. You can add adapters and start ' + tools.appName + ' now');
-            processExit(EXIT_CODES.NO_ERROR);
-        } else {
-            if (!objects.syncFileDirectory || !objects.dirExists) {
-                return void informAboutPlugins(systemConfig, callback);
-            }
-            // check meta.user
-            try {
-                const objExists = await objects.objectExists('meta.user');
-                if (objExists) {
-                    // check if dir is missing
-                    const dirExists = objects.dirExists('meta.user');
-                    if (!dirExists) {
-                        // create meta.user, so users see them as upload target
-                        await objects.mkdirAsync('meta.user');
-                        console.log('Successfully created "meta.user" directory');
-                    }
+            return processExit(EXIT_CODES.NO_ERROR);
+        }
+        if (!objects.syncFileDirectory || !objects.dirExists) {
+            return void informAboutPlugins(systemConfig, callback);
+        }
+        // check meta.user
+        try {
+            const objExists = await objects.objectExists('meta.user');
+            if (objExists) {
+                // check if dir is missing
+                const dirExists = objects.dirExists('meta.user');
+                if (!dirExists) {
+                    // create meta.user, so users see them as upload target
+                    await objects.mkdirAsync('meta.user');
+                    console.log('Successfully created "meta.user" directory');
                 }
-            } catch (err) {
-                console.warn(`Could not create directory "meta.user": ${err.message}`);
             }
+        } catch (err) {
+            console.warn(`Could not create directory "meta.user": ${err.message}`);
+        }
 
-            try {
-                const { numberSuccess, notifications } = objects.syncFileDirectory();
-                numberSuccess &&
-                    console.log(
-                        numberSuccess +
-                            ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!'
-                    );
-                if (notifications.length) {
-                    console.log();
-                    console.log('The following notifications happened during sync: ');
-                    notifications.forEach(el => console.log('- ' + el));
-                    console.log();
-                }
-                return void informAboutPlugins(systemConfig, callback);
-            } catch (err) {
-                console.error('Error on file directory sync: ' + err.message);
-                return void informAboutPlugins(systemConfig, callback);
+        try {
+            const { numberSuccess, notifications } = objects.syncFileDirectory();
+            numberSuccess &&
+                console.log(
+                    numberSuccess +
+                        ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!'
+                );
+            if (notifications.length) {
+                console.log();
+                console.log('The following notifications happened during sync: ');
+                notifications.forEach(el => console.log('- ' + el));
+                console.log();
             }
+            return void informAboutPlugins(systemConfig, callback);
+        } catch (err) {
+            console.error('Error on file directory sync: ' + err.message);
+            return void informAboutPlugins(systemConfig, callback);
         }
     }
 
