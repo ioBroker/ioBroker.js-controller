@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.11": {
+        "en": "make sure to really end CLI process when they should end in error cases\ncatch error when streaming data to stdout and this is closed already",
+        "de": "Stellen Sie sicher, dass der CLI-Prozess wirklich beendet wird, wenn er in Fehlerfällen enden sollte\nFehler beim Streamen von Daten nach stdout abfangen und dieser ist bereits geschlossen",
+        "ru": "убедитесь, что процесс CLI действительно завершен, когда он должен заканчиваться в случаях ошибок\nпоймать ошибку при потоковой передаче данных на стандартный вывод, и это уже закрыто",
+        "pt": "certifique-se de realmente encerrar o processo CLI quando eles devem terminar em casos de erro\nerro de captura ao transmitir dados para stdout e isso já está fechado",
+        "nl": "zorg ervoor dat u het CLI-proces echt beëindigt wanneer ze in foutgevallen zouden moeten eindigen\nvangfout bij het streamen van gegevens naar stdout en dit is al gesloten",
+        "fr": "assurez-vous de vraiment mettre fin au processus CLI lorsqu'il devrait se terminer en cas d'erreur\nattraper l'erreur lors de la diffusion de données vers stdout et cela est déjà fermé",
+        "it": "assicurati di terminare davvero il processo CLI quando dovrebbero terminare in casi di errore\nerrore di cattura durante lo streaming dei dati su stdout e questo è già chiuso",
+        "es": "asegúrese de finalizar realmente el proceso CLI cuando deberían finalizar en casos de error\nerror de captura al transmitir datos a stdout y esto ya está cerrado",
+        "pl": "upewnij się, że naprawdę zakończysz proces CLI, kiedy powinien zakończyć się w przypadkach błędów\nprzechwyć błąd podczas przesyłania danych na standardowe wyjście, które jest już zamknięte",
+        "zh-cn": "确保在 CLI 进程应该在错误情况下结束时真正结束\n将数据流式传输到标准输出时捕获错误并且这已经关闭"
+      },
       "4.0.10": {
         "en": "Fix module specific rebuild command\nallow null for object.states also for extend calls for now\nenable sets on migration to redis if allowed\nMake sure adapters that are stopped on update are not enabled too early\nOptimize some special cases on adapter start",
         "de": "Modulspezifischen Rebuild-Befehl korrigiert\nnull für object.states auch für Extend-Aufrufe zulassen\nAktivieren Sie Sätze bei der Migration zu Redis, falls zulässig\nStellen Sie sicher, dass Adapter, die beim Update angehalten werden, nicht zu früh aktiviert werden\nEinige Sonderfälle beim Adapterstart optimieren",
@@ -90,18 +102,6 @@
         "es": "detenga la base de datos antes de ejecutar la actualización automática; Será efectivo para todas las actualizaciones > 4.0.5\nOptimizar Configurar el manejo de la activación para evitar algún error registrado en la actualización\nCorrija la actualización de la capacidad de Linux para Docker y verifique la bandera de administración\nDetectar otro caso de reconstrucción y permitir la reconstrucción automática\nArreglar la instalación del adaptador con dependencias\nArreglar caso de borde de secuencia\nEvitar varios casos de bloqueo vistos en Sentry",
         "pl": "zatrzymaj bazę danych przed wykonaniem samodzielnej aktualizacji; Będzie obowiązywać dla wszystkich ulepszeń >4,0,5\nOptymalizuj Ustaw obsługę aktywacji, aby zapobiec błędom zalogowania się podczas aktualizacji\nNapraw aktualizację funkcji Linux dla platformy Docker i sprawdź flagę administratora\nWykryj inny przypadek Rebuild i zezwól na automatyczną odbudowę\nNapraw instalację adaptera z zależnościami\nNapraw przypadek krawędzi na sekwencjach\nZapobiegaj kilku przypadkom awarii w Sentry",
         "zh-cn": "在执行升级自我之前停止数据库；将对>4.0.5的所有升级有效\n优化设置激活处理，防止一些错误登录升级\n修复 Docker 的 Linux 功能更新并检查 Admin Flag\n检测另一个重建案例并允许自动重建\n使用依赖项修复适配器安装\n修复 seq 边缘情况\n防止在 Sentry 中出现的几个崩溃案例"
-      },
-      "4.0.4": {
-        "en": "Optimize database initialization and destroys\nUpdate winston-syslog to prevent errors\nAllow proper setup first upgrade from 3.3.x",
-        "de": "Optimieren Sie die Initialisierung und Zerstörung von Datenbanken\nAktualisieren Sie winston-syslog, um Fehler zu vermeiden\nErst-Upgrade von 3.3.x auf ordnungsgemäße Einrichtung zulassen",
-        "ru": "Оптимизация инициализации и уничтожения базы данных\nОбновите winston-syslog, чтобы предотвратить ошибки\nРазрешить правильную настройку первого обновления с 3.3.x",
-        "pt": "Otimize a inicialização do banco de dados e destrua\nAtualize o winston-syslog para evitar erros\nPermitir configuração adequada primeiro upgrade de 3.3.x",
-        "nl": "Optimaliseer database-initialisatie en vernietigt\nUpdate winston-syslog om fouten te voorkomen\nSta de juiste installatie toe, upgrade eerst vanaf 3.3.x",
-        "fr": "Optimiser l'initialisation et la destruction de la base de données\nMettre à jour winston-syslog pour éviter les erreurs\nAutoriser la configuration appropriée pour la première mise à niveau à partir de la version 3.3.x",
-        "it": "Ottimizza l'inizializzazione e la distruzione del database\nAggiorna winston-syslog per prevenire errori\nConsenti una corretta configurazione prima dell'aggiornamento da 3.3.x",
-        "es": "Optimizar la inicialización y destrucción de la base de datos.\nActualice winston-syslog para evitar errores\nPermitir la configuración adecuada primera actualización desde 3.3.x",
-        "pl": "Zoptymalizuj inicjowanie i niszczenie bazy danych\nZaktualizuj winston-syslog, aby zapobiec błędom\nZezwól na prawidłową konfigurację przy pierwszej aktualizacji z wersji 3.3.x",
-        "zh-cn": "优化数据库初始化和销毁\n更新 winston-syslog 以防止错误\n允许正确设置首先从 3.3.x 升级"
       }
     },
     "desc": {
