@@ -97,7 +97,7 @@ function VisDebug(options) {
 
             if (!adapterDir) {
                 console.error(`Adapter not found. Tried: ${adapterNames2Try.join(', ')}`);
-                return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                return void processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
             }
         }
 
@@ -114,7 +114,7 @@ function VisDebug(options) {
                     visDir = `${__dirname}/../../../${tools.appName.toLowerCase()}.vis`;
                     if (!fs.existsSync(visDir)) {
                         console.error(`Cannot find ${tools.appName}.vis`);
-                        return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                        return void processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                     }
                 }
             }
@@ -226,22 +226,14 @@ FALLBACK:
                         console.log('Upload ' + adapterDir + '/widgets');
                         uploadWidgets(adapterDir + '/widgets', 'vis', 'widgets', () => {
                             if (!--count) {
-                                // timeout to print all messages
-                                setTimeout(() => processExit(), 100);
+                                processExit();
                             }
                         });
                     });
                 } else {
                     // upload all files into vis
                     console.log('Upload "' + adapterDir + '/widgets' + '"');
-                    uploadWidgets(
-                        adapterDir + '/widgets',
-                        'vis',
-                        'widgets',
-                        () =>
-                            // timeout to print all messages
-                            !--count && setTimeout(() => processExit(), 100)
-                    );
+                    uploadWidgets(adapterDir + '/widgets', 'vis', 'widgets', () => !--count && processExit());
                 }
             });
         } else {

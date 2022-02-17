@@ -236,7 +236,7 @@ function Users(options) {
                     if (result) {
                         if (result.password !== result.repeatPassword) {
                             console.log('Passwords are not identical!');
-                            processExit(EXIT_CODES.INVALID_PASSWORD);
+                            return void processExit(EXIT_CODES.INVALID_PASSWORD);
                         }
                         //create user
                         that.addUser(user, result.password, err => {
