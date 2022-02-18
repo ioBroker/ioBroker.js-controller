@@ -83,7 +83,8 @@ const IoSeq =
             // we add own properties
             ioInfo.props.Hostname = tools.getHostName();
             if (ioInfo.message) {
-                const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
+                // handle as single line with s flag, to if message ends with CR, etc
+                const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/s);
                 if (msgParts) {
                     ioInfo.props.Source = msgParts[1];
                     ioInfo.props.Pid = msgParts[2];
