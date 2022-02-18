@@ -4443,6 +4443,9 @@ class ObjectsInRedisClient {
             let uniqueKeys = [];
 
             stream.on('data', resultKeys => {
+                if (!Array.isArray(resultKeys)) {
+                    return;
+                }
                 // append result keys to uniqueKeys without duplicates
                 uniqueKeys = [...uniqueKeys, ...resultKeys];
             });
