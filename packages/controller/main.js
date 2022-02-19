@@ -134,10 +134,10 @@ function getConfig() {
     } else {
         const _config = fs.readJSONSync(configFile);
         if (!_config.states) {
-            _config.states = { type: 'file' };
+            _config.states = { type: 'jsonl' };
         }
         if (!_config.objects) {
-            _config.objects = { type: 'file' };
+            _config.objects = { type: 'jsonl' };
         }
         if (!_config.system) {
             _config.system = {};

@@ -3,6 +3,9 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (Apollon77) Add JSONL as default for new installations in some missing places
+
 ## 4.0.13 (2022-02-19)
 * (foxriver76) also log a message on force restore if it accepts a js-controller version mismatch
 * (foxriver76) Fix seq instance detection to add correct meta data to logs in all cases

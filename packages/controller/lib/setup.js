@@ -3091,8 +3091,8 @@ function dbConnect(onlyCheck, params, callback) {
         return void callback(objects, states, false, config.objects.type, config);
     }
 
-    config.states = config.states || { type: 'file' };
-    config.objects = config.objects || { type: 'file' };
+    config.states = config.states || { type: 'jsonl' };
+    config.objects = config.objects || { type: 'jsonl' };
     // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
     // because the lockfile might not have been freed.
     config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);

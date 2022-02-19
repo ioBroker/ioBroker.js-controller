@@ -7,7 +7,7 @@ import { tools } from '@iobroker/js-controller-common';
 export function getStatesConstructor(): any {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.states) {
-        config.states = { type: 'file' };
+        config.states = { type: 'jsonl' };
     }
 
     try {
