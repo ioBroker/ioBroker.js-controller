@@ -1,7 +1,7 @@
 /**
  *      Install adapter
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -68,7 +68,7 @@ function Install(options) {
     const Upload = require('./setupUpload');
     const upload = new Upload(options);
 
-    async function enableAdapters(adapters, enabled) {
+    this.enableAdapters = async function (adapters, enabled) {
         if (adapters && adapters.length) {
             const ts = Date.now();
             for (let i = 0; i < adapters.length; i++) {
@@ -83,16 +83,17 @@ function Install(options) {
                 await objects.extendObjectAsync(adapters[i]._id, updatedObj);
             }
         }
-    }
+    };
 
     /**
      * Download given packet
      *
      * @param {string} repoUrl
      * @param {string} packetName
-     * @param {object?} options
+     * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade ONLY use it for controller upgrade -
+     * db is gone afterwards, does not work with stoppedList
      * @param {object[]?} stoppedList
-     * @return {Promise<void>}
+     * @return {Promise<Record<string, any>>}
      */
     this.downloadPacket = async function (repoUrl, packetName, options, stoppedList) {
         let url;
@@ -100,12 +101,19 @@ function Install(options) {
             options = {};
         }
 
+        stoppedList = stoppedList || [];
+
         if (!repoUrl || typeof repoUrl !== 'object') {
             try {
                 repoUrl = await getRepository(repoUrl, params);
             } catch (err) {
                 return processExit(err);
             }
+        }
+
+        if (options.stopDb && stoppedList) {
+            console.warn('[downloadPacket] stoppedList cannot be used if stopping of databases is requested');
+            stoppedList = [];
         }
 
         let debug = false;
@@ -145,8 +153,6 @@ function Install(options) {
                 endkey: `system.adapter.${packetName}.\u9999`
             });
 
-            stoppedList = [];
-
             if (arr) {
                 for (const row of arr.rows) {
                     // stop only started instances on this host
@@ -156,7 +162,7 @@ function Install(options) {
                 }
             }
 
-            await enableAdapters(stoppedList, false);
+            await this.enableAdapters(stoppedList, false);
         }
 
         // try to extract the information from local sources-dist.json
@@ -181,32 +187,53 @@ function Install(options) {
             }
 
             if (!url && packetName !== 'example') {
+                if (options.stopDb) {
+                    if (objects && objects.destroy) {
+                        await objects.destroy();
+                        console.log('Stopped Objects DB');
+                    }
+                    if (states && states.destroy) {
+                        await states.destroy();
+                        console.log('Stopped States DB');
+                    }
+                }
+
                 // Install node modules
                 await this._npmInstallWithCheck(
-                    `${tools.appName.toLowerCase()}.${packetName}${version ? '@' + version : ''}`,
+                    `${tools.appName.toLowerCase()}.${packetName}${version ? `@${version}` : ''}`,
                     options,
                     debug
                 );
-                await enableAdapters(stoppedList, true);
-                return packetName;
+
+                return { packetName, stoppedList };
             } else if (url && url.match(tarballRegex)) {
+                if (options.stopDb) {
+                    if (objects && objects.destroy) {
+                        await objects.destroy();
+                        console.log('Stopped Objects DB');
+                    }
+                    if (states && states.destroy) {
+                        await states.destroy();
+                        console.log('Stopped States DB');
+                    }
+                }
+
                 // Install node modules
                 await this._npmInstallWithCheck(url, options, debug);
-                await enableAdapters(stoppedList, true);
-                return packetName;
+                return { packetName, stoppedList };
             } else if (!url) {
                 // Adapter
                 console.warn(
                     `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName}.js-controller`
                 );
-                return packetName;
+                return { packetName, stoppedList };
             }
         }
 
         console.error(
             `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
         );
-        processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
+        return processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     };
 
     /**
@@ -254,12 +281,16 @@ function Install(options) {
                 );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return processExit(EXIT_CODES.INVALID_NPM_VERSION);
-            } else {
-                return await this._npmInstall(npmUrl, options, debug);
             }
         } catch (err) {
             console.error(`Could not check npm version: ${err.message}`);
             console.error('Assuming that correct version is installed.');
+        }
+
+        try {
+            return await this._npmInstall(npmUrl, options, debug);
+        } catch (err) {
+            console.error(`Could not install ${npmUrl}: ${err.message}`);
         }
     };
 
@@ -329,8 +360,7 @@ function Install(options) {
             } else {
                 // TODO: revisit this - this should not happen
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-                processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
-                return;
+                return processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
             // create file that indicates, that npm was called there
             fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
@@ -338,7 +368,7 @@ function Install(options) {
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-            processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+            return processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
     };
 
@@ -446,9 +476,7 @@ function Install(options) {
 
                 // if required dependency not found => install it
                 if (!isFound) {
-                    const name = await this.createInstance(dName, _options);
-                    await upload.uploadAdapter(name, true, false);
-                    await upload.uploadAdapter(name, false, false);
+                    await this.createInstance(dName, _options);
                 }
             }
         }
@@ -539,8 +567,9 @@ function Install(options) {
             }
             _installCount++;
 
-            await this.downloadPacket(repoUrl, fullName);
-            await this.installAdapter(adapter, null, _installCount);
+            const { stoppedList } = await this.downloadPacket(repoUrl, fullName);
+            await this.installAdapter(adapter, repoUrl, _installCount);
+            await this.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
             return adapter;
         }
         let adapterConf;
@@ -638,7 +667,6 @@ function Install(options) {
      * @return {Promise<void>}
      */
     this.createInstance = async function (adapter, options) {
-        const adapterDir = tools.getAdapterDir(adapter);
         let ignoreIfExists = false;
         options = options || {};
         options.host = options.host || tools.getHostName();
@@ -773,6 +801,8 @@ function Install(options) {
             objs = [];
         }
 
+        const adapterDir = tools.getAdapterDir(adapter);
+
         if (fs.existsSync(path.join(adapterDir, 'www'))) {
             objs.push({
                 _id: `system.adapter.${adapter}.upload`,
@@ -797,7 +827,7 @@ function Install(options) {
             adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
         } catch (err) {
             console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
-            return void processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
+            return processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
         }
 
         adapterConf.instanceObjects = adapterConf.instanceObjects || [];
@@ -934,24 +964,29 @@ function Install(options) {
                 endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            // add non-duplicates to the list (only for this host)
+            // add non-duplicates to the list (if instance not given -> only for this host)
             const newObjIDs = doc.rows
                 // only the ones with an ID that matches the pattern
                 .filter(row => row && row.value && row.value._id)
                 .filter(row => instanceRegex.test(row.value._id))
-                // only the ones on this host
+                // if instance given also delete from foreign host else only instance on this host
                 .filter(row => {
-                    if (!row.value.common || !row.value.common.host || row.value.common.host === hostname) {
+                    if (
+                        instance !== undefined ||
+                        !row.value.common ||
+                        !row.value.common.host ||
+                        row.value.common.host === hostname
+                    ) {
                         return true;
                     } else {
-                        if (notDeleted.indexOf(row.value._id) === -1) {
+                        if (!notDeleted.includes(row.value._id)) {
                             notDeleted.push(row.value._id);
                         }
                         return false;
                     }
                 })
                 .map(row => row.value._id)
-                .filter(id => knownObjIDs.indexOf(id) === -1);
+                .filter(id => !knownObjIDs.includes(id));
             knownObjIDs.push.apply(knownObjIDs, newObjIDs);
 
             if (newObjIDs.length > 0) {
@@ -1686,6 +1721,18 @@ function Install(options) {
                 endkey: 'system.adapter.\u9999'
             });
 
+            let scopedHostname;
+
+            if (instance) {
+                // we need to respect host relative to the instance
+                [scopedHostname] = doc.rows
+                    .filter(row => row.id === `system.adapter.${adapter}.${instance}`)
+                    .map(row => row.value.common.host);
+            }
+
+            // fallback is this host
+            scopedHostname = scopedHostname || hostname;
+
             for (const row of doc.rows) {
                 if (!row.value.common) {
                     // this object seems to be corrupted so it will not need our adapter
@@ -1695,13 +1742,13 @@ function Install(options) {
                 const localDeps = tools.parseDependencies(row.value.common.dependencies);
 
                 for (const localDep of Object.keys(localDeps)) {
-                    if (row.value.common.host === hostname && localDep === adapter) {
+                    if (row.value.common.host === scopedHostname && localDep === adapter) {
                         if (!instance) {
                             // this adapter needs us locally and all instances should be deleted
                             return `${row.value.common.name}.${row.id.split('.').pop()}`;
                         } else {
                             // check if other instance of us exists on this host
-                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows)) {
+                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)) {
                                 // there are other instances of our adapter - ok
                                 break;
                             } else {
@@ -1715,9 +1762,16 @@ function Install(options) {
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
-                        if (
-                            this._checkDependencyFulfilledForeignHosts(adapter, doc.rows) ||
-                            this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows)
+                        if (!instance) {
+                            // all instances on this host should be removed so check if there are some on other hosts
+                            if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
+                                break;
+                            } else {
+                                return row.value.common.name;
+                            }
+                        } else if (
+                            this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname) ||
+                            this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)
                         ) {
                             // another instance of our adapter is on another host or on ours, no need to search further
                             break;
@@ -1737,12 +1791,13 @@ function Install(options) {
      *
      * @param {string} adapter adapter name
      * @param {object[]} instancesRows all instances objects view rows
+     * @param {string} scopedHostname hostname which should be assumed as local
      * @return {boolean} true if an instance is present on other host
      * @private
      */
-    this._checkDependencyFulfilledForeignHosts = (adapter, instancesRows) => {
+    this._checkDependencyFulfilledForeignHosts = (adapter, instancesRows, scopedHostname) => {
         for (const row of instancesRows) {
-            if (row.value.common.name === adapter && row.value.common.host !== hostname) {
+            if (row.value.common.name === adapter && row.value.common.host !== scopedHostname) {
                 return true;
             }
         }
@@ -1756,14 +1811,15 @@ function Install(options) {
      * @param {string} adapter adapter name
      * @param {string} instance instance number like 1
      * @param {object[]} instancesRows all instances objects view rows
+     * @param {string} scopedHostname hostname which should be assumed as local
      * @return {boolean} true if another instance is present on this host
      * @private
      */
-    this._checkDependencyFulfilledThisHost = (adapter, instance, instancesRows) => {
+    this._checkDependencyFulfilledThisHost = (adapter, instance, instancesRows, scopedHostname) => {
         for (const row of instancesRows) {
             if (
                 row.value.common.name === adapter &&
-                row.value.common.host === hostname &&
+                row.value.common.host === scopedHostname &&
                 row.value._id.split('.').pop() !== instance
             ) {
                 return true;

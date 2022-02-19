@@ -1,7 +1,7 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -66,6 +66,14 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             throttleFS: {
                 intervalMs: 60000,
                 maxBufferedCommands: 2000
+            },
+            lockfile: {
+                // 5 retries starting at 250ms add up to just above 2s,
+                // so the DB has 3 more seconds to load all data if it wants to stay within the 5s connectionTimeout
+                retries: 5,
+                retryMinTimeoutMs: 250,
+                // This makes sure the DB stays locked for maximum 2s even if the process crashes
+                staleMs: 2000
             }
         };
         settings.jsonlDB = {
@@ -212,6 +220,12 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             this.backupDir,
             `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`
         );
+
+        if (!this._db.isOpen) {
+            this.log.warn(`${this.namespace} Cannot save backup ${backupFileName}: DB is closed`);
+            return;
+        }
+
         try {
             if (fs.existsSync(backupFileName)) {
                 return;
@@ -231,11 +245,11 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     async destroy() {
         await super.destroy();
 
-        if (this._db) {
-            await this._db.close();
-        }
         if (this._backupInterval) {
             clearInterval(this._backupInterval);
+        }
+        if (this._db) {
+            await this._db.close();
         }
     }
 }

@@ -2,7 +2,7 @@
  *
  *  ioBroker Command Line Interface (CLI)
  *
- *  7'2014-2021 bluefox <dogafox@gmail.com>
+ *  7'2014-2022 bluefox <dogafox@gmail.com>
  *         2014 hobbyquaker <hq@ccu.io>
  *
  */
@@ -17,7 +17,6 @@ const fs = require('fs-extra');
 const { tools } = require('@iobroker/js-controller-common');
 const cli = require('@iobroker/js-controller-cli');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const { enumHosts } = require('@iobroker/js-controller-cli').tools;
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const debug = require('debug')('iobroker:cli');
@@ -129,9 +128,14 @@ function initYargs() {
             }
         })
         .command(['install <adapter>', 'i <adapter>'], 'Installs a specified adapter', {})
-        .command('rebuild [<path>]', 'Rebuild all native modules or path', {})
+        .command('rebuild [<module>]', 'Rebuild all native modules or path', {
+            path: {
+                describe: 'Executes rebuild command in given path',
+                type: 'string'
+            }
+        })
         .command('url <url> [<name>]', 'Install adapter from specified url, e.g. GitHub', {})
-        .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter from system', {
+        .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter and all instances from this host', {
             custom: {
                 describe: 'Remove adapter custom attribute from all objects',
                 type: 'boolean'
@@ -219,7 +223,9 @@ function initYargs() {
                 .command('chown <user> <group> <id>', 'Change object ownership', {})
                 .command('list <pattern>', 'List object matching given pattern', {})
                 .command('setDBVersion <version>', 'Sets the protocol version of the objects database')
-                .command('getDBVersion', 'Get the protocol version of the objects database');
+                .command('getDBVersion', 'Get the protocol version of the objects database')
+                .command('activateSets', 'Activate the usage of Redis Sets')
+                .command('deactivateSets', 'Deactivate the usage of Redis Sets');
         })
         .command(['state', 's'], 'State management', yargs => {
             yargs
@@ -883,8 +889,9 @@ async function processCommand(command, args, params, callback) {
 
                 if (!fs.existsSync(adapterDir)) {
                     try {
-                        await install.downloadPacket(repoUrl, installName);
+                        const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
+                        await install.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
                         if (command !== 'install' && command !== 'i') {
                             await install.createInstance(name, params);
                         }
@@ -917,11 +924,19 @@ async function processCommand(command, args, params, callback) {
                     options.cwd = commandOptions.path;
                 } else {
                     console.log('Path argument needs to be an absolute path!');
-                    return processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                    return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             }
 
-            console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
+            if (commandOptions.module) {
+                options.module = commandOptions.module;
+                console.log(
+                    `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`
+                );
+            } else {
+                console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
+            }
+
             const result = await tools.rebuildNodeModules(options);
 
             if (result.success) {
@@ -929,9 +944,9 @@ async function processCommand(command, args, params, callback) {
                 console.log(`Rebuilding native modules done`);
                 return void callback();
             } else {
-                processExit(`Rebuilding native modules failed with exit code ${result.exitCode}`);
+                console.error('Rebuilding native modules failed');
+                return void processExit(result.exitCode);
             }
-            break;
         }
 
         case 'upload':
@@ -1279,10 +1294,10 @@ async function processCommand(command, args, params, callback) {
                 try {
                     await backup.validateBackup(name);
                     console.log('Backup OK');
-                    processExit(0);
+                    return void processExit(0);
                 } catch (err) {
                     console.log(`Backup check failed: ${err.message}`);
-                    processExit(1);
+                    return void processExit(1);
                 }
             });
             break;
@@ -2402,17 +2417,17 @@ async function processCommand(command, args, params, callback) {
         case 'v':
         case 'version': {
             const adapter = args[0];
-            let iopckg;
+            let pckg;
             if (adapter) {
                 try {
-                    iopckg = require(tools.appName + '.' + adapter + '/package.json');
+                    pckg = require(`${tools.appName}.${adapter}/package.json`);
                 } catch {
-                    iopckg = { version: '"' + adapter + '" not found' };
+                    pckg = { version: `"${adapter}" not found` };
                 }
             } else {
-                iopckg = require('../package.json');
+                pckg = require(`@${tools.appName.toLowerCase()}/js-controller-common/package.json`);
             }
-            console.log(iopckg.version);
+            console.log(pckg.version);
 
             return void callback();
         }
@@ -2721,17 +2736,17 @@ async function processCommand(command, args, params, callback) {
 
         default: {
             if (params.v || params.version) {
-                let iopckg;
+                let pckg;
                 if (command) {
                     try {
-                        iopckg = require(tools.appName + '.' + command + '/package.json');
+                        pckg = require(`${tools.appName}.${command}/package.json`);
                     } catch {
-                        iopckg = { version: '"' + command + '" not found' };
+                        pckg = { version: `"${command}" not found` };
                     }
                 } else {
-                    iopckg = require('../package.json');
+                    pckg = require(`@${tools.appName.toLowerCase()}/js-controller-common/package.json`);
                 }
-                console.log(iopckg.version);
+                console.log(pckg.version);
             } else {
                 showHelp();
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
@@ -2741,7 +2756,12 @@ async function processCommand(command, args, params, callback) {
     }
 }
 
-// Save objects before exit
+/**
+ * Exits the process and saves objects before exit
+ *
+ * @param {number?} exitCode
+ * @return {Promise<void>} Never resolves
+ */
 async function processExit(exitCode) {
     if (pluginHandler) {
         pluginHandler.destroyAll();
@@ -2753,9 +2773,9 @@ async function processExit(exitCode) {
     if (states && states.destroy) {
         await states.destroy();
     }
-    setTimeout(() => {
-        process.exit(exitCode);
-    }, 1000);
+    return new Promise(() => {
+        setTimeout(() => process.exit(exitCode), 1000);
+    });
 }
 
 const OBJECTS_THAT_CANNOT_BE_DELETED = [
@@ -3002,26 +3022,7 @@ async function checkSystemOffline(onlyCheck) {
         return true;
     }
 
-    const offlineStatus = await new Promise(resolve => {
-        setTimeout(async () => {
-            // Slight delay to allow "setup first" from Pre 2.0 to 2.0
-            try {
-                const hosts = await enumHosts(objects);
-                const hostToCheck = hosts.map(host => `system.host.${host.common.hostname}.alive`);
-
-                const res = await states.getStatesAsync(hostToCheck);
-                Array.isArray(res) &&
-                    res.forEach(aliveState => {
-                        if (aliveState && aliveState.val) {
-                            resolve(false);
-                        }
-                    });
-                resolve(true);
-            } catch {
-                resolve(true);
-            }
-        }, 500);
-    });
+    const offlineStatus = !(await tools.isHostRunning(objects, states));
 
     return offlineStatus;
 }
@@ -3092,6 +3093,10 @@ function dbConnect(onlyCheck, params, callback) {
 
     config.states = config.states || { type: 'file' };
     config.objects = config.objects || { type: 'file' };
+    // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
+    // because the lockfile might not have been freed.
+    config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);
+    config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5000);
 
     Objects = getObjectsConstructor(); // Objects DB Client object
     States = getStatesConstructor(); // States DB Client object
@@ -3144,7 +3149,7 @@ function dbConnect(onlyCheck, params, callback) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
                 } else {
-                    processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                 }
             }
         }
@@ -3200,7 +3205,7 @@ function dbConnect(onlyCheck, params, callback) {
                     callback && callback(objects, states, true, config.objects.type, config);
                     callback = null;
                 } else {
-                    processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                 }
             }
         }
@@ -3216,10 +3221,10 @@ function dbConnect(onlyCheck, params, callback) {
                 callback && callback(null, null, true, config.objects.type, config);
                 callback = null;
             } else {
-                processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
-        }, params.timeout || 10000 + config.objects.connectTimeout || 12000);
-    }, params.timeout || config.objects.connectTimeout * 2 || 4000);
+        }, (params.timeout || 10000) + config.objects.connectTimeout);
+    }, params.timeout || config.objects.connectTimeout * 2);
 
     // try to connect as client
     objects = new Objects({

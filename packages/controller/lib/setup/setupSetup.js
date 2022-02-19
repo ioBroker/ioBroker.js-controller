@@ -1,7 +1,7 @@
 /**
  *      Setup
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -135,45 +135,44 @@ function Setup(options) {
     async function setupReady(systemConfig, callback) {
         if (!callback) {
             console.log('database setup done. You can add adapters and start ' + tools.appName + ' now');
-            processExit(EXIT_CODES.NO_ERROR);
-        } else {
-            if (!objects.syncFileDirectory || !objects.dirExists) {
-                return void informAboutPlugins(systemConfig, callback);
-            }
-            // check meta.user
-            try {
-                const objExists = await objects.objectExists('meta.user');
-                if (objExists) {
-                    // check if dir is missing
-                    const dirExists = objects.dirExists('meta.user');
-                    if (!dirExists) {
-                        // create meta.user, so users see them as upload target
-                        await objects.mkdirAsync('meta.user');
-                        console.log('Successfully created "meta.user" directory');
-                    }
+            return processExit(EXIT_CODES.NO_ERROR);
+        }
+        if (!objects.syncFileDirectory || !objects.dirExists) {
+            return void informAboutPlugins(systemConfig, callback);
+        }
+        // check meta.user
+        try {
+            const objExists = await objects.objectExists('meta.user');
+            if (objExists) {
+                // check if dir is missing
+                const dirExists = objects.dirExists('meta.user');
+                if (!dirExists) {
+                    // create meta.user, so users see them as upload target
+                    await objects.mkdirAsync('meta.user');
+                    console.log('Successfully created "meta.user" directory');
                 }
-            } catch (err) {
-                console.warn(`Could not create directory "meta.user": ${err.message}`);
             }
+        } catch (err) {
+            console.warn(`Could not create directory "meta.user": ${err.message}`);
+        }
 
-            try {
-                const { numberSuccess, notifications } = objects.syncFileDirectory();
-                numberSuccess &&
-                    console.log(
-                        numberSuccess +
-                            ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!'
-                    );
-                if (notifications.length) {
-                    console.log();
-                    console.log('The following notifications happened during sync: ');
-                    notifications.forEach(el => console.log('- ' + el));
-                    console.log();
-                }
-                return void informAboutPlugins(systemConfig, callback);
-            } catch (err) {
-                console.error('Error on file directory sync: ' + err.message);
-                return void informAboutPlugins(systemConfig, callback);
+        try {
+            const { numberSuccess, notifications } = objects.syncFileDirectory();
+            numberSuccess &&
+                console.log(
+                    numberSuccess +
+                        ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!'
+                );
+            if (notifications.length) {
+                console.log();
+                console.log('The following notifications happened during sync: ');
+                notifications.forEach(el => console.log('- ' + el));
+                console.log();
             }
+            return void informAboutPlugins(systemConfig, callback);
+        } catch (err) {
+            console.error('Error on file directory sync: ' + err.message);
+            return void informAboutPlugins(systemConfig, callback);
         }
     }
 
@@ -238,46 +237,13 @@ function Setup(options) {
         dbConnect(params, async (_objects, _states) => {
             objects = _objects;
             states = _states;
-            const iopkg = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+            const iopkg = fs.readJsonSync(`${__dirname}/../../io-package.json`);
 
-            // in all cases we need to ensure that existing objects are migrated to sets
-            try {
-                const noMigrated = await objects.migrateToSets();
-
-                if (noMigrated) {
-                    console.log(`Successfully migrated ${noMigrated} objects to redis sets`);
-                }
-            } catch (e) {
-                console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
-            }
+            await _maybeMigrateSets();
 
             // clean up invalid user group assignments (non-existing user in a group)
             try {
-                const usersView = await objects.getObjectViewAsync('system', 'user');
-                const groupView = await objects.getObjectViewAsync('system', 'group');
-
-                const existingUsers = usersView.rows.map(obj => obj.value._id);
-
-                for (const group of groupView.rows) {
-                    // reference for readability
-                    const groupMembers = group.value.common.members;
-                    let changed = false;
-
-                    for (let i = groupMembers.length - 1; i >= 0; i--) {
-                        if (!existingUsers.includes(groupMembers[i])) {
-                            // we have found a non-existing user, so remove it
-                            changed = true;
-                            console.log(
-                                `Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`
-                            );
-                            groupMembers.splice(i, 1);
-                        }
-                    }
-
-                    if (changed) {
-                        await objects.setObjectAsync(group.value._id, group.value);
-                    }
-                }
+                await _cleanupInvalidGroupAssignments();
             } catch (e) {
                 // Cannot find view happens on very first installation,
                 // so ignore this case because no users can be invalid
@@ -511,7 +477,7 @@ function Setup(options) {
                         console.error(
                             'Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET
                         );
-                        return void callback(90);
+                        return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
 
                     const backup = new Backup({
@@ -557,7 +523,7 @@ function Setup(options) {
                             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                             fs.unlinkSync(tools.getConfigFileName() + '.bak');
 
-                            return void callback(78);
+                            return void callback(EXIT_CODES.MIGRATION_ERROR);
                         }
                         const backup = new Backup({
                             states,
@@ -569,7 +535,7 @@ function Setup(options) {
                         });
                         console.log('Restore backup ...');
                         console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                        backup.restoreBackup(filePath, false, true, err => {
+                        backup.restoreBackup(filePath, false, true, async err => {
                             if (err) {
                                 console.log(`Error happened during restore: ${err.message}`);
                                 console.log();
@@ -577,6 +543,7 @@ function Setup(options) {
                                 fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                                 fs.unlinkSync(tools.getConfigFileName() + '.bak');
                             } else {
+                                await _maybeMigrateSets();
                                 console.log('Backup restored - Migration successful');
                                 console.log(COLOR_YELLOW);
                                 console.log('Important: If your system consists of multiple hosts please execute ');
@@ -585,7 +552,7 @@ function Setup(options) {
                                 console.log('running!' + COLOR_RESET);
                             }
 
-                            callback(err ? 78 : 0);
+                            callback(err ? EXIT_CODES.MIGRATION_ERROR : 0);
                         });
                     });
                 });
@@ -615,55 +582,62 @@ function Setup(options) {
                 config = fs.readJSONSync(tools.getConfigFileName());
                 originalConfig = deepClone(config);
             } else {
-                config = require('../../conf/' + tools.appName + '-dist.json');
+                config = require(`../../conf/${tools.appName}-dist.json`);
             }
         } catch {
-            config = require('../../conf/' + tools.appName + '-dist.json');
+            config = require(`../../conf/${tools.appName}-dist.json`);
         }
 
-        const currentObjectsType = originalConfig.objects.type || 'file';
-        const currentStatesType = originalConfig.states.type || 'file';
+        const currentObjectsType = originalConfig.objects.type || 'jsonl';
+        const currentStatesType = originalConfig.states.type || 'jsonl';
         console.log('Current configuration:');
         console.log('- Objects database:');
-        console.log('  - Type: ' + originalConfig.objects.type);
-        console.log('  - Host/Unix Socket: ' + originalConfig.objects.host);
-        console.log('  - Port: ' + originalConfig.objects.port);
+        console.log(`  - Type: ${originalConfig.objects.type}`);
+        console.log(`  - Host/Unix Socket: ${originalConfig.objects.host}`);
+        console.log(`  - Port: ${originalConfig.objects.port}`);
         if (Array.isArray(originalConfig.objects.host)) {
             console.log(
-                '  - Sentinel-Master-Name: ' +
-                    (originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster')
+                `  - Sentinel-Master-Name: ${
+                    originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster'
+                }`
             );
         }
         console.log('- States database:');
-        console.log('  - Type: ' + originalConfig.states.type);
-        console.log('  - Host/Unix Socket: ' + originalConfig.states.host);
-        console.log('  - Port: ' + originalConfig.states.port);
+        console.log(`  - Type: ${originalConfig.states.type}`);
+        console.log(`  - Host/Unix Socket: ${originalConfig.states.host}`);
+        console.log(`  - Port: ${originalConfig.states.port}`);
         if (Array.isArray(originalConfig.states.host)) {
             console.log(
-                '  - Sentinel-Master-Name: ' +
-                    (originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster')
+                `  - Sentinel-Master-Name: ${
+                    originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster'
+                }`
             );
         }
         if (
             dbTools.objectsDbHasServer(originalConfig.objects.type) ||
             dbTools.statesDbHasServer(originalConfig.states.type)
         ) {
-            console.log('- Data Directory: ' + tools.getDefaultDataDir());
+            console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
-            console.log('- Host name: ' + originalConfig.system.hostname);
+            console.log(`- Host name: ${originalConfig.system.hostname}`);
         }
         console.log('');
 
-        let otype = rl.question('Type of objects DB [(f)ile, (r)edis, ...], default [' + currentObjectsType + ']: ', {
-            defaultInput: currentObjectsType
-        });
+        let otype = rl.question(
+            `Type of objects DB [(j)sonl, (f)ile, (r)edis, ...], default [${currentObjectsType}]: `,
+            {
+                defaultInput: currentObjectsType
+            }
+        );
         otype = otype.toLowerCase();
 
         if (otype === 'r') {
             otype = 'redis';
         } else if (otype === 'f') {
             otype = 'file';
+        } else if (otype === 'j') {
+            otype = 'jsonl';
         }
 
         let getDefaultObjectsPort;
@@ -671,7 +645,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-objects-${otype}`);
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
-            console.log(COLOR_RED + 'Unknown objects type: ' + otype + COLOR_RESET);
+            console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
             if (otype !== 'file' && otype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the objects db type you entered is really correct!`);
@@ -679,7 +653,7 @@ function Setup(options) {
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         if (otype === 'redis' && originalConfig.objects.type !== 'redis') {
@@ -733,14 +707,14 @@ function Setup(options) {
                 oport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(oport[idx])) {
                     console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
-                    return void callback(23);
+                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
         } else {
             oport = parseInt(userObjPort, 10);
             if (isNaN(oport)) {
                 console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
-                return void callback(23);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
         }
 
@@ -762,15 +736,20 @@ function Setup(options) {
             // ignore, unchanged
         }
 
-        let stype = rl.question(`Type of states DB [(f)file, (r)edis, ...], default [${defaultStatesType}]: `, {
-            defaultInput: defaultStatesType
-        });
+        let stype = rl.question(
+            `Type of states DB [(j)sonl, (f)file, (r)edis, ...], default [${defaultStatesType}]: `,
+            {
+                defaultInput: defaultStatesType
+            }
+        );
         stype = stype.toLowerCase();
 
         if (stype === 'r') {
             stype = 'redis';
         } else if (stype === 'f') {
             stype = 'file';
+        } else if (stype === 'j') {
+            stype = 'jsonl';
         }
 
         let getDefaultStatesPort;
@@ -778,7 +757,7 @@ function Setup(options) {
             const path = require.resolve(`@iobroker/db-states-${stype}`);
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
-            console.log(`${COLOR_RED}Unknown objects type: ${stype}${COLOR_RESET}`);
+            console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
             if (stype !== 'file' && stype !== 'redis') {
                 console.log(COLOR_YELLOW);
                 console.log(`Please check that the states db type you entered is really correct!`);
@@ -786,7 +765,7 @@ function Setup(options) {
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         if (stype === 'redis' && originalConfig.states.type !== 'redis' && otype !== 'redis') {
@@ -842,14 +821,14 @@ function Setup(options) {
                 sport[idx] = parseInt(port.trim(), 10);
                 if (isNaN(sport[idx])) {
                     console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
-                    return void callback(23);
+                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             });
         } else {
             sport = parseInt(userStatePort, 10);
             if (isNaN(sport)) {
                 console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
-                return void callback(23);
+                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
         }
 
@@ -891,7 +870,7 @@ function Setup(options) {
 
         if (hname.match(/\s/)) {
             console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
-            return void callback(23);
+            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
         }
 
         config.system = config.system || {};
@@ -919,6 +898,68 @@ function Setup(options) {
 
         migrateObjects(config, originalConfig, rl, callback);
     };
+
+    /**
+     * Checks if single host setup and if so migrates and activates Redis Sets Usage
+     * @return {Promise<void>}
+     * @private
+     */
+    async function _maybeMigrateSets() {
+        try {
+            // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
+            if (await tools.isSingleHost(objects)) {
+                await objects.activateSets();
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
+                }
+            }
+        } catch (e) {
+            console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
+        }
+    }
+
+    /**
+     * Removes non-existing users from groups
+     *
+     * @return {Promise<void>}
+     * @private
+     */
+    async function _cleanupInvalidGroupAssignments() {
+        const usersView = await objects.getObjectViewAsync('system', 'user');
+        const groupView = await objects.getObjectViewAsync('system', 'group');
+
+        const existingUsers = usersView.rows.map(obj => obj.value._id);
+
+        for (const group of groupView.rows) {
+            // reference for readability
+            const groupMembers = group.value.common.members;
+
+            if (!Array.isArray(groupMembers)) {
+                // fix legacy objects
+                const obj = group.value;
+                obj.common.members = [];
+                await objects.setObjectAsync(obj._id, obj);
+                continue;
+            }
+
+            let changed = false;
+
+            for (let i = groupMembers.length - 1; i >= 0; i--) {
+                if (!existingUsers.includes(groupMembers[i])) {
+                    // we have found a non-existing user, so remove it
+                    changed = true;
+                    console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`);
+                    groupMembers.splice(i, 1);
+                }
+            }
+
+            if (changed) {
+                await objects.setObjectAsync(group.value._id, group.value);
+            }
+        }
+    }
 
     this.setup = function (callback, ignoreIfExist, useRedis) {
         let config;

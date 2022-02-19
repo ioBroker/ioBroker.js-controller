@@ -1,7 +1,7 @@
 /**
  *      Upgrade command
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -86,25 +86,25 @@ function Upgrade(options) {
                         relevantAdapters.splice(relevantAdapters.indexOf(relAdapter), 1);
                         oneAdapterAdded = true;
                     } else {
-                        const deps = repo[relAdapter].dependencies || [];
-                        const globalDeps = repo[relAdapter].globalDependencies || [];
+                        /** @type {Record<string, string>} */
+                        const allDeps = {
+                            ...tools.parseDependencies(repo[relAdapter].dependencies),
+                            ...tools.parseDependencies(repo[relAdapter].globalDependencies)
+                        };
 
                         // we have to check if the deps are there
                         let conflict = false;
-                        for (const dep of [...deps, ...globalDeps]) {
-                            debug(`adapter "${relAdapter}" has dependency "${JSON.stringify(dep)}"`);
-                            if (tools.isObject(dep)) {
-                                // object -> dependency is important, because it affects version range
-                                for (const depName of Object.keys(dep)) {
-                                    if (relevantAdapters.includes(depName)) {
-                                        // the dependency is also in the upgrade list and not previously added, we should add the dependency first
-                                        debug(`conflict for dependency "${depName}" at adapter "${relAdapter}"`);
-                                        conflict = true;
-                                        break;
-                                    }
+                        for (const [depName, version] of Object.entries(allDeps)) {
+                            debug(`adapter "${relAdapter}" has dependency "${depName}": "${version}"`);
+                            if (version !== '*') {
+                                // dependency is important, because it affects version range
+                                if (relevantAdapters.includes(depName)) {
+                                    // the dependency is also in the upgrade list and not previously added, we should add the dependency first
+                                    debug(`conflict for dependency "${depName}" at adapter "${relAdapter}"`);
+                                    conflict = true;
+                                    break;
                                 }
                             }
-                            // else it is a string, so doesn't matter because dep is also there before upgrade
                         }
                         // we reached here and no conflict so every dep is satisfied
                         if (!conflict) {
@@ -124,8 +124,6 @@ function Upgrade(options) {
             }
 
             debug(`upgrade order is "${sortedAdapters.join(', ')}"`);
-
-            await this.upgradeAdapterHelper(repo, sortedAdapters, forceDowngrade, autoConfirm);
 
             for (let i = 0; i < sortedAdapters.length; i++) {
                 if (repo[sortedAdapters[i]] && repo[sortedAdapters[i]].controller) {
@@ -301,7 +299,7 @@ function Upgrade(options) {
                     ioPack = fs.readJSONSync(`${adapterDir}/io-package.json`);
                 } catch {
                     console.error(`Cannot find io-package.json in ${adapterDir}`);
-                    processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                    return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                 }
             }
 
@@ -515,8 +513,12 @@ function Upgrade(options) {
 
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
-                await finishUpgrade(name);
+                const { packetName, stoppedList } = await install.downloadPacket(
+                    sources,
+                    `${adapter}@${targetVersion}`
+                );
+                await finishUpgrade(packetName);
+                await install.enableAdapters(stoppedList, true);
             }
         } else if (repoUrl[adapter].meta) {
             // Read repository from url or file
@@ -557,8 +559,12 @@ function Upgrade(options) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
-                const name = await install.downloadPacket(sources, `${adapter}@${targetVersion}`);
-                await finishUpgrade(name, ioPack);
+                const { packetName, stoppedList } = await install.downloadPacket(
+                    sources,
+                    `${adapter}@${targetVersion}`
+                );
+                await finishUpgrade(packetName, ioPack);
+                await install.enableAdapters(stoppedList, true);
             }
         } else {
             if (forceDowngrade) {
@@ -572,8 +578,9 @@ function Upgrade(options) {
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${version}`);
                 // Get the adapter from web site
-                const name = await install.downloadPacket(sources, `${adapter}@${version}`);
-                await finishUpgrade(name);
+                const { packetName, stoppedList } = await install.downloadPacket(sources, `${adapter}@${version}`);
+                await finishUpgrade(packetName);
+                await install.enableAdapters(stoppedList, true);
             } else {
                 return console.error(`Unable to get version for "${adapter}".`);
             }
@@ -597,7 +604,7 @@ function Upgrade(options) {
                 }
                 repoUrl = result;
             } catch (err) {
-                processExit(err);
+                return processExit(err);
             }
         }
 
@@ -634,7 +641,8 @@ function Upgrade(options) {
                 // Get the controller from web site
                 await install.downloadPacket(
                     repoUrl,
-                    `${installed.common.name}@${repoUrl[installed.common.name].version}`
+                    `${installed.common.name}@${repoUrl[installed.common.name].version}`,
+                    { stopDb: true }
                 );
             }
         } else {
@@ -667,7 +675,7 @@ function Upgrade(options) {
                 const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : installed.common.name;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
-                await install.downloadPacket(repoUrl, name + version);
+                await install.downloadPacket(repoUrl, name + version, { stopDb: true });
             }
         }
     };

@@ -57,7 +57,7 @@ const {
  * Adapter class
  *
  * How the initialization happens:
- *  initObjects => initStates => prepareInitAdapter => createInstancesObjects => initAdapter => initLogging => ready
+ *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstanceObjects => ready
  *
  * @class
  * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
@@ -77,6 +77,10 @@ function Adapter(options) {
         config = fs.readJSONSync(configFileName);
         config.states = config.states || { type: 'file' };
         config.objects = config.objects || { type: 'file' };
+        // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
+        // because the lockfile might not have been freed.
+        config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);
+        config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5000);
     } else {
         throw new Error(`Cannot find ${configFileName}`);
     }
@@ -201,16 +205,7 @@ function Adapter(options) {
 
             this.inited = true;
 
-            // auto oObjects
-            if (options.objects) {
-                this.getAdapterObjects(objs => {
-                    this.oObjects = objs;
-                    this.subscribeObjects('*');
-                    initStates(prepareInitAdapter);
-                });
-            } else {
-                initStates(prepareInitAdapter);
-            }
+            initStates(prepareInitAdapter);
         });
     };
 
@@ -280,7 +275,7 @@ function Adapter(options) {
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${utils.getErrorText(exitCode)}): ${
+        const text = `${this.namespaceLog} Terminated (${Utils.getErrorText(exitCode)}): ${
             reason ? reason : 'Without reason'
         }`;
         if (isNotCritical) {
@@ -1233,12 +1228,8 @@ function Adapter(options) {
      * @param {number} id - timer id
      */
     this.clearTimeout = id => {
-        if (!timers.has(id)) {
-            logger.warn(`${this.namespaceLog} Clear already terminated timer ${id}`);
-        } else {
-            clearTimeout(id);
-            timers.delete(id);
-        }
+        clearTimeout(id);
+        timers.delete(id);
     };
 
     /**
@@ -1285,7 +1276,7 @@ function Adapter(options) {
             return;
         }
 
-        const id = setInterval(() => cb(...args));
+        const id = setInterval(() => cb(...args), timeout);
         intervals.add(id);
 
         return id;
@@ -1298,12 +1289,8 @@ function Adapter(options) {
      * @param {number} id - interval id
      */
     this.clearInterval = id => {
-        if (!intervals.has(id)) {
-            logger.warn(`${this.namespaceLog} Clear already terminated interval ${id}`);
-        } else {
-            clearInterval(id);
-            intervals.delete(id);
-        }
+        clearInterval(id);
+        intervals.delete(id);
     };
 
     // Can be later deleted if no more appears
@@ -1363,7 +1350,7 @@ function Adapter(options) {
         }
     };
 
-    const createInstancesObjects = async (instanceObj, callback) => {
+    const createInstancesObjects = async instanceObj => {
         let objs;
 
         if (instanceObj && instanceObj.common && !instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
@@ -1430,27 +1417,25 @@ function Adapter(options) {
             }
         }
 
-        extendObjects(objs, callback);
+        return new Promise(resolve => {
+            extendObjects(objs, () => {
+                resolve();
+            });
+        });
     };
 
     /**
      * Called if states and objects successfully initalized
      */
     const prepareInitAdapter = () => {
-        utils = new Utils(
-            adapterObjects,
-            adapterStates,
-            this.namespaceLog,
-            logger,
-            this.namespace,
-            this._namespaceRegExp
-        );
-
+        if (this.terminated) {
+            return;
+        }
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
-            this.getForeignState(`system.adapter.${this.namespace}.alive`, null, (err, resAlive) => {
-                this.getForeignState(`system.adapter.${this.namespace}.sigKill`, null, (err, killRes) => {
+            adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
+                adapterStates.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
                     if (killRes && killRes.val !== undefined) {
                         killRes.val = parseInt(killRes.val, 10);
                     }
@@ -1499,14 +1484,14 @@ function Adapter(options) {
                         logger.error(this.namespaceLog + ' ' + options.name + '.' + instance + ' already running');
                         this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
-                        this.getForeignObject('system.adapter.' + this.namespace, null, (err, res) => {
+                        adapterObjects.getObject('system.adapter.' + this.namespace, (err, res) => {
                             if ((err || !res) && !config.isInstall) {
                                 logger.error(
                                     this.namespaceLog + ' ' + options.name + '.' + instance + ' invalid config'
                                 );
                                 this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                             } else {
-                                createInstancesObjects(res, () => initAdapter(res));
+                                initAdapter(res);
                             }
                         });
                     }
@@ -1553,7 +1538,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to objects DB. Still waiting ...');
             }
-        }, (config.objects.connectTimeout || 2000) * 3); // Because we do not connect only anymore, give it a bit more time
+        }, config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
         adapterObjects = new Objects({
             namespace: this.namespaceLog,
@@ -1575,7 +1560,7 @@ function Adapter(options) {
 
                 // Read dateformat if using of formatDate is announced
                 if (options.useFormatDate) {
-                    this.getForeignObject('system.config', (err, data) => {
+                    adapterObjects.getObject('system.config', (err, data) => {
                         if (data && data.common) {
                             this.dateFormat = data.common.dateFormat;
                             this.isFloatComma = data.common.isFloatComma;
@@ -5647,7 +5632,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to states DB. Still waiting ...');
             }
-        }, config.states.connectTimeout || 2000);
+        }, config.states.connectTimeout);
 
         // Internal object, but some special adapters want to access it anyway.
         adapterStates = new States({
@@ -8849,7 +8834,7 @@ function Adapter(options) {
         initLogging(() => {
             this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
             this.pluginHandler.initPlugins(adapterConfig, async () => {
-                if (!adapterStates) {
+                if (!adapterStates || this.terminated) {
                     // if adapterState was destroyed,we should not continue
                     return;
                 }
@@ -8983,6 +8968,43 @@ function Adapter(options) {
 
                 this.adapterConfig = adapterConfig;
 
+                utils = new Utils(
+                    adapterObjects,
+                    adapterStates,
+                    this.namespaceLog,
+                    logger,
+                    this.namespace,
+                    this._namespaceRegExp
+                );
+
+                this.log = new Log(this.namespaceLog, config.log.level, logger);
+
+                //
+                // From here on "this" methods can be used that might log with "this.log" !!
+                // Above this line only use logger!
+                //
+
+                await createInstancesObjects(adapterConfig);
+
+                // auto oObjects
+                if (options.objects) {
+                    this.oObjects = await this.getAdapterObjectsAsync();
+                    await this.subscribeObjectsAsync('*');
+                }
+
+                // read the systemSecret
+                if (systemSecret === null) {
+                    try {
+                        const data = await adapterObjects.getObjectAsync('system.config');
+                        if (data && data.native) {
+                            systemSecret = data.native.secret;
+                        }
+                    } catch {
+                        // ignore
+                    }
+                    systemSecret = systemSecret || DEFAULT_SECRET;
+                }
+
                 // Decrypt all attributes of encryptedNative
                 const promises = [];
                 if (Array.isArray(adapterConfig.encryptedNative)) {
@@ -9008,22 +9030,8 @@ function Adapter(options) {
                     }
                 }
 
-                // read the systemSecret
-                if (systemSecret === null) {
-                    try {
-                        const data = await this.getForeignObjectAsync('system.config', null);
-                        if (data && data.native) {
-                            systemSecret = data.native.secret;
-                        }
-                    } catch {
-                        // ignore
-                    }
-                    systemSecret = systemSecret || DEFAULT_SECRET;
-                }
-
                 // Wait till all attributes decrypted
                 await Promise.all(promises);
-                this.log = new Log(this.namespaceLog, config.log.level, logger);
 
                 if (!adapterStates) {
                     // if adapterStates was destroyed, we should not continue

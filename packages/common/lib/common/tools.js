@@ -10,7 +10,7 @@ const cpPromise = require('promisify-child-process');
 const jwt = require('jsonwebtoken');
 const { createInterface } = require('readline');
 const { PassThrough } = require('stream');
-const { detectPackageManager } = require('@alcalzone/pak');
+const { detectPackageManager, packageManagers } = require('@alcalzone/pak');
 const EXIT_CODES = require('./exitCodes');
 const zlib = require('zlib');
 
@@ -190,9 +190,44 @@ function decryptPhrase(password, data, callback) {
         decipher.write(data, 'hex');
         decipher.end();
     } catch (e) {
-        console.error('Cannot decode secret: ' + e.message);
+        console.error(`Cannot decode secret: ${e.message}`);
         callback(null);
     }
+}
+
+/**
+ * Checks if multiple host objects exists, without using object views
+ *
+ * @param {object} objects the objects db
+ * @return {Promise<boolean>} true if only one host object exists
+ */
+async function isSingleHost(objects) {
+    const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
+    const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
+    return hostObjs.length <= 1; // on setup no host object is there yet
+}
+
+/**
+ * Checks if at least one host is running in a MH environment
+ *
+ * @param {object} objects the objects db
+ * @param {object} states the states db
+ * @return Promise<boolean> true if one or more hosts running else false
+ */
+async function isHostRunning(objects, states) {
+    // do it without object view for now, can be reverted if no one downgrades to < 4 (redis-sets)
+    // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+
+    const res = await objects.getObjectList({ startkey: 'system.host.', endkey: 'system.host.\u9999' });
+    res.rows = res.rows.filter(obj => obj.value && obj.value.type === 'host');
+
+    for (const hostObj of res.rows) {
+        const state = await states.getState(`${hostObj.id}.alive`);
+        if (state && state.val) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function getAppName() {
@@ -852,16 +887,6 @@ function getInstalledInfo(hostRunningVersion) {
     scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
     scanDirectory(path.join(fullPath, '..'), result, regExp);
 
-    // Warning! Do not checkin this code
-    if (
-        fs.existsSync(
-            path.join(__dirname, `../../../../../node_modules/${module.exports.appName.toLowerCase()}.js-controller`)
-        ) ||
-        fs.existsSync(path.join(__dirname, `../../../../../node_modules/${module.exports.appName}.js-controller`))
-    ) {
-        scanDirectory(path.join(__dirname, '../../../../../node_modules'), result, regExp);
-    }
-
     return result;
 }
 
@@ -1237,34 +1262,32 @@ function getRepositoryFile(urlOrPath, additionalInfo, callback) {
  */
 async function getRepositoryFileAsync(url, hash, force, _actualRepo) {
     let _hash;
-    if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
-        axios = axios || require('axios');
-        _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
-        if (_hash && _hash.data && hash === _hash.data.hash) {
-            return _actualRepo;
-        }
-    }
-
     let data;
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
         axios = axios || require('axios');
-        if (!_hash) {
+        try {
             _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+        } catch {
+            // ignore missing hash file
         }
 
-        if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${module.exports.appName}, RND: ${randomID}, Node:${process.version}, V:${
                 require('../../package.json').version
             }`;
-            data = await axios({
-                url,
-                timeout: 10000,
-                headers: { 'User-Agent': agent }
-            });
-            data = data.data;
+            try {
+                data = await axios({
+                    url,
+                    timeout: 10000,
+                    headers: { 'User-Agent': agent }
+                });
+                data = data.data;
+            } catch (e) {
+                throw new Error(`Cannot download repository file from "${url}": ${e.message}`);
+            }
         }
     } else {
         if (fs.existsSync(url)) {
@@ -1436,6 +1459,38 @@ function getSystemNpmVersion(callback) {
 const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
 
 /**
+ * @private
+ * Figure out which package manager is in charge, but with a fallback to npm.
+ * @param {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+ * @returns {Promise<PackageManager>}
+ */
+async function detectPackageManagerWithFallback(cwd) {
+    try {
+        // For the first attempt, use pak's default of requiring a lockfile. This makes sure we find ioBroker's root dir
+        return await detectPackageManager(
+            typeof cwd === 'string'
+                ? // If a cwd was provided, use it
+                  { cwd }
+                : // Otherwise try to find the ioBroker root dir
+                  {
+                      cwd: __dirname,
+                      setCwdToPackageRoot: true
+                  }
+        );
+    } catch {
+        // Lockfile not found, use default to avoid picking up a wrong package manager
+        // like a globally installed yarn
+    }
+
+    // Since we have no lockfile to rely on, assume the root dir is 2 levels above js-controller
+    const ioBrokerRootDir = path.join(getControllerDir(), '../..');
+    // And fallback to npm
+    const pak = new packageManagers.npm();
+    pak.cwd = cwd || ioBrokerRootDir;
+    return pak;
+}
+
+/**
  * @typedef {object} InstallNodeModuleOptions
  * @property {boolean} [unsafePerm] Whether the `--unsafe-perm` flag should be used
  * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
@@ -1450,16 +1505,7 @@ const getSystemNpmVersionAsync = promisify(getSystemNpmVersion);
  */
 async function installNodeModule(npmUrl, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1499,16 +1545,7 @@ async function installNodeModule(npmUrl, options = {}) {
  */
 async function uninstallNodeModule(packageName, options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1532,6 +1569,7 @@ async function uninstallNodeModule(packageName, options = {}) {
  * @typedef {object} RebuildNodeModulesOptions
  * @property {boolean} [debug] Whether to include `stderr` in the output and increase the loglevel to include more than errors
  * @property {string} [cwd] Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+ * @property {string} [module] single module which needs rebuild, can contain version too like module@version
  */
 
 /**
@@ -1542,16 +1580,7 @@ async function uninstallNodeModule(packageName, options = {}) {
  */
 async function rebuildNodeModules(options = {}) {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1568,7 +1597,7 @@ async function rebuildNodeModules(options = {}) {
         pipeLinewise(stdout, process.stdout);
     }
 
-    return pak.rebuild();
+    return pak.rebuild(options.module ? [options.module] : undefined);
 }
 
 /**
@@ -2594,7 +2623,7 @@ async function removeIdFromAllEnums(objects, id, allEnums) {
  *
  * @alias parseDependencies
  * @memberof tools
- * @param {string[]|object[]|string} dependencies dependencies array or single dependency
+ * @param {string[]|Record<string, string>[]|string|Record<string, string>} dependencies dependencies array or single dependency
  * @returns {Record<string, string>} parsed dependencies
  */
 function parseDependencies(dependencies) {
@@ -2706,9 +2735,9 @@ function validateGeneralObjectProperties(obj, extend) {
                     );
                 }
 
-                if (obj.common.type !== 'number') {
+                if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.min is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
                     );
                 }
             }
@@ -2720,9 +2749,9 @@ function validateGeneralObjectProperties(obj, extend) {
                     );
                 }
 
-                if (obj.common.type !== 'number') {
+                if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.max is only allowed on obj.common.type "number", received "${obj.common.type}"`
+                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
                     );
                 }
 
@@ -2805,7 +2834,12 @@ function validateGeneralObjectProperties(obj, extend) {
     }
 
     // common.states needs to be a real object or an array
-    if (obj.common.states !== undefined && !isObject(obj.common.states) && !Array.isArray(obj.common.states)) {
+    if (
+        obj.common.states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
+        obj.common.states !== undefined &&
+        !isObject(obj.common.states) &&
+        !Array.isArray(obj.common.states)
+    ) {
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
         );
@@ -2900,7 +2934,7 @@ async function getInstances(adapter, objects, withObjects) {
  * Checks if the given callback is a function and if so calls it with the given parameter immediately, else a resolved Promise is returned
  *
  * @param {(...args: any[]) => void | null | undefined} callback - callback function to be executed
- * @param {any[]} args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @param {...any} args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns {Promise<any>} - if Promise is resolved with multiple arguments, an array is returned
  */
 function maybeCallback(callback, ...args) {
@@ -2918,7 +2952,7 @@ function maybeCallback(callback, ...args) {
  * @param {((error: Error | null | undefined, ...args: any[]) => void) | null | undefined} callback - callback function to be executed
  * @param {Error | string | null | undefined} error - error which will be used by the callback function. If callback is not a function and
  * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
- * @param {any[]} args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @param {...any} args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns {Promise<any>} - if Promise is resolved with multiple arguments, an array is returned
  */
 function maybeCallbackWithError(callback, error, ...args) {
@@ -2965,7 +2999,14 @@ function pipeLinewise(input, output) {
         input,
         crlfDelay: Infinity
     });
-    rl.on('line', line => output.write(line + os.EOL));
+    rl.on('line', line => {
+        try {
+            output.write(line + os.EOL);
+        } catch {
+            // ignore
+        }
+    });
+    rl.on('error', () => {}); // Ignore errors
 }
 
 /**
@@ -3410,33 +3451,60 @@ async function getInstancesOrderedByStartPrio(objects, logger, logPrefix = '') {
  * @returns {Promise<void>}
  */
 async function setExecutableCapabilities(execPath, capabilities, modeEffective, modePermitted, modeInherited) {
+    if (!Array.isArray(capabilities) || !capabilities.length) {
+        throw new Error('No capabilities array provided');
+    }
+
     // if not linux do nothing and silently exit
-    if (os.platform() === 'linux') {
-        if (Array.isArray(capabilities) && capabilities.length) {
-            let modes = '';
-            const capabilitiesStr = capabilities.join(',');
+    if (os.platform() !== 'linux') {
+        return;
+    }
 
-            if (modeEffective) {
-                modes += 'e';
+    // if Docker and Admin Capabilities should be set check if we are allowed to do that
+    if (isDocker() && capabilities.includes('cap_net_admin')) {
+        try {
+            const systemCaps = fs.readFileSync(`/proc/${process.pid}/status`, 'utf-8');
+            const capBnd = systemCaps.match(/^CapBnd:\s(.+)$/m);
+            // We found a value in CapBnd line
+            if (capBnd && capBnd[1]) {
+                const { stdout } = await execAsync(`capsh --decode=${capBnd[1]}`);
+                // Stdout looks like "0x00000000a80425fb=cap_chown,cap_dac_override,..."
+                if (stdout && stdout.startsWith(`0x${capBnd[1]}=`)) {
+                    const capBndArr = stdout.substring(capBnd[1].length + 3).split(',');
+                    // if Admin Capability is not included in System Capabilities we remove it from array
+                    if (!capBndArr.includes('cap_net_admin')) {
+                        capabilities = capabilities.filter(c => c !== 'cap_net_admin');
+                    }
+                }
             }
-
-            if (modePermitted) {
-                modes += 'p';
-            }
-
-            if (modeInherited) {
-                modes += 'i';
-            }
-
-            if (modes.length) {
-                modes = `+${modes}`;
-            }
-
-            // if this throws it needs to be caught outside
-            await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
-        } else {
-            throw new Error('No capabilities array provided');
+        } catch {
+            // Ok we could not find it out, so update Caps but better without Admin Capability
+            capabilities = capabilities.filter(c => c !== 'cap_net_admin');
         }
+    }
+
+    if (capabilities.length) {
+        let modes = '';
+        const capabilitiesStr = capabilities.join(',');
+
+        if (modeEffective) {
+            modes += 'e';
+        }
+
+        if (modePermitted) {
+            modes += 'p';
+        }
+
+        if (modeInherited) {
+            modes += 'i';
+        }
+
+        if (modes.length) {
+            modes = `+${modes}`;
+        }
+
+        // if this throws it needs to be caught outside
+        await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
     }
 }
 
@@ -3496,14 +3564,14 @@ async function updateLicenses(objects, login, password) {
         if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
             try {
                 // get the secret to decode the password
-                const systemConfig = objects.getObjectAsync('system.config');
+                const systemConfig = await objects.getObjectAsync('system.config');
 
                 // decode the password
                 let password;
                 try {
                     password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
                 } catch (err) {
-                    throw new Error('Cannot decode password: ' + err.message);
+                    throw new Error(`Cannot decode password: ${err.message}`);
                 }
 
                 // read licenses from iobroker.net
@@ -3671,6 +3739,8 @@ module.exports = {
     parseShortGithubUrl,
     setExecutableCapabilities,
     isGithubPathname,
+    isSingleHost,
+    isHostRunning,
     parseGithubPathname,
     removePreservedProperties,
     FORBIDDEN_CHARS,
@@ -3679,6 +3749,7 @@ module.exports = {
     getAllEnums,
     updateLicenses,
     compressFileGZip,
+    isDocker,
     ERRORS: {
         ERROR_NOT_FOUND: ERROR_NOT_FOUND,
         ERROR_EMPTY_OBJECT: ERROR_EMPTY_OBJECT,

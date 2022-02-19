@@ -4,7 +4,7 @@
 /* jshint expr:true */
 'use strict';
 
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const setup = require('./lib/setup4controller');
 let objects = null;
 let states = null;

@@ -223,7 +223,7 @@ export class Utils {
      * @param code error code
      * @return error description
      */
-    getErrorText(code: number): string {
+    static getErrorText(code: number): string {
         code = code || 0;
         return (EXIT_CODES[code] || code).toString();
     }

@@ -1,7 +1,7 @@
 /**
  *      List different objects for CLI
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -285,7 +285,7 @@ function List(options) {
                         for (let i = 0; i < objs.rows.length; i++) {
                             let name =
                                 objs.rows[i].value && objs.rows[i].value.common && objs.rows[i].value.common.name;
-                            if (typeof name === 'object') {
+                            if (tools.isObject(name)) {
                                 name = name[lang] || name.en;
                             }
                             if (
@@ -309,7 +309,7 @@ function List(options) {
                                 }
                             }
                         }
-                        setTimeout(processExit, 1000, null);
+                        processExit();
                     });
                     break;
 
@@ -318,12 +318,12 @@ function List(options) {
                     states.getKeys(filter || '*', (err, keys) => {
                         if (err) {
                             console.error(err);
-                            processExit(EXIT_CODES.CANNOT_GET_STATES);
+                            return void processExit(EXIT_CODES.CANNOT_GET_STATES);
                         }
                         states.getStates(keys, (err, states) => {
                             if (err) {
                                 console.error(err);
-                                return processExit(EXIT_CODES.CANNOT_GET_STATES);
+                                return void processExit(EXIT_CODES.CANNOT_GET_STATES);
                             }
                             for (let i = 0; i < states.length; i++) {
                                 let id = keys[i];
@@ -350,7 +350,7 @@ function List(options) {
                                         JSON.stringify(states[i].val)
                                 );
                             }
-                            setTimeout(processExit, 1000, null);
+                            processExit();
                         });
                     });
                     break;
@@ -387,7 +387,7 @@ function List(options) {
                                     console.log(text);
                                 }
                             }
-                            setTimeout(processExit, 1000, null);
+                            processExit();
                         }
                     );
                     break;
@@ -483,7 +483,7 @@ function List(options) {
                             readOnlineState(lines, flags, result => {
                                 console.log(result.join('\n'));
                                 console.log('\n+ instance is alive');
-                                setTimeout(processExit, 1000, null);
+                                processExit();
                             });
                         }
                     );
@@ -543,7 +543,7 @@ function List(options) {
                                         console.log(text + ' ' + gs.join(', '));
                                     }
                                 }
-                                setTimeout(processExit, 1000, null);
+                                processExit();
                             }
                         );
                     });
@@ -685,7 +685,7 @@ function List(options) {
                             '--------------------+---------+---------+-----------+-------+------------------------+---------'
                         );
                         console.log('Legend: (l)ist, (r)ead, (w)rite, (c)reate, (d)elete');
-                        setTimeout(processExit, 1000, null);
+                        processExit();
                     });
                     break;
 
@@ -751,7 +751,7 @@ function List(options) {
                                     }
                                 }
 
-                                setTimeout(processExit, 1000, null);
+                                processExit();
                             });
                         });
                     });
@@ -791,7 +791,7 @@ function List(options) {
                                 }
                             }
                         }
-                        setTimeout(processExit, 1000, null);
+                        processExit();
                     });
                     break;
 
@@ -818,23 +818,20 @@ function List(options) {
 
                         names && names.shift();
 
-                        that.listAdaptersFiles(adapters, names ? names.join('/') : null, () =>
-                            setTimeout(processExit, 1000, null)
-                        );
+                        that.listAdaptersFiles(adapters, names ? names.join('/') : null, () => processExit());
                     });
                     break;
 
                 default:
                     if (type) {
                         console.error('Unknown type: ' + type);
-                        processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                        return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
                     } else {
                         console.log(
                             'Please specify type: objects, states, instances, adapters, users, groups, enums, files'
                         );
-                        processExit();
+                        return void processExit();
                     }
-                    break;
             }
         });
     };

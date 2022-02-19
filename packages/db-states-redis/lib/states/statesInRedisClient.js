@@ -1,7 +1,7 @@
 /**
  *      States DB in redis - Client
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *      Copyright 2013-2014 hobbyquaker
  *
  *      MIT License
@@ -70,7 +70,15 @@ class StateRedisClient {
      * @private
      */
     async _determineProtocolVersion() {
-        const protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
+        let protoVersion;
+        try {
+            protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
+        } catch (e) {
+            if (e.message.includes('GET-UNSUPPORTED')) {
+                // secondary updated and primary < 4.0
+                return;
+            }
+        }
 
         if (!protoVersion) {
             // if no proto version existent yet, we set ours
@@ -910,6 +918,7 @@ class StateRedisClient {
         if (this.client) {
             try {
                 await this.client.quit();
+                this.client.removeAllListeners();
                 this.client = null;
             } catch {
                 // ignore error
@@ -918,6 +927,7 @@ class StateRedisClient {
         if (this.subSystem) {
             try {
                 await this.subSystem.quit();
+                this.subSystem.removeAllListeners();
                 this.subSystem = null;
             } catch {
                 // ignore error
@@ -926,6 +936,7 @@ class StateRedisClient {
         if (this.sub) {
             try {
                 await this.sub.quit();
+                this.sub.removeAllListeners();
                 this.sub = null;
             } catch {
                 // ignore error

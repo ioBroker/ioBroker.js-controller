@@ -3,17 +3,64 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## 4.0.12 (2022-02-17)
+* (Apollon77) make sure to really end CLI process when they should end in error cases
+* (Apollon77) catch error when streaming data to stdout and this is closed already
 
-## 4.0.0 (2021-xx-xx) Release I... [Cut off: 27.01.2022 23:30]
-**WORK IN PROGRESS - Use at own risk!**
+## 4.0.10 (2022-02-15)
+* (foxriver76) Fix module specific rebuild command
+* (foxriver76) allow null for object.states also for extend calls for now
+* (foxriver76) enable sets on migration to redis if allowed
+* (Apollon77) Make sure adapters that are stopped on update are not enabled too early
+* (Apollon77) Optimize some special cases on adapter start
 
+## 4.0.9 (2022-02-13)
+* (foxriver76) dependency check on instance deletion: hostname has to be relative to instance if single instance is deleted
+* (foxriver76) fix setInterval method for adapters
+* (AlCalzone) Prevent db-file-locking issues for jsonl database; the connectTimeout ro databases is now minimum 5s (overrides lower values from configuration)
+
+## 4.0.8 (2022-02-11)
+* (AlCalzone) Prevent issues when backup interval is configured with invalid values
+* (Apollon77) Correctly return null when a session is expired
+* (bluefox) Add docker info to statistic values sent to server in a place where it was missing
+* (foxriver76) Prevent edge case in setup first when sets were initialized earlier already but unused in the meantime
+* (focriver76) allow instance deletion when executed from an other host
+
+## 4.0.7 (2022-02-10)
+* (AlCalzone) Further Optimize package manger detection
+
+## 4.0.6 (2022-02-09)
+* (AlCalzone) Optimize some JSONL cases
+* (foxriver76) Optimize Backup restore process
+* (AlCalzone) Fix issues that prevented adapter installs/updates (npm can not be located error message)
+* (Apollon77) Fix seq Logging issue
+* (foxriver76/Apollon77) Prevent several crash cases seen in Sentry
+
+## 4.0.5 (2022-02-08)
+* (foxriver76) stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5
+* (foxriver76) Optimize Set activation handling to prevent some error logged on upgrade
+* (Apollon77) Fix Linux Capability updating for Docker and check Admin Flag
+* (Apollon77) Detect another Rebuild case and allo wautomatic rebuilding
+* (foxriver76) Fix adapter installation with dependencies
+* (Apollon77) Fix seq edge case 
+* (foxriver76/Apollon77) Prevent several crash cases seen in Sentry
+
+## 4.0.4 (2022-02-05)
+* (Apollon77/foxriver76) Optimize database initialization and destroys
+* (Apollon77) Update winston-syslog to prevent errors
+* (Apollon77) Allow proper setup first upgrade from 3.3.x
+
+## 4.0.3 (2022-02-05) Release Isabelle - Initial Beta Release
+* see CHANGELOG.md
+
+## 4.0.0 (2021-02-03) Release Isabelle
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
 * CLI command `iob update --updateable` changed to `iob update --updatable`
 * CLI command `iob update http://download.iobroker.net/sources-dist.json` is not supported anymore
 * CLI command `iob rebuild adaptername` is no longer supported because of the new way of automatic rebuilds and some unwanted side effects
 * CLI command `iob state get <id>` will no longer handle binary state values (which was never really working before). We added `iob state getBinary <id> <encoding>` as new way.
-* Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. ALso check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
+* Ensure that on a backup-restore the same adapters and adapter versions are restored as existing on backup time. Also check js-controller version and error on mismatch (is allowed to be forced accepted by --force parameter for restore)
 * The "file" database will be automatically converted into JSONL and the database types that use "file" are adjusted to "jsonl" on installation (and backup restore). This means that a rollback of js-controller is only possible to 3.3 after 4.0 was installed! Rollback to former versions require a manual migration to "file" DB before the downgrade! (COMMUNICATION, TESTFOKUS)
 
 **Features**
@@ -31,14 +78,14 @@
 * (foxriver76) Added installedFrom info to adapter start log line when not installed from npm normally
 
 **Optimizations and Fixes**
-* (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 300% faster, redis 46.000% !! faster)
-* (foxriver76/Apollon77) Improve performance for redis object searches by 90-3.000% by using lookup structures for object types and custom object properties (TODO DOCS)
+* (Apollon77/foxriver76) Improve performance of object deletions (also when deleting instances or adapters) significantly (file-db 4x faster, jsonl-db 14x faster, redis 360x% !! faster)
+* (foxriver76/Apollon77) Improve performance for redis object searches by up to 2,5x by using lookup structures for object types and custom object properties. This optimization is only active for single host redis systems automatically, but can be activated for multihost redis systems too after all hosts are (and stay!) on js-controller 4.0! (TODO DOCS)
 * (foxriver76/Apollon77) Improve performance for object searches in general by limiting search namespaces to the relevant ones automatically
 * (foxriver76) Improve handling of backup restores when custom hostnames were used (especially relevant for Docker usage)
 * (foxriver76) Optimize backup to make sure invalid user-generated JSONs do not prevent backups from being considered valid
 * (foxriver76/klein0r) Improved CLI help
 * (foxriver76) Preserve changed instance names also when updating adapter (name was reset before)
-* (foxriver76) stop adapters on win prior update to prevent EBUSY
+* (foxriver76) stop adapters on Windows prior update to prevent EBUSY
 * (foxriver76) Prevent crashes for uploads with invalid adapter installations
 * (bluefox) Removed news from instance/adapter objects on install/update because taken from repository in Admin5 (TODO CHECK ADMIN4 EFFECTS)
 * (AlCalzone) Removed extraneous "npm install" inside adapter directory
@@ -55,6 +102,10 @@
 * (foxriver76) If logging can not be initialized because of a fatal error do not start js-controller
 * (foxriver76) Prevent start of a debug session for an instance that is already running
 * (Apollon77) Fix an edge case for file db which could lead to main and backup file being broken in strange situations with multiple crashes in a row
+* (foxriver76) make sure that admin, backitup and discovery instances are created when update of controller happens if installed and no instance exists
+* (Apollon77) Optimize Stop Handling to prevent errors
+* (Apollon77) Optimize Adapter process initialization to prevent edge case errors
+* (foxriver76) Optimize meta object sync
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -74,6 +125,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 **Developer relevant new Features**
 * (jogibear9988) Add new "unload-safe" promise based "adapter.delay" method to delay further code execution, but still make sure code do not continue after unload was called. This method can **not** be used inside the "unload" method itself!
 * (jogibear9988/AlCalzone/foxriver76/Apollon77) Revamp adapter.*Timeout and adapter.*Interval methods to be "unload-safe" and also clear missing timeouts without warnings for more developer convenience! The methods to set a timeout or interval can **not** be used inside the "unload" method itself!
+* (foxriver76) Allow to set "null" for common.states and not log error for object (but has no effect on extend, so value does not get deleted!)
 * (AlCalzone) Introduce new methods in tools for Node.js module management: installNodeModule, uninstallNodeModule (TODO Issues adapter that use npm install -> Move))
 * (bluefox) Add license management functionality to host. Adapters can use adapter.getSuitableLicenses to get available relevant licenses (TODO DOCS)
 * (AlCalzone) Switch NPM relevant handling to library pak to be more flexible for the future which package manager we want to use. Important: There are still parts that rely on npm for now!
@@ -91,10 +143,11 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (foxriver76) Introduce a database protocol version number to allow detection of the available database features in multihost environments
 * (bluefox) Prevent issues when using adapter.addChannelToEnum because of missing callback
 * (foxriver76) make sure autoSubscribe works as expected in all cases
-
 * general dependency updates
 * code style optimizations and streamline code
 
+## 3.3.22 (2021-12-20)
+* (bluefox) Fixed addChannelToEnum function
 
 ## 3.3.21 (2021-11-28)
 * (Apollon77/foxriver76) we fixed issues with multihost setup, that existed in 3.3.19/3.3.20
@@ -298,7 +351,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 
 ## 3.1.5 (2020-06-05) Release Francesca
 * (Apollon77) Return empty array on non-existing directory for readDir
-* (foxriver76) fixed "host this" command 
+* (foxriver76) fixed "host this" command
 
 ## 3.1.4 (2020-05-10) Release Francesca
 * (Apollon77) Updated Sentry plugin to be more transparent on temporary disabling reasons
@@ -378,7 +431,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (foxriver76/Apollon77) handle weird case where io-package.json from controller is not on normal place when getInstalledInfo is called (Sentry IOBROKER-JS-CONTROLLER-B/C/D/F/H)
 * (foxriver76) fixed bug for some cases where `common.def` is used on creation of foreign objects
 * (Apollon77) made sure error cases are handled on zip file creation for objects (Sentry IOBROKER-JS-CONTROLLER-J)
- 
+
 ## 3.0.14 (2020-04-20) Release Elena
 * First version for latest repository
 * (Apollon77) catch errors when letsencrypt server can not bind to port 80 (Sentry IOBROKER-WEB-1)
@@ -391,10 +444,10 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (Apollon77) prevent logged error from file DB where it ws tried to write meta file for already deleted folders
 * (Apollon77) display errors on npm uninstall
 * (foxriver76) delete adapter and adapter.admin folders even if no corresponding meta objects exist
-* (foxriver76) streamline dependencies/globalDependency checks in all places and allow different versions 
+* (foxriver76) streamline dependencies/globalDependency checks in all places and allow different versions
 
 ## 3.0.11 (2020-04-15) Release Elena
-* (Apollon77) fixed crash when system views are not correctly initialized (Sentry IOBROKER-JS-CONTROLLER-9) 
+* (Apollon77) fixed crash when system views are not correctly initialized (Sentry IOBROKER-JS-CONTROLLER-9)
 
 ## 3.0.10 (2020-04-15) Release Elena
 * (Apollon77) consider the Adapter Stop Timeout also for adapter restarts to give adapters enough time to stop before restarting
@@ -402,7 +455,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 ## 3.0.9 (2020-04-15) Release Elena
 * (Apollon77) fixed reported crash on obsolete object deletion (Sentry IOBROKER-JS-CONTROLLER-8)
 * (Apollon77) fixed reported crash when a new process can not be started because of ENOMEM (Sentry IOBROKER-JS-CONTROLLER-7)
-* (foxriver76) made sure errors are return the same in two places 
+* (foxriver76) made sure errors are return the same in two places
 
 ## 3.0.8 (2020-04-14) Release Elena
 * (foxriver76/bluefox/Apollon77) small code optimizations
@@ -422,7 +475,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (Apollon77) prevent crash if udp membership can not be added (Sentry IOBROKER-JS-CONTROLLER-5)
 * (Apollon77) changed object type for compact groups to "folder"
 * (Apollon77) added adapter flag ALIAS_SEPARATE_READ_WRITE_ID
- 
+
 ## 3.0.5 (2020-04-09) Release Elena
 * (foxriver76) Removed mock for adapter.states.getState again, fixed two adapters
 * (foxriver76) fixed crash of redis setState when undefined is passed and refuse undefined as value in general
@@ -1292,7 +1345,6 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) added homepilot
 * (bluefox) added cloud
 
-
 ## 0.9.0 (2016-05-23)
 * (bluefox) made from seconds the ms
 * (bluefox) added console command "isrun"
@@ -1374,7 +1426,6 @@ for objects (line 11)  and for states (line 21).
 * (husky-koglhof) occ und rpi Adapter
 * (angelnu) visdebug - check for different adapter directories
 * (bluefox) enabled install of icons-open-icon-library-png
-
 
 ## 0.8.2 (2015-12-14)
 * (bluefox) fixed upgrade.
@@ -1464,7 +1515,6 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) normalized paths in backup
 * (bluefox) added better backup
 
-
 ## 0.7.3 (2015-07-12)
 * (bluefox) added flot to repository
 * (bluefox) added chmodFile for adapter
@@ -1491,7 +1541,6 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) fixed error with dependencies
 * (bluefox) fixed delete of logs
 * (bluefox) fixed getPort function in adapter.
-
 
 ## 0.7.0 (2015-05-07)
 * (bluefox) support of permissions
@@ -1841,4 +1890,3 @@ for objects (line 11)  and for states (line 21).
 
 ## 0.0.1
 * (hobbyquaker) first release
-

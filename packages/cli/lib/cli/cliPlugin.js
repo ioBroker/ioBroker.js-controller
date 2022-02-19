@@ -6,11 +6,11 @@ const { tools } = require('@iobroker/js-controller-common');
 const fs = require('fs');
 const path = require('path');
 
-const controllerIoPackPath = path.join(__dirname, '../../io-package.json');
+const controllerIoPackPath = require.resolve('iobroker.js-controller/io-package.json');
 
 /** Command iobroker plugin <enable/disable/status> <pluginname> [--host this/hostname] ... */
 module.exports = class CLIPlugin extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
+    /** @param {CLICommandOptions} options */
     constructor(options) {
         super(options);
     }

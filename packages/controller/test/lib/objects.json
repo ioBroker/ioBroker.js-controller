@@ -344,6 +344,9 @@
             },
             "config": {
                 "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
+            },
+            "custom": {
+                "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
             }
         },
         "acl": {

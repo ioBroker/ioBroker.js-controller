@@ -2,11 +2,11 @@
 const CLI = require('./messages.js');
 const CLICommand = require('./cliCommand.js');
 const { formatValue } = require('./cliTools');
-const { tools } = require('@iobroker/js-controller-common');
+const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 
 /** Command iobroker object ... */
 module.exports = class CLIObjects extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
+    /** @param {CLICommandOptions} options */
     constructor(options) {
         super(options);
     }
@@ -40,11 +40,60 @@ module.exports = class CLIObjects extends CLICommand {
                 return this.getDBVersion(args);
             case 'setDBVersion':
                 return this.setDBVersion();
+            case 'activateSets':
+                return this.activateSets();
+            case 'deactivateSets':
+                return this.deactivateSets();
             default:
                 CLI.error.unknownCommand('object', command);
                 showHelp();
                 return void callback(3);
         }
+    }
+
+    /**
+     * Activates the usage of Redis Sets
+     */
+    activateSets() {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async (objects, states) => {
+            if (!parseInt(await objects.getMeta('objects.features.useSets'))) {
+                // all hosts need to be stopped for this
+                if (await tools.isHostRunning(objects, states)) {
+                    console.log('Cannot activate the usage of Redis Sets while one or more hosts are running');
+                    return void callback(EXIT_CODES.CONTROLLER_RUNNING);
+                }
+
+                await objects.activateSets();
+                const noMigrated = await objects.migrateToSets();
+
+                if (noMigrated) {
+                    console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
+                }
+                console.log(
+                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`
+                );
+            } else {
+                console.log('Redis Sets are already activated.');
+            }
+            return void callback();
+        });
+    }
+
+    /**
+     * Deactivates the usage of Redis Sets
+     */
+    deactivateSets() {
+        const { callback, dbConnect } = this.options;
+        dbConnect(async objects => {
+            if (parseInt(await objects.getMeta('objects.features.useSets'))) {
+                await objects.deactivateSets();
+                console.log(`Successfully deactivated the usage of Redis Sets.`);
+            } else {
+                console.log('Redis Sets are already deactivated.');
+            }
+            return void callback();
+        });
     }
 
     /**

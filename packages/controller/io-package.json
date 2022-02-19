@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.0",
+    "version": "4.0.13",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,89 +19,89 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "3.3.18": {
-        "en": "see CHANGELOG.md",
-        "de": "siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.12": {
+        "en": "make sure to really end CLI process when they should end in error cases\ncatch error when streaming data to stdout and this is closed already",
+        "de": "Stellen Sie sicher, dass der CLI-Prozess wirklich beendet wird, wenn er in Fehlerfällen enden sollte\nFehler beim Streamen von Daten nach stdout abfangen und dieser ist bereits geschlossen",
+        "ru": "убедитесь, что процесс CLI действительно завершен, когда он должен заканчиваться в случаях ошибок\nпоймать ошибку при потоковой передаче данных на стандартный вывод, и это уже закрыто",
+        "pt": "certifique-se de realmente encerrar o processo CLI quando eles devem terminar em casos de erro\nerro de captura ao transmitir dados para stdout e isso já está fechado",
+        "nl": "zorg ervoor dat u het CLI-proces echt beëindigt wanneer ze in foutgevallen zouden moeten eindigen\nvangfout bij het streamen van gegevens naar stdout en dit is al gesloten",
+        "fr": "assurez-vous de vraiment mettre fin au processus CLI lorsqu'il devrait se terminer en cas d'erreur\nattraper l'erreur lors de la diffusion de données vers stdout et cela est déjà fermé",
+        "it": "assicurati di terminare davvero il processo CLI quando dovrebbero terminare in casi di errore\nerrore di cattura durante lo streaming dei dati su stdout e questo è già chiuso",
+        "es": "asegúrese de finalizar realmente el proceso CLI cuando deberían finalizar en casos de error\nerror de captura al transmitir datos a stdout y esto ya está cerrado",
+        "pl": "upewnij się, że naprawdę zakończysz proces CLI, kiedy powinien zakończyć się w przypadkach błędów\nZłap błąd podczas przesyłania danych na standardowe wyjście, a to jest już zamknięte",
+        "zh-cn": "确保在 CLI 进程应该在错误情况下结束时真正结束\n将数据流式传输到标准输出时捕获错误并且这已经关闭"
       },
-      "3.2.16": {
-        "en": "see CHANGELOG.md",
-        "de": "siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.10": {
+        "en": "Fix module specific rebuild command\nallow null for object.states also for extend calls for now\nenable sets on migration to redis if allowed\nMake sure adapters that are stopped on update are not enabled too early\nOptimize some special cases on adapter start",
+        "de": "Modulspezifischen Rebuild-Befehl korrigiert\nnull für object.states auch für Extend-Aufrufe zulassen\nAktivieren Sie Sätze bei der Migration zu Redis, falls zulässig\nStellen Sie sicher, dass Adapter, die beim Update angehalten werden, nicht zu früh aktiviert werden\nEinige Sonderfälle beim Adapterstart optimieren",
+        "ru": "Исправить специфичную для модуля команду перестроения\nразрешить null для object.states также для вызовов расширения на данный момент\nвключить наборы при миграции на Redis, если это разрешено\nУбедитесь, что адаптеры, остановленные при обновлении, не включаются слишком рано.\nОптимизированы некоторые особые случаи при запуске адаптера.",
+        "pt": "Corrija o comando de reconstrução específico do módulo\npermitir null para object.states também para chamadas estendidas por enquanto\nhabilitar conjuntos na migração para redis, se permitido\nCertifique-se de que os adaptadores parados na atualização não estejam ativados muito cedo\nOtimize alguns casos especiais na inicialização do adaptador",
+        "nl": "Modulespecifieke herbouwopdracht repareren\nsta null toe voor object.states ook voor verlengingsaanroepen voor nu\nschakel sets bij migratie in op redis indien toegestaan\nZorg ervoor dat adapters die worden gestopt bij de update niet te vroeg worden ingeschakeld\nOptimaliseer enkele speciale gevallen bij het starten van de adapter",
+        "fr": "Correction de la commande de reconstruction spécifique au module\nautoriser null pour object.states également pour les appels étendus pour l'instant\nactiver les ensembles lors de la migration vers redis si autorisé\nAssurez-vous que les adaptateurs arrêtés lors de la mise à jour ne sont pas activés trop tôt\nOptimiser certains cas particuliers au démarrage de l'adaptateur",
+        "it": "Risolto il problema con il comando di ricostruzione specifico del modulo\nconsenti null per object.states anche per estendere le chiamate per ora\nabilitare i set durante la migrazione a redis se consentito\nAssicurati che gli adattatori interrotti durante l'aggiornamento non siano abilitati troppo presto\nOttimizza alcuni casi speciali all'avvio dell'adattatore",
+        "es": "Arreglar el comando de reconstrucción específico del módulo\npermitir nulo para object.states también para extender llamadas por ahora\nhabilitar conjuntos en la migración a redis si está permitido\nAsegúrese de que los adaptadores que se detienen en la actualización no se habiliten demasiado pronto\nOptimice algunos casos especiales en el inicio del adaptador",
+        "pl": "Napraw polecenie przebudowy specyficzne dla modułu\nna razie zezwalaj na null dla object.states również dla połączeń rozszerzonych\nwłącz zestawy dotyczące migracji do redis, jeśli jest to dozwolone\nUpewnij się, że adaptery zatrzymane podczas aktualizacji nie są włączane zbyt wcześnie\nZoptymalizuj niektóre specjalne przypadki podczas uruchamiania adaptera",
+        "zh-cn": "修复模块特定的重建命令\n现在允许 object.states 为 null 也用于扩展调用\n如果允许，在迁移到 redis 时启用集合\n确保不会过早启用更新时停止的适配器\n优化适配器启动的一些特殊情况"
       },
-      "3.1.6": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.9": {
+        "en": "dependency check on instance deletion: hostname has to be relative to instance if single instance is deleted\nfix setInterval method for adapters\nPrevent db-file-locking issues for jsonl database; the connectTimeout ro databases is now minimum 5s (overrides lower values from configuration)",
+        "de": "Abhängigkeitsprüfung beim Löschen einer Instanz: Hostname muss relativ zur Instanz sein, wenn eine einzelne Instanz gelöscht wird\nsetInterval-Methode für Adapter behoben\nVerhindern Sie Probleme mit der Sperrung von DB-Dateien für die jsonl-Datenbank; Das ConnectTimeout für ro-Datenbanken beträgt jetzt mindestens 5 Sekunden (setzt niedrigere Werte aus der Konfiguration außer Kraft)",
+        "ru": "проверка зависимости при удалении экземпляра: имя хоста должно относиться к экземпляру, если удаляется один экземпляр\nисправить метод setInterval для адаптеров\nПредотвращение проблем с блокировкой db-файлов для базы данных jsonl; Базы данных connectTimeout ro теперь составляют минимум 5 с (переопределяют более низкие значения из конфигурации)",
+        "pt": "verificação de dependência na exclusão da instância: o nome do host deve ser relativo à instância se uma única instância for excluída\nfix método setInterval para adaptadores\nEvite problemas de bloqueio de arquivo db para banco de dados jsonl; os bancos de dados connectTimeout ro agora são no mínimo 5s (substitui valores mais baixos da configuração)",
+        "nl": "afhankelijkheidscontrole bij verwijdering van instantie: hostnaam moet relatief zijn aan instantie als een enkele instantie wordt verwijderd\nfix setInterval-methode voor adapters\nVoorkom problemen met het vergrendelen van db-bestanden voor jsonl-database; de connectTimeout ro-databases zijn nu minimaal 5s (overschrijft lagere waarden uit de configuratie)",
+        "fr": "vérification des dépendances lors de la suppression de l'instance : le nom d'hôte doit être relatif à l'instance si une seule instance est supprimée\ncorrection de la méthode setInterval pour les adaptateurs\nEmpêcher les problèmes de verrouillage de fichier db pour la base de données jsonl ; les bases de données connectTimeout ro sont maintenant au minimum de 5 secondes (remplace les valeurs inférieures de la configuration)",
+        "it": "controllo delle dipendenze sull'eliminazione dell'istanza: il nome host deve essere relativo all'istanza se viene eliminata una singola istanza\nfix metodo setInterval per gli adattatori\nPrevenire i problemi di blocco dei file db per il database jsonl; il database di connectTimeout ro ora è minimo 5s (sostituisce i valori inferiori dalla configurazione)",
+        "es": "verificación de dependencia en la eliminación de instancias: el nombre de host debe ser relativo a la instancia si se elimina una sola instancia\ncorregir el método setInterval para adaptadores\nEvite problemas de bloqueo de archivos db para la base de datos jsonl; las bases de datos connectTimeout ro ahora tienen un mínimo de 5 s (anula los valores más bajos de la configuración)",
+        "pl": "sprawdzenie zależności przy usuwaniu instancji: nazwa hosta musi być względna do instancji, jeśli usunięta zostanie pojedyncza instancja\nfix setInterval metoda dla adapterów\nZapobiegaj problemom z blokowaniem plików db dla bazy danych jsonl; bazy danych connectTimeout ro mają teraz minimum 5s (zastępuje niższe wartości z konfiguracji)",
+        "zh-cn": "对实例删除的依赖性检查：如果删除单个实例，主机名必须与实例相关\n修复适配器的 setInterval 方法\n防止 jsonl 数据库的 db-file-locking 问题； connectTimeout ro 数据库现在至少为 5 秒（覆盖配置中的较低值）"
       },
-      "3.0.20": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.8": {
+        "en": "Prevent issues when backup interval is configured with invalid values\nCorrectly return null when a session is expired\nAdd docker info to statistic values sent to server in a place where it was missing\nPrevent edge case in setup first when sets were initialized earlier already but unused in the meantime\nallow instance deletion when executed from an other host",
+        "de": "Verhindern Sie Probleme, wenn das Sicherungsintervall mit ungültigen Werten konfiguriert ist\nGeben Sie null korrekt zurück, wenn eine Sitzung abgelaufen ist\nFügen Sie Docker-Informationen zu Statistikwerten hinzu, die an einer Stelle an den Server gesendet wurden, an der sie fehlten\nVerhindern Sie zuerst den Grenzfall im Setup, wenn Sets bereits früher initialisiert, aber zwischenzeitlich nicht verwendet wurden\nLöschen von Instanzen zulassen, wenn sie von einem anderen Host ausgeführt werden",
+        "ru": "Предотвращение проблем, когда интервал резервного копирования настроен с недопустимыми значениями\nПравильно возвращать значение null, когда срок действия сеанса истек\nДобавить информацию о докере в статистические значения, отправляемые на сервер, в том месте, где она отсутствовала.\nПредотвратите крайний случай в настройке, когда наборы уже были инициализированы ранее, но в то же время не использовались.\nразрешить удаление экземпляра при выполнении с другого хоста",
+        "pt": "Evite problemas quando o intervalo de backup estiver configurado com valores inválidos\nRetornar corretamente null quando uma sessão expirar\nAdicionar informações do docker aos valores estatísticos enviados ao servidor em um local onde estava faltando\nPrevenir casos extremos na configuração primeiro quando os conjuntos já foram inicializados anteriormente, mas não utilizados nesse meio tempo\npermitir a exclusão de instância quando executada de outro host",
+        "nl": "Voorkom problemen wanneer het back-upinterval is geconfigureerd met ongeldige waarden\nNull correct retourneren wanneer een sessie is verlopen\nVoeg docker-info toe aan statistische waarden die naar de server zijn gestuurd op een plaats waar deze ontbrak\nVoorkom eerst edge case in setup wanneer sets al eerder zijn geïnitialiseerd maar in de tussentijd niet zijn gebruikt\nlaat het verwijderen van instanties toe wanneer het wordt uitgevoerd vanaf een andere host",
+        "fr": "Prévenir les problèmes lorsque l'intervalle de sauvegarde est configuré avec des valeurs non valides\nRenvoyer correctement null lorsqu'une session a expiré\nAjouter des informations docker aux valeurs statistiques envoyées au serveur à un endroit où il manquait\nEmpêcher d'abord le cas limite dans la configuration lorsque les ensembles ont déjà été initialisés plus tôt mais qu'ils n'ont pas été utilisés entre-temps\nautoriser la suppression d'instance lorsqu'elle est exécutée à partir d'un autre hôte",
+        "it": "Impedisci problemi quando l'intervallo di backup è configurato con valori non validi\nRestituire correttamente null quando una sessione è scaduta\nAggiungi le informazioni della finestra mobile ai valori statistici inviati al server in una posizione in cui mancava\nImpedisci prima il caso limite nella configurazione quando i set sono stati inizializzati già in precedenza ma nel frattempo non sono stati utilizzati\nconsentire l'eliminazione dell'istanza se eseguita da un altro host",
+        "es": "Evite problemas cuando el intervalo de copia de seguridad esté configurado con valores no válidos\nDevuelve nulo correctamente cuando una sesión caduca\nAgregue información de la ventana acoplable a los valores estadísticos enviados al servidor en un lugar donde faltaba\nEvite el caso extremo en la configuración primero cuando los conjuntos ya se inicializaron antes pero no se usaron mientras tanto\npermitir la eliminación de instancias cuando se ejecuta desde otro host",
+        "pl": "Zapobiegaj problemom, gdy interwał kopii zapasowej jest skonfigurowany z nieprawidłowymi wartościami\nPrawidłowo zwracaj wartość null, gdy sesja wygasła\nDodaj docker info do wartości statystyk wysyłanych na serwer w miejscu, w którym ich brakowało\nZapobiegaj występowaniu krawędzi w konfiguracji jako pierwszy, gdy zestawy zostały już zainicjowane wcześniej, ale w międzyczasie nie były używane\nzezwalaj na usuwanie instancji, gdy są wykonywane z innego hosta",
+        "zh-cn": "使用无效值配置备份间隔时防止出现问题\n会话过期时正确返回 null\n将 docker info 添加到发送到服务器的统计值中丢失的地方\n当集合已较早初始化但同时未使用时，首先防止设置中的边缘情况\n从其他主机执行时允许删除实例"
       },
-      "2.2.9": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.7": {
+        "en": "Further Optimize package manger detection",
+        "de": "Paket-Manager-Erkennung weiter optimieren",
+        "ru": "Дальнейшая оптимизация обнаружения диспетчера пакетов",
+        "pt": "Otimize ainda mais a detecção do gerenciador de pacotes",
+        "nl": "Verder Optimaliseer de detectie van pakketbeheer",
+        "fr": "Optimiser davantage la détection du gestionnaire de packages",
+        "it": "Ottimizza ulteriormente il rilevamento del gestore pacchetti",
+        "es": "Optimizar aún más la detección del administrador de paquetes",
+        "pl": "Dalsza optymalizacja wykrywania menedżera pakietów",
+        "zh-cn": "进一步优化包管理器检测"
       },
-      "2.1.1": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.6": {
+        "en": "Optimize some JSONL cases\nOptimize Backup restore process\nFix issues that prevented adapter installs/updates (npm can not be located error message)\nFix seq Logging issue\nPrevent several crash cases seen in Sentry",
+        "de": "Optimieren Sie einige JSONL-Fälle\nOptimieren Sie den Backup-Wiederherstellungsprozess\nBehebung von Problemen, die Adapterinstallationen/-aktualisierungen verhinderten (Fehlermeldung „npm kann nicht gefunden werden“)\nSeq-Logging-Problem behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
+        "ru": "Оптимизация некоторых случаев JSONL\nОптимизировать процесс восстановления резервной копии\nУстранение проблем, препятствовавших установке/обновлению адаптера (сообщение об ошибке npm не может быть найдено)\nИсправить проблему с ведением журнала последовательностей\nПредотвратить несколько случаев сбоя в Sentry.",
+        "pt": "Otimize alguns casos JSONL\nOtimize o processo de restauração de backup\nCorrige problemas que impediam instalações/atualizações do adaptador (o npm não pode ser localizado a mensagem de erro)\nCorrigir o problema de log de seq\nPrevenir vários casos de acidente vistos no Sentinela",
+        "nl": "Optimaliseer sommige JSONL-cases\nOptimaliseer het back-upherstelproces\nProblemen oplossen die installatie/updates van adapters verhinderden (npm kan foutbericht niet worden gevonden)\nFix seq Logging probleem\nVoorkom verschillende crashgevallen in Sentry",
+        "fr": "Optimiser certains cas JSONL\nOptimiser le processus de restauration de sauvegarde\nRésoudre les problèmes qui empêchaient les installations/mises à jour de l'adaptateur (le message d'erreur npm ne peut pas être localisé)\nCorrection du problème de journalisation suivant\nEmpêcher plusieurs cas de crash vus dans Sentry",
+        "it": "Ottimizza alcuni casi JSONL\nOttimizza il processo di ripristino del backup\nRisolvi i problemi che impedivano le installazioni/gli aggiornamenti dell'adattatore (non è possibile individuare il messaggio di errore di npm)\nRisolto il problema con la registrazione della sequenza\nImpedisci diversi casi di crash visti in Sentry",
+        "es": "Optimizar algunos casos JSONL\nOptimizar el proceso de restauración de copia de seguridad\nSolucionar problemas que impedían la instalación/actualización del adaptador (mensaje de error npm no se puede ubicar)\nSolucionar el problema de registro de secuencias\nEvitar varios casos de bloqueo vistos en Sentry",
+        "pl": "Zoptymalizuj niektóre przypadki JSONL\nZoptymalizuj proces przywracania kopii zapasowej\nNapraw problemy, które uniemożliwiały instalację/aktualizację karty (nie można zlokalizować npm, komunikat o błędzie)\nNapraw kolejny problem z logowaniem\nZapobiegaj kilku przypadkom awarii w Sentry",
+        "zh-cn": "优化部分 JSONL 案例\n优化备份还原过程\n修复阻止适配器安装/更新的问题（npm 无法定位错误消息）\n修复 seq 日志记录问题\n防止在 Sentry 中出现的几个崩溃案例"
       },
-      "1.5.14": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
+      "4.0.5": {
+        "en": "stop the database before executing upgrade self; WIll be effective for all upgrades >4.0.5\nOptimize Set activation handling to prevent some error logged on upgrade\nFix Linux Capability updating for Docker and check Admin Flag\nDetect another Rebuild case and allo wautomatic rebuilding\nFix adapter installation with dependencies\nFix seq edge case \nPrevent several crash cases seen in Sentry",
+        "de": "stoppen Sie die Datenbank, bevor Sie upgrade self ausführen; Gilt für alle Upgrades >4.0.5\nOptimieren Sie die Handhabung der Set-Aktivierung, um einige beim Upgrade protokollierte Fehler zu vermeiden\nKorrigieren Sie die Aktualisierung der Linux-Funktion für Docker und überprüfen Sie das Admin-Flag\nErkennt einen weiteren Rebuild-Fall und erlaubt einen automatischen Rebuild\nAdapterinstallation mit Abhängigkeiten reparieren\nSeq-Edge-Fall behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
+        "ru": "остановить базу данных перед выполнением самообновления; Будет действовать для всех обновлений >4.0.5\nОптимизировать обработку активации Set, чтобы предотвратить некоторые ошибки, регистрируемые при обновлении.\nИсправьте обновление возможностей Linux для Docker и проверьте флаг администратора.\nОбнаружение другого случая Rebuild и разрешение автоматического восстановления\nИсправить установку адаптера с зависимостями\nИсправить пограничный случай seq\nПредотвратите несколько случаев сбоев, наблюдаемых в Sentry.",
+        "pt": "pare o banco de dados antes de executar o upgrade self; Será eficaz para todas as atualizações > 4.0.5\nOtimize o tratamento de ativação do conjunto para evitar alguns erros registrados na atualização\nCorrija a atualização de recursos do Linux para o Docker e verifique o sinalizador de administrador\nDetecte outro caso de reconstrução e permita a reconstrução automática\nCorrigir a instalação do adaptador com dependências\nCorrigir caso de borda seq\nPrevenir vários casos de acidente vistos no Sentinela",
+        "nl": "stop de database voordat u de upgrade zelf uitvoert; Zal effectief zijn voor alle upgrades >4.0.5\nOptimaliseren Activeringsafhandeling instellen om een fout te voorkomen die is aangemeld bij de upgrade\nFix Linux Capability-update voor Docker en controleer Admin Flag\nDetecteer een ander Rebuild-geval en sta automatische reconstructie toe\nInstallatie van adapter met afhankelijkheden repareren\nFix seq edge case\nVoorkom verschillende crashgevallen in Sentry",
+        "fr": "arrêtez la base de données avant d'exécuter la mise à jour automatique ; Sera efficace pour toutes les mises à jour > 4.0.5\nOptimiser Définir la gestion de l'activation pour éviter certaines erreurs enregistrées lors de la mise à niveau\nCorrection de la mise à jour des capacités Linux pour Docker et vérification de l'indicateur d'administration\nDétecter un autre cas de reconstruction et autoriser la reconstruction automatique\nCorrection de l'installation de l'adaptateur avec dépendances\nCorriger le cas de bord suivant\nEmpêcher plusieurs cas de crash vus dans Sentry",
+        "it": "fermare il database prima di eseguire l'aggiornamento automatico; Sarà efficace per tutti gli aggiornamenti >4.0.5\nOttimizza Impostare la gestione dell'attivazione per evitare errori durante l'aggiornamento\nCorreggi l'aggiornamento delle funzionalità Linux per Docker e controlla il flag amministratore\nRileva un altro caso Ricostruisci e consenti la ricostruzione automatica\nCorreggi l'installazione dell'adattatore con le dipendenze\nRisolto il problema con il seq edge case\nImpedisci diversi casi di crash visti in Sentry",
+        "es": "detenga la base de datos antes de ejecutar la actualización automática; Será efectivo para todas las actualizaciones > 4.0.5\nOptimizar Configurar el manejo de la activación para evitar algún error registrado en la actualización\nCorrija la actualización de la capacidad de Linux para Docker y verifique la bandera de administración\nDetectar otro caso de reconstrucción y permitir la reconstrucción automática\nArreglar la instalación del adaptador con dependencias\nArreglar caso de borde de secuencia\nEvitar varios casos de bloqueo vistos en Sentry",
+        "pl": "zatrzymaj bazę danych przed wykonaniem samodzielnej aktualizacji; Będzie obowiązywać dla wszystkich ulepszeń >4,0,5\nOptymalizuj Ustaw obsługę aktywacji, aby zapobiec błędom zalogowania się podczas aktualizacji\nNapraw aktualizację funkcji Linux dla platformy Docker i sprawdź flagę administratora\nWykryj inny przypadek Rebuild i zezwól na automatyczną odbudowę\nNapraw instalację adaptera z zależnościami\nNapraw przypadek krawędzi na sekwencjach\nZapobiegaj kilku przypadkom awarii w Sentry",
+        "zh-cn": "在执行升级自我之前停止数据库；将对>4.0.5的所有升级有效\n优化设置激活处理，防止一些错误登录升级\n修复 Docker 的 Linux 功能更新并检查 Admin Flag\n检测另一个重建案例并允许自动重建\n使用依赖项修复适配器安装\n修复 seq 边缘情况\n防止在 Sentry 中出现的几个崩溃案例"
       }
     },
     "desc": {
@@ -461,7 +461,9 @@
         "defaultHistory": "",
         "expertMode": false,
         "defaultLogLevel": "info",
-        "activeRepo": ["stable"],
+        "activeRepo": [
+          "stable"
+        ],
         "diag": "extended",
         "tabs": [
           "tab-intro",

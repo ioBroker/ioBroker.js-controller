@@ -1,12 +1,12 @@
 {
   "name": "@iobroker/js-controller-common",
-  "version": "4.0.0-alpha.60-20220129-2fc569f3",
+  "version": "4.0.13-alpha.1-20220219-041f837c",
   "engines": {
     "node": ">=12.0.0"
   },
   "optionalDependencies": {
     "@datalust/winston-seq": "^1.0.0",
-    "winston-syslog": "^2.4.4"
+    "winston-syslog": "^2.5.0"
   },
   "dependencies": {
     "@alcalzone/pak": "^0.7.0",
