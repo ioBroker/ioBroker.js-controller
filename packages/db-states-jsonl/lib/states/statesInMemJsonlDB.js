@@ -54,7 +54,6 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
             fileName: 'states.json',
             backupDirName: 'backup-objects'
         };
-        super(settings);
 
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
         const jsonlOptions = this.settings.connection.jsonlOptions || {
@@ -79,6 +78,7 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         settings.jsonlDB = {
             fileName: 'states.jsonl'
         };
+        super(settings);
 
         /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);

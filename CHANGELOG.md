@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## __WORK IN PROGRESS__
-* (Apollon77) Add JSONL as default for new installations in some missing places
+* (Apollon77) Additional optimizations for setup process and DB defaults
 
 ## 4.0.13 (2022-02-19)
 * (foxriver76) also log a message on force restore if it accepts a js-controller version mismatch
