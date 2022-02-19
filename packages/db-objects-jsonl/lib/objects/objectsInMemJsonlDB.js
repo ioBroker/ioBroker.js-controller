@@ -33,7 +33,7 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         };
 
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
-        const jsonlOptions = this.settings.connection.jsonlOptions || {
+        const jsonlOptions = settings.connection.jsonlOptions || {
             autoCompress: {
                 sizeFactor: 2,
                 sizeFactorMinimumSize: 25000
