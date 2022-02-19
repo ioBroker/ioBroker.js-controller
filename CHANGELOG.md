@@ -3,12 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-
-## __WORK IN PROGRESS__
+## 4.0.13 (2022-02-19)
 * (foxriver76) also log a message on force restore if it accepts a js-controller version mismatch
 * (foxriver76) Fix seq instance detection to add correct meta data to logs in all cases
 * (Apollon77) Add database types to crashes reported to sentry
-* (foxriver76) Add JSONL as default for new installations 
+* (foxriver76) Add JSONL as default for new installations
 
 ## 4.0.12 (2022-02-17)
 * (Apollon77) make sure to really end CLI process when they should end in error cases
