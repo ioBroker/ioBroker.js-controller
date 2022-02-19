@@ -51,7 +51,7 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         settings = settings || {};
         // Not really used
         settings.fileDB = {
-            fileName: 'states.json',
+            fileName: 'states.jsonl',
             backupDirName: 'backup-objects'
         };
         super(settings);

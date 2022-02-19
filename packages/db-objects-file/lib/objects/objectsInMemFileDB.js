@@ -27,7 +27,7 @@ const deepClone = require('deep-clone');
 class ObjectsInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
-        settings.fileDB = {
+        settings.fileDB = settings.fileDB || {
             fileName: 'objects.json',
             backupDirName: 'backup-objects'
         };
@@ -49,7 +49,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
                 : 5000;
-        this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
+        if (settings.fileDB.fileName.endsWith('.json')) {
+            this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
+        }
 
         this.objectsDir = path.join(this.dataDir, 'files');
 
