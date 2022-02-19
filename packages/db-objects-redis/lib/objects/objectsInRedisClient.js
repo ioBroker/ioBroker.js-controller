@@ -618,7 +618,8 @@ class ObjectsInRedisClient {
             } catch (e) {
                 // if unsupported we have a legacy host
                 if (!e.message.includes('UNSUPPORTED')) {
-                    throw e;
+                    this.log.error(`${this.namespace} Cannot determine Set feature status: ${e.message}`);
+                    return;
                 } else {
                     this.useSets = false;
                 }
