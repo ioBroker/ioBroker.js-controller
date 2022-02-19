@@ -132,6 +132,13 @@ function Setup(options) {
         callback();
     }
 
+    /**
+     * Called after io-package objects are created
+     *
+     * @param {Record<string, any>} systemConfig
+     * @param {() => void} callback
+     * @return {Promise<void>}
+     */
     async function setupReady(systemConfig, callback) {
         if (!callback) {
             console.log('database setup done. You can add adapters and start ' + tools.appName + ' now');
@@ -142,11 +149,7 @@ function Setup(options) {
         try {
             await _cleanupInvalidGroupAssignments();
         } catch (e) {
-            // Cannot find view happens on very first installation,
-            // so ignore this case because no users can be invalid
-            if (!e.message.includes('Cannot find view')) {
-                console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
-            }
+            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
         }
 
         if (!objects.syncFileDirectory || !objects.dirExists) {
@@ -172,18 +175,18 @@ function Setup(options) {
             const { numberSuccess, notifications } = objects.syncFileDirectory();
             numberSuccess &&
                 console.log(
-                    numberSuccess +
-                        ' file(s) successfully synchronized with ioBroker storage.\nPlease DO NOT copy files manually into ioBroker storage directories!'
+                    `${numberSuccess} file(s) successfully synchronized with ioBroker storage.
+Please DO NOT copy files manually into ioBroker storage directories!`
                 );
             if (notifications.length) {
                 console.log();
                 console.log('The following notifications happened during sync: ');
-                notifications.forEach(el => console.log('- ' + el));
+                notifications.forEach(el => console.log(`- ${el}`));
                 console.log();
             }
             return void informAboutPlugins(systemConfig, callback);
         } catch (err) {
-            console.error('Error on file directory sync: ' + err.message);
+            console.error(`Error on file directory sync: ${err.message}`);
             return void informAboutPlugins(systemConfig, callback);
         }
     }
@@ -198,7 +201,7 @@ function Setup(options) {
             const obj = iopkg.objects.pop();
             objects.getObject(obj._id, (err, _obj) => {
                 if (err || !_obj || obj._id.startsWith('_design/')) {
-                    obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                    obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = Date.now();
                     objects.setObject(obj._id, obj, () => {
                         console.log(`object ${obj._id} ${err || !_obj ? 'created' : 'updated'}`);
