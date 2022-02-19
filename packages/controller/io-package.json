@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.14": {
+        "en": "Additional optimizations for setup process and DB defaults",
+        "de": "Zusätzliche Optimierungen für Setup-Prozess und DB-Standardwerte",
+        "ru": "Дополнительные оптимизации процесса установки и настроек БД по умолчанию",
+        "pt": "Otimizações adicionais para o processo de configuração e padrões de banco de dados",
+        "nl": "Aanvullende optimalisaties voor het installatieproces en DB-standaarden",
+        "fr": "Optimisations supplémentaires pour le processus de configuration et les valeurs par défaut de la base de données",
+        "it": "Ulteriori ottimizzazioni per il processo di configurazione e le impostazioni predefinite del DB",
+        "es": "Optimizaciones adicionales para el proceso de configuración y los valores predeterminados de DB",
+        "pl": "Dodatkowe optymalizacje procesu konfiguracji i ustawień domyślnych bazy danych",
+        "zh-cn": "设置过程和数据库默认值的其他优化"
+      },
       "4.0.13": {
         "en": "also log a message on force restore if it accepts a js-controller version mismatch\nFix seq instance detection to add correct meta data to logs in all cases\nAdd database types to crashes reported to sentry\nAdd JSONL as default for new installations",
         "de": "Protokollieren Sie auch eine Meldung zum Erzwingen der Wiederherstellung, wenn eine Nichtübereinstimmung der JS-Controller-Version akzeptiert wird\nFehler bei der Seq-Instanzerkennung behoben, um in allen Fällen korrekte Metadaten zu Protokollen hinzuzufügen\nHinzufügen von Datenbanktypen zu Abstürzen, die an Sentry gemeldet werden\nFügen Sie JSONL als Standard für neue Installationen hinzu",
@@ -90,18 +102,6 @@
         "es": "Optimizar aún más la detección del administrador de paquetes",
         "pl": "Dalsza optymalizacja wykrywania menedżera pakietów",
         "zh-cn": "进一步优化包管理器检测"
-      },
-      "4.0.6": {
-        "en": "Optimize some JSONL cases\nOptimize Backup restore process\nFix issues that prevented adapter installs/updates (npm can not be located error message)\nFix seq Logging issue\nPrevent several crash cases seen in Sentry",
-        "de": "Optimieren Sie einige JSONL-Fälle\nOptimieren Sie den Backup-Wiederherstellungsprozess\nBehebung von Problemen, die Adapterinstallationen/-aktualisierungen verhinderten (Fehlermeldung „npm kann nicht gefunden werden“)\nSeq-Logging-Problem behoben\nVerhindern Sie mehrere Absturzfälle, die in Sentry aufgetreten sind",
-        "ru": "Оптимизация некоторых случаев JSONL\nОптимизировать процесс восстановления резервной копии\nУстранение проблем, препятствовавших установке/обновлению адаптера (сообщение об ошибке npm не может быть найдено)\nИсправить проблему с ведением журнала последовательностей\nПредотвратить несколько случаев сбоя в Sentry.",
-        "pt": "Otimize alguns casos JSONL\nOtimize o processo de restauração de backup\nCorrige problemas que impediam instalações/atualizações do adaptador (o npm não pode ser localizado a mensagem de erro)\nCorrigir o problema de log de seq\nPrevenir vários casos de acidente vistos no Sentinela",
-        "nl": "Optimaliseer sommige JSONL-cases\nOptimaliseer het back-upherstelproces\nProblemen oplossen die installatie/updates van adapters verhinderden (npm kan foutbericht niet worden gevonden)\nFix seq Logging probleem\nVoorkom verschillende crashgevallen in Sentry",
-        "fr": "Optimiser certains cas JSONL\nOptimiser le processus de restauration de sauvegarde\nRésoudre les problèmes qui empêchaient les installations/mises à jour de l'adaptateur (le message d'erreur npm ne peut pas être localisé)\nCorrection du problème de journalisation suivant\nEmpêcher plusieurs cas de crash vus dans Sentry",
-        "it": "Ottimizza alcuni casi JSONL\nOttimizza il processo di ripristino del backup\nRisolvi i problemi che impedivano le installazioni/gli aggiornamenti dell'adattatore (non è possibile individuare il messaggio di errore di npm)\nRisolto il problema con la registrazione della sequenza\nImpedisci diversi casi di crash visti in Sentry",
-        "es": "Optimizar algunos casos JSONL\nOptimizar el proceso de restauración de copia de seguridad\nSolucionar problemas que impedían la instalación/actualización del adaptador (mensaje de error npm no se puede ubicar)\nSolucionar el problema de registro de secuencias\nEvitar varios casos de bloqueo vistos en Sentry",
-        "pl": "Zoptymalizuj niektóre przypadki JSONL\nZoptymalizuj proces przywracania kopii zapasowej\nNapraw problemy, które uniemożliwiały instalację/aktualizację karty (nie można zlokalizować npm, komunikat o błędzie)\nNapraw kolejny problem z logowaniem\nZapobiegaj kilku przypadkom awarii w Sentry",
-        "zh-cn": "优化部分 JSONL 案例\n优化备份还原过程\n修复阻止适配器安装/更新的问题（npm 无法定位错误消息）\n修复 seq 日志记录问题\n防止在 Sentry 中出现的几个崩溃案例"
       }
     },
     "desc": {

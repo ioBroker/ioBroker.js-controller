@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.14 (2022-02-19)
 * (Apollon77) Additional optimizations for setup process and DB defaults
 
 ## 4.0.13 (2022-02-19)
