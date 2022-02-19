@@ -63,7 +63,7 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
                 : 30000;
-        if (settings.fileDB.fileName.endsWith('.json')) {
+        if (settings.jsonlDB) {
             this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
         }
 

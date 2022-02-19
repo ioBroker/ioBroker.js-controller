@@ -70,7 +70,8 @@ class InMemoryFileDB {
         }
         this.dataDir = this.dataDir.replace(/\\/g, '/');
 
-        this.datasetName = path.join(this.dataDir, this.settings.fileDB.fileName);
+        const fileName = this.settings.jsonlDB ? this.settings.jsonlDB.fileName : this.settings.fileDB.fileName;
+        this.datasetName = path.join(this.dataDir, fileName);
         const parts = path.dirname(this.datasetName);
         fs.ensureDirSync(parts);
 

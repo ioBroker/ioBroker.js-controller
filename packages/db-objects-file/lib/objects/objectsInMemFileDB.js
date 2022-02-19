@@ -49,7 +49,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
                 : 5000;
-        if (settings.fileDB.fileName.endsWith('.json')) {
+        if (!settings.jsonlDB) {
             this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
         }
 

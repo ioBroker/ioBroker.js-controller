@@ -28,7 +28,7 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = {
-            fileName: 'objects.jsonl',
+            fileName: 'objects.json',
             backupDirName: 'backup-objects'
         };
         super(settings);
