@@ -137,6 +137,18 @@ function Setup(options) {
             console.log('database setup done. You can add adapters and start ' + tools.appName + ' now');
             return processExit(EXIT_CODES.NO_ERROR);
         }
+
+        // clean up invalid user group assignments (non-existing user in a group)
+        try {
+            await _cleanupInvalidGroupAssignments();
+        } catch (e) {
+            // Cannot find view happens on very first installation,
+            // so ignore this case because no users can be invalid
+            if (!e.message.includes('Cannot find view')) {
+                console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+            }
+        }
+
         if (!objects.syncFileDirectory || !objects.dirExists) {
             return void informAboutPlugins(systemConfig, callback);
         }
@@ -240,17 +252,6 @@ function Setup(options) {
             const iopkg = fs.readJsonSync(`${__dirname}/../../io-package.json`);
 
             await _maybeMigrateSets();
-
-            // clean up invalid user group assignments (non-existing user in a group)
-            try {
-                await _cleanupInvalidGroupAssignments();
-            } catch (e) {
-                // Cannot find view happens on very first installation,
-                // so ignore this case because no users can be invalid
-                if (!e.message.includes('Cannot find view')) {
-                    console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
-                }
-            }
 
             if (checkCertificateOnly) {
                 let certObj;
