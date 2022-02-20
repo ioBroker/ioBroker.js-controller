@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.15 (2022-02-20)
 * (foxriver76) Make sure to stop adapters on windows or if needed for update (again)
 * (Apollon77) optimize handling of set feature detection in error cases
 * (foxriver76) Remove unneeded error logging

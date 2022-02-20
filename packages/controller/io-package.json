@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.15": {
+        "en": "Make sure to stop adapters on windows or if needed for update (again)\noptimize handling of set feature detection in error cases\nRemove unneeded error logging",
+        "de": "Stellen Sie sicher, dass Adapter unter Windows oder bei Bedarf für ein Update (erneut) gestoppt werden\nOptimieren Sie den Umgang mit der Set-Feature-Erkennung im Fehlerfall\nEntfernen Sie unnötige Fehlerprotokollierung",
+        "ru": "Обязательно остановите адаптеры в Windows или, если необходимо, для обновления (снова)\nоптимизировать обработку обнаружения набора функций в случаях ошибок\nУдалить ненужную регистрацию ошибок",
+        "pt": "Certifique-se de parar os adaptadores no Windows ou, se necessário, para atualização (novamente)\notimizar o manuseio da detecção de recursos definidos em casos de erro\nRemova o registro de erros desnecessários",
+        "nl": "Zorg ervoor dat u adapters op Windows stopt of indien nodig voor update (opnieuw)\noptimalisatie van de afhandeling van detectie van setfuncties in foutgevallen\nVerwijder onnodige foutregistratie",
+        "fr": "Assurez-vous d'arrêter les adaptateurs sur Windows ou si nécessaire pour la mise à jour (à nouveau)\noptimiser la gestion de la détection des caractéristiques définies dans les cas d'erreur\nSupprimer la journalisation des erreurs inutiles",
+        "it": "Assicurati di interrompere gli adattatori su Windows o, se necessario, per l'aggiornamento (di nuovo)\nottimizzare la gestione del rilevamento delle funzioni impostate nei casi di errore\nRimuovere la registrazione degli errori non necessaria",
+        "es": "Asegúrese de detener los adaptadores en Windows o si es necesario para la actualización (nuevamente)\noptimizar el manejo de la detección de características establecidas en casos de error\nEliminar el registro de errores innecesario",
+        "pl": "Pamiętaj, aby zatrzymać adaptery w systemie Windows lub w razie potrzeby do aktualizacji (ponownie)\nzoptymalizować obsługę wykrywania ustawionych cech w przypadkach błędów\nUsuń niepotrzebne rejestrowanie błędów",
+        "zh-cn": "确保停止 Windows 上的适配器，或者如果需要更新（再次）\n在错误情况下优化集合特征检测的处理\n删除不需要的错误记录"
+      },
       "4.0.14": {
         "en": "Additional optimizations for setup process and DB defaults",
         "de": "Zusätzliche Optimierungen für Setup-Prozess und DB-Standardwerte",
@@ -90,18 +102,6 @@
         "es": "Evite problemas cuando el intervalo de copia de seguridad esté configurado con valores no válidos\nDevuelve nulo correctamente cuando una sesión caduca\nAgregue información de la ventana acoplable a los valores estadísticos enviados al servidor en un lugar donde faltaba\nEvite el caso extremo en la configuración primero cuando los conjuntos ya se inicializaron antes pero no se usaron mientras tanto\npermitir la eliminación de instancias cuando se ejecuta desde otro host",
         "pl": "Zapobiegaj problemom, gdy interwał kopii zapasowej jest skonfigurowany z nieprawidłowymi wartościami\nPrawidłowo zwracaj wartość null, gdy sesja wygasła\nDodaj docker info do wartości statystyk wysyłanych na serwer w miejscu, w którym ich brakowało\nZapobiegaj występowaniu krawędzi w konfiguracji jako pierwszy, gdy zestawy zostały już zainicjowane wcześniej, ale w międzyczasie nie były używane\nzezwalaj na usuwanie instancji, gdy są wykonywane z innego hosta",
         "zh-cn": "使用无效值配置备份间隔时防止出现问题\n会话过期时正确返回 null\n将 docker info 添加到发送到服务器的统计值中丢失的地方\n当集合已较早初始化但同时未使用时，首先防止设置中的边缘情况\n从其他主机执行时允许删除实例"
-      },
-      "4.0.7": {
-        "en": "Further Optimize package manger detection",
-        "de": "Paket-Manager-Erkennung weiter optimieren",
-        "ru": "Дальнейшая оптимизация обнаружения диспетчера пакетов",
-        "pt": "Otimize ainda mais a detecção do gerenciador de pacotes",
-        "nl": "Verder Optimaliseer de detectie van pakketbeheer",
-        "fr": "Optimiser davantage la détection du gestionnaire de packages",
-        "it": "Ottimizza ulteriormente il rilevamento del gestore pacchetti",
-        "es": "Optimizar aún más la detección del administrador de paquetes",
-        "pl": "Dalsza optymalizacja wykrywania menedżera pakietów",
-        "zh-cn": "进一步优化包管理器检测"
       }
     },
     "desc": {
