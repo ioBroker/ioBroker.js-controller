@@ -2652,7 +2652,7 @@ class ObjectsInRedisClient {
 
     async _getObject(id, options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -2683,7 +2683,7 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
             }
         } else {
-            return tools.maybeCallbackWithError(callback, err, obj);
+            return tools.maybeCallbackWithRedisError(callback, err, obj);
         }
     }
 
