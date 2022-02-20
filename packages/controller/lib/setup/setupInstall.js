@@ -25,9 +25,9 @@ function Install(options) {
 
     // todo solve it somehow
     const unsafePermAlways = [
-        tools.appName.toLowerCase() + '.zwave',
-        tools.appName.toLowerCase() + '.amazon-dash',
-        tools.appName.toLowerCase() + '.xbox'
+        `${tools.appName.toLowerCase()}.zwave`,
+        `${tools.appName.toLowerCase()}.amazon-dash`,
+        `${tools.appName.toLowerCase()}.xbox`
     ];
 
     const isRootOnUnix = typeof process.getuid === 'function' && process.getuid() === 0;
@@ -111,18 +111,12 @@ function Install(options) {
             }
         }
 
-        if (options.stopDb && stoppedList) {
+        if (options.stopDb && stoppedList.length) {
             console.warn('[downloadPacket] stoppedList cannot be used if stopping of databases is requested');
             stoppedList = [];
         }
 
-        let debug = false;
-        for (const arg of process.argv) {
-            if (arg === '--debug') {
-                debug = true;
-                break;
-            }
-        }
+        const debug = process.argv.includes('--debug');
 
         let version;
         // check if the adapter has format adapter@1.0.0
@@ -146,15 +140,15 @@ function Install(options) {
         // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
         if (
             ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
-            !stoppedList
+            !stoppedList.length
         ) {
-            const arr = await objects.getObjectListAsync({
+            const doc = await objects.getObjectListAsync({
                 startkey: `system.adapter.${packetName}.`,
                 endkey: `system.adapter.${packetName}.\u9999`
             });
 
-            if (arr) {
-                for (const row of arr.rows) {
+            if (doc) {
+                for (const row of doc.rows) {
                     // stop only started instances on this host
                     if (row.value.common.enabled && hostname === row.value.common.host) {
                         stoppedList.push(row.value);
@@ -168,7 +162,7 @@ function Install(options) {
         // try to extract the information from local sources-dist.json
         if (!sources[packetName]) {
             try {
-                const sourcesDist = fs.readJSONSync(`${__dirname}/../../conf/sources-dist.json`);
+                const sourcesDist = fs.readJsonSync(`${tools.getControllerDir()}/conf/sources-dist.json`);
                 sources[packetName] = sourcesDist[packetName];
             } catch {
                 // OK
@@ -181,7 +175,7 @@ function Install(options) {
             if (
                 url &&
                 packetName === 'js-controller' &&
-                fs.existsSync(`${__dirname}/../../../../node_modules/${tools.appName}.js-controller`)
+                fs.pathExistsSync(`${tools.getControllerDir()}/../../node_modules/${tools.appName}.js-controller`)
             ) {
                 url = null;
             }
