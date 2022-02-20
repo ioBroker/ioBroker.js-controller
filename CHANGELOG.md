@@ -3,6 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+### __WORK IN PROGRESS__
+* (foxriver76) Make sure to stop adapters on windows or if needed for update (again)
+* (Apollon77) optimize handling of set feature detection in error cases
+* (foxriver76) Remove unneeded error logging
+
 ## 4.0.14 (2022-02-19)
 * (Apollon77) Additional optimizations for setup process and DB defaults
 
