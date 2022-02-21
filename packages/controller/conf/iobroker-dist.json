@@ -126,7 +126,7 @@
                "enabled": true,
                "filename": "log/iobroker",
                "fileext": ".log",
-               "maxsize":  null,
+               "maxSize":  null,
                "maxFiles": null
             },
             "syslog1": {
