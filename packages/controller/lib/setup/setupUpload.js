@@ -649,9 +649,16 @@ function Upload(options) {
         });
 
         if (res) {
-            for (let i = 0; i < res.rows.length; i++) {
-                if (res.rows[i].value.common.host === hostname) {
-                    const _obj = await objects.getObjectAsync(res.rows[i].id);
+            const instanceRegex = new RegExp(`^system\\.adapter\\.${name}\\.\\d+$`);
+
+            for (const row of res.rows) {
+                // we have to to additional filtering because of the naive startkey/endkey approach
+                if (!instanceRegex.test(row.value.id)) {
+                    continue;
+                }
+
+                if (row.value.common.host === hostname) {
+                    const _obj = await objects.getObjectAsync(row.id);
                     const newObject = deepClone(_obj);
 
                     // all common settings should be taken from new one
