@@ -737,6 +737,7 @@ function register(it, expect, context) {
         expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
+    // this uses Lua scripts
     it(testName + 'Try to get object view with custom', async function () {
         this.timeout(3000);
 
@@ -755,6 +756,20 @@ function register(it, expect, context) {
 
         // lets create an object matching the view
         await context.adapter.setForeignObjectAsync(`${context.adapterShortName}.1.device.channel.testState`, {
+            type: 'state',
+            common: {
+                role: 'switch',
+                name: 'Test',
+                type: 'boolean',
+                read: false,
+                write: true,
+                custom: customObj
+            },
+            native: {}
+        });
+
+        // lets create an object not matching the view
+        await context.adapter.setForeignObjectAsync(`${context.adapterShortName}.1.device.channel-invalid.testState`, {
             type: 'state',
             common: {
                 role: 'switch',
