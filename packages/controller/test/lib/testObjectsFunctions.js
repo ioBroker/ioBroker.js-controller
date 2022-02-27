@@ -738,35 +738,6 @@ function register(it, expect, context) {
     });
 
     // this uses Lua scripts
-    it(testName + 'Try to get object view instance', async function () {
-        this.timeout(3000);
-
-        // lets create an object matching the view
-        await context.adapter.setForeignObjectAsync(`system.adapter.vis-fake.0`, {
-            type: 'instance',
-            common: {},
-            native: {}
-        });
-
-        // lets create an object matching the view
-        await context.adapter.setForeignObjectAsync(`system.adapter.vis-fake-invalid.0`, {
-            type: 'instance',
-            common: {},
-            native: {}
-        });
-
-        const doc = await context.adapter.getObjectViewAsync('system', 'instance', {
-            startkey: `system.adapter.vis-fake.`,
-            endkey: `system.adapter.vis-fake.\u9999`
-        });
-
-        // now check that our object view contains our object
-        expect(doc.rows).to.be.an('array');
-        expect(doc.rows.length).to.be.equal(1);
-        expect(doc.rows[0].id).to.be.equal(`system.adapter.vis-fake.0`);
-    });
-
-    // this uses Lua scripts
     it(testName + 'Try to get object view with custom', async function () {
         this.timeout(3000);
 
