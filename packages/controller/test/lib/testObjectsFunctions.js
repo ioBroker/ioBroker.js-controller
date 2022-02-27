@@ -630,51 +630,58 @@ function register(it, expect, context) {
     });
 
     // getObjectView
-    it(testName + 'Try to get object view', done => {
+    it(testName + 'Try to get object view', async done => {
         // create the view
-        context.adapter
-            .setForeignObjectAsync('_design/hm-rpc', {
-                language: 'javascript',
-                views: {
-                    paramsetDescription: {
-                        map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
-                    }
+        await context.adapter.setForeignObjectAsync('_design/hm-rpc', {
+            language: 'javascript',
+            views: {
+                paramsetDescription: {
+                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.meta.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
+                }
+            },
+            common: {}
+        });
+        // now lets create an object matching the view
+        await context.adapter.setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
+            type: 'meta',
+            meta: {
+                adapter: 'hm-rpc',
+                type: 'paramsetDescription'
+            },
+            common: {},
+            native: {}
+        });
+
+        // create another object which needs to be filtered out
+        await context.adapter.setForeignObjectAsync(
+            'hm-rpc.meta.VALUES-invalid.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19',
+            {
+                type: 'meta',
+                meta: {
+                    adapter: 'hm-rpc',
+                    type: 'paramsetDescription'
                 },
-                common: {}
-            })
-            .then(() => {
-                // now lets create an object matching the view
-                context.adapter
-                    .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
-                        type: 'meta',
-                        meta: {
-                            adapter: 'hm-rpc',
-                            type: 'paramsetDescription'
-                        },
-                        common: {},
-                        native: {}
-                    })
-                    .then(() => {
-                        context.adapter.getObjectView(
-                            'hm-rpc',
-                            'paramsetDescription',
-                            {
-                                startkey: 'hm-rpc.meta.VALUES',
-                                endkey: 'hm-rpc.meta.VALUES.\u9999'
-                            },
-                            (err, doc) => {
-                                // now check that our object view contains our object
-                                expect(err).to.be.null;
-                                expect(doc.rows).to.be.an('array');
-                                expect(doc.rows.length).to.be.equal(1);
-                                expect(doc.rows[0].value._id).to.be.equal(
-                                    'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
-                                );
-                                done();
-                            }
-                        );
-                    });
-            });
+                common: {},
+                native: {}
+            }
+        );
+
+        context.adapter.getObjectView(
+            'hm-rpc',
+            'paramsetDescription',
+            {
+                startkey: 'hm-rpc.meta.VALUES',
+                endkey: 'hm-rpc.meta.VALUES.\u9999'
+            },
+            (err, doc) => {
+                // now check that our object view contains our object
+                expect(err).to.be.null;
+                expect(doc.rows).to.be.an('array');
+                expect(doc.rows.length).to.be.equal(1);
+                expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
+                done();
+            }
+        );
     });
 
     // getObjectViewAsync
@@ -700,6 +707,20 @@ function register(it, expect, context) {
             common: {},
             native: {}
         });
+
+        // create another object which needs to be filtered out
+        await context.adapter.setForeignObjectAsync(
+            'hm-rpc.meta.VALUES-invalid.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19',
+            {
+                type: 'meta',
+                meta: {
+                    adapter: 'hm-rpc',
+                    type: 'paramsetDescription'
+                },
+                common: {},
+                native: {}
+            }
+        );
 
         const doc = await context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {
             startkey: 'hm-rpc.meta.VALUES',
