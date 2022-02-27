@@ -630,7 +630,7 @@ function register(it, expect, context) {
     });
 
     // getObjectView
-    it(testName + 'Try to get object view', async done => {
+    it(testName + 'Try to get object view', async () => {
         // create the view
         await context.adapter.setForeignObjectAsync('_design/hm-rpc', {
             language: 'javascript',
@@ -666,22 +666,26 @@ function register(it, expect, context) {
             }
         );
 
-        context.adapter.getObjectView(
-            'hm-rpc',
-            'paramsetDescription',
-            {
-                startkey: 'hm-rpc.meta.VALUES',
-                endkey: 'hm-rpc.meta.VALUES.\u9999'
-            },
-            (err, doc) => {
-                // now check that our object view contains our object
-                expect(err).to.be.null;
-                expect(doc.rows).to.be.an('array');
-                expect(doc.rows.length).to.be.equal(1);
-                expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
-                done();
-            }
-        );
+        return new Promise(resolve => {
+            context.adapter.getObjectView(
+                'hm-rpc',
+                'paramsetDescription',
+                {
+                    startkey: 'hm-rpc.meta.VALUES',
+                    endkey: 'hm-rpc.meta.VALUES.\u9999'
+                },
+                (err, doc) => {
+                    // now check that our object view contains our object
+                    expect(err).to.be.null;
+                    expect(doc.rows).to.be.an('array');
+                    expect(doc.rows.length).to.be.equal(1);
+                    expect(doc.rows[0].value._id).to.be.equal(
+                        'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
+                    );
+                    resolve();
+                }
+            );
+        });
     });
 
     // getObjectViewAsync
@@ -792,7 +796,7 @@ function register(it, expect, context) {
                 // now lets get our object
                 context.adapter.getObjectList(
                     {
-                        startkey: 'hm-rpc.meta.VALUES',
+                        startkey: 'hm-rpc.meta.VALUES.',
                         endkey: 'hm-rpc.meta.VALUES.\u9999'
                     },
                     (err, res) => {
@@ -828,7 +832,7 @@ function register(it, expect, context) {
                 // now lets get our object
                 context.adapter
                     .getObjectListAsync({
-                        startkey: 'hm-rpc.meta.VALUES',
+                        startkey: 'hm-rpc.meta.VALUES.',
                         endkey: 'hm-rpc.meta.VALUES.\u9999'
                     })
                     .then(res => {
