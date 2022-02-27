@@ -2,6 +2,7 @@
 -- search: custom
 local rep = {}
 -- local keys=redis.call("keys", KEYS[1].."*")
+local debug = {}
 local cursor = KEYS[4];
 local result = redis.call("SSCAN", KEYS[5], cursor, "MATCH", KEYS[1] .. "*", "COUNT", 500)
 cursor = result[1]
@@ -13,8 +14,11 @@ local argEnd = KEYS[1] .. KEYS[3]
 --          emit(doc._id, doc.common.custom || doc.common.history)
 --   }
 for _, key in ipairs(keys) do
+    debug[#debug + 1] = key
+    debug[#debug + 1] = argStart
+    debug[#debug + 1] = argEnd
     if (key >= argStart and key < argEnd) then
         rep[#rep + 1] = redis.call("get", key)
     end
 end
-return { rep, cursor }
+return { rep, cursor, debug }

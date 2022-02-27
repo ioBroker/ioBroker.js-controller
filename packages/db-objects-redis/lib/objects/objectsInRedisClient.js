@@ -3379,6 +3379,7 @@ class ObjectsInRedisClient {
             this.scripts.filter &&
             (m = func.map.match(/if\s\(doc\.type\s?===?\s?'(\w+)'\)\semit\(([^,]+),\s?doc\s?\)/))
         ) {
+            console.log('using lua filter');
             let cursor = '0';
             let filterRequired = true;
             do {
@@ -3653,6 +3654,8 @@ class ObjectsInRedisClient {
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
+                    console.log('luatest123');
+                    console.log(objs[2]);
                     cursor = objs[1] || '0';
                     objs = objs[0];
                 } else {
