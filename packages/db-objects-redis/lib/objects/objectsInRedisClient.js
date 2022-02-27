@@ -3656,6 +3656,7 @@ class ObjectsInRedisClient {
                 if (Array.isArray(objs[0])) {
                     console.log('luatest123');
                     console.log(objs[2]);
+                    console.log(objs[0]);
                     cursor = objs[1] || '0';
                     objs = objs[0];
                 } else {
