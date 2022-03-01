@@ -690,6 +690,12 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis
 
 ##### Configure Redis
 
+###### make sure Locale is set correctly
+ioBroker requires the "Locale" for the redis-server process to be set to "LANG=C" instead of other locales in order to get correct sorted results when Objects are stored in Redis.
+
+On Linux ideally set the LC_ALL environment variable for the redis-server process correctly.
+For more informations to see if changes are meeded and how to do them see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen (German right now).
+
 ###### Allow Network access
 Ideally the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used the ioBroker installation will not work without it.
 
