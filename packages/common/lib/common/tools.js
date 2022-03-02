@@ -242,20 +242,32 @@ function getAppName() {
 function rmdirRecursiveSync(path) {
     if (fs.existsSync(path)) {
         fs.readdirSync(path).forEach(file => {
-            const curPath = path + '/' + file;
-            if (fs.statSync(curPath).isDirectory()) {
-                // recurse
-                rmdirRecursiveSync(curPath);
-            } else {
-                // delete file
-                fs.unlinkSync(curPath);
+            const curPath = `${path}/${file}`;
+            try {
+                if (fs.statSync(curPath).isDirectory()) {
+                    // recurse
+                    rmdirRecursiveSync(curPath);
+                } else {
+                    // delete file
+                    fs.unlinkSync(curPath);
+                }
+            } catch (e) {
+                if (e.code !== 'ENOENT') {
+                    console.log(`Cannot delete file ${path}: ${e.message}`);
+                } else {
+                    throw e;
+                }
             }
         });
         // delete (hopefully) empty folder
         try {
             fs.rmdirSync(path);
         } catch (e) {
-            console.log('Cannot delete directory ' + path + ': ' + e.message);
+            if (e.code !== 'ENOENT') {
+                console.log(`Cannot delete directory ${path}: ${e.message}`);
+            } else {
+                throw e;
+            }
         }
     }
 }
