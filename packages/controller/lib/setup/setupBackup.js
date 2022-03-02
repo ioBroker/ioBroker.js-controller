@@ -910,7 +910,7 @@ class BackupRestore {
                     file: name,
                     cwd: tmpDir
                 },
-                async err => {
+                err => {
                     if (err) {
                         console.error(`host.${hostname} Cannot extract from file "${name}"`);
                         return void this.processExit(9);
