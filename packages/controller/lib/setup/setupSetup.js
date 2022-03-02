@@ -1059,7 +1059,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
         // only change config if non existing - else setup custom has to be used
         if (!fs.existsSync(configFileName)) {
             isCreated = true;
-            if (fs.existsSync(__dirname + '/../../conf/' + tools.appName + '-dist.json')) {
+            if (fs.existsSync(`${__dirname}/../../conf/${tools.appName}-dist.json`)) {
                 config = require(`../../conf/${tools.appName}-dist.json`);
             } else {
                 config = require(`../../conf/${tools.appName.toLowerCase()}-dist.json`);
@@ -1077,16 +1077,16 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             // this path is relative to js-controller
             config.dataDir = tools.getDefaultDataDir();
             const _path = path
-                .normalize(__dirname + '/../../../node_modules/' + tools.appName + '.js-controller')
+                .normalize(`${__dirname}/../../../node_modules/${tools.appName}.js-controller`)
                 .replace(/\\/g, '/');
             if (fs.existsSync(_path)) {
                 if (_path.indexOf('/node_modules/') !== -1) {
-                    mkpathSync(__dirname + '/../../', config.dataDir);
+                    mkpathSync(`${__dirname}/../../`, config.dataDir);
                 } else {
-                    mkpathSync(__dirname + '../../', config.dataDir);
+                    mkpathSync(`${__dirname}../../`, config.dataDir);
                 }
             } else {
-                mkpathSync(__dirname + '/../', '../' + config.dataDir);
+                mkpathSync(`${__dirname}/../`, `../${config.dataDir}`);
             }
 
             const dirName = path.dirname(configFileName);

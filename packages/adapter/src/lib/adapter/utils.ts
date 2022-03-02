@@ -1,8 +1,7 @@
 import { SYSTEM_ADMIN_USER } from './constants';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
-interface idObject {
+export interface IdObject {
     device?: string;
     channel?: string;
     state?: string;
@@ -234,7 +233,7 @@ export class Utils {
      * @param id id which will be fixed
      * @param isPattern if the id is a pattern
      */
-    fixId(id: string | idObject, isPattern = false): string {
+    fixId(id: string | IdObject, isPattern = false): string {
         if (!id) {
             id = '';
         }
