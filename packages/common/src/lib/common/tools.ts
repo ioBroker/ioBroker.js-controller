@@ -224,7 +224,6 @@ export async function isSingleHost(objects: any): Promise<boolean> {
 /**
  * Checks if at least one host is running in a MH environment
  *
-<<<<<<< HEAD:packages/common/src/lib/common/tools.ts
  * @param objects the objects db
  * @param states the states db
  * @return true if one or more hosts running else false
@@ -3595,7 +3594,6 @@ export async function getInstancesOrderedByStartPrio(
 
 /**
  * Set capabilities of the given executable on Linux systems
-<<<<<<< HEAD:packages/common/src/lib/common/tools.ts
  * @param execPath - path to the executable for node you can determine it via process.execPath
  * @param capabilities - capabilities to set, e.g. ['cap_net_admin', 'cap_net_bind_service']
  * @param modeEffective - add effective mode
