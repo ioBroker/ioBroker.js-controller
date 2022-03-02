@@ -20,7 +20,7 @@ jobs:
         fetch-depth: 0 # Fetch the history, or this action won't work
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.5.1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -70,7 +70,7 @@ jobs:
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         result-encoding: string
         script: |

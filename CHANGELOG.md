@@ -3,6 +3,8 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## 4.1.0 - WORK IN PROGRESS Release Jana
+* Work in Progress
 
 ## 4.0.15 (2022-02-03 - 2022-02-20) Release Isabelle
 **BREAKING CHANGES**

@@ -2272,6 +2272,11 @@ async function processMessage(msg) {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
 
+    if (isStopping) {
+        logger.debug(`${hostLogPrefix} Ignoring incoming Host message becasue controller is stopping ${msg.command}`);
+        return;
+    }
+
     logger.debug(`${hostLogPrefix} Incoming Host message ${msg.command}`);
     switch (msg.command) {
         case 'shell':

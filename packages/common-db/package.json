@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-common-db",
-  "version": "4.0.16-alpha.2-20220302-c5d9b244",
+  "version": "4.1.0-alpha.3-20220302-91ae5b6c",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -16,7 +16,7 @@
     "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
     "@iobroker/db-states-redis": "file:../db-states-redis",
     "@iobroker/js-controller-common": "file:../common",
-    "fs-extra": "^10.0.0"
+    "fs-extra": "^10.0.1"
   },
   "keywords": [
     "ioBroker"

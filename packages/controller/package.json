@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "4.0.16-alpha.2-20220302-c5d9b244",
+  "version": "4.1.0-alpha.3-20220302-91ae5b6c",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -28,12 +28,12 @@
     "@iobroker/js-controller-common-db": "file:../common-db",
     "@iobroker/plugin-base": "~1.2.1",
     "@iobroker/plugin-sentry": "~1.2.0",
-    "axios": "^0.24.0",
+    "axios": "^0.26.0",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.3",
     "decache": "^4.6.1",
     "deep-clone": "^3.0.3",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.7.0",
     "loadavg-windows": "^1.1.1",
