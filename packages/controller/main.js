@@ -2266,9 +2266,13 @@ async function startAdapterUpload() {
     setImmediate(startAdapterUpload);
 }
 
-// Process message to controller, like execute some script
+/**
+ * Process message to controller, like execute some script
+ *
+ * @param {ioBroker.Message} msg
+ * @return {Promise<null>}
+ */
 async function processMessage(msg) {
-    let ioPack;
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
 
@@ -2456,7 +2460,9 @@ async function processMessage(msg) {
                                 );
                             }
                         }
-                        changed && (await objects.setObjectAsync('system.repositories', systemRepos));
+                        if (changed) {
+                            await objects.setObjectAsync('system.repositories', systemRepos);
+                        }
                     }
 
                     sendTo(msg.from, msg.command, globalRepo, msg.callback);
@@ -2481,26 +2487,16 @@ async function processMessage(msg) {
                         result.hosts = {};
                         if (doc && doc.rows.length) {
                             // Read installed versions of all hosts
-                            for (let i = 0; i < doc.rows.length; i++) {
+                            for (const row of doc.rows) {
                                 // If desired local version, do not ask it, just answer
-                                if (doc.rows[i].id === hostObjectPrefix) {
-                                    let _ioPack;
-                                    try {
-                                        _ioPack = fs.readJSONSync(`${__dirname}/io-package.json`);
-                                    } catch {
-                                        logger.error(
-                                            `${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`
-                                        );
-                                    }
-                                    if (_ioPack) {
-                                        _ioPack.common.host = hostname;
-                                        _ioPack.common.runningVersion = version;
-                                        result.hosts[hostname] = _ioPack.common;
-                                    } else {
-                                        result.hosts[hostname] = {};
-                                    }
+                                if (row.id === hostObjectPrefix) {
+                                    const ioPackCommon = deepClone(ioPackage.common);
+
+                                    ioPackCommon.host = hostname;
+                                    ioPackCommon.runningVersion = version;
+                                    result.hosts[hostname] = ioPackCommon;
                                 } else {
-                                    const ioPack = await getVersionFromHost(doc.rows[i].id);
+                                    const ioPack = await getVersionFromHost(row.id);
                                     if (ioPack) {
                                         result.hosts[ioPack.host] = ioPack;
                                         result.hosts[ioPack.host].controller = true;
@@ -2537,19 +2533,10 @@ async function processMessage(msg) {
 
         case 'getVersion':
             if (msg.callback && msg.from) {
-                ioPack = null;
-                try {
-                    ioPack = fs.readJSONSync(__dirname + '/io-package.json');
-                } catch {
-                    logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
-                }
-                if (ioPack) {
-                    ioPack.common.host = hostname;
-                    ioPack.common.runningVersion = version;
-                    sendTo(msg.from, msg.command, ioPack.common, msg.callback);
-                } else {
-                    sendTo(msg.from, msg.command, null, msg.callback);
-                }
+                const ioPackCommon = deepClone(ioPackage.common);
+                ioPackCommon.host = hostname;
+                ioPackCommon.runningVersion = version;
+                sendTo(msg.from, msg.command, ioPackCommon, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2582,8 +2569,6 @@ async function processMessage(msg) {
 
         case 'getDevList':
             if (msg.callback && msg.from) {
-                ioPack = null;
-
                 if (os.platform() === 'linux') {
                     const _args = ['/dev'];
                     logger.info(hostLogPrefix + ' ls /dev');
@@ -2620,8 +2605,6 @@ async function processMessage(msg) {
 
         case 'getLogs':
             if (msg.callback && msg.from) {
-                ioPack = null;
-
                 const lines = msg.message || 200;
                 let text = '';
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
