@@ -99,24 +99,6 @@ class BackupRestore {
         }
     }
 
-    async _removeFolderRecursive(path) {
-        if (fs.existsSync(path)) {
-            for (const file of fs.readdirSync(path)) {
-                const curPath = `${path}/${file}`;
-
-                if (fs.statSync(curPath).isDirectory()) {
-                    // recurse
-                    await this._removeFolderRecursive(curPath);
-                } else {
-                    // delete file
-                    fs.unlinkSync(curPath);
-                }
-            }
-
-            fs.rmdirSync(path);
-        }
-    } // endRemoveFolderRecursive
-
     getBackupDir() {
         let dataDir = tools.getDefaultDataDir();
 
@@ -203,7 +185,7 @@ class BackupRestore {
             });
 
             f.on('error', err => {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err}`);
+                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
                 this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
             });
 
@@ -257,7 +239,7 @@ class BackupRestore {
             }
         }
 
-        const result = { objects: null, states: {} };
+        let result = { objects: null, states: {} };
 
         const hostname = tools.getHostName();
 
@@ -329,7 +311,11 @@ class BackupRestore {
             fs.mkdirSync(tmpDir);
         }
 
-        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+        try {
+            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+        } catch (e) {
+            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+        }
 
         if (!fs.existsSync(`${tmpDir}/backup`)) {
             fs.mkdirSync(`${tmpDir}/backup`);
@@ -430,14 +416,19 @@ class BackupRestore {
 
         console.log(`host.${hostname} ${result.objects.length} objects saved`);
 
-        fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
-
         try {
+            fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
+            result = null; // ... to allow GC to clean it up because no longer needed
+
             this._validateBackupAfterCreation();
             return await this._packBackup(name);
         } catch (err) {
             console.error(`host.${hostname} Backup not created: ${err.message}`);
-            await this._removeFolderRecursive(`${tmpDir}/backup/`);
+            try {
+                tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+            } catch (e) {
+                console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+            }
             return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
         }
     }
@@ -939,13 +930,21 @@ class BackupRestore {
                         console.error(
                             `host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
                         );
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        try {
+                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                        }
                         return void this.processExit(26);
                     }
 
                     if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
                         console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        try {
+                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                        }
                         return void this.processExit(26);
                     } // endIf
 
@@ -953,7 +952,11 @@ class BackupRestore {
 
                     try {
                         this._checkDirectory(`${tmpDir}/backup/files`, true);
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        try {
+                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                        }
                         resolve();
                     } catch (err) {
                         console.error(`host.${hostname} Backup corrupted: ${err.message}`);
