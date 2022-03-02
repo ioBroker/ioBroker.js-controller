@@ -387,17 +387,23 @@ function Upload(options) {
                 }
             }
 
-            await new Promise(resolve =>
-                fs.createReadStream(file).pipe(
-                    objects.insert(id, attName, null, mimeType, { rev: rev }, (err, res) => {
-                        err && console.log(err);
-                        if (res) {
-                            rev = res.rev;
-                        }
-                        resolve();
-                    })
-                )
-            );
+            try {
+                await new Promise((resolve, reject) => {
+                    const stream = fs.createReadStream(file);
+                    stream.on('error', e => reject(e));
+                    stream.pipe(
+                        objects.insert(id, attName, null, mimeType, { rev: rev }, (err, res) => {
+                            err && console.log(err);
+                            if (res) {
+                                rev = res.rev;
+                            }
+                            resolve();
+                        })
+                    );
+                });
+            } catch (e) {
+                console.error(`Error: Cannot upload ${file}: ${e.message}`);
+            }
         }
 
         // Set upload progress to 0;

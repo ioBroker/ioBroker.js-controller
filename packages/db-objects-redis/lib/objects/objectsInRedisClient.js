@@ -618,7 +618,8 @@ class ObjectsInRedisClient {
             } catch (e) {
                 // if unsupported we have a legacy host
                 if (!e.message.includes('UNSUPPORTED')) {
-                    throw e;
+                    this.log.error(`${this.namespace} Cannot determine Set feature status: ${e.message}`);
+                    return;
                 } else {
                     this.useSets = false;
                 }
@@ -4340,6 +4341,7 @@ class ObjectsInRedisClient {
         if (this.client) {
             try {
                 await this.client.quit();
+                this.client.removeAllListeners();
                 this.client = null;
             } catch {
                 // ignore error
@@ -4348,6 +4350,7 @@ class ObjectsInRedisClient {
         if (this.sub) {
             try {
                 await this.sub.quit();
+                this.sub.removeAllListeners();
                 this.sub = null;
             } catch {
                 // ignore error
@@ -4356,6 +4359,7 @@ class ObjectsInRedisClient {
         if (this.subSystem) {
             try {
                 await this.subSystem.quit();
+                this.subSystem.removeAllListeners();
                 this.subSystem = null;
             } catch {
                 // ignore error
@@ -4440,6 +4444,9 @@ class ObjectsInRedisClient {
             let uniqueKeys = [];
 
             stream.on('data', resultKeys => {
+                if (!Array.isArray(resultKeys)) {
+                    return;
+                }
                 // append result keys to uniqueKeys without duplicates
                 uniqueKeys = [...uniqueKeys, ...resultKeys];
             });
@@ -4657,8 +4664,8 @@ class ObjectsInRedisClient {
      * @return {Promise<void>}
      */
     async activateSets() {
-        this.useSets = true;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '1');
+        this.useSets = true;
     }
 
     /**
@@ -4666,8 +4673,8 @@ class ObjectsInRedisClient {
      * @return {Promise<void>}
      */
     async deactivateSets() {
-        this.useSets = false;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '0');
+        this.useSets = false;
     }
 
     /**

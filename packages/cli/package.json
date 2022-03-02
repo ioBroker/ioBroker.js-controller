@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-cli",
-  "version": "4.0.5-alpha.0-20220207-3e046775",
+  "version": "4.0.16-alpha.2-20220302-c5d9b244",
   "engines": {
     "node": ">=12.0.0"
   },

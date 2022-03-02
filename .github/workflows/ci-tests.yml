@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - "*"
+      - master
     tags: # for automatic releases
       # normal versions
       - "v[0-9]+.[0-9]+.[0-9]+"

@@ -31,10 +31,9 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             fileName: 'objects.json',
             backupDirName: 'backup-objects'
         };
-        super(settings);
 
         /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
-        const jsonlOptions = this.settings.connection.jsonlOptions || {
+        const jsonlOptions = settings.connection.jsonlOptions || {
             autoCompress: {
                 sizeFactor: 2,
                 sizeFactorMinimumSize: 25000
@@ -43,11 +42,20 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             throttleFS: {
                 intervalMs: 60000,
                 maxBufferedCommands: 1000
+            },
+            lockfile: {
+                // 5 retries starting at 250ms add up to just above 2s,
+                // so the DB has 3 more seconds to load all data if it wants to stay within the 5s connectionTimeout
+                retries: 5,
+                retryMinTimeoutMs: 250,
+                // This makes sure the DB stays locked for maximum 2s even if the process crashes
+                staleMs: 2000
             }
         };
         settings.jsonlDB = {
             fileName: 'objects.jsonl'
         };
+        super(settings);
 
         /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
@@ -189,6 +197,12 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             this.backupDir,
             `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`
         );
+
+        if (!this._db.isOpen) {
+            this.log.warn(`${this.namespace} Cannot save backup ${backupFileName}: DB is closed`);
+            return;
+        }
+
         try {
             if (fs.existsSync(backupFileName)) {
                 return;
@@ -208,11 +222,11 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     async destroy() {
         await super.destroy();
 
-        if (this._db) {
-            await this._db.close();
-        }
         if (this._backupInterval) {
             clearInterval(this._backupInterval);
+        }
+        if (this._db) {
+            await this._db.close();
         }
     }
 }

@@ -75,8 +75,12 @@ function Adapter(options) {
 
     if (fs.existsSync(configFileName)) {
         config = fs.readJSONSync(configFileName);
-        config.states = config.states || { type: 'file' };
-        config.objects = config.objects || { type: 'file' };
+        config.states = config.states || { type: 'jsonl' };
+        config.objects = config.objects || { type: 'jsonl' };
+        // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
+        // because the lockfile might not have been freed.
+        config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);
+        config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5000);
     } else {
         throw new Error(`Cannot find ${configFileName}`);
     }
@@ -1224,12 +1228,8 @@ function Adapter(options) {
      * @param {number} id - timer id
      */
     this.clearTimeout = id => {
-        if (!timers.has(id)) {
-            logger.warn(`${this.namespaceLog} Clear already terminated timer ${id}`);
-        } else {
-            clearTimeout(id);
-            timers.delete(id);
-        }
+        clearTimeout(id);
+        timers.delete(id);
     };
 
     /**
@@ -1276,7 +1276,7 @@ function Adapter(options) {
             return;
         }
 
-        const id = setInterval(() => cb(...args));
+        const id = setInterval(() => cb(...args), timeout);
         intervals.add(id);
 
         return id;
@@ -1289,12 +1289,8 @@ function Adapter(options) {
      * @param {number} id - interval id
      */
     this.clearInterval = id => {
-        if (!intervals.has(id)) {
-            logger.warn(`${this.namespaceLog} Clear already terminated interval ${id}`);
-        } else {
-            clearInterval(id);
-            intervals.delete(id);
-        }
+        clearInterval(id);
+        intervals.delete(id);
     };
 
     // Can be later deleted if no more appears
@@ -1432,6 +1428,9 @@ function Adapter(options) {
      * Called if states and objects successfully initalized
      */
     const prepareInitAdapter = () => {
+        if (this.terminated) {
+            return;
+        }
         if (options.instance !== undefined) {
             initAdapter(options);
         } else {
@@ -1539,7 +1538,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to objects DB. Still waiting ...');
             }
-        }, (config.objects.connectTimeout || 2000) * 3); // Because we do not connect only anymore, give it a bit more time
+        }, config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
         adapterObjects = new Objects({
             namespace: this.namespaceLog,
@@ -5633,7 +5632,7 @@ function Adapter(options) {
             } else {
                 logger && logger.warn(this.namespaceLog + ' slow connection to states DB. Still waiting ...');
             }
-        }, config.states.connectTimeout || 2000);
+        }, config.states.connectTimeout);
 
         // Internal object, but some special adapters want to access it anyway.
         adapterStates = new States({
@@ -8835,7 +8834,7 @@ function Adapter(options) {
         initLogging(() => {
             this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
             this.pluginHandler.initPlugins(adapterConfig, async () => {
-                if (!adapterStates) {
+                if (!adapterStates || this.terminated) {
                     // if adapterState was destroyed,we should not continue
                     return;
                 }

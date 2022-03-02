@@ -7,7 +7,7 @@ import deepClone from 'deep-clone';
 import cpPromise, { ChildProcessPromise } from 'promisify-child-process';
 import { createInterface } from 'readline';
 import { PassThrough } from 'stream';
-import { CommandResult, detectPackageManager, InstallOptions } from '@alcalzone/pak';
+import { CommandResult, detectPackageManager, InstallOptions, PackageManager, packageManagers } from '@alcalzone/pak';
 import { EXIT_CODES } from './exitCodes';
 import zlib from 'zlib';
 import { password } from './password';
@@ -31,6 +31,7 @@ export enum ERRORS {
 events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
 let diskusage: typeof import('diskusage');
+
 const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
@@ -223,19 +224,23 @@ export async function isSingleHost(objects: any): Promise<boolean> {
 /**
  * Checks if at least one host is running in a MH environment
  *
+<<<<<<< HEAD:packages/common/src/lib/common/tools.ts
  * @param objects the objects db
  * @param states the states db
  * @return true if one or more hosts running else false
  */
 export async function isHostRunning(objects: any, states: any): Promise<boolean> {
-    const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'host', {
-        startkey: '',
-        endkey: '\u9999'
+    // do it without object view for now, can be reverted if no one downgrades to < 4 (redis-sets)
+    // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
+    const res: GetObjectViewResult = await objects.getObjectList({
+        startkey: 'system.host.',
+        endkey: 'system.host.\u9999'
     });
+    res.rows = res.rows.filter(obj => obj.value && obj.value.type === 'host');
 
     for (const hostObj of res.rows) {
         const state: ioBroker.State = await states.getState(`${hostObj.id}.alive`);
-        if (state.val) {
+        if (state && state.val) {
             return true;
         }
     }
@@ -1357,33 +1362,32 @@ export async function getRepositoryFileAsync(
     _actualRepo: RepositoryFile
 ): Promise<RepositoryFile> {
     let _hash;
-    if (_actualRepo && !force && hash && (url.startsWith('http://') || url.startsWith('https://'))) {
-        _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
-        if (_hash && _hash.data && hash === _hash.data.hash) {
-            return _actualRepo;
-        }
-    }
-
     let data;
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
-        if (!_hash) {
+        try {
             _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+        } catch {
+            // ignore missing hash file
         }
 
-        if (_actualRepo && hash && _hash && _hash.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && _hash && _hash.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 require('@iobroker/js-controller-common/package.json').version
             }`;
-            data = await axios({
-                url,
-                timeout: 10000,
-                headers: { 'User-Agent': agent }
-            });
-            data = data.data;
+            try {
+                data = await axios({
+                    url,
+                    timeout: 10000,
+                    headers: { 'User-Agent': agent }
+                });
+                data = data.data;
+            } catch (e: any) {
+                throw new Error(`Cannot download repository file from "${url}": ${e.message}`);
+            }
         }
     } else {
         if (fs.existsSync(url)) {
@@ -1565,6 +1569,37 @@ export interface InstallNodeModuleOptions {
 }
 
 /**
+ * @private
+ * Figure out which package manager is in charge, but with a fallback to npm.
+ * @param cwd Which directory to work in. If none is given, this defaults to ioBroker's root directory.
+ */
+async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
+    try {
+        // For the first attempt, use pak's default of requiring a lockfile. This makes sure we find ioBroker's root dir
+        return await detectPackageManager(
+            typeof cwd === 'string'
+                ? // If a cwd was provided, use it
+                  { cwd }
+                : // Otherwise try to find the ioBroker root dir
+                  {
+                      cwd: __dirname,
+                      setCwdToPackageRoot: true
+                  }
+        );
+    } catch {
+        // Lockfile not found, use default to avoid picking up a wrong package manager
+        // like a globally installed yarn
+    }
+
+    // Since we have no lockfile to rely on, assume the root dir is 2 levels above js-controller
+    const ioBrokerRootDir = path.join(getControllerDir(), '..', '..');
+    // And fallback to npm
+    const pak = new packageManagers.npm();
+    pak.cwd = cwd || ioBrokerRootDir;
+    return pak;
+}
+
+/**
  * Installs a node module using npm or a similar package manager
  * @param npmUrl Which node module to install
  * @param options Options for the installation
@@ -1574,16 +1609,7 @@ export async function installNodeModule(
     options: InstallNodeModuleOptions = {}
 ): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1625,16 +1651,7 @@ export async function uninstallNodeModule(
     options: UninstallNodeModuleOptions = {}
 ): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1659,6 +1676,8 @@ export interface RebuildNodeModulesOptions {
     debug?: boolean;
     // Which directory to work in. If none is given, this defaults to ioBroker's root directory.
     cwd?: string;
+    // module which should be rebuilt
+    module?: string;
 }
 
 /**
@@ -1668,16 +1687,7 @@ export interface RebuildNodeModulesOptions {
  */
 export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
-    const pak = await detectPackageManager(
-        typeof options.cwd === 'string'
-            ? // If a cwd was provided, use it
-              { cwd: options.cwd }
-            : // Otherwise find the ioBroker root dir
-              {
-                  cwd: __dirname,
-                  setCwdToPackageRoot: true
-              }
-    );
+    const pak = await detectPackageManagerWithFallback(options.cwd);
     // By default, don't print all the stuff the package manager spits out
     if (!options.debug) {
         pak.loglevel = 'error';
@@ -1694,7 +1704,7 @@ export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}
         pipeLinewise(stdout, process.stdout);
     }
 
-    return pak.rebuild();
+    return pak.rebuild(options.module ? [options.module] : undefined);
 }
 
 export interface GetDiskInfoResponse {
@@ -2069,7 +2079,7 @@ export async function getHostInfo(
  * Finds the controller root directory
  * @returns absolute path to controller dir
  */
-export function getControllerDir(): string | undefined {
+export function getControllerDir(): string {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
     for (const pkg of possibilities) {
         try {
@@ -2109,6 +2119,8 @@ export function getControllerDir(): string | undefined {
         }
         checkPath = newPath;
     }
+
+    throw new Error('Could not determine controller directory');
 }
 
 // All paths are returned always relative to /node_modules/' + appName + '.js-controller
@@ -2934,7 +2946,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     // common.states needs to be a real object or an array
     if (
-        obj.common.states !== null &&
+        obj.common.states !== null && // we allow null for deletion TODO: implement https://github.com/ioBroker/ioBroker.js-controller/issues/1735
         obj.common.states !== undefined &&
         !isObject(obj.common.states) &&
         !Array.isArray(obj.common.states)
@@ -2942,9 +2954,6 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(
             `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
         );
-    } else if (obj.common.states === null && !extend) {
-        // extend only allowed on extend
-        throw new Error(`obj.common.states has an invalid type! Expected non-null "object", received "null"`);
     }
 }
 
@@ -2982,7 +2991,7 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
 }
 
 export interface GetObjectViewResult {
-    rows: ioBroker.GetObjectViewItem[];
+    rows: ioBroker.GetObjectViewItem<ioBroker.Object>[];
 }
 
 export interface GetObjectViewInstanceEntry {
@@ -3121,7 +3130,16 @@ export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.Writab
         input,
         crlfDelay: Infinity
     });
-    rl.on('line', line => output.write(line + os.EOL));
+    rl.on('line', line => {
+        try {
+            output.write(line + os.EOL);
+        } catch {
+            // ignore
+        }
+    });
+    rl.on('error', () => {
+        /** Ignore Errors */
+    });
 }
 
 /**
@@ -3577,6 +3595,7 @@ export async function getInstancesOrderedByStartPrio(
 
 /**
  * Set capabilities of the given executable on Linux systems
+<<<<<<< HEAD:packages/common/src/lib/common/tools.ts
  * @param execPath - path to the executable for node you can determine it via process.execPath
  * @param capabilities - capabilities to set, e.g. ['cap_net_admin', 'cap_net_bind_service']
  * @param modeEffective - add effective mode
@@ -3591,32 +3610,55 @@ export async function setExecutableCapabilities(
     modeInherited?: boolean
 ): Promise<void> {
     // if not linux do nothing and silently exit
-    if (os.platform() === 'linux') {
-        if (Array.isArray(capabilities) && capabilities.length) {
-            let modes = '';
-            const capabilitiesStr = capabilities.join(',');
+    if (os.platform() !== 'linux') {
+        return;
+    }
 
-            if (modeEffective) {
-                modes += 'e';
+    // if Docker and Admin Capabilities should be set check if we are allowed to do that
+    if (isDocker() && capabilities.includes('cap_net_admin')) {
+        try {
+            const systemCaps = fs.readFileSync(`/proc/${process.pid}/status`, 'utf-8');
+            const capBnd = systemCaps.match(/^CapBnd:\s(.+)$/m);
+            // We found a value in CapBnd line
+            if (capBnd && capBnd[1]) {
+                const { stdout } = await execAsync(`capsh --decode=${capBnd[1]}`);
+                // Stdout looks like "0x00000000a80425fb=cap_chown,cap_dac_override,..."
+                if (typeof stdout === 'string' && stdout.startsWith(`0x${capBnd[1]}=`)) {
+                    const capBndArr = stdout.substring(capBnd[1].length + 3).split(',');
+                    // if Admin Capability is not included in System Capabilities we remove it from array
+                    if (!capBndArr.includes('cap_net_admin')) {
+                        capabilities = capabilities.filter(c => c !== 'cap_net_admin');
+                    }
+                }
             }
-
-            if (modePermitted) {
-                modes += 'p';
-            }
-
-            if (modeInherited) {
-                modes += 'i';
-            }
-
-            if (modes.length) {
-                modes = `+${modes}`;
-            }
-
-            // if this throws it needs to be caught outside
-            await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
-        } else {
-            throw new Error('No capabilities array provided');
+        } catch {
+            // Ok we could not find it out, so update Caps but better without Admin Capability
+            capabilities = capabilities.filter(c => c !== 'cap_net_admin');
         }
+    }
+
+    if (capabilities.length) {
+        let modes = '';
+        const capabilitiesStr = capabilities.join(',');
+
+        if (modeEffective) {
+            modes += 'e';
+        }
+
+        if (modePermitted) {
+            modes += 'p';
+        }
+
+        if (modeInherited) {
+            modes += 'i';
+        }
+
+        if (modes.length) {
+            modes = `+${modes}`;
+        }
+
+        // if this throws it needs to be caught outside
+        await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
     }
 }
 

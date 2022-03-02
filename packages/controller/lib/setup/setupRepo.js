@@ -55,6 +55,7 @@ function Repo(options) {
         }
 
         const urlOrPath = oldRepos.native.repositories[repoName].link;
+        const hashUrl = urlOrPath.replace(/\.json$/, '-hash.json');
         let hash;
 
         if (
@@ -63,7 +64,11 @@ function Repo(options) {
             oldRepos.native.repositories[repoName].json &&
             (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://'))
         ) {
-            hash = await axios({ url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+            try {
+                hash = await axios({ url: hashUrl, timeout: 10000 });
+            } catch (e) {
+                console.error(`Cannot download repository hash file from "${hashUrl}": ${e.message}`);
+            }
             if (hash && hash.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
                 return oldRepos.native.repositories[repoName].json;
             }
@@ -73,18 +78,27 @@ function Repo(options) {
 
         if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
             if (!hash) {
-                hash = await axios({ url: urlOrPath.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+                try {
+                    hash = await axios({ url: hashUrl, timeout: 10000 });
+                } catch (e) {
+                    console.error(`Cannot download repository hash file from "${hashUrl}": ${e.message}`);
+                }
             }
 
             const agent = `${tools.appName}, RND: CLI, Node:${process.version}, V:${version}`;
-            data = await axios({
-                url: urlOrPath,
-                timeout: 10000,
-                headers: { 'User-Agent': agent }
-            });
-            if (data.data) {
-                data = data.data;
-            } else {
+            try {
+                data = await axios({
+                    url: urlOrPath,
+                    timeout: 10000,
+                    headers: { 'User-Agent': agent }
+                });
+                if (data.data) {
+                    data = data.data;
+                } else {
+                    data = null;
+                }
+            } catch (e) {
+                console.error(`Cannot download repository file from "${urlOrPath}": ${e.message}`);
                 data = null;
             }
         } else {

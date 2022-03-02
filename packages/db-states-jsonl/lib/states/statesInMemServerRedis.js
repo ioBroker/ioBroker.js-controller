@@ -244,7 +244,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 }
             } else if (namespace === this.namespaceSession) {
                 const result = this._getSession(id);
-                if (result === null) {
+                if (result === undefined || result === null) {
                     handler.sendNull(responseId);
                 } else {
                     handler.sendBulk(responseId, JSON.stringify(result));

@@ -35,7 +35,15 @@ function VisDebug(options) {
 
     // upload widget directory to vis directory
     function uploadWidgets(dir, adapter, pathW, callback) {
+        if (!fs.existsSync(dir)) {
+            console.error(`Cannot upload widgets, because folder "${dir}" does not exist`);
+            if (callback) {
+                callback();
+            }
+            return;
+        }
         const dirs = fs.readdirSync(dir);
+
         let count = 0;
         for (let d = 0; d < dirs.length; d++) {
             const stat = fs.statSync(dir + '/' + dirs[d]);
@@ -88,7 +96,8 @@ function VisDebug(options) {
             }
 
             if (!adapterDir) {
-                throw new Error(`Adapter not found. Tried: ${adapterNames2Try.join(', ')}`);
+                console.error(`Adapter not found. Tried: ${adapterNames2Try.join(', ')}`);
+                return void processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
             }
         }
 
@@ -96,16 +105,16 @@ function VisDebug(options) {
         // copy edit.html.original to edit.html
         // correct appName.json
         // correct config.js
-        let visDir = __dirname + '/../../node_modules/' + tools.appName + '.vis';
+        let visDir = `${__dirname}/../../node_modules/${tools.appName}.vis`;
         if (!fs.existsSync(visDir)) {
-            visDir = __dirname + '/../../node_modules/' + tools.appName.toLowerCase() + '.vis';
+            visDir = `${__dirname}/../../node_modules/${tools.appName.toLowerCase()}.vis`;
             if (!fs.existsSync(visDir)) {
-                visDir = __dirname + '/../../../' + tools.appName + '.vis';
+                visDir = `${__dirname}/../../../${tools.appName}.vis`;
                 if (!fs.existsSync(visDir)) {
-                    visDir = __dirname + '/../../../' + tools.appName.toLowerCase() + '.vis';
+                    visDir = `${__dirname}/../../../${tools.appName.toLowerCase()}.vis`;
                     if (!fs.existsSync(visDir)) {
-                        console.error('Cannot find ' + tools.appName + '.vis');
-                        return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                        console.error(`Cannot find ${tools.appName}.vis`);
+                        return void processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                     }
                 }
             }
@@ -217,22 +226,14 @@ FALLBACK:
                         console.log('Upload ' + adapterDir + '/widgets');
                         uploadWidgets(adapterDir + '/widgets', 'vis', 'widgets', () => {
                             if (!--count) {
-                                // timeout to print all messages
-                                setTimeout(() => processExit(), 100);
+                                processExit();
                             }
                         });
                     });
                 } else {
                     // upload all files into vis
                     console.log('Upload "' + adapterDir + '/widgets' + '"');
-                    uploadWidgets(
-                        adapterDir + '/widgets',
-                        'vis',
-                        'widgets',
-                        () =>
-                            // timeout to print all messages
-                            !--count && setTimeout(() => processExit(), 100)
-                    );
+                    uploadWidgets(adapterDir + '/widgets', 'vis', 'widgets', () => !--count && processExit());
                 }
             });
         } else {

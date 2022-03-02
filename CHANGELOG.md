@@ -3,15 +3,8 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 4.0.4 (2022-02-05)
-* (Apollon77/foxriver76) Optimize database initialization and destroys
-* (Apollon77) Update winston-syslog to prevent errors
-* (Apollon77) Allow proper setup first upgrade from 3.3.x
 
-## 4.0.3 (2022-02-05) Release Isabelle - Initial Beta Release
-* see CHANGELOG.md
-
-## 4.0.0 (2021-02-03) Release Isabelle
+## 4.0.15 (2022-02-03 - 2022-02-20) Release Isabelle
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
 * CLI command `iob update --updateable` changed to `iob update --updatable`
@@ -64,6 +57,15 @@
 * (Apollon77) Optimize Stop Handling to prevent errors
 * (Apollon77) Optimize Adapter process initialization to prevent edge case errors
 * (foxriver76) Optimize meta object sync
+* (Apollon77) make sure to really end CLI process when they should end in error cases
+* (Apollon77) catch error when streaming data to stdout and this is closed already
+* (Apollon77) Optimize some special cases on adapter start
+* (AlCalzone) Prevent issues when backup interval is configured with invalid values
+* (AlCalzone) Prevent db-file-locking issues for jsonl database; the connectTimeout for databases is now minimum 5s (overrides lower values from configuration)
+* (foxriver76) allow instance deletion when executed from an other host
+* (foxriver76) stop the database before executing upgrade self; Will be effective for all upgrades >4.0.5
+* (Apollon77/foxriver76) Optimize database initialization and destroys
+* (Apollon77) Update winston-syslog to prevent errors
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -83,13 +85,14 @@ The object view definition "custom/state" is now removed from js-controller afte
 **Developer relevant new Features**
 * (jogibear9988) Add new "unload-safe" promise based "adapter.delay" method to delay further code execution, but still make sure code do not continue after unload was called. This method can **not** be used inside the "unload" method itself!
 * (jogibear9988/AlCalzone/foxriver76/Apollon77) Revamp adapter.*Timeout and adapter.*Interval methods to be "unload-safe" and also clear missing timeouts without warnings for more developer convenience! The methods to set a timeout or interval can **not** be used inside the "unload" method itself!
-* (foxriver76) Allow to set "null" for common.states and not log error for object (but has no effect on extend, so value does not get deleted!)
+* (foxriver76) Allow to set "null" for common.states and not log error for object (also for extend)
 * (AlCalzone) Introduce new methods in tools for Node.js module management: installNodeModule, uninstallNodeModule (TODO Issues adapter that use npm install -> Move))
 * (bluefox) Add license management functionality to host. Adapters can use adapter.getSuitableLicenses to get available relevant licenses (TODO DOCS)
 * (AlCalzone) Switch NPM relevant handling to library pak to be more flexible for the future which package manager we want to use. Important: There are still parts that rely on npm for now!
 * (bluefox) Also report docker info when sending diag data
 * (foxriver76) Add server time to getHostInfo message
 * (foxriver76) For multihost clusters with js-controller 4.0+ the hosts automatically determine a "primary" host that can be used js-controller internally (right now, preparation for future topics)
+* (Apollon77) Add database types to crash data reported to sentry
 
 **Developer relevant Optimizations and Fixes**
 * (foxriver76) fixed permissionError on setBinaryState
@@ -101,6 +104,7 @@ The object view definition "custom/state" is now removed from js-controller afte
 * (foxriver76) Introduce a database protocol version number to allow detection of the available database features in multihost environments
 * (bluefox) Prevent issues when using adapter.addChannelToEnum because of missing callback
 * (foxriver76) make sure autoSubscribe works as expected in all cases
+* (Apollon77) Correctly return null when a session is expired 
 * general dependency updates
 * code style optimizations and streamline code
 

@@ -6,7 +6,7 @@ import { tools } from '@iobroker/js-controller-common';
 export function getObjectsConstructor(): any {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.objects) {
-        config.objects = { type: 'file' };
+        config.objects = { type: 'jsonl' };
     }
 
     try {

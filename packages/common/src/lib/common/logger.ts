@@ -61,29 +61,30 @@ const IoSeq =
     Seq &&
     class extends Seq {
         log(info: LogInfo, callback: () => void) {
-            const ioInfo = info;
+            const ioInfo = deepClone(info);
             ioInfo.props = ioInfo.props || {};
 
             // map our log levels to Seq levels
-            const level = (info.level || '').toLowerCase();
+            const level = (ioInfo.level || '').toLowerCase();
             if (level.includes('error')) {
-                info.level = 'Error';
+                ioInfo.level = 'Error';
             } else if (level.includes('warn')) {
-                info.level = 'Warning';
+                ioInfo.level = 'Warning';
             } else if (level.includes('info')) {
-                info.level = 'Information';
+                ioInfo.level = 'Information';
             } else if (level.includes('debug')) {
-                info.level = 'Debug';
+                ioInfo.level = 'Debug';
             } else if (level.includes('silly')) {
-                info.level = 'Verbose';
+                ioInfo.level = 'Verbose';
             } else {
-                info.level = 'Information';
+                ioInfo.level = 'Information';
             }
 
             // we add own properties
             ioInfo.props.Hostname = tools.getHostName();
             if (ioInfo.message) {
-                const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/);
+                // handle as single line with s flag, to if message ends with CR, etc
+                const msgParts = ioInfo.message.match(/^([^.]+\.[0-9]+) \(([^)]+)\) (.*)$/s);
                 if (msgParts) {
                     ioInfo.props.Source = msgParts[1];
                     ioInfo.props.Pid = msgParts[2];

@@ -13,12 +13,13 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 **Please check the js-controller compatibility information below which version runs on your Node.js version**
 
 ## Compatibility
+* js-controller 4.x works with Node.js 12.x, 14.x and 16.x (incl. up to NPM 8)
 * js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
 * js-controller 2.x works with Node.js 8.x, 10.x , 12.x and probably 14.x (untested)
 * js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
 
-Please try to stay current with your Node.js version because the support is limited in Time. As of now (April 2020) all Node.js versions below 10.x are no longer supported by Node.js and considered EOL (End Of Life).
-To upgrade your Node.js version and ioBroker please follow https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten !
+Please try to stay current with your Node.js version because the support is limited in Time. As of now (April 2021) all Node.js versions below 12.x are no longer supported by Node.js and considered EOL (End Of Life).
+To upgrade your Node.js version and ioBroker please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition !
 
 ## Links
 
@@ -408,7 +409,7 @@ If you want to pin a special loglevel for the file transport you can add a prope
 
 ioBroker allows adapters to subscribe to log messages from the whole system. E.g. admin adapter is using this logic
 
-More details for this feature can be found at https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
+More details for this feature can be found at https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/logging.md
 
 ### Controlling and monitoring of adapter processes
 
@@ -688,6 +689,12 @@ e.g. for Linux:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04
 
 ##### Configure Redis
+
+###### make sure Locale is set correctly
+ioBroker requires the "Locale" for the redis-server process to be set to "LANG=C" instead of other locales in order to get correct sorted results when Objects are stored in Redis.
+
+On Linux ideally set the LC_ALL environment variable for the redis-server process correctly.
+For more informations to see if changes are meeded and how to do them see https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen (German right now).
 
 ###### Allow Network access
 Ideally the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used the ioBroker installation will not work without it.
