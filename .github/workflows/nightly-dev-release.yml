@@ -70,7 +70,7 @@ jobs:
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         result-encoding: string
         script: |
