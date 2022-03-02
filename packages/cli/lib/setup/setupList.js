@@ -821,17 +821,6 @@ function List(options) {
                         that.listAdaptersFiles(adapters, names ? names.join('/') : null, () => processExit());
                     });
                     break;
-
-                default:
-                    if (type) {
-                        console.error('Unknown type: ' + type);
-                        return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
-                    } else {
-                        console.log(
-                            'Please specify type: objects, states, instances, adapters, users, groups, enums, files'
-                        );
-                        return void processExit();
-                    }
             }
         });
     };

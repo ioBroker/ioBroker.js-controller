@@ -250,7 +250,37 @@ function initYargs() {
                 .command('getDBVersion', 'Get the protocol version of the states database');
         })
         .command('message <adapter>[.instance] <command> [<message>]', 'Send message to adapter instance/s', {})
-        .command('list <type> [<filter>]', 'List all entries, like objects', {})
+        .command('list <type> [<filter>]', 'List all entries, like objects', yargs => {
+            yargs.positional('type', {
+                describe: 'Type of the objects which should be listed',
+                type: 'string',
+                choices: [
+                    'objects',
+                    'o',
+                    'states',
+                    's',
+                    'instances',
+                    'i',
+                    'adapters',
+                    'a',
+                    'users',
+                    'u',
+                    'groups',
+                    'g',
+                    'enums',
+                    'e',
+                    'files',
+                    'f',
+                    'hosts',
+                    'h'
+                ]
+            });
+
+            yargs.positional('filter', {
+                describe: 'Filter for matching pattern e.g. "admin*"',
+                type: 'string'
+            });
+        })
         .command('chmod <mode> <file>', 'Change file rights', {})
         .command('chown <user> <group> <file>', 'Change file ownership', {})
         .command('touch <file>', 'Touch file', {})
