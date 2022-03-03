@@ -315,7 +315,7 @@ function Upload(options) {
                 if (file.file === '.' || file.file === '..') {
                     continue;
                 }
-                const newPath = path + files[f].file;
+                const newPath = path + file.file;
                 if (files[f].isDir) {
                     if (!_dirs.find(e => e.path === newPath)) {
                         _dirs.push({ adapter, path: newPath });
