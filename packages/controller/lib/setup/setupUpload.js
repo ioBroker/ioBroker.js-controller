@@ -311,7 +311,7 @@ function Upload(options) {
         }
 
         if (files && files.length) {
-            for (let f = 0; f < files.length; f++) {
+            for (const file of files) {
                 if (files[f].file === '.' || files[f].file === '..') {
                     continue;
                 }
