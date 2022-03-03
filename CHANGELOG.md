@@ -11,7 +11,6 @@
 * (Apollon77) Fix maxSize property for logging in dist file
 * (Apollon77/foxriver76) Prevent some crash cases reported by Sentry
 
-
 ## 4.0.15 (2022-02-03 - 2022-02-20) Release Isabelle
 **BREAKING CHANGES**
 * Support for Node.js 10 is dropped! Supported are Node.js 12.x, 14.x and 16.x
