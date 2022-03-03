@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -38,14 +38,14 @@ let zipFiles;
 let upload; // will be used only once by upload of adapter
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
-   Currently Node.js on Windows platform do not implements os.loadavg() functionality - it returns [0,0,0]
+   Currently, Node.js on Windows platform does not implement os.loadavg() functionality - it returns [0,0,0]
    Expect first results after 1 min from application start (before 1 min runtime it will return [0,0,0])
-   Requiring it on other operating systems have NO influence.*/
+   Requiring it on other operating systems has NO influence.*/
 if (os.platform() === 'win32') {
     require('loadavg-windows');
 }
 
-let title = tools.appName + '.js-controller';
+let title = `${tools.appName}.js-controller`;
 
 let Objects;
 let States;
@@ -95,8 +95,8 @@ let compactGroupController = false;
 let compactGroup = null;
 const compactProcs = {};
 const scheduledInstances = {};
-const VENDOR_BOOTSTRAP_FILE = __dirname + '/iob-vendor-secret.json'; // TODO revert '/opt/iobroker/iob-vendor-secret.json'
-const VENDOR_FILE = __dirname + '/iob-vendor.json'; // TODO revert '/etc/iob-vendor.json'
+const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
+const VENDOR_FILE = '/etc/iob-vendor.json';
 let updateIPsTimer = null;
 let lastDiagSend = null;
 
@@ -134,10 +134,10 @@ function getConfig() {
     } else {
         const _config = fs.readJSONSync(configFile);
         if (!_config.states) {
-            _config.states = { type: 'file' };
+            _config.states = { type: 'jsonl' };
         }
         if (!_config.objects) {
-            _config.objects = { type: 'file' };
+            _config.objects = { type: 'jsonl' };
         }
         if (!_config.system) {
             _config.system = {};
@@ -308,7 +308,7 @@ function startUpdateIPs() {
 function logRedirect(isActive, id, reason) {
     console.log(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
     if (isActive) {
-        if (logList.indexOf(id) === -1) {
+        if (!logList.includes(id)) {
             logList.push(id);
         }
     } else {
@@ -333,7 +333,7 @@ function handleDisconnect() {
     }
 
     connected = false;
-    logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
+    logger.warn(`${hostLogPrefix} Slave controller detected disconnection. Stop all instances.`);
     if (compactGroupController) {
         stop(true);
     } else {
@@ -355,12 +355,12 @@ function createStates(onConnect) {
         change: (id, state) => {
             inputCount++;
             if (!id) {
-                return logger.error(hostLogPrefix + ' change event with no ID: ' + JSON.stringify(state));
+                return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(state)}`);
             }
             // If some log transporter activated or deactivated
             if (id.endsWith('.logging')) {
                 logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
-            } else if (!compactGroupController && id === 'messagebox.' + hostObjectPrefix) {
+            } else if (!compactGroupController && id === `messagebox.${hostObjectPrefix}`) {
                 // If this is messagebox, only the main controller is handling the host messages
                 const obj = state;
                 if (obj) {
@@ -393,44 +393,39 @@ function createStates(onConnect) {
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    setImmediate(() => {
-                        objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
-                            if (err) {
-                                logger.error(hostLogPrefix + ' Cannot read object: ' + err);
+                    objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
+                        if (err) {
+                            logger.error(`${hostLogPrefix} Cannot read object: ${err}`);
+                        }
+                        if (obj && obj.common) {
+                            // IF adapter enabled => disable it
+                            if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
+                                obj.common.enabled = !!enabled;
+                                logger.info(
+                                    `${hostLogPrefix} instance "${obj._id}" ${
+                                        obj.common.enabled ? 'enabled' : 'disabled'
+                                    } via .alive`
+                                );
+                                obj.from = hostObjectPrefix;
+                                obj.ts = Date.now();
+                                objects.setObject(obj._id, obj, err =>
+                                    logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
+                                );
                             }
-                            if (obj && obj.common) {
-                                // IF adapter enabled => disable it
-                                if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
-                                    obj.common.enabled = !!enabled;
-                                    logger.info(
-                                        hostLogPrefix +
-                                            ' instance "' +
-                                            obj._id +
-                                            '" ' +
-                                            (obj.common.enabled ? 'enabled' : 'disabled') +
-                                            ' via .alive'
-                                    );
-                                    setImmediate(() => {
-                                        obj.from = hostObjectPrefix;
-                                        obj.ts = Date.now();
-                                        objects.setObject(obj._id, obj);
-                                    });
-                                }
-                            }
-                        });
+                        }
                     });
                 }
             } else if (subscribe[id]) {
                 for (let i = 0; i < subscribe[id].length; i++) {
                     // wake up adapter
                     if (procs[subscribe[id][i]]) {
-                        console.log('Wake up ' + id + ' ' + JSON.stringify(state));
+                        console.log(`Wake up ${id} ${JSON.stringify(state)}`);
                         startInstance(subscribe[id][i], true);
                     } else {
                         logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
                 }
-            } else if (id === hostObjectPrefix + '.logLevel') {
+            } else if (id === `${hostObjectPrefix}.logLevel`) {
                 if (!config || !config.log || !state || state.ack) {
                     return;
                 }
@@ -459,11 +454,11 @@ function createStates(onConnect) {
                     ack: true,
                     from: hostObjectPrefix
                 });
-            } else if (id.startsWith(hostObjectPrefix + '.plugins.') && id.endsWith('.enabled')) {
+            } else if (id.startsWith(`${hostObjectPrefix}.plugins.`) && id.endsWith('.enabled')) {
                 if (!config || !config.log || !state || state.ack) {
                     return;
                 }
-                const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
+                const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
                 let nameEndIndex = id.indexOf('.', pluginStatesIndex + 1);
                 if (nameEndIndex === -1) {
                     nameEndIndex = undefined;
@@ -493,7 +488,7 @@ function createStates(onConnect) {
                 }
             }
         },
-        connected: async () => {
+        connected: () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -502,16 +497,6 @@ function createStates(onConnect) {
             if (!compactGroupController) {
                 states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
-                // subscribe to primary host expiration
-                try {
-                    await objects.subscribePrimaryHost();
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
-                }
-                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
-
-                // first execution now
-                checkPrimaryHost();
             }
             initMessageQueue();
             startAliveInterval();
@@ -569,7 +554,7 @@ async function initializeController() {
         if (!isStopping) {
             pluginHandler.setDatabaseForPlugins(objects, states);
             pluginHandler.initPlugins(ioPackage, () => {
-                states.subscribe(hostObjectPrefix + '.plugins.*');
+                states.subscribe(`${hostObjectPrefix}.plugins.*`);
 
                 // Do not start if we still stopping the instances
                 checkHost(() => {
@@ -599,12 +584,26 @@ function createObjects(onConnect) {
         controller: true,
         logger: logger,
         hostname: hostname,
-        connected: () => {
+        connected: async () => {
             // stop disconnect timeout
             if (objectsDisconnectTimeout) {
                 clearTimeout(objectsDisconnectTimeout);
                 objectsDisconnectTimeout = null;
             }
+
+            // subscribe to primary host expiration
+            try {
+                await objects.subscribePrimaryHost();
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
+            }
+
+            if (!primaryHostInterval && !compactGroupController) {
+                primaryHostInterval = setInterval(checkPrimaryHost, PRIMARY_HOST_LOCK_TIME / 2);
+            }
+
+            // first execution now
+            checkPrimaryHost();
 
             initializeController();
             onConnect && onConnect();
@@ -613,6 +612,8 @@ function createObjects(onConnect) {
             if (restartTimeout) {
                 return;
             }
+            // on reconnection this will be determiend anew
+            isPrimary = false;
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(() => {
                 objectsDisconnectTimeout = null;
@@ -860,6 +861,7 @@ function createObjects(onConnect) {
         },
         primaryHostLost: () => {
             if (!isStopping) {
+                isPrimary = false;
                 logger.info('The primary host is no longer active. Checking responsibilities.');
                 checkPrimaryHost();
             }
@@ -875,7 +877,7 @@ function startAliveInterval() {
         config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
-        states.setState(hostObjectPrefix + '.compactModeEnabled', {
+        states.setState(`${hostObjectPrefix}.compactModeEnabled`, {
             ack: true,
             from: hostObjectPrefix,
             val: config.system.compact || false
@@ -893,6 +895,11 @@ function startAliveInterval() {
  * @return {Promise<void>}
  */
 async function checkPrimaryHost() {
+    // we cannot interact with db now because currently reconnecting
+    if (objectsDisconnectTimeout || compactGroupController) {
+        return;
+    }
+
     // let our host value live PRIMARY_HOST_LOCK_TIME seconds, while it should be renewed lock time / 2
     try {
         if (!isPrimary) {
@@ -915,7 +922,7 @@ function reportStatus() {
     }
     const id = hostObjectPrefix;
     outputCount += 10;
-    states.setState(id + '.alive', {
+    states.setState(`${id}.alive`, {
         val: true,
         ack: true,
         expire: Math.floor(config.system.statisticsInterval / 1000) + 10,
@@ -938,12 +945,12 @@ function reportStatus() {
         pidUsage(process.pid, (err, stats) => {
             // controller.s might be stopped, but this is still running
             if (!err && states && states.setState && stats) {
-                states.setState(id + '.cpu', {
+                states.setState(`${id}.cpu`, {
                     ack: true,
                     from: id,
                     val: Math.round(100 * parseFloat(stats.cpu)) / 100
                 });
-                states.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
+                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
                 outputCount += 2;
             }
         });
@@ -963,7 +970,7 @@ function reportStatus() {
             ack: true,
             from: id
         });
-        states.setState(id + '.memHeapUsed', {
+        states.setState(`${id}.memHeapUsed`, {
             val: Math.round(mem.heapUsed / 10485.76 /* 1MB / 100 */) / 100,
             ack: true,
             from: id
@@ -974,17 +981,17 @@ function reportStatus() {
 
     // provide machine infos
 
-    states.setState(id + '.load', { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
-    states.setState(id + '.uptime', { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(id + '.mem', { val: Math.round((1000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
-    states.setState(id + '.freemem', { val: Math.round(os.freemem() / 1048576 /* 1MB */), ack: true, from: id });
+    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
+    states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
+    states.setState(`${id}.mem`, { val: Math.round((1000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
+    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1048576 /* 1MB */), ack: true, from: id });
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
             const text = fs.readFileSync('/proc/meminfo', 'utf8');
             const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                states.setState(id + '.memAvailable', {
+                states.setState(`${id}.memAvailable`, {
                     val: Math.round(parseInt(m[1], 10) * 0.001024),
                     ack: true,
                     from: id
@@ -1004,12 +1011,12 @@ function reportStatus() {
             }
             try {
                 if (info) {
-                    states.setState(id + '.diskSize', {
+                    states.setState(`${id}.diskSize`, {
                         val: Math.round((info['Disk size'] || 0) / (1024 * 1024)),
                         ack: true,
                         from: id
                     });
-                    states.setState(id + '.diskFree', {
+                    states.setState(`${id}.diskFree`, {
                         val: Math.round((info['Disk free'] || 0) / (1024 * 1024)),
                         ack: true,
                         from: id
@@ -1023,16 +1030,16 @@ function reportStatus() {
     }
 
     // some statistics
-    states.setState(id + '.inputCount', { val: inputCount, ack: true, from: id });
-    states.setState(id + '.outputCount', { val: outputCount, ack: true, from: id });
+    states.setState(`${id}.inputCount`, { val: inputCount, ack: true, from: id });
+    states.setState(`${id}.outputCount`, { val: outputCount, ack: true, from: id });
 
     if (eventLoopLags.length) {
         const eventLoopLag = Math.ceil(eventLoopLags.reduce((a, b) => a + b) / eventLoopLags.length);
-        states.setState(id + '.eventLoopLag', { val: eventLoopLag, ack: true, from: id }); // average of measured values
+        states.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
         eventLoopLags = [];
     }
 
-    states.setState(id + '.compactgroupProcesses', { val: Object.keys(compactProcs).length, ack: true, from: id });
+    states.setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id });
     let realProcesses = 0;
     let compactProcesses = 0;
     Object.keys(procs).forEach(proc => {
@@ -1044,8 +1051,8 @@ function reportStatus() {
             }
         }
     });
-    states.setState(id + '.instancesAsProcess', { val: realProcesses, ack: true, from: id });
-    states.setState(id + '.instancesAsCompact', { val: compactProcesses, ack: true, from: id });
+    states.setState(`${id}.instancesAsProcess`, { val: realProcesses, ack: true, from: id });
+    states.setState(`${id}.instancesAsCompact`, { val: compactProcesses, ack: true, from: id });
 
     inputCount = 0;
     outputCount = 0;
@@ -1299,6 +1306,7 @@ async function collectDiagInfo(type) {
             hosts: [],
             node: process.version,
             arch: os.arch(),
+            docker: tools.isDocker(),
             adapters: {},
             statesType: config.states.type, // redis or file
             objectsType: config.objects.type, // redis or file
@@ -1466,7 +1474,7 @@ function setIPs(ipList) {
                 objects.setObject(
                     oldObj._id,
                     oldObj,
-                    err => err && logger.error(hostLogPrefix + ' Cannot write host object:' + err)
+                    err => err && logger.error(`${hostLogPrefix} Cannot write host object:${err}`)
                 );
             }
 
@@ -1474,7 +1482,7 @@ function setIPs(ipList) {
             startUpdateIPs();
         });
     } else {
-        logger.info(hostLogPrefix + ' No IPv4 address found after 5 minutes.');
+        logger.info(`${hostLogPrefix} No IPv4 address found after 5 minutes.`);
     }
 }
 
@@ -1726,7 +1734,7 @@ function setMeta() {
         common: {
             type: 'number',
             role: 'value',
-            name: hostname + ' - memory usage in %',
+            name: `${hostname} - memory usage in %`,
             unit: '%',
             read: true,
             write: false,
@@ -1738,7 +1746,7 @@ function setMeta() {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.memHeapUsed',
+        _id: `${id}.memHeapUsed`,
         type: 'state',
         common: {
             type: 'number',
@@ -2169,7 +2177,9 @@ async function sendTo(objName, command, message, callback) {
             `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
         );
         if (obj.callback && obj.callback.id) {
-            obj.callback(e);
+            if (typeof callback === 'function') {
+                callback(e);
+            }
             delete callbacks[`_${obj.callback.id}`];
         }
     }
@@ -2254,11 +2264,20 @@ async function startAdapterUpload() {
     setImmediate(startAdapterUpload);
 }
 
-// Process message to controller, like execute some script
+/**
+ * Process message to controller, like execute some script
+ *
+ * @param {ioBroker.Message} msg
+ * @return {Promise<null>}
+ */
 async function processMessage(msg) {
-    let ioPack;
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
+
+    if (isStopping) {
+        logger.debug(`${hostLogPrefix} Ignoring incoming Host message becasue controller is stopping ${msg.command}`);
+        return;
+    }
 
     logger.debug(`${hostLogPrefix} Incoming Host message ${msg.command}`);
     switch (msg.command) {
@@ -2282,7 +2301,7 @@ async function processMessage(msg) {
             break;
 
         case 'cmdExec': {
-            const args = [__dirname + '/' + tools.appName + '.js'];
+            const args = [`${__dirname}/${tools.appName}.js`];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
                     `${hostLogPrefix} ${
@@ -2425,7 +2444,7 @@ async function processMessage(msg) {
                                         }
                                     } catch (e) {
                                         logger.error(
-                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e}`
+                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
                                         );
                                     }
                                 }
@@ -2439,7 +2458,13 @@ async function processMessage(msg) {
                                 );
                             }
                         }
-                        changed && (await objects.setObjectAsync('system.repositories', systemRepos));
+                        if (changed) {
+                            try {
+                                await objects.setObjectAsync('system.repositories', systemRepos);
+                            } catch (e) {
+                                logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
+                            }
+                        }
                     }
 
                     sendTo(msg.from, msg.command, globalRepo, msg.callback);
@@ -2464,26 +2489,16 @@ async function processMessage(msg) {
                         result.hosts = {};
                         if (doc && doc.rows.length) {
                             // Read installed versions of all hosts
-                            for (let i = 0; i < doc.rows.length; i++) {
+                            for (const row of doc.rows) {
                                 // If desired local version, do not ask it, just answer
-                                if (doc.rows[i].id === hostObjectPrefix) {
-                                    let _ioPack;
-                                    try {
-                                        _ioPack = fs.readJSONSync(`${__dirname}/io-package.json`);
-                                    } catch {
-                                        logger.error(
-                                            `${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`
-                                        );
-                                    }
-                                    if (_ioPack) {
-                                        _ioPack.common.host = hostname;
-                                        _ioPack.common.runningVersion = version;
-                                        result.hosts[hostname] = _ioPack.common;
-                                    } else {
-                                        result.hosts[hostname] = {};
-                                    }
+                                if (row.id === hostObjectPrefix) {
+                                    const ioPackCommon = deepClone(ioPackage.common);
+
+                                    ioPackCommon.host = hostname;
+                                    ioPackCommon.runningVersion = version;
+                                    result.hosts[hostname] = ioPackCommon;
                                 } else {
-                                    const ioPack = await getVersionFromHost(doc.rows[i].id);
+                                    const ioPack = await getVersionFromHost(row.id);
                                     if (ioPack) {
                                         result.hosts[ioPack.host] = ioPack;
                                         result.hosts[ioPack.host].controller = true;
@@ -2509,30 +2524,21 @@ async function processMessage(msg) {
                     try {
                         _result = fs.readJSONSync(dir + '/io-package.json');
                     } catch {
-                        logger.error(hostLogPrefix + ' cannot read and parse "' + dir + '/io-package.json"');
+                        logger.error(`${hostLogPrefix} cannot read and parse "${dir}/io-package.json"`);
                     }
                 }
                 sendTo(msg.from, msg.command, _result, msg.callback);
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
         case 'getVersion':
             if (msg.callback && msg.from) {
-                ioPack = null;
-                try {
-                    ioPack = fs.readJSONSync(__dirname + '/io-package.json');
-                } catch {
-                    logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
-                }
-                if (ioPack) {
-                    ioPack.common.host = hostname;
-                    ioPack.common.runningVersion = version;
-                    sendTo(msg.from, msg.command, ioPack.common, msg.callback);
-                } else {
-                    sendTo(msg.from, msg.command, null, msg.callback);
-                }
+                const ioPackCommon = deepClone(ioPackage.common);
+                ioPackCommon.host = hostname;
+                ioPackCommon.runningVersion = version;
+                sendTo(msg.from, msg.command, ioPackCommon, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2565,8 +2571,6 @@ async function processMessage(msg) {
 
         case 'getDevList':
             if (msg.callback && msg.from) {
-                ioPack = null;
-
                 if (os.platform() === 'linux') {
                     const _args = ['/dev'];
                     logger.info(hostLogPrefix + ' ls /dev');
@@ -2603,8 +2607,6 @@ async function processMessage(msg) {
 
         case 'getLogs':
             if (msg.callback && msg.from) {
-                ioPack = null;
-
                 const lines = msg.message || 200;
                 let text = '';
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
@@ -2653,7 +2655,7 @@ async function processMessage(msg) {
                         const parts = ['..', '..', '..', '..'];
                         do {
                             parts.pop();
-                            const _filename = path.normalize(__dirname + '/' + parts.join('/') + '/') + filename;
+                            const _filename = path.normalize(`${__dirname}/${parts.join('/')}/`) + filename;
                             if (fs.existsSync(_filename)) {
                                 filename = _filename;
                                 break;
@@ -2830,10 +2832,10 @@ async function processMessage(msg) {
             break;
         case 'delLogs': {
             const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-            fs.existsSync(__dirname + '/log/' + tools.appName + '.log') &&
-                fs.writeFileSync(__dirname + '/log/' + tools.appName + '.log', '');
-            fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log') &&
-                fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
+            fs.existsSync(`${__dirname}/log/${tools.appName}.log`) &&
+                fs.writeFileSync(`${__dirname}/log/${tools.appName}.log`, '');
+            fs.existsSync(`${__dirname}/../../log/${tools.appName}.log`) &&
+                fs.writeFileSync(`${__dirname}/../../log/${tools.appName}.log`, '');
             fs.existsSync(logFile) && fs.writeFileSync(logFile, '');
 
             msg.callback && msg.from && sendTo(msg.from, msg.command, null, msg.callback);
@@ -2884,14 +2886,14 @@ async function processMessage(msg) {
                         if (msg.message.link) {
                             if (!error) {
                                 const buff = Buffer.from(base64, 'base64');
-                                states.setBinaryState(hostObjectPrefix + '.zip.' + msg.message.link, buff, err => {
+                                states.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                                     if (err) {
                                         sendTo(msg.from, msg.command, { error: err }, msg.callback);
                                     } else {
                                         sendTo(
                                             msg.from,
                                             msg.command,
-                                            hostObjectPrefix + '.zip.' + msg.message.link,
+                                            `${hostObjectPrefix}.zip.${msg.message.link}`,
                                             msg.callback
                                         );
                                     }
@@ -2948,12 +2950,11 @@ async function processMessage(msg) {
 
                                         if (
                                             (typeof obj[i] === 'string' &&
-                                                (obj[i].indexOf('"val":true') !== -1 ||
-                                                    obj[i].indexOf('"val":"true"') !== -1)) ||
+                                                (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))) ||
                                             (typeof obj[i] === 'object' &&
                                                 (obj[i].val === true || obj[i].val === 'true'))
                                         ) {
-                                            logs.push('Subscriber - ' + id + ' ENABLED');
+                                            logs.push(`Subscriber - ${id} ENABLED`);
                                         } else {
                                             logs && logs.push(`Subscriber - ${id} (disabled)`);
                                         }
@@ -3013,7 +3014,11 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, { error: 'Adapter to rebuild not provided.' }, msg.callback);
                 }
             } else if (!installQueue.some(entry => entry.id === msg.message.id)) {
-                logger.info(`${hostLogPrefix} ${msg.message.id} will be rebuilt`);
+                logger.info(
+                    `${hostLogPrefix} ${msg.message.id} will be rebuilt${
+                        msg.message.rebuildArgs ? ` (Args: ${JSON.stringify(msg.message.rebuildArgs)})` : ''
+                    }`
+                );
                 const installObj = { id: msg.message.id, rebuild: true };
                 if (msg.message.rebuildArgs) {
                     installObj.rebuildArgs = msg.message.rebuildArgs;
@@ -3104,7 +3109,7 @@ async function processMessage(msg) {
             }
 
             if (error) {
-                logger.error(hostLogPrefix + ' ' + error);
+                logger.error(`${hostLogPrefix} ${error}`);
                 if (msg.callback && msg.from) {
                     sendTo(msg.from, msg.command, { error }, msg.callback);
                 }
@@ -3377,10 +3382,10 @@ function initInstances() {
             if (id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
-                    logger.info(hostLogPrefix + ' instance "' + id + '" was not started, because running.');
+                    logger.info(`${hostLogPrefix} instance "${id}" was not started, because running.`);
                     continue;
                 }
-                if (installQueue.indexOf(id) === -1) {
+                if (!installQueue.includes(id)) {
                     if (procs[id].restartTimer) {
                         clearTimeout(procs[id].restartTimer);
                     }
@@ -3407,7 +3412,7 @@ function initInstances() {
                     continue;
                 }
 
-                if (installQueue.indexOf(id) === -1) {
+                if (!installQueue.includes(id)) {
                     if (procs[id].restartTimer) {
                         clearTimeout(procs[id].restartTimer);
                     }
@@ -3486,8 +3491,8 @@ function checkVersion(name, version, instances) {
  * Chceks if alle dependencies of an adapter are satisfied
  *
  * @param {string} id - instance id of the requiring instance (only used for logging)
- * @param {string[]|object[]|string} deps - same host dependencies as defined in io-pack
- * @param {string[]|object[]|string} globalDeps - global dependencies, as defined in io-pack
+ * @param {string[] | Record<string, string>[] | string | Record<string, string>} deps - same host dependencies as defined in io-pack
+ * @param {string[] | Record<string, string>[] | string | Record<string, string>} globalDeps - global dependencies, as defined in io-pack
  * @returns {Promise<void>}
  */
 async function checkVersions(id, deps, globalDeps) {
@@ -3613,14 +3618,14 @@ function installAdapters() {
         if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
             if (tools.isShortGithubUrl(task.installedFrom) || task.installedFrom.includes('://')) {
-                // Installing from URL supports raw http(s) and file URLs as well as the short github URL format
+                // Installing from URL supports raw http(s) and file URLs as well as the short GitHub URL format
                 installArgs.push('url');
                 installArgs.push(task.installedFrom);
                 installArgs.push(task.id.split('.')[2]); // adapter name
             } else {
                 installArgs.push('install');
                 let installedFrom = task.installedFrom;
-                if (installedFrom.startsWith(tools.appName + '.')) {
+                if (installedFrom.startsWith(`${tools.appName}.`)) {
                     installedFrom = installedFrom.substr(tools.appName.length + 1);
                 }
                 installArgs.push(installedFrom);
@@ -3631,7 +3636,10 @@ function installAdapters() {
                 installArgs.push(name);
             } else if (task.rebuildArgs) {
                 installArgs.push(`${task.rebuildArgs.module}@${task.rebuildArgs.version}`);
-                installOptions.cwd = task.rebuildArgs.path;
+                if (task.rebuildArgs.path) {
+                    installArgs.push('--path');
+                    installArgs.push(task.rebuildArgs.path);
+                }
             }
         }
         logger.info(
@@ -3677,7 +3685,7 @@ function installAdapters() {
                                     logger.info(
                                         `${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`
                                     );
-                                    states.setState(task.id + '.alive', {
+                                    states.setState(`${task.id}.alive`, {
                                         val: true,
                                         ack: false,
                                         from: hostObjectPrefix
@@ -3768,7 +3776,7 @@ function cleanErrors(procObj, now, doOutput) {
                     .split('\n');
                 for (let k = 0; k < lines.length; k++) {
                     if (lines[k]) {
-                        logger.error(hostLogPrefix + ' Caught by controller[' + i + ']: ' + lines[k]);
+                        logger.error(`${hostLogPrefix} Caught by controller[${i}]: ${lines[k]}`);
                     }
                 }
             }
@@ -3813,7 +3821,7 @@ function startScheduledInstance(callback) {
             procs[id].lastStart = Date.now();
             if (!procs[id].process) {
                 // reset sigKill to 0 if it was set to an other value from "once run"
-                states.setState(instance._id + '.sigKill', { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                states.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     try {
                         procs[id].process = cp.fork(fileNameFull, args, {
@@ -3835,7 +3843,7 @@ function startScheduledInstance(callback) {
 
                         procs[id].process.on('exit', (code, signal) => {
                             outputCount++;
-                            states.setState(id + '.alive', { val: false, ack: true, from: hostObjectPrefix });
+                            states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -4068,13 +4076,13 @@ async function startInstance(id, wakeUp) {
 
     //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
-        procs[id].subscribe = instance.common.subscribe || instance._id + '.wakeup';
+        procs[id].subscribe = instance.common.subscribe || `${instance._id}.wakeup`;
         const parts = instance._id.split('.');
         const instanceId = parts[parts.length - 1];
         procs[id].subscribe = procs[id].subscribe.replace('<INSTANCE>', instanceId);
 
         if (subscribe[procs[id].subscribe]) {
-            if (subscribe[procs[id].subscribe].indexOf(id) === -1) {
+            if (!subscribe[procs[id].subscribe].includes(id)) {
                 subscribe[procs[id].subscribe].push(id);
             }
         } else {
@@ -4113,7 +4121,7 @@ async function startInstance(id, wakeUp) {
                 logger.debug(
                     `${hostLogPrefix} startInstance ${name}.${args[0]} loglevel=${args[1]}, compact=${
                         instance.common.compact && instance.common.runAsCompactMode
-                            ? 'true (' + instance.common.compactGroup + ')'
+                            ? `true (${instance.common.compactGroup})`
                             : 'false'
                     }`
                 );
@@ -4416,7 +4424,7 @@ async function startInstance(id, wakeUp) {
                     }
 
                     if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                        states.setState(id + '.sigKill', {
+                        states.setState(`${id}.sigKill`, {
                             val: procs[id].process.pid,
                             ack: true,
                             from: hostObjectPrefix
@@ -4441,6 +4449,8 @@ async function startInstance(id, wakeUp) {
                             if (
                                 text.includes('NODE_MODULE_VERSION') ||
                                 text.includes('npm rebuild') ||
+                                text.includes("Error: The module '") ||
+                                text.includes('Could not locate the bindings file.') ||
                                 text.includes('Cannot find module')
                             ) {
                                 // only try this at second rebuild
@@ -4498,7 +4508,7 @@ async function startInstance(id, wakeUp) {
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
                         // set to 0 to stop any pot. already running instances, especially broken compactModes
-                        states.setState(id + '.sigKill', { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                        states.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
                             const _instance =
                                 instance && instance._id && instance.common ? instance._id.split('.').pop() || 0 : 0;
                             const logLevel =
@@ -4532,7 +4542,7 @@ async function startInstance(id, wakeUp) {
                                     );
                                     logger.error(e.stackTrace);
                                     procs[id].process && delete procs[id].process;
-                                    states.setState(id + '.sigKill', { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
+                                    states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
                                 }
                             } else {
                                 logger.warn(
@@ -4542,7 +4552,7 @@ async function startInstance(id, wakeUp) {
 
                             if (procs[id].process && !procs[id].process.kill) {
                                 procs[id].process.kill = () =>
-                                    states.setState(id + '.sigKill', {
+                                    states.setState(`${id}.sigKill`, {
                                         val: -1,
                                         ack: false,
                                         from: hostObjectPrefix
@@ -4648,12 +4658,12 @@ async function startInstance(id, wakeUp) {
 
                                         const id = instances.shift();
                                         outputCount += 2;
-                                        states.setState(id + '.alive', {
+                                        states.setState(`${id}.alive`, {
                                             val: false,
                                             ack: true,
                                             from: hostObjectPrefix
                                         });
-                                        states.setState(id + '.connected', {
+                                        states.setState(`${id}.connected`, {
                                             val: false,
                                             ack: true,
                                             from: hostObjectPrefix
@@ -4682,15 +4692,12 @@ async function startInstance(id, wakeUp) {
 
                                         if (isStopping) {
                                             logger.silly(
-                                                hostLogPrefix + ' Check after group exit ' + currentCompactGroup
+                                                `${hostLogPrefix} Check after group exit ${currentCompactGroup}`
                                             );
                                             for (const i of Object.keys(procs)) {
                                                 if (procs[i].process) {
                                                     logger.silly(
-                                                        hostLogPrefix +
-                                                            ' ' +
-                                                            procs[i].config.common.name +
-                                                            ' still running'
+                                                        `${hostLogPrefix} ${procs[i].config.common.name} still running`
                                                     );
                                                     return;
                                                 }
@@ -4698,10 +4705,7 @@ async function startInstance(id, wakeUp) {
                                             for (const i of Object.keys(compactProcs)) {
                                                 if (compactProcs[i].process) {
                                                     logger.silly(
-                                                        hostLogPrefix +
-                                                            ' Compact group ' +
-                                                            i +
-                                                            ' still running (compact)'
+                                                        `${hostLogPrefix} Compact group ${i} still running (compact)`
                                                     );
                                                     return;
                                                 }
@@ -4764,7 +4768,7 @@ async function startInstance(id, wakeUp) {
                 } else {
                     // set to 0 to stop any pot. already running instances, especially broken compactModes
                     states.setState(
-                        id + '.sigKill',
+                        `${id}.sigKill`,
                         {
                             val: 0,
                             ack: false,
@@ -4800,7 +4804,7 @@ async function startInstance(id, wakeUp) {
             // cancel current schedule
             if (procs[id].schedule) {
                 procs[id].schedule.cancel();
-                logger.info(hostLogPrefix + ' instance canceled schedule ' + instance._id);
+                logger.info(`${hostLogPrefix} instance canceled schedule ${instance._id}`);
             }
 
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, () => {
@@ -4812,7 +4816,7 @@ async function startInstance(id, wakeUp) {
                 };
                 Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
             });
-            logger.info(hostLogPrefix + ' instance scheduled ' + instance._id + ' ' + instance.common.schedule);
+            logger.info(`${hostLogPrefix} instance scheduled ${instance._id} ${instance.common.schedule}`);
             // Start one time adapter by start or if configuration changed
             //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
@@ -4828,17 +4832,13 @@ async function startInstance(id, wakeUp) {
                 if (procs[id].process) {
                     storePids(); // Store all pids to make possible kill them all
                     logger.info(
-                        hostLogPrefix +
-                            ' instance ' +
-                            instance._id +
-                            ' started with pid ' +
-                            procs[instance._id].process.pid
+                        `${hostLogPrefix} instance ${instance._id} started with pid ${procs[instance._id].process.pid}`
                     );
 
                     procs[id].process.on('exit', (code, signal) => {
                         cleanAutoSubscribes(id, () => {
                             outputCount++;
-                            states.setState(id + '.alive', { val: false, ack: true, from: hostObjectPrefix });
+                            states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
                             if (signal) {
                                 logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
@@ -4874,7 +4874,7 @@ async function startInstance(id, wakeUp) {
             break;
 
         default:
-            logger.error(hostLogPrefix + ' ' + instance._id + ' invalid mode');
+            logger.error(`${hostLogPrefix} ${instance._id} invalid mode`);
     }
 }
 
@@ -4887,7 +4887,7 @@ function stopInstance(id, force, callback) {
         `${hostLogPrefix} stopInstance ${id} (force=${force}, process=${procs[id].process ? 'true' : 'false'})`
     );
     if (!procs[id]) {
-        logger.warn(hostLogPrefix + ' unknown instance ' + id);
+        logger.warn(`${hostLogPrefix} unknown instance ${id}`);
         return typeof callback === 'function' && callback();
     }
 
@@ -4911,8 +4911,8 @@ function stopInstance(id, force, callback) {
         }
 
         if (procs[id] && procs[id].subscribe) {
-            // Remove this id from subsribed on this message
-            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) !== -1) {
+            // Remove this id from subscribed on this message
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].includes(id)) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
 
                 // If no one subscribed
@@ -4947,13 +4947,13 @@ function stopInstance(id, force, callback) {
                     procs[id].config.common.enabled &&
                     !procs[id].startedAsCompactGroup
                 ) {
-                    !isStopping && logger.warn(hostLogPrefix + ' stopInstance ' + instance._id + ' not running');
+                    !isStopping && logger.warn(`${hostLogPrefix} stopInstance ${instance._id} not running`);
                 }
                 typeof callback === 'function' && callback();
             } else {
                 if (force && !procs[id].startedAsCompactGroup) {
                     logger.info(
-                        hostLogPrefix + ' stopInstance forced ' + instance._id + ' killing pid ' + procs[id].process.pid
+                        `${hostLogPrefix} stopInstance forced ${instance._id} killing pid ${procs[id].process.pid}`
                     );
                     if (procs[id].process) {
                         procs[id].stopping = true;
@@ -4977,12 +4977,9 @@ function stopInstance(id, force, callback) {
                             stopTimeouts[id].timeout = null;
                         }
                         logger.info(
-                            hostLogPrefix +
-                                ' stopInstance self ' +
-                                instance._id +
-                                ' killing pid ' +
-                                (procs[id].process ? procs[id].process.pid : 'undefined') +
-                                (result ? ': ' + result : '')
+                            `${hostLogPrefix} stopInstance self ${instance._id} killing pid ${
+                                procs[id].process ? procs[id].process.pid : 'undefined'
+                            }${result ? ': ' + result : ''}`
                         );
                         if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                             procs[id].stopping = true;
@@ -5012,13 +5009,7 @@ function stopInstance(id, force, callback) {
                         }
                         if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                             logger.info(
-                                hostLogPrefix +
-                                    ' stopInstance timeout ' +
-                                    timeoutDuration +
-                                    ' ' +
-                                    instance._id +
-                                    ' killing pid  ' +
-                                    procs[id].process.pid
+                                `${hostLogPrefix} stopInstance timeout ${timeoutDuration} ${instance._id} killing pid  ${procs[id].process.pid}`
                             );
                             procs[id].stopping = true;
                             try {
@@ -5037,9 +5028,9 @@ function stopInstance(id, force, callback) {
                         }
                     }, timeoutDuration);
                 } else if (!procs[id].startedAsCompactGroup) {
-                    states.setState(id + '.sigKill', { val: -1, ack: false, from: hostObjectPrefix }, err => {
+                    states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }, err => {
                         // send kill signal
-                        logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' send kill signal');
+                        logger.info(`${hostLogPrefix} stopInstance ${instance._id} send kill signal`);
                         if (!err) {
                             if (procs[id]) {
                                 procs[id].stopping = true;
@@ -5058,11 +5049,7 @@ function stopInstance(id, force, callback) {
                             }
                             if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                                 logger.info(
-                                    hostLogPrefix +
-                                        ' stopInstance ' +
-                                        instance._id +
-                                        ' killing pid ' +
-                                        procs[id].process.pid
+                                    `${hostLogPrefix} stopInstance ${instance._id} killing pid ${procs[id].process.pid}`
                                 );
                                 procs[id].stopping = true;
                                 try {
@@ -5092,14 +5079,14 @@ function stopInstance(id, force, callback) {
 
         case 'schedule':
             if (procs[id] && !procs[id].schedule) {
-                !isStopping && logger.debug(hostLogPrefix + ' stopInstance ' + instance._id + ' not scheduled');
+                !isStopping && logger.debug(`${hostLogPrefix} stopInstance ${instance._id} not scheduled`);
             } else if (procs[id]) {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
                 if (scheduledInstances[id]) {
                     delete scheduledInstances[id];
                 }
-                logger.info(hostLogPrefix + ' stopInstance canceled schedule ' + instance._id);
+                logger.info(`${hostLogPrefix} stopInstance canceled schedule ${instance._id}`);
             }
             if (typeof callback === 'function') {
                 callback();
@@ -5109,7 +5096,7 @@ function stopInstance(id, force, callback) {
 
         case 'subscribe':
             // Remove this id from subscribed on this message
-            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) !== -1) {
+            if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].includes(id)) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
 
                 // If no one subscribed
@@ -5129,7 +5116,7 @@ function stopInstance(id, force, callback) {
             if (!procs[id].process) {
                 typeof callback === 'function' && callback();
             } else {
-                logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
+                logger.info(`${hostLogPrefix} stopInstance ${instance._id} killing pid ${procs[id].process.pid}`);
                 procs[id].stopping = true;
                 try {
                     procs[id].process.kill(); // call stop directly in adapter.js
@@ -5285,12 +5272,12 @@ function stop(force, callback) {
         }
         outputCount++;
         try {
-            await states.setStateAsync(hostObjectPrefix + '.alive', { val: false, ack: true, from: hostObjectPrefix });
-            await states.setStateAsync(hostObjectPrefix + '.pid', { val: null, ack: true, from: hostObjectPrefix });
+            await states.setStateAsync(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+            await states.setStateAsync(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
         } catch {
             // ignore
         }
-        logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
+        logger.info(`${hostLogPrefix} ${wasForced ? 'force terminating' : 'terminated'}`);
         if (wasForced) {
             for (const i of Object.keys(procs)) {
                 if (procs[i].process) {
@@ -5446,7 +5433,7 @@ function init(compactGroupId) {
             __dirname
                 .replace(/\\/g, '/')
                 .toLowerCase()
-                .indexOf('/node_modules/' + title.toLowerCase()) !== -1
+                .includes('/node_modules/' + title.toLowerCase())
         ) {
             try {
                 if (!fs.existsSync(`${__dirname}/../../package.json`)) {
@@ -5641,8 +5628,7 @@ function init(compactGroupId) {
                                     if (obj[i]) {
                                         if (
                                             typeof obj[i] === 'string' &&
-                                            (obj[i].indexOf('"val":true') !== -1 ||
-                                                obj[i].indexOf('"val":"true"') !== -1)
+                                            (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))
                                         ) {
                                             logRedirect(
                                                 true,
@@ -5669,7 +5655,7 @@ function init(compactGroupId) {
                         });
                         if (toDelete.length) {
                             toDelete.forEach(id => {
-                                logger.warn(hostLogPrefix + ' logger ' + id + ' was deleted');
+                                logger.warn(`${hostLogPrefix} logger ${id} was deleted`);
                                 states.delState(id);
                             });
                         }
@@ -5728,7 +5714,7 @@ function init(compactGroupId) {
     };
 
     process.on('SIGINT', () => {
-        logger.info(hostLogPrefix + ' received SIGINT');
+        logger.info(`${hostLogPrefix} received SIGINT`);
         stop(false);
     });
 
@@ -5749,14 +5735,27 @@ function init(compactGroupId) {
  * @private
  */
 function _determineRebuildArgsFromLog(text) {
-    // extract rebuild path - it is always between the only two single quotes
-    const matches = text.match(/'.+'/g);
+    let matches;
+    // Try to get path for this case after a →
+    if (text.includes('Could not locate the bindings file.')) {
+        matches = text.match(/→ (.+)$/gm);
+        if (matches) {
+            matches.shift(); // we need to remove the first element from match
+        }
+    }
 
-    if (matches && matches.length === 1) {
+    // else, extract rebuild path the standard way - it is always
+    // between the only two single quotes
+    if (!matches) {
+        matches = text.match(/'.+'/g);
+    }
+
+    if (matches) {
+        // We only check the first path like entry
         // remove the quotes
         let rebuildPath = matches[0].replace(/'/g, '');
         if (path.isAbsolute(rebuildPath)) {
-            // we have found a module which needs rebuild - we need to find deepest pack.json
+            // we have found a module which needs rebuild - we need to find the deepest pack.json
             rebuildPath = path.dirname(rebuildPath);
             const rootDir = path.parse(process.cwd()).root;
 

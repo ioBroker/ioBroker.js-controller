@@ -1,7 +1,7 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -45,7 +45,7 @@ const tools = require('@iobroker/db-base').tools;
 class StatesInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
-        settings.fileDB = {
+        settings.fileDB = settings.fileDB || {
             fileName: 'states.json',
             backupDirName: 'backup-objects'
         };
@@ -63,7 +63,9 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
                 : 30000;
-        this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
+        if (settings.jsonlDB) {
+            this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
+        }
 
         //this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1000;
 

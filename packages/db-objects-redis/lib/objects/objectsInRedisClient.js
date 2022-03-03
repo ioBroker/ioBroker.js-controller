@@ -1,7 +1,7 @@
 /**
  * Object DB in REDIS - Client
  *
- * Copyright (c) 2018-2021 ioBroker GmbH - All rights reserved.
+ * Copyright (c) 2018-2022 ioBroker GmbH - All rights reserved.
  *
  * You may not to use, modify or distribute this package in any form without explicit agreement from ioBroker GmbH.
  *
@@ -618,7 +618,8 @@ class ObjectsInRedisClient {
             } catch (e) {
                 // if unsupported we have a legacy host
                 if (!e.message.includes('UNSUPPORTED')) {
-                    throw e;
+                    this.log.error(`${this.namespace} Cannot determine Set feature status: ${e.message}`);
+                    return;
                 } else {
                     this.useSets = false;
                 }
@@ -2651,7 +2652,7 @@ class ObjectsInRedisClient {
 
     async _getObject(id, options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -2682,7 +2683,7 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
             }
         } else {
-            return tools.maybeCallbackWithError(callback, err, obj);
+            return tools.maybeCallbackWithRedisError(callback, err, obj);
         }
     }
 
@@ -4340,6 +4341,7 @@ class ObjectsInRedisClient {
         if (this.client) {
             try {
                 await this.client.quit();
+                this.client.removeAllListeners();
                 this.client = null;
             } catch {
                 // ignore error
@@ -4348,6 +4350,7 @@ class ObjectsInRedisClient {
         if (this.sub) {
             try {
                 await this.sub.quit();
+                this.sub.removeAllListeners();
                 this.sub = null;
             } catch {
                 // ignore error
@@ -4356,6 +4359,7 @@ class ObjectsInRedisClient {
         if (this.subSystem) {
             try {
                 await this.subSystem.quit();
+                this.subSystem.removeAllListeners();
                 this.subSystem = null;
             } catch {
                 // ignore error
@@ -4412,8 +4416,12 @@ class ObjectsInRedisClient {
                     script.loaded = true;
                 } catch (e) {
                     script.loaded = false;
-                    this.log.error(this.namespace + ' Cannot load "' + script.name + '": ' + e.message);
-                    throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
+                    this.log.error(`${this.namespace} Cannot load "${script.name}": ${e.message}`);
+                    if (!script.name.startsWith('redlock_')) {
+                        // beause of #1753 an upgrade from < 4.0 will run against the old db server which will not know redlock
+                        // TODO: remove if controller 4.0 is old enough
+                        throw new Error(`Cannot load "${script.name}" into objects database: ${e.message}`);
+                    }
                 }
                 script.hash = hash;
             }
@@ -4436,6 +4444,9 @@ class ObjectsInRedisClient {
             let uniqueKeys = [];
 
             stream.on('data', resultKeys => {
+                if (!Array.isArray(resultKeys)) {
+                    return;
+                }
                 // append result keys to uniqueKeys without duplicates
                 uniqueKeys = [...uniqueKeys, ...resultKeys];
             });
@@ -4653,8 +4664,8 @@ class ObjectsInRedisClient {
      * @return {Promise<void>}
      */
     async activateSets() {
-        this.useSets = true;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '1');
+        this.useSets = true;
     }
 
     /**
@@ -4662,8 +4673,8 @@ class ObjectsInRedisClient {
      * @return {Promise<void>}
      */
     async deactivateSets() {
-        this.useSets = false;
         await this.client.set(`${this.metaNamespace}objects.features.useSets`, '0');
+        this.useSets = false;
     }
 
     /**

@@ -1,7 +1,7 @@
 /**
  *      Object DB in memory - Server
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -27,7 +27,7 @@ const deepClone = require('deep-clone');
 class ObjectsInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
-        settings.fileDB = {
+        settings.fileDB = settings.fileDB || {
             fileName: 'objects.json',
             backupDirName: 'backup-objects'
         };
@@ -49,7 +49,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
                 : 5000;
-        this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
+        if (!settings.jsonlDB) {
+            this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
+        }
 
         this.objectsDir = path.join(this.dataDir, 'files');
 
@@ -179,17 +181,8 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         const res = this._getObjectView('system', 'meta', null);
 
-        // collect Meta objects
-        const metaObjects = {};
-        res.rows.forEach(obj => {
-            if (!obj || !obj.value || !obj.value.common || !obj.value.common.type) {
-                return;
-            }
-            if (limitId && obj.id !== limitId) {
-                return;
-            }
-            metaObjects[obj.id] = obj.value.common.type;
-        });
+        // collect meta ids to generate warning if non existing
+        const metaIds = res.rows.map(obj => obj.id).filter(id => !limitId || limitId === id);
 
         if (!fs.existsSync(this.objectsDir)) {
             return {
@@ -211,7 +204,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             if (limitId && dir !== limitId) {
                 return;
             }
-            if (!metaObjects[dir]) {
+            if (!metaIds.includes(dir)) {
                 resNotifies.push(
                     `Ignoring Directory "${dir}" because officially not created as meta object. Please remove directory!`
                 );

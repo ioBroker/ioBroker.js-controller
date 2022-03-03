@@ -75,8 +75,12 @@ class Adapter extends EventEmitter {
         if (fs.pathExistsSync(configFileName)) {
             /** @type {Record<string, any>} */
             this._config = fs.readJsonSync(configFileName);
-            this._config.states = this._config.states || { type: 'file' };
-            this._config.objects = this._config.objects || { type: 'file' };
+            this._config.states = this._config.states || { type: 'jsonl' };
+            this._config.objects = this._config.objects || { type: 'jsonl' };
+            // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
+            // because the lockfile might not have been freed.
+            this._config.states.connectTimeout = Math.max(this._config.states.connectTimeout || 0, 5000);
+            this._config.objects.connectTimeout = Math.max(this._config.objects.connectTimeout || 0, 5000);
         } else {
             throw new Error(`Cannot find ${configFileName}`);
         }
@@ -1249,12 +1253,8 @@ class Adapter extends EventEmitter {
      * @param {number} id - timer id
      */
     clearTimeout(id) {
-        if (!this._timers.has(id)) {
-            this._logger.warn(`${this.namespaceLog} Clear already terminated timer ${id}`);
-        } else {
-            clearTimeout(id);
-            this._timers.delete(id);
-        }
+        clearTimeout(id);
+        this._timers.delete(id);
     }
 
     /**
@@ -1301,7 +1301,7 @@ class Adapter extends EventEmitter {
             return;
         }
 
-        const id = setInterval(() => cb(...args));
+        const id = setInterval(() => cb(...args), timeout);
         this._intervals.add(id);
 
         return id;
@@ -1314,12 +1314,8 @@ class Adapter extends EventEmitter {
      * @param {number} id - interval id
      */
     clearInterval(id) {
-        if (!this._intervals.has(id)) {
-            this._logger.warn(`${this.namespaceLog} Clear already terminated interval ${id}`);
-        } else {
-            clearInterval(id);
-            this._intervals.delete(id);
-        }
+        clearInterval(id);
+        this._intervals.delete(id);
     }
 
     /**
@@ -8130,6 +8126,10 @@ class Adapter extends EventEmitter {
          * Called if states and objects successfully initalized
          */
         const prepareInitAdapter = () => {
+            if (this.terminated) {
+                return;
+            }
+
             if (this._options.instance !== undefined) {
                 initAdapter(this._options);
             } else {
@@ -8202,7 +8202,7 @@ class Adapter extends EventEmitter {
                     this._logger &&
                         this._logger.warn(this.namespaceLog + ' slow connection to objects DB. Still waiting ...');
                 }
-            }, (this._config.objects.connectTimeout || 2000) * 3); // Because we do not connect only anymore, give it a bit more time
+            }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
             adapterObjects = new Objects({
                 namespace: this.namespaceLog,
@@ -9013,7 +9013,7 @@ class Adapter extends EventEmitter {
             initLogging(() => {
                 this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
                 this.pluginHandler.initPlugins(adapterConfig, async () => {
-                    if (!adapterStates) {
+                    if (!adapterStates || this.terminated) {
                         // if adapterState was destroyed,we should not continue
                         return;
                     }

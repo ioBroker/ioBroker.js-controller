@@ -1,11 +1,11 @@
 {
   "name": "@iobroker/db-states-jsonl",
-  "version": "4.0.0-alpha.72-20220203-aa6d25b3",
+  "version": "4.1.0-alpha.4-20220303-091d044b",
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@alcalzone/jsonl-db": "~2.4.1",
+    "@alcalzone/jsonl-db": "~2.5.1",
     "@iobroker/db-base": "file:../db-base",
     "@iobroker/db-states-file": "file:../db-states-file",
     "@iobroker/db-states-redis": "file:../db-states-redis"

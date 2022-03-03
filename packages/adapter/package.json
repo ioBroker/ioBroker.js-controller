@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-adapter",
-  "version": "4.0.0-alpha.72-20220203-aa6d25b3",
+  "version": "4.1.0-alpha.4-20220303-091d044b",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -14,9 +14,9 @@
     "@iobroker/db-states-redis": "file:../db-states-redis",
     "@iobroker/js-controller-common": "file:../common",
     "@iobroker/plugin-base": "~1.2.1",
-    "@iobroker/plugin-sentry": "~1.1.10",
+    "@iobroker/plugin-sentry": "~1.2.0",
     "deep-clone": "^3.0.3",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "jsonwebtoken": "^8.5.1",
     "node-schedule": "^2.1.0",
     "node.extend": "^2.0.2",

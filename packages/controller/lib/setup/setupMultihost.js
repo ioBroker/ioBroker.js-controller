@@ -1,7 +1,7 @@
 /**
  *      Multihost
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -13,7 +13,7 @@
 function Multihost(options) {
     const fs = require('fs-extra');
     const { tools } = require('@iobroker/js-controller-common');
-    const dbTools = require('@iobroker/js-controller-common-db');
+    const { tools: dbTools } = require('@iobroker/js-controller-common-db');
     const configName = tools.getConfigFileName();
     const that = this;
 

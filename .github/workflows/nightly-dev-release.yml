@@ -20,7 +20,7 @@ jobs:
         fetch-depth: 0 # Fetch the history, or this action won't work
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.5.1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -70,7 +70,7 @@ jobs:
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         result-encoding: string
         script: |
@@ -98,7 +98,15 @@ jobs:
           }
 
           // Figure out the next version
-          return `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+          const nightlyVersion =  `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+
+          // ensure that io-pack is in sync
+          const fs = require('fs');
+          const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
+          ioPack.common.version = semver.inc(nightlyVersion, 'patch');;
+          fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
+
+          return nightlyVersion;
 
     - name: Bump version and publish
       if: steps.changes.outputs.result == 'ok'
@@ -111,8 +119,10 @@ jobs:
         git config --global user.email "moritz.heusinger@gmail.com"
         git config --global user.name "Github Action"
 
-        npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes
+        git add .
+        git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
         npx lerna publish from-package --yes --dist-tag dev
+        git push
 
     - name: Create Github Release
       if: steps.changes.outputs.result == 'ok'

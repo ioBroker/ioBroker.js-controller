@@ -1,7 +1,7 @@
 /**
  *      Show users and groups
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -236,7 +236,7 @@ function Users(options) {
                     if (result) {
                         if (result.password !== result.repeatPassword) {
                             console.log('Passwords are not identical!');
-                            processExit(EXIT_CODES.INVALID_PASSWORD);
+                            return void processExit(EXIT_CODES.INVALID_PASSWORD);
                         }
                         //create user
                         that.addUser(user, result.password, err => {

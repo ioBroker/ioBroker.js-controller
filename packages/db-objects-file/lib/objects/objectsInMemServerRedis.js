@@ -1,7 +1,7 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -45,8 +45,8 @@ const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
 //
 
 /**
- * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
- * to access the methods via socket.io
+ * This class inherits statesInMemoryFileDB class and adds redis communication layer
+ * to access the methods via redis protocol
  **/
 class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
@@ -321,7 +321,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
             if (this.knownScripts[data[0]].design) {
                 const scriptDesign = this.knownScripts[data[0]].design;
-                if (data[2] === this.namespaceObj && data.length > 4) {
+                if (typeof data[2] === 'string' && data[2].startsWith(this.namespaceObj) && data.length > 4) {
                     let scriptSearch = this.knownScripts[data[0]].search;
                     if (scriptDesign === 'system' && !scriptSearch && data[5]) {
                         scriptSearch = data[5];
@@ -843,28 +843,26 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * Destructor of the class. Called by shutting down.
      */
     async destroy() {
-        await super.destroy();
-
         if (this.server) {
             Object.keys(this.serverConnections).forEach(s => {
                 this.serverConnections[s].close();
                 delete this.serverConnections[s];
             });
 
-            return /** @type {Promise<void>} */ (
-                new Promise(resolve => {
-                    if (!this.server) {
-                        return void resolve();
-                    }
-                    try {
-                        this.server.close(() => resolve());
-                    } catch (e) {
-                        console.log(e.message);
-                        resolve();
-                    }
-                })
-            );
+            await new Promise(resolve => {
+                if (!this.server) {
+                    return void resolve();
+                }
+                try {
+                    this.server.close(() => resolve());
+                } catch (e) {
+                    console.log(e.message);
+                    resolve();
+                }
+            });
         }
+
+        await super.destroy();
     }
 
     /**

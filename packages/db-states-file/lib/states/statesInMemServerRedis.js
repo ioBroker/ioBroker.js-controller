@@ -1,7 +1,7 @@
 /**
  *      States DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -244,7 +244,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                 }
             } else if (namespace === this.namespaceSession) {
                 const result = this._getSession(id);
-                if (result === null) {
+                if (result === undefined || result === null) {
                     handler.sendNull(responseId);
                 } else {
                     handler.sendBulk(responseId, JSON.stringify(result));
@@ -476,28 +476,25 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
      * Destructor of the class. Called by shutting down.
      */
     async destroy() {
-        await super.destroy();
-
         if (this.server) {
             for (const s of Object.keys(this.serverConnections)) {
                 this.serverConnections[s].close();
                 delete this.serverConnections[s];
             }
 
-            return /** @type {Promise<void>} */ (
-                new Promise(resolve => {
-                    if (!this.server) {
-                        return void resolve();
-                    }
-                    try {
-                        this.server.close(() => resolve());
-                    } catch (e) {
-                        console.log(e.message);
-                        resolve();
-                    }
-                })
-            );
+            await new Promise(resolve => {
+                if (!this.server) {
+                    return void resolve();
+                }
+                try {
+                    this.server.close(() => resolve());
+                } catch (e) {
+                    console.log(e.message);
+                    resolve();
+                }
+            });
         }
+        await super.destroy();
     }
 
     /**

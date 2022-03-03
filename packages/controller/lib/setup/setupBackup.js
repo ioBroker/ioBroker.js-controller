@@ -1,7 +1,7 @@
 /**
  *      Backup
  *
- *      Copyright 2013-2021 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -15,6 +15,7 @@ const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const path = require('path');
+const cpPromise = require('promisify-child-process');
 
 // We cannot use relative paths for the backup locations, as they used by both
 // require, which resolves relative paths from __dirname
@@ -49,6 +50,8 @@ class BackupRestore {
         this.restartController = options.restartController;
         this.dbMigration = options.dbMigration || false;
         this.mime = null;
+        /** these adapters will be reinstalled during restore, while others will be installed after next controller start */
+        this.PRESERVE_ADAPTERS = ['admin', 'backitup'];
 
         this.upload = new Upload(options);
 
@@ -95,24 +98,6 @@ class BackupRestore {
             }
         }
     }
-
-    async _removeFolderRecursive(path) {
-        if (fs.existsSync(path)) {
-            for (const file of fs.readdirSync(path)) {
-                const curPath = `${path}/${file}`;
-
-                if (fs.statSync(curPath).isDirectory()) {
-                    // recurse
-                    await this._removeFolderRecursive(curPath);
-                } else {
-                    // delete file
-                    fs.unlinkSync(curPath);
-                }
-            }
-
-            fs.rmdirSync(path);
-        }
-    } // endRemoveFolderRecursive
 
     getBackupDir() {
         let dataDir = tools.getDefaultDataDir();
@@ -200,7 +185,7 @@ class BackupRestore {
             });
 
             f.on('error', err => {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err}`);
+                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
                 this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
             });
 
@@ -208,7 +193,7 @@ class BackupRestore {
                 tar.create({ gzip: true, cwd: `${tmpDir}/` }, ['backup']).pipe(f);
             } catch (err) {
                 console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
-                return this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
+                return void this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
             }
         });
     }
@@ -254,7 +239,7 @@ class BackupRestore {
             }
         }
 
-        const result = { objects: null, states: {} };
+        let result = { objects: null, states: {} };
 
         const hostname = tools.getHostName();
 
@@ -326,7 +311,11 @@ class BackupRestore {
             fs.mkdirSync(tmpDir);
         }
 
-        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+        try {
+            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+        } catch (e) {
+            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+        }
 
         if (!fs.existsSync(`${tmpDir}/backup`)) {
             fs.mkdirSync(`${tmpDir}/backup`);
@@ -427,14 +416,19 @@ class BackupRestore {
 
         console.log(`host.${hostname} ${result.objects.length} objects saved`);
 
-        fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
-
         try {
+            fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
+            result = null; // ... to allow GC to clean it up because no longer needed
+
             this._validateBackupAfterCreation();
             return await this._packBackup(name);
         } catch (err) {
             console.error(`host.${hostname} Backup not created: ${err.message}`);
-            await this._removeFolderRecursive(`${tmpDir}/backup/`);
+            try {
+                tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+            } catch (e) {
+                console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+            }
             return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
         }
     }
@@ -474,7 +468,7 @@ class BackupRestore {
             if (
                 !this.dbMigration &&
                 _objects[i].id &&
-                _objects[i].id.startsWith('system.adapter.') &&
+                /^system\.adapter\..+\.\d$/.test(_objects[i].id) &&
                 !_objects[i].id.startsWith('system.adapter.admin.') &&
                 !_objects[i].id.startsWith('system.adapter.backitup.')
             ) {
@@ -629,6 +623,10 @@ class BackupRestore {
     }
 
     _copyBackupedFiles(backupDir) {
+        if (!fs.existsSync(backupDir)) {
+            console.log('No additional files to restore');
+            return;
+        }
         const dirs = fs.readdirSync(backupDir);
 
         dirs.forEach(dir => {
@@ -670,17 +668,16 @@ class BackupRestore {
         const controllerDir = tools.getControllerDir();
 
         // check that the same controller version is installed as it is contained in backup
-        if (!force) {
-            const exitCode = this._ensureCompatibility(
-                controllerDir,
-                restore.config ? restore.config.system.hostname || hostname : hostname,
-                restore.objects
-            );
+        const exitCode = this._ensureCompatibility(
+            controllerDir,
+            restore.config ? restore.config.system.hostname || hostname : hostname,
+            restore.objects,
+            force
+        );
 
-            if (exitCode) {
-                // we had an error
-                return exitCode;
-            }
+        if (exitCode) {
+            // we had an error
+            return exitCode;
         }
 
         if (!dontDeleteAdapters) {
@@ -715,11 +712,12 @@ class BackupRestore {
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(pathLib.join(tmpDir, 'backup'));
+        // reinstall preserve adapters
+        await this._restorePreservedAdapters();
 
         if (force) {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
-            const cpPromise = require('promisify-child-process');
             try {
                 await cpPromise.exec(
                     `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
@@ -747,7 +745,6 @@ class BackupRestore {
     async _removeAllAdapters(controllerDir) {
         const nodeModulePath = path.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
-
         // we need to uninstall current adapters to get exact the same system as before backup
         for (const dir of nodeModuleDirs) {
             if (
@@ -772,24 +769,31 @@ class BackupRestore {
      * @param {string} controllerDir - directory of js-controller
      * @param {string} backupHostname - hostname in backup file
      * @param {object[]} backupObjects - the objects contained in the backup
+     * @param {boolean} force - if force is true, only log
      * @return {undefined|number}
      * @private
      */
-    _ensureCompatibility(controllerDir, backupHostname, backupObjects) {
+    _ensureCompatibility(controllerDir, backupHostname, backupObjects, force) {
         try {
             const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
             const hostObj = backupObjects.find(obj => obj.id === `system.host.${backupHostname}`);
             if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
-                console.warn('The current version of js-controller differs from the version in the backup.');
-                console.warn('The js-controller version of the backup can not be restored automatically.');
-                console.warn(
-                    `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
-                );
-                console.warn(
-                    'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
-                );
+                if (!force) {
+                    console.warn('The current version of js-controller differs from the version in the backup.');
+                    console.warn('The js-controller version of the backup can not be restored automatically.');
+                    console.warn(
+                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
+                    );
+                    console.warn(
+                        'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
+                    );
 
-                return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+                    return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+                } else {
+                    console.info('The current version of js-controller differs from the version in the backup.');
+                    console.info('The js-controller version of the backup can not be restored automatically.');
+                    console.info('Note, that your backup might differ in behavior due to this version change!');
+                }
             }
         } catch {
             // ignore
@@ -906,7 +910,7 @@ class BackupRestore {
                     file: name,
                     cwd: tmpDir
                 },
-                async err => {
+                err => {
                     if (err) {
                         console.error(`host.${hostname} Cannot extract from file "${name}"`);
                         return void this.processExit(9);
@@ -926,13 +930,21 @@ class BackupRestore {
                         console.error(
                             `host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
                         );
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        try {
+                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                        }
                         return void this.processExit(26);
                     }
 
                     if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
                         console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        try {
+                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                        }
                         return void this.processExit(26);
                     } // endIf
 
@@ -940,7 +952,11 @@ class BackupRestore {
 
                     try {
                         this._checkDirectory(`${tmpDir}/backup/files`, true);
-                        await this._removeFolderRecursive(`${tmpDir}/backup/`);
+                        try {
+                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                        }
                         resolve();
                     } catch (err) {
                         console.error(`host.${hostname} Backup corrupted: ${err.message}`);
@@ -1004,7 +1020,7 @@ class BackupRestore {
             } else {
                 console.warn('No backups found');
             }
-            return this.processExit(10);
+            return void this.processExit(10);
         }
 
         if (!this.cleanDatabase) {
@@ -1045,7 +1061,7 @@ class BackupRestore {
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${hostname} Cannot find ${name}`);
-            return this.processExit(11);
+            return void this.processExit(11);
         }
         const tar = require('tar');
 
@@ -1060,13 +1076,13 @@ class BackupRestore {
             err => {
                 if (err) {
                     console.error(`host.${hostname} Cannot extract from file "${name}"`);
-                    return this.processExit(9);
+                    return void this.processExit(9);
                 }
                 if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
                     console.error(
                         `host.${hostname} Cannot find extracted file from file "${tmpDir}/backup/backup.json"`
                     );
-                    return this.processExit(9);
+                    return void this.processExit(9);
                 }
                 // Stop controller
                 const daemon = require('daemonize2').setup({
@@ -1093,6 +1109,33 @@ class BackupRestore {
                 daemon.stop();
             }
         );
+    }
+
+    /**
+     * This method checks if adapter of PRESERVE_ADAPTERS exist, and reinstalls them if this is the case
+     *
+     * @return {Promise<void>}
+     * @private
+     */
+    async _restorePreservedAdapters() {
+        for (const adapterName of this.PRESERVE_ADAPTERS) {
+            try {
+                const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
+                if (adapterObj && adapterObj.common && adapterObj.common.version) {
+                    let installSource;
+                    if (adapterObj.common.installedFrom) {
+                        installSource = adapterObj.common.installedFrom;
+                    } else {
+                        installSource = `${tools.appName.toLowerCase()}.${adapterName}@${adapterObj.common.version}`;
+                    }
+
+                    console.log(`Reinstalling adapter "${adapterName}" from "${installSource}"`);
+                    await tools.installNodeModule(installSource);
+                }
+            } catch (e) {
+                console.error(`Could not ensure existence of adapter "${adapterName}": ${e.message}`);
+            }
+        }
     }
 }
 
