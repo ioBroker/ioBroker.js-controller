@@ -393,28 +393,26 @@ function createStates(onConnect) {
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    setImmediate(() => {
-                        objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
-                            if (err) {
-                                logger.error(`${hostLogPrefix} Cannot read object: ${err}`);
+                    objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
+                        if (err) {
+                            logger.error(`${hostLogPrefix} Cannot read object: ${err}`);
+                        }
+                        if (obj && obj.common) {
+                            // IF adapter enabled => disable it
+                            if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
+                                obj.common.enabled = !!enabled;
+                                logger.info(
+                                    `${hostLogPrefix} instance "${obj._id}" ${
+                                        obj.common.enabled ? 'enabled' : 'disabled'
+                                    } via .alive`
+                                );
+                                obj.from = hostObjectPrefix;
+                                obj.ts = Date.now();
+                                objects.setObject(obj._id, obj, err =>
+                                    logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
+                                );
                             }
-                            if (obj && obj.common) {
-                                // IF adapter enabled => disable it
-                                if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
-                                    obj.common.enabled = !!enabled;
-                                    logger.info(
-                                        `${hostLogPrefix} instance "${obj._id}" ${
-                                            obj.common.enabled ? 'enabled' : 'disabled'
-                                        } via .alive`
-                                    );
-                                    setImmediate(() => {
-                                        obj.from = hostObjectPrefix;
-                                        obj.ts = Date.now();
-                                        objects.setObject(obj._id, obj);
-                                    });
-                                }
-                            }
-                        });
+                        }
                     });
                 }
             } else if (subscribe[id]) {
@@ -2461,7 +2459,11 @@ async function processMessage(msg) {
                             }
                         }
                         if (changed) {
-                            await objects.setObjectAsync('system.repositories', systemRepos);
+                            try {
+                                await objects.setObjectAsync('system.repositories', systemRepos);
+                            } catch (e) {
+                                logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
+                            }
                         }
                     }
 
