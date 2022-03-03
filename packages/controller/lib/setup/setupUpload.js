@@ -299,6 +299,14 @@ function Upload(options) {
         }
     }
 
+    /**
+     * Collect Files of an adapter specific directory from the iobroker storage
+     *
+     * @param adapter {string} Adaptername
+     * @param path {string} path in the adapterspecific storage space
+     * @param logger {any} Logger instance
+     * @returns {Promise<{dirs: *[], filesToDelete: *[]}>}
+     */
     async function collectExistingFilesToDelete(adapter, path, logger) {
         let _files = [];
         let _dirs = [];
@@ -328,7 +336,7 @@ function Upload(options) {
 
                         _dirs = _dirs.concat(result.dirs);
                     } catch (err) {
-                        console.warn(`Cannot delete folder "${adapter}${newPath}/": ${err.message}`);
+                        logger.warn(`Cannot delete folder "${adapter}${newPath}/": ${err.message}`);
                     }
                 } else if (!_files.find(e => e.path === newPath)) {
                     _files.push({ adapter, path: newPath });
