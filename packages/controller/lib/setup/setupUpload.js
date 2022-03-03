@@ -312,7 +312,7 @@ function Upload(options) {
 
         if (files && files.length) {
             for (const file of files) {
-                if (files[f].file === '.' || files[f].file === '..') {
+                if (file.file === '.' || file.file === '..') {
                     continue;
                 }
                 const newPath = path + files[f].file;
