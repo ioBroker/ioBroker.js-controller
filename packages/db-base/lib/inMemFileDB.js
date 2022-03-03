@@ -184,7 +184,7 @@ class InMemoryFileDB {
         const maxTimeoutMinutes = Math.floor((2 ** 31 - 1) / 60000);
         if (this.settings.backup.period > maxTimeoutMinutes) {
             this.settings.backup.period = 120;
-            this.log.warning(
+            this.log.warn(
                 `${this.namespace} Configured backup period ${this.settings.backup.period} is larger than the supported maximum of ${maxTimeoutMinutes} minutes. Defaulting to 120 minutes.`
             );
         }
