@@ -70,6 +70,7 @@ function Install(options) {
 
     /**
      * Enables or disables given instances
+     *
      * @param {ioBroker.InstanceObject[]} instances
      * @param {boolean} enabled
      * @return {Promise<void>}
@@ -1822,10 +1823,11 @@ function Install(options) {
     };
 
     /**
-     * Get all instances of an adapter
+     * Get all instances of an adapter which are on the current host
      *
      * @param {string} adapter
      * @return {Promise<ioBroker.InstanceObject[]>}
+     * @private
      */
     this._getInstancesOfAdapter = async adapter => {
         const instances = [];
