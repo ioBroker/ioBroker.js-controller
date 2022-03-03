@@ -68,10 +68,16 @@ function Install(options) {
     const Upload = require('./setupUpload');
     const upload = new Upload(options);
 
-    this.enableAdapters = async function (adapters, enabled) {
-        if (adapters && adapters.length) {
+    /**
+     * Enables or disables given instances
+     * @param {ioBroker.InstanceObject[]} instances
+     * @param {boolean} enabled
+     * @return {Promise<void>}
+     */
+    this.enableInstances = async function (instances, enabled) {
+        if (instances && instances.length) {
             const ts = Date.now();
-            for (let i = 0; i < adapters.length; i++) {
+            for (const instance of instances) {
                 const updatedObj = {
                     common: {
                         enabled
@@ -79,8 +85,8 @@ function Install(options) {
                     from: `system.host.${tools.getHostName()}.cli`,
                     ts
                 };
-                console.log(`host.${hostname} Adapter "${adapters[i]._id}" is ${enabled ? 'started' : 'stopped.'}`);
-                await objects.extendObjectAsync(adapters[i]._id, updatedObj);
+                console.log(`host.${hostname} Adapter "${instance._id}" is ${enabled ? 'started' : 'stopped.'}`);
+                await objects.extendObjectAsync(instance._id, updatedObj);
             }
         }
     };
@@ -92,7 +98,7 @@ function Install(options) {
      * @param {string} packetName
      * @param {Record<string, any>?} options, { stopDb: true } - will stop the db before upgrade ONLY use it for controller upgrade -
      * db is gone afterwards, does not work with stoppedList
-     * @param {object[]?} stoppedList
+     * @param {ioBroker.InstanceObject[]?} stoppedList
      * @return {Promise<Record<string, any>>}
      */
     this.downloadPacket = async function (repoUrl, packetName, options, stoppedList) {
@@ -142,21 +148,8 @@ function Install(options) {
             ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
             !stoppedList.length
         ) {
-            const doc = await objects.getObjectListAsync({
-                startkey: `system.adapter.${packetName}.`,
-                endkey: `system.adapter.${packetName}.\u9999`
-            });
-
-            if (doc) {
-                for (const row of doc.rows) {
-                    // stop only started instances on this host
-                    if (row.value.common.enabled && hostname === row.value.common.host) {
-                        stoppedList.push(row.value);
-                    }
-                }
-            }
-
-            await this.enableAdapters(stoppedList, false);
+            stoppedList = await this._getInstancesOfAdapter(packetName);
+            await this.enableInstances(stoppedList, false);
         }
 
         // try to extract the information from local sources-dist.json
@@ -563,7 +556,7 @@ function Install(options) {
 
             const { stoppedList } = await this.downloadPacket(repoUrl, fullName);
             await this.installAdapter(adapter, repoUrl, _installCount);
-            await this.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
+            await this.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
             return adapter;
         }
         let adapterConf;
@@ -1580,13 +1573,7 @@ function Install(options) {
             /* ignore, not a valid URL */
         }
 
-        let debug = false;
-        for (let i = 0; i < process.argv.length; i++) {
-            if (process.argv[i] === '--debug') {
-                debug = true;
-                break;
-            }
-        }
+        const debug = process.arg.includes('--debug');
 
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
@@ -1663,6 +1650,14 @@ function Install(options) {
             packetName: name
         };
 
+        /** list of stopped instances for windows */
+        let stoppedList = [];
+
+        if (process.platform === 'win32') {
+            stoppedList = await this._getInstancesOfAdapter(name);
+            await this.enableInstances(stoppedList, false);
+        }
+
         const res = await this._npmInstallWithCheck(url, options, debug);
         // if we have no installDir, the method has called processExit itself
         if (!res || !res.installDir) {
@@ -1697,6 +1692,9 @@ function Install(options) {
                 await upload.upgradeAdapterObjects(name);
             }
         }
+
+        // re-enable stopped instances
+        await this.enableInstances(stoppedList, true);
     };
 
     /**
@@ -1821,6 +1819,31 @@ function Install(options) {
         }
 
         return false;
+    };
+
+    /**
+     * Get all instances of an adapter
+     *
+     * @param {string} adapter
+     * @return {Promise<ioBroker.InstanceObject[]>}
+     */
+    this._getInstancesOfAdapter = async adapter => {
+        const instances = [];
+        const doc = await objects.getObjectListAsync({
+            startkey: `system.adapter.${adapter}.`,
+            endkey: `system.adapter.${adapter}.\u9999`
+        });
+
+        if (doc) {
+            for (const row of doc.rows) {
+                // stop only started instances on this host
+                if (row.value.common.enabled && hostname === row.value.common.host) {
+                    instances.push(row.value);
+                }
+            }
+        }
+
+        return instances;
     };
 }
 
