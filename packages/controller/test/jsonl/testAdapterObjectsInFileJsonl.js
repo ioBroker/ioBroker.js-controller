@@ -36,7 +36,7 @@ const objectsConfig = {
 
 describe(textName + ' Test Objects File-Redis', function () {
     before(textName + ' Start js-controller', function (_done) {
-        this.timeout(2000);
+        this.timeout(3000);
 
         setup.startController(
             {

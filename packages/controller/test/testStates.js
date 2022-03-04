@@ -29,7 +29,7 @@ function cleanDbs() {
 
 describe('States: Test states in File-Redis', function () {
     before('States: Start js-controller', function (_done) {
-        this.timeout(2000);
+        this.timeout(3000);
         cleanDbs();
 
         setup.startController(

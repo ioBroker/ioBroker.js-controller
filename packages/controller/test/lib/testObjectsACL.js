@@ -119,7 +119,7 @@ function register(it, expect, context) {
                     }
                 })
             );
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'invalid user name must be checked #1', () => {
         const objects = context.objects;
@@ -132,7 +132,7 @@ function register(it, expect, context) {
                 console.error(err.message);
                 expect(err.message).to.be.equal('permissionError');
             });
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'invalid user name must be checked #2', () => {
         const objects = context.objects;
@@ -145,7 +145,7 @@ function register(it, expect, context) {
                 console.error(err.message);
                 expect(err.message).to.be.equal('permissionError');
             });
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'admin may read secret object', () => {
         const objects = context.objects;
@@ -158,7 +158,7 @@ function register(it, expect, context) {
                 console.error(err.message);
                 expect(1).to.be.equal('Never happens');
             });
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'user may not read secret object', () => {
         const objects = context.objects;
@@ -170,7 +170,7 @@ function register(it, expect, context) {
             .catch(err => {
                 expect(err.message).to.be.equal('permissionError');
             });
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'default acl from system.config should be used', async () => {
         const objects = context.objects;
@@ -189,7 +189,7 @@ function register(it, expect, context) {
 
         expect(obj.acl.owner).to.be.equal('system.user.governor');
         expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'default acl from system.config can be overwritten via acl', async () => {
         const objects = context.objects;
@@ -205,7 +205,7 @@ function register(it, expect, context) {
         const obj = await objects.getObjectAsync('test.overwriteAclDef');
         expect(obj.acl.owner).to.be.equal('system.user.user');
         expect(obj.acl.ownerGroup).to.be.equal('system.group.administrator');
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(textName + 'default acl from system.config is used when user is admin', async () => {
         const objects = context.objects;
@@ -213,7 +213,7 @@ function register(it, expect, context) {
         const obj = await objects.getObjectAsync('test.aclAdmin');
         expect(obj.acl.owner).to.be.equal('system.user.governor');
         expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(
         textName + 'default acl from system.config is used when user is admin and can be modified on the fly',
@@ -239,7 +239,7 @@ function register(it, expect, context) {
             expect(obj.acl.owner).to.be.equal('system.user.notGovernor');
             expect(obj.acl.ownerGroup).to.be.equal('system.group.notSenatorGroup');
         }
-    ).timeout(1000);
+    ).timeout(2000);
 }
 
 module.exports.register = register;

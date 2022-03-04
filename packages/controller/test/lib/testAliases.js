@@ -257,7 +257,7 @@ function register(it, expect, context) {
                 });
             }
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Read alias states', done => {
         context.adapter.setForeignObject(
@@ -326,7 +326,7 @@ function register(it, expect, context) {
                 });
             }
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Write alias state', done => {
         context.adapter.setForeignState(gAliasID, 10, false, () => {
@@ -338,7 +338,7 @@ function register(it, expect, context) {
                 done();
             });
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     // custom read/write functions
     it(testName + 'Use convert state', done => {
@@ -400,7 +400,7 @@ function register(it, expect, context) {
                 });
             }
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Read alias state by not admin', done => {
         prepareGroupsAndUsers(context.objects).then(() => {
@@ -423,7 +423,7 @@ function register(it, expect, context) {
                 });
             });
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Read alias state by not admin without rights', done => {
         prepareGroupsAndUsers(context.objects).then(() => {
@@ -436,7 +436,7 @@ function register(it, expect, context) {
                 });
             });
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     // test subscriptions
     // subscribeForeignStates
@@ -454,7 +454,7 @@ function register(it, expect, context) {
         context.adapter.subscribeForeignStates(gAliasID, () =>
             context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test unsubscribe aliases', done => {
         context.onAdapterStateChanged = () => {
@@ -467,7 +467,7 @@ function register(it, expect, context) {
                 setTimeout(() => done(), 500);
             });
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test subscribe aliases pattern', done => {
         context.onAdapterStateChanged = (id, state) => {
@@ -486,7 +486,7 @@ function register(it, expect, context) {
         context.adapter.subscribeForeignStates(parts.join('.') + '.*', () =>
             context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test unsubscribe aliases pattern', done => {
         context.onAdapterStateChanged = () => {
@@ -502,7 +502,7 @@ function register(it, expect, context) {
                 setTimeout(() => done(), 500);
             });
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test negative subscribe aliases regex', done => {
         const parts = gAliasID.split('.');
@@ -514,7 +514,7 @@ function register(it, expect, context) {
             expect(err).to.be.ok;
             done();
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test unsubscribe aliases regex', done => {
         const parts = gAliasID.split('.');
@@ -525,7 +525,7 @@ function register(it, expect, context) {
             expect(err).to.be.ok;
             done();
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test subscribe aliases array', done => {
         let count = 0;
@@ -552,7 +552,7 @@ function register(it, expect, context) {
         context.adapter.subscribeForeignStates([gAliasID, gid], () =>
             context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
         );
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test unsubscribe aliases array', done => {
         context.onAdapterStateChanged = () => {
@@ -565,7 +565,7 @@ function register(it, expect, context) {
                 setTimeout(() => done(), 500);
             });
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     it(testName + 'Test change subscribed aliases', done => {
         context.onAdapterStateChanged = (id, state) => {

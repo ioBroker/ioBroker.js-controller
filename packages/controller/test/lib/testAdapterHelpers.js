@@ -23,7 +23,7 @@ chai.use(sinonChai);
 function register(it, expect, context) {
     //adapterGetPort
     it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
 
         //Throw Error
         expect(context.adapter.getPort.bind('')).to.throw('adapterGetPort: no port');
@@ -44,7 +44,7 @@ function register(it, expect, context) {
 
     // //adapterGetPort (async)
     // it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port (ASYNC)', function () {
-    //     this.timeout(2000);
+    //     this.timeout(3000);
 
     //     const tests = [
     //         //Throw Error
@@ -64,7 +64,7 @@ function register(it, expect, context) {
 
     //checkPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
 
         //Expecting a callback
         context.adapter.checkPassword('claus', '1234').should.be.rejectedWith('checkPassword: no callback');
@@ -84,7 +84,7 @@ function register(it, expect, context) {
 
     //checkPassword (async)
     it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password (ASYNC)', function () {
-        this.timeout(2000);
+        this.timeout(3000);
 
         const tests = [
             // promisify always provides a callback, so that doesn't need to be tested
@@ -107,7 +107,7 @@ function register(it, expect, context) {
 
     //setPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: sets the users password', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // TODO: sync
         // TODO: async
         done();
@@ -115,7 +115,7 @@ function register(it, expect, context) {
 
     //checkGroup
     it(context.name + ' ' + context.adapterShortName + ' adapter: user exists and is in the group', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // TODO: sync
         // TODO: async
         done();
@@ -123,7 +123,7 @@ function register(it, expect, context) {
 
     //calculatePermissions
     it(context.name + ' ' + context.adapterShortName + ' adapter: get the user permissions', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // TODO: sync
         // TODO: async
         done();
@@ -131,7 +131,7 @@ function register(it, expect, context) {
 
     //getCertificates
     it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // TODO: sync
         // TODO: async
         done();
@@ -150,7 +150,7 @@ function register(it, expect, context) {
 
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         let testValue;
 
         // Test with number
@@ -197,7 +197,7 @@ function register(it, expect, context) {
 
     // formatDate
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const testDate = new Date(0);
         let testStringDate;
 
@@ -333,11 +333,11 @@ function register(it, expect, context) {
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
 
         done();
-    }).timeout(1000);
+    }).timeout(2000);
 
     // idToDCS
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check idToDCS', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         let testString;
 
         //test no id
@@ -357,7 +357,7 @@ function register(it, expect, context) {
 
     // _DCS2ID
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check _DCS2ID', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         let testString;
 
         //test no parameters
@@ -421,7 +421,7 @@ function register(it, expect, context) {
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
             it('at least one property has to exist', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: undefined }, callback);
 
@@ -434,7 +434,7 @@ function register(it, expect, context) {
             });
 
             it('forbids extra properties', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, foo: 'bar' }, callback);
                 setImmediate(() => {
@@ -445,7 +445,7 @@ function register(it, expect, context) {
             });
 
             it('enforces ack to be a boolean', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, ack: 'true' }, callback);
                 setImmediate(() => {
@@ -457,7 +457,7 @@ function register(it, expect, context) {
             });
 
             it('enforces ts to be a number', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, ts: true }, callback);
                 setImmediate(() => {
@@ -469,7 +469,7 @@ function register(it, expect, context) {
             });
 
             it('enforces q to be a number', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, q: true }, callback);
                 setImmediate(() => {
@@ -481,7 +481,7 @@ function register(it, expect, context) {
             });
 
             it('enforces expire to be a number', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, expire: true }, callback);
                 setImmediate(() => {
@@ -493,7 +493,7 @@ function register(it, expect, context) {
             });
 
             it('enforces from to be a string', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, from: 2 }, callback);
                 setImmediate(() => {
@@ -505,7 +505,7 @@ function register(it, expect, context) {
             });
 
             it('enforces c to be a string', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 const callback = spy();
                 context.adapter[method]('testid', { val: 1, c: [] }, callback);
                 setImmediate(() => {
@@ -517,7 +517,7 @@ function register(it, expect, context) {
             });
 
             it('is okay to have undefined val if another property exists', function (done) {
-                this.timeout(2000);
+                this.timeout(3000);
                 // cannot use the sync spies here, so only evaluate the err
                 context.adapter[method]('testid', { ack: true }, err => {
                     expect(err).to.be.not.ok;
