@@ -1574,7 +1574,7 @@ function Install(options) {
             /* ignore, not a valid URL */
         }
 
-        const debug = process.arg.includes('--debug');
+        const debug = process.argv.includes('--debug');
 
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
