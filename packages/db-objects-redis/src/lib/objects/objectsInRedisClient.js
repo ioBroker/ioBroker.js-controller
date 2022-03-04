@@ -3230,7 +3230,7 @@ class ObjectsInRedisClient {
         }
 
         try {
-            oldObj = oldObj ? JSON.parse(oldObj) : null;
+            oldObj = JSON.parse(oldObj);
         } catch (e) {
             this.log.warn(`${this.namespace} Cannot parse ${id} - ${oldObj}: ${e.message}`);
             oldObj = null;
