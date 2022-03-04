@@ -15,12 +15,13 @@ import path from 'path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
 import * as CONSTS from './constants';
-export * as CONSTS from './constants';
 
+export * as CONSTS from './constants';
 export const ERRORS = CONSTS.ERRORS;
-const USER_STARTS_WITH = 'system.user.';
-const GROUP_STARTS_WITH = 'system.group.';
-export const REG_CHECK_ID = /[*?[\]]|\$%\$/;
+export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
+
+const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
+const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
 
 const mimeTypes: Record<string, any> = {
     '.css': { type: 'text/css', binary: false },

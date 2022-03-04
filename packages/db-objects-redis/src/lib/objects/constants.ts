@@ -30,3 +30,8 @@ export const ACCESS_READ = 0x4;
 export const ACCESS_LIST = 'list';
 export const ACCESS_DELETE = 'delete';
 export const ACCESS_CREATE = 'create';
+
+export const REG_CHECK_ID = /[*?[\]]|\$%\$/;
+
+export const USER_STARTS_WITH = 'system.user.';
+export const GROUP_STARTS_WITH = 'system.group.';
