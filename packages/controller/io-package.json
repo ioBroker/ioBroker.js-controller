@@ -79,7 +79,7 @@
         "pl": "zobacz CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       }
-    }
+    },
     "desc": {
       "en": "Javascript/Node.js implementation of ioBroker controller",
       "de": "Javascript/Node.js Implementierung des ioBroker-Controllers",
