@@ -7,7 +7,7 @@
 * Work in Progress
 
 ## 4.0.18 (2022-03-04)
-* (foxriver76) Also stop instances before GitHub installs
+* (foxriver76) Also stop instances before GitHub installs on windows
 * (Apollon77) Fix eraseOnUpload logic
 * (Apollon77) Fix invalid backup period warning
 * (Apollon77) Fix maxSize property for logging in dist file
