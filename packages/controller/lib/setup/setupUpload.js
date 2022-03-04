@@ -287,11 +287,11 @@ function Upload(options) {
     };
 
     async function eraseFiles(files, logger) {
-        if (!files || !files.length) {
+        if (files && files.length) {
             for (let f = 0; f < files.length; f++) {
                 const file = files[f];
                 try {
-                    await objects.unlinkSync(file.adapter, file.path);
+                    await objects.unlinkAsync(file.adapter, file.path);
                 } catch (err) {
                     logger.error(`Cannot delete file "${file.path}": ${err}`);
                 }
