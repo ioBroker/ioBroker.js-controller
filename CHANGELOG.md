@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.17 (2022-03-04)
 * (foxriver76) Also stop instances before GitHub installs
 * (Apollon77) Fix eraseOnUpload logic
 * (Apollon77) Fix invalid backup period warning
