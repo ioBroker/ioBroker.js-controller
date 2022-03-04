@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json && npm run copy-files",
-    "copy-files": "cp -r ./src/lib/objects/lua*/ ./build/lib/objects/"
+    "copy-files": "cp -r ./src/lib/objects/lua* ./build/lib/objects/"
   },
   "main": "build/index.js",
   "license": "Apache 2.0",
