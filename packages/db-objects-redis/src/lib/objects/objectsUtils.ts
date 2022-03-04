@@ -8,13 +8,12 @@
  */
 
 'use strict';
-const stream = require('stream');
+import stream from 'stream';
 const Writable = stream.Writable;
-const memStore = {};
-const util = require('util');
-const path = require('path');
-const deepClone = require('deep-clone');
-const tools = require('@iobroker/db-base').tools;
+const memStore: Record<string, Buffer> = {};
+import path from 'path';
+import deepClone from 'deep-clone';
+import { tools } from '@iobroker/db-base';
 
 const userStartsWith = 'system.user.';
 const groupStartsWith = 'system.group.';
@@ -51,7 +50,7 @@ const ACCESS_LIST = 'list';
 const ACCESS_DELETE = 'delete';
 const ACCESS_CREATE = 'create';
 
-const mimeTypes = {
+const mimeTypes: Record<string, any> = {
     '.css': { type: 'text/css', binary: false },
     '.bmp': { type: 'image/bmp', binary: true },
     '.png': { type: 'image/png', binary: true },
@@ -93,10 +92,45 @@ const mimeTypes = {
     '.gzip': { type: 'application/gzip', binary: true }
 };
 
-let users = {};
-let groups = {};
+// For objects
+const defaultAcl: Record<string, any> = {
+    groups: [],
+    acl: {
+        file: {
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
+        },
+        object: {
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
+        },
+        state: {
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
+        },
+        users: {
+            list: false,
+            read: false,
+            write: false,
+            create: false,
+            delete: false
+        }
+    }
+};
 
-function getMimeType(ext) {
+let users: Record<string, any> = {};
+let groups: Record<string, any> = {};
+
+function getMimeType(ext: string[] | string) {
     if (!ext) {
         return { mimeType: 'text/html', isBinary: false };
     }
@@ -119,48 +153,52 @@ function getMimeType(ext) {
  * @class
  * Writable memory stream
  */
-function WMStrm(key, options) {
-    // allow use without new operator
-    if (!(this instanceof WMStrm)) {
-        return new WMStrm(key, options);
+class WMStrm extends Writable {
+    private readonly key: string;
+    constructor(key: string, options: Record<string, any>) {
+        super(options); // init super
+        this.key = key; // save key
+        memStore[key] = Buffer.alloc(0); // empty
     }
 
-    Writable.call(this, options); // init super
-    this.key = key; // save key
-    memStore[key] = Buffer.alloc(0); // empty
-}
-util.inherits(WMStrm, Writable);
+    _write(chunk: string | Buffer, enc: BufferEncoding, cb: () => void) {
+        if (chunk) {
+            // our memory store stores things in buffers
+            const buffer = Buffer.isBuffer(chunk)
+                ? chunk // already is Buffer use it
+                : Buffer.from(chunk, enc); // string, convert
 
-WMStrm.prototype._write = function (chunk, enc, cb) {
-    if (chunk) {
-        // our memory store stores things in buffers
-        const buffer = Buffer.isBuffer(chunk)
-            ? chunk // already is Buffer use it
-            : Buffer.from(chunk, enc); // string, convert
-
-        // concatenate to the buffer already there
-        if (!memStore[this.key]) {
-            memStore[this.key] = Buffer.alloc(0);
-            console.log(`memstore for ${this.key} is null`);
+            // concatenate to the buffer already there
+            if (!memStore[this.key]) {
+                memStore[this.key] = Buffer.alloc(0);
+                console.log(`memstore for ${this.key} is null`);
+            }
+            memStore[this.key] = Buffer.concat([memStore[this.key], buffer]);
         }
-        memStore[this.key] = Buffer.concat([memStore[this.key], buffer]);
+        if (!cb) {
+            throw new Error('Callback is empty');
+        }
+        cb();
     }
-    if (!cb) {
-        throw new Error('Callback is empty');
-    }
-    cb();
-};
+}
 
-function insert(objects, id, attName, _ignore, options, _obj, callback) {
+function insert(
+    objects: any,
+    id: string,
+    attName: string,
+    _ignore: any,
+    options: Record<string, any> | string,
+    _obj: any,
+    callback: () => void
+) {
     if (typeof options === 'string') {
         options = { mimeType: options };
     }
 
     // return pipe for write into redis
-    const strm = new WMStrm(`${id}/${attName}`);
-    // @ts-ignore
+    const strm = new WMStrm(`${id}/${attName}`, {});
     strm.on('finish', () => {
-        let error = null;
+        let error: null | string = null;
         if (!memStore[id + '/' + attName]) {
             error = `File ${id} / ${attName} is empty`;
         }
@@ -174,7 +212,12 @@ function insert(objects, id, attName, _ignore, options, _obj, callback) {
     return strm;
 }
 
-function checkFile(fileOptions, options, flag, defaultNewAcl) {
+function checkFile(
+    fileOptions: Record<string, any>,
+    options: Record<string, any>,
+    flag: any,
+    defaultNewAcl: Record<string, any>
+) {
     if (typeof fileOptions.acl !== 'object') {
         fileOptions = {};
         fileOptions.mimeType = deepClone(fileOptions);
@@ -218,7 +261,14 @@ function checkFile(fileOptions, options, flag, defaultNewAcl) {
     return true;
 }
 
-function checkFileRights(objects, id, name, options, flag, callback) {
+function checkFileRights(
+    objects: any,
+    id: string,
+    name: string,
+    options: Record<string, any>,
+    flag: any,
+    callback: () => void
+) {
     options = options || {};
     if (!options.user) {
         // Before files converted, lets think: if no options it is admin
@@ -234,7 +284,7 @@ function checkFileRights(objects, id, name, options, flag, callback) {
     }*/
 
     if (!options.acl) {
-        objects.getUserGroup(options.user, (_user, groups, acl) => {
+        objects.getUserGroup(options.user, (_user: any, groups: any, acl: Record<string, any>) => {
             options.acl = acl || {};
             options.groups = groups;
             options.group = groups ? groups[0] : null;
@@ -254,7 +304,7 @@ function checkFileRights(objects, id, name, options, flag, callback) {
     }
 
     options.checked = true;
-    objects.checkFile(id, name, options, flag, (err, options, opt) => {
+    objects.checkFile(id, name, options, flag, (err: Error, options: Record<string, any>, opt: any) => {
         if (err) {
             return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, options);
         } else {
@@ -301,7 +351,7 @@ function checkFileRights(objects, id, name, options, flag, callback) {
      return callback(null, options);*/
 }
 // For users and groups
-function getDefaultAdminRights(acl, _isState) {
+function getDefaultAdminRights(acl?: Record<string, any>, _isState?: boolean) {
     acl = acl || {};
     acl.file = {
         list: true,
@@ -335,7 +385,7 @@ function getDefaultAdminRights(acl, _isState) {
     return acl;
 }
 
-function getUserGroup(objects, user, callback) {
+function getUserGroup(objects: any, user: string, callback: () => void) {
     if (!user || typeof user !== 'string' || !user.startsWith(userStartsWith)) {
         console.log(`invalid user name: ${user}`);
         user = JSON.stringify(user);
@@ -352,12 +402,12 @@ function getUserGroup(objects, user, callback) {
         return tools.maybeCallbackWithError(callback, null, user, users[user].groups, users[user].acl);
     }
 
-    let error;
+    let error: Error;
     // Read all groups
     objects.getObjectList(
         { startkey: 'system.group.', endkey: 'system.group.\u9999' },
         { checked: true },
-        (err, arr) => {
+        (err: Error, arr: { rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>> }) => {
             if (err) {
                 error = err;
             }
@@ -375,7 +425,7 @@ function getUserGroup(objects, user, callback) {
             objects.getObjectList(
                 { startkey: 'system.user.', endkey: 'system.user.\u9999' },
                 { checked: true },
-                (err, arr) => {
+                (err: Error, arr: any) => {
                     if (err) {
                         error = err;
                     }
@@ -412,7 +462,7 @@ function getUserGroup(objects, user, callback) {
                                     users[u].acl.file.create = groups[g].common.acl.file.create;
                                     users[u].acl.file.read = groups[g].common.acl.file.read;
                                     users[u].acl.file.write = groups[g].common.acl.file.write;
-                                    users[u].acl.file['delete'] = groups[g].common.acl.file['delete'];
+                                    users[u].acl.file.delete = groups[g].common.acl.file.delete;
                                     users[u].acl.file.list = groups[g].common.acl.file.list;
                                 } else {
                                     users[u].acl.file.create =
@@ -420,8 +470,8 @@ function getUserGroup(objects, user, callback) {
                                     users[u].acl.file.read = users[u].acl.file.read || groups[g].common.acl.file.read;
                                     users[u].acl.file.write =
                                         users[u].acl.file.write || groups[g].common.acl.file.write;
-                                    users[u].acl.file['delete'] =
-                                        users[u].acl.file['delete'] || groups[g].common.acl.file['delete'];
+                                    users[u].acl.file.delete =
+                                        users[u].acl.file.delete || groups[g].common.acl.file.delete;
                                     users[u].acl.file.list = users[u].acl.file.list || groups[g].common.acl.file.list;
                                 }
                             }
@@ -434,7 +484,7 @@ function getUserGroup(objects, user, callback) {
                                     users[u].acl.object.create = groups[g].common.acl.object.create;
                                     users[u].acl.object.read = groups[g].common.acl.object.read;
                                     users[u].acl.object.write = groups[g].common.acl.object.write;
-                                    users[u].acl.object['delete'] = groups[g].common.acl.object['delete'];
+                                    users[u].acl.object.delete = groups[g].common.acl.object.delete;
                                     users[u].acl.object.list = groups[g].common.acl.object.list;
                                 } else {
                                     users[u].acl.object.create =
@@ -443,8 +493,8 @@ function getUserGroup(objects, user, callback) {
                                         users[u].acl.object.read || groups[g].common.acl.object.read;
                                     users[u].acl.object.write =
                                         users[u].acl.object.write || groups[g].common.acl.object.write;
-                                    users[u].acl.object['delete'] =
-                                        users[u].acl.object['delete'] || groups[g].common.acl.object['delete'];
+                                    users[u].acl.object.delete =
+                                        users[u].acl.object.delete || groups[g].common.acl.object.delete;
                                     users[u].acl.object.list =
                                         users[u].acl.object.list || groups[g].common.acl.object.list;
                                 }
@@ -458,7 +508,7 @@ function getUserGroup(objects, user, callback) {
                                     users[u].acl.users.create = groups[g].common.acl.users.create;
                                     users[u].acl.users.read = groups[g].common.acl.users.read;
                                     users[u].acl.users.write = groups[g].common.acl.users.write;
-                                    users[u].acl.users['delete'] = groups[g].common.acl.users['delete'];
+                                    users[u].acl.users.delete = groups[g].common.acl.users.delete;
                                     users[u].acl.users.list = groups[g].common.acl.users.list;
                                 } else {
                                     users[u].acl.users.create =
@@ -467,8 +517,8 @@ function getUserGroup(objects, user, callback) {
                                         users[u].acl.users.read || groups[g].common.acl.users.read;
                                     users[u].acl.users.write =
                                         users[u].acl.users.write || groups[g].common.acl.users.write;
-                                    users[u].acl.users['delete'] =
-                                        users[u].acl.users['delete'] || groups[g].common.acl.users['delete'];
+                                    users[u].acl.users.delete =
+                                        users[u].acl.users.delete || groups[g].common.acl.users.delete;
                                     users[u].acl.users.list =
                                         users[u].acl.users.list || groups[g].common.acl.users.list;
                                 }
@@ -482,7 +532,7 @@ function getUserGroup(objects, user, callback) {
                                     users[u].acl.state.create = groups[g].common.acl.state.create;
                                     users[u].acl.state.read = groups[g].common.acl.state.read;
                                     users[u].acl.state.write = groups[g].common.acl.state.write;
-                                    users[u].acl.state['delete'] = groups[g].common.acl.state['delete'];
+                                    users[u].acl.state.delete = groups[g].common.acl.state.delete;
                                     users[u].acl.state.list = groups[g].common.acl.state.list;
                                 } else {
                                     users[u].acl.state.create =
@@ -491,8 +541,8 @@ function getUserGroup(objects, user, callback) {
                                         users[u].acl.state.read || groups[g].common.acl.state.read;
                                     users[u].acl.state.write =
                                         users[u].acl.state.write || groups[g].common.acl.state.write;
-                                    users[u].acl.state['delete'] =
-                                        users[u].acl.state['delete'] || groups[g].common.acl.state['delete'];
+                                    users[u].acl.state.delete =
+                                        users[u].acl.state.delete || groups[g].common.acl.state.delete;
                                     users[u].acl.state.list =
                                         users[u].acl.state.list || groups[g].common.acl.state.list;
                                 }
@@ -513,7 +563,7 @@ function getUserGroup(objects, user, callback) {
     );
 }
 
-function sanitizePath(id, name) {
+function sanitizePath(id: string, name: string) {
     if (!name) {
         name = '';
     }
@@ -546,7 +596,7 @@ function sanitizePath(id, name) {
     return { id: id, name: name };
 }
 
-function checkObject(obj, options, flag) {
+function checkObject(obj: ioBroker.Object, options: Record<string, any>, flag: any) {
     // read rights of object
     if (!obj || !obj.common || !obj.acl || flag === ACCESS_LIST) {
         return true;
@@ -587,7 +637,14 @@ function checkObject(obj, options, flag) {
     return true; // ALL OK
 }
 
-function checkObjectRights(objects, id, object, options, flag, callback) {
+function checkObjectRights(
+    objects: any,
+    id: string,
+    object: ioBroker.Object,
+    options: Record<string, any>,
+    flag: any,
+    callback: () => void
+) {
     options = options || {};
 
     if (!options.user) {
@@ -602,7 +659,7 @@ function checkObjectRights(objects, id, object, options, flag, callback) {
     }
 
     if (!options.acl) {
-        return objects.getUserGroup(options.user, (_user, groups, acl) => {
+        return objects.getUserGroup(options.user, (_user: string, groups: any, acl: Record<string, any>) => {
             options.acl = acl || {};
             options.groups = groups;
             options.group = groups ? groups[0] : null;
@@ -693,41 +750,6 @@ function checkObjectRights(objects, id, object, options, flag, callback) {
         return tools.maybeCallbackWithError(callback, null, options);
     }
 }
-
-// For objects
-const defaultAcl = {
-    groups: [],
-    acl: {
-        file: {
-            list: false,
-            read: false,
-            write: false,
-            create: false,
-            delete: false
-        },
-        object: {
-            list: false,
-            read: false,
-            write: false,
-            create: false,
-            delete: false
-        },
-        state: {
-            list: false,
-            read: false,
-            write: false,
-            create: false,
-            delete: false
-        },
-        users: {
-            list: false,
-            read: false,
-            write: false,
-            create: false,
-            delete: false
-        }
-    }
-};
 
 module.exports = {
     getMimeType,
