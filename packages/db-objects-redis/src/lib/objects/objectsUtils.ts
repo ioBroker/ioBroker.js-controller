@@ -15,8 +15,9 @@ import path from 'path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
 import * as CONSTS from './constants';
+export * as CONSTS from './constants';
 
-const ERRORS = CONSTS.ERRORS;
+export const ERRORS = CONSTS.ERRORS;
 const USER_STARTS_WITH = 'system.user.';
 const GROUP_STARTS_WITH = 'system.group.';
 export const REG_CHECK_ID = /[*?[\]]|\$%\$/;
