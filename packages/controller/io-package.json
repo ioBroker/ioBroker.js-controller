@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.15",
+    "version": "4.0.16",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.16": {
+        "en": "Also stop instances before GitHub installs\nFix eraseOnUpload logic\nFix invalid backup period warning\nFix maxSize property for logging in dist file\nPrevent some crash cases reported by Sentry",
+        "de": "Stoppen Sie außerdem Instanzen, bevor GitHub installiert wird\nEraseOnUpload-Logik korrigiert\nWarnung zu ungültigem Sicherungszeitraum behoben\nKorrigieren Sie die maxSize-Eigenschaft für die Anmeldung in der Dist-Datei\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",
+        "ru": "Также останавливайте экземпляры перед установкой GitHub.\nИсправление логики EraseOnUpload\nИсправить предупреждение о недопустимом периоде резервного копирования\nИсправлено свойство maxSize для входа в файл dist.\nПредотвращение некоторых случаев сбоев, о которых сообщает Sentry.",
+        "pt": "Também interrompa instâncias antes da instalação do GitHub\nCorrigir a lógica eraseOnUpload\nCorrigir aviso de período de backup inválido\nCorrige a propriedade maxSize para fazer login no arquivo dist\nPrevenir alguns casos de travamento relatados pelo Sentinela",
+        "nl": "Stop ook instanties voordat GitHub wordt geïnstalleerd\nEraseOnUpload-logica repareren\nWaarschuwing voor ongeldige back-upperiode repareren\nFix maxSize-eigenschap voor inloggen in dist-bestand\nVoorkom enkele door Sentry gemelde crashgevallen",
+        "fr": "Arrêtez également les instances avant l'installation de GitHub\nCorrection de la logique eraseOnUpload\nCorrection de l'avertissement de période de sauvegarde non valide\nCorrection de la propriété maxSize pour la connexion au fichier dist\nEmpêcher certains cas de plantage signalés par Sentry",
+        "it": "Arresta anche le istanze prima dell'installazione di GitHub\nRisolto il problema con la logica di cancellazione durante il caricamento\nCorrezione dell'avviso di periodo di backup non valido\nCorrezione della proprietà maxSize per l'accesso al file dist\nPrevenire alcuni casi di crash segnalati da Sentry",
+        "es": "También detenga las instancias antes de que se instale GitHub\nArreglar la lógica eraseOnUpload\nArreglar la advertencia de período de copia de seguridad no válido\nArreglar la propiedad maxSize para iniciar sesión en el archivo dist\nEvitar algunos casos de bloqueo informados por Sentry",
+        "pl": "Zatrzymaj również instancje przed instalacją GitHub\nNapraw logikę eraseOnUpload\nNapraw ostrzeżenie o nieprawidłowym okresie tworzenia kopii zapasowej\nNapraw właściwość maxSize do logowania w pliku dist\nZapobiegaj niektórym przypadkom awarii zgłaszanych przez Sentry",
+        "zh-cn": "在 GitHub 安装之前停止实例\n修复 eraseOnUpload 逻辑\n修复无效备份周期警告\n修复用于登录 dist 文件的 maxSize 属性\n防止 Sentry 报告的一些崩溃案例"
+      },
       "4.0.15": {
         "en": "Make sure to stop adapters on windows or if needed for update (again)\noptimize handling of set feature detection in error cases\nRemove unneeded error logging",
         "de": "Stellen Sie sicher, dass Adapter unter Windows oder bei Bedarf für ein Update (erneut) gestoppt werden\nOptimieren Sie den Umgang mit der Set-Feature-Erkennung im Fehlerfall\nEntfernen Sie unnötige Fehlerprotokollierung",
@@ -90,18 +102,6 @@
         "es": "verificación de dependencia en la eliminación de instancias: el nombre de host debe ser relativo a la instancia si se elimina una sola instancia\ncorregir el método setInterval para adaptadores\nEvite problemas de bloqueo de archivos db para la base de datos jsonl; las bases de datos connectTimeout ro ahora tienen un mínimo de 5 s (anula los valores más bajos de la configuración)",
         "pl": "sprawdzenie zależności przy usuwaniu instancji: nazwa hosta musi być względna do instancji, jeśli usunięta zostanie pojedyncza instancja\nfix setInterval metoda dla adapterów\nZapobiegaj problemom z blokowaniem plików db dla bazy danych jsonl; bazy danych connectTimeout ro mają teraz minimum 5s (zastępuje niższe wartości z konfiguracji)",
         "zh-cn": "对实例删除的依赖性检查：如果删除单个实例，主机名必须与实例相关\n修复适配器的 setInterval 方法\n防止 jsonl 数据库的 db-file-locking 问题； connectTimeout ro 数据库现在至少为 5 秒（覆盖配置中的较低值）"
-      },
-      "4.0.8": {
-        "en": "Prevent issues when backup interval is configured with invalid values\nCorrectly return null when a session is expired\nAdd docker info to statistic values sent to server in a place where it was missing\nPrevent edge case in setup first when sets were initialized earlier already but unused in the meantime\nallow instance deletion when executed from an other host",
-        "de": "Verhindern Sie Probleme, wenn das Sicherungsintervall mit ungültigen Werten konfiguriert ist\nGeben Sie null korrekt zurück, wenn eine Sitzung abgelaufen ist\nFügen Sie Docker-Informationen zu Statistikwerten hinzu, die an einer Stelle an den Server gesendet wurden, an der sie fehlten\nVerhindern Sie zuerst den Grenzfall im Setup, wenn Sets bereits früher initialisiert, aber zwischenzeitlich nicht verwendet wurden\nLöschen von Instanzen zulassen, wenn sie von einem anderen Host ausgeführt werden",
-        "ru": "Предотвращение проблем, когда интервал резервного копирования настроен с недопустимыми значениями\nПравильно возвращать значение null, когда срок действия сеанса истек\nДобавить информацию о докере в статистические значения, отправляемые на сервер, в том месте, где она отсутствовала.\nПредотвратите крайний случай в настройке, когда наборы уже были инициализированы ранее, но в то же время не использовались.\nразрешить удаление экземпляра при выполнении с другого хоста",
-        "pt": "Evite problemas quando o intervalo de backup estiver configurado com valores inválidos\nRetornar corretamente null quando uma sessão expirar\nAdicionar informações do docker aos valores estatísticos enviados ao servidor em um local onde estava faltando\nPrevenir casos extremos na configuração primeiro quando os conjuntos já foram inicializados anteriormente, mas não utilizados nesse meio tempo\npermitir a exclusão de instância quando executada de outro host",
-        "nl": "Voorkom problemen wanneer het back-upinterval is geconfigureerd met ongeldige waarden\nNull correct retourneren wanneer een sessie is verlopen\nVoeg docker-info toe aan statistische waarden die naar de server zijn gestuurd op een plaats waar deze ontbrak\nVoorkom eerst edge case in setup wanneer sets al eerder zijn geïnitialiseerd maar in de tussentijd niet zijn gebruikt\nlaat het verwijderen van instanties toe wanneer het wordt uitgevoerd vanaf een andere host",
-        "fr": "Prévenir les problèmes lorsque l'intervalle de sauvegarde est configuré avec des valeurs non valides\nRenvoyer correctement null lorsqu'une session a expiré\nAjouter des informations docker aux valeurs statistiques envoyées au serveur à un endroit où il manquait\nEmpêcher d'abord le cas limite dans la configuration lorsque les ensembles ont déjà été initialisés plus tôt mais qu'ils n'ont pas été utilisés entre-temps\nautoriser la suppression d'instance lorsqu'elle est exécutée à partir d'un autre hôte",
-        "it": "Impedisci problemi quando l'intervallo di backup è configurato con valori non validi\nRestituire correttamente null quando una sessione è scaduta\nAggiungi le informazioni della finestra mobile ai valori statistici inviati al server in una posizione in cui mancava\nImpedisci prima il caso limite nella configurazione quando i set sono stati inizializzati già in precedenza ma nel frattempo non sono stati utilizzati\nconsentire l'eliminazione dell'istanza se eseguita da un altro host",
-        "es": "Evite problemas cuando el intervalo de copia de seguridad esté configurado con valores no válidos\nDevuelve nulo correctamente cuando una sesión caduca\nAgregue información de la ventana acoplable a los valores estadísticos enviados al servidor en un lugar donde faltaba\nEvite el caso extremo en la configuración primero cuando los conjuntos ya se inicializaron antes pero no se usaron mientras tanto\npermitir la eliminación de instancias cuando se ejecuta desde otro host",
-        "pl": "Zapobiegaj problemom, gdy interwał kopii zapasowej jest skonfigurowany z nieprawidłowymi wartościami\nPrawidłowo zwracaj wartość null, gdy sesja wygasła\nDodaj docker info do wartości statystyk wysyłanych na serwer w miejscu, w którym ich brakowało\nZapobiegaj występowaniu krawędzi w konfiguracji jako pierwszy, gdy zestawy zostały już zainicjowane wcześniej, ale w międzyczasie nie były używane\nzezwalaj na usuwanie instancji, gdy są wykonywane z innego hosta",
-        "zh-cn": "使用无效值配置备份间隔时防止出现问题\n会话过期时正确返回 null\n将 docker info 添加到发送到服务器的统计值中丢失的地方\n当集合已较早初始化但同时未使用时，首先防止设置中的边缘情况\n从其他主机执行时允许删除实例"
       }
     },
     "desc": {
