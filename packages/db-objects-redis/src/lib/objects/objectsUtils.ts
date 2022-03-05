@@ -338,8 +338,24 @@ function getDefaultAdminRights(
     };
 }
 
-// FIXME: Not sure about the expected return type here? ioBroker.GroupObject maybe? Or an array thereof?
-export function getUserGroup(objects: any, user: string, callback?: () => void) {
+export type GetUserGroupPromiseReturn = [
+    user: string,
+    groups: string[],
+    acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>
+];
+
+export type GetUserGroupCallback = (
+    err: Error | null,
+    user: string,
+    groups: string[],
+    acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>
+) => void;
+
+export function getUserGroup(
+    objects: any,
+    user: string,
+    callback?: GetUserGroupCallback
+): Promise<GetUserGroupPromiseReturn> | void {
     if (!user || typeof user !== 'string' || !user.startsWith(USER_STARTS_WITH)) {
         console.log(`invalid user name: ${user}`);
         user = JSON.stringify(user);
@@ -565,8 +581,6 @@ export function checkObject(
         return true;
     }
 
-    // FIXME: what if flag is ACCESS_DELETE or ACCESS_CREATE?
-
     if (options.user === CONSTS.SYSTEM_ADMIN_USER) {
         return true;
     }
@@ -576,7 +590,8 @@ export function checkObject(
         return true;
     }
 
-    if (typeof flag !== 'number') {
+    // FIXME: what if flag is ACCESS_DELETE or ACCESS_CREATE? currently it will end in false
+    if (flag === CONSTS.ACCESS_DELETE || flag === CONSTS.ACCESS_CREATE) {
         return false;
     }
 
