@@ -6,6 +6,10 @@
 ## 4.1.0 - WORK IN PROGRESS Release Jana
 * Work in Progress
 
+## 4.0.19 (2022-03-05)
+* (foxriver76) Fix Adapter restarting on install/update
+* (foxriver76) Really fix invalid backup period warning
+
 ## 4.0.18 (2022-03-04)
 * (foxriver76) Also stop instances before GitHub installs on windows
 * (Apollon77) Fix eraseOnUpload logic
