@@ -90,10 +90,10 @@ function Upload(options) {
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
                     const instances = await tools.getAllInstances(adapterConf.common.restartAdapters, objects);
-                    if (instances && !instances.length) {
-                        for (let r = 0; r < instances.length; r++) {
+                    if (instances && instances.length) {
+                        for (const instance of instances) {
                             try {
-                                const obj = await objects.getObjectAsync(instances[r]);
+                                const obj = await objects.getObjectAsync(instance);
                                 // if instance is enabled
                                 if (obj && obj.common && obj.common.enabled) {
                                     obj.common.enabled = false; // disable instance
@@ -101,7 +101,7 @@ function Upload(options) {
                                     obj.from = `system.host.${tools.getHostName()}.cli`;
                                     obj.ts = Date.now();
 
-                                    await objects.setObjectAsync(obj._id);
+                                    await objects.setObjectAsync(obj._id, obj);
 
                                     obj.common.enabled = true; // enable instance
                                     obj.ts = Date.now();
@@ -110,7 +110,7 @@ function Upload(options) {
                                     console.log(`Adapter "${obj._id}" restarted.`);
                                 }
                             } catch (err) {
-                                console.error(`Cannot restart adapter "${instances[r]}": ${err.message}`);
+                                console.error(`Cannot restart adapter "${instance}": ${err.message}`);
                             }
                         }
                     }
