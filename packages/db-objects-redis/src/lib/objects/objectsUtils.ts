@@ -296,7 +296,10 @@ export function checkFileRights(
 }
 
 // For users and groups
-function getDefaultAdminRights(acl?: ioBroker.ObjectPermissions, _isState?: boolean): ioBroker.ObjectPermissions {
+function getDefaultAdminRights(
+    acl?: Omit<ioBroker.PermissionSet, 'user' | 'groups'>,
+    _isState?: boolean
+): Omit<ioBroker.PermissionSet, 'user' | 'groups'> {
     return {
         ...acl,
         file: {
@@ -326,6 +329,11 @@ function getDefaultAdminRights(acl?: ioBroker.ObjectPermissions, _isState?: bool
             delete: true,
             create: true,
             list: true
+        },
+        other: {
+            execute: false,
+            http: false,
+            sendto: false
         }
     };
 }
@@ -365,9 +373,9 @@ export function getUserGroup(objects: any, user: string, callback?: () => void) 
                     if (!val) {
                         continue;
                     }
+
                     groups[g] = val;
                     if (groups[g]._id === CONSTS.SYSTEM_ADMIN_GROUP) {
-                        // @ts-expect-error fix this
                         groups[g].common.acl = getDefaultAdminRights(groups[g].common.acl);
                     }
                 }
@@ -569,7 +577,6 @@ export function checkObject(
     }
 
     if (typeof flag !== 'number') {
-        console.warn('Flag has to be type "number"');
         return false;
     }
 
