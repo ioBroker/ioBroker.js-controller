@@ -638,7 +638,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     const stats = fs.statSync(path.join(location, _files[j]));
                     const acl =
                         this.fileOptions[id][name + _files[j]] && this.fileOptions[id][name + _files[j]].acl
-                            ? JSON.parse(JSON.stringify(this.fileOptions[id][name + _files[j]].acl)) // copy settings
+                            ? deepClone(this.fileOptions[id][name + _files[j]].acl) // copy settings
                             : {
                                   read: true,
                                   write: true,

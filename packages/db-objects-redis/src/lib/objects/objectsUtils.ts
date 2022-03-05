@@ -103,9 +103,9 @@ const defaultAcl = {
     }
 } as const;
 
-// FIXME: These should have better types. Probably Record<string, ioBroker.UserObject> and Record<string, ioBroker.GroupObject>?
+// FIXME: This should have better types. Probably Record<string, ioBroker.UserObject>
 let users: Record<string, any> = {};
-let groups: Record<string, any> = {};
+let groups: ioBroker.GroupObject[] = [];
 
 export function getMimeType(ext: string[] | string): { mimeType: string; isBinary: boolean } {
     if (!ext) {
@@ -293,47 +293,10 @@ export function checkFileRights(
             return tools.maybeCallbackWithError(callback, null, options, opt);
         }
     });
-
-    /*if (typeof fileOptions[id][name].acl != 'object') {
-     fileOptions[id][name] = {
-     mimeType: fileOptions[id][name],
-     acl: {
-     owner:       'system.user.admin',
-     permissions: 0x644,
-     ownerGroup:  'system.group.administrator'
-     }
-     };
-     }
-     // Set default onwer group
-     fileOptions[id][name].acl.ownerGroup = fileOptions[id][name].acl.ownerGroup || 'system.group.administrator';
-
-     if (options.user != 'system.user.admin' &&
-     options.groups.indexOf('system.group.administrator') == -1 &&
-     fileOptions[id][name].acl) {
-     if (fileOptions[id][name].acl.owner != options.user) {
-     // Check if the user is in the group
-     if (options.groups.indexOf(fileOptions[id][name].acl.ownerGroup) != -1) {
-     // Check group rights
-     if (!(fileOptions[id][name].acl.permissions & (flag << 4))) {
-     return callback(ERROR_PERMISSION, options);
-     }
-     } else {
-     // everybody
-     if (!(fileOptions[id][name].acl.permissions & flag)) {
-     return callback(ERROR_PERMISSION, options);
-     }
-     }
-     } else {
-     // Check user rights
-     if (!(fileOptions[id][name].acl.permissions & (flag << 8))) {
-     return callback(ERROR_PERMISSION, options);
-     }
-     }
-     }
-     return callback(null, options);*/
 }
+
 // For users and groups
-function getDefaultAdminRights(acl?: ioBroker.ObjectPermissions, _isState?: boolean) {
+function getDefaultAdminRights(acl?: ioBroker.ObjectPermissions, _isState?: boolean): ioBroker.ObjectPermissions {
     return {
         ...acl,
         file: {
@@ -397,9 +360,14 @@ export function getUserGroup(objects: any, user: string, callback?: () => void) 
             groups = [];
             if (arr) {
                 // Read all groups
-                for (let g = 0; g < arr.rows.length; g++) {
-                    groups[g] = arr.rows[g].value;
+                for (const g in arr.rows) {
+                    const val = arr.rows[g].value;
+                    if (!val) {
+                        continue;
+                    }
+                    groups[g] = val;
                     if (groups[g]._id === CONSTS.SYSTEM_ADMIN_GROUP) {
+                        // @ts-expect-error fix this
                         groups[g].common.acl = getDefaultAdminRights(groups[g].common.acl);
                     }
                 }
@@ -415,9 +383,9 @@ export function getUserGroup(objects: any, user: string, callback?: () => void) 
                     users = {};
 
                     if (arr) {
-                        for (let i = 0; i < arr.rows.length; i++) {
+                        for (const row of arr.rows) {
                             // cannot use here Object.assign, because required deep copy
-                            users[arr.rows[i].value._id] = deepClone(defaultAcl);
+                            users[row.value._id] = deepClone(defaultAcl);
                         }
                     }
                     users[CONSTS.SYSTEM_ADMIN_USER] = users[CONSTS.SYSTEM_ADMIN_USER] || deepClone(defaultAcl);
@@ -512,22 +480,22 @@ export function getUserGroup(objects: any, user: string, callback?: () => void) 
                                     users[u].acl = users[u].acl || {};
                                     users[u].acl.state = users[u].acl.state || {};
 
-                                    users[u].acl.state.create = groups[g].common.acl.state.create;
-                                    users[u].acl.state.read = groups[g].common.acl.state.read;
-                                    users[u].acl.state.write = groups[g].common.acl.state.write;
-                                    users[u].acl.state.delete = groups[g].common.acl.state.delete;
-                                    users[u].acl.state.list = groups[g].common.acl.state.list;
+                                    users[u].acl.state.create = groups[g].common.acl.state?.create;
+                                    users[u].acl.state.read = groups[g].common.acl.state?.read;
+                                    users[u].acl.state.write = groups[g].common.acl.state?.write;
+                                    users[u].acl.state.delete = groups[g].common.acl.state?.delete;
+                                    users[u].acl.state.list = groups[g].common.acl.state?.list;
                                 } else {
                                     users[u].acl.state.create =
-                                        users[u].acl.state.create || groups[g].common.acl.state.create;
+                                        users[u].acl.state.create || groups[g].common.acl.state?.create;
                                     users[u].acl.state.read =
-                                        users[u].acl.state.read || groups[g].common.acl.state.read;
+                                        users[u].acl.state.read || groups[g].common.acl.state?.read;
                                     users[u].acl.state.write =
-                                        users[u].acl.state.write || groups[g].common.acl.state.write;
+                                        users[u].acl.state.write || groups[g].common.acl.state?.write;
                                     users[u].acl.state.delete =
-                                        users[u].acl.state.delete || groups[g].common.acl.state.delete;
+                                        users[u].acl.state.delete || groups[g].common.acl.state?.delete;
                                     users[u].acl.state.list =
-                                        users[u].acl.state.list || groups[g].common.acl.state.list;
+                                        users[u].acl.state.list || groups[g].common.acl.state?.list;
                                 }
                             }
                         }
@@ -538,7 +506,7 @@ export function getUserGroup(objects: any, user: string, callback?: () => void) 
                         error,
                         user,
                         users[user] ? users[user].groups : [],
-                        users[user] ? users[user].acl : JSON.parse(JSON.stringify(defaultAcl.acl))
+                        users[user] ? users[user].acl : deepClone(defaultAcl.acl)
                     );
                 }
             );
@@ -600,6 +568,11 @@ export function checkObject(
         return true;
     }
 
+    if (typeof flag !== 'number') {
+        console.warn('Flag has to be type "number"');
+        return false;
+    }
+
     // checkObject always called after checkObjectRights and admin is checked there
     if (obj.acl.owner !== options.user) {
         // Check if the user is in the group
@@ -626,7 +599,6 @@ export function checkObject(
     return true; // ALL OK
 }
 
-// FIXME: Return type?
 export function checkObjectRights(
     objects: any,
     id: string,
@@ -634,7 +606,7 @@ export function checkObjectRights(
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags,
     callback: () => void
-): any {
+): void | Promise<Record<string, any>> {
     options = options || {};
 
     if (!options.user) {
@@ -708,7 +680,7 @@ export function checkObjectRights(
     // If user may write
     if (flag === CONSTS.ACCESS_WRITE && !options.acl.object.write) {
         // write
-        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
+        tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
     }
 
     // If user may read

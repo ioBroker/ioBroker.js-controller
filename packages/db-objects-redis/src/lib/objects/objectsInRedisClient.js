@@ -386,7 +386,7 @@ class ObjectsInRedisClient {
                                             obj.common.defaultNewAcl &&
                                             !isDeepStrictEqual(obj.common.defaultNewAcl, this.defaultNewAcl)
                                         ) {
-                                            this.defaultNewAcl = JSON.parse(JSON.stringify(obj.common.defaultNewAcl));
+                                            this.defaultNewAcl = deepClone(obj.common.defaultNewAcl);
                                             this.settings.controller && this.setDefaultAcl(this.defaultNewAcl);
                                         }
 
