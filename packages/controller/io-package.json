@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.18",
+    "version": "4.0.19",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.19": {
+        "en": "Fix Adapter restarting on install/update\nReally fix invalid backup period warning",
+        "de": "Neustart des Adapters bei Installation/Aktualisierung behoben\nBeheben Sie die Warnung zu einem ungültigen Sicherungszeitraum wirklich",
+        "ru": "Исправлен перезапуск адаптера при установке/обновлении.\nРеально исправить предупреждение о недопустимом периоде резервного копирования",
+        "pt": "Corrigir o adaptador reiniciando na instalação/atualização\nRealmente corrija o aviso de período de backup inválido",
+        "nl": "Fix Adapter opnieuw opstarten bij installatie/update\nWaarschuwing voor ongeldige back-upperiode echt repareren",
+        "fr": "Correction du redémarrage de l'adaptateur lors de l'installation/de la mise à jour\nVraiment corriger l'avertissement de période de sauvegarde invalide",
+        "it": "Risolto il problema con il riavvio dell'adattatore durante l'installazione/aggiornamento\nRisolvi davvero l'avviso di periodo di backup non valido",
+        "es": "Arreglar el reinicio del adaptador en la instalación/actualización\nRealmente solucione la advertencia de período de copia de seguridad no válido",
+        "pl": "Napraw ponowne uruchomienie adaptera podczas instalacji/aktualizacji\nNaprawdę napraw ostrzeżenie o nieprawidłowym okresie tworzenia kopii zapasowej",
+        "zh-cn": "修复适配器在安装/更新时重新启动\n真正修复无效备份周期警告"
+      },
       "4.0.18": {
         "en": "Also stop instances before GitHub installs\nFix eraseOnUpload logic\nFix invalid backup period warning\nFix maxSize property for logging in dist file\nPrevent some crash cases reported by Sentry",
         "de": "Stoppen Sie außerdem Instanzen, bevor GitHub installiert wird\nEraseOnUpload-Logik korrigiert\nWarnung zu ungültigem Sicherungszeitraum behoben\nKorrigieren Sie die maxSize-Eigenschaft für die Anmeldung in der Dist-Datei\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",

@@ -3,8 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-
-## __WORK IN PROGRESS__
+## 4.0.19 (2022-03-05)
 * (foxriver76) Fix Adapter restarting on install/update
 * (foxriver76) Really fix invalid backup period warning
 
