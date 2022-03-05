@@ -31,6 +31,13 @@ export const ACCESS_LIST = 'list';
 export const ACCESS_DELETE = 'delete';
 export const ACCESS_CREATE = 'create';
 
+export type GenericAccessFlags =
+    | typeof ACCESS_WRITE
+    | typeof ACCESS_READ
+    | typeof ACCESS_LIST
+    | typeof ACCESS_DELETE
+    | typeof ACCESS_CREATE;
+
 export const REG_CHECK_ID = /[*?[\]]|\$%\$/;
 
 export const USER_STARTS_WITH = 'system.user.';

@@ -8,9 +8,7 @@
  */
 
 'use strict';
-import stream from 'stream';
-const Writable = stream.Writable;
-const memStore: Record<string, Buffer> = {};
+import { Writable, WritableOptions } from 'stream';
 import path from 'path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
@@ -22,8 +20,9 @@ export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
 
 const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
+const memStore: Record<string, Buffer> = {};
 
-const mimeTypes: Record<string, any> = {
+const mimeTypes = {
     '.css': { type: 'text/css', binary: false },
     '.bmp': { type: 'image/bmp', binary: true },
     '.png': { type: 'image/png', binary: true },
@@ -63,10 +62,14 @@ const mimeTypes: Record<string, any> = {
     '.pdf': { type: 'application/pdf', binary: true },
     '.gz': { type: 'application/gzip', binary: true },
     '.gzip': { type: 'application/gzip', binary: true }
-};
+} as const;
+
+function isKnownMimeType(ext: string): ext is keyof typeof mimeTypes {
+    return ext in mimeTypes;
+}
 
 // For objects
-const defaultAcl: Record<string, any> = {
+const defaultAcl = {
     groups: [],
     acl: {
         file: {
@@ -98,12 +101,13 @@ const defaultAcl: Record<string, any> = {
             delete: false
         }
     }
-};
+} as const;
 
+// FIXME: These should have better types. Probably Record<string, ioBroker.UserObject> and Record<string, ioBroker.GroupObject>?
 let users: Record<string, any> = {};
 let groups: Record<string, any> = {};
 
-export function getMimeType(ext: string[] | string) {
+export function getMimeType(ext: string[] | string): { mimeType: string; isBinary: boolean } {
     if (!ext) {
         return { mimeType: 'text/html', isBinary: false };
     }
@@ -114,7 +118,7 @@ export function getMimeType(ext: string[] | string) {
     let mimeType = 'text/javascript';
     let isBinary = false;
 
-    if (mimeTypes[ext]) {
+    if (isKnownMimeType(ext)) {
         mimeType = mimeTypes[ext].type;
         isBinary = mimeTypes[ext].binary;
     }
@@ -127,13 +131,13 @@ export function getMimeType(ext: string[] | string) {
  */
 export class WMStrm extends Writable {
     private readonly key: string;
-    constructor(key: string, options: Record<string, any>) {
+    constructor(key: string, options: WritableOptions) {
         super(options); // init super
         this.key = key; // save key
         memStore[key] = Buffer.alloc(0); // empty
     }
 
-    _write(chunk: string | Buffer, enc: BufferEncoding, cb: () => void) {
+    _write(chunk: string | Buffer, enc: BufferEncoding, cb: () => void): void {
         if (chunk) {
             // our memory store stores things in buffers
             const buffer = Buffer.isBuffer(chunk)
@@ -162,7 +166,7 @@ export function insert(
     options: Record<string, any> | string,
     _obj: any,
     callback: () => void
-) {
+): WMStrm {
     if (typeof options === 'string') {
         options = { mimeType: options };
     }
@@ -189,7 +193,7 @@ export function checkFile(
     options: Record<string, any>,
     flag: any,
     defaultNewAcl: Record<string, any>
-) {
+): boolean {
     if (typeof fileOptions.acl !== 'object') {
         fileOptions = {};
         fileOptions.mimeType = deepClone(fileOptions);
@@ -244,9 +248,9 @@ export function checkFileRights(
     id: string,
     name: string,
     options: Record<string, any>,
-    flag: any,
+    flag: CONSTS.GenericAccessFlags,
     callback: () => void
-) {
+): any {
     options = options || {};
     if (!options.user) {
         // Before files converted, lets think: if no options it is admin
@@ -271,12 +275,12 @@ export function checkFileRights(
         return;
     }
     // If user may write
-    if (flag === 2 && !options.acl.file.write) {
+    if (flag === CONSTS.ACCESS_WRITE && !options.acl.file.write) {
         // write
         return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
     }
     // If user may read
-    if (flag === 4 && !options.acl.file.read) {
+    if (flag === CONSTS.ACCESS_READ && !options.acl.file.read) {
         // read
         return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
     }
@@ -329,41 +333,42 @@ export function checkFileRights(
      return callback(null, options);*/
 }
 // For users and groups
-function getDefaultAdminRights(acl?: Record<string, any>, _isState?: boolean) {
-    acl = acl || {};
-    acl.file = {
-        list: true,
-        read: true,
-        write: true,
-        create: true,
-        delete: true
+function getDefaultAdminRights(acl?: ioBroker.ObjectPermissions, _isState?: boolean) {
+    return {
+        ...acl,
+        file: {
+            list: true,
+            read: true,
+            write: true,
+            create: true,
+            delete: true
+        },
+        object: {
+            create: true,
+            list: true,
+            read: true,
+            write: true,
+            delete: true
+        },
+        users: {
+            create: true,
+            list: true,
+            read: true,
+            write: true,
+            delete: true
+        },
+        state: {
+            read: true,
+            write: true,
+            delete: true,
+            create: true,
+            list: true
+        }
     };
-    acl.object = {
-        create: true,
-        list: true,
-        read: true,
-        write: true,
-        delete: true
-    };
-    acl.users = {
-        create: true,
-        list: true,
-        read: true,
-        write: true,
-        delete: true
-    };
-    acl.state = {
-        read: true,
-        write: true,
-        delete: true,
-        create: true,
-        list: true
-    };
-
-    return acl;
 }
 
-export function getUserGroup(objects: any, user: string, callback: () => void) {
+// FIXME: Not sure about the expected return type here? ioBroker.GroupObject maybe? Or an array thereof?
+export function getUserGroup(objects: any, user: string, callback?: () => void) {
     if (!user || typeof user !== 'string' || !user.startsWith(USER_STARTS_WITH)) {
         console.log(`invalid user name: ${user}`);
         user = JSON.stringify(user);
@@ -403,7 +408,7 @@ export function getUserGroup(objects: any, user: string, callback: () => void) {
             objects.getObjectList(
                 { startkey: 'system.user.', endkey: 'system.user.\u9999' },
                 { checked: true },
-                (err: Error, arr: any) => {
+                (err?: Error | null, arr?: { rows: ioBroker.GetObjectListItem[] }) => {
                     if (err) {
                         error = err;
                     }
@@ -541,7 +546,7 @@ export function getUserGroup(objects: any, user: string, callback: () => void) {
     );
 }
 
-export function sanitizePath(id: string, name: string) {
+export function sanitizePath(id: string, name: string): { id: string; name: string } {
     if (!name) {
         name = '';
     }
@@ -574,11 +579,17 @@ export function sanitizePath(id: string, name: string) {
     return { id: id, name: name };
 }
 
-export function checkObject(obj: ioBroker.Object, options: Record<string, any>, flag: any) {
+export function checkObject(
+    obj: ioBroker.Object,
+    options: Record<string, any>,
+    flag: CONSTS.GenericAccessFlags
+): boolean {
     // read rights of object
     if (!obj || !obj.common || !obj.acl || flag === CONSTS.ACCESS_LIST) {
         return true;
     }
+
+    // FIXME: what if flag is ACCESS_DELETE or ACCESS_CREATE?
 
     if (options.user === CONSTS.SYSTEM_ADMIN_USER) {
         return true;
@@ -615,14 +626,15 @@ export function checkObject(obj: ioBroker.Object, options: Record<string, any>, 
     return true; // ALL OK
 }
 
+// FIXME: Return type?
 export function checkObjectRights(
     objects: any,
     id: string,
     object: ioBroker.Object,
     options: Record<string, any>,
-    flag: any,
+    flag: CONSTS.GenericAccessFlags,
     callback: () => void
-) {
+): any {
     options = options || {};
 
     if (!options.user) {
