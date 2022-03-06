@@ -161,6 +161,11 @@ module.exports = class CLIStates extends CLICommand {
         const { callback, dbConnect } = this.options;
         const id = args[1];
 
+        if (!id) {
+            CLI.error.stateNotFound(id);
+            return;
+        }
+
         dbConnect(async (objects, states) => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 objects.getObject(id, (err, targetObj) => {

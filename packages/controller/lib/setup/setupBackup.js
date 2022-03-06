@@ -125,14 +125,18 @@ class BackupRestore {
     copyFileSync(source, target) {
         let targetFile = target;
 
-        // if target is a directory a new file with the same name will be created
-        if (fs.existsSync(target)) {
-            if (fs.statSync(target).isDirectory()) {
-                targetFile = pathLib.join(target, pathLib.basename(source));
+        try {
+            // if target is a directory a new file with the same name will be created
+            if (fs.existsSync(target)) {
+                if (fs.statSync(target).isDirectory()) {
+                    targetFile = pathLib.join(target, pathLib.basename(source));
+                }
             }
-        }
 
-        fs.writeFileSync(targetFile, fs.readFileSync(source));
+            fs.writeFileSync(targetFile, fs.readFileSync(source));
+        } catch (e) {
+            console.error(`Could not copy ${targetFile} to ${source}: ${e.message}`);
+        }
     }
 
     copyFolderRecursiveSync(source, target) {
@@ -149,10 +153,13 @@ class BackupRestore {
         }
 
         // copy
-        if (fs.statSync(source).isDirectory()) {
+        if (fs.existsSync(source) && fs.statSync(source).isDirectory()) {
             files = fs.readdirSync(source);
             files.forEach(file => {
                 const curSource = pathLib.join(source, file);
+                if (!fs.existsSync(curSource)) {
+                    return;
+                }
                 if (fs.statSync(curSource).isDirectory()) {
                     this.copyFolderRecursiveSync(curSource, targetFolder);
                 } else {
@@ -600,7 +607,11 @@ class BackupRestore {
         }
         const files = fs.readdirSync(root + path);
         for (const file of files) {
-            const stat = fs.statSync(`${root + path}/${file}`);
+            const fName = path.join(root, path, file);
+            if (!fs.existsSync(fName)) {
+                continue;
+            }
+            const stat = fs.statSync(fName);
             if (stat.isDirectory()) {
                 try {
                     await this._uploadUserFiles(root, `${path}/${file}`);
@@ -634,6 +645,9 @@ class BackupRestore {
                 return;
             }
             const path = pathLib.join(backupDir, dir);
+            if (!fs.existsSync(path)) {
+                return;
+            }
             const stat = fs.statSync(path);
             if (stat.isDirectory()) {
                 this.copyFolderRecursiveSync(path, this.configDir);

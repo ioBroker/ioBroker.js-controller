@@ -1464,6 +1464,8 @@ function setIPs(ipList) {
                 !err &&
                 oldObj &&
                 oldObj.common &&
+                oldObj.native &&
+                oldObj.native.hardware &&
                 (!isDeepStrictEqual(oldObj.native.hardware.networkInterfaces, networkInterfaces) ||
                     !isDeepStrictEqual(oldObj.common.address, _ipList))
             ) {
