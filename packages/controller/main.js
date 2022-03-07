@@ -408,8 +408,10 @@ function createStates(onConnect) {
                                 );
                                 obj.from = hostObjectPrefix;
                                 obj.ts = Date.now();
-                                objects.setObject(obj._id, obj, err =>
-                                    logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
+                                objects.setObject(
+                                    obj._id,
+                                    obj,
+                                    err => err && logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
                                 );
                             }
                         }
