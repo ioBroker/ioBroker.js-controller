@@ -3602,7 +3602,7 @@ function Adapter(options) {
 
                 return setObjectWithDefaultValue(id, obj, null, callback);
             } else {
-                return tools.maybeCallbackWithError(callback, null);
+                return tools.maybeCallbackWithError(callback, null, { id });
             }
         };
         /**
