@@ -464,7 +464,10 @@ class RedisHandler extends EventEmitter {
     _handleMultiResponse(responseId, index, buf) {
         this.activeMultiCalls[index].responseMap.set(responseId, buf);
         this.activeMultiCalls[index].responseCount++;
-        if (this.activeMultiCalls[index].responseCount === this.activeMultiCalls[index].responseIds.length) {
+        if (
+            this.activeMultiCalls[index].execCalled &&
+            this.activeMultiCalls[index].responseCount === this.activeMultiCalls[index].responseIds.length
+        ) {
             const multiRespObj = this.activeMultiCalls.splice(index, 1)[0];
             this._sendExecResponse(multiRespObj);
         }
