@@ -6,6 +6,12 @@
 ## 4.1.0 - WORK IN PROGRESS Release Jana
 * Work in Progress
 
+## 4.0.20 (2022-03-12)
+* (foxriver76) Add missing axios dependency
+* (Apollon77) Only log an error if an error is happening when activating/deactivating adapter via .alive states
+* (foxriver76) Fix edge case in redis simulator MULTI/EXEC logic
+* (Apollon77/foxriver76) Prevent some crash cases reported by Sentry
+
 ## 4.0.19 (2022-03-05)
 * (foxriver76) Fix Adapter restarting on install/update
 * (foxriver76) Really fix invalid backup period warning
