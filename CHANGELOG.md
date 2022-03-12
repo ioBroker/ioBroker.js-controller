@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
+## 4.0.21 (2022-03-12)
 * (Apollon77) Fix Backup Restore crash case
 
 ## 4.0.20 (2022-03-12)

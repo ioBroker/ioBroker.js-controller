@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.20",
+    "version": "4.0.21",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.21": {
+        "en": "Fix Backup Restore crash case",
+        "de": "Beheben Sie den Absturzfall der Sicherungswiederherstellung",
+        "ru": "Исправить случай сбоя восстановления резервной копии",
+        "pt": "Corrigir caso de falha de restauração de backup",
+        "nl": "Fix Backup Herstel crashgeval",
+        "fr": "Correction du cas de plantage de restauration de sauvegarde",
+        "it": "Risolto il caso di arresto anomalo del ripristino del backup",
+        "es": "Solucionar caso de bloqueo de restauración de copia de seguridad",
+        "pl": "Napraw przypadek awarii przywracania kopii zapasowej",
+        "zh-cn": "修复备份还原崩溃案例"
+      },
       "4.0.20": {
         "en": "Add missing axios dependency\nOnly log an error if an error is happening when activating/deactivating adapter via .alive states\nFix edge case in redis simulator MULTI/EXEC logic\nPrevent some crash cases reported by Sentry",
         "de": "Fehlende Axios-Abhängigkeit hinzugefügt\nProtokollieren Sie nur dann einen Fehler, wenn beim Aktivieren/Deaktivieren des Adapters über .alive-Zustände ein Fehler auftritt\nGrenzfall in der MULTI/EXEC-Logik des Redis-Simulators behoben\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",
