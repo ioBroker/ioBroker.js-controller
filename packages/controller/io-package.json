@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.19",
+    "version": "4.0.20",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.20": {
+        "en": "Add missing axios dependency\nOnly log an error if an error is happening when activating/deactivating adapter via .alive states\nFix edge case in redis simulator MULTI/EXEC logic\nPrevent some crash cases reported by Sentry",
+        "de": "Fehlende Axios-Abhängigkeit hinzugefügt\nProtokollieren Sie nur dann einen Fehler, wenn beim Aktivieren/Deaktivieren des Adapters über .alive-Zustände ein Fehler auftritt\nGrenzfall in der MULTI/EXEC-Logik des Redis-Simulators behoben\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",
+        "ru": "Добавить отсутствующую зависимость axios\nРегистрировать ошибку только в том случае, если ошибка возникает при активации/деактивации адаптера через состояния .alive.\nИсправить пограничный случай в логике MULTI/EXEC симулятора Redis.\nПредотвращение некоторых случаев сбоев, о которых сообщает Sentry.",
+        "pt": "Adicionar dependência de axios ausente\nApenas registre um erro se ocorrer um erro ao ativar/desativar o adaptador por meio de estados .alive\nCorrigir caso de borda na lógica MULTI/EXEC do simulador redis\nPrevenir alguns casos de travamento relatados pelo Sentinela",
+        "nl": "Ontbrekende axios-afhankelijkheid toevoegen\nLog alleen een fout in als er een fout optreedt bij het activeren/deactiveren van de adapter via .alive states\nRandgeval repareren in redis-simulator MULTI/EXEC-logica\nVoorkom enkele door Sentry gemelde crashgevallen",
+        "fr": "Ajouter la dépendance axios manquante\nEnregistrez une erreur uniquement si une erreur se produit lors de l'activation/de la désactivation de l'adaptateur via les états .alive\nCorrection du cas limite dans la logique MULTI/EXEC du simulateur redis\nEmpêcher certains cas de plantage signalés par Sentry",
+        "it": "Aggiungi la dipendenza assio mancante\nRegistra un errore solo se si verifica un errore durante l'attivazione/disattivazione dell'adattatore tramite stati .alive\nRisolto il problema con il caso limite nella logica MULTI/EXEC del simulatore Redis\nPrevenire alcuni casi di crash segnalati da Sentry",
+        "es": "Agregar la dependencia de axios faltante\nSolo registre un error si ocurre un error al activar/desactivar el adaptador a través de estados .alive\nArreglar el caso de borde en la lógica MULTI / EXEC del simulador redis\nEvitar algunos casos de bloqueo informados por Sentry",
+        "pl": "Dodaj brakującą zależność axios\nZapisuj błąd tylko wtedy, gdy wystąpi błąd podczas aktywacji/dezaktywacji adaptera przez stany .alive\nNapraw obudowę krawędziową w symulatorze redis, logika MULTI/EXEC\nZapobiegaj niektórym przypadkom awarii zgłaszanych przez Sentry",
+        "zh-cn": "添加缺少的 axios 依赖项\n只有在通过 .alive 状态激活/停用适配器时发生错误时才记录错误\n修复 redis 模拟器 MULTI/EXEC 逻辑中的边缘情况\n防止 Sentry 报告的一些崩溃案例"
+      },
       "4.0.19": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
