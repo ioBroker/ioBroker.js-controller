@@ -14,7 +14,6 @@ const pathLib = require('path');
 const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const path = require('path');
 const cpPromise = require('promisify-child-process');
 
 // We cannot use relative paths for the backup locations, as they used by both
@@ -607,7 +606,7 @@ class BackupRestore {
         }
         const files = fs.readdirSync(root + path);
         for (const file of files) {
-            const fName = path.join(root, path, file);
+            const fName = pathLib.join(root, path, file);
             if (!fs.existsSync(fName)) {
                 continue;
             }
@@ -734,7 +733,7 @@ class BackupRestore {
             console.log('Forced restore - executing setup ...');
             try {
                 await cpPromise.exec(
-                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+                    `"${process.execPath}" "${pathLib.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
                 );
             } catch (e) {
                 console.error(
@@ -757,7 +756,7 @@ class BackupRestore {
      * @private
      */
     async _removeAllAdapters(controllerDir) {
-        const nodeModulePath = path.join(controllerDir, '..');
+        const nodeModulePath = pathLib.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
         // we need to uninstall current adapters to get exact the same system as before backup
         for (const dir of nodeModuleDirs) {
@@ -767,7 +766,7 @@ class BackupRestore {
                 dir.name !== `${tools.appName.toLowerCase()}.js-controller`
             ) {
                 try {
-                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dir.name, 'package.json'));
+                    const packJson = fs.readJsonSync(pathLib.join(nodeModulePath, dir.name, 'package.json'));
                     console.log(`Removing current installation of ${packJson.name}`);
                     await tools.uninstallNodeModule(packJson.name);
                 } catch {
@@ -789,7 +788,7 @@ class BackupRestore {
      */
     _ensureCompatibility(controllerDir, backupHostname, backupObjects, force) {
         try {
-            const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
+            const ioPackJson = fs.readJsonSync(pathLib.join(controllerDir, 'io-package.json'));
             const hostObj = backupObjects.find(obj => obj.id === `system.host.${backupHostname}`);
             if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
                 if (!force) {
