@@ -3602,7 +3602,7 @@ function Adapter(options) {
 
                 return setObjectWithDefaultValue(id, obj, null, callback);
             } else {
-                return tools.maybeCallbackWithError(callback, null);
+                return tools.maybeCallbackWithError(callback, null, { id });
             }
         };
         /**
@@ -9111,6 +9111,9 @@ function Adapter(options) {
                 // auto oStates
                 if (options.states) {
                     this.getStates('*', null, (err, _states) => {
+                        if (stopInProgress) {
+                            return;
+                        }
                         this.oStates = _states;
                         this.subscribeStates('*');
                         if (firstConnection) {
@@ -9121,9 +9124,10 @@ function Adapter(options) {
                             typeof options.reconnect === 'function' && options.reconnect();
                             this.emit('reconnect');
                         }
+
                         this.adapterReady = true;
                     });
-                } else {
+                } else if (!stopInProgress) {
                     typeof options.ready === 'function' && options.ready();
                     this.emit('ready');
                     this.adapterReady = true;
@@ -9269,29 +9273,32 @@ function Adapter(options) {
                 }
             };
 
-            if (typeof options.unload === 'function') {
-                if (options.unload.length >= 1) {
-                    // The method takes (at least) a callback
-                    options.unload(finishUnload);
-                } else {
-                    // The method takes no arguments, so it must return a Promise
-                    const unloadPromise = options.unload();
-                    if (unloadPromise instanceof Promise) {
-                        // Call finishUnload in the case of success and failure
-                        try {
-                            await unloadPromise;
-                        } finally {
-                            finishUnload();
-                        }
+            // if we never were ready, we don't trigger unload
+            if (this.adapterReady) {
+                if (typeof options.unload === 'function') {
+                    if (options.unload.length >= 1) {
+                        // The method takes (at least) a callback
+                        options.unload(finishUnload);
                     } else {
-                        // No callback accepted and no Promise returned - force unload
-                        logger.error(
-                            `${this.namespaceLog} Error in ${id}: The unload method must return a Promise if it does not accept a callback!`
-                        );
+                        // The method takes no arguments, so it must return a Promise
+                        const unloadPromise = options.unload();
+                        if (unloadPromise instanceof Promise) {
+                            // Call finishUnload in the case of success and failure
+                            try {
+                                await unloadPromise;
+                            } finally {
+                                finishUnload();
+                            }
+                        } else {
+                            // No callback accepted and no Promise returned - force unload
+                            logger.error(
+                                `${this.namespaceLog} Error in ${id}: The unload method must return a Promise if it does not accept a callback!`
+                            );
+                        }
                     }
+                } else {
+                    this.emit('unload', finishUnload);
                 }
-            } else {
-                this.emit('unload', finishUnload);
             }
 
             // Even if the developer forgets to call the unload callback, we need to stop the process
