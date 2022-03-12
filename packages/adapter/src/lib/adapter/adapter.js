@@ -9108,31 +9108,32 @@ function Adapter(options) {
                     }
                 }
 
-                if (!stopInProgress) {
-                    // auto oStates
-                    if (options.states) {
-                        this.getStates('*', null, (err, _states) => {
-                            this.oStates = _states;
-                            this.subscribeStates('*');
-                            if (firstConnection) {
-                                firstConnection = false;
-                                typeof options.ready === 'function' && options.ready();
-                                this.emit('ready');
-                            } else {
-                                typeof options.reconnect === 'function' && options.reconnect();
-                                this.emit('reconnect');
-                            }
+                // auto oStates
+                if (options.states) {
+                    this.getStates('*', null, (err, _states) => {
+                        if (stopInProgress) {
+                            return;
+                        }
+                        this.oStates = _states;
+                        this.subscribeStates('*');
+                        if (firstConnection) {
+                            firstConnection = false;
+                            typeof options.ready === 'function' && options.ready();
+                            this.emit('ready');
+                        } else {
+                            typeof options.reconnect === 'function' && options.reconnect();
+                            this.emit('reconnect');
+                        }
 
-                            this.adapterReady = true;
-                        });
-                    } else {
-                        typeof options.ready === 'function' && options.ready();
-                        this.emit('ready');
                         this.adapterReady = true;
+                    });
+                } else if (!stopInProgress) {
+                    typeof options.ready === 'function' && options.ready();
+                    this.emit('ready');
+                    this.adapterReady = true;
 
-                        // todo remove it later, when the error is fixed
-                        adapterStates.subscribe(`${this.namespace}.checkLogging`);
-                    }
+                    // todo remove it later, when the error is fixed
+                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
                 }
             });
         });
