@@ -6,6 +6,9 @@
 ## 4.1.0 - WORK IN PROGRESS Release Jana
 * Work in Progress
 
+## 4.0.21 (2022-03-12)
+* (Apollon77) Fix Backup Restore crash case
+
 ## 4.0.20 (2022-03-12)
 * (foxriver76) Add missing axios dependency
 * (Apollon77) Only log an error if an error is happening when activating/deactivating adapter via .alive states
