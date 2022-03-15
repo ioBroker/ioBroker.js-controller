@@ -19,19 +19,7 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "4.0.18": {
-        "en": "Also stop instances before GitHub installs\nFix eraseOnUpload logic\nFix invalid backup period warning\nFix maxSize property for logging in dist file\nPrevent some crash cases reported by Sentry",
-        "de": "Stoppen Sie außerdem Instanzen, bevor GitHub installiert wird\nEraseOnUpload-Logik korrigiert\nWarnung zu ungültigem Sicherungszeitraum behoben\nKorrigieren Sie die maxSize-Eigenschaft für die Anmeldung in der Dist-Datei\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",
-        "ru": "Также останавливайте экземпляры перед установкой GitHub.\nИсправление логики EraseOnUpload\nИсправить предупреждение о недопустимом периоде резервного копирования\nИсправлено свойство maxSize для входа в файл dist.\nПредотвращение некоторых случаев сбоев, о которых сообщает Sentry.",
-        "pt": "Também interrompa instâncias antes da instalação do GitHub\nCorrigir a lógica eraseOnUpload\nCorrigir aviso de período de backup inválido\nCorrige a propriedade maxSize para fazer login no arquivo dist\nPrevenir alguns casos de travamento relatados pelo Sentinela",
-        "nl": "Stop ook instanties voordat GitHub wordt geïnstalleerd\nEraseOnUpload-logica repareren\nWaarschuwing voor ongeldige back-upperiode repareren\nFix maxSize-eigenschap voor inloggen in dist-bestand\nVoorkom enkele door Sentry gemelde crashgevallen",
-        "fr": "Arrêtez également les instances avant l'installation de GitHub\nCorrection de la logique eraseOnUpload\nCorrection de l'avertissement de période de sauvegarde non valide\nCorrection de la propriété maxSize pour la connexion au fichier dist\nEmpêcher certains cas de plantage signalés par Sentry",
-        "it": "Arresta anche le istanze prima dell'installazione di GitHub\nRisolto il problema con la logica di cancellazione durante il caricamento\nCorrezione dell'avviso di periodo di backup non valido\nCorrezione della proprietà maxSize per l'accesso al file dist\nPrevenire alcuni casi di crash segnalati da Sentry",
-        "es": "También detenga las instancias antes de que se instale GitHub\nArreglar la lógica eraseOnUpload\nArreglar la advertencia de período de copia de seguridad no válido\nArreglar la propiedad maxSize para iniciar sesión en el archivo dist\nEvitar algunos casos de bloqueo informados por Sentry",
-        "pl": "Zatrzymaj również instancje przed instalacją GitHub\nNapraw logikę eraseOnUpload\nNapraw ostrzeżenie o nieprawidłowym okresie tworzenia kopii zapasowej\nNapraw właściwość maxSize do logowania w pliku dist\nZapobiegaj niektórym przypadkom awarii zgłaszanych przez Sentry",
-        "zh-cn": "在 GitHub 安装之前停止实例\n修复 eraseOnUpload 逻辑\n修复无效备份周期警告\n修复用于登录 dist 文件的 maxSize 属性\n防止 Sentry 报告的一些崩溃案例"
-      },
-      "4.0.15": {
+      "4.0.21": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",

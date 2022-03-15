@@ -408,8 +408,10 @@ function createStates(onConnect) {
                                 );
                                 obj.from = hostObjectPrefix;
                                 obj.ts = Date.now();
-                                objects.setObject(obj._id, obj, err =>
-                                    logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
+                                objects.setObject(
+                                    obj._id,
+                                    obj,
+                                    err => err && logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
                                 );
                             }
                         }
@@ -1464,6 +1466,8 @@ function setIPs(ipList) {
                 !err &&
                 oldObj &&
                 oldObj.common &&
+                oldObj.native &&
+                oldObj.native.hardware &&
                 (!isDeepStrictEqual(oldObj.native.hardware.networkInterfaces, networkInterfaces) ||
                     !isDeepStrictEqual(oldObj.common.address, _ipList))
             ) {

@@ -14,7 +14,6 @@ const pathLib = require('path');
 const hostname = tools.getHostName();
 const Upload = require('./setupUpload');
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const path = require('path');
 const cpPromise = require('promisify-child-process');
 
 // We cannot use relative paths for the backup locations, as they used by both
@@ -125,14 +124,18 @@ class BackupRestore {
     copyFileSync(source, target) {
         let targetFile = target;
 
-        // if target is a directory a new file with the same name will be created
-        if (fs.existsSync(target)) {
-            if (fs.statSync(target).isDirectory()) {
-                targetFile = pathLib.join(target, pathLib.basename(source));
+        try {
+            // if target is a directory a new file with the same name will be created
+            if (fs.existsSync(target)) {
+                if (fs.statSync(target).isDirectory()) {
+                    targetFile = pathLib.join(target, pathLib.basename(source));
+                }
             }
-        }
 
-        fs.writeFileSync(targetFile, fs.readFileSync(source));
+            fs.writeFileSync(targetFile, fs.readFileSync(source));
+        } catch (e) {
+            console.error(`Could not copy ${targetFile} to ${source}: ${e.message}`);
+        }
     }
 
     copyFolderRecursiveSync(source, target) {
@@ -149,10 +152,13 @@ class BackupRestore {
         }
 
         // copy
-        if (fs.statSync(source).isDirectory()) {
+        if (fs.existsSync(source) && fs.statSync(source).isDirectory()) {
             files = fs.readdirSync(source);
             files.forEach(file => {
                 const curSource = pathLib.join(source, file);
+                if (!fs.existsSync(curSource)) {
+                    return;
+                }
                 if (fs.statSync(curSource).isDirectory()) {
                     this.copyFolderRecursiveSync(curSource, targetFolder);
                 } else {
@@ -600,7 +606,11 @@ class BackupRestore {
         }
         const files = fs.readdirSync(root + path);
         for (const file of files) {
-            const stat = fs.statSync(`${root + path}/${file}`);
+            const fName = pathLib.join(root, path, file);
+            if (!fs.existsSync(fName)) {
+                continue;
+            }
+            const stat = fs.statSync(fName);
             if (stat.isDirectory()) {
                 try {
                     await this._uploadUserFiles(root, `${path}/${file}`);
@@ -634,6 +644,9 @@ class BackupRestore {
                 return;
             }
             const path = pathLib.join(backupDir, dir);
+            if (!fs.existsSync(path)) {
+                return;
+            }
             const stat = fs.statSync(path);
             if (stat.isDirectory()) {
                 this.copyFolderRecursiveSync(path, this.configDir);
@@ -720,7 +733,7 @@ class BackupRestore {
             console.log('Forced restore - executing setup ...');
             try {
                 await cpPromise.exec(
-                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+                    `"${process.execPath}" "${pathLib.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
                 );
             } catch (e) {
                 console.error(
@@ -743,7 +756,7 @@ class BackupRestore {
      * @private
      */
     async _removeAllAdapters(controllerDir) {
-        const nodeModulePath = path.join(controllerDir, '..');
+        const nodeModulePath = pathLib.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
         // we need to uninstall current adapters to get exact the same system as before backup
         for (const dir of nodeModuleDirs) {
@@ -753,7 +766,7 @@ class BackupRestore {
                 dir.name !== `${tools.appName.toLowerCase()}.js-controller`
             ) {
                 try {
-                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dir.name, 'package.json'));
+                    const packJson = fs.readJsonSync(pathLib.join(nodeModulePath, dir.name, 'package.json'));
                     console.log(`Removing current installation of ${packJson.name}`);
                     await tools.uninstallNodeModule(packJson.name);
                 } catch {
@@ -775,7 +788,7 @@ class BackupRestore {
      */
     _ensureCompatibility(controllerDir, backupHostname, backupObjects, force) {
         try {
-            const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
+            const ioPackJson = fs.readJsonSync(pathLib.join(controllerDir, 'io-package.json'));
             const hostObj = backupObjects.find(obj => obj.id === `system.host.${backupHostname}`);
             if (hostObj.value.common.installedVersion !== ioPackJson.common.version) {
                 if (!force) {
