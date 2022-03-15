@@ -9303,6 +9303,10 @@ class Adapter extends EventEmitter {
                     // auto oStates
                     if (this._options.states) {
                         this.getStates('*', null, (err, _states) => {
+                            if (this._stopInProgress) {
+                                return;
+                            }
+
                             this.oStates = _states;
                             this.subscribeStates('*');
                             if (this._firstConnection) {
@@ -9315,7 +9319,7 @@ class Adapter extends EventEmitter {
                             }
                             this.adapterReady = true;
                         });
-                    } else {
+                    } else if (!this._stopInProgress) {
                         typeof this._options.ready === 'function' && this._options.ready();
                         this.emit('ready');
                         this.adapterReady = true;
