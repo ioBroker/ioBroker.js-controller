@@ -10,7 +10,7 @@ function register(it, expect, context) {
 
     // setState
     it(testName + 'Set local state', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.setObject(
             gid,
             {
@@ -105,7 +105,7 @@ function register(it, expect, context) {
 
     // getState
     it(testName + 'Get local state', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.getState(gid, function (err) {
             expect(err).to.be.not.ok;
 
@@ -127,7 +127,7 @@ function register(it, expect, context) {
 
     // getStates
     it(testName + 'Get local states', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.getStates('*', function (err, states) {
             expect(err).to.be.not.ok;
             expect(states).to.be.an('object');
@@ -157,7 +157,7 @@ function register(it, expect, context) {
 
     // delState
     it(testName + 'Delete local state', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.delState(gid, function (err) {
             expect(err).to.be.not.ok;
 
@@ -228,7 +228,7 @@ function register(it, expect, context) {
 
     // subscribeStates
     it(testName + 'Test subscribe local states', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const sGid = gid + '5';
 
         context.adapter.setObject(
@@ -271,7 +271,7 @@ function register(it, expect, context) {
 
     // unsubscribeStates
     it(testName + 'Test unsubscribe local states', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const sGid = gid + '5';
 
         context.onAdapterStateChanged = function (id, state) {
@@ -299,7 +299,7 @@ function register(it, expect, context) {
     // -------------------------------------------------------------------------------------
     // setForeignState
     it(testName + 'Set foreign state', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const fGid = context.adapterShortName + '1.0.' + gid;
         context.objects.setObject(
             fGid,
@@ -360,7 +360,7 @@ function register(it, expect, context) {
 
     // setForeignState with acl all
     it(testName + 'Set foreign state with acl', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const fGid = context.adapterShortName + '3.0.' + gid;
         context.adapter.setForeignObject(
             'system.group.writer2',
@@ -497,7 +497,7 @@ function register(it, expect, context) {
 
     // setForeignState with acl failure
     it(testName + 'Set foreign state with acl failure', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const fGid = context.adapterShortName + '3.1.' + gid;
 
         context.objects.setObject(
@@ -536,7 +536,7 @@ function register(it, expect, context) {
 
     // setForeignState with acl write only
     it(testName + 'Set foreign state with acl write only', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const fGid = context.adapterShortName + '3.0.' + gid;
         context.objects.setObject(
             fGid,
@@ -640,7 +640,7 @@ function register(it, expect, context) {
 
     // getForeignState
     it(testName + 'Get foreign state', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const fGid = context.adapterShortName + '1.0.' + gid;
         context.adapter.getForeignState(fGid, function (err, state) {
             expect(err).to.be.null;
@@ -659,7 +659,7 @@ function register(it, expect, context) {
 
     // getForeignStates
     it(testName + 'Get foreign states', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.getForeignStates(context.adapterShortName + '1.0.*', function (err, states) {
             expect(err).to.be.not.ok;
             expect(states).to.be.an('object');
@@ -692,7 +692,7 @@ function register(it, expect, context) {
 
     // delForeignState
     it(testName + 'Delete foreign state', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.delForeignState(context.adapterShortName + '1.0.' + gid, function (err) {
             expect(err).to.be.not.ok;
 
@@ -723,7 +723,7 @@ function register(it, expect, context) {
 
     // subscribeForeignStates
     it(testName + 'Test subscribe foreign states', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const sGid = `${context.adapterShortName}2.0.${gid}6`;
 
         context.adapter.setForeignObject(
@@ -811,7 +811,7 @@ function register(it, expect, context) {
                 context.states.setState(id, 10);
             }
         });
-    }).timeout(2000);
+    }).timeout(3000);
 
     // unsubscribeForeignStates
     it(testName + 'Test unsubscribe foreign states', function (done) {

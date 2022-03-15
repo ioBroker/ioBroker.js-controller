@@ -957,29 +957,32 @@ class Adapter extends EventEmitter {
                 }
             };
 
-            if (typeof this._options.unload === 'function') {
-                if (this._options.unload.length >= 1) {
-                    // The method takes (at least) a callback
-                    this._options.unload(finishUnload);
-                } else {
-                    // The method takes no arguments, so it must return a Promise
-                    const unloadPromise = this._options.unload();
-                    if (unloadPromise instanceof Promise) {
-                        // Call finishUnload in the case of success and failure
-                        try {
-                            await unloadPromise;
-                        } finally {
-                            finishUnload();
-                        }
+            // if we never were ready, we don't trigger unload
+            if (this.adapterReady) {
+                if (typeof this._options.unload === 'function') {
+                    if (this._options.unload.length >= 1) {
+                        // The method takes (at least) a callback
+                        this._options.unload(finishUnload);
                     } else {
-                        // No callback accepted and no Promise returned - force unload
-                        this._logger.error(
-                            `${this.namespaceLog} Error in ${id}: The unload method must return a Promise if it does not accept a callback!`
-                        );
+                        // The method takes no arguments, so it must return a Promise
+                        const unloadPromise = this._options.unload();
+                        if (unloadPromise instanceof Promise) {
+                            // Call finishUnload in the case of success and failure
+                            try {
+                                await unloadPromise;
+                            } finally {
+                                finishUnload();
+                            }
+                        } else {
+                            // No callback accepted and no Promise returned - force unload
+                            this._logger.error(
+                                `${this.namespaceLog} Error in ${id}: The unload method must return a Promise if it does not accept a callback!`
+                            );
+                        }
                     }
+                } else {
+                    this.emit('unload', finishUnload);
                 }
-            } else {
-                this.emit('unload', finishUnload);
             }
 
             // Even if the developer forgets to call the unload callback, we need to stop the process

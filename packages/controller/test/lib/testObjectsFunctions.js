@@ -18,7 +18,7 @@ function register(it, expect, context) {
 
     // setObject positive
     it(testName + 'Check if objects will be created', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         context.adapter.setObject(
             gid,
             {
@@ -54,7 +54,7 @@ function register(it, expect, context) {
 
     // // setObject positive (async)
     // it(testName + 'Check if objects will be created (ASYNC)', function () {
-    //     this.timeout(2000);
+    //     this.timeout(3000);
 
     //     const tests = [
     //         // Creating an object works
@@ -88,7 +88,7 @@ function register(it, expect, context) {
 
     // setObject negative
     it(testName + 'Check if objects will not be created without mandatory attribute type', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         const id = 'myTestObjectNoType';
         context.adapter.setObject(
             id,
@@ -152,7 +152,7 @@ function register(it, expect, context) {
 
     // setForeignObject
     it(testName + 'Check if foreign objects will be created', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject(
@@ -304,7 +304,7 @@ function register(it, expect, context) {
 
     // protection check for getForeignObject
     it(testName + 'Check if foreign system adapters protectedNative is not accessible', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // create a system.adapter object of another adapter
         context.adapter.setForeignObject(
             'system.adapter.tesla.0',
@@ -342,7 +342,7 @@ function register(it, expect, context) {
 
     // own protectedNative should be available
     it(testName + 'Check if own system adapters protectedNative is available via getForeignObject', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // create a system.adapter object of own adapter
         context.adapter.setForeignObject(
             'system.adapter.' + context.adapterShortName + '.0',
@@ -1115,7 +1115,7 @@ function register(it, expect, context) {
 
     // getObject with acls
     it(testName + 'Check getObjects with ACLs', function (done) {
-        this.timeout(2000);
+        this.timeout(3000);
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject(

@@ -90,10 +90,10 @@ function Upload(options) {
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
                     const instances = await tools.getAllInstances(adapterConf.common.restartAdapters, objects);
-                    if (instances && !instances.length) {
-                        for (let r = 0; r < instances.length; r++) {
+                    if (instances && instances.length) {
+                        for (const instance of instances) {
                             try {
-                                const obj = await objects.getObjectAsync(instances[r]);
+                                const obj = await objects.getObjectAsync(instance);
                                 // if instance is enabled
                                 if (obj && obj.common && obj.common.enabled) {
                                     obj.common.enabled = false; // disable instance
@@ -101,7 +101,7 @@ function Upload(options) {
                                     obj.from = `system.host.${tools.getHostName()}.cli`;
                                     obj.ts = Date.now();
 
-                                    await objects.setObjectAsync(obj._id);
+                                    await objects.setObjectAsync(obj._id, obj);
 
                                     obj.common.enabled = true; // enable instance
                                     obj.ts = Date.now();
@@ -110,7 +110,7 @@ function Upload(options) {
                                     console.log(`Adapter "${obj._id}" restarted.`);
                                 }
                             } catch (err) {
-                                console.error(`Cannot restart adapter "${instances[r]}": ${err.message}`);
+                                console.error(`Cannot restart adapter "${instance}": ${err.message}`);
                             }
                         }
                     }
@@ -287,11 +287,11 @@ function Upload(options) {
     };
 
     async function eraseFiles(files, logger) {
-        if (!files || !files.length) {
+        if (files && files.length) {
             for (let f = 0; f < files.length; f++) {
                 const file = files[f];
                 try {
-                    await objects.unlinkSync(file.adapter, file.path);
+                    await objects.unlinkAsync(file.adapter, file.path);
                 } catch (err) {
                     logger.error(`Cannot delete file "${file.path}": ${err}`);
                 }
@@ -299,41 +299,47 @@ function Upload(options) {
         }
     }
 
-    async function eraseFolder(isErase, adapter, path, logger) {
+    /**
+     * Collect Files of an adapter specific directory from the iobroker storage
+     *
+     * @param adapter {string} Adaptername
+     * @param path {string} path in the adapterspecific storage space
+     * @param logger {any} Logger instance
+     * @returns {Promise<{dirs: *[], filesToDelete: *[]}>}
+     */
+    async function collectExistingFilesToDelete(adapter, path, logger) {
         let _files = [];
         let _dirs = [];
-        if (isErase) {
-            let files;
-            try {
-                files = await objects.readDirAsync(adapter, path);
-            } catch {
-                // ignore err
-                files = [];
-            }
+        let files;
+        try {
+            files = await objects.readDirAsync(adapter, path);
+        } catch {
+            // ignore err
+            files = [];
+        }
 
-            if (files && files.length) {
-                for (let f = 0; f < files.length; f++) {
-                    if (files[f].file === '.' || files[f].file === '..') {
-                        continue;
+        if (files && files.length) {
+            for (const file of files) {
+                if (file.file === '.' || file.file === '..') {
+                    continue;
+                }
+                const newPath = path + file.file;
+                if (file.isDir) {
+                    if (!_dirs.find(e => e.path === newPath)) {
+                        _dirs.push({ adapter, path: newPath });
                     }
-                    const newPath = path + files[f].file;
-                    if (files[f].isDir) {
-                        if (!_dirs.find(e => e.path === newPath)) {
-                            _dirs.push({ adapter, path: newPath });
+                    try {
+                        const result = await collectExistingFilesToDelete(adapter, newPath + '/', logger);
+                        if (result.filesToDelete) {
+                            _files = _files.concat(result.filesToDelete);
                         }
-                        try {
-                            const result = await eraseFolder(isErase, adapter, newPath + '/', logger);
-                            if (result.filesToDelete) {
-                                _files = _files.concat(result.filesToDelete);
-                            }
 
-                            _dirs = _dirs.concat(result.dirs);
-                        } catch (err) {
-                            console.warn(`Cannot delete folder "${adapter}${newPath}/": ${err.message}`);
-                        }
-                    } else if (!_files.find(e => e.path === newPath)) {
-                        _files.push({ adapter, path: newPath });
+                        _dirs = _dirs.concat(result.dirs);
+                    } catch (err) {
+                        logger.warn(`Cannot delete folder "${adapter}${newPath}/": ${err.message}`);
                     }
+                } else if (!_files.find(e => e.path === newPath)) {
+                    _files.push({ adapter, path: newPath });
                 }
             }
         }
@@ -531,18 +537,6 @@ function Upload(options) {
 
         mime = mime || require('mime');
 
-        let { filesToDelete } = await eraseFolder(
-            cfg && cfg.common && cfg.common.eraseOnUpload,
-            isAdmin ? adapter + '.admin' : adapter,
-            '/',
-            logger
-        );
-        if (filesToDelete) {
-            // directories should be deleted automatically
-            // files = files.concat(dirs);
-        } else {
-            filesToDelete = [];
-        }
         let result;
         try {
             result = await objects.getObjectAsync(id);
@@ -552,8 +546,6 @@ function Upload(options) {
         // Read all names with subtrees from local directory
         const files = walk(dir);
         if (!result) {
-            // delete old files, before upload of new
-            await eraseFiles(filesToDelete, logger);
             await objects.setObjectAsync(id, {
                 type: 'meta',
                 common: {
@@ -568,6 +560,15 @@ function Upload(options) {
         }
 
         if (forceUpload) {
+            if (cfg && cfg.common && cfg.common.eraseOnUpload) {
+                const { filesToDelete } = await collectExistingFilesToDelete(
+                    isAdmin ? adapter + '.admin' : adapter,
+                    '/',
+                    logger
+                );
+                // delete old files, before upload of new
+                await eraseFiles(filesToDelete, logger);
+            }
             if (!isAdmin) {
                 await checkRestartOther(adapter);
                 await new Promise(resolve => setTimeout(() => resolve(), 25));

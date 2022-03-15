@@ -79,11 +79,11 @@ class InMemoryFileDB {
 
         this.backupDir = this.settings.backup.path || path.join(this.dataDir, this.settings.fileDB.backupDirName);
 
+        this.log = tools.getLogger(this.settings.logger);
+
         if (!this.settings.backup.disabled) {
             this.initBackupDir();
         }
-
-        this.log = tools.getLogger(this.settings.logger);
 
         this.log.debug(`${this.namespace} Data File: ${this.datasetName}`);
     }

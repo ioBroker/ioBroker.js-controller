@@ -257,7 +257,7 @@ function testAdapter(options) {
         it(
             options.name + ' ' + context.adapterShortName + ' adapter: check all important adapter attributes',
             function (done) {
-                this.timeout(1000);
+                this.timeout(2000);
                 expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
                 expect(context.adapter.name).to.be.equal(context.adapterShortName);
                 expect(context.adapter.instance).to.be.equal(0);

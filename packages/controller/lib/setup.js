@@ -921,7 +921,7 @@ async function processCommand(command, args, params, callback) {
                     try {
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
-                        await install.enableAdapters(stoppedList, true); // even if unlikely make sure to reenable disabled instances
+                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
                         if (command !== 'install' && command !== 'i') {
                             await install.createInstance(name, params);
                         }

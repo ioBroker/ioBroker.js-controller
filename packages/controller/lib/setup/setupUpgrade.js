@@ -518,7 +518,7 @@ function Upgrade(options) {
                     `${adapter}@${targetVersion}`
                 );
                 await finishUpgrade(packetName);
-                await install.enableAdapters(stoppedList, true);
+                await install.enableInstances(stoppedList, true);
             }
         } else if (repoUrl[adapter].meta) {
             // Read repository from url or file
@@ -564,7 +564,7 @@ function Upgrade(options) {
                     `${adapter}@${targetVersion}`
                 );
                 await finishUpgrade(packetName, ioPack);
-                await install.enableAdapters(stoppedList, true);
+                await install.enableInstances(stoppedList, true);
             }
         } else {
             if (forceDowngrade) {
@@ -580,7 +580,7 @@ function Upgrade(options) {
                 // Get the adapter from web site
                 const { packetName, stoppedList } = await install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(packetName);
-                await install.enableAdapters(stoppedList, true);
+                await install.enableInstances(stoppedList, true);
             } else {
                 return console.error(`Unable to get version for "${adapter}".`);
             }
