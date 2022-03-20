@@ -769,7 +769,7 @@ function createObjects(onConnect) {
                             delete hostAdapter[id];
                         }
                     }
-                } else if (obj.type && obj.type === 'host' && obj.common && obj.common.installedVersion) {
+                } else if (obj && obj.type === 'host' && obj.common && obj.common.installedVersion) {
                     // host object changed
                     // TODO: remove this shim if 4.0 is old enough
                     if (controllerVersions[id]) {
