@@ -10,7 +10,7 @@ const { tools } = require('@iobroker/js-controller-common');
 
 /** Command ioBroker state ... */
 module.exports = class CLILogs extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
+    /** @param {CLICommandOptions} options */
     constructor(options) {
         super(options);
         /** @type {Map<string, number>} */
@@ -29,8 +29,7 @@ module.exports = class CLILogs extends CLICommand {
         const count = params.lines || 1000;
         /** @type {CLILogsOptions} */
         const options = {
-            complete: this.options['all'],
-            adapterName
+            complete: this.options['all']
         };
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
@@ -45,7 +44,8 @@ module.exports = class CLILogs extends CLICommand {
             let regex;
             if (adapterName) {
                 //2019-03-02 13:26:54.698  - debug: iot.0 [ALEXA] Created ALEXA device: Bad.Hauptlicht.Aktor.STATE ["turnOn","turnOff"]
-                regex = new RegExp(': ' + adapterName + '\\.');
+                regex = new RegExp(`: ${adapterName}\\.`);
+                options.regex = regex;
             }
             lines.forEach(line => {
                 if (regex && !regex.test(line)) {
@@ -71,7 +71,7 @@ module.exports = class CLILogs extends CLICommand {
     /**
      * @typedef CLILogsOptions
      * @property {boolean} [complete] Whether to show today's full log
-     * @property {string} [adapterName] An optional adapter name to filter by
+     * @property {RegExp} [regex] An optional RegExp to filter by
      */
 
     /**
@@ -119,12 +119,12 @@ module.exports = class CLILogs extends CLICommand {
             start,
             autoClose: true
         });
-        if (options.adapterName) {
+        if (options.regex) {
             // Read the input line by line and only include the lines matching the filter
             input
                 .pipe(es.split())
                 // @ts-ignore
-                .pipe(es.filterSync(line => line.includes(options.adapterName)))
+                .pipe(es.filterSync(line => options.regex.test(line)))
                 .pipe(es.mapSync(line => line + os.EOL))
                 .pipe(process.stdout);
         } else {
