@@ -26,14 +26,19 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-objects-redis"
   },
-  "scripts": {},
-  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "postbuild": "cp -r ./src/lib/objects/lua* ./build/lib/objects/"
+  },
+  "main": "build/index.js",
   "license": "Apache 2.0",
   "publishConfig": {
     "access": "public"
   },
+  "types": "build/index.d.ts",
   "files": [
-    "lib/",
-    "index.js"
+    "build/lib/",
+    "build/index.js",
+    "build/index.d.ts"
   ]
 }

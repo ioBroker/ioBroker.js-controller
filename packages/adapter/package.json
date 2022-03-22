@@ -38,8 +38,8 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/adapter"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json && npm run copy-files",
-    "copy-files": "cp -r ./src/cert/ ./build/"
+    "build": "tsc -b tsconfig.build.json",
+    "postbuild": "cp -r ./src/cert/ ./build/"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",

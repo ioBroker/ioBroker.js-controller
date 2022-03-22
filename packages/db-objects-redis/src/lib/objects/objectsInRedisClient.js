@@ -26,6 +26,8 @@ const { isDeepStrictEqual } = require('util');
 const deepClone = require('deep-clone');
 const utils = require('./objectsUtils.js');
 const semver = require('semver');
+const CONSTS = require('./constants');
+const ERRORS = CONSTS.ERRORS;
 
 class ObjectsInRedisClient {
     constructor(settings) {
@@ -384,7 +386,7 @@ class ObjectsInRedisClient {
                                             obj.common.defaultNewAcl &&
                                             !isDeepStrictEqual(obj.common.defaultNewAcl, this.defaultNewAcl)
                                         ) {
-                                            this.defaultNewAcl = JSON.parse(JSON.stringify(obj.common.defaultNewAcl));
+                                            this.defaultNewAcl = deepClone(obj.common.defaultNewAcl);
                                             this.settings.controller && this.setDefaultAcl(this.defaultNewAcl);
                                         }
 
@@ -757,7 +759,7 @@ class ObjectsInRedisClient {
     // -------------- FILE FUNCTIONS -------------------------------------------
     async _setBinaryState(id, data, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!Buffer.isBuffer(data)) {
             data = Buffer.from(data);
@@ -780,7 +782,7 @@ class ObjectsInRedisClient {
      */
     async _getBinaryState(id, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
@@ -801,7 +803,7 @@ class ObjectsInRedisClient {
      */
     async _delBinaryState(id, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         } else {
             try {
                 await this.client.del(id);
@@ -850,7 +852,7 @@ class ObjectsInRedisClient {
             }
         }
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED, options);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED, options);
         }
         let fileOptions;
         try {
@@ -892,8 +894,8 @@ class ObjectsInRedisClient {
 
     setDefaultAcl(defaultNewAcl) {
         this.defaultNewAcl = defaultNewAcl || {
-            owner: utils.CONSTS.SYSTEM_ADMIN_USER,
-            ownerGroup: utils.CONSTS.SYSTEM_ADMIN_GROUP,
+            owner: CONSTS.SYSTEM_ADMIN_USER,
+            ownerGroup: CONSTS.SYSTEM_ADMIN_GROUP,
             object: 0x664,
             state: 0x664,
             file: 0x664
@@ -923,7 +925,7 @@ class ObjectsInRedisClient {
 
         const metaID = this.getFileId(id, name, true);
         if (!this.client) {
-            return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);
+            return typeof callback === 'function' && callback(ERRORS.ERROR_DB_CLOSED);
         }
         // virtual files only get Meta objects
         if (options.virtualFile) {
@@ -943,14 +945,11 @@ class ObjectsInRedisClient {
             }
             if (!meta.acl) {
                 meta.acl = {
-                    owner:
-                        options.user ||
-                        (this.defaultNewAcl && this.defaultNewAcl.owner) ||
-                        utils.CONSTS.SYSTEM_ADMIN_USER,
+                    owner: options.user || (this.defaultNewAcl && this.defaultNewAcl.owner) || CONSTS.SYSTEM_ADMIN_USER,
                     ownerGroup:
                         options.group ||
                         (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                        utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                        CONSTS.SYSTEM_ADMIN_GROUP,
                     permissions: options.mode || (this.defaultNewAcl && this.defaultNewAcl.file) || 0x644
                 };
             }
@@ -966,7 +965,7 @@ class ObjectsInRedisClient {
             meta.acl.ownerGroup =
                 meta.acl.ownerGroup ||
                 (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                utils.CONSTS.SYSTEM_ADMIN_GROUP;
+                CONSTS.SYSTEM_ADMIN_GROUP;
             meta.modifiedAt = Date.now();
 
             this._setBinaryState(this.getFileId(id, name, false), data, async err => {
@@ -1009,7 +1008,7 @@ class ObjectsInRedisClient {
         }
 
         if (typeof name !== 'string' || !name.length || name === '/') {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         if (name.startsWith('/')) {
@@ -1021,7 +1020,7 @@ class ObjectsInRedisClient {
         }
 
         // If file yet exists => check the permissions
-        return this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_WRITE, (err, options, meta) => {
+        return this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
@@ -1040,10 +1039,10 @@ class ObjectsInRedisClient {
 
     async _readFile(id, name, options, callback, meta) {
         if (meta.notExists) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         let buffer;
@@ -1077,7 +1076,7 @@ class ObjectsInRedisClient {
         }
 
         if (typeof name !== 'string' || !name.length || name === '/') {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         if (name.startsWith('/')) {
@@ -1085,7 +1084,7 @@ class ObjectsInRedisClient {
         }
 
         options = options || {};
-        this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_READ, (err, options, meta) => {
+        this.checkFileRights(id, name, options, CONSTS.ACCESS_READ, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
@@ -1111,7 +1110,7 @@ class ObjectsInRedisClient {
      */
     async objectExists(id, options) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
@@ -1120,7 +1119,7 @@ class ObjectsInRedisClient {
         try {
             await /** @type {Promise<void>} */ (
                 new Promise((resolve, reject) => {
-                    utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_LIST, err => {
+                    utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, err => {
                         if (err) {
                             reject(err);
                         } else {
@@ -1157,7 +1156,7 @@ class ObjectsInRedisClient {
         try {
             await /** @type {Promise<void>} */ (
                 new Promise((resolve, reject) => {
-                    this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_READ, err => {
+                    this.checkFileRights(id, name, options, CONSTS.ACCESS_READ, err => {
                         if (err) {
                             reject(err);
                         } else {
@@ -1177,11 +1176,11 @@ class ObjectsInRedisClient {
 
     async _unlink(id, name, options, callback, meta) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (meta && meta.notExists) {
             this._rm(id, name, options, callback);
-            //typeof callback === 'function' && callback(utils.ERRORS.ERROR_NOT_FOUND);
+            //typeof callback === 'function' && callback(ERRORS.ERROR_NOT_FOUND);
         } else {
             const metaID = this.getFileId(id, name, true);
             const dataID = this.getFileId(id, name, false);
@@ -1212,12 +1211,12 @@ class ObjectsInRedisClient {
             name = name.substring(1);
         }
 
-        this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_DELETE, (err, options, meta) => {
+        this.checkFileRights(id, name, options, CONSTS.ACCESS_DELETE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file['delete']) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._unlink(id, name, options, callback, meta);
                 }
@@ -1242,7 +1241,7 @@ class ObjectsInRedisClient {
     async _readDir(id, name, options, callback) {
         name = this.normalizeFilename(name);
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (id === '') {
             // special case for "root"
@@ -1256,7 +1255,7 @@ class ObjectsInRedisClient {
             }
 
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
 
             const result = [];
@@ -1288,7 +1287,7 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         const start = dirID.indexOf('$%$') + 3;
@@ -1298,7 +1297,7 @@ class ObjectsInRedisClient {
         const dirs = [];
         const deepLevel = baseName.split('/').length;
         if (!keys || !keys.length) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND, []);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND, []);
         }
         keys = keys.sort().filter(key => {
             if (key.endsWith('$%$meta')) {
@@ -1335,9 +1334,9 @@ class ObjectsInRedisClient {
 
         const result = [];
         const dontCheck =
-            options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-            options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-            (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.user === CONSTS.SYSTEM_ADMIN_USER ||
+            options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+            (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
         objs = objs || [];
         for (let i = 0; i < keys.length; i++) {
@@ -1356,17 +1355,17 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                 continue;
             }
-            if (dontCheck || utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_READ)) {
+            if (dontCheck || utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
                 if (!objs[i] || objs[i].virtualFile) {
                     continue;
                 } // virtual file, ignore
                 objs[i].acl = objs[i].acl || {};
                 if (
-                    options.user !== utils.CONSTS.SYSTEM_ADMIN_USER &&
-                    options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) === -1
+                    options.user !== CONSTS.SYSTEM_ADMIN_USER &&
+                    options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) === -1
                 ) {
-                    objs[i].acl.read = !!(objs[i].acl.permissions & utils.CONSTS.ACCESS_EVERY_READ);
-                    objs[i].acl.write = !!(objs[i].acl.permissions & utils.CONSTS.ACCESS_EVERY_WRITE);
+                    objs[i].acl.read = !!(objs[i].acl.permissions & CONSTS.ACCESS_EVERY_READ);
+                    objs[i].acl.write = !!(objs[i].acl.permissions & CONSTS.ACCESS_EVERY_WRITE);
                 } else {
                     objs[i].acl.read = true;
                     objs[i].acl.write = true;
@@ -1412,12 +1411,12 @@ class ObjectsInRedisClient {
             name = name.substring(0, name.length - 1);
         }
 
-        this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_READ, (err, options) => {
+        this.checkFileRights(id, name, options, CONSTS.ACCESS_READ, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file.list) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     this._readDir(id, name, options, callback);
                 }
@@ -1436,7 +1435,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
             for (const id of keys) {
                 try {
@@ -1466,7 +1465,7 @@ class ObjectsInRedisClient {
         const newMetaID = this.getFileId(id, newName, true);
         const newDataID = this.getFileId(id, newName, false);
         if (!meta || !this.client) {
-            return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);
+            return typeof callback === 'function' && callback(ERRORS.ERROR_DB_CLOSED);
         } else if (meta.notExists) {
             oldName = this.normalizeFilename(oldName);
             newName = this.normalizeFilename(newName);
@@ -1495,16 +1494,16 @@ class ObjectsInRedisClient {
             }
 
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
             if (!keys) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
             }
 
             keys = keys.sort().filter(key => key.endsWith('$%$meta'));
 
             if (!keys.length) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
             }
             // Check permissions
             let objs;
@@ -1515,9 +1514,9 @@ class ObjectsInRedisClient {
             }
             let result;
             const dontCheck =
-                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             objs = objs || [];
             if (!dontCheck) {
@@ -1529,7 +1528,7 @@ class ObjectsInRedisClient {
                         this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                         continue;
                     }
-                    if (utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_READ)) {
+                    if (utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
                         result.push(keys[i]);
                     }
                 }
@@ -1566,7 +1565,7 @@ class ObjectsInRedisClient {
             newName === '/' ||
             newName === '//'
         ) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
         if (oldName.startsWith('/')) {
             oldName = oldName.substring(1);
@@ -1581,12 +1580,12 @@ class ObjectsInRedisClient {
             newName = newName.substring(0, newName.length - 1);
         }
 
-        this.checkFileRights(id, oldName, options, utils.CONSTS.ACCESS_WRITE, (err, options, meta) => {
+        this.checkFileRights(id, oldName, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 typeof callback === 'function' && callback(err);
             } else {
                 if (!options.acl.file.write) {
-                    typeof callback === 'function' && callback(utils.ERRORS.ERROR_PERMISSION);
+                    typeof callback === 'function' && callback(ERRORS.ERROR_PERMISSION);
                 } else {
                     this._rename(id, oldName, newName, options, callback, meta);
                 }
@@ -1605,10 +1604,10 @@ class ObjectsInRedisClient {
     async _touch(id, name, options, callback, meta) {
         const metaID = this.getFileId(id, name, true);
         if (!this.client) {
-            return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);
+            return typeof callback === 'function' && callback(ERRORS.ERROR_DB_CLOSED);
         }
         if (!meta || meta.notExists) {
-            return typeof callback === 'function' && callback(utils.ERRORS.ERROR_NOT_FOUND);
+            return typeof callback === 'function' && callback(ERRORS.ERROR_NOT_FOUND);
         }
         meta.modifiedAt = Date.now();
         try {
@@ -1629,14 +1628,14 @@ class ObjectsInRedisClient {
         }
 
         if (typeof name !== 'string' || !name.length || name === '/') {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         if (name.startsWith('/')) {
             name = name.substring(1);
         }
 
-        this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_WRITE, (err, options, meta) => {
+        this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
@@ -1656,7 +1655,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
 
             for (const id of keys) {
@@ -1679,7 +1678,7 @@ class ObjectsInRedisClient {
             this.delObject(dataID, _err => this.delObject(metaID, callback));
         } else {
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
             name = this.normalizeFilename(name);
             // it could be dir
@@ -1696,16 +1695,16 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
             if (!keys) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
             }
 
             keys = keys.sort().filter(key => key.endsWith('$%$meta'));
 
             if (!keys.length) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
             }
             // Check permissions
             let objs;
@@ -1716,9 +1715,9 @@ class ObjectsInRedisClient {
             }
             let result;
             const dontCheck =
-                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             objs = objs || [];
             if (!dontCheck) {
@@ -1730,7 +1729,7 @@ class ObjectsInRedisClient {
                         this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                         continue;
                     }
-                    if (utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_READ)) {
+                    if (utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
                         result.push(keys[i]);
                     }
                 }
@@ -1765,12 +1764,12 @@ class ObjectsInRedisClient {
             name = '';
         }
 
-        this.checkFileRights(id, null, options, utils.CONSTS.ACCESS_DELETE, (err, options, meta) => {
+        this.checkFileRights(id, null, options, CONSTS.ACCESS_DELETE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file['delete']) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._rm(id, name, options, callback, meta && meta.notExists ? null : meta);
                 }
@@ -1798,12 +1797,12 @@ class ObjectsInRedisClient {
         if (dirName.startsWith('/')) {
             dirName = dirName.substring(1);
         }
-        this.checkFileRights(id, dirName, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
+        this.checkFileRights(id, dirName, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     // we create a dummy file (for file this file exists to store meta data)
                     options = options || {};
@@ -1826,7 +1825,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallback(callback);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         for (const id of keys) {
@@ -1844,12 +1843,12 @@ class ObjectsInRedisClient {
 
     async _chownFile(id, name, options, callback, meta) {
         if (!meta) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         name = this.normalizeFilename(name);
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!meta.isDir && !meta.notExists) {
             // it is file
@@ -1893,10 +1892,10 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!keys) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         keys = keys.sort().filter(key => key.endsWith('$%$meta'));
@@ -1909,9 +1908,9 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
         const dontCheck =
-            options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-            options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-            (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.user === CONSTS.SYSTEM_ADMIN_USER ||
+            options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+            (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
         const keysFiltered = [];
         const objsFiltered = [];
         const processed = [];
@@ -1926,7 +1925,7 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${metas[i]}`);
                 continue;
             }
-            if (dontCheck || utils.checkObject(metas[i], options, utils.CONSTS.ACCESS_WRITE)) {
+            if (dontCheck || utils.checkObject(metas[i], options, CONSTS.ACCESS_WRITE)) {
                 if (!metas[i] || metas[i].virtualFile) {
                     continue;
                 } // virtual file, ignore
@@ -1963,7 +1962,7 @@ class ObjectsInRedisClient {
         }
 
         if (typeof name !== 'string' || !name.length || name === '/') {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         if (name.startsWith('/')) {
@@ -1995,12 +1994,12 @@ class ObjectsInRedisClient {
             return;
         }
 
-        this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_WRITE, (err, options, meta) => {
+        this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._chownFile(id, name, options, callback, meta);
                 }
@@ -2030,7 +2029,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallback(callback);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         for (const i in keys) {
@@ -2048,11 +2047,11 @@ class ObjectsInRedisClient {
 
     async _chmodFile(id, name, options, callback, meta) {
         if (!meta) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
         name = this.normalizeFilename(name);
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!meta.isDir && !meta.notExists) {
             // it is file
@@ -2096,10 +2095,10 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!keys) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         keys = keys.sort().filter(key => key.endsWith('$%$meta'));
@@ -2113,9 +2112,9 @@ class ObjectsInRedisClient {
         }
 
         const dontCheck =
-            options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-            options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-            (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+            options.user === CONSTS.SYSTEM_ADMIN_USER ||
+            options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+            (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
         const keysFiltered = [];
         const objsFiltered = [];
@@ -2131,7 +2130,7 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                 continue;
             }
-            if (dontCheck || utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_WRITE)) {
+            if (dontCheck || utils.checkObject(objs[i], options, CONSTS.ACCESS_WRITE)) {
                 if (!objs[i] || objs[i].virtualFile) {
                     continue;
                 } // virtual file, ignore
@@ -2165,7 +2164,7 @@ class ObjectsInRedisClient {
         options = options || {};
 
         if (typeof name !== 'string' || !name.length || name === '/') {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
 
         if (name[0].startsWith('/')) {
@@ -2183,12 +2182,12 @@ class ObjectsInRedisClient {
             options.mode = parseInt(options.mode, 16);
         }
 
-        this.checkFileRights(id, name, options, utils.CONSTS.ACCESS_WRITE, (err, options, meta) => {
+        this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._chmodFile(id, name, options, callback, meta);
                 }
@@ -2214,7 +2213,7 @@ class ObjectsInRedisClient {
             options.acl = null;
         }
 
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, _options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, _options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
@@ -2233,7 +2232,7 @@ class ObjectsInRedisClient {
     // -------------- OBJECT FUNCTIONS -------------------------------------------
     _subscribe(pattern, options, subClient, callback) {
         if (!subClient) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
             let count = pattern.length;
@@ -2307,7 +2306,7 @@ class ObjectsInRedisClient {
 
     _unsubscribe(pattern, options, subClient, callback) {
         if (!subClient) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
             let count = pattern.length;
@@ -2382,7 +2381,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
-                return typeof callback === 'function' && callback(utils.ERRORS.ERROR_DB_CLOSED);
+                return typeof callback === 'function' && callback(ERRORS.ERROR_DB_CLOSED);
             }
             for (const id of keys) {
                 const obj = objs.shift();
@@ -2428,7 +2427,7 @@ class ObjectsInRedisClient {
                     return tools.maybeCallbackWithError(callback, err);
                 }
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objects;
@@ -2447,27 +2446,22 @@ class ObjectsInRedisClient {
                         this.log.error(`${this.namespace} Cannot parse JSON ${keys[k]}: ${objects[k]}`);
                         continue;
                     }
-                    if (!utils.checkObject(objects[k], options, utils.CONSTS.ACCESS_WRITE)) {
+                    if (!utils.checkObject(objects[k], options, CONSTS.ACCESS_WRITE)) {
                         continue;
                     }
                     if (!objects[k].acl) {
                         objects[k].acl = {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || CONSTS.SYSTEM_ADMIN_USER,
                             ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP,
                             object:
                                 (this.defaultNewAcl && this.defaultNewAcl.object) ||
-                                utils.CONSTS.ACCESS_USER_RW |
-                                    utils.CONSTS.ACCESS_GROUP_READ |
-                                    utils.CONSTS.ACCESS_EVERY_READ // '0644'
+                                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (objects[k].type === 'state') {
                             objects[k].acl.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
-                                utils.CONSTS.ACCESS_USER_RW |
-                                    utils.CONSTS.ACCESS_GROUP_READ |
-                                    utils.CONSTS.ACCESS_EVERY_READ; // '0644'
+                                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
                     }
                     objects[k].acl.owner = options.owner;
@@ -2520,12 +2514,12 @@ class ObjectsInRedisClient {
             return;
         }
 
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.object || !options.acl.object.write) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._chownObject(pattern, options, callback);
                 }
@@ -2548,7 +2542,7 @@ class ObjectsInRedisClient {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 }
                 if (!this.client) {
-                    return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objects;
@@ -2568,27 +2562,22 @@ class ObjectsInRedisClient {
                         this.log.error(`${this.namespace} Cannot parse JSON ${keys[k]}: ${objects[k]}`);
                         continue;
                     }
-                    if (!utils.checkObject(objects[k], options, utils.CONSTS.ACCESS_WRITE)) {
+                    if (!utils.checkObject(objects[k], options, CONSTS.ACCESS_WRITE)) {
                         continue;
                     }
                     if (!objects[k].acl) {
                         objects[k].acl = {
-                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
+                            owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || CONSTS.SYSTEM_ADMIN_USER,
                             ownerGroup:
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP,
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP,
                             object:
                                 (this.defaultNewAcl && this.defaultNewAcl.object) ||
-                                utils.CONSTS.ACCESS_USER_RW |
-                                    utils.CONSTS.ACCESS_GROUP_READ |
-                                    utils.CONSTS.ACCESS_EVERY_READ // '0644'
+                                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (objects[k].type === 'state') {
                             objects[k].acl.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
-                                utils.CONSTS.ACCESS_USER_RW |
-                                    utils.CONSTS.ACCESS_GROUP_READ |
-                                    utils.CONSTS.ACCESS_EVERY_READ; // '0644'
+                                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
                     }
                     if (options.object !== undefined) {
@@ -2631,12 +2620,12 @@ class ObjectsInRedisClient {
             options.mode = parseInt(options.mode, 16);
         }
 
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._chmodObject(pattern, options, callback);
                 }
@@ -2652,7 +2641,7 @@ class ObjectsInRedisClient {
 
     async _getObject(id, options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -2677,10 +2666,10 @@ class ObjectsInRedisClient {
         }
         if (obj) {
             // Check permissions
-            if (utils.checkObject(obj, options, utils.CONSTS.ACCESS_READ)) {
+            if (utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                 return tools.maybeCallbackWithError(callback, null, obj);
             } else {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
         } else {
             return tools.maybeCallbackWithRedisError(callback, err, obj);
@@ -2702,7 +2691,7 @@ class ObjectsInRedisClient {
             if (options && options.acl) {
                 options.acl = null;
             }
-            utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
+            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
@@ -2720,7 +2709,7 @@ class ObjectsInRedisClient {
 
     async _getKeys(pattern, options, callback, dontModify) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
@@ -2736,7 +2725,7 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         const result = [];
@@ -2744,9 +2733,9 @@ class ObjectsInRedisClient {
             keys.sort();
             const result = [];
             const dontCheck =
-                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             if (dontCheck) {
                 for (let i = 0; i < keys.length; i++) {
@@ -2777,7 +2766,7 @@ class ObjectsInRedisClient {
                         continue;
                     }
 
-                    if (r.test(keys[i]) && utils.checkObject(metas[i], options, utils.CONSTS.ACCESS_READ)) {
+                    if (r.test(keys[i]) && utils.checkObject(metas[i], options, CONSTS.ACCESS_READ)) {
                         if (!dontModify) {
                             result.push(keys[i].substring(this.objNamespaceL));
                         } else {
@@ -2842,7 +2831,7 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         let objs;
@@ -2857,9 +2846,9 @@ class ObjectsInRedisClient {
 
         if (objs) {
             const dontCheck =
-                options.user === utils.CONSTS.SYSTEM_ADMIN_USER ||
-                options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP ||
-                (options.groups && options.groups.indexOf(utils.CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
+                options.user === CONSTS.SYSTEM_ADMIN_USER ||
+                options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
+                (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
             if (!dontCheck) {
                 for (let i = 0; i < objs.length; i++) {
@@ -2867,13 +2856,13 @@ class ObjectsInRedisClient {
                         objs[i] = JSON.parse(objs[i]);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON ${_keys[i]}: ${objs[i]}`);
-                        result.push({ error: utils.ERRORS.ERROR_PERMISSION });
+                        result.push({ error: ERRORS.ERROR_PERMISSION });
                         continue;
                     }
-                    if (utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_READ)) {
+                    if (utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
                         result.push(objs[i]);
                     } else {
-                        result.push({ error: utils.ERRORS.ERROR_PERMISSION });
+                        result.push({ error: ERRORS.ERROR_PERMISSION });
                     }
                 }
             } else {
@@ -2905,7 +2894,7 @@ class ObjectsInRedisClient {
             options.acl = null;
         }
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
+            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
@@ -2927,7 +2916,7 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         let keys;
@@ -2937,7 +2926,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         this.settings.connection.enhancedLogging &&
@@ -2959,7 +2948,7 @@ class ObjectsInRedisClient {
             options.acl = null;
         }
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_READ, (err, options) => {
+            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
@@ -2976,7 +2965,7 @@ class ObjectsInRedisClient {
     }
 
     async _setObject(id, obj, options, callback) {
-        if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
+        if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
             return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
 
@@ -2989,7 +2978,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, 'obj is no object');
         }
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         // make a copy of object, because we will modify it
         obj = deepClone(obj);
@@ -3114,11 +3103,11 @@ class ObjectsInRedisClient {
                 delete obj.acl.state;
             }
             // take the current user as owner if given, but if admin we keep default
-            if (options.user && options.user !== utils.CONSTS.SYSTEM_ADMIN_USER) {
+            if (options.user && options.user !== CONSTS.SYSTEM_ADMIN_USER) {
                 obj.acl.owner = options.user;
             }
             // take the current group as owner if given, but if admin we keep default
-            if (options.group && options.group !== utils.CONSTS.SYSTEM_ADMIN_GROUP) {
+            if (options.group && options.group !== CONSTS.SYSTEM_ADMIN_GROUP) {
                 obj.acl.ownerGroup = options.group;
             }
         }
@@ -3203,7 +3192,7 @@ class ObjectsInRedisClient {
             options.acl = null;
         }
 
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, err => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, err => {
             // do not use options from checkObjectRights because this will mess up configured default acl
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
@@ -3220,11 +3209,11 @@ class ObjectsInRedisClient {
     }
 
     async _delObject(id, options, callback) {
-        if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
+        if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
             return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         // read object
@@ -3241,14 +3230,14 @@ class ObjectsInRedisClient {
         }
 
         try {
-            oldObj = oldObj ? JSON.parse(oldObj) : null;
+            oldObj = JSON.parse(oldObj);
         } catch (e) {
             this.log.warn(`${this.namespace} Cannot parse ${id} - ${oldObj}: ${e.message}`);
             oldObj = null;
         }
 
-        if (!utils.checkObject(oldObj, options, utils.CONSTS.ACCESS_WRITE)) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+        if (!utils.checkObject(oldObj, options, CONSTS.ACCESS_WRITE)) {
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
         } else {
             try {
                 const commands = [];
@@ -3306,7 +3295,7 @@ class ObjectsInRedisClient {
         if (options && options.acl) {
             options.acl = null;
         }
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_DELETE, (err, options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_DELETE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
@@ -3324,7 +3313,7 @@ class ObjectsInRedisClient {
     // this function is very ineffective. Because reads all objects and then process them
     async _applyViewFunc(func, params, options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         const result = {
             rows: []
@@ -3383,7 +3372,7 @@ class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objs;
@@ -3470,7 +3459,7 @@ class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
                 let objs;
                 try {
@@ -3525,7 +3514,7 @@ class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objs;
@@ -3580,7 +3569,7 @@ class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objs;
@@ -3635,7 +3624,7 @@ class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
                 let objs;
                 try {
@@ -3699,7 +3688,7 @@ class ObjectsInRedisClient {
             }
 
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
 
             const endAfterWildcard = params.endkey.substr(wildcardPos + 1);
@@ -3707,7 +3696,7 @@ class ObjectsInRedisClient {
             params.endkey = this.objNamespace + params.endkey;
 
             keys = keys.sort().filter(key => {
-                if (key && !utils.regCheckId.test(key)) {
+                if (key && !utils.REG_CHECK_ID.test(key)) {
                     if (params && wildcardPos > 0) {
                         if (params.startkey && key < params.startkey) {
                             return false;
@@ -3747,7 +3736,7 @@ class ObjectsInRedisClient {
                     this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                     continue;
                 }
-                if (!utils.checkObject(objs[i], options, utils.CONSTS.ACCESS_READ)) {
+                if (!utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
                     continue;
                 }
 
@@ -3805,7 +3794,7 @@ class ObjectsInRedisClient {
 
     async _getObjectView(design, search, params, options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         let obj;
@@ -3876,7 +3865,7 @@ class ObjectsInRedisClient {
 
     async _getObjectList(params, options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         //params = {startkey, endkey, include_docs}
         params = params || {};
@@ -3896,7 +3885,7 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         const _keys = [];
@@ -3908,7 +3897,7 @@ class ObjectsInRedisClient {
             if (params.endkey && id > params.endkey) {
                 continue;
             }
-            if (!id || utils.regCheckId.test(id) || id.match(/\|file\$%\$/)) {
+            if (!id || utils.REG_CHECK_ID.test(id) || id.match(/\|file\$%\$/)) {
                 continue;
             }
             if (!params.include_docs && id[0] === '_') {
@@ -3936,7 +3925,7 @@ class ObjectsInRedisClient {
                     continue;
                 }
 
-                if (!objs[r] || !utils.checkObject(objs[r], options, utils.CONSTS.ACCESS_READ)) {
+                if (!objs[r] || !utils.checkObject(objs[r], options, CONSTS.ACCESS_READ)) {
                     continue;
                 }
                 result.rows.push({ id: objs[r]._id, value: objs[r], doc: objs[r] });
@@ -3979,11 +3968,11 @@ class ObjectsInRedisClient {
 
     // could be optimised, to read object only once. Now it will read 3 times
     async _extendObject(id, obj, options, callback, _iteration) {
-        if (!id || typeof id !== 'string' || utils.regCheckId.test(id)) {
+        if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
             return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
 
         let oldObj;
@@ -4000,8 +3989,8 @@ class ObjectsInRedisClient {
             oldObj = null;
             return typeof callback === 'function' && callback(`Cannot parse JSON ${id}: ${oldObj}`);
         }
-        if (!utils.checkObject(oldObj, options, utils.CONSTS.ACCESS_WRITE)) {
-            return typeof callback === 'function' && callback(utils.ERRORS.ERROR_PERMISSION);
+        if (!utils.checkObject(oldObj, options, CONSTS.ACCESS_WRITE)) {
+            return typeof callback === 'function' && callback(ERRORS.ERROR_PERMISSION);
         }
 
         let _oldObj;
@@ -4047,8 +4036,7 @@ class ObjectsInRedisClient {
                     return this.getUserGroup(options.owner, (user, groups /*, permissions */) => {
                         if (!groups || !groups[0]) {
                             options.ownerGroup =
-                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) ||
-                                utils.CONSTS.SYSTEM_ADMIN_GROUP;
+                                (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP;
                         } else {
                             options.ownerGroup = groups[0];
                         }
@@ -4149,7 +4137,7 @@ class ObjectsInRedisClient {
             options.acl = null;
         }
 
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
@@ -4185,7 +4173,7 @@ class ObjectsInRedisClient {
             // Assume it is ID
             if (
                 obj &&
-                utils.checkObject(obj, options, utils.CONSTS.ACCESS_READ) &&
+                utils.checkObject(obj, options, CONSTS.ACCESS_READ) &&
                 (!type || (obj.common && obj.common.type === type))
             ) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
@@ -4247,7 +4235,7 @@ class ObjectsInRedisClient {
         }
 
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_LIST, (err, options) => {
+            utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
@@ -4281,7 +4269,7 @@ class ObjectsInRedisClient {
             return tools.maybeCallback(callback);
         } else {
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
 
             for (const id of keys) {
@@ -4298,7 +4286,7 @@ class ObjectsInRedisClient {
 
     async _destroyDB(options, callback) {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         } else {
             try {
                 const keys = await this._getKeysViaScan(`${this.redisNamespace}*`);
@@ -4316,12 +4304,12 @@ class ObjectsInRedisClient {
         }
         options = options || {};
 
-        utils.checkObjectRights(this, null, null, options, utils.CONSTS.ACCESS_WRITE, (err, options) => {
+        utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
-                if (!options.acl.file.write || options.user !== utils.CONSTS.SYSTEM_ADMIN_USER) {
-                    return tools.maybeCallbackWithError(callback, utils.ERRORS.ERROR_PERMISSION);
+                if (!options.acl.file.write || options.user !== CONSTS.SYSTEM_ADMIN_USER) {
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     return this._destroyDB(options, callback);
                 }
@@ -4466,7 +4454,7 @@ class ObjectsInRedisClient {
      */
     async setExists(id) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         const exists = await this.client.exists(this.setNamespace + id);
@@ -4483,7 +4471,7 @@ class ObjectsInRedisClient {
         }
 
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         // to be safe we remove all sets before migration
@@ -4525,7 +4513,7 @@ class ObjectsInRedisClient {
      */
     getProtocolVersion() {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         return this.client.get(`${this.metaNamespace}objects.protocolVersion`);
@@ -4540,7 +4528,7 @@ class ObjectsInRedisClient {
      */
     extendPrimaryHostLock(ms) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         // we have a host version smaller 3 no one can be primary
@@ -4567,7 +4555,7 @@ class ObjectsInRedisClient {
      */
     setPrimaryHost(ms) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         // we have a host version smaller 3 no one can be primary
@@ -4592,7 +4580,7 @@ class ObjectsInRedisClient {
      */
     getPrimaryHost() {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         // we have a host version smaller 3 no one can be primary
@@ -4610,7 +4598,7 @@ class ObjectsInRedisClient {
      */
     releasePrimaryHost() {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!this.noLegacyMultihost) {
@@ -4635,7 +4623,7 @@ class ObjectsInRedisClient {
      */
     async setProtocolVersion(version) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         version = version.toString();
@@ -4685,7 +4673,7 @@ class ObjectsInRedisClient {
      */
     getMeta(id) {
         if (!this.client) {
-            throw new Error(utils.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         return this.client.get(this.metaNamespace + id);
