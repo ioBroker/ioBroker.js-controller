@@ -259,4 +259,63 @@ export class Utils {
         }
         return result;
     }
+
+    /**
+     * Validates the object-type argument that is passed to setState
+     * @param obj object to validate
+     */
+    validateSetStateObjectArgument(obj: Record<string, any>): void {
+        // Check that we have at least one existing non-undefined property at all, else invalid
+        if (!Object.values(obj).some(prop => prop !== undefined)) {
+            throw new Error(`The state contains no properties! At least one property is expected!`);
+        }
+
+        /*
+        The following object parameters and types are allowed:
+        val:    any,     (optional)
+        ack:    boolean, (optional)
+        ts:     number,  (optional)
+        q:      number,  (optional)
+        from:   string,  (optional)
+        c:      string,  (optional)
+        expire: number   (optional)
+        lc:     number   (optional)
+        user:   string   (optional)
+
+        Everything else is forbidden
+    */
+        const optionalProperties: Record<string, string> = {
+            val: 'any',
+            ack: 'boolean',
+            ts: 'number',
+            q: 'number',
+            from: 'string',
+            c: 'string',
+            expire: 'number',
+            lc: 'number',
+            user: 'string'
+        };
+
+        // Are there any forbidden properties?
+        const forbiddenProperties = Object.keys(obj).filter(k => !optionalProperties[k]);
+        if (forbiddenProperties.length) {
+            throw new Error(`The state contains the forbidden properties ${forbiddenProperties.join(', ')}!`);
+        }
+        // Do all properties have the correct type?
+        for (const [key, type] of Object.entries(optionalProperties)) {
+            // any permits all types
+            if (type === 'any') {
+                continue;
+            }
+            // don't flag optional properties when they don't exist or are undefined
+            if (!(key in obj) || obj[key] === undefined) {
+                continue;
+            }
+            if (type !== typeof obj[key]) {
+                throw new Error(
+                    `The state property "${key}" has the wrong type "${typeof obj[key]}" (should be "${type}")!`
+                );
+            }
+        }
+    }
 }
