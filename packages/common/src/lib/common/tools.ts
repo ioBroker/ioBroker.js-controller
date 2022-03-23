@@ -4,7 +4,7 @@ import semver from 'semver';
 import os from 'os';
 import forge from 'node-forge';
 import deepClone from 'deep-clone';
-import cpPromise, { ChildProcessPromise } from 'promisify-child-process';
+import { ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
 import { createInterface } from 'readline';
 import { PassThrough } from 'stream';
 import { CommandResult, detectPackageManager, InstallOptions, PackageManager, packageManagers } from '@alcalzone/pak';
@@ -3128,7 +3128,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
         encoding: 'utf8'
     };
 
-    return cpPromise.exec(command, { ...defaultOptions, ...execOptions });
+    return cpExecAsync(command, { ...defaultOptions, ...execOptions });
 }
 
 /**
@@ -3668,7 +3668,7 @@ export async function setExecutableCapabilities(
         }
 
         // if this throws it needs to be caught outside
-        await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
+        await execAsync(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
     }
 }
 
