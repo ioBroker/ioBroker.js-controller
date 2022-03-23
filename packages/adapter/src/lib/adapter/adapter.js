@@ -66,7 +66,7 @@ let adapterObjects;
  * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
  * @return {object} object instance
  */
-class AdapterClass extends EventEmitter {
+class Adapter extends EventEmitter {
     constructor(options) {
         super();
         this._options = options;
@@ -9509,16 +9509,6 @@ class AdapterClass extends EventEmitter {
         // finally init
         _initDBs();
     }
-}
-
-/**
- * Polyfill to allow calling without `new`
- * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
- * @return {AdapterClass}
- * @constructor
- */
-function Adapter(options) {
-    return new AdapterClass(options);
 }
 
 module.exports = Adapter;
