@@ -66,7 +66,7 @@ let adapterObjects;
  * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
  * @return {object} object instance
  */
-class Adapter extends EventEmitter {
+class AdapterClass extends EventEmitter {
     constructor(options) {
         super();
         this._options = options;
@@ -2912,7 +2912,7 @@ class Adapter extends EventEmitter {
     /**
      * Same as {@link Adapter.setObject}, but with check if the object exists.
      *
-     * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE".
+     * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * New object will be created only if no object exists with such ID.
      *
      * @alias setObjectNotExists
@@ -9509,6 +9509,15 @@ class Adapter extends EventEmitter {
         // finally init
         _initDBs();
     }
+}
+
+/**
+ * Polyfill to allow calling without `new`
+ * @return {AdapterClass}
+ * @constructor
+ */
+function Adapter() {
+    return new AdapterClass();
 }
 
 module.exports = Adapter;
