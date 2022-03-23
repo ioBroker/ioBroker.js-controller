@@ -3668,7 +3668,7 @@ export async function setExecutableCapabilities(
         }
 
         // if this throws it needs to be caught outside
-        await cpPromise.exec(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
+        await execAsync(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
     }
 }
 

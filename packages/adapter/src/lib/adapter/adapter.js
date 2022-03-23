@@ -9513,11 +9513,12 @@ class AdapterClass extends EventEmitter {
 
 /**
  * Polyfill to allow calling without `new`
+ * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
  * @return {AdapterClass}
  * @constructor
  */
-function Adapter() {
-    return new AdapterClass();
+function Adapter(options) {
+    return new AdapterClass(options);
 }
 
 module.exports = Adapter;
