@@ -19,7 +19,7 @@ describe('test tools.js helpers', () => {
     });
 
     it('execAsync', async () => {
-        const res = await execAsync('echo "test"');
+        const res = await execAsync('echo test');
         expect(res.stdout.trim()).to.be.equal('test');
     });
 });
