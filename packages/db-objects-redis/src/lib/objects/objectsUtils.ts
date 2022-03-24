@@ -345,7 +345,7 @@ export type GetUserGroupPromiseReturn = [
 ];
 
 export type GetUserGroupCallback = (
-    err: Error | null,
+    err: Error | null | undefined,
     user: string,
     groups: string[],
     acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>
