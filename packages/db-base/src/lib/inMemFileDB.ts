@@ -9,9 +9,7 @@
 
 import fs from 'fs-extra';
 import path from 'path';
-import type { Logger } from '@iobroker/js-controller-common/build/lib/common/tools';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const tools = require('./tools.js');
+import { tools } from '@iobroker/js-controller-common';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -69,7 +67,7 @@ interface FileDbSettings {
     backup: BackupOptions;
     change?: ChangeFunction;
     connected: (nameOfServer: string) => void;
-    logger: Logger;
+    logger: tools.Logger;
     connection: ConnectionOptions;
     // unused
     auth: null;
@@ -107,7 +105,7 @@ export class InMemoryFileDB {
     private callbackSubscriptionClient: SubscriptionClient;
     private readonly dataDir: string;
     private readonly datasetName: string;
-    private log: Logger;
+    private log: tools.Logger;
     private readonly backupDir: string;
 
     constructor(settings: FileDbSettings) {

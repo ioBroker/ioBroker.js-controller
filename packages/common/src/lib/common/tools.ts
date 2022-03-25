@@ -3084,6 +3084,9 @@ export function maybeCallback(
     }
 }
 
+type MaybeCbErrCallback = ((error: Error | null | undefined, ...args: any[]) => void) | null | undefined;
+type MaybeCbError = Error | string | null | undefined;
+
 /**
  * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Error ERROR_DB_CLOSED are not rejecting the promise
  *
@@ -3094,8 +3097,8 @@ export function maybeCallback(
  * @returns if Promise is resolved with multiple arguments, an array is returned
  */
 export function maybeCallbackWithError(
-    callback: ((error: Error | null | undefined, ...args: any[]) => void) | null | undefined,
-    error: Error | string | null | undefined,
+    callback: MaybeCbErrCallback,
+    error: MaybeCbError,
     ...args: any[]
 ): Promise<any> | void {
     if (error !== undefined && error !== null && !(error instanceof Error)) {
@@ -3111,6 +3114,26 @@ export function maybeCallbackWithError(
     } else {
         return Promise.resolve(args.length > 1 ? args : args[0]);
     }
+}
+
+/**
+ * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Redis-Error "Connection is closed." is converted into ERROR_DB_CLOSED
+ *
+ * @param callback - callback function to be executed
+ * @param error - error which will be used by the callback function. If callback is not a function and
+ * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
+ * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
+ * @returns Promise if Promise is resolved with multiple arguments, an array is returned
+ */
+export function maybeCallbackWithRedisError(
+    callback: MaybeCbErrCallback,
+    error: MaybeCbError,
+    ...args: any[]
+): Promise<any> | void {
+    if (error instanceof Error && error.message.includes('Connection is closed')) {
+        error.message = module.exports.ERRORS.ERROR_DB_CLOSED;
+    }
+    return maybeCallbackWithError(callback, error, ...args);
 }
 
 /**
