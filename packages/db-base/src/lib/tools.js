@@ -1,8 +1,6 @@
 const { tools } = require('@iobroker/js-controller-common');
 
 module.exports = tools;
-const controllerDir = tools.getControllerDir() || __dirname;
-module.exports.getControllerDir = () => controllerDir;
 
 /**
  * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Redis-Error "Connection is closed." is converted into ERROR_DB_CLOSED
