@@ -16,7 +16,7 @@
 const net = require('net');
 const { inspect } = require('util');
 
-const RedisHandler = require('@iobroker/db-base').redisHandler;
+const { RedisHandler } = require('@iobroker/db-base');
 const StatesInMemoryJsonlDB = require('./statesInMemJsonlDB');
 
 // settings = {

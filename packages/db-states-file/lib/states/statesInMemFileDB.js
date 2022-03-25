@@ -14,7 +14,7 @@
 /* jslint node: true */
 'use strict';
 
-const InMemoryFileDB = require('@iobroker/db-base').inMemoryFileDB;
+const { InMemoryFileDB } = require('@iobroker/db-base');
 const tools = require('@iobroker/db-base').tools;
 
 // settings = {

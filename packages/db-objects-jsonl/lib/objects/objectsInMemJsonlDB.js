@@ -13,7 +13,7 @@
 /* jshint -W061 */
 'use strict';
 
-const ObjectsInMemoryFileDB = require('@iobroker/db-objects-file').ObjectsInMemoryFileDB;
+const { ObjectsInMemoryFileDB } = require('@iobroker/db-objects-file');
 const { JsonlDB } = require('@alcalzone/jsonl-db');
 const path = require('path');
 const fs = require('fs');

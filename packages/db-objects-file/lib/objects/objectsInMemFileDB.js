@@ -15,7 +15,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const InMemoryFileDB = require('@iobroker/db-base').inMemoryFileDB;
+const { InMemoryFileDB } = require('@iobroker/db-base');
 const tools = require('@iobroker/db-base').tools;
 const utils = require('@iobroker/db-objects-redis').objectsUtils;
 const deepClone = require('deep-clone');

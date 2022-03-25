@@ -3516,7 +3516,15 @@ export function getInstanceIndicatorObjects(namespace: string, createWakeup: boo
     return objs;
 }
 
-export function getLogger(log: any): Record<string, (msg: string) => void> {
+export interface Logger {
+    silly: (msg: string) => void;
+    debug: (msg: string) => void;
+    info: (msg: string) => void;
+    warn: (msg: string) => void;
+    error: (msg: string) => void;
+}
+
+export function getLogger(log: any): Logger {
     if (!log) {
         log = {
             silly: function (_msg: string) {
