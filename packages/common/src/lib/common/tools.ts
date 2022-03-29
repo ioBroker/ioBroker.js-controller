@@ -3065,6 +3065,19 @@ export async function getInstances(adapter: string, objects: any, withObjects: b
     return instances;
 }
 
+type MaybeCbCallback<T extends any[]> = (...args: T) => void;
+
+// cb
+export function maybeCallback<T extends any[]>(callback: MaybeCbCallback<T>, ...args: T): void;
+
+// promise
+export function maybeCallback<T extends any[]>(callback: null | undefined, ...args: T): Promise<MaybeCbReturnType<T>>;
+
+// compatibility
+export function maybeCallback<TCb extends MaybeCbCallback<[]> | undefined = undefined>(
+    callback?: TCb
+): undefined extends TCb ? Promise<void> : void;
+
 /**
  * Checks if the given callback is a function and if so calls it with the given parameter immediately, else a resolved Promise is returned
  *
@@ -3072,9 +3085,9 @@ export async function getInstances(adapter: string, objects: any, withObjects: b
  * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-export function maybeCallback(
-    callback?: (...args: any[]) => void | null | undefined,
-    ...args: any[]
+export function maybeCallback<T extends any[]>(
+    callback?: MaybeCbCallback<T> | null | undefined,
+    ...args: T
 ): Promise<any> | void {
     if (typeof callback === 'function') {
         // if function we call it with given param
@@ -3084,8 +3097,38 @@ export function maybeCallback(
     }
 }
 
-type MaybeCbErrCallback = ((error: Error | null | undefined, ...args: any[]) => void) | null | undefined;
-type MaybeCbError = Error | string | null | undefined;
+type MaybeCbErrCallback<T extends any[]> = (error: Error | null | undefined, ...args: T) => void;
+type MaybeCbReturnType<T extends any[]> = [] extends T
+    ? void // if ([] === T) void
+    : [any] extends T
+    ? T[0] // else if (T has one element) => take first element
+    : T; // else return T entirely
+
+// cb success
+export function maybeCallbackWithError<TCb extends MaybeCbErrCallback<any>>(
+    callback: TCb,
+    error: null | undefined,
+    ...args: Parameters<TCb>
+): void;
+
+// cb with error
+export function maybeCallbackWithError(callback: MaybeCbErrCallback<[]>, error: Error | string): void;
+
+// promise but error
+export function maybeCallbackWithError(callback: null | undefined, error: Error | string): Promise<never>;
+
+// promise success
+export function maybeCallbackWithError<T extends any[]>(
+    callback: null | undefined,
+    error: null | undefined,
+    ...args: T
+): Promise<MaybeCbReturnType<T>>;
+
+// NEEDED for callbacks without parameters
+export function maybeCallbackWithError<TCb extends MaybeCbErrCallback<[]> | undefined = undefined>(
+    callback?: TCb,
+    error?: any
+): undefined extends TCb ? Promise<void> : void;
 
 /**
  * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Error ERROR_DB_CLOSED are not rejecting the promise
@@ -3096,10 +3139,10 @@ type MaybeCbError = Error | string | null | undefined;
  * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-export function maybeCallbackWithError(
-    callback: MaybeCbErrCallback,
-    error: MaybeCbError,
-    ...args: any[]
+export function maybeCallbackWithError<T extends any[]>(
+    callback: MaybeCbErrCallback<T> | null | undefined,
+    error: Error | string | null | undefined,
+    ...args: T
 ): Promise<any> | void {
     if (error !== undefined && error !== null && !(error instanceof Error)) {
         // if it's not a real Error, we convert it into one
@@ -3116,6 +3159,34 @@ export function maybeCallbackWithError(
     }
 }
 
+// cb with error
+export function maybeCallbackWithRedisError<T extends any[]>(
+    callback: MaybeCbErrCallback<[]>,
+    error: Error | string,
+    ...args: T
+): void;
+
+// cb success
+export function maybeCallbackWithRedisError<T extends any[]>(
+    callback: MaybeCbErrCallback<T>,
+    error: null | undefined,
+    ...args: T
+): void;
+
+// promise but error
+export function maybeCallbackWithRedisError<T extends any[]>(
+    callback: null | undefined,
+    error: Error | string,
+    ...args: T
+): Promise<never>;
+
+// promise success
+export function maybeCallbackWithRedisError<T extends any[]>(
+    callback: null | undefined,
+    error: null | undefined,
+    ...args: T
+): Promise<MaybeCbReturnType<T>>;
+
 /**
  * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Redis-Error "Connection is closed." is converted into ERROR_DB_CLOSED
  *
@@ -3125,14 +3196,15 @@ export function maybeCallbackWithError(
  * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns Promise if Promise is resolved with multiple arguments, an array is returned
  */
-export function maybeCallbackWithRedisError(
-    callback: MaybeCbErrCallback,
-    error: MaybeCbError,
-    ...args: any[]
+export function maybeCallbackWithRedisError<T extends any[]>(
+    callback: MaybeCbErrCallback<T> | null | undefined,
+    error: Error | string | null | undefined,
+    ...args: T
 ): Promise<any> | void {
     if (error instanceof Error && error.message.includes('Connection is closed')) {
         error.message = module.exports.ERRORS.ERROR_DB_CLOSED;
     }
+    // @ts-expect-error ts currently cannot catch this
     return maybeCallbackWithError(callback, error, ...args);
 }
 
