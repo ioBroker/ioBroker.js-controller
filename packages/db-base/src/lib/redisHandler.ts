@@ -427,21 +427,24 @@ export class RedisHandler extends EventEmitter {
      * @param arr Array to encode
      * @returns Array with Buffers with encoded values
      */
-    encodeRespArray(arr: any[]): Buffer[] {
-        for (let i = 0; i < arr.length; i++) {
-            if (Array.isArray(arr[i])) {
-                arr[i] = this.encodeRespArray(arr[i]);
-            } else if (Buffer.isBuffer(arr[i])) {
-                arr[i] = Resp.encodeBufBulk(arr[i]);
-            } else if (arr[i] === null) {
-                arr[i] = Resp.encodeNull();
-            } else if (typeof arr[i] === 'number') {
-                arr[i] = Resp.encodeInteger(arr[i]);
+    encodeRespArray(arr: unknown[]): Buffer[] {
+        const returnArr: Buffer[] = new Array(arr.length);
+        arr.forEach((value, i) => {
+            if (Array.isArray(value)) {
+                // @ts-expect-error document this somehow
+                returnArr[i] = this.encodeRespArray(value);
+            } else if (Buffer.isBuffer(value)) {
+                returnArr[i] = Resp.encodeBufBulk(value);
+            } else if (value === null) {
+                returnArr[i] = Resp.encodeNull();
+            } else if (typeof value === 'number') {
+                returnArr[i] = Resp.encodeInteger(value);
             } else {
-                arr[i] = Resp.encodeBulk(arr[i]);
+                returnArr[i] = Resp.encodeBulk(value);
             }
-        }
-        return arr;
+        });
+
+        return returnArr;
     }
 
     /**
