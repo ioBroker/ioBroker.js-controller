@@ -6,7 +6,7 @@ import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
 
 interface RedisHandlerOptions {
     // Logger object
-    log: any;
+    log: Omit<ioBroker.Logger, 'level'>;
     // log prefix
     logScope?: string;
     // if data should be handled as buffer
@@ -33,7 +33,7 @@ interface MultiCallElement {
     // indicator if exec already called
     execCalled: boolean;
     // number of responses which are already ready
-    responseCount: 0;
+    responseCount: number;
     // all responses as a map in correct order, key is responseId, value is null if no response there yet
     responseMap: Map<ResponseId, Buffer | null>;
     // id of the exec response
@@ -57,7 +57,7 @@ export class RedisHandler extends EventEmitter {
     private readonly logScope: string;
     private readonly handleBuffers: boolean;
     private readonly options: RedisHandlerOptions;
-    private readonly log: any;
+    private readonly log: Omit<ioBroker.Logger, 'level'>;
     private readonly socketId: string;
     private initialized: boolean;
     private stop: boolean;

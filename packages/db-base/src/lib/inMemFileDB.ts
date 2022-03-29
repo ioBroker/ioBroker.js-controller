@@ -10,6 +10,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { tools } from '@iobroker/js-controller-common';
+import { createGzip } from 'zlib';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -67,12 +68,12 @@ interface FileDbSettings {
     backup: BackupOptions;
     change?: ChangeFunction;
     connected: (nameOfServer: string) => void;
-    logger: tools.Logger;
+    logger: Omit<ioBroker.Logger, 'level'>;
     connection: ConnectionOptions;
     // unused
-    auth: null;
+    auth?: null;
     secure: boolean;
-    // as required by createServer
+    // as required by createServer TODO: if createServer is typed, add type
     certificates: any;
     port: number;
     host: string;
@@ -100,12 +101,11 @@ export class InMemoryFileDB {
     private dataset: Record<string, any>;
     private readonly namespace: string;
     private lastSave: null | number;
-    private zlib: null | typeof import('zlib');
     private stateTimer: NodeJS.Timeout | null;
     private callbackSubscriptionClient: SubscriptionClient;
     private readonly dataDir: string;
     private readonly datasetName: string;
-    private log: tools.Logger;
+    private log: Omit<ioBroker.Logger, 'level'>;
     private readonly backupDir: string;
 
     constructor(settings: FileDbSettings) {
@@ -117,7 +117,6 @@ export class InMemoryFileDB {
 
         this.namespace = this.settings.namespace || '';
         this.lastSave = null;
-        this.zlib = null;
         this.callbackSubscriptionClient = {};
 
         this.settings.backup = this.settings.connection.backup || {
@@ -235,7 +234,6 @@ export class InMemoryFileDB {
     }
 
     initBackupDir(): void {
-        this.zlib = this.zlib || require('zlib');
         // Interval in minutes => to milliseconds
         this.settings.backup.period =
             this.settings.backup.period === undefined ? 120 : parseInt(String(this.settings.backup.period));
@@ -486,9 +484,8 @@ export class InMemoryFileDB {
                     output.on('error', err => {
                         this.log.error(`${this.namespace} Cannot save ${this.datasetName}: ${err.stack}`);
                     });
-                    this.zlib = this.zlib || require('zlib');
-                    // @ts-expect-error we have checked existence
-                    const compress = this.zlib.createGzip();
+
+                    const compress = createGzip();
                     /* The following line will pipe everything written into compress to the file stream */
                     compress.pipe(output);
                     /* Since we're piped through the file stream, the following line will do:
