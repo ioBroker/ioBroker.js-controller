@@ -5,6 +5,8 @@ import { EventEmitter } from 'events';
 import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
 
+type NestedArray<T> = Array<T> | Array<NestedArray<T>>;
+
 interface RedisHandlerOptions {
     // Logger object
     log: InternalLogger;
@@ -427,11 +429,10 @@ export class RedisHandler extends EventEmitter {
      * @param arr Array to encode
      * @returns Array with Buffers with encoded values
      */
-    encodeRespArray(arr: unknown[]): Buffer[] {
-        const returnArr: Buffer[] = new Array(arr.length);
+    encodeRespArray(arr: unknown[]): NestedArray<Buffer> {
+        const returnArr: NestedArray<Buffer> = new Array(arr.length);
         arr.forEach((value, i) => {
             if (Array.isArray(value)) {
-                // @ts-expect-error document this somehow
                 returnArr[i] = this.encodeRespArray(value);
             } else if (Buffer.isBuffer(value)) {
                 returnArr[i] = Resp.encodeBufBulk(value);
