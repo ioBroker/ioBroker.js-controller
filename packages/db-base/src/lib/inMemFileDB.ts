@@ -10,6 +10,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { tools } from '@iobroker/js-controller-common';
+import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
 import { createGzip } from 'zlib';
 
 // settings = {
@@ -68,7 +69,7 @@ interface FileDbSettings {
     backup: BackupOptions;
     change?: ChangeFunction;
     connected: (nameOfServer: string) => void;
-    logger: Omit<ioBroker.Logger, 'level'>;
+    logger: InternalLogger;
     connection: ConnectionOptions;
     // unused
     auth?: null;
@@ -105,7 +106,7 @@ export class InMemoryFileDB {
     private callbackSubscriptionClient: SubscriptionClient;
     private readonly dataDir: string;
     private readonly datasetName: string;
-    private log: Omit<ioBroker.Logger, 'level'>;
+    private log: InternalLogger;
     private readonly backupDir: string;
 
     constructor(settings: FileDbSettings) {
@@ -266,12 +267,13 @@ export class InMemoryFileDB {
         fs.ensureDirSync(this.backupDir);
     }
 
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
     handleSubscribe(
         client: SubscriptionClient,
         type: string,
         pattern: string | string[],
         options: any,
-        cb: () => void
+        cb?: () => void
     ): void {
         if (typeof options === 'function') {
             cb = options;
@@ -298,29 +300,31 @@ export class InMemoryFileDB {
         typeof cb === 'function' && cb();
     }
 
-    handleUnsubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb: () => void): void {
-        if (!client._subscribe || !client._subscribe[type]) {
-            if (typeof cb === 'function') {
-                cb();
-            }
-            return;
-        }
-        const s = client._subscribe[type];
-        if (pattern instanceof Array) {
-            pattern.forEach(pattern => {
-                const index = s.findIndex(sub => sub.pattern === pattern);
+    handleUnsubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        cb?: () => void
+    ): void | Promise<void> {
+        const s = client?._subscribe?.[type];
+        if (s) {
+            const removeEntry = (p: string) => {
+                const index = s.findIndex(sub => sub.pattern === p);
                 if (index > -1) {
                     s.splice(index, 1);
                 }
-            });
-        } else {
-            const index = s.findIndex(sub => sub.pattern === pattern);
-            if (index > -1) {
-                s.splice(index, 1);
-                return void (typeof cb === 'function' && cb());
+            };
+
+            if (pattern instanceof Array) {
+                pattern.forEach(p => {
+                    removeEntry(p);
+                });
+            } else {
+                removeEntry(pattern);
             }
         }
-        typeof cb === 'function' && cb();
+
+        return tools.maybeCallback(cb);
     }
 
     publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {

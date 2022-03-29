@@ -3,10 +3,11 @@ import type { Socket } from 'net';
 import Resp from 'respjs';
 import { EventEmitter } from 'events';
 import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
+import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
 
 interface RedisHandlerOptions {
     // Logger object
-    log: Omit<ioBroker.Logger, 'level'>;
+    log: InternalLogger;
     // log prefix
     logScope?: string;
     // if data should be handled as buffer
@@ -57,7 +58,7 @@ export class RedisHandler extends EventEmitter {
     private readonly logScope: string;
     private readonly handleBuffers: boolean;
     private readonly options: RedisHandlerOptions;
-    private readonly log: Omit<ioBroker.Logger, 'level'>;
+    private readonly log: InternalLogger;
     private readonly socketId: string;
     private initialized: boolean;
     private stop: boolean;

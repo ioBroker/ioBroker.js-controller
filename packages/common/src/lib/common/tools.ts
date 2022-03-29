@@ -3539,7 +3539,9 @@ export function getInstanceIndicatorObjects(namespace: string, createWakeup: boo
     return objs;
 }
 
-export function getLogger(log: any): Omit<ioBroker.Logger, 'level'> {
+export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
+
+export function getLogger(log: any): InternalLogger {
     if (!log) {
         log = {
             silly: function (_msg: string) {
