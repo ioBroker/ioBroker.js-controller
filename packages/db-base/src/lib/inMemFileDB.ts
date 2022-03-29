@@ -274,6 +274,14 @@ export class InMemoryFileDB {
         pattern: string | string[],
         options: any,
         cb?: () => void
+    ): void;
+
+    handleSubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        options: any,
+        cb?: () => void
     ): void {
         if (typeof options === 'function') {
             cb = options;
