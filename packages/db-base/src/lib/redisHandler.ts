@@ -5,7 +5,7 @@ import { EventEmitter } from 'events';
 import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
 
-type NestedArray<T> = Array<T> | Array<NestedArray<T>>;
+type NestedArray<T> = T[] | NestedArray<T>[];
 
 interface RedisHandlerOptions {
     // Logger object
