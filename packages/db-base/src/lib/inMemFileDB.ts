@@ -10,7 +10,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { tools } from '@iobroker/js-controller-common';
-import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import { createGzip } from 'zlib';
 
 // settings = {
