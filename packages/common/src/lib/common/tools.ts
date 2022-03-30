@@ -18,6 +18,7 @@ import type { ExecOptions } from 'child_process';
 import { exec } from 'child_process';
 import { URLSearchParams } from 'url';
 import events from 'events';
+import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 
@@ -3065,149 +3066,6 @@ export async function getInstances(adapter: string, objects: any, withObjects: b
     return instances;
 }
 
-type MaybeCbCallback<T extends any[]> = (...args: T) => void;
-
-// cb
-export function maybeCallback<T extends any[]>(callback: MaybeCbCallback<T>, ...args: T): void;
-
-// promise
-export function maybeCallback<T extends any[]>(callback: null | undefined, ...args: T): Promise<MaybeCbReturnType<T>>;
-
-// compatibility
-export function maybeCallback<TCb extends MaybeCbCallback<[]> | undefined = undefined>(
-    callback?: TCb
-): undefined extends TCb ? Promise<void> : void;
-
-/**
- * Checks if the given callback is a function and if so calls it with the given parameter immediately, else a resolved Promise is returned
- *
- * @param callback - callback function to be executed
- * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns if Promise is resolved with multiple arguments, an array is returned
- */
-export function maybeCallback<T extends any[]>(
-    callback?: MaybeCbCallback<T> | null | undefined,
-    ...args: T
-): Promise<any> | void {
-    if (typeof callback === 'function') {
-        // if function we call it with given param
-        setImmediate(callback, ...args);
-    } else {
-        return Promise.resolve(args.length > 1 ? args : args[0]);
-    }
-}
-
-type MaybeCbErrCallback<T extends any[]> = (error: Error | null | undefined, ...args: T) => void;
-type MaybeCbReturnType<T extends any[]> = [] extends T
-    ? void // if ([] === T) void
-    : [any] extends T
-    ? T[0] // else if (T has one element) => take first element
-    : T; // else return T entirely
-
-// cb success
-export function maybeCallbackWithError<TCb extends MaybeCbErrCallback<any>>(
-    callback: TCb,
-    error: null | undefined,
-    ...args: Parameters<TCb>
-): void;
-
-// cb with error
-export function maybeCallbackWithError(callback: MaybeCbErrCallback<[]>, error: Error | string): void;
-
-// promise but error
-export function maybeCallbackWithError(callback: null | undefined, error: Error | string): Promise<never>;
-
-// promise success
-export function maybeCallbackWithError<T extends any[]>(
-    callback: null | undefined,
-    error: null | undefined,
-    ...args: T
-): Promise<MaybeCbReturnType<T>>;
-
-// NEEDED for callbacks without parameters
-export function maybeCallbackWithError<TCb extends MaybeCbErrCallback<[]> | undefined = undefined>(
-    callback?: TCb,
-    error?: any
-): undefined extends TCb ? Promise<void> : void;
-
-/**
- * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Error ERROR_DB_CLOSED are not rejecting the promise
- *
- * @param callback - callback function to be executed
- * @param error - error which will be used by the callback function. If callback is not a function and
- * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
- * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns if Promise is resolved with multiple arguments, an array is returned
- */
-export function maybeCallbackWithError<T extends any[]>(
-    callback: MaybeCbErrCallback<T> | null | undefined,
-    error: Error | string | null | undefined,
-    ...args: T
-): Promise<any> | void {
-    if (error !== undefined && error !== null && !(error instanceof Error)) {
-        // if it's not a real Error, we convert it into one
-        error = new Error(error);
-    }
-    const isDbError = error ? error.message === ERRORS.ERROR_DB_CLOSED : false;
-
-    if (typeof callback === 'function') {
-        setImmediate(callback, error, ...args);
-    } else if (error && !isDbError) {
-        return Promise.reject(error);
-    } else {
-        return Promise.resolve(args.length > 1 ? args : args[0]);
-    }
-}
-
-// cb with error
-export function maybeCallbackWithRedisError<T extends any[]>(
-    callback: MaybeCbErrCallback<[]>,
-    error: Error | string,
-    ...args: T
-): void;
-
-// cb success
-export function maybeCallbackWithRedisError<T extends any[]>(
-    callback: MaybeCbErrCallback<T>,
-    error: null | undefined,
-    ...args: T
-): void;
-
-// promise but error
-export function maybeCallbackWithRedisError<T extends any[]>(
-    callback: null | undefined,
-    error: Error | string,
-    ...args: T
-): Promise<never>;
-
-// promise success
-export function maybeCallbackWithRedisError<T extends any[]>(
-    callback: null | undefined,
-    error: null | undefined,
-    ...args: T
-): Promise<MaybeCbReturnType<T>>;
-
-/**
- * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Redis-Error "Connection is closed." is converted into ERROR_DB_CLOSED
- *
- * @param callback - callback function to be executed
- * @param error - error which will be used by the callback function. If callback is not a function and
- * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
- * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns Promise if Promise is resolved with multiple arguments, an array is returned
- */
-export function maybeCallbackWithRedisError<T extends any[]>(
-    callback: MaybeCbErrCallback<T> | null | undefined,
-    error: Error | string | null | undefined,
-    ...args: T
-): Promise<any> | void {
-    if (error instanceof Error && error.message.includes('Connection is closed')) {
-        error.message = module.exports.ERRORS.ERROR_DB_CLOSED;
-    }
-    // @ts-expect-error ts currently cannot catch this
-    return maybeCallbackWithError(callback, error, ...args);
-}
-
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
@@ -3936,3 +3794,5 @@ export function compressFileGZip(
         input.pipe(compress).pipe(output);
     });
 }
+
+export * from './maybeCallback';
