@@ -103,7 +103,7 @@ const defaultAcl = {
     }
 } as const;
 
-// FIXME: This should have better types. Probably Record<string, ioBroker.UserObject>
+// FIXME: This should have better types. Probably Record<string, {acl: ioBroker.ObjectPermissions, [x: string | number | symbol]: any}>
 let users: Record<string, any> = {};
 let groups: ioBroker.GroupObject[] = [];
 
@@ -165,7 +165,7 @@ export function insert(
     _ignore: any,
     options: Record<string, any> | string,
     _obj: any,
-    callback: () => void
+    callback: (err: Error | null | undefined, param: null) => void
 ): WMStrm {
     if (typeof options === 'string') {
         options = { mimeType: options };
@@ -249,7 +249,7 @@ export function checkFileRights(
     name: string,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags,
-    callback: () => void
+    callback: (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void
 ): any {
     options = options || {};
     if (!options.user) {
@@ -297,7 +297,7 @@ export function checkFileRights(
 
 // For users and groups
 function getDefaultAdminRights(
-    acl?: Omit<ioBroker.PermissionSet, 'user' | 'groups'>,
+    acl?: ioBroker.ObjectPermissions,
     _isState?: boolean
 ): Omit<ioBroker.PermissionSet, 'user' | 'groups'> {
     return {
@@ -338,17 +338,13 @@ function getDefaultAdminRights(
     };
 }
 
-export type GetUserGroupPromiseReturn = [
-    user: string,
-    groups: string[],
-    acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>
-];
+export type GetUserGroupPromiseReturn = [user: string, groups: string[], acl: ioBroker.ObjectPermissions];
 
 export type GetUserGroupCallback = (
     err: Error | null | undefined,
     user: string,
     groups: string[],
-    acl: Omit<ioBroker.PermissionSet, 'user' | 'groups'>
+    acl: ioBroker.ObjectPermissions
 ) => void;
 
 export function getUserGroup(
@@ -627,7 +623,7 @@ export function checkObjectRights(
     object: ioBroker.Object,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags,
-    callback: () => void
+    callback: (err: Error | null | undefined, options?: Record<string, any>) => void
 ): void | Promise<Record<string, any>> {
     options = options || {};
 
