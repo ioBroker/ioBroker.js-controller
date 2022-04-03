@@ -1,18 +1,79 @@
-const Resp = require('respjs');
-const { EventEmitter } = require('events');
-const { QUEUED_STR_BUF, OK_STR_BUF } = require('./constants');
+import type { Socket } from 'net';
+// @ts-expect-error no types
+import Resp from 'respjs';
+import { EventEmitter } from 'events';
+import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+
+type NestedArray<T> = T[] | NestedArray<T>[];
+
+interface RedisHandlerOptions {
+    // Logger object
+    log: InternalLogger;
+    // log prefix
+    logScope?: string;
+    // if data should be handled as buffer
+    handleAsBuffers: boolean;
+    // additonal debug information
+    enhancedLogging?: boolean;
+}
+
+interface WriteQueueElement {
+    // response id
+    id: ResponseId;
+    // response data, temporary false if not ready to sent yet
+    data: false | Buffer;
+}
+
+interface FullWriteQueueElement extends WriteQueueElement {
+    // response data
+    data: Buffer;
+}
+
+interface MultiCallElement {
+    // all response ids of the multi call
+    responseIds: ResponseId[];
+    // indicator if exec already called
+    execCalled: boolean;
+    // number of responses which are already ready
+    responseCount: number;
+    // all responses as a map in correct order, key is responseId, value is null if no response there yet
+    responseMap: Map<ResponseId, Buffer | null>;
+    // id of the exec response
+    execId?: ResponseId;
+}
+
+interface FullMultiCallElement extends MultiCallElement {
+    // id of the exec response
+    execId: ResponseId;
+}
+
+// null if send without id
+type ResponseId = number | null;
 
 /**
  * Class to handle a redis connection and provide events to react on for
  * all incoming Redis commands
  */
-class RedisHandler extends EventEmitter {
+export class RedisHandler extends EventEmitter {
+    private readonly socket: Socket;
+    private readonly logScope: string;
+    private readonly handleBuffers: boolean;
+    private readonly options: RedisHandlerOptions;
+    private readonly log: InternalLogger;
+    private readonly socketId: string;
+    private initialized: boolean;
+    private stop: boolean;
+    private readonly activeMultiCalls: MultiCallElement[];
+    private readonly writeQueue: WriteQueueElement[];
+    private readonly resp: any;
+
     /**
      * Initialize and register all data handlers to send out events on new commands
      * @param socket Network Socket/Connection
      * @param options options objects, currently mainly for logger
      */
-    constructor(socket, options) {
+    constructor(socket: Socket, options: RedisHandlerOptions) {
         super();
 
         options = options || {};
@@ -32,14 +93,14 @@ class RedisHandler extends EventEmitter {
         this.writeQueue = [];
 
         this.handleBuffers = false;
-        const respOptions = {};
+        const respOptions: Record<string, any> = {};
         if (options.handleAsBuffers) {
             this.handleBuffers = true;
             respOptions.bufBulk = true;
         }
         this.resp = new Resp(respOptions);
 
-        this.resp.on('error', err => {
+        this.resp.on('error', (err: any) => {
             this.log.error(`${this.socketId} (Init=${this.initialized}) Redis error:${err}`);
             if (this.initialized) {
                 this.sendError(null, new Error(`PARSER ERROR ${err}`)); // TODO
@@ -48,7 +109,7 @@ class RedisHandler extends EventEmitter {
             }
         });
 
-        this.resp.on('data', data => this._handleCommand(data));
+        this.resp.on('data', (data: any) => this._handleCommand(data));
 
         socket.on('data', data => {
             if (this.options.enhancedLogging) {
@@ -68,7 +129,7 @@ class RedisHandler extends EventEmitter {
 
         socket.on('error', err => {
             if (!this.stop) {
-                this.log.debug(`${this.socketId} Redis Socket error: ${err}`);
+                this.log.debug(`${this.socketId} Redis Socket error: ${err.stack}`);
             }
             if (this.socket) {
                 this.socket.destroy();
@@ -81,7 +142,7 @@ class RedisHandler extends EventEmitter {
      * @param data Array RESP data
      * @private
      */
-    _handleCommand(data) {
+    _handleCommand(data: any[]): void {
         let command = data.splice(0, 1)[0];
         if (this.handleBuffers) {
             // Command and pot. first parameter should always be Buffer
@@ -155,7 +216,7 @@ class RedisHandler extends EventEmitter {
      * @param data Buffer to send out
      * @private
      */
-    _sendQueued(responseId, data) {
+    _sendQueued(responseId: ResponseId, data: Buffer): void {
         let idx = 0;
 
         while (this.writeQueue.length && idx < this.writeQueue.length) {
@@ -171,7 +232,7 @@ class RedisHandler extends EventEmitter {
             // when data for queue entry 0 are preset (!== false) we can send it, remove the first entry
             // and check the other entries if they have completed responses too
             if (idx === 0 && this.writeQueue[idx].data !== false) {
-                const response = this.writeQueue.shift();
+                const response = this.writeQueue.shift() as FullWriteQueueElement;
                 if (this.options.enhancedLogging) {
                     this.log.silly(
                         `${this.socketId} Redis response (${response.id}): ${
@@ -206,7 +267,7 @@ class RedisHandler extends EventEmitter {
      * @param data Buffer to send out
      * @private
      */
-    _write(data) {
+    _write(data: Buffer): void {
         this.socket.write(data);
     }
 
@@ -215,7 +276,7 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      * @param data Buffer to send out
      */
-    sendResponse(responseId, data) {
+    sendResponse(responseId: ResponseId, data: Buffer): void {
         // handle responses without a specific request like publishing data, so send directly
         if (responseId === null) {
             if (this.options.enhancedLogging) {
@@ -237,7 +298,7 @@ class RedisHandler extends EventEmitter {
     /**
      * Close network connection
      */
-    close() {
+    close(): void {
         this.log.silly(`${this.socketId} close Redis connection`);
         this.stop = true;
         this.socket.end();
@@ -245,9 +306,9 @@ class RedisHandler extends EventEmitter {
 
     /**
      * Return if socket/handler active or closed
-     * @returns {boolean} is Handler/Connection active (not closed)
+     * @returns is Handler/Connection active (not closed)
      */
-    isActive() {
+    isActive(): boolean {
         return !this.stop;
     }
 
@@ -255,8 +316,8 @@ class RedisHandler extends EventEmitter {
      * Encode RESP's Null value to RESP buffer and send out
      * @param responseId ID of the response
      */
-    sendNull(responseId) {
-        for (const i in this.activeMultiCalls) {
+    sendNull(responseId: ResponseId): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeNull());
                 return;
@@ -270,8 +331,8 @@ class RedisHandler extends EventEmitter {
      * Encode RESP's Null Array value to RESP buffer and send out
      * @param responseId ID of the response
      */
-    sendNullArray(responseId) {
-        for (const i in this.activeMultiCalls) {
+    sendNullArray(responseId: ResponseId): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeNullArray());
                 return;
@@ -286,8 +347,8 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID od the response
      * @param str String to encode
      */
-    sendString(responseId, str) {
-        for (const i in this.activeMultiCalls) {
+    sendString(responseId: ResponseId, str: string): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeString(str));
                 return;
@@ -302,10 +363,10 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      * @param error Error object with error details to send out
      */
-    sendError(responseId, error) {
-        this.log.warn(`${this.socketId} Error from InMemDB: ${error}`);
+    sendError(responseId: ResponseId, error: Error): void {
+        this.log.warn(`${this.socketId} Error from InMemDB: ${error.stack}`);
 
-        for (const i in this.activeMultiCalls) {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeError(error));
                 return;
@@ -320,8 +381,8 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      * @param num Integer to send out
      */
-    sendInteger(responseId, num) {
-        for (const i in this.activeMultiCalls) {
+    sendInteger(responseId: ResponseId, num: number): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeInteger(num));
                 return;
@@ -336,8 +397,8 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      * @param str String to send out
      */
-    sendBulk(responseId, str) {
-        for (const i in this.activeMultiCalls) {
+    sendBulk(responseId: ResponseId, str: string): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeBulk(str));
                 return;
@@ -352,8 +413,8 @@ class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      * @param buf Buffer to send out
      */
-    sendBufBulk(responseId, buf) {
-        for (const i in this.activeMultiCalls) {
+    sendBufBulk(responseId: ResponseId, buf: Buffer): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeBufBulk(buf));
                 return;
@@ -366,32 +427,34 @@ class RedisHandler extends EventEmitter {
     /**
      * Encode an Array depending on the type of the elements
      * @param arr Array to encode
-     * @returns {Array} Array with Buffers with encoded values
+     * @returns Array with Buffers with encoded values
      */
-    encodeRespArray(arr) {
-        for (let i = 0; i < arr.length; i++) {
-            if (Array.isArray(arr[i])) {
-                arr[i] = this.encodeRespArray(arr[i]);
-            } else if (Buffer.isBuffer(arr[i])) {
-                arr[i] = Resp.encodeBufBulk(arr[i]);
-            } else if (arr[i] === null) {
-                arr[i] = Resp.encodeNull();
-            } else if (typeof arr[i] === 'number') {
-                arr[i] = Resp.encodeInteger(arr[i]);
+    encodeRespArray(arr: unknown[]): NestedArray<Buffer> {
+        const returnArr: NestedArray<Buffer> = new Array(arr.length);
+        arr.forEach((value, i) => {
+            if (Array.isArray(value)) {
+                returnArr[i] = this.encodeRespArray(value);
+            } else if (Buffer.isBuffer(value)) {
+                returnArr[i] = Resp.encodeBufBulk(value);
+            } else if (value === null) {
+                returnArr[i] = Resp.encodeNull();
+            } else if (typeof value === 'number') {
+                returnArr[i] = Resp.encodeInteger(value);
             } else {
-                arr[i] = Resp.encodeBulk(arr[i]);
+                returnArr[i] = Resp.encodeBulk(value);
             }
-        }
-        return arr;
+        });
+
+        return returnArr;
     }
 
     /**
      * Encode a array values to buffers and send out
-     * @param {number} responseId ID of the response
-     * @param {any[]} arr Array to send out
+     * @param responseId ID of the response
+     * @param arr Array to send out
      */
-    sendArray(responseId, arr) {
-        for (const i in this.activeMultiCalls) {
+    sendArray(responseId: ResponseId, arr: any[]): void {
+        for (let i = 0; i < this.activeMultiCalls.length; i++) {
             if (this.activeMultiCalls[i].responseIds.includes(responseId)) {
                 this._handleMultiResponse(responseId, i, Resp.encodeArray(this.encodeRespArray(arr)));
                 return;
@@ -406,7 +469,7 @@ class RedisHandler extends EventEmitter {
      *
      * @private
      */
-    _handleMulti() {
+    _handleMulti(): void {
         this.activeMultiCalls.unshift({
             responseIds: [],
             execCalled: false,
@@ -421,7 +484,7 @@ class RedisHandler extends EventEmitter {
      * @param {number} responseId ID of the response
      * @private
      */
-    _handleExec(responseId) {
+    _handleExec(responseId: ResponseId): void {
         if (!this.activeMultiCalls[0]) {
             this.sendError(responseId, new Error('EXEC without MULTI'));
             return;
@@ -432,18 +495,18 @@ class RedisHandler extends EventEmitter {
 
         // maybe we have all fullfilled yet
         if (this.activeMultiCalls[0].responseCount === this.activeMultiCalls[0].responseIds.length) {
-            const multiRespObj = this.activeMultiCalls.shift();
+            const multiRespObj = this.activeMultiCalls.shift() as FullMultiCallElement;
             this._sendExecResponse(multiRespObj);
         }
     }
 
     /**
      * Builds up the exec response and sends it
-     * @param {Record<string, any>} multiObj the multi object to send out
+     * @param multiObj the multi object to send out
      *
      * @private
      */
-    _sendExecResponse(multiObj) {
+    _sendExecResponse(multiObj: FullMultiCallElement): void {
         // collect all 'QUEUED' answers
         const queuedStrArr = new Array(multiObj.responseCount).fill(QUEUED_STR_BUF);
 
@@ -456,22 +519,20 @@ class RedisHandler extends EventEmitter {
     /**
      * Handles a multi response
      *
-     * @param {number} responseId ID of the response
-     * @param {number} index index of the multi call
-     * @param {Buffer} buf buffer to include in response
+     * @param responseId ID of the response
+     * @param index index of the multi call
+     * @param buf buffer to include in response
      * @private
      */
-    _handleMultiResponse(responseId, index, buf) {
+    _handleMultiResponse(responseId: ResponseId, index: number, buf: Buffer): void {
         this.activeMultiCalls[index].responseMap.set(responseId, buf);
         this.activeMultiCalls[index].responseCount++;
         if (
             this.activeMultiCalls[index].execCalled &&
             this.activeMultiCalls[index].responseCount === this.activeMultiCalls[index].responseIds.length
         ) {
-            const multiRespObj = this.activeMultiCalls.splice(index, 1)[0];
+            const multiRespObj = this.activeMultiCalls.splice(index, 1)[0] as FullMultiCallElement;
             this._sendExecResponse(multiRespObj);
         }
     }
 }
-
-module.exports = RedisHandler;

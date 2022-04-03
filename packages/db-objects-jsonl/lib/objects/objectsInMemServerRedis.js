@@ -20,7 +20,7 @@ const crypto = require('crypto');
 const utils = require('@iobroker/db-objects-redis').objectsUtils;
 const tools = require('@iobroker/db-base').tools;
 
-const RedisHandler = require('@iobroker/db-base').redisHandler;
+const { RedisHandler } = require('@iobroker/db-base');
 const ObjectsInMemoryJsonlDB = require('./objectsInMemJsonlDB');
 
 // settings = {

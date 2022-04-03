@@ -18,6 +18,7 @@ import type { ExecOptions } from 'child_process';
 import { exec } from 'child_process';
 import { URLSearchParams } from 'url';
 import events from 'events';
+import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 
@@ -3066,54 +3067,6 @@ export async function getInstances(adapter: string, objects: any, withObjects: b
 }
 
 /**
- * Checks if the given callback is a function and if so calls it with the given parameter immediately, else a resolved Promise is returned
- *
- * @param callback - callback function to be executed
- * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns if Promise is resolved with multiple arguments, an array is returned
- */
-export function maybeCallback(
-    callback?: (...args: any[]) => void | null | undefined,
-    ...args: any[]
-): Promise<any> | void {
-    if (typeof callback === 'function') {
-        // if function we call it with given param
-        setImmediate(callback, ...args);
-    } else {
-        return Promise.resolve(args.length > 1 ? args : args[0]);
-    }
-}
-
-/**
- * Checks if the given callback is a function and if so calls it with the given error and parameter immediately, else a resolved or rejected Promise is returned. Error ERROR_DB_CLOSED are not rejecting the promise
- *
- * @param callback - callback function to be executed
- * @param error - error which will be used by the callback function. If callback is not a function and
- * error is given, a rejected Promise is returned. If error is given but it is not an instance of Error, it is converted into one.
- * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
- * @returns if Promise is resolved with multiple arguments, an array is returned
- */
-export function maybeCallbackWithError(
-    callback: ((error: Error | null | undefined, ...args: any[]) => void) | null | undefined,
-    error: Error | string | null | undefined,
-    ...args: any[]
-): Promise<any> | void {
-    if (error !== undefined && error !== null && !(error instanceof Error)) {
-        // if it's not a real Error, we convert it into one
-        error = new Error(error);
-    }
-    const isDbError = error ? error.message === ERRORS.ERROR_DB_CLOSED : false;
-
-    if (typeof callback === 'function') {
-        setImmediate(callback, error, ...args);
-    } else if (error && !isDbError) {
-        return Promise.reject(error);
-    } else {
-        return Promise.resolve(args.length > 1 ? args : args[0]);
-    }
-}
-
-/**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
  * @param command The command to execute
@@ -3516,7 +3469,9 @@ export function getInstanceIndicatorObjects(namespace: string, createWakeup: boo
     return objs;
 }
 
-export function getLogger(log: any): Record<string, (msg: string) => void> {
+export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
+
+export function getLogger(log: any): InternalLogger {
     if (!log) {
         log = {
             silly: function (_msg: string) {
@@ -3839,3 +3794,5 @@ export function compressFileGZip(
         input.pipe(compress).pipe(output);
     });
 }
+
+export * from './maybeCallback';

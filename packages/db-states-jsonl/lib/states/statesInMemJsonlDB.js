@@ -14,7 +14,7 @@
 /* jslint node: true */
 'use strict';
 
-const StatesInMemoryFileDB = require('@iobroker/db-states-file').StatesInMemoryFileDB;
+const { StatesInMemoryFileDB } = require('@iobroker/db-states-file');
 const { JsonlDB } = require('@alcalzone/jsonl-db');
 const path = require('path');
 const fs = require('fs');

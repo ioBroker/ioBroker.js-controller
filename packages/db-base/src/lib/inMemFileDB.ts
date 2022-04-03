@@ -7,16 +7,11 @@
  *
  */
 
-/** @module inMemoryFileDB */
-
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-
-const fs = require('fs-extra');
-const path = require('path');
-const tools = require('./tools.js');
+import fs from 'fs-extra';
+import path from 'path';
+import { tools } from '@iobroker/js-controller-common';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import { createGzip } from 'zlib';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -39,12 +34,82 @@ const tools = require('./tools.js');
 // };
 //
 
+interface ConnectionOptions {
+    // relative path to the data dir
+    backup?: BackupOptions;
+    dataDir: string;
+}
+
+type ChangeFunction = (id: string, state: any) => void;
+
+interface DbStatus {
+    type: string;
+    server: boolean;
+}
+
+interface BackupOptions {
+    // deactivates backup if false
+    disabled: boolean;
+    // minimum number of files
+    files: number;
+    hours: number;
+    // minutes
+    period: number;
+    path: string;
+}
+
+interface DbOptions {
+    backupDirName: string;
+    fileName: string;
+}
+
+interface FileDbSettings {
+    fileDB: DbOptions;
+    jsonlDB: DbOptions;
+    backup: BackupOptions;
+    change?: ChangeFunction;
+    connected: (nameOfServer: string) => void;
+    logger: InternalLogger;
+    connection: ConnectionOptions;
+    // unused
+    auth?: null;
+    secure: boolean;
+    // as required by createServer TODO: if createServer is typed, add type
+    certificates: any;
+    port: number;
+    host: string;
+    // logging namespace
+    namespace?: string;
+}
+
+interface Subscription {
+    pattern: string;
+    regex: RegExp;
+    options: any;
+}
+
+interface SubscriptionClient {
+    _subscribe?: Record<string, Subscription[]>;
+}
+
 /**
  * The parent of the class structure, which provides basic JSON storage
  * and general subscription and publish functionality
  **/
-class InMemoryFileDB {
-    constructor(settings) {
+export class InMemoryFileDB {
+    private settings: FileDbSettings;
+    private readonly change: ChangeFunction | undefined;
+    private dataset: Record<string, any>;
+    private readonly namespace: string;
+    private lastSave: null | number;
+    private stateTimer: NodeJS.Timeout | null;
+    private callbackSubscriptionClient: SubscriptionClient;
+    private readonly dataDir: string;
+    private readonly datasetName: string;
+    private log: InternalLogger;
+    private readonly backupDir: string;
+
+    constructor(settings: FileDbSettings) {
         this.settings = settings || {};
 
         this.change = this.settings.change;
@@ -53,7 +118,6 @@ class InMemoryFileDB {
 
         this.namespace = this.settings.namespace || '';
         this.lastSave = null;
-        this.zlib = null;
         this.callbackSubscriptionClient = {};
 
         this.settings.backup = this.settings.connection.backup || {
@@ -88,8 +152,7 @@ class InMemoryFileDB {
         this.log.debug(`${this.namespace} Data File: ${this.datasetName}`);
     }
 
-    /** @returns {Promise<void>} */
-    async open() {
+    async open(): Promise<void> {
         // load values from file
         this.dataset = await this.loadDataset(this.datasetName);
     }
@@ -97,10 +160,10 @@ class InMemoryFileDB {
     /**
      * Loads a dataset file
      *
-     * @param datasetName {string} Filename of the file to load
-     * @returns {Promise<Record<string, any>>} read data, normally as object
+     * @param datasetName Filename of the file to load
+     * @returns obj read data, normally as object
      */
-    async loadDatasetFile(datasetName) {
+    async loadDatasetFile(datasetName: string): Promise<Record<string, any>> {
         if (!(await fs.pathExists(datasetName))) {
             throw new Error(`Database file ${datasetName} does not exists.`);
         }
@@ -110,10 +173,10 @@ class InMemoryFileDB {
     /**
      * Loads the dataset including pot. Fallback handling
      *
-     * @param datasetName {string} Filename of the file to load
-     * @returns {Promise<Record<string, any>>} dataset read as object
+     * @param datasetName Filename of the file to load
+     * @returns obj dataset read as object
      */
-    async loadDataset(datasetName) {
+    async loadDataset(datasetName: string): Promise<Record<string, any>> {
         let ret = {};
         try {
             ret = await this.loadDatasetFile(datasetName);
@@ -121,18 +184,18 @@ class InMemoryFileDB {
             // loading worked, make sure that "bak" File is not broken
             try {
                 await fs.readJSON(`${datasetName}.bak`);
-            } catch (e) {
+            } catch (e: any) {
                 this.log.info(
                     `${this.namespace} Rewrite bak file, because error on verify ${datasetName}.bak: ${e.message}`
                 );
                 try {
                     const jsonString = JSON.stringify(ret);
                     await fs.writeFile(`${datasetName}.bak`, jsonString);
-                } catch (e) {
+                } catch (e: any) {
                     this.log.error(`${this.namespace} Cannot save ${datasetName}.bak: ${e.message}`);
                 }
             }
-        } catch (err) {
+        } catch (err: any) {
             this.log.error(`${this.namespace} Cannot load ${datasetName}: ${err.message}. We try last Backup!`);
 
             try {
@@ -143,14 +206,14 @@ class InMemoryFileDB {
                     if (await fs.pathExists(datasetName)) {
                         try {
                             await fs.move(datasetName, `${datasetName}.broken`, { overwrite: true });
-                        } catch (e) {
+                        } catch (e: any) {
                             this.log.error(
                                 `${this.namespace} Cannot copy the broken file ${datasetName} to ${datasetName}.broken ${e.message}`
                             );
                         }
                         try {
                             await fs.writeFile(datasetName, JSON.stringify(ret));
-                        } catch (e) {
+                        } catch (e: any) {
                             this.log.error(
                                 `${this.namespace} Cannot restore backup file as new main ${datasetName}: ${e.message}`
                             );
@@ -159,7 +222,7 @@ class InMemoryFileDB {
                 } catch {
                     // ignore, file does not exist
                 }
-            } catch (err) {
+            } catch (err: any) {
                 this.log.error(
                     `${this.namespace} Cannot load ${datasetName}.bak: ${err.message}. Continue with empty dataset!`
                 );
@@ -171,11 +234,10 @@ class InMemoryFileDB {
         return ret;
     }
 
-    initBackupDir() {
-        this.zlib = this.zlib || require('zlib');
+    initBackupDir(): void {
         // Interval in minutes => to milliseconds
         this.settings.backup.period =
-            this.settings.backup.period === undefined ? 120 : parseInt(this.settings.backup.period);
+            this.settings.backup.period === undefined ? 120 : parseInt(String(this.settings.backup.period));
         if (isNaN(this.settings.backup.period)) {
             this.settings.backup.period = 120;
         }
@@ -191,13 +253,13 @@ class InMemoryFileDB {
         this.settings.backup.period *= 60000;
 
         this.settings.backup.files =
-            this.settings.backup.files === undefined ? 24 : parseInt(this.settings.backup.files);
+            this.settings.backup.files === undefined ? 24 : parseInt(String(this.settings.backup.files));
         if (isNaN(this.settings.backup.files)) {
             this.settings.backup.files = 24;
         }
 
         this.settings.backup.hours =
-            this.settings.backup.hours === undefined ? 48 : parseInt(this.settings.backup.hours);
+            this.settings.backup.hours === undefined ? 48 : parseInt(String(this.settings.backup.hours));
         if (isNaN(this.settings.backup.hours)) {
             this.settings.backup.hours = 48;
         }
@@ -205,7 +267,22 @@ class InMemoryFileDB {
         fs.ensureDirSync(this.backupDir);
     }
 
-    handleSubscribe(client, type, pattern, options, cb) {
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
+    handleSubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        options: any,
+        cb?: () => void
+    ): void;
+
+    handleSubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        options: any,
+        cb?: () => void
+    ): void {
         if (typeof options === 'function') {
             cb = options;
             options = undefined;
@@ -231,37 +308,38 @@ class InMemoryFileDB {
         typeof cb === 'function' && cb();
     }
 
-    handleUnsubscribe(client, type, pattern, cb) {
-        if (!client._subscribe || !client._subscribe[type]) {
-            if (typeof cb === 'function') {
-                cb();
-            }
-            return;
-        }
-        const s = client._subscribe[type];
-        if (pattern instanceof Array) {
-            pattern.forEach(pattern => {
-                const index = s.findIndex(sub => sub.pattern === pattern);
+    handleUnsubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        cb?: () => void
+    ): void | Promise<void> {
+        const s = client?._subscribe?.[type];
+        if (s) {
+            const removeEntry = (p: string) => {
+                const index = s.findIndex(sub => sub.pattern === p);
                 if (index > -1) {
                     s.splice(index, 1);
                 }
-            });
-        } else {
-            const index = s.findIndex(sub => sub.pattern === pattern);
-            if (index > -1) {
-                s.splice(index, 1);
-                return typeof cb === 'function' && cb();
+            };
+
+            if (pattern instanceof Array) {
+                pattern.forEach(p => {
+                    removeEntry(p);
+                });
+            } else {
+                removeEntry(pattern);
             }
         }
-        typeof cb === 'function' && cb();
+
+        return tools.maybeCallback(cb);
     }
 
-    /** @returns {number} */
-    publishToClients(_client, _type, _id, _obj) {
+    publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {
         throw new Error('no communication handling implemented');
     }
 
-    deleteOldBackupFiles(baseFilename) {
+    deleteOldBackupFiles(baseFilename: string): void {
         // delete files only if settings.backupNumber is not 0
         let files = fs.readdirSync(this.backupDir);
         files.sort();
@@ -279,7 +357,7 @@ class InMemoryFileDB {
             if (limit > ms) {
                 try {
                     fs.unlinkSync(path.join(this.backupDir, file));
-                } catch (e) {
+                } catch (e: any) {
                     this.log.error(
                         `${this.namespace} Cannot delete file "${path.join(this.backupDir, file)}: ${e.message}`
                     );
@@ -288,7 +366,7 @@ class InMemoryFileDB {
         }
     }
 
-    getTimeStr(date) {
+    getTimeStr(date: number): string {
         const dateObj = new Date(date);
 
         let text = dateObj.getFullYear().toString() + '-';
@@ -322,7 +400,7 @@ class InMemoryFileDB {
     /**
      * Handle saving the dataset incl. backups
      */
-    async saveState() {
+    async saveState(): Promise<void> {
         try {
             const jsonString = await this.saveDataset();
 
@@ -340,14 +418,14 @@ class InMemoryFileDB {
     /**
      * Saves the dataset into File incl. handling of a fallback backup file
      *
-     * @returns {Promise<string>} JSON string of the complete dataset to also be stored into a compressed backup file
+     * @returns dataset JSON string of the complete dataset to also be stored into a compressed backup file
      */
-    async saveDataset() {
+    async saveDataset(): Promise<string> {
         const jsonString = JSON.stringify(this.dataset);
 
         try {
             await fs.writeFile(`${this.datasetName}.new`, jsonString);
-        } catch (e) {
+        } catch (e: any) {
             this.log.error(`${this.namespace} Cannot save Dataset to ${this.datasetName}.new: ${e.message}`);
             return jsonString;
         }
@@ -357,7 +435,7 @@ class InMemoryFileDB {
             if (await fs.pathExists(this.datasetName)) {
                 try {
                     await fs.move(this.datasetName, `${this.datasetName}.bak`, { overwrite: true });
-                } catch (e) {
+                } catch (e: any) {
                     bakOk = false;
                     this.log.error(`${this.namespace} Cannot backup file ${this.datasetName}.bak: ${e.message}`);
                 }
@@ -371,13 +449,13 @@ class InMemoryFileDB {
 
         try {
             await fs.move(`${this.datasetName}.new`, this.datasetName, { overwrite: true });
-        } catch (e) {
+        } catch (e: any) {
             this.log.error(
                 `${this.namespace} Cannot move ${this.datasetName}.new to ${this.datasetName}: ${e.message}. Try direct write as fallback`
             );
             try {
                 await fs.writeFile(this.datasetName, jsonString);
-            } catch (e) {
+            } catch (e: any) {
                 this.log.error(`${this.namespace} Cannot directly write Dataset to ${this.datasetName}: ${e.message}`);
                 return jsonString;
             }
@@ -387,7 +465,7 @@ class InMemoryFileDB {
             // it seems the bak File is not successfully there, write current content again
             try {
                 await fs.writeFile(`${this.datasetName}.bak`, jsonString);
-            } catch (e) {
+            } catch (e: any) {
                 this.log.error(`${this.namespace} Cannot save ${this.datasetName}.bak: ${e.message}`);
             }
         }
@@ -398,9 +476,9 @@ class InMemoryFileDB {
     /**
      * Stores a compressed backup of the DB in definable intervals
      *
-     * @param jsonString {string} JSON string of the complete dataset to also be stored into a compressed backup file
+     * @param jsonString JSON string of the complete dataset to also be stored into a compressed backup file
      */
-    saveBackup(jsonString) {
+    saveBackup(jsonString: string): void {
         // save files for the last x hours
         const now = Date.now();
 
@@ -414,12 +492,12 @@ class InMemoryFileDB {
 
             try {
                 if (!fs.existsSync(backFileName)) {
-                    this.zlib = this.zlib || require('zlib');
                     const output = fs.createWriteStream(backFileName);
                     output.on('error', err => {
-                        this.log.error(`${this.namespace} Cannot save ${this.datasetName}: ${err}`);
+                        this.log.error(`${this.namespace} Cannot save ${this.datasetName}: ${err.stack}`);
                     });
-                    const compress = this.zlib.createGzip();
+
+                    const compress = createGzip();
                     /* The following line will pipe everything written into compress to the file stream */
                     compress.pipe(output);
                     /* Since we're piped through the file stream, the following line will do:
@@ -430,22 +508,21 @@ class InMemoryFileDB {
                     // analyse older files
                     this.deleteOldBackupFiles(this.settings.fileDB.fileName);
                 }
-            } catch (e) {
+            } catch (e: any) {
                 this.log.error(`${this.namespace} Cannot save backup ${backFileName}: ${e.message}`);
             }
         }
     }
 
-    getStatus() {
+    getStatus(): DbStatus {
         return { type: 'file', server: true };
     }
 
-    /** @returns {object} */
-    getClients() {
+    getClients(): Record<string, any> {
         return {};
     }
 
-    publishAll(type, id, obj) {
+    publishAll(type: string, id: string, obj: any): number {
         if (id === undefined) {
             this.log.error(`${this.namespace} Can not publish empty ID`);
             return 0;
@@ -466,8 +543,9 @@ class InMemoryFileDB {
             this.callbackSubscriptionClient._subscribe &&
             this.callbackSubscriptionClient._subscribe[type]
         ) {
-            for (let j = 0; j < this.callbackSubscriptionClient._subscribe[type].length; j++) {
-                if (this.callbackSubscriptionClient._subscribe[type][j].regex.test(id)) {
+            for (const entry of this.callbackSubscriptionClient._subscribe[type]) {
+                if (entry.regex.test(id)) {
+                    // @ts-expect-error we have checked 3 lines above
                     setImmediate(() => this.change(id, obj));
                     break;
                 }
@@ -477,12 +555,10 @@ class InMemoryFileDB {
     }
 
     // Destructor of the class. Called by shutting down.
-    async destroy() {
+    async destroy(): Promise<void> {
         if (this.stateTimer) {
             clearTimeout(this.stateTimer);
             await this.saveState();
         }
     }
 }
-
-module.exports = InMemoryFileDB;
