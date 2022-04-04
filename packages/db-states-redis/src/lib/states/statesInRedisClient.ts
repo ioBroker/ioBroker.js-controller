@@ -11,7 +11,7 @@
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import { isDeepStrictEqual } from 'util';
-import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type IORedis from 'ioredis';
 
 type JSONDecoderValue = Record<string, any>;
@@ -26,6 +26,36 @@ function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSOND
     return value;
 }
 
+interface ConnectionOptions {
+    pass?: string;
+    sentinelName?: string;
+    host: string | string[];
+    // array on sentinel
+    port: number | number[];
+    options: Record<string, any>;
+    maxQueue?: number;
+    enhancedLogging?: boolean;
+    backup?: BackupOptions;
+    // relative path to the data dir
+    dataDir: string;
+}
+
+interface DbStatus {
+    type: string;
+    server: boolean;
+}
+
+interface BackupOptions {
+    // deactivates backup if false
+    disabled: boolean;
+    // minimum number of files
+    files: number;
+    hours: number;
+    // minutes
+    period: number;
+    path: string;
+}
+
 type ChangeFunction = (id: string, state: Record<string, any> | null) => void;
 
 interface StatesSettings {
@@ -33,7 +63,7 @@ interface StatesSettings {
     disconnected?: () => void;
     changeUser?: ChangeFunction;
     change?: ChangeFunction;
-    connection: Record<string, any>;
+    connection: ConnectionOptions;
     autoConnect?: boolean;
     logger?: InternalLogger;
     hostname?: string;
@@ -98,10 +128,9 @@ export class StateRedisClient {
     /**
      * Checks if we are allowed to start and sets the protocol version accordingly
      *
-     * @returns {Promise<void>}
      * @private
      */
-    async _determineProtocolVersion() {
+    async _determineProtocolVersion(): Promise<void> {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -132,7 +161,7 @@ export class StateRedisClient {
         }
     }
 
-    connectDb() {
+    connectDb(): void {
         this.settings.connection = this.settings.connection || {};
 
         const onChange = this.settings.change; // on change handler
@@ -199,10 +228,11 @@ export class StateRedisClient {
             );
         } else if (Array.isArray(this.settings.connection.host)) {
             // Host is an array means we use a sentinel
-            const defaultPort = Array.isArray(this.settings.connection.port) ? null : this.settings.connection.port;
             this.settings.connection.options.sentinels = this.settings.connection.host.map((redisNode, idx) => ({
                 host: redisNode,
-                port: defaultPort || this.settings.connection.port[idx]
+                port: Array.isArray(this.settings.connection.port)
+                    ? this.settings.connection.port[idx]
+                    : this.settings.connection.port
             }));
             this.settings.connection.options.name = this.settings.connection.sentinelName
                 ? this.settings.connection.sentinelName
@@ -482,14 +512,22 @@ export class StateRedisClient {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
                                 `${this.namespace} States ${ready ? 'system re' : ''}connected to redis: ${
-                                    this.settings.connection.host
+                                    Array.isArray(this.settings.connection.host)
+                                        ? JSON.stringify(this.settings.connection.host)
+                                        : this.settings.connection.host
                                 }`
                             );
                         } else {
                             this.log.debug(
                                 `${this.namespace} States ${ready ? 'system re' : ''}connected to redis: ${
-                                    this.settings.connection.host
-                                }:${this.settings.connection.port}`
+                                    Array.isArray(this.settings.connection.host)
+                                        ? JSON.stringify(this.settings.connection.host)
+                                        : this.settings.connection.host
+                                }:${
+                                    Array.isArray(this.settings.connection.port)
+                                        ? JSON.stringify(this.settings.connection.port)
+                                        : this.settings.connection.port
+                                }`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -596,14 +634,22 @@ export class StateRedisClient {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
                                 `${this.namespace} States ${ready ? 'user re' : ''}connected to redis: ${
-                                    this.settings.connection.host
+                                    Array.isArray(this.settings.connection.host)
+                                        ? JSON.stringify(this.settings.connection.host)
+                                        : this.settings.connection.host
                                 }`
                             );
                         } else {
                             this.log.debug(
                                 `${this.namespace} States ${ready ? 'user re' : ''}connected to redis: ${
-                                    this.settings.connection.host
-                                }:${this.settings.connection.port}`
+                                    Array.isArray(this.settings.connection.host)
+                                        ? JSON.stringify(this.settings.connection.host)
+                                        : this.settings.connection.host
+                                }:${
+                                    Array.isArray(this.settings.connection.port)
+                                        ? JSON.stringify(this.settings.connection.port)
+                                        : this.settings.connection.port
+                                }`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -632,14 +678,22 @@ export class StateRedisClient {
                 if (this.settings.connection.port === 0) {
                     this.log.debug(
                         `${this.namespace} States ${ready ? 'client re' : ''}connected to redis: ${
-                            this.settings.connection.host
+                            Array.isArray(this.settings.connection.host)
+                                ? JSON.stringify(this.settings.connection.host)
+                                : this.settings.connection.host
                         }`
                     );
                 } else {
                     this.log.debug(
                         `${this.namespace} States ${ready ? 'client re' : ''}connected to redis: ${
-                            this.settings.connection.host
-                        }:${this.settings.connection.port}`
+                            Array.isArray(this.settings.connection.host)
+                                ? JSON.stringify(this.settings.connection.host)
+                                : this.settings.connection.host
+                        }:${
+                            Array.isArray(this.settings.connection.port)
+                                ? JSON.stringify(this.settings.connection.port)
+                                : this.settings.connection.port
+                        }`
                     );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -648,7 +702,7 @@ export class StateRedisClient {
         });
     }
 
-    getStatus() {
+    getStatus(): DbStatus {
         return { type: 'redis', server: false };
     }
 
@@ -682,7 +736,7 @@ export class StateRedisClient {
         id: string,
         state: ioBroker.SettableState | any,
         callback?: (err: Error | null | undefined, id: string) => void
-    ) {
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -847,7 +901,10 @@ export class StateRedisClient {
      * @param id
      * @param callback
      */
-    async getState(id: string, callback?: ioBroker.GetStateCallback): ioBroker.GetStatePromise {
+    async getState(
+        id: string,
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -879,15 +936,15 @@ export class StateRedisClient {
     /**
      * Promise-version of getState
      */
-    getStateAsync(id: string): ioBroker.GetStatePromise {
+    getStateAsync(id: string): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         return this.getState(id);
     }
 
     async getStates(
         keys: string[],
-        callback: (err: Error | undefined | null, keys?: string[]) => void,
+        callback: (err: Error | undefined | null, states?: (ioBroker.StateObject | null)[]) => void,
         dontModify: boolean
-    ): Promise<string[]> {
+    ): Promise<(ioBroker.StateObject | null)[] | void> {
         if (!keys || !Array.isArray(keys)) {
             return tools.maybeCallbackWithError(callback, 'no keys');
         }
@@ -935,7 +992,7 @@ export class StateRedisClient {
      * @param callback function to be executed after keys have been deleted
      * @private
      */
-    async _destroyDBHelper(keys: string[], callback?: (err?: Error) => void) {
+    async _destroyDBHelper(keys: string[], callback?: (err?: Error | null) => void): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         } else {
@@ -959,7 +1016,7 @@ export class StateRedisClient {
      * @method destroyDB
      * @param callback cb function to be executed after DB has been destroyed
      */
-    async destroyDB(callback?: (err?: Error) => void): Promise<void> {
+    async destroyDB(callback?: (err?: Error | null) => void): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         } else {
@@ -974,7 +1031,7 @@ export class StateRedisClient {
     }
 
     // Destructor of the class. Called by shutting down.
-    async destroy() {
+    async destroy(): Promise<void> {
         this.stop = true;
         if (this.client) {
             try {
@@ -1008,7 +1065,7 @@ export class StateRedisClient {
     async delState(
         id: string,
         callback: ioBroker.DeleteStateCallback
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.DeleteStateCallback>> {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.DeleteStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1032,7 +1089,7 @@ export class StateRedisClient {
         pattern: string,
         callback: ioBroker.GetConfigKeysCallback,
         dontModify: boolean
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>> {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -1063,7 +1120,11 @@ export class StateRedisClient {
      * @param subClient
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    async subscribe(pattern: string, subClient: IORedis.Redis | null, callback: (err?: Error) => void): Promise<void> {
+    async subscribe(
+        pattern: string,
+        subClient: IORedis.Redis | null,
+        callback: (err?: Error | null) => void
+    ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -1098,7 +1159,7 @@ export class StateRedisClient {
      * @param pattern
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    subscribeUser(pattern: string, callback: (err?: Error) => void): Promise<void> {
+    subscribeUser(pattern: string, callback: (err?: Error | null) => void): Promise<void> {
         return this.subscribe(pattern, this.sub, callback);
     }
 
@@ -1108,7 +1169,11 @@ export class StateRedisClient {
      * @param subClient
      * @param callback
      */
-    async unsubscribe(pattern: string, subClient: IORedis.Redis | null, callback: (err: Error) => void): Promise<void> {
+    async unsubscribe(
+        pattern: string,
+        subClient: IORedis.Redis | null,
+        callback: (err?: Error | null) => void
+    ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -1144,15 +1209,15 @@ export class StateRedisClient {
      * @param pattern
      * @param {function?} callback callback function (optional)
      */
-    unsubscribeUser(pattern: string, callback: (err?: Error) => void): Promise<void> {
+    unsubscribeUser(pattern: string, callback: (err?: Error | null) => void): Promise<void> {
         return this.unsubscribe(pattern, this.sub, callback);
     }
 
     async pushMessage(
         id: string,
         state: PushableState,
-        callback: (err: Error | undefined, id?: string) => void
-    ): Promise<string> {
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1173,7 +1238,7 @@ export class StateRedisClient {
         }
     }
 
-    async subscribeMessage(id: string, callback: (err?: Error) => void) {
+    async subscribeMessage(id: string, callback: (err?: Error | null) => void): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1197,7 +1262,7 @@ export class StateRedisClient {
         }
     }
 
-    async unsubscribeMessage(id: string, callback: (err?: Error) => void): Promise<void> {
+    async unsubscribeMessage(id: string, callback: (err?: Error | null) => void): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1228,7 +1293,7 @@ export class StateRedisClient {
     async pushLog(
         id: string,
         log: Record<string, any>,
-        callback: (err: Error | undefined, id?: string) => void
+        callback: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1249,7 +1314,7 @@ export class StateRedisClient {
         }
     }
 
-    async subscribeLog(id: string, callback: (err?: Error) => void): Promise<void> {
+    async subscribeLog(id: string, callback: (err?: Error | null) => void): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1270,7 +1335,7 @@ export class StateRedisClient {
         }
     }
 
-    async unsubscribeLog(id: string, callback: (err?: Error) => void): Promise<void> {
+    async unsubscribeLog(id: string, callback: (err?: Error | null) => void): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1297,8 +1362,8 @@ export class StateRedisClient {
     // TODO: types session obj
     async getSession(
         id: string,
-        callback: (err: Error | undefined, session?: Record<string, any> | null) => void
-    ): Promise<Record<string, any> | null> {
+        callback: (err: Error | undefined | null, session?: Record<string, any> | null) => void
+    ): Promise<Record<string, any> | null | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1329,7 +1394,7 @@ export class StateRedisClient {
         id: string,
         expireS: number,
         obj: Record<string, any>,
-        callback: (err?: Error) => void
+        callback: (err?: Error | null) => void
     ): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1349,7 +1414,7 @@ export class StateRedisClient {
         }
     }
 
-    async destroySession(id: string, callback: (err?: Error) => void): Promise<void> {
+    async destroySession(id: string, callback: (err?: Error | null) => void): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1368,7 +1433,7 @@ export class StateRedisClient {
         }
     }
 
-    async setBinaryState(id: string, data: Buffer, callback: (err?: Error) => void): Promise<void> {
+    async setBinaryState(id: string, data: Buffer, callback: (err?: Error | null) => void): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1389,7 +1454,10 @@ export class StateRedisClient {
         }
     }
 
-    async getBinaryState(id: string, callback: (err: Error | undefined, state?: Buffer) => void): Promise<Buffer> {
+    async getBinaryState(
+        id: string,
+        callback: (err: Error | undefined | null, state?: Buffer) => void
+    ): Promise<Buffer | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1407,7 +1475,10 @@ export class StateRedisClient {
         }
     }
 
-    async delBinaryState(id: string, callback: (err: Error | undefined, id?: string) => void): Promise<string> {
+    async delBinaryState(
+        id: string,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1427,9 +1498,8 @@ export class StateRedisClient {
     /**
      * Returns the protocol version from DB
      *
-     * @returns {Promise<string>}
      */
-    getProtocolVersion() {
+    getProtocolVersion(): Promise<string | null> {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }

@@ -35,8 +35,8 @@ import { createGzip } from 'zlib';
 //
 
 interface ConnectionOptions {
-    // relative path to the data dir
     backup?: BackupOptions;
+    // relative path to the data dir
     dataDir: string;
 }
 
