@@ -28,18 +28,18 @@ function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSOND
 }
 
 interface LogObject {
-    // id of the source instance
+    /** id of the source instance */
     from: string;
-    // log level
+    /** log level */
     severity: string;
-    // timestamp
+    /** timestamp */
     ts: number;
-    // actual content
+    /** actual content */
     message: string;
 }
 
 interface InternalLogObject extends LogObject {
-    // internal id
+    /** internal id */
     _id: number;
 }
 
@@ -80,10 +80,14 @@ export class StateRedisClient {
     private readonly supportedProtocolVersions: string[];
     private stop: boolean;
     private client: IORedis.Redis | null;
+    /** Client for user events */
     private sub: IORedis.Redis | null;
+    /** Client for system events */
     private subSystem: IORedis.Redis | null;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
+    private readonly userSubscriptions: Record<string, RegExp>;
+    private readonly systemSubscriptions: Record<string, RegExp | true>;
 
     constructor(settings: StatesSettings) {
         this.settings = settings || {};
@@ -104,6 +108,9 @@ export class StateRedisClient {
         this.client = null;
         this.sub = null;
         this.subSystem = null;
+
+        this.userSubscriptions = {};
+        this.systemSubscriptions = {};
 
         this.log = tools.getLogger(this.settings.logger);
 
@@ -336,8 +343,6 @@ export class StateRedisClient {
 
                 this.log.debug(`${this.namespace} States create System PubSub Client`);
                 this.subSystem = new Redis(this.settings.connection.options);
-                // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-                this.subSystem.ioBrokerSubscriptions = {};
 
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) => {
@@ -404,19 +409,15 @@ export class StateRedisClient {
                                 }
                                 if (typeof onChange === 'function') {
                                     // Find deleted states and notify user
-                                    // @ts-expect-error TODO move it away from redis client
-                                    const found = Object.values(this.subSystem.ioBrokerSubscriptions).find(
-                                        // @ts-expect-error types missing
+                                    const found = Object.values(this.systemSubscriptions).find(
                                         regex => regex !== true && regex.test(message)
                                     );
                                     found && onChange(message.substring(this.namespaceRedisL), null);
                                 }
                                 if (typeof onChangeUser === 'function' && this.sub) {
                                     // Find deleted states and notify user
-                                    // @ts-expect-error TODO move it away from redis client
-                                    const found = Object.values(this.sub.ioBrokerSubscriptions).find(
-                                        // @ts-expect-error types missing
-                                        regex => regex !== true && regex.test(message)
+                                    const found = Object.values(this.userSubscriptions).find(regex =>
+                                        regex.test(message)
                                     );
                                     found && onChangeUser(message.substring(this.namespaceRedisL), null);
                                 }
@@ -522,8 +523,7 @@ export class StateRedisClient {
                     }
 
                     if (this.subSystem) {
-                        // @ts-expect-error TODO move it away from redis client
-                        for (const sub of Object.keys(this.subSystem.ioBrokerSubscriptions)) {
+                        for (const sub of Object.keys(this.systemSubscriptions)) {
                             try {
                                 await this.subSystem.psubscribe(sub);
                             } catch {
@@ -537,10 +537,8 @@ export class StateRedisClient {
             if (!this.sub && typeof onChangeUser === 'function') {
                 initCounter++;
 
-                this.log.debug(this.namespace + ' States create User PubSub Client');
+                this.log.debug(`${this.namespace} States create User PubSub Client`);
                 this.sub = new Redis(this.settings.connection.options);
-                // @ts-expect-error TODO move it away from redis client
-                this.sub.ioBrokerSubscriptions = {};
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
@@ -643,8 +641,7 @@ export class StateRedisClient {
                         ready = true;
                     }
 
-                    // @ts-expect-error TODO move it away from redis client
-                    for (const sub of Object.keys(this.sub.ioBrokerSubscriptions)) {
+                    for (const sub of Object.keys(this.userSubscriptions)) {
                         try {
                             await this.sub.psubscribe(sub);
                         } catch {
@@ -1103,23 +1100,19 @@ export class StateRedisClient {
      * @method subscribe
      *
      * @param pattern
-     * @param subClient
+     * @param asUser - if true it will be subscribed as user
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    async subscribe(
-        pattern: string,
-        subClient: IORedis.Redis | null,
-        callback: (err?: Error | null) => void
-    ): Promise<void> {
+    async subscribe(pattern: string, asUser: boolean, callback: (err?: Error | null) => void): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
 
-        if (typeof subClient === 'function') {
-            callback = subClient;
-            subClient = null;
+        if (typeof asUser === 'function') {
+            callback = asUser;
+            asUser = false;
         }
-        subClient = subClient || this.subSystem;
+        const subClient = asUser ? this.sub : this.subSystem;
 
         if (!subClient) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -1129,10 +1122,15 @@ export class StateRedisClient {
             this.log.silly(`${this.namespace} redis psubscribe ${this.namespaceRedis}${pattern}`);
         try {
             await subClient.psubscribe(this.namespaceRedis + pattern);
-            // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-            subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern] = new RegExp(
-                tools.pattern2RegEx(this.namespaceRedis + pattern)
-            );
+            if (asUser) {
+                this.userSubscriptions[this.namespaceRedis + pattern] = new RegExp(
+                    tools.pattern2RegEx(this.namespaceRedis + pattern)
+                );
+            } else {
+                this.systemSubscriptions[this.namespaceRedis + pattern] = new RegExp(
+                    tools.pattern2RegEx(this.namespaceRedis + pattern)
+                );
+            }
             return tools.maybeCallback(callback);
         } catch (e: any) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1146,28 +1144,24 @@ export class StateRedisClient {
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
     subscribeUser(pattern: string, callback: (err?: Error | null) => void): Promise<void> {
-        return this.subscribe(pattern, this.sub, callback);
+        return this.subscribe(pattern, true, callback);
     }
 
     /**
      * Unsubscribe pattern
      * @param pattern
-     * @param subClient
+     * @param asUser - if true it will be unsubscribed as user
      * @param callback
      */
-    async unsubscribe(
-        pattern: string,
-        subClient: IORedis.Redis | null,
-        callback: (err?: Error | null) => void
-    ): Promise<void> {
+    async unsubscribe(pattern: string, asUser: boolean, callback: (err?: Error | null) => void): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
-        if (typeof subClient === 'function') {
-            callback = subClient;
-            subClient = null;
+        if (typeof asUser === 'function') {
+            callback = asUser;
+            asUser = false;
         }
-        subClient = subClient || this.subSystem;
+        const subClient = asUser ? this.sub : this.subSystem;
 
         if (!subClient) {
             return tools.maybeCallbackWithRedisError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -1177,10 +1171,14 @@ export class StateRedisClient {
             this.log.silly(`${this.namespace} redis punsubscribe ${this.namespaceRedis}${pattern}`);
         try {
             await subClient.punsubscribe(this.namespaceRedis + pattern);
-            // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-            if (subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern] !== undefined) {
-                // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-                delete subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern];
+            if (asUser) {
+                if (this.userSubscriptions[this.namespaceRedis + pattern] !== undefined) {
+                    delete this.userSubscriptions[this.namespaceRedis + pattern];
+                }
+            } else {
+                if (this.systemSubscriptions[this.namespaceRedis + pattern] !== undefined) {
+                    delete this.systemSubscriptions[this.namespaceRedis + pattern];
+                }
             }
 
             return tools.maybeCallback(callback);
@@ -1196,7 +1194,7 @@ export class StateRedisClient {
      * @param {function?} callback callback function (optional)
      */
     unsubscribeUser(pattern: string, callback: (err?: Error | null) => void): Promise<void> {
-        return this.unsubscribe(pattern, this.sub, callback);
+        return this.unsubscribe(pattern, true, callback);
     }
 
     async pushMessage(
@@ -1240,8 +1238,7 @@ export class StateRedisClient {
             this.log.silly(`${this.namespace} redis subscribeMessage ${this.namespaceMsg}${id}`);
         try {
             await this.subSystem.psubscribe(this.namespaceMsg + id);
-            // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-            this.subSystem.ioBrokerSubscriptions[this.namespaceMsg + id] = true;
+            this.systemSubscriptions[this.namespaceMsg + id] = true;
             return tools.maybeCallback(callback);
         } catch (e: any) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1264,10 +1261,8 @@ export class StateRedisClient {
             this.log.silly(`${this.namespace} redis unsubscribeMessage ${this.namespaceMsg}${id}`);
         try {
             await this.subSystem.punsubscribe(this.namespaceMsg + id);
-            // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-            if (this.subSystem.ioBrokerSubscriptions[this.namespaceMsg + id] !== undefined) {
-                // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-                delete this.subSystem.ioBrokerSubscriptions[this.namespaceMsg + id];
+            if (this.systemSubscriptions[this.namespaceMsg + id] !== undefined) {
+                delete this.systemSubscriptions[this.namespaceMsg + id];
             }
             return tools.maybeCallback(callback);
         } catch (e: any) {
@@ -1319,8 +1314,7 @@ export class StateRedisClient {
             this.log.silly(`${this.namespace} redis subscribeMessage ${this.namespaceLog}${id}`);
         try {
             await this.subSystem.psubscribe(this.namespaceLog + id);
-            // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-            this.subSystem.ioBrokerSubscriptions[this.namespaceLog + id] = true;
+            this.systemSubscriptions[this.namespaceLog + id] = true;
             return tools.maybeCallback(callback);
         } catch (e: any) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1340,10 +1334,8 @@ export class StateRedisClient {
             this.log.silly(`${this.namespace} redis unsubscribeMessage ${this.namespaceLog}${id}`);
         try {
             await this.subSystem.punsubscribe(this.namespaceLog + id);
-            // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-            if (this.subSystem.ioBrokerSubscriptions[this.namespaceLog + id] !== undefined) {
-                // @ts-expect-error uhh this is ugly TODO: move away from Redis instance
-                delete this.subSystem.ioBrokerSubscriptions[this.namespaceLog + id];
+            if (this.systemSubscriptions[this.namespaceLog + id] !== undefined) {
+                delete this.systemSubscriptions[this.namespaceLog + id];
             }
             return tools.maybeCallback(callback);
         } catch (e: any) {

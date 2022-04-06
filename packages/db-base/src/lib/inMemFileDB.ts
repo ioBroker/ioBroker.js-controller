@@ -37,14 +37,15 @@ import { createGzip } from 'zlib';
 export interface ConnectionOptions {
     pass?: string;
     sentinelName?: string;
+    /** array on sentinel */
     host: string | string[];
-    // array on sentinel
+    /** array on sentinel */
     port: number | number[];
     options: Record<string, any>;
     maxQueue?: number;
     enhancedLogging?: boolean;
     backup?: BackupOptions;
-    // relative path to the data dir
+    /** relative path to the data dir */
     dataDir: string;
 }
 
@@ -56,12 +57,12 @@ export interface DbStatus {
 }
 
 interface BackupOptions {
-    // deactivates backup if false
+    /** deactivates backup if true */
     disabled: boolean;
-    // minimum number of files
+    /** minimum number of files */
     files: number;
     hours: number;
-    // minutes
+    /** minutes */
     period: number;
     path: string;
 }
@@ -79,14 +80,14 @@ interface FileDbSettings {
     connected: (nameOfServer: string) => void;
     logger: InternalLogger;
     connection: ConnectionOptions;
-    // unused
+    /** unused */
     auth?: null;
     secure: boolean;
-    // as required by createServer TODO: if createServer is typed, add type
+    /** as required by createServer TODO: if createServer is typed, add type */
     certificates: any;
     port: number;
     host: string;
-    // logging namespace
+    /** logging namespace */
     namespace?: string;
 }
 
