@@ -500,23 +500,17 @@ export class StateRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'system re' : ''}connected to redis: ${
-                                    Array.isArray(this.settings.connection.host)
-                                        ? JSON.stringify(this.settings.connection.host)
-                                        : this.settings.connection.host
-                                }`
+                                `${this.namespace} States ${
+                                    ready ? 'system re' : ''
+                                }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'system re' : ''}connected to redis: ${
-                                    Array.isArray(this.settings.connection.host)
-                                        ? JSON.stringify(this.settings.connection.host)
-                                        : this.settings.connection.host
-                                }:${
-                                    Array.isArray(this.settings.connection.port)
-                                        ? JSON.stringify(this.settings.connection.port)
-                                        : this.settings.connection.port
-                                }`
+                                `${this.namespace} States ${
+                                    ready ? 'system re' : ''
+                                }connected to redis: ${this._maybeArrayToString(
+                                    this.settings.connection.host
+                                )}:${this._maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -619,23 +613,17 @@ export class StateRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'user re' : ''}connected to redis: ${
-                                    Array.isArray(this.settings.connection.host)
-                                        ? JSON.stringify(this.settings.connection.host)
-                                        : this.settings.connection.host
-                                }`
+                                `${this.namespace} States ${
+                                    ready ? 'user re' : ''
+                                }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'user re' : ''}connected to redis: ${
-                                    Array.isArray(this.settings.connection.host)
-                                        ? JSON.stringify(this.settings.connection.host)
-                                        : this.settings.connection.host
-                                }:${
-                                    Array.isArray(this.settings.connection.port)
-                                        ? JSON.stringify(this.settings.connection.port)
-                                        : this.settings.connection.port
-                                }`
+                                `${this.namespace} States ${
+                                    ready ? 'user re' : ''
+                                }connected to redis: ${this._maybeArrayToString(
+                                    this.settings.connection.host
+                                )}:${this._maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -662,23 +650,17 @@ export class StateRedisClient {
             if (initCounter < 1) {
                 if (this.settings.connection.port === 0) {
                     this.log.debug(
-                        `${this.namespace} States ${ready ? 'client re' : ''}connected to redis: ${
-                            Array.isArray(this.settings.connection.host)
-                                ? JSON.stringify(this.settings.connection.host)
-                                : this.settings.connection.host
-                        }`
+                        `${this.namespace} States ${
+                            ready ? 'client re' : ''
+                        }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
                     );
                 } else {
                     this.log.debug(
-                        `${this.namespace} States ${ready ? 'client re' : ''}connected to redis: ${
-                            Array.isArray(this.settings.connection.host)
-                                ? JSON.stringify(this.settings.connection.host)
-                                : this.settings.connection.host
-                        }:${
-                            Array.isArray(this.settings.connection.port)
-                                ? JSON.stringify(this.settings.connection.port)
-                                : this.settings.connection.port
-                        }`
+                        `${this.namespace} States ${
+                            ready ? 'client re' : ''
+                        }connected to redis: ${this._maybeArrayToString(
+                            this.settings.connection.host
+                        )}:${this._maybeArrayToString(this.settings.connection.port)}`
                     );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -719,7 +701,7 @@ export class StateRedisClient {
      */
     async setState(
         id: string,
-        state: ioBroker.SettableState | any,
+        state: ioBroker.SettableState | ioBroker.StateValue | any,
         callback?: (err: Error | null | undefined, id: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
@@ -732,7 +714,7 @@ export class StateRedisClient {
 
         if (!tools.isObject(state)) {
             state = {
-                val: state
+                val: state as ioBroker.StateValue
             };
         }
 
@@ -1522,5 +1504,20 @@ export class StateRedisClient {
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
         }
+    }
+
+    /**
+     * If an array is passed it will be stringified, else the parameter is returned
+     * @param maybeArr parameter which will be stringified if it is an array
+     * @private
+     */
+    private _maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T {
+        if (Array.isArray(maybeArr)) {
+            // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
+            return JSON.stringify(maybeArr);
+        }
+
+        // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
+        return maybeArr;
     }
 }
