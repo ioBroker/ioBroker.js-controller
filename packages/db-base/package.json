@@ -36,7 +36,7 @@
   "exports": {
     ".": "./build/index.js",
     "./package.json": "./package.json",
-    "./tools": "./build/lib/inMemFileDB.js"
+    "./inMemFileDB": "./build/lib/inMemFileDB.js"
   },
   "types": "build/index.d.ts",
   "typesVersions": {
