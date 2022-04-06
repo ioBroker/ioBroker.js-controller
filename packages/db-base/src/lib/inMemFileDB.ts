@@ -34,7 +34,15 @@ import { createGzip } from 'zlib';
 // };
 //
 
-interface ConnectionOptions {
+export interface ConnectionOptions {
+    pass?: string;
+    sentinelName?: string;
+    host: string | string[];
+    // array on sentinel
+    port: number | number[];
+    options: Record<string, any>;
+    maxQueue?: number;
+    enhancedLogging?: boolean;
     backup?: BackupOptions;
     // relative path to the data dir
     dataDir: string;
@@ -42,7 +50,7 @@ interface ConnectionOptions {
 
 type ChangeFunction = (id: string, state: any) => void;
 
-interface DbStatus {
+export interface DbStatus {
     type: string;
     server: boolean;
 }
@@ -58,7 +66,7 @@ interface BackupOptions {
     path: string;
 }
 
-interface DbOptions {
+export interface DbOptions {
     backupDirName: string;
     fileName: string;
 }

@@ -13,6 +13,7 @@ import { tools } from '@iobroker/db-base';
 import { isDeepStrictEqual } from 'util';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type IORedis from 'ioredis';
+import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
 
 type JSONDecoderValue = Record<string, any>;
 
@@ -40,36 +41,6 @@ interface LogObject {
 interface InternalLogObject extends LogObject {
     // internal id
     _id: number;
-}
-
-interface ConnectionOptions {
-    pass?: string;
-    sentinelName?: string;
-    host: string | string[];
-    // array on sentinel
-    port: number | number[];
-    options: Record<string, any>;
-    maxQueue?: number;
-    enhancedLogging?: boolean;
-    backup?: BackupOptions;
-    // relative path to the data dir
-    dataDir: string;
-}
-
-interface DbStatus {
-    type: string;
-    server: boolean;
-}
-
-interface BackupOptions {
-    // deactivates backup if false
-    disabled: boolean;
-    // minimum number of files
-    files: number;
-    hours: number;
-    // minutes
-    period: number;
-    path: string;
 }
 
 type ChangeFunction = (id: string, state: Record<string, any> | null) => void;
