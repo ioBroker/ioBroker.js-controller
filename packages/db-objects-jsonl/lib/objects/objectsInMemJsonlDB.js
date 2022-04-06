@@ -21,6 +21,68 @@ const os = require('os');
 const { tools } = require('@iobroker/js-controller-common');
 
 /**
+ * Normalizes options for the JsonlDB
+ * @param {Record<string, any> | undefined} conf The jsonlOptions options from iobroker.json
+ * @returns {import("@alcalzone/jsonl-db").JsonlDBOptions<any>}
+ */
+function normalizeJsonlOptions(conf = {}) {
+    /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
+    const ret = {
+        autoCompress: {
+            sizeFactor: 2,
+            sizeFactorMinimumSize: 25000
+        },
+        ignoreReadErrors: true,
+        throttleFS: {
+            intervalMs: 60000,
+            maxBufferedCommands: 1000
+        },
+        lockfile: {
+            // 5 retries starting at 250ms add up to just above 2s,
+            // so the DB has 3 more seconds to load all data if it wants to stay within the 5s connectionTimeout
+            retries: 5,
+            retryMinTimeoutMs: 250,
+            // This makes sure the DB stays locked for maximum 2s even if the process crashes
+            staleMs: 2000
+        }
+    };
+
+    // Be really careful what we allow here. Incorrect settings may cause problems in production.
+    if (tools.isObject(conf.autoCompress)) {
+        const ac = conf.autoCompress;
+        // Letting the DB grow more than 100x is risky
+        if (typeof ac.sizeFactor === 'number' && ac.sizeFactor >= 2 && ac.sizeFactor <= 100) {
+            ret.autoCompress.sizeFactor = ac.sizeFactor;
+        }
+        // Also we should definitely compress once the DB has reached 100k lines or it might grow too big
+        if (
+            typeof ac.sizeFactorMinimumSize === 'number' &&
+            ac.sizeFactorMinimumSize >= 0 &&
+            ac.sizeFactorMinimumSize <= 100000
+        ) {
+            ret.autoCompress.sizeFactorMinimumSize = ac.sizeFactorMinimumSize;
+        }
+    }
+    if (tools.isObject(conf.throttleFS)) {
+        const thr = conf.throttleFS;
+        // Don't write more often than every second and write at least once every hour
+        if (typeof thr.intervalMs === 'number' && thr.intervalMs >= 1000 && thr.intervalMs <= 3600000) {
+            ret.throttleFS.intervalMs = thr.intervalMs;
+        }
+        // Don't keep too much in memory - 100k changes are more than enough
+        if (
+            typeof thr.maxBufferedCommands === 'number' &&
+            thr.maxBufferedCommands >= 0 &&
+            thr.maxBufferedCommands <= 100000
+        ) {
+            ret.throttleFS.maxBufferedCommands = thr.maxBufferedCommands;
+        }
+    }
+
+    return ret;
+}
+
+/**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  **/
@@ -32,26 +94,7 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
             backupDirName: 'backup-objects'
         };
 
-        /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
-        const jsonlOptions = settings.connection.jsonlOptions || {
-            autoCompress: {
-                sizeFactor: 2,
-                sizeFactorMinimumSize: 25000
-            },
-            ignoreReadErrors: true,
-            throttleFS: {
-                intervalMs: 60000,
-                maxBufferedCommands: 1000
-            },
-            lockfile: {
-                // 5 retries starting at 250ms add up to just above 2s,
-                // so the DB has 3 more seconds to load all data if it wants to stay within the 5s connectionTimeout
-                retries: 5,
-                retryMinTimeoutMs: 250,
-                // This makes sure the DB stays locked for maximum 2s even if the process crashes
-                staleMs: 2000
-            }
-        };
+        const jsonlOptions = normalizeJsonlOptions(settings.connection.jsonlOptions);
         settings.jsonlDB = {
             fileName: 'objects.jsonl'
         };
