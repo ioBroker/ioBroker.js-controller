@@ -27,6 +27,9 @@ function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSOND
     return value;
 }
 
+/** Callback which has no further arguments */
+type OnlyErrorCallback = (err?: Error | null) => void;
+
 interface LogObject {
     /** id of the source instance */
     from: string;
@@ -87,6 +90,7 @@ export class StateRedisClient {
     private log: InternalLogger;
     private activeProtocolVersion?: string;
     private readonly userSubscriptions: Record<string, RegExp>;
+    /** System level subscriptions value true means messagebox is subscribed */
     private readonly systemSubscriptions: Record<string, RegExp | true>;
 
     constructor(settings: StatesSettings) {
@@ -975,7 +979,7 @@ export class StateRedisClient {
      * @param callback function to be executed after keys have been deleted
      * @private
      */
-    async _destroyDBHelper(keys: string[], callback?: (err?: Error | null) => void): Promise<void> {
+    async _destroyDBHelper(keys: string[], callback?: OnlyErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         } else {
@@ -999,7 +1003,7 @@ export class StateRedisClient {
      * @method destroyDB
      * @param callback cb function to be executed after DB has been destroyed
      */
-    async destroyDB(callback?: (err?: Error | null) => void): Promise<void> {
+    async destroyDB(callback?: OnlyErrorCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         } else {
@@ -1096,6 +1100,9 @@ export class StateRedisClient {
         return tools.maybeCallbackWithError(callback, null, obj);
     }
 
+    async subscribe(pattern: string, callback: OnlyErrorCallback): Promise<void>;
+    async subscribe(pattern: string, asUser: boolean, callback: OnlyErrorCallback): Promise<void>;
+
     /**
      * @method subscribe
      *
@@ -1103,7 +1110,7 @@ export class StateRedisClient {
      * @param asUser - if true it will be subscribed as user
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    async subscribe(pattern: string, asUser: boolean, callback: (err?: Error | null) => void): Promise<void> {
+    async subscribe(pattern: string, asUser: boolean | OnlyErrorCallback, callback?: OnlyErrorCallback): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -1143,17 +1150,23 @@ export class StateRedisClient {
      * @param pattern
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    subscribeUser(pattern: string, callback: (err?: Error | null) => void): Promise<void> {
+    subscribeUser(pattern: string, callback: OnlyErrorCallback): Promise<void> {
         return this.subscribe(pattern, true, callback);
     }
 
+    async unsubscribe(pattern: string, asUser: boolean, callback: OnlyErrorCallback): Promise<void>;
+    async unsubscribe(pattern: string, callback: OnlyErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
      * @param pattern
      * @param asUser - if true it will be unsubscribed as user
      * @param callback
      */
-    async unsubscribe(pattern: string, asUser: boolean, callback: (err?: Error | null) => void): Promise<void> {
+    async unsubscribe(
+        pattern: string,
+        asUser: boolean | OnlyErrorCallback,
+        callback?: OnlyErrorCallback
+    ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -1191,9 +1204,9 @@ export class StateRedisClient {
      * @method unsubscribeUser
      *
      * @param pattern
-     * @param {function?} callback callback function (optional)
+     * @param callback callback function (optional)
      */
-    unsubscribeUser(pattern: string, callback: (err?: Error | null) => void): Promise<void> {
+    unsubscribeUser(pattern: string, callback: OnlyErrorCallback): Promise<void> {
         return this.unsubscribe(pattern, true, callback);
     }
 
@@ -1222,7 +1235,7 @@ export class StateRedisClient {
         }
     }
 
-    async subscribeMessage(id: string, callback: (err?: Error | null) => void): Promise<void> {
+    async subscribeMessage(id: string, callback?: OnlyErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1245,7 +1258,7 @@ export class StateRedisClient {
         }
     }
 
-    async unsubscribeMessage(id: string, callback: (err?: Error | null) => void): Promise<void> {
+    async unsubscribeMessage(id: string, callback?: OnlyErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1301,7 +1314,7 @@ export class StateRedisClient {
         }
     }
 
-    async subscribeLog(id: string, callback: (err?: Error | null) => void): Promise<void> {
+    async subscribeLog(id: string, callback?: OnlyErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1321,7 +1334,7 @@ export class StateRedisClient {
         }
     }
 
-    async unsubscribeLog(id: string, callback: (err?: Error | null) => void): Promise<void> {
+    async unsubscribeLog(id: string, callback?: OnlyErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1378,7 +1391,7 @@ export class StateRedisClient {
         id: string,
         expireS: number,
         obj: Record<string, any>,
-        callback: (err?: Error | null) => void
+        callback?: OnlyErrorCallback
     ): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1398,7 +1411,7 @@ export class StateRedisClient {
         }
     }
 
-    async destroySession(id: string, callback: (err?: Error | null) => void): Promise<void> {
+    async destroySession(id: string, callback?: OnlyErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1417,7 +1430,7 @@ export class StateRedisClient {
         }
     }
 
-    async setBinaryState(id: string, data: Buffer, callback: (err?: Error | null) => void): Promise<void> {
+    async setBinaryState(id: string, data: Buffer, callback?: OnlyErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
