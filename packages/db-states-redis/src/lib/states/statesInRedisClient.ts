@@ -26,6 +26,22 @@ function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSOND
     return value;
 }
 
+interface LogObject {
+    // id of the source instance
+    from: string;
+    // log level
+    severity: string;
+    // timestamp
+    ts: number;
+    // actual content
+    message: string;
+}
+
+interface InternalLogObject extends LogObject {
+    // internal id
+    _id: number;
+}
+
 interface ConnectionOptions {
     pass?: string;
     sentinelName?: string;
@@ -975,10 +991,9 @@ export class StateRedisClient {
         obj.forEach(state => {
             try {
                 result.push(state ? JSON.parse(state) : null);
-            } catch {
-                // parsing error
-                // @ts-expect-error I don't think we should push a string here, more like null + error log TODO
-                result.push(state);
+            } catch (e: any) {
+                this.log.error(`Parsing error on getStates, returning "null" for "${state}": ${e.message}`);
+                result.push(null);
             }
         });
 
@@ -1289,10 +1304,16 @@ export class StateRedisClient {
         }
     }
 
-    // TODO: better type for log
     async pushLog(
         id: string,
-        log: Record<string, any>,
+        log: LogObject,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void>;
+
+    // implementation uses an modified pushLog with internal _id
+    async pushLog(
+        id: string,
+        log: InternalLogObject,
         callback: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {

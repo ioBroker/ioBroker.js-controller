@@ -8930,8 +8930,8 @@ class AdapterClass extends EventEmitter {
                     }
                 } else if (adapterStates && adapterStates.pushLog) {
                     // Send to all adapter, that required logs
-                    for (let i = 0; i < this.logList.length; i++) {
-                        adapterStates.pushLog(this.logList[i], info);
+                    for (const instanceId of this.logList) {
+                        adapterStates.pushLog(instanceId, info);
                     }
                 }
             });
