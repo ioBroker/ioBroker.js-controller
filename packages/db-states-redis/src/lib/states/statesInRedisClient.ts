@@ -701,7 +701,7 @@ export class StateRedisClient {
      */
     async setState(
         id: string,
-        state: ioBroker.SettableState | ioBroker.StateValue | any,
+        state: ioBroker.SettableState | ioBroker.StateValue,
         callback?: (err: Error | null | undefined, id: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
@@ -714,7 +714,7 @@ export class StateRedisClient {
 
         if (!tools.isObject(state)) {
             state = {
-                val: state as ioBroker.StateValue
+                val: state
             };
         }
 
