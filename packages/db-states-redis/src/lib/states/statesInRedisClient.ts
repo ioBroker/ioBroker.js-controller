@@ -133,7 +133,7 @@ export class StateRedisClient {
         let protoVersion;
         try {
             protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
-        } catch (e: any) {
+        } catch (e) {
             if (e.message.includes('GET-UNSUPPORTED')) {
                 // secondary updated and primary < 4.0
                 return;
@@ -336,7 +336,7 @@ export class StateRedisClient {
                 initCounter++;
                 try {
                     await this.client.config('SET', 'notify-keyspace-events', 'Exe'); // enable Expiry/Evicted events in server
-                } catch (e: any) {
+                } catch (e) {
                     this.log.warn(
                         `${this.namespace} Unable to enable Expiry Keyspace events from Redis Server: ${e.message}`
                     );
@@ -383,7 +383,7 @@ export class StateRedisClient {
                                 } else {
                                     onChange(channel, message);
                                 }
-                            } catch (e: any) {
+                            } catch (e) {
                                 this.log.warn(
                                     `${this.namespace} States system pmessage ${channel} ${JSON.stringify(message)} ${
                                         e.message
@@ -422,7 +422,7 @@ export class StateRedisClient {
                                     );
                                     found && onChangeUser(message.substring(this.namespaceRedisL), null);
                                 }
-                            } catch (e: any) {
+                            } catch (e) {
                                 this.log.warn(`${this.namespace} user message ${channel} ${message} ${e.message}`);
                                 this.log.warn(`${this.namespace} ${e.stack}`);
                             }
@@ -471,7 +471,7 @@ export class StateRedisClient {
                             (await this.subSystem.subscribe(
                                 `__keyevent@${this.settings.connection.options.db}__:expired`
                             ));
-                    } catch (e: any) {
+                    } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to expiry Keyspace events from Redis Server: ${e.message}`
                         );
@@ -482,7 +482,7 @@ export class StateRedisClient {
                             (await this.subSystem.subscribe(
                                 `__keyevent@${this.settings.connection.options.db}__:evicted`
                             ));
-                    } catch (e: any) {
+                    } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to evicted Keyspace events from Redis Server: ${e.message}`
                         );
@@ -491,7 +491,7 @@ export class StateRedisClient {
                     // subscribe to meta changes
                     try {
                         this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
-                    } catch (e: any) {
+                    } catch (e) {
                         this.log.warn(
                             `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
                         );
@@ -554,7 +554,7 @@ export class StateRedisClient {
                             } else {
                                 onChangeUser(channel, message);
                             }
-                        } catch (e: any) {
+                        } catch (e) {
                             this.log.warn(
                                 `${this.namespace} States user pmessage ${channel} ${JSON.stringify(message)} ${
                                     e.message
@@ -642,7 +642,7 @@ export class StateRedisClient {
 
             try {
                 await this._determineProtocolVersion();
-            } catch (e: any) {
+            } catch (e) {
                 this.log.error(`${this.namespace} ${e.message}`);
                 throw new Error('States DB is not allowed to start in the current Multihost environment');
             }
@@ -727,7 +727,7 @@ export class StateRedisClient {
         let oldObj;
         try {
             oldObj = await this.client.get(this.namespaceRedis + id);
-        } catch (e: any) {
+        } catch (e) {
             this.log.warn(`${this.namespace} get state error: ${e.message}`);
             return tools.maybeCallbackWithRedisError(callback, e, id);
         }
@@ -808,7 +808,7 @@ export class StateRedisClient {
                     this.log.silly(`${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString}`);
                 await this.client.publish(this.namespaceRedis + id, objString);
                 return tools.maybeCallbackWithError(callback, null, id);
-            } catch (e: any) {
+            } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e, id);
             }
         } else {
@@ -819,7 +819,7 @@ export class StateRedisClient {
                     this.log.silly(`${this.namespace} redis publish ${this.namespaceRedis}${id} ${objString}`);
                 await this.client.publish(this.namespaceRedis + id, objString);
                 return tools.maybeCallbackWithError(callback, null, id);
-            } catch (e: any) {
+            } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e, id);
             }
         }
@@ -857,7 +857,7 @@ export class StateRedisClient {
         try {
             await this.client.set(this.namespaceRedis + id, JSON.stringify(state));
             return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e, id);
         }
     }
@@ -884,7 +884,7 @@ export class StateRedisClient {
         try {
             obj = await this.client.get(this.namespaceRedis + id);
             this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis get ${id} ok: ${obj}`);
-        } catch (e: any) {
+        } catch (e) {
             this.log.warn(`${this.namespace} redis get ${id}, error - ${e.message}`);
         }
 
@@ -933,7 +933,7 @@ export class StateRedisClient {
             obj = await this.client.mget(_keys);
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} redis mget ${!obj ? 0 : obj.length} ${_keys.length}`);
-        } catch (e: any) {
+        } catch (e) {
             this.log.warn(`${this.namespace} redis mget of ${_keys.length} keys, err: ${e.message}`);
             return tools.maybeCallbackWithRedisError(callback, e, []);
         }
@@ -942,7 +942,7 @@ export class StateRedisClient {
         obj.forEach(state => {
             try {
                 result.push(state ? JSON.parse(state) : null);
-            } catch (e: any) {
+            } catch (e) {
                 this.log.error(`Parsing error on getStates, returning "null" for "${state}": ${e.message}`);
                 result.push(null);
             }
@@ -1045,7 +1045,7 @@ export class StateRedisClient {
             await this.client.publish(this.namespaceRedis + id, 'null');
             this.settings.connection.enhancedLogging && this.log.silly(`${this.namespace} redis del ${id}, ok`);
             return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e: any) {
+        } catch (e) {
             this.log.warn(`${this.namespace} redis del ${id}, error - ${e.message}`);
             return tools.maybeCallbackWithRedisError(callback, e, id);
         }
@@ -1067,7 +1067,7 @@ export class StateRedisClient {
         let obj;
         try {
             obj = await this.client.keys(this.namespaceRedis + pattern);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
         this.settings.connection.enhancedLogging &&
@@ -1122,7 +1122,7 @@ export class StateRedisClient {
                 );
             }
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1178,7 +1178,7 @@ export class StateRedisClient {
             }
 
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1213,7 +1213,7 @@ export class StateRedisClient {
         try {
             await this.client.publish(this.namespaceMsg + id, JSON.stringify(state));
             return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1236,7 +1236,7 @@ export class StateRedisClient {
             await this.subSystem.psubscribe(this.namespaceMsg + id);
             this.systemSubscriptions[this.namespaceMsg + id] = true;
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1261,7 +1261,7 @@ export class StateRedisClient {
                 delete this.systemSubscriptions[this.namespaceMsg + id];
             }
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1291,7 +1291,7 @@ export class StateRedisClient {
             try {
                 await this.client.publish(this.namespaceLog + id, JSON.stringify(log));
                 return tools.maybeCallbackWithError(callback, null, id);
-            } catch (e: any) {
+            } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
         }
@@ -1312,7 +1312,7 @@ export class StateRedisClient {
             await this.subSystem.psubscribe(this.namespaceLog + id);
             this.systemSubscriptions[this.namespaceLog + id] = true;
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1334,7 +1334,7 @@ export class StateRedisClient {
                 delete this.systemSubscriptions[this.namespaceLog + id];
             }
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1389,7 +1389,7 @@ export class StateRedisClient {
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} redis setex ${id} ${expireS} ${JSON.stringify(obj)}`);
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1408,7 +1408,7 @@ export class StateRedisClient {
         try {
             await this.client.del(id);
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1429,7 +1429,7 @@ export class StateRedisClient {
         try {
             await this.client.set(this.namespaceRedis + id, data);
             return tools.maybeCallback(callback);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1450,7 +1450,7 @@ export class StateRedisClient {
         try {
             data = await this.client.getBuffer(this.namespaceRedis + id);
             return tools.maybeCallbackWithError(callback, null, data);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
@@ -1470,7 +1470,7 @@ export class StateRedisClient {
         try {
             await this.client.del(this.namespaceRedis + id);
             return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e: any) {
+        } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e, id);
         }
     }
