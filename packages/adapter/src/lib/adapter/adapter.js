@@ -6543,7 +6543,7 @@ class AdapterClass extends EventEmitter {
             let aliasDetails;
             if (!this.aliases.has(sourceId)) {
                 aliasDetails = { source: null, targets: [] };
-                this.aliases.set(sourceId, aliasObj);
+                this.aliases.set(sourceId, aliasDetails);
             } else {
                 aliasDetails = this.aliases.get(sourceId);
             }
