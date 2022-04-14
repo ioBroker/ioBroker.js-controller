@@ -6511,7 +6511,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    _addAliasSubscribe(aliasObj, pattern, callback) {
+    async _addAliasSubscribe(aliasObj, pattern, callback) {
         if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
@@ -6561,31 +6561,35 @@ class AdapterClass extends EventEmitter {
             aliasDetails.targets.push(targetEntry);
 
             if (!aliasDetails.source) {
-                adapterStates.subscribe(sourceId, () =>
-                    adapterObjects.getObject(sourceId, this._options, (err, sourceObj) => {
-                        if (sourceObj && sourceObj.common) {
-                            if (!this.aliases.has(sourceObj._id)) {
-                                // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
-                                this._logger.error(
-                                    `${
-                                        this.namespaceLog
-                                    } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
-                                        sourceObj
-                                    )}`
-                                );
-                            } else {
-                                aliasDetails.source = {
-                                    min: sourceObj.common.min,
-                                    max: sourceObj.common.max,
-                                    type: sourceObj.common.type,
-                                    unit: sourceObj.common.unit
-                                };
-                            }
-                        }
+                let sourceObj;
+                try {
+                    await adapterStates.subscribe(sourceId);
+                    sourceObj = await adapterObjects.getObject(sourceId, this._options);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
 
-                        return tools.maybeCallbackWithError(callback, err);
-                    })
-                );
+                if (sourceObj && sourceObj.common) {
+                    if (!this.aliases.has(sourceObj._id)) {
+                        // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
+                        this._logger.error(
+                            `${
+                                this.namespaceLog
+                            } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
+                                sourceObj
+                            )}`
+                        );
+                    } else {
+                        aliasDetails.source = {
+                            min: sourceObj.common.min,
+                            max: sourceObj.common.max,
+                            type: sourceObj.common.type,
+                            unit: sourceObj.common.unit
+                        };
+                    }
+                }
+
+                return tools.maybeCallback(callback);
             } else {
                 return tools.maybeCallback(callback);
             }
