@@ -698,6 +698,10 @@ function createObjects(onConnect) {
                                 if (
                                     procs[id].config.common.enabled &&
                                     (procs[id].config.common.mode !== 'extension' ||
+                                        !procs[id].config.native.webInstance) &&
+                                    // if instance could be daemon or web extension and if web extension it is stopped
+                                    (procs[id].config.common.mode !== 'daemon' ||
+                                        !procs[id].config.common.stoppedWhenWebExtension ||
                                         !procs[id].config.native.webInstance)
                                 ) {
                                     if (procs[id].restartTimer) {
@@ -742,7 +746,12 @@ function createObjects(onConnect) {
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
                             if (
                                 procs[id].config.common.enabled &&
-                                (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
+                                (procs[id].config.common.mode !== 'extension' ||
+                                    !procs[id].config.native.webInstance) &&
+                                // if instance could be daemon or web extension and if web extension it is stopped
+                                (procs[id].config.common.mode !== 'daemon' ||
+                                    !procs[id].config.common.stoppedWhenWebExtension ||
+                                    !procs[id].config.native.webInstance)
                             ) {
                                 startInstance(id);
                             }
@@ -845,7 +854,11 @@ function createObjects(onConnect) {
                     if (
                         checkAndAddInstance(obj, _ipArr) &&
                         procs[id].config.common.enabled &&
-                        (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
+                        (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) &&
+                        // if instance could be daemon or web extension and if web extension it is stopped
+                        (procs[id].config.common.mode !== 'daemon' ||
+                            !procs[id].config.common.stoppedWhenWebExtension ||
+                            !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
                         const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
@@ -3278,7 +3291,11 @@ async function getInstances() {
             if (
                 checkAndAddInstance(instance, _ipArr) &&
                 instance.common.enabled &&
-                (instance.common.mode !== 'extension' || !instance.native.webInstance)
+                (instance.common.mode !== 'extension' || !instance.native.webInstance) &&
+                // if instance could be daemon or web extension and if web extension it is stopped
+                (instance.common.mode !== 'daemon' ||
+                    !instance.common.stoppedWhenWebExtension ||
+                    !instance.native.webInstance)
             ) {
                 count++;
             }
@@ -3381,7 +3398,11 @@ function initInstances() {
     for (id of Object.keys(procs)) {
         if (
             procs[id].config.common.enabled &&
-            (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
+            (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) &&
+            // if instance could be daemon or web extension and if web extension it is stopped
+            (procs[id].config.common.mode !== 'daemon' ||
+                !procs[id].config.common.stoppedWhenWebExtension ||
+                !procs[id].config.native.webInstance)
         ) {
             if (id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
@@ -3407,7 +3428,11 @@ function initInstances() {
     for (id of Object.keys(procs)) {
         if (
             procs[id].config.common.enabled &&
-            (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
+            (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) &&
+            // if instance could be daemon or web extension and if web extension it is stopped
+            (procs[id].config.common.mode !== 'daemon' ||
+                !procs[id].config.common.stoppedWhenWebExtension ||
+                !procs[id].config.native.webInstance)
         ) {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
@@ -4302,11 +4327,15 @@ async function startInstance(id, wakeUp) {
                                 procs[id].config &&
                                 procs[id].config.common &&
                                 procs[id].config.common.enabled &&
-                                (mode !== 'extension' || !procs[id].config.native.webInstance) &&
+                                (mode !== 'extension' || !procs[id].config.native.webInstance) && // if type is extension, and it belongs to some webInstance
+                                // if instance could be daemon or web extension and if web extension it is stopped
+                                (mode !== 'daemon' ||
+                                    !procs[id].config.common.stoppedWhenWebExtension ||
+                                    !procs[id].config.native.webInstance) &&
                                 mode !== 'once'
                             ) {
                                 if (code === EXIT_CODES.UNCAUGHT_EXCEPTION) {
-                                    // if its an uncaught exception, detect restart loop
+                                    // if it is an uncaught exception, detect restart loop
                                     procs[id].crashCount = procs[id].crashCount || 0;
                                     procs[id].crashCount++;
                                     logger.debug(`${hostLogPrefix} Crash count of ${id}: ${procs[id].crashCount}`);
@@ -4488,6 +4517,10 @@ async function startInstance(id, wakeUp) {
                         procs[id].config.common &&
                         procs[id].config.common.enabled &&
                         (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) &&
+                        // if instance could be daemon or web extension and if web extension it is stopped
+                        (procs[id].config.common.mode !== 'daemon' ||
+                            !procs[id].config.common.stoppedWhenWebExtension ||
+                            !procs[id].config.native.webInstance) &&
                         mode !== 'once'
                     ) {
                         if (procs[id].startedInCompactMode) {
