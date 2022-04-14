@@ -1028,6 +1028,10 @@
           "description": "If adapter must be stopped before update",
           "type": "boolean"
         },
+        "stoppedWhenWebExtension": {
+          "description": "If instance has mode=daemon but it runs as web extension (native.webInstance !== ''), controller will not start this instance if common.stoppedWhenWebExtension=true.",
+          "type": "boolean"
+        },
         "stopTimeout": {
           "description": "timeout in ms to wait, till adapter shut down",
           "type": "number",
