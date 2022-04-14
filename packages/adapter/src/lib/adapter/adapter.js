@@ -6540,8 +6540,12 @@ class AdapterClass extends EventEmitter {
                 );
             }
 
+            let aliasDetails;
             if (!this.aliases.has(sourceId)) {
-                this.aliases.set(sourceId, { source: null, targets: [] });
+                aliasDetails = { source: null, targets: [] };
+                this.aliases.set(sourceId, aliasObj);
+            } else {
+                aliasDetails = this.aliases.get(sourceId);
             }
 
             const targetEntry = {
@@ -6554,13 +6558,14 @@ class AdapterClass extends EventEmitter {
                 unit: aliasObj.common.unit
             };
 
-            this.aliases.get(sourceId).targets.push(targetEntry);
+            aliasDetails.targets.push(targetEntry);
 
-            if (!this.aliases.get(sourceId).source) {
+            if (!aliasDetails.source) {
                 adapterStates.subscribe(sourceId, () =>
                     adapterObjects.getObject(sourceId, this._options, (err, sourceObj) => {
                         if (sourceObj && sourceObj.common) {
                             if (!this.aliases.has(sourceObj._id)) {
+                                // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
                                 this._logger.error(
                                     `${
                                         this.namespaceLog
@@ -6569,7 +6574,7 @@ class AdapterClass extends EventEmitter {
                                     )}`
                                 );
                             } else {
-                                this.aliases.get(sourceObj._id).source = {
+                                aliasDetails.source = {
                                     min: sourceObj.common.min,
                                     max: sourceObj.common.max,
                                     type: sourceObj.common.type,
@@ -6577,6 +6582,7 @@ class AdapterClass extends EventEmitter {
                                 };
                             }
                         }
+
                         return tools.maybeCallbackWithError(callback, err);
                     })
                 );
