@@ -18,7 +18,8 @@
     // Avoid TS errors in external dependencies
     "skipLibCheck": true,
     // Enable syntax help for importes JSON files
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "useUnknownInCatchVariables": false
   },
   "include": [
     "packages/**/*.js",

@@ -59,34 +59,6 @@ function register(it, expect, context) {
             });
         });
     });
-    it(testName + 'check lenLog', function (done) {
-        context.states.lenLog(gid, function (err) {
-            expect(err).to.be.equal('Not exists');
-            done();
-        });
-    });
-    it(testName + 'check getLog', function (done) {
-        context.states.getLog(gid, function (err) {
-            expect(err).to.be.equal('Not exists');
-            done();
-        });
-    });
-    it(testName + 'check delLog', function (done) {
-        context.states.delLog(gid, 0, function (err) {
-            expect(err).to.be.equal('Not exists');
-            done();
-        });
-    });
-
-    it(testName + 'check clearAllLogs', function (done) {
-        context.states.clearAllLogs(function (err) {
-            if (err) {
-                // undefined for "file" db version
-                expect(err).to.be.equal('Not exists');
-            }
-            done();
-        });
-    });
 
     it(testName + 'check unsubscribeLog', function (done) {
         context.states.unsubscribeLog(gid, function (err) {

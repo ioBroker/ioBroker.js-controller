@@ -137,7 +137,7 @@ export class Utils {
                     `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`
                 );
             }
-        } catch (e: any) {
+        } catch (e) {
             this.log.warn(`${this.namespaceLog} Could not perform strict object check of state ${id}: ${e.message}`);
         }
     }

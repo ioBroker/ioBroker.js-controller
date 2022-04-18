@@ -8775,25 +8775,6 @@ class AdapterClass extends EventEmitter {
             });
         };
 
-        // read all logs prepared for this adapter at start
-        const readLogs = callback => {
-            if (!adapterStates) {
-                // if states is no longer existing, we do not need to unsubscribe
-                this.log.info('readLogs not processed because States database not connected');
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            // read all stored messages
-            adapterStates.getLog('system.adapter.' + this.namespace, (err, msg) => {
-                if (msg) {
-                    this.emit('log', msg);
-                    setImmediate(() => readLogs(callback));
-                } else {
-                    return tools.maybeCallback(callback);
-                }
-            });
-        };
-
         // debug function to find error with stop logging
         const checkLogging = () => {
             let logs = [];
@@ -8949,8 +8930,8 @@ class AdapterClass extends EventEmitter {
                     }
                 } else if (adapterStates && adapterStates.pushLog) {
                     // Send to all adapter, that required logs
-                    for (let i = 0; i < this.logList.length; i++) {
-                        adapterStates.pushLog(this.logList[i], info);
+                    for (const instanceId of this.logList) {
+                        adapterStates.pushLog(instanceId, info);
                     }
                 }
             });
@@ -8998,8 +8979,6 @@ class AdapterClass extends EventEmitter {
                 this.processLog = msg => {
                     msg && !this._stopInProgress && this.emit('log', msg);
                 };
-
-                readLogs();
 
                 adapterStates.subscribeLog('system.adapter.' + this.namespace);
             } else {

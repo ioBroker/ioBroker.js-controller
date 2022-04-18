@@ -7,36 +7,90 @@
  *      MIT License
  *
  */
-/** @module statesRedis */
 
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-'use strict';
+import Redis from 'ioredis';
+import { tools } from '@iobroker/db-base';
+import { isDeepStrictEqual } from 'util';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type IORedis from 'ioredis';
+import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
 
-const Redis = require('ioredis');
-const tools = require('@iobroker/db-base').tools;
-const { isDeepStrictEqual } = require('util');
+type JSONDecoderValue = Record<string, any>;
 
 /**
- *
+ * Decodes a JSON with buffer value
  */
-function bufferJsonDecoder(key, value) {
-    if (
-        value &&
-        typeof value === 'object' &&
-        typeof value.type === 'string' &&
-        value.type === 'Buffer' &&
-        value.data &&
-        Array.isArray(value.data)
-    ) {
+function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
+    if (tools.isObject(value) && value.type === 'Buffer' && value.data && Array.isArray(value.data)) {
         return Buffer.from(value.data);
     }
     return value;
 }
 
-class StateRedisClient {
-    constructor(settings) {
+interface LogObject {
+    /** id of the source instance */
+    from: string;
+    /** log level */
+    severity: string;
+    /** timestamp */
+    ts: number;
+    /** actual content */
+    message: string;
+}
+
+interface InternalLogObject extends LogObject {
+    /** internal id */
+    _id: number;
+}
+
+type ChangeFunction = (id: string, state: Record<string, any> | null) => void;
+
+interface StatesSettings {
+    connected?: () => void;
+    disconnected?: () => void;
+    changeUser?: ChangeFunction;
+    change?: ChangeFunction;
+    connection: ConnectionOptions;
+    autoConnect?: boolean;
+    logger?: InternalLogger;
+    hostname?: string;
+    namespace?: string;
+    metaNamespace?: string;
+    namespaceSession?: string;
+    namespaceLog?: string;
+    namespaceMsg?: string;
+    redisNamespace?: string;
+}
+
+interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
+    _id?: number;
+}
+
+export class StateRedisClient {
+    private settings: StatesSettings;
+    private readonly namespaceRedis: string;
+    private readonly namespaceRedisL: number;
+    namespaceMsg: string;
+    private readonly namespaceLog: string;
+    private readonly namespaceSession: string;
+    private readonly metaNamespace: string;
+    private globalMessageId: number;
+    private globalLogId: number;
+    private readonly namespace: string;
+    private readonly supportedProtocolVersions: string[];
+    private stop: boolean;
+    private client: IORedis.Redis | null;
+    /** Client for user events */
+    private sub: IORedis.Redis | null;
+    /** Client for system events */
+    private subSystem: IORedis.Redis | null;
+    private log: InternalLogger;
+    private activeProtocolVersion?: string;
+    private readonly userSubscriptions: Record<string, RegExp>;
+    /** System level subscriptions value true means messagebox is subscribed */
+    private readonly systemSubscriptions: Record<string, RegExp | true>;
+
+    constructor(settings: StatesSettings) {
         this.settings = settings || {};
         this.namespaceRedis = (this.settings.redisNamespace || 'io') + '.';
         this.namespaceRedisL = this.namespaceRedis.length;
@@ -56,6 +110,9 @@ class StateRedisClient {
         this.sub = null;
         this.subSystem = null;
 
+        this.userSubscriptions = {};
+        this.systemSubscriptions = {};
+
         this.log = tools.getLogger(this.settings.logger);
 
         if (this.settings.autoConnect !== false) {
@@ -66,10 +123,13 @@ class StateRedisClient {
     /**
      * Checks if we are allowed to start and sets the protocol version accordingly
      *
-     * @returns {Promise<void>}
      * @private
      */
-    async _determineProtocolVersion() {
+    async _determineProtocolVersion(): Promise<void> {
+        if (!this.client) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
         let protoVersion;
         try {
             protoVersion = await this.client.get(`${this.metaNamespace}states.protocolVersion`);
@@ -82,7 +142,7 @@ class StateRedisClient {
 
         if (!protoVersion) {
             // if no proto version existent yet, we set ours
-            const highestVersion = Math.max(...this.supportedProtocolVersions);
+            const highestVersion = Math.max(...this.supportedProtocolVersions.map(value => parseInt(value)));
             await this.setProtocolVersion(highestVersion);
             this.activeProtocolVersion = highestVersion.toString();
             return;
@@ -96,7 +156,7 @@ class StateRedisClient {
         }
     }
 
-    connectDb() {
+    connectDb(): void {
         this.settings.connection = this.settings.connection || {};
 
         const onChange = this.settings.change; // on change handler
@@ -114,7 +174,7 @@ class StateRedisClient {
         this.settings.connection.options = this.settings.connection.options || {};
         const retry_max_delay = this.settings.connection.options.retry_max_delay || 5000;
         const retry_max_count = this.settings.connection.options.retry_max_count || 19;
-        this.settings.connection.options.retryStrategy = reconnectCount => {
+        this.settings.connection.options.retryStrategy = (reconnectCount: number) => {
             if (!ready && initError) {
                 return new Error('No more tries');
             }
@@ -163,10 +223,11 @@ class StateRedisClient {
             );
         } else if (Array.isArray(this.settings.connection.host)) {
             // Host is an array means we use a sentinel
-            const defaultPort = Array.isArray(this.settings.connection.port) ? null : this.settings.connection.port;
             this.settings.connection.options.sentinels = this.settings.connection.host.map((redisNode, idx) => ({
                 host: redisNode,
-                port: defaultPort || this.settings.connection.port[idx]
+                port: Array.isArray(this.settings.connection.port)
+                    ? this.settings.connection.port[idx]
+                    : this.settings.connection.port
             }));
             this.settings.connection.options.name = this.settings.connection.sentinelName
                 ? this.settings.connection.sentinelName
@@ -265,7 +326,7 @@ class StateRedisClient {
         this.client.on('ready', async () => {
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} States-Redis Event ready (stop=${this.stop})`);
-            if (this.stop) {
+            if (this.stop || !this.client) {
                 return;
             }
             initError = false;
@@ -274,16 +335,15 @@ class StateRedisClient {
             if (!this.subSystem && typeof onChange === 'function') {
                 initCounter++;
                 try {
-                    await this.client.config('set', ['notify-keyspace-events', 'Exe']); // enable Expiry/Evicted events in server
+                    await this.client.config('SET', 'notify-keyspace-events', 'Exe'); // enable Expiry/Evicted events in server
                 } catch (e) {
                     this.log.warn(
                         `${this.namespace} Unable to enable Expiry Keyspace events from Redis Server: ${e.message}`
                     );
                 }
 
-                this.log.debug(this.namespace + ' States create System PubSub Client');
+                this.log.debug(`${this.namespace} States create System PubSub Client`);
                 this.subSystem = new Redis(this.settings.connection.options);
-                this.subSystem.ioBrokerSubscriptions = {};
 
                 if (typeof onChange === 'function') {
                     this.subSystem.on('pmessage', (pattern, channel, message) => {
@@ -350,15 +410,15 @@ class StateRedisClient {
                                 }
                                 if (typeof onChange === 'function') {
                                     // Find deleted states and notify user
-                                    const found = Object.values(this.subSystem.ioBrokerSubscriptions).find(
+                                    const found = Object.values(this.systemSubscriptions).find(
                                         regex => regex !== true && regex.test(message)
                                     );
                                     found && onChange(message.substring(this.namespaceRedisL), null);
                                 }
                                 if (typeof onChangeUser === 'function' && this.sub) {
                                     // Find deleted states and notify user
-                                    const found = Object.values(this.sub.ioBrokerSubscriptions).find(
-                                        regex => regex !== true && regex.test(message)
+                                    const found = Object.values(this.userSubscriptions).find(regex =>
+                                        regex.test(message)
                                     );
                                     found && onChangeUser(message.substring(this.namespaceRedisL), null);
                                 }
@@ -440,15 +500,17 @@ class StateRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'system re' : ''}connected to redis: ${
-                                    this.settings.connection.host
-                                }`
+                                `${this.namespace} States ${
+                                    ready ? 'system re' : ''
+                                }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'system re' : ''}connected to redis: ${
+                                `${this.namespace} States ${
+                                    ready ? 'system re' : ''
+                                }connected to redis: ${this._maybeArrayToString(
                                     this.settings.connection.host
-                                }:${this.settings.connection.port}`
+                                )}:${this._maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -456,7 +518,7 @@ class StateRedisClient {
                     }
 
                     if (this.subSystem) {
-                        for (const sub of Object.keys(this.subSystem.ioBrokerSubscriptions)) {
+                        for (const sub of Object.keys(this.systemSubscriptions)) {
                             try {
                                 await this.subSystem.psubscribe(sub);
                             } catch {
@@ -470,9 +532,8 @@ class StateRedisClient {
             if (!this.sub && typeof onChangeUser === 'function') {
                 initCounter++;
 
-                this.log.debug(this.namespace + ' States create User PubSub Client');
+                this.log.debug(`${this.namespace} States create User PubSub Client`);
                 this.sub = new Redis(this.settings.connection.options);
-                this.sub.ioBrokerSubscriptions = {};
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
@@ -544,25 +605,32 @@ class StateRedisClient {
                 }
 
                 this.sub.on('ready', async _error => {
+                    if (!this.sub) {
+                        // client gone while ready emitted, can maybe not happen but ts is happy
+                        return;
+                    }
+
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'user re' : ''}connected to redis: ${
-                                    this.settings.connection.host
-                                }`
+                                `${this.namespace} States ${
+                                    ready ? 'user re' : ''
+                                }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
-                                `${this.namespace} States ${ready ? 'user re' : ''}connected to redis: ${
+                                `${this.namespace} States ${
+                                    ready ? 'user re' : ''
+                                }connected to redis: ${this._maybeArrayToString(
                                     this.settings.connection.host
-                                }:${this.settings.connection.port}`
+                                )}:${this._maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
                         ready = true;
                     }
 
-                    for (const sub of Object.keys(this.sub.ioBrokerSubscriptions)) {
+                    for (const sub of Object.keys(this.userSubscriptions)) {
                         try {
                             await this.sub.psubscribe(sub);
                         } catch {
@@ -582,15 +650,17 @@ class StateRedisClient {
             if (initCounter < 1) {
                 if (this.settings.connection.port === 0) {
                     this.log.debug(
-                        `${this.namespace} States ${ready ? 'client re' : ''}connected to redis: ${
-                            this.settings.connection.host
-                        }`
+                        `${this.namespace} States ${
+                            ready ? 'client re' : ''
+                        }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
                     );
                 } else {
                     this.log.debug(
-                        `${this.namespace} States ${ready ? 'client re' : ''}connected to redis: ${
+                        `${this.namespace} States ${
+                            ready ? 'client re' : ''
+                        }connected to redis: ${this._maybeArrayToString(
                             this.settings.connection.host
-                        }:${this.settings.connection.port}`
+                        )}:${this._maybeArrayToString(this.settings.connection.port)}`
                     );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -599,14 +669,14 @@ class StateRedisClient {
         });
     }
 
-    getStatus() {
+    getStatus(): DbStatus {
         return { type: 'redis', server: false };
     }
 
     /**
      * @method setState
-     * @param id {String}           the id of the value. '<this.namespaceRedis>.' will be prepended
-     * @param state {any}
+     * @param id the id of the value. '<this.namespaceRedis>.' will be prepended
+     * @param state
      *
      *
      *      an object containing the actual value and some metadata:<br>
@@ -627,9 +697,13 @@ class StateRedisClient {
      *      <li><b>lc</b>   a unix timestamp indicating the last change of the actual value. this should be undefined
      *                      when calling setState, it will be set by the setValue method itself.</li></ul>
      *
-     * @param callback {function(Error|undefined, String):void}   will be called when redis confirmed reception of the command
+     * @param callback will be called when redis confirmed reception of the command
      */
-    async setState(id, state, callback) {
+    async setState(
+        id: string,
+        state: ioBroker.SettableState | ioBroker.StateValue,
+        callback?: (err: Error | null | undefined, id: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -637,8 +711,6 @@ class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
-
-        const obj = {};
 
         if (!tools.isObject(state)) {
             state = {
@@ -673,6 +745,8 @@ class StateRedisClient {
                 oldObj = { val: null };
             }
         }
+
+        const obj: Partial<ioBroker.State> = {};
 
         if (state.val !== undefined) {
             obj.val = state.val;
@@ -754,7 +828,7 @@ class StateRedisClient {
     /**
      * Promise-version of setState
      */
-    setStateAsync(id, state) {
+    setStateAsync(id: string, state: ioBroker.SettableState): Promise<string> {
         return new Promise((resolve, reject) => {
             this.setState(id, state, (err, res) => {
                 if (err) {
@@ -767,7 +841,11 @@ class StateRedisClient {
     }
 
     // Used for restore function (do not call it)
-    async setRawState(id, state, callback) {
+    async setRawState(
+        id: string,
+        state: ioBroker.SettableState,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -787,11 +865,13 @@ class StateRedisClient {
     /**
      * @method getState
      *
-     * @param {String} id
-     * @param {function?} callback
-     * @return {Promise<object>}
+     * @param id
+     * @param callback
      */
-    async getState(id, callback) {
+    async getState(
+        id: string,
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -823,13 +903,17 @@ class StateRedisClient {
     /**
      * Promise-version of getState
      */
-    getStateAsync(id) {
+    getStateAsync(id: string): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         return this.getState(id);
     }
 
-    async getStates(keys, callback, dontModify) {
+    async getStates(
+        keys: string[],
+        callback: (err: Error | undefined | null, states?: (ioBroker.StateObject | null)[]) => void,
+        dontModify: boolean
+    ): Promise<(ioBroker.StateObject | null)[] | void> {
         if (!keys || !Array.isArray(keys)) {
-            return tools.maybeCallbackWithError(callback, 'no keys', null);
+            return tools.maybeCallbackWithError(callback, 'no keys');
         }
         if (!keys.length) {
             return tools.maybeCallbackWithError(callback, null, []);
@@ -844,22 +928,23 @@ class StateRedisClient {
             _keys = keys;
         }
 
-        let obj;
+        let obj: (string | null)[];
         try {
             obj = await this.client.mget(_keys);
             this.settings.connection.enhancedLogging &&
                 this.log.silly(`${this.namespace} redis mget ${!obj ? 0 : obj.length} ${_keys.length}`);
         } catch (e) {
-            this.log.warn(`${this.namespace} redis mget ${!obj ? 0 : obj.length} ${_keys.length}, err: ${e.message}`);
+            this.log.warn(`${this.namespace} redis mget of ${_keys.length} keys, err: ${e.message}`);
+            return tools.maybeCallbackWithRedisError(callback, e, []);
         }
-        const result = [];
+        const result: (ioBroker.StateObject | null)[] = [];
 
-        obj = obj || [];
         obj.forEach(state => {
             try {
                 result.push(state ? JSON.parse(state) : null);
-            } catch {
-                result.push(state);
+            } catch (e) {
+                this.log.error(`Parsing error on getStates, returning "null" for "${state}": ${e.message}`);
+                result.push(null);
             }
         });
 
@@ -869,11 +954,11 @@ class StateRedisClient {
     /**
      * @method _destroyDBHelper
      *
-     * @param {string[]} keys - array of keys which will be deleted from db
-     * @param {function(Error|undefined):void} [callback] cb function to be executed after keys have been deleted
+     * @param keys - array of keys which will be deleted from db
+     * @param callback function to be executed after keys have been deleted
      * @private
      */
-    async _destroyDBHelper(keys, callback) {
+    async _destroyDBHelper(keys: string[], callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         } else {
@@ -895,10 +980,9 @@ class StateRedisClient {
 
     /**
      * @method destroyDB
-     *
-     * @param {function(Error|undefined):void} [callback] cb function to be executed after DB has been destroyed
+     * @param callback cb function to be executed after DB has been destroyed
      */
-    async destroyDB(callback) {
+    async destroyDB(callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         } else {
@@ -908,12 +992,12 @@ class StateRedisClient {
             } catch {
                 //ignore
             }
-            return this._destroyDBHelper(keys, callback);
+            return this._destroyDBHelper(keys || [], callback);
         }
     }
 
     // Destructor of the class. Called by shutting down.
-    async destroy() {
+    async destroy(): Promise<void> {
         this.stop = true;
         if (this.client) {
             try {
@@ -944,9 +1028,16 @@ class StateRedisClient {
         }
     }
 
-    async delState(id, callback) {
+    async delState(
+        id: string,
+        callback: ioBroker.DeleteStateCallback
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.DeleteStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
+        }
+
+        if (!this.client) {
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
@@ -960,9 +1051,17 @@ class StateRedisClient {
         }
     }
 
-    async getKeys(pattern, callback, dontModify) {
+    async getKeys(
+        pattern: string,
+        callback: ioBroker.GetConfigKeysCallback,
+        dontModify: boolean
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
+        }
+
+        if (!this.client) {
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         let obj;
@@ -980,36 +1079,48 @@ class StateRedisClient {
         return tools.maybeCallbackWithError(callback, null, obj);
     }
 
+    async subscribe(pattern: string, callback: ioBroker.ErrorCallback): Promise<void>;
+    async subscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
+
     /**
      * @method subscribe
      *
      * @param pattern
-     * @param subClient
+     * @param asUser - if true it will be subscribed as user
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    async subscribe(pattern, subClient, callback) {
+    async subscribe(
+        pattern: string,
+        asUser: boolean | ioBroker.ErrorCallback,
+        callback?: ioBroker.ErrorCallback
+    ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
-            typeof callback === 'function' && setImmediate(callback, `invalid pattern ${JSON.stringify(pattern)}`);
-            return;
+            return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
 
-        if (typeof subClient === 'function') {
-            callback = subClient;
-            subClient = null;
+        if (typeof asUser === 'function') {
+            callback = asUser;
+            asUser = false;
         }
-        subClient = subClient || this.subSystem;
+        const subClient = asUser ? this.sub : this.subSystem;
 
         if (!subClient) {
-            return typeof callback === 'function' && setImmediate(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         this.settings.connection.enhancedLogging &&
             this.log.silly(`${this.namespace} redis psubscribe ${this.namespaceRedis}${pattern}`);
         try {
             await subClient.psubscribe(this.namespaceRedis + pattern);
-            subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern] = new RegExp(
-                tools.pattern2RegEx(this.namespaceRedis + pattern)
-            );
+            if (asUser) {
+                this.userSubscriptions[this.namespaceRedis + pattern] = new RegExp(
+                    tools.pattern2RegEx(this.namespaceRedis + pattern)
+                );
+            } else {
+                this.systemSubscriptions[this.namespaceRedis + pattern] = new RegExp(
+                    tools.pattern2RegEx(this.namespaceRedis + pattern)
+                );
+            }
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1022,26 +1133,31 @@ class StateRedisClient {
      * @param pattern
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    subscribeUser(pattern, callback) {
-        return this.subscribe(pattern, this.sub, callback);
+    subscribeUser(pattern: string, callback: ioBroker.ErrorCallback): Promise<void> {
+        return this.subscribe(pattern, true, callback);
     }
 
+    async unsubscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
+    async unsubscribe(pattern: string, callback: ioBroker.ErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
-     * @param {string} pattern
-     * @param {object?} subClient
-     * @param {(err: Error) => void?} callback
-     * @return {Promise<void>}
+     * @param pattern
+     * @param asUser - if true it will be unsubscribed as user
+     * @param callback
      */
-    async unsubscribe(pattern, subClient, callback) {
+    async unsubscribe(
+        pattern: string,
+        asUser: boolean | ioBroker.ErrorCallback,
+        callback?: ioBroker.ErrorCallback
+    ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
-        if (typeof subClient === 'function') {
-            callback = subClient;
-            subClient = null;
+        if (typeof asUser === 'function') {
+            callback = asUser;
+            asUser = false;
         }
-        subClient = subClient || this.subSystem;
+        const subClient = asUser ? this.sub : this.subSystem;
 
         if (!subClient) {
             return tools.maybeCallbackWithRedisError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -1051,8 +1167,14 @@ class StateRedisClient {
             this.log.silly(`${this.namespace} redis punsubscribe ${this.namespaceRedis}${pattern}`);
         try {
             await subClient.punsubscribe(this.namespaceRedis + pattern);
-            if (subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern] !== undefined) {
-                delete subClient.ioBrokerSubscriptions[this.namespaceRedis + pattern];
+            if (asUser) {
+                if (this.userSubscriptions[this.namespaceRedis + pattern] !== undefined) {
+                    delete this.userSubscriptions[this.namespaceRedis + pattern];
+                }
+            } else {
+                if (this.systemSubscriptions[this.namespaceRedis + pattern] !== undefined) {
+                    delete this.systemSubscriptions[this.namespaceRedis + pattern];
+                }
             }
 
             return tools.maybeCallback(callback);
@@ -1064,15 +1186,18 @@ class StateRedisClient {
     /**
      * @method unsubscribeUser
      *
-     * @param {string} pattern
-     * @param {function?} callback callback function (optional)
-     * @return {Promise<void>}
+     * @param pattern
+     * @param callback callback function (optional)
      */
-    unsubscribeUser(pattern, callback) {
-        return this.unsubscribe(pattern, this.sub, callback);
+    unsubscribeUser(pattern: string, callback: ioBroker.ErrorCallback): Promise<void> {
+        return this.unsubscribe(pattern, true, callback);
     }
 
-    async pushMessage(id, state, callback) {
+    async pushMessage(
+        id: string,
+        state: PushableState,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1093,7 +1218,7 @@ class StateRedisClient {
         }
     }
 
-    async subscribeMessage(id, callback) {
+    async subscribeMessage(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1109,14 +1234,14 @@ class StateRedisClient {
             this.log.silly(`${this.namespace} redis subscribeMessage ${this.namespaceMsg}${id}`);
         try {
             await this.subSystem.psubscribe(this.namespaceMsg + id);
-            this.subSystem.ioBrokerSubscriptions[this.namespaceMsg + id] = true;
+            this.systemSubscriptions[this.namespaceMsg + id] = true;
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
 
-    async unsubscribeMessage(id, callback) {
+    async unsubscribeMessage(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1132,8 +1257,8 @@ class StateRedisClient {
             this.log.silly(`${this.namespace} redis unsubscribeMessage ${this.namespaceMsg}${id}`);
         try {
             await this.subSystem.punsubscribe(this.namespaceMsg + id);
-            if (this.subSystem.ioBrokerSubscriptions[this.namespaceMsg + id] !== undefined) {
-                delete this.subSystem.ioBrokerSubscriptions[this.namespaceMsg + id];
+            if (this.systemSubscriptions[this.namespaceMsg + id] !== undefined) {
+                delete this.systemSubscriptions[this.namespaceMsg + id];
             }
             return tools.maybeCallback(callback);
         } catch (e) {
@@ -1141,7 +1266,18 @@ class StateRedisClient {
         }
     }
 
-    async pushLog(id, log, callback) {
+    async pushLog(
+        id: string,
+        log: LogObject,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void>;
+
+    // implementation uses an modified pushLog with internal _id
+    async pushLog(
+        id: string,
+        log: InternalLogObject,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1161,36 +1297,7 @@ class StateRedisClient {
         }
     }
 
-    // todo: delete it
-    lenLog(id, callback) {
-        typeof callback === 'function' && callback(tools.ERRORS.ERROR_NOT_FOUND, 0, id);
-        // this.client.llen(this.namespaceLog + id, (err, obj) => {
-        //    typeof callback === 'function' && callback(err, obj, id);
-        // });
-    }
-
-    // todo: delete it
-    getLog(_id, callback) {
-        if (typeof callback === 'function') {
-            callback(tools.ERRORS.ERROR_NOT_FOUND, null, 0);
-        }
-    }
-
-    // todo: delete it
-    delLog(_id, _logId, callback) {
-        if (typeof callback === 'function') {
-            callback(tools.ERRORS.ERROR_NOT_FOUND);
-        }
-    }
-
-    // todo: delete it
-    clearAllLogs(callback) {
-        if (typeof callback === 'function') {
-            callback(tools.ERRORS.ERROR_NOT_FOUND);
-        }
-    }
-
-    async subscribeLog(id, callback) {
+    async subscribeLog(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1203,14 +1310,14 @@ class StateRedisClient {
             this.log.silly(`${this.namespace} redis subscribeMessage ${this.namespaceLog}${id}`);
         try {
             await this.subSystem.psubscribe(this.namespaceLog + id);
-            this.subSystem.ioBrokerSubscriptions[this.namespaceLog + id] = true;
+            this.systemSubscriptions[this.namespaceLog + id] = true;
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
 
-    async unsubscribeLog(id, callback) {
+    async unsubscribeLog(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1223,8 +1330,8 @@ class StateRedisClient {
             this.log.silly(`${this.namespace} redis unsubscribeMessage ${this.namespaceLog}${id}`);
         try {
             await this.subSystem.punsubscribe(this.namespaceLog + id);
-            if (this.subSystem.ioBrokerSubscriptions[this.namespaceLog + id] !== undefined) {
-                delete this.subSystem.ioBrokerSubscriptions[this.namespaceLog + id];
+            if (this.systemSubscriptions[this.namespaceLog + id] !== undefined) {
+                delete this.systemSubscriptions[this.namespaceLog + id];
             }
             return tools.maybeCallback(callback);
         } catch (e) {
@@ -1232,7 +1339,11 @@ class StateRedisClient {
         }
     }
 
-    async getSession(id, callback) {
+    // TODO: types session obj
+    async getSession(
+        id: string,
+        callback: (err: Error | undefined | null, session?: Record<string, any> | null) => void
+    ): Promise<Record<string, any> | null | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1258,7 +1369,13 @@ class StateRedisClient {
         return tools.maybeCallback(callback, obj);
     }
 
-    async setSession(id, expire, obj, callback) {
+    // TODO: types obj
+    async setSession(
+        id: string,
+        expireS: number,
+        obj: Record<string, any>,
+        callback?: ioBroker.ErrorCallback
+    ): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1268,16 +1385,16 @@ class StateRedisClient {
         }
 
         try {
-            await this.client.setex(this.namespaceSession + id, expire, JSON.stringify(obj));
+            await this.client.setex(this.namespaceSession + id, expireS, JSON.stringify(obj));
             this.settings.connection.enhancedLogging &&
-                this.log.silly(`${this.namespace} redis setex`, id, expire, obj);
+                this.log.silly(`${this.namespace} redis setex ${id} ${expireS} ${JSON.stringify(obj)}`);
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
 
-    async destroySession(id, callback) {
+    async destroySession(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1296,7 +1413,7 @@ class StateRedisClient {
         }
     }
 
-    async setBinaryState(id, data, callback) {
+    async setBinaryState(id: string, data: Buffer, callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1317,7 +1434,10 @@ class StateRedisClient {
         }
     }
 
-    async getBinaryState(id, callback) {
+    async getBinaryState(
+        id: string,
+        callback: (err: Error | undefined | null, state?: Buffer) => void
+    ): Promise<Buffer | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1335,7 +1455,10 @@ class StateRedisClient {
         }
     }
 
-    async delBinaryState(id, callback) {
+    async delBinaryState(
+        id: string,
+        callback: (err: Error | undefined | null, id?: string) => void
+    ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1355,9 +1478,8 @@ class StateRedisClient {
     /**
      * Returns the protocol version from DB
      *
-     * @returns {Promise<string>}
      */
-    getProtocolVersion() {
+    getProtocolVersion(): Promise<string | null> {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -1367,23 +1489,35 @@ class StateRedisClient {
 
     /**
      * Sets the protocol version to the DB
-     * @param {number} version - protocol version
-     * @returns {Promise<void>}
+     * @param version - protocol version
      */
-    async setProtocolVersion(version) {
+    async setProtocolVersion(version: number): Promise<void> {
         if (!this.client) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        version = version.toString();
+        const versionStr = version.toString();
         // we can only set a protocol if we actually support it
-        if (this.supportedProtocolVersions.includes(version)) {
-            await this.client.set(`${this.metaNamespace}states.protocolVersion`, version);
-            await this.client.publish(`${this.metaNamespace}states.protocolVersion`, version);
+        if (this.supportedProtocolVersions.includes(versionStr)) {
+            await this.client.set(`${this.metaNamespace}states.protocolVersion`, versionStr);
+            await this.client.publish(`${this.metaNamespace}states.protocolVersion`, versionStr);
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
         }
     }
-}
 
-module.exports = StateRedisClient;
+    /**
+     * If an array is passed it will be stringified, else the parameter is returned
+     * @param maybeArr parameter which will be stringified if it is an array
+     * @private
+     */
+    private _maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T {
+        if (Array.isArray(maybeArr)) {
+            // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
+            return JSON.stringify(maybeArr);
+        }
+
+        // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
+        return maybeArr;
+    }
+}

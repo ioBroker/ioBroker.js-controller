@@ -250,7 +250,7 @@ export function logger(
                     try {
                         const _log = new DailyRotateFile(transport);
                         options.transports.push(_log);
-                    } catch (e: any) {
+                    } catch (e) {
                         if (e.code === 'EACCES') {
                             // modify error code to make it unique for handling
                             e.code = 'EACCES_LOG';
@@ -285,7 +285,7 @@ export function logger(
                     }
                     try {
                         options.transports.push(new IoSysLog(transport));
-                    } catch (err: any) {
+                    } catch (err) {
                         console.log(`Cannot activate Syslog: ${err.message}`);
                     }
                 } else if (transport.type === 'http' && transport.enabled !== false) {
@@ -300,7 +300,7 @@ export function logger(
 
                     try {
                         options.transports.push(new winston.transports.Http(transport));
-                    } catch (err: any) {
+                    } catch (err) {
                         console.log(`Cannot activate HTTP: ${err.message}`);
                     }
                 } else if (transport.type === 'stream' && transport.enabled !== false) {
@@ -321,7 +321,7 @@ export function logger(
                         }
 
                         options.transports.push(new winston.transports.Stream(transport));
-                    } catch (err: any) {
+                    } catch (err) {
                         console.log(`Cannot activate Stream: ${err.message}`);
                     }
                 } else if (transport.type === 'seq' && transport.enabled !== false) {
@@ -343,7 +343,7 @@ export function logger(
                             };
                             const seqLogger = new IoSeq(transport);
                             options.transports.push(seqLogger);
-                        } catch (err: any) {
+                        } catch (err) {
                             console.log(`Cannot activate SEQ: ${err.message}`);
                         }
                     } else {
@@ -452,7 +452,7 @@ export function logger(
                         try {
                             /** @ts-expect-error we use undocumented stuff here TODO */
                             files = fs.readdirSync(transport.dirname);
-                        } catch (err: any) {
+                        } catch (err) {
                             console.log(`host.${hostname} Cannot read log directory: ${err}`);
                             return;
                         }
@@ -473,7 +473,7 @@ export function logger(
                                         console.log(`host.${hostname} Delete log file ${files[i]}`);
                                         /** @ts-expect-error we use undocumented stuff here TODO */
                                         fs.unlinkSync(transport.dirname + '/' + files[i]);
-                                    } catch (e: any) {
+                                    } catch (e) {
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
                                             level: os.platform().startsWith('win') ? 'info' : 'error',
