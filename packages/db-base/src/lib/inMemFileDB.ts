@@ -34,31 +34,40 @@ import { createGzip } from 'zlib';
 // };
 //
 
-interface ConnectionOptions {
-    // relative path to the data dir
+export interface ConnectionOptions {
+    pass?: string;
+    sentinelName?: string;
+    /** array on sentinel */
+    host: string | string[];
+    /** array on sentinel */
+    port: number | number[];
+    options: Record<string, any>;
+    maxQueue?: number;
+    enhancedLogging?: boolean;
     backup?: BackupOptions;
+    /** relative path to the data dir */
     dataDir: string;
 }
 
 type ChangeFunction = (id: string, state: any) => void;
 
-interface DbStatus {
+export interface DbStatus {
     type: string;
     server: boolean;
 }
 
 interface BackupOptions {
-    // deactivates backup if false
+    /** deactivates backup if true */
     disabled: boolean;
-    // minimum number of files
+    /** minimum number of files */
     files: number;
     hours: number;
-    // minutes
+    /** minutes */
     period: number;
     path: string;
 }
 
-interface DbOptions {
+export interface DbOptions {
     backupDirName: string;
     fileName: string;
 }
@@ -71,14 +80,14 @@ interface FileDbSettings {
     connected: (nameOfServer: string) => void;
     logger: InternalLogger;
     connection: ConnectionOptions;
-    // unused
+    /** unused */
     auth?: null;
     secure: boolean;
-    // as required by createServer TODO: if createServer is typed, add type
+    /** as required by createServer TODO: if createServer is typed, add type */
     certificates: any;
     port: number;
     host: string;
-    // logging namespace
+    /** logging namespace */
     namespace?: string;
 }
 
@@ -184,18 +193,18 @@ export class InMemoryFileDB {
             // loading worked, make sure that "bak" File is not broken
             try {
                 await fs.readJSON(`${datasetName}.bak`);
-            } catch (e: any) {
+            } catch (e) {
                 this.log.info(
                     `${this.namespace} Rewrite bak file, because error on verify ${datasetName}.bak: ${e.message}`
                 );
                 try {
                     const jsonString = JSON.stringify(ret);
                     await fs.writeFile(`${datasetName}.bak`, jsonString);
-                } catch (e: any) {
+                } catch (e) {
                     this.log.error(`${this.namespace} Cannot save ${datasetName}.bak: ${e.message}`);
                 }
             }
-        } catch (err: any) {
+        } catch (err) {
             this.log.error(`${this.namespace} Cannot load ${datasetName}: ${err.message}. We try last Backup!`);
 
             try {
@@ -206,14 +215,14 @@ export class InMemoryFileDB {
                     if (await fs.pathExists(datasetName)) {
                         try {
                             await fs.move(datasetName, `${datasetName}.broken`, { overwrite: true });
-                        } catch (e: any) {
+                        } catch (e) {
                             this.log.error(
                                 `${this.namespace} Cannot copy the broken file ${datasetName} to ${datasetName}.broken ${e.message}`
                             );
                         }
                         try {
                             await fs.writeFile(datasetName, JSON.stringify(ret));
-                        } catch (e: any) {
+                        } catch (e) {
                             this.log.error(
                                 `${this.namespace} Cannot restore backup file as new main ${datasetName}: ${e.message}`
                             );
@@ -222,7 +231,7 @@ export class InMemoryFileDB {
                 } catch {
                     // ignore, file does not exist
                 }
-            } catch (err: any) {
+            } catch (err) {
                 this.log.error(
                     `${this.namespace} Cannot load ${datasetName}.bak: ${err.message}. Continue with empty dataset!`
                 );
@@ -357,7 +366,7 @@ export class InMemoryFileDB {
             if (limit > ms) {
                 try {
                     fs.unlinkSync(path.join(this.backupDir, file));
-                } catch (e: any) {
+                } catch (e) {
                     this.log.error(
                         `${this.namespace} Cannot delete file "${path.join(this.backupDir, file)}: ${e.message}`
                     );
@@ -425,7 +434,7 @@ export class InMemoryFileDB {
 
         try {
             await fs.writeFile(`${this.datasetName}.new`, jsonString);
-        } catch (e: any) {
+        } catch (e) {
             this.log.error(`${this.namespace} Cannot save Dataset to ${this.datasetName}.new: ${e.message}`);
             return jsonString;
         }
@@ -435,7 +444,7 @@ export class InMemoryFileDB {
             if (await fs.pathExists(this.datasetName)) {
                 try {
                     await fs.move(this.datasetName, `${this.datasetName}.bak`, { overwrite: true });
-                } catch (e: any) {
+                } catch (e) {
                     bakOk = false;
                     this.log.error(`${this.namespace} Cannot backup file ${this.datasetName}.bak: ${e.message}`);
                 }
@@ -449,13 +458,13 @@ export class InMemoryFileDB {
 
         try {
             await fs.move(`${this.datasetName}.new`, this.datasetName, { overwrite: true });
-        } catch (e: any) {
+        } catch (e) {
             this.log.error(
                 `${this.namespace} Cannot move ${this.datasetName}.new to ${this.datasetName}: ${e.message}. Try direct write as fallback`
             );
             try {
                 await fs.writeFile(this.datasetName, jsonString);
-            } catch (e: any) {
+            } catch (e) {
                 this.log.error(`${this.namespace} Cannot directly write Dataset to ${this.datasetName}: ${e.message}`);
                 return jsonString;
             }
@@ -465,7 +474,7 @@ export class InMemoryFileDB {
             // it seems the bak File is not successfully there, write current content again
             try {
                 await fs.writeFile(`${this.datasetName}.bak`, jsonString);
-            } catch (e: any) {
+            } catch (e) {
                 this.log.error(`${this.namespace} Cannot save ${this.datasetName}.bak: ${e.message}`);
             }
         }
@@ -508,7 +517,7 @@ export class InMemoryFileDB {
                     // analyse older files
                     this.deleteOldBackupFiles(this.settings.fileDB.fileName);
                 }
-            } catch (e: any) {
+            } catch (e) {
                 this.log.error(`${this.namespace} Cannot save backup ${backFileName}: ${e.message}`);
             }
         }

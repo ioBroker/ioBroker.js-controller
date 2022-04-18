@@ -201,7 +201,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
 
         decipher.write(data, 'hex');
         decipher.end();
-    } catch (e: any) {
+    } catch (e) {
         console.error(`Cannot decode secret: ${e.message}`);
         callback(null);
     }
@@ -279,7 +279,7 @@ export function rmdirRecursiveSync(path: string): void {
                     // delete file
                     fs.unlinkSync(curPath);
                 }
-            } catch (e: any) {
+            } catch (e) {
                 if (e.code !== 'ENOENT') {
                     console.log(`Cannot delete file ${path}: ${e.message}`);
                 } else {
@@ -290,7 +290,7 @@ export function rmdirRecursiveSync(path: string): void {
         // delete (hopefully) empty folder
         try {
             fs.rmdirSync(path);
-        } catch (e: any) {
+        } catch (e) {
             if (e.code !== 'ENOENT') {
                 console.log(`Cannot delete directory ${path}: ${e.message}`);
             } else {
@@ -309,7 +309,7 @@ export function findIPs(): string[] {
             for (const iface of Object.values(ifaces)) {
                 iface?.forEach(details => !details.internal && ownIpArr.push(details.address));
             }
-        } catch (e: any) {
+        } catch (e) {
             console.error(`Can not find local IPs: ${e.message}`);
         }
     }
@@ -631,7 +631,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
                 console.log(`downloaded ${tmpFile}`);
                 callback && callback(tmpFile);
             });
-        } catch (e: any) {
+        } catch (e) {
             console.log(`Cannot download "${tmpFile}": ${e.message}`);
             callback && callback(tmpFile);
         }
@@ -647,7 +647,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
                 console.log('File not found: ' + urlOrPath);
                 process.exit(EXIT_CODES.FILE_NOT_FOUND);
             }
-        } catch (err: any) {
+        } catch (err) {
             console.log(`File "${urlOrPath}" could no be read: ${err.message}`);
             process.exit(EXIT_CODES.FILE_NOT_FOUND);
         }
@@ -696,7 +696,7 @@ export async function getJson(
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } catch (e: any) {
+            } catch (e) {
                 console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
                 if (callback) {
                     callback(null, urlOrPath);
@@ -707,7 +707,7 @@ export async function getJson(
             if (fs.existsSync(urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(urlOrPath);
-                } catch (e: any) {
+                } catch (e) {
                     console.log(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
@@ -720,7 +720,7 @@ export async function getJson(
             } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
                 try {
                     sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
-                } catch (e: any) {
+                } catch (e) {
                     console.log(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
@@ -733,7 +733,7 @@ export async function getJson(
             } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
                 try {
                     sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
-                } catch (e: any) {
+                } catch (e) {
                     console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
@@ -778,7 +778,7 @@ export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Re
                     validateStatus: status => status !== 200
                 });
                 return result.data;
-            } catch (e: any) {
+            } catch (e) {
                 console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
                 return null;
             }
@@ -786,7 +786,7 @@ export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Re
             if (fs.existsSync(urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(urlOrPath);
-                } catch (e: any) {
+                } catch (e) {
                     console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
@@ -794,7 +794,7 @@ export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Re
             } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
                 try {
                     sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
-                } catch (e: any) {
+                } catch (e) {
                     console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
@@ -802,7 +802,7 @@ export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Re
             } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
                 try {
                     sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
-                } catch (e: any) {
+                } catch (e) {
                     console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
@@ -849,7 +849,7 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
         let dirs;
         try {
             dirs = fs.readdirSync(dirName);
-        } catch (e: any) {
+        } catch (e) {
             console.log(`Cannot read or parse ${dirName}: ${e.message}`);
             return;
         }
@@ -885,7 +885,7 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
                         licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
                     };
                 }
-            } catch (e: any) {
+            } catch (e) {
                 console.log(
                     `Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`
                 );
@@ -940,7 +940,7 @@ export function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoR
     let ioPackage;
     try {
         ioPackage = fs.readJSONSync(path.join(fullPath, 'io-package.json'));
-    } catch (e: any) {
+    } catch (e) {
         console.error(`Cannot get installed host information: ${e.message}`);
     }
     const package_ = fs.existsSync(path.join(fullPath, 'package.json'))
@@ -1206,7 +1206,7 @@ async function _checkRepositoryFileHash(
             }
 
             json = res.data;
-        } catch (e: any) {
+        } catch (e) {
             console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
         }
 
@@ -1397,7 +1397,7 @@ export async function getRepositoryFileAsync(
                     headers: { 'User-Agent': agent }
                 });
                 data = data.data;
-            } catch (e: any) {
+            } catch (e) {
                 throw new Error(`Cannot download repository file from "${url}": ${e.message}`);
             }
         }
@@ -1405,7 +1405,7 @@ export async function getRepositoryFileAsync(
         if (fs.existsSync(url)) {
             try {
                 data = JSON.parse(fs.readFileSync(url).toString('utf8'));
-            } catch (e: any) {
+            } catch (e) {
                 throw new Error(`Error: Cannot read or parse file "${url}": ${e}`);
             }
         } else {
@@ -1437,7 +1437,7 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
 
     try {
         await axios.post(`http://download.${appName}.net/diag.php`, params, config);
-    } catch (e: any) {
+    } catch (e) {
         console.log(`Cannot send diag info: ${e.message}`);
     }
 }
@@ -1561,7 +1561,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
                 }
             }
         );
-    } catch (e: any) {
+    } catch (e) {
         if (callback) {
             callback(e);
             callback = undefined;
@@ -1811,7 +1811,7 @@ export function getDiskInfo(
                     callback && callback(error, null);
                 });
             }
-        } catch (e: any) {
+        } catch (e) {
             callback && callback(e, null);
         }
     }
@@ -2068,7 +2068,7 @@ export async function getHostInfo(
             const version = await getSystemNpmVersionAsync();
             data.NPM = 'v' + (version || ' ---');
             npmVersion = version;
-        } catch (e: any) {
+        } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
         }
     } else {
@@ -2079,7 +2079,7 @@ export async function getHostInfo(
         if (info) {
             Object.assign(data, info);
         }
-    } catch (e: any) {
+    } catch (e) {
         console.error(`Cannot get disk information: ${e.message}`);
     }
     callback && callback(data);
@@ -2611,7 +2611,7 @@ export function formatAliasValue(
                 sourceObj.min,
                 sourceObj.max
             );
-        } catch (e: any) {
+        } catch (e) {
             logger.error(
                 `${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`
             );
@@ -2641,7 +2641,7 @@ export function formatAliasValue(
                 targetObj.min,
                 targetObj.max
             );
-        } catch (e: any) {
+        } catch (e) {
             logger.error(
                 `${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`
             );
@@ -3529,7 +3529,7 @@ export async function getInstancesOrderedByStartPrio(
             startkey: 'system.adapter.',
             endkey: 'system.adapter.\u9999'
         });
-    } catch (e: any) {
+    } catch (e) {
         if (e.message && e.message.startsWith('Cannot find ')) {
             logger.error(`${logPrefix} _design/system missing - call node ${appName}.js setup`);
         } else {
@@ -3652,7 +3652,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
         }
 
         return response.data;
-    } catch (err: any) {
+    } catch (err) {
         if (err.response) {
             throw new Error((err.response.data && err.response.data.error) || err.response.data || err.response.status);
         } else if (err.request) {
@@ -3688,7 +3688,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
                 let password;
                 try {
                     password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
-                } catch (err: any) {
+                } catch (err) {
                     throw new Error(`Cannot decode password: ${err.message}`);
                 }
 
@@ -3712,7 +3712,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
                 // update read time
                 await objects.setObjectAsync('system.licenses', systemLicenses);
                 return licenses;
-            } catch (err: any) {
+            } catch (err) {
                 // if password is invalid
                 if (
                     err.message.includes('Authentication required') ||
