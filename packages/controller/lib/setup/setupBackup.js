@@ -633,25 +633,35 @@ class BackupRestore {
     }
 
     _copyBackupedFiles(backupDir) {
-        if (!fs.existsSync(backupDir)) {
-            console.log('No additional files to restore');
-            return;
-        }
-        const dirs = fs.readdirSync(backupDir);
+        try {
+            if (!fs.existsSync(backupDir)) {
+                console.log('No additional files to restore');
+                return;
+            }
+            const dirs = fs.readdirSync(backupDir);
 
-        dirs.forEach(dir => {
-            if (dir === 'files') {
-                return;
-            }
-            const path = pathLib.join(backupDir, dir);
-            if (!fs.existsSync(path)) {
-                return;
-            }
-            const stat = fs.statSync(path);
-            if (stat.isDirectory()) {
-                this.copyFolderRecursiveSync(path, this.configDir);
-            }
-        });
+            dirs.forEach(dir => {
+                if (dir === 'files') {
+                    return;
+                }
+                const path = pathLib.join(backupDir, dir);
+                let stat;
+                try {
+                    if (!fs.existsSync(path)) {
+                        return;
+                    }
+                    stat = fs.statSync(path);
+                } catch (err) {
+                    console.error(`Ignoring ${path} because can not get file type: ${err.message}`);
+                    return;
+                }
+                if (stat.isDirectory()) {
+                    this.copyFolderRecursiveSync(path, this.configDir);
+                }
+            });
+        } catch (err) {
+            console.error(`Ignoring ${backupDir} because can not read directory: ${err.message}`);
+        }
     }
 
     /**
@@ -925,7 +935,7 @@ class BackupRestore {
                 },
                 err => {
                     if (err) {
-                        console.error(`host.${hostname} Cannot extract from file "${name}"`);
+                        console.error(`host.${hostname} Cannot extract from file "${name}": ${err.message}`);
                         return void this.processExit(9);
                     }
                     if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
@@ -1088,7 +1098,7 @@ class BackupRestore {
             },
             err => {
                 if (err) {
-                    console.error(`host.${hostname} Cannot extract from file "${name}"`);
+                    console.error(`host.${hostname} Cannot extract from file "${name}": ${err.message}`);
                     return void this.processExit(9);
                 }
                 if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {

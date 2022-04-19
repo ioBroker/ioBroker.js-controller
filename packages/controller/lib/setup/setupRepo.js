@@ -187,7 +187,7 @@ function Repo(options) {
         } else {
             repoUrl = repoUrl || systemConfig.common.activeRepo;
 
-            if (typeof repoUrl !== 'object') {
+            if (!Array.isArray(repoUrl)) {
                 repoUrl = [repoUrl];
             }
 
@@ -324,9 +324,7 @@ function Repo(options) {
             (obj.common.activeRepo &&
                 typeof obj.common.activeRepo === 'string' &&
                 obj.common.activeRepo === repoName) ||
-            (obj.common.activeRepo &&
-                typeof obj.common.activeRepo === 'object' &&
-                obj.common.activeRepo.includes(repoName))
+            (obj.common.activeRepo && Array.isArray(obj.common.activeRepo) && obj.common.activeRepo.includes(repoName))
         ) {
             throw new Error(`Cannot delete active repository: ${repoName}`);
         } else {
@@ -418,7 +416,7 @@ function Repo(options) {
                     sysConfigObj.common &&
                     ((typeof sysConfigObj.common.activeRepo === 'string' &&
                         sysConfigObj.common.activeRepo === oldName) ||
-                        (typeof sysConfigObj.common.activeRepo === 'object' &&
+                        (Array.isArray(sysConfigObj.common.activeRepo) &&
                             sysConfigObj.common.activeRepo.includes(oldName)))
                 ) {
                     if (typeof sysConfigObj.common.activeRepo === 'string') {
