@@ -22,6 +22,14 @@ const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
 const memStore: Record<string, Buffer> = {};
 
+export interface ACLObject {
+    owner: string;
+    ownerGroup: string;
+    object: number;
+    state: number;
+    file: number;
+}
+
 const mimeTypes = {
     '.css': { type: 'text/css', binary: false },
     '.bmp': { type: 'image/bmp', binary: true },
@@ -192,7 +200,7 @@ export function checkFile(
     fileOptions: Record<string, any>,
     options: Record<string, any>,
     flag: any,
-    defaultNewAcl: Record<string, any>
+    defaultNewAcl?: ACLObject | null
 ): boolean {
     if (typeof fileOptions.acl !== 'object') {
         fileOptions = {};
@@ -568,7 +576,7 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
 }
 
 export function checkObject(
-    obj: ioBroker.Object,
+    obj: ioBroker.Object | null,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags
 ): boolean {
@@ -619,8 +627,8 @@ export function checkObject(
 
 export function checkObjectRights(
     objects: any,
-    id: string,
-    object: ioBroker.Object,
+    id: string | null,
+    object: ioBroker.Object | null,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags,
     callback: (err: Error | null | undefined, options?: Record<string, any>) => void

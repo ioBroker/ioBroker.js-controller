@@ -20,17 +20,10 @@ import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type { ACLObject, GetUserGroupCallback } from './objectsUtils.js';
 const ERRORS = CONSTS.ERRORS;
 
 type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
-
-interface ACLObject {
-    owner: string;
-    ownerGroup: string;
-    object: number;
-    state: number;
-    file: number;
-}
 
 interface ViewFuncResult<T> {
     rows: ioBroker.GetObjectViewItem<T>[];
@@ -39,6 +32,8 @@ interface ViewFuncResult<T> {
 interface ObjectListResult {
     rows: ioBroker.GetObjectListItem[];
 }
+
+type GetUserGroupCallback = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
 interface ObjectsSettings {
     connected: () => void;
@@ -65,6 +60,16 @@ interface CallOptions {
     acl?: any;
 }
 
+interface ObjectViewIdValue {
+    id: string;
+    value: ioBroker.Object;
+}
+
+interface ObjectViewFunction {
+    map: string;
+    reduce?: '_stats';
+}
+
 class ObjectsInRedisClient {
     private client: IORedis.Redis | null;
     private readonly fileNamespace: string;
@@ -89,6 +94,8 @@ class ObjectsInRedisClient {
     private activeProtocolVersion?: string;
     private useSets?: boolean;
     private noLegacyMultihost?: boolean;
+    private readonly userSubscriptions: Record<string, boolean>;
+    private readonly systemSubscriptions: Record<string, boolean>;
 
     constructor(settings: ObjectsSettings) {
         this.settings = settings || {};
@@ -113,6 +120,8 @@ class ObjectsInRedisClient {
         this.namespace = this.settings.namespace || this.settings.hostname || '';
         this.hostname = this.settings.hostname || tools.getHostName();
         this.scripts = {};
+        this.userSubscriptions = {};
+        this.systemSubscriptions = {};
 
         // cached meta objects for file operations
         this.existingMetaObjects = {};
@@ -349,7 +358,6 @@ class ObjectsInRedisClient {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create System PubSub Client`);
                 this.subSystem = new Redis(this.settings.connection.options);
-                this.subSystem.ioBrokerSubscriptions = {};
 
                 if (typeof this.settings.primaryHostLost === 'function') {
                     try {
@@ -529,7 +537,7 @@ class ObjectsInRedisClient {
                     }
 
                     if (this.subSystem) {
-                        for (const sub of Object.keys(this.subSystem.ioBrokerSubscriptions)) {
+                        for (const sub of Object.keys(this.systemSubscriptions)) {
                             try {
                                 await this.subSystem.psubscribe(sub);
                             } catch {
@@ -544,7 +552,6 @@ class ObjectsInRedisClient {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create User PubSub Client`);
                 this.sub = new Redis(this.settings.connection.options);
-                this.sub.ioBrokerSubscriptions = {};
 
                 this.sub.on('pmessage', (pattern, channel, message) => {
                     setImmediate(() => {
@@ -640,7 +647,7 @@ class ObjectsInRedisClient {
                         ready = true;
                     }
 
-                    for (const sub of Object.keys(this.sub.ioBrokerSubscriptions)) {
+                    for (const sub of Object.keys(this.userSubscriptions)) {
                         try {
                             await this.sub.psubscribe(sub);
                         } catch {
@@ -932,7 +939,7 @@ class ObjectsInRedisClient {
         }
     }
 
-    async setDefaultAcl(defaultNewAcl: ACLObject) {
+    async setDefaultAcl(defaultNewAcl: ACLObject | null) {
         this.defaultNewAcl = defaultNewAcl || {
             owner: CONSTS.SYSTEM_ADMIN_USER,
             ownerGroup: CONSTS.SYSTEM_ADMIN_GROUP,
@@ -949,10 +956,10 @@ class ObjectsInRedisClient {
         }
     }
 
-    getUserGroup(user: string, callback) {
+    getUserGroup(user: string, callback: GetUserGroupCallback) {
         return utils.getUserGroup(this, user, (error, user, userGroups, userAcl) => {
             if (error) {
-                this.log.error(`${this.namespace} ${error}`);
+                this.log.error(`${this.namespace} ${error.stack}`);
             }
             return tools.maybeCallback(callback, user, userGroups, userAcl);
         });
@@ -2272,7 +2279,19 @@ class ObjectsInRedisClient {
         );
     }
 
-    enableFileCache(enabled, options, callback) {
+    // no options provided by user
+    enableFileCache(enabled: boolean, callback?: (err: Error | null, res: boolean) => void): void;
+    // options provided by user
+    enableFileCache(
+        enabled: boolean,
+        options?: CallOptions,
+        callback?: (err: Error | null | undefined, res: boolean) => void
+    ): void;
+    enableFileCache(
+        enabled: boolean,
+        options?: any,
+        callback?: (err: Error | null | undefined, res: boolean) => void
+    ): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2292,14 +2311,29 @@ class ObjectsInRedisClient {
         });
     }
 
-    enableFileCacheAsync(enabled, options) {
+    enableFileCacheAsync(enabled: boolean, options?: CallOptions): Promise<boolean> {
         return new Promise((resolve, reject) =>
             this.enableFileCache(enabled, options, (err, res) => (err ? reject(err) : resolve(res)))
         );
     }
 
     // -------------- OBJECT FUNCTIONS -------------------------------------------
-    _subscribe(pattern, options, subClient, callback) {
+    // No callback provided by user, we return a Promise
+    _subscribe(pattern: string, options: CallOptions | null | undefined, asUser: boolean): Promise<void>;
+    // Callback provided by user, we call callback
+    _subscribe(
+        pattern: string,
+        options: CallOptions | null | undefined,
+        asUser: boolean,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    _subscribe(
+        pattern: string,
+        options: CallOptions | null | undefined,
+        asUser: boolean,
+        callback?: ioBroker.ErrorCallback
+    ): void | Promise<void> {
+        const subClient = asUser ? this.sub : this.subSystem;
         if (!subClient) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -2309,7 +2343,8 @@ class ObjectsInRedisClient {
                 this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
                 subClient.psubscribe(this.objNamespace + pattern, err => {
                     if (!err) {
-                        subClient.ioBrokerSubscriptions[this.objNamespace + pattern] = true;
+                        const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
+                        subscriptions[this.objNamespace + pattern] = true;
                     }
                     if (!--count) {
                         return tools.maybeCallbackWithError(callback, err);
@@ -2317,17 +2352,20 @@ class ObjectsInRedisClient {
                 });
             });
         } else {
-            this.log.silly(this.namespace + ' redis psubscribe ' + this.objNamespace + pattern);
+            this.log.silly(`${this.namespace} redis psubscribe ${this.objNamespace}${pattern}`);
             subClient.psubscribe(this.objNamespace + pattern, err => {
                 if (!err) {
-                    subClient.ioBrokerSubscriptions[this.objNamespace + pattern] = true;
+                    const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
+                    subscriptions[this.objNamespace + pattern] = true;
                 }
                 return tools.maybeCallbackWithError(callback, err);
             });
         }
     }
 
-    subscribeConfig(pattern, options, callback) {
+    subscribeConfig(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    subscribeConfig(pattern: string, options?: CallOptions, callback?: ioBroker.ErrorCallback): void;
+    subscribeConfig(pattern: string, options?: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2336,12 +2374,12 @@ class ObjectsInRedisClient {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
-                return this._subscribe(pattern, options, this.subSystem, callback);
+                return this._subscribe(pattern, options, false, callback);
             }
         });
     }
 
-    subscribe(pattern, options, callback) {
+    subscribe(pattern: string, options: CallOptions, callback: ioBroker.ErrorCallback) {
         return this.subscribeConfig(pattern, options, callback);
     }
 
@@ -2351,7 +2389,11 @@ class ObjectsInRedisClient {
         );
     }
 
-    subscribeUser(pattern, options, callback) {
+    // User has called the method without providing options
+    subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    // User has called the method by providing options
+    subscribeUser(pattern: string, options: CallOptions, callback?: ioBroker.ErrorCallback): void;
+    subscribeUser(pattern: string, options: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2360,7 +2402,7 @@ class ObjectsInRedisClient {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
-                return this._subscribe(pattern, options, this.sub, callback);
+                return this._subscribe(pattern, options, true, callback);
             }
         });
     }
@@ -2371,7 +2413,8 @@ class ObjectsInRedisClient {
         );
     }
 
-    private _unsubscribe(pattern: string, options: CallOptions, subClient, callback) {
+    private _unsubscribe(pattern: string, options: CallOptions, asUser: boolean, callback) {
+        const subClient = asUser ? this.sub : this.subSystem;
         if (!subClient) {
             return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -2380,17 +2423,19 @@ class ObjectsInRedisClient {
             pattern.forEach(pattern => {
                 this.log.silly(`${this.namespace} redis punsubscribe ${this.objNamespace}${pattern}`);
                 subClient.punsubscribe(this.objNamespace + pattern, err => {
-                    if (!err && subClient.ioBrokerSubscriptions[this.objNamespace + pattern] !== undefined) {
-                        delete subClient.ioBrokerSubscriptions[this.objNamespace + pattern];
+                    const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
+                    if (!err && subscriptions[this.objNamespace + pattern] !== undefined) {
+                        delete subscriptions[this.objNamespace + pattern];
                     }
                     !--count && typeof callback === 'function' && callback(err);
                 });
             });
         } else {
-            this.log.silly(this.namespace + ' redis punsubscribe ' + this.objNamespace + pattern);
+            this.log.silly(`${this.namespace} redis punsubscribe ${this.objNamespace}${pattern}`);
             subClient.punsubscribe(this.objNamespace + pattern, err => {
-                if (!err && subClient.ioBrokerSubscriptions[this.objNamespace + pattern] !== undefined) {
-                    delete subClient.ioBrokerSubscriptions[this.objNamespace + pattern];
+                const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
+                if (!err && subscriptions[this.objNamespace + pattern] !== undefined) {
+                    delete subscriptions[this.objNamespace + pattern];
                 }
                 typeof callback === 'function' && callback(err);
             });
@@ -2406,7 +2451,7 @@ class ObjectsInRedisClient {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
-                return this._unsubscribe(pattern, options, this.subSystem, callback);
+                return this._unsubscribe(pattern, options, false, callback);
             }
         });
     }
@@ -2430,7 +2475,7 @@ class ObjectsInRedisClient {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
-                return this._unsubscribe(pattern, options, this.sub, callback);
+                return this._unsubscribe(pattern, options, true, callback);
             }
         });
     }
@@ -3358,7 +3403,7 @@ class ObjectsInRedisClient {
         }
     }
 
-    delObject(id: string, options, callback) {
+    delObject(id: string, options: CallOptions, callback) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3388,7 +3433,7 @@ class ObjectsInRedisClient {
     }
 
     // this function is very ineffective. Because reads all objects and then process them
-    async _applyViewFunc(func, params: ioBroker.GetObjectViewParams, options, callback) {
+    async _applyViewFunc(func: ObjectViewFunction, params: ioBroker.GetObjectViewParams, options, callback) {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -3402,9 +3447,9 @@ class ObjectsInRedisClient {
          * @param arr - Array of objects which should be filtered
          * @param duplicateFiltering - if duplicates need to be filtered
          */
-        const filterEntries = (arr: any[], duplicateFiltering: boolean): any[] => {
+        const filterEntries = (arr: ObjectViewIdValue[], duplicateFiltering: boolean): ObjectViewIdValue[] => {
             if (duplicateFiltering) {
-                const included = {};
+                const included: Record<string, boolean> = {};
                 return arr.filter(obj => {
                     if (included[obj.id] || obj.id === 'parseError') {
                         return false;
@@ -3429,7 +3474,7 @@ class ObjectsInRedisClient {
         if (wildcardPos !== -1 && wildcardPos !== params.endkey.length - 1) {
             wildCardLastPos = false; // TODO do in LUA
         }
-        let m;
+        let m: any[] | null;
 
         // if start and and end keys are equal modify end key
         if (params.startkey === params.endkey) {
@@ -3537,9 +3582,9 @@ class ObjectsInRedisClient {
                 if (!this.client) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
                 }
-                let objs;
+                let res: string[] | [objStrings: string[], cursor: string];
                 try {
-                    objs = await this.client.evalsha([
+                    res = await this.client.evalsha([
                         this.scripts.script,
                         5,
                         this.objNamespace,
@@ -3550,24 +3595,28 @@ class ObjectsInRedisClient {
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
+                    return tools.maybeCallbackWithError(callback, e, result);
                 }
+
+                let objs: string[];
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
-                if (Array.isArray(objs[0])) {
-                    cursor = objs[1] || '0';
-                    objs = objs[0];
+                if (Array.isArray(res[0])) {
+                    cursor = res[1] || '0';
+                    objs = res[0];
                 } else {
                     cursor = '0';
                     filterRequired = false;
+                    objs = res as string[];
                 }
 
                 const currRows = objs.map(obj => {
                     try {
-                        obj = JSON.parse(obj);
+                        const scriptObj: ioBroker.ScriptObject = JSON.parse(obj);
+                        return { id: scriptObj._id, value: scriptObj };
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
                         return { id: 'parseError', value: null };
                     }
-                    return { id: obj._id, value: obj };
                 });
                 if (currRows.length) {
                     result.rows = [...result.rows, ...currRows];
@@ -3791,34 +3840,35 @@ class ObjectsInRedisClient {
                 }
             });
 
-            let objs;
+            let objs: (null | string)[];
             try {
                 objs = await this.client.mget(keys);
             } catch {
-                //ignore
+                objs = [];
             }
 
-            const _emit_ = (id, obj) => {
+            const _emit_ = (id: string, obj: ioBroker.Object) => {
                 result.rows.push({ id: id, value: obj });
             };
 
-            const f = eval('(' + func.map.replace(/^function\(([a-z0-9A-Z_]+)\)/g, 'function($1, emit)') + ')');
+            const f = eval(`(${func.map.replace(/^function\(([a-z0-9A-Z_]+)\)/g, 'function($1, emit)')})`);
 
-            objs = objs || [];
             for (let i = 0; i < keys.length; i++) {
+                const strObj = objs[i];
+                let obj: ioBroker.Object | null;
                 try {
-                    objs[i] = JSON.parse(objs[i]);
+                    obj = strObj !== null ? JSON.parse(strObj) : null;
                 } catch {
                     this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                     continue;
                 }
-                if (!utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
+                if (!utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                     continue;
                 }
 
-                if (objs[i]) {
+                if (obj) {
                     try {
-                        f(objs[i], _emit_);
+                        f(obj, _emit_);
                     } catch (e) {
                         this.log.error(`${this.namespace} Cannot execute map: ${e.message}`);
                     }
