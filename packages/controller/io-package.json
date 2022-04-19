@@ -19,18 +19,6 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "4.0.22": {
-        "en": "normalize JSONL options to prevent issues because of admin adding empty setting objects\nPrevent some crash cases reported by Sentry",
-        "de": "Normalisieren Sie JSONL-Optionen, um Probleme zu vermeiden, weil der Administrator leere Einstellungsobjekte hinzufügt\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",
-        "ru": "нормализуйте параметры JSONL, чтобы предотвратить проблемы из-за того, что администратор добавляет пустые объекты настроек\nПредотвращение некоторых случаев сбоев, о которых сообщает Sentry.",
-        "pt": "normalize as opções JSONL para evitar problemas devido ao administrador adicionar objetos de configuração vazios\nPrevenir alguns casos de travamento relatados pelo Sentinela",
-        "nl": "normaliseer JSONL-opties om problemen te voorkomen omdat de beheerder lege instellingsobjecten toevoegt\nVoorkom enkele door Sentry gemelde crashgevallen",
-        "fr": "normaliser les options JSONL pour éviter les problèmes dus à l'ajout par l'administrateur d'objets de réglage vides\nEmpêcher certains cas de plantage signalés par Sentry",
-        "it": "normalizzare le opzioni JSONL per evitare problemi dovuti all'aggiunta di oggetti di impostazione vuoti da parte dell'amministratore\nPrevenire alcuni casi di crash segnalati da Sentry",
-        "es": "normalice las opciones de JSONL para evitar problemas debido a que el administrador agrega objetos de configuración vacíos\nEvitar algunos casos de bloqueo informados por Sentry",
-        "pl": "znormalizować opcje JSONL, aby zapobiec problemom z powodu dodania przez administratora pustych obiektów ustawień\nZapobiegaj niektórym przypadkom awarii zgłaszanych przez Sentry",
-        "zh-cn": "规范化 JSONL 选项以防止由于管理员添加空设置对象而出现问题\n防止 Sentry 报告的一些崩溃案例"
-      },
       "4.0.21": {
         "en": "Fix Backup Restore crash case",
         "de": "Beheben Sie den Absturzfall der Sicherungswiederherstellung",
