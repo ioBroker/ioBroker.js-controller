@@ -6,6 +6,10 @@
 ## 4.1.0 - WORK IN PROGRESS Release Jana
 * Work in Progress
 
+## 4.0.23 (2022-04-19)
+* (AlCalzone) normalize JSONL options to prevent issues because of admin adding empty setting objects
+* (Apollon77/foxriver76) Prevent some crash cases reported by Sentry
+
 ## 4.0.21 (2022-03-12)
 * (Apollon77) Fix Backup Restore crash case
 
