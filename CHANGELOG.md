@@ -3,6 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+## __WORK IN PROGRESS__
+* (AlCalzone) normalize JSONL options to prevent issues because of admin adding empty setting objects
+* (Apollon77/foxriver76) Prevent some crash cases reported by Sentry
+
 ## 4.0.21 (2022-03-12)
 * (Apollon77) Fix Backup Restore crash case
 
