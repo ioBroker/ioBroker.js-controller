@@ -20,7 +20,7 @@ import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
-import type { ACLObject, GetUserGroupCallback } from './objectsUtils.js';
+import type { ACLObject, CheckFileRightsCallback, GetUserGroupCallback } from './objectsUtils.js';
 const ERRORS = CONSTS.ERRORS;
 
 type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
@@ -32,8 +32,6 @@ interface ViewFuncResult<T> {
 interface ObjectListResult {
     rows: ioBroker.GetObjectListItem[];
 }
-
-type GetUserGroupCallback = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
 interface ObjectsSettings {
     connected: () => void;
@@ -53,6 +51,7 @@ interface ObjectsSettings {
 }
 
 interface CallOptions {
+    groups?: string[];
     group?: string;
     user?: string;
     owner?: string;
@@ -917,7 +916,7 @@ class ObjectsInRedisClient {
         }
     }
 
-    checkFileRights(id: string, name: string, options: CallOptions, flag: any, callback: () => void) {
+    checkFileRights(id: string, name: string, options: CallOptions, flag: any, callback: CheckFileRightsCallback) {
         return utils.checkFileRights(this, id, name, options, flag, callback);
     }
 
@@ -2413,69 +2412,91 @@ class ObjectsInRedisClient {
         );
     }
 
-    private _unsubscribe(pattern: string, options: CallOptions, asUser: boolean, callback) {
+    private async _unsubscribe(
+        pattern: string | string[],
+        options: CallOptions | null | undefined,
+        asUser: boolean
+    ): Promise<void> {
         const subClient = asUser ? this.sub : this.subSystem;
         if (!subClient) {
-            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
-            let count = pattern.length;
-            pattern.forEach(pattern => {
-                this.log.silly(`${this.namespace} redis punsubscribe ${this.objNamespace}${pattern}`);
-                subClient.punsubscribe(this.objNamespace + pattern, err => {
-                    const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
-                    if (!err && subscriptions[this.objNamespace + pattern] !== undefined) {
-                        delete subscriptions[this.objNamespace + pattern];
-                    }
-                    !--count && typeof callback === 'function' && callback(err);
-                });
-            });
+            for (const _pattern of pattern) {
+                this.log.silly(`${this.namespace} redis punsubscribe ${this.objNamespace}${_pattern}`);
+                await subClient.punsubscribe(this.objNamespace + _pattern);
+                const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
+                if (subscriptions[this.objNamespace + _pattern] !== undefined) {
+                    delete subscriptions[this.objNamespace + _pattern];
+                }
+            }
         } else {
             this.log.silly(`${this.namespace} redis punsubscribe ${this.objNamespace}${pattern}`);
-            subClient.punsubscribe(this.objNamespace + pattern, err => {
-                const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
-                if (!err && subscriptions[this.objNamespace + pattern] !== undefined) {
-                    delete subscriptions[this.objNamespace + pattern];
-                }
-                typeof callback === 'function' && callback(err);
-            });
+
+            await subClient.punsubscribe(this.objNamespace + pattern);
+            const subscriptions = asUser ? this.userSubscriptions : this.systemSubscriptions;
+            if (subscriptions[this.objNamespace + pattern] !== undefined) {
+                delete subscriptions[this.objNamespace + pattern];
+            }
         }
     }
 
-    unsubscribeConfig(pattern, options, callback) {
+    // User has not provided any options
+    unsubscribeConfig(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    // User has provided options
+    unsubscribeConfig(
+        pattern: string | string[],
+        options?: CallOptions | null,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    unsubscribeConfig(
+        pattern: string | string[],
+        options?: CallOptions | ioBroker.ErrorCallback | null,
+        callback?: ioBroker.ErrorCallback
+    ): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
-        utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
+        utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
-                return this._unsubscribe(pattern, options, false, callback);
+                try {
+                    await this._unsubscribe(pattern, options, false);
+                    return tools.maybeCallback(callback);
+                } catch (e) {
+                    return tools.maybeCallbackWithRedisError(callback, e);
+                }
             }
         });
     }
 
-    unsubscribe(pattern, options, callback) {
+    unsubscribe(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void {
         return this.unsubscribeConfig(pattern, options, callback);
     }
 
-    unsubscribeAsync(pattern: string, options: CallOptions) {
+    unsubscribeAsync(pattern: string, options: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unsubscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );
     }
 
-    unsubscribeUser(pattern, options, callback) {
+    unsubscribeUser(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
-        utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
+        utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
-                return this._unsubscribe(pattern, options, true, callback);
+                try {
+                    await this._unsubscribe(pattern, options, true);
+                    return tools.maybeCallback(callback);
+                } catch (e) {
+                    return tools.maybeCallbackWithRedisError(callback, e);
+                }
             }
         });
     }
@@ -2523,7 +2544,7 @@ class ObjectsInRedisClient {
         }
     }
 
-    _chownObject(pattern, options, callback) {
+    _chownObject(pattern: string, options: CallOptions, callback: ioBroker.ErrorCallback): void {
         this.getConfigKeys(
             pattern,
             options,
@@ -2903,7 +2924,28 @@ class ObjectsInRedisClient {
         }
     }
 
-    getKeys(pattern: string, options, callback, dontModify) {
+    // User has provided a callback, thus we call the callback function
+    getKeys(
+        pattern: string,
+        options: CallOptions | null,
+        callback: ioBroker.GetConfigKeysCallback,
+        dontModify?: boolean
+    ): void;
+    // User has provided callback without options, we call it
+    getKeys(pattern: string, callback: ioBroker.GetConfigKeysCallback): void;
+    // User has provided no callback, we return a promise
+    getKeys(
+        pattern: string,
+        options?: CallOptions | null,
+        callback?: undefined,
+        dontModify?: boolean
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>>;
+    getKeys(
+        pattern: string,
+        options?: CallOptions | null | ioBroker.GetConfigKeysCallback,
+        callback?: ioBroker.GetConfigKeysCallback,
+        dontModify?: boolean
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2930,11 +2972,11 @@ class ObjectsInRedisClient {
         );
     }
 
-    getConfigKeys(pattern, options, callback, dontModify) {
+    getConfigKeys(pattern: string, options: CallOptions, callback, dontModify: boolean) {
         return this.getKeys(pattern, options, callback, dontModify);
     }
 
-    async _getObjects(keys, options, callback, dontModify) {
+    async _getObjects(keys: string[], options: CallOptions, callback, dontModify: boolean) {
         if (!keys) {
             return tools.maybeCallbackWithError(callback, 'no keys', null);
         }

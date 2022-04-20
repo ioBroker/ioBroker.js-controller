@@ -30,6 +30,8 @@ export interface ACLObject {
     file: number;
 }
 
+export type CheckFileRightsCallback = (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void;
+
 const mimeTypes = {
     '.css': { type: 'text/css', binary: false },
     '.bmp': { type: 'image/bmp', binary: true },
@@ -257,7 +259,7 @@ export function checkFileRights(
     name: string,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void
+    callback: CheckFileRightsCallback
 ): any {
     options = options || {};
     if (!options.user) {
@@ -629,7 +631,7 @@ export function checkObjectRights(
     objects: any,
     id: string | null,
     object: ioBroker.Object | null,
-    options: Record<string, any>,
+    options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
     callback: (err?: Error | null, options?: Record<string, any>) => void
 ): void | Promise<Record<string, any>> {
@@ -648,6 +650,8 @@ export function checkObjectRights(
 
     if (!options.acl) {
         return objects.getUserGroup(options.user, (_user: string, groups: any, acl: Record<string, any>) => {
+            // TODO: ts needs it because we are doing async call before
+            options = options || {};
             options.acl = acl || {};
             options.groups = groups;
             options.group = groups ? groups[0] : null;
