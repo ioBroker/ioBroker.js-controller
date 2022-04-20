@@ -257,9 +257,9 @@ export function checkFileRights(
     objects: any,
     id: string,
     name: string | null,
-    options: Record<string, any>,
+    options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: CheckFileRightsCallback
+    callback?: CheckFileRightsCallback
 ): any {
     options = options || {};
     if (!options.user) {
@@ -271,12 +271,10 @@ export function checkFileRights(
         };
     }
 
-    /*if (options.checked) {
-        return callback(null, options);
-    }*/
-
     if (!options.acl) {
         objects.getUserGroup(options.user, (_user: any, groups: any, acl: Record<string, any>) => {
+            // TODO ts needs it because we are doing something async in between
+            options = options || {};
             options.acl = acl || {};
             options.groups = groups;
             options.group = groups ? groups[0] : null;

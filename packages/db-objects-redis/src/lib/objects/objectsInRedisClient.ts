@@ -20,7 +20,7 @@ import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
-import type { ACLObject, CheckFileRightsCallback, GetUserGroupCallback } from './objectsUtils.js';
+import type { ACLObject, CheckFileRightsCallback } from './objectsUtils.js';
 const ERRORS = CONSTS.ERRORS;
 
 type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
@@ -77,6 +77,7 @@ interface WriteFileOptions extends CallOptions {
 }
 
 interface MetaObject {
+    modifiedAt?: number;
     binary?: boolean;
     mimeType?: string;
     notExists?: boolean;
@@ -932,9 +933,9 @@ class ObjectsInRedisClient {
     checkFileRights(
         id: string,
         name: string | null,
-        options: CallOptions,
-        flag: any,
-        callback: CheckFileRightsCallback
+        options?: CallOptions | null,
+        flag?: any,
+        callback?: CheckFileRightsCallback
     ) {
         return utils.checkFileRights(this, id, name, options, flag, callback);
     }
@@ -998,7 +999,7 @@ class ObjectsInRedisClient {
         id: string,
         name: string,
         data: Buffer,
-        options: { virtualFile: any; user: any; group: any; mode: any; mimeType: string },
+        options: { virtualFile?: any; user?: any; group?: any; mode?: any; mimeType?: string },
         callback: ioBroker.ErrorCallback | undefined,
         meta: {
             acl?: any;
@@ -1319,7 +1320,7 @@ class ObjectsInRedisClient {
         }
     }
 
-    unlink(id: string, name: string, options: CallOptions, callback) {
+    unlink(id: string, name: string, options: CallOptions, callback: ioBroker.ErrorCallback) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1355,7 +1356,7 @@ class ObjectsInRedisClient {
         );
     }
 
-    delFile(id: string, name: string, options: CallOptions, callback) {
+    delFile(id: string, name: string, options: CallOptions, callback: ioBroker.ErrorCallback) {
         return this.unlink(id, name, options, callback);
     }
 
@@ -1363,7 +1364,12 @@ class ObjectsInRedisClient {
         return this.unlinkAsync(id, name, options);
     }
 
-    async _readDir(id, name, options, callback) {
+    private async _readDir(
+        id: string,
+        name: string,
+        options: CallOptions,
+        callback: (err?: Error | null, res?: ioBroker.ReadDirResult[]) => void
+    ) {
         name = this.normalizeFilename(name);
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
@@ -1383,11 +1389,11 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
             }
 
-            const result = [];
+            const result: ioBroker.ReadDirResult[] = [];
             if (!keys || !keys.length) {
                 return tools.maybeCallbackWithError(callback, null, result);
             }
-            let lastDir;
+            let lastDir: string;
             keys.sort().forEach(dir => {
                 dir = dir.substring(this.fileNamespaceL, dir.indexOf('$%$'));
                 if (dir !== lastDir) {
@@ -1419,7 +1425,7 @@ class ObjectsInRedisClient {
         const end = '$%$meta'.length;
 
         const baseName = name + (name.length ? '/' : '');
-        const dirs = [];
+        const dirs: string[] = [];
         const deepLevel = baseName.split('/').length;
         if (!keys || !keys.length) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND, []);
@@ -1450,9 +1456,9 @@ class ObjectsInRedisClient {
         }
 
         // Check permissions
-        let objs;
+        let strObjs: (null | string)[];
         try {
-            objs = await this.client.mget(keys);
+            strObjs = await this.client.mget(keys);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
         }
@@ -1463,7 +1469,6 @@ class ObjectsInRedisClient {
             options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
             (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
-        objs = objs || [];
         for (let i = 0; i < keys.length; i++) {
             const file = keys[i].substring(start + baseName.length, keys[i].length - end);
             while (dirs.length && dirs[0] < file) {
@@ -1474,34 +1479,38 @@ class ObjectsInRedisClient {
                 });
             }
 
+            const strObj = strObjs[i];
+            let obj: ioBroker.Object | null;
             try {
-                objs[i] = JSON.parse(objs[i]);
+                obj = strObj ? JSON.parse(strObj) : null;
             } catch {
-                this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
+                this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${strObj}`);
                 continue;
             }
-            if (dontCheck || utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
-                if (!objs[i] || objs[i].virtualFile) {
+            if (dontCheck || utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
+                if (!obj || obj.virtualFile) {
+                    // virtual file, ignore
                     continue;
-                } // virtual file, ignore
-                objs[i].acl = objs[i].acl || {};
+                }
+                obj.acl = obj.acl || {};
                 if (
                     options.user !== CONSTS.SYSTEM_ADMIN_USER &&
+                    options.groups &&
                     options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) === -1
                 ) {
-                    objs[i].acl.read = !!(objs[i].acl.permissions & CONSTS.ACCESS_EVERY_READ);
-                    objs[i].acl.write = !!(objs[i].acl.permissions & CONSTS.ACCESS_EVERY_WRITE);
+                    obj.acl.read = !!(obj.acl.permissions & CONSTS.ACCESS_EVERY_READ);
+                    obj.acl.write = !!(obj.acl.permissions & CONSTS.ACCESS_EVERY_WRITE);
                 } else {
-                    objs[i].acl.read = true;
-                    objs[i].acl.write = true;
+                    obj.acl.read = true;
+                    obj.acl.write = true;
                 }
                 result.push({
                     file: file,
-                    stats: objs[i].stats,
+                    stats: obj.stats,
                     isDir: false,
-                    acl: objs[i].acl,
-                    modifiedAt: objs[i].modifiedAt,
-                    createdAt: objs[i].createdAt
+                    acl: obj.acl,
+                    modifiedAt: obj.modifiedAt,
+                    createdAt: obj.createdAt
                 });
             }
         }
@@ -1515,7 +1524,7 @@ class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
-    readDir(id: string, name: string, options: CallOptions, callback) {
+    readDir(id: string, name: string, options: CallOptions, callback: ioBroker.ReadDirCallback) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1555,7 +1564,7 @@ class ObjectsInRedisClient {
         );
     }
 
-    private async _renameHelper(keys: string[], oldBase, newBase, callback) {
+    private async _renameHelper(keys: string[], oldBase: string, newBase: string, callback: ioBroker.ErrorCallback) {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         } else {
@@ -1584,7 +1593,14 @@ class ObjectsInRedisClient {
         }
     }
 
-    async _rename(id: string, oldName: string, newName: string, options: CallOptions, callback, meta) {
+    async _rename(
+        id: string,
+        oldName: string,
+        newName: string,
+        options: CallOptions,
+        callback: ioBroker.ErrorCallback,
+        meta: MetaObject
+    ) {
         const oldMetaID = this.getFileId(id, oldName, true);
         const oldDataID = this.getFileId(id, oldName, false);
         const newMetaID = this.getFileId(id, newName, true);
@@ -1631,9 +1647,9 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
             }
             // Check permissions
-            let objs;
+            let strObjs: (string | null)[];
             try {
-                objs = await this.client.mget(keys);
+                strObjs = await this.client.mget(keys);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
@@ -1643,17 +1659,18 @@ class ObjectsInRedisClient {
                 options.group !== CONSTS.SYSTEM_ADMIN_GROUP ||
                 (options.groups && options.groups.indexOf(CONSTS.SYSTEM_ADMIN_GROUP) !== -1);
 
-            objs = objs || [];
             if (!dontCheck) {
                 result = [];
                 for (let i = 0; i < keys.length; i++) {
+                    const strObj = strObjs[i];
+                    let obj: ioBroker.Object | null;
                     try {
-                        objs[i] = JSON.parse(objs[i]);
+                        obj = strObj ? JSON.parse(strObj) : null;
                     } catch {
-                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
+                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${strObj}`);
                         continue;
                     }
-                    if (utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
+                    if (utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                         result.push(keys[i]);
                     }
                 }
@@ -1672,7 +1689,13 @@ class ObjectsInRedisClient {
         }
     }
 
-    rename(id, oldName, newName, options, callback) {
+    rename(
+        id: string,
+        oldName: string,
+        newName: string,
+        options: CallOptions | null,
+        callback: ioBroker.ErrorCallback
+    ) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1707,10 +1730,10 @@ class ObjectsInRedisClient {
 
         this.checkFileRights(id, oldName, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
-                typeof callback === 'function' && callback(err);
+                return tools.maybeCallbackWithError(callback, err);
             } else {
                 if (!options.acl.file.write) {
-                    typeof callback === 'function' && callback(ERRORS.ERROR_PERMISSION);
+                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
                     this._rename(id, oldName, newName, options, callback, meta);
                 }
@@ -1724,13 +1747,13 @@ class ObjectsInRedisClient {
         );
     }
 
-    async _touch(id: string, name: string, options: CallOptions, callback, meta) {
+    async _touch(id: string, name: string, options: CallOptions, callback: ioBroker.ErrorCallback, meta: MetaObject) {
         const metaID = this.getFileId(id, name, true);
         if (!this.client) {
-            return typeof callback === 'function' && callback(ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
         if (!meta || meta.notExists) {
-            return typeof callback === 'function' && callback(ERRORS.ERROR_NOT_FOUND);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
         meta.modifiedAt = Date.now();
         try {
