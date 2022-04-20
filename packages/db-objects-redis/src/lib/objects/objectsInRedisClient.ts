@@ -2813,7 +2813,7 @@ class ObjectsInRedisClient {
         );
     }
 
-    private async _getObject(id: string, options: CallOptions, callback) {
+    private async _getObject(id: string, options: CallOptions, callback: ioBroker.GetObjectCallback) {
         if (!this.client) {
             return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -2878,7 +2878,8 @@ class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
-                    return this._getObject(id, options, callback);
+                    // @ts-expect-error the callback is there else we would have returned
+                    return this._getObject(id, options || {}, callback);
                 }
             });
         }
@@ -2893,7 +2894,12 @@ class ObjectsInRedisClient {
         );
     }
 
-    private async _getKeys(pattern: string, options: CallOptions, callback, dontModify: boolean) {
+    private async _getKeys(
+        pattern: string,
+        options: CallOptions,
+        callback?: ioBroker.GetConfigKeysCallback,
+        dontModify?: boolean
+    ) {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -2937,7 +2943,7 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, null, result);
             } else {
                 // Check permissions
-                let metas;
+                let metas: (string | null)[];
                 try {
                     metas = await this.client.mget(keys);
                 } catch (e) {
@@ -2945,14 +2951,16 @@ class ObjectsInRedisClient {
                 }
                 metas = metas || [];
                 for (let i = 0; i < keys.length; i++) {
+                    const metaStr = metas[i];
+                    let meta: ioBroker.Object;
                     try {
-                        metas[i] = JSON.parse(metas[i]);
+                        meta = metaStr ? JSON.parse(metaStr) : null;
                     } catch {
-                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${metas[i]}`);
+                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${metaStr}`);
                         continue;
                     }
 
-                    if (r.test(keys[i]) && utils.checkObject(metas[i], options, CONSTS.ACCESS_READ)) {
+                    if (r.test(keys[i]) && utils.checkObject(meta, options, CONSTS.ACCESS_READ)) {
                         if (!dontModify) {
                             result.push(keys[i].substring(this.objNamespaceL));
                         } else {
@@ -2970,7 +2978,7 @@ class ObjectsInRedisClient {
     // User has provided a callback, thus we call the callback function
     getKeys(
         pattern: string,
-        options: CallOptions | null,
+        options: CallOptions | null | undefined,
         callback: ioBroker.GetConfigKeysCallback,
         dontModify?: boolean
     ): void;
@@ -3003,30 +3011,38 @@ class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
-                    return this._getKeys(pattern, options, callback, dontModify);
+                    return this._getKeys(pattern, options || {}, callback, dontModify);
                 }
             });
         }
     }
 
-    getKeysAsync(id: string, options?: CallOptions): Promise<string[]> {
+    getKeysAsync(
+        id: string,
+        options?: CallOptions
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>> {
         return new Promise((resolve, reject) =>
             this.getKeys(id, options, (err, keys) => (err ? reject(err) : resolve(keys)))
         );
     }
 
-    getConfigKeys(pattern: string, options: CallOptions, callback, dontModify: boolean) {
+    getConfigKeys(
+        pattern: string,
+        options: CallOptions,
+        callback: ioBroker.GetConfigKeysCallback,
+        dontModify: boolean
+    ) {
         return this.getKeys(pattern, options, callback, dontModify);
     }
 
     async _getObjects(
         keys: string[],
-        options: CallOptions | null,
-        callback: ioBroker.GetObjectsCallback,
+        options: CallOptions,
+        callback?: (err?: Error | null, objs?: ioBroker.Object[]) => void,
         dontModify?: boolean
     ) {
         if (!keys) {
-            return tools.maybeCallbackWithError(callback, 'no keys', null);
+            return tools.maybeCallbackWithError(callback, 'no keys');
         }
         if (!keys.length) {
             return tools.maybeCallbackWithError(callback, null, []);
@@ -3065,15 +3081,18 @@ class ObjectsInRedisClient {
 
             if (!dontCheck) {
                 for (let i = 0; i < objs.length; i++) {
+                    const strObj = objs[i];
+                    let obj: ioBroker.Object | null;
                     try {
-                        objs[i] = JSON.parse(objs[i]);
+                        obj = strObj ? JSON.parse(strObj) : null;
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON ${_keys[i]}: ${objs[i]}`);
+                        // TODO why permission error? It should better be something like parse error
                         result.push({ error: ERRORS.ERROR_PERMISSION });
                         continue;
                     }
-                    if (utils.checkObject(objs[i], options, CONSTS.ACCESS_READ)) {
-                        result.push(objs[i]);
+                    if (utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
+                        result.push(obj);
                     } else {
                         result.push({ error: ERRORS.ERROR_PERMISSION });
                     }
@@ -3095,15 +3114,16 @@ class ObjectsInRedisClient {
     getObjects(
         keys: string[],
         options?: CallOptions | null,
-        callback?: ioBroker.GetObjectsCallback,
+        callback?: (err?: Error | null, objs?: ioBroker.Object[]) => void,
         dontModify?: boolean
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectsCallback>> {
+    ): void | Promise<ioBroker.Object[]> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
+                // @ts-expect-error need to clarify, that objs is not undefined if no error is provided
                 this.getObjects(keys, options, (err, objs) => (err ? reject(err) : resolve(objs)), dontModify)
             );
         }
@@ -3128,7 +3148,11 @@ class ObjectsInRedisClient {
         );
     }
 
-    async _getObjectsByPattern(pattern: string, options: CallOptions, callback: ioBroker.GetObjectsCallback) {
+    async _getObjectsByPattern(
+        pattern: string,
+        options: CallOptions,
+        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void
+    ) {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -3152,7 +3176,11 @@ class ObjectsInRedisClient {
         this._getObjects(keys, options, callback, true);
     }
 
-    getObjectsByPattern(pattern: string, options: CallOptions | null, callback: ioBroker.GetObjectsCallback) {
+    getObjectsByPattern(
+        pattern: string,
+        options: CallOptions | null,
+        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void
+    ): void | Promise<ioBroker.Object[]> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3170,7 +3198,7 @@ class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
-                    return this._getObjectsByPattern(pattern, options, callback);
+                    return this._getObjectsByPattern(pattern, options || {}, callback);
                 }
             });
         }
@@ -3255,13 +3283,13 @@ class ObjectsInRedisClient {
                         obj.common.custom = oldObj.common.custom;
                     } else if (obj.common && obj.common.custom && oldObj.common.custom) {
                         // merge together
-                        Object.keys(oldObj.common.custom).forEach(attr => {
+                        for (const attr of Object.keys(oldObj.common.custom)) {
                             if (obj.common.custom[attr] === null) {
                                 delete obj.common.custom[attr];
                             } else if (obj.common.custom[attr] === undefined) {
                                 obj.common.custom[attr] = oldObj.common.custom[attr];
                             }
-                        });
+                        }
                     }
                     // remove custom if no one attribute inside
                     if (obj.common && obj.common.custom) {
@@ -4470,7 +4498,7 @@ class ObjectsInRedisClient {
         return this.setObject(id, obj, options, callback);
     }
 
-    delConfig(id: string, options: CallOptions, callback) {
+    delConfig(id: string, options: CallOptions, callback: ioBroker.ErrorCallback) {
         return this.delObject(id, options, callback);
     }
 
@@ -4478,7 +4506,12 @@ class ObjectsInRedisClient {
         return this.getObject(id, options, callback);
     }
 
-    getConfigs(keys: string[], options: CallOptions, callback: ioBroker.GetObjectsCallback, dontModify: boolean) {
+    getConfigs(
+        keys: string[],
+        options: CallOptions,
+        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void,
+        dontModify: boolean
+    ) {
         return this.getObjects(keys, options, callback, dontModify);
     }
 
@@ -4489,7 +4522,12 @@ class ObjectsInRedisClient {
      * @param options
      * @param callback
      */
-    private _findObject(idOrName: string, type: string, options: CallOptions, callback) {
+    private _findObject(
+        idOrName: string,
+        type: string,
+        options: CallOptions,
+        callback: (err?: Error | null, idOrName?: string | null, commonName?: Record<string, any> | string) => void
+    ) {
         this._getObject(idOrName, options, (err, obj) => {
             // Assume it is ID
             if (
@@ -4503,6 +4541,14 @@ class ObjectsInRedisClient {
                     '*',
                     options,
                     async (err, keys) => {
+                        if (!this.client) {
+                            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                        }
+
+                        if (!keys || err) {
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
+
                         let objs;
                         try {
                             objs = await this.client.mget(keys);
@@ -4512,19 +4558,21 @@ class ObjectsInRedisClient {
                         objs = objs || [];
                         // Assume it is name
                         for (let i = 0; i < keys.length; i++) {
+                            const strObj = objs[i];
+                            let obj: ioBroker.Object | null;
                             try {
-                                objs[i] = JSON.parse(objs[i]);
+                                obj = strObj ? JSON.parse(strObj) : null;
                             } catch {
                                 this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                                 continue;
                             }
                             if (
-                                objs[i] &&
-                                objs[i].common &&
-                                objs[i].common.name === idOrName &&
-                                (!type || objs[i].common.type === type)
+                                obj &&
+                                obj.common &&
+                                obj.common.name === idOrName &&
+                                (!type || obj.common.type === type)
                             ) {
-                                return tools.maybeCallbackWithError(callback, null, objs[i]._id, idOrName);
+                                return tools.maybeCallbackWithError(callback, null, obj._id, idOrName);
                             }
                         }
                         return tools.maybeCallbackWithError(callback, null, null, idOrName);
