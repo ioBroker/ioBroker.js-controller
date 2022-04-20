@@ -111,7 +111,7 @@ function copyAttributes(
  * @param newObject destination object
  *
  */
-export function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>): boolean {
+export function checkNonEditable(oldObject: Record<string, any> | null, newObject: Record<string, any>): boolean {
     if (!oldObject) {
         return true;
     }

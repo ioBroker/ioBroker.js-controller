@@ -256,7 +256,7 @@ export function checkFile(
 export function checkFileRights(
     objects: any,
     id: string,
-    name: string,
+    name: string | null,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags,
     callback: CheckFileRightsCallback
@@ -350,7 +350,7 @@ function getDefaultAdminRights(
 
 export type GetUserGroupPromiseReturn = [user: string, groups: string[], acl: ioBroker.ObjectPermissions];
 
-export type GetUserGroupCallback = (
+type GetUserGroupCallback = (
     err: Error | null | undefined,
     user: string,
     groups: string[],
