@@ -631,7 +631,7 @@ export function checkObjectRights(
     object: ioBroker.Object | null,
     options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err?: Error | null, options?: Record<string, any>) => void
+    callback: (err: Error | null | undefined, options: Record<string, any>) => void
 ): void | Promise<Record<string, any>> {
     options = options || {};
 
