@@ -231,13 +231,12 @@ export class ObjectsInRedisClient {
 
         let ready = false;
         let initError = false;
-        let ignoreErrors = false;
         let connected = false;
         let reconnectCounter = 0;
         let errorLogged = false;
 
         this.settings.connection.options.retryStrategy = (reconnectCount: number) => {
-            if (!ready && initError && ignoreErrors) {
+            if (!ready && initError) {
                 return new Error('No more tries');
             }
             if (this.stop) {
@@ -325,7 +324,7 @@ export class ObjectsInRedisClient {
         this.client.on('error', error => {
             this.settings.connection.enhancedLogging &&
                 this.log.silly(
-                    `${this.namespace} Redis ERROR Objects: (${ignoreErrors}/${this.stop}) ${error.message} / ${error.stack}`
+                    `${this.namespace} Redis ERROR Objects: (${this.stop}) ${error.message} / ${error.stack}`
                 );
             if (this.stop) {
                 return;
@@ -333,7 +332,7 @@ export class ObjectsInRedisClient {
             if (!ready) {
                 initError = true;
                 // Seems we have a socket.io server
-                if (!ignoreErrors && error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
+                if (error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
                     this.log.error(
                         `${this.namespace} Could not connect to objects database at ${this.settings.connection.options.host}:${this.settings.connection.options.port} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`
                     );
@@ -367,7 +366,7 @@ export class ObjectsInRedisClient {
         });
 
         this.client.on('reconnecting', () => {
-            if (connected && !ready && !initError && !ignoreErrors) {
+            if (connected && !ready && !initError) {
                 reconnectCounter++;
             }
 
@@ -392,7 +391,6 @@ export class ObjectsInRedisClient {
                 return;
             }
             initError = false;
-            ignoreErrors = false;
 
             this.log.debug(`${this.namespace} Objects client ready ... initialize now`);
             try {
@@ -3340,7 +3338,7 @@ export class ObjectsInRedisClient {
         id: string,
         obj: ioBroker.SettableObject,
         options: CallOptions,
-        callback: ioBroker.SetObjectCallback
+        callback?: ioBroker.SetObjectCallback
     ) {
         if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
             return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
@@ -3588,8 +3586,7 @@ export class ObjectsInRedisClient {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
-                // @ts-expect-error we have ensured that options is an object
-                return this._setObject(id, obj, options, callback);
+                return this._setObject(id, obj, options || {}, callback);
             }
         });
     }
