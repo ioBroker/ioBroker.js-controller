@@ -3247,7 +3247,6 @@ async function getInstances() {
 
         for (const instance of instances) {
             // register all common fields, that may not be deleted, like "mobile" or "history"
-            //noinspection JSUnresolvedVariable
             if (objects.addPreserveSettings && instance.common.preserveSettings) {
                 //noinspection JSUnresolvedVariable
                 objects.addPreserveSettings(instance.common.preserveSettings);

@@ -8,19 +8,20 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
-import Redis from 'ioredis';
 import type IORedis from 'ioredis';
+import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { isDeepStrictEqual } from 'util';
 import deepClone from 'deep-clone';
+import type { ACLObject, CheckFileRightsCallback } from './objectsUtils.js';
 import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
-import type { ACLObject, CheckFileRightsCallback } from './objectsUtils.js';
+
 const ERRORS = CONSTS.ERRORS;
 
 type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
@@ -97,6 +98,11 @@ interface MetaObject {
     acl?: any;
 }
 
+interface ChmodMetaObject extends MetaObject {
+    modifiedAt: number;
+    createdAt: number;
+}
+
 interface Script {
     name: string;
     hash: string;
@@ -104,7 +110,7 @@ interface Script {
     loaded?: boolean;
 }
 
-class ObjectsInRedisClient {
+export class ObjectsInRedisClient {
     private client: IORedis.Redis | null;
     private readonly fileNamespace: string;
     private readonly redisNamespace: string;
@@ -1332,8 +1338,7 @@ class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (meta && meta.notExists) {
-            const files = await this._rm(id, name, options);
-            return files;
+            return this._rm(id, name, options);
         } else {
             const metaID = this.getFileId(id, name, true);
             const dataID = this.getFileId(id, name, false);
@@ -1903,7 +1908,6 @@ class ObjectsInRedisClient {
                         }
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
-                        continue;
                     }
                 }
             } else {
@@ -2035,7 +2039,7 @@ class ObjectsInRedisClient {
         name: string,
         options: CallOptions,
         callback: ioBroker.ChownFileCallback,
-        meta: MetaObject
+        meta: ChmodMetaObject
     ): Promise<ioBroker.ChownFileResult | void> {
         if (!meta) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
@@ -2251,7 +2255,7 @@ class ObjectsInRedisClient {
         name: string,
         options: CallOptions,
         callback: ioBroker.ChownFileCallback,
-        meta: MetaObject
+        meta: ChmodMetaObject
     ) {
         if (!meta) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
@@ -2547,11 +2551,7 @@ class ObjectsInRedisClient {
         );
     }
 
-    private async _unsubscribe(
-        pattern: string | string[],
-        options: CallOptions | null | undefined,
-        asUser: boolean
-    ): Promise<void> {
+    private async _unsubscribe(pattern: string | string[], asUser: boolean): Promise<void> {
         const subClient = asUser ? this.sub : this.subSystem;
         if (!subClient) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
@@ -2593,12 +2593,12 @@ class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
+        utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
                 try {
-                    await this._unsubscribe(pattern, options, false);
+                    await this._unsubscribe(pattern, false);
                     return tools.maybeCallback(callback);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
@@ -2622,12 +2622,12 @@ class ObjectsInRedisClient {
             callback = options;
             options = null;
         }
-        utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
+        utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 try {
-                    await this._unsubscribe(pattern, options, true);
+                    await this._unsubscribe(pattern, true);
                     return tools.maybeCallback(callback);
                 } catch (e) {
                     return tools.maybeCallbackWithRedisError(callback, e);
@@ -3222,6 +3222,15 @@ class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
+    // No callback provided, we return a Promise
+    getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.Object[]>;
+    // Callback provided, thus we call it
+    getObjects(
+        keys: string[],
+        options: CallOptions | null,
+        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void,
+        dontModify?: boolean
+    ): void;
     getObjects(
         keys: string[],
         options?: CallOptions | null,
@@ -3253,10 +3262,8 @@ class ObjectsInRedisClient {
         }
     }
 
-    getObjectsAsync(keys: string[], options?: CallOptions | null) {
-        return new Promise((resolve, reject) =>
-            this.getObjects(keys, options, (err, objs) => (err ? reject(err) : resolve(objs)))
-        );
+    getObjectsAsync(keys: string[], options?: CallOptions | null): Promise<ioBroker.Object[]> {
+        return this.getObjects(keys, options);
     }
 
     async _getObjectsByPattern(
@@ -4777,7 +4784,9 @@ class ObjectsInRedisClient {
         }
 
         for (const setting of settings) {
+            // @ts-expect-error TODO: decide https://github.com/ioBroker/ioBroker.js-controller/issues/507
             if (this.preserveSettings.indexOf(setting) === -1) {
+                // @ts-expect-error TODO: decide https://github.com/ioBroker/ioBroker.js-controller/issues/507
                 this.preserveSettings.push(setting);
             }
         }
@@ -4803,7 +4812,7 @@ class ObjectsInRedisClient {
         }
     }
 
-    private async _destroyDB(options: CallOptions, callback: ioBroker.ErrorCallback) {
+    private async _destroyDB(callback: ioBroker.ErrorCallback) {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         } else {
@@ -4830,7 +4839,7 @@ class ObjectsInRedisClient {
                 if (!options.acl.file.write || options.user !== CONSTS.SYSTEM_ADMIN_USER) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
-                    return this._destroyDB(options, callback);
+                    return this._destroyDB(callback);
                 }
             }
         });
@@ -5198,5 +5207,3 @@ class ObjectsInRedisClient {
         return this.client.get(this.metaNamespace + id);
     }
 }
-
-module.exports = ObjectsInRedisClient;
