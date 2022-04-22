@@ -21,6 +21,7 @@ import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
 
 const ERRORS = CONSTS.ERRORS;
 
@@ -34,6 +35,10 @@ interface ViewFuncResult<T> {
 
 interface ObjectListResult {
     rows: ioBroker.GetObjectListItem[];
+}
+
+interface RedisConnectionOptions extends ConnectionOptions {
+    redisNamespace?: string;
 }
 
 interface ObjectsSettings {
@@ -50,7 +55,7 @@ interface ObjectsSettings {
     defaultNewAcl?: ACLObject;
     metaNamespace?: string;
     redisNamespace?: string;
-    connection: Record<string, any>; // TODO: wait for states-redis pr
+    connection: RedisConnectionOptions;
 }
 
 type FileObject = ioBroker.Object & {
@@ -139,15 +144,16 @@ export class ObjectsInRedisClient {
 
     constructor(settings: ObjectsSettings) {
         this.settings = settings || {};
-        this.redisNamespace =
-            (this.settings.redisNamespace ||
-                (this.settings.connection && this.settings.connection.redisNamespace) ||
-                'cfg') + '.';
-        this.fileNamespace = this.redisNamespace + 'f.';
+        this.redisNamespace = `${
+            this.settings.redisNamespace ||
+            (this.settings.connection && this.settings.connection.redisNamespace) ||
+            'cfg'
+        }.`;
+        this.fileNamespace = `${this.redisNamespace}f.`;
         this.fileNamespaceL = this.fileNamespace.length;
-        this.objNamespace = this.redisNamespace + 'o.';
-        this.setNamespace = this.redisNamespace + 's.';
-        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.objNamespace = `${this.redisNamespace}o.`;
+        this.setNamespace = `${this.redisNamespace}s.`;
+        this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
         this.objNamespaceL = this.objNamespace.length;
         this.supportedProtocolVersions = ['4'];
 
@@ -280,12 +286,14 @@ export class ObjectsInRedisClient {
                 `${this.namespace} Redis Objects: Use File Socket for connection: ${this.settings.connection.options.path}`
             );
         } else if (Array.isArray(this.settings.connection.host)) {
+            const configuredPort = this.settings.connection.port;
             // Host is an array means we use a sentinel
-            const defaultPort = Array.isArray(this.settings.connection.port) ? null : this.settings.connection.port;
+            const defaultPort = Array.isArray(configuredPort) ? null : configuredPort;
 
             this.settings.connection.options.sentinels = this.settings.connection.host.map((redisNode, idx) => ({
                 host: redisNode,
-                port: defaultPort || this.settings.connection.port[idx]
+                // @ts-expect-error ts does not get that if defPort is null we have an array
+                port: defaultPort === null ? configuredPort[idx] : defaultPort
             }));
 
             this.settings.connection.options.name = this.settings.connection.sentinelName
@@ -516,9 +524,9 @@ export class ObjectsInRedisClient {
                     }
                     this.settings.connection.enhancedLogging &&
                         this.log.silly(
-                            this.namespace +
-                                ' PubSub System client Objects No redis connection: ' +
-                                JSON.stringify(error)
+                            `${this.namespace} PubSub System client Objects No redis connection: ${JSON.stringify(
+                                error
+                            )}`
                         );
                 });
 
@@ -546,15 +554,17 @@ export class ObjectsInRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                `${this.namespace} Objects ${ready ? 'system re' : ''}connected to redis: ${
-                                    this.settings.connection.host
-                                }`
+                                `${this.namespace} Objects ${
+                                    ready ? 'system re' : ''
+                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
-                                `${this.namespace} Objects ${ready ? 'system re' : ''}connected to redis: ${
+                                `${this.namespace} Objects ${
+                                    ready ? 'system re' : ''
+                                }connected to redis: ${tools.maybeArrayToString(
                                     this.settings.connection.host
-                                }:${this.settings.connection.port}`
+                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -672,15 +682,17 @@ export class ObjectsInRedisClient {
                     if (--initCounter < 1) {
                         if (this.settings.connection.port === 0) {
                             this.log.debug(
-                                `${this.namespace} Objects ${ready ? 'user re' : ''}connected to redis: ${
-                                    this.settings.connection.host
-                                }`
+                                `${this.namespace} Objects ${
+                                    ready ? 'user re' : ''
+                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
-                                `${this.namespace} Objects ${ready ? 'user re' : ''}connected to redis: ${
+                                `${this.namespace} Objects ${
+                                    ready ? 'user re' : ''
+                                }connected to redis: ${tools.maybeArrayToString(
                                     this.settings.connection.host
-                                }:${this.settings.connection.port}`
+                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -796,21 +808,17 @@ export class ObjectsInRedisClient {
             if (--initCounter < 1) {
                 if (this.settings.connection.port === 0) {
                     this.log.debug(
-                        this.namespace +
-                            ' Objects ' +
-                            (ready ? 'client re' : '') +
-                            'connected to redis: ' +
-                            this.settings.connection.host
+                        `${this.namespace} Objects ${
+                            ready ? 'client re' : ''
+                        }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
                     );
                 } else {
                     this.log.debug(
-                        this.namespace +
-                            ' Objects ' +
-                            (ready ? 'client re' : '') +
-                            'connected to redis: ' +
-                            this.settings.connection.host +
-                            ':' +
-                            this.settings.connection.port
+                        `${this.namespace} Objects ${
+                            ready ? 'client re' : ''
+                        }connected to redis: ${tools.maybeArrayToString(
+                            this.settings.connection.host
+                        )}:${tools.maybeArrayToString(this.settings.connection.port)}`
                     );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -819,7 +827,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    getStatus() {
+    getStatus(): DbStatus {
         return { type: 'redis', server: false };
     }
 
@@ -905,7 +913,7 @@ export class ObjectsInRedisClient {
         try {
             normalized = utils.sanitizePath(id, name);
         } catch {
-            this.log.debug(this.namespace + ' Invalid file path ' + id + '/' + name);
+            this.log.debug(`${this.namespace} Invalid file path ${id}/${name}`);
             return '';
         }
         if (id !== '*') {
@@ -1441,7 +1449,7 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, null, result);
         }
 
-        const dirID = this.getFileId(id, name + (name.length ? '/' : '') + '*');
+        const dirID = this.getFileId(id, `${name}${name.length ? '/' : ''}*`);
 
         let keys;
         try {
@@ -1996,7 +2004,7 @@ export class ObjectsInRedisClient {
                     options = options || {};
                     options.virtualFile = true; // this is a virtual File
                     const realName = dirName + (dirName.endsWith('/') ? '' : '/');
-                    this.writeFile(id, realName + '_data.json', '', options, callback);
+                    this.writeFile(id, `${realName}_data.json`, '', options, callback);
                 }
             }
         });
@@ -3532,7 +3540,6 @@ export class ObjectsInRedisClient {
                 await this.client.multi(commands).exec();
             }
 
-            //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
             // object updated -> if type changed to meta -> cache
             if (oldObj && oldObj.type === 'meta' && this.existingMetaObjects[id] === false) {
                 this.existingMetaObjects[id] = true;
@@ -3661,7 +3668,7 @@ export class ObjectsInRedisClient {
                 if (this.existingMetaObjects[id]) {
                     this.existingMetaObjects[id] = false;
                 }
-                //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' null');
+
                 await this.client.publish(this.objNamespace + id, 'null');
                 return tools.maybeCallback(callback);
             } catch (e) {
@@ -3754,7 +3761,7 @@ export class ObjectsInRedisClient {
 
         // if start and and end keys are equal modify end key
         if (params.startkey === params.endkey) {
-            params.endkey = params.endkey + '\u0000';
+            params.endkey = `${params.endkey}\u0000`;
         }
 
         const matches: string[] | null = func.map.match(
@@ -4081,7 +4088,7 @@ export class ObjectsInRedisClient {
                 this.log.debug(`${this.namespace} No suitable Lua script, fallback to keys!: ${func.map}`);
             }
 
-            let searchKeys = this.objNamespace + '*';
+            let searchKeys = `${this.objNamespace}*`;
             if (wildcardPos !== -1) {
                 // Wildcard included
                 searchKeys = this.objNamespace + params.endkey.replace(/\u9999/g, '*');
@@ -4331,8 +4338,8 @@ export class ObjectsInRedisClient {
         params.endkey = params.endkey || '\u9999';
         const pattern =
             params.endkey.substring(0, params.startkey.length) === params.startkey
-                ? this.objNamespace + params.startkey + '*'
-                : this.objNamespace + '*';
+                ? `${this.objNamespace + params.startkey}*`
+                : `${this.objNamespace}*`;
 
         // todo: use lua script for this
         const keys = await this._getKeysViaScan(pattern);
@@ -4582,7 +4589,7 @@ export class ObjectsInRedisClient {
             if (this.existingMetaObjects[id] === false && oldObj && oldObj.type === 'meta') {
                 this.existingMetaObjects[id] = true;
             }
-            //this.settings.connection.enhancedLogging && this.log.silly(this.namespace + ' redis publish ' + this.objNamespace + id + ' ' + message);
+
             await this.client.publish(this.objNamespace + id, message);
             return tools.maybeCallbackWithError(callback, null, { id: id, value: oldObj }, id);
         } catch (e) {
