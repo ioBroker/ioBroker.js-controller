@@ -134,7 +134,7 @@ export class ObjectsInRedisClient {
     private readonly namespace: string;
     private readonly hostname: string;
     private scripts: Record<string, any>; // TODO
-    private readonly existingMetaObjects: Record<string, any>; // TODO
+    private readonly existingMetaObjects: Record<string, boolean>;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
     private useSets?: boolean;
