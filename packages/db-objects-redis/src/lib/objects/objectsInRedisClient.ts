@@ -52,7 +52,13 @@ interface ObjectsSettings {
     connection: Record<string, any>; // TODO: wait for states-redis pr
 }
 
-type FileObject = ioBroker.Object & { virtualFile?: boolean; stats: any; modifiedAt: number; createdAt: number };
+type FileObject = ioBroker.Object & {
+    virtualFile?: boolean;
+    stats: any;
+    modifiedAt: number;
+    createdAt: number;
+    acl: ioBroker.EvaluatedFileACL;
+};
 
 interface CallOptions {
     groups?: string[];
@@ -112,7 +118,7 @@ class ObjectsInRedisClient {
     private sub: IORedis.Redis | null;
     private subSystem: IORedis.Redis | null;
     private settings: ObjectsSettings;
-    private readonly preserveSettings: string[];
+    private readonly preserveSettings: ('custom' | 'smartName' | 'material' | 'habpanel' | 'mobile')[];
     private defaultNewAcl: ACLObject | null;
     private readonly namespace: string;
     private readonly hostname: string;
@@ -909,7 +915,7 @@ class ObjectsInRedisClient {
         name: string,
         options: CallOptions,
         flag: any,
-        callback?: (checkFailed: boolean, options: CallOptions, fileOptions?: { notExists: boolean }) => void
+        callback?: (checkFailed: boolean, options?: CallOptions, fileOptions?: { notExists: boolean }) => void
     ) {
         // read file settings from redis
         const fileId = this.getFileId(id, name, true);
@@ -922,7 +928,7 @@ class ObjectsInRedisClient {
             }
         }
         if (!this.client) {
-            // TODO: not in specs, better just maybe cb check false?
+            // @ts-expect-error TODO: not in specs, better just maybe cb check false?
             return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED, options);
         }
         let fileOptions;
@@ -939,9 +945,9 @@ class ObjectsInRedisClient {
             fileOptions = { notExists: true };
         }
         if (utils.checkFile(fileOptions, options, flag, this.defaultNewAcl)) {
-            return typeof callback === 'function' && callback(false, options, fileOptions); // NO error
+            return tools.maybeCallback(callback, false, options, fileOptions); // NO error
         } else {
-            return typeof callback === 'function' && callback(true, options); // error
+            return tools.maybeCallback(callback, true, options); // error
         }
     }
 
@@ -984,7 +990,9 @@ class ObjectsInRedisClient {
         try {
             // Get ALL Objects
             const ids = await this.getKeysAsync('*');
-            await this._setDefaultAcl(ids, this.defaultNewAcl);
+            if (ids) {
+                await this._setDefaultAcl(ids, this.defaultNewAcl);
+            }
         } catch (e) {
             this.log.error(`${this.namespace} Could not update default acl: ${e.message}`);
         }
@@ -1187,11 +1195,7 @@ class ObjectsInRedisClient {
     }
 
     // User has provided no callback, we will return the Promise
-    readFile(
-        id: string,
-        name: string,
-        options: CallOptions | null
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ReadFileCallback>>;
+    readFile(id: string, name: string, options: CallOptions | null): ioBroker.ReadFilePromise;
 
     // User has provided a callback, thus we will call it
     readFile(id: string, name: string, options: CallOptions | null, callback: ioBroker.ReadFileCallback): void;
@@ -1200,7 +1204,7 @@ class ObjectsInRedisClient {
         name: string,
         options: CallOptions | null,
         callback?: ioBroker.ReadFileCallback
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ReadFileCallback>> {
+    ): void | ioBroker.ReadFilePromise {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1212,7 +1216,8 @@ class ObjectsInRedisClient {
         if (!callback) {
             return new Promise((resolve, reject) =>
                 this.readFile(id, name, options, (err, res, mimeType) =>
-                    err ? reject(err) : resolve({ data: res, mimeType: mimeType })
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    err ? reject(err) : resolve({ data: res, mimeType: mimeType as string })
                 )
             );
         }
@@ -1236,10 +1241,11 @@ class ObjectsInRedisClient {
         });
     }
 
-    readFileAsync(id: string, name: string, options: CallOptions): Promise<any> {
+    readFileAsync(id: string, name: string, options: CallOptions): ioBroker.ReadFilePromise {
         return new Promise((resolve, reject) =>
             this.readFile(id, name, options, (err, res, mimeType) =>
-                err ? reject(err) : resolve({ data: res, mimeType: mimeType })
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                err ? reject(err) : resolve({ data: res, mimeType: mimeType as string })
             )
         );
     }
@@ -1321,7 +1327,7 @@ class ObjectsInRedisClient {
         name: string,
         options: CallOptions,
         meta: MetaObject
-    ): Promise<void | ioBroker.RmResult[]> {
+    ): Promise<undefined | ioBroker.RmResult[]> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -1420,6 +1426,7 @@ class ObjectsInRedisClient {
                 if (dir !== lastDir) {
                     result.push({
                         file: dir,
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         stats: {},
                         isDir: true
                     });
@@ -1468,7 +1475,8 @@ class ObjectsInRedisClient {
             const result: ioBroker.ReadDirResult[] = [];
             while (dirs.length) {
                 result.push({
-                    file: dirs.shift(),
+                    file: dirs.shift() as string,
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     stats: {},
                     isDir: true
                 });
@@ -1494,7 +1502,8 @@ class ObjectsInRedisClient {
             const file = keys[i].substring(start + baseName.length, keys[i].length - end);
             while (dirs.length && dirs[0] < file) {
                 result.push({
-                    file: dirs.shift(),
+                    file: dirs.shift() as string,
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     stats: {},
                     isDir: true
                 });
@@ -1537,7 +1546,8 @@ class ObjectsInRedisClient {
         }
         while (dirs.length) {
             result.push({
-                file: dirs.shift(),
+                file: dirs.shift() as string,
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 stats: {},
                 isDir: true
             });
@@ -1830,7 +1840,12 @@ class ObjectsInRedisClient {
         }
     }
 
-    private async _rm(id: string, name: string, options: CallOptions, meta?: any): Promise<ioBroker.RmResult[] | void> {
+    private async _rm(
+        id: string,
+        name: string,
+        options: CallOptions,
+        meta?: any
+    ): Promise<ioBroker.RmResult[] | undefined> {
         if (meta && !meta.isDir) {
             // it is file
             const metaID = this.getFileId(id, name, true);
@@ -1910,6 +1925,7 @@ class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Could not remove files: ${e.message}`);
             }
 
+            // @ts-expect-error we do not have property isDir but RmResult requires it
             return files;
         }
     }
@@ -2040,7 +2056,7 @@ class ObjectsInRedisClient {
                 return tools.maybeCallbackWithRedisError(callback, e);
             }
             const nameArr = name.split('/');
-            const file = nameArr.pop();
+            const file = nameArr.pop() as string;
             const res = [
                 {
                     path: nameArr.join('/'),
@@ -2114,7 +2130,7 @@ class ObjectsInRedisClient {
 
                 const name = keys[i].substring(start, keys[i].length - end);
                 const nameArr = name.split('/');
-                const file = nameArr.pop();
+                const file = nameArr.pop() as string;
                 processed.push({
                     path: nameArr.join('/'),
                     file: file,
@@ -2716,8 +2732,8 @@ class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
                     }
-                    obj.acl.owner = options.owner;
-                    obj.acl.ownerGroup = options.ownerGroup;
+                    obj.acl.owner = options.owner || obj.acl.owner;
+                    obj.acl.ownerGroup = options.ownerGroup || obj.acl.ownerGroup;
                     filteredKeys.push(keys[i]);
                     filteredObjs.push(obj);
                 }
@@ -3316,11 +3332,11 @@ class ObjectsInRedisClient {
         }
 
         if (!obj) {
-            this.log.warn(this.namespace + ' setObject: Argument object is null');
+            this.log.warn(`${this.namespace} setObject: Argument object is null`);
             return tools.maybeCallbackWithError(callback, 'obj is null');
         }
         if (!tools.isObject(obj)) {
-            this.log.warn(this.namespace + ' setObject: Argument object is no object: ' + obj);
+            this.log.warn(`${this.namespace} setObject: Argument object is no object: ${obj as any}`);
             return tools.maybeCallbackWithError(callback, 'obj is no object');
         }
         if (!this.client) {
@@ -3404,16 +3420,22 @@ class ObjectsInRedisClient {
                         }
                     }
                 } else {
+                    // preserve only relevant for StateCommon TODO: maybe better a type guard to be specific
+                    let objCommon: ioBroker.StateCommon = obj.common as ioBroker.StateCommon;
                     // remove settings if desired
-                    if (obj.common && obj.common[commonSetting] === null) {
-                        delete obj.common[commonSetting];
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    if (objCommon && objCommon[commonSetting] === null) {
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        delete objCommon[commonSetting];
                     } else if (
                         // if old setting present and new setting is absent
                         oldObj.common[commonSetting] !== undefined &&
-                        (!obj.common || obj.common[commonSetting] === undefined)
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        (!objCommon || objCommon[commonSetting] === undefined)
                     ) {
-                        obj.common = obj.common || {};
-                        obj.common[commonSetting] = oldObj.common[commonSetting];
+                        objCommon = objCommon || {};
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        objCommon[commonSetting] = oldObj.common[commonSetting];
                     }
                 }
             }
@@ -3482,7 +3504,7 @@ class ObjectsInRedisClient {
                     );
                 } else if (oldObj && oldObj.type && !obj.type) {
                     // the oldObj had a type, the new one has no -> rem
-                    // @ts-expect-error TODO: TS assumes that there cannot be an obj without type - but e.g. design/chart has type (OtherObject)
+                    // @ts-expect-error TODO: TS assumes that there cannot be an obj without type - but e.g. design has no type https://github.com/ioBroker/adapter-core/issues/455
                     commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
                 }
 
