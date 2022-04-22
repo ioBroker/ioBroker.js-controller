@@ -4217,7 +4217,7 @@ async function startInstance(id, wakeUp) {
                                 ) {
                                     logger.info(`${hostLogPrefix} instance ${id} terminated for restart.`);
                                 } else if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
-                                    logger.error(
+                                    logger.info(
                                         `${hostLogPrefix} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`
                                     );
                                 } else if (
