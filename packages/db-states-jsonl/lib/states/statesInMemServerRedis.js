@@ -435,7 +435,11 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
         // Handle Redis "CONFIG" ... currently mainly ignored
         handler.on('config', (data, responseId) => {
-            if (data[0] === 'set' && data[1] === 'notify-keyspace-events') {
+            if (
+                typeof data[0] === 'string' &&
+                data[0].toLowerCase() === 'set' &&
+                data[1] === 'notify-keyspace-events'
+            ) {
                 // we ignore these type of commands for now, should only be to subscribe to keyspace events
                 handler.sendString(responseId, 'OK');
             } else {
