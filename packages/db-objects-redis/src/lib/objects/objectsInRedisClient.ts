@@ -133,7 +133,7 @@ export class ObjectsInRedisClient {
     private defaultNewAcl: ACLObject | null;
     private readonly namespace: string;
     private readonly hostname: string;
-    private scripts: Record<string, any>; // TODO
+    private scripts: Record<string, string>;
     private readonly existingMetaObjects: Record<string, boolean>;
     private log: InternalLogger;
     private activeProtocolVersion?: string;
@@ -181,11 +181,8 @@ export class ObjectsInRedisClient {
 
     /**
      * Checks if we are allowed to start and sets the protocol version accordingly
-     *
-     * @returns {Promise<void>}
-     * @private
      */
-    async _determineProtocolVersion() {
+    private async _determineProtocolVersion(): Promise<void> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -216,7 +213,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    connectDb() {
+    connectDb(): void {
         this.settings.connection = this.settings.connection || {};
 
         const onChange = this.settings.change; // on change handler
@@ -258,20 +255,6 @@ export class ObjectsInRedisClient {
             } else {
                 return retry_max_delay;
             }
-            /*if (options.error.code === 'ECONNREFUSED') {
-                // End reconnecting on a specific error and flush all commands with a individual error
-                return new Error('The server refused the connection');
-            }
-            if (options.total_retry_time > 1000 * 60 * 60) {
-                // End reconnecting after a specific timeout and flush all commands with a individual error
-                return new Error('Retry time exhausted');
-            }
-            if (options.times_connected > 10) {
-                // End reconnecting with built in error
-                return undefined;
-            }
-            // reconnect after
-            return Math.max(options.attempt * 100, 3000);*/
         };
 
         delete this.settings.connection.options.retry_max_delay;
@@ -969,7 +952,7 @@ export class ObjectsInRedisClient {
         options?: CallOptions | null,
         flag?: any,
         callback?: CheckFileRightsCallback
-    ) {
+    ): void {
         return utils.checkFileRights(this, id, name, options, flag, callback);
     }
 
@@ -991,7 +974,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    async setDefaultAcl(defaultNewAcl: ACLObject | null) {
+    async setDefaultAcl(defaultNewAcl: ACLObject | null): Promise<void> {
         this.defaultNewAcl = defaultNewAcl || {
             owner: CONSTS.SYSTEM_ADMIN_USER,
             ownerGroup: CONSTS.SYSTEM_ADMIN_GROUP,
