@@ -35,7 +35,7 @@ function checkNpmVersion() {
                         clearTimeout(timer);
                         timer = null;
                         npmVersion = npmVersion.trim();
-                        console.log('NPM version: ' + npmVersion);
+                        console.log(`NPM version: ${npmVersion}`);
 
                         if (gte(npmVersion, '5.0.0') && lt(npmVersion, '5.7.1')) {
                             console.warn('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
@@ -43,7 +43,7 @@ function checkNpmVersion() {
                             console.warn('You are using an unsupported npm version!');
                             console.warn('This can lead to problems when installing further packages');
                             console.warn();
-                            console.warn('Please use "npm install -g npm@4" to downgrade npm to 4.x or ');
+                            console.warn('Please use "npm install -g npm@6" to upgrade npm to 6.x or ');
                             console.warn('use "npm install -g npm@latest" to install a supported version of npm!');
                             console.warn(
                                 'You need to make sure to repeat this step after installing an update to NodeJS and/or npm.'

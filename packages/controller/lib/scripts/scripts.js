@@ -1,6 +1,6 @@
 const https = require('https');
 const fs = require('fs');
-const tools = require('../tools.js');
+const { tools } = require('@iobroker/js-controller-common');
 
 function httpsGet(link, callback) {
     https
@@ -80,10 +80,10 @@ function updateVersions(callback) {
 if (process.argv.indexOf('--prepublish') !== -1) {
     httpsGet(stableURL, function (err, body) {
         if (err || !body) {
-            console.error('Cannot read sources file "' + stableURL + '": ' + err);
+            console.error(`Cannot read sources file "${stableURL}": ${err}`);
             process.exit(2);
         } else {
-            fs.writeFileSync(__dirname + '/../../conf/sources-dist.json', body);
+            fs.writeFileSync(`${__dirname}/../../conf/sources-dist.json`, body);
             process.exit();
         }
     });
