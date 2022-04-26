@@ -96,9 +96,9 @@ class AdapterClass extends EventEmitter {
         this._config = this._options.config || this._config;
         this.startedInCompactMode = this._options.compact;
 
-        this.logList = [];
-        this.aliases = {};
-        this.aliasPatterns = [];
+        this.logList = new Set();
+        this.aliases = new Map();
+        this.aliasPatterns = new Set();
         this.enums = {};
 
         this.eventLoopLags = [];
@@ -6511,7 +6511,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    _addAliasSubscribe(aliasObj, pattern, callback) {
+    async _addAliasSubscribe(aliasObj, pattern, callback) {
         if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
@@ -6540,7 +6540,13 @@ class AdapterClass extends EventEmitter {
                 );
             }
 
-            this.aliases[sourceId] = this.aliases[sourceId] || { source: null, targets: [] };
+            let aliasDetails;
+            if (!this.aliases.has(sourceId)) {
+                aliasDetails = { source: null, targets: [] };
+                this.aliases.set(sourceId, aliasDetails);
+            } else {
+                aliasDetails = this.aliases.get(sourceId);
+            }
 
             const targetEntry = {
                 alias: deepClone(aliasObj.common.alias),
@@ -6552,31 +6558,38 @@ class AdapterClass extends EventEmitter {
                 unit: aliasObj.common.unit
             };
 
-            this.aliases[sourceId].targets.push(targetEntry);
+            aliasDetails.targets.push(targetEntry);
 
-            if (!this.aliases[sourceId].source) {
-                adapterStates.subscribe(sourceId, () =>
-                    adapterObjects.getObject(sourceId, this._options, (err, sourceObj) => {
-                        if (sourceObj && sourceObj.common) {
-                            if (!this.aliases[sourceObj._id]) {
-                                this._logger.error(
-                                    `${
-                                        this.namespaceLog
-                                    } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
-                                        sourceObj
-                                    )}`
-                                );
-                            } else {
-                                this.aliases[sourceObj._id].source = {};
-                                this.aliases[sourceObj._id].source.min = sourceObj.common.min;
-                                this.aliases[sourceObj._id].source.max = sourceObj.common.max;
-                                this.aliases[sourceObj._id].source.type = sourceObj.common.type;
-                                this.aliases[sourceObj._id].source.unit = sourceObj.common.unit;
-                            }
-                        }
-                        return tools.maybeCallbackWithError(callback, err);
-                    })
-                );
+            if (!aliasDetails.source) {
+                let sourceObj;
+                try {
+                    await adapterStates.subscribe(sourceId);
+                    sourceObj = await adapterObjects.getObject(sourceId, this._options);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
+
+                if (sourceObj && sourceObj.common) {
+                    if (!this.aliases.has(sourceObj._id)) {
+                        // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
+                        this._logger.error(
+                            `${
+                                this.namespaceLog
+                            } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
+                                sourceObj
+                            )}`
+                        );
+                    } else {
+                        aliasDetails.source = {
+                            min: sourceObj.common.min,
+                            max: sourceObj.common.max,
+                            type: sourceObj.common.type,
+                            unit: sourceObj.common.unit
+                        };
+                    }
+                }
+
+                return tools.maybeCallback(callback);
             } else {
                 return tools.maybeCallback(callback);
             }
@@ -6595,19 +6608,19 @@ class AdapterClass extends EventEmitter {
             pattern = null;
         }
 
-        if (!this.aliases[sourceId]) {
+        if (!this.aliases.has(sourceId)) {
             return tools.maybeCallback(callback);
         }
 
         // remove from targets array
-        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases[sourceId].targets.indexOf(aliasObj);
+        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId).targets.indexOf(aliasObj);
 
         if (pos !== -1) {
-            this.aliases[sourceId].targets.splice(pos, 1);
+            this.aliases.get(sourceId).targets.splice(pos, 1);
 
             // unsubscribe if no more aliases exists
-            if (!this.aliases[sourceId].targets.length) {
-                delete this.aliases[sourceId];
+            if (!this.aliases.get(sourceId).targets.length) {
+                this.aliases.delete(sourceId);
                 await adapterStates.unsubscribe(sourceId);
             }
         }
@@ -6715,10 +6728,10 @@ class AdapterClass extends EventEmitter {
                 if (
                     typeof aliasPattern === 'string' &&
                     (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
-                    !this.aliasPatterns.includes(aliasPattern)
+                    !this.aliasPatterns.has(aliasPattern)
                 ) {
                     // its a new alias conform pattern to store
-                    this.aliasPatterns.push(aliasPattern);
+                    this.aliasPatterns.add(aliasPattern);
                 }
             }
 
@@ -6762,9 +6775,9 @@ class AdapterClass extends EventEmitter {
                 try {
                     const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
                     const promises = [];
-                    if (!this.aliasPatterns.includes(pattern)) {
+                    if (!this.aliasPatterns.has(pattern)) {
                         // its a new pattern to store
-                        this.aliasPatterns.push(pattern);
+                        this.aliasPatterns.add(pattern);
                     }
 
                     for (const id of Object.keys(objs)) {
@@ -6948,10 +6961,10 @@ class AdapterClass extends EventEmitter {
         }
 
         // if pattern known, remove it from alias patterns to not subscribe to further matching aliases
-        this.aliasPatterns = this.aliasPatterns.filter(pattern => pattern !== aliasPattern);
+        this.aliasPatterns.delete(aliasPattern);
 
         if (aliasPattern) {
-            for (const [sourceId, alias] of Object.entries(this.aliases)) {
+            for (const [sourceId, alias] of this.aliases) {
                 for (let i = alias.targets.length - 1; i >= 0; i--) {
                     if (alias.targets[i].pattern === aliasPattern) {
                         promises.push(this._removeAliasSubscribe(sourceId, i));
@@ -6962,7 +6975,7 @@ class AdapterClass extends EventEmitter {
 
         await Promise.all(promises);
         // if no alias subscribed any longer, remove subscription
-        if (!Object.keys(this.aliases).length && this._aliasObjectsSubscribed) {
+        if (!this.aliases.size && this._aliasObjectsSubscribed) {
             this._aliasObjectsSubscribed = false;
             adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
         }
@@ -8317,7 +8330,7 @@ class AdapterClass extends EventEmitter {
                         // if this.aliases is empty, or no target found its a new alias
                         let isNewAlias = true;
 
-                        for (const [sourceId, alias] of Object.entries(this.aliases)) {
+                        for (const [sourceId, alias] of this.aliases) {
                             const targetAlias = alias.targets.find(entry => entry.id === id);
 
                             // Find entry for this alias
@@ -8629,7 +8642,7 @@ class AdapterClass extends EventEmitter {
                     }
 
                     // If someone want to have log messages
-                    if (this.logList && id.endsWith('.logging')) {
+                    if (id.endsWith('.logging')) {
                         const instance = id.substring(0, id.length - '.logging'.length);
                         this._logger &&
                             this._logger.silly(
@@ -8703,12 +8716,12 @@ class AdapterClass extends EventEmitter {
                                 }
                             }
                         }
-                    } else if (this.adapterReady && this.aliases[id]) {
+                    } else if (this.adapterReady && this.aliases.has(id)) {
                         // If adapter is ready and for this ID exist some alias links
-                        this.aliases[id].targets.forEach(target => {
+                        this.aliases.get(id).targets.forEach(target => {
                             const aState = state
                                 ? tools.formatAliasValue(
-                                      this.aliases[id].source,
+                                      this.aliases.get(id).source,
                                       target,
                                       deepClone(state),
                                       this._logger,
@@ -8779,7 +8792,7 @@ class AdapterClass extends EventEmitter {
         const checkLogging = () => {
             let logs = [];
             // LogList
-            logs.push('Actual Loglist - ' + JSON.stringify(this.logList));
+            logs.push(`Actual Loglist - ${JSON.stringify(Array.from(this.logList))}`);
 
             if (!adapterStates) {
                 // if adapterState was destroyed, we can not continue
@@ -8867,15 +8880,15 @@ class AdapterClass extends EventEmitter {
                                 }
                             }
                             if (
-                                this.logList.length &&
+                                this.logList.size &&
                                 messages &&
                                 messages.length &&
                                 adapterStates &&
                                 adapterStates.pushLog
                             ) {
-                                for (let m = 0; m < messages.length; m++) {
-                                    for (let k = 0; k < this.logList.length; k++) {
-                                        adapterStates.pushLog(this.logList[k], messages[m]);
+                                for (const message of messages) {
+                                    for (const instanceId of this.logList) {
+                                        adapterStates.pushLog(instanceId, message);
                                     }
                                 }
                             }
@@ -8897,14 +8910,11 @@ class AdapterClass extends EventEmitter {
                 }
 
                 if (isActive) {
-                    if (!this.logList.includes(id)) {
-                        this.logList.push(id);
+                    if (!this.logList.has(id)) {
+                        this.logList.add(id);
                     }
                 } else {
-                    const pos = this.logList.indexOf(id);
-                    if (pos !== -1) {
-                        this.logList.splice(pos, 1);
-                    }
+                    this.logList.delete(id);
                 }
             };
 
@@ -8918,12 +8928,12 @@ class AdapterClass extends EventEmitter {
                     this.emit('log', info);
                 }
 
-                if (!this.logList.length) {
+                if (!this.logList.size) {
                     // if log buffer still active
                     if (messages && !this._options.logTransporter) {
                         messages.push(info);
 
-                        // do not let messages to grow without limit
+                        // do not let messages grow without limit
                         if (messages.length > this._config.states.maxQueue) {
                             messages.splice(0, messages.length - this._config.states.maxQueue);
                         }
