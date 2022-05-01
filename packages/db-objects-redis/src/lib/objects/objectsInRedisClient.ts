@@ -1163,12 +1163,7 @@ export class ObjectsInRedisClient {
         );
     }
 
-    private async _readFile(
-        id: string,
-        name: string,
-        options: CallOptions,
-        meta: MetaObject
-    ): ioBroker.ReadFilePromise {
+    private async _readFile(id: string, name: string, meta: MetaObject): ioBroker.ReadFilePromise {
         if (meta.notExists) {
             throw new Error(ERRORS.ERROR_NOT_FOUND);
         }
@@ -1183,7 +1178,7 @@ export class ObjectsInRedisClient {
         if (meta && !meta.binary && buffer) {
             buffer = buffer.toString();
         }
-        return { file: buffer, mimeType: mimeType as string };
+        return { file: buffer, mimeType: mimeType };
     }
 
     // User has provided no callback, we will return the Promise
@@ -1209,7 +1204,7 @@ export class ObjectsInRedisClient {
             return new Promise((resolve, reject) =>
                 this.readFile(id, name, options, (err, res, mimeType) =>
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    err ? reject(err) : resolve({ data: res, mimeType: mimeType as string })
+                    err ? reject(err) : resolve({ data: res, mimeType: mimeType })
                 )
             );
         }
@@ -1228,7 +1223,7 @@ export class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 try {
-                    const { file, mimeType } = await this._readFile(id, name, options, meta);
+                    const { file, mimeType } = await this._readFile(id, name, meta);
                     return tools.maybeCallbackWithError(callback, null, file, mimeType);
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
@@ -1241,7 +1236,7 @@ export class ObjectsInRedisClient {
         return new Promise((resolve, reject) =>
             this.readFile(id, name, options, (err, res, mimeType) =>
                 // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                err ? reject(err) : resolve({ data: res, mimeType: mimeType as string })
+                err ? reject(err) : resolve({ data: res, mimeType: mimeType })
             )
         );
     }
