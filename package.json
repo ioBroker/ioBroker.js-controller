@@ -56,7 +56,7 @@
     "semver": "^7.3.5",
     "sinon": "^13.0.0",
     "sinon-chai": "^3.7.0",
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.4"
   },
   "scripts": {
     "prebuild": "rimraf packages/*/build packages/*/*.tsbuildinfo",
