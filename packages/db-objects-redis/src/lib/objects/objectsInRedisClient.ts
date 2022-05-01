@@ -1178,6 +1178,7 @@ export class ObjectsInRedisClient {
         if (meta && !meta.binary && buffer) {
             buffer = buffer.toString();
         }
+        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
         return { file: buffer, mimeType: mimeType };
     }
 
