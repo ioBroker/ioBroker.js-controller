@@ -16,7 +16,7 @@
     "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
     "@iobroker/db-states-redis": "file:../db-states-redis",
     "@iobroker/js-controller-common": "file:../common",
-    "fs-extra": "^10.0.1"
+    "fs-extra": "^10.1.0"
   },
   "keywords": [
     "ioBroker"
