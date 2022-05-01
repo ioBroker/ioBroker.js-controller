@@ -1467,15 +1467,13 @@ export class ObjectsInRedisClient {
             }
         });
         if (!keys.length) {
-            const result: ioBroker.ReadDirResult[] = [];
-            while (dirs.length) {
-                result.push({
-                    file: dirs.shift() as string,
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    stats: {},
-                    isDir: true
-                });
-            }
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 stats attribute
+            const result: ioBroker.ReadDirResult[] = dirs.map(file => ({
+                file,
+                stats: {},
+                isDir: true
+            }));
+
             return tools.maybeCallbackWithError(callback, null, result);
         }
 
@@ -1497,7 +1495,7 @@ export class ObjectsInRedisClient {
             const file = keys[i].substring(start + baseName.length, keys[i].length - end);
             while (dirs.length && dirs[0] < file) {
                 result.push({
-                    file: dirs.shift() as string,
+                    file: dirs.shift()!,
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     stats: {},
                     isDir: true
@@ -1541,7 +1539,7 @@ export class ObjectsInRedisClient {
         }
         while (dirs.length) {
             result.push({
-                file: dirs.shift() as string,
+                file: dirs.shift()!,
                 // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 stats: {},
                 isDir: true
@@ -1586,9 +1584,7 @@ export class ObjectsInRedisClient {
 
     readDirAsync(id: string, name: string, options: CallOptions): ioBroker.ReadDirPromise {
         return new Promise((resolve, reject) =>
-            this.readDir(id, name, options, (err, res) =>
-                err ? reject(err) : resolve(res as ioBroker.ReadDirResult[])
-            )
+            this.readDir(id, name, options, (err, res) => (err ? reject(err) : resolve(res!)))
         );
     }
 
@@ -1770,7 +1766,7 @@ export class ObjectsInRedisClient {
     }
 
     renameAsync(id: string, oldName: string, newName: string, options: CallOptions): Promise<void> {
-        return new Promise<void>((resolve, reject) =>
+        return new Promise((resolve, reject) =>
             this.rename(id, oldName, newName, options, err => (err ? reject(err) : resolve()))
         );
     }
@@ -1995,7 +1991,7 @@ export class ObjectsInRedisClient {
     }
 
     mkdirAsync(id: string, dirName: string, options: CallOptions): Promise<void> {
-        return new Promise<void>((resolve, reject) =>
+        return new Promise((resolve, reject) =>
             this.mkdir(id, dirName, options, err => (err ? reject(err) : resolve()))
         );
     }
@@ -2410,7 +2406,7 @@ export class ObjectsInRedisClient {
     }
 
     // no options provided by user
-    enableFileCache(enabled: boolean, callback?: (err: Error | null, res: boolean) => void): void;
+    enableFileCache(enabled: boolean, callback?: (err: Error | null | undefined, res: boolean) => void): void;
     // options provided by user
     enableFileCache(
         enabled: boolean,
@@ -2504,7 +2500,7 @@ export class ObjectsInRedisClient {
     }
 
     subscribeAsync(pattern: string, options: CallOptions): Promise<void> {
-        return new Promise<void>((resolve, reject) =>
+        return new Promise((resolve, reject) =>
             this.subscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );
     }
@@ -2528,7 +2524,7 @@ export class ObjectsInRedisClient {
     }
 
     subscribeUserAsync(pattern: string, options: CallOptions): Promise<void> {
-        return new Promise<void>((resolve, reject) =>
+        return new Promise((resolve, reject) =>
             this.subscribeUser(pattern, options, err => (err ? reject(err) : resolve()))
         );
     }
@@ -2594,7 +2590,7 @@ export class ObjectsInRedisClient {
     }
 
     unsubscribeAsync(pattern: string, options: CallOptions): Promise<void> {
-        return new Promise<void>((resolve, reject) =>
+        return new Promise((resolve, reject) =>
             this.unsubscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );
     }
@@ -2708,8 +2704,7 @@ export class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (obj.type === 'state') {
-                            // @ts-expect-error we have ensured above, that property acl exists
-                            obj.acl.state =
+                            obj.acl!.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
@@ -2837,8 +2832,7 @@ export class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (obj.type === 'state') {
-                            // @ts-expect-error we have ensured, that property acl exists
-                            obj.acl.state =
+                            obj.acl!.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
                         }
@@ -2846,10 +2840,11 @@ export class ObjectsInRedisClient {
                     if (options.object !== undefined) {
                         obj.acl.object = options.object;
                     }
-                    if (options.state !== undefined) {
-                        // @ts-expect-error TODO: state not allowed or types incorrect?
+
+                    if (options.state !== undefined && 'state' in obj.acl) {
                         obj.acl.state = options.state;
                     }
+
                     filteredKeys.push(keys[i]);
                     filteredObjs.push(obj);
                 }
@@ -3483,7 +3478,7 @@ export class ObjectsInRedisClient {
 
         const commands = [];
         if (this.useSets) {
-            if (obj.type && (!oldObj || !oldObj.type)) {
+            if (obj.type && !oldObj?.type) {
                 // new object or oldObj had no type -> add to set + set object
                 commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
             } else if (obj.type && oldObj && oldObj.type && oldObj.type !== obj.type) {
@@ -3492,16 +3487,16 @@ export class ObjectsInRedisClient {
                     ['sadd', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id],
                     ['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id]
                 );
-            } else if (oldObj && oldObj.type && !obj.type) {
+            } else if (oldObj?.type && !obj.type) {
                 // the oldObj had a type, the new one has no -> rem
                 // @ts-expect-error TODO: TS assumes that there cannot be an obj without type - but e.g. design has no type https://github.com/ioBroker/adapter-core/issues/455
                 commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
             }
 
-            if (obj.common && obj.common.custom && !oldObjHasCustom) {
+            if (obj.common?.custom && !oldObjHasCustom) {
                 // we now have custom, old object had no custom
                 commands.push(['sadd', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
-            } else if (oldObjHasCustom && (!obj.common || !obj.common.custom)) {
+            } else if (oldObjHasCustom && !obj.common?.custom) {
                 // we no longer have custom
                 commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
             }
@@ -3516,7 +3511,7 @@ export class ObjectsInRedisClient {
         }
 
         // object updated -> if type changed to meta -> cache
-        if (oldObj && oldObj.type === 'meta' && this.existingMetaObjects[id] === false) {
+        if (oldObj?.type === 'meta' && this.existingMetaObjects[id] === false) {
             this.existingMetaObjects[id] = true;
         }
 
@@ -4871,7 +4866,9 @@ export class ObjectsInRedisClient {
         let arr: any[];
         try {
             arr = await this.client.script(hashes);
-            arr && scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
+            if (arr) {
+                scripts.forEach((e, i) => (scripts[i].loaded = !!arr[i]));
+            }
         } catch {
             // ignore
         }
@@ -4880,9 +4877,8 @@ export class ObjectsInRedisClient {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        for (let i = 0; i < scripts.length; i++) {
-            if (!scripts[i].loaded) {
-                const script = scripts[i];
+        for (const script of scripts) {
+            if (!script.loaded) {
                 let hash;
                 try {
                     hash = await this.client.script(['LOAD', script.text]);

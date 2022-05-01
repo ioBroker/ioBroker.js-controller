@@ -261,40 +261,36 @@ export function checkFileRights(
     flag: CONSTS.GenericAccessFlags,
     callback?: CheckFileRightsCallback
 ): any {
-    options = options || {};
-    if (!options.user) {
+    const _options = options || {};
+    if (!_options.user) {
         // Before files converted, lets think: if no options it is admin
-        options = {
-            user: 'system.user.admin',
-            params: options,
-            group: 'system.group.administrator'
-        };
+        _options.user = 'system.user.admin';
+        _options.params = _options;
+        _options.group = 'system.group.administrator';
     }
 
-    if (!options.acl) {
-        objects.getUserGroup(options.user, (_user: any, groups: any, acl: Record<string, any>) => {
-            // TODO ts needs it because we are doing something async in between
-            options = options || {};
-            options.acl = acl || {};
-            options.groups = groups;
-            options.group = groups ? groups[0] : null;
-            checkFileRights(objects, id, name, options, flag, callback);
+    if (!_options.acl) {
+        objects.getUserGroup(_options.user, (_user: any, groups: any, acl: Record<string, any>) => {
+            _options.acl = acl || {};
+            _options.groups = groups;
+            _options.group = groups ? groups[0] : null;
+            checkFileRights(objects, id, name, _options, flag, callback);
         });
         return;
     }
     // If user may write
-    if (flag === CONSTS.ACCESS_WRITE && !options.acl.file.write) {
+    if (flag === CONSTS.ACCESS_WRITE && !_options.acl.file.write) {
         // write
-        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
+        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, _options);
     }
     // If user may read
-    if (flag === CONSTS.ACCESS_READ && !options.acl.file.read) {
+    if (flag === CONSTS.ACCESS_READ && !_options.acl.file.read) {
         // read
-        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
+        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, _options);
     }
 
-    options.checked = true;
-    objects.checkFile(id, name, options, flag, (err: Error, options: Record<string, any>, opt: any) => {
+    _options.checked = true;
+    objects.checkFile(id, name, _options, flag, (err: Error, options: Record<string, any>, opt: any) => {
         if (err) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
         } else {
