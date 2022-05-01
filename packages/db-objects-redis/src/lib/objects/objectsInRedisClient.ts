@@ -4223,14 +4223,14 @@ export class ObjectsInRedisClient {
         params: ioBroker.GetObjectViewParams,
         options?: any,
         callback?: ioBroker.GetObjectViewCallback<any>
-    ) {
+    ): void | ioBroker.GetObjectViewPromise<any> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
         if (!callback) {
             return new Promise((resolve, reject) =>
-                this.getObjectView(design, search, params, options, (err, obj) => (err ? reject(err) : resolve(obj)))
+                this.getObjectView(design, search, params, options, (err, obj) => (err ? reject(err) : resolve(obj!)))
             );
         }
 
@@ -4366,7 +4366,10 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getObjectListAsync(params: ioBroker.GetObjectListParams, options: CallOptions) {
+    getObjectListAsync(
+        params: ioBroker.GetObjectListParams,
+        options: CallOptions
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>> {
         return new Promise((resolve, reject) =>
             this.getObjectList(params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
         );
