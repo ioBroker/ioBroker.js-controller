@@ -15,7 +15,13 @@ import path from 'path';
 import crypto from 'crypto';
 import { isDeepStrictEqual } from 'util';
 import deepClone from 'deep-clone';
-import type { ACLObject, CheckFileRightsCallback, GetUserGroupPromiseReturn, WMStrm } from './objectsUtils.js';
+import type {
+    ACLObject,
+    FileObject,
+    CheckFileRightsCallback,
+    GetUserGroupPromiseReturn,
+    WMStrm
+} from './objectsUtils.js';
 import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
@@ -57,14 +63,6 @@ interface ObjectsSettings {
     connection: RedisConnectionOptions;
 }
 
-type FileObject = ioBroker.Object & {
-    virtualFile?: boolean;
-    stats: any;
-    modifiedAt: number;
-    createdAt: number;
-    acl: ioBroker.EvaluatedFileACL;
-};
-
 interface CallOptions {
     groups?: string[];
     group?: string;
@@ -77,7 +75,7 @@ interface CallOptions {
 
 interface ObjectIdValue {
     id: string;
-    value: ioBroker.Object;
+    value: ioBroker.AnyObject;
 }
 
 interface ObjectViewFunction {
@@ -1683,7 +1681,7 @@ export class ObjectsInRedisClient {
                 result = [];
                 for (let i = 0; i < keys.length; i++) {
                     const strObj = strObjs[i];
-                    let obj: ioBroker.Object | null;
+                    let obj: ioBroker.AnyObject | null;
                     try {
                         obj = strObj ? JSON.parse(strObj) : null;
                     } catch {
@@ -1886,7 +1884,7 @@ export class ObjectsInRedisClient {
                 for (let i = 0; i < keys.length; i++) {
                     try {
                         const strObj = objs[i];
-                        const obj: ioBroker.Object | null = strObj ? JSON.parse(strObj) : null;
+                        const obj: ioBroker.AnyObject | null = strObj ? JSON.parse(strObj) : null;
                         if (utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                             result.push(keys[i]);
                         }
@@ -2680,7 +2678,7 @@ export class ObjectsInRedisClient {
 
                 for (let i = 0; i < keys.length; i++) {
                     const strObj = strObjects[i];
-                    let obj: null | ioBroker.Object;
+                    let obj: null | ioBroker.AnyObject;
                     try {
                         obj = strObj ? JSON.parse(strObj) : null;
                     } catch {
@@ -2808,7 +2806,7 @@ export class ObjectsInRedisClient {
 
                 for (let i = 0; i < keys.length; i++) {
                     const strObj = strObjs[i];
-                    let obj: null | ioBroker.Object;
+                    let obj: null | ioBroker.AnyObject;
                     try {
                         obj = strObj ? JSON.parse(strObj) : null;
                     } catch {
@@ -2941,19 +2939,23 @@ export class ObjectsInRedisClient {
     }
 
     // cb version with options
-    getObject(id: string, options: Record<string, any> | undefined, callback: ioBroker.GetObjectCallback): void;
+    getObject<T extends string>(
+        id: T,
+        options: Record<string, any> | undefined,
+        callback: ioBroker.GetObjectCallback<T>
+    ): void;
     // Promise version
-    getObject(
-        id: string,
+    getObject<T extends string>(
+        id: T,
         options?: Record<string, any>
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback>>;
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
     // no options but cb
     getObject(id: string, callback: ioBroker.ErrorCallback): void;
-    getObject(
-        id: string,
+    getObject<T extends string>(
+        id: T,
         options?: any,
-        callback?: ioBroker.ErrorCallback
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback>> {
+        callback?: ioBroker.GetObjectCallback<T>
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2979,10 +2981,10 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getObjectAsync(
-        id: string,
+    getObjectAsync<T extends string>(
+        id: T,
         options?: Record<string, any>
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback>> {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
         return new Promise((resolve, reject) =>
             this.getObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj)))
         );
@@ -3046,7 +3048,7 @@ export class ObjectsInRedisClient {
                 metas = metas || [];
                 for (let i = 0; i < keys.length; i++) {
                     const metaStr = metas[i];
-                    let meta: ioBroker.Object;
+                    let meta: ioBroker.AnyObject;
                     try {
                         meta = metaStr ? JSON.parse(metaStr) : null;
                     } catch {
@@ -3130,9 +3132,9 @@ export class ObjectsInRedisClient {
     private async _getObjects(
         keys: string[],
         options: CallOptions,
-        callback?: (err?: Error | null, objs?: ioBroker.Object[]) => void,
+        callback?: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
         dontModify?: boolean
-    ): Promise<void | ioBroker.Object[]> {
+    ): Promise<void | ioBroker.AnyObject[]> {
         if (!keys) {
             return tools.maybeCallbackWithError(callback, 'no keys');
         }
@@ -3174,7 +3176,7 @@ export class ObjectsInRedisClient {
             if (!dontCheck) {
                 for (let i = 0; i < objs.length; i++) {
                     const strObj = objs[i];
-                    let obj: ioBroker.Object | null;
+                    let obj: ioBroker.AnyObject | null;
                     try {
                         obj = strObj ? JSON.parse(strObj) : null;
                     } catch {
@@ -3204,20 +3206,20 @@ export class ObjectsInRedisClient {
     }
 
     // No callback provided, we return a Promise
-    getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.Object[]>;
+    getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]>;
     // Callback provided, thus we call it
     getObjects(
         keys: string[],
         options: CallOptions | null,
-        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void,
+        callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
         dontModify?: boolean
     ): void;
     getObjects(
         keys: string[],
         options?: CallOptions | null,
-        callback?: (err?: Error | null, objs?: ioBroker.Object[]) => void,
+        callback?: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
         dontModify?: boolean
-    ): void | Promise<ioBroker.Object[]> {
+    ): void | Promise<ioBroker.AnyObject[]> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3243,15 +3245,15 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getObjectsAsync(keys: string[], options?: CallOptions | null): Promise<ioBroker.Object[]> {
+    getObjectsAsync(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]> {
         return this.getObjects(keys, options);
     }
 
     private async _getObjectsByPattern(
         pattern: string,
         options: CallOptions,
-        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void
-    ): Promise<ioBroker.Object[] | void> {
+        callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void
+    ): Promise<ioBroker.AnyObject[] | void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
@@ -3278,8 +3280,8 @@ export class ObjectsInRedisClient {
     getObjectsByPattern(
         pattern: string,
         options: CallOptions | null,
-        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void
-    ): void | Promise<ioBroker.Object[] | void> {
+        callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void
+    ): void | Promise<ioBroker.AnyObject[] | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3303,15 +3305,15 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getObjectsByPatternAsync(pattern: string, options: CallOptions): Promise<ioBroker.Object[] | void> {
+    getObjectsByPatternAsync(pattern: string, options: CallOptions): Promise<ioBroker.AnyObject[] | void> {
         return new Promise((resolve, reject) =>
             this.getObjectsByPattern(pattern, options, (err, objs) => (err ? reject(err) : resolve(objs)))
         );
     }
 
-    private async _setObject(
-        id: string,
-        obj: ioBroker.SettableObject,
+    private async _setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
         options: CallOptions
     ): ioBroker.SetObjectPromise {
         if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
@@ -3336,7 +3338,7 @@ export class ObjectsInRedisClient {
 
         const oldObjStr = await this.client.get(this.objNamespace + id);
 
-        let oldObj: ioBroker.Object | null;
+        let oldObj: ioBroker.AnyObject | null;
         try {
             oldObj = oldObjStr ? JSON.parse(oldObjStr) : null;
         } catch (e) {
@@ -3411,6 +3413,7 @@ export class ObjectsInRedisClient {
                         delete objCommon[commonSetting];
                     } else if (
                         // if old setting present and new setting is absent
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         oldObj.common[commonSetting] !== undefined &&
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         (!objCommon || objCommon[commonSetting] === undefined)
@@ -3527,9 +3530,9 @@ export class ObjectsInRedisClient {
      * @param options options for access control are optional
      * @param callback return function
      */
-    setObject(
-        id: string,
-        obj: ioBroker.SettableObject,
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
         options?: CallOptions | null,
         callback?: ioBroker.SetObjectCallback
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> {
@@ -3594,7 +3597,7 @@ export class ObjectsInRedisClient {
             return;
         }
 
-        let oldObj: ioBroker.Object | null;
+        let oldObj: ioBroker.AnyObject | null;
         try {
             oldObj = JSON.parse(oldObjStr);
         } catch (e) {
@@ -3770,7 +3773,7 @@ export class ObjectsInRedisClient {
                 }
 
                 const currRows = objs.map(_obj => {
-                    let obj: ioBroker.Object;
+                    let obj: ioBroker.AnyObject;
                     try {
                         obj = JSON.parse(_obj);
                     } catch {
@@ -3918,7 +3921,7 @@ export class ObjectsInRedisClient {
 
                 const currRows = objs.map(_obj => {
                     try {
-                        const obj: ioBroker.Object = JSON.parse(_obj);
+                        const obj: ioBroker.AnyObject = JSON.parse(_obj);
                         return { id: obj._id, value: obj };
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${_obj}`);
@@ -3974,7 +3977,7 @@ export class ObjectsInRedisClient {
 
                 const currRows = objs.map(_obj => {
                     try {
-                        const obj: ioBroker.Object = JSON.parse(_obj);
+                        const obj: ioBroker.AnyObject = JSON.parse(_obj);
                         return { id: obj._id, value: obj };
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${_obj}`);
@@ -4028,7 +4031,7 @@ export class ObjectsInRedisClient {
                 }
 
                 for (const _obj of objs) {
-                    let obj: ioBroker.Object;
+                    let obj: ioBroker.AnyObject;
                     try {
                         obj = JSON.parse(_obj);
                     } catch {
@@ -4102,7 +4105,7 @@ export class ObjectsInRedisClient {
                 objs = [];
             }
 
-            const _emit_ = (id: string, obj: ioBroker.Object) => {
+            const _emit_ = (id: string, obj: ioBroker.AnyObject) => {
                 result.rows.push({ id: id, value: obj });
             };
 
@@ -4110,7 +4113,7 @@ export class ObjectsInRedisClient {
 
             for (let i = 0; i < keys.length; i++) {
                 const strObj = objs[i];
-                let obj: ioBroker.Object | null;
+                let obj: ioBroker.AnyObject | null;
                 try {
                     obj = strObj !== null ? JSON.parse(strObj) : null;
                 } catch {
@@ -4193,37 +4196,37 @@ export class ObjectsInRedisClient {
     }
 
     // no callback provided, thus we return a result Promise
-    getObjectView(
-        design: string,
-        search: string,
+    getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
         params: ioBroker.GetObjectViewParams,
         options?: CallOptions
-    ): ioBroker.GetObjectViewPromise<any>;
+    ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
     // callback and options provided, we send result in callback
-    getObjectView(
-        design: string,
-        search: string,
+    getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
         params: ioBroker.GetObjectViewParams,
         options: CallOptions,
-        callback: ioBroker.GetObjectViewCallback<any>
+        callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
 
     // callback but no options provided, we send result in callback
-    getObjectView(
-        design: string,
-        search: string,
+    getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
         params: ioBroker.GetObjectViewParams,
-        callback: ioBroker.GetObjectViewCallback<any>
+        callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
 
-    getObjectView(
-        design: string,
-        search: string,
+    getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
         params: ioBroker.GetObjectViewParams,
         options?: any,
-        callback?: ioBroker.GetObjectViewCallback<any>
-    ): void | ioBroker.GetObjectViewPromise<any> {
+        callback?: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
+    ): void | ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4314,7 +4317,7 @@ export class ObjectsInRedisClient {
         if (objs) {
             for (let i = 0; i < objs.length; i++) {
                 const strObj = objs[i];
-                let obj: ioBroker.Object | null;
+                let obj: ioBroker.AnyObject | null;
                 try {
                     obj = strObj ? JSON.parse(strObj) : null;
                 } catch {
@@ -4376,9 +4379,9 @@ export class ObjectsInRedisClient {
     }
 
     // could be optimized, to read object only once. Now it will read 3 times
-    private async _extendObject(
-        id: string,
-        obj: Partial<ioBroker.Object>,
+    private async _extendObject<T extends string>(
+        id: T,
+        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: CallOptions,
         callback?: (err?: Error | null, obj?: ObjectIdValue, id?: string) => void
     ): Promise<[ObjectIdValue, string] | void> {
@@ -4463,7 +4466,7 @@ export class ObjectsInRedisClient {
             oldObj.acl.ownerGroup = options.ownerGroup;
         }
 
-        if (obj.common && obj.common.alias && obj.common.alias.id) {
+        if (obj.common && 'alias' in obj.common && obj.common.alias.id) {
             if (typeof obj.common.alias.id === 'object') {
                 if (typeof obj.common.alias.id.write !== 'string' || typeof obj.common.alias.id.read !== 'string') {
                     return tools.maybeCallbackWithError(callback, 'Invalid alias ID');
@@ -4535,9 +4538,9 @@ export class ObjectsInRedisClient {
         }
     }
 
-    extendObject(
-        id: string,
-        obj: Partial<ioBroker.Object>,
+    extendObject<T extends string>(
+        id: T,
+        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: ioBroker.ExtendObjectOptions | null,
         callback?: ioBroker.ExtendObjectCallback
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
@@ -4566,7 +4569,7 @@ export class ObjectsInRedisClient {
 
     extendObjectAsync(
         id: string,
-        obj: Partial<ioBroker.Object>,
+        obj: Partial<ioBroker.AnyObject>,
         options: ioBroker.ExtendObjectOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
         return new Promise((resolve, reject) =>
@@ -4576,7 +4579,7 @@ export class ObjectsInRedisClient {
 
     setConfig(
         id: string,
-        obj: ioBroker.SettableObject,
+        obj: ioBroker.SettableOtherObject,
         options: CallOptions,
         callback: ioBroker.SetObjectCallback
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> {
@@ -4594,7 +4597,7 @@ export class ObjectsInRedisClient {
     getConfigs(
         keys: string[],
         options: CallOptions,
-        callback: (err?: Error | null, objs?: ioBroker.Object[]) => void,
+        callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
         dontModify: boolean
     ): void {
         return this.getObjects(keys, options, callback, dontModify);
@@ -4645,7 +4648,7 @@ export class ObjectsInRedisClient {
                         // Assume it is name
                         for (let i = 0; i < keys.length; i++) {
                             const strObj = objs[i];
-                            let obj: ioBroker.Object | null;
+                            let obj: ioBroker.AnyObject | null;
                             try {
                                 obj = strObj ? JSON.parse(strObj) : null;
                             } catch {
@@ -4656,7 +4659,7 @@ export class ObjectsInRedisClient {
                                 obj &&
                                 obj.common &&
                                 obj.common.name === idOrName &&
-                                (!type || obj.common.type === type)
+                                (!type || ('type' in obj.common && obj.common.type === type))
                             ) {
                                 return tools.maybeCallbackWithError(callback, null, obj._id, idOrName);
                             }

@@ -30,6 +30,14 @@ export interface ACLObject {
     file: number;
 }
 
+export interface FileObject {
+    virtualFile?: boolean;
+    stats: any;
+    modifiedAt: number;
+    createdAt: number;
+    acl: ioBroker.EvaluatedFileACL;
+}
+
 export type CheckFileRightsCallback = (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void;
 
 const mimeTypes = {
@@ -572,12 +580,12 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
 }
 
 export function checkObject(
-    obj: ioBroker.Object | null,
+    obj: ioBroker.Object | FileObject | null,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags
 ): boolean {
     // read rights of object
-    if (!obj || !obj.common || !obj.acl || flag === CONSTS.ACCESS_LIST) {
+    if (!obj || !('common' in obj) || !obj.acl || flag === CONSTS.ACCESS_LIST) {
         return true;
     }
 
