@@ -909,9 +909,9 @@ export class StateRedisClient {
 
     async getStates(
         keys: string[],
-        callback: (err: Error | undefined | null, states?: (ioBroker.StateObject | null)[]) => void,
-        dontModify: boolean
-    ): Promise<(ioBroker.StateObject | null)[] | void> {
+        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        dontModify?: boolean
+    ): Promise<(ioBroker.State | null)[] | void> {
         if (!keys || !Array.isArray(keys)) {
             return tools.maybeCallbackWithError(callback, 'no keys');
         }
@@ -937,7 +937,7 @@ export class StateRedisClient {
             this.log.warn(`${this.namespace} redis mget of ${_keys.length} keys, err: ${e.message}`);
             return tools.maybeCallbackWithRedisError(callback, e, []);
         }
-        const result: (ioBroker.StateObject | null)[] = [];
+        const result: (ioBroker.State | null)[] = [];
 
         obj.forEach(state => {
             try {
@@ -1054,7 +1054,7 @@ export class StateRedisClient {
     async getKeys(
         pattern: string,
         callback: ioBroker.GetConfigKeysCallback,
-        dontModify: boolean
+        dontModify?: boolean
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
