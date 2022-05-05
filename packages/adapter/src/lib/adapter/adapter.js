@@ -8195,7 +8195,7 @@ class AdapterClass extends EventEmitter {
                             adapterObjects.getObject(`system.adapter.${this.namespace}`, (err, res) => {
                                 if ((err || !res) && !this._config.isInstall) {
                                     this._logger.error(
-                                        `${this.namespaceLog} ${this._options.name}.${instance} invalidthis._config`
+                                        `${this.namespaceLog} ${this._options.name}.${instance} invalid config`
                                     );
                                     this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                                 } else {
@@ -9051,7 +9051,7 @@ class AdapterClass extends EventEmitter {
                         }
 
                         if (!this._config.isInstall && !adapterConfig._id) {
-                            this._logger.error(this.namespaceLog + ' invalidthis._config: no _id found');
+                            this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
                             this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                             return;
                         }
@@ -9062,7 +9062,7 @@ class AdapterClass extends EventEmitter {
                         if (!this._config.isInstall) {
                             const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
                             if (!tmp) {
-                                this._logger.error(this.namespaceLog + ' invalidthis._config');
+                                this._logger.error(`${this.namespaceLog} invalid config`);
                                 this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                                 return;
                             }
