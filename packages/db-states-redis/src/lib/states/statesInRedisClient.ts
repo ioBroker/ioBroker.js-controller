@@ -1428,6 +1428,8 @@ export class StateRedisClient {
 
         try {
             await this.client.set(this.namespaceRedis + id, data);
+            // for back compatibility send normal state, but with the flag "binary"
+            await this.client.publish(this.namespaceRedis + id, JSON.stringify({ val: null, binary: true }));
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);

@@ -5,15 +5,15 @@
 //   name:                  name of the adapter. Must be exactly the same as directory name.
 //   dirname:               adapter directory name
 //   instance:              instance number of adapter
-//   objects:               true or false, if desired to have oObjects. This is a list with all states, channels and devices of this adapter and it will be updated automatically.
-//   states:                true or false, if desired to have oStates. This is a list with all states values and it will be updated automatically.
-//   systemConfig:          if required systemthis._configuration. Store it in systemConfig attribute
+//   objects:               true or false, if desired to have oObjects. This is a list with all states, channels and devices of this adapter, and it will be updated automatically.
+//   states:                true or false, if desired to have oStates. This is a list with all states values, and it will be updated automatically.
+//   systemConfig:          if required system configuration. Store it in systemConfig attribute
 //   objectChange:          callback function (id, obj) that will be called if object changed
 //   stateChange:           callback function (id, obj) that will be called if state changed
 //   message:               callback to inform about new message the adapter
 //   unload:                callback to stop the adapter
-//  this._config:               this._configuration of the connection to controller
-//   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without an corresponding existing object
+//   config:                configuration of the connection to controller
+//   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without a corresponding existing object
 
 const net = require('net');
 const fs = require('fs-extra');
@@ -703,6 +703,8 @@ class AdapterClass extends EventEmitter {
      *            setObject:          {type: 'object',    operation: 'write'},
      *            subscribeObjects:   {type: 'object',    operation: 'read'},
      *            unsubscribeObjects: {type: 'object',    operation: 'read'},
+     *            subscribeFiles:     {type: 'object',    operation: 'read'},
+     *            unsubscribeFiles:   {type: 'object',    operation: 'read'},
      *
      *            getStates:          {type: 'state',     operation: 'list'},
      *            getState:           {type: 'state',     operation: 'read'},
@@ -1035,7 +1037,7 @@ class AdapterClass extends EventEmitter {
      * returns SSL certificates by name
      *
      * This function returns SSL certificates (private key, public cert and chained certificate).
-     * Names are defined in the system'sthis._configuration in admin, e.g. "defaultPrivate", "defaultPublic".
+     * Names are defined in the system's configuration in admin, e.g. "defaultPrivate", "defaultPublic".
      * The result can be directly used for creation of https server.
      *
      * @alias getCertificates
@@ -1082,7 +1084,7 @@ class AdapterClass extends EventEmitter {
                 (chainedName && !obj.native.certificates[chainedName])
             ) {
                 this._logger.error(
-                    `${this.namespaceLog} Cannotthis._configure secure web server, because no certificates found: ${publicName}, ${privateName}, ${chainedName}`
+                    `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${publicName}, ${privateName}, ${chainedName}`
                 );
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NOT_FOUND);
             } else {
@@ -1124,26 +1126,26 @@ class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Updates the adapterthis._config with new values. Only a subset of thethis._configuration has to be provided,
-     * since merging with the existingthis._config is done automatically, e.g. like this:
+     * Updates the adapter config with new values. Only a subset of the configuration has to be provided,
+     * since merging with the existing config is done automatically, e.g. like this:
      *
      * `adapter.updateConfig({prop1: "newValue1"})`
      *
-     * After updating thethis._configuration, the adapter is automatically restarted.
+     * After updating the configuration, the adapter is automatically restarted.
      *
-     * @param {Record<string, any>} newConfig The newthis._config values to be stored
+     * @param {Record<string, any>} newConfig The new config values to be stored
      * @return Promise<void>
      */
     async updateConfig(newConfig) {
-        // merge the old and newthis._configuration
+        // merge the old and new configuration
         const _config = Object.assign({}, this.config, newConfig);
-        // update the adapterthis._config object
+        // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
         try {
             obj = await this.getForeignObjectAsync(configObjId);
         } catch (e) {
-            this._logger.error(`${this.namespaceLog} Updating the adapterthis._config failed: ${e.message}`);
+            this._logger.error(`${this.namespaceLog} Updating the adapter config failed: ${e.message}`);
         }
 
         if (!obj) {
@@ -1160,7 +1162,7 @@ class AdapterClass extends EventEmitter {
      * @return Promise<void>
      */
     async disable() {
-        // update the adapterthis._config object
+        // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
         try {
@@ -1178,10 +1180,10 @@ class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Reads the encrypted parameter fromthis._config.
+     * Reads the encrypted parameter from config.
      *
      * It returns promise if no callback is provided.
-     * @param {string} attribute - attribute name in nativethis._configuration part
+     * @param {string} attribute - attribute name in native configuration part
      * @param {(error: Error | null | undefined, result?: string) => void} [callback] - optional callback
      * @returns {Promise<any>} promise if no callback provided
      *
@@ -1455,7 +1457,7 @@ class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one isthis._configured
+     * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one is configured
      * @param {string} id of the object
      * @param obj The object to set
      * @param {object} [options]
@@ -2907,6 +2909,65 @@ class AdapterClass extends EventEmitter {
         }
 
         adapterObjects.unsubscribeUser(pattern, options, callback);
+    }
+
+    /**
+     * Subscribe for the changes of files in specific instance.
+     *
+     * @alias subscribeForeignFiles
+     * @memberof Adapter
+     * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
+     * @param {string} pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
+     * @param {object} [options] optional user context
+     * @param {ioBroker.ErrorCallback} [callback] optional returns result
+     *        <pre><code>
+     *            function (err) {
+     *              if (err) adapter.log.error('Cannot subscribe object: ' + err);
+     *            }
+     *        </code></pre>
+     */
+    subscribeForeignFiles(id, pattern, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = undefined;
+        }
+        if (!adapterObjects) {
+            this.log.info('subscribeForeignFiles not processed because Objects database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterObjects.subscribeUserFile(id, pattern, options, callback);
+    }
+
+    /**
+     * Unsubscribe for the changes of files on specific instance.
+     *
+     * @alias unsubscribeForeignFiles
+     * @memberof Adapter
+     * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
+     * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param {object} [options] optional user context
+     * @param {ioBroker.ErrorCallback} [callback] optional returns result
+     *        <pre><code>
+     *            function (err) {
+     *              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);
+     *            }
+     *        </code></pre>
+     */
+    unsubscribeForeignFiles(id, pattern, options, callback) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = undefined;
+        }
+        if (!pattern) {
+            pattern = '*';
+        }
+        if (!adapterObjects) {
+            this.log.info('unsubscribeForeignFiles not processed because Objects database not connected');
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterObjects.unsubscribeUserFile(id, pattern, options, callback);
     }
 
     /**
@@ -7331,10 +7392,10 @@ class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Return pluginthis._configuration
+     * Return plugin configuration
      *
      * @param name {string} name of the plugin to return
-     * @returns {object} pluginthis._configuration or null if not existent or not isActive
+     * @returns {object} plugin configuration or null if not existent or not isActive
      */
     getPluginConfig(name) {
         if (!this.pluginHandler) {
@@ -7517,7 +7578,7 @@ class AdapterClass extends EventEmitter {
             this.ioPack = this.pack.io;
         }
 
-        // If required systemthis._configuration. Store it in systemConfig attribute
+        // If required system configuration. Store it in systemConfig attribute
         if (this._options.systemConfig) {
             this.systemConfig = this._config;
             // Workaround for an admin 5 issue which could lead to deleting the dataDir folder
@@ -7923,6 +7984,16 @@ class AdapterClass extends EventEmitter {
          * Promise-version of Adapter.unsubscribeStates
          */
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
+
+        /**
+         * Promise-version of Adapter.subscribeForeignFiles
+         */
+        this.subscribeForeignFilesAsync = tools.promisify(this.subscribeForeignFiles, this);
+
+        /**
+         * Promise-version of Adapter.unsubscribeForeignFiles
+         */
+        this.unsubscribeForeignFilesAsync = tools.promisify(this.unsubscribeForeignFiles, this);
 
         /**
          * Promise-version of Adapter.setBinaryState
@@ -8471,6 +8542,18 @@ class AdapterClass extends EventEmitter {
                             setImmediate(() => this.emit('objectChange', id, obj));
                         }
                     }
+                },
+                changeFileUser: (id, fileName, size) => {
+                    if (!id) {
+                        this._logger.error(`${this.namespaceLog} change file name is empty`);
+                        return;
+                    }
+                    if (this.adapterReady && !this._stopInProgress) {
+                        typeof this._options.fileChange === 'function' &&
+                            setImmediate(this._options.fileChange, id, fileName, size);
+                        // emit 'fileChange' event instantly
+                        setImmediate(() => this.emit('fileChange', id, fileName, size));
+                    }
                 }
             });
         };
@@ -8594,7 +8677,7 @@ class AdapterClass extends EventEmitter {
                                     if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
                                         continue;
                                     }
-                                    // set the loglevel on transport only if no loglevel was pinned in logthis._config
+                                    // set the loglevel on transport only if no loglevel was pinned in log config
                                     if (!this._logger.transports[transport]._defaultConfigLoglevel) {
                                         this._logger.transports[transport].level = state.val;
                                     }
@@ -9078,9 +9161,9 @@ class AdapterClass extends EventEmitter {
                         }
 
                         if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
-                            // setthis._configured in DB log level
+                            // set configured in DB log level
                             for (const trans of Object.keys(this._logger.transports)) {
-                                // set the loglevel on transport only if no loglevel was pinned in logthis._config
+                                // set the loglevel on transport only if no loglevel was pinned in log config
                                 if (!this._logger.transports[trans]._defaultConfigLoglevel) {
                                     this._logger.transports[trans].level = adapterConfig.common.loglevel;
                                 }
@@ -9092,7 +9175,7 @@ class AdapterClass extends EventEmitter {
                         this.instance = instance;
                         this.namespace = name + '.' + instance;
                         this.namespaceLog =
-                            this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ' (' + process.pid + ')');
+                            this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
                         if (!this.startedInCompactMode) {
                             process.title = 'io.' + this.namespace;
                         }

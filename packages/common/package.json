@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@alcalzone/pak": "^0.7.0",
-    "axios": "^0.26.0",
+    "axios": "^0.27.2",
     "ci-info": "^3.3.0",
     "deep-clone": "^3.0.3",
     "event-stream": "^4.0.1",
@@ -24,6 +24,9 @@
     "semver": "^7.3.5",
     "winston": "^3.6.0",
     "winston-daily-rotate-file": "^4.6.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.4"
   },
   "keywords": [
     "ioBroker"

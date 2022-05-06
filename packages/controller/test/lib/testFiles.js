@@ -35,6 +35,7 @@ function register(it, expect, context) {
 
     it(testName + 'setBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testSetBinaryState`;
+
         // create an object of type file first
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'state',
@@ -47,8 +48,27 @@ function register(it, expect, context) {
             native: {}
         });
 
+        await context.adapter.subscribeForeignStatesAsync(objId);
+
+        const receivedPromise = new Promise(resolve => {
+            context.onAdapterStateChanged = (id, state) => {
+                if (id === objId) {
+                    if (typeof state !== 'object') {
+                        throw new Error(`Expected object, but got ${typeof state}`);
+                    }
+                    if (!state.binary) {
+                        throw new Error(`Binary flag does not set`);
+                    }
+                    if (state.val !== null) {
+                        throw new Error(`Value is not null`);
+                    }
+                    resolve();
+                }
+            };
+        });
+
         // now we write a binary state
-        await context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
+        return Promise.all([receivedPromise, context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'))]);
     });
 
     it(testName + 'getForeignBinaryState', async () => {
