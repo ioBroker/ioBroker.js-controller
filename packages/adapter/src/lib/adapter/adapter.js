@@ -922,17 +922,17 @@ class AdapterClass extends EventEmitter {
             const id = `system.adapter.${this.namespace}`;
 
             const finishUnload = () => {
-                if (this._timers.size) {
+                if (this._timers && this._timers.size) {
                     this._timers.forEach(id => clearTimeout(id));
                     this._timers.clear();
                 }
 
-                if (this._intervals.size) {
+                if (this._intervals && this._intervals.size) {
                     this._intervals.forEach(id => clearInterval(id));
                     this._intervals.clear();
                 }
 
-                if (this._delays.size) {
+                if (this._delays && this._delays.size) {
                     this._delays.forEach(id => clearTimeout(id));
                     this._delays.clear();
                 }
@@ -957,7 +957,7 @@ class AdapterClass extends EventEmitter {
                 }
             };
 
-            // if we never were ready, we don't trigger unload
+            // if we were never ready, we don't trigger unload
             if (this.adapterReady) {
                 if (typeof this._options.unload === 'function') {
                     if (this._options.unload.length >= 1) {
@@ -8139,7 +8139,7 @@ class AdapterClass extends EventEmitter {
         };
 
         /**
-         * Called if states and objects successfully initalized
+         * Called if states and objects successfully initialized
          */
         const prepareInitAdapter = () => {
             if (this.terminated) {
