@@ -1,7 +1,7 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2018 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -68,7 +68,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
-        this.namespaceMeta = (this.settings.namespaceMeta || 'meta') + '.';
+        this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
         this.namespaceMetaLen = this.namespaceMeta.length;
 
         this.knownScripts = {};
@@ -95,7 +95,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             })
             .catch(e => {
                 this.log.error(
-                    this.namespace + ' Cannot start inMem-objects on port ' + (settings.port || 9001) + ': ' + e.message
+                    `${this.namespace} Cannot start inMem-objects on port ${settings.port || 9001}: ${e.message}`
                 );
                 process.exit(24); // todo: replace it with exitcode
             });
@@ -132,6 +132,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 } else if (idWithNamespace.startsWith(this.namespaceSet)) {
                     idx = this.namespaceSetLen;
                 }
+
                 if (idx !== -1) {
                     ns = idWithNamespace.substr(0, idx);
                     id = idWithNamespace.substr(idx);
@@ -171,7 +172,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns {number} Publish counter 0 or 1 depending if send out or not
+     * @returns {number} Publish counter 0 or 1 depending on if send out or not
      */
     publishToClients(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe[type]) {
@@ -180,6 +181,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         const s = client._subscribe[type];
 
         const found = s.find(sub => sub.regex.test(id));
+
         if (found) {
             if (type === 'meta') {
                 this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
@@ -187,10 +189,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 const sendId = this.namespaceMeta + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
             } else if (type === 'files') {
-                this.log.silly(`${this.namespace} Redis Publish File ${id}=${obj}`);
+                const objString = JSON.stringify(obj);
+                this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
                 const sendPattern = this.namespaceFile + found.pattern;
                 const sendId = this.namespaceFile + id;
-                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
             } else {
                 const objString = JSON.stringify(obj);
                 this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
@@ -321,7 +324,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // Handle Redis "EVALSHA" request
         handler.on('evalsha', (data, responseId) => {
             if (!this.knownScripts[data[0]]) {
-                return void handler.sendError(responseId, new Error('Unknown Script ' + data[0]));
+                return void handler.sendError(responseId, new Error(`Unknown Script ${data[0]}`));
             }
             if (this.knownScripts[data[0]].design) {
                 const scriptDesign = this.knownScripts[data[0]].design;
@@ -461,7 +464,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('MGET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`MGET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -558,7 +561,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('GET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`GET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -576,7 +579,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 }
                 handler.sendString(responseId, 'OK');
             } else if (namespace === this.namespaceFile) {
-                // Handle request to set meta data, we ignore it because
+                // Handle request to set meta-data, we ignore it because
                 // will be set when data are written
                 if (isMeta) {
                     this._loadFileSettings(id);
@@ -584,7 +587,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     try {
                         fs.ensureDirSync(path.join(this.objectsDir, id, path.dirname(name)));
 
-                        // only set if the meta object is already/still existing
+                        // only set if the meta-object is already/still existing
                         if (this.fileOptions[id]) {
                             this.fileOptions[id][name] = JSON.parse(data[1].toString('utf-8'));
                             fs.writeFileSync(
@@ -667,7 +670,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 }
                 handler.sendInteger(responseId, 1);
             } else if (namespace === this.namespaceFile) {
-                // Handle request to delete meta data, we ignore it because
+                // Handle request to delete meta-data, we ignore it because
                 // will be removed when data are deleted
                 if (isMeta) {
                     handler.sendString(responseId, 'OK');
@@ -758,7 +761,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
         handler.on('psubscribe', (data, responseId) => {
-            const { id, namespace } = this._normalizeId(data[0]);
+            const { id, namespace, name } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
@@ -766,25 +769,31 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             } else if (namespace === this.namespaceMeta) {
                 this._subscribeMeta(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceFile) {
+                this._subscribeFileForClient(handler, id, name);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('PSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`PSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
 
         // Handle Redis "UNSUBSCRIBE" request for state, log and session namespace
         handler.on('punsubscribe', (data, responseId) => {
-            const { id, namespace } = this._normalizeId(data[0]);
+            const { id, namespace, name } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 this._unsubscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceFile) {
+                this._unsubscribeFileForClient(handler, id, name);
+                handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('PUNSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`PUNSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -835,7 +844,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             }
         });
 
-        handler.on('error', err => this.log.warn(`${namespaceLog} Redis states: ${err}`));
+        handler.on('error', err => this.log.warn(`${namespaceLog} Redis objects: ${err}`));
     }
 
     /**
@@ -868,6 +877,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                 }
             });
         }
+
         await super.destroy();
     }
 
@@ -959,7 +969,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         }
         const options = {
             log: this.log,
-            logScope: (this.settings.namespace || '') + ' Objects',
+            logScope: `${this.settings.namespace || ''} Objects`,
             handleAsBuffers: true,
             enhancedLogging: this.settings.connection.enhancedLogging
         };

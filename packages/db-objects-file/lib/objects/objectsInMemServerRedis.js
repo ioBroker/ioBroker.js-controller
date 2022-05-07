@@ -64,6 +64,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         this.namespaceObj = this.namespaceObjects + 'o.';
         this.namespaceSet = this.namespaceObjects + 's.';
         this.namespaceSetLen = this.namespaceSet.length;
+
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
@@ -189,7 +190,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
             } else if (type === 'files') {
                 const objString = JSON.stringify(obj);
-                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
+                this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
                 const sendPattern = this.namespaceFile + found.pattern;
                 const sendId = this.namespaceFile + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
@@ -350,11 +351,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     } catch (err) {
                         return void handler.sendError(
                             responseId,
-                            new Error(
-                                '_getObjectView Error for ' + scriptDesign + '/' + scriptSearch + ': ' + err.message
-                            )
+                            new Error(`_getObjectView Error for ${scriptDesign}/${scriptSearch}: ${err.message}`)
                         );
                     }
+
                     const res = objs.rows.map(obj => JSON.stringify(this.dataset[obj.value._id || obj.id]));
                     handler.sendArray(responseId, res);
                 }
@@ -678,18 +678,6 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     // Handle request to remove the file
                     try {
                         this._unlink(id, name);
-
-                        setImmediate(name => {
-                            // publish event in states
-                            this.log.silly(
-                                `${this.namespace} memory publish ${id} ${JSON.stringify({
-                                    val: null,
-                                    binary: true,
-                                    size: data.byteLength
-                                })}`
-                            );
-                            this.publishAll('files', id, { name, file: true, size: null });
-                        }, name);
                     } catch (err) {
                         return void handler.sendError(responseId, err);
                     }
