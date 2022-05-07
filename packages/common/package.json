@@ -25,9 +25,6 @@
     "winston": "^3.6.0",
     "winston-daily-rotate-file": "^4.6.1"
   },
-  "devDependencies": {
-    "typescript": "^4.6.4"
-  },
   "keywords": [
     "ioBroker"
   ],
