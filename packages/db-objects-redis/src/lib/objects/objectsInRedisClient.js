@@ -2308,48 +2308,30 @@ class ObjectsInRedisClient {
         }
     }
 
-    subscribeUserFile(id, pattern, options, callback) {
-        if (typeof options === 'function') {
-            callback = options;
-            options = null;
-        }
-        utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
-            if (err) {
-                return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                return this._subscribeFile(id, pattern, options, this.sub, callback);
-            }
+    subscribeUserFile(id, pattern, options) {
+        return new Promise((resolve, reject) => {
+            utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    return this._subscribeFile(id, pattern, options, this.sub, err =>
+                        err ? reject(err) : resolve());
+                }
+            });
         });
     }
 
-    subscribeUserFileAsync(id, pattern, options) {
-        return /** @type {Promise<void>} */ (
-            new Promise((resolve, reject) =>
-                this.subscribeUserFile(id, pattern, options, err => (err ? reject(err) : resolve()))
-            )
-        );
-    }
-
-    unsubscribeUserFile(id, pattern, options, callback) {
-        if (typeof options === 'function') {
-            callback = options;
-            options = null;
-        }
-        utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            } else {
-                return this._unsubscribeFile(id, pattern, options, this.sub, callback);
-            }
+    unsubscribeUserFile(id, pattern, options) {
+        return new Promise((resolve, reject) => {
+            utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    return this._unsubscribeFile(id, pattern, options, this.sub, err =>
+                        err ? reject(err) : resolve());
+                }
+            });
         });
-    }
-
-    unsubscribeUserFileAsync(id, pattern, options) {
-        return /** @type {Promise<void>} */ (
-            new Promise((resolve, reject) =>
-                this.unsubscribeUserFile(id, pattern, options, err => (err ? reject(err) : resolve()))
-            )
-        );
     }
 
     // -------------- OBJECT FUNCTIONS -------------------------------------------

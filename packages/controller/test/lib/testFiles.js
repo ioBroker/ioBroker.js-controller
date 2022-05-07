@@ -65,7 +65,8 @@ function register(it, expect, context) {
 
         await context.adapter.subscribeForeignStatesAsync(objId);
 
-        await Promise.all([promise, context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'))]);
+        context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
+        await promise;
 
         await context.adapter.unsubscribeForeignStatesAsync(objId);
     });
@@ -84,7 +85,8 @@ function register(it, expect, context) {
 
         await context.adapter.subscribeForeignStatesAsync(objId);
 
-        await Promise.all([promise, context.adapter.delBinaryStateAsync(objId)]);
+        context.adapter.delBinaryStateAsync(objId);
+        await promise;
 
         await context.adapter.unsubscribeForeignStatesAsync(objId);
     });

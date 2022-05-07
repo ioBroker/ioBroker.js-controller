@@ -2915,61 +2915,43 @@ class AdapterClass extends EventEmitter {
 
     /**
      * Subscribe for the changes of files in specific instance.
-     *
+     * This is async function!
      * @alias subscribeForeignFiles
      * @memberof Adapter
      * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
      * @param {string} pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] optional returns result
-     *        <pre><code>
-     *            function (err) {
-     *              if (err) adapter.log.error('Cannot subscribe object: ' + err);
-     *            }
-     *        </code></pre>
+     * @returns {Promise<>}
      */
-    subscribeForeignFiles(id, pattern, options, callback) {
-        if (typeof options === 'function') {
-            callback = options;
-            options = undefined;
-        }
+    subscribeForeignFiles(id, pattern, options) {
         if (!adapterObjects) {
             this.log.info('subscribeForeignFiles not processed because Objects database not connected');
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.subscribeUserFile(id, pattern, options, callback);
+        return adapterObjects.subscribeUserFile(id, pattern, options);
     }
 
     /**
      * Unsubscribe for the changes of files on specific instance.
-     *
+     * This is async function!
      * @alias unsubscribeForeignFiles
      * @memberof Adapter
      * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
      * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] optional returns result
-     *        <pre><code>
-     *            function (err) {
-     *              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);
-     *            }
-     *        </code></pre>
+     * @returns {Promise<>}
      */
-    unsubscribeForeignFiles(id, pattern, options, callback) {
-        if (typeof options === 'function') {
-            callback = options;
-            options = undefined;
-        }
+    unsubscribeForeignFiles(id, pattern, options) {
         if (!pattern) {
             pattern = '*';
         }
         if (!adapterObjects) {
             this.log.info('unsubscribeForeignFiles not processed because Objects database not connected');
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.unsubscribeUserFile(id, pattern, options, callback);
+        return adapterObjects.unsubscribeUserFile(id, pattern, options);
     }
 
     /**
@@ -3273,7 +3255,7 @@ class AdapterClass extends EventEmitter {
                 if (typeof min !== 'number') {
                     min = parseFloat(min);
                     if (isNaN(min)) {
-                        err = 'Wrong type of ' + id + '.common.min';
+                        err = `Wrong type of ${id}.common.min`;
                         this._logger.error(this.namespaceLog + ' ' + err);
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
@@ -3286,7 +3268,7 @@ class AdapterClass extends EventEmitter {
                 if (typeof max !== 'number') {
                     max = parseFloat(max);
                     if (isNaN(max)) {
-                        err = 'Wrong type of ' + id + '.common.max';
+                        err = `Wrong type of ${id}.common.max`;
                         this._logger.error(this.namespaceLog + ' ' + err);
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
@@ -3299,7 +3281,7 @@ class AdapterClass extends EventEmitter {
                 if (typeof def !== 'number') {
                     def = parseFloat(def);
                     if (isNaN(def)) {
-                        err = new Error('Wrong type of ' + id + '.common.def');
+                        err = new Error(`Wrong type of ${id}.common.def`);
                         this._logger.error(`${this.namespaceLog} ${err.message}`);
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
