@@ -949,7 +949,9 @@ class AdapterClass extends EventEmitter {
                         if (!isPause && this._logger) {
                             this._logger.info(this.namespaceLog + ' terminating');
                         }
-                        this.terminate(exitCode);
+
+                        // To this moment, the class could be destroyed
+                        this.terminate && this.terminate(exitCode);
                     });
                 } else {
                     if (!isPause && this.log) {
@@ -8445,7 +8447,7 @@ class AdapterClass extends EventEmitter {
                         // it's a new alias, we add it to our subscription
                         if (isNewAlias) {
                             for (const aliasPattern of this.aliasPatterns) {
-                                // check if its in our subs range, if so add it
+                                // check if it's in our subs range, if so add it
                                 const testPattern =
                                     aliasPattern.slice(-1) === '*'
                                         ? new RegExp(tools.pattern2RegEx(aliasPattern))
@@ -8466,7 +8468,7 @@ class AdapterClass extends EventEmitter {
                         }
                     }
 
-                    // process autosubscribe adapters
+                    // process auto-subscribe adapters
                     if (id.startsWith('system.adapter.')) {
                         if (obj && obj.common && obj.common.subscribable) {
                             const _id = id.substring(15); // 'system.adapter.'.length

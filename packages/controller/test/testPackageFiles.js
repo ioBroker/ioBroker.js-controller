@@ -26,7 +26,7 @@ describe('Test package.json and io-package.json', () => {
 
         const versionDiff = semverDiff(ioPackage.common.version, npmPackage.version);
 
-        // we don't put prereleases into io-pack so they are allowed to differ here
+        // we don't put pre-releases into io-pack, so they are allowed to differ here
         if (versionDiff && versionDiff !== 'prerelease') {
             expect(
                 ioPackage.common.version,
@@ -112,14 +112,14 @@ describe('Test package.json and io-package.json', () => {
             console.log();
         }
         expect(
-            licenseFileExists || fileContentReadme.indexOf('## License') !== -1,
+            licenseFileExists || fileContentReadme.includes('## License'),
             'A LICENSE must exist as LICENSE file or as part of the README.md'
         ).to.be.true;
         if (!licenseFileExists) {
             console.log('Warning: The License should also exist as LICENSE file');
             console.log();
         }
-        if (fileContentReadme.indexOf('## License') === -1) {
+        if (!fileContentReadme.includes('## License')) {
             console.log('Warning: The README.md should also have a section ## License to be shown in Admin3');
             console.log();
         }

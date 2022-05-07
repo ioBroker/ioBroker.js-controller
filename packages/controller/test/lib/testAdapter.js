@@ -203,7 +203,7 @@ function testAdapter(options) {
         }
     }
 
-    describe(options.name + ' ' + context.adapterShortName + ' adapter', function () {
+    describe(`${options.name} ${context.adapterShortName} adapter`, function () {
         before('Test ' + context.adapterShortName + ' adapter: Start js-controller and adapter', function (_done) {
             this.timeout(10000); // no installation
 
@@ -246,7 +246,7 @@ function testAdapter(options) {
             );
         });
 
-        it(options.name + ' ' + context.adapterShortName + ' adapter: Check if adapter started', function (done) {
+        it(`${options.name} ${context.adapterShortName} adapter: Check if adapter started`, function (done) {
             this.timeout(60000);
             checkConnectionOfAdapter(true, function (err) {
                 if (err) {

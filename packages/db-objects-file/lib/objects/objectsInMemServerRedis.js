@@ -94,7 +94,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             })
             .catch(e => {
                 this.log.error(
-                    this.namespace + ' Cannot start inMem-objects on port ' + (settings.port || 9001) + ': ' + e.message
+                    `${this.namespace} Cannot start inMem-objects on port ${settings.port || 9001}: ${e.message}`
                 );
                 process.exit(24); // todo: replace it with exitcode
             });
@@ -171,7 +171,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns {number} Publish counter 0 or 1 depending if send out or not
+     * @returns {number} Publish counter 0 or 1 depending on if send out or not
      */
     publishToClients(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe[type]) {
@@ -189,7 +189,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
             } else {
                 const objString = JSON.stringify(obj);
-                this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
+                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
                 const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
                 const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
@@ -241,7 +241,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             infoString += '# CPU\r\n';
             infoString += '# Cluster\r\n';
             infoString += '# Keyspace\r\n';
-            infoString += 'db0:keys=' + Object.keys(this.dataset).length + ',expires=0,avg_ttl=98633637897';
+            infoString += `db0:keys=${Object.keys(this.dataset).length},expires=0,avg_ttl=98633637897`;
             handler.sendBulk(responseId, infoString);
         });
 
@@ -454,7 +454,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('MGET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`MGET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -551,7 +551,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('GET-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`GET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -569,7 +569,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 }
                 handler.sendString(responseId, 'OK');
             } else if (namespace === this.namespaceFile) {
-                // Handle request to set meta data, we ignore it because
+                // Handle request to set meta-data, we ignore it because
                 // will be set when data are written
                 if (isMeta) {
                     this._loadFileSettings(id);
@@ -577,7 +577,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     try {
                         fs.ensureDirSync(path.join(this.objectsDir, id, path.dirname(name)));
 
-                        // only set if the meta object is already/still existing
+                        // only set if the meta-object is already/still existing
                         if (this.fileOptions[id]) {
                             this.fileOptions[id][name] = JSON.parse(data[1].toString('utf-8'));
                             fs.writeFileSync(
@@ -660,7 +660,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 }
                 handler.sendInteger(responseId, 1);
             } else if (namespace === this.namespaceFile) {
-                // Handle request to delete meta data, we ignore it because
+                // Handle request to delete meta-data, we ignore it because
                 // will be removed when data are deleted
                 if (isMeta) {
                     handler.sendString(responseId, 'OK');
@@ -762,7 +762,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('PSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`PSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -777,7 +777,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error('PUNSUBSCRIBE-UNSUPPORTED for namespace ' + namespace + ': Data=' + JSON.stringify(data))
+                    new Error(`PUNSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
                 );
             }
         });
@@ -953,7 +953,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         }
         const options = {
             log: this.log,
-            logScope: (this.settings.namespace || '') + ' Objects',
+            logScope: `${this.settings.namespace || ''} Objects`,
             handleAsBuffers: true,
             enhancedLogging: this.settings.connection.enhancedLogging
         };

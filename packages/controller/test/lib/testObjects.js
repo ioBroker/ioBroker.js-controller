@@ -568,7 +568,7 @@ function register(it, expect, context) {
 
     it(testName + 'should close DB', () => {
         const objects = context.objects;
-        // we running as a server, so nothing should happens
+        // we're running as a server, so nothing should happen
         return objects.destroy();
     });
 }
