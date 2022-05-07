@@ -212,6 +212,19 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
                 this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(obj)}`);
                 this.publishAll('state', id, obj);
             });
+        } else if ((obj || obj === 0) && typeof obj !== 'object') {
+            // it is binary state
+            setImmediate(() => {
+                // publish event in states
+                this.log.silly(
+                    `${this.namespace} memory publish ${id} ${JSON.stringify({
+                        val: null,
+                        binary: true,
+                        size: obj.length
+                    })}`
+                );
+                this.publishAll('state', id, { val: null, binary: true, size: obj.length });
+            });
         }
 
         if (!this.stateTimer) {
@@ -338,6 +351,21 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
             data = Buffer.from(data);
         }
         this.dataset[id] = data;
+
+        // If data === undefined, the state was just created and not filled with value
+        if (data !== undefined) {
+            setImmediate(() => {
+                // publish event in states
+                this.log.silly(
+                    `${this.namespace} memory publish ${id} ${JSON.stringify({
+                        val: null,
+                        binary: true,
+                        size: data.byteLength
+                    })}`
+                );
+                this.publishAll('state', id, { val: null, binary: true, size: data.byteLength });
+            });
+        }
 
         if (!this.stateTimer) {
             this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);

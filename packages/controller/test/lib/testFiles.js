@@ -34,21 +34,7 @@ function register(it, expect, context) {
     it(testName + 'setBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testSetBinaryState`;
 
-        // create an object of type file first
-        await context.adapter.setForeignObjectAsync(objId, {
-            type: 'state',
-            common: {
-                name: objId,
-                read: true,
-                write: true,
-                type: 'file'
-            },
-            native: {}
-        });
-
-        await context.adapter.subscribeForeignStatesAsync(objId);
-
-        const receivedPromise = new Promise(resolve => {
+        const promise = new Promise(resolve => {
             context.onAdapterStateChanged = (id, state) => {
                 if (id === objId) {
                     if (typeof state !== 'object') {
@@ -65,8 +51,21 @@ function register(it, expect, context) {
             };
         });
 
-        // now we write a binary state
-        return Promise.all([receivedPromise, context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'))]);
+        // create an object of type file first
+        await context.adapter.setForeignObjectAsync(objId, {
+            type: 'state',
+            common: {
+                name: objId,
+                read: true,
+                write: true,
+                type: 'file'
+            },
+            native: {}
+        });
+
+        await context.adapter.subscribeForeignStatesAsync(objId);
+
+        return Promise.all([promise, context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'))]);
     });
 
     it(testName + 'getForeignBinaryState', async () => {
@@ -111,7 +110,7 @@ function register(it, expect, context) {
         expect(state.toString('utf-8')).to.be.equal('1234');
     });
 
-    it(testName + 'writeFile', async () => {
+    it.only(testName + 'writeFile', async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
         const dataBinary = Buffer.from('1234');
@@ -132,6 +131,7 @@ function register(it, expect, context) {
                 }
             };
         });
+
         // now we write a file state
         await Promise.all([receivedPromise, context.adapter.writeFileAsync(objId, fileName, dataBinary)]);
 
@@ -140,7 +140,7 @@ function register(it, expect, context) {
 
         expect(mimeType).to.be.equal('application/bin');
         expect(data.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
-    });
+    }).timeout(300000);
 }
 
 module.exports.register = register;

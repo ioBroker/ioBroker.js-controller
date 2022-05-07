@@ -3,7 +3,7 @@
 /* jslint node:true */
 /* jshint expr:true */
 'use strict';
-const testAdapter = require(__dirname + '/lib/testAdapter');
+const testAdapter = require('./lib/testAdapter');
 // const dataDir = __dirname + '/../tmp/data-redis';
 
 const statesConfig = {
@@ -31,7 +31,7 @@ const objectsConfig = {
 
 // states in REDIS, objects in files
 testAdapter({
-    statesConfig: statesConfig,
-    objectsConfig: objectsConfig,
+    statesConfig,
+    objectsConfig,
     name: 'Tests REDIS'
 });

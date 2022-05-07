@@ -785,7 +785,7 @@ class ObjectsInRedisClient {
         }
         try {
             await this.client.set(id, data);
-            await this.client.publish(id, data.length);
+            await this.client.publish(id, data.byteLength);
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
