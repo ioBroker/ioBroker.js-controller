@@ -141,7 +141,6 @@ function register(it, expect, context) {
         expect(mimeType).to.be.equal('application/bin');
         expect(data.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
     });
-
 }
 
 module.exports.register = register;
