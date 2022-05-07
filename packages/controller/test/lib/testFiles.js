@@ -70,6 +70,25 @@ function register(it, expect, context) {
         await context.adapter.unsubscribeForeignStatesAsync(objId);
     });
 
+    it(testName + 'delBinaryState', async () => {
+        const objId = `${context.adapter.namespace}.testSetBinaryState`;
+
+        const promise = new Promise(resolve => {
+            context.onAdapterStateChanged = (id, state) => {
+                if (id === objId) {
+                    expect(state).to.be.equal(null);
+                    resolve();
+                }
+            };
+        });
+
+        await context.adapter.subscribeForeignStatesAsync(objId);
+
+        await Promise.all([promise, context.adapter.delBinaryStateAsync(objId)]);
+
+        await context.adapter.unsubscribeForeignStatesAsync(objId);
+    });
+
     it(testName + 'getForeignBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testGetForeignBinaryState`;
         // create an object of type file first
