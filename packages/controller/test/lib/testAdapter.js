@@ -41,6 +41,7 @@ function testAdapter(options) {
         onControllerStateChanged: null,
         onControllerObjectChanged: null,
         onAdapterStateChanged: null,
+        onAdapterFileChanged: null,
         onAdapterObjectChanged: null,
         onAdapterUnload: null,
         onAdapterMessage: null,
@@ -65,6 +66,7 @@ function testAdapter(options) {
             name: context.adapterShortName,
             objectChange: (id, obj) => context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
             stateChange: (id, state) => context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
+            fileChange: (id, fileName, size) => context.onAdapterFileChanged && context.onAdapterFileChanged(id, fileName, size),
             unload: callback => {
                 if (context.onAdapterUnload) {
                     context.onAdapterUnload(callback);
