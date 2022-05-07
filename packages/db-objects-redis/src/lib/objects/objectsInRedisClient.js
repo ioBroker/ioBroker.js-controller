@@ -103,7 +103,6 @@ class ObjectsInRedisClient {
 
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
-        debugger;
         const onChangeFileUser = this.settings.changeFileUser; // on change handler for User file events
 
         // limit max number of log entries in the list
@@ -516,7 +515,6 @@ class ObjectsInRedisClient {
                             `${this.namespace} Objects user redis pmessage ${pattern}/${channel}:${message}`
                         );
                         try {
-                            debugger;
                             if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
                                 if (onChangeUser) {
                                     const id = channel.substring(this.objNamespaceL);
@@ -829,6 +827,7 @@ class ObjectsInRedisClient {
         } else {
             try {
                 await this.client.del(id);
+                await this.client.publish(id, null); // inform about deletion
                 return tools.maybeCallback(callback);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);
@@ -1209,7 +1208,6 @@ class ObjectsInRedisClient {
             try {
                 await this._delBinaryState(dataID);
                 await this.client.del(metaID);
-                await this.client.publish(dataID, null); // inform about deletion
                 return tools.maybeCallback(callback);
             } catch (e) {
                 return tools.maybeCallbackWithRedisError(callback, e);

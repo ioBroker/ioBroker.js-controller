@@ -389,7 +389,7 @@ function testAdapter(options) {
          });
          });*/
 
-        after(options.name + ' ' + context.adapterShortName + ' adapter: Stop js-controller', function (done) {
+        after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, function (done) {
             this.timeout(35000);
 
             expect(context.adapter.connected).to.be.true;

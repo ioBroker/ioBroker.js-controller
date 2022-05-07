@@ -68,8 +68,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
-        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
-        this.metaNamespaceLen = this.metaNamespace.length;
+        this.namespaceMeta = (this.settings.namespaceMeta || 'meta') + '.';
+        this.namespaceMetaLen = this.namespaceMeta.length;
 
         this.knownScripts = {};
 
@@ -154,8 +154,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                         }
                     }
                 }
-            } else if (idWithNamespace.startsWith(this.metaNamespace)) {
-                const idx = this.metaNamespaceLen;
+            } else if (idWithNamespace.startsWith(this.namespaceMeta)) {
+                const idx = this.namespaceMetaLen;
                 if (idx !== -1) {
                     ns = idWithNamespace.substr(0, idx);
                     id = idWithNamespace.substr(idx);
@@ -183,12 +183,17 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         if (found) {
             if (type === 'meta') {
                 this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
-                const sendPattern = this.metaNamespace + found.pattern;
-                const sendId = this.metaNamespace + id;
+                const sendPattern = this.namespaceMeta + found.pattern;
+                const sendId = this.namespaceMeta + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else if (type === 'files') {
+                this.log.silly(`${this.namespace} Redis Publish File ${id}=${obj}`);
+                const sendPattern = this.namespaceFile + found.pattern;
+                const sendId = this.namespaceFile + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
             } else {
                 const objString = JSON.stringify(obj);
-                this.log.silly(this.namespace + ' Redis Publish Object ' + id + '=' + objString);
+                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
                 const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
                 const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
@@ -240,7 +245,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             infoString += '# CPU\r\n';
             infoString += '# Cluster\r\n';
             infoString += '# Keyspace\r\n';
-            infoString += 'db0:keys=' + Object.keys(this.dataset).length + ',expires=0,avg_ttl=98633637897';
+            infoString += `db0:keys=${Object.keys(this.dataset).length},expires=0,avg_ttl=98633637897`;
             handler.sendBulk(responseId, infoString);
         });
 
@@ -375,7 +380,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
-            if (namespace === this.namespaceObj || namespace === this.metaNamespace) {
+            if (
+                namespace === this.namespaceObj ||
+                namespace === this.namespaceMeta ||
+                namespace === this.namespaceFile
+            ) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
@@ -533,7 +542,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
-            } else if (namespace === this.metaNamespace) {
+            } else if (namespace === this.namespaceMeta) {
                 // special handling for the primaryHost
                 if (id === 'objects.primaryHost') {
                     // we are the server -> we are primary
@@ -602,7 +611,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
                     }
                     handler.sendString(responseId, 'OK');
                 }
-            } else if (namespace === this.metaNamespace) {
+            } else if (namespace === this.namespaceMeta) {
                 this.setMeta(id, data[1].toString('utf-8'));
                 handler.sendString(responseId, 'OK');
             } else {
@@ -754,7 +763,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
-            } else if (namespace === this.metaNamespace) {
+            } else if (namespace === this.namespaceMeta) {
                 this._subscribeMeta(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {

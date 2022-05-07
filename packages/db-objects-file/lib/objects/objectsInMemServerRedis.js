@@ -67,8 +67,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
-        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
-        this.metaNamespaceLen = this.metaNamespace.length;
+        this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
+        this.namespaceMetaLen = this.namespaceMeta.length;
 
         this.knownScripts = {};
 
@@ -154,8 +154,8 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         }
                     }
                 }
-            } else if (idWithNamespace.startsWith(this.metaNamespace)) {
-                const idx = this.metaNamespaceLen;
+            } else if (idWithNamespace.startsWith(this.namespaceMeta)) {
+                const idx = this.namespaceMetaLen;
                 if (idx !== -1) {
                     ns = idWithNamespace.substr(0, idx);
                     id = idWithNamespace.substr(idx);
@@ -184,9 +184,15 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         if (found) {
             if (type === 'meta') {
                 this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
-                const sendPattern = this.metaNamespace + found.pattern;
-                const sendId = this.metaNamespace + id;
+                const sendPattern = this.namespaceMeta + found.pattern;
+                const sendId = this.namespaceMeta + id;
                 client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else if (type === 'files') {
+                const objString = JSON.stringify(obj);
+                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
+                const sendPattern = this.namespaceFile + found.pattern;
+                const sendId = this.namespaceFile + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
             } else {
                 const objString = JSON.stringify(obj);
                 this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
@@ -377,7 +383,11 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         handler.on('publish', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
 
-            if (namespace === this.namespaceObj || namespace === this.metaNamespace) {
+            if (
+                namespace === this.namespaceObj ||
+                namespace === this.namespaceMeta ||
+                namespace === this.namespaceFile
+            ) {
                 // a "set" always comes afterwards, so do not publish
                 return void handler.sendInteger(responseId, 0); // do not publish for now
             }
@@ -535,7 +545,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
                     handler.sendBufBulk(responseId, Buffer.from(fileData));
                 }
-            } else if (namespace === this.metaNamespace) {
+            } else if (namespace === this.namespaceMeta) {
                 // special handling for the primaryHost
                 if (id === 'objects.primaryHost') {
                     // we are the server -> we are primary
@@ -604,7 +614,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     }
                     handler.sendString(responseId, 'OK');
                 }
-            } else if (namespace === this.metaNamespace) {
+            } else if (namespace === this.namespaceMeta) {
                 this.setMeta(id, data[1].toString('utf-8'));
                 handler.sendString(responseId, 'OK');
             } else {
@@ -668,6 +678,18 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                     // Handle request to remove the file
                     try {
                         this._unlink(id, name);
+
+                        setImmediate(name => {
+                            // publish event in states
+                            this.log.silly(
+                                `${this.namespace} memory publish ${id} ${JSON.stringify({
+                                    val: null,
+                                    binary: true,
+                                    size: data.byteLength
+                                })}`
+                            );
+                            this.publishAll('files', id, { name, file: true, size: null });
+                        }, name);
                     } catch (err) {
                         return void handler.sendError(responseId, err);
                     }
@@ -751,13 +773,16 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "PSUBSCRIBE" request for state, log and session namespace
         handler.on('psubscribe', (data, responseId) => {
-            const { id, namespace } = this._normalizeId(data[0]);
+            const { id, namespace, name } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 this._subscribeConfigForClient(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
-            } else if (namespace === this.metaNamespace) {
+            } else if (namespace === this.namespaceMeta) {
                 this._subscribeMeta(handler, id);
+                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceFile) {
+                this._subscribeFileForClient(handler, id, name);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else {
                 handler.sendError(
@@ -769,10 +794,13 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "UNSUBSCRIBE" request for state, log and session namespace
         handler.on('punsubscribe', (data, responseId) => {
-            const { id, namespace } = this._normalizeId(data[0]);
+            const { id, namespace, name } = this._normalizeId(data[0]);
 
             if (namespace === this.namespaceObj) {
                 this._unsubscribeConfigForClient(handler, id);
+                handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
+            } else if (namespace === this.namespaceFile) {
+                this._unsubscribeFileForClient(handler, id, name);
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
             } else {
                 handler.sendError(

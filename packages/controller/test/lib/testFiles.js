@@ -65,7 +65,9 @@ function register(it, expect, context) {
 
         await context.adapter.subscribeForeignStatesAsync(objId);
 
-        return Promise.all([promise, context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'))]);
+        await Promise.all([promise, context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'))]);
+
+        await context.adapter.unsubscribeForeignStatesAsync(objId);
     });
 
     it(testName + 'getForeignBinaryState', async () => {
@@ -110,7 +112,7 @@ function register(it, expect, context) {
         expect(state.toString('utf-8')).to.be.equal('1234');
     });
 
-    it.only(testName + 'writeFile', async () => {
+    it(testName + 'writeFile', async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
         const dataBinary = Buffer.from('1234');
@@ -123,25 +125,53 @@ function register(it, expect, context) {
             native: {}
         });
 
-        // TODO:
-        const receivedPromise = Promise.resolve(); /* new Promise(resolve => {
+        await context.adapter.subscribeForeignFiles(objId, '*');
+
+        const receivedPromise = new Promise(resolve => {
             context.onAdapterFileChanged = (id, _fileName, size) => {
-                console.error('onAdapterFileChanged', id);
                 if (id === objId && fileName === _fileName) {
                     expect(size).to.be.equal(dataBinary.byteLength);
                     resolve();
                 }
             };
-        });*/
+        });
 
         // now we write a file state
         await Promise.all([receivedPromise, context.adapter.writeFileAsync(objId, fileName, dataBinary)]);
+
+        await context.adapter.unsubscribeForeignFiles(objId, '*');
 
         /** @type Buffer */
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
         expect(mimeType).to.be.equal('text/javascript');
         expect(file.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
+    });
+
+    it(testName + 'deleteFile', async () => {
+        const objId = `vis.0`;
+        const fileName = 'testFile.bin';
+
+        await context.adapter.subscribeForeignFiles(objId, '*');
+
+        const receivedPromise = new Promise(resolve => {
+            context.onAdapterFileChanged = (id, _fileName, size) => {
+                if (id === objId && fileName === _fileName) {
+                    expect(size).to.be.equal(null);
+                    resolve();
+                }
+            };
+        });
+
+        // now we write a file state
+        await Promise.all([receivedPromise, context.adapter.unlinkAsync(objId, fileName)]);
+
+        /** @type Buffer */
+        try {
+            await context.adapter.readFileAsync(objId, fileName);
+        } catch (error) {
+            expect(error.toString()).to.be.equal('Error: Not exists');
+        }
     });
 }
 
