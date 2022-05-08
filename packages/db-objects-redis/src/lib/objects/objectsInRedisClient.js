@@ -2314,8 +2314,7 @@ class ObjectsInRedisClient {
                 if (err) {
                     reject(err);
                 } else {
-                    return this._subscribeFile(id, pattern, options, this.sub, err =>
-                        err ? reject(err) : resolve());
+                    return this._subscribeFile(id, pattern, options, this.sub, err => (err ? reject(err) : resolve()));
                 }
             });
         });
@@ -2328,7 +2327,8 @@ class ObjectsInRedisClient {
                     reject(err);
                 } else {
                     return this._unsubscribeFile(id, pattern, options, this.sub, err =>
-                        err ? reject(err) : resolve());
+                        err ? reject(err) : resolve()
+                    );
                 }
             });
         });
