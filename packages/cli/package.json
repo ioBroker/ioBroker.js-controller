@@ -28,14 +28,18 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/cli"
   },
-  "scripts": {},
-  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "lib/",
-    "index.js"
+    "build/lib/",
+    "build/index.js",
+    "build/index.d.ts"
   ]
 }
