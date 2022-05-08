@@ -111,7 +111,7 @@ function copyAttributes(
  * @param newObject destination object
  *
  */
-export function checkNonEditable(oldObject: Record<string, any>, newObject: Record<string, any>): boolean {
+export function checkNonEditable(oldObject: Record<string, any> | null, newObject: Record<string, any>): boolean {
     if (!oldObject) {
         return true;
     }
@@ -3793,6 +3793,20 @@ export function compressFileGZip(
 
         input.pipe(compress).pipe(output);
     });
+}
+
+/**
+ * If an array is passed it will be stringified, else the parameter is returned
+ * @param maybeArr parameter which will be stringified if it is an array
+ */
+export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T {
+    if (Array.isArray(maybeArr)) {
+        // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
+        return JSON.stringify(maybeArr);
+    }
+
+    // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
+    return maybeArr;
 }
 
 export * from './maybeCallback';
