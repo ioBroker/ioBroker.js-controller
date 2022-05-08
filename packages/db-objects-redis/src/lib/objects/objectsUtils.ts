@@ -22,6 +22,24 @@ const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
 const memStore: Record<string, Buffer> = {};
 
+export interface ACLObject {
+    owner: string;
+    ownerGroup: string;
+    object: number;
+    state: number;
+    file: number;
+}
+
+export interface FileObject {
+    virtualFile?: boolean;
+    stats: any;
+    modifiedAt: number;
+    createdAt: number;
+    acl: ioBroker.EvaluatedFileACL;
+}
+
+export type CheckFileRightsCallback = (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void;
+
 const mimeTypes = {
     '.css': { type: 'text/css', binary: false },
     '.bmp': { type: 'image/bmp', binary: true },
@@ -192,7 +210,7 @@ export function checkFile(
     fileOptions: Record<string, any>,
     options: Record<string, any>,
     flag: any,
-    defaultNewAcl: Record<string, any>
+    defaultNewAcl?: ACLObject | null
 ): boolean {
     if (typeof fileOptions.acl !== 'object') {
         fileOptions = {};
@@ -246,47 +264,41 @@ export function checkFile(
 export function checkFileRights(
     objects: any,
     id: string,
-    name: string,
-    options: Record<string, any>,
+    name: string | null,
+    options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void
+    callback?: CheckFileRightsCallback
 ): any {
-    options = options || {};
-    if (!options.user) {
+    const _options = options || {};
+    if (!_options.user) {
         // Before files converted, lets think: if no options it is admin
-        options = {
-            user: 'system.user.admin',
-            params: options,
-            group: 'system.group.administrator'
-        };
+        _options.user = 'system.user.admin';
+        _options.params = _options;
+        _options.group = 'system.group.administrator';
     }
 
-    /*if (options.checked) {
-        return callback(null, options);
-    }*/
-
-    if (!options.acl) {
-        objects.getUserGroup(options.user, (_user: any, groups: any, acl: Record<string, any>) => {
-            options.acl = acl || {};
-            options.groups = groups;
-            options.group = groups ? groups[0] : null;
-            checkFileRights(objects, id, name, options, flag, callback);
+    if (!_options.acl) {
+        objects.getUserGroup(_options.user, (_user: any, groups: any, acl: Record<string, any>) => {
+            _options.acl = acl || {};
+            _options.groups = groups;
+            _options.group = groups ? groups[0] : null;
+            checkFileRights(objects, id, name, _options, flag, callback);
         });
         return;
     }
     // If user may write
-    if (flag === CONSTS.ACCESS_WRITE && !options.acl.file.write) {
+    if (flag === CONSTS.ACCESS_WRITE && !_options.acl.file.write) {
         // write
-        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
+        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, _options);
     }
     // If user may read
-    if (flag === CONSTS.ACCESS_READ && !options.acl.file.read) {
+    if (flag === CONSTS.ACCESS_READ && !_options.acl.file.read) {
         // read
-        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
+        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, _options);
     }
 
-    options.checked = true;
-    objects.checkFile(id, name, options, flag, (err: Error, options: Record<string, any>, opt: any) => {
+    _options.checked = true;
+    objects.checkFile(id, name, _options, flag, (err: Error, options: Record<string, any>, opt: any) => {
         if (err) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
         } else {
@@ -340,7 +352,7 @@ function getDefaultAdminRights(
 
 export type GetUserGroupPromiseReturn = [user: string, groups: string[], acl: ioBroker.ObjectPermissions];
 
-export type GetUserGroupCallback = (
+type GetUserGroupCallback = (
     err: Error | null | undefined,
     user: string,
     groups: string[],
@@ -568,12 +580,12 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
 }
 
 export function checkObject(
-    obj: ioBroker.Object,
+    obj: ioBroker.Object | FileObject | null,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags
 ): boolean {
     // read rights of object
-    if (!obj || !obj.common || !obj.acl || flag === CONSTS.ACCESS_LIST) {
+    if (!obj || !('common' in obj) || !obj.acl || flag === CONSTS.ACCESS_LIST) {
         return true;
     }
 
@@ -619,11 +631,11 @@ export function checkObject(
 
 export function checkObjectRights(
     objects: any,
-    id: string,
-    object: ioBroker.Object,
-    options: Record<string, any>,
+    id: string | null,
+    object: ioBroker.Object | null,
+    options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err: Error | null | undefined, options?: Record<string, any>) => void
+    callback: (err: Error | null | undefined, options: Record<string, any>) => void
 ): void | Promise<Record<string, any>> {
     options = options || {};
 
@@ -640,6 +652,8 @@ export function checkObjectRights(
 
     if (!options.acl) {
         return objects.getUserGroup(options.user, (_user: string, groups: any, acl: Record<string, any>) => {
+            // TODO: ts needs it because we are doing async call before
+            options = options || {};
             options.acl = acl || {};
             options.groups = groups;
             options.group = groups ? groups[0] : null;

@@ -502,15 +502,15 @@ export class StateRedisClient {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'system re' : ''
-                                }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
+                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'system re' : ''
-                                }connected to redis: ${this._maybeArrayToString(
+                                }connected to redis: ${tools.maybeArrayToString(
                                     this.settings.connection.host
-                                )}:${this._maybeArrayToString(this.settings.connection.port)}`
+                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -615,15 +615,15 @@ export class StateRedisClient {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'user re' : ''
-                                }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
+                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
                             );
                         } else {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'user re' : ''
-                                }connected to redis: ${this._maybeArrayToString(
+                                }connected to redis: ${tools.maybeArrayToString(
                                     this.settings.connection.host
-                                )}:${this._maybeArrayToString(this.settings.connection.port)}`
+                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -652,15 +652,15 @@ export class StateRedisClient {
                     this.log.debug(
                         `${this.namespace} States ${
                             ready ? 'client re' : ''
-                        }connected to redis: ${this._maybeArrayToString(this.settings.connection.host)}`
+                        }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
                     );
                 } else {
                     this.log.debug(
                         `${this.namespace} States ${
                             ready ? 'client re' : ''
-                        }connected to redis: ${this._maybeArrayToString(
+                        }connected to redis: ${tools.maybeArrayToString(
                             this.settings.connection.host
-                        )}:${this._maybeArrayToString(this.settings.connection.port)}`
+                        )}:${tools.maybeArrayToString(this.settings.connection.port)}`
                     );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -1510,20 +1510,5 @@ export class StateRedisClient {
         } else {
             throw new Error('Cannot set an unsupported protocol version on the current host');
         }
-    }
-
-    /**
-     * If an array is passed it will be stringified, else the parameter is returned
-     * @param maybeArr parameter which will be stringified if it is an array
-     * @private
-     */
-    private _maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T {
-        if (Array.isArray(maybeArr)) {
-            // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
-            return JSON.stringify(maybeArr);
-        }
-
-        // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
-        return maybeArr;
     }
 }
