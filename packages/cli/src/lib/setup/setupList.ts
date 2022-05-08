@@ -10,7 +10,8 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import * as fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
+import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 interface File {
     adapter: string;
@@ -34,8 +35,8 @@ interface FlagObject {
 
 export class List {
     private config: Record<string, any>;
-    private objects: any;
-    private states: StateRedisClient;
+    private objects: ObjectsRedisClient;
+    private states: StatesRedisClient;
     private readonly processExit: (exitCode?: number) => void;
 
     constructor(options: Record<string, any>) {
