@@ -87,12 +87,12 @@ function register(it, expect, context) {
                 objects.findObject('test3', (err, id, idOrName) => {
                     expect(err).to.be.not.ok;
                     expect(idOrName).to.be.equal('test3');
-                    expect(id).to.be.equal(null);
+                    expect(id).to.be.equal(undefined);
 
                     objects.findObject('test2', 'channel', (err, id, idOrName) => {
                         expect(err).to.be.not.ok;
                         expect(idOrName).to.be.equal('test2');
-                        expect(id).to.be.equal(null);
+                        expect(id).to.be.equal(undefined);
                         done();
                     });
                 });
@@ -114,11 +114,11 @@ function register(it, expect, context) {
                 return objects.findObject('test3');
             })
             .then(id => {
-                expect(id).to.be.equal(null);
+                expect(id).to.be.equal(undefined);
                 return objects.findObject('test3', 'channel');
             })
             .then(id => {
-                expect(id).to.be.equal(null);
+                expect(id).to.be.equal(undefined);
                 done();
             })
             .catch(err => {

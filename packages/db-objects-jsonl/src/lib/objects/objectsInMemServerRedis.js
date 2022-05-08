@@ -792,14 +792,15 @@ class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
 
         // Handle Redis "CONFIG" ... currently mainly ignored
         handler.on('config', (data, responseId) => {
-            if (data[0] === 'set' && data[1] === 'notify-keyspace-events') {
+            const command = typeof data[0] === 'string' ? data[0].toLowerCase() : data[0].toString().toLowerCase();
+            if (command === 'set' && data[1] === 'notify-keyspace-events') {
                 // we ignore these type of commands for now, should only be to subscribe to keyspace events
                 handler.sendString(responseId, 'OK');
-            } else if (data[0] === 'set' && data[1] === 'lua-time-limit') {
+            } else if (command === 'set' && data[1] === 'lua-time-limit') {
                 // we ignore these type of commands for now, irrelevant
                 handler.sendString(responseId, 'OK');
             } else {
-                handler.sendError(responseId, new Error('CONFIG-UNSUPPORTED for ' + JSON.stringify(data)));
+                handler.sendError(responseId, new Error(`CONFIG-UNSUPPORTED for ${JSON.stringify(data)}`));
             }
         });
 
