@@ -46,6 +46,7 @@ function register(it, expect, context) {
                     if (state.val !== null) {
                         throw new Error(`Value is not null`);
                     }
+                    expect(state.ack).to.be.true;
                     resolve();
                 }
             };

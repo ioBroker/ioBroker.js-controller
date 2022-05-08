@@ -215,15 +215,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         } else if ((obj || obj === 0) && typeof obj !== 'object') {
             // it is binary state
             setImmediate(() => {
+                const event = { val: null, binary: true, size: obj.length, ack: true };
                 // publish event in states
-                this.log.silly(
-                    `${this.namespace} memory publish ${id} ${JSON.stringify({
-                        val: null,
-                        binary: true,
-                        size: obj.length
-                    })}`
-                );
-                this.publishAll('state', id, { val: null, binary: true, size: obj.length });
+                this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(event)}`);
+                this.publishAll('state', id, event);
             });
         }
 
@@ -355,15 +350,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         // If data === undefined, the state was just created and not filled with value
         if (data !== undefined) {
             setImmediate(() => {
+                const event = { val: null, binary: true, size: data.byteLength, ack: true };
                 // publish event in states
-                this.log.silly(
-                    `${this.namespace} memory publish ${id} ${JSON.stringify({
-                        val: null,
-                        binary: true,
-                        size: data.byteLength
-                    })}`
-                );
-                this.publishAll('state', id, { val: null, binary: true, size: data.byteLength });
+                this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(event)}`);
+                this.publishAll('state', id, event);
             });
         }
 
