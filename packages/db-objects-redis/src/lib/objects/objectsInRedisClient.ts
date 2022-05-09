@@ -4334,6 +4334,19 @@ export class ObjectsInRedisClient {
         return result;
     }
 
+    // getObjectList is called without options
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        callback?: ioBroker.GetObjectListCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+
+    // getObjectList is called with options
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        options?: CallOptions | null,
+        callback?: ioBroker.GetObjectListCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+
     getObjectList(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null,

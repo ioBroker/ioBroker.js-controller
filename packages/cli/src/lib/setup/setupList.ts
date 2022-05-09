@@ -204,12 +204,13 @@ export class List {
                             console.log(`Cannot read "${path}": ${err}`);
                             typeof callback === 'function' && callback(_allFiles);
                         } else {
-                            for (let f = 0; f < files.length; f++) {
-                                if (files[f].file === '.' || files[f].file === '..') {
+                            // @ts-expect-error if no error, files are guranteed to be an Array https://github.com/ioBroker/adapter-core/issues/455
+                            for (const file of files) {
+                                if (file.file === '.' || file.file === '..') {
                                     continue;
                                 }
-                                if (files[f].file === fname) {
-                                    _allFiles.push({ adapter: adapter, path: _path, file: files[f] });
+                                if (file.file === fname) {
+                                    _allFiles.push({ adapter: adapter, path: _path, file });
                                     break;
                                 }
                             }
@@ -221,14 +222,15 @@ export class List {
                 }
             } else {
                 let count = 0;
-                for (let f = 0; f < files.length; f++) {
-                    if (files[f].file === '.' || files[f].file === '..') {
+                // @ts-expect-error if no error, files are guranteed to be an Array https://github.com/ioBroker/adapter-core/issues/455
+                for (const file of files) {
+                    if (file.file === '.' || file.file === '..') {
                         continue;
                     }
-                    _allFiles.push({ adapter: adapter, path: _path, file: files[f] });
-                    if (files[f].isDir) {
+                    _allFiles.push({ adapter: adapter, path: _path, file });
+                    if (file.isDir) {
                         count++;
-                        this.listDirectory(adapter, `${path}/${files[f].file}`, allFiles, () => {
+                        this.listDirectory(adapter, `${path}/${file.file}`, allFiles, () => {
                             if (!--count && callback) {
                                 typeof callback === 'function' && callback(_allFiles);
                             }
@@ -287,47 +289,46 @@ export class List {
         lines: IdValueObject[],
         flags: FlagObject,
         cb: (res: any[]) => void,
-        _result: any[]
+        _result?: any[]
     ): void {
-        _result = _result || [];
+        const result = _result || [];
         if (!lines || !lines.length) {
-            cb(_result);
+            cb(result);
         } else {
             const task = lines.shift() as IdValueObject;
             const id = `${task.id}.alive`;
             this.states.getState(id, (err, state) => {
                 if (state && state.val) {
-                    _result.push(`+ ${task.value}`);
+                    result.push(`+ ${task.value}`);
                 } else if (!flags.alive) {
-                    _result.push(`  ${task.value}`);
+                    result.push(`  ${task.value}`);
                 }
-                setImmediate(this._readOnlineState, lines, flags, cb, _result);
+                setImmediate(this._readOnlineState, lines, flags, cb, result);
             });
         }
     }
 
     list(type: string, filter: string, flags: FlagObject): void {
         this.objects.getObject('system.config', (err, systemConf) => {
-            const lang = (systemConf && systemConf.common && systemConf.common.language) || 'en';
+            const lang: ioBroker.Languages = (systemConf && systemConf.common && systemConf.common.language) || 'en';
             switch (type) {
                 case 'objects':
                 case 'o':
-                    this.objects.getObjectList(null, (err, objs) => {
+                    this.objects.getObjectList({}, (err, objs) => {
+                        if (!objs) {
+                            this.processExit();
+                            return;
+                        }
                         const reg = filter ? new RegExp(tools.pattern2RegEx(filter)) : null;
-                        for (let i = 0; i < objs.rows.length; i++) {
-                            let name =
-                                objs.rows[i].value && objs.rows[i].value.common && objs.rows[i].value.common.name;
+                        for (const obj of objs.rows) {
+                            let name = obj.value?.common?.name;
                             if (tools.isObject(name)) {
                                 name = name[lang] || name.en;
                             }
-                            if (
-                                !reg ||
-                                reg.test(objs.rows[i].value._id) ||
-                                (objs.rows[i].value.common && reg.test(name))
-                            ) {
-                                if (objs.rows[i].value.type) {
-                                    let id = objs.rows[i].value._id;
-                                    let type = objs.rows[i].value.type;
+                            if (!reg || reg.test(obj.value._id) || (obj.value.common && reg.test(name))) {
+                                if (obj.value.type) {
+                                    let id = obj.value._id;
+                                    let type = obj.value.type;
                                     if (id.length < 40) {
                                         id += new Array(40 - id.length).join(' ');
                                     }
@@ -335,9 +336,9 @@ export class List {
                                         type += new Array(10 - type.length).join(' ');
                                     }
 
-                                    console.log(id + ': ' + type + ' - ' + (name || ''));
+                                    console.log(`${id}: ${type} - ${name || ''}`);
                                 } else {
-                                    console.log(objs.rows[i].value._id);
+                                    console.log(obj.value._id);
                                 }
                             }
                         }
@@ -396,19 +397,23 @@ export class List {
                     this.objects.getObjectList(
                         { startkey: 'system.adapter.', endkey: 'system.adapter.\u9999' },
                         (err, objs) => {
+                            if (!objs) {
+                                this.processExit();
+                                return;
+                            }
                             const reg = filter ? new RegExp(tools.pattern2RegEx('system.adapter.' + filter)) : null;
-                            for (let i = 0; i < objs.rows.length; i++) {
-                                if (objs.rows[i].value.type !== 'adapter') {
+                            for (const obj of objs.rows) {
+                                if (obj.value.type !== 'adapter') {
                                     continue;
                                 }
                                 if (
                                     !reg ||
-                                    reg.test(objs.rows[i].value._id) ||
-                                    (objs.rows[i].value.common && reg.test(objs.rows[i].value.common.name))
+                                    reg.test(obj.value._id) ||
+                                    (obj.value.common && reg.test(obj.value.common.name))
                                 ) {
-                                    let id = objs.rows[i].value._id;
-                                    let name = objs.rows[i].value.common.name;
-                                    if (typeof name === 'object') {
+                                    let id = obj.value._id;
+                                    let name = obj.value.common.name;
+                                    if (tools.isObject(name)) {
                                         name = name[lang] || name.en;
                                     }
                                     if (id.length < 40) {
@@ -418,7 +423,7 @@ export class List {
                                         name += new Array(15 - name.length).join(' ');
                                     }
 
-                                    const text = id + ': ' + name + ' - v' + objs.rows[i].value.common.version;
+                                    const text = `${id}: ${name} - v${obj.value.common.version}`;
 
                                     console.log(text);
                                 }
@@ -433,7 +438,11 @@ export class List {
                     this.objects.getObjectList(
                         { startkey: 'system.adapter.', endkey: 'system.adapter.\u9999' },
                         (err, objs) => {
-                            const reg = filter ? new RegExp(tools.pattern2RegEx('system.adapter.' + filter)) : null;
+                            if (!objs) {
+                                this.processExit();
+                                return;
+                            }
+                            const reg = filter ? new RegExp(tools.pattern2RegEx(`system.adapter.${filter}`)) : null;
                             objs.rows.sort((a, b) => {
                                 if (a.id > b.id) {
                                     return 1;
@@ -447,6 +456,7 @@ export class List {
                                 if (row.value.type !== 'instance') {
                                     continue;
                                 }
+
                                 if (
                                     !reg ||
                                     reg.test(row.value._id) ||
@@ -471,7 +481,7 @@ export class List {
                                     let id = row.value._id;
                                     let name = row.value.common.name;
                                     let host = row.value.common.host;
-                                    if (typeof name === 'object') {
+                                    if (tools.isObject(name)) {
                                         name = name[lang] || name.en;
                                     }
                                     if (id.length < 40) {
@@ -493,11 +503,11 @@ export class List {
                                         text +=
                                             ', compact ' +
                                             (row.value.common.compact && row.value.common.runAsCompactMode
-                                                ? 'enabled (group ' +
-                                                  (row.value.common.compactGroup !== undefined
-                                                      ? row.value.common.compactGroup
-                                                      : 1) +
-                                                  ')'
+                                                ? `enabled (group ${
+                                                      row.value.common.compactGroup !== undefined
+                                                          ? row.value.common.compactGroup
+                                                          : 1
+                                                  })`
                                                 : 'disabled');
                                     }
 
@@ -533,6 +543,10 @@ export class List {
                             this.objects.getObjectList(
                                 { startkey: 'system.group.', endkey: 'system.group.\u9999' },
                                 (err, groups) => {
+                                    if (!objs) {
+                                        this.processExit();
+                                        return;
+                                    }
                                     const reg = filter
                                         ? new RegExp(tools.pattern2RegEx('system.user.' + filter))
                                         : null;
@@ -542,19 +556,19 @@ export class List {
                                     console.log(
                                         '---------------------------------------+-------------+----------+--------------'
                                     );
-                                    for (let i = 0; i < objs.rows.length; i++) {
-                                        if (objs.rows[i].value.type !== 'user') {
+                                    for (const obj of objs.rows) {
+                                        if (obj.value.type !== 'user') {
                                             continue;
                                         }
 
                                         if (
                                             !reg ||
-                                            reg.test(objs.rows[i].value._id) ||
-                                            (objs.rows[i].value.common && reg.test(objs.rows[i].value.common.name))
+                                            reg.test(obj.value._id) ||
+                                            (obj.value.common && reg.test(obj.value.common.name))
                                         ) {
-                                            let id = objs.rows[i].value._id;
-                                            let name = objs.rows[i].value.common.name;
-                                            if (typeof name === 'object') {
+                                            let id = obj.value._id;
+                                            let name = obj.value.common.name;
+                                            if (tools.isObject(name)) {
                                                 name = name[lang] || name.en;
                                             }
                                             if (id.length < 40) {
@@ -564,26 +578,22 @@ export class List {
                                                 name += new Array(12 - name.length).join(' ');
                                             }
 
-                                            const text =
-                                                id +
-                                                '| ' +
-                                                name +
-                                                ' | ' +
-                                                (objs.rows[i].value.common.enabled ? ' enabled' : 'disabled') +
-                                                ' |';
-                                            const gs = [];
-                                            // find all groups
-                                            for (let g = 0; g < groups.rows.length; g++) {
-                                                if (
-                                                    groups.rows[g].value.common.members &&
-                                                    groups.rows[g].value.common.members.indexOf(
-                                                        objs.rows[i].value._id
-                                                    ) !== -1
-                                                ) {
-                                                    gs.push(groups.rows[g].value._id.substring(13));
+                                            const text = `${id}| ${name} | ${
+                                                obj.value.common.enabled ? ' enabled' : 'disabled'
+                                            } |`;
+                                            if (groups) {
+                                                const gs = [];
+                                                // find all groups
+                                                for (const group of groups.rows) {
+                                                    if (
+                                                        group.value.common.members &&
+                                                        group.value.common.members.indexOf(obj.value._id) !== -1
+                                                    ) {
+                                                        gs.push(group.value._id.substring(13));
+                                                    }
                                                 }
+                                                console.log(`${text} ${gs.join(', ')}`);
                                             }
-                                            console.log(text + ' ' + gs.join(', '));
                                         }
                                     }
                                     this.processExit();
@@ -598,6 +608,10 @@ export class List {
                     this.objects.getObjectList(
                         { startkey: 'system.group.', endkey: 'system.group.\u9999' },
                         (err, objs) => {
+                            if (!objs) {
+                                this.processExit();
+                                return;
+                            }
                             const reg = filter ? new RegExp(tools.pattern2RegEx('system.group.' + filter)) : null;
                             console.log('');
                             console.log(
@@ -609,20 +623,20 @@ export class List {
                             console.log(
                                 '--------------------+---------+---------+-----------+-------+------------------------+---------'
                             );
-                            for (let i = 0; i < objs.rows.length; i++) {
-                                if (objs.rows[i].value.type !== 'group') {
+                            for (const obj of objs.rows) {
+                                if (obj.value.type !== 'group') {
                                     continue;
                                 }
                                 if (
                                     !reg ||
-                                    reg.test(objs.rows[i].value._id) ||
-                                    (objs.rows[i].value.common && reg.test(objs.rows[i].value.common.name))
+                                    reg.test(obj.value._id) ||
+                                    (obj.value.common && reg.test(obj.value.common.name))
                                 ) {
-                                    let id = objs.rows[i].value._id.substring(13);
+                                    let id = obj.value._id.substring(13);
                                     //let name = objs.rows[i].value.common.name;
 
                                     if (id === 'administrator') {
-                                        objs.rows[i].value.common.acl = {
+                                        obj.value.common.acl = {
                                             file: {
                                                 read: true,
                                                 write: true,
@@ -661,50 +675,50 @@ export class List {
                                     }
                                     let text = id;
                                     text += ' | ';
-                                    if (objs.rows[i].value.common.acl && objs.rows[i].value.common.acl.object) {
-                                        text += (objs.rows[i].value.common.acl.object.list ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.object.read ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.object.write ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.object.delete ? '+' : '-') + ' ';
+                                    if (obj.value.common.acl && obj.value.common.acl.object) {
+                                        text += (obj.value.common.acl.object.list ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.object.read ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.object.write ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.object.delete ? '+' : '-') + ' ';
                                         text += '|';
                                     } else {
                                         text += '        |';
                                     }
-                                    if (objs.rows[i].value.common.acl && objs.rows[i].value.common.acl.state) {
+                                    if (obj.value.common.acl && obj.value.common.acl.state) {
                                         text += ' ';
-                                        text += (objs.rows[i].value.common.acl.state.list ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.state.read ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.state.write ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.state.delete ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.state.list ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.state.read ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.state.write ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.state.delete ? '+' : '-') + ' ';
                                         text += '|';
                                     } else {
                                         text += '         |';
                                     }
-                                    if (objs.rows[i].value.common.acl && objs.rows[i].value.common.acl.file) {
+                                    if (obj.value.common.acl && obj.value.common.acl.file) {
                                         text += ' ';
-                                        text += (objs.rows[i].value.common.acl.file.list ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.file.read ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.file.write ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.file.create ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.file.delete ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.file.list ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.file.read ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.file.write ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.file.create ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.file.delete ? '+' : '-') + ' ';
                                         text += '|';
                                     } else {
                                         text += '           |';
                                     }
-                                    if (objs.rows[i].value.common.acl && objs.rows[i].value.common.acl.users) {
+                                    if (obj.value.common.acl && obj.value.common.acl.users) {
                                         text += ' ';
-                                        text += (objs.rows[i].value.common.acl.users.write ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.users.create ? '+' : '-') + ' ';
-                                        text += (objs.rows[i].value.common.acl.users.delete ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.users.write ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.users.create ? '+' : '-') + ' ';
+                                        text += (obj.value.common.acl.users.delete ? '+' : '-') + ' ';
                                         text += '|';
                                     } else {
                                         text += '       |';
                                     }
-                                    if (objs.rows[i].value.common.acl && objs.rows[i].value.common.acl.other) {
+                                    if (obj.value.common.acl && obj.value.common.acl.other) {
                                         text += ' ';
                                         let others = '';
-                                        for (const r of Object.keys(objs.rows[i].value.common.acl.other)) {
-                                            others += r + (objs.rows[i].value.common.acl.other[r] ? '+' : '-') + ' ';
+                                        for (const [r, otherPerm] of Object.entries(obj.value.common.acl.other)) {
+                                            others += r + (otherPerm ? '+' : '-') + ' ';
                                         }
                                         if (others.length < 23) {
                                             others += new Array(23 - others.length).join(' ');
@@ -715,12 +729,11 @@ export class List {
                                     }
 
                                     //if (name.length < 30) name += new Array(30 - name.length).join(' ');
-                                    if (objs.rows[i].value.common.members) {
-                                        for (let m = 0; m < objs.rows[i].value.common.members.length; m++) {
-                                            objs.rows[i].value.common.members[m] =
-                                                objs.rows[i].value.common.members[m].substring(12);
+                                    if (obj.value.common.members) {
+                                        for (let m = 0; m < obj.value.common.members.length; m++) {
+                                            obj.value.common.members[m] = obj.value.common.members[m].substring(12);
                                         }
-                                        text += ' ' + objs.rows[i].value.common.members.join(', ');
+                                        text += ` ${obj.value.common.members.join(', ')}`;
                                     }
                                     //text += '| (' + name + ')';
                                     console.log(text);
@@ -742,40 +755,49 @@ export class List {
                         { startkey: 'system.host.', endkey: 'system.host.\u9999' },
                         (err, objs) => {
                             this.states.getKeys('system.host.*', (err, keys) => {
+                                if (!keys) {
+                                    this.processExit();
+                                    return;
+                                }
                                 this.states.getStates(keys, (err, states) => {
+                                    if (!objs) {
+                                        this.processExit();
+                                        return;
+                                    }
+
                                     const reg = filter
                                         ? new RegExp(tools.pattern2RegEx('system.host.' + filter))
                                         : null;
 
-                                    for (let i = 0; i < objs.rows.length; i++) {
-                                        if (objs.rows[i].value.type !== 'host') {
+                                    for (const obj of objs.rows) {
+                                        if (obj.value.type !== 'host') {
                                             continue;
                                         }
                                         if (
                                             !reg ||
-                                            reg.test(objs.rows[i].value._id) ||
-                                            (objs.rows[i].value.common && reg.test(objs.rows[i].value.common.name))
+                                            reg.test(obj.value._id) ||
+                                            (obj.value.common && reg.test(obj.value.common.name))
                                         ) {
-                                            let id = objs.rows[i].value._id.substring(12);
-                                            let name = objs.rows[i].value.common.name;
-                                            if (typeof name === 'object') {
+                                            let id = obj.value._id.substring(12);
+                                            let name = obj.value.common.name;
+                                            if (tools.isObject(name)) {
                                                 name = name[lang] || name.en;
                                             }
                                             if (id.length < 20) {
                                                 id += new Array(20 - id.length).join(' ');
                                             }
-                                            let hostname = objs.rows[i].value.common.hostname;
+                                            let hostname = obj.value.common.hostname;
                                             if (hostname.length < 15) {
                                                 hostname += new Array(15 - hostname.length).join(' ');
                                             }
-                                            const version = objs.rows[i].value.common.installedVersion;
+                                            const version = obj.value.common.installedVersion;
                                             let alive = '';
                                             let uptime = '';
                                             for (let k = 0; k < keys.length; k++) {
-                                                if (keys[k] === objs.rows[i].value._id + '.alive') {
+                                                if (keys[k] === `${obj.value._id}.alive`) {
                                                     alive = states[k].val;
                                                 }
-                                                if (keys[k] === objs.rows[i].value._id + '.uptime') {
+                                                if (keys[k] === `${obj.value._id}.uptime`) {
                                                     uptime = states[k].val;
                                                 }
                                             }
@@ -800,34 +822,38 @@ export class List {
                 case 'enums':
                 case 'e':
                     this.objects.getObjectList({ startkey: 'enum.', endkey: 'enum.\u9999' }, (err, objs) => {
-                        const reg = filter ? new RegExp(tools.pattern2RegEx('enum.' + filter)) : null;
-                        for (let i = 0; i < objs.rows.length; i++) {
-                            if (objs.rows[i].value.type !== 'enum') {
+                        if (!objs) {
+                            this.processExit();
+                            return;
+                        }
+                        const reg = filter ? new RegExp(tools.pattern2RegEx(`enum.${filter}`)) : null;
+                        for (const obj of objs.rows) {
+                            if (obj.value.type !== 'enum') {
                                 continue;
                             }
                             if (
                                 !reg ||
-                                reg.test(objs.rows[i].value._id) ||
-                                (objs.rows[i].value.common && reg.test(objs.rows[i].value.common.name))
+                                reg.test(obj.value._id) ||
+                                (obj.value.common && reg.test(obj.value.common.name))
                             ) {
                                 console.log(
                                     '\n====================================================================================='
                                 );
-                                let id = objs.rows[i].value._id.substring(5);
-                                let name = objs.rows[i].value.common.name;
-                                if (typeof name === 'object') {
+                                let id = obj.value._id.substring(5);
+                                let name = obj.value.common.name;
+                                if (tools.isObject(name)) {
                                     name = name[lang] || name.en;
                                 }
                                 if (id.length < 20) {
                                     id += new Array(20 - id.length).join(' ');
                                 }
-                                console.log(id + '(' + name + ')');
+                                console.log(`${id}(${name})`);
                                 console.log(
                                     '-------------------------------------------------------------------------------------'
                                 );
 
-                                if (objs.rows[i].value.common.members) {
-                                    console.log(objs.rows[i].value.common.members.join(', '));
+                                if (obj.value.common.members) {
+                                    console.log(obj.value.common.members.join(', '));
                                 }
                             }
                         }
@@ -838,6 +864,11 @@ export class List {
                 case 'files':
                 case 'f':
                     this.objects.getObjectList({ startkey: '', endkey: '\u9999' }, (err, objs) => {
+                        if (!objs) {
+                            this.processExit();
+                            return;
+                        }
+
                         const adapter = filter || null;
                         const names = filter ? filter.split('/') : null;
                         if (names && !names[0]) {
@@ -849,6 +880,7 @@ export class List {
                                 row =>
                                     row.value.type === 'meta' &&
                                     !(
+                                        names &&
                                         adapter &&
                                         row.value._id !== names[0] &&
                                         !row.value._id.startsWith(`${names[0]}.`)
@@ -856,7 +888,9 @@ export class List {
                             )
                             .map(row => row.value._id);
 
-                        names && names.shift();
+                        if (names) {
+                            names.shift();
+                        }
 
                         this.listAdaptersFiles(adapters, names ? names.join('/') : null, () => this.processExit());
                     });
