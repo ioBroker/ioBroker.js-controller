@@ -340,6 +340,16 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             );
             throw e;
         }
+
+        setImmediate(
+            (name, size) => {
+                // publish event in states
+                this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify({ name, file: true, size })}`);
+                this.publishAll('files', `${id}$%$${name}`, size);
+            },
+            name,
+            data.byteLength
+        );
     }
 
     // needed by server
@@ -571,6 +581,18 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 // Store dir description
                 this._saveFileSettings(id, true);
             }
+
+            setImmediate(
+                (id, name) => {
+                    // publish event in states
+                    this.log.silly(
+                        `${this.namespace} memory publish ${id} ${JSON.stringify({ name, file: true, size: null })}`
+                    );
+                    this.publishAll('files', `${id}$%$${name}`, null);
+                },
+                id,
+                name
+            );
         }
     }
 
@@ -787,17 +809,36 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         return temp;
     }
 
+    _subscribeMeta(client, pattern) {
+        this.handleSubscribe(client, 'meta', pattern);
+    }
+
     // needed by server
     _subscribeConfigForClient(client, pattern) {
         this.handleSubscribe(client, 'objects', pattern);
     }
 
-    _subscribeMeta(client, pattern) {
-        this.handleSubscribe(client, 'meta', pattern);
-    }
     // needed by server
     _unsubscribeConfigForClient(client, pattern) {
         this.handleUnsubscribe(client, 'objects', pattern); // ignore options => unsubscribe may everyone
+    }
+
+    // needed by server
+    _subscribeFileForClient(client, id, pattern) {
+        if (Array.isArray(pattern)) {
+            pattern.forEach(pattern => this.handleSubscribe(client, 'files', `${id}$%$${pattern}`));
+        } else {
+            this.handleSubscribe(client, 'files', `${id}$%$${pattern}`);
+        }
+    }
+
+    // needed by server
+    _unsubscribeFileForClient(client, id, pattern) {
+        if (Array.isArray(pattern)) {
+            pattern.forEach(pattern => this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`));
+        } else {
+            this.handleUnsubscribe(client, 'files', `${id}$%$${pattern}`);
+        }
     }
 
     // needed by server

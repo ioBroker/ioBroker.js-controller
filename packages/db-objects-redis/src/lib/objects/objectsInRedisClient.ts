@@ -31,6 +31,7 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 const ERRORS = CONSTS.ERRORS;
 
 type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
+type ChangeFileFunction = (id: string, fileName: string, size: number | null) => void;
 
 type GetUserGroupCallbackNoError = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
@@ -53,6 +54,7 @@ interface ObjectsSettings {
     disconnected?: () => void;
     change?: ChangeFunction;
     changeUser?: ChangeFunction;
+    changeFileUser?: ChangeFileFunction;
     autoConnect: boolean;
     logger: InternalLogger;
     hostname?: string;
@@ -168,7 +170,7 @@ export class ObjectsInRedisClient {
         this.userSubscriptions = {};
         this.systemSubscriptions = {};
 
-        // cached meta objects for file operations
+        // cached meta-objects for file operations
         this.existingMetaObjects = {};
 
         this.log = tools.getLogger(this.settings.logger);
@@ -217,6 +219,7 @@ export class ObjectsInRedisClient {
 
         const onChange = this.settings.change; // on change handler
         const onChangeUser = this.settings.changeUser; // on change handler for User events
+        const onChangeFileUser = this.settings.changeFileUser; // on change handler for User file events
 
         // limit max number of log entries in the list
         this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1000;
@@ -578,7 +581,7 @@ export class ObjectsInRedisClient {
                 });
             }
 
-            if (!this.sub && typeof onChangeUser === 'function') {
+            if (!this.sub && (typeof onChangeUser === 'function' || typeof onChangeFileUser === 'function')) {
                 initCounter++;
                 this.log.debug(`${this.namespace} Objects create User PubSub Client`);
                 this.sub = new Redis(this.settings.connection.options);
@@ -590,16 +593,34 @@ export class ObjectsInRedisClient {
                         );
                         try {
                             if (channel.startsWith(this.objNamespace) && channel.length > this.objNamespaceL) {
-                                const id = channel.substring(this.objNamespaceL);
-                                try {
-                                    const obj = message ? JSON.parse(message) : null;
+                                if (onChangeUser) {
+                                    const id = channel.substring(this.objNamespaceL);
+                                    try {
+                                        const obj = message ? JSON.parse(message) : null;
 
-                                    onChangeUser(id, obj);
-                                } catch (e) {
-                                    this.log.warn(
-                                        `${this.namespace} Objects user cannot process pmessage ${id} - ${message}: ${e.message}`
-                                    );
-                                    this.log.warn(`${this.namespace} ${e.stack}`);
+                                        onChangeUser(id, obj);
+                                    } catch (e) {
+                                        this.log.warn(
+                                            `${this.namespace} Objects user cannot process pmessage ${id} - ${message}: ${e.message}`
+                                        );
+                                        this.log.warn(`${this.namespace} ${e.stack}`);
+                                    }
+                                }
+                            } else if (channel.startsWith(this.fileNamespace) && channel.length > this.fileNamespaceL) {
+                                if (onChangeFileUser) {
+                                    // cfg.f.vis.0$%$main/historyChart.js$%$data
+                                    const [id, fileName] = channel.substring(this.fileNamespaceL).split('$%$');
+
+                                    try {
+                                        const obj = message ? JSON.parse(message) : null;
+
+                                        onChangeFileUser(id, fileName, obj);
+                                    } catch (e) {
+                                        this.log.warn(
+                                            `${this.namespace} Objects user cannot process pmessage ${id}/${fileName} - ${message}: ${e.message}`
+                                        );
+                                        this.log.warn(`${this.namespace} ${e.stack}`);
+                                    }
                                 }
                             } else {
                                 this.log.warn(
@@ -812,7 +833,7 @@ export class ObjectsInRedisClient {
     }
 
     /**
-     * Checks if given Id is a meta object, else throws error
+     * Checks if given ID is a meta-object, else throws error
      *
      * @param {string} id to check
      * @throws Error if id is invalid
@@ -846,6 +867,7 @@ export class ObjectsInRedisClient {
         }
         try {
             await this.client.set(id, data);
+            await this.client.publish(id, data.byteLength.toString(10));
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -875,6 +897,7 @@ export class ObjectsInRedisClient {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         } else {
             await this.client.del(id);
+            await this.client.publish(id, 'null'); // inform about deletion
         }
     }
 
@@ -2435,6 +2458,80 @@ export class ObjectsInRedisClient {
         return new Promise((resolve, reject) =>
             this.enableFileCache(enabled, options, (err, res) => (err ? reject(err) : resolve(res)))
         );
+    }
+
+    private async _subscribeFile(id: string, pattern: string) {
+        if (!this.sub) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        if (Array.isArray(pattern)) {
+            for (let p = 0; p < pattern.length; p++) {
+                const fileId = this.getFileId(id, pattern[p], false);
+                this.log.silly(`${this.namespace} redis psubscribe ${fileId}`);
+                if (this.sub) {
+                    await this.sub.psubscribe(fileId);
+                    this.userSubscriptions[fileId] = true;
+                }
+            }
+        } else {
+            const fileId = this.getFileId(id, pattern, false);
+            this.log.silly(`${this.namespace} redis psubscribe ${fileId}`);
+            await this.sub.psubscribe(fileId);
+            this.userSubscriptions[fileId] = true;
+        }
+    }
+
+    private async _unsubscribeFile(id: string, pattern: string) {
+        if (!this.sub) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        if (Array.isArray(pattern)) {
+            for (let p = 0; p < pattern.length; p++) {
+                const fileId = this.getFileId(id, pattern[p], false);
+                this.log.silly(`${this.namespace} redis punsubscribe ${fileId}`);
+                if (this.sub) {
+                    await this.sub.punsubscribe(fileId);
+                    if (this.userSubscriptions[fileId] !== undefined) {
+                        delete this.userSubscriptions[fileId];
+                    }
+                }
+            }
+        } else {
+            this.log.silly(`${this.namespace} redis punsubscribe ${this.objNamespace}${pattern}`);
+            const fileId = this.getFileId(id, pattern, false);
+            await this.sub.punsubscribe(fileId);
+            if (this.userSubscriptions[fileId] !== undefined) {
+                delete this.userSubscriptions[fileId];
+            }
+        }
+    }
+
+    subscribeUserFile(id: string, pattern: string, options?: CallOptions): Promise<void> {
+        return new Promise((resolve, reject) => {
+            utils.checkObjectRights(this, null, null, options, 'list', err => {
+                if (err) {
+                    reject(err);
+                } else {
+                    return this._subscribeFile(id, pattern)
+                        .then(() => resolve())
+                        .catch(err => reject(err));
+                }
+            });
+        });
+    }
+
+    unsubscribeUserFile(id: string, pattern: string, options?: CallOptions): Promise<void> {
+        return new Promise((resolve, reject) => {
+            utils.checkObjectRights(this, null, null, options, 'list', err => {
+                if (err) {
+                    reject(err);
+                } else {
+                    return this._unsubscribeFile(id, pattern)
+                        .then(() => resolve())
+                        .catch(err => reject(err));
+                }
+            });
+        });
     }
 
     // -------------- OBJECT FUNCTIONS -------------------------------------------

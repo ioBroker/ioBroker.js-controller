@@ -307,13 +307,14 @@ export class InMemoryFileDB {
                     return;
                 }
 
-                s.push({ pattern: pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options: options });
+                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
             });
         } else {
             if (!s.find(sub => sub.pattern === pattern)) {
-                s.push({ pattern: pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options: options });
+                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
             }
         }
+
         typeof cb === 'function' && cb();
     }
 
@@ -560,6 +561,7 @@ export class InMemoryFileDB {
                 }
             }
         }
+
         return publishCount;
     }
 

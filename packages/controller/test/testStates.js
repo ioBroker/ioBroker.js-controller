@@ -5,7 +5,7 @@
 'use strict';
 
 const expect = require('chai').expect;
-const setup = require(__dirname + '/lib/setup4controller');
+const setup = require('./lib/setup4controller');
 const fs = require('fs');
 let objects = null;
 let states = null;

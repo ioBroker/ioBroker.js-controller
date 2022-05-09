@@ -1428,6 +1428,11 @@ export class StateRedisClient {
 
         try {
             await this.client.set(this.namespaceRedis + id, data);
+            // for back compatibility send normal state, but with the flag "binary"
+            await this.client.publish(
+                this.namespaceRedis + id,
+                JSON.stringify({ val: null, binary: true, size: data.byteLength, ack: true })
+            );
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1469,6 +1474,7 @@ export class StateRedisClient {
 
         try {
             await this.client.del(this.namespaceRedis + id);
+            await this.client.publish(this.namespaceRedis + id, JSON.stringify(null));
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e, id);

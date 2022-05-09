@@ -4,7 +4,7 @@
 /* jshint expr:true */
 'use strict';
 
-const testAdapter = require(__dirname + '/lib/testAdapter');
+const testAdapter = require('./lib/testAdapter');
 const dataDir = __dirname + '/../tmp/data';
 
 const statesConfig = {
@@ -36,9 +36,10 @@ const objectsConfig = {
     noFileCache: true,
     connectTimeout: 2000
 };
+
 // states in files, objects in files
 testAdapter({
-    statesConfig: statesConfig,
-    objectsConfig: objectsConfig,
-    name: 'Tests FILE Redis'
+    statesConfig,
+    objectsConfig,
+    name: 'Tests FILE'
 });
