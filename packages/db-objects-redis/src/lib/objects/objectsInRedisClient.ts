@@ -3045,13 +3045,13 @@ export class ObjectsInRedisClient {
         options: Record<string, any> | undefined,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
+    // no options but cb
+    getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
     // Promise version
     getObject<T extends string>(
         id: T,
         options?: Record<string, any>
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
-    // no options but cb
-    getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
     getObject<T extends string>(
         id: T,
         options?: any,

@@ -338,6 +338,7 @@ export class List {
                                         type += new Array(10 - type.length).join(' ');
                                     }
 
+                                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                     console.log(`${id}: ${type} - ${name || ''}`);
                                 } else {
                                     // @ts-expect-error if we would have an design object it would have no type
@@ -501,6 +502,7 @@ export class List {
                                         host = host.padEnd(40);
                                     }
 
+                                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                     let text = `${id}: ${name || ''}: ${host} - ${
                                         row.value.common.enabled ? ' enabled' : 'disabled'
                                     }`;
@@ -859,6 +861,7 @@ export class List {
                                 if (id.length < 20) {
                                     id += new Array(20 - id.length).join(' ');
                                 }
+                                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                 console.log(`${id}(${name})`);
                                 console.log(
                                     '-------------------------------------------------------------------------------------'
