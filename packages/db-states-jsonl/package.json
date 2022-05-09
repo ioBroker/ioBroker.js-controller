@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/db-states-jsonl",
-  "version": "4.1.0-alpha.28-20220506-3b3cef46",
+  "version": "4.1.0-alpha.29-20220509-105c7a6f",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -25,14 +25,18 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-states-jsonl"
   },
-  "scripts": {},
-  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "lib/",
-    "index.js"
+    "build/lib/",
+    "build/index.js",
+    "build/index.d.ts"
   ]
 }
