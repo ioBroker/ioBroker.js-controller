@@ -201,7 +201,7 @@ export class List {
                     const fname = _path.substring(pos + 1);
                     this.objects.readDir(adapter, dir, null, (err, files) => {
                         if (err) {
-                            console.log(`Cannot read "${path}": ${err}`);
+                            console.log(`Cannot read "${path}": ${err.message}`);
                             typeof callback === 'function' && callback(_allFiles);
                         } else {
                             // @ts-expect-error if no error, files are guranteed to be an Array https://github.com/ioBroker/adapter-core/issues/455
@@ -256,7 +256,7 @@ export class List {
         return a1.localeCompare(b1);
     }
 
-    listAdaptersFiles(adapters: string[], filter?: null | string, callback?: () => void): void {
+    listAdaptersFiles(adapters: string[], filter?: null | string, callback?: () => void): void | Promise<void> {
         if (typeof filter === 'function') {
             callback = filter;
             filter = null;
@@ -278,10 +278,10 @@ export class List {
                     .filter(f => !filter || `${f.path}/${f.file.file}`.startsWith(filter))
                     .forEach(f => this.showFile(f.adapter, f.path, f.file));
 
-                this.listAdaptersFiles(adapters, callback);
+                this.listAdaptersFiles(adapters, filter, callback);
             });
         } else {
-            typeof callback === 'function' && callback();
+            return tools.maybeCallback(callback);
         }
     }
 
@@ -323,9 +323,11 @@ export class List {
                         for (const obj of objs.rows) {
                             let name = obj.value?.common?.name;
                             if (tools.isObject(name)) {
+                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                                 name = name[lang] || name.en;
                             }
-                            if (!reg || reg.test(obj.value._id) || (obj.value.common && reg.test(name))) {
+
+                            if (!reg || reg.test(obj.value._id) || (name && reg.test(name as string))) {
                                 if (obj.value.type) {
                                     let id = obj.value._id;
                                     let type = obj.value.type;
@@ -338,6 +340,7 @@ export class List {
 
                                     console.log(`${id}: ${type} - ${name || ''}`);
                                 } else {
+                                    // @ts-expect-error if we would have an design object it would have no type
                                     console.log(obj.value._id);
                                 }
                             }
@@ -457,11 +460,15 @@ export class List {
                                     continue;
                                 }
 
-                                if (
-                                    !reg ||
-                                    reg.test(row.value._id) ||
-                                    (row.value.common && reg.test(row.value.common.name))
-                                ) {
+                                let name = row.value.common?.name;
+
+                                if (tools.isObject(name)) {
+                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                                    name = name[lang] || name.en;
+                                }
+
+                                // @ts-expect-error if typings fixed ts should get it https://github.com/ioBroker/adapter-core/issues/455
+                                if (!reg || reg.test(row.value._id) || (name && reg.test(name))) {
                                     if (flags.enabled && !row.value.common.enabled) {
                                         continue;
                                     }
@@ -479,15 +486,14 @@ export class List {
                                     }
 
                                     let id = row.value._id;
-                                    let name = row.value.common.name;
                                     let host = row.value.common.host;
-                                    if (tools.isObject(name)) {
-                                        name = name[lang] || name.en;
-                                    }
+
                                     if (id.length < 40) {
                                         id = id.padEnd(40);
                                     }
+                                    // @ts-expect-error if typings fixed ts should get it https://github.com/ioBroker/adapter-core/issues/455
                                     if (name && name.length < 22) {
+                                        // @ts-expect-error if typings fixed ts should get it https://github.com/ioBroker/adapter-core/issues/455
                                         name = name.padEnd(22);
                                     }
 
@@ -644,6 +650,7 @@ export class List {
                                                 create: true,
                                                 list: true
                                             },
+                                            // @ts-expect-error todo discuss, is create missing or intended?
                                             object: {
                                                 read: true,
                                                 write: true,
@@ -754,13 +761,17 @@ export class List {
                     this.objects.getObjectList(
                         { startkey: 'system.host.', endkey: 'system.host.\u9999' },
                         (err, objs) => {
+                            if (!objs) {
+                                this.processExit();
+                                return;
+                            }
                             this.states.getKeys('system.host.*', (err, keys) => {
                                 if (!keys) {
                                     this.processExit();
                                     return;
                                 }
                                 this.states.getStates(keys, (err, states) => {
-                                    if (!objs) {
+                                    if (!states) {
                                         this.processExit();
                                         return;
                                     }
@@ -795,14 +806,14 @@ export class List {
                                             let uptime = '';
                                             for (let k = 0; k < keys.length; k++) {
                                                 if (keys[k] === `${obj.value._id}.alive`) {
-                                                    alive = states[k].val;
+                                                    alive = 'alive';
                                                 }
                                                 if (keys[k] === `${obj.value._id}.uptime`) {
-                                                    uptime = states[k].val;
+                                                    uptime = states[k]!.val?.toString() || '-';
                                                 }
                                             }
-                                            alive = alive ? 'alive' : ' dead';
-                                            //if (uptime.toString().length < 10) uptime = new Array(10 - uptime.toString().length).join(' ') + uptime.toString();
+                                            alive = alive || 'dead';
+
                                             if (!uptime) {
                                                 uptime = '-';
                                             }
@@ -831,19 +842,20 @@ export class List {
                             if (obj.value.type !== 'enum') {
                                 continue;
                             }
-                            if (
-                                !reg ||
-                                reg.test(obj.value._id) ||
-                                (obj.value.common && reg.test(obj.value.common.name))
-                            ) {
+
+                            let name = obj.value.common?.name;
+                            if (tools.isObject(name)) {
+                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                                name = name[lang] || name.en;
+                            }
+
+                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                            if (!reg || reg.test(obj.value._id) || (name && reg.test(name))) {
                                 console.log(
                                     '\n====================================================================================='
                                 );
                                 let id = obj.value._id.substring(5);
-                                let name = obj.value.common.name;
-                                if (tools.isObject(name)) {
-                                    name = name[lang] || name.en;
-                                }
+
                                 if (id.length < 20) {
                                     id += new Array(20 - id.length).join(' ');
                                 }
