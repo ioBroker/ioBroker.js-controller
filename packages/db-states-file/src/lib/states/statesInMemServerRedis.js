@@ -115,7 +115,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
                 }
             }
         }
-        return { id: id, namespace: ns };
+        return { id, namespace: ns };
     }
 
     /**
@@ -124,7 +124,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns {number} Publish counter 0 or 1 depending if send out or not
+     * @returns {number} Publish counter 0 or 1 depending on if send out or not
      */
     publishToClients(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe[type]) {
