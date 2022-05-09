@@ -924,23 +924,19 @@ class AdapterClass extends EventEmitter {
             const id = `system.adapter.${this.namespace}`;
 
             const finishUnload = () => {
-                if (this._timers && this._timers.size) {
+                if (this._timers.size) {
                     this._timers.forEach(id => clearTimeout(id));
                     this._timers.clear();
                 }
 
-                if (this._intervals && this._intervals.size) {
+                if (this._intervals.size) {
                     this._intervals.forEach(id => clearInterval(id));
                     this._intervals.clear();
                 }
 
-                if (this._delays && this._delays.size) {
+                if (this._delays.size) {
                     this._delays.forEach(id => clearTimeout(id));
                     this._delays.clear();
-                }
-
-                if (this.terminated) {
-                    return;
                 }
 
                 if (adapterStates && updateAliveState) {
@@ -951,7 +947,7 @@ class AdapterClass extends EventEmitter {
                         }
 
                         // To this moment, the class could be destroyed
-                        this.terminate && this.terminate(exitCode);
+                        this.terminate(exitCode);
                     });
                 } else {
                     if (!isPause && this.log) {
@@ -2697,7 +2693,7 @@ class AdapterClass extends EventEmitter {
                 } catch (e) {
                     this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
                 }
-                setImmediate(this._deleteObjects, tasks, options, cb);
+                setImmediate(() => this._deleteObjects(tasks, options, cb));
             });
         }
     }
@@ -5345,11 +5341,11 @@ class AdapterClass extends EventEmitter {
         if (!ids || i >= ids.length) {
             return tools.maybeCallback(callback);
         } else if (this.groups[ids] !== undefined) {
-            setImmediate(this._getGroups, ids, callback, i + 1);
+            setImmediate(() => this._getGroups(ids, callback, i + 1));
         } else {
             this.getForeignObject(ids[i], null, (err, obj) => {
                 this.groups[ids] = obj || {};
-                setImmediate(this._getGroups, ids, callback, i + 1);
+                setImmediate(() => this._getGroups(ids, callback, i + 1));
             });
         }
     }
@@ -8521,7 +8517,7 @@ class AdapterClass extends EventEmitter {
 
                         if (!this._stopInProgress) {
                             typeof this._options.objectChange === 'function' &&
-                                setImmediate(this._options.objectChange, id, obj);
+                                setImmediate(() => this._options.objectChange(id, obj));
                             // emit 'objectChange' event instantly
                             setImmediate(() => this.emit('objectChange', id, obj));
                         }
@@ -8534,7 +8530,7 @@ class AdapterClass extends EventEmitter {
                     }
                     if (this.adapterReady && !this._stopInProgress) {
                         typeof this._options.fileChange === 'function' &&
-                            setImmediate(this._options.fileChange, id, fileName, size);
+                            setImmediate(() => this._options.fileChange(id, fileName, size));
                         // emit 'fileChange' event instantly
                         setImmediate(() => this.emit('fileChange', id, fileName, size));
                     }
