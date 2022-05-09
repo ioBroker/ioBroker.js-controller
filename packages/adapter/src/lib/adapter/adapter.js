@@ -1021,7 +1021,7 @@ class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`
                         );
-                        setTimeout(this._stop, 2000, false, true);
+                        setTimeout(() => this._stop(), 2000, false, true);
                     });
                 }
             } catch (e) {
@@ -9475,10 +9475,10 @@ class AdapterClass extends EventEmitter {
             }
         };
 
-        process.once('SIGINT', this._stop);
-        process.once('SIGTERM', this._stop);
+        process.once('SIGINT', () => this._stop());
+        process.once('SIGTERM', () => this._stop());
         // And the exit event shuts down the child.
-        process.once('exit', this._stop);
+        process.once('exit', () => this._stop());
 
         process.on('uncaughtException', err => exceptionHandler(err));
         process.on('unhandledRejection', err => exceptionHandler(err, true));
