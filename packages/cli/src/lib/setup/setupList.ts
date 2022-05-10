@@ -303,7 +303,7 @@ export class List {
                 } else if (!flags.alive) {
                     result.push(`  ${task.value}`);
                 }
-                setImmediate(this._readOnlineState, lines, flags, cb, result);
+                setImmediate(() => this._readOnlineState(lines, flags, cb, result));
             });
         }
     }
