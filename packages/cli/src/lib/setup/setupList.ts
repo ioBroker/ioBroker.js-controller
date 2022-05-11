@@ -16,7 +16,7 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 interface File {
     adapter: string;
     path: string;
-    file: Record<string, any>;
+    file: ioBroker.ReadDirResult;
 }
 
 interface IdValueObject {
@@ -33,13 +33,19 @@ interface FlagObject {
     ip?: string;
 }
 
+interface ListOptions {
+    states: StatesRedisClient;
+    objects: ObjectsRedisClient;
+    processExit: (exitCode?: number) => void;
+}
+
 export class List {
     private config: Record<string, any>;
     private objects: ObjectsRedisClient;
     private states: StatesRedisClient;
     private readonly processExit: (exitCode?: number) => void;
 
-    constructor(options: Record<string, any>) {
+    constructor(options: ListOptions) {
         options = options || {};
 
         if (!options.states) {
@@ -82,52 +88,35 @@ export class List {
         console.log('----------------+----------+--------------+--------------+------+---------');
     }
 
-    showFile(adapter: string, path: string, file: Record<string, any>): void {
+    showFile(adapter: string, path: string, file: ioBroker.ReadDirResult): void {
         //drwxr-xr-x   1 odroid odroid    43 Oct  3  2013 .xsessionrc
         let text = '';
-        let time;
+        let time = '';
         if (file.modifiedAt) {
             const ts = new Date(file.modifiedAt);
             time = ts.toISOString();
             time = time.replace('T', ' ');
             time = time.substring(0, 16) + ' ';
-        } else {
-            time = new Array(18).join(' ');
         }
-        text += time;
+        text += time.padEnd(17);
 
         if (file.acl) {
             text += (file.isDir ? 'd' : '-') + List._perm2str(file.acl.permissions || 0);
             let owner = file.acl.owner;
-            if (owner) {
-                owner = owner.substring(12);
-                if (owner.length < 15) {
-                    owner = new Array(15 - owner.length).join(' ') + owner;
-                }
-            } else {
-                owner = new Array(15).join(' ');
-            }
-            text += ' ' + owner;
-            let group = file.acl.ownerGroup;
-            if (group) {
-                group = group.substring(13);
-                if (group.length < 15) {
-                    group = new Array(15 - group.length).join(' ') + group;
-                }
-            } else {
-                group = new Array(15).join(' ');
-            }
+            // cut system.user.
+            owner = owner.substring(12);
 
-            text += ' ' + group;
+            text += ` ${owner.padStart(14)}`;
+            let group = file.acl.ownerGroup;
+            // cut system.group.
+            group = group.substring(13);
+            text += ` ${group.padStart(14)}`;
         } else {
             text += (file.isDir ? 'd' : '-') + '?????????' + new Array(31).join(' ');
         }
-        let size = file.stats && file.stats.size ? file.stats.size.toString() : '';
-        if (size.length < 7) {
-            size = new Array(7 - size.length).join(' ') + size;
-        }
+        const size = file.stats && file.stats.size ? file.stats.size.toString() : '';
 
-        text += ' ' + size + ' ' + adapter + (!path || path[0] === '/' ? '' : '/') + path + '/' + file.file;
+        text += ` ${size.padStart(6)} ${adapter}${!path || path[0] === '/' ? '' : '/'}${path}/${file.file}`;
         if (file.isDir) {
             text += '/';
             console.log(text);
@@ -149,25 +138,14 @@ export class List {
                 obj.type === 'state' ? List._perm2str(obj.acl.state || 0) : '         '
             }`;
             let owner = obj.acl.owner;
-            if (owner) {
-                owner = owner.substring(12);
-                if (owner.length < 15) {
-                    owner = new Array(15 - owner.length).join(' ') + owner;
-                }
-            } else {
-                owner = new Array(15).join(' ');
-            }
-            text += ` ${owner}`;
+            // cut system.user.
+            owner = owner.substring(12);
+
+            text += ` ${owner.padStart(14)}`;
             let group = obj.acl.ownerGroup;
-            if (group) {
-                group = group.substring(13);
-                if (group.length < 15) {
-                    group = new Array(15 - group.length).join(' ') + group;
-                }
-            } else {
-                group = new Array(15).join(' ');
-            }
-            text += ` ${group}`;
+            // cut system.group.
+            group = group.substring(13);
+            text += ` ${group.padStart(14)}`;
         } else {
             text += `?????????${obj.type === 'state' ? ' ?????????' : '          '}${new Array(31).join(' ')}`;
         }
@@ -210,7 +188,7 @@ export class List {
                                     continue;
                                 }
                                 if (file.file === fname) {
-                                    _allFiles.push({ adapter: adapter, path: _path, file });
+                                    _allFiles.push({ adapter, path: _path, file });
                                     break;
                                 }
                             }
@@ -329,17 +307,11 @@ export class List {
 
                             if (!reg || reg.test(obj.value._id) || (name && reg.test(name as string))) {
                                 if (obj.value.type) {
-                                    let id = obj.value._id;
-                                    let type = obj.value.type;
-                                    if (id.length < 40) {
-                                        id += new Array(40 - id.length).join(' ');
-                                    }
-                                    if (type.length < 10) {
-                                        type += new Array(10 - type.length).join(' ');
-                                    }
+                                    const id = obj.value._id;
+                                    const type = obj.value.type;
 
                                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                    console.log(`${id}: ${type} - ${name || ''}`);
+                                    console.log(`${id.padStart(39)}: ${type.padStart(39)} - ${name || ''}`);
                                 } else {
                                     // @ts-expect-error if we would have an design object it would have no type
                                     console.log(obj.value._id);
@@ -373,20 +345,12 @@ export class List {
                                     continue;
                                 }
 
-                                let id = keys[i];
-                                let from = state.from || '';
-                                let type = typeof state.val;
-                                if (type.length < 10) {
-                                    type += new Array(10 - type.length).join(' ');
-                                }
-                                if (id.length < 40) {
-                                    id += new Array(40 - id.length).join(' ');
-                                }
-                                if (from.length < 30) {
-                                    from += new Array(30 - from.length).join(' ');
-                                }
+                                const id = keys[i];
+                                const from = state.from || '';
+                                const type = typeof state.val;
+
                                 console.log(
-                                    `${id}: from [${from}] (${type}) ${
+                                    `${id.padEnd(39)}: from [${from.padEnd(29)}] (${type.padEnd(9)}) ${
                                         state.ack ? '    ack' : 'not ack'
                                     } ${JSON.stringify(state.val)}`
                                 );
@@ -415,19 +379,13 @@ export class List {
                                     reg.test(obj.value._id) ||
                                     (obj.value.common && reg.test(obj.value.common.name))
                                 ) {
-                                    let id = obj.value._id;
+                                    const id = obj.value._id;
                                     let name = obj.value.common.name;
                                     if (tools.isObject(name)) {
                                         name = name[lang] || name.en;
                                     }
-                                    if (id.length < 40) {
-                                        id += new Array(40 - id.length).join(' ');
-                                    }
-                                    if (name.length < 15) {
-                                        name += new Array(15 - name.length).join(' ');
-                                    }
 
-                                    const text = `${id}: ${name} - v${obj.value.common.version}`;
+                                    const text = `${id.padEnd(39)}: ${name.padEnd(14)} - v${obj.value.common.version}`;
 
                                     console.log(text);
                                 }
@@ -574,19 +532,13 @@ export class List {
                                             reg.test(obj.value._id) ||
                                             (obj.value.common && reg.test(obj.value.common.name))
                                         ) {
-                                            let id = obj.value._id;
+                                            const id = obj.value._id;
                                             let name = obj.value.common.name;
                                             if (tools.isObject(name)) {
                                                 name = name[lang] || name.en;
                                             }
-                                            if (id.length < 40) {
-                                                id += new Array(40 - id.length).join(' ');
-                                            }
-                                            if (name.length < 12) {
-                                                name += new Array(12 - name.length).join(' ');
-                                            }
 
-                                            const text = `${id}| ${name} | ${
+                                            const text = `${id.padEnd(39)}| ${name.padEnd(11)} | ${
                                                 obj.value.common.enabled ? ' enabled' : 'disabled'
                                             } |`;
                                             if (groups) {
@@ -640,7 +592,7 @@ export class List {
                                     reg.test(obj.value._id) ||
                                     (obj.value.common && reg.test(obj.value.common.name))
                                 ) {
-                                    let id = obj.value._id.substring(13);
+                                    const id = obj.value._id.substring(13);
                                     //let name = objs.rows[i].value.common.name;
 
                                     if (id === 'administrator') {
@@ -679,10 +631,7 @@ export class List {
                                         };
                                     }
 
-                                    if (id.length < 20) {
-                                        id += new Array(20 - id.length).join(' ');
-                                    }
-                                    let text = id;
+                                    let text = id.padEnd(19);
                                     text += ' | ';
                                     if (obj.value.common.acl && obj.value.common.acl.object) {
                                         text += (obj.value.common.acl.object.list ? '+' : '-') + ' ';
@@ -729,22 +678,18 @@ export class List {
                                         for (const [r, otherPerm] of Object.entries(obj.value.common.acl.other)) {
                                             others += r + (otherPerm ? '+' : '-') + ' ';
                                         }
-                                        if (others.length < 23) {
-                                            others += new Array(23 - others.length).join(' ');
-                                        }
-                                        text += others + '|';
+
+                                        text += `${others.padEnd(22)}|`;
                                     } else {
                                         text += new Array(25).join(' ') + '|';
                                     }
 
-                                    //if (name.length < 30) name += new Array(30 - name.length).join(' ');
                                     if (obj.value.common.members) {
                                         for (let m = 0; m < obj.value.common.members.length; m++) {
                                             obj.value.common.members[m] = obj.value.common.members[m].substring(12);
                                         }
                                         text += ` ${obj.value.common.members.join(', ')}`;
                                     }
-                                    //text += '| (' + name + ')';
                                     console.log(text);
                                 }
                             }
@@ -791,18 +736,14 @@ export class List {
                                             reg.test(obj.value._id) ||
                                             (obj.value.common && reg.test(obj.value.common.name))
                                         ) {
-                                            let id = obj.value._id.substring(12);
+                                            const id = obj.value._id.substring(12);
                                             let name = obj.value.common.name;
                                             if (tools.isObject(name)) {
                                                 name = name[lang] || name.en;
                                             }
-                                            if (id.length < 20) {
-                                                id += new Array(20 - id.length).join(' ');
-                                            }
-                                            let hostname = obj.value.common.hostname;
-                                            if (hostname.length < 15) {
-                                                hostname += new Array(15 - hostname.length).join(' ');
-                                            }
+
+                                            const hostname = obj.value.common.hostname;
+
                                             const version = obj.value.common.installedVersion;
                                             let alive = '';
                                             let uptime = '';
@@ -819,7 +760,11 @@ export class List {
                                             if (!uptime) {
                                                 uptime = '-';
                                             }
-                                            const text = `${id} ${name} (version: ${version}, hostname: ${hostname}, ${alive}, uptime: ${uptime})`;
+                                            const text = `${id.padEnd(
+                                                19
+                                            )} ${name} (version: ${version}, hostname: ${hostname.padEnd(
+                                                14
+                                            )}, ${alive}, uptime: ${uptime})`;
                                             // todo
                                             console.log(text);
                                         }
@@ -856,13 +801,10 @@ export class List {
                                 console.log(
                                     '\n====================================================================================='
                                 );
-                                let id = obj.value._id.substring(5);
+                                const id = obj.value._id.substring(5);
 
-                                if (id.length < 20) {
-                                    id += new Array(20 - id.length).join(' ');
-                                }
                                 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                                console.log(`${id}(${name})`);
+                                console.log(`${id.padEnd(19)}(${name})`);
                                 console.log(
                                     '-------------------------------------------------------------------------------------'
                                 );

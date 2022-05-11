@@ -2537,8 +2537,12 @@ export class ObjectsInRedisClient {
     // -------------- OBJECT FUNCTIONS -------------------------------------------
     // No callback provided by user, we return a Promise
     private _subscribe(pattern: string | string[], asUser: boolean): Promise<void>;
-    // Callback provided by user, we call callback|
-    private _subscribe(pattern: string | string[], asUser: boolean, callback?: ioBroker.ErrorCallback): void;
+    // Callback provided by user, we call callback
+    private _subscribe<T extends ioBroker.ErrorCallback>(
+        pattern: string | string[],
+        asUser: boolean,
+        callback?: T
+    ): T extends ioBroker.ErrorCallback ? void : Promise<void>;
     private _subscribe(
         pattern: string | string[],
         asUser: boolean,
@@ -4435,18 +4439,35 @@ export class ObjectsInRedisClient {
         return result;
     }
 
-    // getObjectList is called without options
+    // getObjectList is called without options with callback
+    getObjectList(params: ioBroker.GetObjectListParams, callback: ioBroker.GetObjectListCallback): void;
+
+    // getObjectList is called without options without callback, we return a promise
     getObjectList(
-        params: ioBroker.GetObjectListParams,
-        callback?: ioBroker.GetObjectListCallback
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+        params: ioBroker.GetObjectListParams
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
 
     // getObjectList is called with options
-    getObjectList(
+    getObjectList<T extends ioBroker.GetObjectListCallback>(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null,
-        callback?: ioBroker.GetObjectListCallback
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+        callback?: T
+    ): T extends ioBroker.GetObjectListCallback
+        ? void
+        : Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+
+    // getObjectList is called with callback, thus we call it
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        options: CallOptions | null,
+        callback: ioBroker.GetObjectListCallback
+    ): void;
+
+    // getObjectList is called without callback, thus we return a promise
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        options?: CallOptions | null
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
 
     getObjectList(
         params: ioBroker.GetObjectListParams,
