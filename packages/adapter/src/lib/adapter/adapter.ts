@@ -1,5 +1,3 @@
-'use strict';
-
 // This is file, that makes all communication with controller. All options are optional except name.
 // following options are available:
 //   name:                  name of the adapter. Must be exactly the same as directory name.
@@ -15,28 +13,33 @@
 //   config:                configuration of the connection to controller
 //   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without a corresponding existing object
 
-const net = require('net');
-const fs = require('fs-extra');
+import net from 'net';
+import fs from 'fs-extra';
+import os from 'os';
+import jwt from 'jsonwebtoken';
+import { EventEmitter } from 'events';
+import { tools, EXIT_CODES, password, logger } from '@iobroker/js-controller-common';
+import pidUsage from 'pidusage';
+import deepClone from 'deep-clone';
+import { PluginHandler } from '@iobroker/plugin-base';
+import semver from 'semver';
+import path from 'path';
+import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
-const os = require('os');
-const jwt = require('jsonwebtoken');
-const { EventEmitter } = require('events');
-const { tools } = require('@iobroker/js-controller-common');
-const pidUsage = require('pidusage');
-const deepClone = require('deep-clone');
-const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const { PluginHandler } = require('@iobroker/plugin-base');
-const semver = require('semver');
-const path = require('path');
+import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type Winston from 'winston';
+import type NodeSchedule from 'node-schedule';
+
 // local version is always same as controller version, since lerna exact: true is used
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
-const { password } = require('@iobroker/js-controller-common');
-const Log = require('./log');
-const { Utils } = require('./utils');
+import { Log } from './log';
+import { Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
-const {
+import {
     DEFAULT_SECRET,
     ALIAS_STARTS_WITH,
     SYSTEM_ADMIN_USER,
@@ -50,11 +53,46 @@ const {
     ACCESS_GROUP_READ,
     ACCESS_USER_WRITE,
     ACCESS_USER_READ
-} = require('./constants');
+} from './constants';
 
 // keep them outside until we have migrated to TS, else devs can access them
-let adapterStates;
-let adapterObjects;
+let adapterStates: StatesInRedisClient;
+let adapterObjects: ObjectsInRedisClient;
+
+interface AdapterOptions {
+    strictObjectChecks: boolean;
+    compact: boolean;
+    config: AdapterOptionsConfig;
+    name: string;
+    /** If true, the systemConfig (iobroker.json) will be available in this.systemConfig */
+    systemConfig: boolean;
+}
+
+interface AdapterOptionsConfig {
+    log: Record<string, any>; // TODO: specify
+}
+
+interface AliasDetails {
+    source: AliasDetailsSource;
+    targets: AliasTargetEntry[];
+}
+
+interface AliasDetailsSource {
+    min?: number;
+    max?: number;
+    type: string;
+    unit?: string;
+}
+
+interface AliasTargetEntry {
+    alias: Record<string, any>; // TODO: specify
+    id: string;
+    pattern: string;
+    type: string;
+    max?: number;
+    min?: number;
+    unit?: string;
+}
 
 /**
  * Adapter class
@@ -62,18 +100,44 @@ let adapterObjects;
  * How the initialization happens:
  *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstancesObjects => ready
  *
- * @class
  * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
  * @return {object} object instance
  */
 class AdapterClass extends EventEmitter {
-    constructor(options) {
+    /** Contents of iobroker.json */
+    private readonly _config: Record<string, any>;
+    private readonly _options: AdapterOptions | string;
+    private readonly startedInCompactMode: boolean;
+    /** List of instances which want our logs */
+    private readonly logList: Set<string>;
+    private readonly aliases: Map<string, AliasDetails>;
+    private readonly aliasPatterns: Set<string>;
+    private enums: Record<string, any>;
+    private eventLoopLags: number[];
+    private overwriteLogLevel: boolean;
+    protected adapterReady: boolean;
+    private _stopInProgress: boolean;
+    private _callbackId: number;
+    private _firstConnection: boolean;
+    private _timers: Set<any>;
+    private _intervals: Set<any>;
+    private _delays: Set<any>;
+    private tools: any; // TODO remove the shim
+    private log: Log;
+    private readonly performStrictObjectChecks: boolean;
+    private readonly _logger: Winston.Logger;
+    private _restartScheduleJob: any;
+    private _schedule: typeof NodeSchedule | undefined;
+    private namespaceLog: string;
+    private namespace: string;
+    private name: string;
+
+    constructor(options: AdapterOptions) {
         super();
         this._options = options;
         const configFileName = tools.getConfigFileName();
 
         if (fs.pathExistsSync(configFileName)) {
-            /** @type {Record<string, any>} */
             this._config = fs.readJsonSync(configFileName);
             this._config.states = this._config.states || { type: 'jsonl' };
             this._config.objects = this._config.objects || { type: 'jsonl' };
@@ -85,7 +149,7 @@ class AdapterClass extends EventEmitter {
             throw new Error(`Cannot find ${configFileName}`);
         }
 
-        if (!this._options || (!this._options && !this._options.config)) {
+        if (!this._options || !this._options.config) {
             throw new Error('Configuration not set!');
         }
 
@@ -177,7 +241,7 @@ class AdapterClass extends EventEmitter {
             throw new Error('No name of adapter!');
         }
 
-        this._logger = require('@iobroker/js-controller-common').logger(this._config.log);
+        this._logger = logger(this._config.log);
 
         // compatibility
         if (!this._logger.silly) {
@@ -4433,7 +4497,7 @@ class AdapterClass extends EventEmitter {
                 case 'YY':
                 case 'JJ':
                 case 'ГГ':
-                    v = /** @type {Date} */ (dateObj).getFullYear();
+                    v = /** @type {Date} */ dateObj.getFullYear();
                     if (s.length === 2) {
                         v %= 100;
                     }
@@ -5059,14 +5123,13 @@ class AdapterClass extends EventEmitter {
                                     user.acl.file.create = group.common.acl.file.create;
                                     user.acl.file.read = group.common.acl.file.read;
                                     user.acl.file.write = group.common.acl.file.write;
-                                    user.acl.file['delete'] = group.common.acl.file['delete'];
+                                    user.acl.file.delete = group.common.acl.file.delete;
                                     user.acl.file.list = group.common.acl.file.list;
                                 } else {
                                     user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
                                     user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
                                     user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                                    user.acl.file['delete'] =
-                                        user.acl.file['delete'] || group.common.acl.file['delete'];
+                                    user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
                                     user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
                                 }
                             }
@@ -5079,14 +5142,13 @@ class AdapterClass extends EventEmitter {
                                     user.acl.object.create = group.common.acl.object.create;
                                     user.acl.object.read = group.common.acl.object.read;
                                     user.acl.object.write = group.common.acl.object.write;
-                                    user.acl.object['delete'] = group.common.acl.object['delete'];
+                                    user.acl.object.delete = group.common.acl.object.delete;
                                     user.acl.object.list = group.common.acl.object.list;
                                 } else {
                                     user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
                                     user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
                                     user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                                    user.acl.object['delete'] =
-                                        user.acl.object['delete'] || group.common.acl.object['delete'];
+                                    user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
                                     user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
                                 }
                             }
@@ -5099,14 +5161,13 @@ class AdapterClass extends EventEmitter {
                                     user.acl.users.create = group.common.acl.users.create;
                                     user.acl.users.read = group.common.acl.users.read;
                                     user.acl.users.write = group.common.acl.users.write;
-                                    user.acl.users['delete'] = group.common.acl.users['delete'];
+                                    user.acl.users.delete = group.common.acl.users.delete;
                                     user.acl.users.list = group.common.acl.users.list;
                                 } else {
                                     user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
                                     user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
                                     user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                                    user.acl.users['delete'] =
-                                        user.acl.users['delete'] || group.common.acl.users['delete'];
+                                    user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
                                     user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
                                 }
                             }
@@ -5118,14 +5179,13 @@ class AdapterClass extends EventEmitter {
                                     user.acl.state.create = group.common.acl.state.create;
                                     user.acl.state.read = group.common.acl.state.read;
                                     user.acl.state.write = group.common.acl.state.write;
-                                    user.acl.state['delete'] = group.common.acl.state['delete'];
+                                    user.acl.state.delete = group.common.acl.state.delete;
                                     user.acl.state.list = group.common.acl.state.list;
                                 } else {
                                     user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
                                     user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
                                     user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                                    user.acl.state['delete'] =
-                                        user.acl.state['delete'] || group.common.acl.state['delete'];
+                                    user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
                                     user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
                                 }
                             }
@@ -5148,7 +5208,7 @@ class AdapterClass extends EventEmitter {
                 // If user is owner
                 if (options.user === obj.acl.owner) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state['delete']) {
+                        if (command === 'delState' && !options.acl.state.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`
                             );
@@ -5176,7 +5236,7 @@ class AdapterClass extends EventEmitter {
                     }
                 } else if (options.groups.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state['delete']) {
+                        if (command === 'delState' && !options.acl.state.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`
                             );
@@ -5204,7 +5264,7 @@ class AdapterClass extends EventEmitter {
                     }
                 } else if (!limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
-                        if (command === 'delState' && !options.acl.state['delete']) {
+                        if (command === 'delState' && !options.acl.state.delete) {
                             this._logger.warn(
                                 `${this.namespaceLog} Permission error for user "${options.user} on "${obj._id}": ${command}`
                             );
@@ -7513,7 +7573,7 @@ class AdapterClass extends EventEmitter {
         return licenses;
     }
 
-    _init() {
+    async _init() {
         /**
          * Initiates the databases
          */
@@ -7568,26 +7628,26 @@ class AdapterClass extends EventEmitter {
             }
         }
 
-        let States;
+        let States: StatesInRedisClient;
         if (this._config.states && this._config.states.type) {
             try {
-                States = require(`@iobroker/db-states-${this._config.states.type}`).Client;
+                States = (await import(`@iobroker/db-states-${this._config.states.type}`)).Client;
             } catch (err) {
                 throw new Error(`Unknown states type: ${this._config.states.type}: ${err.message}`);
             }
         } else {
-            States = require('@iobroker/js-controller-common-db').getStatesConstructor();
+            States = getStatesConstructor();
         }
 
-        let Objects;
+        let Objects: ObjectsInRedisClient;
         if (this._config.objects && this._config.objects.type) {
             try {
-                Objects = require(`@iobroker/db-objects-${this._config.objects.type}`).Client;
+                Objects = (await import(`@iobroker/db-objects-${this._config.objects.type}`)).Client;
             } catch (err) {
                 throw new Error(`Unknown objects type: ${this._config.objects.type}: ${err.message}`);
             }
         } else {
-            Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
+            Objects = getObjectsConstructor();
         }
 
         const ifaces = os.networkInterfaces();
@@ -9332,7 +9392,7 @@ class AdapterClass extends EventEmitter {
 
                     if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
                         try {
-                            this._schedule = require('node-schedule');
+                            this._schedule = await import('node-schedule');
                         } catch {
                             this._logger.error(
                                 `${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`
@@ -9567,10 +9627,8 @@ class AdapterClass extends EventEmitter {
  * Polyfill to allow calling without `new`
  * @type {AdapterClass}
  */
-const Adapter = new Proxy(AdapterClass, {
+export const Adapter = new Proxy(AdapterClass, {
     apply(target, thisArg, argArray) {
         return new target(...argArray);
     }
 });
-
-module.exports = Adapter;
