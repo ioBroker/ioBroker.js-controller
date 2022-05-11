@@ -33,7 +33,7 @@ interface FlagObject {
     ip?: string;
 }
 
-interface ListOptions {
+interface CLIListOptions {
     states: StatesRedisClient;
     objects: ObjectsRedisClient;
     processExit: (exitCode?: number) => void;
@@ -45,7 +45,7 @@ export class List {
     private states: StatesRedisClient;
     private readonly processExit: (exitCode?: number) => void;
 
-    constructor(options: ListOptions) {
+    constructor(options: CLIListOptions) {
         options = options || {};
 
         if (!options.states) {

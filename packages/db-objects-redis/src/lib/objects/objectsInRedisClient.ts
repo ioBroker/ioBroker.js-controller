@@ -2535,9 +2535,7 @@ export class ObjectsInRedisClient {
     }
 
     // -------------- OBJECT FUNCTIONS -------------------------------------------
-    // No callback provided by user, we return a Promise
-    private _subscribe(pattern: string | string[], asUser: boolean): Promise<void>;
-    // Callback provided by user, we call callback
+    // If callback provided by user, we call callback else we return a Promise
     private _subscribe<T extends ioBroker.ErrorCallback>(
         pattern: string | string[],
         asUser: boolean,
