@@ -34,7 +34,7 @@ function register(it, expect, context) {
     it(testName + 'setBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testSetBinaryState`;
 
-        const promise = new Promise(resolve => {
+        const receivedPromise = new Promise(resolve => {
             context.onAdapterStateChanged = (id, state) => {
                 if (id === objId) {
                     if (typeof state !== 'object') {
@@ -67,7 +67,7 @@ function register(it, expect, context) {
         await context.adapter.subscribeForeignStatesAsync(objId);
 
         context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
-        await promise;
+        await receivedPromise;
 
         await context.adapter.unsubscribeForeignStatesAsync(objId);
     });
@@ -75,7 +75,7 @@ function register(it, expect, context) {
     it(testName + 'delBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testSetBinaryState`;
 
-        const promise = new Promise(resolve => {
+        const receivedPromise = new Promise(resolve => {
             context.onAdapterStateChanged = (id, state) => {
                 if (id === objId) {
                     expect(state).to.be.equal(null);
@@ -87,7 +87,7 @@ function register(it, expect, context) {
         await context.adapter.subscribeForeignStatesAsync(objId);
 
         context.adapter.delBinaryStateAsync(objId);
-        await promise;
+        await receivedPromise;
 
         await context.adapter.unsubscribeForeignStatesAsync(objId);
     });

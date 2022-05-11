@@ -2460,13 +2460,13 @@ export class ObjectsInRedisClient {
         );
     }
 
-    private async _subscribeFile(id: string, pattern: string) {
+    private async _subscribeFile(id: string, pattern: string | string[]) {
         if (!this.sub) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
-            for (let p = 0; p < pattern.length; p++) {
-                const fileId = this.getFileId(id, pattern[p], false);
+            for (const _pattern of pattern) {
+                const fileId = this.getFileId(id, _pattern, false);
                 this.log.silly(`${this.namespace} redis psubscribe ${fileId}`);
                 if (this.sub) {
                     await this.sub.psubscribe(fileId);
@@ -2481,13 +2481,13 @@ export class ObjectsInRedisClient {
         }
     }
 
-    private async _unsubscribeFile(id: string, pattern: string) {
+    private async _unsubscribeFile(id: string, pattern: string | string[]) {
         if (!this.sub) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (Array.isArray(pattern)) {
-            for (let p = 0; p < pattern.length; p++) {
-                const fileId = this.getFileId(id, pattern[p], false);
+            for (const _pattern of pattern) {
+                const fileId = this.getFileId(id, _pattern, false);
                 this.log.silly(`${this.namespace} redis punsubscribe ${fileId}`);
                 if (this.sub) {
                     await this.sub.punsubscribe(fileId);
@@ -2535,11 +2535,17 @@ export class ObjectsInRedisClient {
     }
 
     // -------------- OBJECT FUNCTIONS -------------------------------------------
-    // No callback provided by user, we return a Promise
-    private _subscribe(pattern: string, asUser: boolean): Promise<void>;
-    // Callback provided by user, we call callback
-    private _subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): void;
-    private _subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): void | Promise<void> {
+    // If callback provided by user, we call callback else we return a Promise
+    private _subscribe<T extends ioBroker.ErrorCallback>(
+        pattern: string | string[],
+        asUser: boolean,
+        callback?: T
+    ): T extends ioBroker.ErrorCallback ? void : Promise<void>;
+    private _subscribe(
+        pattern: string | string[],
+        asUser: boolean,
+        callback?: ioBroker.ErrorCallback
+    ): void | Promise<void> {
         const subClient = asUser ? this.sub : this.subSystem;
         if (!subClient) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
@@ -2570,9 +2576,9 @@ export class ObjectsInRedisClient {
         }
     }
 
-    subscribeConfig(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeConfig(pattern: string, options?: CallOptions, callback?: ioBroker.ErrorCallback): void;
-    subscribeConfig(pattern: string, options?: any, callback?: ioBroker.ErrorCallback): void {
+    subscribeConfig(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    subscribeConfig(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void;
+    subscribeConfig(pattern: string | string[], options?: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2586,21 +2592,21 @@ export class ObjectsInRedisClient {
         });
     }
 
-    subscribe(pattern: string, options: CallOptions, callback?: ioBroker.ErrorCallback): void {
+    subscribe(pattern: string | string[], options: CallOptions, callback?: ioBroker.ErrorCallback): void {
         return this.subscribeConfig(pattern, options, callback);
     }
 
-    subscribeAsync(pattern: string, options: CallOptions): Promise<void> {
+    subscribeAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );
     }
 
     // User has called the method without providing options
-    subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    subscribeUser(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
     // User has called the method by providing options
-    subscribeUser(pattern: string, options: CallOptions, callback?: ioBroker.ErrorCallback): void;
-    subscribeUser(pattern: string, options: any, callback?: ioBroker.ErrorCallback): void {
+    subscribeUser(pattern: string | string[], options: CallOptions, callback?: ioBroker.ErrorCallback): void;
+    subscribeUser(pattern: string | string[], options: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2614,7 +2620,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    subscribeUserAsync(pattern: string, options: CallOptions): Promise<void> {
+    subscribeUserAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribeUser(pattern, options, err => (err ? reject(err) : resolve()))
         );
@@ -2680,7 +2686,7 @@ export class ObjectsInRedisClient {
         return this.unsubscribeConfig(pattern, options, callback);
     }
 
-    unsubscribeAsync(pattern: string, options: CallOptions): Promise<void> {
+    unsubscribeAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.unsubscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );
@@ -2705,7 +2711,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unsubscribeUserAsync(pattern: string, options: CallOptions): Promise<void> {
+    unsubscribeUserAsync(pattern: string | string[], options: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unsubscribeUser(pattern, options, err => (err ? reject(err) : resolve()))
         );
@@ -3041,13 +3047,13 @@ export class ObjectsInRedisClient {
         options: Record<string, any> | undefined,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
+    // no options but cb
+    getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
     // Promise version
     getObject<T extends string>(
         id: T,
         options?: Record<string, any>
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
-    // no options but cb
-    getObject(id: string, callback: ioBroker.ErrorCallback): void;
     getObject<T extends string>(
         id: T,
         options?: any,
@@ -4430,6 +4436,36 @@ export class ObjectsInRedisClient {
         }
         return result;
     }
+
+    // getObjectList is called without options with callback
+    getObjectList(params: ioBroker.GetObjectListParams, callback: ioBroker.GetObjectListCallback): void;
+
+    // getObjectList is called without options without callback, we return a promise
+    getObjectList(
+        params: ioBroker.GetObjectListParams
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+
+    // getObjectList is called with options
+    getObjectList<T extends ioBroker.GetObjectListCallback>(
+        params: ioBroker.GetObjectListParams,
+        options?: CallOptions | null,
+        callback?: T
+    ): T extends ioBroker.GetObjectListCallback
+        ? void
+        : Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+
+    // getObjectList is called with callback, thus we call it
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        options: CallOptions | null,
+        callback: ioBroker.GetObjectListCallback
+    ): void;
+
+    // getObjectList is called without callback, thus we return a promise
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        options?: CallOptions | null
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
 
     getObjectList(
         params: ioBroker.GetObjectListParams,
