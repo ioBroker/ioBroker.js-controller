@@ -71,10 +71,12 @@ interface AdapterOptions {
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
     unload?: ioBroker.UnloadHandler;
-    /** Called when adapter is ready */
+    /** called when adapter is ready */
     ready?: ioBroker.ReadyHandler;
-    /** Called on reconnection to DB */
+    /** called on reconnection to DB */
     reconnect?: () => void | Promise<void>;
+    /** Handler to handle uncaught exceptions, return true if no further handling required */
+    error?: ioBroker.ErrorHandler;
 }
 
 interface AdapterOptionsConfig {
@@ -101,6 +103,12 @@ interface AliasTargetEntry {
     max?: number;
     min?: number;
     unit?: string;
+}
+
+interface PortRunningObject {
+    port: number;
+    host?: string;
+    callback: (port: number) => void;
 }
 
 /**
@@ -152,6 +160,7 @@ class AdapterClass extends EventEmitter {
     private defaultHistory: null | string;
     private pluginHandler?: typeof PluginHandler;
     private _reportInterval?: null | NodeJS.Timer;
+    private getPortRunning: null | PortRunningObject;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -9554,7 +9563,7 @@ class AdapterClass extends EventEmitter {
             this.outputCount = 0;
         };
 
-        const exceptionHandler = async (err, isUnhandledRejection) => {
+        const exceptionHandler = async (err: Error, isUnhandledRejection: boolean) => {
             // If the adapter has a callback to listen for unhandled errors
             // give it a chance to handle the error itself instead of restarting it
             if (typeof this._options.error === 'function') {
@@ -9573,11 +9582,9 @@ class AdapterClass extends EventEmitter {
             // catch it on windows
             if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
                 this._logger.warn(
-                    this.namespaceLog +
-                        ' Port ' +
-                        this.getPortRunning.port +
-                        (this.getPortRunning.host ? ' for host ' + this.getPortRunning.host : '') +
-                        ' is in use. Get next'
+                    `${this.namespaceLog} Port ${this.getPortRunning.port}${
+                        this.getPortRunning.host ? ' for host ' + this.getPortRunning.host : ''
+                    } is in use. Get next`
                 );
 
                 setImmediate(() =>
@@ -9634,7 +9641,7 @@ class AdapterClass extends EventEmitter {
             iobrokerConfig: this._config,
             parentPackage: this.pack,
             controllerVersion
-        };
+        } as const;
         this.pluginHandler = new PluginHandler(pluginSettings);
         this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
 
