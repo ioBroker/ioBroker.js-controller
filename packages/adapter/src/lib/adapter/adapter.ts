@@ -1,18 +1,3 @@
-// This is file, that makes all communication with controller. All options are optional except name.
-// following options are available:
-//   name:                  name of the adapter. Must be exactly the same as directory name.
-//   dirname:               adapter directory name
-//   instance:              instance number of adapter
-//   objects:               true or false, if desired to have oObjects. This is a list with all states, channels and devices of this adapter, and it will be updated automatically.
-//   states:                true or false, if desired to have oStates. This is a list with all states values, and it will be updated automatically.
-//   systemConfig:          if required system configuration. Store it in systemConfig attribute
-//   objectChange:          callback function (id, obj) that will be called if object changed
-//   stateChange:           callback function (id, obj) that will be called if state changed
-//   message:               callback to inform about new message the adapter
-//   unload:                callback to stop the adapter
-//   config:                configuration of the connection to controller
-//   strictObjectChecks:    flag which defaults to true - if true, adapter warns if states are set without a corresponding existing object
-
 import net from 'net';
 import fs from 'fs-extra';
 import os from 'os';
@@ -60,12 +45,36 @@ let adapterStates: StatesInRedisClient;
 let adapterObjects: ObjectsInRedisClient;
 
 interface AdapterOptions {
-    strictObjectChecks: boolean;
-    compact: boolean;
-    config: AdapterOptionsConfig;
+    /** if desired to have oStates. This is a list with all states values, and it will be updated automatically. */
+    states?: boolean;
+    /** if desired to have oObjects. This is a list with all states, channels and devices of this adapter, and it will be updated automatically.*/
+    objects?: boolean;
+    /** instance number of adapter */
+    instance?: number;
+    /** adapter directory name */
+    dirname?: string;
+    /** flag which defaults to true - if true, adapter warns if states are set without a corresponding existing object */
+    strictObjectChecks?: boolean;
+    /** If true runs in compact mode */
+    compact?: boolean;
+    /** configuration of the connection to controller */
+    config?: AdapterOptionsConfig;
+    /** name of the adapter. Must be exactly the same as directory name. */
     name: string;
     /** If true, the systemConfig (iobroker.json) will be available in this.systemConfig */
-    systemConfig: boolean;
+    systemConfig?: boolean;
+    /** callback function (id, obj) that will be called if object changed */
+    objectChange?: ioBroker.ObjectChangeHandler;
+    /** callback function (id, obj) that will be called if state changed */
+    stateChange?: ioBroker.StateChangeHandler;
+    /** callback to inform about new message the adapter */
+    message?: ioBroker.MessageHandler;
+    /** callback to stop the adapter */
+    unload?: ioBroker.UnloadHandler;
+    /** Called when adapter is ready */
+    ready?: ioBroker.ReadyHandler;
+    /** Called on reconnection to DB */
+    reconnect?: () => void | Promise<void>;
 }
 
 interface AdapterOptionsConfig {
@@ -106,7 +115,7 @@ interface AliasTargetEntry {
 class AdapterClass extends EventEmitter {
     /** Contents of iobroker.json */
     private readonly _config: Record<string, any>;
-    private readonly _options: AdapterOptions | string;
+    private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
     /** List of instances which want our logs */
     private readonly logList: Set<string>;
@@ -131,10 +140,28 @@ class AdapterClass extends EventEmitter {
     private namespaceLog: string;
     private namespace: string;
     private name: string;
+    private _systemSecret?: string;
+    private terminated: boolean;
+    private usernames: Record<string, { id: string }>;
+    private readonly FORBIDDEN_CHARS: RegExp;
+    private inputCount: number;
+    private outputCount: number;
+    private users: Record<string, any>; // TODO
+    private groups: Record<string, any>; // TODO
+    private autoSubscribe: null | string[];
+    private defaultHistory: null | string;
+    private pluginHandler?: typeof PluginHandler;
+    private _reportInterval?: null | NodeJS.Timer;
 
-    constructor(options: AdapterOptions) {
+    constructor(options: AdapterOptions | string) {
         super();
-        this._options = options;
+
+        // enable "const adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
+        if (typeof options === 'string') {
+            this._options = { name: options };
+        } else {
+            this._options = options;
+        }
         const configFileName = tools.getConfigFileName();
 
         if (fs.pathExistsSync(configFileName)) {
@@ -158,13 +185,25 @@ class AdapterClass extends EventEmitter {
         }
 
         this._config = this._options.config || this._config;
-        this.startedInCompactMode = this._options.compact;
+        this.startedInCompactMode = !!this._options.compact;
 
         this.logList = new Set();
         this.aliases = new Map();
         this.aliasPatterns = new Set();
         this.enums = {};
+        /** The cache of users */
+        this.users = {};
+        /** The cache of usernames */
+        this.usernames = {};
+        /** The cache of user groups */
+        this.groups = {};
+        this.defaultHistory = null;
+        /** An array of instances, that support auto subscribe */
+        this.autoSubscribe = null;
+        this.inputCount = 0;
+        this.outputCount = 0;
 
+        this.getPortRunning = null;
         this.eventLoopLags = [];
         this.overwriteLogLevel = false;
         this.adapterReady = false;
@@ -175,6 +214,11 @@ class AdapterClass extends EventEmitter {
         this._timers = new Set();
         this._intervals = new Set();
         this._delays = new Set();
+
+        /** A RegExp to test for forbidden chars in object IDs */
+        this.FORBIDDEN_CHARS = FORBIDDEN_CHARS;
+        /** Whether the adapter has already terminated */
+        this.terminated = false;
 
         // TODO: remove shim
         // Provide selected tools methods for backward compatibility use in adapter
@@ -232,14 +276,11 @@ class AdapterClass extends EventEmitter {
 
         this.performStrictObjectChecks = this._options.strictObjectChecks !== false;
 
-        // enable "const adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
-        if (typeof this._options === 'string') {
-            this._options = { name: this._options };
-        }
-
         if (!this._options.name) {
             throw new Error('No name of adapter!');
         }
+
+        this.name = this._options.name;
 
         this._logger = logger(this._config.log);
 
@@ -542,15 +583,13 @@ class AdapterClass extends EventEmitter {
 
     /**
      * This method update the cached values in this.usernames
-     *
-     * @returns {Promise<void>}
      */
-    async _updateUsernameCache() {
+    async _updateUsernameCache(): Promise<void> {
         // TODO: ok if available on the class?
-        // make sure cache is cleared
         try {
             // get all users
             const obj = await this.getObjectListAsync({ startkey: 'system.user.', endkey: 'system.user.\u9999' });
+            // make sure cache is cleared
             this.usernames = {};
             for (const row of obj.rows) {
                 if (row.value.common && typeof row.value.common.name === 'string') {
@@ -7665,28 +7704,9 @@ class AdapterClass extends EventEmitter {
             10
         );
 
-        this.name = this._options.name;
         this.namespace = `${this._options.name}.${instance}`;
         this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
-
-        /** The cache of users */
-        this.users = {};
-        /** The cache of usernames */
-        this.usernames = {};
-        /** The cache of user groups */
-        this.groups = {};
-        this.defaultHistory = null;
-        /** An array of instances, that support auto subscribe */
-        this.autoSubscribe = null;
-        this.inputCount = 0;
-        this.outputCount = 0;
-        /** A RegExp to test for forbidden chars in object IDs */
-        this.FORBIDDEN_CHARS = FORBIDDEN_CHARS;
-        /** Whether the adapter has already terminated */
-        this.terminated = false;
-
-        this.getPortRunning = null;
 
         // Create methods which need to be generated dynamically
         /**
@@ -9367,8 +9387,8 @@ class AdapterClass extends EventEmitter {
                         if (!this._config.isInstall) {
                             this._reportInterval = setInterval(reportStatus, this._config.system.statisticsInterval);
                             reportStatus();
-                            const id = 'system.adapter.' + this.namespace;
-                            adapterStates.setState(id + '.compactMode', {
+                            const id = `system.adapter.${this.namespace}`;
+                            adapterStates.setState(`${id}.compactMode`, {
                                 ack: true,
                                 from: id,
                                 val: !!this.startedInCompactMode
