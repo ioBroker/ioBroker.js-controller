@@ -45,6 +45,12 @@ let adapterStates: StatesInRedisClient;
 let adapterObjects: ObjectsInRedisClient;
 
 interface AdapterOptions {
+    /** if true, the date format from system.config */
+    useFormatDate?: boolean;
+    /** if it is possible for other instances to retrive states of this adapter automatically */
+    subscribable?: boolean;
+    /** compact group instance if running in compact mode */
+    compactInstance?: number;
     /** if desired to have oStates. This is a list with all states values, and it will be updated automatically. */
     states?: boolean;
     /** if desired to have oObjects. This is a list with all states, channels and devices of this adapter, and it will be updated automatically.*/
@@ -84,7 +90,7 @@ interface AdapterOptionsConfig {
 }
 
 interface AliasDetails {
-    source: AliasDetailsSource;
+    source: AliasDetailsSource | null;
     targets: AliasTargetEntry[];
 }
 
@@ -161,6 +167,31 @@ class AdapterClass extends EventEmitter {
     private pluginHandler?: typeof PluginHandler;
     private _reportInterval?: null | NodeJS.Timer;
     private getPortRunning: null | PortRunningObject;
+    private readonly _namespaceRegExp: RegExp;
+    private instance: number;
+    private _utils: Utils;
+    /** contents of io-package.json */
+    protected adapterConfig?: Record<string, any>; // TODO: contents of io-pack?
+    private connected?: boolean;
+    protected adapterDir?: string | null;
+    /** contents of package.json */
+    protected pack?: Record<string, any>;
+    /** contents of io-package.json */
+    protected ioPack?: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
+    private _initializeTimeout?: NodeJS.Timeout | null;
+    private inited?: boolean;
+    /** contents of iobroker.json if required via AdapterOptions */
+    private systemConfig?: Record<string, any>;
+    /** the configured date format of system.config, only vailable if requested via AdapterOptions `useFormatDate` */
+    private dateFormat?: any;
+    /** if float comma instead of dot is used, only vailable if requested via AdapterOptions `useFormatDate` */
+    private isFloatComma?: boolean;
+    /** configured language of system.config, only vailable if requested via AdapterOptions `useFormatDate` */
+    private language?: ioBroker.Languages;
+    /** longitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
+    private longitude?: number;
+    /** latitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
+    private latitude?: number;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -290,6 +321,18 @@ class AdapterClass extends EventEmitter {
         }
 
         this.name = this._options.name;
+
+        const instance = parseInt(
+            this._options.compactInstance !== undefined
+                ? this._options.compactInstance
+                : this._options.instance !== undefined
+                ? this._options.instance
+                : this._config.instance || 0,
+            10
+        );
+
+        this.namespace = `${this._options.name}.${instance}`;
+        this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
         this._logger = logger(this._config.log);
 
@@ -1053,9 +1096,9 @@ class AdapterClass extends EventEmitter {
 
                 if (adapterStates && updateAliveState) {
                     this.outputCount++;
-                    adapterStates.setState(id + '.alive', { val: false, ack: true, from: id }, () => {
+                    adapterStates.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
                         if (!isPause && this._logger) {
-                            this._logger.info(this.namespaceLog + ' terminating');
+                            this._logger.info(`${this.namespaceLog} terminating`);
                         }
 
                         // To this moment, the class could be destroyed
@@ -1063,7 +1106,7 @@ class AdapterClass extends EventEmitter {
                     });
                 } else {
                     if (!isPause && this.log) {
-                        this._logger.info(this.namespaceLog + ' terminating');
+                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
                 }
@@ -6660,7 +6703,11 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    async _addAliasSubscribe(aliasObj, pattern, callback) {
+    private async _addAliasSubscribe(
+        aliasObj: ioBroker.StateObject,
+        pattern: string,
+        callback: ioBroker.ErrorCallback
+    ): Promise<void> {
         if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
@@ -6751,12 +6798,11 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    async _removeAliasSubscribe(sourceId, aliasObj, pattern, callback) {
-        if (typeof pattern === 'function') {
-            callback = pattern;
-            pattern = null;
-        }
-
+    private async _removeAliasSubscribe(
+        sourceId: string,
+        aliasObj: number | Record<string, any>,
+        callback?: () => void
+    ): Promise<void> {
         if (!this.aliases.has(sourceId)) {
             return tools.maybeCallback(callback);
         }
@@ -7621,7 +7667,7 @@ class AdapterClass extends EventEmitter {
         return licenses;
     }
 
-    async _init() {
+    private async _init(): Promise<void> {
         /**
          * Initiates the databases
          */
@@ -7676,7 +7722,7 @@ class AdapterClass extends EventEmitter {
             }
         }
 
-        let States: StatesInRedisClient;
+        let States: typeof StatesInRedisClient;
         if (this._config.states && this._config.states.type) {
             try {
                 States = (await import(`@iobroker/db-states-${this._config.states.type}`)).Client;
@@ -7687,7 +7733,7 @@ class AdapterClass extends EventEmitter {
             States = getStatesConstructor();
         }
 
-        let Objects: ObjectsInRedisClient;
+        let Objects: typeof ObjectsInRedisClient;
         if (this._config.objects && this._config.objects.type) {
             try {
                 Objects = (await import(`@iobroker/db-objects-${this._config.objects.type}`)).Client;
@@ -7704,18 +7750,7 @@ class AdapterClass extends EventEmitter {
             ifaces[dev].forEach(details => !details.internal && ipArr.push(details.address));
         }
 
-        const instance = parseInt(
-            this._options.compactInstance !== undefined
-                ? this._options.compactInstance
-                : this._options.instance !== undefined
-                ? this._options.instance
-                : this._config.instance || 0,
-            10
-        );
-
-        this.namespace = `${this._options.name}.${instance}`;
         this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-        this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
         // Create methods which need to be generated dynamically
         /**
@@ -8225,7 +8260,7 @@ class AdapterClass extends EventEmitter {
                                         lang =>
                                             (obj.common.name[lang] = obj.common.name[lang].replace(
                                                 '%INSTANCE%',
-                                                instance
+                                                this.instance
                                             ))
                                     );
                                 } else {
@@ -8239,7 +8274,7 @@ class AdapterClass extends EventEmitter {
                                         lang =>
                                             (obj.common.desc[lang] = obj.common.desc[lang].replace(
                                                 '%INSTANCE%',
-                                                instance
+                                                this.instance
                                             ))
                                     );
                                 } else {
@@ -8265,9 +8300,9 @@ class AdapterClass extends EventEmitter {
                         objs.push(obj);
                     } else {
                         this._logger.error(
-                            `${this.namespaceLog} ${
-                                this._options.name
-                            }.${instance} invalid instance object: ${JSON.stringify(obj)}`
+                            `${this.namespaceLog} ${this._options.name}.${
+                                this.instance
+                            } invalid instance object: ${JSON.stringify(obj)}`
                         );
                     }
                 }
@@ -8348,7 +8383,7 @@ class AdapterClass extends EventEmitter {
             }
         };
 
-        const initObjects = cb => {
+        const initObjects = (cb: () => void) => {
             this._initializeTimeout = setTimeout(() => {
                 this._initializeTimeout = null;
                 if (this._config.isInstall) {
@@ -8407,7 +8442,7 @@ class AdapterClass extends EventEmitter {
                             } // If reconnected in the meantime, do not terminate
                             this._logger &&
                                 this._logger.warn(
-                                    this.namespaceLog + ' Cannot connect/reconnect to objects DB. Terminating'
+                                    `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
                                 );
                             this.terminate(EXIT_CODES.NO_ERROR);
                         }, 4000);
@@ -8648,8 +8683,8 @@ class AdapterClass extends EventEmitter {
             adapterStates = new States({
                 namespace: this.namespaceLog,
                 connection: this._config.states,
-                connected: async _statesInstance => {
-                    this._logger.silly(this.namespaceLog + ' statesDB connected');
+                connected: async () => {
+                    this._logger.silly(`${this.namespaceLog} statesDB connected`);
                     this.statesConnectedTime = Date.now();
 
                     if (this._initializeTimeout) {
@@ -9146,8 +9181,7 @@ class AdapterClass extends EventEmitter {
             } else {
                 this.requireLog = _isActive => {
                     this._logger.warn(
-                        this.namespaceLog +
-                            ' requireLog is not supported by this adapter! Please set common.logTransporter to true'
+                        `${this.namespaceLog} requireLog is not supported by this adapter! Please set common.logTransporter to true`
                     );
                 };
             }
@@ -9242,7 +9276,7 @@ class AdapterClass extends EventEmitter {
 
                         this.name = adapterConfig.common.name;
                         this.instance = instance;
-                        this.namespace = name + '.' + instance;
+                        this.namespace = `${name}.${instance}`;
                         this.namespaceLog =
                             this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
                         if (!this.startedInCompactMode) {
@@ -9292,7 +9326,6 @@ class AdapterClass extends EventEmitter {
 
                     this.adapterConfig = adapterConfig;
 
-                    /** @type Utils*/
                     this._utils = new Utils(
                         adapterObjects,
                         adapterStates,

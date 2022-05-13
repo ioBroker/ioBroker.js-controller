@@ -1079,7 +1079,7 @@ export class StateRedisClient {
         return tools.maybeCallbackWithError(callback, null, obj);
     }
 
-    async subscribe(pattern: string, callback: ioBroker.ErrorCallback): Promise<void>;
+    async subscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
     async subscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
 
     /**
@@ -1091,7 +1091,7 @@ export class StateRedisClient {
      */
     async subscribe(
         pattern: string,
-        asUser: boolean | ioBroker.ErrorCallback,
+        asUser?: boolean | ioBroker.ErrorCallback,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
