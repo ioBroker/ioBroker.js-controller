@@ -39,8 +39,6 @@ import {
     ACCESS_USER_WRITE,
     ACCESS_USER_READ
 } from './constants';
-import { symlink } from 'fs';
-import Type = module;
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import ErrnoException = NodeJS.ErrnoException;
 
@@ -157,6 +155,13 @@ interface InternalCheckPasswordOptions {
 
 interface InternalGetUserIDOptions {
     username: string;
+}
+
+interface InternalSetPasswordOptions {
+    user: string;
+    pw: string;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
 }
 
 /**
@@ -817,61 +822,79 @@ class AdapterClass extends EventEmitter {
         return this.usernames[options.username].id;
     }
 
+    // external signature
+    setPassword(
+        user: string,
+        pw: string,
+        options: Record<string, any>,
+        callback?: ioBroker.ErrorCallback
+    ): Promise<void>;
+
     /**
      * sets the user's password
      *
      * @alias setPassword
-     * @memberof Adapter
-     * @param {string} user user name as text
-     * @param {string} pw password as text
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param user user name as text
+     * @param pw password as text
+     * @param [options] optional user context
+     * @param [callback] return result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot set password: ' + err);
      *            }
      *        </code></pre>
      */
-    async setPassword(user, pw, options, callback) {
+    setPassword(user: unknown, pw: unknown, options: unknown, callback: unknown): Promise<void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
-        if (user && !user.startsWith('system.user.')) {
+        Utils.assertsString(user, 'user');
+        Utils.assertsString(pw, 'pw');
+        Utils.assertsOptionalCallback(callback, 'callback');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._setPassword({ user, pw, options, callback });
+    }
+
+    private async _setPassword(options: InternalSetPasswordOptions) {
+        if (options.user && !options.user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
-            if (!this.usernames[user]) {
+            if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
                     this.log.error(e);
                 }
-                if (!this.usernames[user]) {
+                if (!this.usernames[options.user]) {
                     // user still not there, fallback to legacy check
-                    user = `system.user.${user
+                    options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
                         .replace(/\s/g, '_')
                         .replace(/\./g, '_')
                         .toLowerCase()}`;
                 } else {
-                    user = this.usernames[user].id;
+                    options.user = this.usernames[options.user].id;
                 }
             } else {
-                user = this.usernames[user].id;
+                options.user = this.usernames[options.user].id;
             }
         }
 
-        this.getForeignObject(user, options, (err, obj) => {
+        this.getForeignObject(options.user, options, (err, obj) => {
             if (err || !obj) {
-                return tools.maybeCallbackWithError(callback, 'User does not exist');
+                return tools.maybeCallbackWithError(options.callback, 'User does not exist');
             }
 
             // BF: (2020.05.22) are the empty passwords allowed??
-            if (!pw) {
+            if (!options.pw) {
                 this.extendForeignObject(
-                    user,
+                    options.user,
                     {
                         common: {
                             password: ''
@@ -883,12 +906,12 @@ class AdapterClass extends EventEmitter {
                     }
                 );
             } else {
-                password(pw).hash(null, null, (err, res) => {
+                password(options.pw).hash(null, null, (err, res) => {
                     if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
+                        return tools.maybeCallbackWithError(options.callback, err);
                     }
                     this.extendForeignObject(
-                        user,
+                        options.user,
                         {
                             common: {
                                 password: res
@@ -896,7 +919,7 @@ class AdapterClass extends EventEmitter {
                         },
                         options,
                         () => {
-                            return tools.maybeCallbackWithError(callback, null);
+                            return tools.maybeCallbackWithError(options.callback, null);
                         }
                     );
                 });
