@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
 import { Log } from './log';
-import { Utils } from './utils';
+import { ID, Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -117,6 +117,8 @@ interface PortRunningObject {
     callback: (port: number) => void;
 }
 
+type CheckStateCommand = 'getState' | 'setState' | 'delState';
+
 /**
  * Adapter class
  *
@@ -192,6 +194,8 @@ class AdapterClass extends EventEmitter {
     private longitude?: number;
     /** latitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
     private latitude?: number;
+    private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
+    private _aliasObjectsSubscribed?: boolean;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -402,27 +406,22 @@ class AdapterClass extends EventEmitter {
         adapterStates.destroySession(id, callback);
     }
 
-    _getObjectsByArray(keys, objects, options, cb, _index, _result, _errors) {
+    private async _getObjectsByArray(keys: ID[], objects, options) {
         if (objects) {
             return tools.maybeCallbackWithError(cb, null, objects);
         }
-        _index = _index || 0;
-        _result = _result || [];
-        _errors = _errors || [];
 
-        while (!keys[_index] && _index < keys.length) {
-            _index++;
+        const res: (ioBroker.Object | null)[] = [];
+        for (const key of keys) {
+            try {
+                const obj = await this.getForeignObjectAsync(key, options);
+                res.push(obj);
+            } catch {
+                res.push(null);
+            }
         }
 
-        if (_index >= keys.length) {
-            return tools.maybeCallbackWithError(cb, _errors.find(e => e) ? _errors : null, _result);
-        }
-
-        // if empty => skip immediately
-        this.getForeignObject(keys[_index], options, (err, obj) => {
-            _result[_index] = obj;
-            setImmediate(() => this._getObjectsByArray(keys, objects, options, cb, _index + 1, _result, _errors));
-        });
+        return res;
     }
 
     /**
@@ -435,7 +434,7 @@ class AdapterClass extends EventEmitter {
      * @param {string | number} [reason] optional termination description
      * @param {number} [exitCode] optional exit code
      */
-    terminate(reason, exitCode) {
+    terminate(reason, exitCode?) {
         // This function must be defined very first, because in the next lines will be yet used.
         if (this.terminated) {
             return;
@@ -636,7 +635,7 @@ class AdapterClass extends EventEmitter {
     /**
      * This method update the cached values in this.usernames
      */
-    async _updateUsernameCache(): Promise<void> {
+    private async _updateUsernameCache(): Promise<void> {
         // TODO: ok if available on the class?
         try {
             // get all users
@@ -1064,8 +1063,7 @@ class AdapterClass extends EventEmitter {
         });
     }
 
-    async _stop(isPause, isScheduled, exitCode, updateAliveState) {
-        // TODO: okay if its available on the class?
+    private async _stop(isPause: boolean, isScheduled: boolean, exitCode?: number, updateAliveState?: boolean) {
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -1149,13 +1147,13 @@ class AdapterClass extends EventEmitter {
                     // Give 1 seconds to write the value
                     setTimeout(() => {
                         if (!isPause && this.log) {
-                            this._logger.info(this.namespaceLog + ' terminating with timeout');
+                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
                     }, 1000);
                 } else {
                     if (!isPause && this.log) {
-                        this._logger.info(this.namespaceLog + ' terminating');
+                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
                 }
@@ -1163,8 +1161,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    _readFileCertificate(cert) {
-        // TODO: okay if it is available?
+    private _readFileCertificate(cert: string) {
         if (typeof cert === 'string') {
             try {
                 // if length < 1024 its no valid cert, so we assume a path to a valid certificate
@@ -1176,7 +1173,7 @@ class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`
                         );
-                        setTimeout(() => this._stop(), 2000, false, true);
+                        setTimeout(() => this._stop(false, true), 2000);
                     });
                 }
             } catch (e) {
@@ -1507,13 +1504,13 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    setObject(id, obj, options, callback) {
+    async setObject(id, obj, options, callback) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
         if (!this._defaultObjs) {
-            this._defaultObjs = require('./defaultObjs.js')();
+            this._defaultObjs = (await import('./defaultObjs.js')).createDefaults();
         }
 
         if (!obj) {
@@ -1611,13 +1608,12 @@ class AdapterClass extends EventEmitter {
 
     /**
      * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one is configured
-     * @param {string} id of the object
+     * @param id of the object
      * @param obj The object to set
-     * @param {object} [options]
-     * @param {function} [callback]
+     * @param [options]
+     * @param [callback]
      */
-    async _setObjectWithDefaultValue(id, obj, options, callback) {
-        // TODO: okay if available?
+    private async _setObjectWithDefaultValue(id: ID, obj: ioBroker.StateObject, options?, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
@@ -2826,8 +2822,7 @@ class AdapterClass extends EventEmitter {
         this.delForeignObject(id, options, callback);
     }
 
-    _deleteObjects(tasks, options, cb) {
-        // TODO: okay if this is available?
+    private _deleteObjects(tasks: { id: ID; [other: string]: any }, options, cb) {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(cb);
         } else {
@@ -3157,7 +3152,7 @@ class AdapterClass extends EventEmitter {
 
         if (objExists === false) {
             if (!obj.from) {
-                obj.from = 'system.adapter.' + this.namespace;
+                obj.from = `system.adapter.${this.namespace}`;
             }
             if (!obj.user) {
                 obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -3233,7 +3228,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    _DCS2ID(device, channel, stateOrPoint) {
+    private _DCS2ID(device: string, channel: string, stateOrPoint: boolean | string): ID {
         let id = '';
         if (device) {
             id += device;
@@ -3249,7 +3244,7 @@ class AdapterClass extends EventEmitter {
         } else if (stateOrPoint === true && id) {
             id += '.';
         }
-        return id;
+        return id as ID;
     }
 
     createDevice(deviceName, common, _native, options, callback) {
@@ -5175,7 +5170,7 @@ class AdapterClass extends EventEmitter {
                 this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
                 return tools.maybeCallback(callback, options);
             } else {
-                this.getForeignObjects('*', 'group', null, null, (err, groups) => {
+                this.getForeignObjects('*', 'group', null, null, async (err, groups) => {
                     // aggregate all groups permissions, where this user is
                     if (groups) {
                         for (const g in groups) {
@@ -5196,101 +5191,99 @@ class AdapterClass extends EventEmitter {
                         groups: options.groups,
                         acl: (userAcl.common && userAcl.common.acl) || {}
                     };
-                    this._getGroups(options.groups, () => {
-                        // combine all rights
-                        const user = this.users[options.user];
-                        for (let g = 0; g < options.groups.length; g++) {
-                            const gName = options.groups[g];
-                            if (!this.groups[gName] || !this.groups[gName].common || !this.groups[gName].common.acl) {
-                                continue;
-                            }
-                            const group = this.groups[gName];
+                    await this._getGroups(options.groups);
+                    // combine all rights
+                    const user = this.users[options.user];
+                    for (let g = 0; g < options.groups.length; g++) {
+                        const gName = options.groups[g];
+                        if (!this.groups[gName] || !this.groups[gName].common || !this.groups[gName].common.acl) {
+                            continue;
+                        }
+                        const group = this.groups[gName];
 
-                            if (group.common.acl && group.common.acl.file) {
-                                if (!user.acl || !user.acl.file) {
-                                    user.acl = user.acl || {};
-                                    user.acl.file = user.acl.file || {};
+                        if (group.common.acl && group.common.acl.file) {
+                            if (!user.acl || !user.acl.file) {
+                                user.acl = user.acl || {};
+                                user.acl.file = user.acl.file || {};
 
-                                    user.acl.file.create = group.common.acl.file.create;
-                                    user.acl.file.read = group.common.acl.file.read;
-                                    user.acl.file.write = group.common.acl.file.write;
-                                    user.acl.file.delete = group.common.acl.file.delete;
-                                    user.acl.file.list = group.common.acl.file.list;
-                                } else {
-                                    user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
-                                    user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
-                                    user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                                    user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
-                                    user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
-                                }
-                            }
-
-                            if (group.common.acl && group.common.acl.object) {
-                                if (!user.acl || !user.acl.object) {
-                                    user.acl = user.acl || {};
-                                    user.acl.object = user.acl.object || {};
-
-                                    user.acl.object.create = group.common.acl.object.create;
-                                    user.acl.object.read = group.common.acl.object.read;
-                                    user.acl.object.write = group.common.acl.object.write;
-                                    user.acl.object.delete = group.common.acl.object.delete;
-                                    user.acl.object.list = group.common.acl.object.list;
-                                } else {
-                                    user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
-                                    user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
-                                    user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                                    user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
-                                    user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
-                                }
-                            }
-
-                            if (group.common.acl && group.common.acl.users) {
-                                if (!user.acl || !user.acl.users) {
-                                    user.acl = user.acl || {};
-                                    user.acl.users = user.acl.users || {};
-
-                                    user.acl.users.create = group.common.acl.users.create;
-                                    user.acl.users.read = group.common.acl.users.read;
-                                    user.acl.users.write = group.common.acl.users.write;
-                                    user.acl.users.delete = group.common.acl.users.delete;
-                                    user.acl.users.list = group.common.acl.users.list;
-                                } else {
-                                    user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
-                                    user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
-                                    user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                                    user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
-                                    user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
-                                }
-                            }
-                            if (group.common.acl && group.common.acl.state) {
-                                if (!user.acl || !user.acl.state) {
-                                    user.acl = user.acl || {};
-                                    user.acl.state = user.acl.state || {};
-
-                                    user.acl.state.create = group.common.acl.state.create;
-                                    user.acl.state.read = group.common.acl.state.read;
-                                    user.acl.state.write = group.common.acl.state.write;
-                                    user.acl.state.delete = group.common.acl.state.delete;
-                                    user.acl.state.list = group.common.acl.state.list;
-                                } else {
-                                    user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
-                                    user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
-                                    user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                                    user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
-                                    user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
-                                }
+                                user.acl.file.create = group.common.acl.file.create;
+                                user.acl.file.read = group.common.acl.file.read;
+                                user.acl.file.write = group.common.acl.file.write;
+                                user.acl.file.delete = group.common.acl.file.delete;
+                                user.acl.file.list = group.common.acl.file.list;
+                            } else {
+                                user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
+                                user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
+                                user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
+                                user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
+                                user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
                             }
                         }
-                        options.acl = user.acl;
-                        return tools.maybeCallback(callback, options);
-                    });
+
+                        if (group.common.acl && group.common.acl.object) {
+                            if (!user.acl || !user.acl.object) {
+                                user.acl = user.acl || {};
+                                user.acl.object = user.acl.object || {};
+
+                                user.acl.object.create = group.common.acl.object.create;
+                                user.acl.object.read = group.common.acl.object.read;
+                                user.acl.object.write = group.common.acl.object.write;
+                                user.acl.object.delete = group.common.acl.object.delete;
+                                user.acl.object.list = group.common.acl.object.list;
+                            } else {
+                                user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
+                                user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
+                                user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
+                                user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
+                                user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
+                            }
+                        }
+
+                        if (group.common.acl && group.common.acl.users) {
+                            if (!user.acl || !user.acl.users) {
+                                user.acl = user.acl || {};
+                                user.acl.users = user.acl.users || {};
+
+                                user.acl.users.create = group.common.acl.users.create;
+                                user.acl.users.read = group.common.acl.users.read;
+                                user.acl.users.write = group.common.acl.users.write;
+                                user.acl.users.delete = group.common.acl.users.delete;
+                                user.acl.users.list = group.common.acl.users.list;
+                            } else {
+                                user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
+                                user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
+                                user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
+                                user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
+                                user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
+                            }
+                        }
+                        if (group.common.acl && group.common.acl.state) {
+                            if (!user.acl || !user.acl.state) {
+                                user.acl = user.acl || {};
+                                user.acl.state = user.acl.state || {};
+
+                                user.acl.state.create = group.common.acl.state.create;
+                                user.acl.state.read = group.common.acl.state.read;
+                                user.acl.state.write = group.common.acl.state.write;
+                                user.acl.state.delete = group.common.acl.state.delete;
+                                user.acl.state.list = group.common.acl.state.list;
+                            } else {
+                                user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
+                                user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
+                                user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
+                                user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
+                                user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
+                            }
+                        }
+                    }
+                    options.acl = user.acl;
+                    return tools.maybeCallback(callback, options);
                 });
             }
         });
     }
 
-    _checkState(obj, options, command) {
-        // TODO: ok if available?
+    private _checkState(obj: ioBroker.StateObject, options, command: CheckStateCommand) {
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj && obj.acl) {
             obj.acl.state = obj.acl.state || obj.acl.object;
@@ -5398,8 +5391,7 @@ class AdapterClass extends EventEmitter {
         return true;
     }
 
-    _checkStates(ids, options, command, callback, _helper) {
-        // TODO: ok if available?
+    private _checkStates(ids: ID | ID[], options, command: CheckStateCommand, callback, _helper?) {
         if (!options.groups) {
             return this._getUserGroups(options, () => this._checkStates(ids, options, command, callback));
         }
@@ -5410,14 +5402,15 @@ class AdapterClass extends EventEmitter {
             }
 
             if (options._objects) {
-                const ids = [];
-                const objs = [];
-                options._objects.forEach((obj, i) => {
-                    if (obj && this._checkState(options._objects[i], options, command)) {
+                const ids: ID[] = [];
+                const objs: ioBroker.StateObject[] = [];
+                for (const obj of options._objects) {
+                    if (obj && this._checkState(obj, options, command)) {
                         ids.push(obj._id);
                         objs.push(obj);
                     }
-                });
+                }
+
                 options._objects = undefined;
                 return tools.maybeCallbackWithError(callback, null, ids, objs);
             } else {
@@ -5456,7 +5449,7 @@ class AdapterClass extends EventEmitter {
                 });
             }
         } else {
-            let originalChecked = undefined;
+            let originalChecked: boolean;
 
             if (options.checked !== undefined) {
                 originalChecked = options.checked;
@@ -5486,23 +5479,21 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    _getGroups(ids, callback, i) {
-        // TODO: okay if it is available?
-        i = i || 0;
-        if (!ids || i >= ids.length) {
-            return tools.maybeCallback(callback);
-        } else if (this.groups[ids] !== undefined) {
-            setImmediate(() => this._getGroups(ids, callback, i + 1));
-        } else {
-            this.getForeignObject(ids[i], null, (err, obj) => {
-                this.groups[ids] = obj || {};
-                setImmediate(() => this._getGroups(ids, callback, i + 1));
-            });
+    private async _getGroups(ids: ID[]) {
+        for (const id of ids) {
+            let obj;
+            try {
+                obj = await this.getForeignObjectAsync(id);
+            } catch {
+                // ignore
+            }
+            if (this.groups[id] === undefined) {
+                this.groups[id] = obj || {};
+            }
         }
     }
 
-    // TODO: okay if available?
-    _setStateChangedHelper(id, state, callback) {
+    private _setStateChangedHelper(id: ID, state: ioBroker.State, callback) {
         if (!adapterObjects) {
             this.log.info('setStateChanged not processed because Objects database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -5514,7 +5505,7 @@ class AdapterClass extends EventEmitter {
                     // id can be string or can have attribute write
                     const aliasId =
                         typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
-                    this.__setStateChangedHelper(aliasId, state, callback);
+                    this._setStateChangedHelper(aliasId, state, callback);
                 } else {
                     this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
                     return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
@@ -5553,7 +5544,7 @@ class AdapterClass extends EventEmitter {
                             await this._utils.performStrictObjectCheck(id, state);
                         }
                         this.outputCount++;
-                        adapterStates.setState(id, state, (/* err */) => {
+                        adapterStates.setState(id, state, () => {
                             return tools.maybeCallbackWithError(callback, null, id, false);
                         });
                     } else {
@@ -6247,49 +6238,48 @@ class AdapterClass extends EventEmitter {
     }
 
     // find out default history instance
-    _getDefaultHistory(callback) {
-        // TODO: okay if available?
+    private async _getDefaultHistory() {
         if (!this.defaultHistory) {
             // read default history instance from system.config
-            return this.getForeignObject('system.config', null, (err, data) => {
-                if (data && data.common) {
-                    this.defaultHistory = data.common.defaultHistory;
-                }
-                if (data && data.native) {
-                    this._systemSecret = data.native.secret;
+            let data;
+            try {
+                data = await this.getForeignObjectAsync('system.config', null);
+            } catch {
+                // ignore
+            }
+
+            if (data && data.common) {
+                this.defaultHistory = data.common.defaultHistory;
+            }
+            if (data && data.native) {
+                this._systemSecret = data.native.secret;
+            }
+
+            // if no default history set
+            if (!this.defaultHistory) {
+                let _obj;
+                // read all adapters
+                try {
+                    _obj = await adapterObjects.getObjectViewAsync('system', 'instance', {
+                        startkey: 'system.adapter.',
+                        endkey: 'system.adapter.\u9999'
+                    });
+                } catch (e) {
+                    // ignore
                 }
 
-                // if no default history set
-                if (!this.defaultHistory) {
-                    // read all adapters
-                    adapterObjects.getObjectView(
-                        'system',
-                        'instance',
-                        {
-                            startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999'
-                        },
-                        (err, _obj) => {
-                            if (_obj && _obj.rows) {
-                                for (let i = 0; i < _obj.rows.length; i++) {
-                                    if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
-                                        this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!this.defaultHistory) {
-                                this.defaultHistory = 'history.0';
-                            }
-                            return tools.maybeCallback(callback);
+                if (_obj && _obj.rows) {
+                    for (let i = 0; i < _obj.rows.length; i++) {
+                        if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
+                            this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
+                            break;
                         }
-                    );
-                } else {
-                    return tools.maybeCallback(callback);
+                    }
                 }
-            });
-        } else {
-            return tools.maybeCallback(callback);
+                if (!this.defaultHistory) {
+                    this.defaultHistory = 'history.0';
+                }
+            }
         }
     }
 
@@ -6335,7 +6325,7 @@ class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getHistory(id, options, callback) {
+    async getHistory(id, options, callback) {
         try {
             this._utils.validateId(id, true, null);
         } catch (err) {
@@ -6351,7 +6341,8 @@ class AdapterClass extends EventEmitter {
         if (!options.instance) {
             if (!this.defaultHistory) {
                 // read default history instance from system.config
-                return this._getDefaultHistory(() => this.getHistory(id, options, callback));
+                await this._getDefaultHistory();
+                return this.getHistory(id, options, callback);
             } else {
                 options.instance = this.defaultHistory;
             }
@@ -6487,13 +6478,18 @@ class AdapterClass extends EventEmitter {
         this.getForeignStates(pattern, options, callback);
     }
 
-    _processStatesSecondary(keys, targetObjs, srcObjs, callback) {
+    private _processStatesSecondary(
+        keys: ID[],
+        targetObjs: ioBroker.StateObject[] | null,
+        srcObjs: ioBroker.StateObject[] | null,
+        callback
+    ) {
         adapterStates.getStates(keys, (err, arr) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            const result = {};
+            const result: Record<string, { val: any; ts: number; q: number } | null> = {};
 
             for (let i = 0; i < keys.length; i++) {
                 const obj = targetObjs && targetObjs[i];
@@ -6503,7 +6499,7 @@ class AdapterClass extends EventEmitter {
                     } catch {
                         // if it is not binary state
                         arr[i] < 2000 &&
-                            this._logger.error(this.namespaceLog + ' Cannot parse state "' + keys[i] + ': ' + arr[i]);
+                            this._logger.error(`${this.namespaceLog} Cannot parse state "${keys[i]}: ${arr[i]}`);
                     }
                 }
 
@@ -6530,7 +6526,7 @@ class AdapterClass extends EventEmitter {
         });
     }
 
-    _processStates(keys, targetObjs, callback) {
+    private async _processStates(keys: ID[], targetObjs: ioBroker.StateObject[], callback) {
         let aliasFound;
         const aIds = keys.map(id => {
             if (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH)) {
@@ -6547,27 +6543,25 @@ class AdapterClass extends EventEmitter {
             keys = [...keys];
 
             // read aliases objects
-            this._getObjectsByArray(aIds, targetObjs, this._options, (errors, targetObjs) => {
-                const srcIds = [];
-                // replace aliases ID with targets
-                targetObjs.forEach((obj, i) => {
-                    if (obj && obj.common && obj.common.alias) {
-                        // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
-                        const aliasId =
-                            obj.common.alias.id && typeof obj.common.alias.id.read === 'string'
-                                ? obj.common.alias.id.read
-                                : obj.common.alias.id;
+            targetObjs = await this._getObjectsByArray(aIds, targetObjs, this._options);
+            const srcIds: ID[] = [];
+            // replace aliases ID with targets
+            targetObjs.forEach((obj, i) => {
+                if (obj && obj.common && obj.common.alias) {
+                    // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
+                    const aliasId =
+                        obj.common.alias.id && typeof obj.common.alias.id.read === 'string'
+                            ? obj.common.alias.id.read
+                            : obj.common.alias.id;
 
-                        keys[i] = aliasId || null;
-                        srcIds[i] = keys[i];
-                    }
-                });
-
-                // srcObjs and targetObjs could be merged
-                this._getObjectsByArray(srcIds, null, this._options, (errors, srcObjs) =>
-                    this._processStatesSecondary(keys, targetObjs, srcObjs, callback)
-                );
+                    keys[i] = aliasId || null;
+                    srcIds[i] = keys[i];
+                }
             });
+
+            // srcObjs and targetObjs could be merged
+            const srcObjs = await this._getObjectsByArray(srcIds, null, this._options);
+            this._processStatesSecondary(keys, targetObjs, srcObjs, callback);
         } else {
             this._processStatesSecondary(keys, null, null, callback);
         }
@@ -6938,9 +6932,7 @@ class AdapterClass extends EventEmitter {
                     adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
                 }
 
-                const aliasObjs = await new Promise(resolve =>
-                    this._getObjectsByArray(aliasesIds, null, options, (errors, aliasObjs) => resolve(aliasObjs))
-                );
+                const aliasObjs = await this._getObjectsByArray(aliasesIds, null, options);
 
                 for (const aliasObj of aliasObjs) {
                     promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
@@ -8387,11 +8379,11 @@ class AdapterClass extends EventEmitter {
             this._initializeTimeout = setTimeout(() => {
                 this._initializeTimeout = null;
                 if (this._config.isInstall) {
-                    this._logger && this._logger.warn(this.namespaceLog + ' no connection to objects DB. Terminating');
+                    this._logger && this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
                     this.terminate(EXIT_CODES.NO_ERROR);
                 } else {
                     this._logger &&
-                        this._logger.warn(this.namespaceLog + ' slow connection to objects DB. Still waiting ...');
+                        this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
                 }
             }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
@@ -9689,6 +9681,7 @@ class AdapterClass extends EventEmitter {
  */
 export const Adapter = new Proxy(AdapterClass, {
     apply(target, thisArg, argArray) {
+        // @ts-expect-error fix later on if necessary
         return new target(...argArray);
     }
 });

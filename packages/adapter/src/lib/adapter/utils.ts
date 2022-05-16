@@ -1,6 +1,12 @@
 import { SYSTEM_ADMIN_USER } from './constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
+type OpaqueString<T extends string> = string & {
+    __type: T;
+};
+
+export type ID = OpaqueString<'ID'>;
+
 export interface IdObject {
     device?: string;
     channel?: string;
@@ -150,7 +156,7 @@ export class Utils {
      * @param options optional
      * @throws Error when id is invalid
      */
-    validateId(id: string | any, isForeignId: boolean, options: any): void {
+    validateId(id: string | any, isForeignId: boolean, options: any): asserts id is ID {
         // there is special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;
