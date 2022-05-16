@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "cp -r ./src/lib/objects/lua* ./build/lib/objects/"
+    "postbuild": "cpy ./lib/objects/**/*.lua ./build/lib/objects/ --cwd=src"
   },
   "main": "build/index.js",
   "license": "Apache 2.0",
