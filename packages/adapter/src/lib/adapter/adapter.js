@@ -9057,7 +9057,8 @@ class AdapterClass extends EventEmitter {
             } else {
                 this.requireLog = _isActive =>
                     // show warning only by enabling
-                    _isActive && this._logger.warn(
+                    _isActive &&
+                    this._logger.warn(
                         this.namespaceLog +
                             ' requireLog is not supported by this adapter! Please set common.logTransporter to true'
                     );
