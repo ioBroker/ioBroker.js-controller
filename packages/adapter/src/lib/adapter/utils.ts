@@ -7,6 +7,8 @@ type OpaqueString<T extends string> = string & {
 
 export type ID = OpaqueString<'ID'>;
 
+type OptionalCallback = undefined | ((...args: any[]) => void | Promise<void>);
+
 export interface IdObject {
     device?: string;
     channel?: string;
@@ -231,6 +233,56 @@ export class Utils {
     static getErrorText(code: number): string {
         code = code || 0;
         return (EXIT_CODES[code] || code).toString();
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertsString(value: unknown, name: string): asserts value is string {
+        if (typeof value !== 'string') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertsNumber(value: unknown, name: string): asserts value is number {
+        if (typeof value !== 'number') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertsObject(value: unknown, name: string): asserts value is Record<string, any> {
+        if (!tools.isObject(value)) {
+            throw new Error(`Paramter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
+        }
+    }
+
+    /**
+     * Throws if type is not an optional callback
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertsOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
+        if (value && typeof value !== 'function') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`
+            );
+        }
     }
 
     /**

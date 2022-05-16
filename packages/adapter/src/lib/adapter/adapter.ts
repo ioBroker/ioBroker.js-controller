@@ -39,6 +39,10 @@ import {
     ACCESS_USER_WRITE,
     ACCESS_USER_READ
 } from './constants';
+import { symlink } from 'fs';
+import Type = module;
+import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import ErrnoException = NodeJS.ErrnoException;
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -114,10 +118,46 @@ interface AliasTargetEntry {
 interface PortRunningObject {
     port: number;
     host?: string;
-    callback: (port: number) => void;
+    callback?: (port: number) => void;
 }
 
 type CheckStateCommand = 'getState' | 'setState' | 'delState';
+
+interface InternalSetSessionOptions {
+    id: string;
+    ttl: number;
+    data: Record<string, any>;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalGetSessionOptions {
+    id: string;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalDestroySessionOptions {
+    id: string;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalGetPortOptions {
+    port: number;
+    host?: string;
+    callback?: (port: number) => void;
+}
+
+type CheckPasswordCallback = (success: boolean, user: string) => void;
+
+interface InternalCheckPasswordOptions {
+    user: string;
+    pw: string;
+    options?: Record<string, any> | null;
+    callback: CheckPasswordCallback;
+}
+
+interface InternalGetUserIDOptions {
+    username: string;
+}
 
 /**
  * Adapter class
@@ -196,6 +236,9 @@ class AdapterClass extends EventEmitter {
     private latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
+    protected config?: Record<string, any>;
+    protected host?: string;
+    protected common?: Record<string, any>;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -348,70 +391,118 @@ class AdapterClass extends EventEmitter {
         this._init();
     }
 
+    // overload with real types
+    decrypt(secretVal: string, value?: string): string;
     /**
      * Decrypt the password/value with given key
-     * @param {string} secretVal to use for decrypt (or value if only one parameter is given)
-     * @param {string} [value] value to decrypt (if secret is provided)
-     * @returns {string}
+     * @param secretVal to use for decrypt (or value if only one parameter is given)
+     * @param  [value] value to decrypt (if secret is provided)
      */
-    decrypt(secretVal, value) {
+    decrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
             value = secretVal;
             secretVal = this._systemSecret;
         }
+
+        Utils.assertsString(secretVal, 'secretVal');
+        Utils.assertsString(value, 'value');
+
         return tools.decrypt(secretVal, value);
     }
 
+    // overload with real types
+    encrypt(secretVal: string, value?: string): string;
     /**
      * Encrypt the password/value with given key
-     * @param {string} secretVal to use for encrypt (or value if only one parameter is given)
-     * @param {string} [value] value to encrypt (if secret is provided)
-     * @returns {string}
+     * @param secretVal to use for encrypt (or value if only one parameter is given)
+     * @param [value] value to encrypt (if secret is provided)
      */
-    encrypt(secretVal, value) {
+    encrypt(secretVal: unknown, value: unknown): string {
         if (value === undefined) {
             value = secretVal;
             secretVal = this._systemSecret;
         }
+
+        Utils.assertsString(secretVal, 'secretVal');
+        Utils.assertsString(value, 'value');
+
         return tools.encrypt(secretVal, value);
     }
 
-    getSession(id, callback) {
+    // real types overload
+    getSession(id: string, callback: ioBroker.GetSessionCallback): void | Promise<void>;
+    // unknown guard implementation
+    getSession(id: unknown, callback: unknown): void | Promise<void> {
+        Utils.assertsString(id, 'id');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getSession({ id, callback });
+    }
+
+    // actual implementation
+    private _getSession(options: InternalGetSessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this.log.info('getSession not processed because States database not connected');
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterStates.getSession(id, callback);
+        adapterStates.getSession(options.id, options.callback);
     }
 
-    setSession(id, ttl, data, callback) {
+    // overload for docs
+    setSession(
+        id: string,
+        ttl: number,
+        data: Record<string, any>,
+        callback?: ioBroker.ErrorCallback
+    ): void | Promise<void>;
+
+    // unknown implementation guards
+    setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): void | Promise<void> {
+        Utils.assertsString(id, 'id');
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsNumber(ttl, 'ttl');
+        Utils.assertsObject(data, 'data');
+
+        return this._setSession({ id, ttl, data, callback });
+    }
+
+    // actual implementation
+    private _setSession(options: InternalSetSessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this.log.info('setSession not processed because States database not connected');
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
-
-        adapterStates.setSession(id, ttl, data, callback);
+        adapterStates.setSession(options.id, options.ttl, options.data, options.callback);
     }
 
-    destroySession(id, callback) {
+    // real types overload
+    destroySession(id: string, callback?: ioBroker.ErrorCallback): void | Promise<void>;
+    destroySession(id: unknown, callback: unknown): void | Promise<void> {
+        Utils.assertsString(id, 'id');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._destroySession({ id, callback });
+    }
+
+    private _destroySession(options: InternalDestroySessionOptions) {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this.log.info('destroySession not processed because States database not connected');
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterStates.destroySession(id, callback);
+        adapterStates.destroySession(options.id, options.callback);
     }
 
-    private async _getObjectsByArray(keys: ID[], objects, options) {
+    private async _getObjectsByArray(keys: ID[], objects: ioBroker.AnyObject[] | null, options) {
         if (objects) {
-            return tools.maybeCallbackWithError(cb, null, objects);
+            return objects;
         }
 
-        const res: (ioBroker.Object | null)[] = [];
+        const res: (ioBroker.AnyObject | null)[] = [];
         for (const key of keys) {
             try {
                 const obj = await this.getForeignObjectAsync(key, options);
@@ -424,17 +515,18 @@ class AdapterClass extends EventEmitter {
         return res;
     }
 
+    // external signature
+    terminate(reason?: string | number, exitCode?: number): void;
+
     /**
      * stops the execution of adapter, but not disables it.
      *
      * Sometimes, the adapter must be stopped if some libraries are missing.
      *
-     * @alias terminate
-     * @memberof Adapter
-     * @param {string | number} [reason] optional termination description
-     * @param {number} [exitCode] optional exit code
+     * @param reason optional termination description
+     * @param exitCode optional exit code
      */
-    terminate(reason, exitCode?) {
+    terminate(reason: unknown, exitCode: unknown) {
         // This function must be defined very first, because in the next lines will be yet used.
         if (this.terminated) {
             return;
@@ -451,25 +543,32 @@ class AdapterClass extends EventEmitter {
             this._restartScheduleJob.cancel();
             this._restartScheduleJob = null;
         }
+
+        let _reason = 'Without reason';
+        let _exitCode: number;
+
         if (typeof reason === 'number') {
             // Only the exit code was passed
             exitCode = reason;
-            reason = null;
+            _reason = 'Without reason';
+        } else if (reason && typeof reason === 'string') {
+            _reason = reason;
         }
+
         if (typeof exitCode !== 'number') {
-            exitCode =
+            _exitCode =
                 process.argv.indexOf('--install') === -1
                     ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION
                     : EXIT_CODES.NO_ERROR;
+        } else {
+            _exitCode = exitCode;
         }
 
         const isNotCritical =
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${Utils.getErrorText(exitCode)}): ${
-            reason ? reason : 'Without reason'
-        }`;
+        const text = `${this.namespaceLog} Terminated (${Utils.getErrorText(_exitCode)}): ${_reason}`;
         if (isNotCritical) {
             this._logger.info(text);
         } else {
@@ -492,15 +591,17 @@ class AdapterClass extends EventEmitter {
                 }
             }
             if (this.startedInCompactMode) {
-                this.emit('exit', exitCode, reason);
+                this.emit('exit', _exitCode, reason);
                 adapterStates = null;
                 adapterObjects = null;
             } else {
-                process.exit(exitCode === undefined ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : exitCode);
+                process.exit(_exitCode);
             }
         }, 500);
     }
 
+    // external signature
+    getPort(port: number, host?: string, callback?: (port: number) => void): void;
     /**
      * Helper function to find next free port
      *
@@ -513,43 +614,54 @@ class AdapterClass extends EventEmitter {
      *
      * @alias getPort
      * @memberof Adapter
-     * @param {number} port port number to start the search for free port
-     * @param {string} [host] optional hostname for the port search
-     * @param {(port: number) => void} callback return result
+     * @param port port number to start the search for free port
+     * @param [host] optional hostname for the port search
+     * @param callback return result
      *        <pre><code>function (port) {}</code></pre>
      */
-    getPort(port, host, callback) {
-        if (!port) {
-            throw new Error('adapterGetPort: no port');
-        }
-
+    getPort(port: unknown, host: unknown, callback: unknown): void {
         if (typeof host === 'function') {
             callback = host;
             host = null;
-        }
-        if (!host) {
-            host = undefined;
         }
 
         if (typeof port === 'string') {
             port = parseInt(port, 10);
         }
-        this.getPortRunning = { port, host, callback };
+
+        let _host: string | undefined;
+        if (!host) {
+            _host = undefined;
+        } else {
+            Utils.assertsString(host, 'host');
+            _host = host;
+        }
+
+        Utils.assertsNumber(port, 'port');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getPort({ port, host: _host, callback });
+    }
+
+    private _getPort(options: InternalGetPortOptions): void {
+        this.getPortRunning = options;
         const server = net.createServer();
         try {
-            server.listen({ port, host }, (/* err */) => {
+            server.listen({ port: options.port, host: options.host }, () => {
                 server.once('close', () => {
-                    return tools.maybeCallback(callback, port);
+                    return tools.maybeCallback(options.callback, options.port);
                 });
                 server.close();
             });
-            server.on('error', (/* err */) => {
-                setTimeout(() => this.getPort(port + 1, host, callback), 100);
+            server.on('error', () => {
+                setTimeout(() => this.getPort(options.port + 1, options.host, options.callback), 100);
             });
         } catch {
-            setImmediate(() => this.getPort(port + 1, host, callback));
+            setImmediate(() => this.getPort(options.port + 1, options.host, options.callback));
         }
     }
+
+    supportsFeature(featureName: string): boolean;
 
     /**
      * Method to check for available Features for adapter development
@@ -561,72 +673,93 @@ class AdapterClass extends EventEmitter {
      *     }
      * </code></pre>
 
-     * @alias supportsFeature
-     * @memberof Adapter
-     * @param {string} featureName the name of the feature to check
-     * @returns {boolean} true/false if the feature is in the list of supported features
+     * @param featureName the name of the feature to check
+     * @returns true/false if the feature is in the list of supported features
      */
-    supportsFeature(featureName) {
-        return SUPPORTED_FEATURES.includes(featureName);
+    supportsFeature(featureName: unknown): boolean {
+        if (typeof featureName === 'string') {
+            return SUPPORTED_FEATURES.includes(featureName);
+        } else {
+            return false;
+        }
     }
 
+    // external signature
+    checkPassword(
+        user: string,
+        pw: string,
+        options?: Record<string, any>,
+        callback?: CheckPasswordCallback
+    ): Promise<void>;
     /**
      * validates user and password
      *
      *
      * @alias checkPassword
      * @memberof Adapter
-     * @param {string} user user name as text
-     * @param {string} pw password as text
-     * @param {object} [options] optional user context
-     * @param {(success: boolean, user: string) => void} callback return result
+     * @param user user name as text
+     * @param pw password as text
+     * @param [options] optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (result) {
      *              if (result) adapter.log.debug('User is valid');
      *            }
      *        </code></pre>
      */
-    async checkPassword(user, pw, options, callback) {
+    checkPassword(user: unknown, pw: unknown, options: unknown, callback: unknown): Promise<void> {
         if (typeof options === 'function') {
             callback = options;
-            options = null;
+            options = {};
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(user, 'user');
+        Utils.assertsString(pw, 'pw');
 
         if (!callback) {
             throw new Error('checkPassword: no callback');
         }
 
-        if (user && !user.startsWith('system.user.')) {
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._checkPassword({ user, pw, options, callback });
+    }
+
+    private async _checkPassword(options: InternalCheckPasswordOptions): Promise<void> {
+        if (options.user && !options.user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
-            if (!this.usernames[user]) {
+            if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
                     this.log.error(e.message);
                 }
-                if (!this.usernames[user]) {
+                if (!this.usernames[options.user]) {
                     // user still not there, its no valid user -> fallback to legacy check
-                    user = `system.user.${user
+                    options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
                         .replace(/\s/g, '_')
                         .replace(/\./g, '_')
                         .toLowerCase()}`;
                 } else {
-                    user = this.usernames[user].id;
+                    options.user = this.usernames[options.user].id;
                 }
             } else {
-                user = this.usernames[user].id;
+                options.user = this.usernames[options.user].id;
             }
         }
 
-        this.getForeignObject(user, options, (err, obj) => {
-            if (err || !obj || !obj.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
-                return tools.maybeCallback(callback, false, user);
+        this.getForeignObject(options.user, options, (err, obj) => {
+            if (err || !obj || !obj.common || (!obj.common.enabled && options.user !== SYSTEM_ADMIN_USER)) {
+                return tools.maybeCallback(options.callback, false, options.user);
             } else {
-                password(pw).check(obj.common.password, (err, res) => {
-                    return tools.maybeCallback(callback, res, user);
+                password(options.pw).check(obj.common.password, (err, res) => {
+                    return tools.maybeCallback(options.callback, !!res, options.user);
                 });
             }
         });
@@ -636,7 +769,6 @@ class AdapterClass extends EventEmitter {
      * This method update the cached values in this.usernames
      */
     private async _updateUsernameCache(): Promise<void> {
-        // TODO: ok if available on the class?
         try {
             // get all users
             const obj = await this.getObjectListAsync({ startkey: 'system.user.', endkey: 'system.user.\u9999' });
@@ -654,19 +786,26 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    // external signature
+    getUserID(username: string): Promise<string | void>;
     /**
      * Return ID of given username
      *
-     * @param {string} username - name of the user
-     * @return {Promise<undefined|string>}
+     * @param username - name of the user
      */
-    async getUserID(username) {
-        if (!this.usernames[username]) {
+    getUserID(username: unknown): Promise<string | void> {
+        Utils.assertsString(username, 'username');
+
+        return this._getUserID({ username });
+    }
+
+    async _getUserID(options: InternalGetUserIDOptions): Promise<void | string> {
+        if (!this.usernames[options.username]) {
             try {
                 // did not find username, we should have a look in the cache
                 await this._updateUsernameCache();
 
-                if (!this.usernames[username]) {
+                if (!this.usernames[options.username]) {
                     return;
                 }
             } catch (e) {
@@ -675,7 +814,7 @@ class AdapterClass extends EventEmitter {
             }
         }
 
-        return this.usernames[username].id;
+        return this.usernames[options.username].id;
     }
 
     /**
@@ -6480,9 +6619,9 @@ class AdapterClass extends EventEmitter {
 
     private _processStatesSecondary(
         keys: ID[],
-        targetObjs: ioBroker.StateObject[] | null,
-        srcObjs: ioBroker.StateObject[] | null,
-        callback
+        targetObjs: (ioBroker.StateObject | null)[] | null,
+        srcObjs: (ioBroker.StateObject | null)[] | null,
+        callback: (err?: Error | null, result?: any) => void
     ) {
         adapterStates.getStates(keys, (err, arr) => {
             if (err) {
@@ -6526,7 +6665,11 @@ class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _processStates(keys: ID[], targetObjs: ioBroker.StateObject[], callback) {
+    private async _processStates(
+        keys: ID[],
+        targetObjs: (ioBroker.StateObject | null)[],
+        callback: (err?: Error | null, result?: any) => void
+    ) {
         let aliasFound;
         const aIds = keys.map(id => {
             if (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH)) {
@@ -8222,7 +8365,7 @@ class AdapterClass extends EventEmitter {
             }
         };
 
-        const createInstancesObjects = async instanceObj => {
+        const createInstancesObjects = async (instanceObj: ioBroker.InstanceObject) => {
             let objs;
 
             if (
@@ -8256,7 +8399,7 @@ class AdapterClass extends EventEmitter {
                                             ))
                                     );
                                 } else {
-                                    obj.common.name = obj.common.name.replace('%INSTANCE%', instance);
+                                    obj.common.name = obj.common.name.replace('%INSTANCE%', this.instance);
                                 }
                             }
                             if (obj.common.desc) {
@@ -8270,7 +8413,7 @@ class AdapterClass extends EventEmitter {
                                             ))
                                     );
                                 } else {
-                                    obj.common.desc = obj.common.desc.replace('%INSTANCE%', instance);
+                                    obj.common.desc = obj.common.desc.replace('%INSTANCE%', this.instance);
                                 }
                             }
 
@@ -9257,10 +9400,10 @@ class AdapterClass extends EventEmitter {
 
                         if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
                             // set configured in DB log level
-                            for (const trans of Object.keys(this._logger.transports)) {
+                            for (const trans of Object.values(this._logger.transports)) {
                                 // set the loglevel on transport only if no loglevel was pinned in log config
-                                if (!this._logger.transports[trans]._defaultConfigLoglevel) {
-                                    this._logger.transports[trans].level = adapterConfig.common.loglevel;
+                                if (!trans._defaultConfigLoglevel) {
+                                    trans.level = adapterConfig.common.loglevel;
                                 }
                             }
                             this._config.log.level = adapterConfig.common.loglevel;
@@ -9582,13 +9725,13 @@ class AdapterClass extends EventEmitter {
                 ack: true,
                 from: id
             });
-            adapterStates.setState(id + '.inputCount', { val: this.inputCount, ack: true, from: id });
-            adapterStates.setState(id + '.outputCount', { val: this.outputCount, ack: true, from: id });
+            adapterStates.setState(`${id}.inputCount`, { val: this.inputCount, ack: true, from: id });
+            adapterStates.setState(`${id}.outputCount`, { val: this.outputCount, ack: true, from: id });
             this.inputCount = 0;
             this.outputCount = 0;
         };
 
-        const exceptionHandler = async (err: Error, isUnhandledRejection: boolean) => {
+        const exceptionHandler = async (err: ErrnoException, isUnhandledRejection: boolean) => {
             // If the adapter has a callback to listen for unhandled errors
             // give it a chance to handle the error itself instead of restarting it
             if (typeof this._options.error === 'function') {
@@ -9606,15 +9749,12 @@ class AdapterClass extends EventEmitter {
 
             // catch it on windows
             if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
+                const { host, port, callback } = this.getPortRunning;
                 this._logger.warn(
-                    `${this.namespaceLog} Port ${this.getPortRunning.port}${
-                        this.getPortRunning.host ? ' for host ' + this.getPortRunning.host : ''
-                    } is in use. Get next`
+                    `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`
                 );
 
-                setImmediate(() =>
-                    this.getPort(this.getPortRunning.port + 1, this.getPortRunning.host, this.getPortRunning.callback)
-                );
+                setImmediate(() => this.getPort(port + 1, host, callback));
                 return;
             }
 
@@ -9658,7 +9798,7 @@ class AdapterClass extends EventEmitter {
         process.on('uncaughtException', err => exceptionHandler(err));
         process.on('unhandledRejection', err => exceptionHandler(err, true));
 
-        const pluginSettings = {
+        const pluginSettings: PluginHandlerSettings = {
             scope: 'adapter',
             namespace: `system.adapter.${this.namespace}`,
             logNamespace: this.namespaceLog,
@@ -9666,7 +9806,8 @@ class AdapterClass extends EventEmitter {
             iobrokerConfig: this._config,
             parentPackage: this.pack,
             controllerVersion
-        } as const;
+        };
+
         this.pluginHandler = new PluginHandler(pluginSettings);
         this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
 
