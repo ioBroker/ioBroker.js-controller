@@ -232,7 +232,76 @@ interface InternalGetObjectsOptions {
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }
 
+/**
+ * Here we define dynamic methods which need overloads
+ */
 interface AdapterClass {
+    /**
+     * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
+     */
+    setForeignStateChangedAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack?: boolean
+    ): ioBroker.SetStateChangedPromise;
+    setForeignStateChangedAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        options?: unknown
+    ): ioBroker.SetStateChangedPromise;
+    setForeignStateChangedAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack: boolean,
+        options: unknown
+    ): ioBroker.SetStateChangedPromise;
+
+    /**
+     * Writes a value into the states DB only if it has changed.
+     */
+    setStateChangedAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack?: boolean
+    ): ioBroker.SetStateChangedPromise;
+    setStateChangedAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        options?: unknown
+    ): ioBroker.SetStateChangedPromise;
+    setStateChangedAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack: boolean,
+        options: unknown
+    ): ioBroker.SetStateChangedPromise;
+
+    /**
+     * Sends a message to a specific host or all hosts.
+     */
+    sendToHostAsync(hostName: string, message: ioBroker.MessagePayload): Promise<ioBroker.Message | undefined>;
+    sendToHostAsync(
+        hostName: string,
+        command: string,
+        message: ioBroker.MessagePayload
+    ): Promise<ioBroker.Message | undefined>;
+
+    /**
+     * Sends a message to a specific instance or all instances of some specific adapter.
+     */
+    sendToAsync(instanceName: string, message: ioBroker.MessagePayload): Promise<ioBroker.Message | undefined>;
+    sendToAsync(
+        instanceName: string,
+        command: string,
+        message: ioBroker.MessagePayload
+    ): Promise<ioBroker.Message | undefined>;
+
+    /**
+     * Deletes a given file
+     */
+    delFile(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
+    delFile(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+
     /**
      * Writes a value into the states DB.
      */
@@ -272,6 +341,143 @@ interface AdapterClass {
         ack: boolean,
         options: unknown
     ): ioBroker.SetStatePromise;
+
+    /**
+     * Get foreign objects by pattern, by specific type and resolve their enums.
+     */
+    getForeignObjectsAsync<T extends ioBroker.ObjectType>(
+        pattern: string,
+        type: T,
+        enums: ioBroker.EnumList,
+        options?: unknown
+    ): ioBroker.GetObjectsPromiseTyped<T>;
+    getForeignObjectsAsync<T extends ioBroker.ObjectType>(
+        pattern: string,
+        type: T,
+        options?: unknown
+    ): ioBroker.GetObjectsPromiseTyped<T>;
+    getForeignObjectsAsync(pattern: string, options?: unknown): ioBroker.GetObjectsPromise;
+
+    /**
+     * creates an object with type device
+     */
+    createDeviceAsync(deviceName: string, common?: Partial<ioBroker.DeviceCommon>): ioBroker.SetObjectPromise;
+    createDeviceAsync(
+        deviceName: string,
+        common: Partial<ioBroker.DeviceCommon>,
+        native?: Record<string, any>
+    ): ioBroker.SetObjectPromise;
+    createDeviceAsync(
+        deviceName: string,
+        common: Partial<ioBroker.DeviceCommon>,
+        native: Record<string, any>,
+        options?: unknown
+    ): ioBroker.SetObjectPromise;
+
+    /**
+     * Finds an object by its ID or name
+     */
+    findForeignObjectAsync(idOrName: string, type: string): Promise<{ id: string; name: string }>;
+
+    /**
+     * Creates an object with type channel. It must be located under a device
+     */
+    createChannelAsync(
+        parentDevice: string,
+        channelName: string,
+        roleOrCommon?: string | Partial<ioBroker.ChannelCommon>
+    ): ioBroker.SetObjectPromise;
+    createChannelAsync(
+        parentDevice: string,
+        channelName: string,
+        roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+        native?: Record<string, any>
+    ): ioBroker.SetObjectPromise;
+    createChannelAsync(
+        parentDevice: string,
+        channelName: string,
+        roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+        native: Record<string, any>,
+        options?: unknown
+    ): ioBroker.SetObjectPromise;
+
+    /**
+     * Creates a state and the corresponding object. It must be located in a channel under a device
+     */
+    createStateAsync(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        roleOrCommon?: string | Partial<ioBroker.StateCommon>
+    ): ioBroker.SetObjectPromise;
+    createStateAsync(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        roleOrCommon: string | Partial<ioBroker.StateCommon>,
+        native?: Record<string, any>
+    ): ioBroker.SetObjectPromise;
+    createStateAsync(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        roleOrCommon: string | Partial<ioBroker.StateCommon>,
+        native: Record<string, any>,
+        options?: unknown
+    ): ioBroker.SetObjectPromise;
+
+    /**
+     * Deletes a channel and its states. It must have been created with createChannel
+     */
+    deleteChannelAsync(channelName: string, options?: unknown): Promise<void>;
+    deleteChannelAsync(parentDevice: string, channelName: string, options?: unknown): Promise<void>;
+
+    /**
+     * Deletes a state. It must have been created with createState
+     */
+    deleteStateAsync(stateName: string, options?: unknown): Promise<void>;
+    deleteStateAsync(parentChannel: string, stateName: string, options?: unknown): Promise<void>;
+    deleteStateAsync(parentDevice: string, parentChannel: string, stateName: string, options?: unknown): Promise<void>;
+
+    /**
+     * Returns a list of all channels in this adapter instance @param parentDevice (optional) Name
+     * of the parent device to filter the channels by @param options (optional) Some internal options.
+     */
+    getChannelsOfAsync(): Promise<ioBroker.ChannelObject[]>;
+    getChannelsOfAsync(parentDevice: string, options?: unknown): Promise<ioBroker.ChannelObject[]>;
+
+    /**
+     * Returns a list of all channels in this adapter instance
+     */
+    getChannels(callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    getChannels(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    getChannels(
+        parentDevice: string,
+        options: unknown,
+        callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>
+    ): void;
+
+    /**
+     * Returns a list of all channels in this adapter instance @param parentDevice (optional)
+     * Name of the parent device to filter the channels by @param options (optional) Some internal options.
+     */
+    getChannelsAsync(): Promise<ioBroker.ChannelObject[]>;
+    getChannelsAsync(parentDevice: string, options?: unknown): Promise<ioBroker.ChannelObject[]>;
+
+    /**
+     * Returns a list of all states in this adapter instance @param parentDevice (optional)
+     * Name of the parent device to filter the channels by @param parentChannel (optional)
+     * Name of the parent channel to filter the channels by @param options (optional) Some internal options.
+     */
+    getStatesOfAsync(): Promise<ioBroker.StateObject[]>;
+    getStatesOfAsync(parentDevice: string, parentChannel?: string): Promise<ioBroker.StateObject[]>;
+    getStatesOfAsync(parentDevice: string, parentChannel: string, options?: unknown): Promise<ioBroker.StateObject[]>;
+}
+
+interface InternalGetChannelsOfOptions {
+    parentDevice: string;
+    callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
+    options: unknown;
 }
 
 /**
@@ -413,23 +619,7 @@ class AdapterClass extends EventEmitter {
         options?: unknown
     ) => Promise<{ result: Record<string, any>; requestEnum: string }>;
     protected readonly getEnumsAsync: (enumList: ioBroker.EnumList, options?: unknown) => ioBroker.GetEnumsPromise;
-    protected readonly getForeignObjectsAsync:
-        | (<T extends ioBroker.ObjectType>(
-              pattern: string,
-              type: T,
-              enums: ioBroker.EnumList,
-              options?: unknown
-          ) => ioBroker.GetObjectsPromiseTyped<T>)
-        | (<T extends ioBroker.ObjectType>(
-              pattern: string,
-              type: T,
-              options?: unknown
-          ) => ioBroker.GetObjectsPromiseTyped<T>)
-        | ((pattern: string, options?: unknown) => ioBroker.GetObjectsPromise);
-    protected readonly findForeignObjectAsync: (
-        idOrName: string,
-        type: string
-    ) => Promise<{ id: string; name: string }>;
+
     protected readonly delObjectAsync: (id: string, options?: ioBroker.DelObjectOptions) => Promise<void>;
     protected readonly delForeignObjectAsync: (id: string, options?: ioBroker.DelObjectOptions) => Promise<void>;
     protected readonly subscribeObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
@@ -447,60 +637,7 @@ class AdapterClass extends EventEmitter {
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: unknown
     ) => ioBroker.SetObjectPromise;
-    protected readonly createDeviceAsync:
-        | ((deviceName: string, common?: Partial<ioBroker.DeviceCommon>) => ioBroker.SetObjectPromise)
-        | ((
-              deviceName: string,
-              common: Partial<ioBroker.DeviceCommon>,
-              native?: Record<string, any>
-          ) => ioBroker.SetObjectPromise)
-        | ((
-              deviceName: string,
-              common: Partial<ioBroker.DeviceCommon>,
-              native: Record<string, any>,
-              options?: unknown
-          ) => ioBroker.SetObjectPromise);
-    protected readonly createChannelAsync:
-        | ((
-              parentDevice: string,
-              channelName: string,
-              roleOrCommon?: string | Partial<ioBroker.ChannelCommon>
-          ) => ioBroker.SetObjectPromise)
-        | ((
-              parentDevice: string,
-              channelName: string,
-              roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
-              native?: Record<string, any>
-          ) => ioBroker.SetObjectPromise)
-        | ((
-              parentDevice: string,
-              channelName: string,
-              roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
-              native: Record<string, any>,
-              options?: unknown
-          ) => ioBroker.SetObjectPromise);
-    protected readonly createStateAsync:
-        | ((
-              parentDevice: string,
-              parentChannel: string,
-              stateName: string,
-              roleOrCommon?: string | Partial<ioBroker.StateCommon>
-          ) => ioBroker.SetObjectPromise)
-        | ((
-              parentDevice: string,
-              parentChannel: string,
-              stateName: string,
-              roleOrCommon: string | Partial<ioBroker.StateCommon>,
-              native?: Record<string, any>
-          ) => ioBroker.SetObjectPromise)
-        | ((
-              parentDevice: string,
-              parentChannel: string,
-              stateName: string,
-              roleOrCommon: string | Partial<ioBroker.StateCommon>,
-              native: Record<string, any>,
-              options?: unknown
-          ) => ioBroker.SetObjectPromise);
+
     protected readonly deleteDeviceAsync: (deviceName: string, options?: unknown) => Promise<void>;
     protected readonly addChannelToEnumAsync: (
         enumName: string,
@@ -515,32 +652,9 @@ class AdapterClass extends EventEmitter {
         channelName: string,
         options?: unknown
     ) => Promise<void>;
-    protected readonly deleteChannelAsync:
-        | ((channelName: string, options?: unknown) => Promise<void>)
-        | ((parentDevice: string, channelName: string, options?: unknown) => Promise<void>);
-    protected readonly deleteStateAsync:
-        | ((stateName: string, options?: unknown) => Promise<void>)
-        | ((parentChannel: string, stateName: string, options?: unknown) => Promise<void>)
-        | ((parentDevice: string, parentChannel: string, stateName: string, options?: unknown) => Promise<void>);
+
     protected readonly getDevicesAsync: (options?: unknown) => Promise<ioBroker.DeviceObject[]>;
-    protected readonly getChannelsOfAsync:
-        | (() => Promise<ioBroker.ChannelObject[]>)
-        | ((parentDevice: string, options?: unknown) => Promise<ioBroker.ChannelObject[]>);
-    protected readonly getChannels:
-        | ((callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>) => void)
-        | ((parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>) => void)
-        | ((
-              parentDevice: string,
-              options: unknown,
-              callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>
-          ) => void);
-    protected readonly getChannelsAsync:
-        | (() => Promise<ioBroker.ChannelObject[]>)
-        | ((parentDevice: string, options?: unknown) => Promise<ioBroker.ChannelObject[]>);
-    protected readonly getStatesOfAsync:
-        | (() => Promise<ioBroker.StateObject[]>)
-        | ((parentDevice: string, parentChannel?: string) => Promise<ioBroker.StateObject[]>)
-        | ((parentDevice: string, parentChannel: string, options?: unknown) => Promise<ioBroker.StateObject[]>);
+
     protected readonly addStateToEnumAsync: (
         enumName: string,
         addTo: string,
@@ -569,9 +683,7 @@ class AdapterClass extends EventEmitter {
         options?: unknown
     ) => ioBroker.ReadDirPromise;
     protected readonly unlinkAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
-    protected readonly delFile:
-        | ((adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback) => void)
-        | ((adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback) => void);
+
     protected readonly delFileAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
     protected readonly renameAsync: (
         adapterName: string | null,
@@ -596,54 +708,7 @@ class AdapterClass extends EventEmitter {
         path: string,
         options?: unknown
     ) => Promise<boolean>;
-    protected readonly sendToAsync:
-        | ((instanceName: string, message: ioBroker.MessagePayload) => Promise<ioBroker.Message | undefined>)
-        | ((
-              instanceName: string,
-              command: string,
-              message: ioBroker.MessagePayload
-          ) => Promise<ioBroker.Message | undefined>);
-    protected readonly sendToHostAsync:
-        | ((hostName: string, message: ioBroker.MessagePayload) => Promise<ioBroker.Message | undefined>)
-        | ((
-              hostName: string,
-              command: string,
-              message: ioBroker.MessagePayload
-          ) => Promise<ioBroker.Message | undefined>);
-    protected readonly setStateChangedAsync:
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack?: boolean
-          ) => ioBroker.SetStateChangedPromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              options?: unknown
-          ) => ioBroker.SetStateChangedPromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack: boolean,
-              options: unknown
-          ) => ioBroker.SetStateChangedPromise);
-    protected readonly setForeignStateChangedAsync:
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack?: boolean
-          ) => ioBroker.SetStateChangedPromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              options?: unknown
-          ) => ioBroker.SetStateChangedPromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack: boolean,
-              options: unknown
-          ) => ioBroker.SetStateChangedPromise);
+
     // TODO correct types needed
     protected readonly getHistoryAsync: (...args: any[]) => Promise<any>;
     protected readonly delStateAsync: (id: string, options?: unknown) => Promise<void>;
@@ -5151,7 +5216,15 @@ class AdapterClass extends EventEmitter {
         );
     }
 
-    getChannelsOf(parentDevice, options, callback) {
+    // public signature
+    getChannelsOf(callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    getChannelsOf(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>): void;
+    getChannelsOf(
+        parentDevice: string,
+        options: unknown,
+        callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>
+    ): void;
+    getChannelsOf(parentDevice: unknown, options?: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5161,40 +5234,46 @@ class AdapterClass extends EventEmitter {
             parentDevice = null;
         }
 
+        if (!options.parentDevice) {
+            options.parentDevice = '';
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(parentDevice, 'parentDevice');
+
+        return this._getChannelsOf({ parentDevice, options, callback });
+    }
+
+    private _getChannelsOf(options: InternalGetChannelsOfOptions) {
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'getChannelsOf not processed because Objects database not connected'
+                `${this.namespaceLog} getChannelsOf not processed because Objects database not connected`
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        if (!parentDevice) {
-            parentDevice = '';
+        if (options.parentDevice && this._namespaceRegExp.test(options.parentDevice)) {
+            options.parentDevice = options.parentDevice.substring(this.namespace.length + 1);
         }
 
-        if (parentDevice && this._namespaceRegExp.test(parentDevice)) {
-            parentDevice = parentDevice.substring(this.namespace.length + 1);
-        }
-
-        parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
-        parentDevice = this.namespace + (parentDevice ? '.' + parentDevice : '');
+        options.parentDevice = options.parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+        options.parentDevice = this.namespace + (options.parentDevice ? '.' + options.parentDevice : '');
         adapterObjects.getObjectView(
             'system',
             'channel',
             {
-                startkey: parentDevice + '.',
-                endkey: parentDevice + '.\u9999'
+                startkey: options.parentDevice + '.',
+                endkey: options.parentDevice + '.\u9999'
             },
-            options,
+            options.options,
             (err, obj) => {
                 if (err || !obj || !obj.rows || !obj.rows.length) {
-                    return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
+                    return tools.maybeCallbackWithError(options.callback, err, err ? undefined : []);
                 }
                 const res = [];
                 for (let i = 0; i < obj.rows.length; i++) {
                     res.push(obj.rows[i].value);
                 }
-                return tools.maybeCallbackWithError(callback, null, res);
+                return tools.maybeCallbackWithError(options.callback, null, res);
             }
         );
     }
@@ -5218,9 +5297,7 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'getStatesOf not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} getStatesOf not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5609,7 +5686,10 @@ class AdapterClass extends EventEmitter {
         adapterObjects.readDir(_adapter, path, options, callback);
     }
 
-    unlink(_adapter, name, options, callback) {
+    // public signature
+    unlink(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
+    unlink(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
+    unlink(_adapter: unknown, name: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -5618,8 +5698,13 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(_adapter, '_adapter');
+        Utils.assertsString(name, 'name');
+
         if (!adapterObjects) {
-            this._logger.info(this.namespaceLog + ' ' + 'unlink not processed because Objects database not connected');
+            this._logger.info(`${this.namespaceLog} unlink not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
