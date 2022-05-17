@@ -40,7 +40,6 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import ErrnoException = NodeJS.ErrnoException;
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -219,6 +218,12 @@ interface InternalSetObjectOptions {
     callback?: ioBroker.SetObjectCallback;
 }
 
+interface InternalGetObjectOptions {
+    id: string;
+    options: unknown;
+    callback?: ioBroker.GetObjectCallback<any>;
+}
+
 /**
  * Adapter class
  *
@@ -246,7 +251,7 @@ class AdapterClass extends EventEmitter {
     private _intervals: Set<any>;
     private _delays: Set<any>;
     private tools: any; // TODO remove the shim
-    private log: Log;
+    private log?: Log;
     private readonly performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
@@ -398,6 +403,251 @@ class AdapterClass extends EventEmitter {
     protected readonly unsubscribeObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
     protected readonly getStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
     protected readonly subscribeForeignObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly unsubscribeForeignObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly setObjectNotExistsAsync: (
+        id: string,
+        obj: ioBroker.SettableObject,
+        options?: unknown
+    ) => ioBroker.SetObjectPromise;
+    protected readonly setForeignObjectNotExistsAsync: <T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: unknown
+    ) => ioBroker.SetObjectPromise;
+    protected readonly createDeviceAsync:
+        | ((deviceName: string, common?: Partial<ioBroker.DeviceCommon>) => ioBroker.SetObjectPromise)
+        | ((
+              deviceName: string,
+              common: Partial<ioBroker.DeviceCommon>,
+              native?: Record<string, any>
+          ) => ioBroker.SetObjectPromise)
+        | ((
+              deviceName: string,
+              common: Partial<ioBroker.DeviceCommon>,
+              native: Record<string, any>,
+              options?: unknown
+          ) => ioBroker.SetObjectPromise);
+    protected readonly createChannelAsync:
+        | ((
+              parentDevice: string,
+              channelName: string,
+              roleOrCommon?: string | Partial<ioBroker.ChannelCommon>
+          ) => ioBroker.SetObjectPromise)
+        | ((
+              parentDevice: string,
+              channelName: string,
+              roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+              native?: Record<string, any>
+          ) => ioBroker.SetObjectPromise)
+        | ((
+              parentDevice: string,
+              channelName: string,
+              roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+              native: Record<string, any>,
+              options?: unknown
+          ) => ioBroker.SetObjectPromise);
+    protected readonly createStateAsync:
+        | ((
+              parentDevice: string,
+              parentChannel: string,
+              stateName: string,
+              roleOrCommon?: string | Partial<ioBroker.StateCommon>
+          ) => ioBroker.SetObjectPromise)
+        | ((
+              parentDevice: string,
+              parentChannel: string,
+              stateName: string,
+              roleOrCommon: string | Partial<ioBroker.StateCommon>,
+              native?: Record<string, any>
+          ) => ioBroker.SetObjectPromise)
+        | ((
+              parentDevice: string,
+              parentChannel: string,
+              stateName: string,
+              roleOrCommon: string | Partial<ioBroker.StateCommon>,
+              native: Record<string, any>,
+              options?: unknown
+          ) => ioBroker.SetObjectPromise);
+    protected readonly deleteDeviceAsync: (deviceName: string, options?: unknown) => Promise<void>;
+    protected readonly addChannelToEnumAsync: (
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        channelName: string,
+        options?: unknown
+    ) => Promise<void>;
+    protected readonly deleteChannelFromEnumAsync: (
+        enumName: string,
+        parentDevice: string,
+        channelName: string,
+        options?: unknown
+    ) => Promise<void>;
+    protected readonly deleteChannelAsync:
+        | ((channelName: string, options?: unknown) => Promise<void>)
+        | ((parentDevice: string, channelName: string, options?: unknown) => Promise<void>);
+    protected readonly deleteStateAsync:
+        | ((stateName: string, options?: unknown) => Promise<void>)
+        | ((parentChannel: string, stateName: string, options?: unknown) => Promise<void>)
+        | ((parentDevice: string, parentChannel: string, stateName: string, options?: unknown) => Promise<void>);
+    protected readonly getDevicesAsync: (options?: unknown) => Promise<ioBroker.DeviceObject[]>;
+    protected readonly getChannelsOfAsync:
+        | (() => Promise<ioBroker.ChannelObject[]>)
+        | ((parentDevice: string, options?: unknown) => Promise<ioBroker.ChannelObject[]>);
+    protected readonly getChannels:
+        | ((callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>) => void)
+        | ((parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>) => void)
+        | ((
+              parentDevice: string,
+              options: unknown,
+              callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>
+          ) => void);
+    protected readonly getChannelsAsync:
+        | (() => Promise<ioBroker.ChannelObject[]>)
+        | ((parentDevice: string, options?: unknown) => Promise<ioBroker.ChannelObject[]>);
+    protected readonly getStatesOfAsync:
+        | (() => Promise<ioBroker.StateObject[]>)
+        | ((parentDevice: string, parentChannel?: string) => Promise<ioBroker.StateObject[]>)
+        | ((parentDevice: string, parentChannel: string, options?: unknown) => Promise<ioBroker.StateObject[]>);
+    protected readonly addStateToEnumAsync: (
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options?: unknown
+    ) => Promise<void>;
+    protected readonly deleteStateFromEnumAsync: (
+        enumName: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options?: unknown
+    ) => Promise<void>;
+    protected readonly chmodFileAsync: (
+        adapter: string | null,
+        path: string,
+        options: { mode: number | string } | Record<string, any>
+    ) => Promise<{ entries: ioBroker.ChownFileResult[]; id: string }>;
+    // TODO: correct types
+    protected readonly chownFileAsync: (...args: any[]) => Promise<any>;
+    protected readonly readDirAsync: (
+        adapterName: string | null,
+        path: string,
+        options?: unknown
+    ) => ioBroker.ReadDirPromise;
+    protected readonly unlinkAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
+    protected readonly delFile:
+        | ((adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback) => void)
+        | ((adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback) => void);
+    protected readonly delFileAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
+    protected readonly renameAsync: (
+        adapterName: string | null,
+        oldName: string,
+        newName: string,
+        options?: unknown
+    ) => Promise<void>;
+    protected readonly mkdirAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
+    protected readonly readFileAsync: (
+        adapterName: string | null,
+        path: string,
+        options?: unknown
+    ) => ioBroker.ReadFilePromise;
+    protected readonly writeFileAsync: (
+        adapterName: string | null,
+        path: string,
+        data: Buffer | string,
+        options?: unknown
+    ) => Promise<void>;
+    protected readonly fileExistsAsync: (
+        adapterName: string | null,
+        path: string,
+        options?: unknown
+    ) => Promise<boolean>;
+    protected readonly sendToAsync:
+        | ((instanceName: string, message: ioBroker.MessagePayload) => Promise<ioBroker.Message | undefined>)
+        | ((
+              instanceName: string,
+              command: string,
+              message: ioBroker.MessagePayload
+          ) => Promise<ioBroker.Message | undefined>);
+    protected readonly sendToHostAsync:
+        | ((hostName: string, message: ioBroker.MessagePayload) => Promise<ioBroker.Message | undefined>)
+        | ((
+              hostName: string,
+              command: string,
+              message: ioBroker.MessagePayload
+          ) => Promise<ioBroker.Message | undefined>);
+    protected readonly setStateAsync:
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack?: boolean
+          ) => ioBroker.SetStatePromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              options?: unknown
+          ) => ioBroker.SetStatePromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack: boolean,
+              options: unknown
+          ) => ioBroker.SetStatePromise);
+    protected readonly setStateChangedAsync:
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack?: boolean
+          ) => ioBroker.SetStateChangedPromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              options?: unknown
+          ) => ioBroker.SetStateChangedPromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack: boolean,
+              options: unknown
+          ) => ioBroker.SetStateChangedPromise);
+    protected readonly setForeignStateChangedAsync:
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack?: boolean
+          ) => ioBroker.SetStateChangedPromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              options?: unknown
+          ) => ioBroker.SetStateChangedPromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack: boolean,
+              options: unknown
+          ) => ioBroker.SetStateChangedPromise);
+    // TODO correct types needed
+    protected readonly getHistoryAsync: (...args: any[]) => Promise<any>;
+    protected readonly delStateAsync: (id: string, options?: unknown) => Promise<void>;
+    protected readonly delForeignStateAsync: (id: string, options?: unknown) => Promise<void>;
+    protected readonly getStatesAsync: (pattern: string, options?: unknown) => ioBroker.GetStatesPromise;
+    protected readonly getForeignStatesAsync: (pattern: string, options?: unknown) => ioBroker.GetStatesPromise;
+    protected readonly subscribeForeignStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly unsubscribeForeignStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly subscribeStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly unsubscribeStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly setForeignBinaryStateAsync: (
+        id: string,
+        binary: Buffer,
+        options?: unknown
+    ) => ioBroker.SetStatePromise;
+    protected readonly setBinaryStateAsync: (id: string, binary: Buffer, options?: unknown) => ioBroker.SetStatePromise;
+    protected readonly getForeignBinaryStateAsync: (id: string, options?: unknown) => ioBroker.GetBinaryStatePromise;
+    protected readonly getBinaryStateAsync: (id: string, options?: unknown) => ioBroker.GetBinaryStatePromise;
+    protected readonly delForeignBinaryStateAsync: (id: string, options?: unknown) => Promise<void>;
+    protected readonly delBinaryStateAsync: (id: string, options?: unknown) => Promise<void>;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -885,16 +1135,6 @@ class AdapterClass extends EventEmitter {
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignFiles
-         */
-        this.subscribeForeignFilesAsync = tools.promisify(this.subscribeForeignFiles, this);
-
-        /**
-         * Promise-version of Adapter.unsubscribeForeignFiles
-         */
-        this.unsubscribeForeignFilesAsync = tools.promisify(this.unsubscribeForeignFiles, this);
-
-        /**
          * Promise-version of Adapter.setBinaryState
          *
          * @alias setForeignBinaryStateAsync
@@ -1018,7 +1258,9 @@ class AdapterClass extends EventEmitter {
     private _getSession(options: InternalGetSessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('getSession not processed because States database not connected');
+            this._logger.info(
+                `${this.namespaceLog} getSession not processed because States database not connected`
+            );
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -1047,7 +1289,9 @@ class AdapterClass extends EventEmitter {
     private _setSession(options: InternalSetSessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('setSession not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setSession not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
         adapterStates.setSession(options.id, options.ttl, options.data, options.callback);
@@ -1065,7 +1309,9 @@ class AdapterClass extends EventEmitter {
     private _destroySession(options: InternalDestroySessionOptions) {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('destroySession not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'destroySession not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -1311,7 +1557,7 @@ class AdapterClass extends EventEmitter {
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
-                    this.log.error(e.message);
+                    this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
                 if (!this.usernames[options.user]) {
                     // user still not there, its no valid user -> fallback to legacy check
@@ -1384,7 +1630,7 @@ class AdapterClass extends EventEmitter {
                     return;
                 }
             } catch (e) {
-                this.log.error(e.message);
+                this._logger.error(`${this.namespaceLog} ${e.message}`);
                 return;
             }
         }
@@ -1438,7 +1684,7 @@ class AdapterClass extends EventEmitter {
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
-                    this.log.error(e);
+                    this._logger.error(`${this.namespaceLog} ${e}`);
                 }
                 if (!this.usernames[options.user]) {
                     // user still not there, fallback to legacy check
@@ -1547,7 +1793,7 @@ class AdapterClass extends EventEmitter {
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
-                    this.log.error(e);
+                    this._logger.error(`${this.namespaceLog} ${e}`);
                 }
 
                 if (!this.usernames[options.user]) {
@@ -1720,7 +1966,7 @@ class AdapterClass extends EventEmitter {
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
-                    this.log.error(e.message);
+                    this._logger.error(this.namespaceLog + ' ' + e.message);
                 }
                 // user still not there, fallback
                 if (!this.usernames[options.user]) {
@@ -2185,12 +2431,16 @@ class AdapterClass extends EventEmitter {
      */
     setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
         if (typeof cb !== 'function') {
-            this.log.warn(`setTimeout expected callback to be of type "function", but got "${typeof cb}"`);
+            this._logger.warn(
+                this.namespaceLog +
+                    ' ' +
+                    `setTimeout expected callback to be of type "function", but got "${typeof cb}"`
+            );
             return;
         }
 
         if (this._stopInProgress) {
-            this.log.warn(`setTimeout called, but adapter is shutting down`);
+            this._logger.warn(this.namespaceLog + ' ' + `setTimeout called, but adapter is shutting down`);
             return;
         }
 
@@ -2237,7 +2487,7 @@ class AdapterClass extends EventEmitter {
      */
     delay(timeout: unknown): Promise<void> {
         if (this._stopInProgress) {
-            this.log.warn(`delay called, but adapter is shutting down`);
+            this._logger.warn(this.namespaceLog + ' ' + `delay called, but adapter is shutting down`);
         }
 
         Utils.assertsNumber(timeout, 'timeout');
@@ -2268,12 +2518,16 @@ class AdapterClass extends EventEmitter {
      */
     setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
         if (typeof cb !== 'function') {
-            this.log.error(`setInterval expected callback to be of type "function", but got "${typeof cb}"`);
+            this._logger.error(
+                this.namespaceLog +
+                    ' ' +
+                    `setInterval expected callback to be of type "function", but got "${typeof cb}"`
+            );
             return;
         }
 
         if (this._stopInProgress) {
-            this.log.warn(`setInterval called, but adapter is shutting down`);
+            this._logger.warn(this.namespaceLog + ' ' + `setInterval called, but adapter is shutting down`);
             return;
         }
 
@@ -2474,7 +2728,9 @@ class AdapterClass extends EventEmitter {
         callback?: ioBroker.SetObjectCallback
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!adapterObjects) {
-            this.log.info('setObject not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setObject not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -2482,8 +2738,12 @@ class AdapterClass extends EventEmitter {
             tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
             // todo: in the future we will not create this object
-            this.log.warn(`Object ${id} is invalid: ${e.message}`);
-            this.log.warn('This object will not be created in future versions. Please report this to the developer.');
+            this._logger.warn(this.namespaceLog + ' ' + `Object ${id} is invalid: ${e.message}`);
+            this._logger.warn(
+                this.namespaceLog +
+                    ' ' +
+                    'This object will not be created in future versions. Please report this to the developer.'
+            );
         }
 
         try {
@@ -3087,7 +3347,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('getObject not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getObject not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3134,7 +3396,9 @@ class AdapterClass extends EventEmitter {
             options = undefined;
         }
         if (!adapterObjects) {
-            this.log.info('getObjectView not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getObjectView not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3214,7 +3478,9 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this.log.info('getObjectList not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getObjectList not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3262,7 +3528,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('getEnum not processed because Objects database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'getEnum not processed because Objects database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3347,7 +3613,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('getEnums not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getEnums not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3401,10 +3669,10 @@ class AdapterClass extends EventEmitter {
                             if (!parts[2]) {
                                 continue;
                             }
-                            if (!result[parts[0] + '.' + parts[1]]) {
-                                result[parts[0] + '.' + parts[1]] = {};
+                            if (!result[`${parts[0]}.${parts[1]}`]) {
+                                result[`${parts[0]}.${parts[1]}`] = {};
                             }
-                            result[parts[0] + '.' + parts[1]][res.rows[i].id] = res.rows[i].value;
+                            result[`${parts[0]}.${parts[1]}`][res.rows[i].id] = res.rows[i].value;
                         }
                     }
 
@@ -3494,7 +3762,9 @@ class AdapterClass extends EventEmitter {
             enums = null;
         }
         if (!adapterObjects) {
-            this.log.info('getForeignObjects not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getForeignObjects not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3586,7 +3856,9 @@ class AdapterClass extends EventEmitter {
             type = null;
         }
         if (!adapterObjects) {
-            this.log.info('findForeignObject not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'findForeignObject not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3598,6 +3870,14 @@ class AdapterClass extends EventEmitter {
 
         adapterObjects.findObject(id, type, options, callback);
     }
+
+    // external signatures
+    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void | Promise<void>;
+    getForeignObject<T extends string>(
+        id: T,
+        options: unknown,
+        callback: ioBroker.GetObjectCallback<T>
+    ): void | Promise<void>;
 
     /**
      * Get any object.
@@ -3615,15 +3895,13 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getForeignObject(id, options, callback) {
+    getForeignObject(id: unknown, options: unknown, callback?: unknown): void | Promise<void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
-        if (!adapterObjects) {
-            this.log.info('getForeignObject not processed because Objects database not connected');
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
 
         try {
             this._utils.validateId(id, true, options);
@@ -3631,7 +3909,18 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        adapterObjects.getObject(id, options, (err, obj) => {
+        return this._getForeignObject({ id, options, callback });
+    }
+
+    private _getForeignObject(options: InternalGetObjectOptions): void | Promise<void> {
+        if (!adapterObjects) {
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getForeignObject not processed because Objects database not connected'
+            );
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterObjects.getObject(options.id, options, (err, obj) => {
             const adapterName = this.namespace.split('.')[0];
             // remove protectedNative if not admin or own adapter
             if (
@@ -3648,7 +3937,7 @@ class AdapterClass extends EventEmitter {
                 } // endFor
             } // endIf
 
-            return tools.maybeCallbackWithError(callback, err, obj);
+            return tools.maybeCallbackWithError(options.callback, err, obj);
         });
     }
 
@@ -3690,13 +3979,15 @@ class AdapterClass extends EventEmitter {
                     try {
                         await this.delForeignStateAsync(task.id, options);
                     } catch (e) {
-                        this.log.warn(`Could not remove state of ${task.id}: ${e.message}`);
+                        this._logger.warn(
+                            this.namespaceLog + ' ' + `Could not remove state of ${task.id}: ${e.message}`
+                        );
                     }
                 }
                 try {
                     await tools.removeIdFromAllEnums(adapterObjects, task.id, this.enums);
                 } catch (e) {
-                    this.log.warn(`Could not remove ${task.id} from enums: ${e.message}`);
+                    this._logger.warn(this.namespaceLog + ' ' + `Could not remove ${task.id} from enums: ${e.message}`);
                 }
                 setImmediate(() => this._deleteObjects(tasks, options, cb));
             });
@@ -3725,7 +4016,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('delForeignObject not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'delForeignObject not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3813,7 +4106,9 @@ class AdapterClass extends EventEmitter {
             options = undefined;
         }
         if (!adapterObjects) {
-            this.log.info('subscribeObjects not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeObjects not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3845,7 +4140,9 @@ class AdapterClass extends EventEmitter {
             options = undefined;
         }
         if (!adapterObjects) {
-            this.log.info('unsubscribeObjects not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'unsubscribeObjects not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3877,7 +4174,9 @@ class AdapterClass extends EventEmitter {
             options = undefined;
         }
         if (!adapterObjects) {
-            this.log.info('subscribeForeignObjects not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeForeignObjects not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3907,7 +4206,11 @@ class AdapterClass extends EventEmitter {
             pattern = '*';
         }
         if (!adapterObjects) {
-            this.log.info('unsubscribeForeignObjects not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog +
+                    ' ' +
+                    'unsubscribeForeignObjects not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3926,7 +4229,9 @@ class AdapterClass extends EventEmitter {
      */
     subscribeForeignFiles(id, pattern, options) {
         if (!adapterObjects) {
-            this.log.info('subscribeForeignFiles not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeForeignFiles not processed because Objects database not connected'
+            );
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3948,7 +4253,9 @@ class AdapterClass extends EventEmitter {
             pattern = '*';
         }
         if (!adapterObjects) {
-            this.log.info('unsubscribeForeignFiles not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'unsubscribeForeignFiles not processed because Objects database not connected'
+            );
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3981,7 +4288,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('setObjectNotExists not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setObjectNotExists not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4048,7 +4357,11 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('setForeignObjectNotExists not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog +
+                    ' ' +
+                    'setForeignObjectNotExists not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4358,7 +4671,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('deleteDevice not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'deleteDevice not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4397,7 +4712,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('addChannelToEnum not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'addChannelToEnum not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4484,7 +4801,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('deleteChannelFromEnum not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'deleteChannelFromEnum not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4584,7 +4903,9 @@ class AdapterClass extends EventEmitter {
             parentDevice = '';
         }
         if (!adapterObjects) {
-            this.log.info('deleteChannel not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'deleteChannel not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4717,7 +5038,9 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this.log.info('getDevices not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getDevices not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4753,7 +5076,9 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this.log.info('getChannelsOf not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getChannelsOf not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4807,7 +5132,9 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this.log.info('getStatesOf not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getStatesOf not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4871,7 +5198,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('addStateToEnum not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'addStateToEnum not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -4970,7 +5299,9 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this.log.info('deleteStateFromEnum not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'deleteStateFromEnum not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5087,7 +5418,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('chmodFile not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'chmodFile not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5127,7 +5460,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('chownFile not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'chownFile not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5181,7 +5516,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('readDir not processed because Objects database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'readDir not processed because Objects database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5198,7 +5533,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('unlink not processed because Objects database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'unlink not processed because Objects database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5214,7 +5549,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('rename not processed because Objects database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'rename not processed because Objects database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5230,7 +5565,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('mkdir not processed because Objects database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'mkdir not processed because Objects database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5271,7 +5606,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('readFile not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'readFile not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5311,7 +5648,9 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this.log.info('writeFile not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'writeFile not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5348,7 +5687,9 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this.log.info('fileExists not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'fileExists not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5562,7 +5903,7 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('sendTo not processed because States database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'sendTo not processed because States database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5579,7 +5920,9 @@ class AdapterClass extends EventEmitter {
         // If not specific instance
         if (!instanceName.match(/\.[0-9]+$/)) {
             if (!adapterObjects) {
-                this.log.info('sendTo not processed because Objects database not connected');
+                this._logger.info(
+                    this.namespaceLog + ' ' + 'sendTo not processed because Objects database not connected'
+                );
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -5675,7 +6018,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('sendToHost not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'sendToHost not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5689,7 +6034,9 @@ class AdapterClass extends EventEmitter {
 
         if (!hostName) {
             if (!adapterObjects) {
-                this.log.info('sendToHost not processed because Objects database not connected');
+                this._logger.info(
+                    this.namespaceLog + ' ' + 'sendToHost not processed because Objects database not connected'
+                );
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -5823,11 +6170,13 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to set
-            this.log.info('setState not processed because States database not connected');
+            this._logger.info(this.namespaceLog + ' ' + 'setState not processed because States database not connected');
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
         if (!adapterObjects) {
-            this.log.info('setState not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setState not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5853,7 +6202,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this.log.info(`undefined is not a valid state value for id "${id}"`);
+            this._logger.info(this.namespaceLog + ' ' + `undefined is not a valid state value for id "${id}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -5874,7 +6223,11 @@ class AdapterClass extends EventEmitter {
                 } else {
                     if (!adapterObjects) {
                         // if objects is no longer existing, we do not need to unsubscribe
-                        this.log.info('setForeignState not processed because Objects database not connected');
+                        this._logger.info(
+                            this.namespaceLog +
+                                ' ' +
+                                'setForeignState not processed because Objects database not connected'
+                        );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
@@ -5912,8 +6265,10 @@ class AdapterClass extends EventEmitter {
                                 } else {
                                     if (!adapterStates) {
                                         // if states is no longer existing, we do not need to unsubscribe
-                                        this.log.info(
-                                            'setForeignState not processed because States database not connected'
+                                        this._logger.info(
+                                            this.namespaceLog +
+                                                ' ' +
+                                                'setForeignState not processed because States database not connected'
                                         );
                                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                                     }
@@ -5940,7 +6295,11 @@ class AdapterClass extends EventEmitter {
                     } else {
                         if (!adapterStates) {
                             // if states is no longer existing, we do not need to unsubscribe
-                            this.log.info('setForeignState not processed because States database not connected');
+                            this._logger.info(
+                                this.namespaceLog +
+                                    ' ' +
+                                    'setForeignState not processed because States database not connected'
+                            );
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
 
@@ -6000,7 +6359,9 @@ class AdapterClass extends EventEmitter {
 
                 if (!adapterStates) {
                     // if states is no longer existing, we do not need to set
-                    this.log.info('setState not processed because States database not connected');
+                    this._logger.info(
+                        this.namespaceLog + ' ' + 'setState not processed because States database not connected'
+                    );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
 
@@ -6313,7 +6674,9 @@ class AdapterClass extends EventEmitter {
             options.checked = true;
 
             if (!adapterObjects) {
-                this.log.info('checkStates not processed because Objects database not connected');
+                this._logger.info(
+                    this.namespaceLog + ' ' + 'checkStates not processed because Objects database not connected'
+                );
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
             adapterObjects.getObject(ids, options, (err, obj) => {
@@ -6350,7 +6713,9 @@ class AdapterClass extends EventEmitter {
 
     private _setStateChangedHelper(id: ID, state: ioBroker.State, callback) {
         if (!adapterObjects) {
-            this.log.info('setStateChanged not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setStateChanged not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6449,7 +6814,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('setStateCHanged not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setStateCHanged not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6475,7 +6842,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this.log.info(`undefined is not a valid state value for id "${id}"`);
+            this._logger.info(this.namespaceLog + ' ' + `undefined is not a valid state value for id "${id}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -6551,7 +6918,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('setForeignState not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setForeignState not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6575,7 +6944,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this.log.info(`undefined is not a valid state value for id "${id}"`);
+            this._logger.info(this.namespaceLog + ' ' + `undefined is not a valid state value for id "${id}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -6608,7 +6977,11 @@ class AdapterClass extends EventEmitter {
                 } else {
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
-                        this.log.info('setForeignState not processed because States database not connected');
+                        this._logger.info(
+                            this.namespaceLog +
+                                ' ' +
+                                'setForeignState not processed because States database not connected'
+                        );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
@@ -6646,8 +7019,10 @@ class AdapterClass extends EventEmitter {
                                 } else {
                                     if (!adapterStates) {
                                         // if states is no longer existing, we do not need to unsubscribe
-                                        this.log.info(
-                                            'setForeignState not processed because States database not connected'
+                                        this._logger.info(
+                                            this.namespaceLog +
+                                                ' ' +
+                                                'setForeignState not processed because States database not connected'
                                         );
                                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                                     }
@@ -6673,7 +7048,11 @@ class AdapterClass extends EventEmitter {
                     } else {
                         if (!adapterStates) {
                             // if states is no longer existing, we do not need to unsubscribe
-                            this.log.info('setForeignState not processed because States database not connected');
+                            this._logger.info(
+                                this.namespaceLog +
+                                    ' ' +
+                                    'setForeignState not processed because States database not connected'
+                            );
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
 
@@ -6686,7 +7065,9 @@ class AdapterClass extends EventEmitter {
             // write alias
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 if (!adapterObjects) {
-                    this.log.info('setForeignState not processed because Objects database not connected');
+                    this._logger.info(
+                        this.namespaceLog + ' ' + 'setForeignState not processed because Objects database not connected'
+                    );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
 
@@ -6712,7 +7093,11 @@ class AdapterClass extends EventEmitter {
 
                         if (!adapterObjects) {
                             // if objects is no longer existing, we do not need to unsubscribe
-                            this.log.info('setForeignState not processed because Objects database not connected');
+                            this._logger.info(
+                                this.namespaceLog +
+                                    ' ' +
+                                    'setForeignState not processed because Objects database not connected'
+                            );
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
 
@@ -6720,7 +7105,11 @@ class AdapterClass extends EventEmitter {
                         adapterObjects.getObject(aliasId, options, (err, targetObj) => {
                             if (!adapterStates) {
                                 // if states is no longer existing, we do not need to unsubscribe
-                                this.log.info('setForeignState not processed because States database not connected');
+                                this._logger.info(
+                                    this.namespaceLog +
+                                        ' ' +
+                                        'setForeignState not processed because States database not connected'
+                                );
                                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                             }
 
@@ -6746,7 +7135,11 @@ class AdapterClass extends EventEmitter {
                 if (this.performStrictObjectChecks) {
                     if (!adapterObjects) {
                         // if objects is no longer existing, we do not need to unsubscribe
-                        this.log.info('setForeignState not processed because Objects database not connected');
+                        this._logger.info(
+                            this.namespaceLog +
+                                ' ' +
+                                'setForeignState not processed because Objects database not connected'
+                        );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
@@ -6755,7 +7148,9 @@ class AdapterClass extends EventEmitter {
                 }
                 if (!adapterStates) {
                     // if states is no longer existing, we do not need to unsubscribe
-                    this.log.info('setForeignState not processed because States database not connected');
+                    this._logger.info(
+                        this.namespaceLog + ' ' + 'setForeignState not processed because States database not connected'
+                    );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
 
@@ -6816,7 +7211,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('setForeignStateChanged not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setForeignStateChanged not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6840,7 +7237,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this.log.info(`undefined is not a valid state value for id "${id}"`);
+            this._logger.info(this.namespaceLog + ' ' + `undefined is not a valid state value for id "${id}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -6924,12 +7321,16 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('getForeignState not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getForeignState not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!adapterObjects) {
-            this.log.info('getForeignState not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getForeignState not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7283,7 +7684,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('delForeignState not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'delForeignState not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7456,13 +7859,17 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('getForeignStates not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getForeignStates not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!adapterObjects) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('getForeignStates not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getForeignStates not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7706,7 +8113,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('subscribeForeignStates not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeForeignStates not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7715,11 +8124,15 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('subscribeForeignStates not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeForeignStates not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
         if (!adapterObjects) {
-            this.log.info('subscribeForeignStates not processed because Objects database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeForeignStates not processed because Objects database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7842,7 +8255,11 @@ class AdapterClass extends EventEmitter {
 
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
-                        this.log.info('subscribeForeignStates not processed because States database not connected');
+                        this._logger.info(
+                            this.namespaceLog +
+                                ' ' +
+                                'subscribeForeignStates not processed because States database not connected'
+                        );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
@@ -7931,7 +8348,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('unsubscrubeForeignStates not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'unsubscrubeForeignStates not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8051,7 +8470,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('subscribeStates not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'subscribeStates not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8090,7 +8511,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('unsubscribeStates not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'unsubscribeStates not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8130,7 +8553,9 @@ class AdapterClass extends EventEmitter {
             // obj needs to exist and has to be of type "file" - custom check for binary state
             try {
                 if (!adapterObjects) {
-                    this.log.info('setBinaryState not processed because Objects database not connected');
+                    this._logger.info(
+                        this.namespaceLog + ' ' + 'setBinaryState not processed because Objects database not connected'
+                    );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
 
@@ -8160,7 +8585,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('setBinaryState not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'setBinaryState not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8179,7 +8606,11 @@ class AdapterClass extends EventEmitter {
                     obj.binary = true;
 
                     if (!adapterObjects) {
-                        this.log.info('setBinaryState not processed because Objects database not connected');
+                        this._logger.info(
+                            this.namespaceLog +
+                                ' ' +
+                                'setBinaryState not processed because Objects database not connected'
+                        );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
@@ -8189,7 +8620,11 @@ class AdapterClass extends EventEmitter {
                         } else {
                             if (!adapterStates) {
                                 // if states is no longer existing, we do not need to unsubscribe
-                                this.log.info('setBinaryState not processed because States database not connected');
+                                this._logger.info(
+                                    this.namespaceLog +
+                                        ' ' +
+                                        'setBinaryState not processed because States database not connected'
+                                );
                                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                             }
 
@@ -8202,7 +8637,11 @@ class AdapterClass extends EventEmitter {
                 } else {
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
-                        this.log.info('setBinaryState not processed because States database not connected');
+                        this._logger.info(
+                            this.namespaceLog +
+                                ' ' +
+                                'setBinaryState not processed because States database not connected'
+                        );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
@@ -8248,7 +8687,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('getBinaryState not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'getBinaryState not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8323,7 +8764,9 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this.log.info('delBinaryState not processed because States database not connected');
+            this._logger.info(
+                this.namespaceLog + ' ' + 'delBinaryState not processed because States database not connected'
+            );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8996,7 +9439,9 @@ class AdapterClass extends EventEmitter {
                                     try {
                                         await this._addAliasSubscribe(obj, id);
                                     } catch (e) {
-                                        this.log.warn(`Could not add alias subscription: ${e.message}`);
+                                        this._logger.warn(
+                                            this.namespaceLog + ' ' + `Could not add alias subscription: ${e.message}`
+                                        );
                                     }
                                     break;
                                 }
@@ -10029,7 +10474,7 @@ class AdapterClass extends EventEmitter {
             this.outputCount = 0;
         };
 
-        const exceptionHandler = async (err: ErrnoException, isUnhandledRejection: boolean) => {
+        const exceptionHandler = async (err: NodeJS.ErrnoException, isUnhandledRejection: boolean) => {
             // If the adapter has a callback to listen for unhandled errors
             // give it a chance to handle the error itself instead of restarting it
             if (typeof this._options.error === 'function') {
