@@ -2158,21 +2158,25 @@ export function getDefaultDataDir(): string {
  * Returns the path of the config file
  */
 export function getConfigFileName(): string {
-    let configDir = __dirname.replace(/\\/g, '/');
-    const configParts = configDir.split('/');
     const _appName = appName.toLowerCase();
 
     if (_isDevInstallation()) {
+        let devConfigDir = __dirname.replace(/\\/g, '/');
+        const devConfigParts = devConfigDir.split('/');
+
         // dev install -> Remove /lib
-        configParts.splice(configParts.length - 4, 4);
-        configDir = configParts.join('/');
-        configDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${configDir}/conf/${_appName}.json`)) {
-            return `${configDir}/conf/${_appName}.json`;
-        } else if (fs.existsSync(`${configDir}/data/${_appName}.json`)) {
-            return `${configDir}/data/${_appName}.json`;
+        devConfigParts.splice(devConfigParts.length - 4, 4);
+        devConfigDir = devConfigParts.join('/');
+        devConfigDir += '/controller'; // go inside controller dir
+        if (fs.existsSync(`${devConfigDir}/conf/${_appName}.json`)) {
+            return `${devConfigDir}/conf/${_appName}.json`;
+        } else if (fs.existsSync(`${devConfigDir}/data/${_appName}.json`)) {
+            return `${devConfigDir}/data/${_appName}.json`;
         }
     }
+
+    let configDir = __dirname.replace(/\\/g, '/');
+    const configParts = configDir.split('/');
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
     if (
