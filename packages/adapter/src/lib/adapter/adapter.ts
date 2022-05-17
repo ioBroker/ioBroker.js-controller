@@ -41,17 +41,6 @@ import {
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import ErrnoException = NodeJS.ErrnoException;
-import {
-    ExtendObjectOptions,
-    GetStatePromise,
-    PermissionSet,
-    SetObjectCallback,
-    SetObjectPromise,
-    SetStatePromise,
-    SettableState,
-    State,
-    StateValue
-} from 'iobroker';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -310,11 +299,23 @@ class AdapterClass extends EventEmitter {
     protected common?: Record<string, any>;
     private mboxSubscribed?: boolean;
     protected readonly getPortAsync: (port: number) => Promise<number>;
-    protected readonly setForeignStateAsync: (
-        id: string,
-        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        ack?: boolean
-    ) => ioBroker.SetStatePromise;
+    protected readonly setForeignStateAsync:
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack?: boolean
+          ) => ioBroker.SetStatePromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              options?: unknown
+          ) => ioBroker.SetStatePromise)
+        | ((
+              id: string,
+              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+              ack: boolean,
+              options: unknown
+          ) => ioBroker.SetStatePromise);
     protected readonly getForeignStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
     protected readonly checkPasswordAsync: (user: string, password: string, options?: unknown) => Promise<boolean>;
     protected readonly setPasswordAsync: (user: string, password: string, options?: unknown) => Promise<void>;
@@ -323,7 +324,7 @@ class AdapterClass extends EventEmitter {
         user: string,
         commandsPermissions: CommandsPermissions,
         options?: unknown
-    ) => Promise<PermissionSet>;
+    ) => Promise<ioBroker.PermissionSet>;
     protected readonly setObjectAsync: (
         id: string,
         obj: ioBroker.SettableObject,
@@ -342,6 +343,61 @@ class AdapterClass extends EventEmitter {
         objPart: ioBroker.PartialObject,
         options?: ioBroker.ExtendObjectOptions
     ) => ioBroker.SetObjectPromise;
+    protected readonly setExecutableCapabilities: (
+        execPath: string,
+        capabilities: string[],
+        modeEffective?: boolean,
+        modePermitted?: boolean,
+        modeInherited?: boolean
+    ) => Promise<void>;
+    protected readonly getForeignObjectAsync: <T extends string>(
+        id: T,
+        options?: unknown
+    ) => ioBroker.GetObjectPromise<T>;
+    protected readonly extendForeignObjectAsync: <T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: ioBroker.ExtendObjectOptions
+    ) => ioBroker.SetObjectPromise;
+    protected readonly getObjectAsync: (id: string, options?: unknown) => ioBroker.GetObjectPromise;
+    protected readonly getObjectViewAsync: <Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
+        params: ioBroker.GetObjectViewParams | null | undefined,
+        options?: unknown
+    ) => ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
+    protected readonly getObjectListAsync: (
+        params: ioBroker.GetObjectListParams | null,
+        options?: { sorted?: boolean } | Record<string, any>
+    ) => ioBroker.GetObjectListPromise;
+    protected readonly getEnumAsync: (
+        name: string,
+        options?: unknown
+    ) => Promise<{ result: Record<string, any>; requestEnum: string }>;
+    protected readonly getEnumsAsync: (enumList: ioBroker.EnumList, options?: unknown) => ioBroker.GetEnumsPromise;
+    protected readonly getForeignObjectsAsync:
+        | (<T extends ioBroker.ObjectType>(
+              pattern: string,
+              type: T,
+              enums: ioBroker.EnumList,
+              options?: unknown
+          ) => ioBroker.GetObjectsPromiseTyped<T>)
+        | (<T extends ioBroker.ObjectType>(
+              pattern: string,
+              type: T,
+              options?: unknown
+          ) => ioBroker.GetObjectsPromiseTyped<T>)
+        | ((pattern: string, options?: unknown) => ioBroker.GetObjectsPromise);
+    protected readonly findForeignObjectAsync: (
+        idOrName: string,
+        type: string
+    ) => Promise<{ id: string; name: string }>;
+    protected readonly delObjectAsync: (id: string, options?: ioBroker.DelObjectOptions) => Promise<void>;
+    protected readonly delForeignObjectAsync: (id: string, options?: ioBroker.DelObjectOptions) => Promise<void>;
+    protected readonly subscribeObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly unsubscribeObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
+    protected readonly getStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
+    protected readonly subscribeForeignObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -1016,7 +1072,7 @@ class AdapterClass extends EventEmitter {
         adapterStates.destroySession(options.id, options.callback);
     }
 
-    private async _getObjectsByArray(keys: ID[], objects: ioBroker.AnyObject[] | null, options) {
+    private async _getObjectsByArray(keys: ID[], objects: ioBroker.AnyObject[] | null, options: Record<string, any>) {
         if (objects) {
             return objects;
         }
