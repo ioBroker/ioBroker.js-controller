@@ -315,7 +315,7 @@ export class Utils {
                 id.state ? id.state : ''
             }`;
         }
-        return result;
+        return result as ID;
     }
 
     /**

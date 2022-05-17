@@ -40,16 +40,6 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import {
-    EnumList,
-    GetObjectsCallback,
-    GetObjectsCallbackTyped,
-    SetObjectCallback,
-    SetStatePromise,
-    SettableState,
-    State,
-    StateValue
-} from 'iobroker';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -237,9 +227,9 @@ interface InternalGetObjectOptions {
 interface InternalGetObjectsOptions {
     pattern: string;
     type?: string;
-    enums?: EnumList;
+    enums?: ioBroker.EnumList;
     options?: unknown;
-    callback?: GetObjectsCallbackTyped<any>;
+    callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }
 
 interface AdapterClass {
@@ -3716,31 +3706,31 @@ class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObjects(pattern: string, callback: GetObjectsCallback): void;
-    getForeignObjects(pattern: string, options: unknown, callback: GetObjectsCallback): void;
+    getForeignObjects(pattern: string, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: string, options: unknown, callback: ioBroker.GetObjectsCallback): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
-        callback: GetObjectsCallbackTyped<T>
+        callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
-        enums: EnumList,
-        callback: GetObjectsCallbackTyped<T>
+        enums: ioBroker.EnumList,
+        callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
         options: unknown,
-        callback: GetObjectsCallbackTyped<T>
+        callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
-        enums: EnumList,
+        enums: ioBroker.EnumList,
         options: unknown,
-        callback: GetObjectsCallbackTyped<T>
+        callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     /**
      * Get objects by pattern, by specific type and resolve their enums.
