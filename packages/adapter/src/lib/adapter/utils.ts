@@ -291,7 +291,7 @@ export class Utils {
      * @param id id which will be fixed
      * @param isPattern if the id is a pattern
      */
-    fixId(id: string | IdObject, isPattern = false): string {
+    fixId(id: string | IdObject, isPattern = false): ID {
         if (!id) {
             id = '';
         }
