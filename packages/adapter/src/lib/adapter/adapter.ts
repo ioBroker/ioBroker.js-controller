@@ -40,6 +40,7 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import { EnumList, GetObjectsCallback, GetObjectsCallbackTyped } from 'iobroker';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -212,7 +213,7 @@ interface InternalGetEncryptedConfigOptions {
 type TimeoutCallback = (args?: any[]) => void;
 
 interface InternalSetObjectOptions {
-    id: ID;
+    id: string;
     options?: Record<string, any> | null;
     obj: ioBroker.SettableObject;
     callback?: ioBroker.SetObjectCallback;
@@ -222,6 +223,14 @@ interface InternalGetObjectOptions {
     id: string;
     options: unknown;
     callback?: ioBroker.GetObjectCallback<any>;
+}
+
+interface InternalGetObjectsOptions {
+    pattern: string;
+    type?: string;
+    enums?: EnumList;
+    options?: unknown;
+    callback?: GetObjectsCallbackTyped<any>;
 }
 
 /**
@@ -273,7 +282,7 @@ class AdapterClass extends EventEmitter {
     private _reportInterval?: null | NodeJS.Timer;
     private getPortRunning: null | PortRunningObject;
     private readonly _namespaceRegExp: RegExp;
-    private instance: number;
+    private instance?: number;
     private _utils: Utils;
     /** contents of io-package.json */
     protected adapterConfig?: Record<string, any>; // TODO: contents of io-pack?
@@ -648,6 +657,7 @@ class AdapterClass extends EventEmitter {
     protected readonly getBinaryStateAsync: (id: string, options?: unknown) => ioBroker.GetBinaryStatePromise;
     protected readonly delForeignBinaryStateAsync: (id: string, options?: unknown) => Promise<void>;
     protected readonly delBinaryStateAsync: (id: string, options?: unknown) => Promise<void>;
+    protected readonly stop?: () => Promise<void>;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -1258,9 +1268,7 @@ class AdapterClass extends EventEmitter {
     private _getSession(options: InternalGetSessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} getSession not processed because States database not connected`
-            );
+            this._logger.info(`${this.namespaceLog} getSession not processed because States database not connected`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -2082,7 +2090,7 @@ class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(isPause: boolean, isScheduled: boolean, exitCode?: number, updateAliveState?: boolean) {
+    private async _stop(isPause?: boolean, isScheduled?: boolean, exitCode?: number, updateAliveState?: boolean) {
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2235,6 +2243,10 @@ class AdapterClass extends EventEmitter {
      *        </code></pre>
      */
     getCertificates(publicName: unknown, privateName: unknown, chainedName: unknown, callback: unknown): void {
+        if (!this.config) {
+            throw new Error(tools.ERRORS.ERROR_NOT_READY);
+        }
+
         if (typeof publicName === 'function') {
             callback = publicName;
             publicName = null;
@@ -2309,11 +2321,15 @@ class AdapterClass extends EventEmitter {
      *
      */
     restart(): void {
-        this._logger.warn(`${this.namespaceLog} Restart initiated`);
-        this.stop();
+        if (this.stop) {
+            this._logger.warn(`${this.namespaceLog} Restart initiated`);
+            this.stop();
+        } else {
+            this._logger.warn(`${this.namespaceLog} Cannot initiate restart, because this.stop is not defined`);
+        }
     }
 
-    updateConfig(newConfig: Record<string, any>): Promise<void>;
+    updateConfig(newConfig: Record<string, any>): ioBroker.SetObjectPromise;
     /**
      * Updates the adapter config with new values. Only a subset of the configuration has to be provided,
      * since merging with the existing config is done automatically, e.g. like this:
@@ -2324,13 +2340,13 @@ class AdapterClass extends EventEmitter {
      *
      * @param newConfig The new config values to be stored
      */
-    updateConfig(newConfig: unknown): Promise<void> {
+    updateConfig(newConfig: unknown): ioBroker.SetObjectPromise {
         Utils.assertsObject(newConfig, 'newConfig');
 
         return this._updateConfig({ newConfig });
     }
 
-    private async _updateConfig(options: InternalUpdateConfigOptions): Promise<void> {
+    private async _updateConfig(options: InternalUpdateConfigOptions): ioBroker.SetObjectPromise {
         // merge the old and new configuration
         const _config = Object.assign({}, this.config, options.newConfig);
         // update the adapter config object
@@ -2354,7 +2370,7 @@ class AdapterClass extends EventEmitter {
      * Disables and stops the adapter instance.
      *
      */
-    async disable(): Promise<void> {
+    async disable(): ioBroker.SetObjectPromise {
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
@@ -2381,7 +2397,7 @@ class AdapterClass extends EventEmitter {
      * @param [callback] - optional callback
      *
      */
-    async getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
+    getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
         Utils.assertsString(attribute, 'attribute');
         Utils.assertsOptionalCallback(callback, 'callback');
 
@@ -2389,6 +2405,10 @@ class AdapterClass extends EventEmitter {
     }
 
     private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions) {
+        if (!this.config) {
+            throw new Error(tools.ERRORS.ERROR_NOT_READY);
+        }
+
         if (Object.prototype.hasOwnProperty.call(this.config, options.attribute)) {
             if (this._systemSecret !== undefined) {
                 return tools.maybeCallbackWithError(
@@ -3682,6 +3702,33 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    // external signatures
+    getForeignObjects(pattern: string, callback: GetObjectsCallback): void;
+    getForeignObjects(pattern: string, options: unknown, callback: GetObjectsCallback): void;
+    getForeignObjects<T extends ioBroker.ObjectType>(
+        pattern: string,
+        type: T,
+        callback: GetObjectsCallbackTyped<T>
+    ): void;
+    getForeignObjects<T extends ioBroker.ObjectType>(
+        pattern: string,
+        type: T,
+        enums: EnumList,
+        callback: GetObjectsCallbackTyped<T>
+    ): void;
+    getForeignObjects<T extends ioBroker.ObjectType>(
+        pattern: string,
+        type: T,
+        options: unknown,
+        callback: GetObjectsCallbackTyped<T>
+    ): void;
+    getForeignObjects<T extends ioBroker.ObjectType>(
+        pattern: string,
+        type: T,
+        enums: EnumList,
+        options: unknown,
+        callback: GetObjectsCallbackTyped<T>
+    ): void;
     /**
      * Get objects by pattern, by specific type and resolve their enums.
      *
@@ -3726,25 +3773,18 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getForeignObjects(pattern, type, enums, options, callback) {
-        if (typeof pattern !== 'string') {
-            return tools.maybeCallbackWithError(
-                callback,
-                new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`)
-            );
-        }
-
+    getForeignObjects(
+        pattern: unknown,
+        type: unknown,
+        enums?: unknown,
+        options?: unknown,
+        callback?: unknown
+    ): void | Promise<void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
-        let params = {};
-        if (pattern && pattern !== '*') {
-            params = {
-                startkey: pattern.replace(/\*/g, ''),
-                endkey: pattern.replace(/\*/g, '\u9999')
-            };
-        }
+
         if (typeof enums === 'function') {
             callback = enums;
             enums = null;
@@ -3761,35 +3801,57 @@ class AdapterClass extends EventEmitter {
             options = enums;
             enums = null;
         }
-        if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'getForeignObjects not processed because Objects database not connected'
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        if (typeof pattern !== 'string') {
+            return tools.maybeCallbackWithError(
+                callback,
+                new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`)
             );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObjectView('system', type || 'state', params, options, (err, res) => {
+        return this._getForeignObjects({ pattern, type, enums, options, callback });
+    }
+
+    private _getForeignObjects(options: InternalGetObjectsOptions) {
+        let params = {};
+        if (options.pattern && options.pattern !== '*') {
+            params = {
+                startkey: options.pattern.replace(/\*/g, ''),
+                endkey: options.pattern.replace(/\*/g, '\u9999')
+            };
+        }
+
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} getForeignObjects not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        adapterObjects.getObjectView('system', options.type || 'state', params, options, (err, res) => {
             if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+                return tools.maybeCallbackWithError(options.callback, err);
             }
 
             // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
-            this.getEnums(enums, null, (err, _enums) => {
-                const list = {};
+            this.getEnums(options.enums, null, (err, _enums) => {
+                const list: Record<string, any> = {};
                 if (res && res.rows) {
                     for (let i = 0; i < res.rows.length; i++) {
                         if (!res.rows[i].value) {
                             // it is more an unimportant warning as debug
                             this._logger.debug(
                                 `${this.namespaceLog} getEnums(${JSON.stringify(
-                                    enums
+                                    options.enums
                                 )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(
                                     res.rows[i]
                                 )}`
                             );
                             continue;
                         }
-                        const id = res.rows[i].value._id;
+                        const id: string = res.rows[i].value._id;
                         list[id] = res.rows[i].value;
                         if (_enums && id) {
                             // get device or channel of this state and check it too
@@ -3800,14 +3862,8 @@ class AdapterClass extends EventEmitter {
                             const device = parts.join('.');
 
                             list[id].enums = {};
-                            for (const es in _enums) {
-                                if (!Object.prototype.hasOwnProperty.call(_enums, es)) {
-                                    continue;
-                                }
-                                for (const e in _enums[es]) {
-                                    if (!Object.prototype.hasOwnProperty.call(_enums[es], e)) {
-                                        continue;
-                                    }
+                            for (const es of Object.keys(_enums)) {
+                                for (const e of Object.keys(_enums[es])) {
                                     if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members) {
                                         continue;
                                     }
@@ -3823,7 +3879,7 @@ class AdapterClass extends EventEmitter {
                         }
                     }
                 }
-                return tools.maybeCallbackWithError(callback, null, list);
+                return tools.maybeCallbackWithError(options.callback, null, list);
             });
         });
     }

@@ -26,7 +26,8 @@ export enum ERRORS {
     ERROR_NOT_FOUND = 'Not exists',
     ERROR_EMPTY_OBJECT = 'null object',
     ERROR_NO_OBJECT = 'no object',
-    ERROR_DB_CLOSED = 'DB closed'
+    ERROR_DB_CLOSED = 'DB closed',
+    ERROR_NOT_READY = 'Adapter is not ready yet'
 }
 
 events.EventEmitter.prototype.setMaxListeners(100);
