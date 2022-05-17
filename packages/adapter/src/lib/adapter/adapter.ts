@@ -40,7 +40,16 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { EnumList, GetObjectsCallback, GetObjectsCallbackTyped } from 'iobroker';
+import {
+    EnumList,
+    GetObjectsCallback,
+    GetObjectsCallbackTyped,
+    SetObjectCallback,
+    SetStatePromise,
+    SettableState,
+    State,
+    StateValue
+} from 'iobroker';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -233,6 +242,48 @@ interface InternalGetObjectsOptions {
     callback?: GetObjectsCallbackTyped<any>;
 }
 
+interface AdapterClass {
+    /**
+     * Writes a value into the states DB.
+     */
+    setStateAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack?: boolean
+    ): ioBroker.SetStatePromise;
+    setStateAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        options?: unknown
+    ): ioBroker.SetStatePromise;
+    setStateAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack: boolean,
+        options: unknown
+    ): ioBroker.SetStatePromise;
+
+    /**
+     * Writes a value (which might not belong to this adapter) into the states DB.
+     */
+    setForeignStateAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack?: boolean
+    ): ioBroker.SetStatePromise;
+    setForeignStateAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        options?: unknown
+    ): ioBroker.SetStatePromise;
+    setForeignStateAsync(
+        id: string,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack: boolean,
+        options: unknown
+    ): ioBroker.SetStatePromise;
+}
+
 /**
  * Adapter class
  *
@@ -313,23 +364,6 @@ class AdapterClass extends EventEmitter {
     protected common?: Record<string, any>;
     private mboxSubscribed?: boolean;
     protected readonly getPortAsync: (port: number) => Promise<number>;
-    protected readonly setForeignStateAsync:
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack?: boolean
-          ) => ioBroker.SetStatePromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              options?: unknown
-          ) => ioBroker.SetStatePromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack: boolean,
-              options: unknown
-          ) => ioBroker.SetStatePromise);
     protected readonly getForeignStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
     protected readonly checkPasswordAsync: (user: string, password: string, options?: unknown) => Promise<boolean>;
     protected readonly setPasswordAsync: (user: string, password: string, options?: unknown) => Promise<void>;
@@ -586,23 +620,6 @@ class AdapterClass extends EventEmitter {
               command: string,
               message: ioBroker.MessagePayload
           ) => Promise<ioBroker.Message | undefined>);
-    protected readonly setStateAsync:
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack?: boolean
-          ) => ioBroker.SetStatePromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              options?: unknown
-          ) => ioBroker.SetStatePromise)
-        | ((
-              id: string,
-              state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-              ack: boolean,
-              options: unknown
-          ) => ioBroker.SetStatePromise);
     protected readonly setStateChangedAsync:
         | ((
               id: string,
@@ -2742,15 +2759,13 @@ class AdapterClass extends EventEmitter {
      * @param [callback]
      */
     private async _setObjectWithDefaultValue(
-        id: ID,
-        obj: ioBroker.AnyObject,
+        id: string,
+        obj: ioBroker.SettableObject,
         options: Record<string, any> | null,
         callback?: ioBroker.SetObjectCallback
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'setObject not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} setObject not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -2758,11 +2773,9 @@ class AdapterClass extends EventEmitter {
             tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
             // todo: in the future we will not create this object
-            this._logger.warn(this.namespaceLog + ' ' + `Object ${id} is invalid: ${e.message}`);
+            this._logger.warn(`${this.namespaceLog} Object ${id} is invalid: ${e.message}`);
             this._logger.warn(
-                this.namespaceLog +
-                    ' ' +
-                    'This object will not be created in future versions. Please report this to the developer.'
+                `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
             );
         }
 
@@ -4318,6 +4331,18 @@ class AdapterClass extends EventEmitter {
         return adapterObjects.unsubscribeUserFile(id, pattern, options);
     }
 
+    // external signatures
+    setObjectNotExists(
+        id: string,
+        obj: ioBroker.SettableObject,
+        callback?: SetObjectCallback
+    ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> | void;
+    setObjectNotExists(
+        id: string,
+        obj: ioBroker.SettableObject,
+        options: unknown,
+        callback?: SetObjectCallback
+    ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> | void;
     /**
      * Same as {@link Adapter.setObject}, but with check if the object exists.
      *
@@ -4338,17 +4363,23 @@ class AdapterClass extends EventEmitter {
      *        </code></pre>
      * @returns {Promise<{id: string}>}
      */
-    async setObjectNotExists(id, obj, options, callback) {
+    setObjectNotExists(
+        id: unknown,
+        obj: unknown,
+        options?: unknown,
+        callback?: unknown
+    ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
-        if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'setObjectNotExists not processed because Objects database not connected'
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
         }
+
+        Utils.assertsObject(obj, 'obj');
 
         try {
             this._utils.validateId(id, false, null);
@@ -4358,32 +4389,48 @@ class AdapterClass extends EventEmitter {
 
         id = this._utils.fixId(id);
 
-        if (obj.children || obj.parent) {
-            this._logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
+        return this._setObjectNotExists({ id, obj, options, callback });
+    }
+
+    private async _setObjectNotExists(
+        options: InternalSetObjectOptions
+    ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> {
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} setObjectNotExists not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if ('children' in options.obj || 'parent' in options.obj) {
+            this._logger.warn(`${this.namespaceLog} Do not use parent or children for ${options.id}`);
         }
 
         // check if object already exists
         let objExists;
         try {
-            objExists = await adapterObjects.objectExists(id, options);
+            objExists = await adapterObjects.objectExists(options.id, options);
         } catch (e) {
-            return tools.maybeCallbackWithError(callback, `Could not check object existence of ${id}: ${e.message}`);
+            return tools.maybeCallbackWithError(
+                options.callback,
+                `Could not check object existence of ${options.id}: ${e.message}`
+            );
         }
 
         if (objExists === false) {
-            if (!obj.from) {
-                obj.from = `system.adapter.${this.namespace}`;
+            if (!options.obj.from) {
+                options.obj.from = `system.adapter.${this.namespace}`;
             }
-            if (!obj.user) {
-                obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+            if (!options.obj.user) {
+                options.obj.user = (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
             }
-            if (!obj.ts) {
-                obj.ts = Date.now();
+            if (!options.obj.ts) {
+                options.obj.ts = Date.now();
             }
 
-            return this._setObjectWithDefaultValue(id, obj, null, callback);
+            return this._setObjectWithDefaultValue(options.id, options.obj, null, options.callback);
         } else {
-            return tools.maybeCallbackWithError(callback, null);
+            return tools.maybeCallbackWithError(options.callback, null);
         }
     }
 
@@ -4414,9 +4461,7 @@ class AdapterClass extends EventEmitter {
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog +
-                    ' ' +
-                    'setForeignObjectNotExists not processed because Objects database not connected'
+                `${this.namespaceLog} setForeignObjectNotExists not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -4437,7 +4482,7 @@ class AdapterClass extends EventEmitter {
 
         if (objExists === false) {
             if (!obj.from) {
-                obj.from = 'system.adapter.' + this.namespace;
+                obj.from = `system.adapter.${this.namespace}`;
             }
             if (!obj.user) {
                 obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -4573,8 +4618,7 @@ class AdapterClass extends EventEmitter {
             roleOrCommon = undefined;
         }
 
-        /** @type {ioBroker.StateCommon} */
-        let common = {};
+        let common: Partial<ioBroker.StateCommon> = {};
         if (typeof roleOrCommon === 'string') {
             common = {
                 read: true,
@@ -4594,13 +4638,9 @@ class AdapterClass extends EventEmitter {
 
         if (!common.role) {
             this._logger.error(
-                this.namespaceLog +
-                    ' Try to create state ' +
-                    (parentDevice ? parentDevice + '.' : '') +
-                    parentChannel +
-                    '.' +
-                    stateName +
-                    ' without role'
+                `${this.namespaceLog} Try to create state ${
+                    parentDevice ? parentDevice + '.' : ''
+                }${parentChannel}.${stateName} without role`
             );
             return;
         }
