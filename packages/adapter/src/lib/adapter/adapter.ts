@@ -164,14 +164,58 @@ interface InternalSetPasswordOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+type CheckGroupCallback = (result: boolean) => void;
+
+interface InternalCheckGroupOptions {
+    user: string;
+    group: string;
+    options?: Record<string, any> | null;
+    callback?: CheckGroupCallback;
+}
+
+type CommandsPermissions = {
+    [permission: string]: { type: 'object' | 'state' | '' | 'other' | 'file'; operation: string };
+};
+
+type CalculatePermissionsCallback = (result: ioBroker.PermissionSet) => void;
+
+interface InternalCalculatePermissionsOptions {
+    user: string;
+    commandsPermissions: CommandsPermissions;
+    options?: Record<string, any> | null;
+    callback?: CalculatePermissionsCallback;
+}
+
+type GetCertificatesCallback = (
+    err: string | null,
+    certs?: ioBroker.Certificates,
+    useLetsEncryptCert?: boolean
+) => void;
+
+interface InternalGetCertificatesOptions {
+    publicName: string;
+    privateName: string;
+    chainedName: string;
+    callback?: GetCertificatesCallback;
+}
+
+interface InternalUpdateConfigOptions {
+    newConfig: Record<string, any>;
+}
+
+type GetEncryptedConfigCallback = (error: Error | null | undefined, result?: string) => void;
+
+interface InternalGetEncryptedConfigOptions {
+    attribute: string;
+    callback?: GetEncryptedConfigCallback;
+}
+
 /**
  * Adapter class
  *
  * How the initialization happens:
  *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstancesObjects => ready
  *
- * @param {string|object} options object like {name: "adapterName", systemConfig: true} or just "adapterName"
- * @return {object} object instance
  */
 class AdapterClass extends EventEmitter {
     /** Contents of iobroker.json */
@@ -244,6 +288,7 @@ class AdapterClass extends EventEmitter {
     protected config?: Record<string, any>;
     protected host?: string;
     protected common?: Record<string, any>;
+    private mboxSubscribed?: boolean;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -531,7 +576,7 @@ class AdapterClass extends EventEmitter {
      * @param reason optional termination description
      * @param exitCode optional exit code
      */
-    terminate(reason: unknown, exitCode: unknown) {
+    terminate(reason: unknown, exitCode: unknown): void {
         // This function must be defined very first, because in the next lines will be yet used.
         if (this.terminated) {
             return;
@@ -902,7 +947,7 @@ class AdapterClass extends EventEmitter {
                     },
                     options,
                     () => {
-                        return tools.maybeCallback(callback);
+                        return tools.maybeCallback(options.callback);
                     }
                 );
             } else {
@@ -927,6 +972,13 @@ class AdapterClass extends EventEmitter {
         });
     }
 
+    // external signature
+    checkGroup(
+        user: string,
+        group: string,
+        options?: Record<string, any>,
+        callback?: CheckGroupCallback
+    ): Promise<void>;
     /**
      * returns if user exists and is in the group
      *
@@ -934,17 +986,17 @@ class AdapterClass extends EventEmitter {
      *
      * @alias checkGroup
      * @memberof Adapter
-     * @param {string} user user name as text
-     * @param {string} group group name
-     * @param {object} [options] optional user context
-     * @param {(result: boolean) => void} callback return result
+     * @param user user name as text
+     * @param group group name
+     * @param [options] optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (result) {
      *              if (result) adapter.log.debug('User exists and in the group');
      *            }
      *        </code></pre>
      */
-    async checkGroup(user, group, options, callback) {
+    checkGroup(user: unknown, group: unknown, options: unknown, callback: unknown): Promise<void> {
         user = user || '';
 
         if (typeof options === 'function') {
@@ -952,9 +1004,20 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        if (user && !user.startsWith('system.user.')) {
+        Utils.assertsString(user, 'user');
+        Utils.assertsString(group, 'group');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._checkGroup({ user, group, options, callback });
+    }
+
+    private async _checkGroup(options: InternalCheckGroupOptions): Promise<void> {
+        if (options.user && !options.user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
-            if (!this.usernames[user]) {
+            if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
                     await this._updateUsernameCache();
@@ -962,43 +1025,49 @@ class AdapterClass extends EventEmitter {
                     this.log.error(e);
                 }
 
-                if (!this.usernames[user]) {
+                if (!this.usernames[options.user]) {
                     // user still not there, its no valid user -> fallback
-                    user = `system.user.${user
+                    options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
                         .replace(/\s/g, '_')
                         .replace(/\./g, '_')
                         .toLowerCase()}`;
                 } else {
-                    user = this.usernames[user].id;
+                    options.user = this.usernames[options.user].id;
                 }
             } else {
-                user = this.usernames[user].id;
+                options.user = this.usernames[options.user].id;
             }
         }
 
-        if (group && !group.startsWith('system.group.')) {
-            group = 'system.group.' + group;
+        if (options.group && !options.group.startsWith('system.group.')) {
+            options.group = `system.group.${options.group}`;
         }
-        this.getForeignObject(user, options, (err, obj) => {
+        this.getForeignObject(options.user, options, (err, obj) => {
             if (err || !obj) {
-                return tools.maybeCallback(callback, false);
+                return tools.maybeCallback(options.callback, false);
             }
-            this.getForeignObject(group, options, (err, obj) => {
+            this.getForeignObject(options.group, options, (err, obj) => {
                 if (err || !obj) {
-                    return tools.maybeCallback(callback, false);
+                    return tools.maybeCallback(options.callback, false);
                 }
-                if (obj.common.members.includes(user)) {
-                    return tools.maybeCallback(callback, true);
+                if (obj.common.members.includes(options.user)) {
+                    return tools.maybeCallback(options.callback, true);
                 } else {
-                    return tools.maybeCallback(callback, false);
+                    return tools.maybeCallback(options.callback, false);
                 }
             });
         });
     }
 
-    /** @typedef {{[permission: string]: {type: 'object' | 'state' | '' | 'other' | 'file', operation: string}}} CommandsPermissions */
+    // external signature
+    calculatePermissions(
+        user: string,
+        commandsPermissions: CommandsPermissions,
+        options?: Record<string, any>,
+        callback?: CalculatePermissionsCallback
+    ): Promise<void | ioBroker.PermissionSet>;
 
     /**
      * get the user permissions
@@ -1006,10 +1075,8 @@ class AdapterClass extends EventEmitter {
      * This function used mostly internally and the adapter developer do not require it.
      * The function reads permissions of user's groups (it can be more than one) and merge permissions together
      *
-     * @alias calculatePermissions
-     * @memberof Adapter
-     * @param {string} user user name as text
-     * @param {CommandsPermissions} commandsPermissions object that describes the access rights like
+     * @param  user user name as text
+     * @param  commandsPermissions object that describes the access rights like
      *     <pre><code>
      *         // static information
      *         var commandsPermissions = {
@@ -1051,8 +1118,8 @@ class AdapterClass extends EventEmitter {
      *            getUserPermissions: {type: 'object',    operation: 'read'}
      *         };
      *        </code></pre>
-     * @param {object} [options] optional user context
-     * @param {(result: ioBroker.PermissionSet) => void} [callback] return result
+     * @param [options] optional user context
+     * @param [callback] return result
      *        <pre><code>
      *            function (acl) {
      *              // Access control object for admin looks like:
@@ -1095,7 +1162,12 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async calculatePermissions(user, commandsPermissions, options, callback) {
+    calculatePermissions(
+        user: unknown,
+        commandsPermissions: unknown,
+        options: unknown,
+        callback: unknown
+    ): Promise<void | ioBroker.PermissionSet> {
         user = user || '';
 
         if (typeof options === 'function') {
@@ -1103,9 +1175,22 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        if (user && !user.startsWith('system.user.')) {
+        Utils.assertsString(user, 'user');
+        Utils.assertsObject(commandsPermissions, 'commandsPermissions');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._calculatePermissions({ user, commandsPermissions, options, callback });
+    }
+
+    private async _calculatePermissions(
+        options: InternalCalculatePermissionsOptions
+    ): Promise<void | ioBroker.PermissionSet> {
+        if (options.user && !options.user.startsWith('system.user.')) {
             // its not yet a `system.user.xy` id, thus we assume it's a username
-            if (!this.usernames[user]) {
+            if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
                     await this._updateUsernameCache();
@@ -1113,26 +1198,26 @@ class AdapterClass extends EventEmitter {
                     this.log.error(e.message);
                 }
                 // user still not there, fallback
-                if (!this.usernames[user]) {
-                    user = `system.user.${user
+                if (!this.usernames[options.user]) {
+                    options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
                         .replace(/\s/g, '_')
                         .replace(/\./g, '_')
                         .toLowerCase()}`;
                 } else {
-                    user = this.usernames[user].id;
+                    options.user = this.usernames[options.user].id;
                 }
             } else {
-                user = this.usernames[user].id;
+                options.user = this.usernames[options.user].id;
             }
         }
 
         // read all groups
-        let acl = { user: user };
-        if (user === SYSTEM_ADMIN_USER) {
+        let acl: Partial<ioBroker.PermissionSet> = { user: options.user };
+        if (options.user === SYSTEM_ADMIN_USER) {
             acl.groups = [SYSTEM_ADMIN_GROUP];
-            for (const commandPermission of Object.values(commandsPermissions)) {
+            for (const commandPermission of Object.values(options.commandsPermissions)) {
                 if (!commandPermission.type) {
                     continue;
                 }
@@ -1140,10 +1225,10 @@ class AdapterClass extends EventEmitter {
                 acl[commandPermission.type][commandPermission.operation] = true;
             }
 
-            return tools.maybeCallback(callback, acl);
+            return tools.maybeCallback(options.callback, acl);
         }
-        acl.groups = [];
         this.getForeignObjects('*', 'group', null, options, (err, groups) => {
+            acl.groups = [];
             // aggregate all groups permissions, where this user is
             if (groups) {
                 for (const g of Object.keys(groups)) {
@@ -1151,7 +1236,7 @@ class AdapterClass extends EventEmitter {
                         groups[g] &&
                         groups[g].common &&
                         groups[g].common.members &&
-                        groups[g].common.members.includes(user)
+                        groups[g].common.members.includes(options.user)
                     ) {
                         acl.groups.push(groups[g]._id);
                         if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
@@ -1163,6 +1248,7 @@ class AdapterClass extends EventEmitter {
                                     create: true,
                                     list: true
                                 },
+                                // @ts-expect-error create is missing
                                 object: {
                                     read: true,
                                     write: true,
@@ -1176,7 +1262,7 @@ class AdapterClass extends EventEmitter {
                                     create: true,
                                     list: true
                                 },
-                                user: user,
+                                user: options.user,
                                 users: {
                                     read: true,
                                     write: true,
@@ -1221,7 +1307,7 @@ class AdapterClass extends EventEmitter {
                 }
             }
 
-            return tools.maybeCallback(callback, acl);
+            return tools.maybeCallback(options.callback, acl);
         });
     }
 
@@ -1323,7 +1409,12 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    private _readFileCertificate(cert: string) {
+    /**
+     * Reads the file certificate from given path and adds a file watcher to restart adapter on cert changes
+     * if a cert is passed it is returned as it is
+     * @param cert
+     */
+    private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
             try {
                 // if length < 1024 its no valid cert, so we assume a path to a valid certificate
@@ -1345,6 +1436,14 @@ class AdapterClass extends EventEmitter {
         return cert;
     }
 
+    // public signature
+    getCertificates(
+        publicName?: string,
+        privateName?: string,
+        chainedName?: string,
+        callback?: GetCertificatesCallback
+    ): void;
+
     /**
      * returns SSL certificates by name
      *
@@ -1352,12 +1451,10 @@ class AdapterClass extends EventEmitter {
      * Names are defined in the system's configuration in admin, e.g. "defaultPrivate", "defaultPublic".
      * The result can be directly used for creation of https server.
      *
-     * @alias getCertificates
-     * @memberof Adapter
-     * @param {string} [publicName] public certificate name
-     * @param {string} [privateName] private certificate name
-     * @param {string} [chainedName] optional chained certificate name
-     * @param {(err: string | null, certs?: ioBroker.Certificates, useLetsEncryptCert?: boolean) => void} callback return result
+     * @param [publicName] public certificate name
+     * @param [privateName] private certificate name
+     * @param [chainedName] optional chained certificate name
+     * @param callback return result
      *        <pre><code>
      *            function (err, certs, letsEncrypt) {
      *              adapter.log.debug('private key: ' + certs.key);
@@ -1366,7 +1463,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getCertificates(publicName, privateName, chainedName, callback) {
+    getCertificates(publicName: unknown, privateName: unknown, chainedName: unknown, callback: unknown): void {
         if (typeof publicName === 'function') {
             callback = publicName;
             publicName = null;
@@ -1383,26 +1480,35 @@ class AdapterClass extends EventEmitter {
         privateName = privateName || this.config.certPrivate;
         chainedName = chainedName || this.config.certChained;
 
+        Utils.assertsString(publicName, 'publicName');
+        Utils.assertsString(privateName, 'privateName');
+        Utils.assertsString(chainedName, 'chainedName');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getCertificates({ publicName, privateName, chainedName, callback });
+    }
+
+    private _getCertificates(options: InternalGetCertificatesOptions) {
         // Load certificates
         this.getForeignObject('system.certificates', null, (err, obj) => {
             if (
                 err ||
                 !obj ||
                 !obj.native.certificates ||
-                !publicName ||
-                !privateName ||
-                !obj.native.certificates[publicName] ||
-                !obj.native.certificates[privateName] ||
-                (chainedName && !obj.native.certificates[chainedName])
+                !options.publicName ||
+                !options.privateName ||
+                !obj.native.certificates[options.publicName] ||
+                !obj.native.certificates[options.privateName] ||
+                (options.chainedName && !obj.native.certificates[options.chainedName])
             ) {
                 this._logger.error(
-                    `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${publicName}, ${privateName}, ${chainedName}`
+                    `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${options.publicName}, ${options.privateName}, ${options.chainedName}`
                 );
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NOT_FOUND);
+                return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_NOT_FOUND);
             } else {
                 let ca;
-                if (chainedName) {
-                    const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
+                if (options.chainedName) {
+                    const chained = this._readFileCertificate(obj.native.certificates[options.chainedName]).split(
                         '-----END CERTIFICATE-----\r\n'
                     );
                     ca = [];
@@ -1414,11 +1520,11 @@ class AdapterClass extends EventEmitter {
                 }
 
                 return tools.maybeCallbackWithError(
-                    callback,
+                    options.callback,
                     null,
                     {
-                        key: this._readFileCertificate(obj.native.certificates[privateName]),
-                        cert: this._readFileCertificate(obj.native.certificates[publicName]),
+                        key: this._readFileCertificate(obj.native.certificates[options.privateName]),
+                        cert: this._readFileCertificate(obj.native.certificates[options.publicName]),
                         ca
                     },
                     obj.native.letsEncrypt
@@ -1430,13 +1536,13 @@ class AdapterClass extends EventEmitter {
     /**
      * Restarts an instance of the adapter.
      *
-     * @memberof Adapter
      */
-    restart() {
+    restart(): void {
         this._logger.warn(`${this.namespaceLog} Restart initiated`);
         this.stop();
     }
 
+    updateConfig(newConfig: Record<string, any>): Promise<void>;
     /**
      * Updates the adapter config with new values. Only a subset of the configuration has to be provided,
      * since merging with the existing config is done automatically, e.g. like this:
@@ -1445,12 +1551,17 @@ class AdapterClass extends EventEmitter {
      *
      * After updating the configuration, the adapter is automatically restarted.
      *
-     * @param {Record<string, any>} newConfig The new config values to be stored
-     * @return Promise<void>
+     * @param newConfig The new config values to be stored
      */
-    async updateConfig(newConfig) {
+    updateConfig(newConfig: unknown): Promise<void> {
+        Utils.assertsObject(newConfig, 'newConfig');
+
+        return this._updateConfig({ newConfig });
+    }
+
+    private async _updateConfig(options: InternalUpdateConfigOptions): Promise<void> {
         // merge the old and new configuration
-        const _config = Object.assign({}, this.config, newConfig);
+        const _config = Object.assign({}, this.config, options.newConfig);
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
@@ -1471,9 +1582,8 @@ class AdapterClass extends EventEmitter {
     /**
      * Disables and stops the adapter instance.
      *
-     * @return Promise<void>
      */
-    async disable() {
+    async disable(): Promise<void> {
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
@@ -1486,27 +1596,34 @@ class AdapterClass extends EventEmitter {
         if (!obj) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
-
         obj.common.enabled = false;
         return this.setForeignObjectAsync(configObjId, obj);
     }
+
+    async getEncryptedConfig(attribute: string, callback?: GetEncryptedConfigCallback): Promise<string | void>;
 
     /**
      * Reads the encrypted parameter from config.
      *
      * It returns promise if no callback is provided.
-     * @param {string} attribute - attribute name in native configuration part
-     * @param {(error: Error | null | undefined, result?: string) => void} [callback] - optional callback
-     * @returns {Promise<any>} promise if no callback provided
+     * @param attribute - attribute name in native configuration part
+     * @param [callback] - optional callback
      *
      */
-    async getEncryptedConfig(attribute, callback) {
-        if (Object.prototype.hasOwnProperty.call(this.config, attribute)) {
+    async getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
+        Utils.assertsString(attribute, 'attribute');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getEncryptedConfig({ attribute, callback });
+    }
+
+    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions) {
+        if (Object.prototype.hasOwnProperty.call(this.config, options.attribute)) {
             if (this._systemSecret !== undefined) {
                 return tools.maybeCallbackWithError(
-                    callback,
+                    options.callback,
                     null,
-                    tools.decrypt(this._systemSecret, this.config[attribute])
+                    tools.decrypt(this._systemSecret, this.config[options.attribute])
                 );
             } else {
                 try {
@@ -1519,13 +1636,13 @@ class AdapterClass extends EventEmitter {
                 }
                 this._systemSecret = this._systemSecret || DEFAULT_SECRET;
                 return tools.maybeCallbackWithError(
-                    callback,
+                    options.callback,
                     null,
-                    tools.decrypt(this._systemSecret, this.config[attribute])
+                    tools.decrypt(this._systemSecret, this.config[options.attribute])
                 );
             }
         } else {
-            return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
+            return tools.maybeCallbackWithError(options.callback, `Attribute "${options.attribute}" not found`);
         }
     }
 
@@ -9463,10 +9580,9 @@ class AdapterClass extends EventEmitter {
 
                         if (typeof this._options.message === 'function' && !adapterConfig.common.messagebox) {
                             this._logger.error(
-                                this.namespaceLog +
-                                    ' : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.'
+                                `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
                             );
-                        } else if (/*typeof options.message === 'function' && */ adapterConfig.common.messagebox) {
+                        } else if (adapterConfig.common.messagebox) {
                             this.mboxSubscribed = true;
                             adapterStates.subscribeMessage('system.adapter.' + this.namespace);
                         }
