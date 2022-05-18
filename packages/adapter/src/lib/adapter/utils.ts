@@ -253,6 +253,19 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
+    static assertsBoolean(value: unknown, name: string): asserts value is boolean {
+        if (typeof value !== 'boolean') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
     static assertsNumber(value: unknown, name: string): asserts value is number {
         if (typeof value !== 'number') {
             throw new Error(
