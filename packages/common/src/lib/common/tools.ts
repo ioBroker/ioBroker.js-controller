@@ -2159,9 +2159,10 @@ export function getDefaultDataDir(): string {
  */
 export function getConfigFileName(): string {
     const _appName = appName.toLowerCase();
+    let devConfigDir;
 
     if (_isDevInstallation()) {
-        let devConfigDir = __dirname.replace(/\\/g, '/');
+        devConfigDir = __dirname.replace(/\\/g, '/');
         const devConfigParts = devConfigDir.split('/');
 
         // dev install -> Remove /lib
@@ -2190,6 +2191,10 @@ export function getConfigFileName(): string {
         // If installed with npm -> remove node_modules/@iobroker/js-controller-common/src/lib/common
         configParts.splice(configParts.length - 6, 6);
         configDir = configParts.join('/');
+    }
+
+    if (!fs.existsSync(`${configDir}/${_appName}-data/${_appName}.json`) && devConfigDir) {
+        return `${devConfigDir}/data/${_appName}.json`;
     }
 
     return `${configDir}/${_appName}-data/${_appName}.json`;
