@@ -40,6 +40,7 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import { DelObjectOptions, ErrorCallback } from 'iobroker';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient;
@@ -227,7 +228,7 @@ interface InternalGetObjectOptions {
 interface InternalGetObjectsOptions {
     pattern: string;
     type?: string;
-    enums?: ioBroker.EnumList;
+    enums?: ioBroker.EnumList | null;
     options?: unknown;
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }
@@ -236,6 +237,11 @@ interface InternalGetObjectsOptions {
  * Here we define dynamic methods which need overloads
  */
 interface AdapterClass {
+    /**
+     * Reads an object (which might not belong to this adapter) from the object db
+     */
+    getForeignObjectAsync<T extends string>(id: T, options?: unknown): ioBroker.GetObjectPromise<T>;
+
     /**
      * Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
      */
@@ -480,6 +486,36 @@ interface InternalGetChannelsOfOptions {
     options: unknown;
 }
 
+interface InternalGetAdapterObjectsOptions {
+    callback?: (objects: Record<string, ioBroker.AdapterScopedObject>) => void;
+}
+
+interface InternalGetObjectViewOptions {
+    design: string;
+    search: string;
+    params: ioBroker.GetObjectViewParams;
+    options: unknown;
+    callback?: ioBroker.GetObjectViewCallback<ioBroker.AnyObject>;
+}
+
+interface InternalGetEnumOptions {
+    _enum: string;
+    options: unknown;
+    callback?: ioBroker.GetEnumCallback;
+}
+
+interface InternalGetEnumsOptions {
+    _enumList?: ioBroker.EnumList;
+    options: unknown;
+    callback?: ioBroker.GetEnumsCallback;
+}
+
+interface InternalDelObjectOptions {
+    id: string;
+    options?: DelObjectOptions | null;
+    callback?: ErrorCallback;
+}
+
 /**
  * Adapter class
  *
@@ -507,7 +543,7 @@ class AdapterClass extends EventEmitter {
     private _intervals: Set<any>;
     private _delays: Set<any>;
     private tools: any; // TODO remove the shim
-    private log?: Log;
+    protected log?: Log;
     private readonly performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
@@ -594,10 +630,6 @@ class AdapterClass extends EventEmitter {
         modePermitted?: boolean,
         modeInherited?: boolean
     ) => Promise<void>;
-    protected readonly getForeignObjectAsync: <T extends string>(
-        id: T,
-        options?: unknown
-    ) => ioBroker.GetObjectPromise<T>;
     protected readonly extendForeignObjectAsync: <T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -1390,7 +1422,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'destroySession not processed because States database not connected'
+                `${this.namespaceLog} destroySession not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -1403,7 +1435,7 @@ class AdapterClass extends EventEmitter {
             return objects;
         }
 
-        const res: (ioBroker.AnyObject | null)[] = [];
+        const res: (ioBroker.AnyObject | null | undefined)[] = [];
         for (const key of keys) {
             try {
                 const obj = await this.getForeignObjectAsync(key, options);
@@ -2072,7 +2104,9 @@ class AdapterClass extends EventEmitter {
                 if (!commandPermission.type) {
                     continue;
                 }
+                // @ts-expect-error we fix this later
                 acl[commandPermission.type] = acl[commandPermission.type] || {};
+                // @ts-expect-error we fix this later
                 acl[commandPermission.type][commandPermission.operation] = true;
             }
 
@@ -2136,15 +2170,20 @@ class AdapterClass extends EventEmitter {
                             for (const type of Object.keys(gAcl)) {
                                 // fix bug. Some version have user instead of users.
                                 if (type === 'user') {
+                                    // @ts-expect-error fix it
                                     acl.users = acl.users || {};
                                 } else {
+                                    // @ts-expect-error fix it
                                     acl[type] = acl[type] || {};
                                 }
+                                // @ts-expect-error fix it
                                 for (const op of Object.keys(gAcl[type])) {
                                     // fix error
                                     if (type === 'user') {
+                                        // @ts-expect-error fix it
                                         acl.users[op] = acl.users[op] || gAcl.user[op];
                                     } else {
+                                        // @ts-expect-error fix it
                                         acl[type][op] = acl[type][op] || gAcl[type][op];
                                     }
                                 }
@@ -2217,6 +2256,7 @@ class AdapterClass extends EventEmitter {
                         this._options.unload(finishUnload);
                     } else {
                         // The method takes no arguments, so it must return a Promise
+                        // @ts-expect-error already fixed in latest types
                         const unloadPromise = this._options.unload();
                         if (unloadPromise instanceof Promise) {
                             // Call finishUnload in the case of success and failure
@@ -2695,7 +2735,7 @@ class AdapterClass extends EventEmitter {
         }
         Utils.assertsOptionalCallback(callback, 'callback');
 
-        return this._setObject({ id, obj, options, callback });
+        return this._setObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
     private async _setObject(options: InternalSetObjectOptions) {
@@ -2703,7 +2743,7 @@ class AdapterClass extends EventEmitter {
             this._defaultObjs = (await import('./defaultObjs.js')).createDefaults();
         }
 
-        if (!obj) {
+        if (!options.obj) {
             this._logger.error(`${this.namespaceLog} setObject: try to set null object for ${options.id}`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_EMPTY_OBJECT);
         }
@@ -2738,15 +2778,21 @@ class AdapterClass extends EventEmitter {
                 this._logger.warn(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common missing!`
                 );
+                // @ts-expect-error fix later on
                 options.obj.common = {};
             } else if (options.obj.type === 'state') {
                 // Try to extend the model for type='state'
                 // Check property 'role' by 'state'
                 if (
                     Object.prototype.hasOwnProperty.call(options.obj.common, 'role') &&
-                    this._defaultObjs[obj.common.role]
+                    this._defaultObjs[options.obj.common.role]
                 ) {
-                    obj.common = extend(true, {}, this._defaultObjs[options.obj.common.role], options.obj.common);
+                    options.obj.common = extend(
+                        true,
+                        {},
+                        this._defaultObjs[options.obj.common.role],
+                        options.obj.common
+                    );
                 } else if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'role')) {
                     this._logger.warn(
                         `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.role missing!`
@@ -2796,10 +2842,10 @@ class AdapterClass extends EventEmitter {
             }
 
             options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
-            options.obj.user = options.obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
+            options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
             options.obj.ts = options.obj.ts || Date.now();
 
-            this._setObjectWithDefaultValue(options.id, options.obj, options, options.callback);
+            this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
         } else {
             this._logger.error(`${this.namespaceLog} setObject ${options.id} mandatory property type missing!`);
             return tools.maybeCallbackWithError(options.callback, 'mandatory property type missing!');
@@ -2816,7 +2862,7 @@ class AdapterClass extends EventEmitter {
     private async _setObjectWithDefaultValue(
         id: string,
         obj: ioBroker.SettableObject,
-        options: Record<string, any> | null,
+        options?: Record<string, any> | null,
         callback?: ioBroker.SetObjectCallback
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!adapterObjects) {
@@ -2859,6 +2905,11 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    // external signature
+    getAdapterObjects(
+        callback: (objects: Record<string, ioBroker.AdapterScopedObject>) => void
+    ): Promise<Record<string, ioBroker.AdapterScopedObject> | void>;
+
     /**
      * Get all states, channels and devices of this adapter.
      *
@@ -2873,11 +2924,18 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async getAdapterObjects(callback) {
-        const ret = {};
+    getAdapterObjects(callback: unknown): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getAdapterObjects({ callback });
+    }
+
+    private async _getAdapterObjects(
+        options: InternalGetAdapterObjectsOptions
+    ): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
+        const ret: Record<string, ioBroker.AdapterScopedObject> = {};
         // Adds result rows to the return object
-        /** @param {any[] | undefined} rows */
-        const addRows = rows => {
+        const addRows = (rows: any[] | undefined) => {
             if (rows) {
                 for (const { id, value } of rows) {
                     ret[id] = value;
@@ -2886,42 +2944,59 @@ class AdapterClass extends EventEmitter {
         };
 
         if (!adapterObjects) {
-            return tools.maybeCallback(callback, ret);
+            return tools.maybeCallback(options.callback, ret);
         }
 
-        const options = {
-            startkey: this.namespace + '.',
-            endkey: this.namespace + '.\u9999',
+        const params = {
+            startkey: `${this.namespace}.`,
+            endkey: `${this.namespace}.\u9999`,
             include_docs: true
         };
 
         try {
-            const folders = await adapterObjects.getObjectViewAsync('system', 'folder', options);
-            addRows(folders.rows);
+            const folders = await adapterObjects.getObjectViewAsync('system', 'folder', params);
+            if (folders) {
+                addRows(folders.rows);
+            }
         } catch {
             /* ignore, we'll return what we get till now */
         }
         try {
-            const devices = await adapterObjects.getObjectViewAsync('system', 'device', options);
-            addRows(devices.rows);
+            const devices = await adapterObjects.getObjectViewAsync('system', 'device', params);
+            if (devices) {
+                addRows(devices.rows);
+            }
         } catch {
             /* ignore, we'll return what we get till now */
         }
         try {
-            const channels = await adapterObjects.getObjectViewAsync('system', 'channel', options);
-            addRows(channels.rows);
+            const channels = await adapterObjects.getObjectViewAsync('system', 'channel', params);
+            if (channels) {
+                addRows(channels.rows);
+            }
         } catch {
             /* ignore, we'll return what we get till now */
         }
         try {
-            const states = await adapterObjects.getObjectViewAsync('system', 'state', options);
-            addRows(states.rows);
+            const states = await adapterObjects.getObjectViewAsync('system', 'state', params);
+            if (states) {
+                addRows(states.rows);
+            }
         } catch {
             /* ignore, we'll return what we get till now */
         }
 
-        return tools.maybeCallback(callback, ret);
+        return tools.maybeCallback(options.callback, ret);
     }
+
+    // public signatures
+    extendObject(id: string, objPart: ioBroker.PartialObject, callback?: ioBroker.SetObjectCallback): void;
+    extendObject(
+        id: string,
+        objPart: ioBroker.PartialObject,
+        options: ioBroker.ExtendObjectOptions,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
 
     /**
      * Extend some object and create it if it does not exist
@@ -2983,11 +3058,14 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async extendObject(id, obj, options, callback) {
+    extendObject(id: unknown, obj: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(id, 'id');
 
         if (!obj) {
             this._logger.error(`${this.namespaceLog} extendObject: try to extend null object for ${id}`);
@@ -3003,132 +3081,153 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NO_OBJECT);
         }
 
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._extendObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
+    }
+
+    private async _extendObject(options: InternalSetObjectOptions) {
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} extendObject not processed because Objects database not connected`);
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
-            tools.validateGeneralObjectProperties(obj, true);
+            tools.validateGeneralObjectProperties(options.obj, true);
         } catch (e) {
             // todo: in the future we will not create this object
-            this._logger.warn(`${this.namespaceLog} Object ${id} is invalid: ${e.message}`);
+            this._logger.warn(`${this.namespaceLog} Object ${options.id} is invalid: ${e.message}`);
             this._logger.warn(
                 `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
             );
         }
 
         try {
-            this._utils.validateId(id, false, null);
+            this._utils.validateId(options.id, false, null);
         } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+            return tools.maybeCallbackWithError(options.callback, err);
         }
 
-        id = this._utils.fixId(id, false);
+        options.id = this._utils.fixId(options.id, false);
 
-        const mId = id.replace(FORBIDDEN_CHARS, '_');
-        if (mId !== id) {
-            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
-            id = mId;
+        const mId = options.id.replace(FORBIDDEN_CHARS, '_');
+        if (mId !== options.id) {
+            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${options.id} changed to ${mId}`);
+            options.id = mId;
         }
 
-        if (obj.children || obj.parent) {
-            this._logger.warn(`${this.namespaceLog} Do not use parent or children for ${id}`);
+        if ('children' in options.obj || 'parent' in options.obj) {
+            this._logger.warn(`${this.namespaceLog} Do not use parent or children for ${options.id}`);
         }
 
         // Read whole object
         let oldObj;
         try {
-            oldObj = await adapterObjects.getObjectAsync(id, options);
+            oldObj = await adapterObjects.getObjectAsync(options.id, options.options);
         } catch (e) {
-            return tools.maybeCallbackWithError(callback, e);
+            return tools.maybeCallbackWithError(options.callback, e);
         }
 
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} extendObject not processed because Objects database not connected`);
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         // remove the preserve attributes
-        if (oldObj && options && tools.isObject(options.preserve)) {
-            tools.removePreservedProperties(options.preserve, oldObj, obj);
+        if (oldObj && options.options && tools.isObject(options.options.preserve)) {
+            tools.removePreservedProperties(options.options.preserve, oldObj, options.obj);
         }
 
         // delete arrays if they should be changed
         if (
-            obj &&
-            ((obj.common && obj.common.members) ||
-                (obj.native && obj.native.repositories) ||
-                (obj.native && obj.native.certificates) ||
-                (obj.native && obj.native.devices))
+            options.obj &&
+            ((options.obj.common && 'members' in options.obj.common) ||
+                (options.obj.native && 'repositories' in options.obj.native) ||
+                (options.obj.native && 'certificates' in options.obj.native) ||
+                (options.obj.native && 'devices' in options.obj.native))
         ) {
             if (!oldObj) {
-                this._logger.error(`${this.namespaceLog} Object ${id} not exist!`);
+                this._logger.error(`${this.namespaceLog} Object ${options.id} not exist!`);
                 oldObj = {};
             }
-            if (obj.native && obj.native.repositories && oldObj.native && oldObj.native.repositories) {
+            if (
+                options.obj.native &&
+                'repositories' in options.obj.native &&
+                oldObj.native &&
+                oldObj.native.repositories
+            ) {
                 oldObj.native.repositories = [];
             }
-            if (obj.common && obj.common.members && oldObj.common && oldObj.common.members) {
+            if (options.obj.common && 'members' in options.obj.common && oldObj.common && oldObj.common.members) {
                 oldObj.common.members = [];
             }
-            if (obj.native && obj.native.certificates && oldObj.native && oldObj.native.certificates) {
+            if (
+                options.obj.native &&
+                'certificates' in options.obj.native &&
+                oldObj.native &&
+                oldObj.native.certificates
+            ) {
                 oldObj.native.certificates = [];
             }
-            if (obj.native && obj.native.devices && oldObj.native && oldObj.native.devices) {
+            if (options.obj.native && 'devices' in options.obj.native && oldObj.native && oldObj.native.devices) {
                 oldObj.native.devices = [];
             }
 
-            obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-            obj.ts = obj.ts || Date.now();
+            options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
+            options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+            options.obj.ts = options.obj.ts || Date.now();
 
-            obj = extend(true, oldObj, obj);
+            options.obj = extend(true, oldObj, options.obj);
 
-            return adapterObjects.setObject(id, obj, options, callback);
+            return adapterObjects.setObject(options.id, options.obj, options.options, options.callback);
         } else {
-            obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
-            obj.ts = obj.ts || Date.now();
+            options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
+            options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+            options.obj.ts = options.obj.ts || Date.now();
 
-            if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
+            if (
+                (options.obj.type && options.obj.type === 'state') ||
+                (!options.obj.type && oldObj && oldObj.type === 'state')
+            ) {
                 if (
-                    obj.common &&
-                    Object.prototype.hasOwnProperty.call(obj.common, 'custom') &&
-                    obj.common.custom !== null &&
-                    !tools.isObject(obj.common.custom)
+                    options.obj.common &&
+                    Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
+                    options.obj.common.custom !== null &&
+                    !tools.isObject(options.obj.common.custom)
                 ) {
                     this._logger.error(
-                        `${this.namespaceLog} extendObject ${id} (type=${
-                            obj.type
-                        }) property common.custom is of type ${typeof obj.common.custom}, expected object.`
+                        `${this.namespaceLog} extendObject ${options.id} (type=${
+                            options.obj.type
+                        }) property common.custom is of type ${typeof options.obj.common.custom}, expected object.`
                     );
-                    return tools.maybeCallbackWithError(callback, 'common.custom needs to be an object');
+                    return tools.maybeCallbackWithError(options.callback, 'common.custom needs to be an object');
                 }
             } else {
                 if (
-                    obj.common &&
-                    Object.prototype.hasOwnProperty.call(obj.common, 'custom') &&
-                    obj.common.custom !== null
+                    options.obj.common &&
+                    Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
+                    options.obj.common.custom !== null
                 ) {
                     this._logger.warn(
-                        `${this.namespaceLog} setObject ${id} (type=${obj.type}) property common.custom must not exist.`
+                        `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.custom must not exist.`
                     );
-                    delete obj.common.custom;
+                    delete options.obj.common.custom;
                 }
             }
 
             if (!oldObj) {
                 // if old object is not existing we behave like setObject
-                return this.setForeignObject(id, obj, options, callback);
+                return this.setForeignObject(options.id, options.obj, options.options, options.callback);
             }
 
             try {
-                const cbObj = await adapterObjects.extendObjectAsync(id, obj, options);
+                const cbObj = await adapterObjects.extendObjectAsync(options.id, options.obj, options);
                 let defState;
-                if (obj.type === 'state' || oldObj.type === 'state') {
-                    if (obj.common && obj.common.def !== undefined) {
-                        defState = obj.common.def;
+                if (options.obj.type === 'state' || oldObj.type === 'state') {
+                    if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
+                        defState = options.obj.common.def;
                     } else if (oldObj.common && oldObj.common.def !== undefined) {
                         defState = oldObj.common.def;
                     }
@@ -3137,30 +3236,43 @@ class AdapterClass extends EventEmitter {
                 if (defState !== undefined) {
                     let currentStateObj;
                     try {
-                        currentStateObj = await this.getForeignStateAsync(id);
+                        currentStateObj = await this.getForeignStateAsync(options.id);
                     } catch {
                         // do nothing
                     }
                     if (!currentStateObj) {
                         try {
-                            await this.setForeignStateAsync(id, {
+                            await this.setForeignStateAsync(options.id, {
                                 val: defState,
                                 q: QUALITY_SUBS_INITIAL,
                                 ack: true
                             });
                         } catch (e) {
                             this._logger.info(
-                                `${this.namespaceLog} Default value for state "${id}" could not be set: ${e.message}`
+                                `${this.namespaceLog} Default value for state "${options.id}" could not be set: ${e.message}`
                             );
                         }
                     }
                 }
-                return tools.maybeCallbackWithError(callback, null, cbObj);
+                return tools.maybeCallbackWithError(options.callback, null, cbObj);
             } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
+                return tools.maybeCallbackWithError(options.callback, e);
             }
         }
     }
+
+    // external signatures
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: unknown,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
 
     /**
      * Same as {@link Adapter.setObject}, but for any object.
@@ -3180,10 +3292,16 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    setForeignObject(id, obj, options, callback) {
+    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
+        }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(id, 'id');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
         }
 
         if (!obj) {
@@ -3200,6 +3318,13 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NO_OBJECT);
         }
 
+        return this._setForeignObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
+    }
+
+    private _setForeignObject(_options: InternalSetObjectOptions): void {
+        const { options, callback, obj } = _options;
+        let { id } = _options;
+
         obj.from = obj.from || 'system.adapter.' + this.namespace;
         obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
         obj.ts = obj.ts || Date.now();
@@ -3213,7 +3338,7 @@ class AdapterClass extends EventEmitter {
         }
 
         // check that alias is valid if given
-        if (obj.common && obj.common.alias && obj.common.alias.id) {
+        if (obj.common && 'alias' in obj.common && obj.common.alias.id) {
             // if alias is object validate read and write
             if (typeof obj.common.alias.id === 'object') {
                 try {
@@ -3245,6 +3370,19 @@ class AdapterClass extends EventEmitter {
         this._setObjectWithDefaultValue(id, obj, options, callback);
     }
 
+    // external signatures
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: ioBroker.ExtendObjectOptions,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+
     /**
      * Same as {@link Adapter.extendObject}, but for any object.
      *
@@ -3263,7 +3401,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async extendForeignObject(id, obj, options, callback) {
+    extendForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3287,10 +3425,25 @@ class AdapterClass extends EventEmitter {
             id = mId;
         }
 
+        Utils.assertsString(id, 'id');
+
         if (!obj) {
             this._logger.error(`${this.namespaceLog} extendForeignObject: try to set null object for ${id}`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_EMPTY_OBJECT);
         }
+
+        Utils.assertsObject(obj, 'obj');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._extendForeignObjectAsync({ id, obj: obj as ioBroker.SettableObject, callback, options });
+    }
+
+    private async _extendForeignObjectAsync(_options: InternalSetObjectOptions): Promise<void> {
+        const { id, callback, options } = _options;
+        let { obj } = _options;
 
         // Read whole object
         let oldObj;
@@ -3308,25 +3461,25 @@ class AdapterClass extends EventEmitter {
         // delete arrays if they should be changed
         if (
             obj &&
-            ((obj.common && obj.common.members) ||
-                (obj.native && obj.native.repositories) ||
-                (obj.native && obj.native.certificates) ||
-                (obj.native && obj.native.devices))
+            ((obj.common && 'members' in obj.common) ||
+                (obj.native && 'repositories' in obj.native) ||
+                (obj.native && 'certificates' in obj.native) ||
+                (obj.native && 'devices' in obj.native))
         ) {
             if (!oldObj) {
                 this._logger.error(`${this.namespaceLog} Object ${id} not exist!`);
                 oldObj = {};
             }
-            if (obj.native && obj.native.repositories && oldObj.native && oldObj.native.repositories) {
+            if (obj.native && 'repositories' in obj.native && oldObj.native && oldObj.native.repositories) {
                 oldObj.native.repositories = [];
             }
-            if (obj.common && obj.common.members && oldObj.common && oldObj.common.members) {
+            if (obj.common && 'members' in obj.common && oldObj.common && oldObj.common.members) {
                 oldObj.common.members = [];
             }
-            if (obj.native && obj.native.certificates && oldObj.native && oldObj.native.certificates) {
+            if (obj.native && 'certificates' in obj.native && oldObj.native && oldObj.native.certificates) {
                 oldObj.native.certificates = [];
             }
-            if (obj.native && obj.native.devices && oldObj.native && oldObj.native.devices) {
+            if (obj.native && 'devices' in obj.native && oldObj.native && oldObj.native.devices) {
                 oldObj.native.devices = [];
             }
 
@@ -3378,7 +3531,7 @@ class AdapterClass extends EventEmitter {
                 const cbObj = await adapterObjects.extendObjectAsync(id, obj, options);
                 if (cbObj.value.type === 'state') {
                     let defState;
-                    if (obj.common && obj.common.def !== undefined) {
+                    if (obj.common && 'def' in obj.common && obj.common.def !== undefined) {
                         defState = obj.common.def;
                     } else if (oldObj.common && oldObj.common.def !== undefined) {
                         defState = oldObj.common.def;
@@ -3413,6 +3566,10 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    // external signature
+    getObject(id: string, callback: ioBroker.GetObjectCallback): void;
+    getObject(id: string, options: unknown, callback: ioBroker.GetObjectCallback): void;
+
     /**
      * Get object of this instance.
      *
@@ -3429,15 +3586,13 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getObject(id, options, callback) {
+    getObject(id: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'getObject not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} getObject not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -3449,6 +3604,20 @@ class AdapterClass extends EventEmitter {
 
         adapterObjects.getObject(this._utils.fixId(id), options, callback);
     }
+
+    getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
+        params: ioBroker.GetObjectViewParams | null | undefined,
+        callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
+    ): void;
+    getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
+        params: ioBroker.GetObjectViewParams | null | undefined,
+        options: unknown,
+        callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
+    ): void;
 
     /**
      * Read object view from DB.
@@ -3478,59 +3647,76 @@ class AdapterClass extends EventEmitter {
      *           }
      *           </code></pre>
      */
-    getObjectView(design, search, params, options, callback) {
+    getObjectView(design: unknown, search: unknown, params: unknown, options: unknown, callback?: unknown): void {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'getObjectView not processed because Objects database not connected'
+                `${this.namespaceLog} getObjectView not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         params = params || {};
+        Utils.assertsString(design, 'design');
+        Utils.assertsString(search, 'search');
+        Utils.assertsObject(params, 'params');
+        Utils.assertsOptionalCallback(callback, 'callback');
 
+        return this._getObjectView({ design, search, params, options, callback });
+    }
+
+    private _getObjectView(_options: InternalGetObjectViewOptions) {
+        const { design, search, params, options, callback } = _options;
         // Limit search ranges for system views to the relevant namespaces
         // to prevent too wide searches where the objects never will be
         if (design === 'system' && !params.startkey && (!params.endkey || params.endkey === '\u9999')) {
             switch (search) {
                 case 'host':
                     params.startkey = 'system.host.';
-                    params.endKey = 'system.host.\u9999';
+                    params.endkey = 'system.host.\u9999';
                     break;
                 case 'adapter':
                 case 'instance':
                 case 'instanceStats':
                     params.startkey = 'system.adapter.';
-                    params.endKey = 'system.adapter.\u9999';
+                    params.endkey = 'system.adapter.\u9999';
                     break;
                 case 'enum':
                     params.startkey = 'enum.';
-                    params.endKey = 'enum.\u9999';
+                    params.endkey = 'enum.\u9999';
                     break;
                 case 'script':
                     params.startkey = 'script.';
-                    params.endKey = 'script.\u9999';
+                    params.endkey = 'script.\u9999';
                     break;
                 case 'group':
                     params.startkey = 'system.group.';
-                    params.endKey = 'system.group.\u9999';
+                    params.endkey = 'system.group.\u9999';
                     break;
                 case 'user':
                     params.startkey = 'system.user.';
-                    params.endKey = 'system.user.\u9999';
+                    params.endkey = 'system.user.\u9999';
                     break;
                 case 'config':
                     params.startkey = 'system.';
-                    params.endKey = 'system.\u9999';
+                    params.endkey = 'system.\u9999';
                     break;
             }
         }
 
         return adapterObjects.getObjectView(design, search, params, options, callback);
     }
+
+    // external signatures
+    getObjectList(params: ioBroker.GetObjectListParams | null, callback: ioBroker.GetObjectListCallback): void;
+    getObjectList(
+        params: ioBroker.GetObjectListParams | null,
+        options: { sorted?: boolean } | Record<string, any>,
+        callback: ioBroker.GetObjectListCallback
+    ): void;
 
     /**
      * Read object list from DB.
@@ -3559,7 +3745,7 @@ class AdapterClass extends EventEmitter {
      *          }
      *       </code></pre>
      */
-    getObjectList(params, options, callback) {
+    getObjectList(params: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3567,13 +3753,18 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'getObjectList not processed because Objects database not connected'
+                `${this.namespaceLog} getObjectList not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         adapterObjects.getObjectList(params, options, callback);
     }
+
+    // external signatures
+    getEnum(callback: ioBroker.GetEnumCallback): void;
+    getEnum(name: string, callback: ioBroker.GetEnumCallback): void;
+    getEnum(name: string, options: unknown, callback: ioBroker.GetEnumCallback): void;
 
     /**
      * Get the enum tree.
@@ -3605,7 +3796,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getEnum(_enum, options, callback) {
+    getEnum(_enum: unknown, options?: unknown, callback?: unknown) {
         if (typeof _enum === 'function') {
             callback = _enum;
             options = null;
@@ -3615,22 +3806,33 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(_enum, '_enum');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getEnum({ _enum, options, callback });
+    }
+
+    private _getEnum(_options: InternalGetEnumOptions) {
+        const { options, callback } = _options;
+        let { _enum } = _options;
+
         if (!adapterObjects) {
-            this._logger.info(this.namespaceLog + ' ' + 'getEnum not processed because Objects database not connected');
+            this._logger.info(`${this.namespaceLog} getEnum not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!_enum.startsWith('enum.')) {
             _enum = `enum.${_enum}`;
         }
-        const result = {};
+        const result: Record<string, ioBroker.Enum> = {};
 
         adapterObjects.getObjectView(
             'system',
             'enum',
             {
-                startkey: _enum + '.',
-                endkey: _enum + '.\u9999'
+                startkey: `${_enum}.`,
+                endkey: `${_enum}.\u9999`
             },
             options,
             (err, res) => {
@@ -3638,14 +3840,19 @@ class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, err);
                 }
                 if (res && res.rows) {
-                    for (let t = 0; t < res.rows.length; t++) {
-                        result[res.rows[t].id] = res.rows[t].value;
+                    for (const row of res.rows) {
+                        result[row.id] = row.value;
                     }
                 }
                 return tools.maybeCallbackWithError(callback, err, result, _enum);
             }
         );
     }
+
+    // public signatures
+    getEnums(callback: ioBroker.GetEnumsCallback): void;
+    getEnums(enumList: ioBroker.EnumList, callback: ioBroker.GetEnumsCallback): void;
+    getEnums(enumList: ioBroker.EnumList, options: unknown, callback: ioBroker.GetEnumsCallback): void;
 
     /**
      * Read the members of given enums.
@@ -3691,7 +3898,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async getEnums(_enumList, options, callback) {
+    getEnums(_enumList: unknown, options?: unknown, callback?: unknown): Promise<void> {
         if (typeof _enumList === 'function') {
             callback = _enumList;
             _enumList = null;
@@ -3700,14 +3907,24 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._getEnums({ _enumList: _enumList as ioBroker.EnumList, options, callback });
+    }
+
+    private async _getEnums(_options: InternalGetEnumsOptions): Promise<void> {
+        const { options, callback } = _options;
+        let { _enumList } = _options;
+
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'getEnums not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} getEnums not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        const _enums = {};
+        const _enums: {
+            [groupName: string]: Record<string, Enum>;
+        } = {};
         if (_enumList) {
             if (typeof _enumList === 'string') {
                 _enumList = [_enumList];
@@ -3716,11 +3933,11 @@ class AdapterClass extends EventEmitter {
 
             for (const currEnum of _enumList) {
                 promises.push(
-                    new Promise((resolve, reject) =>
+                    new Promise<void>((resolve, reject) =>
                         this.getEnum(currEnum, options, (err, list, _enum) => {
                             if (err) {
                                 return reject(err);
-                            } else if (list) {
+                            } else if (list && _enum) {
                                 _enums[_enum] = list;
                             }
                             resolve();
@@ -3750,17 +3967,19 @@ class AdapterClass extends EventEmitter {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     }
-                    const result = {};
+                    const result: {
+                        [groupName: string]: Record<string, Enum>;
+                    } = {};
                     if (res && res.rows) {
-                        for (let i = 0; i < res.rows.length; i++) {
-                            const parts = res.rows[i].id.split('.', 3);
+                        for (const row of res.rows) {
+                            const parts: string[] = row.id.split('.', 3);
                             if (!parts[2]) {
                                 continue;
                             }
                             if (!result[`${parts[0]}.${parts[1]}`]) {
                                 result[`${parts[0]}.${parts[1]}`] = {};
                             }
-                            result[`${parts[0]}.${parts[1]}`][res.rows[i].id] = res.rows[i].value;
+                            result[`${parts[0]}.${parts[1]}`][row.id] = row.value;
                         }
                     }
 
@@ -3793,7 +4012,7 @@ class AdapterClass extends EventEmitter {
     getForeignObjects<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
-        enums: ioBroker.EnumList,
+        enums: ioBroker.EnumList | null,
         options: unknown,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
@@ -3879,7 +4098,17 @@ class AdapterClass extends EventEmitter {
             );
         }
 
-        return this._getForeignObjects({ pattern, type, enums, options, callback });
+        if (type !== undefined) {
+            Utils.assertsString(type, 'type');
+        }
+
+        return this._getForeignObjects({
+            pattern,
+            type,
+            enums: enums as ioBroker.EnumList | undefined | null,
+            options,
+            callback
+        });
     }
 
     private _getForeignObjects(options: InternalGetObjectsOptions) {
@@ -3904,6 +4133,7 @@ class AdapterClass extends EventEmitter {
             }
 
             // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
+            // @ts-expect-error adjust type checks or code here
             this.getEnums(options.enums, null, (err, _enums) => {
                 const list: Record<string, any> = {};
                 if (res && res.rows) {
@@ -3952,6 +4182,10 @@ class AdapterClass extends EventEmitter {
         });
     }
 
+    // external signature
+    findForeignObject(idOrName: string, type: string, callback: FindObjectCallback): void;
+    findForeignObject(idOrName: string, type: string, options: unknown, callback: FindObjectCallback): void;
+
     /**
      * Find any object by name or ID.
      *
@@ -3970,7 +4204,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    findForeignObject(id, type, options, callback) {
+    findForeignObject(id: unknown, type: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3981,7 +4215,7 @@ class AdapterClass extends EventEmitter {
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'findForeignObject not processed because Objects database not connected'
+                `${this.namespaceLog} findForeignObject not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -4065,6 +4299,9 @@ class AdapterClass extends EventEmitter {
         });
     }
 
+    delObject(id: string, callback?: ioBroker.ErrorCallback): void;
+    delObject(id: string, options: ioBroker.DelObjectOptions, callback?: ioBroker.ErrorCallback): void;
+
     /**
      * Delete an object of this instance.
      *
@@ -4084,39 +4321,46 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    delObject(id, options, callback) {
+    delObject(id: unknown, options: unknown, callback?: unknown) {
+        Utils.assertsString(id, 'id');
+
         // delObject does the same as delForeignObject, but fixes the ID first
         id = this._utils.fixId(id);
         this.delForeignObject(id, options, callback);
     }
 
-    private _deleteObjects(tasks: { id: ID; [other: string]: any }, options, cb) {
+    private _deleteObjects(
+        tasks: { id: string; [other: string]: any }[],
+        options: Record<string, any>,
+        cb: () => void
+    ) {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(cb);
         } else {
             const task = tasks.shift();
-            adapterObjects.delObject(task.id, options, async err => {
+            adapterObjects.delObject(task!.id, options, async err => {
                 if (err) {
                     return tools.maybeCallbackWithError(cb, err);
                 }
-                if (task.state) {
+                if (task!.state) {
                     try {
-                        await this.delForeignStateAsync(task.id, options);
+                        await this.delForeignStateAsync(task!.id, options);
                     } catch (e) {
-                        this._logger.warn(
-                            this.namespaceLog + ' ' + `Could not remove state of ${task.id}: ${e.message}`
-                        );
+                        this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
                     }
                 }
                 try {
-                    await tools.removeIdFromAllEnums(adapterObjects, task.id, this.enums);
+                    await tools.removeIdFromAllEnums(adapterObjects, task!.id, this.enums);
                 } catch (e) {
-                    this._logger.warn(this.namespaceLog + ' ' + `Could not remove ${task.id} from enums: ${e.message}`);
+                    this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
                 }
                 setImmediate(() => this._deleteObjects(tasks, options, cb));
             });
         }
     }
+
+    delForeignObject(id: string, callback?: ErrorCallback): void;
+    delForeignObject(id: string, options: DelObjectOptions, callback?: ErrorCallback): void;
 
     /**
      * Delete any object.
@@ -4134,14 +4378,14 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    delForeignObject(id, options, callback) {
+    delForeignObject(id: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'delForeignObject not processed because Objects database not connected'
+                `${this.namespaceLog} delForeignObject not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -4152,6 +4396,12 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
+        return this._delForeignObject({ id, options, callback });
+    }
+
+    private _delForeignObject(_options: InternalDelObjectOptions) {
+        const { id, options, callback } = _options;
+
         // If recursive deletion of all underlying objects, including id
         if (options && options.recursive) {
             // read object itself
@@ -4159,13 +4409,13 @@ class AdapterClass extends EventEmitter {
                 const tasks =
                     obj && (!obj.common || !obj.common.dontDelete) ? [{ id, state: obj.type === 'state' }] : [];
 
-                const selector = { startkey: id + '.', endkey: id + '.\u9999' };
+                const selector = { startkey: `${id}.`, endkey: `${id}.\u9999` };
                 // read all underlying states
                 adapterObjects.getObjectList(selector, options, (err, res) => {
                     res &&
                         res.rows &&
                         res.rows.forEach(
-                            item =>
+                            (item: ioBroker.GetObjectListItem) =>
                                 !tasks.find(task => task.id === item.id) &&
                                 (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
                                 tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })

@@ -3044,7 +3044,7 @@ export class ObjectsInRedisClient {
     // cb version with options
     getObject<T extends string>(
         id: T,
-        options: Record<string, any> | undefined,
+        options: Record<string, any> | undefined | null,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
     // no options but cb
@@ -3052,7 +3052,7 @@ export class ObjectsInRedisClient {
     // Promise version
     getObject<T extends string>(
         id: T,
-        options?: Record<string, any>
+        options?: Record<string, any> | null
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
     getObject<T extends string>(
         id: T,
@@ -3086,7 +3086,7 @@ export class ObjectsInRedisClient {
 
     getObjectAsync<T extends string>(
         id: T,
-        options?: Record<string, any>
+        options?: Record<string, any> | null
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
         return new Promise((resolve, reject) =>
             this.getObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj)))
@@ -4311,7 +4311,7 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        options: CallOptions | undefined,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
 
@@ -4359,7 +4359,7 @@ export class ObjectsInRedisClient {
         design: string,
         search: string,
         params: ioBroker.GetObjectViewParams,
-        options: CallOptions
+        options?: CallOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         return new Promise((resolve, reject) =>
             this.getObjectView(design, search, params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
