@@ -552,6 +552,16 @@ class AdapterClass extends EventEmitter {
     private eventLoopLags: number[];
     private overwriteLogLevel: boolean;
     protected adapterReady: boolean;
+    /**
+     * Contains a live cache of the adapter's states.
+     * NOTE: This is only defined if the adapter was initialized with the option states: true.
+     */
+    protected oStates?: Record<string, ioBroker.State | undefined>;
+    /**
+     * Contains a live cache of the adapter's objects.
+     * NOTE: This is only defined if the adapter was initialized with the option objects: true.
+     */
+    protected oObjects?: Record<string, ioBroker.Object | undefined>;
     private _stopInProgress: boolean;
     private _callbackId: number;
     private _firstConnection: boolean;
@@ -576,7 +586,7 @@ class AdapterClass extends EventEmitter {
     private outputCount: number;
     private users: Record<string, any>; // TODO
     private groups: Record<string, any>; // TODO
-    private autoSubscribe: null | string[];
+    private autoSubscribe: string[];
     private defaultHistory: null | string;
     private pluginHandler?: typeof PluginHandler;
     private _reportInterval?: null | NodeJS.Timer;
@@ -827,7 +837,7 @@ class AdapterClass extends EventEmitter {
         this.groups = {};
         this.defaultHistory = null;
         /** An array of instances, that support auto subscribe */
-        this.autoSubscribe = null;
+        this.autoSubscribe = [];
         this.inputCount = 0;
         this.outputCount = 0;
 
@@ -1448,7 +1458,11 @@ class AdapterClass extends EventEmitter {
         adapterStates.destroySession(options.id, options.callback);
     }
 
-    private async _getObjectsByArray(keys: ID[], objects: ioBroker.AnyObject[] | null, options: Record<string, any>) {
+    private async _getObjectsByArray(
+        keys: string[],
+        objects: ioBroker.AnyObject[] | null,
+        options: Record<string, any>
+    ) {
         if (objects) {
             return objects;
         }
@@ -4889,7 +4903,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    private _DCS2ID(device: string, channel: string, stateOrPoint: boolean | string): ID {
+    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): ID {
         let id = '';
         if (device) {
             id += device;
@@ -4983,8 +4997,38 @@ class AdapterClass extends EventEmitter {
         );
     }
 
+    createChannel(parentDevice: string, channelName: string, callback?: ioBroker.SetObjectCallback): void;
+    createChannel(
+        parentDevice: string,
+        channelName: string,
+        roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    createChannel(
+        parentDevice: string,
+        channelName: string,
+        roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+        native: Record<string, any>,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    createChannel(
+        parentDevice: string,
+        channelName: string,
+        roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
+        native: Record<string, any>,
+        options: unknown,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+
     // name of channel must be in format "channel"
-    createChannel(parentDevice, channelName, roleOrCommon, _native, options, callback) {
+    createChannel(
+        parentDevice: unknown,
+        channelName: unknown,
+        roleOrCommon?: unknown,
+        _native?: unknown,
+        options?: unknown,
+        callback?: unknown
+    ) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5009,15 +5053,23 @@ class AdapterClass extends EventEmitter {
                 name: '',
                 role: roleOrCommon
             };
-        } else if (typeof roleOrCommon === 'object') {
+        } else if (tools.isObject(roleOrCommon)) {
+            // @ts-expect-error should be ok
             common = roleOrCommon;
         }
+
+        Utils.assertsObject(common, 'common');
+        Utils.assertsString(channelName, 'channelName');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
         common.name = common.name || channelName;
 
         if (parentDevice) {
             parentDevice = parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
         }
         channelName = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
+        // @ts-expect-error ts somehow loses types here
         channelName = this._DCS2ID(parentDevice, channelName);
 
         _native = _native || {};
@@ -5026,12 +5078,50 @@ class AdapterClass extends EventEmitter {
             type: 'channel',
             common: common,
             native: _native
-        };
+        } as const;
 
-        this.setObjectNotExists(channelName, obj, options, callback);
+        this.setObjectNotExists(channelName as string, obj as any, options, callback);
     }
 
-    createState(parentDevice, parentChannel, stateName, roleOrCommon, _native, options, callback) {
+    createState(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    createState(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        roleOrCommon: string | Partial<ioBroker.StateCommon>,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    createState(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        roleOrCommon: string | Partial<ioBroker.StateCommon>,
+        native: Record<string, any>,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    createState(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        roleOrCommon: string | Partial<ioBroker.StateCommon>,
+        native: Record<string, any>,
+        options: unknown,
+        callback?: ioBroker.SetObjectCallback
+    ): void;
+    createState(
+        parentDevice: unknown,
+        parentChannel: unknown,
+        stateName: unknown,
+        roleOrCommon: unknown,
+        _native?: unknown,
+        options?: unknown,
+        callback?: unknown
+    ) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5058,9 +5148,16 @@ class AdapterClass extends EventEmitter {
                 name: '',
                 role: roleOrCommon
             };
-        } else if (typeof roleOrCommon === 'object') {
+        } else if (tools.isObject(roleOrCommon)) {
+            // @ts-expect-error should be okay
             common = roleOrCommon;
         }
+
+        Utils.assertsObject(common, 'common');
+        Utils.assertsString(stateName, 'stateName');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(parentChannel, 'parentChannel');
+        Utils.assertsOptionalCallback(callback, 'callback');
 
         common.name = common.name || stateName;
         _native = _native || {};
@@ -5071,7 +5168,7 @@ class AdapterClass extends EventEmitter {
         if (!common.role) {
             this._logger.error(
                 `${this.namespaceLog} Try to create state ${
-                    parentDevice ? parentDevice + '.' : ''
+                    parentDevice ? `${parentDevice}.` : ''
                 }${parentChannel}.${stateName} without role`
             );
             return;
@@ -5084,7 +5181,11 @@ class AdapterClass extends EventEmitter {
             parentChannel = parentChannel.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
         }
         stateName = stateName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
-        const id = this._utils.fixId({ device: parentDevice, channel: parentChannel, state: stateName });
+        const id = this._utils.fixId({
+            device: parentDevice as string,
+            channel: parentChannel as string,
+            state: stateName as string
+        });
 
         // Check min, max and def values for number
         if (common.type !== undefined && common.type === 'number') {
@@ -5098,7 +5199,7 @@ class AdapterClass extends EventEmitter {
                     min = parseFloat(min);
                     if (isNaN(min)) {
                         err = `Wrong type of ${id}.common.min`;
-                        this._logger.error(this.namespaceLog + ' ' + err);
+                        this._logger.error(`${this.namespaceLog} ${err}`);
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
                         common.min = min;
@@ -5111,7 +5212,7 @@ class AdapterClass extends EventEmitter {
                     max = parseFloat(max);
                     if (isNaN(max)) {
                         err = `Wrong type of ${id}.common.max`;
-                        this._logger.error(this.namespaceLog + ' ' + err);
+                        this._logger.error(`${this.namespaceLog} ${err}`);
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
                         common.max = max;
@@ -5147,8 +5248,8 @@ class AdapterClass extends EventEmitter {
             id,
             {
                 type: 'state',
-                common: common,
-                native: _native
+                common: common as any,
+                native: _native as any
             },
             options,
             err => {
@@ -5158,9 +5259,9 @@ class AdapterClass extends EventEmitter {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
                             if (common.defAck !== undefined) {
-                                this.setState(id, common.def, common.defAck, options, callback);
+                                this.setState(id, common.def, common.defAck, options, callback as any);
                             } else {
-                                this.setState(id, common.def, options, callback);
+                                this.setState(id, common.def, options, callback as any);
                             }
                         } else {
                             return tools.maybeCallback(callback);
@@ -5169,7 +5270,7 @@ class AdapterClass extends EventEmitter {
                 } else {
                     this.getState(id, null, (err, state) => {
                         if (!state) {
-                            this.setState(id, null, true, options, callback);
+                            this.setState(id, null, true, options, callback as any);
                         } else {
                             return tools.maybeCallback(callback);
                         }
@@ -5178,6 +5279,9 @@ class AdapterClass extends EventEmitter {
             }
         );
     }
+
+    deleteDevice(deviceName: string, callback?: ioBroker.ErrorCallback): void;
+    deleteDevice(deviceName: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Delete device with all its channels and states.
@@ -5193,7 +5297,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async deleteDevice(deviceName, options, callback) {
+    async deleteDevice(deviceName, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5232,7 +5336,24 @@ class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    addChannelToEnum(enumName, addTo, parentDevice, channelName, options, callback) {
+    // external signature
+    addChannelToEnum(
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        channelName: string,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    addChannelToEnum(
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        channelName: string,
+        options: unknown,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+
+    addChannelToEnum(enumName, addTo, parentDevice, channelName, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5259,7 +5380,7 @@ class AdapterClass extends EventEmitter {
         }
         channelName = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-        const objId = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
+        const objId = `${this.namespace}.${this._DCS2ID(parentDevice, channelName)}`;
 
         if (addTo.startsWith('enum.')) {
             adapterObjects.getObject(addTo, options, (err, obj) => {
@@ -5321,7 +5442,22 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    deleteChannelFromEnum(enumName, parentDevice, channelName, options, callback) {
+    // external signature
+    deleteChannelFromEnum(
+        enumName: string,
+        parentDevice: string,
+        channelName: string,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    deleteChannelFromEnum(
+        enumName: string,
+        parentDevice: string,
+        channelName: string,
+        options: unknown,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+
+    deleteChannelFromEnum(enumName, parentDevice, channelName, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5396,6 +5532,15 @@ class AdapterClass extends EventEmitter {
         );
     }
 
+    // external signature
+    deleteChannel(channelName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteChannel(
+        parentDevice: string,
+        channelName: string,
+        options?: unknown,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+
     /**
      * Deletes channel and udnerlying structure
      * @alais deleteChannel
@@ -5410,7 +5555,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async deleteChannel(parentDevice, channelName, options, callback) {
+    async deleteChannel(parentDevice, channelName, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5430,7 +5575,7 @@ class AdapterClass extends EventEmitter {
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'deleteChannel not processed because Objects database not connected'
+                `${this.namespaceLog} deleteChannel not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -5482,7 +5627,18 @@ class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    deleteState(parentDevice, parentChannel, stateName, options, callback) {
+    // external signature
+    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteState(parentChannel: string, stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteState(
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options?: unknown,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+
+    deleteState(parentDevice, parentChannel, stateName, options?, callback?) {
         if (typeof parentChannel === 'function' && stateName === undefined) {
             stateName = parentDevice;
             callback = parentChannel;
@@ -5552,7 +5708,11 @@ class AdapterClass extends EventEmitter {
         this.delObject(_name, options, callback);
     }
 
-    getDevices(options, callback) {
+    // external signature
+    getDevices(callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
+    getDevices(options: unknown, callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
+
+    getDevices(options, callback?) {
         if (typeof options === 'function' && typeof callback === 'object') {
             const tmp = callback;
             callback = options;
@@ -5564,9 +5724,7 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'getDevices not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} getDevices not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -5574,7 +5732,7 @@ class AdapterClass extends EventEmitter {
             'system',
             'device',
             {
-                startkey: this.namespace + '.',
+                startkey: `${this.namespace}.`,
                 endkey: this.namespace + '.\u9999'
             },
             options,
@@ -5609,9 +5767,6 @@ class AdapterClass extends EventEmitter {
             parentDevice = null;
         }
 
-        if (!options.parentDevice) {
-            options.parentDevice = '';
-        }
         Utils.assertsOptionalCallback(callback, 'callback');
         Utils.assertsString(parentDevice, 'parentDevice');
 
@@ -5624,6 +5779,10 @@ class AdapterClass extends EventEmitter {
                 `${this.namespaceLog} getChannelsOf not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (!options.parentDevice) {
+            options.parentDevice = '';
         }
 
         if (options.parentDevice && this._namespaceRegExp.test(options.parentDevice)) {
@@ -5645,15 +5804,29 @@ class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(options.callback, err, err ? undefined : []);
                 }
                 const res = [];
-                for (let i = 0; i < obj.rows.length; i++) {
-                    res.push(obj.rows[i].value);
+                for (const row of obj.rows) {
+                    res.push(row.value);
                 }
                 return tools.maybeCallbackWithError(options.callback, null, res);
             }
         );
     }
 
-    getStatesOf(parentDevice, parentChannel, options, callback) {
+    // external signature
+    getStatesOf(callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
+    getStatesOf(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
+    getStatesOf(
+        parentDevice: string,
+        parentChannel: string,
+        callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
+    ): void;
+    getStatesOf(
+        parentDevice: string,
+        parentChannel: string,
+        options: unknown,
+        callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
+    ): void;
+    getStatesOf(parentDevice, parentChannel?, options?, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5698,7 +5871,7 @@ class AdapterClass extends EventEmitter {
 
         parentChannel = parentChannel.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-        const id = this.namespace + '.' + this._DCS2ID(parentDevice, parentChannel, true);
+        const id = `${this.namespace}.${this._DCS2ID(parentDevice, parentChannel, true)}`;
 
         adapterObjects.getObjectView(
             'system',
@@ -5712,7 +5885,7 @@ class AdapterClass extends EventEmitter {
                 if (err || !obj || !obj.rows || !obj.rows.length) {
                     return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
                 }
-                const res = [];
+                const res: ioBroker.StateObject[] = [];
                 let read = 0;
                 for (let i = 0; i < obj.rows.length; i++) {
                     read++;
@@ -5730,14 +5903,32 @@ class AdapterClass extends EventEmitter {
         );
     }
 
-    addStateToEnum(enumName, addTo, parentDevice, parentChannel, stateName, options, callback) {
+    // external signature
+    addStateToEnum(
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    addStateToEnum(
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options: unknown,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    addStateToEnum(enumName, addTo, parentDevice, parentChannel, stateName, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'addStateToEnum not processed because Objects database not connected'
+                `${this.namespaceLog} addStateToEnum not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -5830,7 +6021,23 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    deleteStateFromEnum(enumName, parentDevice, parentChannel, stateName, options, callback) {
+    // external signature
+    deleteStateFromEnum(
+        enumName: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    deleteStateFromEnum(
+        enumName: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options: unknown,
+        callback?: ioBroker.ErrorCallback
+    ): void;
+    deleteStateFromEnum(enumName, parentDevice, parentChannel, stateName, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5838,7 +6045,7 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'deleteStateFromEnum not processed because Objects database not connected'
+                `${this.namespaceLog} deleteStateFromEnum not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -5923,6 +6130,14 @@ class AdapterClass extends EventEmitter {
         );
     }
 
+    // external signature
+    chmodFile(
+        adapter: string | null,
+        path: string,
+        options: { mode: number | string } | Record<string, any>,
+        callback: ioBroker.ChownFileCallback
+    ): void;
+
     /**
      * Change file access rights
      *
@@ -5946,7 +6161,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    chmodFile(_adapter, path, options, callback) {
+    chmodFile(_adapter: unknown, path: unknown, options: unknown, callback: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -5956,14 +6171,19 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'chmodFile not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} chmodFile not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         adapterObjects.chmodFile(_adapter, path, options, callback);
     }
+
+    chownFile(
+        _adapter: string,
+        path: string,
+        options: unknown,
+        callback: (err?: Error | null, processedFiles?: any) => void
+    ): void;
 
     /**
      * Change file owner
@@ -5988,7 +6208,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    chownFile(_adapter, path, options, callback) {
+    chownFile(_adapter: unknown, path: unknown, options: unknown, callback: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -5998,14 +6218,16 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'chownFile not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} chownFile not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         adapterObjects.chownFile(_adapter, path, options, callback);
     }
+
+    // external signatures
+    readDir(adapterName: string | null, path: string, callback: ioBroker.ReadDirCallback): void;
+    readDir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ReadDirCallback): void;
 
     /**
      * Read directory from DB.
@@ -6086,6 +6308,16 @@ class AdapterClass extends EventEmitter {
         adapterObjects.unlink(_adapter, name, options, callback);
     }
 
+    // external signatures
+    rename(adapterName: string | null, oldName: string, newName: string, callback: ioBroker.ErrnoCallback): void;
+    rename(
+        adapterName: string | null,
+        oldName: string,
+        newName: string,
+        options: unknown,
+        callback: ioBroker.ErrnoCallback
+    ): void;
+
     rename(_adapter, oldName, newName, options, callback) {
         if (_adapter === null) {
             _adapter = this.name;
@@ -6095,7 +6327,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this._logger.info(this.namespaceLog + ' ' + 'rename not processed because Objects database not connected');
+            this._logger.info(`${this.namespaceLog} rename not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6117,6 +6349,9 @@ class AdapterClass extends EventEmitter {
 
         adapterObjects.mkdir(_adapter, dirname, options, callback);
     }
+
+    readFile(adapterName: string | null, path: string, callback: ioBroker.ReadFileCallback): void;
+    readFile(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ReadFileCallback): void;
 
     /**
      * Read file from DB.
@@ -6142,7 +6377,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    readFile(_adapter, filename, options, callback) {
+    readFile(_adapter, filename, options, callback?) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6161,6 +6396,16 @@ class AdapterClass extends EventEmitter {
         adapterObjects.readFile(_adapter, filename, options, callback);
     }
 
+    // external signatures
+    writeFile(adapterName: string | null, path: string, data: Buffer | string, callback: ioBroker.ErrnoCallback): void;
+    writeFile(
+        adapterName: string | null,
+        path: string,
+        data: Buffer | string,
+        options: unknown,
+        callback: ioBroker.ErrnoCallback
+    ): void;
+
     /**
      * Write file to DB.
      *
@@ -6171,7 +6416,7 @@ class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias readFile
+     * @alias writeFile
      * @memberof Adapter
      * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
      * @param {string} filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
@@ -6184,7 +6429,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    writeFile(_adapter, filename, data, options, callback) {
+    writeFile(_adapter, filename, data, options, callback?) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6194,14 +6439,20 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'writeFile not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} writeFile not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         return adapterObjects.writeFile(_adapter, filename, data, options, callback);
     }
+
+    fileExists(adapterName: string | null, path: string, callback: ioBroker.GenericCallback<boolean>): void;
+    fileExists(
+        adapterName: string | null,
+        path: string,
+        options: unknown,
+        callback: ioBroker.GenericCallback<boolean>
+    ): void;
 
     /**
      * Checks if file exists in DB.
@@ -6214,7 +6465,7 @@ class AdapterClass extends EventEmitter {
      * @param {function} [callback] cb function if none provided, a promise is returned
      * @returns {Promise<boolean>}
      */
-    async fileExists(_adapter, filename, options, callback) {
+    async fileExists(_adapter, filename, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6247,13 +6498,17 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    formatValue(value, decimals, _format) {
+    // external signatures
+    formatValue(value: number | string, format: any): string;
+    formatValue(value: number | string, decimals: number, format: any): string;
+    formatValue(value: unknown, decimals: unknown, _format?: unknown) {
         if (typeof decimals !== 'number') {
             _format = decimals;
             decimals = 2;
         }
 
         const format =
+            // @ts-expect-error fix later
             !_format || _format.length !== 2
                 ? this.isFloatComma === undefined
                     ? '.,'
@@ -6263,17 +6518,27 @@ class AdapterClass extends EventEmitter {
                 : _format;
 
         if (typeof value !== 'number') {
+            // @ts-expect-error fix later
             value = parseFloat(value);
         }
+        // @ts-expect-error fix later
         return isNaN(value)
             ? ''
-            : value
+            : // @ts-expect-error fix later
+              value
                   .toFixed(decimals)
+                  // @ts-expect-error fix later
                   .replace(format[0], format[1])
+                  // @ts-expect-error fix later
                   .replace(/\B(?=(\d{3})+(?!\d))/g, format[0]);
     }
 
-    formatDate(dateObj, isDuration, _format) {
+    // external signature
+    formatDate(dateObj: string | Date | number, format: string): string;
+    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
+
+    // TODO make strict later
+    formatDate(dateObj: any, isDuration: any, _format?: any) {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
             isDuration = true;
         }
@@ -6315,9 +6580,8 @@ class AdapterClass extends EventEmitter {
         let s = '';
         let result = '';
 
-        const put = s => {
-            /** @type {number | string} */
-            let v = '';
+        const put = (s: string) => {
+            let v: number | string = '';
             switch (s) {
                 case 'YYYY':
                 case 'JJJJ':
@@ -6325,8 +6589,9 @@ class AdapterClass extends EventEmitter {
                 case 'YY':
                 case 'JJ':
                 case 'ГГ':
-                    v = /** @type {Date} */ dateObj.getFullYear();
+                    v = dateObj.getFullYear();
                     if (s.length === 2) {
+                        // @ts-expect-error
                         v %= 100;
                     }
                     if (v <= 9) {
@@ -6409,6 +6674,18 @@ class AdapterClass extends EventEmitter {
         return result;
     }
 
+    sendTo(
+        instanceName: string,
+        message: ioBroker.MessagePayload,
+        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+    ): void;
+    sendTo(
+        instanceName: string,
+        command: string,
+        message: ioBroker.MessagePayload,
+        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+    ): void;
+
     /**
      * Send message to other adapter instance or all instances of adapter.
      *
@@ -6428,7 +6705,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async sendTo(instanceName, command, message, callback) {
+    async sendTo(instanceName, command, message, callback?) {
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -6536,6 +6813,18 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    sendToHost(
+        hostName: string,
+        message: ioBroker.MessagePayload,
+        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+    ): void;
+    sendToHost(
+        hostName: string,
+        command: string,
+        message: ioBroker.MessagePayload,
+        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+    ): void;
+
     /**
      * Send message to specific host or to all hosts.
      *
@@ -6555,7 +6844,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async sendToHost(hostName, command, message, callback) {
+    async sendToHost(hostName, command, message, callback?) {
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
@@ -6647,6 +6936,12 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
+        scope: Scope,
+        category: ioBroker.NotificationScopes[Scope] | null,
+        message: string
+    ): Promise<void>;
+
     /**
      * Send notification with given scope and category to host of this adapter
      *
@@ -6724,7 +7019,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async setState(id: unknown, state: unknown, ack: unknown, options: unknown, callback: unknown) {
+    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown) {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -6964,8 +7259,10 @@ class AdapterClass extends EventEmitter {
     }
 
     // Cache will be cleared if user or group changes.. Important! only if subscribed.
-    _getUserGroups(options, callback) {
-        // TODO: ok if available?
+    private _getUserGroups(
+        options: Record<string, any>,
+        callback: (err?: Error | null, options?: Record<string, any>) => void
+    ) {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
             options.acl = this.users[options.user].acl;
@@ -6997,6 +7294,7 @@ class AdapterClass extends EventEmitter {
                     // read all groups for this user
                     this.users[options.user] = {
                         groups: options.groups,
+                        // @ts-expect-error
                         acl: (userAcl.common && userAcl.common.acl) || {}
                     };
                     await this._getGroups(options.groups);
@@ -7124,7 +7422,9 @@ class AdapterClass extends EventEmitter {
                             return false;
                         }
                     } else {
-                        this._logger.warn(`${this.namespaceLog} Called unknown command on "${obj._id}": ${command}`);
+                        this._logger.warn(
+                            `${this.namespaceLog} Called unknown command on "${obj._id}": ${command as any}`
+                        );
                     }
                 } else if (options.groups.includes(obj.acl.ownerGroup) && !limitToOwnerRights) {
                     if (command === 'setState' || command === 'delState') {
@@ -7239,7 +7539,7 @@ class AdapterClass extends EventEmitter {
             }
 
             if (options._objects) {
-                const ids: ID[] = [];
+                const ids: string[] = [];
                 const objs: ioBroker.StateObject[] = [];
                 for (const obj of options._objects) {
                     if (obj && this._checkState(obj, options, command)) {
@@ -7319,7 +7619,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _getGroups(ids: ID[]) {
+    private async _getGroups(ids: string[]): Promise<void> {
         for (const id of ids) {
             let obj;
             try {
@@ -7333,7 +7633,7 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    private _setStateChangedHelper(id: ID, state: ioBroker.State, callback: () => void) {
+    private _setStateChangedHelper(id: string, state: ioBroker.State, callback: () => void) {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because Objects database not connected`
@@ -7892,6 +8192,9 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    getState(id: string, callback: ioBroker.GetStateCallback): void;
+    getState(id: string, options: unknown, callback: ioBroker.GetStateCallback): void;
+
     /**
      * Read value from states DB.
      *
@@ -7911,11 +8214,14 @@ class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getState(id, options, callback) {
+    getState(id, options, callback?) {
         // get state does the same as getForeignState but fixes the id first
         id = this._utils.fixId(id, false);
         return this.getForeignState(id, options, callback);
     }
+
+    getForeignState(id: string, callback: ioBroker.GetStateCallback): void;
+    getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): void;
 
     /**
      * Read value from states DB for any instance and system state.
@@ -7935,7 +8241,7 @@ class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getForeignState(id, options, callback) {
+    getForeignState(id, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -7944,14 +8250,14 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'getForeignState not processed because States database not connected'
+                `${this.namespaceLog} getForeignState not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'getForeignState not processed because Objects database not connected'
+                `${this.namespaceLog} getForeignState not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -7971,8 +8277,10 @@ class AdapterClass extends EventEmitter {
                         if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
                             // id can be string or can have attribute id.read
                             const aliasId =
+                                // @ts-expect-error
                                 typeof obj.common.alias.id.read === 'string'
-                                    ? obj.common.alias.id.read
+                                    ? // @ts-expect-error
+                                      obj.common.alias.id.read
                                     : obj.common.alias.id;
 
                             // validate here because we use objects/states db directly
@@ -8254,6 +8562,10 @@ class AdapterClass extends EventEmitter {
         return { device: parts[2], channel: parts[3], state: parts[4] };
     }
 
+    // external signature
+    delState(id: string, callback?: ioBroker.ErrorCallback): void;
+    delState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+
     /**
      * Deletes a state of this instance.
      * The object will NOT be deleted. If you want to delete it too, use @delObject instead.
@@ -8285,6 +8597,10 @@ class AdapterClass extends EventEmitter {
         id = this._utils.fixId(id);
         this.delForeignState(id, options, callback);
     }
+
+    // external signature
+    delForeignState(id: string, callback?: ioBroker.ErrorCallback): void;
+    delForeignState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Deletes a state of any adapter.
@@ -8331,6 +8647,10 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    // external signature
+    getStates(pattern: string, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: string, options: unknown, callback: ioBroker.GetStatesCallback): void;
+
     /**
      * Read all states of this adapter, that pass the pattern
      *
@@ -8349,7 +8669,7 @@ class AdapterClass extends EventEmitter {
      * @param {object} options optional argument to describe the user context
      * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      */
-    getStates(pattern, options, callback) {
+    getStates(pattern, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -8359,7 +8679,7 @@ class AdapterClass extends EventEmitter {
     }
 
     private _processStatesSecondary(
-        keys: ID[],
+        keys: string[],
         targetObjs: (ioBroker.StateObject | null)[] | null,
         srcObjs: (ioBroker.StateObject | null)[] | null,
         callback: (err?: Error | null, result?: any) => void
@@ -8407,7 +8727,7 @@ class AdapterClass extends EventEmitter {
     }
 
     private async _processStates(
-        keys: ID[],
+        keys: string[],
         targetObjs: (ioBroker.StateObject | null)[],
         callback: (err?: Error | null, result?: any) => void
     ) {
@@ -8427,8 +8747,9 @@ class AdapterClass extends EventEmitter {
             keys = [...keys];
 
             // read aliases objects
+            // @ts-expect-error
             targetObjs = await this._getObjectsByArray(aIds, targetObjs, this._options);
-            const srcIds: ID[] = [];
+            const srcIds: string[] = [];
             // replace aliases ID with targets
             targetObjs.forEach((obj, i) => {
                 if (obj && obj.common && obj.common.alias) {
@@ -8445,6 +8766,7 @@ class AdapterClass extends EventEmitter {
 
             // srcObjs and targetObjs could be merged
             const srcObjs = await this._getObjectsByArray(srcIds, null, this._options);
+            // @ts-expect-error fix later
             this._processStatesSecondary(keys, targetObjs, srcObjs, callback);
         } else {
             this._processStatesSecondary(keys, null, null, callback);
@@ -8690,12 +9012,15 @@ class AdapterClass extends EventEmitter {
         }
 
         // remove from targets array
+        // @ts-expect-error
         const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId).targets.indexOf(aliasObj);
 
         if (pos !== -1) {
+            // @ts-expect-error
             this.aliases.get(sourceId).targets.splice(pos, 1);
 
             // unsubscribe if no more aliases exists
+            // @ts-expect-error
             if (!this.aliases.get(sourceId).targets.length) {
                 this.aliases.delete(sourceId);
                 await adapterStates.unsubscribe(sourceId);
@@ -8703,6 +9028,9 @@ class AdapterClass extends EventEmitter {
         }
         return tools.maybeCallback(callback);
     }
+
+    subscribeForeignStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
@@ -8718,7 +9046,7 @@ class AdapterClass extends EventEmitter {
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
      */
-    async subscribeForeignStates(pattern, options, callback) {
+    async subscribeForeignStates(pattern, options, callback?) {
         pattern = pattern || '*';
 
         if (typeof options === 'function') {
@@ -8736,7 +9064,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'subscribeForeignStates not processed because States database not connected'
+                `${this.namespaceLog} subscribeForeignStates not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -8747,13 +9075,13 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'subscribeForeignStates not processed because States database not connected'
+                `${this.namespaceLog} subscribeForeignStates not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
         if (!adapterObjects) {
             this._logger.info(
-                this.namespaceLog + ' ' + 'subscribeForeignStates not processed because Objects database not connected'
+                `${this.namespaceLog} subscribeForeignStates not processed because Objects database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -9069,6 +9397,9 @@ class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
+    subscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+
     /**
      * Subscribe for changes on all states of this instance, that pass the pattern
      *
@@ -9083,7 +9414,7 @@ class AdapterClass extends EventEmitter {
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback]
      */
-    subscribeStates(pattern, options, callback) {
+    subscribeStates(pattern, options, callback?) {
         // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
@@ -9106,6 +9437,9 @@ class AdapterClass extends EventEmitter {
             adapterStates.subscribeUser(pattern, callback);
         }
     }
+
+    unsubscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for changes for given pattern for own states.
@@ -9134,18 +9468,21 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'unsubscribeStates not processed because States database not connected'
+                `${this.namespaceLog} unsubscribeStates not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (!pattern || pattern === '*') {
-            adapterStates.unsubscribeUser(this.namespace + '.*', callback);
+            adapterStates.unsubscribeUser(`${this.namespace}.*`, callback);
         } else {
             pattern = this._utils.fixId(pattern, true);
             adapterStates.unsubscribeUser(pattern, callback);
         }
     }
+
+    setForeignBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
+    setForeignBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
 
     /**
      * Write binary block into redis, e.g image
@@ -9159,7 +9496,7 @@ class AdapterClass extends EventEmitter {
      * @param {ioBroker.ErrorCallback} [callback]
      *
      */
-    async setForeignBinaryState(id, binary, options, callback) {
+    async setForeignBinaryState(id, binary, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9176,7 +9513,7 @@ class AdapterClass extends EventEmitter {
             try {
                 if (!adapterObjects) {
                     this._logger.info(
-                        this.namespaceLog + ' ' + 'setBinaryState not processed because Objects database not connected'
+                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
                     );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
@@ -9208,7 +9545,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'setBinaryState not processed because States database not connected'
+                `${this.namespaceLog} setBinaryState not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -9224,14 +9561,13 @@ class AdapterClass extends EventEmitter {
             this._checkStates(id, options, 'setState', (err, obj) => {
                 if (!err && !obj) {
                     return tools.maybeCallbackWithError(callback, 'Object does not exist');
-                } else if (!err && !obj.binary) {
+                } else if (!err && obj && !('binary' in obj)) {
+                    // @ts-expect-error probably need to adjust types
                     obj.binary = true;
 
                     if (!adapterObjects) {
                         this._logger.info(
-                            this.namespaceLog +
-                                ' ' +
-                                'setBinaryState not processed because Objects database not connected'
+                            `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
                         );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
@@ -9243,9 +9579,7 @@ class AdapterClass extends EventEmitter {
                             if (!adapterStates) {
                                 // if states is no longer existing, we do not need to unsubscribe
                                 this._logger.info(
-                                    this.namespaceLog +
-                                        ' ' +
-                                        'setBinaryState not processed because States database not connected'
+                                    `${this.namespaceLog} setBinaryState not processed because States database not connected`
                                 );
                                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                             }
@@ -9260,9 +9594,7 @@ class AdapterClass extends EventEmitter {
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
-                            this.namespaceLog +
-                                ' ' +
-                                'setBinaryState not processed because States database not connected'
+                            `${this.namespaceLog} setBinaryState not processed because States database not connected`
                         );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
@@ -9277,6 +9609,9 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    setBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
+    setBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
+
     /**
      * Same as setForeignBinaryState but prefixes the own namespace to the id
      *
@@ -9288,11 +9623,14 @@ class AdapterClass extends EventEmitter {
      * @param {object} [options] optional
      * @param {ioBroker.ErrorCallback} [callback]
      */
-    setBinaryState(id, binary, options, callback) {
+    setBinaryState(id, binary, options, callback?) {
         // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-        // id =this._utils.fixId(id, false);
+        // id = this._utils.fixId(id, false);
         return this.setForeignBinaryState(id, binary, options, callback);
     }
+
+    getForeignBinaryState(id: string, callback: ioBroker.GetBinaryStateCallback): void;
+    getForeignBinaryState(id: string, options: unknown, callback: ioBroker.GetBinaryStateCallback): void;
 
     /**
      * Read a binary block from redis, e.g. an image
@@ -9301,7 +9639,7 @@ class AdapterClass extends EventEmitter {
      * @param {object} options optional
      * @param {ioBroker.GetBinaryStateCallback} callback
      */
-    getForeignBinaryState(id, options, callback) {
+    getForeignBinaryState(id, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9354,6 +9692,9 @@ class AdapterClass extends EventEmitter {
         });
     }
 
+    getBinaryState(id: string, callback: ioBroker.GetBinaryStateCallback): void;
+    getBinaryState(id: string, options: unknown, callback: ioBroker.GetBinaryStateCallback): void;
+
     /**
      * Same as getForeignBinaryState but prefixes the own namespace to the id
      *
@@ -9367,6 +9708,9 @@ class AdapterClass extends EventEmitter {
         return this.getForeignBinaryState(id, options, callback);
     }
 
+    delForeignBinaryState(id: string, callback?: ioBroker.ErrorCallback): void;
+    delForeignBinaryState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+
     /**
      * Deletes binary state
      *
@@ -9378,7 +9722,7 @@ class AdapterClass extends EventEmitter {
      * @param {ioBroker.ErrorCallback} [callback]
      *
      */
-    delForeignBinaryState(id, options, callback) {
+    delForeignBinaryState(id, options, callback?) {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9411,6 +9755,9 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    delBinaryState(id: string, callback?: ioBroker.ErrorCallback): void;
+    delBinaryState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+
     /**
      * Deletes binary state but prefixes the own namespace to the id
      *
@@ -9422,11 +9769,13 @@ class AdapterClass extends EventEmitter {
      * @param {ioBroker.ErrorCallback} [callback]
      *
      */
-    delBinaryState(id, options, callback) {
+    delBinaryState(id, options, callback?) {
         // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
         // id = this._utils.fixId(id, false);
         return this.delForeignBinaryState(id, options, callback);
     }
+
+    getPluginInstance(name: string): ioBroker.Plugin | null;
 
     /**
      * Return plugin instance
@@ -9434,12 +9783,15 @@ class AdapterClass extends EventEmitter {
      * @param name {string} name of the plugin to return
      * @returns {object} plugin instance or null if not existent or not isActive
      */
-    getPluginInstance(name) {
+    getPluginInstance(name: unknown): ioBroker.Plugin | null {
         if (!this.pluginHandler) {
             return null;
         }
+        // @ts-expect-error
         return this.pluginHandler.getPluginInstance(name);
     }
+
+    getPluginConfig(name: string): Record<string, any> | null;
 
     /**
      * Return plugin configuration
@@ -9447,15 +9799,15 @@ class AdapterClass extends EventEmitter {
      * @param name {string} name of the plugin to return
      * @returns {object} plugin configuration or null if not existent or not isActive
      */
-    getPluginConfig(name) {
+    getPluginConfig(name: unknown): Record<string, any> | null {
         if (!this.pluginHandler) {
             return null;
         }
+        // @ts-expect-error
         return this.pluginHandler.getPluginConfig(name);
     }
 
-    // TODO: ok if available?
-    async _autoSubscribeOn() {
+    private async _autoSubscribeOn(): Promise<void> {
         if (!this.autoSubscribe && adapterObjects) {
             try {
                 // collect all
@@ -9484,13 +9836,15 @@ class AdapterClass extends EventEmitter {
         }
     }
 
+    getSuitableLicenses(all: boolean): Promise<any[]>;
+
     /**
      * This method returns the list of license that can be used by this adapter
      * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
      * @returns {Promise<object[]>} list of suitable licenses
      */
     async getSuitableLicenses(all) {
-        const licenses = [];
+        const licenses: any[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
@@ -9588,6 +9942,7 @@ class AdapterClass extends EventEmitter {
          * Initiates the databases
          */
         const _initDBs = () => {
+            // eslint-disable-next-line @typescript-eslint/no-use-before-define
             initObjects(() => {
                 if (this.inited) {
                     this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
@@ -9595,6 +9950,7 @@ class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
+                // eslint-disable-next-line @typescript-eslint/no-use-before-define
                 initStates(prepareInitAdapter);
             });
         };
@@ -11167,13 +11523,17 @@ class AdapterClass extends EventEmitter {
             scope: 'adapter',
             namespace: `system.adapter.${this.namespace}`,
             logNamespace: this.namespaceLog,
+            // @ts-expect-error
             log: this._logger,
             iobrokerConfig: this._config,
+            // @ts-expect-error
             parentPackage: this.pack,
             controllerVersion
         };
 
+        // @ts-expect-error
         this.pluginHandler = new PluginHandler(pluginSettings);
+        // @ts-expect-error
         this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
 
         // finally init
