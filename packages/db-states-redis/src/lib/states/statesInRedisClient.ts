@@ -1196,7 +1196,7 @@ export class StateRedisClient {
     async pushMessage(
         id: string,
         state: PushableState,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
