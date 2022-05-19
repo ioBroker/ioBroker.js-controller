@@ -489,7 +489,7 @@ interface AdapterClass {
 interface InternalGetChannelsOfOptions {
     parentDevice: string;
     callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
-    options: unknown;
+    options?: Record<string, any> | null;
 }
 
 interface InternalGetAdapterObjectsOptions {
@@ -536,6 +536,16 @@ interface InternalSetStateOptions {
     ack?: boolean;
     options?: Record<string, any> | null;
     callback?: ioBroker.SetStateCallback;
+}
+
+interface InternalCreateStateOptions {
+    parentDevice: string;
+    parentChannel: string;
+    stateName: string;
+    common: Partial<ioBroker.StateCommon>;
+    _native: Record<string, any>;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.SetObjectCallback;
 }
 
 /**
@@ -2466,6 +2476,7 @@ class AdapterClass extends EventEmitter {
                 }
 
                 return tools.maybeCallbackWithError(
+                    // @ts-expect-error
                     options.callback,
                     null,
                     {
@@ -3274,7 +3285,7 @@ class AdapterClass extends EventEmitter {
             }
 
             try {
-                const cbObj = await adapterObjects.extendObjectAsync(options.id, options.obj, options.options);
+                const cbObj = await adapterObjects.extendObjectAsync(options.id, options.obj, options.options || {});
                 let defState;
                 if (options.obj.type === 'state' || oldObj.type === 'state') {
                     if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
@@ -3579,8 +3590,8 @@ class AdapterClass extends EventEmitter {
             }
 
             try {
-                const cbObj = await adapterObjects.extendObjectAsync(id, obj, options);
-                if (cbObj.value.type === 'state') {
+                const cbObj = await adapterObjects!.extendObjectAsync(id, obj, options);
+                if (cbObj?.value.type === 'state') {
                     let defState;
                     if (obj.common && 'def' in obj.common && obj.common.def !== undefined) {
                         defState = obj.common.def;
@@ -4902,7 +4913,7 @@ class AdapterClass extends EventEmitter {
         // check if object exists
         let objExists;
         try {
-            objExists = await adapterObjects.objectExists(id, options);
+            objExists = await adapterObjects.objectExists(id, options || {});
         } catch (e) {
             return tools.maybeCallbackWithError(callback, `Could not check object existence of ${id}: ${e.message}`);
         }
@@ -5160,7 +5171,7 @@ class AdapterClass extends EventEmitter {
             roleOrCommon = undefined;
         }
 
-        let common: Partial<ioBroker.StateCommon> = {};
+        let common: any = {};
         if (typeof roleOrCommon === 'string') {
             common = {
                 read: true,
@@ -5172,14 +5183,26 @@ class AdapterClass extends EventEmitter {
             common = roleOrCommon;
         }
 
+        _native = _native || {};
+
         Utils.assertsObject(common, 'common');
         Utils.assertsString(stateName, 'stateName');
         Utils.assertsString(parentDevice, 'parentDevice');
         Utils.assertsString(parentChannel, 'parentChannel');
         Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsObject(_native, '_native');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._createState({ parentDevice, parentChannel, callback, stateName, common, _native, options });
+    }
+
+    private _createState(_options: InternalCreateStateOptions) {
+        const { _native, common, callback, options } = _options;
+        let { parentChannel, parentDevice, stateName } = _options;
 
         common.name = common.name || stateName;
-        _native = _native || {};
 
         common.read = common.read === undefined ? true : common.read;
         common.write = common.write === undefined ? false : common.write;
@@ -5380,7 +5403,7 @@ class AdapterClass extends EventEmitter {
         channelName: any,
         options: any,
         callback?: any
-    ): void {
+    ): void | Promise<void> {
         // TODO: add types
         if (typeof options === 'function') {
             callback = options;
@@ -5415,13 +5438,15 @@ class AdapterClass extends EventEmitter {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else if (obj) {
+                    // @ts-expect-error
                     if (!obj.common.members.includes(objId)) {
+                        // @ts-expect-error
                         obj.common.members.push(objId);
                         obj.from = 'system.adapter.' + this.namespace;
                         obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
-                        adapterObjects.setObject(obj._id, obj, options, callback);
+                        adapterObjects!.setObject(obj._id, obj, options, callback);
                     } else {
                         return tools.maybeCallback(callback);
                     }
@@ -5438,20 +5463,22 @@ class AdapterClass extends EventEmitter {
                 }
 
                 if (obj) {
+                    // @ts-expect-error
                     if (!obj.common.members.includes(objId)) {
+                        // @ts-expect-error
                         obj.common.members.push(objId);
 
                         obj.from = 'system.adapter.' + this.namespace;
                         obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
-                        adapterObjects.setObject(obj._id, obj, options, callback);
+                        adapterObjects!.setObject(obj._id, obj, options, callback);
                     } else {
                         return tools.maybeCallback(callback);
                     }
                 } else {
                     // Create enum
-                    adapterObjects.setObject(
+                    adapterObjects!.setObject(
                         `enum.${enumName}.${addTo}`,
                         {
                             common: {
@@ -5460,7 +5487,8 @@ class AdapterClass extends EventEmitter {
                             },
                             from: 'system.adapter.' + this.namespace,
                             ts: Date.now(),
-                            type: 'enum'
+                            type: 'enum',
+                            native: {}
                         },
                         options,
                         callback
@@ -5536,19 +5564,22 @@ class AdapterClass extends EventEmitter {
                 }
 
                 if (res && res.rows) {
-                    for (let i = 0; i < res.rows.length; i++) {
+                    for (const row of res.rows) {
                         try {
-                            const obj = await adapterObjects.getObject(res.rows[i].id, options);
+                            const obj = (await adapterObjects!.getObject(row.id, options)) as
+                                | ioBroker.EnumObject
+                                | null
+                                | undefined;
 
-                            if (obj && obj.common && obj.common.members) {
+                            if (obj?.common?.members) {
                                 const pos = obj.common.members.indexOf(objId);
                                 if (pos !== -1) {
                                     obj.common.members.splice(pos, 1);
-                                    obj.from = 'system.adapter.' + this.namespace;
+                                    obj.from = `system.adapter.${this.namespace}`;
                                     obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                                     obj.ts = Date.now();
 
-                                    await adapterObjects.setObjectAsync(obj._id, obj, options);
+                                    await adapterObjects!.setObjectAsync(obj._id, obj, options);
                                 }
                             }
                         } catch (e) {
@@ -5799,6 +5830,10 @@ class AdapterClass extends EventEmitter {
             parentDevice = null;
         }
 
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         Utils.assertsOptionalCallback(callback, 'callback');
         Utils.assertsString(parentDevice, 'parentDevice');
 
@@ -5830,14 +5865,16 @@ class AdapterClass extends EventEmitter {
                 startkey: options.parentDevice + '.',
                 endkey: options.parentDevice + '.\u9999'
             },
-            options.options,
+            options.options || {},
             (err, obj) => {
                 if (err || !obj || !obj.rows || !obj.rows.length) {
                     return tools.maybeCallbackWithError(options.callback, err, err ? undefined : []);
                 }
                 const res = [];
                 for (const row of obj.rows) {
-                    res.push(row.value);
+                    if (row.value) {
+                        res.push(row.value);
+                    }
                 }
                 return tools.maybeCallbackWithError(options.callback, null, res);
             }
@@ -5920,11 +5957,11 @@ class AdapterClass extends EventEmitter {
                 }
                 const res: ioBroker.StateObject[] = [];
                 let read = 0;
-                for (let i = 0; i < obj.rows.length; i++) {
+                for (const row of obj.rows) {
                     read++;
-                    adapterObjects.getObject(obj.rows[i].id, (err, subObj) => {
+                    adapterObjects!.getObject(row.id, (err, subObj) => {
                         if (subObj) {
-                            res.push(subObj);
+                            res.push(subObj as ioBroker.StateObject);
                         }
 
                         if (!--read) {
@@ -6012,12 +6049,14 @@ class AdapterClass extends EventEmitter {
                 if (err || !obj) {
                     return tools.maybeCallbackWithError(callback, err || tools.ERRORS.ERROR_NOT_FOUND);
                 }
+                // @ts-expect-error
                 if (!obj.common.members.includes(objId)) {
+                    // @ts-expect-error
                     obj.common.members.push(objId);
                     obj.from = 'system.adapter.' + this.namespace;
                     obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                     obj.ts = Date.now();
-                    adapterObjects.setObject(obj._id, obj, options, callback);
+                    adapterObjects!.setObject(obj._id, obj, options, callback);
                 } else {
                     return tools.maybeCallback(callback);
                 }
@@ -6027,14 +6066,15 @@ class AdapterClass extends EventEmitter {
                 enumName = enumName.substring(5);
             }
 
-            adapterObjects.getObject(`enum.${enumName}.${addTo}`, options, (err, obj) => {
+            adapterObjects!.getObject(`enum.${enumName}.${addTo}`, options, (err, obj) => {
                 if (!err && obj) {
+                    // @ts-expect-error cast to enum object
                     if (!obj.common.members.includes(objId)) {
-                        obj.common.members.push(objId);
+                        obj.common.members!.push(objId);
                         obj.from = 'system.adapter.' + this.namespace;
                         obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
-                        adapterObjects.setObject(obj._id, obj, callback);
+                        adapterObjects!.setObject(obj._id, obj, callback);
                     } else {
                         return tools.maybeCallback(callback);
                     }
@@ -6044,16 +6084,17 @@ class AdapterClass extends EventEmitter {
                     }
 
                     // Create enum
-                    adapterObjects.setObject(
-                        'enum.' + enumName + '.' + addTo,
+                    adapterObjects!.setObject(
+                        `enum.${enumName}.${addTo}`,
                         {
                             common: {
                                 name: addTo,
                                 members: [objId]
                             },
-                            from: 'system.adapter.' + this.namespace,
+                            from: `system.adapter.${this.namespace}`,
                             ts: Date.now(),
-                            type: 'enum'
+                            type: 'enum',
+                            native: {}
                         },
                         options,
                         callback
@@ -6160,7 +6201,7 @@ class AdapterClass extends EventEmitter {
 
                 for (const row of res.rows) {
                     try {
-                        const obj = await adapterObjects.getObjectAsync(row.id);
+                        const obj = await adapterObjects!.getObjectAsync(row.id);
                         if (obj && obj.common && obj.common.members) {
                             const pos = obj.common.members.indexOf(objId);
                             if (pos !== -1) {
@@ -6168,7 +6209,7 @@ class AdapterClass extends EventEmitter {
                                 obj.from = 'system.adapter.' + this.namespace;
                                 obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
                                 obj.ts = Date.now();
-                                await adapterObjects.setObjectAsync(obj._id, obj);
+                                await adapterObjects!.setObjectAsync(obj._id, obj);
                             }
                         }
                     } catch (e) {
@@ -6222,10 +6263,10 @@ class AdapterClass extends EventEmitter {
         }
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} chmodFile not processed because Objects database not connected`);
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback as any, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.chmodFile(_adapter, path, options, callback);
+        adapterObjects.chmodFile(_adapter as any, path as any, options as any, callback as any);
     }
 
     chownFile(
@@ -6269,10 +6310,10 @@ class AdapterClass extends EventEmitter {
         }
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} chownFile not processed because Objects database not connected`);
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback as any, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.chownFile(_adapter, path, options, callback);
+        adapterObjects!.chownFile(_adapter as string, path as string, options as any, callback as any);
     }
 
     // external signatures
@@ -6350,13 +6391,16 @@ class AdapterClass extends EventEmitter {
         Utils.assertsOptionalCallback(callback, 'callback');
         Utils.assertsString(_adapter, '_adapter');
         Utils.assertsString(name, 'name');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
 
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} unlink not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.unlink(_adapter, name, options, callback);
+        adapterObjects!.unlink(_adapter, name, options, callback);
     }
 
     // external signatures
@@ -6483,7 +6527,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    writeFile(_adapter: any, filename: any, data: any, options: any, callback?: any): void {
+    writeFile(_adapter: any, filename: any, data: any, options: any, callback?: any): void | Promise<void> {
         // TODO: add types
         if (_adapter === null) {
             _adapter = this.name;
@@ -6822,7 +6866,7 @@ class AdapterClass extends EventEmitter {
                     if (_obj && _obj.rows) {
                         for (let i = 0; i < _obj.rows.length; i++) {
                             try {
-                                await adapterStates.pushMessage(_obj.rows[i].id, obj);
+                                await adapterStates!.pushMessage(_obj.rows[i].id, obj as any);
                             } catch (e) {
                                 return tools.maybeCallbackWithError(callback, e);
                             }
@@ -6869,7 +6913,7 @@ class AdapterClass extends EventEmitter {
             }
 
             try {
-                await adapterStates.pushMessage(instanceName, obj);
+                await adapterStates.pushMessage(instanceName, obj as any);
             } catch (e) {
                 return tools.maybeCallbackWithError(callback, e);
             }
@@ -6949,13 +6993,13 @@ class AdapterClass extends EventEmitter {
                         // if states is no longer existing, we do not need to unsubscribe
                         return;
                     }
-                    if (!err && res.rows.length) {
-                        for (let i = 0; i < res.rows.length; i++) {
-                            const parts = res.rows[i].id.split('.');
+                    if (!err && res?.rows?.length) {
+                        for (const row of res.rows) {
+                            const parts: string[] = row.id.split('.');
                             // ignore system.host.name.alive and so on
                             if (parts.length === 3) {
                                 try {
-                                    await adapterStates.pushMessage(res.rows[i].id, obj);
+                                    await adapterStates!.pushMessage(row.id, obj as any);
                                 } catch (e) {
                                     return tools.maybeCallbackWithError(callback, e);
                                 }
@@ -6992,7 +7036,7 @@ class AdapterClass extends EventEmitter {
             }
 
             try {
-                await adapterStates.pushMessage(hostName, obj);
+                await adapterStates.pushMessage(hostName, obj as any);
             } catch (e) {
                 return tools.maybeCallbackWithError(callback, e);
             }
@@ -7014,6 +7058,14 @@ class AdapterClass extends EventEmitter {
      * @return Promise<void>
      */
     async registerNotification(scope: any, category: any, message: any) {
+        if (!adapterStates) {
+            // if states is no longer existing, we do not need to set
+            this._logger.info(
+                `${this.namespaceLog} registerNotification not processed because States database not connected`
+            );
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
         // TODO: add types
         const obj = {
             command: 'addNotification',
@@ -7021,7 +7073,7 @@ class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`
         };
 
-        await adapterStates.pushMessage(this.host, obj);
+        await adapterStates.pushMessage(this.host!, obj as any);
     }
 
     // external signatures
@@ -7230,8 +7282,8 @@ class AdapterClass extends EventEmitter {
                                         aliasId,
                                         tools.formatAliasValue(
                                             obj && obj.common,
-                                            targetObj && targetObj.common,
-                                            state,
+                                            targetObj && (targetObj.common as any),
+                                            state as ioBroker.State,
                                             this._logger,
                                             this.namespaceLog
                                         ),
@@ -7280,15 +7332,15 @@ class AdapterClass extends EventEmitter {
                         }
 
                         // read object for formatting
-                        adapterObjects.getObject(aliasId, options, (err, targetObj) => {
+                        adapterObjects!.getObject(aliasId, options, (err, targetObj) => {
                             // write target state
                             this.outputCount++;
-                            adapterStates.setState(
+                            adapterStates!.setState(
                                 aliasId,
                                 tools.formatAliasValue(
                                     obj && obj.common,
-                                    targetObj && targetObj.common,
-                                    state,
+                                    targetObj && (targetObj.common as any),
+                                    state as ioBroker.State,
                                     this._logger,
                                     this.namespaceLog
                                 ),
@@ -7322,10 +7374,7 @@ class AdapterClass extends EventEmitter {
     }
 
     // Cache will be cleared if user or group changes.. Important! only if subscribed.
-    private _getUserGroups(
-        options: Record<string, any>,
-        callback: (err?: Error | null, options?: Record<string, any>) => void
-    ) {
+    private _getUserGroups(options: Record<string, any>, callback: (options?: Record<string, any>) => void) {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
             options.acl = this.users[options.user].acl;
@@ -7598,6 +7647,7 @@ class AdapterClass extends EventEmitter {
 
         if (Array.isArray(ids)) {
             if (!ids.length) {
+                // @ts-expect-error fix it
                 return tools.maybeCallbackWithError(callback, null, ids);
             }
 
@@ -7612,6 +7662,7 @@ class AdapterClass extends EventEmitter {
                 }
 
                 options._objects = undefined;
+                // @ts-expect-error fix it
                 return tools.maybeCallbackWithError(callback, null, ids, objs);
             } else {
                 _helper = _helper || {
@@ -7641,6 +7692,7 @@ class AdapterClass extends EventEmitter {
                             }
                         }
 
+                        // @ts-expect-error fix it
                         return tools.maybeCallbackWithError(callback, null, ids, _helper.objs);
                     } else {
                         _helper.i++;
@@ -7662,6 +7714,7 @@ class AdapterClass extends EventEmitter {
                 this._logger.info(
                     `${this.namespaceLog} checkStates not processed because Objects database not connected`
                 );
+                // @ts-expect-error fix it
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
             adapterObjects.getObject(ids, options, (err, obj) => {
@@ -7671,12 +7724,15 @@ class AdapterClass extends EventEmitter {
                     options.checked = undefined;
                 }
                 if (err) {
+                    // @ts-expect-error fix it
                     return tools.maybeCallbackWithError(callback, err, { _id: ids });
                 } else {
-                    if (!this._checkState(obj, options, command)) {
+                    if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
+                        // @ts-expect-error fix it
                         return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, { _id: ids });
                     }
                 }
+                // @ts-expect-error fix it
                 return tools.maybeCallbackWithError(callback, null, obj);
             });
         }
@@ -7696,11 +7752,16 @@ class AdapterClass extends EventEmitter {
         }
     }
 
-    private _setStateChangedHelper(id: string, state: ioBroker.State, callback: () => void) {
+    private _setStateChangedHelper(
+        id: string,
+        state: ioBroker.State,
+        callback: (err?: Error | null, id?: string, changed?: boolean) => void
+    ) {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because Objects database not connected`
             );
+
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7749,7 +7810,7 @@ class AdapterClass extends EventEmitter {
                             await this._utils.performStrictObjectCheck(id, state);
                         }
                         this.outputCount++;
-                        adapterStates.setState(id, state, () => {
+                        adapterStates!.setState(id, state, () => {
                             return tools.maybeCallbackWithError(callback, null, id, false);
                         });
                     } else {
@@ -8068,7 +8129,7 @@ class AdapterClass extends EventEmitter {
                                         aliasId,
                                         tools.formatAliasValue(
                                             obj && obj.common,
-                                            targetObj && targetObj.common,
+                                            targetObj && (targetObj.common as any),
                                             state,
                                             this._logger,
                                             this.namespaceLog
@@ -8109,12 +8170,15 @@ class AdapterClass extends EventEmitter {
 
                 // read alias id
                 adapterObjects.getObject(id, options, (err, obj) => {
-                    if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    // @ts-expect-error
+                    if (obj?.common?.alias?.id) {
                         // alias id can be a string or can have id.write
-                        const aliasId =
-                            typeof obj.common.alias.id.write === 'string'
-                                ? obj.common.alias.id.write
-                                : obj.common.alias.id;
+                        // @ts-expect-error
+                        const aliasId = tools.isObject(obj.common.alias.id)
+                            ? // @ts-expect-error
+                              obj.common.alias.id.write
+                            : // @ts-expect-error
+                              obj.common.alias.id;
 
                         // validate here because we use objects/states db directly
                         try {
@@ -8154,7 +8218,7 @@ class AdapterClass extends EventEmitter {
                                 aliasId,
                                 tools.formatAliasValue(
                                     obj && obj.common,
-                                    targetObj && targetObj.common,
+                                    targetObj && (targetObj.common as any),
                                     state,
                                     this._logger,
                                     this.namespaceLog
@@ -8449,7 +8513,7 @@ class AdapterClass extends EventEmitter {
                                                 callback,
                                                 err,
                                                 tools.formatAliasValue(
-                                                    sourceObj && sourceObj.common,
+                                                    sourceObj && (sourceObj.common as any),
                                                     obj.common,
                                                     state,
                                                     this._logger,
@@ -8464,12 +8528,12 @@ class AdapterClass extends EventEmitter {
                                             return tools.maybeCallbackWithError(callback, err);
                                         } else {
                                             this.inputCount++;
-                                            adapterStates.getState(aliasId, (err, state) =>
+                                            adapterStates!.getState(aliasId, (err, state) =>
                                                 tools.maybeCallbackWithError(
                                                     callback,
                                                     err,
                                                     tools.formatAliasValue(
-                                                        sourceObj && sourceObj.common,
+                                                        sourceObj && (sourceObj.common as any),
                                                         obj.common,
                                                         state,
                                                         this._logger,
@@ -8489,7 +8553,7 @@ class AdapterClass extends EventEmitter {
                         if (this.oStates && this.oStates[id]) {
                             return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
                         } else {
-                            adapterStates.getState(id, callback);
+                            adapterStates!.getState(id, callback);
                         }
                     }
                 }
@@ -8515,7 +8579,7 @@ class AdapterClass extends EventEmitter {
                             );
                         }
 
-                        adapterObjects.getObject(aliasId, (err, sourceObj) => {
+                        adapterObjects!.getObject(aliasId, (err, sourceObj) => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             }
@@ -8525,7 +8589,7 @@ class AdapterClass extends EventEmitter {
                                     callback,
                                     err,
                                     tools.formatAliasValue(
-                                        sourceObj && sourceObj.common,
+                                        sourceObj && (sourceObj.common as any),
                                         obj.common,
                                         state,
                                         this._logger,
@@ -8534,12 +8598,12 @@ class AdapterClass extends EventEmitter {
                                 );
                             } else {
                                 this.inputCount++;
-                                adapterStates.getState(aliasId, (err, state) => {
+                                adapterStates!.getState(aliasId, (err, state) => {
                                     return tools.maybeCallbackWithError(
                                         callback,
                                         err,
                                         tools.formatAliasValue(
-                                            sourceObj && sourceObj.common,
+                                            sourceObj && (sourceObj.common as any),
                                             obj.common,
                                             state,
                                             this._logger,
@@ -8588,7 +8652,7 @@ class AdapterClass extends EventEmitter {
                 let _obj;
                 // read all adapters
                 try {
-                    _obj = await adapterObjects.getObjectViewAsync('system', 'instance', {
+                    _obj = await adapterObjects!.getObjectViewAsync('system', 'instance', {
                         startkey: 'system.adapter.',
                         endkey: 'system.adapter.\u9999'
                     });
@@ -8795,7 +8859,7 @@ class AdapterClass extends EventEmitter {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
-                    adapterStates.delState(id, callback);
+                    adapterStates!.delState(id, callback);
                 }
             });
         } else {
@@ -8841,7 +8905,7 @@ class AdapterClass extends EventEmitter {
         srcObjs: (ioBroker.StateObject | null)[] | null,
         callback: (err?: Error | null, result?: any) => void
     ) {
-        adapterStates.getStates(keys, (err, arr) => {
+        adapterStates!.getStates(keys, (err, arr) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             }
@@ -8862,7 +8926,7 @@ class AdapterClass extends EventEmitter {
                                 // @ts-expect-error
                                 srcObjs[i].common,
                                 obj.common,
-                                arr[i] || null,
+                                arr![i] || null,
                                 this._logger,
                                 this.namespaceLog
                             ) || null;
@@ -9025,7 +9089,7 @@ class AdapterClass extends EventEmitter {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
-                        this._processStatesSecondary(keys, null, null, callback);
+                        this._processStatesSecondary(keys || [], null, null, callback);
                     }
                 });
             }

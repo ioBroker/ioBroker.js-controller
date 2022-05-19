@@ -62,7 +62,7 @@ interface StatesSettings {
     redisNamespace?: string;
 }
 
-interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
+export interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
     _id?: number;
 }
 

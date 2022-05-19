@@ -7,7 +7,8 @@ type OpaqueString<T extends string> = string & {
 
 export type ID = OpaqueString<'ID'>;
 
-type OptionalCallback = undefined | ((...args: any[]) => void | Promise<void>);
+type Callback = (...args: any[]) => void | Promise<void>;
+type OptionalCallback = undefined | Callback;
 
 export interface IdObject {
     device?: string;
@@ -303,7 +304,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsCallback(value: unknown, name: string): asserts value is OptionalCallback {
+    static assertsCallback(value: unknown, name: string): asserts value is Callback {
         if (typeof value !== 'function') {
             throw new Error(
                 `Paramter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`

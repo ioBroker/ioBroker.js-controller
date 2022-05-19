@@ -2576,7 +2576,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 export function formatAliasValue(
     sourceObj: Record<string, any>,
     targetObj: Record<string, any>,
-    state: ioBroker.State | null,
+    state: ioBroker.State | null | undefined,
     logger: any,
     logNamespace?: string
 ): ioBroker.State | null {
@@ -2590,7 +2590,7 @@ export function formatAliasValue(
         return state;
     }
 
-    if (targetObj && targetObj.alias && targetObj.alias.read) {
+    if (targetObj?.alias?.read) {
         try {
             // process the value here
             const func = new Function(

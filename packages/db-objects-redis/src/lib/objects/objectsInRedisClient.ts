@@ -1354,7 +1354,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    unlink(id: string, name: string, options: CallOptions | null, callback: ioBroker.RmCallback): void {
+    unlink(id: string, name: string, options: CallOptions | null | undefined, callback?: ioBroker.RmCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3620,6 +3620,21 @@ export class ObjectsInRedisClient {
         await this.client.publish(this.objNamespace + id, message);
         return { id };
     }
+
+    // method called without options
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
+        callback?: ioBroker.SetObjectCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+
+    // method called with options
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
+        options?: CallOptions | null,
+        callback?: ioBroker.SetObjectCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * set anew or update object
