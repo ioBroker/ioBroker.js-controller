@@ -30,8 +30,8 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 
 const ERRORS = CONSTS.ERRORS;
 
-type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
-type ChangeFileFunction = (id: string, fileName: string, size: number | null) => void;
+type ChangeFunction = (id: string, object: ioBroker.Object | null) => void;
+export type ChangeFileFunction = (id: string, fileName: string, size: number | null) => void;
 
 type GetUserGroupCallbackNoError = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
@@ -55,7 +55,7 @@ interface ObjectsSettings {
     change?: ChangeFunction;
     changeUser?: ChangeFunction;
     changeFileUser?: ChangeFileFunction;
-    autoConnect: boolean;
+    autoConnect?: boolean;
     logger: InternalLogger;
     hostname?: string;
     namespace?: string;
@@ -2592,11 +2592,11 @@ export class ObjectsInRedisClient {
         });
     }
 
-    subscribe(pattern: string | string[], options: CallOptions, callback?: ioBroker.ErrorCallback): void {
+    subscribe(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void {
         return this.subscribeConfig(pattern, options, callback);
     }
 
-    subscribeAsync(pattern: string | string[], options: CallOptions): Promise<void> {
+    subscribeAsync(pattern: string | string[], options?: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );

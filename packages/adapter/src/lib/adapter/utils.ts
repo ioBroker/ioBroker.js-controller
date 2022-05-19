@@ -299,6 +299,19 @@ export class Utils {
     }
 
     /**
+     * Throws if type is not an optional callback
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertsCallback(value: unknown, name: string): asserts value is OptionalCallback {
+        if (typeof value !== 'function') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
      * Adds the namespace to the id if it is missing, if an object is passed it will be converted to an id string
      *
      * @param id id which will be fixed

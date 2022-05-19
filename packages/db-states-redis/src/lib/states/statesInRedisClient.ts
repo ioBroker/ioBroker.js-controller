@@ -43,7 +43,7 @@ interface InternalLogObject extends LogObject {
     _id: number;
 }
 
-type ChangeFunction = (id: string, state: Record<string, any> | null) => void;
+type ChangeFunction = (id: string, state: ioBroker.State | null) => void;
 
 interface StatesSettings {
     connected?: () => void;
@@ -1137,8 +1137,8 @@ export class StateRedisClient {
         return this.subscribe(pattern, true, callback);
     }
 
-    async unsubscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
-    async unsubscribe(pattern: string, callback: ioBroker.ErrorCallback): Promise<void>;
+    async unsubscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
+    async unsubscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
      * @param pattern
@@ -1147,7 +1147,7 @@ export class StateRedisClient {
      */
     async unsubscribe(
         pattern: string,
-        asUser: boolean | ioBroker.ErrorCallback,
+        asUser?: boolean | ioBroker.ErrorCallback,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
@@ -1189,7 +1189,7 @@ export class StateRedisClient {
      * @param pattern
      * @param callback callback function (optional)
      */
-    unsubscribeUser(pattern: string, callback: ioBroker.ErrorCallback): Promise<void> {
+    unsubscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.unsubscribe(pattern, true, callback);
     }
 
@@ -1269,14 +1269,14 @@ export class StateRedisClient {
     async pushLog(
         id: string,
         log: LogObject,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void>;
 
     // implementation uses an modified pushLog with internal _id
     async pushLog(
         id: string,
         log: InternalLogObject,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

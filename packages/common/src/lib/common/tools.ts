@@ -2576,10 +2576,10 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 export function formatAliasValue(
     sourceObj: Record<string, any>,
     targetObj: Record<string, any>,
-    state: Record<string, any>,
+    state: ioBroker.State | null,
     logger: any,
     logNamespace?: string
-): Record<string, any> | null {
+): ioBroker.State | null {
     logNamespace = logNamespace ? `${logNamespace} ` : '';
 
     if (!state) {
@@ -2660,7 +2660,7 @@ export function formatAliasValue(
                 state.val = !!state.val;
             }
         } else if (targetObj.type === 'number') {
-            state.val = parseFloat(state.val);
+            state.val = parseFloat(state.val as any);
         } else if (targetObj.type === 'string') {
             state.val = state.val.toString();
         }
@@ -2683,7 +2683,7 @@ export function formatAliasValue(
             sourceObj.max !== undefined
         ) {
             // scale target between 0 and 100 % based on sources min/max
-            state.val = ((state.val - sourceObj.min) / (sourceObj.max - sourceObj.min)) * 100;
+            state.val = (((state.val as any) - sourceObj.min) / (sourceObj.max - sourceObj.min)) * 100;
         } else if (
             sourceObj &&
             sourceObj.type === 'number' &&
@@ -2695,7 +2695,7 @@ export function formatAliasValue(
             targetObj.max !== undefined
         ) {
             // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetObj.max - targetObj.min) * state.val) / 100 + targetObj.min;
+            state.val = ((targetObj.max - targetObj.min) * (state.val as any)) / 100 + targetObj.min;
         }
     }
 

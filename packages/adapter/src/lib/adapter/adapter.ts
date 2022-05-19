@@ -41,12 +41,16 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { ChangeFileFunction } from '@iobroker/db-objects-redis/lib/objects/objectsInRedisClient';
 
 // keep them outside until we have migrated to TS, else devs can access them
-let adapterStates: StatesInRedisClient;
-let adapterObjects: ObjectsInRedisClient;
+let adapterStates: StatesInRedisClient | null;
+let adapterObjects: ObjectsInRedisClient | null;
 
 interface AdapterOptions {
+    subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
+    /** If the adapter collects logs from all adapters (experts only). Default: false */
+    logTransporter?: boolean;
     /** if true, the date format from system.config */
     useFormatDate?: boolean;
     /** if it is possible for other instances to retrive states of this adapter automatically */
@@ -76,7 +80,7 @@ interface AdapterOptions {
     /** callback function (id, obj) that will be called if state changed */
     stateChange?: ioBroker.StateChangeHandler;
     /** callback function (id, file) that will be called if file changed */
-    fileChange?: (id: string, file: any | null | undefined) => void | Promise<void>;
+    fileChange?: ChangeFileFunction;
     /** callback to inform about new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
@@ -132,7 +136,7 @@ interface InternalSetSessionOptions {
 
 interface InternalGetSessionOptions {
     id: string;
-    callback?: ioBroker.ErrorCallback;
+    callback: ioBroker.GetSessionCallback;
 }
 
 interface InternalDestroySessionOptions {
@@ -554,7 +558,7 @@ class AdapterClass extends EventEmitter {
     private eventLoopLags: number[];
     private overwriteLogLevel: boolean;
     protected adapterReady: boolean;
-    private callbacks?: Record<string, { cb: (args: any[]) => void; time?: number }>;
+    private callbacks?: Record<string, { cb: (msg: ioBroker.MessagePayload) => void; time?: number }>;
 
     /**
      * Contains a live cache of the adapter's states.
@@ -799,6 +803,10 @@ class AdapterClass extends EventEmitter {
     protected processLog?: (msg: any) => void;
     protected requireLog?: (_isActive: boolean) => void;
     private logOffTimer?: NodeJS.Timeout | null;
+    private logRedirect?: (isActive: boolean, id: string) => void;
+    private logRequired?: boolean;
+    private patterns?: Record<string, { regex: string }>;
+    private statesConnectedTime?: number;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -1400,7 +1408,7 @@ class AdapterClass extends EventEmitter {
     // unknown guard implementation
     getSession(id: unknown, callback: unknown): void | Promise<void> {
         Utils.assertsString(id, 'id');
-        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsCallback(callback, 'callback');
 
         return this._getSession({ id, callback });
     }
@@ -2152,7 +2160,7 @@ class AdapterClass extends EventEmitter {
                 acl[commandPermission.type][commandPermission.operation] = true;
             }
 
-            return tools.maybeCallback(options.callback, acl);
+            return tools.maybeCallback(options.callback, acl as ioBroker.PermissionSet);
         }
         this.getForeignObjects('*', 'group', null, options, (err, groups) => {
             acl.groups = [];
@@ -2441,6 +2449,7 @@ class AdapterClass extends EventEmitter {
                 this._logger.error(
                     `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${options.publicName}, ${options.privateName}, ${options.chainedName}`
                 );
+                // @ts-expect-error
                 return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_NOT_FOUND);
             } else {
                 let ca;
@@ -3265,7 +3274,7 @@ class AdapterClass extends EventEmitter {
             }
 
             try {
-                const cbObj = await adapterObjects.extendObjectAsync(options.id, options.obj, options);
+                const cbObj = await adapterObjects.extendObjectAsync(options.id, options.obj, options.options);
                 let defState;
                 if (options.obj.type === 'state' || oldObj.type === 'state') {
                     if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
@@ -4255,6 +4264,9 @@ class AdapterClass extends EventEmitter {
             callback = type;
             type = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} findForeignObject not processed because Objects database not connected`
@@ -5063,7 +5075,6 @@ class AdapterClass extends EventEmitter {
                 role: roleOrCommon
             };
         } else if (tools.isObject(roleOrCommon)) {
-            // @ts-expect-error should be ok
             common = roleOrCommon;
         }
 
@@ -5158,7 +5169,6 @@ class AdapterClass extends EventEmitter {
                 role: roleOrCommon
             };
         } else if (tools.isObject(roleOrCommon)) {
-            // @ts-expect-error should be okay
             common = roleOrCommon;
         }
 
@@ -7129,9 +7139,7 @@ class AdapterClass extends EventEmitter {
         if (tools.isObject(state)) {
             // Verify that the passed state object is valid
             try {
-                // @ts-expect-error fix later
                 this._utils.validateSetStateObjectArgument(state);
-                // @ts-expect-error fix later
                 stateObj = state;
             } catch (e) {
                 return tools.maybeCallbackWithError(callback, e);
@@ -8838,12 +8846,12 @@ class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, err);
             }
 
-            const result: Record<string, { val: any; ts: number; q: number } | null> = {};
+            const result: Record<string, Partial<ioBroker.State> | null> = {};
 
             for (let i = 0; i < keys.length; i++) {
                 const obj = targetObjs && targetObjs[i];
 
-                if (obj && obj.common && obj.common.alias) {
+                if (obj?.common?.alias) {
                     // @ts-expect-error
                     if (obj.common.alias.val !== undefined) {
                         // @ts-expect-error
@@ -8859,10 +8867,10 @@ class AdapterClass extends EventEmitter {
                                 this.namespaceLog
                             ) || null;
                     } else {
-                        result[obj._id || keys[i]] = arr[i] || null;
+                        result[obj._id || keys[i]] = arr![i] || null;
                     }
                 } else {
-                    result[(obj && obj._id) || keys[i]] = arr[i] || null;
+                    result[(obj && obj._id) || keys[i]] = arr![i] || null;
                 }
             }
             return tools.maybeCallbackWithError(callback, null, result);
@@ -9116,8 +9124,8 @@ class AdapterClass extends EventEmitter {
             if (!aliasDetails.source) {
                 let sourceObj;
                 try {
-                    await adapterStates.subscribe(sourceId);
-                    sourceObj = await adapterObjects.getObject(sourceId, this._options);
+                    await adapterStates!.subscribe(sourceId);
+                    sourceObj = await adapterObjects!.getObject(sourceId, this._options);
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
@@ -9176,7 +9184,7 @@ class AdapterClass extends EventEmitter {
             // @ts-expect-error
             if (!this.aliases.get(sourceId).targets.length) {
                 this.aliases.delete(sourceId);
-                await adapterStates.unsubscribe(sourceId);
+                await adapterStates!.unsubscribe(sourceId);
             }
         }
         return tools.maybeCallback(callback);
@@ -9250,11 +9258,11 @@ class AdapterClass extends EventEmitter {
                 } catch {
                     // ignore
                 }
-                state = state || {};
+                state = state || { val: '{}' };
                 state.val = state.val || '{}';
                 let subs;
                 try {
-                    subs = JSON.parse(state.val);
+                    subs = JSON.parse(state.val as any);
                 } catch {
                     this._logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSubEntry}.subscribes"`);
                 }
@@ -9320,7 +9328,7 @@ class AdapterClass extends EventEmitter {
 
             if (nonAliasesIds.length) {
                 for (const id of nonAliasesIds) {
-                    promises.push(new Promise(resolve => adapterStates.subscribeUser(id, resolve)));
+                    promises.push(new Promise(resolve => adapterStates!.subscribeUser(id, resolve)));
                 }
             }
 
@@ -9410,7 +9418,7 @@ class AdapterClass extends EventEmitter {
                 const aliasObj = await adapterObjects.getObjectAsync(pattern, options);
                 if (aliasObj) {
                     // cb will be called, but await for catching promisified part
-                    await this._addAliasSubscribe(aliasObj, pattern, callback);
+                    await this._addAliasSubscribe(aliasObj as ioBroker.StateObject, pattern, callback);
                 } else {
                     return tools.maybeCallback(callback);
                 }
@@ -9482,7 +9490,7 @@ class AdapterClass extends EventEmitter {
                     }
                     let subs;
                     try {
-                        subs = JSON.parse(state.val);
+                        subs = JSON.parse(state.val as any);
                     } catch {
                         this._logger.error(`${this.namespaceLog} Cannot parse subscribes for "${autoSub}.subscribes"`);
                         continue;
@@ -9555,7 +9563,7 @@ class AdapterClass extends EventEmitter {
         // if no alias subscribed any longer, remove subscription
         if (!this.aliases.size && this._aliasObjectsSubscribed) {
             this._aliasObjectsSubscribed = false;
-            adapterObjects.unsubscribe(`${ALIAS_STARTS_WITH}*`);
+            adapterObjects!.unsubscribe(`${ALIAS_STARTS_WITH}*`);
         }
         return tools.maybeCallback(callback);
     }
@@ -9691,6 +9699,7 @@ class AdapterClass extends EventEmitter {
                     this._logger.warn(
                         `${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`
                     );
+                    return;
                 }
 
                 // for a state object we require common.type to exist
@@ -9837,11 +9846,11 @@ class AdapterClass extends EventEmitter {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
-                adapterStates.getBinaryState(id, (err, data) => {
+                adapterStates!.getBinaryState(id, (err, data) => {
                     if (!err && data && obj && !('binary' in obj)) {
                         // @ts-expect-error type adjustment needed?
                         obj.binary = true;
-                        adapterObjects.setObject(id, obj, err => {
+                        adapterObjects!.setObject(id, obj, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             } else {
@@ -9918,7 +9927,7 @@ class AdapterClass extends EventEmitter {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
-                    adapterStates.delBinaryState(id, callback);
+                    adapterStates!.delBinaryState(id, callback);
                 }
             });
         } else {
@@ -10350,7 +10359,7 @@ class AdapterClass extends EventEmitter {
          * Called if states and objects successfully initialized
          */
         const prepareInitAdapter = () => {
-            if (this.terminated) {
+            if (this.terminated || !adapterObjects || !adapterStates) {
                 return;
             }
 
@@ -10359,9 +10368,9 @@ class AdapterClass extends EventEmitter {
                 initAdapter(this._options);
             } else {
                 adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
-                    adapterStates.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
+                    adapterStates!.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
                         if (killRes && killRes.val !== undefined) {
-                            killRes.val = parseInt(killRes.val, 10);
+                            killRes.val = parseInt(killRes.val as any, 10);
                         }
                         if (
                             !this._config.isInstall &&
@@ -10382,7 +10391,7 @@ class AdapterClass extends EventEmitter {
                             killRes.from &&
                             killRes.from.startsWith('system.host.') &&
                             killRes.ack &&
-                            !isNaN(killRes.val) &&
+                            !isNaN(killRes.val as any) &&
                             killRes.val !== process.pid
                         ) {
                             this._logger.error(
@@ -10401,7 +10410,8 @@ class AdapterClass extends EventEmitter {
                             );
                             this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                         } else {
-                            adapterObjects.getObject(`system.adapter.${this.namespace}`, (err, res) => {
+                            adapterObjects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
+                                // TODO: ts infers AdapterObject instead of InstanceObject
                                 if ((err || !res) && !this._config.isInstall) {
                                     this._logger.error(
                                         `${this.namespaceLog} ${this._options.name}.${this.instance} invalid config`
@@ -10409,7 +10419,7 @@ class AdapterClass extends EventEmitter {
                                     this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                                 } else {
                                     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                                    initAdapter(res);
+                                    initAdapter(res as unknown as ioBroker.InstanceObject);
                                 }
                             });
                         }
@@ -10439,6 +10449,10 @@ class AdapterClass extends EventEmitter {
                     if (this._initializeTimeout) {
                         clearTimeout(this._initializeTimeout);
                         this._initializeTimeout = null;
+                    }
+
+                    if (!adapterObjects) {
+                        return;
                     }
 
                     // subscribe to user changes
@@ -10484,10 +10498,6 @@ class AdapterClass extends EventEmitter {
                 },
                 change: async (id, obj) => {
                     // System level object changes (and alias objects)
-                    if (obj === 'null' || obj === '') {
-                        obj = null;
-                    }
-
                     if (!id) {
                         this._logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
                         return;
@@ -10559,7 +10569,10 @@ class AdapterClass extends EventEmitter {
                                     if (newSourceId !== sourceId) {
                                         this._removeAliasSubscribe(sourceId, targetAlias, async () => {
                                             try {
-                                                await this._addAliasSubscribe(obj, targetAlias.pattern);
+                                                await this._addAliasSubscribe(
+                                                    obj as ioBroker.StateObject,
+                                                    targetAlias.pattern
+                                                );
                                             } catch (e) {
                                                 this._logger.error(
                                                     `${this.namespaceLog} Could not add alias subscription: ${e.message}`
@@ -10595,7 +10608,7 @@ class AdapterClass extends EventEmitter {
                                     (testPattern instanceof RegExp && testPattern.test(id))
                                 ) {
                                     try {
-                                        await this._addAliasSubscribe(obj, id);
+                                        await this._addAliasSubscribe(obj as ioBroker.StateObject, id);
                                     } catch (e) {
                                         this._logger.warn(
                                             this.namespaceLog + ' ' + `Could not add alias subscription: ${e.message}`
@@ -10641,10 +10654,6 @@ class AdapterClass extends EventEmitter {
                 },
                 changeUser: (id, obj) => {
                     // User level object changes
-                    if (obj === 'null' || obj === '') {
-                        obj = null;
-                    }
-
                     if (!id) {
                         this._logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
                         return;
@@ -10654,8 +10663,8 @@ class AdapterClass extends EventEmitter {
                     const adapterName = this.namespace.split('.')[0];
                     if (
                         obj &&
-                        obj.protectedNative &&
-                        obj.protectedNative.length &&
+                        'protectedNative' in obj &&
+                        Array.isArray(obj.protectedNative) &&
                         obj._id &&
                         obj._id.startsWith('system.adapter.') &&
                         adapterName !== 'admin' &&
@@ -10692,7 +10701,7 @@ class AdapterClass extends EventEmitter {
                     }
                     if (this.adapterReady && !this._stopInProgress) {
                         typeof this._options.fileChange === 'function' &&
-                            setImmediate(() => this._options.fileChange(id, fileName, size));
+                            setImmediate(() => this._options.fileChange!(id, fileName, size));
                         // emit 'fileChange' event instantly
                         setImmediate(() => this.emit('fileChange', id, fileName, size));
                     }
@@ -10701,7 +10710,7 @@ class AdapterClass extends EventEmitter {
         };
 
         // initStates is called from initAdapter
-        const initStates = cb => {
+        const initStates = (cb: () => void) => {
             this._logger.silly(`${this.namespaceLog} objectDB connected`);
 
             this._config.states.maxQueue = this._config.states.maxQueue || 1000;
@@ -10722,6 +10731,10 @@ class AdapterClass extends EventEmitter {
                 namespace: this.namespaceLog,
                 connection: this._config.states,
                 connected: async () => {
+                    if (!adapterStates) {
+                        return;
+                    }
+
                     this._logger.silly(`${this.namespaceLog} statesDB connected`);
                     this.statesConnectedTime = Date.now();
 
@@ -10752,9 +10765,9 @@ class AdapterClass extends EventEmitter {
                             this.patterns = {};
                         } else {
                             try {
-                                this.patterns = JSON.parse(state.val);
-                                Object.keys(this.patterns).forEach(
-                                    p => (this.patterns[p].regex = tools.pattern2RegEx(p))
+                                this.patterns = JSON.parse(state.val as string);
+                                Object.keys(this.patterns!).forEach(
+                                    p => (this.patterns![p].regex = tools.pattern2RegEx(p))
                                 );
                             } catch {
                                 this.patterns = {};
@@ -10768,9 +10781,6 @@ class AdapterClass extends EventEmitter {
                 logger: this._logger,
                 change: (id, state) => {
                     this.inputCount++;
-                    if (state === 'null' || state === '') {
-                        state = null;
-                    }
 
                     if (!id || typeof id !== 'string') {
                         console.log(`Something is wrong! ${JSON.stringify(id)}`);
@@ -10780,11 +10790,11 @@ class AdapterClass extends EventEmitter {
                     if (
                         id === `system.adapter.${this.namespace}.sigKill` &&
                         state &&
-                        state.ts > this.statesConnectedTime &&
+                        state.ts > this.statesConnectedTime! &&
                         state.from &&
                         state.from.startsWith('system.host.')
                     ) {
-                        const sigKillVal = parseInt(state.val);
+                        const sigKillVal = parseInt(state.val as any);
                         if (!isNaN(sigKillVal)) {
                             if (this.startedInCompactMode || sigKillVal === -1) {
                                 this._logger.info(
@@ -10811,7 +10821,7 @@ class AdapterClass extends EventEmitter {
                             if (
                                 state.val &&
                                 state.val !== currentLevel &&
-                                ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)
+                                ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
                             ) {
                                 this.overwriteLogLevel = true;
                                 this._config.log.level = state.val;
@@ -10822,7 +10832,7 @@ class AdapterClass extends EventEmitter {
                                     // set the loglevel on transport only if no loglevel was pinned in log config
                                     // @ts-expect-error it is our own modification
                                     if (!this._logger.transports[transport]._defaultConfigLoglevel) {
-                                        this._logger.transports[transport].level = state.val;
+                                        this._logger.transports[transport].level = state.val as string;
                                     }
                                 }
                                 this._logger.info(
@@ -10844,14 +10854,15 @@ class AdapterClass extends EventEmitter {
 
                     // todo remove it as an error with log will be found
                     if (id === `system.adapter.${this.namespace}.checkLogging`) {
+                        // eslint-disable-next-line @typescript-eslint/no-use-before-define
                         checkLogging();
                     }
 
                     // someone subscribes or unsubscribes from adapter
                     if (this._options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
-                        let subs;
+                        let subs: Record<string, any>;
                         try {
-                            subs = JSON.parse((state && state.val) || '{}');
+                            subs = JSON.parse((state && (state.val as string)) || '{}');
                             Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
                         } catch {
                             subs = {};
@@ -10874,12 +10885,12 @@ class AdapterClass extends EventEmitter {
                             this._logger.silly(
                                 `${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`
                             );
-                        this.logRedirect(state ? state.val : false, instance);
+                        this.logRedirect!(state ? !!state.val : false, instance);
                     } else if (id === `log.system.adapter.${this.namespace}`) {
                         this._options.logTransporter && this.processLog && this.processLog(state);
                     } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                         // If this is messagebox
-                        const obj = state;
+                        const obj = state as unknown as ioBroker.Message;
 
                         if (obj) {
                             // If callback stored for this request
@@ -10891,13 +10902,14 @@ class AdapterClass extends EventEmitter {
                                 this.callbacks[`_${obj.callback.id}`]
                             ) {
                                 // Call callback function
-                                if (this.callbacks[`_${obj.callback.id}`].cb) {
+                                if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
                                     this.callbacks[`_${obj.callback.id}`].cb(obj.message);
                                     delete this.callbacks[`_${obj.callback.id}`];
                                 }
                                 // delete too old callbacks IDs, like garbage collector
                                 const now = Date.now();
-                                for (const _id in this.callbacks) {
+                                for (const _id of Object.keys(this.callbacks)) {
+                                    // @ts-expect-error
                                     if (now - this.callbacks[_id].time > 3600000) {
                                         delete this.callbacks[_id];
                                     }
@@ -10915,26 +10927,34 @@ class AdapterClass extends EventEmitter {
                             return;
                         }
                         const pluginStatesIndex = ('system.adapter.' + this.namespace + '.plugins.').length;
-                        let nameEndIndex = id.indexOf('.', pluginStatesIndex + 1);
+                        let nameEndIndex: number | undefined = id.indexOf('.', pluginStatesIndex + 1);
                         if (nameEndIndex === -1) {
                             nameEndIndex = undefined;
                         }
                         const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
+                        // @ts-expect-error
                         if (!this.pluginHandler.pluginExists(pluginName)) {
                             return;
                         }
+                        // @ts-expect-error
                         if (this.pluginHandler.isPluginActive(pluginName) !== state.val) {
                             if (state.val) {
+                                // @ts-expect-error
                                 if (!this.pluginHandler.isPluginInstanciated(pluginName)) {
+                                    // @ts-expect-error
                                     this.pluginHandler.instanciatePlugin(
                                         pluginName,
+                                        // @ts-expect-error
                                         this.pluginHandler.getPluginConfig(pluginName),
                                         __dirname
                                     );
+                                    // @ts-expect-error
                                     this.pluginHandler.setDatabaseForPlugin(pluginName, adapterObjects, adapterStates);
+                                    // @ts-expect-error
                                     this.pluginHandler.initPlugin(pluginName, this.adapterConfig);
                                 }
                             } else {
+                                // @ts-expect-error
                                 if (!this.pluginHandler.destroy(pluginName)) {
                                     this._logger.info(
                                         `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`
@@ -10944,16 +10964,17 @@ class AdapterClass extends EventEmitter {
                         }
                     } else if (this.adapterReady && this.aliases.has(id)) {
                         // If adapter is ready and for this ID exist some alias links
-                        this.aliases.get(id).targets.forEach(target => {
+                        this.aliases.get(id)!.targets.forEach(target => {
                             const aState = state
                                 ? tools.formatAliasValue(
-                                      this.aliases.get(id).source,
+                                      this.aliases.get(id)!.source!,
                                       target,
                                       deepClone(state),
                                       this._logger,
                                       this.namespaceLog
                                   )
                                 : null;
+                            // @ts-expect-error
                             const targetId = target.id.read === 'string' ? target.id.read : target.id;
 
                             if (!this._stopInProgress && (aState || !state)) {
@@ -10969,9 +10990,6 @@ class AdapterClass extends EventEmitter {
                 },
                 changeUser: (id, state) => {
                     this.inputCount++;
-                    if (state === 'null' || state === '') {
-                        state = null;
-                    }
 
                     if (!id || typeof id !== 'string') {
                         console.log(`Something is wrong! ${JSON.stringify(id)}`);
@@ -10989,7 +11007,7 @@ class AdapterClass extends EventEmitter {
 
                         if (!this._stopInProgress) {
                             if (typeof this._options.stateChange === 'function') {
-                                setImmediate(() => this._options.stateChange(id, state));
+                                setImmediate(() => this._options.stateChange!(id, state));
                             } else {
                                 // emit 'stateChange' event instantly
                                 setImmediate(() => this.emit('stateChange', id, state));
@@ -11016,7 +11034,7 @@ class AdapterClass extends EventEmitter {
 
         // debug function to find error with stop logging
         const checkLogging = () => {
-            let logs = [];
+            let logs: null | string[] = [];
             // LogList
             logs.push(`Actual Loglist - ${JSON.stringify(Array.from(this.logList))}`);
 
@@ -11036,15 +11054,18 @@ class AdapterClass extends EventEmitter {
                     adapterStates.getStates(keys, (err, obj) => {
                         if (obj) {
                             for (let i = 0; i < keys.length; i++) {
+                                const objPart = obj[i];
                                 // We can JSON.parse, but index is 16x faster
-                                if (obj[i]) {
+                                if (objPart) {
                                     const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                                     if (
-                                        (typeof obj[i] === 'string' &&
-                                            (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))) ||
-                                        (typeof obj[i] === 'object' && (obj[i].val === true || obj[i].val === 'true'))
+                                        (typeof objPart === 'string' &&
+                                            // @ts-expect-error recheck code-wise this should not be possible to have a string
+                                            (objPart.includes('"val":true') || objPart.includes('"val":"true"'))) ||
+                                        (typeof objPart === 'object' &&
+                                            (objPart.val === true || objPart.val === 'true'))
                                     ) {
-                                        logs.push(`Subscriber - ${id} ENABLED`);
+                                        logs!.push(`Subscriber - ${id} ENABLED`);
                                     } else {
                                         if (logs) {
                                             logs.push(`Subscriber - ${id} (disabled)`);
@@ -11059,7 +11080,7 @@ class AdapterClass extends EventEmitter {
                         }
                         if (logs) {
                             for (let m = 0; m < logs.length; m++) {
-                                this._logger.error(this.namespaceLog + ' LOGINFO: ' + logs[m]);
+                                this._logger.error(`${this.namespaceLog} LOGINFO: ${logs[m]}`);
                             }
                             logs = null;
                         }
@@ -11068,9 +11089,9 @@ class AdapterClass extends EventEmitter {
             });
         };
 
-        const initLogging = callback => {
+        const initLogging = (callback: () => void) => {
             // temporary log buffer
-            let messages = [];
+            let messages: null | any[] = [];
             // Read current state of all log subscriber
 
             if (!adapterStates) {
@@ -11088,21 +11109,23 @@ class AdapterClass extends EventEmitter {
                     adapterStates.getStates(keys, (err, obj) => {
                         if (obj) {
                             for (let i = 0; i < keys.length; i++) {
+                                const objPart = obj[i];
                                 // We can JSON.parse, but index is 16x faster
-                                if (!obj[i]) {
+                                if (!objPart) {
                                     continue;
                                 }
                                 const id = keys[i].substring(0, keys[i].length - '.logging'.length);
                                 if (
-                                    typeof obj[i] === 'string' &&
-                                    (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))
+                                    typeof objPart === 'string' &&
+                                    // @ts-expect-error recheck this but getStates should not return string code-wise
+                                    (objPart.includes('"val":true') || objPart.includes('"val":"true"'))
                                 ) {
-                                    this.logRedirect(true, id);
+                                    this.logRedirect!(true, id);
                                 } else if (
-                                    typeof obj[i] === 'object' &&
-                                    (obj[i].val === true || obj[i].val === 'true')
+                                    typeof objPart === 'object' &&
+                                    (objPart.val === true || objPart.val === 'true')
                                 ) {
-                                    this.logRedirect(true, id);
+                                    this.logRedirect!(true, id);
                                 }
                             }
                             if (
@@ -11114,7 +11137,7 @@ class AdapterClass extends EventEmitter {
                             ) {
                                 for (const message of messages) {
                                     for (const instanceId of this.logList) {
-                                        adapterStates.pushLog(instanceId, message);
+                                        adapterStates!.pushLog(instanceId, message);
                                     }
                                 }
                             }
@@ -11131,7 +11154,7 @@ class AdapterClass extends EventEmitter {
 
             this.logRedirect = (isActive, id) => {
                 // ignore itself
-                if (id === 'system.adapter.' + this.namespace) {
+                if (id === `system.adapter.${this.namespace}`) {
                     return;
                 }
 
@@ -11146,7 +11169,9 @@ class AdapterClass extends EventEmitter {
 
             // If some message from logger
             // find our notifier transport
+            // @ts-expect-error
             const ts = this._logger.transports.find(t => t.name === 'NT');
+            // @ts-expect-error
             ts.on('logged', info => {
                 info.from = this.namespace;
                 // emit to itself
@@ -11172,7 +11197,7 @@ class AdapterClass extends EventEmitter {
                 }
             });
 
-            this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
+            this._options.logTransporter = this._options.logTransporter || this.ioPack!.common.logTransporter;
 
             if (this._options.logTransporter) {
                 this.requireLog = isActive => {
@@ -11186,13 +11211,15 @@ class AdapterClass extends EventEmitter {
                                 // disable log receiving after 10 seconds
                                 this.logOffTimer = setTimeout(() => {
                                     this.logOffTimer = null;
-                                    this._logger.silly(this.namespaceLog + ' Change log subscriber state: FALSE');
+                                    this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
                                     this.outputCount++;
-                                    adapterStates.setState('system.adapter.' + this.namespace + '.logging', {
-                                        val: false,
-                                        ack: true,
-                                        from: 'system.adapter.' + this.namespace
-                                    });
+                                    if (adapterStates) {
+                                        adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
+                                            val: false,
+                                            ack: true,
+                                            from: `system.adapter.${this.namespace}`
+                                        });
+                                    }
                                 }, 10000);
                             } else {
                                 if (this.logOffTimer) {
@@ -11226,19 +11253,25 @@ class AdapterClass extends EventEmitter {
             }
         };
 
-        const initAdapter = adapterConfig => {
+        const initAdapter = (adapterConfig: AdapterOptions | ioBroker.InstanceObject) => {
             initLogging(() => {
+                // @ts-expect-error
                 this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
+                // @ts-expect-error
                 this.pluginHandler.initPlugins(adapterConfig, async () => {
-                    if (!adapterStates || this.terminated) {
+                    if (!adapterStates || !adapterObjects || this.terminated) {
                         // if adapterState was destroyed,we should not continue
                         return;
                     }
 
                     adapterStates.subscribe(`system.adapter.${this.namespace}.plugins.*`);
                     if (this._options.instance === undefined) {
-                        if (!adapterConfig || !adapterConfig.common || !adapterConfig.common.enabled) {
-                            if (adapterConfig && adapterConfig.common && adapterConfig.common.enabled !== undefined) {
+                        if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
+                            if (
+                                adapterConfig &&
+                                'common' in adapterConfig &&
+                                adapterConfig.common.enabled !== undefined
+                            ) {
                                 !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
                             } else {
                                 !this._config.isInstall &&
@@ -11275,7 +11308,7 @@ class AdapterClass extends EventEmitter {
                             }
                         }
 
-                        if (!this._config.isInstall && !adapterConfig._id) {
+                        if (!this._config.isInstall && !('_id' in adapterConfig)) {
                             this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
                             this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                             return;
@@ -11285,6 +11318,7 @@ class AdapterClass extends EventEmitter {
                         let instance;
 
                         if (!this._config.isInstall) {
+                            // @ts-expect-error
                             const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
                             if (!tmp) {
                                 this._logger.error(`${this.namespaceLog} invalid config`);
@@ -11302,18 +11336,22 @@ class AdapterClass extends EventEmitter {
                             };
                         }
 
+                        // @ts-expect-error
                         if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
                             // set configured in DB log level
                             for (const trans of Object.values(this._logger.transports)) {
                                 // set the loglevel on transport only if no loglevel was pinned in log config
                                 // @ts-expect-error it is our own modification
                                 if (!trans._defaultConfigLoglevel) {
+                                    // @ts-expect-error
                                     trans.level = adapterConfig.common.loglevel;
                                 }
                             }
+                            // @ts-expect-error
                             this._config.log.level = adapterConfig.common.loglevel;
                         }
 
+                        // @ts-expect-error
                         this.name = adapterConfig.common.name;
                         this.instance = instance;
                         this.namespace = `${name}.${instance}`;
@@ -11323,13 +11361,19 @@ class AdapterClass extends EventEmitter {
                             process.title = 'io.' + this.namespace;
                         }
 
+                        // @ts-expect-error
                         this.config = adapterConfig.native;
+                        // @ts-expect-error
                         this.host = adapterConfig.common.host;
+                        // @ts-expect-error
                         this.common = adapterConfig.common;
 
                         if (
+                            // @ts-expect-error
                             adapterConfig.common.mode === 'subscribe' ||
+                            // @ts-expect-error
                             adapterConfig.common.mode === 'schedule' ||
+                            // @ts-expect-error
                             adapterConfig.common.mode === 'once'
                         ) {
                             this.stop = () => this._stop(true);
@@ -11343,24 +11387,29 @@ class AdapterClass extends EventEmitter {
                         // Monitor logging state
                         adapterStates.subscribe('*.logging');
 
+                        // @ts-expect-error
                         if (typeof this._options.message === 'function' && !adapterConfig.common.messagebox) {
                             this._logger.error(
                                 `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
                             );
+                            // @ts-expect-error
                         } else if (adapterConfig.common.messagebox) {
                             this.mboxSubscribed = true;
-                            adapterStates.subscribeMessage('system.adapter.' + this.namespace);
+                            adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                         }
                     } else {
+                        // @ts-expect-error
                         this.name = adapterConfig.name || this._options.name;
+                        // @ts-expect-error
                         this.instance = adapterConfig.instance || 0;
                         this.namespace = `${this.name}.${this.instance}`;
                         this.namespaceLog =
                             this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-
+                        // @ts-expect-error
                         this.config = adapterConfig.native || {};
+                        // @ts-expect-error
                         this.common = adapterConfig.common || {};
-                        this.host = this.common.host || tools.getHostName() || os.hostname();
+                        this.host = this.common!.host || tools.getHostName() || os.hostname();
                     }
 
                     this.adapterConfig = adapterConfig;
@@ -11381,7 +11430,7 @@ class AdapterClass extends EventEmitter {
                     // Above this line only use logger!
                     //
 
-                    await createInstancesObjects(adapterConfig);
+                    await createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
 
                     // auto oObjects
                     if (this._options.objects) {
@@ -11404,12 +11453,16 @@ class AdapterClass extends EventEmitter {
 
                     // Decrypt all attributes of encryptedNative
                     const promises = [];
+                    // @ts-expect-error
                     if (Array.isArray(adapterConfig.encryptedNative)) {
+                        // @ts-expect-error
                         for (const attr of adapterConfig.encryptedNative) {
                             // we can only decrypt strings
+                            // @ts-expect-error
                             if (typeof this.config[attr] === 'string') {
                                 promises.push(
                                     this.getEncryptedConfig(attr)
+                                        // @ts-expect-error
                                         .then(decryptedValue => (this.config[attr] = decryptedValue))
                                         .catch(e =>
                                             this._logger.error(
@@ -11466,7 +11519,9 @@ class AdapterClass extends EventEmitter {
                         this._config.system.statisticsInterval =
                             parseInt(this._config.system.statisticsInterval, 10) || 15000;
                         if (!this._config.isInstall) {
+                            // eslint-disable-next-line @typescript-eslint/no-use-before-define
                             this._reportInterval = setInterval(reportStatus, this._config.system.statisticsInterval);
+                            // eslint-disable-next-line @typescript-eslint/no-use-before-define
                             reportStatus();
                             const id = `system.adapter.${this.namespace}`;
                             adapterStates.setState(`${id}.compactMode`, {
@@ -11478,20 +11533,25 @@ class AdapterClass extends EventEmitter {
                             this.outputCount++;
 
                             if (this.startedInCompactMode) {
-                                adapterStates.setState(id + '.cpu', { ack: true, from: id, val: 0 });
-                                adapterStates.setState(id + '.cputime', { ack: true, from: id, val: 0 });
-                                adapterStates.setState(id + '.memRss', { val: 0, ack: true, from: id });
-                                adapterStates.setState(id + '.memHeapTotal', { val: 0, ack: true, from: id });
-                                adapterStates.setState(id + '.memHeapUsed', { val: 0, ack: true, from: id });
-                                adapterStates.setState(id + '.eventLoopLag', { val: 0, ack: true, from: id });
+                                adapterStates.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
+                                adapterStates.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
+                                adapterStates.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
+                                adapterStates.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
+                                adapterStates.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
+                                adapterStates.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
                                 this.outputCount += 6;
                             } else {
-                                tools.measureEventLoopLag(1000, lag => this.eventLoopLags.push(lag));
+                                tools.measureEventLoopLag(1000, lag => {
+                                    if (lag) {
+                                        this.eventLoopLags.push(lag);
+                                    }
+                                });
                             }
                         }
                     }
 
-                    if (adapterConfig && adapterConfig.common && adapterConfig.common.restartSchedule) {
+                    // @ts-expect-error restartSchedule can exist - adjust types
+                    if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
                         try {
                             this._schedule = await import('node-schedule');
                         } catch {
@@ -11501,9 +11561,11 @@ class AdapterClass extends EventEmitter {
                         }
                         if (this._schedule) {
                             this._logger.debug(
+                                // @ts-expect-error restartSchedule can exist - adjust types
                                 `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
                             );
                             this._restartScheduleJob = this._schedule.scheduleJob(
+                                // @ts-expect-error restartSchedule can exist - adjust types
                                 adapterConfig.common.restartSchedule,
                                 () => {
                                     this._logger.info(`${this.namespaceLog} Scheduled restart.`);
@@ -11574,12 +11636,12 @@ class AdapterClass extends EventEmitter {
                 pidUsage(process.pid, (err, stats) => {
                     // sometimes adapter is stopped, but this is still running
                     if (!err && this && adapterStates && adapterStates.setState && stats) {
-                        adapterStates.setState(id + '.cpu', {
+                        adapterStates.setState(`${id}.cpu`, {
                             ack: true,
                             from: id,
-                            val: Math.round(100 * parseFloat(stats.cpu)) / 100
+                            val: Math.round(100 * stats.cpu) / 100
                         });
-                        adapterStates.setState(id + '.cputime', { ack: true, from: id, val: stats.ctime / 1000 });
+                        adapterStates.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
                         this.outputCount += 2;
                     }
                 });
@@ -11635,7 +11697,7 @@ class AdapterClass extends EventEmitter {
             this.outputCount = 0;
         };
 
-        const exceptionHandler = async (err: NodeJS.ErrnoException, isUnhandledRejection: boolean) => {
+        const exceptionHandler = async (err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) => {
             // If the adapter has a callback to listen for unhandled errors
             // give it a chance to handle the error itself instead of restarting it
             if (typeof this._options.error === 'function') {
@@ -11700,7 +11762,7 @@ class AdapterClass extends EventEmitter {
         process.once('exit', () => this._stop());
 
         process.on('uncaughtException', err => exceptionHandler(err));
-        process.on('unhandledRejection', err => exceptionHandler(err, true));
+        process.on('unhandledRejection', err => exceptionHandler(err as any, true));
 
         const pluginSettings: PluginHandlerSettings = {
             scope: 'adapter',
