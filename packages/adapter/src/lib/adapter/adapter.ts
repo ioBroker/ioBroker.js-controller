@@ -13,7 +13,7 @@ import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-contro
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as ObjectsInRedisClient, ChangeFileFunction } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 
@@ -41,7 +41,6 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import type { ChangeFileFunction } from '@iobroker/db-objects-redis/lib/objects/objectsInRedisClient';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient | null;
@@ -500,13 +499,13 @@ interface InternalGetObjectViewOptions {
     design: string;
     search: string;
     params: ioBroker.GetObjectViewParams;
-    options: unknown;
+    options?: Record<string, any> | null;
     callback?: ioBroker.GetObjectViewCallback<ioBroker.AnyObject>;
 }
 
 interface InternalGetEnumOptions {
     _enum: string;
-    options: unknown;
+    options?: Record<string, any> | null;
     callback?: ioBroker.GetEnumCallback;
 }
 
@@ -3463,20 +3462,18 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    extendForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
+    extendForeignObject(
+        id: unknown,
+        obj: unknown,
+        options: unknown,
+        callback?: unknown
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
         Utils.assertsOptionalCallback(callback, 'callback');
-
-        if (!adapterObjects) {
-            this._logger.info(
-                `${this.namespaceLog} extendForeignObject not processed because Objects database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
 
         try {
             this._utils.validateId(id, true, null);
@@ -3506,9 +3503,18 @@ class AdapterClass extends EventEmitter {
         return this._extendForeignObjectAsync({ id, obj: obj as ioBroker.SettableObject, callback, options });
     }
 
-    private async _extendForeignObjectAsync(_options: InternalSetObjectOptions): Promise<void> {
+    private async _extendForeignObjectAsync(
+        _options: InternalSetObjectOptions
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         const { id, callback, options } = _options;
         let { obj } = _options;
+
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} extendForeignObject not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
 
         // Read whole object
         let oldObj;
@@ -3593,7 +3599,7 @@ class AdapterClass extends EventEmitter {
             }
 
             try {
-                const cbObj = await adapterObjects!.extendObjectAsync(id, obj, options);
+                const cbObj = await adapterObjects!.extendObjectAsync(id, obj, options || {});
                 if (cbObj?.value.type === 'state') {
                     let defState;
                     if (obj.common && 'def' in obj.common && obj.common.def !== undefined) {
@@ -3656,6 +3662,13 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(id, 'id');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} getObject not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -3667,6 +3680,7 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
+        // @ts-expect-error fix types
         adapterObjects.getObject(this._utils.fixId(id), options, callback);
     }
 
@@ -3712,11 +3726,33 @@ class AdapterClass extends EventEmitter {
      *           }
      *           </code></pre>
      */
-    getObjectView(design: unknown, search: unknown, params: unknown, options: unknown, callback?: unknown): void {
+    getObjectView(
+        design: unknown,
+        search: unknown,
+        params: unknown,
+        options: unknown,
+        callback?: unknown
+    ): void | ioBroker.GetObjectViewPromise<any> {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
         }
+
+        Utils.assertsString(design, 'design');
+        Utils.assertsString(search, 'search');
+        Utils.assertsOptionalCallback(callback, 'callback');
+        params = params || {};
+        Utils.assertsObject(params, 'params');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._getObjectView({ design, search, params, options, callback });
+    }
+
+    private _getObjectView(_options: InternalGetObjectViewOptions) {
+        const { design, search, params, options, callback } = _options;
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getObjectView not processed because Objects database not connected`
@@ -3724,17 +3760,6 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        params = params || {};
-        Utils.assertsString(design, 'design');
-        Utils.assertsString(search, 'search');
-        Utils.assertsObject(params, 'params');
-        Utils.assertsOptionalCallback(callback, 'callback');
-
-        return this._getObjectView({ design, search, params, options, callback });
-    }
-
-    private _getObjectView(_options: InternalGetObjectViewOptions) {
-        const { design, search, params, options, callback } = _options;
         // Limit search ranges for system views to the relevant namespaces
         // to prevent too wide searches where the objects never will be
         if (design === 'system' && !params.startkey && (!params.endkey || params.endkey === '\u9999')) {
@@ -3772,6 +3797,7 @@ class AdapterClass extends EventEmitter {
             }
         }
 
+        // @ts-expect-error fix it
         return adapterObjects.getObjectView(design, search, params, options, callback);
     }
 
@@ -3881,6 +3907,9 @@ class AdapterClass extends EventEmitter {
 
         Utils.assertsString(_enum, '_enum');
         Utils.assertsOptionalCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
 
         return this._getEnum({ _enum, options, callback });
     }
