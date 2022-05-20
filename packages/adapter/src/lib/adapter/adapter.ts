@@ -109,7 +109,7 @@ interface AliasDetailsSource {
 }
 
 interface AliasTargetEntry {
-    alias: Record<string, any>; // TODO: specify
+    alias: ioBroker.StateCommon['alias'];
     id: string;
     pattern: string;
     type: string;
@@ -601,8 +601,8 @@ class AdapterClass extends EventEmitter {
     private readonly FORBIDDEN_CHARS: RegExp;
     private inputCount: number;
     private outputCount: number;
-    private users: Record<string, any>; // TODO
-    private groups: Record<string, any>; // TODO
+    private users: Record<string, { groups: any; acl: any }>; // todo
+    private groups: Record<string, Partial<ioBroker.Object>>; // TODO: probably better GroupObject
     private autoSubscribe: string[];
     private defaultHistory: null | string;
     private pluginHandler?: typeof PluginHandler;
@@ -640,6 +640,7 @@ class AdapterClass extends EventEmitter {
     protected host?: string;
     protected common?: Record<string, any>;
     private mboxSubscribed?: boolean;
+    // TODO: move these methods in interface AdapterClass where overloads are located
     protected readonly getPortAsync: (port: number) => Promise<number>;
     protected readonly getForeignStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
     protected readonly checkPasswordAsync: (user: string, password: string, options?: unknown) => Promise<boolean>;
@@ -1612,6 +1613,10 @@ class AdapterClass extends EventEmitter {
      *        <pre><code>function (port) {}</code></pre>
      */
     getPort(port: unknown, host: unknown, callback: unknown): void {
+        if (!port) {
+            throw new Error('adapterGetPort: no port');
+        }
+
         if (typeof host === 'function') {
             callback = host;
             host = null;
@@ -6999,16 +7004,14 @@ class AdapterClass extends EventEmitter {
 
                     // delete too old callbacks IDs
                     const now = Date.now();
-                    for (const _id of Object.keys(this.callbacks)) {
-                        // @ts-expect-error
-                        if (now - this.callbacks[_id].time > 3600000) {
+                    for (const [_id, cb] of Object.entries(this.callbacks)) {
+                        if (now - cb.time! > 3600000) {
                             delete this.callbacks[_id];
                         }
                     }
                 } else {
                     obj.callback = callback;
-                    // @ts-expect-error cb is 100% defined
-                    obj.callback.ack = true;
+                    obj.callback!.ack = true;
                 }
             }
 
@@ -7512,14 +7515,13 @@ class AdapterClass extends EventEmitter {
                     await this._getGroups(options.groups);
                     // combine all rights
                     const user = this.users[options.user];
-                    for (let g = 0; g < options.groups.length; g++) {
-                        const gName = options.groups[g];
-                        if (!this.groups[gName] || !this.groups[gName].common || !this.groups[gName].common.acl) {
+                    for (const gName of options.groups) {
+                        if (!this.groups[gName].common?.acl) {
                             continue;
                         }
                         const group = this.groups[gName];
 
-                        if (group.common.acl && group.common.acl.file) {
+                        if (group.common?.acl?.file) {
                             if (!user.acl || !user.acl.file) {
                                 user.acl = user.acl || {};
                                 user.acl.file = user.acl.file || {};
@@ -7538,7 +7540,7 @@ class AdapterClass extends EventEmitter {
                             }
                         }
 
-                        if (group.common.acl && group.common.acl.object) {
+                        if (group.common?.acl?.object) {
                             if (!user.acl || !user.acl.object) {
                                 user.acl = user.acl || {};
                                 user.acl.object = user.acl.object || {};
@@ -7557,7 +7559,7 @@ class AdapterClass extends EventEmitter {
                             }
                         }
 
-                        if (group.common.acl && group.common.acl.users) {
+                        if (group.common?.acl?.users) {
                             if (!user.acl || !user.acl.users) {
                                 user.acl = user.acl || {};
                                 user.acl.users = user.acl.users || {};
@@ -7575,7 +7577,7 @@ class AdapterClass extends EventEmitter {
                                 user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
                             }
                         }
-                        if (group.common.acl && group.common.acl.state) {
+                        if (group.common?.acl?.state) {
                             if (!user.acl || !user.acl.state) {
                                 user.acl = user.acl || {};
                                 user.acl.state = user.acl.state || {};
