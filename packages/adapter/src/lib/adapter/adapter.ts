@@ -4193,11 +4193,11 @@ class AdapterClass extends EventEmitter {
         }
         if (typeof type === 'function') {
             callback = type;
-            type = null;
+            type = undefined;
         }
         if (typeof type === 'object') {
             options = type;
-            type = null;
+            type = undefined;
         }
         if (typeof enums === 'object' && !Array.isArray(enums)) {
             options = enums;
@@ -7386,7 +7386,7 @@ class AdapterClass extends EventEmitter {
                                         tools.formatAliasValue(
                                             obj && obj.common,
                                             targetObj && (targetObj.common as any),
-                                            state as ioBroker.State,
+                                            stateObj as ioBroker.State,
                                             this._logger,
                                             this.namespaceLog
                                         ),
@@ -7408,7 +7408,7 @@ class AdapterClass extends EventEmitter {
                         }
 
                         this.outputCount++;
-                        adapterStates.setState(id, state, callback);
+                        adapterStates.setState(id, stateObj, callback);
                     }
                 }
             });
@@ -7443,7 +7443,7 @@ class AdapterClass extends EventEmitter {
                                 tools.formatAliasValue(
                                     obj && obj.common,
                                     targetObj && (targetObj.common as any),
-                                    state as ioBroker.State,
+                                    stateObj as ioBroker.State,
                                     this._logger,
                                     this.namespaceLog
                                 ),
@@ -7471,7 +7471,7 @@ class AdapterClass extends EventEmitter {
                 }
 
                 this.outputCount++;
-                adapterStates.setState(id, state, callback);
+                adapterStates.setState(id, stateObj, callback);
             }
         }
     }
