@@ -512,7 +512,7 @@ interface InternalGetEnumOptions {
 
 interface InternalGetEnumsOptions {
     _enumList?: ioBroker.EnumList;
-    options: unknown;
+    options?: Record<string, any> | null;
     callback?: ioBroker.GetEnumsCallback;
 }
 
@@ -3463,11 +3463,14 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    extendForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> {
+    extendForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} extendForeignObject not processed because Objects database not connected`
@@ -3813,6 +3816,13 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
 
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        Utils.assertsObject(params, 'params');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getObjectList not processed because Objects database not connected`
@@ -3960,7 +3970,11 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getEnums(_enumList: unknown, options?: unknown, callback?: unknown): Promise<void> {
+    getEnums(
+        _enumList: unknown,
+        options?: unknown,
+        callback?: unknown
+    ): Promise<{ [groupName: string]: Record<string, ioBroker.Enum> } | void> {
         if (typeof _enumList === 'function') {
             callback = _enumList;
             _enumList = null;
@@ -3971,11 +3985,16 @@ class AdapterClass extends EventEmitter {
         }
 
         Utils.assertsOptionalCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
 
         return this._getEnums({ _enumList: _enumList as ioBroker.EnumList, options, callback });
     }
 
-    private async _getEnums(_options: InternalGetEnumsOptions): Promise<void> {
+    private async _getEnums(
+        _options: InternalGetEnumsOptions
+    ): Promise<{ [groupName: string]: Record<string, ioBroker.Enum> } | void> {
         const { options, callback } = _options;
         let { _enumList } = _options;
 
@@ -4211,6 +4230,7 @@ class AdapterClass extends EventEmitter {
                             );
                             continue;
                         }
+                        // @ts-expect-error rewrite as for of
                         const id: string = res.rows[i].value._id;
                         list[id] = res.rows[i].value;
                         if (_enums && id) {
@@ -4276,7 +4296,13 @@ class AdapterClass extends EventEmitter {
             type = null;
         }
 
-        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsCallback(callback, 'callback');
+        if (type !== null) {
+            Utils.assertsString(type, 'type');
+        }
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
 
         if (!adapterObjects) {
             this._logger.info(
@@ -4291,7 +4317,7 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        adapterObjects.findObject(id, type, options, callback);
+        adapterObjects.findObject(id, type, options || {}, callback);
     }
 
     // external signatures
@@ -4348,8 +4374,8 @@ class AdapterClass extends EventEmitter {
             // remove protectedNative if not admin or own adapter
             if (
                 obj &&
-                obj.protectedNative &&
-                obj.protectedNative.length &&
+                'protectedNative' in obj &&
+                Array.isArray(obj.protectedNative) &&
                 obj._id &&
                 obj._id.startsWith('system.adapter.') &&
                 adapterName !== 'admin' &&
@@ -4405,7 +4431,7 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallback(cb);
         } else {
             const task = tasks.shift();
-            adapterObjects.delObject(task!.id, options, async err => {
+            adapterObjects!.delObject(task!.id, options, async err => {
                 if (err) {
                     return tools.maybeCallbackWithError(cb, err);
                 }
@@ -4450,6 +4476,13 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(id, 'id');
+        Utils.assertsOptionalCallback(callback, 'callback');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} delForeignObject not processed because Objects database not connected`
@@ -4478,13 +4511,13 @@ class AdapterClass extends EventEmitter {
         // If recursive deletion of all underlying objects, including id
         if (options && options.recursive) {
             // read object itself
-            adapterObjects.getObject(id, options, (err, obj) => {
+            adapterObjects!.getObject(id, options, (err, obj) => {
                 const tasks =
                     obj && (!obj.common || !obj.common.dontDelete) ? [{ id, state: obj.type === 'state' }] : [];
 
                 const selector = { startkey: `${id}.`, endkey: `${id}.\u9999` };
                 // read all underlying states
-                adapterObjects.getObjectList(selector, options, (err, res) => {
+                adapterObjects!.getObjectList(selector, options, (err, res) => {
                     res &&
                         res.rows &&
                         res.rows.forEach(
@@ -4497,7 +4530,7 @@ class AdapterClass extends EventEmitter {
                 });
             });
         } else {
-            adapterObjects.getObject(id, options, async (err, obj) => {
+            adapterObjects!.getObject(id, options, async (err, obj) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else if (obj) {
@@ -4507,13 +4540,13 @@ class AdapterClass extends EventEmitter {
                     }
 
                     try {
-                        await adapterObjects.delObject(obj._id, options);
+                        await adapterObjects!.delObject(obj._id, options);
                     } catch (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     }
                     if (obj.type === 'state') {
                         try {
-                            if (obj.binary) {
+                            if ('binary' in obj) {
                                 await this.delBinaryStateAsync(id, options);
                             } else {
                                 await this.delForeignStateAsync(id, options);
@@ -4556,6 +4589,13 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = undefined;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsPattern(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} subscribeObjects not processed because Objects database not connected`
@@ -4563,13 +4603,12 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertsString(pattern, 'pattern');
-
         if (pattern === '*') {
             adapterObjects.subscribeUser(`${this.namespace}.*`, options, callback);
         } else {
+            // @ts-expect-error should fixId be able to handle array?
             pattern = this._utils.fixId(pattern, true);
-            adapterObjects.subscribeUser(pattern, options, callback);
+            adapterObjects.subscribeUser(pattern as any, options, callback);
         }
     }
 
@@ -4595,6 +4634,13 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = undefined;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsPattern(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} unsubscribeObjects not processed because Objects database not connected`
@@ -4602,13 +4648,12 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertsString(pattern, 'pattern');
-
         if (pattern === '*') {
             adapterObjects.unsubscribeUser(`${this.namespace}.*`, options, callback);
         } else {
+            // @ts-expect-error should fixid be able to handle array?
             pattern = this._utils.fixId(pattern, true);
-            adapterObjects.unsubscribeUser(pattern, options, callback);
+            adapterObjects.unsubscribeUser(pattern as string, options, callback);
         }
     }
 
@@ -4635,6 +4680,13 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = undefined;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} subscribeForeignObjects not processed because Objects database not connected`
@@ -4671,6 +4723,13 @@ class AdapterClass extends EventEmitter {
         if (!pattern) {
             pattern = '*';
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} unsubscribeForeignObjects not processed because Objects database not connected`
@@ -4703,6 +4762,12 @@ class AdapterClass extends EventEmitter {
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
+        Utils.assertsString(id, 'id');
+        Utils.assertsString(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         return adapterObjects.subscribeUserFile(id, pattern, options);
     }
 
@@ -4729,6 +4794,12 @@ class AdapterClass extends EventEmitter {
                 `${this.namespaceLog} unsubscribeForeignFiles not processed because Objects database not connected`
             );
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Utils.assertsString(id, 'id');
+        Utils.assertsString(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
         }
 
         return adapterObjects.unsubscribeUserFile(id, pattern, options);

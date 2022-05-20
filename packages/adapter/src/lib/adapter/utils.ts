@@ -9,6 +9,7 @@ export type ID = OpaqueString<'ID'>;
 
 type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
+type Pattern = string | string[];
 
 export interface IdObject {
     device?: string;
@@ -246,6 +247,27 @@ export class Utils {
             throw new Error(
                 `Paramter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
             );
+        }
+    }
+
+    /**
+     * Throws if type is not a pattern
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertsPattern(value: unknown, name: string): asserts value is Pattern {
+        if (typeof value !== 'string' && !Array.isArray(value)) {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`
+            );
+        } else if (Array.isArray(value)) {
+            for (const entry of value) {
+                if (typeof entry !== 'string') {
+                    throw new Error(
+                        `Paramter "${name}" needs to be of type "string" or an array of type "string", but the array contains a value of type "${typeof value}"`
+                    );
+                }
+            }
         }
     }
 

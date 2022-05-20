@@ -2506,7 +2506,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    subscribeUserFile(id: string, pattern: string, options?: CallOptions): Promise<void> {
+    subscribeUserFile(id: string, pattern: string, options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
@@ -2520,7 +2520,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unsubscribeUserFile(id: string, pattern: string, options?: CallOptions): Promise<void> {
+    unsubscribeUserFile(id: string, pattern: string, options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
@@ -2605,8 +2605,8 @@ export class ObjectsInRedisClient {
     // User has called the method without providing options
     subscribeUser(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
     // User has called the method by providing options
-    subscribeUser(pattern: string | string[], options: CallOptions, callback?: ioBroker.ErrorCallback): void;
-    subscribeUser(pattern: string | string[], options: any, callback?: ioBroker.ErrorCallback): void {
+    subscribeUser(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void;
+    subscribeUser(pattern: string | string[], options?: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4318,7 +4318,7 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams,
-        options?: CallOptions
+        options?: CallOptions | null
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
     // callback and options provided, we send result in callback
@@ -4326,7 +4326,7 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams,
-        options: CallOptions | undefined,
+        options: CallOptions | undefined | null,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
 
