@@ -615,7 +615,7 @@ class AdapterClass extends EventEmitter {
     // @ts-expect-error decide how to handle it
     private _utils: Utils;
     /** contents of io-package.json */
-    protected adapterConfig?: Record<string, any>; // TODO: contents of io-pack?
+    protected adapterConfig?: Record<string, any> | null; // TODO: contents of io-pack?
     private connected?: boolean;
     protected adapterDir?: string | null;
     /** contents of package.json */
@@ -1710,13 +1710,13 @@ class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertsOptionalCallback(callback, 'callback');
-        Utils.assertsString(user, 'user');
-        Utils.assertsString(pw, 'pw');
-
         if (!callback) {
             throw new Error('checkPassword: no callback');
         }
+
+        Utils.assertsCallback(callback, 'callback');
+        Utils.assertsString(user, 'user');
+        Utils.assertsString(pw, 'pw');
 
         if (options !== undefined && options !== null) {
             Utils.assertsObject(options, 'options');
