@@ -2863,19 +2863,20 @@ async function processMessage(msg) {
 
         case 'writeDirAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles
-                .writeDirAsZip(
+            try {
+                await zipFiles.writeDirAsZip(
                     objects,
                     msg.message.id,
                     msg.message.name,
                     Buffer.from(msg.message.data, 'base64'),
                     msg.message.options
-                )
-                .then(() => msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback))
-                .catch(error => {
-                    logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
-                    msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
-                });
+                );
+
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback);
+            } catch (error) {
+                logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
+                msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
+            }
             break;
 
         case 'readObjectsAsZip':
