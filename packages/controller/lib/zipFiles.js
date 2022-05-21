@@ -224,7 +224,7 @@ async function writeDirAsZip(objects, id, name, data, options) {
         }
     }
     if (errors.length) {
-        throw errors.join(', ');
+        throw new Error(errors.join(', '));
     }
 }
 
@@ -296,7 +296,7 @@ async function _writeOneObject(objects, zip, rootId, filename, options, callback
             try {
                 data.data = JSON.parse(data.data);
             } catch (e) {
-                callback(`Cannot parse "${data.id}": ${e}`);
+                callback(`Cannot parse "${data.id}": ${e.message}`);
                 return;
             }
         }

@@ -4650,7 +4650,7 @@ class AdapterClass extends EventEmitter {
      *
      * @alias sendToHost
      * @memberof Adapter
-     * @param {any} hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+     * @param {any} hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
      * @param {string} command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param {object} message object that will be given as argument for request
      * @param {function(any):any} [callback] optional return result
@@ -9055,13 +9055,12 @@ class AdapterClass extends EventEmitter {
 
                 adapterStates.subscribeLog('system.adapter.' + this.namespace);
             } else {
-                this.requireLog = _isActive =>
-                    // show warning only by enabling
-                    _isActive &&
+                this.requireLog = _isActive => {
                     this._logger.warn(
                         this.namespaceLog +
                             ' requireLog is not supported by this adapter! Please set common.logTransporter to true'
                     );
+                };
             }
         };
 
