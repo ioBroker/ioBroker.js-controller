@@ -93,7 +93,9 @@ interface AdapterOptions {
 }
 
 interface AdapterOptionsConfig {
-    log: Record<string, any>; // TODO: specify
+    log: {
+        level: ioBroker.LogLevel;
+    };
 }
 
 interface AliasDetails {
@@ -582,9 +584,9 @@ class AdapterClass extends EventEmitter {
     private _stopInProgress: boolean;
     private _callbackId: number;
     private _firstConnection: boolean;
-    private _timers: Set<any>;
-    private _intervals: Set<any>;
-    private _delays: Set<any>;
+    private _timers: Set<NodeJS.Timeout>;
+    private _intervals: Set<NodeJS.Timeout>;
+    private _delays: Set<NodeJS.Timeout>;
     private tools: any; // TODO remove the shim
     protected log?: Log;
     private readonly performStrictObjectChecks: boolean;
@@ -593,7 +595,7 @@ class AdapterClass extends EventEmitter {
     private _schedule: typeof NodeSchedule | undefined;
     // @ts-expect-error decide how to handle it
     private namespaceLog: string;
-    private namespace: string;
+    private namespace: `${string}.${number}`;
     private name: string;
     private _systemSecret?: string;
     private terminated: boolean;
@@ -1456,9 +1458,7 @@ class AdapterClass extends EventEmitter {
     private _setSession(options: InternalSetSessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                this.namespaceLog + ' ' + 'setSession not processed because States database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} setSession not processed because States database not connected`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
         adapterStates.setSession(options.id, options.ttl, options.data, options.callback);
@@ -2142,7 +2142,7 @@ class AdapterClass extends EventEmitter {
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
-                    this._logger.error(this.namespaceLog + ' ' + e.message);
+                    this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
                 // user still not there, fallback
                 if (!this.usernames[options.user]) {
@@ -2280,17 +2280,17 @@ class AdapterClass extends EventEmitter {
 
             const finishUnload = () => {
                 if (this._timers.size) {
-                    this._timers.forEach(id => clearTimeout(id));
+                    this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
                 }
 
                 if (this._intervals.size) {
-                    this._intervals.forEach(id => clearInterval(id));
+                    this._intervals.forEach(interval => clearInterval(interval));
                     this._intervals.clear();
                 }
 
                 if (this._delays.size) {
-                    this._delays.forEach(id => clearTimeout(id));
+                    this._delays.forEach(timer => clearTimeout(timer));
                     this._delays.clear();
                 }
 
@@ -2630,47 +2630,43 @@ class AdapterClass extends EventEmitter {
     setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
         if (typeof cb !== 'function') {
             this._logger.warn(
-                this.namespaceLog +
-                    ' ' +
-                    `setTimeout expected callback to be of type "function", but got "${typeof cb}"`
+                `${this.namespaceLog} setTimeout expected callback to be of type "function", but got "${typeof cb}"`
             );
             return;
         }
 
         if (this._stopInProgress) {
-            this._logger.warn(this.namespaceLog + ' ' + `setTimeout called, but adapter is shutting down`);
+            this._logger.warn(`${this.namespaceLog} setTimeout called, but adapter is shutting down`);
             return;
         }
 
         Utils.assertsNumber(timeout, 'timeout');
 
-        const id = setTimeout.call(
+        const timer = setTimeout.call(
             null,
             () => {
-                this._timers.delete(id);
+                this._timers.delete(timer);
                 cb(...args);
             },
             timeout
         );
-        this._timers.add(id);
+        this._timers.add(timer);
 
-        return id;
+        return timer;
     }
 
-    clearTimeout(id: unknown): void;
+    clearTimeout(timer: NodeJS.Timeout): void;
 
     /**
      * Same as clearTimeout
      * but it check the running timers on unload
      *
-     * @param id - timer id
+     * @param timer - the timer object
      */
-    clearTimeout(id: unknown): void {
-        Utils.assertsNumber(id, 'id');
-
-        // @ts-expect-error todo fix it
-        clearTimeout(id);
-        this._timers.delete(id);
+    clearTimeout(timer: unknown): void {
+        // should we validate this?
+        clearTimeout(timer as any);
+        this._timers.delete(timer as any);
     }
 
     // external signature
@@ -2685,19 +2681,19 @@ class AdapterClass extends EventEmitter {
      */
     delay(timeout: unknown): Promise<void> {
         if (this._stopInProgress) {
-            this._logger.warn(this.namespaceLog + ' ' + `delay called, but adapter is shutting down`);
+            this._logger.warn(`${this.namespaceLog} delay called, but adapter is shutting down`);
         }
 
         Utils.assertsNumber(timeout, 'timeout');
 
         return new Promise(resolve => {
-            const id = setTimeout(() => {
-                this._delays.delete(id);
+            const timer = setTimeout(() => {
+                this._delays.delete(timer);
                 if (!this._stopInProgress) {
                     resolve();
                 }
             }, timeout);
-            this._delays.add(id);
+            this._delays.add(timer);
         });
     }
 
@@ -2712,20 +2708,18 @@ class AdapterClass extends EventEmitter {
      * @param cb - interval callback
      * @param timeout - interval in milliseconds
      * @param args - as many arguments as needed, which will be passed to setTimeout
-     * @returns interval id
+     * @returns interval interval object
      */
     setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
         if (typeof cb !== 'function') {
             this._logger.error(
-                this.namespaceLog +
-                    ' ' +
-                    `setInterval expected callback to be of type "function", but got "${typeof cb}"`
+                `${this.namespaceLog} setInterval expected callback to be of type "function", but got "${typeof cb}"`
             );
             return;
         }
 
         if (this._stopInProgress) {
-            this._logger.warn(this.namespaceLog + ' ' + `setInterval called, but adapter is shutting down`);
+            this._logger.warn(`${this.namespaceLog} setInterval called, but adapter is shutting down`);
             return;
         }
 
@@ -2738,19 +2732,18 @@ class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    clearInterval(id: number): void;
+    clearInterval(interval: NodeJS.Timeout): void;
 
     /**
      * Same as clearInterval
      * but it check the running intervals on unload
      *
-     * @param id - interval id
+     * @param interval - interval object
      */
-    clearInterval(id: unknown): void {
-        Utils.assertsNumber(id, 'id');
-        // @ts-expect-error todo fix
-        clearInterval(id);
-        this._intervals.delete(id);
+    clearInterval(interval: unknown): void {
+        // should we validate it is a valid interval?
+        clearInterval(interval as any);
+        this._intervals.delete(interval as any);
     }
 
     setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
@@ -6547,7 +6540,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
         if (!adapterObjects) {
-            this._logger.info(this.namespaceLog + ' ' + 'mkdir not processed because Objects database not connected');
+            this._logger.info(`${this.namespaceLog} mkdir not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6689,9 +6682,7 @@ class AdapterClass extends EventEmitter {
         }
 
         if (!adapterObjects) {
-            this._logger.info(
-                this.namespaceLog + ' ' + 'fileExists not processed because Objects database not connected'
-            );
+            this._logger.info(`${this.namespaceLog} fileExists not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6936,7 +6927,7 @@ class AdapterClass extends EventEmitter {
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(this.namespaceLog + ' ' + 'sendTo not processed because States database not connected');
+            this._logger.info(`${this.namespaceLog} sendTo not processed because States database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6953,9 +6944,7 @@ class AdapterClass extends EventEmitter {
         // If not specific instance
         if (!instanceName.match(/\.[0-9]+$/)) {
             if (!adapterObjects) {
-                this._logger.info(
-                    this.namespaceLog + ' ' + 'sendTo not processed because Objects database not connected'
-                );
+                this._logger.info(`${this.namespaceLog} sendTo not processed because Objects database not connected`);
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7079,7 +7068,7 @@ class AdapterClass extends EventEmitter {
         if (!hostName) {
             if (!adapterObjects) {
                 this._logger.info(
-                    this.namespaceLog + ' ' + 'sendToHost not processed because Objects database not connected'
+                    `${this.namespaceLog} sendToHost not processed because Objects database not connected`
                 );
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
@@ -8000,7 +7989,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'setStateCHanged not processed because States database not connected'
+                `${this.namespaceLog} setStateCHanged not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -8027,7 +8016,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(this.namespaceLog + ' ' + `undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -8188,9 +8177,7 @@ class AdapterClass extends EventEmitter {
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
-                            this.namespaceLog +
-                                ' ' +
-                                'setForeignState not processed because States database not connected'
+                            `${this.namespaceLog} setForeignState not processed because States database not connected`
                         );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
@@ -8259,9 +8246,7 @@ class AdapterClass extends EventEmitter {
                         if (!adapterStates) {
                             // if states is no longer existing, we do not need to unsubscribe
                             this._logger.info(
-                                this.namespaceLog +
-                                    ' ' +
-                                    'setForeignState not processed because States database not connected'
+                                `${this.namespaceLog} setForeignState not processed because States database not connected`
                             );
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
@@ -8276,7 +8261,7 @@ class AdapterClass extends EventEmitter {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 if (!adapterObjects) {
                     this._logger.info(
-                        this.namespaceLog + ' ' + 'setForeignState not processed because Objects database not connected'
+                        `${this.namespaceLog} setForeignState not processed because Objects database not connected`
                     );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
@@ -8307,9 +8292,7 @@ class AdapterClass extends EventEmitter {
                         if (!adapterObjects) {
                             // if objects is no longer existing, we do not need to unsubscribe
                             this._logger.info(
-                                this.namespaceLog +
-                                    ' ' +
-                                    'setForeignState not processed because Objects database not connected'
+                                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
                             );
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
@@ -8319,9 +8302,7 @@ class AdapterClass extends EventEmitter {
                             if (!adapterStates) {
                                 // if states is no longer existing, we do not need to unsubscribe
                                 this._logger.info(
-                                    this.namespaceLog +
-                                        ' ' +
-                                        'setForeignState not processed because States database not connected'
+                                    `${this.namespaceLog} setForeignState not processed because States database not connected`
                                 );
                                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                             }
@@ -8349,9 +8330,7 @@ class AdapterClass extends EventEmitter {
                     if (!adapterObjects) {
                         // if objects is no longer existing, we do not need to unsubscribe
                         this._logger.info(
-                            this.namespaceLog +
-                                ' ' +
-                                'setForeignState not processed because Objects database not connected'
+                            `${this.namespaceLog} setForeignState not processed because Objects database not connected`
                         );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
@@ -8362,7 +8341,7 @@ class AdapterClass extends EventEmitter {
                 if (!adapterStates) {
                     // if states is no longer existing, we do not need to unsubscribe
                     this._logger.info(
-                        this.namespaceLog + ' ' + 'setForeignState not processed because States database not connected'
+                        `${this.namespaceLog} setForeignState not processed because States database not connected`
                     );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
@@ -8475,7 +8454,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(this.namespaceLog + ' ' + `undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
             // TODO: reactivate line below + test in in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -9550,9 +9529,7 @@ class AdapterClass extends EventEmitter {
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
-                            this.namespaceLog +
-                                ' ' +
-                                'subscribeForeignStates not processed because States database not connected'
+                            `${this.namespaceLog} subscribeForeignStates not processed because States database not connected`
                         );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
@@ -9647,7 +9624,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'unsubscrubeForeignStates not processed because States database not connected'
+                `${this.namespaceLog} unsubscrubeForeignStates not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -9773,7 +9750,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'subscribeStates not processed because States database not connected'
+                `${this.namespaceLog} subscribeStates not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -10002,7 +9979,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                this.namespaceLog + ' ' + 'getBinaryState not processed because States database not connected'
+                `${this.namespaceLog} getBinaryState not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -10596,7 +10573,7 @@ class AdapterClass extends EventEmitter {
                                     this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                                 } else {
                                     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                                    initAdapter(res as unknown as ioBroker.InstanceObject);
+                                    initAdapter(res);
                                 }
                             });
                         }
@@ -10788,7 +10765,7 @@ class AdapterClass extends EventEmitter {
                                         await this._addAliasSubscribe(obj as ioBroker.StateObject, id);
                                     } catch (e) {
                                         this._logger.warn(
-                                            this.namespaceLog + ' ' + `Could not add alias subscription: ${e.message}`
+                                            `${this.namespaceLog} Could not add alias subscription: ${e.message}`
                                         );
                                     }
                                     break;
@@ -11430,7 +11407,7 @@ class AdapterClass extends EventEmitter {
             }
         };
 
-        const initAdapter = (adapterConfig: AdapterOptions | ioBroker.InstanceObject) => {
+        const initAdapter = (adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null) => {
             initLogging(() => {
                 // @ts-expect-error
                 this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
@@ -11485,7 +11462,7 @@ class AdapterClass extends EventEmitter {
                             }
                         }
 
-                        if (!this._config.isInstall && !('_id' in adapterConfig)) {
+                        if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
                             this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
                             this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                             return;
@@ -11508,6 +11485,7 @@ class AdapterClass extends EventEmitter {
                             name = this._options.name;
                             instance = 0;
                             adapterConfig = adapterConfig || {
+                                // @ts-expect-error protectedNative exists on instance objects
                                 common: { mode: 'once', name: name, protectedNative: [] },
                                 native: {}
                             };
@@ -11579,7 +11557,7 @@ class AdapterClass extends EventEmitter {
                         this.name = adapterConfig.name || this._options.name;
                         // @ts-expect-error
                         this.instance = adapterConfig.instance || 0;
-                        this.namespace = `${this.name}.${this.instance}`;
+                        this.namespace = `${this.name}.${this.instance!}`;
                         this.namespaceLog =
                             this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
                         // @ts-expect-error
