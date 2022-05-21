@@ -22,7 +22,7 @@ import type NodeSchedule from 'node-schedule';
 const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
 
 import { Log } from './log';
-import { ID, Utils } from './utils';
+import { ID, IdObject, Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -530,7 +530,7 @@ interface InternalCreateDeviceOptions {
 }
 
 interface InternalSetStateOptions {
-    id: string;
+    id: string | IdObject;
     state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState;
     ack?: boolean;
     options?: Record<string, any> | null;
@@ -7181,24 +7181,24 @@ class AdapterClass extends EventEmitter {
 
     // external signatures
     setState(
-        id: string,
+        id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: ioBroker.SetStateCallback
     ): void;
     setState(
-        id: string,
+        id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: ioBroker.SetStateCallback
     ): void;
     setState(
-        id: string,
+        id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
         callback?: ioBroker.SetStateCallback
     ): void;
     setState(
-        id: string,
+        id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options: unknown,
@@ -7254,7 +7254,11 @@ class AdapterClass extends EventEmitter {
             ack = undefined;
         }
 
-        Utils.assertsString(id, 'id');
+        if (!tools.isObject(id)) {
+            // it can be id object or string
+            Utils.assertsString(id, 'id');
+        }
+
         if (ack !== undefined) {
             Utils.assertsBoolean(ack, 'ack');
         }
@@ -7270,7 +7274,7 @@ class AdapterClass extends EventEmitter {
 
     private async _setState(_options: InternalSetStateOptions) {
         const { state, ack, options, callback } = _options;
-        let { id } = _options;
+        const { id } = _options;
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to set
@@ -7288,7 +7292,7 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        id = this._utils.fixId(id, false);
+        const fixedId = this._utils.fixId(id, false);
         let stateObj: ioBroker.State | ioBroker.SettableState;
 
         if (tools.isObject(state)) {
@@ -7307,7 +7311,7 @@ class AdapterClass extends EventEmitter {
 
         if (stateObj.val === undefined && !Object.keys(stateObj).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
+            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${fixedId}"`);
             // TODO: reactivate line below + test in next controller version (02.05.2021)
             // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
@@ -7324,7 +7328,7 @@ class AdapterClass extends EventEmitter {
         stateObj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'setState', async (err, obj) => {
+            this._checkStates(fixedId, options, 'setState', async (err, obj) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
@@ -7339,10 +7343,10 @@ class AdapterClass extends EventEmitter {
                     if (this.performStrictObjectChecks) {
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
                         // @ts-expect-error fix later
-                        await this._utils.performStrictObjectCheck(id, stateObj);
+                        await this._utils.performStrictObjectCheck(fixedId, stateObj);
                     }
 
-                    if (id.startsWith(ALIAS_STARTS_WITH)) {
+                    if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
                         // write alias
                         if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
                             // id can be string or can have attribute write
@@ -7358,11 +7362,11 @@ class AdapterClass extends EventEmitter {
                                 this._utils.validateId(aliasId, true, null);
                             } catch (e) {
                                 this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
+                                    `${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`
                                 );
                                 return tools.maybeCallbackWithError(
                                     callback,
-                                    `Error validating alias id of ${id}: ${e.message}`
+                                    `Error validating alias id of ${fixedId}: ${e.message}`
                                 );
                             }
 
@@ -7395,8 +7399,8 @@ class AdapterClass extends EventEmitter {
                                 }
                             });
                         } else {
-                            this._logger.warn(`${this.namespaceLog} ${`Alias ${id} has no target 2`}`);
-                            return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                            this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
+                            return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
                         }
                     } else {
                         if (!adapterStates) {
@@ -7408,15 +7412,15 @@ class AdapterClass extends EventEmitter {
                         }
 
                         this.outputCount++;
-                        adapterStates.setState(id, stateObj, callback);
+                        adapterStates.setState(fixedId, stateObj, callback);
                     }
                 }
             });
         } else {
-            if (id.startsWith(ALIAS_STARTS_WITH)) {
+            if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
                 // write alias
                 // read alias id
-                adapterObjects.getObject(id, options, (err, obj) => {
+                adapterObjects.getObject(fixedId, options, (err, obj) => {
                     if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
                         const aliasId =
                             typeof obj.common.alias.id.write === 'string'
@@ -7427,10 +7431,12 @@ class AdapterClass extends EventEmitter {
                         try {
                             this._utils.validateId(aliasId, true, null);
                         } catch (e) {
-                            this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                            this._logger.warn(
+                                `${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`
+                            );
                             return tools.maybeCallbackWithError(
                                 callback,
-                                `Error validating alias id of ${id}: ${e.message}`
+                                `Error validating alias id of ${fixedId}: ${e.message}`
                             );
                         }
 
@@ -7451,15 +7457,20 @@ class AdapterClass extends EventEmitter {
                             );
                         });
                     } else {
-                        this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 3`}`);
-                        return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
+                        this._logger.warn(
+                            `${this.namespaceLog} ${err ? err.message : `Alias ${fixedId} has no target 3`}`
+                        );
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            err ? err.message : `Alias ${fixedId} has no target`
+                        );
                     }
                 });
             } else {
                 if (this.performStrictObjectChecks) {
                     // validate that object exists, read-only logic ok, type ok, etc. won't throw now
                     // @ts-expect-error fix later on
-                    await this._utils.performStrictObjectCheck(id, state);
+                    await this._utils.performStrictObjectCheck(fixedId, stateObj);
                 }
 
                 if (!adapterStates) {
@@ -7471,7 +7482,7 @@ class AdapterClass extends EventEmitter {
                 }
 
                 this.outputCount++;
-                adapterStates.setState(id, stateObj, callback);
+                adapterStates.setState(fixedId, stateObj, callback);
             }
         }
     }
