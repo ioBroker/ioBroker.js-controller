@@ -921,7 +921,7 @@ export class StateRedisClient {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
-        let _keys;
+        let _keys: string[];
         if (!dontModify) {
             _keys = keys.map(k => this.namespaceRedis + k);
         } else {
@@ -939,11 +939,13 @@ export class StateRedisClient {
         }
         const result: (ioBroker.State | null)[] = [];
 
-        obj.forEach(state => {
+        obj.forEach((state, i) => {
             try {
                 result.push(state ? JSON.parse(state) : null);
             } catch (e) {
-                this.log.error(`Parsing error on getStates, returning "null" for "${state}": ${e.message}`);
+                this.log.error(
+                    `Parsing error on getStates("${_keys[i]}"), returning "null" for "${state}": ${e.message}`
+                );
                 result.push(null);
             }
         });
