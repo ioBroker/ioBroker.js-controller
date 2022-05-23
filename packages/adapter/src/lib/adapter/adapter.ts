@@ -126,6 +126,11 @@ interface PortRunningObject {
     callback?: (port: number) => void;
 }
 
+interface GetUserGroupsOptions {
+    user: `system.user.${string}`;
+    [other: string]: any;
+}
+
 type CheckStateCommand = 'getState' | 'setState' | 'delState';
 
 interface InternalSetSessionOptions {
@@ -241,12 +246,202 @@ interface InternalGetObjectsOptions {
 }
 
 /**
- * Here we define dynamic methods which need overloads
+ * Here we define dynamically created methods
  */
 interface AdapterClass {
+    /** Extend an object and create it if it might not exist */
+    extendObjectAsync(
+        id: string,
+        objPart: ioBroker.PartialObject,
+        options?: ioBroker.ExtendObjectOptions
+    ): ioBroker.SetObjectPromise;
+    /** Set capabilities of the given executable. Only works on Linux systems. */
+    setExecutableCapabilities(
+        execPath: string,
+        capabilities: string[],
+        modeEffective?: boolean,
+        modePermitted?: boolean,
+        modeInherited?: boolean
+    ): Promise<void>;
+    /** Extend an object (which might not belong to this adapter) and create it if it might not exist */
+    extendForeignObjectAsync<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: ioBroker.ExtendObjectOptions
+    ): ioBroker.SetObjectPromise;
+    /** Reads an object from the object db */
+    getObjectAsync(id: string, options?: unknown): ioBroker.GetObjectPromise;
     /**
-     * Reads an object (which might not belong to this adapter) from the object db
+     * Query a predefined object view (similar to SQL stored procedures) and return the results
+     * For a detailed description refer to https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation#object-fields
+     * or http://guide.couchdb.org/editions/1/en/views.html
      */
+    getObjectViewAsync<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
+        params: ioBroker.GetObjectViewParams | null | undefined,
+        options?: unknown
+    ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
+    /** Returns a list of objects with id between params.startkey and params.endkey */
+    getObjectListAsync(
+        params: ioBroker.GetObjectListParams | null,
+        options?: { sorted?: boolean } | Record<string, any>
+    ): ioBroker.GetObjectListPromise;
+    /** Returns the enum tree, filtered by the optional enum name */
+    getEnumAsync(name: string, options?: unknown): Promise<{ result: Record<string, any>; requestEnum: string }>;
+    /** Returns the enum tree, filtered by the optional enum name */
+    getEnumsAsync(enumList: ioBroker.EnumList, options?: unknown): ioBroker.GetEnumsPromise;
+    /** Deletes an object from the object db */
+    delObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
+    /** Deletes an object (which might not belong to this adapter) from the object db */
+    delForeignObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
+    /** Subscribe to changes of objects in this instance */
+    subscribeObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Unsubscribe from changes of objects in this instance */
+    unsubscribeObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Read a value from the states DB. */
+    getStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
+    /** Subscribe to changes of objects (which might not belong to this adapter) */
+    subscribeForeignObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Unsubscribe from changes of objects (which might not belong to this adapter) */
+    unsubscribeForeignObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Creates an object in the object db. Existing objects are not overwritten. */
+    setObjectNotExistsAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
+    /** Creates an object (which might not belong to this adapter) in the object db. Existing objects are not overwritten. */
+    setForeignObjectNotExistsAsync<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: unknown
+    ): ioBroker.SetObjectPromise;
+
+    /** deletes a device, its channels and states */
+    deleteDeviceAsync(deviceName: string, options?: unknown): Promise<void>;
+    addChannelToEnumAsync(
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        channelName: string,
+        options?: unknown
+    ): Promise<void>;
+    deleteChannelFromEnumAsync(
+        enumName: string,
+        parentDevice: string,
+        channelName: string,
+        options?: unknown
+    ): Promise<void>;
+
+    /** Returns a list of all devices in this adapter instance */
+    getDevicesAsync(options?: unknown): Promise<ioBroker.DeviceObject[]>;
+
+    addStateToEnumAsync(
+        enumName: string,
+        addTo: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options?: unknown
+    ): Promise<void>;
+    deleteStateFromEnumAsync(
+        enumName: string,
+        parentDevice: string,
+        parentChannel: string,
+        stateName: string,
+        options?: unknown
+    ): Promise<void>;
+    /** Changes access rights of all files in the adapter directory */
+    chmodFileAsync(
+        adapter: string | null,
+        path: string,
+        options: { mode: number | string } | Record<string, any>
+    ): Promise<{ entries: ioBroker.ChownFileResult[]; id: string }>;
+    // TODO: correct types
+    chownFileAsync(...args: any[]): Promise<any>;
+    /** reads the content of directory from DB for given adapter and path */
+    readDirAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadDirPromise;
+    /** Deletes a given file */
+    unlinkAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    /** Deletes a given file */
+    delFileAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    renameAsync(adapterName: string | null, oldName: string, newName: string, options?: unknown): Promise<void>;
+    mkdirAsync(adapterName: string | null, path: string, options?: unknown): Promise<void>;
+    /** reads the content of directory from DB for given adapter and path */
+    readFileAsync(adapterName: string | null, path: string, options?: unknown): ioBroker.ReadFilePromise;
+    writeFileAsync(adapterName: string | null, path: string, data: Buffer | string, options?: unknown): Promise<void>;
+    /** Checks if a file exists in the DB */
+    fileExistsAsync(adapterName: string | null, path: string, options?: unknown): Promise<boolean>;
+
+    // TODO correct types needed
+    getHistoryAsync(...args: any[]): Promise<any>;
+    /** Deletes a state from the states DB, but not the associated object. Consider using @link{deleteState} instead */
+    delStateAsync(id: string, options?: unknown): Promise<void>;
+    /** Deletes a state from the states DB, but not the associated object */
+    delForeignStateAsync(id: string, options?: unknown): Promise<void>;
+    /** Read all states of this adapter which match the given pattern */
+    getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
+    /** Read all states (which might not belong to this adapter) which match the given pattern */
+    getForeignStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
+    /** Subscribe to changes of states (which might not belong to this adapter) */
+    subscribeForeignStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Subscribe from changes of states (which might not belong to this adapter) */
+    unsubscribeForeignStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Subscribe to changes of states in this instance */
+    subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Subscribe from changes of states in this instance */
+    unsubscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    /** Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace. */
+    setForeignBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
+
+    /**
+     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
+     * Writes a binary state into Redis
+     */
+    setBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
+    getForeignBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
+    /**
+     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
+     * Reads a binary state from Redis
+     */
+    getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
+    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace. */
+    delForeignBinaryStateAsync(id: string, options?: unknown): Promise<void>;
+
+    /**
+     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use delForeignBinaryStateAsync instead.
+     * Deletes a binary state from the states DB
+     */
+    delBinaryStateAsync(id: string, options?: unknown): Promise<void>;
+    /**
+     * Helper function that looks for first free TCP port starting with the given one.
+     */
+    getPortAsync(port: number): Promise<number>;
+    /** Read a value (which might not belong to this adapter) from the states DB. */
+    getForeignStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
+    /** Validates username and password */
+    checkPasswordAsync(user: string, password: string, options?: unknown): Promise<boolean>;
+    /** Sets a new password for the given user */
+    setPasswordAsync(user: string, password: string, options?: unknown): Promise<void>;
+    /** <INTERNAL> Checks if a user exists and is in the given group. */
+    checkGroupAsync(user: string, group: string, options?: unknown): Promise<boolean>;
+    /** <INTERNAL> Determines the users permissions */
+    calculatePermissionsAsync(
+        user: string,
+        commandsPermissions: CommandsPermissions,
+        options?: unknown
+    ): Promise<ioBroker.PermissionSet>;
+    /** Creates or overwrites an object in the object db */
+    setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
+    /** Creates or overwrites an object (which might not belong to this adapter) in the object db */
+    setForeignObjectAsync<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: unknown
+    ): ioBroker.SetObjectPromise;
+    // TODO: correct types
+    getCertificatesAsync(...args: any[]): Promise<any>;
+    /** Get all states, channels, devices and folders of this adapter */
+    getAdapterObjectsAsync(): Promise<Record<string, ioBroker.AdapterScopedObject>>;
+
+    /** Reads an object (which might not belong to this adapter) from the object db*/
     getForeignObjectAsync<T extends string>(id: T, options?: unknown): ioBroker.GetObjectPromise<T>;
 
     /**
@@ -549,6 +744,12 @@ interface InternalCreateStateOptions {
     callback?: ioBroker.SetObjectCallback;
 }
 
+interface InternalSubscribeOptions {
+    pattern: string | string[];
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
+}
+
 /**
  * Adapter class
  *
@@ -603,8 +804,8 @@ class AdapterClass extends EventEmitter {
     private readonly FORBIDDEN_CHARS: RegExp;
     private inputCount: number;
     private outputCount: number;
-    private users: Record<string, { groups: any; acl: any }>; // todo
-    private groups: Record<string, Partial<ioBroker.Object>>; // TODO: probably better GroupObject
+    private users: Record<`system.user.${string}`, { groups: any; acl: any }>; // todo
+    private groups: Record<string, Partial<ioBroker.GroupObject>>;
     private autoSubscribe: string[];
     private defaultHistory: null | string;
     private pluginHandler?: typeof PluginHandler;
@@ -642,173 +843,6 @@ class AdapterClass extends EventEmitter {
     protected host?: string;
     protected common?: Record<string, any>;
     private mboxSubscribed?: boolean;
-    // TODO: move these methods in interface AdapterClass where overloads are located
-    protected readonly getPortAsync: (port: number) => Promise<number>;
-    protected readonly getForeignStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
-    protected readonly checkPasswordAsync: (user: string, password: string, options?: unknown) => Promise<boolean>;
-    protected readonly setPasswordAsync: (user: string, password: string, options?: unknown) => Promise<void>;
-    protected readonly checkGroupAsync: (user: string, group: string, options?: unknown) => Promise<boolean>;
-    protected readonly calculatePermissionsAsync: (
-        user: string,
-        commandsPermissions: CommandsPermissions,
-        options?: unknown
-    ) => Promise<ioBroker.PermissionSet>;
-    protected readonly setObjectAsync: (
-        id: string,
-        obj: ioBroker.SettableObject,
-        options?: unknown
-    ) => ioBroker.SetObjectPromise;
-    protected readonly setForeignObjectAsync: <T extends string>(
-        id: T,
-        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: unknown
-    ) => ioBroker.SetObjectPromise;
-    // TODO: correct types
-    protected readonly getCertificatesAsync: (...args: any[]) => Promise<any>;
-    protected readonly getAdapterObjectsAsync: () => Promise<Record<string, ioBroker.AdapterScopedObject>>;
-    protected readonly extendObjectAsync: (
-        id: string,
-        objPart: ioBroker.PartialObject,
-        options?: ioBroker.ExtendObjectOptions
-    ) => ioBroker.SetObjectPromise;
-    protected readonly setExecutableCapabilities: (
-        execPath: string,
-        capabilities: string[],
-        modeEffective?: boolean,
-        modePermitted?: boolean,
-        modeInherited?: boolean
-    ) => Promise<void>;
-    protected readonly extendForeignObjectAsync: <T extends string>(
-        id: T,
-        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: ioBroker.ExtendObjectOptions
-    ) => ioBroker.SetObjectPromise;
-    protected readonly getObjectAsync: (id: string, options?: unknown) => ioBroker.GetObjectPromise;
-    protected readonly getObjectViewAsync: <Design extends string = string, Search extends string = string>(
-        design: Design,
-        search: Search,
-        params: ioBroker.GetObjectViewParams | null | undefined,
-        options?: unknown
-    ) => ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
-    protected readonly getObjectListAsync: (
-        params: ioBroker.GetObjectListParams | null,
-        options?: { sorted?: boolean } | Record<string, any>
-    ) => ioBroker.GetObjectListPromise;
-    protected readonly getEnumAsync: (
-        name: string,
-        options?: unknown
-    ) => Promise<{ result: Record<string, any>; requestEnum: string }>;
-    protected readonly getEnumsAsync: (enumList: ioBroker.EnumList, options?: unknown) => ioBroker.GetEnumsPromise;
-
-    protected readonly delObjectAsync: (id: string, options?: ioBroker.DelObjectOptions) => Promise<void>;
-    protected readonly delForeignObjectAsync: (id: string, options?: ioBroker.DelObjectOptions) => Promise<void>;
-    protected readonly subscribeObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly unsubscribeObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly getStateAsync: (id: string, options?: unknown) => ioBroker.GetStatePromise;
-    protected readonly subscribeForeignObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly unsubscribeForeignObjectsAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly setObjectNotExistsAsync: (
-        id: string,
-        obj: ioBroker.SettableObject,
-        options?: unknown
-    ) => ioBroker.SetObjectPromise;
-    protected readonly setForeignObjectNotExistsAsync: <T extends string>(
-        id: T,
-        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        options?: unknown
-    ) => ioBroker.SetObjectPromise;
-
-    protected readonly deleteDeviceAsync: (deviceName: string, options?: unknown) => Promise<void>;
-    protected readonly addChannelToEnumAsync: (
-        enumName: string,
-        addTo: string,
-        parentDevice: string,
-        channelName: string,
-        options?: unknown
-    ) => Promise<void>;
-    protected readonly deleteChannelFromEnumAsync: (
-        enumName: string,
-        parentDevice: string,
-        channelName: string,
-        options?: unknown
-    ) => Promise<void>;
-
-    protected readonly getDevicesAsync: (options?: unknown) => Promise<ioBroker.DeviceObject[]>;
-
-    protected readonly addStateToEnumAsync: (
-        enumName: string,
-        addTo: string,
-        parentDevice: string,
-        parentChannel: string,
-        stateName: string,
-        options?: unknown
-    ) => Promise<void>;
-    protected readonly deleteStateFromEnumAsync: (
-        enumName: string,
-        parentDevice: string,
-        parentChannel: string,
-        stateName: string,
-        options?: unknown
-    ) => Promise<void>;
-    protected readonly chmodFileAsync: (
-        adapter: string | null,
-        path: string,
-        options: { mode: number | string } | Record<string, any>
-    ) => Promise<{ entries: ioBroker.ChownFileResult[]; id: string }>;
-    // TODO: correct types
-    protected readonly chownFileAsync: (...args: any[]) => Promise<any>;
-    protected readonly readDirAsync: (
-        adapterName: string | null,
-        path: string,
-        options?: unknown
-    ) => ioBroker.ReadDirPromise;
-    protected readonly unlinkAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
-
-    protected readonly delFileAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
-    protected readonly renameAsync: (
-        adapterName: string | null,
-        oldName: string,
-        newName: string,
-        options?: unknown
-    ) => Promise<void>;
-    protected readonly mkdirAsync: (adapterName: string | null, path: string, options?: unknown) => Promise<void>;
-    protected readonly readFileAsync: (
-        adapterName: string | null,
-        path: string,
-        options?: unknown
-    ) => ioBroker.ReadFilePromise;
-    protected readonly writeFileAsync: (
-        adapterName: string | null,
-        path: string,
-        data: Buffer | string,
-        options?: unknown
-    ) => Promise<void>;
-    protected readonly fileExistsAsync: (
-        adapterName: string | null,
-        path: string,
-        options?: unknown
-    ) => Promise<boolean>;
-
-    // TODO correct types needed
-    protected readonly getHistoryAsync: (...args: any[]) => Promise<any>;
-    protected readonly delStateAsync: (id: string, options?: unknown) => Promise<void>;
-    protected readonly delForeignStateAsync: (id: string, options?: unknown) => Promise<void>;
-    protected readonly getStatesAsync: (pattern: string, options?: unknown) => ioBroker.GetStatesPromise;
-    protected readonly getForeignStatesAsync: (pattern: string, options?: unknown) => ioBroker.GetStatesPromise;
-    protected readonly subscribeForeignStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly unsubscribeForeignStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly subscribeStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly unsubscribeStatesAsync: (pattern: string, options?: unknown) => Promise<void>;
-    protected readonly setForeignBinaryStateAsync: (
-        id: string,
-        binary: Buffer,
-        options?: unknown
-    ) => ioBroker.SetStatePromise;
-    protected readonly setBinaryStateAsync: (id: string, binary: Buffer, options?: unknown) => ioBroker.SetStatePromise;
-    protected readonly getForeignBinaryStateAsync: (id: string, options?: unknown) => ioBroker.GetBinaryStatePromise;
-    protected readonly getBinaryStateAsync: (id: string, options?: unknown) => ioBroker.GetBinaryStatePromise;
-    protected readonly delForeignBinaryStateAsync: (id: string, options?: unknown) => Promise<void>;
-    protected readonly delBinaryStateAsync: (id: string, options?: unknown) => Promise<void>;
     protected stop?: () => Promise<void>;
     protected version?: string;
     protected kill?: () => Promise<void>;
@@ -1488,8 +1522,8 @@ class AdapterClass extends EventEmitter {
     private async _getObjectsByArray(
         keys: string[],
         objects: ioBroker.AnyObject[] | null,
-        options: Record<string, any>
-    ) {
+        options?: Record<string, any> | null
+    ): Promise<(ioBroker.AnyObject | null | undefined)[]> {
         if (objects) {
             return objects;
         }
@@ -7477,7 +7511,7 @@ class AdapterClass extends EventEmitter {
     }
 
     // Cache will be cleared if user or group changes.. Important! only if subscribed.
-    private _getUserGroups(options: Record<string, any>, callback: (options?: Record<string, any>) => void) {
+    private _getUserGroups(options: GetUserGroupsOptions, callback: (options?: Record<string, any>) => void) {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
             options.acl = this.users[options.user].acl;
@@ -7493,15 +7527,9 @@ class AdapterClass extends EventEmitter {
                 this.getForeignObjects('*', 'group', null, null, async (err, groups) => {
                     // aggregate all groups permissions, where this user is
                     if (groups) {
-                        for (const g in groups) {
-                            if (
-                                Object.prototype.hasOwnProperty.call(groups, g) &&
-                                groups[g] &&
-                                groups[g].common &&
-                                groups[g].common.members &&
-                                groups[g].common.members.includes(options.user)
-                            ) {
-                                options.groups.push(groups[g]._id);
+                        for (const group of Object.values(groups)) {
+                            if (group.common.members.includes(options.user)) {
+                                options.groups.push(group._id);
                             }
                         }
                     }
@@ -7509,8 +7537,8 @@ class AdapterClass extends EventEmitter {
                     // read all groups for this user
                     this.users[options.user] = {
                         groups: options.groups,
-                        // @ts-expect-error
-                        acl: (userAcl.common && userAcl.common.acl) || {}
+                        // @ts-expect-error TODO: UserCommon has no acl
+                        acl: userAcl.common?.acl || {}
                     };
                     await this._getGroups(options.groups);
                     // combine all rights
@@ -7844,7 +7872,7 @@ class AdapterClass extends EventEmitter {
         for (const id of ids) {
             let obj;
             try {
-                obj = await this.getForeignObjectAsync(id);
+                obj = (await this.getForeignObjectAsync(id)) as ioBroker.GroupObject;
             } catch {
                 // ignore
             }
@@ -9040,7 +9068,7 @@ class AdapterClass extends EventEmitter {
     ) {
         let aliasFound;
         const aIds = keys.map(id => {
-            if (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH)) {
+            if (id.startsWith(ALIAS_STARTS_WITH)) {
                 aliasFound = true;
                 return id;
             } else {
@@ -9054,7 +9082,7 @@ class AdapterClass extends EventEmitter {
             keys = [...keys];
 
             // read aliases objects
-            // @ts-expect-error
+            // @ts-expect-error fix later
             targetObjs = await this._getObjectsByArray(aIds, targetObjs, this._options);
             const srcIds: string[] = [];
             // replace aliases ID with targets
@@ -9346,8 +9374,8 @@ class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeForeignStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeForeignStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
@@ -9363,14 +9391,15 @@ class AdapterClass extends EventEmitter {
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
      */
-    async subscribeForeignStates(pattern: any, options: any, callback?: any) {
-        // TODO: add types
+    subscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
         pattern = pattern || '*';
 
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
 
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
@@ -9379,13 +9408,16 @@ class AdapterClass extends EventEmitter {
             );
         }
 
-        if (!adapterStates) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} subscribeForeignStates not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
         }
+        Utils.assertsPattern(pattern, 'pattern');
+
+        return this._subscribeForeignStates({ pattern, options, callback });
+    }
+
+    private async _subscribeForeignStates(_options: InternalSubscribeOptions) {
+        const { pattern, options, callback } = _options;
 
         // Todo check rights for options
         await this._autoSubscribeOn();
@@ -9445,17 +9477,16 @@ class AdapterClass extends EventEmitter {
         if (Array.isArray(pattern)) {
             // get all aliases
             const aliasesIds = pattern
-                .map(id => (typeof id === 'string' && id.startsWith(ALIAS_STARTS_WITH) ? id : null))
+                .map(id => (id.startsWith(ALIAS_STARTS_WITH) ? id : null))
                 .filter(id => id) as string[];
 
             // get all non aliases
             const nonAliasesIds = pattern
-                .map(id => (typeof id === 'string' && !id.startsWith(ALIAS_STARTS_WITH) ? id : null))
+                .map(id => (!id.startsWith(ALIAS_STARTS_WITH) ? id : null))
                 .filter(id => id) as string[];
 
             for (const aliasPattern of pattern) {
                 if (
-                    typeof aliasPattern === 'string' &&
                     (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
                     !this.aliasPatterns.has(aliasPattern)
                 ) {
@@ -9494,7 +9525,7 @@ class AdapterClass extends EventEmitter {
                 this._logger.error(`${this.namespaceLog} Error on "subscribeForeignStates": ${e.message}`);
             }
             return tools.maybeCallback(callback);
-        } else if (typeof pattern === 'string' && pattern.includes('*')) {
+        } else if (pattern.includes('*')) {
             if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
                 if (!this._aliasObjectsSubscribed) {
                     this._aliasObjectsSubscribed = true;
@@ -9547,7 +9578,7 @@ class AdapterClass extends EventEmitter {
             } else {
                 adapterStates.subscribeUser(pattern, callback);
             }
-        } else if (typeof pattern === 'string' && pattern.startsWith(ALIAS_STARTS_WITH)) {
+        } else if (pattern.startsWith(ALIAS_STARTS_WITH)) {
             if (!this._aliasObjectsSubscribed) {
                 this._aliasObjectsSubscribed = true;
                 adapterObjects.subscribe(`${ALIAS_STARTS_WITH}*`);
@@ -9604,8 +9635,7 @@ class AdapterClass extends EventEmitter {
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
      */
-    async unsubscribeForeignStates(pattern: any, options: any, callback?: any) {
-        // TODO: add types
+    unsubscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
         pattern = pattern || '*';
 
         // Todo check rights for options
@@ -9614,12 +9644,25 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
 
+        Utils.assertsCallback(callback, 'callback');
+
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
                 callback,
                 `Regexp is not supported for "unsubscribeForeignStates", received "${pattern.toString()}"`
             );
         }
+
+        Utils.assertsPattern(pattern, 'pattern');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._unsubscribeForeignStates({ pattern, options, callback });
+    }
+
+    private async _unsubscribeForeignStates(_options: InternalSubscribeOptions) {
+        const { pattern, callback } = _options;
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9687,7 +9730,7 @@ class AdapterClass extends EventEmitter {
             for (const _pattern of pattern) {
                 promises.push(this.unsubscribeForeignStatesAsync(_pattern));
             }
-        } else if (typeof pattern === 'string' && (pattern.includes('*') || pattern.startsWith(ALIAS_STARTS_WITH))) {
+        } else if (pattern.includes('*') || pattern.startsWith(ALIAS_STARTS_WITH)) {
             if (pattern === '*' || pattern.startsWith(ALIAS_STARTS_WITH)) {
                 aliasPattern = pattern; // check all aliases
                 if (pattern === '*') {

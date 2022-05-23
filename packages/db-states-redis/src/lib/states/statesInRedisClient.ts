@@ -1080,7 +1080,7 @@ export class StateRedisClient {
     }
 
     async subscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
-    async subscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
+    async subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
 
     /**
      * @method subscribe
@@ -1133,7 +1133,7 @@ export class StateRedisClient {
      * @param pattern
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    subscribeUser(pattern: string, callback: ioBroker.ErrorCallback): Promise<void> {
+    subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.subscribe(pattern, true, callback);
     }
 
