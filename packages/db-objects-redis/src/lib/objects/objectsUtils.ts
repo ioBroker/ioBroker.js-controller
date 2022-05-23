@@ -13,6 +13,7 @@ import path from 'path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
 import * as CONSTS from './constants';
+import mime from 'mime';
 
 export * as CONSTS from './constants';
 export const ERRORS = CONSTS.ERRORS;
@@ -40,50 +41,19 @@ export interface FileObject {
 
 export type CheckFileRightsCallback = (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void;
 
-const mimeTypes = {
-    '.css': { type: 'text/css', binary: false },
-    '.bmp': { type: 'image/bmp', binary: true },
-    '.png': { type: 'image/png', binary: true },
-    '.jpg': { type: 'image/jpeg', binary: true },
-    '.jpeg': { type: 'image/jpeg', binary: true },
-    '.gif': { type: 'image/gif', binary: true },
-    '.ico': { type: 'image/x-icon', binary: true },
-    '.webp': { type: 'image/webp', binary: true },
-    '.wbmp': { type: 'image/vnd.wap.wbmp', binary: true },
-    '.tif': { type: 'image/tiff', binary: true },
-    '.js': { type: 'application/javascript', binary: false },
-    '.html': { type: 'text/html', binary: false },
-    '.htm': { type: 'text/html', binary: false },
-    '.json': { type: 'application/json', binary: false },
-    '.md': { type: 'text/markdown', binary: false },
-    '.xml': { type: 'text/xml', binary: false },
-    '.svg': { type: 'image/svg+xml', binary: false },
-    '.eot': { type: 'application/vnd.ms-fontobject', binary: true },
-    '.ttf': { type: 'application/font-sfnt', binary: true },
-    '.cur': { type: 'application/x-win-bitmap', binary: true },
-    '.woff': { type: 'application/font-woff', binary: true },
-    '.wav': { type: 'audio/wav', binary: true },
-    '.mp3': { type: 'audio/mpeg3', binary: true },
-    '.avi': { type: 'video/avi', binary: true },
-    '.qt': { type: 'video/quicktime', binary: true },
-    '.ppt': { type: 'application/vnd.ms-powerpoint', binary: true },
-    '.pptx': { type: 'application/vnd.ms-powerpoint', binary: true },
-    '.doc': { type: 'application/msword', binary: true },
-    '.docx': { type: 'application/msword', binary: true },
-    '.xls': { type: 'application/vnd.ms-excel', binary: true },
-    '.xlsx': { type: 'application/vnd.ms-excel', binary: true },
-    '.mp4': { type: 'video/mp4', binary: true },
-    '.mkv': { type: 'video/mkv', binary: true },
-    '.zip': { type: 'application/zip', binary: true },
-    '.ogg': { type: 'audio/ogg', binary: true },
-    '.manifest': { type: 'text/cache-manifest', binary: false },
-    '.pdf': { type: 'application/pdf', binary: true },
-    '.gz': { type: 'application/gzip', binary: true },
-    '.gzip': { type: 'application/gzip', binary: true }
-} as const;
+const textTypes = ['.js', '.json', '.svg'];
 
-function isKnownMimeType(ext: string): ext is keyof typeof mimeTypes {
-    return ext in mimeTypes;
+function isKnownMimeType(ext: string): { mimeType: string; isBinary: boolean } | null {
+    try {
+        const mimeType = mime.getType(ext);
+        if (mimeType) {
+            return { mimeType, isBinary: mimeType.startsWith('text/') || textTypes.includes(ext) };
+        }
+    } catch (error) {
+        // ignore
+    }
+
+    return null;
 }
 
 // For objects
@@ -127,21 +97,20 @@ let groups: ioBroker.GroupObject[] = [];
 
 export function getMimeType(ext: string[] | string): { mimeType: string; isBinary: boolean } {
     if (!ext) {
-        return { mimeType: 'text/html', isBinary: false };
+        return { mimeType: 'application/octet-stream', isBinary: true };
     }
+    // if it is result of match, get '.ext'
     if (ext instanceof Array) {
         ext = ext[0];
     }
     ext = ext.toLowerCase();
-    let mimeType = 'text/javascript';
-    let isBinary = false;
 
-    if (isKnownMimeType(ext)) {
-        mimeType = mimeTypes[ext].type;
-        isBinary = mimeTypes[ext].binary;
+    const _type = isKnownMimeType(ext);
+    if (_type) {
+        return _type;
+    } else {
+        return { mimeType: 'application/octet-stream', isBinary: true };
     }
-
-    return { mimeType, isBinary };
 }
 
 /**

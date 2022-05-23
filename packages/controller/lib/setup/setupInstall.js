@@ -1566,7 +1566,7 @@ function Install(options) {
      * @return {Promise<void>}
      */
     this.installAdapterFromUrl = async function (url, name) {
-        // If the user provided an URL, try to parse it into known ways to represent a Github URL
+        // If the user provided an URL, try to parse it into known ways to represent a GitHub URL
         let parsedUrl;
         try {
             parsedUrl = new URL(url);
@@ -1605,7 +1605,7 @@ function Install(options) {
                     console.log(
                         `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`
                     );
-                    // Install using the npm Github URL syntax `npm i user/repo_name`:
+                    // Install using the npm GitHub URL syntax `npm i user/repo_name`:
                     url = `${user}/${repo}`;
                 }
             } else {
@@ -1631,7 +1631,7 @@ function Install(options) {
                 }
             } else {
                 const githubUrlParts = tools.parseShortGithubUrl(url);
-                // Try to extract the adapter name from the github url if possible
+                // Try to extract the adapter name from the GitHub url if possible
                 // Otherwise fall back to the complete URL
                 if (githubUrlParts) {
                     name = githubUrlParts.repo;
@@ -1672,7 +1672,7 @@ function Install(options) {
             await upload.uploadAdapter(name, false, true);
             await upload.upgradeAdapterObjects(name);
         } else {
-            // Try to find io-package.json with newest date
+            // Try to find io-package.json with the newest date
             const dirs = fs.readdirSync(installDir);
             let date = null;
             let dir = null;
