@@ -7233,7 +7233,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @alias sendTo
      * @memberof Adapter
-     * @param {string} instanceName name of the instance where the message must be send to. E.g. "pushover.0" or "system.adapter.pushover.0".
+     * @param {string} instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param {string} command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param {object} message object that will be given as argument for request
      * @param {function(any):any} [callback] optional return result
@@ -11069,10 +11069,12 @@ export class AdapterClass extends EventEmitter {
 
             adapterStates.subscribeLog(`system.adapter.${this.namespace}`);
         } else {
-            this.requireLog = _isActive => {
-                this._logger.warn(
-                    `${this.namespaceLog} requireLog is not supported by this adapter! Please set common.logTransporter to true`
-                );
+            this.requireLog = isActive => {
+                if (isActive) {
+                    this._logger.warn(
+                        `${this.namespaceLog} requireLog is not supported by this adapter! Please set common.logTransporter to true`
+                    );
+                }
             };
         }
     }
