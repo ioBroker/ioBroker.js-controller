@@ -814,6 +814,14 @@ interface InternalDeleteDeviceOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+interface InternalDeleteChannelFromEnumOptions {
+    enumName: string;
+    parentDevice: string;
+    channelName: string;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
+}
+
 /**
  * Adapter class
  *
@@ -5748,12 +5756,33 @@ class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback
     ): void;
 
-    deleteChannelFromEnum(enumName: any, parentDevice: any, channelName: any, options: any, callback?: any) {
-        // todo: add types
+    deleteChannelFromEnum(
+        enumName: unknown,
+        parentDevice: unknown,
+        channelName: unknown,
+        options: unknown,
+        callback?: unknown
+    ) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(enumName, 'enumName');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(channelName, 'channelName');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._deleteChannelFromEnum({ enumName, parentDevice, channelName, options, callback });
+    }
+
+    private _deleteChannelFromEnum(_options: InternalDeleteChannelFromEnumOptions) {
+        const { options, callback } = _options;
+        let { enumName, channelName, parentDevice } = _options;
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} deleteChannelFromEnum not processed because Objects database not connected`
@@ -9404,7 +9433,7 @@ class AdapterClass extends EventEmitter {
 
         // if pattern is array
         if (Array.isArray(pattern)) {
-            if (options.user !== SYSTEM_ADMIN_USER) {
+            if (options.user && options.user !== SYSTEM_ADMIN_USER) {
                 this._checkStates(pattern, options, 'getState', (err, keys, objs) => {
                     if (err) {
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -10177,7 +10206,7 @@ class AdapterClass extends EventEmitter {
             options.user = SYSTEM_ADMIN_USER;
         }
 
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options.user !== SYSTEM_ADMIN_USER) {
             // always read according object to set the binary flag
             this._checkStates(id, options, 'setState', (err, obj) => {
                 if (!err && !obj) {
