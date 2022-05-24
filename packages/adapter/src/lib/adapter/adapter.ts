@@ -1475,8 +1475,6 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promise-version of Adapter.setBinaryState
          *
-         * @alias setForeignBinaryStateAsync
-         * @memberof Adapter
          * @param {string} id of state
          * @param {Buffer} binary data
          * @param {object} [options] optional
@@ -1488,8 +1486,6 @@ export class AdapterClass extends EventEmitter {
         /**
          * Async version of setBinaryState
          *
-         * @alias setBinaryStateAsync
-         * @memberof Adapter
          *
          * @param {string} id of state
          * @param {Buffer} binary data
@@ -1501,8 +1497,6 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promise-version of Adapter.getBinaryState
          *
-         * @alias getForeignBinaryStateAsync
-         * @memberof Adapter
          *
          */
         this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
@@ -1519,8 +1513,6 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promise-version of Adapter.delForeignBinaryState
          *
-         * @alias delForeignBinaryStateAsync
-         * @memberof Adapter
          * @param {string} id
          * @param {object} [options]
          * @return {Promise<void>}
@@ -1531,8 +1523,6 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promise-version of Adapter.delBinaryState
          *
-         * @alias delBinaryStateAsync
-         * @memberof Adapter
          * @param {string} id
          * @param {object} [options]
          * @return {Promise<void>}
@@ -1771,8 +1761,6 @@ export class AdapterClass extends EventEmitter {
      *     });
      * </code></pre>
      *
-     * @alias getPort
-     * @memberof Adapter
      * @param port port number to start the search for free port
      * @param [host] optional hostname for the port search
      * @param callback return result
@@ -1858,8 +1846,6 @@ export class AdapterClass extends EventEmitter {
      * validates user and password
      *
      *
-     * @alias checkPassword
-     * @memberof Adapter
      * @param user user name as text
      * @param pw password as text
      * @param [options] optional user context
@@ -1991,7 +1977,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * sets the user's password
      *
-     * @alias setPassword
      * @param user user name as text
      * @param pw password as text
      * @param [options] optional user context
@@ -2097,8 +2082,6 @@ export class AdapterClass extends EventEmitter {
      *
      * This function used mostly internally and the adapter developer do not require it.
      *
-     * @alias checkGroup
-     * @memberof Adapter
      * @param user user name as text
      * @param group group name
      * @param [options] optional user context
@@ -3138,8 +3121,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Get all states, channels and devices of this adapter.
      *
-     * @alias getAdapterObjects
-     * @memberof Adapter
      * @param {(objects: Record<string, ioBroker.Object>) => void} callback return result
      *        <pre><code>
      *            function (objects) {
@@ -3270,8 +3251,6 @@ export class AdapterClass extends EventEmitter {
      * </code></pre>
      *
      *
-     * @alias extendObject
-     * @memberof Adapter
      * @param {string} id object ID, that must be extended
      * @param {object} obj part that must be extended
      * @param {object} [options] optional user context
@@ -3504,8 +3483,6 @@ export class AdapterClass extends EventEmitter {
      *
      * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
      *
-     * @alias setForeignObject
-     * @memberof Adapter
      * @param {string} id object ID, that must be overwritten or created.
      * @param {object} obj new object
      * @param {object} [options] optional user context
@@ -3613,8 +3590,6 @@ export class AdapterClass extends EventEmitter {
      *
      * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
      *
-     * @alias extendForeignObject
-     * @memberof Adapter
      * @param {string} id object ID, that must be extended
      * @param {object} obj part that must be extended
      * @param {object} [options] optional user context, or use attribute preserve e.g. {preserve: {common: ['name']}} to preserve common.name
@@ -3810,8 +3785,6 @@ export class AdapterClass extends EventEmitter {
      *
      * It is not required, that ID consists namespace. E.g. to get object of "adapterName.X.myObject", only "myObject" is required as ID.
      *
-     * @alias getObject
-     * @memberof Adapter
      * @param {string} id exactly object ID (without namespace)
      * @param {object} [options] optional user context
      * @param {ioBroker.GetObjectCallback} callback return result
@@ -3867,8 +3840,6 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
      * to get all objects of the instance.
      *
-     * @alias getObjectView
-     * @memberof Adapter
      * @param {string} design name of the design
      * @param {string} search name of the view
      * @param {object} params object containing startkey: first id to include in result; endkey: last id to include in result
@@ -3978,8 +3949,6 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
      * to get all objects of the instance.
      *
-     * @alias getObjectList
-     * @memberof Adapter
      *
      * @param {object} params
      * @param {object} options
@@ -4042,8 +4011,6 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias getEnum
-     * @memberof Adapter
      * @param {string} _enum enum name, e.g. 'rooms', 'function' or '' (all enums)
      * @param {object} [options] optional user context
      * @param {ioBroker.GetEnumCallback} callback return result
@@ -4123,8 +4090,6 @@ export class AdapterClass extends EventEmitter {
      *
      * Get enums of specified tree or all enums if nothing specified as object with values.
      *
-     * @alias getEnums
-     * @memberof Adapter
      * @param {string|array} _enumList enum name or names, e.g. ['rooms', 'function']
      * @param {object} [options] optional user context
      * @param {ioBroker.GetEnumsCallback} callback return result
@@ -4320,8 +4285,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      *
-     * @alias getForeignObjects
-     * @memberof Adapter
+
      * @param {string} pattern object ID/wildchars
      * @param {string} type type of object: 'state', 'channel' or 'device'. Default - 'state'
      * @param {string|string[]} enums object ID, that must be overwritten or created.
@@ -4469,8 +4433,6 @@ export class AdapterClass extends EventEmitter {
      *
      * Find object by the exact name or ID.
      *
-     * @alias findForeignObject
-     * @memberof Adapter
      * @param {string} id exactly object ID (without namespace)
      * @param {string} type optional common.type of state: 'number', 'string', 'boolean', 'file', ...
      * @param {object} options optional user context
@@ -4529,8 +4491,6 @@ export class AdapterClass extends EventEmitter {
      *
      * ID must be specified with namespace.
      *
-     * @alias getForeignObject
-     * @memberof Adapter
      * @param {string} id exactly object ID (with namespace)
      * @param {object} [options] optional user context
      * @param {ioBroker.GetObjectCallback} callback return result
@@ -4597,8 +4557,6 @@ export class AdapterClass extends EventEmitter {
      *
      * The corresponding state will be deleted too if the object has type "state".
      *
-     * @alias delObject
-     * @memberof Adapter
      * @param {string} id exactly object ID (without namespace)
      * @param {object} [options] optional user context. E.g. recursive option could be true
      * @param {ioBroker.ErrorCallback} [callback] return result
@@ -4656,8 +4614,6 @@ export class AdapterClass extends EventEmitter {
      *
      * The full ID with namespace must be specified. The corresponding state will be deleted too if the object has type "state".
      *
-     * @alias delForeignObject
-     * @memberof Adapter
      * @param {string} id exactly object ID (with namespace)
      * @param {object} [options] optional user context or {recursive:true} to delete all underlying objects
      * @param {ioBroker.ErrorCallback} [callback] return result
@@ -4769,8 +4725,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of objects in this instance.
      *
-     * @alias subscribeObjects
-     * @memberof Adapter
      * @param {string} pattern pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces
      * @param {object} [options] optional user context
      * @param {ioBroker.ErrorCallback} [callback] optional returns result
@@ -4814,8 +4768,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe on the changes of objects in this instance.
      *
-     * @alias unsubscribeObjects
-     * @memberof Adapter
      * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param {object} [options] optional user context
      * @param {ioBroker.ErrorCallback} [callback] optional returns result
@@ -4860,8 +4812,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of objects in any instance.
      *
-     * @alias subscribeForeignObjects
-     * @memberof Adapter
      * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns
      * @param {object} [options] optional user context
      * @param {ioBroker.ErrorCallback} [callback] optional returns result
@@ -4900,8 +4850,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the patterns on all objects.
      *
-     * @alias unsubscribeForeignObjects
-     * @memberof Adapter
      * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param {object} [options] optional user context
      * @param {ioBroker.ErrorCallback} [callback] optional returns result
@@ -4943,8 +4891,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of files in specific instance.
      * This is async function!
-     * @alias subscribeForeignFiles
-     * @memberof Adapter
      * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
      * @param {string} pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param {object} [options] optional user context
@@ -4974,8 +4920,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the changes of files on specific instance.
      * This is async function!
-     * @alias unsubscribeForeignFiles
-     * @memberof Adapter
      * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
      * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param {object} [options] optional user context
@@ -5019,8 +4963,6 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * New object will be created only if no object exists with such ID.
      *
-     * @alias setObjectNotExists
-     * @memberof Adapter
      * @param {string} id object ID, that must be overwritten or created.
      * @param {object} obj new object
      * @param {object} [options] optional user context
@@ -5123,8 +5065,6 @@ export class AdapterClass extends EventEmitter {
      * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE".
      * New object will be created only if no object exists with such ID.
      *
-     * @alias setForeignObjectNotExists
-     * @memberof Adapter
      * @param {string} id object ID, that must be overwritten or created.
      * @param {object} obj new object
      * @param {object} [options] optional user context
@@ -5595,8 +5535,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Delete device with all its channels and states.
      *
-     * @alias deleteDevice
-     * @memberof Adapter
      * @param {string} deviceName is the part of ID like: adapter.instance.<deviceName>
      * @param {object} [options] optional user context
      * @param {ioBroker.ErrorCallback} [callback] return result
@@ -6638,8 +6576,6 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias chownFile
-     * @memberof Adapter
      * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
      * @param {string} path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
      * @param {object} options data with mode
@@ -6685,8 +6621,6 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias chownFile
-     * @memberof Adapter
      * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
      * @param {string} path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
      * @param {object} options data with owner and ownerGroup
@@ -6735,8 +6669,6 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias readDir
-     * @memberof Adapter
      * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
      * @param {string} path path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
      * @param {object} options optional user context
@@ -6884,8 +6816,6 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias readFile
-     * @memberof Adapter
      * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
      * @param {string} filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
      * @param {object} options optional user context
@@ -6941,8 +6871,6 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @alias writeFile
-     * @memberof Adapter
      * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
      * @param {string} filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
      * @param {object} data data as UTF8 string or buffer depends on the file extension.
@@ -6999,8 +6927,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Checks if file exists in DB.
      *
-     * @alias fileExists
-     * @memberof Adapter
      * @param {string} _adapter adapter name
      * @param {string} filename path to file without adapter name. E.g. If you want to check "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
      * @param {object} [options] optional user context
@@ -7231,8 +7157,6 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific instance or all instances of some specific adapter.
      * If no instance given (e.g. "pushover"), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @alias sendTo
-     * @memberof Adapter
      * @param {string} instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param {string} command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param {object} message object that will be given as argument for request
@@ -7392,8 +7316,6 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific host or all hosts.
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @alias sendToHost
-     * @memberof Adapter
      * @param {any} hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
      * @param {string} command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param {object} message object that will be given as argument for request
@@ -7579,8 +7501,6 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * ack, options and callback are optional
      *
-     * @alias setState
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object|string|number|boolean} state simple value or object with attribues.
      *  If state is object and ack exists too as function argument, function argument has priority.
@@ -8323,8 +8243,6 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * ack, options and callback are optional
      *
-     * @alias setStateChanged
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object|string|number|boolean} state simple value or object with attribues.
      * @param {boolean} [ack] optional is command(false) or status(true)
@@ -8470,8 +8388,6 @@ export class AdapterClass extends EventEmitter {
      * This function can write values into states DB for all instances and system states too.
      * ack, options and callback are optional
      *
-     * @alias setForeignState
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object|string|number|boolean} state simple value or object with attribues.
      *  If state is object, so the ack will be ignored and must be included into object.
@@ -8781,8 +8697,6 @@ export class AdapterClass extends EventEmitter {
      * This function can write values into states DB for all instances and system states too.
      * ack, options and callback are optional
      *
-     * @alias setForeignStateChanged
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object|string|number|boolean} state simple value or object with attribues.
      *  If state is object and ack exists too as function argument, function argument has priority.
@@ -8894,8 +8808,6 @@ export class AdapterClass extends EventEmitter {
      * This function can read values from states DB for this adapter.
      * Only Ids that belong to this adapter can be read. So the function automatically adds "adapter.X." to ID.
      *
-     * @alias getState
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object} options optional user context
      * @param {ioBroker.GetStateCallback} callback return result
@@ -8926,8 +8838,6 @@ export class AdapterClass extends EventEmitter {
      *
      * This function can read values from states DB for all instances and adapters. It expects the full path of object ID.
      *
-     * @alias getForeignState
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object} options optional user context
      * @param {ioBroker.GetStateCallback} callback return result
@@ -9230,8 +9140,6 @@ export class AdapterClass extends EventEmitter {
      *      - count - Same as max, but calculate number of values (nulls will be calculated).
      *      - none - No aggregation at all. Only raw values in given period.
      *
-     * @alias getHistory
-     * @memberof Adapter
      * @param {string} id object ID of the state.
      * @param {object} options see function description
      * @param {ioBroker.GetHistoryCallback} callback return result
@@ -9284,8 +9192,6 @@ export class AdapterClass extends EventEmitter {
      * Convert "adapter.instance.D.C.S" in object {device: D, channel: C, state: S}
      * Convert ID to {device: D, channel: C, state: S}
      *
-     * @alias idToDCS
-     * @memberof Adapter
      * @param {string} id short or long string of ID like "stateID" or "adapterName.0.stateID".
      * @return {object} parsed ID as an object
      */
@@ -9318,8 +9224,6 @@ export class AdapterClass extends EventEmitter {
      *
      * No error is returned if state does not exist.
      *
-     * @alias delState
-     * @memberof Adapter
      * @param {string} id exactly object ID (without namespace)
      * @param {object} [options] optional user context
      * @param {ioBroker.ErrorCallback} [callback] return result
@@ -9352,8 +9256,6 @@ export class AdapterClass extends EventEmitter {
      *
      * No error is returned if state does not exist.
      *
-     * @alias delForeignState
-     * @memberof Adapter
      * @param {string} id long string for ID like "adapterName.0.stateID".
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
@@ -9407,8 +9309,6 @@ export class AdapterClass extends EventEmitter {
      *     });
      * </code></pre>
      *
-     * @alias getStates
-     * @memberof Adapter
      * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
      * @param {object} options optional argument to describe the user context
      * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
@@ -9534,8 +9434,6 @@ export class AdapterClass extends EventEmitter {
      *     });
      * </code></pre>
      *
-     * @alias getForeignStates
-     * @memberof Adapter
      * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
      * @param {object} options optional argument to describe the user context
      * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
@@ -9795,8 +9693,6 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeForeignStates('adapterName.X.*');
      * </code></pre>
      *
-     * @alias subscribeForeignStates
-     * @memberof Adapter
      * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
@@ -10039,8 +9935,6 @@ export class AdapterClass extends EventEmitter {
      *     adapter.unsubscribeForeignStates('adapterName.X.*'); // Valid unsubscribe
      * </code></pre>
      *
-     * @alias unsubscribeForeignStates
-     * @memberof Adapter
      * @param {string | string[]} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
@@ -10186,8 +10080,6 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeStates('*'); // subscribe for all states of this adapter
      * </code></pre>
      *
-     * @alias subscribeStates
-     * @memberof Adapter
      * @param {string} pattern string in form 'adapter.0.*' or like this. Only string allowed
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback]
@@ -10233,8 +10125,6 @@ export class AdapterClass extends EventEmitter {
      *     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
      * </code></pre>
      *
-     * @alias unsubscribeStates
-     * @memberof Adapter
      * @param {string} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback]
@@ -10271,8 +10161,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Write binary block into redis, e.g image
      *
-     * @alias setForeignBinaryState
-     * @memberof Adapter
      *
      * @param {string} id of state
      * @param {Buffer} binary data
@@ -10414,8 +10302,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Same as setForeignBinaryState but prefixes the own namespace to the id
      *
-     * @alias setBinaryState
-     * @memberof Adapter
      *
      * @param {string} id of state
      * @param {Buffer} binary data
@@ -10526,8 +10412,6 @@ export class AdapterClass extends EventEmitter {
     /**
      * Deletes binary state
      *
-     * @alias delForeignBinaryState
-     * @memberof Adapter
      *
      * @param {string} id
      * @param {object} [options]
@@ -10586,9 +10470,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Deletes binary state but prefixes the own namespace to the id
-     *
-     * @alias delBinaryState
-     * @memberof Adapter
      *
      * @param {string} id
      * @param {object} [options]
