@@ -1565,7 +1565,12 @@ export class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
-    readDir(id: string, name: string, options: CallOptions | null, callback: ioBroker.ReadDirCallback): void {
+    readDir(
+        id: string,
+        name: string,
+        options: CallOptions | null | undefined,
+        callback: ioBroker.ReadDirCallback
+    ): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1734,7 +1739,7 @@ export class ObjectsInRedisClient {
         id: string,
         oldName: string,
         newName: string,
-        options: CallOptions | null,
+        options?: CallOptions | null,
         callback?: ioBroker.ErrorCallback
     ): void | Promise<void> {
         if (typeof options === 'function') {

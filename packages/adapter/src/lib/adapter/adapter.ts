@@ -45,6 +45,8 @@ import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient | null;
 let adapterObjects: ObjectsInRedisClient | null;
+let States: typeof StatesInRedisClient;
+let Objects: typeof ObjectsInRedisClient;
 
 interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
@@ -818,6 +820,51 @@ interface InternalDeleteChannelFromEnumOptions {
     enumName: string;
     parentDevice: string;
     channelName: string;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalDeleteChannelOptions {
+    parentDevice: string;
+    channelName: string;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalDeleteStateOptions {
+    parentDevice: string;
+    parentChannel: string;
+    stateName: string;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalGetDevicesOptions {
+    options?: Record<string, any> | null;
+    callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>;
+}
+
+interface InternalGetStatesOfOptions {
+    parentDevice: string;
+    parentChannel: string;
+    options?: Record<string, any> | null;
+    callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>;
+}
+
+interface InternalAddStateToEnumOptions {
+    enumName: string;
+    addTo: string;
+    parentDevice: string;
+    parentChannel: string;
+    stateName: string;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
+}
+
+interface InternalDeleteStateFromEnumOptions {
+    enumName: string;
+    parentDevice: string;
+    parentChannel: string;
+    stateName: string;
     options?: Record<string, any> | null;
     callback?: ioBroker.ErrorCallback;
 }
@@ -4539,7 +4586,7 @@ class AdapterClass extends EventEmitter {
     }
 
     delObject(id: string, callback?: ioBroker.ErrorCallback): void;
-    delObject(id: string, options: ioBroker.DelObjectOptions, callback?: ioBroker.ErrorCallback): void;
+    delObject(id: string, options?: ioBroker.DelObjectOptions | null, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Delete an object of this instance.
@@ -5879,8 +5926,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async deleteChannel(parentDevice: any, channelName: any, options: any, callback?: any) {
-        // TODO add types
+    deleteChannel(parentDevice: unknown, channelName: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5898,6 +5944,18 @@ class AdapterClass extends EventEmitter {
             channelName = parentDevice;
             parentDevice = '';
         }
+
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(channelName, 'channelName');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._deleteChannel({ parentDevice, channelName, callback });
+    }
+
+    private async _deleteChannel(_options: InternalDeleteChannelOptions) {
+        const { callback } = _options;
+        let { channelName, parentDevice } = _options;
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} deleteChannel not processed because Objects database not connected`
@@ -5963,8 +6021,13 @@ class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback
     ): void;
 
-    deleteState(parentDevice: any, parentChannel: any, stateName: any, options?: any, callback?: any) {
-        // TODO add types
+    deleteState(
+        parentDevice: unknown,
+        parentChannel: unknown,
+        stateName: unknown,
+        options?: unknown,
+        callback?: unknown
+    ) {
         if (typeof parentChannel === 'function' && stateName === undefined) {
             stateName = parentDevice;
             callback = parentChannel;
@@ -5998,6 +6061,21 @@ class AdapterClass extends EventEmitter {
                 parentDevice = '';
             }
         }
+
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(parentChannel, 'parentChannel');
+        Utils.assertsString(stateName, 'stateName');
+        Utils.assertsOptionalCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._deleteState({ parentDevice, parentChannel, stateName, options, callback });
+    }
+
+    private _deleteState(_options: InternalDeleteStateOptions) {
+        const { callback, options } = _options;
+        let { stateName, parentDevice, parentChannel } = _options;
 
         if (parentDevice) {
             if (this._namespaceRegExp.test(parentDevice)) {
@@ -6038,8 +6116,7 @@ class AdapterClass extends EventEmitter {
     getDevices(callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
     getDevices(options: unknown, callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
 
-    getDevices(options: any, callback?: any) {
-        // TODO: add types
+    getDevices(options: unknown, callback?: unknown) {
         if (typeof options === 'function' && typeof callback === 'object') {
             const tmp = callback;
             callback = options;
@@ -6049,6 +6126,17 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._getDevices({ options, callback });
+    }
+
+    private _getDevices(_options: InternalGetDevicesOptions) {
+        const { options, callback } = _options;
 
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} getDevices not processed because Objects database not connected`);
@@ -6068,8 +6156,10 @@ class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, err, err ? undefined : []);
                 }
                 const res = [];
-                for (let i = 0; i < obj.rows.length; i++) {
-                    res.push(obj.rows[i].value);
+                for (const row of obj.rows) {
+                    if (row.value) {
+                        res.push(row.value);
+                    }
                 }
                 return tools.maybeCallbackWithError(callback, null, res);
             }
@@ -6159,8 +6249,7 @@ class AdapterClass extends EventEmitter {
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
     ): void;
-    getStatesOf(parentDevice: any, parentChannel?: any, options?: any, callback?: any) {
-        // TODO: add types
+    getStatesOf(parentDevice: unknown, parentChannel?: unknown, options?: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6177,6 +6266,20 @@ class AdapterClass extends EventEmitter {
         if (!callback) {
             return;
         }
+
+        Utils.assertsCallback(callback, 'callback');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(parentChannel, 'parentChannel');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._getStatesOf({ parentDevice, parentChannel, options, callback });
+    }
+
+    private _getStatesOf(_options: InternalGetStatesOfOptions) {
+        const { options, callback } = _options;
+        let { parentDevice, parentChannel } = _options;
 
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} getStatesOf not processed because Objects database not connected`);
@@ -6256,19 +6359,36 @@ class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback
     ): void;
     addStateToEnum(
-        enumName: any,
-        addTo: any,
-        parentDevice: any,
-        parentChannel: any,
-        stateName: any,
-        options: any,
-        callback?: any
+        enumName: unknown,
+        addTo: unknown,
+        parentDevice: unknown,
+        parentChannel: unknown,
+        stateName: unknown,
+        options: unknown,
+        callback?: unknown
     ) {
-        // TODO: add types
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(enumName, 'enumName');
+        Utils.assertsString(addTo, 'addTo');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(parentChannel, 'parentChannel');
+        Utils.assertsString(stateName, 'stateName');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._addStateToEnum({ enumName, addTo, parentDevice, parentChannel, stateName, options, callback });
+    }
+
+    private _addStateToEnum(_options: InternalAddStateToEnumOptions) {
+        const { addTo, options, callback } = _options;
+        let { enumName, parentDevice, parentChannel, stateName } = _options;
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} addStateToEnum not processed because Objects database not connected`
@@ -6313,9 +6433,8 @@ class AdapterClass extends EventEmitter {
                 if (err || !obj) {
                     return tools.maybeCallbackWithError(callback, err || tools.ERRORS.ERROR_NOT_FOUND);
                 }
-                // @ts-expect-error
+
                 if (!obj.common.members.includes(objId)) {
-                    // @ts-expect-error
                     obj.common.members.push(objId);
                     obj.from = 'system.adapter.' + this.namespace;
                     obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -6385,18 +6504,33 @@ class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback
     ): void;
     deleteStateFromEnum(
-        enumName: any,
-        parentDevice: any,
-        parentChannel: any,
-        stateName: any,
-        options: any,
-        callback?: any
+        enumName: unknown,
+        parentDevice: unknown,
+        parentChannel: unknown,
+        stateName: unknown,
+        options: unknown,
+        callback?: unknown
     ) {
-        // TODO add types
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(enumName, 'enumName');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(parentChannel, 'parentChannel');
+        Utils.assertsString(stateName, 'stateName');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._deleteStateFromEnum({ enumName, parentDevice, parentChannel, stateName, options, callback });
+    }
+
+    private _deleteStateFromEnum(_options: InternalDeleteStateFromEnumOptions) {
+        const { options, callback } = _options;
+        let { enumName, parentDevice, parentChannel, stateName } = _options;
 
         if (!adapterObjects) {
             this._logger.info(
@@ -6445,7 +6579,7 @@ class AdapterClass extends EventEmitter {
         );
 
         if (enumName) {
-            enumName = 'enum.' + enumName + '.';
+            enumName = `enum.${enumName}.`;
         } else {
             enumName = 'enum.';
         }
@@ -6484,7 +6618,6 @@ class AdapterClass extends EventEmitter {
             }
         );
     }
-
     // external signature
     chmodFile(
         adapter: string | null,
@@ -6621,8 +6754,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    readDir(_adapter: any, path: any, options: any, callback?: any) {
-        // TODO add types
+    readDir(_adapter: unknown, path: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6631,6 +6763,14 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsCallback(callback, 'callback');
+        Utils.assertsString(_adapter, '_adapter');
+        Utils.assertsString(path, 'path');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} readDir not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -6677,8 +6817,7 @@ class AdapterClass extends EventEmitter {
         callback: ioBroker.ErrnoCallback
     ): void;
 
-    rename(_adapter: any, oldName: any, newName: any, options: any, callback?: any) {
-        // TODO add types
+    rename(_adapter: unknown, oldName: unknown, newName: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6686,6 +6825,15 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(oldName, 'oldName');
+        Utils.assertsString(newName, 'newName');
+        Utils.assertsString(_adapter, '_adapter');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} rename not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -7125,7 +7273,7 @@ class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`
         };
 
-        if (typeof instanceName !== 'string' || !instanceName) {
+        if (!instanceName) {
             // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
             return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
         }
@@ -10619,21 +10767,1536 @@ class AdapterClass extends EventEmitter {
         return licenses;
     }
 
+    private _reportStatus(): void {
+        if (!adapterStates) {
+            return;
+        }
+        const id = 'system.adapter.' + this.namespace;
+        adapterStates.setState(id + '.alive', {
+            val: true,
+            ack: true,
+            expire: Math.floor(this._config.system.statisticsInterval / 1000) + 10,
+            from: id
+        });
+        this.outputCount++;
+        if (this.connected) {
+            adapterStates.setState(id + '.connected', { val: true, ack: true, expire: 30, from: id });
+            this.outputCount++;
+        }
+        if (!this.startedInCompactMode) {
+            // pidUsage([pid,pid,...], function (err, stats) {
+            // => {
+            //   cpu: 10.0,            // percentage (from 0 to 100*vcore)
+            //   memory: 357306368,    // bytes
+            //   ppid: 312,            // PPID
+            //   pid: 727,             // PID
+            //   ctime: 867000,        // ms user + system time
+            //   elapsed: 6650000,     // ms since the start of the process
+            //   timestamp: 864000000  // ms since epoch
+            // }
+            pidUsage(process.pid, (err, stats) => {
+                // sometimes adapter is stopped, but this is still running
+                if (!err && this && adapterStates && adapterStates.setState && stats) {
+                    adapterStates.setState(`${id}.cpu`, {
+                        ack: true,
+                        from: id,
+                        val: Math.round(100 * stats.cpu) / 100
+                    });
+                    adapterStates.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
+                    this.outputCount += 2;
+                }
+            });
+            try {
+                //RSS is the resident set size, the portion of the process's memory held in RAM (as opposed to the swap space or the part held in the filesystem).
+                const mem = process.memoryUsage();
+                adapterStates.setState(id + '.memRss', {
+                    val: parseFloat(
+                        (mem.rss / 1048576) /* 1MB */
+                            .toFixed(2)
+                    ),
+                    ack: true,
+                    from: id
+                });
+                adapterStates.setState(id + '.memHeapTotal', {
+                    val: parseFloat(
+                        (mem.heapTotal / 1048576) /* 1MB */
+                            .toFixed(2)
+                    ),
+                    ack: true,
+                    from: id
+                });
+                adapterStates.setState(id + '.memHeapUsed', {
+                    val: parseFloat(
+                        (mem.heapUsed / 1048576) /* 1MB */
+                            .toFixed(2)
+                    ),
+                    ack: true,
+                    from: id
+                });
+            } catch (err) {
+                this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${err.message}`);
+            }
+            this.outputCount += 3;
+            if (this.eventLoopLags.length) {
+                const eventLoopLag = Math.ceil(this.eventLoopLags.reduce((a, b) => a + b) / this.eventLoopLags.length);
+                adapterStates.setState(id + '.eventLoopLag', { val: eventLoopLag, ack: true, from: id }); // average of measured values
+                this.eventLoopLags = [];
+                this.outputCount++;
+            }
+        }
+        this.outputCount += 3;
+        adapterStates.setState(id + '.uptime', {
+            val: parseInt(process.uptime().toFixed(), 10),
+            ack: true,
+            from: id
+        });
+        adapterStates.setState(`${id}.inputCount`, { val: this.inputCount, ack: true, from: id });
+        adapterStates.setState(`${id}.outputCount`, { val: this.outputCount, ack: true, from: id });
+        this.inputCount = 0;
+        this.outputCount = 0;
+    }
+
+    // debug function to find error with stop logging
+    private _checkLogging(): void {
+        let logs: null | string[] = [];
+        // LogList
+        logs.push(`Actual Loglist - ${JSON.stringify(Array.from(this.logList))}`);
+
+        if (!adapterStates) {
+            // if adapterState was destroyed, we can not continue
+            return;
+        }
+
+        // Read current state of all log subscribers
+        adapterStates.getKeys('*.logging', (err, keys) => {
+            if (keys && keys.length) {
+                if (!adapterStates) {
+                    // if adapterState was destroyed, we can not continue
+                    return;
+                }
+
+                adapterStates.getStates(keys, (err, obj) => {
+                    if (obj) {
+                        for (let i = 0; i < keys.length; i++) {
+                            const objPart = obj[i];
+                            // We can JSON.parse, but index is 16x faster
+                            if (objPart) {
+                                const id = keys[i].substring(0, keys[i].length - '.logging'.length);
+                                if (
+                                    (typeof objPart === 'string' &&
+                                        // @ts-expect-error recheck code-wise this should not be possible to have a string
+                                        (objPart.includes('"val":true') || objPart.includes('"val":"true"'))) ||
+                                    (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true'))
+                                ) {
+                                    logs!.push(`Subscriber - ${id} ENABLED`);
+                                } else {
+                                    if (logs) {
+                                        logs.push(`Subscriber - ${id} (disabled)`);
+                                    } else {
+                                        this._logger.error(
+                                            `${this.namespaceLog} LOGINFO: Subscriber - ${id} (disabled)`
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (logs) {
+                        for (let m = 0; m < logs.length; m++) {
+                            this._logger.error(`${this.namespaceLog} LOGINFO: ${logs[m]}`);
+                        }
+                        logs = null;
+                    }
+                });
+            }
+        });
+    }
+
+    private _initLogging(callback: () => void): void {
+        // temporary log buffer
+        let messages: null | any[] = [];
+        // Read current state of all log subscriber
+
+        if (!adapterStates) {
+            // if adapterState was destroyed, we can not continue
+            return;
+        }
+
+        adapterStates.getKeys('*.logging', (err, keys) => {
+            if (keys && keys.length) {
+                if (!adapterStates) {
+                    // if adapterState was destroyed, we can not continue
+                    return;
+                }
+
+                adapterStates.getStates(keys, (err, obj) => {
+                    if (obj) {
+                        for (let i = 0; i < keys.length; i++) {
+                            const objPart = obj[i];
+                            // We can JSON.parse, but index is 16x faster
+                            if (!objPart) {
+                                continue;
+                            }
+                            const id = keys[i].substring(0, keys[i].length - '.logging'.length);
+                            if (
+                                typeof objPart === 'string' &&
+                                // @ts-expect-error recheck this but getStates should not return string code-wise
+                                (objPart.includes('"val":true') || objPart.includes('"val":"true"'))
+                            ) {
+                                this.logRedirect!(true, id);
+                            } else if (
+                                typeof objPart === 'object' &&
+                                (objPart.val === true || objPart.val === 'true')
+                            ) {
+                                this.logRedirect!(true, id);
+                            }
+                        }
+                        if (
+                            this.logList.size &&
+                            messages &&
+                            messages.length &&
+                            adapterStates &&
+                            adapterStates.pushLog
+                        ) {
+                            for (const message of messages) {
+                                for (const instanceId of this.logList) {
+                                    adapterStates!.pushLog(instanceId, message);
+                                }
+                            }
+                        }
+                    }
+                    // clear log buffer
+                    messages = null;
+                });
+            } else {
+                // disable log buffer
+                messages = null;
+            }
+            return tools.maybeCallback(callback);
+        });
+
+        this.logRedirect = (isActive, id) => {
+            // ignore itself
+            if (id === `system.adapter.${this.namespace}`) {
+                return;
+            }
+
+            if (isActive) {
+                if (!this.logList.has(id)) {
+                    this.logList.add(id);
+                }
+            } else {
+                this.logList.delete(id);
+            }
+        };
+
+        // If some message from logger
+        // find our notifier transport
+        // @ts-expect-error
+        const ts = this._logger.transports.find(t => t.name === 'NT');
+        // @ts-expect-error
+        ts.on('logged', info => {
+            info.from = this.namespace;
+            // emit to itself
+            if (this._options.logTransporter && this.logRequired && !this._stopInProgress) {
+                this.emit('log', info);
+            }
+
+            if (!this.logList.size) {
+                // if log buffer still active
+                if (messages && !this._options.logTransporter) {
+                    messages.push(info);
+
+                    // do not let messages grow without limit
+                    if (messages.length > this._config.states.maxQueue) {
+                        messages.splice(0, messages.length - this._config.states.maxQueue);
+                    }
+                }
+            } else if (adapterStates && adapterStates.pushLog) {
+                // Send to all adapter, that required logs
+                for (const instanceId of this.logList) {
+                    adapterStates.pushLog(instanceId, info);
+                }
+            }
+        });
+
+        this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
+
+        if (this._options.logTransporter) {
+            this.requireLog = isActive => {
+                if (adapterStates) {
+                    if (this.logRequired !== isActive) {
+                        this.logRequired = isActive; // remember state
+                        if (!isActive) {
+                            if (this.logOffTimer) {
+                                clearTimeout(this.logOffTimer);
+                            }
+                            // disable log receiving after 10 seconds
+                            this.logOffTimer = setTimeout(() => {
+                                this.logOffTimer = null;
+                                this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
+                                this.outputCount++;
+                                if (adapterStates) {
+                                    adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
+                                        val: false,
+                                        ack: true,
+                                        from: `system.adapter.${this.namespace}`
+                                    });
+                                }
+                            }, 10000);
+                        } else {
+                            if (this.logOffTimer) {
+                                clearTimeout(this.logOffTimer);
+                                this.logOffTimer = null;
+                            } else {
+                                this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
+                                this.outputCount++;
+                                adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
+                                    val: true,
+                                    ack: true,
+                                    from: `system.adapter.${this.namespace}`
+                                });
+                            }
+                        }
+                    }
+                }
+            };
+
+            this.processLog = msg => {
+                msg && !this._stopInProgress && this.emit('log', msg);
+            };
+
+            adapterStates.subscribeLog(`system.adapter.${this.namespace}`);
+        } else {
+            this.requireLog = _isActive => {
+                this._logger.warn(
+                    `${this.namespaceLog} requireLog is not supported by this adapter! Please set common.logTransporter to true`
+                );
+            };
+        }
+    }
+
+    // initStates is called from initAdapter
+    private _initStates(cb: () => void) {
+        this._logger.silly(`${this.namespaceLog} objectDB connected`);
+
+        this._config.states.maxQueue = this._config.states.maxQueue || 1000;
+
+        this._initializeTimeout = setTimeout(() => {
+            this._initializeTimeout = null;
+            if (this._config.isInstall) {
+                this._logger && this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
+                this.terminate(EXIT_CODES.NO_ERROR);
+            } else {
+                this._logger &&
+                    this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
+            }
+        }, this._config.states.connectTimeout || 2000);
+
+        // Internal object, but some special adapters want to access it anyway.
+        adapterStates = new States({
+            namespace: this.namespaceLog,
+            connection: this._config.states,
+            connected: async () => {
+                if (!adapterStates) {
+                    return;
+                }
+
+                this._logger.silly(`${this.namespaceLog} statesDB connected`);
+                this.statesConnectedTime = Date.now();
+
+                if (this._initializeTimeout) {
+                    clearTimeout(this._initializeTimeout);
+                    this._initializeTimeout = null;
+                }
+
+                if (!this._config.isInstall) {
+                    // Subscribe for process exit signal
+                    adapterStates.subscribe(`system.adapter.${this.namespace}.sigKill`);
+
+                    // Subscribe for loglevel
+                    adapterStates.subscribe(`system.adapter.${this.namespace}.logLevel`);
+                }
+                if (this._options.subscribable) {
+                    // subscribe on if other instance wants to have states of this adapter
+                    adapterStates.subscribe(`system.adapter.${this.namespace}.subscribes`);
+
+                    // read actual autosubscribe requests
+                    let state;
+                    try {
+                        state = await adapterStates.getStateAsync(`system.adapter.${this.namespace}.subscribes`);
+                    } catch {
+                        // ignore
+                    }
+                    if (!state || !state.val) {
+                        this.patterns = {};
+                    } else {
+                        try {
+                            this.patterns = JSON.parse(state.val as string);
+                            Object.keys(this.patterns!).forEach(
+                                p => (this.patterns![p].regex = tools.pattern2RegEx(p))
+                            );
+                        } catch {
+                            this.patterns = {};
+                        }
+                    }
+                    return tools.maybeCallback(cb);
+                } else {
+                    return tools.maybeCallback(cb);
+                }
+            },
+            logger: this._logger,
+            change: (id, state) => {
+                this.inputCount++;
+
+                if (!id || typeof id !== 'string') {
+                    console.log(`Something is wrong! ${JSON.stringify(id)}`);
+                    return;
+                }
+
+                if (
+                    id === `system.adapter.${this.namespace}.sigKill` &&
+                    state &&
+                    state.ts > this.statesConnectedTime! &&
+                    state.from &&
+                    state.from.startsWith('system.host.')
+                ) {
+                    const sigKillVal = parseInt(state.val as any);
+                    if (!isNaN(sigKillVal)) {
+                        if (this.startedInCompactMode || sigKillVal === -1) {
+                            this._logger.info(
+                                `${this.namespaceLog} Got terminate signal ${
+                                    sigKillVal === -1 ? 'TERMINATE_YOURSELF' : ` TERMINATE ${sigKillVal}`
+                                }`
+                            );
+                        } else {
+                            this._logger.warn(
+                                `${this.namespaceLog} Got terminate signal. Checking desired PID: ${sigKillVal} vs own PID ${process.pid}`
+                            );
+                        }
+                        // by deletion of state, stop this instance
+                        if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
+                            this._stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
+                            setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
+                        }
+                    }
+                }
+
+                if (id === `system.adapter.${this.namespace}.logLevel`) {
+                    if (this._config && this._config.log && state && !state.ack) {
+                        let currentLevel = this._config.log.level;
+                        if (
+                            state.val &&
+                            state.val !== currentLevel &&
+                            ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
+                        ) {
+                            this.overwriteLogLevel = true;
+                            this._config.log.level = state.val;
+                            for (const transport in this._logger.transports) {
+                                if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
+                                    continue;
+                                }
+                                // set the loglevel on transport only if no loglevel was pinned in log config
+                                // @ts-expect-error it is our own modification
+                                if (!this._logger.transports[transport]._defaultConfigLoglevel) {
+                                    this._logger.transports[transport].level = state.val as string;
+                                }
+                            }
+                            this._logger.info(
+                                `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`
+                            );
+                            currentLevel = state.val;
+                        } else if (state.val && state.val !== currentLevel) {
+                            this._logger.info(`${this.namespaceLog} Got invalid loglevel "${state.val}", ignoring`);
+                        }
+                        this.outputCount++;
+                        adapterStates &&
+                            adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
+                                val: currentLevel,
+                                ack: true,
+                                from: `system.adapter.${this.namespace}`
+                            });
+                    }
+                }
+
+                // todo remove it as an error with log will be found
+                if (id === `system.adapter.${this.namespace}.checkLogging`) {
+                    this._checkLogging();
+                }
+
+                // someone subscribes or unsubscribes from adapter
+                if (this._options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
+                    let subs: Record<string, any>;
+                    try {
+                        subs = JSON.parse((state && (state.val as string)) || '{}');
+                        Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
+                    } catch {
+                        subs = {};
+                    }
+
+                    this.patterns = subs;
+                    if (!this._stopInProgress) {
+                        if (typeof this._options.subscribesChange === 'function') {
+                            this._options.subscribesChange(subs);
+                        } else {
+                            this.emit('subscribesChange', subs);
+                        }
+                    }
+                }
+
+                // If someone want to have log messages
+                if (id.endsWith('.logging')) {
+                    const instance = id.substring(0, id.length - '.logging'.length);
+                    this._logger &&
+                        this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+                    this.logRedirect!(state ? !!state.val : false, instance);
+                } else if (id === `log.system.adapter.${this.namespace}`) {
+                    this._options.logTransporter && this.processLog && this.processLog(state);
+                } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
+                    // If this is messagebox
+                    const obj = state as unknown as ioBroker.Message;
+
+                    if (obj) {
+                        // If callback stored for this request
+                        if (
+                            obj.callback &&
+                            obj.callback.ack &&
+                            obj.callback.id &&
+                            this.callbacks &&
+                            this.callbacks[`_${obj.callback.id}`]
+                        ) {
+                            // Call callback function
+                            if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
+                                // @ts-expect-error TODO something wrong with MessageCallback type?
+                                this.callbacks[`_${obj.callback.id}`].cb(obj.message);
+                                delete this.callbacks[`_${obj.callback.id}`];
+                            }
+                            // delete too old callbacks IDs, like garbage collector
+                            const now = Date.now();
+                            for (const _id of Object.keys(this.callbacks)) {
+                                // @ts-expect-error
+                                if (now - this.callbacks[_id].time > 3600000) {
+                                    delete this.callbacks[_id];
+                                }
+                            }
+                        } else if (!this._stopInProgress) {
+                            if (this._options.message) {
+                                // Else inform about new message the adapter
+                                this._options.message(obj);
+                            }
+                            this.emit('message', obj);
+                        }
+                    }
+                } else if (id.startsWith(`system.adapter.${this.namespace}.plugins.`) && id.endsWith('.enabled')) {
+                    if (!state || state.ack) {
+                        return;
+                    }
+                    const pluginStatesIndex = ('system.adapter.' + this.namespace + '.plugins.').length;
+                    let nameEndIndex: number | undefined = id.indexOf('.', pluginStatesIndex + 1);
+                    if (nameEndIndex === -1) {
+                        nameEndIndex = undefined;
+                    }
+                    const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
+
+                    if (!this.pluginHandler?.pluginExists(pluginName)) {
+                        return;
+                    }
+
+                    if (this.pluginHandler.isPluginActive(pluginName) !== state.val) {
+                        if (state.val) {
+                            if (!this.pluginHandler.isPluginInstanciated(pluginName)) {
+                                this.pluginHandler.instanciatePlugin(
+                                    pluginName,
+                                    this.pluginHandler.getPluginConfig(pluginName) || {},
+                                    __dirname
+                                );
+                                this.pluginHandler.setDatabaseForPlugin(pluginName, adapterObjects, adapterStates);
+                                this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
+                            }
+                        } else {
+                            if (!this.pluginHandler.destroy(pluginName)) {
+                                this._logger.info(
+                                    `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`
+                                );
+                            }
+                        }
+                    }
+                } else if (this.adapterReady && this.aliases.has(id)) {
+                    // If adapter is ready and for this ID exist some alias links
+                    this.aliases.get(id)!.targets.forEach(target => {
+                        const aState = state
+                            ? tools.formatAliasValue(
+                                  this.aliases.get(id)!.source!,
+                                  target,
+                                  deepClone(state),
+                                  this._logger,
+                                  this.namespaceLog
+                              )
+                            : null;
+                        // @ts-expect-error
+                        const targetId = target.id.read === 'string' ? target.id.read : target.id;
+
+                        if (!this._stopInProgress && (aState || !state)) {
+                            if (typeof this._options.stateChange === 'function') {
+                                this._options.stateChange(targetId, aState);
+                            } else {
+                                // emit 'stateChange' event instantly
+                                setImmediate(() => this.emit('stateChange', targetId, aState));
+                            }
+                        }
+                    });
+                }
+            },
+            changeUser: (id, state) => {
+                this.inputCount++;
+
+                if (!id || typeof id !== 'string') {
+                    console.log(`Something is wrong! ${JSON.stringify(id)}`);
+                    return;
+                }
+
+                if (this.adapterReady) {
+                    if (this.oStates) {
+                        if (!state) {
+                            delete this.oStates[id];
+                        } else {
+                            this.oStates[id] = state;
+                        }
+                    }
+
+                    if (!this._stopInProgress) {
+                        if (typeof this._options.stateChange === 'function') {
+                            setImmediate(() => this._options.stateChange!(id, state));
+                        } else {
+                            // emit 'stateChange' event instantly
+                            setImmediate(() => this.emit('stateChange', id, state));
+                        }
+                    }
+                }
+            },
+            disconnected: () => {
+                this.connected = false;
+                !this.terminated &&
+                    setTimeout(() => {
+                        if (this.connected) {
+                            return;
+                        } // If reconnected in the meantime, do not terminate
+                        this._logger &&
+                            this._logger.warn(
+                                this.namespaceLog + ' Cannot connect/reconnect to states DB. Terminating'
+                            );
+                        this.terminate(EXIT_CODES.NO_ERROR);
+                    }, 5000);
+            }
+        });
+    }
+
+    private _initObjects(cb: () => void) {
+        this._initializeTimeout = setTimeout(() => {
+            this._initializeTimeout = null;
+            if (this._config.isInstall) {
+                this._logger && this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
+                this.terminate(EXIT_CODES.NO_ERROR);
+            } else {
+                this._logger &&
+                    this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
+            }
+        }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
+
+        adapterObjects = new Objects({
+            namespace: this.namespaceLog,
+            connection: this._config.objects,
+            logger: this._logger,
+            connected: async () => {
+                this.connected = true;
+                if (this._initializeTimeout) {
+                    clearTimeout(this._initializeTimeout);
+                    this._initializeTimeout = null;
+                }
+
+                if (!adapterObjects) {
+                    return;
+                }
+
+                // subscribe to user changes
+                adapterObjects.subscribe('system.user.*');
+
+                // get all enums and register for enum changes
+                this.enums = await tools.getAllEnums(adapterObjects);
+                adapterObjects.subscribe('enum.*');
+
+                // Read dateformat if using of formatDate is announced
+                if (this._options.useFormatDate) {
+                    adapterObjects.getObject('system.config', (err, data) => {
+                        if (data && data.common) {
+                            this.dateFormat = data.common.dateFormat;
+                            this.isFloatComma = data.common.isFloatComma;
+                            this.language = data.common.language;
+                            this.longitude = data.common.longitude;
+                            this.latitude = data.common.latitude;
+                            this.defaultHistory = data.common.defaultHistory;
+                        }
+                        if (data && data.native) {
+                            this._systemSecret = data.native.secret;
+                        }
+                        return tools.maybeCallback(cb);
+                    });
+                } else {
+                    return tools.maybeCallback(cb);
+                }
+            },
+            disconnected: () => {
+                this.connected = false;
+                !this.terminated &&
+                    setTimeout(() => {
+                        if (this.connected) {
+                            return;
+                        } // If reconnected in the meantime, do not terminate
+                        this._logger &&
+                            this._logger.warn(
+                                `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
+                            );
+                        this.terminate(EXIT_CODES.NO_ERROR);
+                    }, 4000);
+            },
+            change: async (id, obj) => {
+                // System level object changes (and alias objects)
+                if (!id) {
+                    this._logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
+                    return;
+                }
+
+                // If desired, that adapter must be terminated
+                if (id === `system.adapter.${this.namespace}` && obj && obj.common && obj.common.enabled === false) {
+                    this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
+                    this._stop();
+                    setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
+                    return;
+                }
+
+                // update language, dateFormat and comma
+                if (
+                    id === 'system.config' &&
+                    obj &&
+                    obj.common &&
+                    (this._options.useFormatDate || this.defaultHistory !== undefined)
+                ) {
+                    this.dateFormat = obj.common.dateFormat;
+                    this.isFloatComma = obj.common.isFloatComma;
+                    this.language = obj.common.language;
+                    this.longitude = obj.common.longitude;
+                    this.latitude = obj.common.latitude;
+                    this.defaultHistory = obj.common.defaultHistory;
+                }
+
+                // if alias
+                if (id.startsWith(ALIAS_STARTS_WITH)) {
+                    // aliases['sourceId'] = {
+                    //     source: {common attributes},
+                    //     targets: [
+                    //         {
+                    //             alias: {},
+                    //             id: 'aliasId',
+                    //             pattern: 'some pattern',
+                    //             type: stateType,
+                    //             max: number,
+                    //             min: number,
+                    //         }
+                    //     ]
+                    // };
+
+                    // if this.aliases is empty, or no target found its a new alias
+                    let isNewAlias = true;
+
+                    for (const [sourceId, alias] of this.aliases) {
+                        const targetAlias = alias.targets.find(entry => entry.id === id);
+
+                        // Find entry for this alias
+                        if (targetAlias) {
+                            isNewAlias = false;
+
+                            // new sourceId or same
+                            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                                // check if id.read or id
+                                const newSourceId =
+                                    typeof obj.common.alias.id.read === 'string'
+                                        ? obj.common.alias.id.read
+                                        : obj.common.alias.id;
+
+                                // if linked ID changed
+                                if (newSourceId !== sourceId) {
+                                    this._removeAliasSubscribe(sourceId, targetAlias, async () => {
+                                        try {
+                                            await this._addAliasSubscribe(
+                                                obj as ioBroker.StateObject,
+                                                targetAlias.pattern
+                                            );
+                                        } catch (e) {
+                                            this._logger.error(
+                                                `${this.namespaceLog} Could not add alias subscription: ${e.message}`
+                                            );
+                                        }
+                                    });
+                                } else {
+                                    // update attributes
+                                    targetAlias.min = obj.common.min;
+                                    targetAlias.max = obj.common.max;
+                                    targetAlias.type = obj.common.type;
+                                    targetAlias.alias = deepClone(obj.common.alias);
+                                }
+                            } else {
+                                // link was deleted
+                                // remove from targets array
+                                this._removeAliasSubscribe(sourceId, targetAlias);
+                            }
+                        }
+                    }
+
+                    // it's a new alias, we add it to our subscription
+                    if (isNewAlias) {
+                        for (const aliasPattern of this.aliasPatterns) {
+                            // check if it's in our subs range, if so add it
+                            const testPattern =
+                                aliasPattern.slice(-1) === '*'
+                                    ? new RegExp(tools.pattern2RegEx(aliasPattern))
+                                    : aliasPattern;
+
+                            if (
+                                (typeof testPattern === 'string' && aliasPattern === id) ||
+                                (testPattern instanceof RegExp && testPattern.test(id))
+                            ) {
+                                try {
+                                    await this._addAliasSubscribe(obj as ioBroker.StateObject, id);
+                                } catch (e) {
+                                    this._logger.warn(
+                                        `${this.namespaceLog} Could not add alias subscription: ${e.message}`
+                                    );
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // process auto-subscribe adapters
+                if (id.startsWith('system.adapter.')) {
+                    if (obj && obj.common && obj.common.subscribable) {
+                        const _id = id.substring(15); // 'system.adapter.'.length
+                        if (obj.common.enabled) {
+                            if (!this.autoSubscribe.includes(_id)) {
+                                this.autoSubscribe.push(_id);
+                            }
+                        } else {
+                            const pos = this.autoSubscribe.indexOf(_id);
+                            if (pos !== -1) {
+                                this.autoSubscribe.splice(pos, 1);
+                            }
+                        }
+                    }
+                }
+
+                // Clear cache if got the message about change (Will work for admin and javascript - TODO: maybe always subscribe?)
+                if (id.startsWith('system.user.') || id.startsWith('system.group.')) {
+                    this.users = {};
+                    this.groups = {};
+                    this.usernames = {};
+                }
+
+                if (id.startsWith('enum.')) {
+                    if (!obj) {
+                        delete this.enums[id];
+                    } else if (obj.type === 'enum') {
+                        this.enums[id] = obj;
+                    }
+                }
+            },
+            changeUser: (id, obj) => {
+                // User level object changes
+                if (!id) {
+                    this._logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
+                    return;
+                }
+
+                // remove protectedNative if not admin or own adapter
+                const adapterName = this.namespace.split('.')[0];
+                if (
+                    obj &&
+                    'protectedNative' in obj &&
+                    Array.isArray(obj.protectedNative) &&
+                    obj._id &&
+                    obj._id.startsWith('system.adapter.') &&
+                    adapterName !== 'admin' &&
+                    adapterName !== obj._id.split('.')[2]
+                ) {
+                    for (const attr of obj.protectedNative) {
+                        delete obj.native[attr];
+                    }
+                }
+
+                if (this.adapterReady) {
+                    // update oObjects structure if desired
+                    if (this.oObjects) {
+                        if (obj) {
+                            this.oObjects[id] = obj;
+                        } else {
+                            delete this.oObjects[id];
+                        }
+                    }
+
+                    if (!this._stopInProgress) {
+                        typeof this._options.objectChange === 'function' &&
+                            // @ts-expect-error
+                            setImmediate(() => this._options.objectChange(id, obj));
+                        // emit 'objectChange' event instantly
+                        setImmediate(() => this.emit('objectChange', id, obj));
+                    }
+                }
+            },
+            changeFileUser: (id, fileName, size) => {
+                if (!id) {
+                    this._logger.error(`${this.namespaceLog} change file name is empty`);
+                    return;
+                }
+                if (this.adapterReady && !this._stopInProgress) {
+                    typeof this._options.fileChange === 'function' &&
+                        setImmediate(() => this._options.fileChange!(id, fileName, size));
+                    // emit 'fileChange' event instantly
+                    setImmediate(() => this.emit('fileChange', id, fileName, size));
+                }
+            }
+        });
+    }
+
+    /**
+     * Called if states and objects successfully initialized
+     */
+    private _prepareInitAdapter() {
+        if (this.terminated || !adapterObjects || !adapterStates) {
+            return;
+        }
+
+        if (this._options.instance !== undefined) {
+            this._initAdapter(this._options);
+        } else {
+            adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
+                adapterStates!.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
+                    if (killRes && killRes.val !== undefined) {
+                        killRes.val = parseInt(killRes.val as any, 10);
+                    }
+                    if (
+                        !this._config.isInstall &&
+                        this.startedInCompactMode &&
+                        killRes &&
+                        !killRes.ack &&
+                        killRes.val === -1
+                    ) {
+                        this._logger.error(
+                            `${this.namespaceLog} ${this._options.name}.${this.instance} needs to be stopped because not correctly started in compact mode`
+                        );
+                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                    } else if (
+                        !this._config.forceIfDisabled &&
+                        !this._config.isInstall &&
+                        !this.startedInCompactMode &&
+                        killRes &&
+                        killRes.from &&
+                        killRes.from.startsWith('system.host.') &&
+                        killRes.ack &&
+                        !isNaN(killRes.val as any) &&
+                        killRes.val !== process.pid
+                    ) {
+                        this._logger.error(
+                            `${this.namespaceLog} ${this._options.name}.${this.instance} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
+                        );
+                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                    } else if (
+                        !this._config.isInstall &&
+                        resAlive &&
+                        resAlive.val === true &&
+                        resAlive.ack &&
+                        !this._config.forceIfDisabled
+                    ) {
+                        this._logger.error(
+                            `${this.namespaceLog} ${this._options.name}.${this.instance} already running`
+                        );
+                        this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
+                    } else {
+                        adapterObjects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
+                            // TODO: ts infers AdapterObject instead of InstanceObject
+                            if ((err || !res) && !this._config.isInstall) {
+                                this._logger.error(
+                                    `${this.namespaceLog} ${this._options.name}.${this.instance} invalid config`
+                                );
+                                this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
+                            } else {
+                                this._initAdapter(res);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    }
+
+    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null) {
+        this._initLogging(() => {
+            if (!this.pluginHandler) {
+                return;
+            }
+            this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
+            this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
+                if (!adapterStates || !adapterObjects || this.terminated) {
+                    // if adapterState was destroyed,we should not continue
+                    return;
+                }
+
+                adapterStates.subscribe(`system.adapter.${this.namespace}.plugins.*`);
+                if (this._options.instance === undefined) {
+                    if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
+                        if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.enabled !== undefined) {
+                            !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
+                        } else {
+                            !this._config.isInstall &&
+                                this._logger.error(`${this.namespaceLog} no config found for adapter`);
+                        }
+
+                        if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
+                            const id = `system.adapter.${this.namespace}`;
+                            this.outputCount += 2;
+                            adapterStates.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
+                            let done = false;
+                            adapterStates.setState(
+                                `${id}.connected`,
+                                {
+                                    val: true,
+                                    ack: true,
+                                    expire: 30,
+                                    from: id
+                                },
+                                () => {
+                                    if (!done) {
+                                        done = true;
+                                        this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
+                                    }
+                                }
+                            );
+                            setTimeout(() => {
+                                if (!done) {
+                                    done = true;
+                                    this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
+                                }
+                            }, 1000);
+                            return;
+                        }
+                    }
+
+                    if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
+                        this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
+                        this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
+                        return;
+                    }
+
+                    let name;
+                    let instance;
+
+                    if (!this._config.isInstall) {
+                        // @ts-expect-error
+                        const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
+                        if (!tmp) {
+                            this._logger.error(`${this.namespaceLog} invalid config`);
+                            this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
+                            return;
+                        }
+                        name = tmp[1];
+                        instance = parseInt(tmp[2]) || 0;
+                    } else {
+                        name = this._options.name;
+                        instance = 0;
+                        adapterConfig = adapterConfig || {
+                            // @ts-expect-error protectedNative exists on instance objects
+                            common: { mode: 'once', name: name, protectedNative: [] },
+                            native: {}
+                        };
+                    }
+
+                    // @ts-expect-error
+                    if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
+                        // set configured in DB log level
+                        for (const trans of Object.values(this._logger.transports)) {
+                            // set the loglevel on transport only if no loglevel was pinned in log config
+                            // @ts-expect-error it is our own modification
+                            if (!trans._defaultConfigLoglevel) {
+                                // @ts-expect-error
+                                trans.level = adapterConfig.common.loglevel;
+                            }
+                        }
+                        // @ts-expect-error
+                        this._config.log.level = adapterConfig.common.loglevel;
+                    }
+
+                    // @ts-expect-error
+                    this.name = adapterConfig.common.name;
+                    this.instance = instance;
+                    this.namespace = `${name}.${instance}`;
+                    this.namespaceLog =
+                        this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
+                    if (!this.startedInCompactMode) {
+                        process.title = 'io.' + this.namespace;
+                    }
+
+                    // @ts-expect-error
+                    this.config = adapterConfig.native;
+                    // @ts-expect-error
+                    this.host = adapterConfig.common.host;
+                    // @ts-expect-error
+                    this.common = adapterConfig.common;
+
+                    if (
+                        // @ts-expect-error
+                        adapterConfig.common.mode === 'subscribe' ||
+                        // @ts-expect-error
+                        adapterConfig.common.mode === 'schedule' ||
+                        // @ts-expect-error
+                        adapterConfig.common.mode === 'once'
+                    ) {
+                        this.stop = () => this._stop(true);
+                    } else if (this.startedInCompactMode) {
+                        this.stop = () => this._stop(false);
+                        this.kill = this.stop;
+                    } else {
+                        this.stop = () => this._stop(false);
+                    }
+
+                    // Monitor logging state
+                    adapterStates.subscribe('*.logging');
+
+                    // @ts-expect-error
+                    if (typeof this._options.message === 'function' && !adapterConfig.common.messagebox) {
+                        this._logger.error(
+                            `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
+                        );
+                        // @ts-expect-error
+                    } else if (adapterConfig.common.messagebox) {
+                        this.mboxSubscribed = true;
+                        adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
+                    }
+                } else {
+                    // @ts-expect-error
+                    this.name = adapterConfig.name || this._options.name;
+                    // @ts-expect-error
+                    this.instance = adapterConfig.instance || 0;
+                    this.namespace = `${this.name}.${this.instance!}`;
+                    this.namespaceLog =
+                        this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
+                    // @ts-expect-error
+                    this.config = adapterConfig.native || {};
+                    // @ts-expect-error
+                    this.common = adapterConfig.common || {};
+                    this.host = this.common?.host || tools.getHostName() || os.hostname();
+                }
+
+                this.adapterConfig = adapterConfig;
+
+                this._utils = new Utils(
+                    adapterObjects,
+                    adapterStates,
+                    this.namespaceLog,
+                    this._logger,
+                    this.namespace,
+                    this._namespaceRegExp
+                );
+
+                this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
+
+                await this._createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
+
+                // auto oObjects
+                if (this._options.objects) {
+                    this.oObjects = await this.getAdapterObjectsAsync();
+                    await this.subscribeObjectsAsync('*');
+                }
+
+                // read the systemSecret
+                if (this._systemSecret === undefined) {
+                    try {
+                        const data = await adapterObjects.getObjectAsync('system.config');
+                        if (data && data.native) {
+                            this._systemSecret = data.native.secret;
+                        }
+                    } catch {
+                        // ignore
+                    }
+                    this._systemSecret = this._systemSecret || DEFAULT_SECRET;
+                }
+
+                // Decrypt all attributes of encryptedNative
+                const promises = [];
+                // @ts-expect-error
+                if (Array.isArray(adapterConfig.encryptedNative)) {
+                    // @ts-expect-error
+                    for (const attr of adapterConfig.encryptedNative) {
+                        // we can only decrypt strings
+                        // @ts-expect-error
+                        if (typeof this.config[attr] === 'string') {
+                            promises.push(
+                                this.getEncryptedConfig(attr)
+                                    // @ts-expect-error
+                                    .then(decryptedValue => (this.config[attr] = decryptedValue))
+                                    .catch(e =>
+                                        this._logger.error(
+                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
+                                        )
+                                    )
+                            );
+                        }
+                    }
+                } else {
+                    // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
+                    const idx = SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
+                    if (idx !== -1) {
+                        SUPPORTED_FEATURES.splice(idx, 1);
+                    }
+                }
+
+                // Wait till all attributes decrypted
+                await Promise.all(promises);
+
+                if (!adapterStates) {
+                    // if adapterStates was destroyed, we should not continue
+                    return;
+                }
+
+                this.outputCount++;
+                // set current loglevel
+                adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
+                    val: this._config.log.level,
+                    ack: true,
+                    from: `system.adapter.${this.namespace}`
+                });
+
+                if (this._options.instance === undefined) {
+                    this.version =
+                        this.pack && this.pack.version
+                            ? this.pack.version
+                            : this.ioPack && this.ioPack.common
+                            ? this.ioPack.common.version
+                            : 'unknown';
+                    // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                    const isNpmVersion =
+                        !this.ioPack ||
+                        !this.ioPack.common ||
+                        typeof this.ioPack.common.installedFrom !== 'string' ||
+                        this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+
+                    this._logger.info(
+                        `${this.namespaceLog} starting. Version ${this.version} ${
+                            !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
+                        }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                    );
+                    this._config.system = this._config.system || {};
+                    this._config.system.statisticsInterval =
+                        parseInt(this._config.system.statisticsInterval, 10) || 15000;
+                    if (!this._config.isInstall) {
+                        this._reportInterval = setInterval(this._reportStatus, this._config.system.statisticsInterval);
+                        this._reportStatus();
+                        const id = `system.adapter.${this.namespace}`;
+                        adapterStates.setState(`${id}.compactMode`, {
+                            ack: true,
+                            from: id,
+                            val: !!this.startedInCompactMode
+                        });
+
+                        this.outputCount++;
+
+                        if (this.startedInCompactMode) {
+                            adapterStates.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
+                            adapterStates.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
+                            adapterStates.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
+                            adapterStates.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
+                            adapterStates.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
+                            adapterStates.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
+                            this.outputCount += 6;
+                        } else {
+                            tools.measureEventLoopLag(1000, lag => {
+                                if (lag) {
+                                    this.eventLoopLags.push(lag);
+                                }
+                            });
+                        }
+                    }
+                }
+
+                // @ts-expect-error restartSchedule can exist - adjust types
+                if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
+                    try {
+                        this._schedule = await import('node-schedule');
+                    } catch {
+                        this._logger.error(
+                            `${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`
+                        );
+                    }
+                    if (this._schedule) {
+                        this._logger.debug(
+                            // @ts-expect-error restartSchedule can exist - adjust types
+                            `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
+                        );
+                        this._restartScheduleJob = this._schedule.scheduleJob(
+                            // @ts-expect-error restartSchedule can exist - adjust types
+                            adapterConfig.common.restartSchedule,
+                            () => {
+                                this._logger.info(`${this.namespaceLog} Scheduled restart.`);
+                                this._stop(false, true);
+                            }
+                        );
+                    }
+                }
+
+                // auto oStates
+                if (this._options.states) {
+                    this.getStates('*', null, (err, _states) => {
+                        if (this._stopInProgress) {
+                            return;
+                        }
+
+                        this.oStates = _states;
+                        this.subscribeStates('*');
+                        if (this._firstConnection) {
+                            this._firstConnection = false;
+                            typeof this._options.ready === 'function' && this._options.ready();
+                            this.emit('ready');
+                        } else {
+                            typeof this._options.reconnect === 'function' && this._options.reconnect();
+                            this.emit('reconnect');
+                        }
+                        this.adapterReady = true;
+                    });
+                } else if (!this._stopInProgress) {
+                    typeof this._options.ready === 'function' && this._options.ready();
+                    this.emit('ready');
+                    this.adapterReady = true;
+
+                    // todo remove it later, when the error is fixed
+                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
+                }
+            });
+        });
+    }
+
+    private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) {
+        // If the adapter has a callback to listen for unhandled errors
+        // give it a chance to handle the error itself instead of restarting it
+        if (typeof this._options.error === 'function') {
+            try {
+                // if error handler in the adapter returned exactly true,
+                // we expect the error to be handled and do nothing more
+                const wasHandled = this._options.error(err);
+                if (wasHandled === true) {
+                    return;
+                }
+            } catch (e) {
+                console.error(`Error in adapter error handler: ${e.message}`);
+            }
+        }
+
+        // catch it on windows
+        if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
+            const { host, port, callback } = this.getPortRunning;
+            this._logger.warn(
+                `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`
+            );
+
+            setImmediate(() => this.getPort(port + 1, host, callback));
+            return;
+        }
+
+        if (isUnhandledRejection) {
+            this._logger.error(
+                `${this.namespaceLog} Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch().`
+            );
+        }
+        this._logger.error(
+            `${this.namespaceLog} ${isUnhandledRejection ? 'unhandled promise rejection' : 'uncaught exception'}: ${
+                err ? err.message : err
+            }`
+        );
+        if (err && err.stack) {
+            this._logger.error(`${this.namespaceLog} ${err.stack}`);
+        }
+
+        if (err) {
+            const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
+            this._logger.error(`${this.namespaceLog} ${message}`);
+            try {
+                await this.registerNotification('system', null, message);
+            } catch {
+                // ignore
+            }
+        }
+
+        try {
+            this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
+            setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1000);
+        } catch (err) {
+            this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);
+        }
+    }
+
+    private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
+        let objs: ioBroker.AnyObject[];
+
+        if (
+            instanceObj &&
+            instanceObj.common &&
+            !('onlyWWW' in instanceObj.common) &&
+            instanceObj.common.mode !== 'once'
+        ) {
+            // @ts-expect-error
+            objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common.wakeup);
+        } else {
+            objs = [];
+        }
+
+        if (instanceObj && 'instanceObjects' in instanceObj) {
+            // @ts-expect-error
+            for (const obj of instanceObj.instanceObjects) {
+                if (!obj._id.startsWith(this.namespace)) {
+                    // instanceObjects are normally defined without namespace prefix
+                    obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
+                }
+
+                if (obj && (obj._id || obj.type === 'meta')) {
+                    if (obj.common) {
+                        if (obj.common.name) {
+                            // if name has many languages
+                            if (typeof obj.common.name === 'object') {
+                                Object.keys(obj.common.name).forEach(
+                                    lang =>
+                                        (obj.common.name[lang] = obj.common.name[lang].replace(
+                                            '%INSTANCE%',
+                                            this.instance
+                                        ))
+                                );
+                            } else {
+                                obj.common.name = obj.common.name.replace('%INSTANCE%', this.instance);
+                            }
+                        }
+                        if (obj.common.desc) {
+                            // if description has many languages
+                            if (typeof obj.common.desc === 'object') {
+                                Object.keys(obj.common.desc).forEach(
+                                    lang =>
+                                        (obj.common.desc[lang] = obj.common.desc[lang].replace(
+                                            '%INSTANCE%',
+                                            this.instance
+                                        ))
+                                );
+                            } else {
+                                obj.common.desc = obj.common.desc.replace('%INSTANCE%', this.instance);
+                            }
+                        }
+
+                        if (obj.type === 'state' && obj.common.def !== undefined) {
+                            // default value given - if obj non existing we have to set it
+                            try {
+                                const checkObj = await this.getForeignObjectAsync(obj._id);
+                                if (!checkObj) {
+                                    obj.state = obj.common.def;
+                                }
+                            } catch (e) {
+                                this._logger.warn(
+                                    `${this.namespaceLog} Did not add default (${obj.common.def}) value on creation of ${obj._id}: ${e.message}`
+                                );
+                            }
+                        }
+                    }
+
+                    objs.push(obj);
+                } else {
+                    this._logger.error(
+                        `${this.namespaceLog} ${this._options.name}.${
+                            this.instance
+                        } invalid instance object: ${JSON.stringify(obj)}`
+                    );
+                }
+            }
+        }
+
+        return new Promise(resolve => {
+            this._extendObjects(objs, resolve);
+        });
+    }
+
+    private async _extendObjects(tasks: Record<string, any>, callback: () => void) {
+        if (!tasks || !tasks.length) {
+            return tools.maybeCallback(callback);
+        }
+        const task = tasks.shift();
+        const state = task.state;
+        if (state !== undefined) {
+            delete task.state;
+        }
+
+        try {
+            tools.validateGeneralObjectProperties(task, true);
+        } catch (e) {
+            // todo: in the future we will not create this object
+            this._logger.warn(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
+            this._logger.warn(
+                `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
+            );
+        }
+
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} extendObjects not processed because Objects database not connected.`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        // preserve attributes on instance creation
+        const options = { preserve: { common: ['name'], native: true } };
+
+        try {
+            await this.extendForeignObjectAsync(task._id, task, options);
+        } catch {
+            // ignore
+        }
+
+        if (state !== undefined) {
+            if (!adapterStates) {
+                this._logger.info(
+                    `${this.namespaceLog} extendObjects not processed because States database not connected.`
+                );
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+            this.outputCount++;
+            adapterStates.setState(
+                task._id,
+                {
+                    val: state,
+                    from: `system.adapter.${this.namespace}`,
+                    ack: true
+                },
+                () => setImmediate(() => this._extendObjects(tasks, callback))
+            );
+        } else {
+            setImmediate(() => this._extendObjects(tasks, callback));
+        }
+    }
+
     private async _init(): Promise<void> {
         /**
          * Initiates the databases
          */
         const _initDBs = () => {
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            initObjects(() => {
+            this._initObjects(() => {
                 if (this.inited) {
                     this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
                     return;
                 }
 
                 this.inited = true;
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                initStates(prepareInitAdapter);
+                this._initStates(this._prepareInitAdapter);
             });
         };
 
@@ -10653,7 +12316,6 @@ class AdapterClass extends EventEmitter {
             }
         }
 
-        let States: typeof StatesInRedisClient;
         if (this._config.states && this._config.states.type) {
             try {
                 States = (await import(`@iobroker/db-states-${this._config.states.type}`)).Client;
@@ -10664,7 +12326,6 @@ class AdapterClass extends EventEmitter {
             States = getStatesConstructor();
         }
 
-        let Objects: typeof ObjectsInRedisClient;
         if (this._config.objects && this._config.objects.type) {
             try {
                 Objects = (await import(`@iobroker/db-objects-${this._config.objects.type}`)).Client;
@@ -10688,1550 +12349,13 @@ class AdapterClass extends EventEmitter {
         // Can be later deleted if no more appears TODO: check
         this.inited = false;
 
-        const extendObjects = async (tasks: Record<string, any>, callback: () => void) => {
-            if (!tasks || !tasks.length) {
-                return tools.maybeCallback(callback);
-            }
-            const task = tasks.shift();
-            const state = task.state;
-            if (state !== undefined) {
-                delete task.state;
-            }
-
-            try {
-                tools.validateGeneralObjectProperties(task, true);
-            } catch (e) {
-                // todo: in the future we will not create this object
-                this._logger.warn(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
-                this._logger.warn(
-                    `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
-                );
-            }
-
-            if (!adapterObjects) {
-                this._logger.info(
-                    `${this.namespaceLog} extendObjects not processed because Objects database not connected.`
-                );
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            // preserve attributes on instance creation
-            const options = { preserve: { common: ['name'], native: true } };
-
-            try {
-                await this.extendForeignObjectAsync(task._id, task, options);
-            } catch {
-                // ignore
-            }
-
-            if (state !== undefined) {
-                if (!adapterStates) {
-                    this._logger.info(
-                        `${this.namespaceLog} extendObjects not processed because States database not connected.`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-                this.outputCount++;
-                adapterStates.setState(
-                    task._id,
-                    {
-                        val: state,
-                        from: `system.adapter.${this.namespace}`,
-                        ack: true
-                    },
-                    () => setImmediate(extendObjects, tasks, callback)
-                );
-            } else {
-                setImmediate(extendObjects, tasks, callback);
-            }
-        };
-
-        const createInstancesObjects = async (instanceObj: ioBroker.InstanceObject) => {
-            let objs: ioBroker.AnyObject[];
-
-            if (
-                instanceObj &&
-                instanceObj.common &&
-                !('onlyWWW' in instanceObj.common) &&
-                instanceObj.common.mode !== 'once'
-            ) {
-                // @ts-expect-error
-                objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common.wakeup);
-            } else {
-                objs = [];
-            }
-
-            if (instanceObj && 'instanceObjects' in instanceObj) {
-                // @ts-expect-error
-                for (const obj of instanceObj.instanceObjects) {
-                    if (!obj._id.startsWith(this.namespace)) {
-                        // instanceObjects are normally defined without namespace prefix
-                        obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
-                    }
-
-                    if (obj && (obj._id || obj.type === 'meta')) {
-                        if (obj.common) {
-                            if (obj.common.name) {
-                                // if name has many languages
-                                if (typeof obj.common.name === 'object') {
-                                    Object.keys(obj.common.name).forEach(
-                                        lang =>
-                                            (obj.common.name[lang] = obj.common.name[lang].replace(
-                                                '%INSTANCE%',
-                                                this.instance
-                                            ))
-                                    );
-                                } else {
-                                    obj.common.name = obj.common.name.replace('%INSTANCE%', this.instance);
-                                }
-                            }
-                            if (obj.common.desc) {
-                                // if description has many languages
-                                if (typeof obj.common.desc === 'object') {
-                                    Object.keys(obj.common.desc).forEach(
-                                        lang =>
-                                            (obj.common.desc[lang] = obj.common.desc[lang].replace(
-                                                '%INSTANCE%',
-                                                this.instance
-                                            ))
-                                    );
-                                } else {
-                                    obj.common.desc = obj.common.desc.replace('%INSTANCE%', this.instance);
-                                }
-                            }
-
-                            if (obj.type === 'state' && obj.common.def !== undefined) {
-                                // default value given - if obj non existing we have to set it
-                                try {
-                                    const checkObj = await this.getForeignObjectAsync(obj._id);
-                                    if (!checkObj) {
-                                        obj.state = obj.common.def;
-                                    }
-                                } catch (e) {
-                                    this._logger.warn(
-                                        `${this.namespaceLog} Did not add default (${obj.common.def}) value on creation of ${obj._id}: ${e.message}`
-                                    );
-                                }
-                            }
-                        }
-
-                        objs.push(obj);
-                    } else {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${
-                                this.instance
-                            } invalid instance object: ${JSON.stringify(obj)}`
-                        );
-                    }
-                }
-            }
-
-            return new Promise(resolve => {
-                // @ts-expect-error
-                extendObjects(objs, resolve);
-            });
-        };
-
-        /**
-         * Called if states and objects successfully initialized
-         */
-        const prepareInitAdapter = () => {
-            if (this.terminated || !adapterObjects || !adapterStates) {
-                return;
-            }
-
-            if (this._options.instance !== undefined) {
-                // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                initAdapter(this._options);
-            } else {
-                adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
-                    adapterStates!.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
-                        if (killRes && killRes.val !== undefined) {
-                            killRes.val = parseInt(killRes.val as any, 10);
-                        }
-                        if (
-                            !this._config.isInstall &&
-                            this.startedInCompactMode &&
-                            killRes &&
-                            !killRes.ack &&
-                            killRes.val === -1
-                        ) {
-                            this._logger.error(
-                                `${this.namespaceLog} ${this._options.name}.${this.instance} needs to be stopped because not correctly started in compact mode`
-                            );
-                            this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                        } else if (
-                            !this._config.forceIfDisabled &&
-                            !this._config.isInstall &&
-                            !this.startedInCompactMode &&
-                            killRes &&
-                            killRes.from &&
-                            killRes.from.startsWith('system.host.') &&
-                            killRes.ack &&
-                            !isNaN(killRes.val as any) &&
-                            killRes.val !== process.pid
-                        ) {
-                            this._logger.error(
-                                `${this.namespaceLog} ${this._options.name}.${this.instance} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
-                            );
-                            this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                        } else if (
-                            !this._config.isInstall &&
-                            resAlive &&
-                            resAlive.val === true &&
-                            resAlive.ack &&
-                            !this._config.forceIfDisabled
-                        ) {
-                            this._logger.error(
-                                `${this.namespaceLog} ${this._options.name}.${this.instance} already running`
-                            );
-                            this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
-                        } else {
-                            adapterObjects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
-                                // TODO: ts infers AdapterObject instead of InstanceObject
-                                if ((err || !res) && !this._config.isInstall) {
-                                    this._logger.error(
-                                        `${this.namespaceLog} ${this._options.name}.${this.instance} invalid config`
-                                    );
-                                    this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
-                                } else {
-                                    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                                    initAdapter(res);
-                                }
-                            });
-                        }
-                    });
-                });
-            }
-        };
-
-        const initObjects = (cb: () => void) => {
-            this._initializeTimeout = setTimeout(() => {
-                this._initializeTimeout = null;
-                if (this._config.isInstall) {
-                    this._logger && this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
-                    this.terminate(EXIT_CODES.NO_ERROR);
-                } else {
-                    this._logger &&
-                        this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
-                }
-            }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
-
-            adapterObjects = new Objects({
-                namespace: this.namespaceLog,
-                connection: this._config.objects,
-                logger: this._logger,
-                connected: async () => {
-                    this.connected = true;
-                    if (this._initializeTimeout) {
-                        clearTimeout(this._initializeTimeout);
-                        this._initializeTimeout = null;
-                    }
-
-                    if (!adapterObjects) {
-                        return;
-                    }
-
-                    // subscribe to user changes
-                    adapterObjects.subscribe('system.user.*');
-
-                    // get all enums and register for enum changes
-                    this.enums = await tools.getAllEnums(adapterObjects);
-                    adapterObjects.subscribe('enum.*');
-
-                    // Read dateformat if using of formatDate is announced
-                    if (this._options.useFormatDate) {
-                        adapterObjects.getObject('system.config', (err, data) => {
-                            if (data && data.common) {
-                                this.dateFormat = data.common.dateFormat;
-                                this.isFloatComma = data.common.isFloatComma;
-                                this.language = data.common.language;
-                                this.longitude = data.common.longitude;
-                                this.latitude = data.common.latitude;
-                                this.defaultHistory = data.common.defaultHistory;
-                            }
-                            if (data && data.native) {
-                                this._systemSecret = data.native.secret;
-                            }
-                            return tools.maybeCallback(cb);
-                        });
-                    } else {
-                        return tools.maybeCallback(cb);
-                    }
-                },
-                disconnected: () => {
-                    this.connected = false;
-                    !this.terminated &&
-                        setTimeout(() => {
-                            if (this.connected) {
-                                return;
-                            } // If reconnected in the meantime, do not terminate
-                            this._logger &&
-                                this._logger.warn(
-                                    `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
-                                );
-                            this.terminate(EXIT_CODES.NO_ERROR);
-                        }, 4000);
-                },
-                change: async (id, obj) => {
-                    // System level object changes (and alias objects)
-                    if (!id) {
-                        this._logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
-                        return;
-                    }
-
-                    // If desired, that adapter must be terminated
-                    if (
-                        id === `system.adapter.${this.namespace}` &&
-                        obj &&
-                        obj.common &&
-                        obj.common.enabled === false
-                    ) {
-                        this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
-                        this._stop();
-                        setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
-                        return;
-                    }
-
-                    // update language, dateFormat and comma
-                    if (
-                        id === 'system.config' &&
-                        obj &&
-                        obj.common &&
-                        (this._options.useFormatDate || this.defaultHistory !== undefined)
-                    ) {
-                        this.dateFormat = obj.common.dateFormat;
-                        this.isFloatComma = obj.common.isFloatComma;
-                        this.language = obj.common.language;
-                        this.longitude = obj.common.longitude;
-                        this.latitude = obj.common.latitude;
-                        this.defaultHistory = obj.common.defaultHistory;
-                    }
-
-                    // if alias
-                    if (id.startsWith(ALIAS_STARTS_WITH)) {
-                        // aliases['sourceId'] = {
-                        //     source: {common attributes},
-                        //     targets: [
-                        //         {
-                        //             alias: {},
-                        //             id: 'aliasId',
-                        //             pattern: 'some pattern',
-                        //             type: stateType,
-                        //             max: number,
-                        //             min: number,
-                        //         }
-                        //     ]
-                        // };
-
-                        // if this.aliases is empty, or no target found its a new alias
-                        let isNewAlias = true;
-
-                        for (const [sourceId, alias] of this.aliases) {
-                            const targetAlias = alias.targets.find(entry => entry.id === id);
-
-                            // Find entry for this alias
-                            if (targetAlias) {
-                                isNewAlias = false;
-
-                                // new sourceId or same
-                                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                                    // check if id.read or id
-                                    const newSourceId =
-                                        typeof obj.common.alias.id.read === 'string'
-                                            ? obj.common.alias.id.read
-                                            : obj.common.alias.id;
-
-                                    // if linked ID changed
-                                    if (newSourceId !== sourceId) {
-                                        this._removeAliasSubscribe(sourceId, targetAlias, async () => {
-                                            try {
-                                                await this._addAliasSubscribe(
-                                                    obj as ioBroker.StateObject,
-                                                    targetAlias.pattern
-                                                );
-                                            } catch (e) {
-                                                this._logger.error(
-                                                    `${this.namespaceLog} Could not add alias subscription: ${e.message}`
-                                                );
-                                            }
-                                        });
-                                    } else {
-                                        // update attributes
-                                        targetAlias.min = obj.common.min;
-                                        targetAlias.max = obj.common.max;
-                                        targetAlias.type = obj.common.type;
-                                        targetAlias.alias = deepClone(obj.common.alias);
-                                    }
-                                } else {
-                                    // link was deleted
-                                    // remove from targets array
-                                    this._removeAliasSubscribe(sourceId, targetAlias);
-                                }
-                            }
-                        }
-
-                        // it's a new alias, we add it to our subscription
-                        if (isNewAlias) {
-                            for (const aliasPattern of this.aliasPatterns) {
-                                // check if it's in our subs range, if so add it
-                                const testPattern =
-                                    aliasPattern.slice(-1) === '*'
-                                        ? new RegExp(tools.pattern2RegEx(aliasPattern))
-                                        : aliasPattern;
-
-                                if (
-                                    (typeof testPattern === 'string' && aliasPattern === id) ||
-                                    (testPattern instanceof RegExp && testPattern.test(id))
-                                ) {
-                                    try {
-                                        await this._addAliasSubscribe(obj as ioBroker.StateObject, id);
-                                    } catch (e) {
-                                        this._logger.warn(
-                                            `${this.namespaceLog} Could not add alias subscription: ${e.message}`
-                                        );
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    // process auto-subscribe adapters
-                    if (id.startsWith('system.adapter.')) {
-                        if (obj && obj.common && obj.common.subscribable) {
-                            const _id = id.substring(15); // 'system.adapter.'.length
-                            if (obj.common.enabled) {
-                                if (!this.autoSubscribe.includes(_id)) {
-                                    this.autoSubscribe.push(_id);
-                                }
-                            } else {
-                                const pos = this.autoSubscribe.indexOf(_id);
-                                if (pos !== -1) {
-                                    this.autoSubscribe.splice(pos, 1);
-                                }
-                            }
-                        }
-                    }
-
-                    // Clear cache if got the message about change (Will work for admin and javascript - TODO: maybe always subscribe?)
-                    if (id.startsWith('system.user.') || id.startsWith('system.group.')) {
-                        this.users = {};
-                        this.groups = {};
-                        this.usernames = {};
-                    }
-
-                    if (id.startsWith('enum.')) {
-                        if (!obj) {
-                            delete this.enums[id];
-                        } else if (obj.type === 'enum') {
-                            this.enums[id] = obj;
-                        }
-                    }
-                },
-                changeUser: (id, obj) => {
-                    // User level object changes
-                    if (!id) {
-                        this._logger.error(`${this.namespaceLog} change ID is empty: ${JSON.stringify(obj)}`);
-                        return;
-                    }
-
-                    // remove protectedNative if not admin or own adapter
-                    const adapterName = this.namespace.split('.')[0];
-                    if (
-                        obj &&
-                        'protectedNative' in obj &&
-                        Array.isArray(obj.protectedNative) &&
-                        obj._id &&
-                        obj._id.startsWith('system.adapter.') &&
-                        adapterName !== 'admin' &&
-                        adapterName !== obj._id.split('.')[2]
-                    ) {
-                        for (const attr of obj.protectedNative) {
-                            delete obj.native[attr];
-                        }
-                    }
-
-                    if (this.adapterReady) {
-                        // update oObjects structure if desired
-                        if (this.oObjects) {
-                            if (obj) {
-                                this.oObjects[id] = obj;
-                            } else {
-                                delete this.oObjects[id];
-                            }
-                        }
-
-                        if (!this._stopInProgress) {
-                            typeof this._options.objectChange === 'function' &&
-                                // @ts-expect-error
-                                setImmediate(() => this._options.objectChange(id, obj));
-                            // emit 'objectChange' event instantly
-                            setImmediate(() => this.emit('objectChange', id, obj));
-                        }
-                    }
-                },
-                changeFileUser: (id, fileName, size) => {
-                    if (!id) {
-                        this._logger.error(`${this.namespaceLog} change file name is empty`);
-                        return;
-                    }
-                    if (this.adapterReady && !this._stopInProgress) {
-                        typeof this._options.fileChange === 'function' &&
-                            setImmediate(() => this._options.fileChange!(id, fileName, size));
-                        // emit 'fileChange' event instantly
-                        setImmediate(() => this.emit('fileChange', id, fileName, size));
-                    }
-                }
-            });
-        };
-
-        // initStates is called from initAdapter
-        const initStates = (cb: () => void) => {
-            this._logger.silly(`${this.namespaceLog} objectDB connected`);
-
-            this._config.states.maxQueue = this._config.states.maxQueue || 1000;
-
-            this._initializeTimeout = setTimeout(() => {
-                this._initializeTimeout = null;
-                if (this._config.isInstall) {
-                    this._logger && this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
-                    this.terminate(EXIT_CODES.NO_ERROR);
-                } else {
-                    this._logger &&
-                        this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
-                }
-            }, this._config.states.connectTimeout || 2000);
-
-            // Internal object, but some special adapters want to access it anyway.
-            adapterStates = new States({
-                namespace: this.namespaceLog,
-                connection: this._config.states,
-                connected: async () => {
-                    if (!adapterStates) {
-                        return;
-                    }
-
-                    this._logger.silly(`${this.namespaceLog} statesDB connected`);
-                    this.statesConnectedTime = Date.now();
-
-                    if (this._initializeTimeout) {
-                        clearTimeout(this._initializeTimeout);
-                        this._initializeTimeout = null;
-                    }
-
-                    if (!this._config.isInstall) {
-                        // Subscribe for process exit signal
-                        adapterStates.subscribe(`system.adapter.${this.namespace}.sigKill`);
-
-                        // Subscribe for loglevel
-                        adapterStates.subscribe(`system.adapter.${this.namespace}.logLevel`);
-                    }
-                    if (this._options.subscribable) {
-                        // subscribe on if other instance wants to have states of this adapter
-                        adapterStates.subscribe(`system.adapter.${this.namespace}.subscribes`);
-
-                        // read actual autosubscribe requests
-                        let state;
-                        try {
-                            state = await adapterStates.getStateAsync(`system.adapter.${this.namespace}.subscribes`);
-                        } catch {
-                            // ignore
-                        }
-                        if (!state || !state.val) {
-                            this.patterns = {};
-                        } else {
-                            try {
-                                this.patterns = JSON.parse(state.val as string);
-                                Object.keys(this.patterns!).forEach(
-                                    p => (this.patterns![p].regex = tools.pattern2RegEx(p))
-                                );
-                            } catch {
-                                this.patterns = {};
-                            }
-                        }
-                        return tools.maybeCallback(cb);
-                    } else {
-                        return tools.maybeCallback(cb);
-                    }
-                },
-                logger: this._logger,
-                change: (id, state) => {
-                    this.inputCount++;
-
-                    if (!id || typeof id !== 'string') {
-                        console.log(`Something is wrong! ${JSON.stringify(id)}`);
-                        return;
-                    }
-
-                    if (
-                        id === `system.adapter.${this.namespace}.sigKill` &&
-                        state &&
-                        state.ts > this.statesConnectedTime! &&
-                        state.from &&
-                        state.from.startsWith('system.host.')
-                    ) {
-                        const sigKillVal = parseInt(state.val as any);
-                        if (!isNaN(sigKillVal)) {
-                            if (this.startedInCompactMode || sigKillVal === -1) {
-                                this._logger.info(
-                                    `${this.namespaceLog} Got terminate signal ${
-                                        sigKillVal === -1 ? 'TERMINATE_YOURSELF' : ` TERMINATE ${sigKillVal}`
-                                    }`
-                                );
-                            } else {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Got terminate signal. Checking desired PID: ${sigKillVal} vs own PID ${process.pid}`
-                                );
-                            }
-                            // by deletion of state, stop this instance
-                            if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
-                                this._stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
-                                setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
-                            }
-                        }
-                    }
-
-                    if (id === `system.adapter.${this.namespace}.logLevel`) {
-                        if (this._config && this._config.log && state && !state.ack) {
-                            let currentLevel = this._config.log.level;
-                            if (
-                                state.val &&
-                                state.val !== currentLevel &&
-                                ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
-                            ) {
-                                this.overwriteLogLevel = true;
-                                this._config.log.level = state.val;
-                                for (const transport in this._logger.transports) {
-                                    if (!Object.prototype.hasOwnProperty.call(this._logger.transports, transport)) {
-                                        continue;
-                                    }
-                                    // set the loglevel on transport only if no loglevel was pinned in log config
-                                    // @ts-expect-error it is our own modification
-                                    if (!this._logger.transports[transport]._defaultConfigLoglevel) {
-                                        this._logger.transports[transport].level = state.val as string;
-                                    }
-                                }
-                                this._logger.info(
-                                    `${this.namespaceLog} Loglevel changed from "${currentLevel}" to "${state.val}"`
-                                );
-                                currentLevel = state.val;
-                            } else if (state.val && state.val !== currentLevel) {
-                                this._logger.info(`${this.namespaceLog} Got invalid loglevel "${state.val}", ignoring`);
-                            }
-                            this.outputCount++;
-                            adapterStates &&
-                                adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
-                                    val: currentLevel,
-                                    ack: true,
-                                    from: `system.adapter.${this.namespace}`
-                                });
-                        }
-                    }
-
-                    // todo remove it as an error with log will be found
-                    if (id === `system.adapter.${this.namespace}.checkLogging`) {
-                        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                        checkLogging();
-                    }
-
-                    // someone subscribes or unsubscribes from adapter
-                    if (this._options.subscribable && id === `system.adapter.${this.namespace}.subscribes`) {
-                        let subs: Record<string, any>;
-                        try {
-                            subs = JSON.parse((state && (state.val as string)) || '{}');
-                            Object.keys(subs).forEach(p => (subs[p].regex = tools.pattern2RegEx(p)));
-                        } catch {
-                            subs = {};
-                        }
-
-                        this.patterns = subs;
-                        if (!this._stopInProgress) {
-                            if (typeof this._options.subscribesChange === 'function') {
-                                this._options.subscribesChange(subs);
-                            } else {
-                                this.emit('subscribesChange', subs);
-                            }
-                        }
-                    }
-
-                    // If someone want to have log messages
-                    if (id.endsWith('.logging')) {
-                        const instance = id.substring(0, id.length - '.logging'.length);
-                        this._logger &&
-                            this._logger.silly(
-                                `${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`
-                            );
-                        this.logRedirect!(state ? !!state.val : false, instance);
-                    } else if (id === `log.system.adapter.${this.namespace}`) {
-                        this._options.logTransporter && this.processLog && this.processLog(state);
-                    } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
-                        // If this is messagebox
-                        const obj = state as unknown as ioBroker.Message;
-
-                        if (obj) {
-                            // If callback stored for this request
-                            if (
-                                obj.callback &&
-                                obj.callback.ack &&
-                                obj.callback.id &&
-                                this.callbacks &&
-                                this.callbacks[`_${obj.callback.id}`]
-                            ) {
-                                // Call callback function
-                                if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
-                                    // @ts-expect-error TODO something wrong with MessageCallback type?
-                                    this.callbacks[`_${obj.callback.id}`].cb(obj.message);
-                                    delete this.callbacks[`_${obj.callback.id}`];
-                                }
-                                // delete too old callbacks IDs, like garbage collector
-                                const now = Date.now();
-                                for (const _id of Object.keys(this.callbacks)) {
-                                    // @ts-expect-error
-                                    if (now - this.callbacks[_id].time > 3600000) {
-                                        delete this.callbacks[_id];
-                                    }
-                                }
-                            } else if (!this._stopInProgress) {
-                                if (this._options.message) {
-                                    // Else inform about new message the adapter
-                                    this._options.message(obj);
-                                }
-                                this.emit('message', obj);
-                            }
-                        }
-                    } else if (id.startsWith(`system.adapter.${this.namespace}.plugins.`) && id.endsWith('.enabled')) {
-                        if (!state || state.ack) {
-                            return;
-                        }
-                        const pluginStatesIndex = ('system.adapter.' + this.namespace + '.plugins.').length;
-                        let nameEndIndex: number | undefined = id.indexOf('.', pluginStatesIndex + 1);
-                        if (nameEndIndex === -1) {
-                            nameEndIndex = undefined;
-                        }
-                        const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
-
-                        if (!this.pluginHandler?.pluginExists(pluginName)) {
-                            return;
-                        }
-
-                        if (this.pluginHandler.isPluginActive(pluginName) !== state.val) {
-                            if (state.val) {
-                                if (!this.pluginHandler.isPluginInstanciated(pluginName)) {
-                                    this.pluginHandler.instanciatePlugin(
-                                        pluginName,
-                                        this.pluginHandler.getPluginConfig(pluginName) || {},
-                                        __dirname
-                                    );
-                                    this.pluginHandler.setDatabaseForPlugin(pluginName, adapterObjects, adapterStates);
-                                    this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
-                                }
-                            } else {
-                                if (!this.pluginHandler.destroy(pluginName)) {
-                                    this._logger.info(
-                                        `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`
-                                    );
-                                }
-                            }
-                        }
-                    } else if (this.adapterReady && this.aliases.has(id)) {
-                        // If adapter is ready and for this ID exist some alias links
-                        this.aliases.get(id)!.targets.forEach(target => {
-                            const aState = state
-                                ? tools.formatAliasValue(
-                                      this.aliases.get(id)!.source!,
-                                      target,
-                                      deepClone(state),
-                                      this._logger,
-                                      this.namespaceLog
-                                  )
-                                : null;
-                            // @ts-expect-error
-                            const targetId = target.id.read === 'string' ? target.id.read : target.id;
-
-                            if (!this._stopInProgress && (aState || !state)) {
-                                if (typeof this._options.stateChange === 'function') {
-                                    this._options.stateChange(targetId, aState);
-                                } else {
-                                    // emit 'stateChange' event instantly
-                                    setImmediate(() => this.emit('stateChange', targetId, aState));
-                                }
-                            }
-                        });
-                    }
-                },
-                changeUser: (id, state) => {
-                    this.inputCount++;
-
-                    if (!id || typeof id !== 'string') {
-                        console.log(`Something is wrong! ${JSON.stringify(id)}`);
-                        return;
-                    }
-
-                    if (this.adapterReady) {
-                        if (this.oStates) {
-                            if (!state) {
-                                delete this.oStates[id];
-                            } else {
-                                this.oStates[id] = state;
-                            }
-                        }
-
-                        if (!this._stopInProgress) {
-                            if (typeof this._options.stateChange === 'function') {
-                                setImmediate(() => this._options.stateChange!(id, state));
-                            } else {
-                                // emit 'stateChange' event instantly
-                                setImmediate(() => this.emit('stateChange', id, state));
-                            }
-                        }
-                    }
-                },
-                disconnected: () => {
-                    this.connected = false;
-                    !this.terminated &&
-                        setTimeout(() => {
-                            if (this.connected) {
-                                return;
-                            } // If reconnected in the meantime, do not terminate
-                            this._logger &&
-                                this._logger.warn(
-                                    this.namespaceLog + ' Cannot connect/reconnect to states DB. Terminating'
-                                );
-                            this.terminate(EXIT_CODES.NO_ERROR);
-                        }, 5000);
-                }
-            });
-        };
-
-        // debug function to find error with stop logging
-        const checkLogging = () => {
-            let logs: null | string[] = [];
-            // LogList
-            logs.push(`Actual Loglist - ${JSON.stringify(Array.from(this.logList))}`);
-
-            if (!adapterStates) {
-                // if adapterState was destroyed, we can not continue
-                return;
-            }
-
-            // Read current state of all log subscribers
-            adapterStates.getKeys('*.logging', (err, keys) => {
-                if (keys && keys.length) {
-                    if (!adapterStates) {
-                        // if adapterState was destroyed, we can not continue
-                        return;
-                    }
-
-                    adapterStates.getStates(keys, (err, obj) => {
-                        if (obj) {
-                            for (let i = 0; i < keys.length; i++) {
-                                const objPart = obj[i];
-                                // We can JSON.parse, but index is 16x faster
-                                if (objPart) {
-                                    const id = keys[i].substring(0, keys[i].length - '.logging'.length);
-                                    if (
-                                        (typeof objPart === 'string' &&
-                                            // @ts-expect-error recheck code-wise this should not be possible to have a string
-                                            (objPart.includes('"val":true') || objPart.includes('"val":"true"'))) ||
-                                        (typeof objPart === 'object' &&
-                                            (objPart.val === true || objPart.val === 'true'))
-                                    ) {
-                                        logs!.push(`Subscriber - ${id} ENABLED`);
-                                    } else {
-                                        if (logs) {
-                                            logs.push(`Subscriber - ${id} (disabled)`);
-                                        } else {
-                                            this._logger.error(
-                                                `${this.namespaceLog} LOGINFO: Subscriber - ${id} (disabled)`
-                                            );
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (logs) {
-                            for (let m = 0; m < logs.length; m++) {
-                                this._logger.error(`${this.namespaceLog} LOGINFO: ${logs[m]}`);
-                            }
-                            logs = null;
-                        }
-                    });
-                }
-            });
-        };
-
-        const initLogging = (callback: () => void) => {
-            // temporary log buffer
-            let messages: null | any[] = [];
-            // Read current state of all log subscriber
-
-            if (!adapterStates) {
-                // if adapterState was destroyed, we can not continue
-                return;
-            }
-
-            adapterStates.getKeys('*.logging', (err, keys) => {
-                if (keys && keys.length) {
-                    if (!adapterStates) {
-                        // if adapterState was destroyed, we can not continue
-                        return;
-                    }
-
-                    adapterStates.getStates(keys, (err, obj) => {
-                        if (obj) {
-                            for (let i = 0; i < keys.length; i++) {
-                                const objPart = obj[i];
-                                // We can JSON.parse, but index is 16x faster
-                                if (!objPart) {
-                                    continue;
-                                }
-                                const id = keys[i].substring(0, keys[i].length - '.logging'.length);
-                                if (
-                                    typeof objPart === 'string' &&
-                                    // @ts-expect-error recheck this but getStates should not return string code-wise
-                                    (objPart.includes('"val":true') || objPart.includes('"val":"true"'))
-                                ) {
-                                    this.logRedirect!(true, id);
-                                } else if (
-                                    typeof objPart === 'object' &&
-                                    (objPart.val === true || objPart.val === 'true')
-                                ) {
-                                    this.logRedirect!(true, id);
-                                }
-                            }
-                            if (
-                                this.logList.size &&
-                                messages &&
-                                messages.length &&
-                                adapterStates &&
-                                adapterStates.pushLog
-                            ) {
-                                for (const message of messages) {
-                                    for (const instanceId of this.logList) {
-                                        adapterStates!.pushLog(instanceId, message);
-                                    }
-                                }
-                            }
-                        }
-                        // clear log buffer
-                        messages = null;
-                    });
-                } else {
-                    // disable log buffer
-                    messages = null;
-                }
-                return tools.maybeCallback(callback);
-            });
-
-            this.logRedirect = (isActive, id) => {
-                // ignore itself
-                if (id === `system.adapter.${this.namespace}`) {
-                    return;
-                }
-
-                if (isActive) {
-                    if (!this.logList.has(id)) {
-                        this.logList.add(id);
-                    }
-                } else {
-                    this.logList.delete(id);
-                }
-            };
-
-            // If some message from logger
-            // find our notifier transport
-            // @ts-expect-error
-            const ts = this._logger.transports.find(t => t.name === 'NT');
-            // @ts-expect-error
-            ts.on('logged', info => {
-                info.from = this.namespace;
-                // emit to itself
-                if (this._options.logTransporter && this.logRequired && !this._stopInProgress) {
-                    this.emit('log', info);
-                }
-
-                if (!this.logList.size) {
-                    // if log buffer still active
-                    if (messages && !this._options.logTransporter) {
-                        messages.push(info);
-
-                        // do not let messages grow without limit
-                        if (messages.length > this._config.states.maxQueue) {
-                            messages.splice(0, messages.length - this._config.states.maxQueue);
-                        }
-                    }
-                } else if (adapterStates && adapterStates.pushLog) {
-                    // Send to all adapter, that required logs
-                    for (const instanceId of this.logList) {
-                        adapterStates.pushLog(instanceId, info);
-                    }
-                }
-            });
-
-            this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
-
-            if (this._options.logTransporter) {
-                this.requireLog = isActive => {
-                    if (adapterStates) {
-                        if (this.logRequired !== isActive) {
-                            this.logRequired = isActive; // remember state
-                            if (!isActive) {
-                                if (this.logOffTimer) {
-                                    clearTimeout(this.logOffTimer);
-                                }
-                                // disable log receiving after 10 seconds
-                                this.logOffTimer = setTimeout(() => {
-                                    this.logOffTimer = null;
-                                    this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
-                                    this.outputCount++;
-                                    if (adapterStates) {
-                                        adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
-                                            val: false,
-                                            ack: true,
-                                            from: `system.adapter.${this.namespace}`
-                                        });
-                                    }
-                                }, 10000);
-                            } else {
-                                if (this.logOffTimer) {
-                                    clearTimeout(this.logOffTimer);
-                                    this.logOffTimer = null;
-                                } else {
-                                    this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
-                                    this.outputCount++;
-                                    adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
-                                        val: true,
-                                        ack: true,
-                                        from: `system.adapter.${this.namespace}`
-                                    });
-                                }
-                            }
-                        }
-                    }
-                };
-
-                this.processLog = msg => {
-                    msg && !this._stopInProgress && this.emit('log', msg);
-                };
-
-                adapterStates.subscribeLog(`system.adapter.${this.namespace}`);
-            } else {
-                this.requireLog = _isActive => {
-                    this._logger.warn(
-                        `${this.namespaceLog} requireLog is not supported by this adapter! Please set common.logTransporter to true`
-                    );
-                };
-            }
-        };
-
-        const initAdapter = (adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null) => {
-            initLogging(() => {
-                if (!this.pluginHandler) {
-                    return;
-                }
-                this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
-                this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
-                    if (!adapterStates || !adapterObjects || this.terminated) {
-                        // if adapterState was destroyed,we should not continue
-                        return;
-                    }
-
-                    adapterStates.subscribe(`system.adapter.${this.namespace}.plugins.*`);
-                    if (this._options.instance === undefined) {
-                        if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
-                            if (
-                                adapterConfig &&
-                                'common' in adapterConfig &&
-                                adapterConfig.common.enabled !== undefined
-                            ) {
-                                !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
-                            } else {
-                                !this._config.isInstall &&
-                                    this._logger.error(`${this.namespaceLog} no config found for adapter`);
-                            }
-
-                            if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
-                                const id = `system.adapter.${this.namespace}`;
-                                this.outputCount += 2;
-                                adapterStates.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
-                                let done = false;
-                                adapterStates.setState(
-                                    `${id}.connected`,
-                                    {
-                                        val: true,
-                                        ack: true,
-                                        expire: 30,
-                                        from: id
-                                    },
-                                    () => {
-                                        if (!done) {
-                                            done = true;
-                                            this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                                        }
-                                    }
-                                );
-                                setTimeout(() => {
-                                    if (!done) {
-                                        done = true;
-                                        this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                                    }
-                                }, 1000);
-                                return;
-                            }
-                        }
-
-                        if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
-                            this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
-                            this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
-                            return;
-                        }
-
-                        let name;
-                        let instance;
-
-                        if (!this._config.isInstall) {
-                            // @ts-expect-error
-                            const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
-                            if (!tmp) {
-                                this._logger.error(`${this.namespaceLog} invalid config`);
-                                this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
-                                return;
-                            }
-                            name = tmp[1];
-                            instance = parseInt(tmp[2]) || 0;
-                        } else {
-                            name = this._options.name;
-                            instance = 0;
-                            adapterConfig = adapterConfig || {
-                                // @ts-expect-error protectedNative exists on instance objects
-                                common: { mode: 'once', name: name, protectedNative: [] },
-                                native: {}
-                            };
-                        }
-
-                        // @ts-expect-error
-                        if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
-                            // set configured in DB log level
-                            for (const trans of Object.values(this._logger.transports)) {
-                                // set the loglevel on transport only if no loglevel was pinned in log config
-                                // @ts-expect-error it is our own modification
-                                if (!trans._defaultConfigLoglevel) {
-                                    // @ts-expect-error
-                                    trans.level = adapterConfig.common.loglevel;
-                                }
-                            }
-                            // @ts-expect-error
-                            this._config.log.level = adapterConfig.common.loglevel;
-                        }
-
-                        // @ts-expect-error
-                        this.name = adapterConfig.common.name;
-                        this.instance = instance;
-                        this.namespace = `${name}.${instance}`;
-                        this.namespaceLog =
-                            this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-                        if (!this.startedInCompactMode) {
-                            process.title = 'io.' + this.namespace;
-                        }
-
-                        // @ts-expect-error
-                        this.config = adapterConfig.native;
-                        // @ts-expect-error
-                        this.host = adapterConfig.common.host;
-                        // @ts-expect-error
-                        this.common = adapterConfig.common;
-
-                        if (
-                            // @ts-expect-error
-                            adapterConfig.common.mode === 'subscribe' ||
-                            // @ts-expect-error
-                            adapterConfig.common.mode === 'schedule' ||
-                            // @ts-expect-error
-                            adapterConfig.common.mode === 'once'
-                        ) {
-                            this.stop = () => this._stop(true);
-                        } else if (this.startedInCompactMode) {
-                            this.stop = () => this._stop(false);
-                            this.kill = this.stop;
-                        } else {
-                            this.stop = () => this._stop(false);
-                        }
-
-                        // Monitor logging state
-                        adapterStates.subscribe('*.logging');
-
-                        // @ts-expect-error
-                        if (typeof this._options.message === 'function' && !adapterConfig.common.messagebox) {
-                            this._logger.error(
-                                `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
-                            );
-                            // @ts-expect-error
-                        } else if (adapterConfig.common.messagebox) {
-                            this.mboxSubscribed = true;
-                            adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
-                        }
-                    } else {
-                        // @ts-expect-error
-                        this.name = adapterConfig.name || this._options.name;
-                        // @ts-expect-error
-                        this.instance = adapterConfig.instance || 0;
-                        this.namespace = `${this.name}.${this.instance!}`;
-                        this.namespaceLog =
-                            this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-                        // @ts-expect-error
-                        this.config = adapterConfig.native || {};
-                        // @ts-expect-error
-                        this.common = adapterConfig.common || {};
-                        this.host = this.common?.host || tools.getHostName() || os.hostname();
-                    }
-
-                    this.adapterConfig = adapterConfig;
-
-                    this._utils = new Utils(
-                        adapterObjects,
-                        adapterStates,
-                        this.namespaceLog,
-                        this._logger,
-                        this.namespace,
-                        this._namespaceRegExp
-                    );
-
-                    this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
-
-                    await createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
-
-                    // auto oObjects
-                    if (this._options.objects) {
-                        this.oObjects = await this.getAdapterObjectsAsync();
-                        await this.subscribeObjectsAsync('*');
-                    }
-
-                    // read the systemSecret
-                    if (this._systemSecret === undefined) {
-                        try {
-                            const data = await adapterObjects.getObjectAsync('system.config');
-                            if (data && data.native) {
-                                this._systemSecret = data.native.secret;
-                            }
-                        } catch {
-                            // ignore
-                        }
-                        this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                    }
-
-                    // Decrypt all attributes of encryptedNative
-                    const promises = [];
-                    // @ts-expect-error
-                    if (Array.isArray(adapterConfig.encryptedNative)) {
-                        // @ts-expect-error
-                        for (const attr of adapterConfig.encryptedNative) {
-                            // we can only decrypt strings
-                            // @ts-expect-error
-                            if (typeof this.config[attr] === 'string') {
-                                promises.push(
-                                    this.getEncryptedConfig(attr)
-                                        // @ts-expect-error
-                                        .then(decryptedValue => (this.config[attr] = decryptedValue))
-                                        .catch(e =>
-                                            this._logger.error(
-                                                `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
-                                            )
-                                        )
-                                );
-                            }
-                        }
-                    } else {
-                        // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
-                        const idx = SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
-                        if (idx !== -1) {
-                            SUPPORTED_FEATURES.splice(idx, 1);
-                        }
-                    }
-
-                    // Wait till all attributes decrypted
-                    await Promise.all(promises);
-
-                    if (!adapterStates) {
-                        // if adapterStates was destroyed, we should not continue
-                        return;
-                    }
-
-                    this.outputCount++;
-                    // set current loglevel
-                    adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
-                        val: this._config.log.level,
-                        ack: true,
-                        from: `system.adapter.${this.namespace}`
-                    });
-
-                    if (this._options.instance === undefined) {
-                        this.version =
-                            this.pack && this.pack.version
-                                ? this.pack.version
-                                : this.ioPack && this.ioPack.common
-                                ? this.ioPack.common.version
-                                : 'unknown';
-                        // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
-                        const isNpmVersion =
-                            !this.ioPack ||
-                            !this.ioPack.common ||
-                            typeof this.ioPack.common.installedFrom !== 'string' ||
-                            this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
-
-                        this._logger.info(
-                            `${this.namespaceLog} starting. Version ${this.version} ${
-                                !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
-                            }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
-                        );
-                        this._config.system = this._config.system || {};
-                        this._config.system.statisticsInterval =
-                            parseInt(this._config.system.statisticsInterval, 10) || 15000;
-                        if (!this._config.isInstall) {
-                            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                            this._reportInterval = setInterval(reportStatus, this._config.system.statisticsInterval);
-                            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-                            reportStatus();
-                            const id = `system.adapter.${this.namespace}`;
-                            adapterStates.setState(`${id}.compactMode`, {
-                                ack: true,
-                                from: id,
-                                val: !!this.startedInCompactMode
-                            });
-
-                            this.outputCount++;
-
-                            if (this.startedInCompactMode) {
-                                adapterStates.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
-                                adapterStates.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
-                                adapterStates.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
-                                adapterStates.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
-                                adapterStates.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
-                                adapterStates.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
-                                this.outputCount += 6;
-                            } else {
-                                tools.measureEventLoopLag(1000, lag => {
-                                    if (lag) {
-                                        this.eventLoopLags.push(lag);
-                                    }
-                                });
-                            }
-                        }
-                    }
-
-                    // @ts-expect-error restartSchedule can exist - adjust types
-                    if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
-                        try {
-                            this._schedule = await import('node-schedule');
-                        } catch {
-                            this._logger.error(
-                                `${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`
-                            );
-                        }
-                        if (this._schedule) {
-                            this._logger.debug(
-                                // @ts-expect-error restartSchedule can exist - adjust types
-                                `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
-                            );
-                            this._restartScheduleJob = this._schedule.scheduleJob(
-                                // @ts-expect-error restartSchedule can exist - adjust types
-                                adapterConfig.common.restartSchedule,
-                                () => {
-                                    this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                                    this._stop(false, true);
-                                }
-                            );
-                        }
-                    }
-
-                    // auto oStates
-                    if (this._options.states) {
-                        this.getStates('*', null, (err, _states) => {
-                            if (this._stopInProgress) {
-                                return;
-                            }
-
-                            this.oStates = _states;
-                            this.subscribeStates('*');
-                            if (this._firstConnection) {
-                                this._firstConnection = false;
-                                typeof this._options.ready === 'function' && this._options.ready();
-                                this.emit('ready');
-                            } else {
-                                typeof this._options.reconnect === 'function' && this._options.reconnect();
-                                this.emit('reconnect');
-                            }
-                            this.adapterReady = true;
-                        });
-                    } else if (!this._stopInProgress) {
-                        typeof this._options.ready === 'function' && this._options.ready();
-                        this.emit('ready');
-                        this.adapterReady = true;
-
-                        // todo remove it later, when the error is fixed
-                        adapterStates.subscribe(`${this.namespace}.checkLogging`);
-                    }
-                });
-            });
-        };
-
-        const reportStatus = () => {
-            if (!adapterStates) {
-                return;
-            }
-            const id = 'system.adapter.' + this.namespace;
-            adapterStates.setState(id + '.alive', {
-                val: true,
-                ack: true,
-                expire: Math.floor(this._config.system.statisticsInterval / 1000) + 10,
-                from: id
-            });
-            this.outputCount++;
-            if (this.connected) {
-                adapterStates.setState(id + '.connected', { val: true, ack: true, expire: 30, from: id });
-                this.outputCount++;
-            }
-            if (!this.startedInCompactMode) {
-                // pidUsage([pid,pid,...], function (err, stats) {
-                // => {
-                //   cpu: 10.0,            // percentage (from 0 to 100*vcore)
-                //   memory: 357306368,    // bytes
-                //   ppid: 312,            // PPID
-                //   pid: 727,             // PID
-                //   ctime: 867000,        // ms user + system time
-                //   elapsed: 6650000,     // ms since the start of the process
-                //   timestamp: 864000000  // ms since epoch
-                // }
-                pidUsage(process.pid, (err, stats) => {
-                    // sometimes adapter is stopped, but this is still running
-                    if (!err && this && adapterStates && adapterStates.setState && stats) {
-                        adapterStates.setState(`${id}.cpu`, {
-                            ack: true,
-                            from: id,
-                            val: Math.round(100 * stats.cpu) / 100
-                        });
-                        adapterStates.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
-                        this.outputCount += 2;
-                    }
-                });
-                try {
-                    //RSS is the resident set size, the portion of the process's memory held in RAM (as opposed to the swap space or the part held in the filesystem).
-                    const mem = process.memoryUsage();
-                    adapterStates.setState(id + '.memRss', {
-                        val: parseFloat(
-                            (mem.rss / 1048576) /* 1MB */
-                                .toFixed(2)
-                        ),
-                        ack: true,
-                        from: id
-                    });
-                    adapterStates.setState(id + '.memHeapTotal', {
-                        val: parseFloat(
-                            (mem.heapTotal / 1048576) /* 1MB */
-                                .toFixed(2)
-                        ),
-                        ack: true,
-                        from: id
-                    });
-                    adapterStates.setState(id + '.memHeapUsed', {
-                        val: parseFloat(
-                            (mem.heapUsed / 1048576) /* 1MB */
-                                .toFixed(2)
-                        ),
-                        ack: true,
-                        from: id
-                    });
-                } catch (err) {
-                    this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${err.message}`);
-                }
-                this.outputCount += 3;
-                if (this.eventLoopLags.length) {
-                    const eventLoopLag = Math.ceil(
-                        this.eventLoopLags.reduce((a, b) => a + b) / this.eventLoopLags.length
-                    );
-                    adapterStates.setState(id + '.eventLoopLag', { val: eventLoopLag, ack: true, from: id }); // average of measured values
-                    this.eventLoopLags = [];
-                    this.outputCount++;
-                }
-            }
-            this.outputCount += 3;
-            adapterStates.setState(id + '.uptime', {
-                val: parseInt(process.uptime().toFixed(), 10),
-                ack: true,
-                from: id
-            });
-            adapterStates.setState(`${id}.inputCount`, { val: this.inputCount, ack: true, from: id });
-            adapterStates.setState(`${id}.outputCount`, { val: this.outputCount, ack: true, from: id });
-            this.inputCount = 0;
-            this.outputCount = 0;
-        };
-
-        const exceptionHandler = async (err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) => {
-            // If the adapter has a callback to listen for unhandled errors
-            // give it a chance to handle the error itself instead of restarting it
-            if (typeof this._options.error === 'function') {
-                try {
-                    // if error handler in the adapter returned exactly true,
-                    // we expect the error to be handled and do nothing more
-                    const wasHandled = this._options.error(err);
-                    if (wasHandled === true) {
-                        return;
-                    }
-                } catch (e) {
-                    console.error(`Error in adapter error handler: ${e.message}`);
-                }
-            }
-
-            // catch it on windows
-            if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
-                const { host, port, callback } = this.getPortRunning;
-                this._logger.warn(
-                    `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`
-                );
-
-                setImmediate(() => this.getPort(port + 1, host, callback));
-                return;
-            }
-
-            if (isUnhandledRejection) {
-                this._logger.error(
-                    `${this.namespaceLog} Unhandled promise rejection. This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch().`
-                );
-            }
-            this._logger.error(
-                `${this.namespaceLog} ${isUnhandledRejection ? 'unhandled promise rejection' : 'uncaught exception'}: ${
-                    err ? err.message : err
-                }`
-            );
-            if (err && err.stack) {
-                this._logger.error(`${this.namespaceLog} ${err.stack}`);
-            }
-
-            if (err) {
-                const message = err.code ? `Exception-Code: ${err.code}: ${err.message}` : err.message;
-                this._logger.error(`${this.namespaceLog} ${message}`);
-                try {
-                    await this.registerNotification('system', null, message);
-                } catch {
-                    // ignore
-                }
-            }
-
-            try {
-                this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
-                setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1000);
-            } catch (err) {
-                this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);
-            }
-        };
-
         process.once('SIGINT', () => this._stop());
         process.once('SIGTERM', () => this._stop());
         // And the exit event shuts down the child.
         process.once('exit', () => this._stop());
 
-        process.on('uncaughtException', err => exceptionHandler(err));
-        process.on('unhandledRejection', err => exceptionHandler(err as any, true));
+        process.on('uncaughtException', err => this._exceptionHandler(err));
+        process.on('unhandledRejection', err => this._exceptionHandler(err as any, true));
 
         const pluginSettings: PluginHandlerSettings = {
             scope: 'adapter',
