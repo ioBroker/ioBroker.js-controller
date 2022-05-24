@@ -1962,7 +1962,7 @@ export class AdapterClass extends EventEmitter {
         return this._getUserID({ username });
     }
 
-    async _getUserID(options: InternalGetUserIDOptions): Promise<void | string> {
+    private async _getUserID(options: InternalGetUserIDOptions): Promise<void | string> {
         if (!this.usernames[options.username]) {
             try {
                 // did not find username, we should have a look in the cache
