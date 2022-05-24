@@ -40,7 +40,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "cpy ./cert ../build/ --cwd=src"
+    "postbuild": "cpy ./cert ../build/ --cwd=src && typedoc src/lib/adapter/adapter.ts --out ../controller/doc"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",

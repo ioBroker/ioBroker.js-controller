@@ -250,7 +250,7 @@ interface InternalGetObjectsOptions {
 /**
  * Here we define dynamically created methods
  */
-interface AdapterClass {
+export interface AdapterClass {
     /** Extend an object and create it if it might not exist */
     extendObjectAsync(
         id: string,
@@ -876,7 +876,7 @@ interface InternalDeleteStateFromEnumOptions {
  *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstancesObjects => ready
  *
  */
-class AdapterClass extends EventEmitter {
+export class AdapterClass extends EventEmitter {
     /** Contents of iobroker.json */
     private readonly _config: Record<string, any>;
     private readonly _options: AdapterOptions;
@@ -918,7 +918,7 @@ class AdapterClass extends EventEmitter {
     private _systemSecret?: string;
     private terminated: boolean;
     private usernames: Record<string, { id: string }>;
-    private readonly FORBIDDEN_CHARS: RegExp;
+    protected readonly FORBIDDEN_CHARS: RegExp;
     private inputCount: number;
     private outputCount: number;
     private users: Record<`system.user.${string}`, { groups: any; acl: any }>; // todo
