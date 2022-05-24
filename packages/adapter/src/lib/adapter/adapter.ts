@@ -766,6 +766,20 @@ interface InternalAddChannelToEnumOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+interface InternalSendToOptions {
+    instanceName: string;
+    command: string;
+    message: ioBroker.MessagePayload;
+    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+}
+
+interface InternalSendToHostOptions {
+    hostName: string;
+    command: string;
+    message: ioBroker.MessagePayload;
+    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+}
+
 /**
  * Adapter class
  *
@@ -786,7 +800,7 @@ class AdapterClass extends EventEmitter {
     private eventLoopLags: number[];
     private overwriteLogLevel: boolean;
     protected adapterReady: boolean;
-    private callbacks?: Record<string, { cb: (msg: ioBroker.MessagePayload) => void; time?: number }>;
+    private callbacks?: Record<string, { cb: ioBroker.MessageCallback; time?: number }>;
 
     /**
      * Contains a live cache of the adapter's states.
@@ -6769,25 +6783,23 @@ class AdapterClass extends EventEmitter {
      * @param {string} filename path to file without adapter name. E.g. If you want to check "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
      * @param {object} [options] optional user context
      * @param {function} [callback] cb function if none provided, a promise is returned
-     * @returns {Promise<boolean>}
      */
-    async fileExists(_adapter: any, filename: any, options: any, callback?: any) {
-        // TODO: add types
+    async fileExists(
+        _adapter: unknown,
+        filename: unknown,
+        options: unknown,
+        callback?: unknown
+    ): Promise<boolean | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
-        if (typeof callback !== 'function') {
-            return new Promise((resolve, reject) => {
-                this.fileExists(_adapter, filename, options, (err, existent) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(existent);
-                    }
-                });
-            });
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(_adapter, '_adapter');
+        Utils.assertsString(filename, 'filename');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6797,9 +6809,9 @@ class AdapterClass extends EventEmitter {
 
         try {
             const exists = await adapterObjects.fileExists(_adapter, filename, options);
-            callback(null, exists);
+            return tools.maybeCallbackWithError(callback, null, exists);
         } catch (e) {
-            callback(e);
+            return tools.maybeCallbackWithError(callback, e);
         }
     }
 
@@ -7010,8 +7022,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async sendTo(instanceName: any, command: any, message: any, callback?: any) {
-        // TODO: add types
+    sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown) {
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -7020,6 +7031,21 @@ class AdapterClass extends EventEmitter {
             message = command;
             command = 'send';
         }
+
+        Utils.assertsString(instanceName, 'instanceName');
+        Utils.assertsString(command, 'command');
+        if (typeof message !== 'string') {
+            Utils.assertsObject(message, 'message');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._sendTo({ instanceName, command, message, callback });
+    }
+
+    private async _sendTo(_options: InternalSendToOptions) {
+        const { command, message, callback } = _options;
+        let { instanceName } = _options;
+
         const obj: Partial<ioBroker.Message> = {
             command: command,
             message: message,
@@ -7027,6 +7053,7 @@ class AdapterClass extends EventEmitter {
         };
 
         if (typeof instanceName !== 'string' || !instanceName) {
+            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
             return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
         }
 
@@ -7037,6 +7064,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} sendTo not processed because States database not connected`);
+            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7054,6 +7082,7 @@ class AdapterClass extends EventEmitter {
         if (!instanceName.match(/\.[0-9]+$/)) {
             if (!adapterObjects) {
                 this._logger.info(`${this.namespaceLog} sendTo not processed because Objects database not connected`);
+                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7071,6 +7100,7 @@ class AdapterClass extends EventEmitter {
                             try {
                                 await adapterStates!.pushMessage(row.id, obj as any);
                             } catch (e) {
+                                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                                 return tools.maybeCallbackWithError(callback, e);
                             }
                         }
@@ -7116,6 +7146,7 @@ class AdapterClass extends EventEmitter {
             try {
                 await adapterStates.pushMessage(instanceName, obj as any);
             } catch (e) {
+                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
@@ -7152,22 +7183,32 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async sendToHost(hostName: any, command: any, message: any, callback?: any) {
-        // todo: add types
+    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown) {
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
         }
+
+        Utils.assertsString(hostName, 'hostName');
+        Utils.assertsString(command, 'command');
+        if (typeof message !== 'string') {
+            Utils.assertsObject(message, 'message');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._sendToHost({ hostName, command, message, callback });
+    }
+
+    private async _sendToHost(_options: InternalSendToHostOptions) {
+        const { command, message, callback } = _options;
+        let { hostName } = _options;
         const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.namespace}` };
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} sendToHost not processed because States database not connected`);
+            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (hostName && typeof hostName !== 'string') {
-            hostName = hostName.toString();
         }
 
         if (hostName && !hostName.startsWith('system.host.')) {
@@ -7179,6 +7220,7 @@ class AdapterClass extends EventEmitter {
                 this._logger.info(
                     `${this.namespaceLog} sendToHost not processed because Objects database not connected`
                 );
+                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7202,6 +7244,7 @@ class AdapterClass extends EventEmitter {
                                 try {
                                     await adapterStates!.pushMessage(row.id, obj as any);
                                 } catch (e) {
+                                    // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                                     return tools.maybeCallbackWithError(callback, e);
                                 }
                             }
@@ -7231,7 +7274,6 @@ class AdapterClass extends EventEmitter {
                     this.callbacks[`_${obj.callback.id}`] = { cb: callback };
                 } else {
                     obj.callback = callback;
-                    // @ts-expect-error we have ensured it is true
                     obj.callback.ack = true;
                 }
             }
@@ -7239,6 +7281,7 @@ class AdapterClass extends EventEmitter {
             try {
                 await adapterStates.pushMessage(hostName, obj as any);
             } catch (e) {
+                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
@@ -11173,6 +11216,7 @@ class AdapterClass extends EventEmitter {
                             ) {
                                 // Call callback function
                                 if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
+                                    // @ts-expect-error TODO something wrong with MessageCallback type?
                                     this.callbacks[`_${obj.callback.id}`].cb(obj.message);
                                     delete this.callbacks[`_${obj.callback.id}`];
                                 }

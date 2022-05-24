@@ -1306,7 +1306,7 @@ export class ObjectsInRedisClient {
      * @param name name of the file
      * @param options optional user context
      */
-    async fileExists(id: string, name: string, options: CallOptions): Promise<boolean> {
+    async fileExists(id: string, name: string, options?: CallOptions | null): Promise<boolean> {
         if (typeof name !== 'string') {
             name = '';
         }
