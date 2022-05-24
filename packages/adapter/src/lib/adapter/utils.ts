@@ -57,7 +57,7 @@ export class Utils {
      * @param id - id of the state
      * @param state - ioBroker setState object
      */
-    async performStrictObjectCheck(id: string, state: ioBroker.State): Promise<void> {
+    async performStrictObjectCheck(id: string, state: ioBroker.SettableState): Promise<void> {
         // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
         // can already let the non existing object case throw with 3.4 because this is already producing a warning
         try {

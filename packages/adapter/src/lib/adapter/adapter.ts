@@ -757,6 +757,15 @@ interface InternalSetBinaryStateOptions {
     callback?: ioBroker.SetStateCallback;
 }
 
+interface InternalAddChannelToEnumOptions {
+    enumName: string;
+    addTo: string;
+    parentDevice: string;
+    channelName: string;
+    options?: Record<string, any> | null;
+    callback?: ioBroker.ErrorCallback;
+}
+
 /**
  * Adapter class
  *
@@ -795,16 +804,14 @@ class AdapterClass extends EventEmitter {
     private _timers: Set<NodeJS.Timeout>;
     private _intervals: Set<NodeJS.Timeout>;
     private _delays: Set<NodeJS.Timeout>;
-    private tools: any; // TODO remove the shim
     protected log?: Log;
     private readonly performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
     private _schedule: typeof NodeSchedule | undefined;
-    // @ts-expect-error decide how to handle it
     private namespaceLog: string;
-    private namespace: `${string}.${number}`;
-    private name: string;
+    protected namespace: `${string}.${number}`;
+    protected name: string;
     private _systemSecret?: string;
     private terminated: boolean;
     private usernames: Record<string, { id: string }>;
@@ -815,35 +822,35 @@ class AdapterClass extends EventEmitter {
     private groups: Record<string, Partial<ioBroker.GroupObject>>;
     private autoSubscribe: string[];
     private defaultHistory: null | string;
-    private pluginHandler?: typeof PluginHandler;
+    private pluginHandler?: InstanceType<typeof PluginHandler>;
     private _reportInterval?: null | NodeJS.Timer;
     private getPortRunning: null | PortRunningObject;
     private readonly _namespaceRegExp: RegExp;
-    private instance?: number;
+    protected instance?: number;
     // @ts-expect-error decide how to handle it
     private _utils: Utils;
     /** contents of io-package.json */
     protected adapterConfig?: Record<string, any> | null; // TODO: contents of io-pack?
-    private connected?: boolean;
-    protected adapterDir?: string | null;
+    protected connected?: boolean;
+    protected adapterDir: string;
     /** contents of package.json */
     protected pack?: Record<string, any>;
     /** contents of io-package.json */
-    protected ioPack?: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
+    protected ioPack: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
     private _initializeTimeout?: NodeJS.Timeout | null;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
-    private systemConfig?: Record<string, any>;
+    protected systemConfig?: Record<string, any>;
     /** the configured date format of system.config, only vailable if requested via AdapterOptions `useFormatDate` */
-    private dateFormat?: any;
+    protected dateFormat?: any;
     /** if float comma instead of dot is used, only vailable if requested via AdapterOptions `useFormatDate` */
-    private isFloatComma?: boolean;
+    protected isFloatComma?: boolean;
     /** configured language of system.config, only vailable if requested via AdapterOptions `useFormatDate` */
-    private language?: ioBroker.Languages;
+    protected language?: ioBroker.Languages;
     /** longitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
-    private longitude?: number;
+    protected longitude?: number;
     /** latitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
-    private latitude?: number;
+    protected latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
     protected config?: Record<string, any>;
@@ -928,13 +935,6 @@ class AdapterClass extends EventEmitter {
         /** Whether the adapter has already terminated */
         this.terminated = false;
 
-        // TODO: remove shim
-        // Provide selected tools methods for backward compatibility use in adapter
-        this.tools = {
-            encrypt: tools.encrypt,
-            decrypt: tools.decrypt
-        };
-
         // possible arguments
         // 0,1,.. - instance
         // info, debug, warn, error - log level
@@ -1000,6 +1000,7 @@ class AdapterClass extends EventEmitter {
         );
 
         this.namespace = `${this._options.name}.${instance}`;
+        this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
         this._logger = logger(this._config.log);
@@ -1007,6 +1008,27 @@ class AdapterClass extends EventEmitter {
         // compatibility
         if (!this._logger.silly) {
             this._logger.silly = this._logger.debug;
+        }
+
+        // If installed as npm module
+        if (this._options.dirname) {
+            this.adapterDir = this._options.dirname.replace(/\\/g, '/');
+        } else {
+            const adapterDir = tools.getAdapterDir(this._options.name);
+
+            if (!adapterDir) {
+                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this._options.name}`);
+                this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
+            }
+
+            this.adapterDir = adapterDir;
+        }
+
+        if (fs.existsSync(`${this.adapterDir}/io-package.json`)) {
+            this.ioPack = fs.readJSONSync(`${this.adapterDir}/io-package.json`);
+        } else {
+            this._logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
+            this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
 
         // Create dynamic methods
@@ -1549,7 +1571,7 @@ class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    terminate(reason?: string | number, exitCode?: number): void;
+    terminate(reason?: string | number, exitCode?: number): never;
 
     /**
      * stops the execution of adapter, but not disables it.
@@ -1566,7 +1588,6 @@ class AdapterClass extends EventEmitter {
         }
         this.terminated = true;
 
-        // @ts-expect-error types not infered correctly
         this.pluginHandler && this.pluginHandler.destroyAll();
 
         if (this._reportInterval) {
@@ -5539,18 +5560,34 @@ class AdapterClass extends EventEmitter {
     ): void;
 
     addChannelToEnum(
-        enumName: any,
-        addTo: any,
-        parentDevice: any,
-        channelName: any,
-        options: any,
-        callback?: any
+        enumName: unknown,
+        addTo: unknown,
+        parentDevice: unknown,
+        channelName: unknown,
+        options: unknown,
+        callback?: unknown
     ): void | Promise<void> {
-        // TODO: add types
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(enumName, 'enumName');
+        Utils.assertsString(addTo, 'addTo');
+        Utils.assertsString(parentDevice, 'parentDevice');
+        Utils.assertsString(channelName, 'channelName');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._addChannelToEnum({ enumName, addTo, parentDevice, channelName, options, callback });
+    }
+
+    private _addChannelToEnum(_options: InternalAddChannelToEnumOptions) {
+        const { addTo, options, callback } = _options;
+        let { enumName, parentDevice, channelName } = _options;
+
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} addChannelToEnum not processed because Objects database not connected`
@@ -5580,9 +5617,7 @@ class AdapterClass extends EventEmitter {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else if (obj) {
-                    // @ts-expect-error
                     if (!obj.common.members.includes(objId)) {
-                        // @ts-expect-error
                         obj.common.members.push(objId);
                         obj.from = 'system.adapter.' + this.namespace;
                         obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
@@ -7009,9 +7044,9 @@ class AdapterClass extends EventEmitter {
                 },
                 async (err, _obj) => {
                     if (_obj && _obj.rows) {
-                        for (let i = 0; i < _obj.rows.length; i++) {
+                        for (const row of _obj.rows) {
                             try {
-                                await adapterStates!.pushMessage(_obj.rows[i].id, obj as any);
+                                await adapterStates!.pushMessage(row.id, obj as any);
                             } catch (e) {
                                 return tools.maybeCallbackWithError(callback, e);
                             }
@@ -7198,9 +7233,8 @@ class AdapterClass extends EventEmitter {
      * @param {string} scope - scope to be addressed
      * @param {string|null} category - to be addressed, if null message will be checked by regex of given scope
      * @param {string} message - message to be stored/checked
-     * @return Promise<void>
      */
-    async registerNotification(scope: any, category: any, message: any) {
+    async registerNotification(scope: unknown, category: unknown, message: unknown): Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to set
             this._logger.info(
@@ -7209,7 +7243,12 @@ class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        // TODO: add types
+        Utils.assertsString(scope, 'scope');
+        if (category !== null) {
+            Utils.assertsString(category, 'category');
+        }
+        Utils.assertsString(message, 'message');
+
         const obj = {
             command: 'addNotification',
             message: { scope, category, message, instance: this.namespace },
@@ -7333,7 +7372,7 @@ class AdapterClass extends EventEmitter {
         }
 
         const fixedId = this._utils.fixId(id, false);
-        let stateObj: ioBroker.State | ioBroker.SettableState;
+        let stateObj: ioBroker.SettableState;
 
         if (tools.isObject(state)) {
             // Verify that the passed state object is valid
@@ -7351,9 +7390,7 @@ class AdapterClass extends EventEmitter {
 
         if (stateObj.val === undefined && !Object.keys(stateObj).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${fixedId}"`);
-            // TODO: reactivate line below + test in next controller version (02.05.2021)
-            // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
+            return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
         if (ack !== undefined) {
@@ -7382,7 +7419,6 @@ class AdapterClass extends EventEmitter {
 
                     if (this.performStrictObjectChecks) {
                         // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        // @ts-expect-error fix later
                         await this._utils.performStrictObjectCheck(fixedId, stateObj);
                     }
 
@@ -7509,7 +7545,6 @@ class AdapterClass extends EventEmitter {
             } else {
                 if (this.performStrictObjectChecks) {
                     // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                    // @ts-expect-error fix later on
                     await this._utils.performStrictObjectCheck(fixedId, stateObj);
                 }
 
@@ -8034,7 +8069,7 @@ class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
-                `${this.namespaceLog} setStateCHanged not processed because States database not connected`
+                `${this.namespaceLog} setStateChanged not processed because States database not connected`
             );
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
@@ -8061,9 +8096,7 @@ class AdapterClass extends EventEmitter {
 
         if (state.val === undefined && !Object.keys(state).length) {
             // undefined is not allowed as state.val -> return
-            this._logger.info(`${this.namespaceLog} undefined is not a valid state value for id "${id}"`);
-            // TODO: reactivate line below + test in in next controller version (02.05.2021)
-            // return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
+            return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
         if (ack !== undefined) {
@@ -8554,11 +8587,13 @@ class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getState(id: any, options: any, callback?: any) {
-        // TODO: add types
+    getState(id: unknown, options: any, callback?: any) {
+        // we use any types here, because validation takes place in foreign method
         // get state does the same as getForeignState but fixes the id first
-        id = this._utils.fixId(id, false);
-        return this.getForeignState(id, options, callback);
+
+        Utils.assertsString(id, 'id');
+        const fixedId = this._utils.fixId(id, false);
+        return this.getForeignState(fixedId, options, callback);
     }
 
     getForeignState(id: string, callback: ioBroker.GetStateCallback): void;
@@ -9026,14 +9061,17 @@ class AdapterClass extends EventEmitter {
      * @param {object} options optional argument to describe the user context
      * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      */
-    getStates(pattern: any, options: any, callback?: any) {
-        // TODO: add types
+    getStates(pattern: unknown, options: any, callback?: any) {
+        // we use any types here, because validation takes place in foreign method
         if (typeof options === 'function') {
             callback = options;
             options = {};
         }
-        pattern = this._utils.fixId(pattern, true);
-        this.getForeignStates(pattern, options, callback);
+
+        Utils.assertsString(pattern, 'pattern');
+
+        const fixedPattern = this._utils.fixId(pattern, true);
+        this.getForeignStates(fixedPattern, options, callback);
     }
 
     private _processStatesSecondary(
@@ -10108,7 +10146,7 @@ class AdapterClass extends EventEmitter {
      * @param {ioBroker.GetBinaryStateCallback} callback
      */
     getBinaryState(id: any, options: any, callback?: any) {
-        // TODO: add types
+        // we use any types here, because validation takes place in foreign method
         // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
         // id =this._utils.fixId(id);
         return this.getForeignBinaryState(id, options, callback);
@@ -10177,7 +10215,7 @@ class AdapterClass extends EventEmitter {
      *
      */
     delBinaryState(id: any, options: any, callback?: any) {
-        // TODO:add types
+        // we use any types here, because validation takes place in foreign method
         // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
         // id = this._utils.fixId(id, false);
         return this.delForeignBinaryState(id, options, callback);
@@ -10195,7 +10233,9 @@ class AdapterClass extends EventEmitter {
         if (!this.pluginHandler) {
             return null;
         }
-        // @ts-expect-error
+
+        Utils.assertsString(name, 'name');
+
         return this.pluginHandler.getPluginInstance(name);
     }
 
@@ -10211,7 +10251,8 @@ class AdapterClass extends EventEmitter {
         if (!this.pluginHandler) {
             return null;
         }
-        // @ts-expect-error
+
+        Utils.assertsString(name, 'name');
         return this.pluginHandler.getPluginConfig(name);
     }
 
@@ -10364,33 +10405,10 @@ class AdapterClass extends EventEmitter {
             });
         };
 
-        // If installed as npm module
-        if (this._options.dirname) {
-            this.adapterDir = this._options.dirname.replace(/\\/g, '/');
-        } else {
-            this.adapterDir = tools.getAdapterDir(this._options.name);
-
-            if (!this.adapterDir) {
-                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this._options.name}`);
-                this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-            }
-        }
-
         if (fs.existsSync(`${this.adapterDir}/package.json`)) {
             this.pack = fs.readJSONSync(`${this.adapterDir}/package.json`);
         } else {
             this._logger.info(`${this.namespaceLog} Non npm module. No package.json`);
-        }
-
-        if (!this.pack || !this.pack.io) {
-            if (fs.existsSync(`${this.adapterDir}/io-package.json`)) {
-                this.ioPack = fs.readJSONSync(`${this.adapterDir}/io-package.json`);
-            } else {
-                this._logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
-                this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
-            }
-        } else {
-            this.ioPack = this.pack.io;
         }
 
         // If required system configuration. Store it in systemConfig attribute
@@ -11159,29 +11177,23 @@ class AdapterClass extends EventEmitter {
                             nameEndIndex = undefined;
                         }
                         const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
-                        // @ts-expect-error
-                        if (!this.pluginHandler.pluginExists(pluginName)) {
+
+                        if (!this.pluginHandler?.pluginExists(pluginName)) {
                             return;
                         }
-                        // @ts-expect-error
+
                         if (this.pluginHandler.isPluginActive(pluginName) !== state.val) {
                             if (state.val) {
-                                // @ts-expect-error
                                 if (!this.pluginHandler.isPluginInstanciated(pluginName)) {
-                                    // @ts-expect-error
                                     this.pluginHandler.instanciatePlugin(
                                         pluginName,
-                                        // @ts-expect-error
-                                        this.pluginHandler.getPluginConfig(pluginName),
+                                        this.pluginHandler.getPluginConfig(pluginName) || {},
                                         __dirname
                                     );
-                                    // @ts-expect-error
                                     this.pluginHandler.setDatabaseForPlugin(pluginName, adapterObjects, adapterStates);
-                                    // @ts-expect-error
-                                    this.pluginHandler.initPlugin(pluginName, this.adapterConfig);
+                                    this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
                                 }
                             } else {
-                                // @ts-expect-error
                                 if (!this.pluginHandler.destroy(pluginName)) {
                                     this._logger.info(
                                         `${this.namespaceLog} Plugin ${pluginName} could not be disabled. Please restart adapter to disable it.`
@@ -11424,7 +11436,7 @@ class AdapterClass extends EventEmitter {
                 }
             });
 
-            this._options.logTransporter = this._options.logTransporter || this.ioPack!.common.logTransporter;
+            this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
             if (this._options.logTransporter) {
                 this.requireLog = isActive => {
@@ -11482,10 +11494,11 @@ class AdapterClass extends EventEmitter {
 
         const initAdapter = (adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null) => {
             initLogging(() => {
-                // @ts-expect-error
+                if (!this.pluginHandler) {
+                    return;
+                }
                 this.pluginHandler.setDatabaseForPlugins(adapterObjects, adapterStates);
-                // @ts-expect-error
-                this.pluginHandler.initPlugins(adapterConfig, async () => {
+                this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
                     if (!adapterStates || !adapterObjects || this.terminated) {
                         // if adapterState was destroyed,we should not continue
                         return;
@@ -11637,7 +11650,7 @@ class AdapterClass extends EventEmitter {
                         this.config = adapterConfig.native || {};
                         // @ts-expect-error
                         this.common = adapterConfig.common || {};
-                        this.host = this.common!.host || tools.getHostName() || os.hostname();
+                        this.host = this.common?.host || tools.getHostName() || os.hostname();
                     }
 
                     this.adapterConfig = adapterConfig;
@@ -11652,11 +11665,6 @@ class AdapterClass extends EventEmitter {
                     );
 
                     this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
-
-                    //
-                    // From here on "this" methods can be used that might log with "this.log" !!
-                    // Above this line only use logger!
-                    //
 
                     await createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
 
@@ -11740,7 +11748,7 @@ class AdapterClass extends EventEmitter {
 
                         this._logger.info(
                             `${this.namespaceLog} starting. Version ${this.version} ${
-                                !isNpmVersion ? `(non-npm: ${this.ioPack!.common.installedFrom}) ` : ''
+                                !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
                             }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
                         );
                         this._config.system = this._config.system || {};
@@ -12004,9 +12012,7 @@ class AdapterClass extends EventEmitter {
             controllerVersion
         };
 
-        // @ts-expect-error
         this.pluginHandler = new PluginHandler(pluginSettings);
-        // @ts-expect-error
         this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
 
         // finally init
