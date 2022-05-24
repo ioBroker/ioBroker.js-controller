@@ -809,6 +809,11 @@ interface InternalDelBinaryStateOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+interface InternalDeleteDeviceOptions {
+    deviceName: string;
+    callback?: ioBroker.ErrorCallback;
+}
+
 /**
  * Adapter class
  *
@@ -5545,12 +5550,22 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    async deleteDevice(deviceName: any, options: any, callback?: any) {
-        // TODO: add types
+    deleteDevice(deviceName: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(deviceName, 'deviceName');
+        Utils.assertsOptionalCallback(callback, 'callback');
+
+        return this._deleteDevice({ deviceName, callback });
+    }
+
+    private async _deleteDevice(_options: InternalDeleteDeviceOptions) {
+        const { callback } = _options;
+        let { deviceName } = _options;
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} deleteDevice not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
