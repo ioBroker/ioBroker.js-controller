@@ -10373,7 +10373,7 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        if (options?.user !== SYSTEM_ADMIN_USER) {
+        if (options.user && options.user !== SYSTEM_ADMIN_USER) {
             this._checkStates(id, options, 'delState', err => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
