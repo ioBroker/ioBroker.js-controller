@@ -750,6 +750,13 @@ interface InternalSubscribeOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+interface InternalSetBinaryStateOptions {
+    id: string;
+    options?: Record<string, any> | null;
+    binary: Buffer;
+    callback?: ioBroker.SetStateCallback;
+}
+
 /**
  * Adapter class
  *
@@ -3695,7 +3702,7 @@ class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsCallback(callback, 'callback');
         Utils.assertsString(id, 'id');
         if (options !== null && options !== undefined) {
             Utils.assertsObject(options, 'options');
@@ -3712,7 +3719,6 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        // @ts-expect-error fix types
         adapterObjects.getObject(this._utils.fixId(id), options, callback);
     }
 
@@ -4269,59 +4275,63 @@ class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObjectView('system', options.type || 'state', params, options, (err, res) => {
+        adapterObjects.getObjectView('system', options.type || 'state', params, options, async (err, res) => {
             if (err) {
                 return tools.maybeCallbackWithError(options.callback, err);
             }
 
             // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
-            // @ts-expect-error adjust type checks or code here
-            this.getEnums(options.enums, null, (err, _enums) => {
-                const list: Record<string, any> = {};
-                if (res && res.rows) {
-                    for (let i = 0; i < res.rows.length; i++) {
-                        if (!res.rows[i].value) {
-                            // it is more an unimportant warning as debug
-                            this._logger.debug(
-                                `${this.namespaceLog} getEnums(${JSON.stringify(
-                                    options.enums
-                                )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(
-                                    res.rows[i]
-                                )}`
-                            );
-                            continue;
-                        }
-                        // @ts-expect-error rewrite as for of
-                        const id: string = res.rows[i].value._id;
-                        list[id] = res.rows[i].value;
-                        if (_enums && id) {
-                            // get device or channel of this state and check it too
-                            const parts = id.split('.');
-                            parts.splice(parts.length - 1, 1);
-                            const channel = parts.join('.');
-                            parts.splice(parts.length - 1, 1);
-                            const device = parts.join('.');
+            let _enums;
+            if (options.enums) {
+                try {
+                    _enums = await this.getEnumsAsync(options.enums, null);
+                } catch (e) {
+                    this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
+                }
+            }
+            const list: Record<string, any> = {};
+            if (res && res.rows) {
+                for (let i = 0; i < res.rows.length; i++) {
+                    const row = res.rows[i];
+                    if (!row.value) {
+                        // it is more an unimportant warning as debug
+                        this._logger.debug(
+                            `${this.namespaceLog} getEnums(${JSON.stringify(
+                                options.enums
+                            )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(row)}`
+                        );
+                        continue;
+                    }
 
-                            list[id].enums = {};
-                            for (const es of Object.keys(_enums)) {
-                                for (const e of Object.keys(_enums[es])) {
-                                    if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members) {
-                                        continue;
-                                    }
-                                    if (
-                                        _enums[es][e].common.members.includes(id) ||
-                                        _enums[es][e].common.members.includes(channel) ||
-                                        _enums[es][e].common.members.includes(device)
-                                    ) {
-                                        list[id].enums[e] = _enums[es][e].common.name;
-                                    }
+                    const id: string = row.value._id;
+                    list[id] = row.value;
+                    if (_enums && id) {
+                        // get device or channel of this state and check it too
+                        const parts = id.split('.');
+                        parts.splice(parts.length - 1, 1);
+                        const channel = parts.join('.');
+                        parts.splice(parts.length - 1, 1);
+                        const device = parts.join('.');
+
+                        list[id].enums = {};
+                        for (const es of Object.keys(_enums)) {
+                            for (const e of Object.keys(_enums[es])) {
+                                if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members) {
+                                    continue;
+                                }
+                                if (
+                                    _enums[es][e].common.members.includes(id) ||
+                                    _enums[es][e].common.members.includes(channel) ||
+                                    _enums[es][e].common.members.includes(device)
+                                ) {
+                                    list[id].enums[e] = _enums[es][e].common.name;
                                 }
                             }
                         }
                     }
                 }
-                return tools.maybeCallbackWithError(options.callback, null, list);
-            });
+            }
+            return tools.maybeCallbackWithError(options.callback, null, list);
         });
     }
 
@@ -4479,7 +4489,7 @@ class AdapterClass extends EventEmitter {
         // delObject does the same as delForeignObject, but fixes the ID first
         id = this._utils.fixId(id);
 
-        // @ts-expect-error we have ensured that it is string
+        // @ts-expect-error we have ensured that it is string for the rest the method will validate again
         this.delForeignObject(id, options, callback);
     }
 
@@ -6564,8 +6574,7 @@ class AdapterClass extends EventEmitter {
 
     mkdir(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
     mkdir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
-    mkdir(_adapter: any, dirname: any, options: any, callback?: any) {
-        // TODO: add types
+    mkdir(_adapter: unknown, dirname: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6573,6 +6582,14 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsString(_adapter, '_adapter');
+        Utils.assertsString(dirname, 'dirname');
+        if (options !== undefined && options !== null) {
+            Utils.assertsObject(options, 'options');
+        }
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} mkdir not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -9866,12 +9883,25 @@ class AdapterClass extends EventEmitter {
      * @param {ioBroker.ErrorCallback} [callback]
      *
      */
-    async setForeignBinaryState(id: any, binary: any, options: any, callback?: any) {
-        // TODO: add types
+    setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = {};
         }
+
+        Utils.assertsString(id, 'id');
+        Utils.assertsOptionalCallback(callback, 'callback');
+        Utils.assertsBuffer(binary, 'binary');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+
+        return this._setForeignBinaryState({ id, binary, options, callback });
+    }
+
+    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions) {
+        const { id, binary, callback } = _options;
+        let { options } = _options;
 
         try {
             this._utils.validateId(id, true, options);
@@ -9996,7 +10026,7 @@ class AdapterClass extends EventEmitter {
      * @param {ioBroker.ErrorCallback} [callback]
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
-        // TODO add types
+        // we just keep any types here, because setForeign method will validate
         // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
         // id = this._utils.fixId(id, false);
         return this.setForeignBinaryState(id, binary, options, callback);

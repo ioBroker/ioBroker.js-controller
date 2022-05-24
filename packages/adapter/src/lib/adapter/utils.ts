@@ -313,6 +313,17 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
+    static assertsBuffer(value: unknown, name: string): asserts value is Buffer {
+        if (!Buffer.isBuffer(value)) {
+            throw new Error(`Paramter "${name}" needs to be a Buffer but type "${typeof value}" has been passed`);
+        }
+    }
+
+    /**
+     * Throws if type is not an optional callback
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
     static assertsOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
         if (value && typeof value !== 'function') {
             throw new Error(

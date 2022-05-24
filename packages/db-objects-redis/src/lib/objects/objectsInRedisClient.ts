@@ -1977,7 +1977,12 @@ export class ObjectsInRedisClient {
     }
 
     // simulate. redis has no dirs
-    mkdir(id: string, dirName: string, options: CallOptions | null, callback: ioBroker.ErrorCallback): void {
+    mkdir(
+        id: string,
+        dirName: string,
+        options: CallOptions | null | undefined,
+        callback?: ioBroker.ErrorCallback
+    ): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
