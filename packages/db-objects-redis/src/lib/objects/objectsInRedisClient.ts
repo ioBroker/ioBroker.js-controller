@@ -1204,14 +1204,19 @@ export class ObjectsInRedisClient {
     }
 
     // User has provided no callback, we will return the Promise
-    readFile(id: string, name: string, options: CallOptions | null): ioBroker.ReadFilePromise;
+    readFile(id: string, name: string, options?: CallOptions | null): ioBroker.ReadFilePromise;
 
     // User has provided a callback, thus we will call it
-    readFile(id: string, name: string, options: CallOptions | null, callback: ioBroker.ReadFileCallback): void;
     readFile(
         id: string,
         name: string,
-        options: CallOptions | null,
+        options: CallOptions | null | undefined,
+        callback: ioBroker.ReadFileCallback
+    ): void;
+    readFile(
+        id: string,
+        name: string,
+        options?: CallOptions | null,
         callback?: ioBroker.ReadFileCallback
     ): void | ioBroker.ReadFilePromise {
         if (typeof options === 'function') {

@@ -6660,8 +6660,7 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    readFile(_adapter: any, filename: any, options: any, callback?: any) {
-        // TODO: add types
+    readFile(_adapter: unknown, filename: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6670,6 +6669,14 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(_adapter, '_adapter');
+        Utils.assertsString(filename, 'filename');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsCallback(callback, 'callback');
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} readFile not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -6711,8 +6718,13 @@ class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    writeFile(_adapter: any, filename: any, data: any, options: any, callback?: any): void | Promise<void> {
-        // TODO: add types
+    writeFile(
+        _adapter: unknown,
+        filename: unknown,
+        data: unknown,
+        options: unknown,
+        callback?: unknown
+    ): void | Promise<void> {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6721,6 +6733,17 @@ class AdapterClass extends EventEmitter {
             callback = options;
             options = null;
         }
+
+        Utils.assertsString(_adapter, '_adapter');
+        Utils.assertsString(filename, 'filename');
+        if (options !== null && options !== undefined) {
+            Utils.assertsObject(options, 'options');
+        }
+        Utils.assertsOptionalCallback(callback, 'callback');
+        if (typeof data !== 'string') {
+            Utils.assertsBuffer(data, 'data');
+        }
+
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} writeFile not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -8591,7 +8614,9 @@ class AdapterClass extends EventEmitter {
         // we use any types here, because validation takes place in foreign method
         // get state does the same as getForeignState but fixes the id first
 
-        Utils.assertsString(id, 'id');
+        if (!tools.isObject(id)) {
+            Utils.assertsString(id, 'id');
+        }
         const fixedId = this._utils.fixId(id, false);
         return this.getForeignState(fixedId, options, callback);
     }
