@@ -980,6 +980,7 @@ class AdapterClass extends EventEmitter {
         } else {
             this._options = options;
         }
+
         const configFileName = tools.getConfigFileName();
 
         if (fs.pathExistsSync(configFileName)) {
@@ -11997,7 +11998,10 @@ class AdapterClass extends EventEmitter {
                     this._config.system.statisticsInterval =
                         parseInt(this._config.system.statisticsInterval, 10) || 15000;
                     if (!this._config.isInstall) {
-                        this._reportInterval = setInterval(this._reportStatus, this._config.system.statisticsInterval);
+                        this._reportInterval = setInterval(
+                            () => this._reportStatus(),
+                            this._config.system.statisticsInterval
+                        );
                         this._reportStatus();
                         const id = `system.adapter.${this.namespace}`;
                         adapterStates.setState(`${id}.compactMode`, {
@@ -12296,7 +12300,7 @@ class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
-                this._initStates(this._prepareInitAdapter);
+                this._initStates(this._prepareInitAdapter.bind(this));
             });
         };
 
