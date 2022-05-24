@@ -841,15 +841,15 @@ class AdapterClass extends EventEmitter {
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
     protected systemConfig?: Record<string, any>;
-    /** the configured date format of system.config, only vailable if requested via AdapterOptions `useFormatDate` */
+    /** the configured date format of system.config, only available if requested via AdapterOptions `useFormatDate` */
     protected dateFormat?: any;
-    /** if float comma instead of dot is used, only vailable if requested via AdapterOptions `useFormatDate` */
+    /** if float comma instead of dot is used, only available if requested via AdapterOptions `useFormatDate` */
     protected isFloatComma?: boolean;
-    /** configured language of system.config, only vailable if requested via AdapterOptions `useFormatDate` */
+    /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
     protected language?: ioBroker.Languages;
-    /** longitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
+    /** longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
     protected longitude?: number;
-    /** latitude configured in system.config, only vailable if requested via AdapterOptions `useFormatDate`*/
+    /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
     protected latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
