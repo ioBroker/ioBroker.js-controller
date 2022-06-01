@@ -52,12 +52,11 @@ export class PacketManager {
         if (process.platform !== 'win32') {
             if (!this.manager) {
                 const manager = await this._detectManager();
-                if (!manager) {
-                    throw new Error('No packet manager found');
+                if (manager) {
+                    this.logger && this.logger.debug(`Detected packet manager: ${manager}`);
+                    // Check if sudo is available for packet manager and store information
+                    this.sudo = (await this._isSudoAvailable()) && (await this._isSudoAvailableForManager());
                 }
-                this.logger && this.logger.debug(`Detected packet manager: ${manager}`);
-                // Check if sudo is available for packet manager and store information
-                this.sudo = (await this._isSudoAvailable()) && (await this._isSudoAvailableForManager());
             }
 
             // Check if dpkg is available
