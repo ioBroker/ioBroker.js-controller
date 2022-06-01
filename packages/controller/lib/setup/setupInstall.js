@@ -18,7 +18,7 @@ function Install(options) {
     const semver = require('semver');
     const child_process = require('child_process');
     const axios = require('axios');
-    const PacketManager = require('./setupPacketManager');
+    const PacketManager = require('@iobroker/js-controller-cli').setupPacketManager;
     const osPlatform = require('os').platform();
     const deepClone = require('deep-clone');
     const { URL } = require('url');
