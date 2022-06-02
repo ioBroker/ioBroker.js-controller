@@ -602,7 +602,7 @@ async function processCommand(command, args, params, callback) {
                     async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
-                            const Install = require('./setup/setupInstall.js');
+                            const Install = require('@iobroker/js-controller-cli').setupInstall;
                             const install = new Install({
                                 objects,
                                 states,
@@ -790,7 +790,7 @@ async function processCommand(command, args, params, callback) {
             url = url.trim();
 
             dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
+                const Install = require('@iobroker/js-controller-cli').setupInstall;
                 const install = new Install({
                     objects,
                     states,
@@ -893,7 +893,7 @@ async function processCommand(command, args, params, callback) {
             const adapterDir = tools.getAdapterDir(name);
 
             dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
+                const Install = require('@iobroker/js-controller-cli').setupInstall;
                 const install = new Install({
                     objects,
                     states,
@@ -1088,7 +1088,7 @@ async function processCommand(command, args, params, callback) {
 
             if (instance || instance === 0) {
                 dbConnect(params, async () => {
-                    const Install = require('./setup/setupInstall.js');
+                    const Install = require('@iobroker/js-controller-cli').setupInstall;
                     const install = new Install({
                         objects,
                         states,
@@ -1103,7 +1103,7 @@ async function processCommand(command, args, params, callback) {
                 });
             } else {
                 dbConnect(params, async () => {
-                    const Install = require('./setup/setupInstall.js');
+                    const Install = require('@iobroker/js-controller-cli').setupInstall;
                     const install = new Install({
                         objects,
                         states,

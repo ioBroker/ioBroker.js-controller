@@ -42,7 +42,7 @@ function Upgrade(options) {
     const Upload = require('@iobroker/js-controller-cli').setupUpload;
     const upload = new Upload(options);
 
-    const Install = require('./setupInstall.js');
+    const Install = require('@iobroker/js-controller-cli').setupInstall;
     const install = new Install(options);
 
     /**
