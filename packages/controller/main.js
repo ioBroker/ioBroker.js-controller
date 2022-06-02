@@ -2240,7 +2240,7 @@ async function startAdapterUpload() {
     }
 
     if (!upload) {
-        const Upload = require('./lib/setup/setupUpload');
+        const Upload = require('@iobroker/js-controller-cli').setupUpload;
         upload = new Upload({
             states: states,
             objects: objects

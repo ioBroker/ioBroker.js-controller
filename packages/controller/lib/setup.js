@@ -986,7 +986,7 @@ async function processCommand(command, args, params, callback) {
             const subTree = args[1];
             if (name) {
                 dbConnect(params, async () => {
-                    const Upload = require('./setup/setupUpload.js');
+                    const Upload = require('@iobroker/js-controller-cli').setupUpload;
                     const upload = new Upload({ states, objects });
 
                     if (name === 'all') {

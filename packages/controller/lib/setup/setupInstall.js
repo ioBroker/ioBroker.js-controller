@@ -65,7 +65,7 @@ function Install(options) {
 
     const tarballRegex = /\/tarball\/[^/]+$/;
 
-    const Upload = require('./setupUpload');
+    const Upload = require('@iobroker/js-controller-cli').setupUpload;
     const upload = new Upload(options);
 
     /**

@@ -16,5 +16,6 @@ module.exports = {
         plugin: require('./lib/cli/cliPlugin.js')
     },
     setupList: require('./lib/setup/setupList').List,
-    setupPacketManager: require('./lib/setup/setupPacketManager').PacketManager
+    setupPacketManager: require('./lib/setup/setupPacketManager').PacketManager,
+    setupUpload: require('./lib/setup/setupUpload').Upload
 };
