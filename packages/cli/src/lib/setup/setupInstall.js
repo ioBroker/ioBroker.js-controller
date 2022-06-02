@@ -16,10 +16,11 @@ const path = require('path');
 const semver = require('semver');
 const child_process = require('child_process');
 const axios = require('axios');
-const PacketManager = require('@iobroker/js-controller-cli').setupPacketManager;
 const osPlatform = require('os').platform();
 const deepClone = require('deep-clone');
 const { URL } = require('url');
+const { Upload } = require('./setupUpload');
+const { PacketManager } = require('./setupPacketManager');
 
 class Install {
     constructor(options) {
@@ -57,7 +58,6 @@ class Install {
 
         this.tarballRegex = /\/tarball\/[^/]+$/;
 
-        const { Upload } = require('./setupUpload');
         this.upload = new Upload(options);
     }
 
