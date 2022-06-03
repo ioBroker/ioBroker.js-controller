@@ -390,11 +390,7 @@ class Install {
         }
     }
 
-    private async _npmUninstall(
-        packageName: string,
-        options: Record<string, any> | null,
-        debug: boolean
-    ): Promise<void> {
+    private async _npmUninstall(packageName: string, debug: boolean): Promise<void> {
         const result = await tools.uninstallNodeModule(packageName, { debug: !!debug });
         if (!result.success) {
             throw new Error(`host.${hostname}: Cannot uninstall ${packageName}: ${result.exitCode}`);
@@ -1442,7 +1438,7 @@ class Install {
                 const ioPack = require(`${adapterNpm}/io-package.json`); // yep, it's that easy
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
-                    await this._npmUninstall(adapterNpm, null, false);
+                    await this._npmUninstall(adapterNpm, false);
                     // after uninstalling we have to restart the defined adapters
                     if (ioPack.common.restartAdapters) {
                         if (!Array.isArray(ioPack.common.restartAdapters)) {
