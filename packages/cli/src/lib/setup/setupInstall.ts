@@ -1620,7 +1620,7 @@ class Install {
 
         if (parsedUrl && parsedUrl.hostname === 'github.com') {
             if (!tools.isGithubPathname(parsedUrl.pathname)) {
-                return console.log(`Cannot install from GitHub. Invalid URL ${url}`);
+                return console.error(`Cannot install from GitHub. Invalid URL ${url}`);
             }
 
             // This is a URL we can parse
@@ -1689,6 +1689,11 @@ class Install {
                     name = match[1];
                 }
             }
+        }
+
+        if (name === 'js-controller') {
+            console.error(`Cannot install "js-controller" from url, use "${tools.appName.toLowerCase()} upgrade self"`);
+            return;
         }
 
         const options = {
