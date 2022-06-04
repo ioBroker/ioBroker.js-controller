@@ -26,7 +26,7 @@ const osPlatform = platform();
 
 export interface CLIInstallOptions {
     params: Record<string, any>;
-    // TODO type it
+    // TODO type it as soon as we have typed setup.js where this function origins
     getRepository: any;
     states: StatesRedisClient;
     objects: ObjectsRedisClient;
@@ -339,8 +339,7 @@ class Install {
 
             // Determine where the packet would be installed if npm succeeds
             // TODO: There's probably a better way to figure this out
-            /** @type {string} */
-            let packetDirName;
+            let packetDirName: string;
             if (options.packetName) {
                 packetDirName = tools.appName.toLowerCase() + '.' + options.packetName;
             } else {
@@ -352,7 +351,7 @@ class Install {
                 }
                 if (packetDirName.includes('/') && !packetDirName.startsWith('@')) {
                     // only scoped packages (e.g. @types/node ) may have a slash in their path
-                    packetDirName = packetDirName.substr(packetDirName.lastIndexOf('/') + 1);
+                    packetDirName = packetDirName.substring(packetDirName.lastIndexOf('/') + 1);
                 }
             }
             const installDir = tools.getAdapterDir(packetDirName);
@@ -834,7 +833,7 @@ class Install {
             instanceObj.common.loglevel = defaultLogLevel;
             // @ts-expect-error TODO should it be loglevel or logLevel
         } else if (!instanceObj.common.loglevel) {
-            // @ts-expect-error TODO should it be loglevel or logLevel
+            // @ts-expect-error TODO should it be loglevel or logLevel looked into my objects -> loglevel
             instanceObj.common.loglevel = 'info';
         }
 
@@ -1084,8 +1083,7 @@ class Install {
                     console.log(
                         `host.${hostname} Adapter ${adapter} cannot be deleted completely, because it is marked non-deletable.`
                     );
-                    // @ts-expect-error TODO fix types
-                    obj.installedVersion = '';
+                    obj.common.installedVersion = '';
                     obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = Date.now();
                     await this.objects.setObjectAsync(obj._id, obj);
@@ -1252,7 +1250,6 @@ class Install {
         }
     }
 
-    // TODO: is enumerateAdapterDocs the correct name???
     /**
      * Enumerates the docs of an adapter (or instance)
      * @param knownObjIDs The already known object ids
@@ -1575,7 +1572,7 @@ class Install {
      *
      * @param ids - id of the adapter/instance to check for
      */
-    async _removeCustomFromObjects(ids: string[]): Promise<void> {
+    private async _removeCustomFromObjects(ids: string[]): Promise<void> {
         // get all objects which have a custom attribute
         // @ts-expect-error # 1917
         const res = await this.objects.getObjectViewAsync('system', 'custom', {
@@ -1591,8 +1588,10 @@ class Install {
                         if (!obj) {
                             obj = await this.objects.getObjectAsync(row.id);
                         }
-                        // @ts-expect-error needs fix TODO
-                        obj.common.custom[id] = null;
+
+                        if (obj?.common?.custom) {
+                            delete obj.common.custom[id];
+                        }
                     }
                 }
 
