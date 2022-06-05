@@ -804,11 +804,7 @@ class Install {
             // @ts-expect-error types needed TODO
             delete instanceObj.common.news; // remove this information as it could be big, but it will be taken from repo
         }
-        // @ts-expect-error TODO what is this
-        if (instanceObj._rev) {
-            // @ts-expect-error TODO what is this
-            delete instanceObj._rev;
-        }
+
         instanceObj.common.enabled =
             options.enabled === true || options.enabled === false
                 ? options.enabled
