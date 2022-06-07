@@ -84,12 +84,12 @@ export function getInstanceName(instanceObjID: string): string {
 export async function enumInstances(
     objects: ObjectsClient,
     adapter?: string
-): Promise<ioBroker.InferGetObjectViewItemType<'system', 'instance'>[]> {
+): Promise<(ioBroker.InferGetObjectViewItemType<'system', 'instance'> | null)[]> {
     // if no adapter given all instances should be returned
     const startkey = `system.adapter.${adapter ? `${adapter}.` : ''}`;
     const data = await enumObjects(objects, 'instance', startkey);
     // because of startkey logic not only receive objects with the dot at the end, so filter them!
-    return data.filter(it => it._id.startsWith(startkey));
+    return data.filter(it => it && it._id.startsWith(startkey));
 }
 
 /**
@@ -97,7 +97,9 @@ export async function enumInstances(
  * @param objects The objects DB to use
  * @returns An array of host objects
  */
-export function enumHosts(objects: ObjectsClient): Promise<ioBroker.InferGetObjectViewItemType<'system', 'host'>[]> {
+export function enumHosts(
+    objects: ObjectsClient
+): Promise<(ioBroker.InferGetObjectViewItemType<'system', 'host'> | null)[]> {
     return enumObjects(objects, 'host', 'system.host.');
 }
 
@@ -111,7 +113,7 @@ export function enumObjects<T extends string>(
     objects: ObjectsClient,
     type: T,
     startkey: string
-): Promise<ioBroker.InferGetObjectViewItemType<'system', T>[]> {
+): Promise<(ioBroker.InferGetObjectViewItemType<'system', T> | null)[]> {
     return new Promise((resolve, reject) => {
         const endkey = `${startkey}\u9999`;
         // @ts-expect-error #1917
@@ -120,9 +122,8 @@ export function enumObjects<T extends string>(
                 return reject(err);
             }
 
-            let ret: ioBroker.InferGetObjectViewItemType<'system', T>[] = [];
+            let ret: (ioBroker.InferGetObjectViewItemType<'system', T> | null)[] = [];
             if (res && res.rows) {
-                // @ts-expect-error todo check
                 ret = res.rows.map(row => row.value);
             }
             resolve(ret);
