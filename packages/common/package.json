@@ -57,7 +57,9 @@
   "exports": {
     ".": "./build/index.js",
     "./package.json": "./package.json",
-    "./tools": "./build/lib/common/tools.js"
+    "./tools": "./build/lib/common/tools.js",
+    "./password": "./build/lib/common/password.js",
+    "./lib/common/password": "./build/lib/common/password.js"
   },
   "files": [
     "build/lib/",
