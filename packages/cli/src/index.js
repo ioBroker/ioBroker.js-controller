@@ -5,7 +5,7 @@ module.exports = {
     tools: require('./lib/cli/cliTools'),
     command: {
         object: require('./lib/cli/cliObjects.js'),
-        state: require('./lib/cli/cliStates.js'),
+        state: require('./lib/cli/cliStates.js').CLIStates,
         process: require('./lib/cli/cliProcess.js'),
         message: require('./lib/cli/cliMessage.js'),
         logs: require('./lib/cli/cliLogs.js'),

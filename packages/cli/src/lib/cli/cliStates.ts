@@ -1,25 +1,30 @@
-'use strict';
-const { tools } = require('@iobroker/js-controller-common');
+import { tools } from '@iobroker/js-controller-common';
+import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const CLI = require('./messages.js');
-const CLICommand = require('./cliCommand.js');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { formatValue } = require('./cliTools');
+import * as rl from 'readline-sync';
+
 const ALIAS_STARTS_WITH = 'alias.';
 
+type ResultTransform = (input: any) => any;
+
 /** Command iobroker state ... */
-module.exports = class CLIStates extends CLICommand {
-    /** @param {CLICommandOptions} options */
-    constructor(options) {
+export class CLIStates extends CLICommand {
+    constructor(options: CLICommandOptions) {
         super(options);
     }
 
     /**
      * Executes a command
-     * @param {any[]} args
+     * @param args
      */
-    execute(args) {
+    execute(args: any[]): void {
         const { callback, pretty, showHelp } = this.options;
         const command = args[0];
-        let resultTransform;
+        let resultTransform: ResultTransform;
 
         switch (command) {
             case 'get':
@@ -52,7 +57,7 @@ module.exports = class CLIStates extends CLICommand {
             case 'del':
                 return this.delete(args);
             case 'getDBVersion':
-                return this.getDBVersion(args);
+                return this.getDBVersion();
             case 'setDBVersion':
                 return this.setDBVersion();
             default:
@@ -65,23 +70,21 @@ module.exports = class CLIStates extends CLICommand {
     /**
      * Get the protocol version
      */
-    getDBVersion() {
+    getDBVersion(): void {
         const { callback, dbConnect } = this.options;
         dbConnect(async (objects, states) => {
             const version = await states.getProtocolVersion();
             console.log(`Current States DB protocol version: ${version}`);
-            return void callback();
+            return void callback(0);
         });
     }
 
     /**
      * Set protocol version
      */
-    setDBVersion() {
+    setDBVersion(): void {
         const { callback, dbConnect } = this.options;
         dbConnect(async (objects, states) => {
-            const rl = require('readline-sync');
-
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
                 limit: /^(yes|y|n|no)$/i,
                 defaultInput: 'no'
@@ -91,7 +94,7 @@ module.exports = class CLIStates extends CLICommand {
 
             if (answer !== 'y' && answer !== 'yes') {
                 console.log('Protocol version has not been changed!');
-                return void callback();
+                return void callback(0);
             }
 
             try {
@@ -101,36 +104,33 @@ module.exports = class CLIStates extends CLICommand {
                 return void callback(1);
             }
             console.log(`States DB protocol updated to version ${this.options.version}`);
-            return void callback();
+            return void callback(0);
         });
     }
 
     /**
      * Checks if state is a binary state
-     * @param {string} id id of the state
+     * @param id id of the state
      * @param {object} objects the objects db
-     * @param {ioBroker.OtherObject?} obj cached object
-     * @return {Promise<boolean>}
-     * @private
+     * @param {ioBroker.OtherObject?} _obj cached object
      */
-    async _isBinary(id, objects, obj) {
-        obj = obj || (await objects.getObjectAsync(id));
+    private async _isBinary(id: string, objects: ObjectsClient, _obj?: ioBroker.AnyObject | null): Promise<boolean> {
+        const obj = _obj || (await objects.getObjectAsync(id));
 
-        return !!(obj && (obj.binary || (obj.common && obj.common.type === 'file')));
+        return !!(obj && ('binary' in obj || (obj.common && 'type' in obj.common && obj.common.type === 'file')));
     }
 
     /**
      * Get and show binary state
      *
-     * @param {any[]} args
-     * @private
+     * @param args
      */
-    _getBinary(args) {
+    private _getBinary(args: any[]): void {
         const { callback, dbConnect } = this.options;
         const id = args[1];
         dbConnect(async (objects, states) => {
             try {
-                /** @type Buffer | null */
+                // @ts-expect-error #1917
                 const state = await states.getBinaryState(id);
 
                 if (!state) {
@@ -139,8 +139,9 @@ module.exports = class CLIStates extends CLICommand {
                 }
 
                 if (Buffer.isBuffer(state)) {
-                    console.log(state.toString(this.options.encoding));
-                    return void callback();
+                    // console.log would append new lines which will mess up the result
+                    process.stdout.write(state, this.options.encoding);
+                    return void callback(0);
                 } else {
                     CLI.error.stateNotBinary(id);
                     return void callback(1);
@@ -154,10 +155,10 @@ module.exports = class CLIStates extends CLICommand {
 
     /**
      * Returns the value of a state
-     * @param {any[]} args
-     * @param {(input: any) => any} resultTransform
+     * @param args
+     * @param resultTransform
      */
-    get_(args, resultTransform) {
+    get_(args: any[], resultTransform: ResultTransform): void {
         const { callback, dbConnect } = this.options;
         const id = args[1];
 
@@ -170,7 +171,7 @@ module.exports = class CLIStates extends CLICommand {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 objects.getObject(id, (err, targetObj) => {
                     // alias
-                    if (targetObj && targetObj.common && targetObj.common.alias && targetObj.common.alias.id) {
+                    if (targetObj && targetObj.common && 'alias' in targetObj.common && targetObj.common.alias.id) {
                         const aliasId =
                             typeof targetObj.common.alias.id.read === 'string'
                                 ? targetObj.common.alias.id.read
@@ -187,13 +188,14 @@ module.exports = class CLIStates extends CLICommand {
                                 if (!state) {
                                     CLI.error.stateNotFound(id);
                                 } else {
-                                    tools.formatAliasValue(sourceObj.common, targetObj.common, state, console, '');
+                                    // @ts-expect-error fix after #1917
+                                    tools.formatAliasValue(sourceObj?.common, targetObj.common, state, console, '');
                                     console.log(resultTransform(state));
                                 }
                             } catch (e) {
                                 CLI.error.unknown(e);
                             }
-                            return void callback();
+                            return void callback(0);
                         });
                     } else {
                         CLI.error.unknown(err || `Alias ${id} has no target`);
@@ -215,24 +217,24 @@ module.exports = class CLIStates extends CLICommand {
                 } catch (e) {
                     CLI.error.unknown(e);
                 }
-                return void callback();
+                return void callback(0);
             }
         });
     }
 
     /**
-     * @param {any[]} args
+     * @param args
      */
-    set_(args) {
+    set_(args: any[]): void {
         const { callback, dbConnect, showHelp } = this.options;
         // eslint-disable-next-line prefer-const
-        let [id, val, ack] = /** @type {[string, any, any]} */ (args.slice(1));
+        let [id, val, ack] = args.slice(1) as [string, any, any];
         const force = args.includes('--force') || args.includes('-f');
 
         if (val === undefined) {
             CLI.error.requiredArgumentMissing('value');
             showHelp();
-            return void callback();
+            return void callback(0);
         }
 
         if (ack !== undefined) {
@@ -283,6 +285,7 @@ module.exports = class CLIStates extends CLICommand {
                             // write target
                             states.setState(
                                 aliasId,
+                                // @ts-expect-error fix after #1917
                                 tools.formatAliasValue(obj.common, targetObj.common, newVal, console, ''),
                                 err => {
                                     if (err) {
@@ -290,7 +293,7 @@ module.exports = class CLIStates extends CLICommand {
                                         return void callback(1); // ?
                                     } else {
                                         CLI.success.stateUpdated(id, val, !!ack);
-                                        return void callback();
+                                        return void callback(0);
                                     }
                                 }
                             );
@@ -338,7 +341,7 @@ module.exports = class CLIStates extends CLICommand {
                             return void callback(1); // ?
                         } else {
                             CLI.success.stateUpdated(id, val, !!ack);
-                            return void callback();
+                            return void callback(0);
                         }
                     });
                 });
@@ -348,12 +351,11 @@ module.exports = class CLIStates extends CLICommand {
 
     /**
      * Deletes a state
-     * @param {any[]} args
+     * @param args
      */
-    delete(args) {
+    delete(args: any[]): void {
         const { callback, dbConnect } = this.options;
-        /** @type {string} */
-        const id = args[1];
+        const id: string = args[1];
         if (!id) {
             CLI.error.requiredArgumentMissing('id', 'state delete id');
             return void callback(1);
@@ -366,9 +368,9 @@ module.exports = class CLIStates extends CLICommand {
                     return void callback(3);
                 } else {
                     CLI.success.stateDeleted(id);
-                    return void callback();
+                    return void callback(0);
                 }
             })
         );
     }
-};
+}
