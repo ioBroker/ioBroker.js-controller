@@ -1,6 +1,6 @@
 'use strict';
+const CLI = require('./messages.js');
 const { CLICommand } = require('./cliCommand.js');
-const CLICommand = require('./cliCommand.js');
 const { formatValue } = require('./cliTools');
 const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
 
