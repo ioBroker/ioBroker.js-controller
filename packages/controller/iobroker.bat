@@ -9,10 +9,10 @@ if %1==fix (
             if %1==stop (
                 call serviceIoBroker.bat stop
             ) else (
-                node iobroker.js %1 %2 %3 %4 %5 %6 %7 %8
+                node iobroker.js %*
             )
         )
     ) else (
-        node iobroker.js %1 %2 %3 %4 %5 %6 %7 %8
+        node iobroker.js %*
     )
 )
