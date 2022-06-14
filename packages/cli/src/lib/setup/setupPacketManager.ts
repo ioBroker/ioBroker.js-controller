@@ -237,15 +237,18 @@ export class PacketManager {
                         ', '
                     )}. Please install them manually.`
                 );
-            } else {
-                notInstalled.length &&
+
+                if (notInstalled.length) {
                     this.logger.info(
                         `Installed the following ${this.manager || 'OS'} packages: ${notInstalled.join(', ')}`
                     );
-                installed.length &&
+                }
+
+                if (installed.length) {
                     this.logger.info(
                         `These ${this.manager || 'OS'} packages were already installed: ${installed.join(', ')}`
                     );
+                }
             }
         }
     }
