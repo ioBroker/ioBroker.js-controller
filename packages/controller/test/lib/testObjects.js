@@ -392,7 +392,7 @@ function register(it, expect, context) {
                 objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
                     expect(err).to.be.not.ok;
                     expect(data).to.be.equal('dataInFile');
-                    expect(mimeType).to.be.equal('text/javascript');
+                    expect(mimeType).to.be.equal('text/plain');
                     objects.rm(testId, 'myFile/*', (err, files) => {
                         expect(err).to.be.not.ok;
                         const file = files.find(f => f.file === 'abc.txt');
@@ -410,11 +410,11 @@ function register(it, expect, context) {
 
     it(testName + 'should read directory', done => {
         const objects = context.objects;
-        objects.writeFile(testId, 'myFile/abc1.txt', 'dataInFile', err => {
+        objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
             expect(err).to.be.not.ok;
-            objects.writeFile(testId, 'myFile/abc2.txt', Buffer.from('ABC'), err => {
+            objects.writeFile(testId, 'myFileA/abc2.txt', Buffer.from('ABC'), err => {
                 expect(err).to.be.not.ok;
-                objects.readDir(testId, 'myFile/', (err, data) => {
+                objects.readDir(testId, 'myFileA/', (err, data) => {
                     expect(err).to.be.not.ok;
                     expect(data.length).to.be.equal(2);
                     expect(data[0].file).to.be.equal('abc1.txt');

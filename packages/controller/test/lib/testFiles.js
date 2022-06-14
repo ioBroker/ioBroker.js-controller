@@ -166,7 +166,7 @@ function register(it, expect, context) {
         /** @type Buffer */
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
-        expect(mimeType).to.be.equal('text/javascript');
+        expect(mimeType).to.be.equal('application/octet-stream');
         expect(file.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
     });
 
