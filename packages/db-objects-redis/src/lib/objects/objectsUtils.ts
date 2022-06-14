@@ -7,15 +7,14 @@
  *
  */
 
-'use strict';
-import { Writable, WritableOptions } from 'stream';
-import path from 'path';
-import deepClone from 'deep-clone';
-import { tools } from '@iobroker/db-base';
-import * as CONSTS from './constants';
-import mime from 'mime';
+"use strict";
+import { Writable, WritableOptions } from "stream";
+import path from "path";
+import deepClone from "deep-clone";
+import { tools } from "@iobroker/db-base";
+import * as CONSTS from "./constants";
 
-export * as CONSTS from './constants';
+export * as CONSTS from "./constants";
 export const ERRORS = CONSTS.ERRORS;
 export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
 
@@ -41,19 +40,50 @@ export interface FileObject {
 
 export type CheckFileRightsCallback = (err: Error | null | undefined, options: Record<string, any>, opt?: any) => void;
 
-const textTypes = ['.js', '.json', '.svg'];
+const mimeTypes = {
+    ".css": { type: "text/css", binary: false },
+    ".bmp": { type: "image/bmp", binary: true },
+    ".png": { type: "image/png", binary: true },
+    ".jpg": { type: "image/jpeg", binary: true },
+    ".jpeg": { type: "image/jpeg", binary: true },
+    ".gif": { type: "image/gif", binary: true },
+    ".ico": { type: "image/x-icon", binary: true },
+    ".webp": { type: "image/webp", binary: true },
+    ".wbmp": { type: "image/vnd.wap.wbmp", binary: true },
+    ".tif": { type: "image/tiff", binary: true },
+    ".js": { type: "application/javascript", binary: false },
+    ".html": { type: "text/html", binary: false },
+    ".htm": { type: "text/html", binary: false },
+    ".json": { type: "application/json", binary: false },
+    ".md": { type: "text/markdown", binary: false },
+    ".xml": { type: "text/xml", binary: false },
+    ".svg": { type: "image/svg+xml", binary: false },
+    ".eot": { type: "application/vnd.ms-fontobject", binary: true },
+    ".ttf": { type: "application/font-sfnt", binary: true },
+    ".cur": { type: "application/x-win-bitmap", binary: true },
+    ".woff": { type: "application/font-woff", binary: true },
+    ".wav": { type: "audio/wav", binary: true },
+    ".mp3": { type: "audio/mpeg3", binary: true },
+    ".avi": { type: "video/avi", binary: true },
+    ".qt": { type: "video/quicktime", binary: true },
+    ".ppt": { type: "application/vnd.ms-powerpoint", binary: true },
+    ".pptx": { type: "application/vnd.ms-powerpoint", binary: true },
+    ".doc": { type: "application/msword", binary: true },
+    ".docx": { type: "application/msword", binary: true },
+    ".xls": { type: "application/vnd.ms-excel", binary: true },
+    ".xlsx": { type: "application/vnd.ms-excel", binary: true },
+    ".mp4": { type: "video/mp4", binary: true },
+    ".mkv": { type: "video/mkv", binary: true },
+    ".zip": { type: "application/zip", binary: true },
+    ".ogg": { type: "audio/ogg", binary: true },
+    ".manifest": { type: "text/cache-manifest", binary: false },
+    ".pdf": { type: "application/pdf", binary: true },
+    ".gz": { type: "application/gzip", binary: true },
+    ".gzip": { type: "application/gzip", binary: true }
+} as const;
 
-function isKnownMimeType(ext: string): { mimeType: string; isBinary: boolean } | null {
-    try {
-        const mimeType = mime.getType(ext);
-        if (mimeType) {
-            return { mimeType, isBinary: mimeType.startsWith('text/') || textTypes.includes(ext) };
-        }
-    } catch (error) {
-        // ignore
-    }
-
-    return null;
+function isKnownMimeType(ext: string): ext is keyof typeof mimeTypes {
+    return ext in mimeTypes;
 }
 
 // For objects
@@ -97,20 +127,21 @@ let groups: ioBroker.GroupObject[] = [];
 
 export function getMimeType(ext: string[] | string): { mimeType: string; isBinary: boolean } {
     if (!ext) {
-        return { mimeType: 'application/octet-stream', isBinary: true };
+        return { mimeType: "text/html", isBinary: false };
     }
-    // if it is result of match, get '.ext'
     if (ext instanceof Array) {
         ext = ext[0];
     }
     ext = ext.toLowerCase();
+    let mimeType = "text/javascript";
+    let isBinary = false;
 
-    const _type = isKnownMimeType(ext);
-    if (_type) {
-        return _type;
-    } else {
-        return { mimeType: 'application/octet-stream', isBinary: true };
+    if (isKnownMimeType(ext)) {
+        mimeType = mimeTypes[ext].type;
+        isBinary = mimeTypes[ext].binary;
     }
+
+    return { mimeType, isBinary };
 }
 
 /**
@@ -118,6 +149,7 @@ export function getMimeType(ext: string[] | string): { mimeType: string; isBinar
  */
 export class WMStrm extends Writable {
     private readonly key: string;
+
     constructor(key: string, options: WritableOptions) {
         super(options); // init super
         this.key = key; // save key
@@ -139,7 +171,7 @@ export class WMStrm extends Writable {
             memStore[this.key] = Buffer.concat([memStore[this.key], buffer]);
         }
         if (!cb) {
-            throw new Error('Callback is empty');
+            throw new Error("Callback is empty");
         }
         cb();
     }
@@ -154,20 +186,20 @@ export function insert(
     _obj: any,
     callback: (err: Error | null | undefined, param: null) => void
 ): WMStrm {
-    if (typeof options === 'string') {
+    if (typeof options === "string") {
         options = { mimeType: options };
     }
 
     // return pipe for write into redis
     const strm = new WMStrm(`${id}/${attName}`, {});
-    strm.on('finish', () => {
+    strm.on("finish", () => {
         let error: null | string = null;
-        if (!memStore[id + '/' + attName]) {
+        if (!memStore[id + "/" + attName]) {
             error = `File ${id} / ${attName} is empty`;
         }
-        objects.writeFile(id, attName, memStore[id + '/' + attName] || '', options, () => {
-            if (memStore[id + '/' + attName] !== undefined) {
-                delete memStore[id + '/' + attName];
+        objects.writeFile(id, attName, memStore[id + "/" + attName] || "", options, () => {
+            if (memStore[id + "/" + attName] !== undefined) {
+                delete memStore[id + "/" + attName];
             }
             return tools.maybeCallbackWithError(callback, error, null);
         });
@@ -181,7 +213,7 @@ export function checkFile(
     flag: any,
     defaultNewAcl?: ACLObject | null
 ): boolean {
-    if (typeof fileOptions.acl !== 'object') {
+    if (typeof fileOptions.acl !== "object") {
         fileOptions = {};
         fileOptions.mimeType = deepClone(fileOptions);
         fileOptions.acl = {
@@ -241,9 +273,9 @@ export function checkFileRights(
     const _options = options || {};
     if (!_options.user) {
         // Before files converted, lets think: if no options it is admin
-        _options.user = 'system.user.admin';
+        _options.user = "system.user.admin";
         _options.params = _options;
-        _options.group = 'system.group.administrator';
+        _options.group = "system.group.administrator";
     }
 
     if (!_options.acl) {
@@ -280,7 +312,7 @@ export function checkFileRights(
 function getDefaultAdminRights(
     acl?: ioBroker.ObjectPermissions,
     _isState?: boolean
-): Omit<ioBroker.PermissionSet, 'user' | 'groups'> {
+): Omit<ioBroker.PermissionSet, "user" | "groups"> {
     return {
         ...acl,
         file: {
@@ -333,7 +365,7 @@ export function getUserGroup(
     user: string,
     callback?: GetUserGroupCallback
 ): Promise<GetUserGroupPromiseReturn> | void {
-    if (!user || typeof user !== 'string' || !user.startsWith(USER_STARTS_WITH)) {
+    if (!user || typeof user !== "string" || !user.startsWith(USER_STARTS_WITH)) {
         console.log(`invalid user name: ${user}`);
         user = JSON.stringify(user);
         // deep copy
@@ -352,7 +384,7 @@ export function getUserGroup(
     let error: Error;
     // Read all groups
     objects.getObjectList(
-        { startkey: 'system.group.', endkey: 'system.group.\u9999' },
+        { startkey: "system.group.", endkey: "system.group.\u9999" },
         { checked: true },
         (err: Error, arr: { rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>> }) => {
             if (err) {
@@ -375,7 +407,7 @@ export function getUserGroup(
             }
 
             objects.getObjectList(
-                { startkey: 'system.user.', endkey: 'system.user.\u9999' },
+                { startkey: "system.user.", endkey: "system.user.\u9999" },
                 { checked: true },
                 (err?: Error | null, arr?: { rows: ioBroker.GetObjectListItem[] }) => {
                     if (err) {
@@ -401,7 +433,7 @@ export function getUserGroup(
                             if (!users[u]) {
                                 error =
                                     error ||
-                                    `Unknown user in group "${groups[g]._id.replace('system.group.', '')}": ${u}`;
+                                    `Unknown user in group "${groups[g]._id.replace("system.group.", "")}": ${u}`;
                                 continue;
                             }
                             users[u].groups.push(groups[g]._id);
@@ -517,31 +549,31 @@ export function getUserGroup(
 
 export function sanitizePath(id: string, name: string): { id: string; name: string } {
     if (!name) {
-        name = '';
+        name = "";
     }
-    if (name[0] === '/') {
+    if (name[0] === "/") {
         name = name.substring(1);
     }
 
     if (!id) {
-        throw new Error('Empty ID');
+        throw new Error("Empty ID");
     }
 
-    id = id.replace(/[\][*,;'"`<>\\?/]/g, ''); // remove all invalid characters from states plus slashes
-    id = id.replace(/\.\./g, ''); // do not allow to write in parent directories
+    id = id.replace(/[\][*,;'"`<>\\?/]/g, ""); // remove all invalid characters from states plus slashes
+    id = id.replace(/\.\./g, ""); // do not allow to write in parent directories
 
-    if (name.includes('..')) {
-        name = path.normalize('/' + name);
+    if (name.includes("..")) {
+        name = path.normalize("/" + name);
     }
-    if (name.includes('..')) {
+    if (name.includes("..")) {
         // Also after normalization we still have .. in it - should not happen if normalize worked correctly
-        name = name.replace(/\.\./g, '');
-        name = path.normalize('/' + name);
+        name = name.replace(/\.\./g, "");
+        name = path.normalize("/" + name);
     }
 
-    name = name.replace(/\\/g, '/'); // replace win path backslashes
+    name = name.replace(/\\/g, "/"); // replace win path backslashes
 
-    if (name[0] === '/') {
+    if (name[0] === "/") {
         name = name.substring(1);
     } // do not allow absolute paths
 
@@ -554,7 +586,7 @@ export function checkObject(
     flag: CONSTS.GenericAccessFlags
 ): boolean {
     // read rights of object
-    if (!obj || !('common' in obj) || !obj.acl || flag === CONSTS.ACCESS_LIST) {
+    if (!obj || !("common" in obj) || !obj.acl || flag === CONSTS.ACCESS_LIST) {
         return true;
     }
 
@@ -640,7 +672,7 @@ export function checkObjectRights(
     }
 
     // if user or group objects
-    if (typeof id === 'string' && (id.startsWith(USER_STARTS_WITH) || id.startsWith(GROUP_STARTS_WITH))) {
+    if (typeof id === "string" && (id.startsWith(USER_STARTS_WITH) || id.startsWith(GROUP_STARTS_WITH))) {
         // If user may write
         if (flag === CONSTS.ACCESS_WRITE && !options.acl.users.write) {
             // write
