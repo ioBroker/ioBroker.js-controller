@@ -310,10 +310,9 @@ export class List {
                                     const id = obj.value._id;
                                     const type = obj.value.type;
 
-                                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                     console.log(`${id.padStart(39)}: ${type.padStart(39)} - ${name || ''}`);
                                 } else {
-                                    // @ts-expect-error if we would have an design object it would have no type
+                                    // @ts-expect-error if we would have a design object it would have no type
                                     console.log(obj.value._id);
                                 }
                             }
@@ -460,7 +459,6 @@ export class List {
                                         host = host.padEnd(40);
                                     }
 
-                                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                     let text = `${id}: ${name || ''}: ${host} - ${
                                         row.value.common.enabled ? ' enabled' : 'disabled'
                                     }`;
@@ -803,7 +801,6 @@ export class List {
                                 );
                                 const id = obj.value._id.substring(5);
 
-                                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                                 console.log(`${id.padEnd(19)}(${name})`);
                                 console.log(
                                     '-------------------------------------------------------------------------------------'
