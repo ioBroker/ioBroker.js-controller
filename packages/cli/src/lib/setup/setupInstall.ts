@@ -40,6 +40,12 @@ interface DownloadPacketReturnObject {
     packetName: string;
 }
 
+export interface CLIDownloadPacketOptions {
+    /** will stop the db before upgrade ONLY use it for controller upgrade */
+    stopDb?: boolean;
+    [other: string]: any;
+}
+
 interface CreateInstanceOptions {
     instance?: number;
     ignoreIfExists?: boolean;
@@ -130,7 +136,7 @@ class Install {
     async downloadPacket(
         repoUrl: string | undefined,
         packetName: string,
-        options?: Record<string, any>,
+        options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[]
     ): Promise<DownloadPacketReturnObject | void> {
         let url;
@@ -208,11 +214,11 @@ class Install {
 
             if (!url && packetName !== 'example') {
                 if (options.stopDb) {
-                    if (this.objects && this.objects.destroy) {
+                    if (this.objects.destroy) {
                         await this.objects.destroy();
                         console.log('Stopped Objects DB');
                     }
-                    if (this.states && this.states.destroy) {
+                    if (this.states.destroy) {
                         await this.states.destroy();
                         console.log('Stopped States DB');
                     }
@@ -228,11 +234,11 @@ class Install {
                 return { packetName, stoppedList };
             } else if (url && url.match(this.tarballRegex)) {
                 if (options.stopDb) {
-                    if (this.objects && this.objects.destroy) {
+                    if (this.objects.destroy) {
                         await this.objects.destroy();
                         console.log('Stopped Objects DB');
                     }
-                    if (this.states && this.states.destroy) {
+                    if (this.states.destroy) {
                         await this.states.destroy();
                         console.log('Stopped States DB');
                     }
@@ -357,7 +363,7 @@ class Install {
             const installDir = tools.getAdapterDir(packetDirName);
 
             // inject the installedFrom information in io-package
-            if (installDir !== null && fs.existsSync(installDir)) {
+            if (installDir && fs.existsSync(installDir)) {
                 const ioPackPath = path.join(installDir, 'io-package.json');
                 let iopack;
                 try {
@@ -518,17 +524,17 @@ class Install {
         let adapterConf: Record<string, any>;
         if (!_adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
-            if (!fs.existsSync(`${adapterDir}/io-package.json`)) {
-                console.error(`host.${hostname} Adapter directory "${adapterDir}" does not exists`);
-                // @ts-expect-error TODO can we just .toString() to make it happy?
-                throw new Error(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
+            if (!adapterDir || !fs.existsSync(`${adapterDir}/io-package.json`)) {
+                const message = `Adapter directory "${adapterDir}" does not exists`;
+                console.error(`host.${hostname} ${message}`);
+                throw new Error(message);
             }
             try {
-                adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
+                adapterConf = await fs.readJSON(path.join(adapterDir, 'io-package.json'));
             } catch (err) {
-                console.error(`host.${hostname} error: reading io-package.json ${err.message}`, adapter);
-                // @ts-expect-error TODO can we just .toString() to make it happy?
-                throw new Error(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
+                const message = `error reading io-package.json: ${err.message}`;
+                console.error(`host.${hostname} ${message}`, adapter);
+                throw new Error(message);
             }
         } else {
             adapterConf = _adapterConf;
@@ -775,14 +781,14 @@ class Install {
         if (options.instance !== undefined) {
             instance = options.instance;
             // find max instance
-            if (res.rows.find(obj => parseInt(obj.id.split('.').pop() as string, 10) === instance)) {
+            if (res.rows.find(obj => parseInt(obj.id.split('.').pop()!, 10) === instance)) {
                 console.error(`host.${hostname} error: instance yet exists`);
                 return this.processExit(EXIT_CODES.INSTANCE_ALREADY_EXISTS);
             }
         } else {
             // find max instance
             for (const row of res.rows) {
-                const iInstance = parseInt(row.id.split('.').pop() as string, 10);
+                const iInstance = parseInt(row.id.split('.').pop()!, 10);
                 if (instance === null || iInstance > instance) {
                     instance = iInstance;
                 }
@@ -844,7 +850,7 @@ class Install {
 
         const adapterDir = tools.getAdapterDir(adapter);
 
-        if (adapterDir !== null && fs.existsSync(path.join(adapterDir, 'www'))) {
+        if (adapterDir && fs.existsSync(path.join(adapterDir, 'www'))) {
             objs.push({
                 _id: `system.adapter.${adapter}.upload`,
                 type: 'state',
@@ -995,24 +1001,31 @@ class Install {
 
             // add non-duplicates to the list (if instance not given -> only for this host)
             const newObjIDs = doc.rows
-                // only the ones with an ID that matches the pattern
-                .filter(row => row?.value && row.value._id)
-                .filter(row => row?.value && instanceRegex.test(row.value._id))
+                // only the ones with an ID ...
+                .filter(
+                    (
+                        row
+                    ): row is ioBroker.GetObjectViewItem<ioBroker.InstanceObject> & {
+                        value: ioBroker.InstanceObject;
+                    } => !!row?.value?._id
+                )
+                //  ... that matches the pattern
+                .filter(row => instanceRegex.test(row.value._id))
                 // if instance given also delete from foreign host else only instance on this host
                 .filter(row => {
-                    if (instance !== undefined || row?.value?.common.host === hostname) {
+                    if (instance !== undefined || !row.value.common?.host || row.value.common?.host === hostname) {
                         return true;
                     } else {
-                        if (row.value && !notDeleted.includes(row.value._id)) {
+                        if (!notDeleted.includes(row.value._id)) {
                             notDeleted.push(row.value._id);
                         }
                         return false;
                     }
                 })
-                .map(row => row.value!._id)
+                .map(row => row.value._id)
                 .filter(id => !knownObjIDs.includes(id));
-            // eslint-disable-next-line prefer-spread
-            knownObjIDs.push.apply(knownObjIDs, newObjIDs);
+
+            knownObjIDs.push(...newObjIDs);
 
             if (newObjIDs.length > 0) {
                 console.log(
@@ -1048,11 +1061,9 @@ class Install {
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => knownObjIDs.indexOf(id) === -1);
-                // eslint-disable-next-line prefer-spread
-                knownObjIDs.push.apply(knownObjIDs, newObjs);
+                knownObjIDs.push(...newObjs);
                 // meta ids can also be present as files
-                // eslint-disable-next-line prefer-spread
-                metaFilesToDelete.push.apply(metaFilesToDelete, newObjs);
+                metaFilesToDelete.push(...newObjs);
 
                 if (newObjs.length) {
                     console.log(`host.${hostname} Counted ${newObjs.length} meta of ${adapter}`);
@@ -1122,8 +1133,8 @@ class Install {
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
-                // eslint-disable-next-line prefer-spread
-                knownObjIDs.push.apply(knownObjIDs, newObjs);
+
+                knownObjIDs.push(...newObjs);
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} devices of ${adapter}${
@@ -1161,8 +1172,8 @@ class Install {
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
-                // eslint-disable-next-line prefer-spread
-                knownObjIDs.push.apply(knownObjIDs, newObjs);
+
+                knownObjIDs.push(...newObjs);
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} channels of ${adapter}${
@@ -1202,8 +1213,8 @@ class Install {
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
-                // eslint-disable-next-line prefer-spread
-                knownObjIDs.push.apply(knownObjIDs, newObjs);
+
+                knownObjIDs.push(...newObjs);
 
                 if (newObjs.length > 0) {
                     console.log(
@@ -1228,8 +1239,7 @@ class Install {
                     .filter(id => sysAdapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
 
-                // eslint-disable-next-line prefer-spread
-                knownObjIDs.push.apply(knownObjIDs, newObjs);
+                knownObjIDs.push(...newObjs);
 
                 if (newObjs.length > 0) {
                     console.log(
@@ -1266,8 +1276,8 @@ class Install {
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id) || sysAdapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
-                // eslint-disable-next-line prefer-spread
-                knownObjIDs.push.apply(knownObjIDs, newObjs);
+
+                knownObjIDs.push(...newObjs);
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} objects of ${adapter}${
@@ -1301,8 +1311,7 @@ class Install {
                     // add non-duplicates to the list
                     const newStates = ids.filter(id => !knownStateIDs.includes(id));
 
-                    // eslint-disable-next-line prefer-spread
-                    knownStateIDs.push.apply(knownStateIDs, newStates);
+                    knownStateIDs.push(...newStates);
 
                     if (newStates.length) {
                         console.log(`host.${hostname} Counted ${newStates.length} states (${pattern}) from states`);
@@ -1367,7 +1376,7 @@ class Install {
             // try to delete the current state
             try {
                 // @ts-expect-error #1917
-                await this.states.delState(stateIDs.pop() as string);
+                await this.states.delState(stateIDs.pop()!);
             } catch (err) {
                 // yep that works!
                 err !== tools.ERRORS.ERROR_NOT_FOUND &&
@@ -1402,13 +1411,13 @@ class Install {
             }
             // try to delete the current object
             try {
-                const id = objIDs.pop() as string;
+                const id = objIDs.pop()!;
                 await this.objects.delObjectAsync(id);
                 await tools.removeIdFromAllEnums(this.objects, id, allEnums);
-            } catch (err) {
-                err !== tools.ERRORS.ERROR_NOT_FOUND &&
-                    err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
-                    console.error(`host.${hostname} cannot delete objects: ${err.message}`);
+            } catch (e) {
+                if (e !== tools.ERRORS.ERROR_NOT_FOUND && e.message !== tools.ERRORS.ERROR_NOT_FOUND) {
+                    console.error(`host.${hostname} cannot delete objects: ${e.message}`);
+                }
             }
         }
     }
@@ -1484,7 +1493,7 @@ class Install {
             if (notDeletedObjectIDs.length) {
                 // just delete all instances on this host and then delete npm
                 for (const knownObjectID of knownObjectIDs) {
-                    await this.deleteInstance(adapter, parseInt(knownObjectID.split('.').pop() as string));
+                    await this.deleteInstance(adapter, parseInt(knownObjectID.split('.').pop()!));
                 }
 
                 // remove adapter from custom
@@ -1663,7 +1672,7 @@ class Install {
                 name = match[1];
             } else if (url.match(/\.(tgz|gz|zip|tar\.gz)$/)) {
                 const parts = url.split('/');
-                const last = parts.pop() as string;
+                const last = parts.pop()!;
                 const mm = last.match(/\.([-_\w\d]+)-[.\d]+/);
                 if (mm) {
                     name = mm[1];
@@ -1872,7 +1881,7 @@ class Install {
                 row.value &&
                 row.value.common.name === adapter &&
                 row.value.common.host === scopedHostname &&
-                parseInt(row.value._id.split('.').pop() as string) !== instance
+                parseInt(row.value._id.split('.').pop()!) !== instance
             ) {
                 return true;
             }

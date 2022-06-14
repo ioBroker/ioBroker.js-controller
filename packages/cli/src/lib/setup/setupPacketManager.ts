@@ -29,9 +29,7 @@ export class PacketManager {
     private sudo: boolean;
     private readonly _readyPromise: Promise<void>;
 
-    constructor(_options?: PacketManagerOptions) {
-        const options = _options || { logLevel: LOG_LEVELS.info };
-
+    constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
         // detect apt, apt-get or yum
         this.manager = (options && options.manager) || '';
         this.logger = (options && options.logger) || {
@@ -48,7 +46,7 @@ export class PacketManager {
     }
 
     /** Starts the initialization process */
-    async _init(): Promise<void> {
+    private async _init(): Promise<void> {
         if (process.platform !== 'win32') {
             if (!this.manager) {
                 const manager = await this._detectManager();
@@ -74,7 +72,7 @@ export class PacketManager {
      * @param cmd The command to test
      * @returns True if the execution was successful, false otherwise
      */
-    async _isCmd(cmd: string): Promise<boolean> {
+    private async _isCmd(cmd: string): Promise<boolean> {
         try {
             const { stderr } = await execAsync(cmd);
             return !stderr;
@@ -88,7 +86,7 @@ export class PacketManager {
         }
     }
 
-    async _isDpkgAvailable(): Promise<boolean> {
+    private async _isDpkgAvailable(): Promise<boolean> {
         try {
             const { stdout, stderr } = await execAsync('dpkg');
             return !!((stdout && stdout.includes('dpkg --help')) || (stderr && stderr.includes('dpkg --help')));
@@ -106,7 +104,7 @@ export class PacketManager {
         }
     }
 
-    async _isSudoAvailable(): Promise<boolean> {
+    private async _isSudoAvailable(): Promise<boolean> {
         try {
             const { stdout, stderr } = await execAsync('sudo');
             return !!((stdout && stdout.includes('sudo -h')) || (stderr && stderr.includes('sudo -h')));
@@ -121,7 +119,7 @@ export class PacketManager {
         }
     }
 
-    async _isSudoAvailableForManager(): Promise<boolean> {
+    private async _isSudoAvailableForManager(): Promise<boolean> {
         try {
             await execAsync(`sudo -n ${this.manager} -v`);
             return true;
@@ -135,7 +133,7 @@ export class PacketManager {
     /**
      * Detects which package manager is installed. Throws if none can be found
      */
-    async _detectManager(): Promise<Manager | void> {
+    private async _detectManager(): Promise<Manager | void> {
         for (const cmd of ['apt-get', 'apt', 'yum'] as const) {
             if (await this._isCmd(cmd)) {
                 this.manager = cmd;
@@ -145,14 +143,15 @@ export class PacketManager {
         this.logger && this.logger.info('No supported packet manager found');
     }
 
-    async _listPackages(): Promise<string | Buffer> {
+    private async _listPackages(): Promise<string> {
         if (!this.dpkg) {
             throw new Error('No dpkg detected');
         }
 
         try {
             const { stdout } = await execAsync(`${this.sudo ? 'sudo ' : ''}dpkg -l`);
-            return stdout || '';
+            const res = Buffer.isBuffer(stdout) ? stdout.toString('utf-8') : stdout;
+            return res || '';
         } catch {
             // Ignore error
             return '';
@@ -176,22 +175,21 @@ export class PacketManager {
      * Installs a single packet using the configured manager and returns the stdout if there was any
      * @param packet The packet to install
      */
-    async _installPacket(packet: string): Promise<any> {
+    private async _installPacket(packet: string): Promise<void> {
         if (!this.manager) {
             // ignore
-            return true;
+            return;
         }
 
         // if it fails, let it throw and get caught by _installPackets
-        const { stdout } = await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} install ${packet} -y`);
-        return stdout;
+        await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} install ${packet} -y`);
     }
 
     /**
      * Installs multiple packets. The returned Promise contains the list of failed packets
      * @param packets
      */
-    async _installPackets(packets: string[]): Promise<string[]> {
+    private async _installPackets(packets: string[]): Promise<string[]> {
         const failed: string[] = [];
 
         if (packets && packets.length) {

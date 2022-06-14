@@ -13,6 +13,7 @@ import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 import axios from 'axios';
 import mime from 'mime';
+import { join } from 'path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
@@ -104,8 +105,14 @@ export class Upload {
     // Check if some adapters must be restarted and restart them
     async checkRestartOther(adapter: string): Promise<void> {
         const adapterDir = tools.getAdapterDir(adapter);
+
+        if (!adapterDir) {
+            console.error(`Adapter directory of adapter "${adapter}" not found`);
+            return;
+        }
+
         try {
-            const adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
+            const adapterConf = await fs.readJSON(join(adapterDir, 'io-package.json'));
             if (adapterConf.common.restartAdapters) {
                 if (!Array.isArray(adapterConf.common.restartAdapters)) {
                     // its not an array, now it can only be a single adapter as string
@@ -136,15 +143,15 @@ export class Upload {
                                     await this.objects.setObjectAsync(obj._id, obj);
                                     console.log(`Adapter "${obj._id}" restarted.`);
                                 }
-                            } catch (err) {
-                                console.error(`Cannot restart adapter "${instance}": ${err.message}`);
+                            } catch (e) {
+                                console.error(`Cannot restart adapter "${instance}": ${e.message}`);
                             }
                         }
                     }
                 }
             }
-        } catch (err) {
-            console.error(`Cannot parse ${adapterDir}/io-package.json: ${err.message}`);
+        } catch (e) {
+            console.error(`Cannot parse ${adapterDir}/io-package.json: ${e.message}`);
         }
     }
 
@@ -183,17 +190,16 @@ export class Upload {
         };
 
         this.states.subscribeMessage(from, () => {
-            const obj: Partial<ioBroker.Message> = {
+            const obj: Omit<ioBroker.Message, '_id'> = {
                 command,
                 message: message,
-                from: `system.host.${hostname}_cli_${time}`
-            };
-
-            obj.callback = {
-                message,
-                id: this.callbackId++,
-                ack: false,
-                time
+                from: `system.host.${hostname}_cli_${time}`,
+                callback: {
+                    message,
+                    id: this.callbackId++,
+                    ack: false,
+                    time
+                }
             };
 
             if (this.callbackId > 0xffffffff) {
@@ -240,7 +246,7 @@ export class Upload {
                     if (!instance) {
                         // no one alive instance found
                         const adapterDir = tools.getAdapterDir(adapter);
-                        if (adapterDir === null || !fs.existsSync(adapterDir)) {
+                        if (!adapterDir || !fs.existsSync(adapterDir)) {
                             console.warn(
                                 `No alive host found which has the adapter ${adapter} installed! No upload possible. Skipped.`
                             );
@@ -267,7 +273,7 @@ export class Upload {
             target = target.substring(1);
         }
         if (target[target.length - 1] === '/') {
-            let name = source.split('/').pop() as string;
+            let name = source.split('/').pop()!;
             name = name.split('?')[0];
             if (!name.includes('.')) {
                 name = 'index.html';
@@ -412,7 +418,7 @@ export class Upload {
                 attNameArr = ['', file.substring(tools.appName.length + 2)];
             }
 
-            let attName = attNameArr.pop() as string;
+            let attName = attNameArr.pop()!;
             attName = attName.split('/').slice(2).join('/');
             if (files.length - f > 100) {
                 (!f || !((files.length - f - 1) % 50)) &&
@@ -594,7 +600,7 @@ export class Upload {
             await this.objects.setObjectAsync(id, {
                 type: 'meta',
                 common: {
-                    name: id.split('.').pop() as string,
+                    name: id.split('.').pop()!,
                     type: isAdmin ? 'admin' : 'www'
                 },
                 from: `system.host.${tools.getHostName()}.cli`,
@@ -716,7 +722,7 @@ export class Upload {
                     newObject.common = this.extendCommon(
                         newObject.common,
                         ioPack.common,
-                        newObject._id.split('.').pop() as string
+                        newObject._id.split('.').pop()!
                     );
                     newObject.native = this.extendNative(newObject.native, ioPack.native);
 
@@ -831,7 +837,12 @@ export class Upload {
             } catch {
                 // ignore err
             }
-            const obj: Partial<ioBroker.AdapterObject> = _obj || {};
+            const obj: Omit<ioBroker.AdapterObject, '_id'> = _obj || {
+                common: ioPack.common,
+                native: ioPack.native,
+                type: 'adapter'
+            };
+
             obj.common = ioPack.common || {};
             obj.native = ioPack.native || {};
             // protected/encryptedNative and notifications also need to be updated
@@ -861,7 +872,7 @@ export class Upload {
             obj.ts = Date.now();
 
             try {
-                await this.objects.setObjectAsync(`system.adapter.${name}`, obj as ioBroker.AdapterObject);
+                await this.objects.setObjectAsync(`system.adapter.${name}`, obj);
             } catch (err) {
                 logger.error(`Cannot set system.adapter.${name}: ${err.message}`);
             }
