@@ -490,14 +490,14 @@ function register(it, expect, context) {
 
     it(testName + 'should touch file', done => {
         const objects = context.objects;
-        objects.readDir(testId, 'myFile', (err, files) => {
+        objects.readDir(testId, 'myFileA', (err, files) => {
             expect(err).to.be.not.ok;
             const file = files.find(f => f.file === 'abc3.txt');
 
             setTimeout(() => {
                 objects.touch(testId, 'myFileA/abc3.txt', err => {
                     expect(err).to.be.not.ok;
-                    objects.readDir(testId, 'myFile', (_err, files) => {
+                    objects.readDir(testId, 'myFileA', (_err, files) => {
                         const file1 = files.find(f => f.file === 'abc3.txt');
                         expect(file1.modifiedAt).to.be.not.equal(file.modifiedAt);
                         done();
