@@ -45,7 +45,7 @@ function Multihost(options) {
         return new Array(len - text.length).join(' ') + text;
     }
 
-    this.showHosts = function (list) {
+    this.showHosts = function(list) {
         if (!list || !list.length) {
             console.info(
                 'No Multihost server found. Make sure iobroker is running on the host where you enabled multihost discovery (and it is not this host)!'
@@ -62,7 +62,7 @@ function Multihost(options) {
         }
     };
 
-    this.browse = function (callback) {
+    this.browse = function(callback) {
         const MHClient = require('../multihostClient');
         const mhClient = new MHClient();
         mhClient.browse(2000, params.debug, (err, list) => {
@@ -84,14 +84,14 @@ function Multihost(options) {
             } else if (config.objects.type === 'redis') {
                 warningShown = true;
                 console.log(
-                    'Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
+                    'Please check the binding of redis service. By default it is only local: https://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
                 );
             } else {
                 warningShown = true;
                 console.log(
                     'Please check the binding of the configured ' +
-                        config.objects.type +
-                        ' server to allow remote connections.'
+                    config.objects.type +
+                    ' server to allow remote connections.'
                 );
             }
             if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
@@ -101,7 +101,7 @@ function Multihost(options) {
             } else if (config.states.type === 'redis') {
                 !warningShown &&
                     console.log(
-                        'Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
+                        'Please check the binding of redis service. By default it is only local: https://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
                     );
             } else {
                 !warningShown &&
@@ -135,7 +135,7 @@ function Multihost(options) {
      * @param {boolean} isEnable - if the server should be activated or deactivated
      * @param {function} callback - callback function to be executed
      */
-    this.enable = function (isEnable, callback) {
+    this.enable = function(isEnable, callback) {
         let changed = false;
         const config = getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
@@ -221,7 +221,7 @@ function Multihost(options) {
         }
     };
 
-    this.status = function (callback) {
+    this.status = function(callback) {
         const config = getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
         showMHState(config, false, callback);
@@ -296,7 +296,7 @@ function Multihost(options) {
         });
     }
 
-    this.connect = function (number, pass, callback) {
+    this.connect = function(number, pass, callback) {
         if (typeof pass === 'function') {
             callback = pass;
             pass = null;

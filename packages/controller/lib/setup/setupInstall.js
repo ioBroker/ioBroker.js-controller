@@ -75,7 +75,7 @@ function Install(options) {
      * @param {boolean} enabled
      * @return {Promise<void>}
      */
-    this.enableInstances = async function (instances, enabled) {
+    this.enableInstances = async function(instances, enabled) {
         if (instances && instances.length) {
             const ts = Date.now();
             for (const instance of instances) {
@@ -102,93 +102,93 @@ function Install(options) {
      * @param {ioBroker.InstanceObject[]?} stoppedList
      * @return {Promise<Record<string, any>>}
      */
-    this.downloadPacket = async function (repoUrl, packetName, options, stoppedList) {
-        let url;
-        if (!options || typeof options !== 'object') {
-            options = {};
-        }
-
-        stoppedList = stoppedList || [];
-
-        if (!repoUrl || typeof repoUrl !== 'object') {
-            try {
-                repoUrl = await getRepository(repoUrl, params);
-            } catch (err) {
-                return processExit(err);
+    this.downloadPacket = async function(repoUrl, packetName, options, stoppedList) {
+            let url;
+            if (!options || typeof options !== 'object') {
+                options = {};
             }
-        }
 
-        if (options.stopDb && stoppedList.length) {
-            console.warn('[downloadPacket] stoppedList cannot be used if stopping of databases is requested');
-            stoppedList = [];
-        }
+            stoppedList = stoppedList || [];
 
-        const debug = process.argv.includes('--debug');
+            if (!repoUrl || typeof repoUrl !== 'object') {
+                try {
+                    repoUrl = await getRepository(repoUrl, params);
+                } catch (err) {
+                    return processExit(err);
+                }
+            }
 
-        let version;
-        // check if the adapter has format adapter@1.0.0
-        if (packetName.includes('@')) {
-            const parts = packetName.split('@');
-            packetName = parts[0];
-            version = parts[1];
-        } else {
-            // always take version from repository
-            if (repoUrl[packetName] && repoUrl[packetName].version) {
-                version = repoUrl[packetName].version;
+            if (options.stopDb && stoppedList.length) {
+                console.warn('[downloadPacket] stoppedList cannot be used if stopping of databases is requested');
+                stoppedList = [];
+            }
+
+            const debug = process.argv.includes('--debug');
+
+            let version;
+            // check if the adapter has format adapter@1.0.0
+            if (packetName.includes('@')) {
+                const parts = packetName.split('@');
+                packetName = parts[0];
+                version = parts[1];
             } else {
-                version = '';
+                // always take version from repository
+                if (repoUrl[packetName] && repoUrl[packetName].version) {
+                    version = repoUrl[packetName].version;
+                } else {
+                    version = '';
+                }
             }
-        }
-        options.packetName = packetName;
+            options.packetName = packetName;
 
-        const sources = repoUrl;
-        options.unsafePerm = sources[packetName] && sources[packetName].unsafePerm;
+            const sources = repoUrl;
+            options.unsafePerm = sources[packetName] && sources[packetName].unsafePerm;
 
-        // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
-        if (
-            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
-            !stoppedList.length
-        ) {
-            stoppedList = await this._getInstancesOfAdapter(packetName);
-            await this.enableInstances(stoppedList, false);
-        }
-
-        // try to extract the information from local sources-dist.json
-        if (!sources[packetName]) {
-            try {
-                const sourcesDist = fs.readJsonSync(`${tools.getControllerDir()}/conf/sources-dist.json`);
-                sources[packetName] = sourcesDist[packetName];
-            } catch {
-                // OK
-            }
-        }
-
-        if (sources[packetName]) {
-            url = sources[packetName].url;
-
+            // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
             if (
-                url &&
-                packetName === 'js-controller' &&
-                fs.pathExistsSync(`${tools.getControllerDir()}/../../node_modules/${tools.appName}.js-controller`)
+                ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
+                !stoppedList.length
             ) {
-                url = null;
+                stoppedList = await this._getInstancesOfAdapter(packetName);
+                await this.enableInstances(stoppedList, false);
             }
 
-            if (!url && packetName !== 'example') {
-                if (options.stopDb) {
-                    if (objects && objects.destroy) {
-                        await objects.destroy();
-                        console.log('Stopped Objects DB');
-                    }
-                    if (states && states.destroy) {
-                        await states.destroy();
-                        console.log('Stopped States DB');
-                    }
+            // try to extract the information from local sources-dist.json
+            if (!sources[packetName]) {
+                try {
+                    const sourcesDist = fs.readJsonSync(`${tools.getControllerDir()}/conf/sources-dist.json`);
+                    sources[packetName] = sourcesDist[packetName];
+                } catch {
+                    // OK
+                }
+            }
+
+            if (sources[packetName]) {
+                url = sources[packetName].url;
+
+                if (
+                    url &&
+                    packetName === 'js-controller' &&
+                    fs.pathExistsSync(`${tools.getControllerDir()}/../../node_modules/${tools.appName}.js-controller`)
+                ) {
+                    url = null;
                 }
 
-                // Install node modules
-                await this._npmInstallWithCheck(
-                    `${tools.appName.toLowerCase()}.${packetName}${version ? `@${version}` : ''}`,
+                if (!url && packetName !== 'example') {
+                    if (options.stopDb) {
+                        if (objects && objects.destroy) {
+                            await objects.destroy();
+                            console.log('Stopped Objects DB');
+                        }
+                        if (states && states.destroy) {
+                            await states.destroy();
+                            console.log('Stopped States DB');
+                        }
+                    }
+
+                    // Install node modules
+                    await this._npmInstallWithCheck(
+                            `${tools.appName.toLowerCase()}.${packetName}${version ? `@${version}` : ''}`,
                     options,
                     debug
                 );
@@ -1587,7 +1587,7 @@ function Install(options) {
             if (!commit) {
                 // No commit given, try to get it from the API
                 try {
-                    const result = await axios(`http://api.github.com/repos/${user}/${repo}/commits`, {
+                    const result = await axios(`https://api.github.com/repos/${user}/${repo}/commits`, {
                         headers: {
                             'User-Agent': 'ioBroker Adapter install',
                             validateStatus: status => status === 200
