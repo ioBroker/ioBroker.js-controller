@@ -26,11 +26,11 @@
         "native": {
             "repositories": {
                 "stable": {
-                    "link": "http://download.iobroker.net/sources-dist.json",
+                    "link": "https://repo.iobroker.live/sources-dist.json",
                     "json": null
                 },
                 "beta": {
-                    "link": "http://download.iobroker.net/sources-dist-latest.json",
+                    "link": "https://repo.iobroker.live/sources-dist-latest.json",
                     "json": null
                 },
                 "sources": {
@@ -384,8 +384,7 @@
             "dontDelete": true,
             "enabled": true
         },
-        "native": {
-        },
+        "native": {},
         "_id": "system.user.admin"
     },
     "system.meta.uuid": {
@@ -443,11 +442,9 @@
                 "hobbyquaker <hq@ccu.io>",
                 "bluefox <bluefox@ccu.io>"
             ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.8.0"
-                }
-            ],
+            "dependencies": [{
+                "js-controller": ">=0.8.0"
+            }],
             "type": "common adapters",
             "license": "MIT",
             "logTransporter": true,
@@ -581,11 +578,9 @@
                 "hobbyquaker <hq@ccu.io>",
                 "bluefox <bluefox@ccu.io>"
             ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.8.0"
-                }
-            ],
+            "dependencies": [{
+                "js-controller": ">=0.8.0"
+            }],
             "type": "common adapters",
             "license": "MIT",
             "logTransporter": true,
@@ -613,8 +608,7 @@
             "name": "admin",
             "type": "admin"
         },
-        "native": {
-        },
+        "native": {},
         "_id": "test.admin"
     },
     "system.adapter.test.upload": {
@@ -672,11 +666,9 @@
                 "test",
                 "communication"
             ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.9.0"
-                }
-            ],
+            "dependencies": [{
+                "js-controller": ">=0.9.0"
+            }],
             "config": {
                 "width ": 1224,
                 "height": 520
@@ -698,8 +690,7 @@
             "role": "indicator.state",
             "unit": "seconds"
         },
-        "native": {
-        }
+        "native": {}
     },
     "system.adapter.test.0.memRss": {
         "_id": "system.adapter.test.0.memRss",
@@ -722,8 +713,7 @@
             "role": "indicator.state",
             "unit": "MB"
         },
-        "native": {
-        }
+        "native": {}
     },
     "system.adapter.test.0.memHeapUsed": {
         "_id": "system.adapter.test.0.memHeapUsed",
@@ -734,8 +724,7 @@
             "role": "indicator.state",
             "unit": "MB"
         },
-        "native": {
-        }
+        "native": {}
     },
     "system.adapter.test.0.connected": {
         "_id": "system.adapter.test.0.connected",
@@ -745,8 +734,7 @@
             "type": "boolean",
             "role": "indicator.state"
         },
-        "native": {
-        }
+        "native": {}
     },
     "system.adapter.test.0.alive": {
         "_id": "system.adapter.test.0.alive",
@@ -800,11 +788,9 @@
                 "test",
                 "communication"
             ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.9.0"
-                }
-            ],
+            "dependencies": [{
+                "js-controller": ">=0.9.0"
+            }],
             "config": {
                 "width ": 1224,
                 "height": 520

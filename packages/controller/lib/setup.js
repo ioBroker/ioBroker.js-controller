@@ -174,26 +174,22 @@ function initYargs() {
                 .command('[<repositoryUrl>]', 'Upgrade all adapters, optionally you can specify the repository url', {})
                 .command(
                     'all [<repositoryUrl>]',
-                    'Upgrade all adapters, optionally you can specify the repository url',
-                    {}
+                    'Upgrade all adapters, optionally you can specify the repository url', {}
                 )
                 .command(
                     'self [<repositoryUrl>]',
-                    'Upgrade js-controller, optionally you can specify the repository url',
-                    {}
+                    'Upgrade js-controller, optionally you can specify the repository url', {}
                 )
                 .command(
                     '<adapter> [<repositoryUrl>]',
-                    'Upgrade specified adapter, optionally you can specify the repository url',
-                    {}
+                    'Upgrade specified adapter, optionally you can specify the repository url', {}
                 );
         })
         .command(['upload [all|<adapter>]', 'u [all|<adapter>]'], 'Upload management', yargs => {
             yargs
                 .command(
                     `<pathToLocalFile> <pathIn${tools.appName}>`,
-                    'Upload given files to provided path to make them available for instances',
-                    {}
+                    'Upload given files to provided path to make them available for instances', {}
                 )
                 .command('all', 'Upload all adapter files to make them available for instances', {})
                 .command('<adapter>', 'Upload specified adapter files to make them available for instances', {});
@@ -204,13 +200,11 @@ function initYargs() {
                 .command('set <id> <json-value>', 'Set object with the given id by providing a new json object', {})
                 .command(
                     'set <id> propertyname=<value or json-value>',
-                    'Update part of the object by providing a new value or partial object',
-                    {}
+                    'Update part of the object by providing a new value or partial object', {}
                 )
                 .command(
                     'extend <id> <json-value>',
-                    'Extend object with the given id by providing a new json object',
-                    {}
+                    'Extend object with the given id by providing a new json object', {}
                 )
                 .command('del <id|pattern>', 'Delete object with given id or all objects matching the pattern', {
                     y: {
@@ -289,13 +283,11 @@ function initYargs() {
             yargs
                 .command(
                     `read <${tools.appName}-path-to-read> [<filesystem-path-to-write>]`,
-                    `Read file from ${tools.appName} path and optionally write to destination`,
-                    {}
+                    `Read file from ${tools.appName} path and optionally write to destination`, {}
                 )
                 .command(
                     `write <filesystem-path-to-read> <${tools.appName}-path-to-write>`,
-                    `Read file from path and write it to ${tools.appName} path`,
-                    {}
+                    `Read file from path and write it to ${tools.appName} path`, {}
                 )
                 .command(`rm <${tools.appName}-path-to-delete>`, 'Remove file', {})
                 .command('sync', 'Sync files', {});
@@ -349,8 +341,7 @@ function initYargs() {
         })
         .command('set <adapter>.<instance>', 'Change settings of adapter config', {
             customOption: {
-                describe:
-                    'Set the name of the parameter you want to change as option followed by its value, e. g. --port 80'
+                describe: 'Set the name of the parameter you want to change as option followed by its value, e. g. --port 80'
             }
         })
         .command('license <license.file or license.text>', 'Update license by given file', {})
@@ -422,8 +413,7 @@ function initYargs() {
             yargs
                 .command(
                     'enable <pluginname>',
-                    'Enables a plugin for the specified host or instance. If no host is specified, the current one is used',
-                    {
+                    'Enables a plugin for the specified host or instance. If no host is specified, the current one is used', {
                         host: {
                             describe: 'Hostname',
                             type: 'string'
@@ -436,8 +426,7 @@ function initYargs() {
                 )
                 .command(
                     'disable <pluginname>',
-                    'Disables a plugin for the specified host or instance. If no host is specified, the current one is used',
-                    {
+                    'Disables a plugin for the specified host or instance. If no host is specified, the current one is used', {
                         host: {
                             describe: 'Hostname',
                             type: 'string'
@@ -450,8 +439,7 @@ function initYargs() {
                 )
                 .command(
                     'status <pluginname>',
-                    'Checks if a plugin is enabled for the specified host or instance. If no host is specified, the current one is used',
-                    {
+                    'Checks if a plugin is enabled for the specified host or instance. If no host is specified, the current one is used', {
                         host: {
                             describe: 'Hostname',
                             type: 'string'
@@ -522,446 +510,462 @@ async function processCommand(command, args, params, callback) {
 
     switch (command) {
         case 'start':
-        case 'stop': {
-            const procCommand = new cli.command.process(commandOptions);
-            procCommand[command](args);
-            break;
-        }
+        case 'stop':
+            {
+                const procCommand = new cli.command.process(commandOptions);
+                procCommand[command](args);
+                break;
+            }
 
-        case 'debug': {
-            const debugCommand = new cli.command.debug(commandOptions);
-            debugCommand.execute(args);
-            break;
-        }
+        case 'debug':
+            {
+                const debugCommand = new cli.command.debug(commandOptions);
+                debugCommand.execute(args);
+                break;
+            }
 
         case 'status':
-        case 'isrun': {
-            const procCommand = new cli.command.process(commandOptions);
-            procCommand.status(args);
-            break;
-        }
+        case 'isrun':
+            {
+                const procCommand = new cli.command.process(commandOptions);
+                procCommand.status(args);
+                break;
+            }
 
         case 'r':
-        case 'restart': {
-            const procCommand = new cli.command.process(commandOptions);
-            procCommand.restart(args);
-            break;
-        }
+        case 'restart':
+            {
+                const procCommand = new cli.command.process(commandOptions);
+                procCommand.restart(args);
+                break;
+            }
 
         case '_restart':
             restartController();
             callback();
             break;
 
-        case 'update': {
-            Objects = getObjectsConstructor();
-            const repoUrl = args[0]; // Repo url or name
-            dbConnect(params, async (_objects, _states) => {
-                const Repo = require('./setup/setupRepo.js');
-                const repo = new Repo({
-                    objects: _objects,
-                    states: _states
+        case 'update':
+            {
+                Objects = getObjectsConstructor();
+                const repoUrl = args[0]; // Repo url or name
+                dbConnect(params, async(_objects, _states) => {
+                    const Repo = require('./setup/setupRepo.js');
+                    const repo = new Repo({
+                        objects: _objects,
+                        states: _states
+                    });
+
+                    await repo.showRepo(repoUrl, params);
+                    setTimeout(callback, 1000);
                 });
-
-                await repo.showRepo(repoUrl, params);
-                setTimeout(callback, 1000);
-            });
-            break;
-        }
-
-        case 'setup': {
-            const Setup = require('./setup/setupSetup.js');
-            const setup = new Setup({
-                dbConnect,
-                processExit: callback,
-                cleanDatabase,
-                restartController,
-                resetDbConnect,
-                params
-            });
-            if (args[0] === 'custom' || params.custom) {
-                setup.setupCustom(callback);
-            } else {
-                let isFirst;
-                let isRedis;
-
-                // we support "first" and "redis" without "--" flag
-                for (const arg of args) {
-                    if (arg === 'first') {
-                        isFirst = true;
-                    } else if (arg === 'redis') {
-                        isRedis = true;
-                    }
-                }
-
-                // and as --flag
-                isRedis = params.redis || isRedis;
-                isFirst = params.first || isFirst;
-
-                setup.setup(
-                    async () => {
-                        if (isFirst) {
-                            // Creates all instances that are needed on a fresh installation
-                            const Install = require('./setup/setupInstall.js');
-                            const install = new Install({
-                                objects,
-                                states,
-                                getRepository,
-                                processExit: callback,
-                                params
-                            });
-                            // Define the necessary instances
-                            const initialInstances = ['admin', 'discovery', 'backitup'];
-                            // And try to install each of them
-                            for (const instance of initialInstances) {
-                                try {
-                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`);
-
-                                    if (adapterInstalled) {
-                                        let otherInstanceExists = false;
-                                        try {
-                                            // check if another instance exists
-                                            const res = await objects.getObjectViewAsync('system', 'instance', {
-                                                startkey: `system.adapter.${instance}`,
-                                                endkey: `system.adapter.${instance}\u9999`
-                                            });
-
-                                            otherInstanceExists = res && res.rows && res.rows.length;
-                                        } catch {
-                                            // ignore - on install we have no object views
-                                        }
-
-                                        if (!otherInstanceExists) {
-                                            await install.createInstance(instance, {
-                                                enabled: true,
-                                                ignoreIfExists: true
-                                            });
-                                        }
-                                    }
-                                } catch {
-                                    // not found, just continue
-                                }
-                            }
-
-                            await new Promise(resolve => {
-                                // Creates a fresh certificate
-                                const Cert = cli.command.cert;
-                                // Create a new instance of the cert command,
-                                // but use the resolve method as a callback
-                                const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
-                                cert.create();
-                            });
-                        }
-
-                        // we update existing things, in first as well as normnal setup
-                        // Rename repositories
-                        const Repo = require('./setup/setupRepo.js');
-                        const repo = new Repo({ objects, states });
-
-                        try {
-                            await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
-                            await repo.rename(
-                                'latest',
-                                'beta',
-                                'http://download.iobroker.net/sources-dist-latest.json'
-                            );
-                        } catch (err) {
-                            console.warn(`Cannot rename: ${err.message}`);
-                        }
-
-                        // there has been a bug that user can upload js-controller
-                        try {
-                            await objects.delObjectAsync('system.adapter.js-controller');
-                        } catch {
-                            // ignore
-                        }
-
-                        try {
-                            const configFile = tools.getConfigFileName();
-
-                            const configOrig = fs.readJSONSync(configFile);
-                            const config = deepClone(configOrig);
-
-                            config.objects.options = config.objects.options || {
-                                auth_pass: null,
-                                retry_max_delay: 5000
-                            };
-                            if (
-                                config.objects.options.retry_max_delay === 15000 ||
-                                !config.objects.options.retry_max_delay
-                            ) {
-                                config.objects.options.retry_max_delay = 5000;
-                            }
-                            config.states.options = config.states.options || {
-                                auth_pass: null,
-                                retry_max_delay: 5000
-                            };
-                            if (
-                                config.states.options.retry_max_delay === 15000 ||
-                                !config.states.options.retry_max_delay
-                            ) {
-                                config.states.options.retry_max_delay = 5000;
-                            }
-
-                            let migrated = '';
-                            // We migrate file to jsonl
-                            if (config.states.type === 'file') {
-                                config.states.type = 'jsonl';
-
-                                if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
-                                    // silent config change on secondaries
-                                    console.log('States DB type migrated from "file" to "jsonl"');
-                                    migrated += 'States';
-                                }
-                            }
-
-                            if (config.objects.type === 'file') {
-                                config.objects.type = 'jsonl';
-                                if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
-                                    // silent config change on secondaries
-                                    console.log('Objects DB type migrated from "file" to "jsonl"');
-                                    migrated += migrated ? ' and Objects' : 'Objects';
-                                }
-                            }
-
-                            if (migrated) {
-                                const NotificationHandler = require('./../lib/notificationHandler');
-
-                                const hostname = tools.getHostName();
-
-                                const notificationSettings = {
-                                    states: states,
-                                    objects: objects,
-                                    log: console,
-                                    logPrefix: '',
-                                    host: hostname
-                                };
-
-                                const notificationHandler = new NotificationHandler(notificationSettings);
-
-                                try {
-                                    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
-                                    await notificationHandler.addConfig(ioPackage.notifications);
-
-                                    await notificationHandler.addMessage(
-                                        'system',
-                                        'fileToJsonl',
-                                        `Migrated: ${migrated}`,
-                                        `system.host.${hostname}`
-                                    );
-
-                                    notificationHandler.storeNotifications();
-                                } catch (e) {
-                                    console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
-                                }
-                            }
-
-                            if (!isDeepStrictEqual(config, configOrig)) {
-                                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                                console.log('ioBroker configuration updated');
-                            }
-                        } catch (err) {
-                            console.log(`Could not update ioBroker configuration: ${err.message}`);
-                        }
-
-                        return void callback();
-                    },
-                    isFirst,
-                    isRedis
-                );
-            }
-            break;
-        }
-
-        case 'url': {
-            Objects = getObjectsConstructor();
-
-            let url = args[0];
-            const name = args[1];
-
-            if (!url) {
-                console.log('Please provide a URL to install from and optionally a name of the adapter to install');
-                callback(EXIT_CODES.INVALID_ARGUMENTS);
+                break;
             }
 
-            if (url[0] === '"' && url[url.length - 1] === '"') {
-                url = url.substring(1, url.length - 1);
-            }
-            url = url.trim();
-
-            dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
-                const install = new Install({
-                    objects,
-                    states,
-                    getRepository,
+        case 'setup':
+            {
+                const Setup = require('./setup/setupSetup.js');
+                const setup = new Setup({
+                    dbConnect,
                     processExit: callback,
+                    cleanDatabase,
+                    restartController,
+                    resetDbConnect,
                     params
                 });
+                if (args[0] === 'custom' || params.custom) {
+                    setup.setupCustom(callback);
+                } else {
+                    let isFirst;
+                    let isRedis;
 
-                try {
-                    await install.installAdapterFromUrl(url, name);
-                    return void callback(EXIT_CODES.NO_ERROR);
-                } catch (e) {
-                    console.error(`Could not install adapter from url: ${e.message}`);
-                    return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+                    // we support "first" and "redis" without "--" flag
+                    for (const arg of args) {
+                        if (arg === 'first') {
+                            isFirst = true;
+                        } else if (arg === 'redis') {
+                            isRedis = true;
+                        }
+                    }
+
+                    // and as --flag
+                    isRedis = params.redis || isRedis;
+                    isFirst = params.first || isFirst;
+
+                    setup.setup(
+                        async() => {
+                            if (isFirst) {
+                                // Creates all instances that are needed on a fresh installation
+                                const Install = require('./setup/setupInstall.js');
+                                const install = new Install({
+                                    objects,
+                                    states,
+                                    getRepository,
+                                    processExit: callback,
+                                    params
+                                });
+                                // Define the necessary instances
+                                const initialInstances = ['admin', 'discovery', 'backitup'];
+                                // And try to install each of them
+                                for (const instance of initialInstances) {
+                                    try {
+                                        const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`);
+
+                                        if (adapterInstalled) {
+                                            let otherInstanceExists = false;
+                                            try {
+                                                // check if another instance exists
+                                                const res = await objects.getObjectViewAsync('system', 'instance', {
+                                                    startkey: `system.adapter.${instance}`,
+                                                    endkey: `system.adapter.${instance}\u9999`
+                                                });
+
+                                                otherInstanceExists = res && res.rows && res.rows.length;
+                                            } catch {
+                                                // ignore - on install we have no object views
+                                            }
+
+                                            if (!otherInstanceExists) {
+                                                await install.createInstance(instance, {
+                                                    enabled: true,
+                                                    ignoreIfExists: true
+                                                });
+                                            }
+                                        }
+                                    } catch {
+                                        // not found, just continue
+                                    }
+                                }
+
+                                await new Promise(resolve => {
+                                    // Creates a fresh certificate
+                                    const Cert = cli.command.cert;
+                                    // Create a new instance of the cert command,
+                                    // but use the resolve method as a callback
+                                    const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
+                                    cert.create();
+                                });
+                            }
+
+                            // we update existing things, in first as well as normnal setup
+                            // Rename repositories
+                            const Repo = require('./setup/setupRepo.js');
+                            const repo = new Repo({ objects, states });
+
+                            try {
+                                await repo.rename(
+                                    'default',
+                                    'stable',
+                                    'http://download.iobroker.net/sources-dist.json',
+                                    'https://repo.iobroker.live/sources-dist.json'
+                                );
+                                await repo.rename(
+                                    'latest',
+                                    'beta',
+                                    'http://download.iobroker.net/sources-dist-latest.json',
+                                    'https://repo.iobroker.live/sources-dist-latest.json'
+                                );
+                            } catch (err) {
+                                console.warn(`Cannot rename: ${err.message}`);
+                            }
+
+                            // there has been a bug that user can upload js-controller
+                            try {
+                                await objects.delObjectAsync('system.adapter.js-controller');
+                            } catch {
+                                // ignore
+                            }
+
+                            try {
+                                const configFile = tools.getConfigFileName();
+
+                                const configOrig = fs.readJSONSync(configFile);
+                                const config = deepClone(configOrig);
+
+                                config.objects.options = config.objects.options || {
+                                    auth_pass: null,
+                                    retry_max_delay: 5000
+                                };
+                                if (
+                                    config.objects.options.retry_max_delay === 15000 ||
+                                    !config.objects.options.retry_max_delay
+                                ) {
+                                    config.objects.options.retry_max_delay = 5000;
+                                }
+                                config.states.options = config.states.options || {
+                                    auth_pass: null,
+                                    retry_max_delay: 5000
+                                };
+                                if (
+                                    config.states.options.retry_max_delay === 15000 ||
+                                    !config.states.options.retry_max_delay
+                                ) {
+                                    config.states.options.retry_max_delay = 5000;
+                                }
+
+                                let migrated = '';
+                                // We migrate file to jsonl
+                                if (config.states.type === 'file') {
+                                    config.states.type = 'jsonl';
+
+                                    if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                                        // silent config change on secondaries
+                                        console.log('States DB type migrated from "file" to "jsonl"');
+                                        migrated += 'States';
+                                    }
+                                }
+
+                                if (config.objects.type === 'file') {
+                                    config.objects.type = 'jsonl';
+                                    if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+                                        // silent config change on secondaries
+                                        console.log('Objects DB type migrated from "file" to "jsonl"');
+                                        migrated += migrated ? ' and Objects' : 'Objects';
+                                    }
+                                }
+
+                                if (migrated) {
+                                    const NotificationHandler = require('./../lib/notificationHandler');
+
+                                    const hostname = tools.getHostName();
+
+                                    const notificationSettings = {
+                                        states: states,
+                                        objects: objects,
+                                        log: console,
+                                        logPrefix: '',
+                                        host: hostname
+                                    };
+
+                                    const notificationHandler = new NotificationHandler(notificationSettings);
+
+                                    try {
+                                        const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
+                                        await notificationHandler.addConfig(ioPackage.notifications);
+
+                                        await notificationHandler.addMessage(
+                                            'system',
+                                            'fileToJsonl',
+                                            `Migrated: ${migrated}`,
+                                            `system.host.${hostname}`
+                                        );
+
+                                        notificationHandler.storeNotifications();
+                                    } catch (e) {
+                                        console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                                    }
+                                }
+
+                                if (!isDeepStrictEqual(config, configOrig)) {
+                                    fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                                    console.log('ioBroker configuration updated');
+                                }
+                            } catch (err) {
+                                console.log(`Could not update ioBroker configuration: ${err.message}`);
+                            }
+
+                            return void callback();
+                        },
+                        isFirst,
+                        isRedis
+                    );
                 }
-            });
-            break;
-        }
+                break;
+            }
 
-        case 'info': {
-            Objects = getObjectsConstructor();
-            dbConnect(params, async objects => {
-                try {
-                    const data = await tools.getHostInfo(objects);
-                    const formatters = require('./formatters');
-                    const formatInfo = {
-                        Uptime: formatters.formatSeconds,
-                        'System uptime': formatters.formatSeconds,
-                        RAM: formatters.formatRam,
-                        Speed: formatters.formatSpeed,
-                        'Disk size': formatters.formatBytes,
-                        'Disk free': formatters.formatBytes
-                    };
+        case 'url':
+            {
+                Objects = getObjectsConstructor();
 
-                    for (const attr of Object.keys(data)) {
-                        console.log(
-                            `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
+                let url = args[0];
+                const name = args[1];
+
+                if (!url) {
+                    console.log('Please provide a URL to install from and optionally a name of the adapter to install');
+                    callback(EXIT_CODES.INVALID_ARGUMENTS);
+                }
+
+                if (url[0] === '"' && url[url.length - 1] === '"') {
+                    url = url.substring(1, url.length - 1);
+                }
+                url = url.trim();
+
+                dbConnect(params, async() => {
+                    const Install = require('./setup/setupInstall.js');
+                    const install = new Install({
+                        objects,
+                        states,
+                        getRepository,
+                        processExit: callback,
+                        params
+                    });
+
+                    try {
+                        await install.installAdapterFromUrl(url, name);
+                        return void callback(EXIT_CODES.NO_ERROR);
+                    } catch (e) {
+                        console.error(`Could not install adapter from url: ${e.message}`);
+                        return void callback(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+                    }
+                });
+                break;
+            }
+
+        case 'info':
+            {
+                Objects = getObjectsConstructor();
+                dbConnect(params, async objects => {
+                    try {
+                        const data = await tools.getHostInfo(objects);
+                        const formatters = require('./formatters');
+                        const formatInfo = {
+                            Uptime: formatters.formatSeconds,
+                            'System uptime': formatters.formatSeconds,
+                            RAM: formatters.formatRam,
+                            Speed: formatters.formatSpeed,
+                            'Disk size': formatters.formatBytes,
+                            'Disk free': formatters.formatBytes
+                        };
+
+                        for (const attr of Object.keys(data)) {
+                            console.log(
+                                `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
                                 formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''
                             }`
-                        );
+                            );
+                        }
+                    } catch (err) {
+                        console.error('Cannot read host info: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
+                        return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
                     }
-                } catch (err) {
-                    console.error('Cannot read host info: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
-                    return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
-                }
 
-                return void callback();
-            });
-            break;
-        }
+                    return void callback();
+                });
+                break;
+            }
 
         case 'a':
         case 'add':
         case 'install':
-        case 'i': {
-            Objects = getObjectsConstructor();
+        case 'i':
+            {
+                Objects = getObjectsConstructor();
 
-            let name = args[0];
-            let instance = args[1];
-            let repoUrl = args[2];
+                let name = args[0];
+                let instance = args[1];
+                let repoUrl = args[2];
 
-            if (instance === 0) {
-                instance = '0';
-            }
-            if (repoUrl === 0) {
-                repoUrl = '0';
-            }
-
-            if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
-                repoUrl = instance;
-                instance = null;
-            }
-            if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
-                const temp = instance;
-                instance = repoUrl;
-                repoUrl = temp;
-            }
-            if (parseInt(instance, 10).toString() === (instance || '').toString()) {
-                instance = parseInt(instance, 10);
-                params.instance = instance;
-            }
-
-            // If user accidentally wrote tools.appName.adapter => remove adapter
-            name = cli.tools.normalizeAdapterName(name);
-
-            const parsedName = cli.tools.splitAdapterOrInstanceIdentifierWithVersion(name);
-            if (!parsedName) {
-                console.log('Invalid adapter name for install');
-                showHelp();
-                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-            }
-
-            // split the adapter into its parts if necessary
-            if (parsedName.instance !== null) {
-                params.instance = parsedName.instance;
-            }
-            name = parsedName.name;
-            const installName = parsedName.nameWithVersion;
-
-            const adapterDir = tools.getAdapterDir(name);
-
-            dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
-                const install = new Install({
-                    objects,
-                    states,
-                    getRepository,
-                    processExit: callback,
-                    params
-                });
-
-                if (params.host && params.host !== tools.getHostName()) {
-                    // if host argument provided we should check, that host actually exists in mh environment
-                    let obj;
-                    try {
-                        obj = await objects.getObjectAsync(`system.host.${params.host}`);
-                    } catch (err) {
-                        console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
-                    }
-
-                    if (!obj) {
-                        console.error(`Cannot add instance to non-existing host "${params.host}"`);
-                        return void callback(EXIT_CODES.NON_EXISTING_HOST);
-                    }
+                if (instance === 0) {
+                    instance = '0';
+                }
+                if (repoUrl === 0) {
+                    repoUrl = '0';
                 }
 
-                if (!fs.existsSync(adapterDir)) {
-                    try {
-                        const { stoppedList } = await install.downloadPacket(repoUrl, installName);
-                        await install.installAdapter(installName, repoUrl);
-                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
-                        if (command !== 'install' && command !== 'i') {
-                            await install.createInstance(name, params);
+                if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
+                    repoUrl = instance;
+                    instance = null;
+                }
+                if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
+                    const temp = instance;
+                    instance = repoUrl;
+                    repoUrl = temp;
+                }
+                if (parseInt(instance, 10).toString() === (instance || '').toString()) {
+                    instance = parseInt(instance, 10);
+                    params.instance = instance;
+                }
+
+                // If user accidentally wrote tools.appName.adapter => remove adapter
+                name = cli.tools.normalizeAdapterName(name);
+
+                const parsedName = cli.tools.splitAdapterOrInstanceIdentifierWithVersion(name);
+                if (!parsedName) {
+                    console.log('Invalid adapter name for install');
+                    showHelp();
+                    return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+                }
+
+                // split the adapter into its parts if necessary
+                if (parsedName.instance !== null) {
+                    params.instance = parsedName.instance;
+                }
+                name = parsedName.name;
+                const installName = parsedName.nameWithVersion;
+
+                const adapterDir = tools.getAdapterDir(name);
+
+                dbConnect(params, async() => {
+                    const Install = require('./setup/setupInstall.js');
+                    const install = new Install({
+                        objects,
+                        states,
+                        getRepository,
+                        processExit: callback,
+                        params
+                    });
+
+                    if (params.host && params.host !== tools.getHostName()) {
+                        // if host argument provided we should check, that host actually exists in mh environment
+                        let obj;
+                        try {
+                            obj = await objects.getObjectAsync(`system.host.${params.host}`);
+                        } catch (err) {
+                            console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
                         }
-                        return void callback();
-                    } catch (err) {
-                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
-                    }
-                } else if (command !== 'install' && command !== 'i') {
-                    try {
-                        await install.createInstance(name, params);
-                        return void callback();
-                    } catch (err) {
-                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
-                    }
-                } else {
-                    console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
-                    return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
-                }
-            });
-            break;
-        }
 
-        case 'rebuild': {
-            const options = { debug: process.argv.includes('--debug') };
+                        if (!obj) {
+                            console.error(`Cannot add instance to non-existing host "${params.host}"`);
+                            return void callback(EXIT_CODES.NON_EXISTING_HOST);
+                        }
+                    }
 
-            if (commandOptions.path) {
-                if (path.isAbsolute(commandOptions.path)) {
-                    options.cwd = commandOptions.path;
-                } else {
-                    console.log('Path argument needs to be an absolute path!');
-                    return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
-                }
+                    if (!fs.existsSync(adapterDir)) {
+                        try {
+                            const { stoppedList } = await install.downloadPacket(repoUrl, installName);
+                            await install.installAdapter(installName, repoUrl);
+                            await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
+                            if (command !== 'install' && command !== 'i') {
+                                await install.createInstance(name, params);
+                            }
+                            return void callback();
+                        } catch (err) {
+                            console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                            return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                        }
+                    } else if (command !== 'install' && command !== 'i') {
+                        try {
+                            await install.createInstance(name, params);
+                            return void callback();
+                        } catch (err) {
+                            console.error(`adapter "${name}" cannot be installed: ${err.message}`);
+                            return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                        }
+                    } else {
+                        console.log(`adapter "${name}" already installed. Use "upgrade" to upgrade to a newer version.`);
+                        return void callback(EXIT_CODES.ADAPTER_ALREADY_INSTALLED);
+                    }
+                });
+                break;
             }
 
-            if (commandOptions.module) {
-                options.module = commandOptions.module;
-                console.log(
-                    `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`
+        case 'rebuild':
+            {
+                const options = { debug: process.argv.includes('--debug') };
+
+                if (commandOptions.path) {
+                    if (path.isAbsolute(commandOptions.path)) {
+                        options.cwd = commandOptions.path;
+                    } else {
+                        console.log('Path argument needs to be an absolute path!');
+                        return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                    }
+                }
+
+                if (commandOptions.module) {
+                    options.module = commandOptions.module;
+                    console.log(
+                            `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`
                 );
             } else {
                 console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);

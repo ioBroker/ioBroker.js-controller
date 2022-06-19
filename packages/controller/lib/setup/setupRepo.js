@@ -17,11 +17,11 @@ function Repo(options) {
         native: {
             repositories: {
                 stable: {
-                    link: 'http://download.iobroker.net/sources-dist.json',
+                    link: 'https://repo.iobroker.live/sources-dist.json',
                     json: null
                 },
                 beta: {
-                    link: 'http://download.iobroker.net/sources-dist-latest.json',
+                    link: 'https://repo.iobroker.live/sources-dist-latest.json',
                     json: null
                 }
             }
@@ -58,8 +58,7 @@ function Repo(options) {
         const hashUrl = urlOrPath.replace(/\.json$/, '-hash.json');
         let hash;
 
-        if (
-            !force &&
+        if (!force &&
             oldRepos.native.repositories[repoName].hash &&
             oldRepos.native.repositories[repoName].json &&
             (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://'))
@@ -131,7 +130,7 @@ function Repo(options) {
         return oldRepos.native.repositories[repoName].json;
     }
 
-    this.showRepo = async function (repoUrl, flags) {
+    this.showRepo = async function(repoUrl, flags) {
         function showRepoResult(_name, sources) {
             const installed = tools.getInstalledInfo();
             const adapters = Object.keys(sources).sort();
@@ -272,7 +271,7 @@ function Repo(options) {
         }
     }
 
-    this.showRepoStatus = async function () {
+    this.showRepoStatus = async function() {
         try {
             const obj = await objects.getObjectAsync('system.repositories');
             if (!obj) {
@@ -301,7 +300,7 @@ function Repo(options) {
         }
     };
 
-    this.add = async function (repoName, repoUrl) {
+    this.add = async function(repoName, repoUrl) {
         let obj = await objects.getObjectAsync('system.repositories');
         obj = obj || defaultSystemRepo;
 
@@ -318,7 +317,7 @@ function Repo(options) {
         }
     };
 
-    this.del = async function (repoName) {
+    this.del = async function(repoName) {
         const obj = await objects.getObjectAsync('system.config');
         if (
             (obj.common.activeRepo &&
@@ -342,7 +341,7 @@ function Repo(options) {
         }
     };
 
-    this.setActive = async function (repoName) {
+    this.setActive = async function(repoName) {
         let obj = await objects.getObjectAsync('system.repositories');
         obj = obj || defaultSystemRepo;
 
@@ -362,7 +361,7 @@ function Repo(options) {
         }
     };
 
-    this.setInactive = async function (repoName) {
+    this.setInactive = async function(repoName) {
         const confObj = await objects.getObjectAsync('system.config');
         if (typeof confObj.common.activeRepo === 'string') {
             confObj.common.activeRepo = [confObj.common.activeRepo];
@@ -384,7 +383,7 @@ function Repo(options) {
      * @param {string} matchingLink - hyperlink of the repository
      * @returns {Promise<void>}
      */
-    this.rename = async function (oldName, newName, matchingLink) {
+    this.rename = async function(oldName, newName, matchingLink) {
         let repoObj;
         let sysConfigObj;
         try {
@@ -415,7 +414,7 @@ function Repo(options) {
                     sysConfigObj &&
                     sysConfigObj.common &&
                     ((typeof sysConfigObj.common.activeRepo === 'string' &&
-                        sysConfigObj.common.activeRepo === oldName) ||
+                            sysConfigObj.common.activeRepo === oldName) ||
                         (Array.isArray(sysConfigObj.common.activeRepo) &&
                             sysConfigObj.common.activeRepo.includes(oldName)))
                 ) {

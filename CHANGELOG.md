@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 ## 4.1.0 - WORK IN PROGRESS Release Jana
-* Work in Progress
+* (jpawlowski) Change repository URL from insecure http://download.iobroker.net to secure https://repo.iobroker.live. Also avoids HTTP redirect and uses Cloudflare CDN for better redundancy.
 
 ## 4.0.23 (2022-04-19)
 * (AlCalzone) normalize JSONL options to prevent issues because of admin adding empty setting objects
