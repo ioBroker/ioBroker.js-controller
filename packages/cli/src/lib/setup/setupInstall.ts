@@ -24,6 +24,9 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 const hostname = tools.getHostName();
 const osPlatform = platform();
 
+/** Note: this is duplicated in preinstallCheck */
+const RECOMMENDED_NPM_VERSION = 8;
+
 export interface CLIInstallOptions {
     params: Record<string, any>;
     // TODO type it as soon as we have typed setup.js where this function origins
@@ -288,7 +291,7 @@ class Install {
                 console.error('Aborting install because the npm version could not be checked!');
                 console.error('Please check that npm is installed correctly.');
                 console.error(
-                    'Use "npm install -g npm@6" or "npm install -g npm@latest" to install a supported version.'
+                    `Use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" or "npm install -g npm@latest" to install a supported version.`
                 );
                 console.error(
                     'You need to make sure to repeat this step after installing an update to NodeJS and/or npm'
@@ -298,7 +301,9 @@ class Install {
             } else if (semver.gte(npmVersion, '5.0.0') && semver.lt(npmVersion, '5.7.1')) {
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 console.error('NPM 5 is only supported starting with version 5.7.1!');
-                console.error('Please use "npm install -g npm@6" to upgrade npm to 6.x or ');
+                console.error(
+                    `Please use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" to upgrade npm to ${RECOMMENDED_NPM_VERSION}.x or `
+                );
                 console.error('use "npm install -g npm@latest" to install a supported version of npm!');
                 console.error(
                     'You need to make sure to repeat this step after installing an update to NodeJS and/or npm'
