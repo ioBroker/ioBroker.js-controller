@@ -12,7 +12,7 @@ const fs = require('fs-extra');
 const { tools } = require('@iobroker/js-controller-common');
 const pathLib = require('path');
 const hostname = tools.getHostName();
-const Upload = require('./setupUpload');
+const Upload = require('@iobroker/js-controller-cli').setupUpload;
 const { EXIT_CODES } = require('@iobroker/js-controller-common');
 const cpPromise = require('promisify-child-process');
 
