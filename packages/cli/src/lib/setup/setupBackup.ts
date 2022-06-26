@@ -914,7 +914,7 @@ export class BackupRestore {
             }
         }
 
-        name = (name || '').toString().replace(/\\/g, '/');
+        name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = BackupRestore.getBackupDir() + name;
             const regEx = new RegExp(`_backup${tools.appName}`, 'i');
@@ -1085,7 +1085,7 @@ export class BackupRestore {
             }
         }
 
-        name = (name || '').toString().replace(/\\/g, '/');
+        name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = BackupRestore.getBackupDir() + name;
             const regEx = new RegExp(`_backup${tools.appName}`, 'i');
