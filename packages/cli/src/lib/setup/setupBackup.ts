@@ -528,7 +528,7 @@ export class BackupRestore {
     private async _reloadAdaptersObjects(): Promise<void> {
         const dirs: string[] = [];
         let _modules;
-        let p = path.normalize(`${__dirname}/../../node_modules`);
+        let p = path.join(tools.getControllerDir(), 'node_modules');
 
         if (fs.existsSync(p)) {
             if (!p.includes('js-controller')) {
@@ -542,7 +542,7 @@ export class BackupRestore {
                     }
                 }
             } else {
-                p = path.normalize(`${__dirname}/../../../node_modules`);
+                p = path.join(tools.getControllerDir(), '..', 'node_modules');
                 if (fs.existsSync(p)) {
                     _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
                     if (_modules) {
@@ -556,9 +556,14 @@ export class BackupRestore {
                 }
             }
         }
+
         // if installed as npm
-        if (fs.existsSync(`${__dirname}/../../../../node_modules/${tools.appName}.js-controller`)) {
-            const p = path.normalize(`${__dirname}/../../..`);
+        if (
+            fs.existsSync(
+                path.join(tools.getControllerDir(), '..', '..', 'node_modules', `${tools.appName}.js-controller`)
+            )
+        ) {
+            const p = path.join(tools.getControllerDir(), '..');
             _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
             const regEx_ = new RegExp(`^${tools.appName}\\.`, 'i');
             for (const module of _modules) {
@@ -1119,10 +1124,10 @@ export class BackupRestore {
                 // Stop controller
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const daemon = require('daemonize2').setup({
-                    main: '../../controller.js',
+                    main: path.join(tools.getControllerDir(), 'controller.js'),
                     name: `${tools.appName} controller`,
-                    pidfile: `${__dirname}/../${tools.appName}.pid`,
-                    cwd: '../../',
+                    pidfile: path.join(tools.getControllerDir(), `${tools.appName}.pid`),
+                    cwd: tools.getControllerDir(),
                     stopTimeout: 1000
                 });
                 daemon.on('error', async () => {
