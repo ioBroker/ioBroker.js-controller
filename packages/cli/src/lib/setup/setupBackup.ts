@@ -19,8 +19,8 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 const hostname = tools.getHostName();
 
-const tmpDir = path.normalize(path.join(tools.getControllerDir(), '../../tmp'));
-const bkpDir = path.normalize(path.join(tools.getControllerDir(), '../../backups'));
+const tmpDir = path.normalize(path.join(tools.getControllerDir(), 'tmp'));
+const bkpDir = path.normalize(path.join(tools.getControllerDir(), 'backups'));
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -127,21 +127,8 @@ export class BackupRestore {
         }
     }
 
-    getBackupDir(): string {
-        let dataDir = tools.getDefaultDataDir();
-
-        // All paths are returned always relative to /node_modules/appName.js-controller
-        if (dataDir) {
-            if (dataDir[0] === '.' && dataDir[1] === '.') {
-                dataDir = `${__dirname}/../../${dataDir}`;
-            } else if (dataDir[0] === '.' && dataDir[1] === '/') {
-                dataDir = `${__dirname}/../../${dataDir.substring(2)}`;
-            }
-        }
-        dataDir = dataDir.replace(/\\/g, '/');
-        if (dataDir[dataDir.length - 1] !== '/') {
-            dataDir += '/';
-        }
+    static getBackupDir(): string {
+        const dataDir = path.join(tools.getControllerDir(), tools.getDefaultDataDir());
 
         const parts = dataDir.split('/');
         parts.pop(); // remove data or appName-data
@@ -256,7 +243,7 @@ export class BackupRestore {
 
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
-            const backupPath = this.getBackupDir();
+            const backupPath = BackupRestore.getBackupDir();
 
             // create directory if not exists
             if (!fs.existsSync(backupPath)) {
@@ -739,7 +726,7 @@ export class BackupRestore {
         // reload objects of adapters (if some couldn't be removed - normally this shouldn't be necessary anymore)
         await this._reloadAdaptersObjects();
         // Reload host objects
-        const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+        const packageIO = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(path.join(tmpDir, 'backup'));
@@ -842,7 +829,7 @@ export class BackupRestore {
      * Returns all backups as array
      */
     listBackups(): string[] {
-        const dir = this.getBackupDir();
+        const dir = BackupRestore.getBackupDir();
         const result: string[] = [];
         if (fs.existsSync(dir)) {
             const files = fs.readdirSync(dir);
@@ -924,7 +911,7 @@ export class BackupRestore {
 
         name = (name || '').toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
-            name = this.getBackupDir() + name;
+            name = BackupRestore.getBackupDir() + name;
             const regEx = new RegExp(`_backup${tools.appName}`, 'i');
             if (!regEx.test(name)) {
                 name += `_backup${tools.appName}`;
@@ -1095,7 +1082,7 @@ export class BackupRestore {
 
         name = (name || '').toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
-            name = this.getBackupDir() + name;
+            name = BackupRestore.getBackupDir() + name;
             const regEx = new RegExp(`_backup${tools.appName}`, 'i');
             if (!regEx.test(name)) {
                 name += '_backup' + tools.appName;
