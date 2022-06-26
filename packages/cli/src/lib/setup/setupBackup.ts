@@ -9,7 +9,7 @@
 
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import pathLib from 'path';
+import path from 'path';
 import { Upload } from './setupUpload';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import cpPromise from 'promisify-child-process';
@@ -19,8 +19,8 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 const hostname = tools.getHostName();
 
-const tmpDir = pathLib.normalize(pathLib.join(tools.getControllerDir(), '../../tmp'));
-const bkpDir = pathLib.normalize(pathLib.join(tools.getControllerDir(), '../../backups'));
+const tmpDir = path.normalize(path.join(tools.getControllerDir(), '../../tmp'));
+const bkpDir = path.normalize(path.join(tools.getControllerDir(), '../../backups'));
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -147,7 +147,7 @@ export class BackupRestore {
         parts.pop(); // remove data or appName-data
         parts.pop();
 
-        return pathLib.normalize(`${parts.join('/')}/backups/`);
+        return path.normalize(`${parts.join('/')}/backups/`);
     }
 
     copyFileSync(source: string, target: string): void {
@@ -157,7 +157,7 @@ export class BackupRestore {
             // if target is a directory a new file with the same name will be created
             if (fs.existsSync(target)) {
                 if (fs.statSync(target).isDirectory()) {
-                    targetFile = pathLib.join(target, pathLib.basename(source));
+                    targetFile = path.join(target, path.basename(source));
                 }
             }
 
@@ -175,7 +175,7 @@ export class BackupRestore {
         }
 
         // check if folder needs to be created or integrated
-        const targetFolder = pathLib.join(target, pathLib.basename(source));
+        const targetFolder = path.join(target, path.basename(source));
         if (!fs.existsSync(targetFolder)) {
             fs.mkdirSync(targetFolder);
         }
@@ -184,7 +184,7 @@ export class BackupRestore {
         if (fs.existsSync(source) && fs.statSync(source).isDirectory()) {
             files = fs.readdirSync(source);
             files.forEach(file => {
-                const curSource = pathLib.join(source, file);
+                const curSource = path.join(source, file);
                 if (!fs.existsSync(curSource)) {
                     return;
                 }
@@ -213,7 +213,7 @@ export class BackupRestore {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
                 tools.rmdirRecursiveSync(`${tmpDir}/backup`);
-                resolve(pathLib.normalize(name));
+                resolve(path.normalize(name));
             });
 
             f.on('error', err => {
@@ -256,17 +256,17 @@ export class BackupRestore {
 
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
-            const path = this.getBackupDir();
+            const backupPath = this.getBackupDir();
 
             // create directory if not exists
-            if (!fs.existsSync(path)) {
-                fs.mkdirSync(path);
+            if (!fs.existsSync(backupPath)) {
+                fs.mkdirSync(backupPath);
             }
 
             if (!name.includes('.tar.gz')) {
-                name = `${path + name}.tar.gz`;
+                name = `${backupPath + name}.tar.gz`;
             } else {
-                name = path + name;
+                name = backupPath + name;
             }
         }
 
@@ -407,14 +407,14 @@ export class BackupRestore {
 
                 // Read all files
                 if (object.value.type === 'instance' && object.value.common && object.value.common.dataFolder) {
-                    let path = object.value.common.dataFolder;
+                    let dataFolderPath = object.value.common.dataFolder;
 
-                    if (path[0] !== '/' && !path.match(/^\w:/)) {
-                        path = pathLib.join(this.configDir, path);
+                    if (dataFolderPath[0] !== '/' && !dataFolderPath.match(/^\w:/)) {
+                        dataFolderPath = path.join(this.configDir, dataFolderPath);
                     }
 
-                    if (fs.existsSync(path)) {
-                        this.copyFolderRecursiveSync(path, `${tmpDir}/backup`);
+                    if (fs.existsSync(dataFolderPath)) {
+                        this.copyFolderRecursiveSync(dataFolderPath, `${tmpDir}/backup`);
                     }
                 }
             }
@@ -541,7 +541,7 @@ export class BackupRestore {
     private async _reloadAdaptersObjects(): Promise<void> {
         const dirs: string[] = [];
         let _modules;
-        let p = pathLib.normalize(`${__dirname}/../../node_modules`);
+        let p = path.normalize(`${__dirname}/../../node_modules`);
 
         if (fs.existsSync(p)) {
             if (!p.includes('js-controller')) {
@@ -555,7 +555,7 @@ export class BackupRestore {
                     }
                 }
             } else {
-                p = pathLib.normalize(`${__dirname}/../../../node_modules`);
+                p = path.normalize(`${__dirname}/../../../node_modules`);
                 if (fs.existsSync(p)) {
                     _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
                     if (_modules) {
@@ -571,7 +571,7 @@ export class BackupRestore {
         }
         // if installed as npm
         if (fs.existsSync(`${__dirname}/../../../../node_modules/${tools.appName}.js-controller`)) {
-            const p = pathLib.normalize(`${__dirname}/../../..`);
+            const p = path.normalize(`${__dirname}/../../..`);
             _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
             const regEx_ = new RegExp(`^${tools.appName}\\.`, 'i');
             for (const module of _modules) {
@@ -608,31 +608,31 @@ export class BackupRestore {
         }
     }
 
-    private async _uploadUserFiles(root: string, path?: string) {
-        path = path || '';
+    private async _uploadUserFiles(root: string, uploadPath?: string) {
+        uploadPath = uploadPath || '';
         if (!fs.existsSync(root)) {
             return;
         }
-        const files = fs.readdirSync(root + path);
+        const files = fs.readdirSync(root + uploadPath);
         for (const file of files) {
-            const fName = pathLib.join(root, path, file);
+            const fName = path.join(root, uploadPath, file);
             if (!fs.existsSync(fName)) {
                 continue;
             }
             const stat = fs.statSync(fName);
             if (stat.isDirectory()) {
                 try {
-                    await this._uploadUserFiles(root, `${path}/${file}`);
+                    await this._uploadUserFiles(root, `${uploadPath}/${file}`);
                 } catch (err) {
                     console.error(`Error: ${err}`);
                 }
             } else {
-                const parts = path.split('/');
+                const parts = uploadPath.split('/');
                 const adapter = parts.splice(0, 2)[1];
                 const _path = `${parts.join('/')}/${file}`;
                 console.log(`host.${hostname} Upload user file "${adapter}/${_path}`);
                 try {
-                    await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(`${root + path}/${file}`));
+                    await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(`${root + uploadPath}/${file}`));
                 } catch (err) {
                     console.error(`Error: ${err.message}`);
                 }
@@ -652,19 +652,19 @@ export class BackupRestore {
                 if (dir === 'files') {
                     return;
                 }
-                const path = pathLib.join(backupDir, dir);
+                const backupPath = path.join(backupDir, dir);
                 let stat;
                 try {
-                    if (!fs.existsSync(path)) {
+                    if (!fs.existsSync(backupPath)) {
                         return;
                     }
-                    stat = fs.statSync(path);
+                    stat = fs.statSync(backupPath);
                 } catch (err) {
-                    console.error(`Ignoring ${path} because can not get file type: ${err.message}`);
+                    console.error(`Ignoring ${backupPath} because can not get file type: ${err.message}`);
                     return;
                 }
                 if (stat.isDirectory()) {
-                    this.copyFolderRecursiveSync(path, this.configDir);
+                    this.copyFolderRecursiveSync(backupPath, this.configDir);
                 }
             });
         } catch (err) {
@@ -742,7 +742,7 @@ export class BackupRestore {
         const packageIO = fs.readJSONSync(`${__dirname}/../../io-package.json`);
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
-        await this._copyBackupedFiles(pathLib.join(tmpDir, 'backup'));
+        await this._copyBackupedFiles(path.join(tmpDir, 'backup'));
         // reinstall preserve adapters
         await this._restorePreservedAdapters();
 
@@ -751,7 +751,7 @@ export class BackupRestore {
             console.log('Forced restore - executing setup ...');
             try {
                 await cpPromise.exec(
-                    `"${process.execPath}" "${pathLib.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
                 );
             } catch (e) {
                 console.error(
@@ -772,7 +772,7 @@ export class BackupRestore {
      * @param controllerDir - directory of js-controller
      */
     private async _removeAllAdapters(controllerDir: string): Promise<void> {
-        const nodeModulePath = pathLib.join(controllerDir, '..');
+        const nodeModulePath = path.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
         // we need to uninstall current adapters to get exact the same system as before backup
         for (const dir of nodeModuleDirs) {
@@ -782,7 +782,7 @@ export class BackupRestore {
                 dir.name !== `${tools.appName.toLowerCase()}.js-controller`
             ) {
                 try {
-                    const packJson = fs.readJsonSync(pathLib.join(nodeModulePath, dir.name, 'package.json'));
+                    const packJson = fs.readJsonSync(path.join(nodeModulePath, dir.name, 'package.json'));
                     console.log(`Removing current installation of ${packJson.name}`);
                     await tools.uninstallNodeModule(packJson.name);
                 } catch {
@@ -807,7 +807,7 @@ export class BackupRestore {
         force: boolean
     ): void | number {
         try {
-            const ioPackJson = fs.readJsonSync(pathLib.join(controllerDir, 'io-package.json'));
+            const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
             const hostObj = backupObjects.find(obj => obj.id === `system.host.${backupHostname}`);
 
             if (!hostObj) {
