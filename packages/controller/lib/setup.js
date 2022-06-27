@@ -1258,7 +1258,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'restore': {
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
 
             dbConnect(params, (_obj, _stat, isNotRun) => {
                 if (!isNotRun) {
@@ -1286,7 +1286,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'backup': {
             const name = args[0];
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
 
             dbConnect(params, async () => {
                 const backup = new Backup({
@@ -1311,7 +1311,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'validate': {
             const name = args[0];
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
             dbConnect(params, async () => {
                 const backup = new Backup({
                     states,

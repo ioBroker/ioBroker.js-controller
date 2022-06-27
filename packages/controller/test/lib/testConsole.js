@@ -3,33 +3,10 @@
 /* jslint node:true */
 /* jshint expr:true */
 'use strict';
-const { tools } = require('@iobroker/js-controller-common');
 const path = require('path');
 const cpPromise = require('promisify-child-process');
 const iobExecutable = path.join(__dirname, '..', '..', 'iobroker.js');
-
-function getBackupDir() {
-    let dataDir = tools.getDefaultDataDir();
-
-    // All paths are returned always relative to /node_modules/appName.js-controller
-    if (dataDir) {
-        if (dataDir[0] === '.' && dataDir[1] === '.') {
-            dataDir = __dirname + '/../../' + dataDir;
-        } else if (dataDir[0] === '.' && dataDir[1] === '/') {
-            dataDir = __dirname + '/../../' + dataDir.substring(2);
-        }
-    }
-    dataDir = dataDir.replace(/\\/g, '/');
-    if (dataDir[dataDir.length - 1] !== '/') {
-        dataDir += '/';
-    }
-
-    const parts = dataDir.split('/');
-    parts.pop(); // remove data or appName-data
-    parts.pop();
-
-    return parts.join('/') + '/backups/';
-}
+const { setupBackup } = require('@iobroker/js-controller-cli');
 
 function register(it, expect, context) {
     const testName = `${context.name} ${context.adapterShortName} console: `;
@@ -579,7 +556,7 @@ function register(it, expect, context) {
     // backup
     it(testName + 'backup', async () => {
         // create backup
-        const dir = getBackupDir();
+        const dir = setupBackup.getBackupDir();
         const fs = require('fs');
         let files;
         // delete existing files
@@ -597,23 +574,24 @@ function register(it, expect, context) {
         expect(res.stderr).to.be.not.ok;
         files = fs.readdirSync(dir);
         // check 2017_03_09-13_48_33_backupioBroker.tar.gz
-        //let found = false;
+        // TODO: found logic not working on CI
+        // let found = false;
+
         console.log(`Check ${dir}`);
-        for (let f = files.length - 1; f > 0; f--) {
-            console.log('Detect ' + dir + files[f]);
-            if (files[f].endsWith('_backupioBroker.tar.gz')) {
-                // TODO see next TODO
-                //found = true;
+        for (const file of files) {
+            console.log(`Detect ${dir}${file}`);
+            if (file.endsWith('_backupioBroker.tar.gz')) {
+                // found = true;
                 break;
             }
         }
-        // TODO why this does not work on TRAVIS
-        //expect(found).to.be.true;
+
+        // expect(found).to.be.true;
 
         const name = Math.round(Math.random() * 10000).toString();
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" backup ${name}`);
         expect(res.stderr).to.be.not.ok;
-        expect(require('fs').existsSync(`${getBackupDir() + name}.tar.gz`)).to.be.true;
+        expect(require('fs').existsSync(`${setupBackup.getBackupDir() + name}.tar.gz`)).to.be.true;
     }).timeout(20000);
 
     // list l

@@ -20,7 +20,7 @@ function Setup(options) {
     const path = require('path');
     const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
     const dbTools = require('@iobroker/js-controller-common-db').tools;
-    const Backup = require('./setupBackup');
+    const Backup = require('@iobroker/js-controller-cli').setupBackup;
     const deepClone = require('deep-clone');
     const pluginInfos = require('./pluginInfos');
 
