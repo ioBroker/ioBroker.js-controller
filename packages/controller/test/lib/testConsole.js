@@ -574,18 +574,18 @@ function register(it, expect, context) {
         expect(res.stderr).to.be.not.ok;
         files = fs.readdirSync(dir);
         // check 2017_03_09-13_48_33_backupioBroker.tar.gz
-        //let found = false;
+        let found = false;
+
         console.log(`Check ${dir}`);
         for (let f = files.length - 1; f > 0; f--) {
             console.log('Detect ' + dir + files[f]);
             if (files[f].endsWith('_backupioBroker.tar.gz')) {
-                // TODO see next TODO
-                //found = true;
+                found = true;
                 break;
             }
         }
-        // TODO why this does not work on TRAVIS
-        //expect(found).to.be.true;
+
+        expect(found).to.be.true;
 
         const name = Math.round(Math.random() * 10000).toString();
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" backup ${name}`);

@@ -19,8 +19,9 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 const hostname = tools.getHostName();
 
-const tmpDir = path.normalize(path.join(tools.getControllerDir(), 'tmp'));
-const bkpDir = path.normalize(path.join(tools.getControllerDir(), 'backups'));
+const controllerDir = tools.getControllerDir();
+const tmpDir = path.normalize(path.join(controllerDir, 'tmp'));
+const bkpDir = path.normalize(path.join(controllerDir, 'backups'));
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -128,7 +129,7 @@ export class BackupRestore {
     }
 
     static getBackupDir(): string {
-        const dataDir = path.join(tools.getControllerDir(), tools.getDefaultDataDir());
+        const dataDir = path.join(controllerDir, tools.getDefaultDataDir());
 
         const parts = dataDir.split('/');
         parts.pop(); // remove data or appName-data
@@ -528,7 +529,7 @@ export class BackupRestore {
     private async _reloadAdaptersObjects(): Promise<void> {
         const dirs: string[] = [];
         let _modules;
-        let p = path.join(tools.getControllerDir(), 'node_modules');
+        let p = path.join(controllerDir, 'node_modules');
 
         if (fs.existsSync(p)) {
             if (!p.includes('js-controller')) {
@@ -542,7 +543,7 @@ export class BackupRestore {
                     }
                 }
             } else {
-                p = path.join(tools.getControllerDir(), '..', 'node_modules');
+                p = path.join(controllerDir, '..', 'node_modules');
                 if (fs.existsSync(p)) {
                     _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
                     if (_modules) {
@@ -558,12 +559,8 @@ export class BackupRestore {
         }
 
         // if installed as npm
-        if (
-            fs.existsSync(
-                path.join(tools.getControllerDir(), '..', '..', 'node_modules', `${tools.appName}.js-controller`)
-            )
-        ) {
-            const p = path.join(tools.getControllerDir(), '..');
+        if (fs.existsSync(path.join(controllerDir, '..', '..', 'node_modules', `${tools.appName}.js-controller`))) {
+            const p = path.join(controllerDir, '..');
             _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
             const regEx_ = new RegExp(`^${tools.appName}\\.`, 'i');
             for (const module of _modules) {
@@ -690,8 +687,6 @@ export class BackupRestore {
             return EXIT_CODES.CANNOT_RESTORE_BACKUP;
         }
 
-        const controllerDir = tools.getControllerDir();
-
         // check that the same controller version is installed as it is contained in backup
         const exitCode = this._ensureCompatibility(
             controllerDir,
@@ -707,7 +702,7 @@ export class BackupRestore {
 
         if (!dontDeleteAdapters) {
             // prevent having wrong versions of adapters
-            await this._removeAllAdapters(controllerDir);
+            await this._removeAllAdapters();
         }
 
         // stop all adapters
@@ -731,7 +726,7 @@ export class BackupRestore {
         // reload objects of adapters (if some couldn't be removed - normally this shouldn't be necessary anymore)
         await this._reloadAdaptersObjects();
         // Reload host objects
-        const packageIO = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
+        const packageIO = fs.readJSONSync(path.join(controllerDir, 'io-package.json'));
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
         await this._copyBackupedFiles(path.join(tmpDir, 'backup'));
@@ -761,9 +756,8 @@ export class BackupRestore {
 
     /**
      * Removes all adapters
-     * @param controllerDir - directory of js-controller
      */
-    private async _removeAllAdapters(controllerDir: string): Promise<void> {
+    private async _removeAllAdapters(): Promise<void> {
         const nodeModulePath = path.join(controllerDir, '..');
         const nodeModuleDirs = fs.readdirSync(nodeModulePath, { withFileTypes: true });
         // we need to uninstall current adapters to get exact the same system as before backup
@@ -1124,10 +1118,10 @@ export class BackupRestore {
                 // Stop controller
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const daemon = require('daemonize2').setup({
-                    main: path.join(tools.getControllerDir(), 'controller.js'),
+                    main: path.join(controllerDir, 'controller.js'),
                     name: `${tools.appName} controller`,
-                    pidfile: path.join(tools.getControllerDir(), `${tools.appName}.pid`),
-                    cwd: tools.getControllerDir(),
+                    pidfile: path.join(controllerDir, `${tools.appName}.pid`),
+                    cwd: controllerDir,
                     stopTimeout: 1000
                 });
                 daemon.on('error', async () => {
