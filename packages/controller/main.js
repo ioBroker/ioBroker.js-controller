@@ -2621,16 +2621,17 @@ async function processMessage(msg) {
 
                 if (fs.existsSync(logFile_)) {
                     const stats = fs.statSync(logFile_);
+                    const start = stats.size > 150 * lines ? stats.size - 150 * lines : 0;
 
                     fs.createReadStream(logFile_, {
-                        start: stats.size > 150 * lines ? stats.size - 150 * lines : 0,
+                        start,
                         end: stats.size
                     })
                         .on('data', chunk => (text += chunk.toString()))
                         .on('end', () => {
                             // done
                             const lines = text.split('\n');
-                            lines.shift(); // remove first line of the file as it could be not full
+                            start && lines.shift(); // remove first line of the file as it could be not full if starts not from 0
                             lines.push(stats.size); // place as last line the current size of log
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
@@ -3204,7 +3205,7 @@ async function processMessage(msg) {
 
         case 'restartController': {
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
-            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer to be sent
+            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer be sent
             break;
         }
     }
