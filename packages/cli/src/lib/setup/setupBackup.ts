@@ -695,7 +695,7 @@ export class BackupRestore {
         // check that the same controller version is installed as it is contained in backup
         const exitCode = this._ensureCompatibility(
             controllerDir,
-            restore.config?.system ? restore.config.system.hostname || hostname : hostname,
+            restore.config?.system?.hostname || hostname,
             restore.objects,
             force
         );
