@@ -2631,7 +2631,9 @@ async function processMessage(msg) {
                         .on('end', () => {
                             // done
                             const lines = text.split('\n');
-                            start && lines.shift(); // remove first line of the file as it could be not full if starts not from 0
+                            if (start) {
+                                lines.shift(); // remove first line of the file as it could be not full if starts not from 0
+                            }
                             lines.push(stats.size); // place as last line the current size of log
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
