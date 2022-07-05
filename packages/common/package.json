@@ -7,7 +7,7 @@
   "optionalDependencies": {
     "@datalust/winston-seq": "^1.0.0",
     "diskusage": "^1.1.3",
-    "winston-syslog": "^2.5.0"
+    "winston-syslog": "^2.6.0"
   },
   "dependencies": {
     "@alcalzone/pak": "^0.7.0",
