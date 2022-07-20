@@ -91,9 +91,7 @@ export class BackupRestore {
             // @ts-expect-error #1917
             const data = await this.objects.readFileAsync(id, srcPath);
             if (data) {
-                // @ts-expect-error #1917
                 if (data.data !== undefined) {
-                    // @ts-expect-error #1917
                     fs.writeFileSync(destPath, data.data);
                 } else {
                     // @ts-expect-error #1917 revisit
