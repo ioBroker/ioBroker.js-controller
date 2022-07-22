@@ -439,10 +439,10 @@ class Install {
                     const version = allDeps[dName];
                     // Check only if version not *, else we dont have to read io-pack unnecessarily
                     if (version !== '*') {
-                        const iopkg_ = fs.readJSONSync(`${__dirname}/../../package.json`);
-                        if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
+                        const packJson = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
+                        if (!semver.satisfies(packJson.version, version, { includePrerelease: true })) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${packJson.version}", required "${version}"`
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
