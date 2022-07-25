@@ -9,8 +9,6 @@
 
 'use strict';
 
-const { tools } = require('@iobroker/js-controller-common');
-
 /** @class */
 function VisDebug(options) {
     const fs = require('fs-extra');
