@@ -56,6 +56,7 @@ let isDaemon = false;
 let callbackId = 1;
 let callbacks = {};
 const hostname = tools.getHostName();
+const controllerDir = tools.getControllerDir();
 let hostObjectPrefix = `system.host.${hostname}`;
 let hostLogPrefix = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
@@ -475,7 +476,7 @@ function createStates(onConnect) {
                             pluginHandler.instanciatePlugin(
                                 pluginName,
                                 pluginHandler.getPluginConfig(pluginName),
-                                __dirname
+                                controllerDir
                             );
                             pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
                             pluginHandler.initPlugin(pluginName, ioPackage);
@@ -2567,7 +2568,7 @@ async function processMessage(msg) {
 
         case 'getLocationOnDisk':
             if (msg.callback && msg.from) {
-                sendTo(msg.from, msg.command, { path: __dirname, platform: os.platform() }, msg.callback);
+                sendTo(msg.from, msg.command, { path: controllerDir, platform: os.platform() }, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2616,7 +2617,7 @@ async function processMessage(msg) {
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
 
                 if (!fs.existsSync(logFile_)) {
-                    logFile_ = `${__dirname}/../../log/${tools.appName}.log`;
+                    logFile_ = `${controllerDir}/../../log/${tools.appName}.log`;
                 }
 
                 if (fs.existsSync(logFile_)) {
@@ -2659,7 +2660,7 @@ async function processMessage(msg) {
                         const parts = ['..', '..', '..', '..'];
                         do {
                             parts.pop();
-                            const _filename = path.normalize(`${__dirname}/${parts.join('/')}/`) + filename;
+                            const _filename = path.normalize(`${controllerDir}/${parts.join('/')}/`) + filename;
                             if (fs.existsSync(_filename)) {
                                 filename = _filename;
                                 break;
@@ -2710,7 +2711,7 @@ async function processMessage(msg) {
                                 const parts = ['..', '..', '..', '..'];
                                 do {
                                     parts.pop();
-                                    const _filename = path.normalize(`${__dirname}/${parts.join('/')}/`) + filename;
+                                    const _filename = path.normalize(`${controllerDir}/${parts.join('/')}/`) + filename;
                                     if (fs.existsSync(_filename)) {
                                         filename = _filename;
                                         break;
@@ -2781,9 +2782,9 @@ async function processMessage(msg) {
                     }
                 }
 
-                let location = path.normalize(__dirname + '/../');
+                let location = path.normalize(`${controllerDir}/../`);
                 if (path.basename(location) === 'node_modules') {
-                    location = path.normalize(__dirname + '/../../');
+                    location = path.normalize(`${controllerDir}/../../`);
                 }
 
                 data['Active instances'] = count;
@@ -2800,9 +2801,9 @@ async function processMessage(msg) {
                 // same as getHostInfo, but faster because delivers less information
                 // node.js --version
                 // uptime
-                let location = path.normalize(__dirname + '/../');
+                let location = path.normalize(`${controllerDir}/../`);
                 if (path.basename(location) === 'node_modules') {
-                    location = path.normalize(__dirname + '/../../');
+                    location = path.normalize(`${controllerDir}/../../`);
                 }
 
                 const cpus = os.cpus();
@@ -2835,11 +2836,11 @@ async function processMessage(msg) {
             }
             break;
         case 'delLogs': {
-            const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
-            fs.existsSync(`${__dirname}/log/${tools.appName}.log`) &&
-                fs.writeFileSync(`${__dirname}/log/${tools.appName}.log`, '');
-            fs.existsSync(`${__dirname}/../../log/${tools.appName}.log`) &&
-                fs.writeFileSync(`${__dirname}/../../log/${tools.appName}.log`, '');
+            const logFile = logger.getFileName(); //controllerDir + '/log/' + tools.appName + '.log';
+            fs.existsSync(`${controllerDir}/log/${tools.appName}.log`) &&
+                fs.writeFileSync(`${controllerDir}/log/${tools.appName}.log`, '');
+            fs.existsSync(`${controllerDir}/../../log/${tools.appName}.log`) &&
+                fs.writeFileSync(`${controllerDir}/../../log/${tools.appName}.log`, '');
             fs.existsSync(logFile) && fs.writeFileSync(logFile, '');
 
             msg.callback && msg.from && sendTo(msg.from, msg.command, null, msg.callback);
@@ -3562,10 +3563,10 @@ function storePids() {
             }
             pids.push(process.pid);
             try {
-                fs.writeFileSync(`${__dirname}/pids.txt`, JSON.stringify(pids));
+                fs.writeFileSync(`${controllerDir}/pids.txt`, JSON.stringify(pids));
             } catch (err) {
                 logger.error(
-                    `${hostLogPrefix} could not store process id list in ${__dirname}/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n${err}`
+                    `${hostLogPrefix} could not store process id list in ${controllerDir}/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n${err}`
                 );
                 logger.error(`${hostLogPrefix} Please consider running the installation fixer when on Linux.`);
             }
@@ -5307,10 +5308,10 @@ function stop(force, callback) {
                         clearTimeout(storeTimer);
                     }
                     // delete pids.txt
-                    fs.unlinkSync(path.join(__dirname, 'pids.txt'));
+                    fs.unlinkSync(path.join(controllerDir, 'pids.txt'));
                 } catch (e) {
                     if (e.code !== 'ENOENT') {
-                        logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                        logger.error(`${hostLogPrefix} Could not delete ${path.join(controllerDir, 'pids.txt')}: ${e}`);
                     }
                 }
                 process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
@@ -5433,15 +5434,15 @@ function init(compactGroupId) {
 
         // create package.json for npm >= 3.x if not exists
         if (
-            __dirname
+            controllerDir
                 .replace(/\\/g, '/')
                 .toLowerCase()
                 .includes('/node_modules/' + title.toLowerCase())
         ) {
             try {
-                if (!fs.existsSync(`${__dirname}/../../package.json`)) {
+                if (!fs.existsSync(`${controllerDir}/../../package.json`)) {
                     fs.writeFileSync(
-                        `${__dirname}/../../package.json`,
+                        `${controllerDir}/../../package.json`,
                         JSON.stringify(
                             {
                                 name: 'iobroker.core',
@@ -5454,10 +5455,10 @@ function init(compactGroupId) {
                     );
                 } else {
                     // npm3 requires version attribute
-                    const p = fs.readJSONSync(`${__dirname}/../../package.json`);
+                    const p = fs.readJSONSync(`${controllerDir}/../../package.json`);
                     if (!p.version) {
                         fs.writeFileSync(
-                            `${__dirname}/../../package.json`,
+                            `${controllerDir}/../../package.json`,
                             JSON.stringify(
                                 {
                                     name: 'iobroker.core',
@@ -5471,7 +5472,7 @@ function init(compactGroupId) {
                     }
                 }
             } catch (e) {
-                console.error(`Cannot create "${__dirname}/../../package.json": ${e}`);
+                console.error(`Cannot create "${controllerDir}/../../package.json": ${e}`);
             }
         }
     } else {
@@ -5482,7 +5483,7 @@ function init(compactGroupId) {
 
     let packageJson;
     try {
-        packageJson = fs.readJSONSync(`${__dirname}/package.json`);
+        packageJson = fs.readJSONSync(`${controllerDir}/package.json`);
     } catch {
         logger.error(`${hostLogPrefix} Can not read js-controller package.json`);
     }
@@ -5526,10 +5527,10 @@ function init(compactGroupId) {
         controllerVersion: version
     };
     pluginHandler = new PluginHandler(pluginSettings);
-    pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
+    pluginHandler.addPlugins(ioPackage.common.plugins, controllerDir); // Plugins from io-package have priority over ...
 
     try {
-        pluginHandler.addPlugins(config.plugins, __dirname); // ... plugins from iobroker.json
+        pluginHandler.addPlugins(config.plugins, controllerDir); // ... plugins from iobroker.json
     } catch (e) {
         logger.error(`${hostLogPrefix} Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);
         console.error(`Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);

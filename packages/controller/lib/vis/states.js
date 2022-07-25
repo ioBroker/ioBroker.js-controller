@@ -44,7 +44,7 @@ function calcProjects(objects, states, instance, config, callback) {
                     for (let r = 0; r < result.length; r++) {
                         total += result[r].val;
                     }
-                    result.push({ id: 'vis.' + instance + '.datapoints.total', val: total });
+                    result.push({ id: `vis.${instance}.datapoints.total`, val: total });
                 }
 
                 callback && callback(err, result);

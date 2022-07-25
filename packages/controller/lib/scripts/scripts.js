@@ -1,6 +1,7 @@
 const https = require('https');
 const fs = require('fs');
 const { tools } = require('@iobroker/js-controller-common');
+const path = require('path');
 
 function httpsGet(link, callback) {
     https
@@ -35,7 +36,7 @@ function updateVersion(name, callback, _sources) {
             updateVersion(name, callback, JSON.parse(body));
         });
     }
-    const cmd = 'npm show ' + tools.appName + '.' + name + ' version';
+    const cmd = `npm show ${tools.appName}.${name} version`;
     const exec = require('child_process').exec;
     let result = '';
     const child = exec(cmd, { windowsHide: true }, (error, stdout, _stderr) => (result = stdout));
@@ -83,7 +84,7 @@ if (process.argv.indexOf('--prepublish') !== -1) {
             console.error(`Cannot read sources file "${stableURL}": ${err}`);
             process.exit(2);
         } else {
-            fs.writeFileSync(`${__dirname}/../../conf/sources-dist.json`, body);
+            fs.writeFileSync(path.normalize(`${tools.getControllerDir()}/conf/sources-dist.json`), body);
             process.exit();
         }
     });

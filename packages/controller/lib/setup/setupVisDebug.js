@@ -9,6 +9,8 @@
 
 'use strict';
 
+const { tools } = require('@iobroker/js-controller-common');
+
 /** @class */
 function VisDebug(options) {
     const fs = require('fs-extra');
@@ -105,13 +107,14 @@ function VisDebug(options) {
         // copy edit.html.original to edit.html
         // correct appName.json
         // correct config.js
-        let visDir = `${__dirname}/../../node_modules/${tools.appName}.vis`;
+        const controllerDir = tools.getControllerDir();
+        let visDir = `${controllerDir}/node_modules/${tools.appName}.vis`;
         if (!fs.existsSync(visDir)) {
-            visDir = `${__dirname}/../../node_modules/${tools.appName.toLowerCase()}.vis`;
+            visDir = `${controllerDir}/node_modules/${tools.appName.toLowerCase()}.vis`;
             if (!fs.existsSync(visDir)) {
-                visDir = `${__dirname}/../../../${tools.appName}.vis`;
+                visDir = `${controllerDir}/../${tools.appName}.vis`;
                 if (!fs.existsSync(visDir)) {
-                    visDir = `${__dirname}/../../../${tools.appName.toLowerCase()}.vis`;
+                    visDir = `${controllerDir}/../${tools.appName.toLowerCase()}.vis`;
                     if (!fs.existsSync(visDir)) {
                         console.error(`Cannot find ${tools.appName}.vis`);
                         return void processExit(EXIT_CODES.MISSING_ADAPTER_FILES);

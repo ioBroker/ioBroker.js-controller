@@ -29,10 +29,10 @@ function Multihost(options) {
             if (fs.existsSync(configName)) {
                 config = fs.readJSONSync(configName);
             } else {
-                config = require(`../../conf/${tools.appName}-dist.json`);
+                config = require(`${tools.getControllerDir()}/conf/${tools.appName}-dist.json`);
             }
         } catch {
-            config = require(`../../conf/${tools.appName}-dist.json`);
+            config = require(`${tools.getControllerDir()}/conf/${tools.appName}-dist.json`);
         }
         return config;
     }
