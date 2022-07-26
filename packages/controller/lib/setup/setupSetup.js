@@ -9,7 +9,14 @@
 
 'use strict';
 
-const { tools } = require('@iobroker/js-controller-common');
+const fs = require('fs-extra');
+const path = require('path');
+const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
+const dbTools = require('@iobroker/js-controller-common-db').tools;
+const Backup = require('@iobroker/js-controller-cli').setupBackup;
+const deepClone = require('deep-clone');
+const pluginInfos = require('./pluginInfos');
+
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
 const COLOR_RESET = '\x1b[0m';
@@ -18,14 +25,6 @@ const CONTROLLER_DIR = tools.getControllerDir();
 
 /** @class */
 function Setup(options) {
-    const fs = require('fs-extra');
-    const path = require('path');
-    const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
-    const dbTools = require('@iobroker/js-controller-common-db').tools;
-    const Backup = require('@iobroker/js-controller-cli').setupBackup;
-    const deepClone = require('deep-clone');
-    const pluginInfos = require('./pluginInfos');
-
     options = options || {};
 
     const processExit = options.processExit;
@@ -254,7 +253,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         dbConnect(params, async (_objects, _states) => {
             objects = _objects;
             states = _states;
-            const iopkg = fs.readJsonSync(`${CONTROLLER_DIR}/io-package.json`);
+            const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
 
             await _maybeMigrateSets();
 
@@ -585,13 +584,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         // read actual configuration
         try {
             if (fs.existsSync(tools.getConfigFileName())) {
-                config = fs.readJSONSync(tools.getConfigFileName());
+                config = fs.readJsonSync(tools.getConfigFileName());
                 originalConfig = deepClone(config);
             } else {
-                config = require(`${CONTROLLER_DIR}/conf/${tools.appName}-dist.json`);
+                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`));
             }
         } catch {
-            config = require(`${CONTROLLER_DIR}/conf/${tools.appName}-dist.json`);
+            config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`));
         }
 
         const currentObjectsType = originalConfig.objects.type || 'jsonl';
@@ -974,12 +973,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         const otherInstallDirs = [];
 
         // copy reinstall.js file into root
-        if (fs.existsSync(`${CONTROLLER_DIR}/../../node_modules/`)) {
+        if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
             try {
-                if (fs.existsSync(`${CONTROLLER_DIR}/reinstall.js`)) {
+                if (fs.existsSync(path.join(CONTROLLER_DIR, 'reinstall.js'))) {
                     fs.writeFileSync(
-                        `${CONTROLLER_DIR}/../../reinstall.js`,
-                        fs.readFileSync(`${CONTROLLER_DIR}/reinstall.js`)
+                        path.join(CONTROLLER_DIR, '..', '..', 'reinstall.js'),
+                        fs.readFileSync(path.join(CONTROLLER_DIR, 'reinstall.js'))
                     );
                 }
             } catch (e) {
@@ -988,41 +987,45 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
         // Delete files for other OS
         if (platform.startsWith('win')) {
-            otherInstallDirs.push(`${CONTROLLER_DIR}/${tools.appName}`);
-            otherInstallDirs.push(`${CONTROLLER_DIR}/${tools.appName.substring(0, 3)}`);
-            otherInstallDirs.push(`${CONTROLLER_DIR}/killall.sh`);
-            otherInstallDirs.push(`${CONTROLLER_DIR}/reinstall.sh`);
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, tools.appName));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, tools.appName.substring(0, 3)));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, 'killall.sh'));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, 'reinstall.sh'));
         } else {
-            otherInstallDirs.push(`${CONTROLLER_DIR}/_service_${tools.appName}.bat`);
-            otherInstallDirs.push(`${CONTROLLER_DIR}/${tools.appName}.bat`);
-            otherInstallDirs.push(`${CONTROLLER_DIR}/${tools.appName.substring(0, 3)}.bat`);
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, `_service_${tools.appName}.bat`));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, `${tools.appName}.bat`));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, `${tools.appName.substring(0, 3)}.bat`));
             // copy scripts to root directory
-            if (fs.existsSync(`${CONTROLLER_DIR}/../../node_modules/`)) {
+            if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node
 require('${path.normalize(__dirname + '/..')}/setup').execute();`;
 
                 try {
-                    if (fs.existsSync(`${CONTROLLER_DIR}/killall.sh`)) {
+                    if (fs.existsSync(path.join(CONTROLLER_DIR, 'killall.sh'))) {
                         fs.writeFileSync(
-                            `${CONTROLLER_DIR}/../../killall.sh`,
-                            fs.readFileSync(`${CONTROLLER_DIR}/killall.sh`),
+                            path.join(CONTROLLER_DIR, '..', '..', 'killall.sh'),
+                            fs.readFileSync(path.join(CONTROLLER_DIR, 'killall.sh')),
                             { mode: 492 /* 0754 */ }
                         );
                     }
-                    if (fs.existsSync(`${CONTROLLER_DIR}/reinstall.sh`)) {
+                    if (fs.existsSync(path.join(CONTROLLER_DIR, 'reinstall.sh'))) {
                         fs.writeFileSync(
-                            `${CONTROLLER_DIR}/../../reinstall.sh`,
-                            fs.readFileSync(`${CONTROLLER_DIR}/reinstall.sh`),
+                            path.join(CONTROLLER_DIR, '..', '..', 'reinstall.sh'),
+                            fs.readFileSync(path.join(CONTROLLER_DIR, 'reinstall.sh')),
                             { mode: 492 /* 0754 */ }
                         );
                     }
-                    if (!fs.existsSync(`${CONTROLLER_DIR}/../../${tools.appName.substring(0, 3)}`)) {
-                        fs.writeFileSync(`${CONTROLLER_DIR}/../../${tools.appName.substring(0, 3)}`, startFile, {
-                            mode: 492 /* 0754 */
-                        });
+                    if (!fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', `${tools.appName.substring(0, 3)}`))) {
+                        fs.writeFileSync(
+                            path.join(CONTROLLER_DIR, '..', '..', `${tools.appName.substring(0, 3)}`),
+                            startFile,
+                            {
+                                mode: 492 /* 0754 */
+                            }
+                        );
                     }
-                    if (!fs.existsSync(`${CONTROLLER_DIR}/../../${tools.appName}`)) {
-                        fs.writeFileSync(`${CONTROLLER_DIR}/../../${tools.appName}`, startFile, {
+                    if (!fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', `${tools.appName}`))) {
+                        fs.writeFileSync(path.join(CONTROLLER_DIR, '..', '..', `${tools.appName}`), startFile, {
                             mode: 492 /* 0754 */
                         });
                     }
@@ -1061,10 +1064,10 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
         // only change config if non existing - else setup custom has to be used
         if (!fs.existsSync(configFileName)) {
             isCreated = true;
-            if (fs.existsSync(`${CONTROLLER_DIR}/conf/${tools.appName}-dist.json`)) {
-                config = require(`${CONTROLLER_DIR}/conf/${tools.appName}-dist.json`);
+            if (fs.existsSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`))) {
+                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`));
             } else {
-                config = require(`${CONTROLLER_DIR}/conf/${tools.appName.toLowerCase()}-dist.json`);
+                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
             }
             console.log(`creating conf/${tools.appName}.json`);
             config.objects.host = params.objects || '127.0.0.1';
@@ -1101,12 +1104,12 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     parts.pop();
                     const path_ = parts.join('/');
 
-                    if (!fs.existsSync(`${CONTROLLER_DIR}/${path_}/log`)) {
-                        fs.mkdirSync(`${CONTROLLER_DIR}/${path_}/log`);
+                    if (!fs.existsSync(path.join(CONTROLLER_DIR, path_, 'log'))) {
+                        fs.mkdirSync(path.join(CONTROLLER_DIR, path_, 'log'));
                     }
                 } else {
-                    if (!fs.existsSync(`${CONTROLLER_DIR}/log`)) {
-                        fs.mkdirSync(`${CONTROLLER_DIR}/log`);
+                    if (!fs.existsSync(path.join(CONTROLLER_DIR, 'log'))) {
+                        fs.mkdirSync(path.join(CONTROLLER_DIR, 'log'));
                     }
                 }
             } catch (err) {

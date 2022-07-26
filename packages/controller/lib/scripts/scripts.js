@@ -84,7 +84,7 @@ if (process.argv.indexOf('--prepublish') !== -1) {
             console.error(`Cannot read sources file "${stableURL}": ${err}`);
             process.exit(2);
         } else {
-            fs.writeFileSync(path.normalize(`${tools.getControllerDir()}/conf/sources-dist.json`), body);
+            fs.writeFileSync(path.join(tools.getControllerDir(), 'conf', 'sources-dist.json'), body);
             process.exit();
         }
     });

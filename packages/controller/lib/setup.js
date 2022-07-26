@@ -2114,7 +2114,7 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 fs.writeFileSync(
-                    path.normalize(`${tools.getControllerDir()}/../../package.json`),
+                    path.join(tools.getControllerDir(), '..', '..', 'package.json'),
                     JSON.stringify(json, null, 2)
                 );
                 return void callback();

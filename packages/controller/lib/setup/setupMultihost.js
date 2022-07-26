@@ -9,9 +9,14 @@
 
 'use strict';
 
+const fs = require('fs-extra');
+const path = require('path');
+const { tools } = require('@iobroker/js-controller-common');
+
 /** @class */
 function Multihost(options) {
     const fs = require('fs-extra');
+    const path = require('path');
     const { tools } = require('@iobroker/js-controller-common');
     const { tools: dbTools } = require('@iobroker/js-controller-common-db');
     const configName = tools.getConfigFileName();
@@ -27,12 +32,12 @@ function Multihost(options) {
         // read actual configuration
         try {
             if (fs.existsSync(configName)) {
-                config = fs.readJSONSync(configName);
+                config = fs.readJsonSync(configName);
             } else {
-                config = require(`${tools.getControllerDir()}/conf/${tools.appName}-dist.json`);
+                config = fs.readJsonSync(path.join(tools.getControllerDir(), 'conf', `${tools.appName}-dist.json`));
             }
         } catch {
-            config = require(`${tools.getControllerDir()}/conf/${tools.appName}-dist.json`);
+            config = fs.readJsonSync(path.join(tools.getControllerDir(), 'conf', `${tools.appName}-dist.json`));
         }
         return config;
     }
