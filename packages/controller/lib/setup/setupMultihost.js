@@ -9,10 +9,6 @@
 
 'use strict';
 
-const fs = require('fs-extra');
-const path = require('path');
-const { tools } = require('@iobroker/js-controller-common');
-
 /** @class */
 function Multihost(options) {
     const fs = require('fs-extra');
