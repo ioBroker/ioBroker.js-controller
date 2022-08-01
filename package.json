@@ -46,7 +46,7 @@
     "chai-as-promised": "^7.1.1",
     "cpy-cli": "^4.1.0",
     "eslint": "^8.14.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "fs-extra": "^10.1.0",
     "get-spdx-license-ids": "^2.1.0",
