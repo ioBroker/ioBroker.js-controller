@@ -9,7 +9,7 @@
     "deep-clone": "^3.0.3",
     "ioredis": "^4.28.2",
     "node.extend": "^2.0.2",
-    "semver": "^7.3.5"
+    "semver": "^7.3.7"
   },
   "keywords": [
     "ioBroker",
