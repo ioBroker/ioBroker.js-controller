@@ -1658,7 +1658,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    terminate(reason?: string | number, exitCode?: number): never;
+    terminate(exitCode?: number): never;
+    terminate(reason?: string, exitCode?: number): never;
 
     /**
      * stops the execution of adapter, but not disables it.
@@ -1668,7 +1669,7 @@ export class AdapterClass extends EventEmitter {
      * @param reason optional termination description
      * @param exitCode optional exit code
      */
-    terminate(reason: unknown, exitCode: unknown): void {
+    terminate(reason: unknown, exitCode?: unknown): void {
         // This function must be defined very first, because in the next lines will be yet used.
         if (this.terminated) {
             return;
@@ -1744,6 +1745,8 @@ export class AdapterClass extends EventEmitter {
 
     // external signature
     getPort(port: number, host?: string, callback?: (port: number) => void): void;
+    getPort(port: number, callback?: (port: number) => void): void;
+
     /**
      * Helper function to find next free port
      *
@@ -1759,7 +1762,7 @@ export class AdapterClass extends EventEmitter {
      * @param callback return result
      *        <pre><code>function (port) {}</code></pre>
      */
-    getPort(port: unknown, host: unknown, callback: unknown): void {
+    getPort(port: unknown, host: unknown, callback?: unknown): void {
         if (!port) {
             throw new Error('adapterGetPort: no port');
         }
