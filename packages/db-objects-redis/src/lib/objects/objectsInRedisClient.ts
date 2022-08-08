@@ -1230,7 +1230,7 @@ export class ObjectsInRedisClient {
         if (!callback) {
             return new Promise((resolve, reject) =>
                 this.readFile(id, name, options, (err, res, mimeType) =>
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    // @ts-expect-error res cannot be undefined according to types?
                     err ? reject(err) : resolve({ data: res, mimeType: mimeType })
                 )
             );
@@ -1262,7 +1262,8 @@ export class ObjectsInRedisClient {
     readFileAsync(id: string, name: string, options: CallOptions): ioBroker.ReadFilePromise {
         return new Promise((resolve, reject) =>
             this.readFile(id, name, options, (err, res, mimeType) =>
-                err ? reject(err) : resolve({ data: res as string | Buffer, mimeType: mimeType })
+                // @ts-expect-error res cannot be undefined according to types
+                err ? reject(err) : resolve({ data: res, mimeType: mimeType })
             )
         );
     }

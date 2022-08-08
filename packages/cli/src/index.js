@@ -15,5 +15,9 @@ module.exports = {
         debug: require('./lib/cli/cliDebug.js'),
         plugin: require('./lib/cli/cliPlugin.js')
     },
-    setupList: require('./lib/setup/setupList').List
+    setupList: require('./lib/setup/setupList').List,
+    setupPacketManager: require('./lib/setup/setupPacketManager').PacketManager,
+    setupUpload: require('./lib/setup/setupUpload').Upload,
+    setupInstall: require('./lib/setup/setupInstall').Install,
+    setupBackup: require('./lib/setup/setupBackup').BackupRestore
 };

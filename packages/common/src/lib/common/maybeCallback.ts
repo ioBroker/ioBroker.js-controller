@@ -177,7 +177,7 @@ export function maybeCallbackWithRedisError<T extends any[]>(
     ...args: T
 ): Promise<any> | void {
     if (error instanceof Error && error.message.includes('Connection is closed')) {
-        error.message = module.exports.ERRORS.ERROR_DB_CLOSED;
+        error.message = ERRORS.ERROR_DB_CLOSED;
     }
     return maybeCallbackWithError(callback, error, ...args);
 }
