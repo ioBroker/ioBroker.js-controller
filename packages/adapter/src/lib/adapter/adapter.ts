@@ -916,7 +916,7 @@ export class AdapterClass extends EventEmitter {
     protected readonly FORBIDDEN_CHARS: RegExp;
     private inputCount: number;
     private outputCount: number;
-    private users: Record<`system.user.${string}`, { groups: any; acl: any }>; // todo
+    private users: Record<ioBroker.ObjectIDs.User, { groups: any; acl: any }>; // todo
     private groups: Record<string, Partial<ioBroker.GroupObject>>;
     private autoSubscribe: string[];
     private defaultHistory: null | string;
@@ -1531,6 +1531,7 @@ export class AdapterClass extends EventEmitter {
 
     // overload with real types
     decrypt(secretVal: string, value?: string): string;
+    decrypt(value: string): string;
     /**
      * Decrypt the password/value with given key
      * @param secretVal to use for decrypt (or value if only one parameter is given)
@@ -1550,12 +1551,14 @@ export class AdapterClass extends EventEmitter {
 
     // overload with real types
     encrypt(secretVal: string, value?: string): string;
+    encrypt(value: string): string;
+
     /**
      * Encrypt the password/value with given key
      * @param secretVal to use for encrypt (or value if only one parameter is given)
      * @param [value] value to encrypt (if secret is provided)
      */
-    encrypt(secretVal: unknown, value: unknown): string {
+    encrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
             value = secretVal;
             secretVal = this._systemSecret;
