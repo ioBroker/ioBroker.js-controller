@@ -18,8 +18,7 @@ import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 
 // local version is always same as controller version, since lerna exact: true is used
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const controllerVersion = require('@iobroker/js-controller-adapter/package.json').version;
+import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
 import { ID, IdObject, Utils } from './utils';
@@ -89,7 +88,7 @@ interface AdapterOptions {
     /** called when adapter is ready */
     ready?: ioBroker.ReadyHandler;
     /** called on reconnection to DB */
-    reconnect?: () => void | Promise<void>;
+    reconnect?: () => VoidLikeCallback;
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
 }
@@ -122,18 +121,14 @@ interface AliasTargetEntry {
     unit?: string;
 }
 
-interface PortRunningObject {
-    port: number;
-    host?: string;
-    callback?: (port: number) => void;
-}
-
 interface GetUserGroupsOptions {
     user: `system.user.${string}`;
     [other: string]: any;
 }
 
 type CheckStateCommand = 'getState' | 'setState' | 'delState';
+
+type VoidLikeCallback = Promise<void> | void;
 
 interface InternalSetSessionOptions {
     id: string;
@@ -927,7 +922,7 @@ export class AdapterClass extends EventEmitter {
     private defaultHistory: null | string;
     private pluginHandler?: InstanceType<typeof PluginHandler>;
     private _reportInterval?: null | NodeJS.Timer;
-    private getPortRunning: null | PortRunningObject;
+    private getPortRunning: null | InternalGetPortOptions;
     private readonly _namespaceRegExp: RegExp;
     protected instance?: number;
     // @ts-expect-error decide how to handle it
@@ -1573,9 +1568,9 @@ export class AdapterClass extends EventEmitter {
     }
 
     // real types overload
-    getSession(id: string, callback: ioBroker.GetSessionCallback): void | Promise<void>;
+    getSession(id: string, callback: ioBroker.GetSessionCallback): VoidLikeCallback;
     // unknown guard implementation
-    getSession(id: unknown, callback: unknown): void | Promise<void> {
+    getSession(id: unknown, callback: unknown): VoidLikeCallback {
         Utils.assertString(id, 'id');
         Utils.assertCallback(callback, 'callback');
 
@@ -1583,7 +1578,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // actual implementation
-    private _getSession(options: InternalGetSessionOptions): void | Promise<void> {
+    private _getSession(options: InternalGetSessionOptions): VoidLikeCallback {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} getSession not processed because States database not connected`);
@@ -1594,15 +1589,10 @@ export class AdapterClass extends EventEmitter {
     }
 
     // overload for docs
-    setSession(
-        id: string,
-        ttl: number,
-        data: Record<string, any>,
-        callback?: ioBroker.ErrorCallback
-    ): void | Promise<void>;
+    setSession(id: string, ttl: number, data: Record<string, any>, callback?: ioBroker.ErrorCallback): VoidLikeCallback;
 
     // unknown implementation guards
-    setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): void | Promise<void> {
+    setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): VoidLikeCallback {
         Utils.assertString(id, 'id');
         Utils.assertOptionalCallback(callback, 'callback');
         Utils.assertNumber(ttl, 'ttl');
@@ -1612,7 +1602,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // actual implementation
-    private _setSession(options: InternalSetSessionOptions): void | Promise<void> {
+    private _setSession(options: InternalSetSessionOptions): VoidLikeCallback {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} setSession not processed because States database not connected`);
@@ -1622,8 +1612,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // real types overload
-    destroySession(id: string, callback?: ioBroker.ErrorCallback): void | Promise<void>;
-    destroySession(id: unknown, callback: unknown): void | Promise<void> {
+    destroySession(id: string, callback?: ioBroker.ErrorCallback): VoidLikeCallback;
+    destroySession(id: unknown, callback: unknown): VoidLikeCallback {
         Utils.assertString(id, 'id');
         Utils.assertOptionalCallback(callback, 'callback');
 
@@ -3494,7 +3484,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): void | Promise<void> {
+    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): VoidLikeCallback {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3523,7 +3513,7 @@ export class AdapterClass extends EventEmitter {
         return this._setForeignObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private _setForeignObject(_options: InternalSetObjectOptions): void | Promise<void> {
+    private _setForeignObject(_options: InternalSetObjectOptions): VoidLikeCallback {
         const { options, callback, obj } = _options;
         let { id } = _options;
 
@@ -4303,7 +4293,7 @@ export class AdapterClass extends EventEmitter {
         enums?: unknown,
         options?: unknown,
         callback?: unknown
-    ): void | Promise<void> {
+    ): VoidLikeCallback {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4479,12 +4469,12 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void | Promise<void>;
+    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): VoidLikeCallback;
     getForeignObject<T extends string>(
         id: T,
         options: unknown,
         callback: ioBroker.GetObjectCallback<T>
-    ): void | Promise<void>;
+    ): VoidLikeCallback;
 
     /**
      * Get any object.
@@ -4500,7 +4490,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getForeignObject(id: unknown, options: unknown, callback?: unknown): void | Promise<void> {
+    getForeignObject(id: unknown, options: unknown, callback?: unknown): VoidLikeCallback {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4517,7 +4507,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignObject({ id, options, callback });
     }
 
-    private _getForeignObject(options: InternalGetObjectOptions): void | Promise<void> {
+    private _getForeignObject(options: InternalGetObjectOptions): VoidLikeCallback {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getForeignObject not processed because Objects database not connected`
@@ -5618,7 +5608,7 @@ export class AdapterClass extends EventEmitter {
         channelName: unknown,
         options: unknown,
         callback?: unknown
-    ): void | Promise<void> {
+    ): VoidLikeCallback {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6888,7 +6878,7 @@ export class AdapterClass extends EventEmitter {
         data: unknown,
         options: unknown,
         callback?: unknown
-    ): void | Promise<void> {
+    ): VoidLikeCallback {
         if (_adapter === null) {
             _adapter = this.name;
         }
