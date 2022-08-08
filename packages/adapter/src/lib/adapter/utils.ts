@@ -242,7 +242,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsString(value: unknown, name: string): asserts value is string {
+    static assertString(value: unknown, name: string): asserts value is string {
         if (typeof value !== 'string') {
             throw new Error(
                 `Paramter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
@@ -255,7 +255,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsPattern(value: unknown, name: string): asserts value is Pattern {
+    static assertPattern(value: unknown, name: string): asserts value is Pattern {
         if (typeof value !== 'string' && !Array.isArray(value)) {
             throw new Error(
                 `Paramter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`
@@ -276,7 +276,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsBoolean(value: unknown, name: string): asserts value is boolean {
+    static assertBoolean(value: unknown, name: string): asserts value is boolean {
         if (typeof value !== 'boolean') {
             throw new Error(
                 `Paramter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`
@@ -289,7 +289,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsNumber(value: unknown, name: string): asserts value is number {
+    static assertNumber(value: unknown, name: string): asserts value is number {
         if (typeof value !== 'number') {
             throw new Error(
                 `Paramter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`
@@ -302,7 +302,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsObject(value: unknown, name: string): asserts value is Record<string, any> {
+    static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
         if (!tools.isObject(value)) {
             throw new Error(`Paramter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
         }
@@ -313,7 +313,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsBuffer(value: unknown, name: string): asserts value is Buffer {
+    static assertBuffer(value: unknown, name: string): asserts value is Buffer {
         if (!Buffer.isBuffer(value)) {
             throw new Error(`Paramter "${name}" needs to be a Buffer but type "${typeof value}" has been passed`);
         }
@@ -324,7 +324,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
+    static assertOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
         if (value && typeof value !== 'function') {
             throw new Error(
                 `Paramter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`
@@ -337,7 +337,7 @@ export class Utils {
      * @param value value to check type of
      * @param name name of the parameter for logging
      */
-    static assertsCallback(value: unknown, name: string): asserts value is Callback {
+    static assertCallback(value: unknown, name: string): asserts value is Callback {
         if (typeof value !== 'function') {
             throw new Error(
                 `Paramter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`
