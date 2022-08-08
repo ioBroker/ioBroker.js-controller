@@ -425,7 +425,6 @@ class Install {
         const allDeps = { ...deps, ...globalDeps };
 
         // Get all installed adapters
-        // @ts-expect-error #1917 should fix it
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
             endkey: 'system.adapter.\u9999'
@@ -747,7 +746,6 @@ class Install {
         await this.upload.uploadAdapter(adapter, true, false);
         await this.upload.uploadAdapter(adapter, false, false);
 
-        // @ts-expect-error #1917
         const res = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: `system.adapter.${adapter}.`,
             endkey: `system.adapter.${adapter}.\u9999`
@@ -1051,7 +1049,6 @@ class Install {
      */
     async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[]): Promise<void> {
         try {
-            // @ts-expect-error #1917
             const doc = await this.objects.getObjectViewAsync('system', 'meta', {
                 startkey: `${adapter}.`,
                 endkey: `${adapter}.\u9999`
@@ -1125,7 +1122,6 @@ class Install {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            // @ts-expect-error #1917
             const doc = await this.objects.getObjectViewAsync('system', 'device', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
@@ -1164,7 +1160,6 @@ class Install {
     private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number) {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         try {
-            // @ts-expect-error #1917
             const doc = await this.objects.getObjectViewAsync('system', 'channel', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
@@ -1205,7 +1200,6 @@ class Install {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            // @ts-expect-error #1917
             let doc = await this.objects.getObjectViewAsync('system', 'state', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
@@ -1230,7 +1224,6 @@ class Install {
                 }
             }
 
-            // @ts-expect-error #1917
             doc = await this.objects.getObjectViewAsync('system', 'state', {
                 startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
                 endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
@@ -1584,7 +1577,6 @@ class Install {
      */
     private async _removeCustomFromObjects(ids: string[]): Promise<void> {
         // get all objects which have a custom attribute
-        // @ts-expect-error # 1917
         const res = await this.objects.getObjectViewAsync('system', 'custom', {
             startkey: '',
             endkey: '\u9999'
@@ -1766,7 +1758,6 @@ class Install {
     private async _hasDependentInstances(adapter: string, instance?: number): Promise<void | string> {
         try {
             // lets get all instances
-            // @ts-expect-error #1917
             const doc = await this.objects.getObjectViewAsync('system', 'instance', {
                 startkey: 'system.adapter.',
                 endkey: 'system.adapter.\u9999'

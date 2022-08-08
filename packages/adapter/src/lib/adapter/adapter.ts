@@ -10833,16 +10833,10 @@ export class AdapterClass extends EventEmitter {
                                 this.logRedirect!(true, id);
                             }
                         }
-                        if (
-                            this.logList.size &&
-                            messages &&
-                            messages.length &&
-                            adapterStates &&
-                            adapterStates.pushLog
-                        ) {
+                        if (this.logList.size && messages && messages.length && adapterStates) {
                             for (const message of messages) {
                                 for (const instanceId of this.logList) {
-                                    adapterStates!.pushLog(instanceId, message);
+                                    adapterStates.pushLog(instanceId, message);
                                 }
                             }
                         }
