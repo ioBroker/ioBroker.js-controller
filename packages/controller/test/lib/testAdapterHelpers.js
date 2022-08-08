@@ -26,7 +26,7 @@ function register(it, expect, context) {
         this.timeout(3000);
 
         //Throw Error
-        expect(context.adapter.getPort.bind('')).to.throw('adapterGetPort: no port');
+        expect(() => context.adapter.getPort()).to.throw('adapterGetPort: no port');
 
         expect(context.adapter.getPortRunning).to.not.exist;
 
@@ -67,7 +67,7 @@ function register(it, expect, context) {
         this.timeout(3000);
 
         //Expecting a callback
-        expect(context.adapter.checkPassword.bind('claus', '1234')).to.throw('checkPassword: no callback');
+        expect(() => context.adapter.checkPassword('claus', '1234')).to.throw('checkPassword: no callback');
 
         //User doesnt exists
         context.adapter.checkPassword('claus', '1234', function (res) {
