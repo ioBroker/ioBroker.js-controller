@@ -877,13 +877,13 @@ export class AdapterClass extends EventEmitter {
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
     /** List of instances which want our logs */
-    private readonly logList: Set<string>;
-    private readonly aliases: Map<string, AliasDetails>;
-    private readonly aliasPatterns: Set<string>;
-    private enums: Record<string, any>;
-    private eventLoopLags: number[];
-    private overwriteLogLevel: boolean;
-    protected adapterReady: boolean;
+    private readonly logList = new Set<string>();
+    private readonly aliases = new Map<string, AliasDetails>();
+    private readonly aliasPatterns = new Set<string>();
+    private enums: Record<string, any> = {};
+    private eventLoopLags: number[] = [];
+    private overwriteLogLevel: boolean = false;
+    protected adapterReady: boolean = false;
     private callbacks?: Record<string, { cb: ioBroker.MessageCallback; time?: number }>;
 
     /**
@@ -896,12 +896,12 @@ export class AdapterClass extends EventEmitter {
      * NOTE: This is only defined if the adapter was initialized with the option objects: true.
      */
     protected oObjects?: Record<string, ioBroker.Object | undefined>;
-    private _stopInProgress: boolean;
-    private _callbackId: number;
-    private _firstConnection: boolean;
-    private _timers: Set<NodeJS.Timeout>;
-    private _intervals: Set<NodeJS.Timeout>;
-    private _delays: Set<NodeJS.Timeout>;
+    private _stopInProgress: boolean = false;
+    private _callbackId: number = 1;
+    private _firstConnection: boolean = true;
+    private readonly _timers = new Set<NodeJS.Timeout>();
+    private readonly _intervals = new Set<NodeJS.Timeout>();
+    private readonly _delays = new Set<NodeJS.Timeout>();
     protected log?: Log;
     private readonly performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
@@ -911,18 +911,24 @@ export class AdapterClass extends EventEmitter {
     protected namespace: `${string}.${number}`;
     protected name: string;
     private _systemSecret?: string;
-    private terminated: boolean;
-    private usernames: Record<string, { id: string }>;
-    protected readonly FORBIDDEN_CHARS: RegExp;
-    private inputCount: number;
-    private outputCount: number;
-    private users: Record<ioBroker.ObjectIDs.User, { groups: any; acl: any }>; // todo
-    private groups: Record<string, Partial<ioBroker.GroupObject>>;
-    private autoSubscribe: string[];
-    private defaultHistory: null | string;
+    /** Whether the adapter has already terminated */
+    private terminated: boolean = false;
+    /** The cache of usernames */
+    private usernames: Record<string, { id: string }> = {};
+    /** A RegExp to test for forbidden chars in object IDs */
+    protected readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
+    private inputCount: number = 0;
+    private outputCount: number = 0;
+    /** The cache of users */
+    private users: Record<ioBroker.ObjectIDs.User, { groups: any; acl: any }> = {}; // todo
+    /** The cache of user groups */
+    private groups: Record<string, Partial<ioBroker.GroupObject>> = {};
+    /** An array of instances, that support auto subscribe */
+    private autoSubscribe: string[] = [];
+    private defaultHistory: null | string = null;
     private pluginHandler?: InstanceType<typeof PluginHandler>;
     private _reportInterval?: null | NodeJS.Timer;
-    private getPortRunning: null | InternalGetPortOptions;
+    private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
     protected instance?: number;
     // @ts-expect-error decide how to handle it
@@ -1000,39 +1006,6 @@ export class AdapterClass extends EventEmitter {
 
         this._config = this._options.config || this._config;
         this.startedInCompactMode = !!this._options.compact;
-
-        this.logList = new Set();
-        this.aliases = new Map();
-        this.aliasPatterns = new Set();
-        this.enums = {};
-        /** The cache of users */
-        this.users = {};
-        /** The cache of usernames */
-        this.usernames = {};
-        /** The cache of user groups */
-        this.groups = {};
-        this.defaultHistory = null;
-        /** An array of instances, that support auto subscribe */
-        this.autoSubscribe = [];
-        this.inputCount = 0;
-        this.outputCount = 0;
-
-        this.getPortRunning = null;
-        this.eventLoopLags = [];
-        this.overwriteLogLevel = false;
-        this.adapterReady = false;
-        this._stopInProgress = false;
-        this._callbackId = 1;
-        this._firstConnection = true;
-
-        this._timers = new Set();
-        this._intervals = new Set();
-        this._delays = new Set();
-
-        /** A RegExp to test for forbidden chars in object IDs */
-        this.FORBIDDEN_CHARS = FORBIDDEN_CHARS;
-        /** Whether the adapter has already terminated */
-        this.terminated = false;
 
         // possible arguments
         // 0,1,.. - instance
