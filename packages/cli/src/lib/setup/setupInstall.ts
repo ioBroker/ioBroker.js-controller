@@ -1373,7 +1373,6 @@ class Install {
             }
             // try to delete the current state
             try {
-                // @ts-expect-error #1917
                 await this.states.delState(stateIDs.pop()!);
             } catch (err) {
                 // yep that works!

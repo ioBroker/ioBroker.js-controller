@@ -13,7 +13,7 @@ import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-contro
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { Client as ObjectsInRedisClient, ChangeFileFunction } from '@iobroker/db-objects-redis';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 
@@ -40,207 +40,70 @@ import {
     ACCESS_USER_READ
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type {
+    AdapterOptions,
+    AliasDetails,
+    CalculatePermissionsCallback,
+    CheckGroupCallback,
+    CheckPasswordCallback,
+    CheckStateCommand,
+    CommandsPermissions,
+    GetCertificatesCallback,
+    GetEncryptedConfigCallback,
+    GetUserGroupsOptions,
+    InternalAddChannelToEnumOptions,
+    InternalAddStateToEnumOptions,
+    InternalCalculatePermissionsOptions,
+    InternalCheckGroupOptions,
+    InternalCheckPasswordOptions,
+    InternalCreateDeviceOptions,
+    InternalCreateStateOptions,
+    InternalDelBinaryStateOptions,
+    InternalDeleteChannelFromEnumOptions,
+    InternalDeleteChannelOptions,
+    InternalDeleteDeviceOptions,
+    InternalDeleteStateFromEnumOptions,
+    InternalDeleteStateOptions,
+    InternalDelObjectOptions,
+    InternalDelStateOptions,
+    InternalDestroySessionOptions,
+    InternalGetAdapterObjectsOptions,
+    InternalGetBinaryStateOption,
+    InternalGetCertificatesOptions,
+    InternalGetChannelsOfOptions,
+    InternalGetDevicesOptions,
+    InternalGetEncryptedConfigOptions,
+    InternalGetEnumOptions,
+    InternalGetEnumsOptions,
+    InternalGetHistoryOptions,
+    InternalGetObjectOptions,
+    InternalGetObjectsOptions,
+    InternalGetObjectViewOptions,
+    InternalGetPortOptions,
+    InternalGetSessionOptions,
+    InternalGetStateOptions,
+    InternalGetStatesOfOptions,
+    InternalGetStatesOptions,
+    InternalGetUserIDOptions,
+    InternalSendToHostOptions,
+    InternalSendToOptions,
+    InternalSetBinaryStateOptions,
+    InternalSetObjectOptions,
+    InternalSetPasswordOptions,
+    InternalSetSessionOptions,
+    InternalSetStateChanedOptions,
+    InternalSetStateOptions,
+    InternalSubscribeOptions,
+    InternalUpdateConfigOptions,
+    TimeoutCallback,
+    VoidLikeCallback
+} from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient | null;
 let adapterObjects: ObjectsInRedisClient | null;
 let States: typeof StatesInRedisClient;
 let Objects: typeof ObjectsInRedisClient;
-
-interface AdapterOptions {
-    subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
-    /** If the adapter collects logs from all adapters (experts only). Default: false */
-    logTransporter?: boolean;
-    /** if true, the date format from system.config */
-    useFormatDate?: boolean;
-    /** if it is possible for other instances to retrive states of this adapter automatically */
-    subscribable?: boolean;
-    /** compact group instance if running in compact mode */
-    compactInstance?: number;
-    /** if desired to have oStates. This is a list with all states values, and it will be updated automatically. */
-    states?: boolean;
-    /** if desired to have oObjects. This is a list with all states, channels and devices of this adapter, and it will be updated automatically.*/
-    objects?: boolean;
-    /** instance number of adapter */
-    instance?: number;
-    /** adapter directory name */
-    dirname?: string;
-    /** flag which defaults to true - if true, adapter warns if states are set without a corresponding existing object */
-    strictObjectChecks?: boolean;
-    /** If true runs in compact mode */
-    compact?: boolean;
-    /** configuration of the connection to controller */
-    config?: AdapterOptionsConfig;
-    /** name of the adapter. Must be exactly the same as directory name. */
-    name: string;
-    /** If true, the systemConfig (iobroker.json) will be available in this.systemConfig */
-    systemConfig?: boolean;
-    /** callback function (id, obj) that will be called if object changed */
-    objectChange?: ioBroker.ObjectChangeHandler;
-    /** callback function (id, obj) that will be called if state changed */
-    stateChange?: ioBroker.StateChangeHandler;
-    /** callback function (id, file) that will be called if file changed */
-    fileChange?: ChangeFileFunction;
-    /** callback to inform about new message the adapter */
-    message?: ioBroker.MessageHandler;
-    /** callback to stop the adapter */
-    unload?: ioBroker.UnloadHandler;
-    /** called when adapter is ready */
-    ready?: ioBroker.ReadyHandler;
-    /** called on reconnection to DB */
-    reconnect?: () => VoidLikeCallback;
-    /** Handler to handle uncaught exceptions, return true if no further handling required */
-    error?: ioBroker.ErrorHandler;
-}
-
-interface AdapterOptionsConfig {
-    log: {
-        level: ioBroker.LogLevel;
-    };
-}
-
-interface AliasDetails {
-    source: AliasDetailsSource | null;
-    targets: AliasTargetEntry[];
-}
-
-interface AliasDetailsSource {
-    min?: number;
-    max?: number;
-    type: string;
-    unit?: string;
-}
-
-interface AliasTargetEntry {
-    alias: ioBroker.StateCommon['alias'];
-    id: string;
-    pattern: string;
-    type: string;
-    max?: number;
-    min?: number;
-    unit?: string;
-}
-
-interface GetUserGroupsOptions {
-    user: `system.user.${string}`;
-    [other: string]: any;
-}
-
-type CheckStateCommand = 'getState' | 'setState' | 'delState';
-
-type VoidLikeCallback = Promise<void> | void;
-
-interface InternalSetSessionOptions {
-    id: string;
-    ttl: number;
-    data: Record<string, any>;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalGetSessionOptions {
-    id: string;
-    callback: ioBroker.GetSessionCallback;
-}
-
-interface InternalDestroySessionOptions {
-    id: string;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalGetPortOptions {
-    port: number;
-    host?: string;
-    callback?: (port: number) => void;
-}
-
-type CheckPasswordCallback = (success: boolean, user: string) => void;
-
-interface InternalCheckPasswordOptions {
-    user: string;
-    pw: string;
-    options?: Record<string, any> | null;
-    callback: CheckPasswordCallback;
-}
-
-interface InternalGetUserIDOptions {
-    username: string;
-}
-
-interface InternalSetPasswordOptions {
-    user: string;
-    pw: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-type CheckGroupCallback = (result: boolean) => void;
-
-interface InternalCheckGroupOptions {
-    user: string;
-    group: string;
-    options?: Record<string, any> | null;
-    callback?: CheckGroupCallback;
-}
-
-type CommandsPermissions = {
-    [permission: string]: { type: 'object' | 'state' | '' | 'other' | 'file'; operation: string };
-};
-
-type CalculatePermissionsCallback = (result: ioBroker.PermissionSet) => void;
-
-interface InternalCalculatePermissionsOptions {
-    user: string;
-    commandsPermissions: CommandsPermissions;
-    options?: Record<string, any> | null;
-    callback?: CalculatePermissionsCallback;
-}
-
-type GetCertificatesCallback = (
-    err: string | null,
-    certs?: ioBroker.Certificates,
-    useLetsEncryptCert?: boolean
-) => void;
-
-interface InternalGetCertificatesOptions {
-    publicName: string;
-    privateName: string;
-    chainedName: string;
-    callback?: GetCertificatesCallback;
-}
-
-interface InternalUpdateConfigOptions {
-    newConfig: Record<string, any>;
-}
-
-type GetEncryptedConfigCallback = (error: Error | null | undefined, result?: string) => void;
-
-interface InternalGetEncryptedConfigOptions {
-    attribute: string;
-    callback?: GetEncryptedConfigCallback;
-}
-
-type TimeoutCallback = (args?: any[]) => void;
-
-interface InternalSetObjectOptions {
-    id: string;
-    options?: Record<string, any> | null;
-    obj: ioBroker.SettableObject;
-    callback?: ioBroker.SetObjectCallback;
-}
-
-interface InternalGetObjectOptions {
-    id: string;
-    options: unknown;
-    callback?: ioBroker.GetObjectCallback<any>;
-}
-
-interface InternalGetObjectsOptions {
-    pattern: string;
-    type?: string;
-    enums?: ioBroker.EnumList | null;
-    options?: unknown;
-    callback?: ioBroker.GetObjectsCallbackTyped<any>;
-}
 
 /**
  * Here we define dynamically created methods
@@ -677,191 +540,6 @@ export interface AdapterClass {
     getStatesOfAsync(): Promise<ioBroker.StateObject[]>;
     getStatesOfAsync(parentDevice: string, parentChannel?: string): Promise<ioBroker.StateObject[]>;
     getStatesOfAsync(parentDevice: string, parentChannel: string, options?: unknown): Promise<ioBroker.StateObject[]>;
-}
-
-interface InternalGetChannelsOfOptions {
-    parentDevice: string;
-    callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
-    options?: Record<string, any> | null;
-}
-
-interface InternalGetAdapterObjectsOptions {
-    callback?: (objects: Record<string, ioBroker.AdapterScopedObject>) => void;
-}
-
-interface InternalGetObjectViewOptions {
-    design: string;
-    search: string;
-    params: ioBroker.GetObjectViewParams;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.GetObjectViewCallback<ioBroker.AnyObject>;
-}
-
-interface InternalGetEnumOptions {
-    _enum: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.GetEnumCallback;
-}
-
-interface InternalGetEnumsOptions {
-    _enumList?: ioBroker.EnumList;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.GetEnumsCallback;
-}
-
-interface InternalDelObjectOptions {
-    id: string;
-    options?: ioBroker.DelObjectOptions | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalCreateDeviceOptions {
-    deviceName: string;
-    common?: Partial<ioBroker.DeviceCommon>;
-    _native?: Record<string, any> | null;
-    options: unknown;
-    callback?: ioBroker.SetObjectCallback;
-}
-
-interface InternalSetStateOptions {
-    id: string | IdObject;
-    state: ioBroker.StateValue | ioBroker.SettableState;
-    ack?: boolean;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.SetStateCallback;
-}
-
-// @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-interface InternalSetStateChanedOptions extends InternalSetStateOptions {
-    callback?: ioBroker.SetStateChangedCallback;
-}
-
-interface InternalCreateStateOptions {
-    parentDevice: string;
-    parentChannel: string;
-    stateName: string;
-    common: Partial<ioBroker.StateCommon>;
-    _native: Record<string, any>;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.SetObjectCallback;
-}
-
-interface InternalSubscribeOptions {
-    pattern: string | string[];
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalSetBinaryStateOptions {
-    id: string;
-    options?: Record<string, any> | null;
-    binary: Buffer;
-    callback?: ioBroker.SetStateCallback;
-}
-
-interface InternalAddChannelToEnumOptions {
-    enumName: string;
-    addTo: string;
-    parentDevice: string;
-    channelName: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalSendToOptions {
-    instanceName: string;
-    command: string;
-    message: ioBroker.MessagePayload;
-    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
-}
-
-interface InternalSendToHostOptions {
-    hostName: string;
-    command: string;
-    message: ioBroker.MessagePayload;
-    callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
-}
-
-interface InternalGetStateOptions {
-    id: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.GetStateCallback;
-}
-
-interface InternalGetStatesOptions {
-    pattern: string | string[];
-    options: Record<string, any>;
-    callback: ioBroker.GetStatesCallback;
-}
-
-interface InternalGetBinaryStateOption {
-    id: string;
-    options: Record<string, any>;
-    callback?: ioBroker.GetBinaryStateCallback;
-}
-
-interface InternalDelBinaryStateOptions {
-    id: string;
-    options: Record<string, any>;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalDeleteDeviceOptions {
-    deviceName: string;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalDeleteChannelFromEnumOptions {
-    enumName: string;
-    parentDevice: string;
-    channelName: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalDeleteChannelOptions {
-    parentDevice: string;
-    channelName: string;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalDeleteStateOptions {
-    parentDevice: string;
-    parentChannel: string;
-    stateName: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalGetDevicesOptions {
-    options?: Record<string, any> | null;
-    callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>;
-}
-
-interface InternalGetStatesOfOptions {
-    parentDevice: string;
-    parentChannel: string;
-    options?: Record<string, any> | null;
-    callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>;
-}
-
-interface InternalAddStateToEnumOptions {
-    enumName: string;
-    addTo: string;
-    parentDevice: string;
-    parentChannel: string;
-    stateName: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
-}
-
-interface InternalDeleteStateFromEnumOptions {
-    enumName: string;
-    parentDevice: string;
-    parentChannel: string;
-    stateName: string;
-    options?: Record<string, any> | null;
-    callback?: ioBroker.ErrorCallback;
 }
 
 /**
@@ -9079,6 +8757,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     getHistory(id: string, options: ioBroker.GetHistoryOptions, callback: ioBroker.GetHistoryCallback): void;
+    getHistory(id: string, callback: ioBroker.GetHistoryCallback): void;
 
     /**
      * Read historian data for states of any instance or system state.
@@ -9120,10 +8799,30 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    async getHistory(id: any, options: any, callback: any) {
+    getHistory(id: unknown, options: unknown, callback?: unknown) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = {};
+        }
+
+        Utils.assertString(id, 'id');
+        if (options !== null && options !== undefined) {
+            Utils.assertObject(options, 'options');
+        }
+        Utils.assertCallback(callback, 'callback');
+
+        return this._getHistory({ id, options, callback });
+    }
+
+    // Checked implementation
+    private async _getHistory(_options: InternalGetHistoryOptions) {
+        const { id, callback } = _options;
+        let { options } = _options;
+
         try {
             this._utils.validateId(id, true, null);
         } catch (err) {
+            // @ts-expect-error
             return tools.maybeCallbackWithError(callback, err);
         }
 
@@ -9164,7 +8863,7 @@ export class AdapterClass extends EventEmitter {
      * @param {string} id short or long string of ID like "stateID" or "adapterName.0.stateID".
      * @return {object} parsed ID as an object
      */
-    idToDCS(id: any): {
+    idToDCS(id: unknown): {
         device: string;
         channel: string;
         state: string;
@@ -9172,6 +8871,9 @@ export class AdapterClass extends EventEmitter {
         if (!id) {
             return null;
         }
+
+        Utils.assertString(id, 'id');
+
         const parts = id.split('.');
         if (`${parts[0]}.${parts[1]}` !== this.namespace) {
             this._logger.warn(`${this.namespaceLog} Try to decode id not from this adapter`);
@@ -9202,8 +8904,20 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    delState(id: any, options: any, callback?: any) {
-        // TODO: types
+    delState(id: unknown, options: unknown, callback?: unknown) {
+        Utils.assertString(id, 'id');
+        if (options !== null && options !== undefined) {
+            Utils.assertObject(options, 'options');
+        }
+        Utils.assertOptionalCallback(callback, 'callback');
+
+        return this._delState({ id, options, callback });
+    }
+
+    _delState(_options: InternalDelStateOptions) {
+        const { options, callback } = _options;
+        let { id } = _options;
+
         try {
             this._utils.validateId(id, false, null);
         } catch (err) {
@@ -9212,7 +8926,7 @@ export class AdapterClass extends EventEmitter {
 
         // delState does the same as delForeignState, but fixes the ID first
         id = this._utils.fixId(id);
-        this.delForeignState(id, options, callback);
+        return this.delForeignState(id, options, callback);
     }
 
     // external signature
@@ -9229,11 +8943,23 @@ export class AdapterClass extends EventEmitter {
      * @param {object} [options] optional argument to describe the user context
      * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
      */
-    delForeignState(id: any, options: any, callback?: any) {
+    delForeignState(id: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
+
+        Utils.assertString(id, 'id');
+        Utils.assertOptionalCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Utils.assertObject(options, 'options');
+        }
+
+        return this._delForeignState({ id, options, callback });
+    }
+
+    _delForeignState(_options: InternalDelStateOptions) {
+        const { id, options, callback } = _options;
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9283,6 +9009,7 @@ export class AdapterClass extends EventEmitter {
      * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      */
     getStates(pattern: unknown, options: any, callback?: any) {
+        // TODO Types
         // we use any types here, because validation takes place in foreign method
         if (typeof options === 'function') {
             callback = options;
