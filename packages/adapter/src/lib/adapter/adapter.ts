@@ -41,6 +41,7 @@ import {
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
+    AdapterConfig,
     AdapterOptions,
     AliasDetails,
     CalculatePermissionsCallback,
@@ -612,7 +613,7 @@ export class AdapterClass extends EventEmitter {
     // @ts-expect-error decide how to handle it
     private _utils: Utils;
     /** contents of io-package.json */
-    protected adapterConfig?: Record<string, any> | null; // TODO: contents of io-pack?
+    protected adapterConfig?: AdapterConfig | null;
     protected connected?: boolean;
     protected adapterDir: string;
     /** contents of package.json */

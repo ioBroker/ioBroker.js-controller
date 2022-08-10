@@ -47,6 +47,8 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
 }
 
+export type AdapterConfig = AdapterOptions | ioBroker.InstanceObject;
+
 export interface AdapterOptionsConfig {
     log: {
         level: ioBroker.LogLevel;

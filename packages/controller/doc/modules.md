@@ -20,4 +20,4 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:11961](https://github.com/ioBroker/ioBroker.js-controller/blob/fe2576be/packages/adapter/src/lib/adapter/adapter.ts#L11961)
+[packages/adapter/src/lib/adapter/adapter.ts:11962](https://github.com/ioBroker/ioBroker.js-controller/blob/a74c68fe/packages/adapter/src/lib/adapter/adapter.ts#L11962)
