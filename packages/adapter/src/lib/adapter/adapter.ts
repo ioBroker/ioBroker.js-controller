@@ -8906,6 +8906,11 @@ export class AdapterClass extends EventEmitter {
      *        </code></pre>
      */
     delState(id: unknown, options: unknown, callback?: unknown) {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
         Utils.assertString(id, 'id');
         if (options !== null && options !== undefined) {
             Utils.assertObject(options, 'options');
