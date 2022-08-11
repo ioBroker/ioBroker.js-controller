@@ -68,6 +68,7 @@ import type {
     InternalDelObjectOptions,
     InternalDelStateOptions,
     InternalDestroySessionOptions,
+    InternalFormatDateOptions,
     InternalGetAdapterObjectsOptions,
     InternalGetBinaryStateOption,
     InternalGetCertificatesOptions,
@@ -1487,9 +1488,11 @@ export class AdapterClass extends EventEmitter {
     checkPassword(
         user: string,
         pw: string,
-        options?: Record<string, any>,
-        callback?: CheckPasswordCallback
+        options: Record<string, any>,
+        callback: CheckPasswordCallback
     ): Promise<void>;
+    checkPassword(user: string, pw: string, callback: CheckPasswordCallback): Promise<void>;
+
     /**
      * validates user and password
      *
@@ -1504,7 +1507,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    checkPassword(user: unknown, pw: unknown, options: unknown, callback: unknown): Promise<void> {
+    checkPassword(user: unknown, pw: unknown, options: unknown, callback?: unknown): Promise<void> {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -1622,6 +1625,8 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback
     ): Promise<void>;
 
+    setPassword(user: string, pw: string, callback?: ioBroker.ErrorCallback): Promise<void>;
+
     /**
      * sets the user's password
      *
@@ -1635,7 +1640,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    setPassword(user: unknown, pw: unknown, options: unknown, callback: unknown): Promise<void> {
+    setPassword(user: unknown, pw: unknown, options: unknown, callback?: unknown): Promise<void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1719,12 +1724,9 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    checkGroup(
-        user: string,
-        group: string,
-        options?: Record<string, any>,
-        callback?: CheckGroupCallback
-    ): Promise<void>;
+    checkGroup(user: string, group: string, options: Record<string, any>, callback?: CheckGroupCallback): Promise<void>;
+    checkGroup(user: string, group: string, callback?: CheckGroupCallback): Promise<void>;
+
     /**
      * returns if user exists and is in the group
      *
@@ -1740,7 +1742,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    checkGroup(user: unknown, group: unknown, options: unknown, callback: unknown): Promise<void> {
+    checkGroup(user: unknown, group: unknown, options: unknown, callback?: unknown): Promise<void> {
         user = user || '';
 
         if (typeof options === 'function') {
@@ -1810,6 +1812,11 @@ export class AdapterClass extends EventEmitter {
         user: string,
         commandsPermissions: CommandsPermissions,
         options?: Record<string, any>,
+        callback?: CalculatePermissionsCallback
+    ): Promise<void | ioBroker.PermissionSet>;
+    calculatePermissions(
+        user: string,
+        commandsPermissions: CommandsPermissions,
         callback?: CalculatePermissionsCallback
     ): Promise<void | ioBroker.PermissionSet>;
 
@@ -1910,7 +1917,7 @@ export class AdapterClass extends EventEmitter {
         user: unknown,
         commandsPermissions: unknown,
         options: unknown,
-        callback: unknown
+        callback?: unknown
     ): Promise<void | ioBroker.PermissionSet> {
         user = user || '';
 
@@ -2550,6 +2557,7 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback?: ioBroker.SetObjectCallback
     ): Promise<void>;
+    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     /**
      * Creates or overwrites object in objectDB.
      *
@@ -5491,6 +5499,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    deleteChannel(channelName: string, callback?: ioBroker.ErrorCallback): void;
     deleteChannel(channelName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteChannel(
         parentDevice: string,
@@ -5513,7 +5522,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    deleteChannel(parentDevice: unknown, channelName: unknown, options: unknown, callback?: unknown) {
+    deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown) {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6213,6 +6222,8 @@ export class AdapterClass extends EventEmitter {
         callback: ioBroker.ChownFileCallback
     ): void;
 
+    chmodFile(adapter: string | null, path: string, callback: ioBroker.ChownFileCallback): void;
+
     /**
      * Change file access rights
      *
@@ -6234,7 +6245,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    chmodFile(_adapter: unknown, path: unknown, options: unknown, callback: unknown) {
+    chmodFile(_adapter: unknown, path: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6258,6 +6269,8 @@ export class AdapterClass extends EventEmitter {
         callback: (err?: Error | null, processedFiles?: any) => void
     ): void;
 
+    chownFile(_adapter: string, path: string, callback: (err?: Error | null, processedFiles?: any) => void): void;
+
     /**
      * Change file owner
      *
@@ -6279,7 +6292,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    chownFile(_adapter: unknown, path: unknown, options: unknown, callback: unknown) {
+    chownFile(_adapter: unknown, path: unknown, options: unknown, callback?: unknown) {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6650,8 +6663,7 @@ export class AdapterClass extends EventEmitter {
     formatDate(dateObj: string | Date | number, format: string): string;
     formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
 
-    // TODO make strict later
-    formatDate(dateObj: any, isDuration: any, _format?: any) {
+    formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown) {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
             isDuration = true;
         }
@@ -6663,25 +6675,39 @@ export class AdapterClass extends EventEmitter {
         if (!dateObj) {
             return '';
         }
-        const type = typeof dateObj;
-        if (type === 'string') {
-            dateObj = new Date(dateObj);
+
+        Utils.assertBoolean(isDuration, 'isDuration');
+        Utils.assertString(_format, 'format');
+
+        return this._formatDate({ dateObj: dateObj as any, isDuration, _format });
+    }
+
+    private _formatDate(_options: InternalFormatDateOptions) {
+        const { _format, dateObj: _dateObj } = _options;
+        let { isDuration } = _options;
+
+        let dateObj: Date;
+
+        if (typeof _dateObj === 'string') {
+            dateObj = new Date(_dateObj);
         }
 
-        if (type !== 'object') {
-            const j = parseInt(dateObj, 10);
-            if (j === dateObj) {
+        if (typeof _dateObj !== 'object') {
+            const j = typeof _dateObj === 'number' ? _dateObj : parseInt(_dateObj, 10);
+            if (j === _dateObj) {
                 // may this is interval
                 if (j < 946681200) {
                     isDuration = true;
-                    dateObj = new Date(dateObj);
+                    dateObj = new Date(_dateObj);
                 } else {
                     // if less 2000.01.01 00:00:00
                     dateObj = j < 946681200000 ? new Date(j * 1000) : new Date(j);
                 }
             } else {
-                dateObj = new Date(dateObj);
+                dateObj = new Date(_dateObj);
             }
+        } else {
+            dateObj = _dateObj;
         }
         const format = _format || this.dateFormat || 'DD.MM.YYYY';
 
@@ -6704,7 +6730,6 @@ export class AdapterClass extends EventEmitter {
                 case 'ГГ':
                     v = dateObj.getFullYear();
                     if (s.length === 2) {
-                        // @ts-expect-error
                         v %= 100;
                     }
                     if (v <= 9) {
@@ -9015,7 +9040,6 @@ export class AdapterClass extends EventEmitter {
      * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      */
     getStates(pattern: unknown, options: any, callback?: any) {
-        // TODO Types
         // we use any types here, because validation takes place in foreign method
         if (typeof options === 'function') {
             callback = options;

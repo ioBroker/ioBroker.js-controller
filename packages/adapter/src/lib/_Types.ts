@@ -55,6 +55,12 @@ export interface AdapterOptionsConfig {
     };
 }
 
+export interface InternalFormatDateOptions {
+    dateObj: string | Date | number;
+    isDuration: boolean;
+    _format: string;
+}
+
 export interface AliasDetails {
     source: AliasDetailsSource | null;
     targets: AliasTargetEntry[];
