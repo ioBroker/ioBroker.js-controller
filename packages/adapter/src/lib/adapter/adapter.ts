@@ -6677,7 +6677,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertBoolean(isDuration, 'isDuration');
-        Utils.assertString(_format, 'format');
+        if (_format !== undefined) {
+            Utils.assertString(_format, 'format');
+        }
 
         return this._formatDate({ dateObj: dateObj as any, isDuration, _format });
     }
