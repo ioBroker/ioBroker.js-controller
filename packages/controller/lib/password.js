@@ -1,1 +1,1 @@
-module.exports = require('@iobroker/js-controller-common/lib/common/password');
+module.exports = require('@iobroker/js-controller-common').password;

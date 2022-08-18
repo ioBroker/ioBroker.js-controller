@@ -3,6 +3,8 @@
 // we cannot use semver here, because dependencies are not installed yet
 // so the version checks get a bit messy
 
+const RECOMMENDED_NPM_VERSION = 8;
+
 const path = require('path');
 const child_process = require('child_process');
 
@@ -43,7 +45,9 @@ function checkNpmVersion() {
                             console.warn('You are using an unsupported npm version!');
                             console.warn('This can lead to problems when installing further packages');
                             console.warn();
-                            console.warn('Please use "npm install -g npm@6" to upgrade npm to 6.x or ');
+                            console.warn(
+                                `Please use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" to upgrade npm to ${RECOMMENDED_NPM_VERSION}.x or `
+                            );
                             console.warn('use "npm install -g npm@latest" to install a supported version of npm!');
                             console.warn(
                                 'You need to make sure to repeat this step after installing an update to NodeJS and/or npm.'
@@ -63,7 +67,7 @@ function checkNpmVersion() {
 
 checkNpmVersion()
     .catch(err => {
-        console.error(`Could not check npm version: ${err}`);
+        console.error(`Could not check npm version: ${err.message}`);
         console.error('Assuming that correct version is installed.');
     })
     .then(() => {
@@ -173,15 +177,6 @@ function eq(v1, v2) {
     return v1.build === v2.build;
 }
 
-// /**
-//  * Checks if v1 != v2
-//  * @param {Version | string} v1
-//  * @param {Version | string} v2
-//  */
-// function ne(v1, v2) {
-//     return !eq(v1, v2);
-// }
-
 /**
  * Checks if v1 >= v2
  * @param {Version | string} v1
@@ -190,12 +185,3 @@ function eq(v1, v2) {
 function gte(v1, v2) {
     return gt(v1, v2) || eq(v1, v2);
 }
-
-// /**
-//  * Checks if v1 <= v2
-//  * @param {Version | string} v1
-//  * @param {Version | string} v2
-//  */
-// function lte(v1, v2) {
-//     return lt(v1, v2) || eq(v1, v2);
-// }

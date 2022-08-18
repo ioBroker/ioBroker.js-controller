@@ -39,10 +39,10 @@ function Upgrade(options) {
     const hostname = tools.getHostName();
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
-    const Upload = require('./setupUpload.js');
+    const Upload = require('@iobroker/js-controller-cli').setupUpload;
     const upload = new Upload(options);
 
-    const Install = require('./setupInstall.js');
+    const Install = require('@iobroker/js-controller-cli').setupInstall;
     const install = new Install(options);
 
     /**

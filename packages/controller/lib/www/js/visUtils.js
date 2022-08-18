@@ -1,4 +1,4 @@
-const tools = require('../../tools');
+const { tools } = require('@iobroker/js-controller-common');
 
 function getWidgetGroup(views, view, widget) {
     const widgets = views[view].widgets;

@@ -1,4 +1,4 @@
-const getUsedObjectIDs = require('../www/js/visUtils').getUsedObjectIDs;
+const { getUsedObjectIDs } = require('../www/js/visUtils');
 
 function calcProject(objects, projects, instance, result, callback) {
     if (!projects || !projects.length) {
@@ -34,7 +34,7 @@ function calcProject(objects, projects, instance, result, callback) {
 }
 
 function calcProjects(objects, states, instance, config, callback) {
-    objects.readDir('vis.' + instance, '/', (err, projects) => {
+    objects.readDir(`vis.${instance}`, '/', (err, projects) => {
         if (err || !projects || !projects.length) {
             callback && callback(err || null, [{ id: 'vis.' + instance + '.datapoints.total', val: 0 }]);
         } else {

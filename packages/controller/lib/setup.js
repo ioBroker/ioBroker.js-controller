@@ -602,7 +602,7 @@ async function processCommand(command, args, params, callback) {
                     async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
-                            const Install = require('./setup/setupInstall.js');
+                            const Install = require('@iobroker/js-controller-cli').setupInstall;
                             const install = new Install({
                                 objects,
                                 states,
@@ -790,7 +790,7 @@ async function processCommand(command, args, params, callback) {
             url = url.trim();
 
             dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
+                const Install = require('@iobroker/js-controller-cli').setupInstall;
                 const install = new Install({
                     objects,
                     states,
@@ -893,7 +893,7 @@ async function processCommand(command, args, params, callback) {
             const adapterDir = tools.getAdapterDir(name);
 
             dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
+                const Install = require('@iobroker/js-controller-cli').setupInstall;
                 const install = new Install({
                     objects,
                     states,
@@ -986,7 +986,7 @@ async function processCommand(command, args, params, callback) {
             const subTree = args[1];
             if (name) {
                 dbConnect(params, async () => {
-                    const Upload = require('./setup/setupUpload.js');
+                    const Upload = require('@iobroker/js-controller-cli').setupUpload;
                     const upload = new Upload({ states, objects });
 
                     if (name === 'all') {
@@ -1088,7 +1088,7 @@ async function processCommand(command, args, params, callback) {
 
             if (instance || instance === 0) {
                 dbConnect(params, async () => {
-                    const Install = require('./setup/setupInstall.js');
+                    const Install = require('@iobroker/js-controller-cli').setupInstall;
                     const install = new Install({
                         objects,
                         states,
@@ -1103,7 +1103,7 @@ async function processCommand(command, args, params, callback) {
                 });
             } else {
                 dbConnect(params, async () => {
-                    const Install = require('./setup/setupInstall.js');
+                    const Install = require('@iobroker/js-controller-cli').setupInstall;
                     const install = new Install({
                         objects,
                         states,
@@ -1258,7 +1258,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'restore': {
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
 
             dbConnect(params, (_obj, _stat, isNotRun) => {
                 if (!isNotRun) {
@@ -1286,7 +1286,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'backup': {
             const name = args[0];
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
 
             dbConnect(params, async () => {
                 const backup = new Backup({
@@ -1311,7 +1311,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'validate': {
             const name = args[0];
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
             dbConnect(params, async () => {
                 const backup = new Backup({
                     states,

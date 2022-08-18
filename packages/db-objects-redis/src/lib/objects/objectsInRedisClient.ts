@@ -1199,8 +1199,8 @@ export class ObjectsInRedisClient {
         if (meta && !meta.binary && buffer) {
             buffer = buffer.toString();
         }
-        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-        return { file: buffer, mimeType: mimeType };
+
+        return { data: buffer, mimeType: mimeType };
     }
 
     // User has provided no callback, we will return the Promise
@@ -1225,7 +1225,7 @@ export class ObjectsInRedisClient {
         if (!callback) {
             return new Promise((resolve, reject) =>
                 this.readFile(id, name, options, (err, res, mimeType) =>
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    // @ts-expect-error res cannot be undefined according to types?
                     err ? reject(err) : resolve({ data: res, mimeType: mimeType })
                 )
             );
@@ -1245,8 +1245,8 @@ export class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 try {
-                    const { file, mimeType } = await this._readFile(id, name, meta);
-                    return tools.maybeCallbackWithError(callback, null, file, mimeType);
+                    const { data, mimeType } = await this._readFile(id, name, meta);
+                    return tools.maybeCallbackWithError(callback, null, data, mimeType);
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
@@ -1257,7 +1257,7 @@ export class ObjectsInRedisClient {
     readFileAsync(id: string, name: string, options: CallOptions): ioBroker.ReadFilePromise {
         return new Promise((resolve, reject) =>
             this.readFile(id, name, options, (err, res, mimeType) =>
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                // @ts-expect-error res cannot be undefined according to types
                 err ? reject(err) : resolve({ data: res, mimeType: mimeType })
             )
         );
@@ -1438,7 +1438,6 @@ export class ObjectsInRedisClient {
                 if (dir !== lastDir) {
                     result.push({
                         file: dir,
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         stats: {},
                         isDir: true
                     });
@@ -1484,7 +1483,6 @@ export class ObjectsInRedisClient {
             }
         });
         if (!keys.length) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 stats attribute
             const result: ioBroker.ReadDirResult[] = dirs.map(file => ({
                 file,
                 stats: {},
@@ -1513,7 +1511,6 @@ export class ObjectsInRedisClient {
             while (dirs.length && dirs[0] < file) {
                 result.push({
                     file: dirs.shift()!,
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     stats: {},
                     isDir: true
                 });
@@ -1557,7 +1554,6 @@ export class ObjectsInRedisClient {
         while (dirs.length) {
             result.push({
                 file: dirs.shift()!,
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 stats: {},
                 isDir: true
             });
@@ -1934,7 +1930,6 @@ export class ObjectsInRedisClient {
                 this.log.error(`${this.namespace} Could not remove files: ${e.message}`);
             }
 
-            // @ts-expect-error we do not have property isDir but RmResult requires it
             return files;
         }
     }
@@ -4756,7 +4751,6 @@ export class ObjectsInRedisClient {
                 utils.checkObject(obj, options, CONSTS.ACCESS_READ) &&
                 (!type || (obj.common && obj.common.type === type))
             ) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
             } else {
                 this._getKeys(
