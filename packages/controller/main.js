@@ -2474,7 +2474,11 @@ async function processMessage(msg) {
                     sendTo(msg.from, msg.command, globalRepo, msg.callback);
                 });
             } else {
-                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
+                logger.error(
+                    `${hostLogPrefix} Invalid request ${
+                        msg.command
+                    }. "callback"(${!!msg.callback}) or "from"(${!!msg.from}) is null`
+                );
             }
             break;
 
