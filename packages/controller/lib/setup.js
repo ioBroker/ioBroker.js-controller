@@ -1299,10 +1299,11 @@ async function processCommand(command, args, params, callback) {
 
                 try {
                     const filePath = await backup.createBackup(name);
-                    console.log('Backup created: ' + filePath);
+                    console.log(`Backup created: ${filePath}`);
+                    console.log('This backup can only be restored with js-controller version up from 4.1');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (err) {
-                    console.log('Cannot create backup: ' + err);
+                    console.log(`Cannot create backup: ${err}`);
                     return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                 }
             });
