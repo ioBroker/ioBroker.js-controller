@@ -5,7 +5,7 @@ function Repo(options) {
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
     const { tools } = require('@iobroker/js-controller-common');
     const axios = require('axios');
-    const ioPackage = require('../../io-package.json');
+    const ioPackage = require(`${tools.getControllerDir()}/io-package.json`);
     const version = ioPackage.common.version;
     const fs = require('fs');
 

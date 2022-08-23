@@ -2066,7 +2066,7 @@ export async function getHostInfo(
     if (!npmVersion) {
         try {
             const version = await getSystemNpmVersionAsync();
-            data.NPM = 'v' + (version || ' ---');
+            data.NPM = `v${version || ' ---'}`;
             npmVersion = version;
         } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
@@ -2089,7 +2089,7 @@ export async function getHostInfo(
 
 /**
  * Finds the controller root directory
- * @returns absolute path to controller dir
+ * @returns absolute path to controller dir without ending slash
  */
 export function getControllerDir(): string {
     const possibilities = ['iobroker.js-controller', 'ioBroker.js-controller'];
