@@ -1,5 +1,5 @@
 'use strict';
-const CLICommand = require('./cliCommand.js');
+const { CLICommand } = require('./cliCommand.js');
 const CLIObjects = require('./cliObjects.js');
 const messages = require('./messages.js');
 const { tools } = require('@iobroker/js-controller-common');
