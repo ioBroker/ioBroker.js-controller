@@ -32,9 +32,11 @@ export interface CLIBackupRestoreOptions {
     restartController: () => void;
 }
 
-interface BackupObject {
+type BackupObject = Omit<ioBroker.GetObjectListItem, 'doc'>;
+
+interface Backup {
     config?: null | Record<string, any>;
-    objects: null | Omit<ioBroker.GetObjectListItem, 'doc'>[];
+    objects: null | BackupObject[];
     states: Record<string, ioBroker.State>;
 }
 
@@ -256,7 +258,7 @@ export class BackupRestore {
             }
         }
 
-        let result: BackupObject | null = { objects: null, states: {} };
+        let result: Backup | null = { objects: null, states: {} };
 
         const hostname = tools.getHostName();
 
@@ -469,7 +471,7 @@ export class BackupRestore {
      *
      * @param _objects - array of all objects to be set
      */
-    private async _setObjHelper(_objects: ioBroker.GetObjectListItem[]): Promise<void> {
+    private async _setObjHelper(_objects: BackupObject[]): Promise<void> {
         for (let i = 0; i < _objects.length; i++) {
             // Disable all adapters.
             if (
@@ -679,7 +681,7 @@ export class BackupRestore {
         // replace all hostnames of instances etc with the new host
         data = data.replace(/\$\$__hostname__\$\$/g, hostname);
         fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
-        let restore: BackupObject;
+        let restore: Backup;
         try {
             restore = JSON.parse(data);
         } catch (err) {
@@ -794,7 +796,7 @@ export class BackupRestore {
     private _ensureCompatibility(
         controllerDir: string,
         backupHostname: string,
-        backupObjects: ioBroker.GetObjectListItem[],
+        backupObjects: BackupObject[],
         force: boolean
     ): void | number {
         try {
