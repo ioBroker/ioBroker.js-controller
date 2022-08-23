@@ -1,4 +1,6 @@
 'use strict';
+const { tools } = require('@iobroker/js-controller-common');
+const fs = require('fs-extra');
 
 /**
  * This method initializes a web server with certificates if needed and returns a promise
@@ -33,8 +35,6 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
         return require('https').createServer(certificates, app);
     }
 
-    const { tools } = require('@iobroker/js-controller-common');
-    const fs = require('fs-extra');
     let leDir;
 
     let configPath = tools.getConfigFileName().replace(/\\/g, '/');
@@ -61,13 +61,13 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
 
     // TODO? Tried adding sites in the gl create but that didn't work so is below with gl.add.
 
-    const pkg = require('../package.json');
+    const pkg = require(`${tools.getControllerDir()}/package.json`);
     const glOpts = {
-        packageRoot: __dirname + '/..',
+        packageRoot: tools.getControllerDir(),
         configDir: leDir,
         maintainerEmail: leSettings.email,
         cluster: false,
-        packageAgent: pkg.name + '/' + pkg.version,
+        packageAgent: `${pkg.name}/${pkg.version}`,
         renew: settings.leUpdate,
         notify: (ev, params) => {
             switch (ev) {
