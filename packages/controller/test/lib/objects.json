@@ -318,6 +318,9 @@
             "meta": {
                 "map": "function(doc) { if (doc.type=='meta') emit(doc._id, doc) }"
             },
+            "chart": {
+                "map": "function(doc) { if (doc.type=='chart') emit(doc._id, doc) }"
+            },
             "device": {
                 "map": "function(doc) { if (doc.type=='device') emit(doc._id, doc) }"
             },
