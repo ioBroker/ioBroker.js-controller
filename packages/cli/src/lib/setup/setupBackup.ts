@@ -32,7 +32,7 @@ export interface CLIBackupRestoreOptions {
     restartController: () => void;
 }
 
-interface CreateBackupInternalResult {
+interface BackupObject {
     config?: null | Record<string, any>;
     objects: null | ioBroker.GetObjectListItem[];
     states: Record<string, ioBroker.State>;
@@ -256,7 +256,7 @@ export class BackupRestore {
             }
         }
 
-        let result: CreateBackupInternalResult | null = { objects: null, states: {} };
+        let result: BackupObject | null = { objects: null, states: {} };
 
         const hostname = tools.getHostName();
 
@@ -448,7 +448,7 @@ export class BackupRestore {
      * @param statesList - list of state ids
      * @param stateObjects - list of state objects
      */
-    private async _setStateHelper(statesList: string[], stateObjects: ioBroker.State[]): Promise<void> {
+    private async _setStateHelper(statesList: string[], stateObjects: Record<string, ioBroker.State>): Promise<void> {
         for (let i = 0; i < statesList.length; i++) {
             try {
                 // @ts-expect-error #1917 TODO revisit after merge
@@ -677,7 +677,7 @@ export class BackupRestore {
         // replace all hostnames of instances etc with the new host
         data = data.replace(/\$\$__hostname__\$\$/g, hostname);
         fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
-        let restore;
+        let restore: BackupObject;
         try {
             restore = JSON.parse(data);
         } catch (err) {
@@ -685,10 +685,15 @@ export class BackupRestore {
             return EXIT_CODES.CANNOT_RESTORE_BACKUP;
         }
 
+        if (!restore.objects) {
+            console.error('The backup does not contain any objects.');
+            return EXIT_CODES.CANNOT_RESTORE_BACKUP;
+        }
+
         // check that the same controller version is installed as it is contained in backup
         const exitCode = this._ensureCompatibility(
             controllerDir,
-            restore.config ? restore.config.system.hostname || hostname : hostname,
+            restore.config?.system?.hostname || hostname,
             restore.objects,
             force
         );
