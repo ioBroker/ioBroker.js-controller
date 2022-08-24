@@ -39,10 +39,10 @@ function Upgrade(options) {
     const hostname = tools.getHostName();
     const { EXIT_CODES } = require('@iobroker/js-controller-common');
 
-    const Upload = require('./setupUpload.js');
+    const Upload = require('@iobroker/js-controller-cli').setupUpload;
     const upload = new Upload(options);
 
-    const Install = require('./setupInstall.js');
+    const Install = require('@iobroker/js-controller-cli').setupInstall;
     const install = new Install(options);
 
     /**
@@ -174,7 +174,7 @@ function Upgrade(options) {
                     const version = allDeps[dName];
                     // Check only if version not *, else we dont have to read io-pack unnecessarily
                     if (version !== '*') {
-                        const iopkg_ = fs.readJSONSync(`${__dirname}/../../package.json`);
+                        const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
                         try {
                             if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
                                 return Promise.reject(
@@ -608,7 +608,7 @@ function Upgrade(options) {
             }
         }
 
-        const installed = fs.readJSONSync(`${__dirname}/../../io-package.json`);
+        const installed = fs.readJSONSync(`${tools.getControllerDir()}/io-package.json`);
         if (!installed || !installed.common || !installed.common.version) {
             return console.error(
                 `Host "${hostname}"${hostname.length < 15 ? ''.padStart(15 - hostname.length) : ''} is not installed.`

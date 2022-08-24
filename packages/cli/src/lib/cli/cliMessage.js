@@ -1,7 +1,6 @@
 'use strict';
 const CLI = require('./messages.js');
-const CLICommand = require('./cliCommand.js');
-// const tools = require('../tools.js');
+const { CLICommand } = require('./cliCommand.js');
 const { enumInstances } = require('./cliTools');
 
 /** Command iobroker object ... */

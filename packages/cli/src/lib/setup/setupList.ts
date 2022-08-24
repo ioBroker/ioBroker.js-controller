@@ -301,7 +301,6 @@ export class List {
                         for (const obj of objs.rows) {
                             let name = obj.value?.common?.name;
                             if (tools.isObject(name)) {
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                                 name = name[lang] || name.en;
                             }
 
@@ -421,11 +420,9 @@ export class List {
                                 let name = row.value.common?.name;
 
                                 if (tools.isObject(name)) {
-                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                                     name = name[lang] || name.en;
                                 }
 
-                                // @ts-expect-error if typings fixed ts should get it https://github.com/ioBroker/adapter-core/issues/455
                                 if (!reg || reg.test(row.value._id) || (name && reg.test(name))) {
                                     if (flags.enabled && !row.value.common.enabled) {
                                         continue;
@@ -449,9 +446,7 @@ export class List {
                                     if (id.length < 40) {
                                         id = id.padEnd(40);
                                     }
-                                    // @ts-expect-error if typings fixed ts should get it https://github.com/ioBroker/adapter-core/issues/455
                                     if (name && name.length < 22) {
-                                        // @ts-expect-error if typings fixed ts should get it https://github.com/ioBroker/adapter-core/issues/455
                                         name = name.padEnd(22);
                                     }
 
@@ -790,11 +785,9 @@ export class List {
 
                             let name = obj.value.common?.name;
                             if (tools.isObject(name)) {
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                                 name = name[lang] || name.en;
                             }
 
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                             if (!reg || reg.test(obj.value._id) || (name && reg.test(name))) {
                                 console.log(
                                     '\n====================================================================================='

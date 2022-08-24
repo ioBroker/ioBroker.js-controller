@@ -15,7 +15,7 @@ function _getAllFilesInDir(objects, id, name, options, callback, result) {
                     _getAllFilesInDir(
                         objects,
                         id,
-                        name + '/' + files[f].file,
+                        `${name}/${files[f].file}`,
                         options,
                         (err, _result) => {
                             err && errors.push(err);
@@ -26,7 +26,7 @@ function _getAllFilesInDir(objects, id, name, options, callback, result) {
                         result
                     );
                 } else {
-                    result.push(name + '/' + files[f].file);
+                    result.push(`${name}/${files[f].file}`);
                 }
             }
         }
@@ -47,9 +47,9 @@ function _addFile(objects, id, name, options, zip, files, callback) {
                 try {
                     data = options.stringify(name, data, options ? options.settings : null, files);
                 } catch (error) {
-                    console.error('Cannot stringify file "' + name + '": ' + error);
+                    console.error(`Cannot stringify file "${name}": ${error}`);
                     if (!err) {
-                        err = 'Cannot stringify file "' + name + '": ' + error;
+                        err = `Cannot stringify file "${name}": ${error}`;
                     }
                 }
             }
@@ -82,7 +82,7 @@ function readDirAsZip(objects, id, name, options, callback) {
 
     // try to load processor of adapter
     try {
-        options.stringify = require(tools.appName + '.' + adapter + '/lib/convert.js').stringify;
+        options.stringify = require(`${tools.appName}.${adapter}/lib/convert.js`).stringify;
     } catch {
         // OK
     }

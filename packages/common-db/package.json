@@ -1,12 +1,12 @@
 {
   "name": "@iobroker/js-controller-common-db",
-  "version": "4.1.0-alpha.35-20220602-3de539a6",
+  "version": "4.1.0-alpha.0-20220824-834ccb61",
   "engines": {
     "node": ">=12.0.0"
   },
   "optionalDependencies": {
     "winston-seq-updated": "^1.0.4",
-    "winston-syslog": "^2.4.4"
+    "winston-syslog": "^2.6.0"
   },
   "dependencies": {
     "@iobroker/db-objects-file": "file:../db-objects-file",

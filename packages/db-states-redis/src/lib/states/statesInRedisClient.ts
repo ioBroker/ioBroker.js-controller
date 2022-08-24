@@ -1032,7 +1032,7 @@ export class StateRedisClient {
 
     async delState(
         id: string,
-        callback: ioBroker.DeleteStateCallback
+        callback?: ioBroker.DeleteStateCallback
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.DeleteStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

@@ -602,7 +602,7 @@ async function processCommand(command, args, params, callback) {
                     async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
-                            const Install = require('./setup/setupInstall.js');
+                            const Install = require('@iobroker/js-controller-cli').setupInstall;
                             const install = new Install({
                                 objects,
                                 states,
@@ -740,7 +740,9 @@ async function processCommand(command, args, params, callback) {
                                 const notificationHandler = new NotificationHandler(notificationSettings);
 
                                 try {
-                                    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
+                                    const ioPackage = fs.readJsonSync(
+                                        path.join(tools.getControllerDir(), 'io-package.json')
+                                    );
                                     await notificationHandler.addConfig(ioPackage.notifications);
 
                                     await notificationHandler.addMessage(
@@ -790,7 +792,7 @@ async function processCommand(command, args, params, callback) {
             url = url.trim();
 
             dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
+                const Install = require('@iobroker/js-controller-cli').setupInstall;
                 const install = new Install({
                     objects,
                     states,
@@ -893,7 +895,7 @@ async function processCommand(command, args, params, callback) {
             const adapterDir = tools.getAdapterDir(name);
 
             dbConnect(params, async () => {
-                const Install = require('./setup/setupInstall.js');
+                const Install = require('@iobroker/js-controller-cli').setupInstall;
                 const install = new Install({
                     objects,
                     states,
@@ -986,7 +988,7 @@ async function processCommand(command, args, params, callback) {
             const subTree = args[1];
             if (name) {
                 dbConnect(params, async () => {
-                    const Upload = require('./setup/setupUpload.js');
+                    const Upload = require('@iobroker/js-controller-cli').setupUpload;
                     const upload = new Upload({ states, objects });
 
                     if (name === 'all') {
@@ -1088,7 +1090,7 @@ async function processCommand(command, args, params, callback) {
 
             if (instance || instance === 0) {
                 dbConnect(params, async () => {
-                    const Install = require('./setup/setupInstall.js');
+                    const Install = require('@iobroker/js-controller-cli').setupInstall;
                     const install = new Install({
                         objects,
                         states,
@@ -1103,7 +1105,7 @@ async function processCommand(command, args, params, callback) {
                 });
             } else {
                 dbConnect(params, async () => {
-                    const Install = require('./setup/setupInstall.js');
+                    const Install = require('@iobroker/js-controller-cli').setupInstall;
                     const install = new Install({
                         objects,
                         states,
@@ -1258,7 +1260,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'restore': {
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
 
             dbConnect(params, (_obj, _stat, isNotRun) => {
                 if (!isNotRun) {
@@ -1286,7 +1288,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'backup': {
             const name = args[0];
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
 
             dbConnect(params, async () => {
                 const backup = new Backup({
@@ -1299,10 +1301,11 @@ async function processCommand(command, args, params, callback) {
 
                 try {
                     const filePath = await backup.createBackup(name);
-                    console.log('Backup created: ' + filePath);
+                    console.log(`Backup created: ${filePath}`);
+                    console.log('This backup can only be restored with js-controller version up from 4.1');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (err) {
-                    console.log('Cannot create backup: ' + err);
+                    console.log(`Cannot create backup: ${err}`);
                     return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                 }
             });
@@ -1311,7 +1314,7 @@ async function processCommand(command, args, params, callback) {
 
         case 'validate': {
             const name = args[0];
-            const Backup = require('./setup/setupBackup.js');
+            const Backup = require('@iobroker/js-controller-cli').setupBackup;
             dbConnect(params, async () => {
                 const backup = new Backup({
                     states,
@@ -2091,8 +2094,8 @@ async function processCommand(command, args, params, callback) {
                 dependencies: {},
                 author: 'bluefox <dogafox@gmail.com>'
             };
-            json.dependencies[tools.appName + '.js-controller'] = '*';
-            json.dependencies[tools.appName + '.admin'] = '*';
+            json.dependencies[`${tools.appName}.js-controller`] = '*';
+            json.dependencies[`${tools.appName}.admin`] = '*';
 
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
                 if (sources) {
@@ -2111,7 +2114,10 @@ async function processCommand(command, args, params, callback) {
                     }
                 }
 
-                fs.writeFileSync(__dirname + '/../../../package.json', JSON.stringify(json, null, 2));
+                fs.writeFileSync(
+                    path.join(tools.getControllerDir(), '..', '..', 'package.json'),
+                    JSON.stringify(json, null, 2)
+                );
                 return void callback();
             });
             break;
@@ -3064,8 +3070,8 @@ async function checkSystemOffline(onlyCheck) {
  * returns {Promise<void>}
  */
 function initializePlugins(config) {
-    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
-    const packageJson = fs.readJsonSync(path.join(__dirname, '..', 'package.json'));
+    const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
+    const packageJson = fs.readJsonSync(path.join(tools.getControllerDir(), 'package.json'));
     const hostname = tools.getHostName();
 
     const pluginSettings = {
@@ -3086,8 +3092,8 @@ function initializePlugins(config) {
     };
 
     pluginHandler = new PluginHandler(pluginSettings);
-    pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
-    pluginHandler.addPlugins(config.plugins, __dirname); // ... plugins from iobroker.json
+    pluginHandler.addPlugins(ioPackage.common.plugins, tools.getControllerDir()); // Plugins from io-package have priority over ...
+    pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return new Promise(resolve => {

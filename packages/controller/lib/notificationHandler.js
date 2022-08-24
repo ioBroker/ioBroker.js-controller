@@ -20,8 +20,8 @@ class NotificationHandler {
         this.log = settings.log;
         this.currentNotifications = {};
         this.setup = {};
-        // default data dir is relative to main.js
-        this.dataDir = path.join(__dirname, '..', tools.getDefaultDataDir());
+        // default data dir is relative to controllerDir
+        this.dataDir = path.join(tools.getControllerDir(), tools.getDefaultDataDir());
         this.logPrefix = settings.logPrefix;
         this.host = settings.host;
 
