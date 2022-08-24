@@ -32,9 +32,11 @@ export interface CLIBackupRestoreOptions {
     restartController: () => void;
 }
 
-interface BackupObject {
+type BackupObject = Omit<ioBroker.GetObjectListItem, 'doc'>;
+
+interface Backup {
     config?: null | Record<string, any>;
-    objects: null | ioBroker.GetObjectListItem[];
+    objects: null | BackupObject[];
     states: Record<string, ioBroker.State>;
 }
 
@@ -256,7 +258,7 @@ export class BackupRestore {
             }
         }
 
-        let result: BackupObject | null = { objects: null, states: {} };
+        let result: Backup | null = { objects: null, states: {} };
 
         const hostname = tools.getHostName();
 
@@ -264,7 +266,13 @@ export class BackupRestore {
             // @ts-expect-error #1917
             const res = await this.objects.getObjectListAsync({ include_docs: true });
             if (res) {
-                result.objects = res.rows;
+                // getObjectList returns value and doc as the same so filter out doc to reduce backup size
+                result.objects = res.rows.map(entry => {
+                    return {
+                        id: entry.id,
+                        value: entry.value
+                    };
+                });
             }
         } catch (e) {
             console.error(`host.${hostname} Cannot get objects: ${e.message}`);
@@ -356,15 +364,12 @@ export class BackupRestore {
                     object.value.common.host === hostname
                 ) {
                     object.value.common.host = '$$__hostname__$$';
-                    if (object.doc) {
-                        object.doc.common.host = '$$__hostname__$$';
+                    if (object.value) {
+                        object.value.common.host = '$$__hostname__$$';
                     }
                 } else if (r.test(object.value._id)) {
                     object.value._id = object.value._id.replace(hostname, '$$$$__hostname__$$$$');
                     object.id = object.value._id;
-                    if (object.doc) {
-                        object.doc._id = object.value._id;
-                    }
                 } else if (object.value._id === 'system.host.' + hostname) {
                     object.value._id = 'system.host.$$__hostname__$$';
                     object.value.common.name = object.value._id;
@@ -373,12 +378,11 @@ export class BackupRestore {
                         object.value.native.os.hostname = '$$__hostname__$$';
                     }
                     object.id = object.value._id;
-                    if (object.doc) {
-                        object.doc._id = object.value._id;
-                        object.doc.common.name = object.value._id;
-                        object.doc.common.hostname = '$$__hostname__$$';
-                        if (object.doc.native && object.value.native.os) {
-                            object.doc.native.os.hostname = '$$__hostname__$$';
+                    if (object.value) {
+                        object.value.common.name = object.value._id;
+                        object.value.common.hostname = '$$__hostname__$$';
+                        if (object.value.native && object.value.native.os) {
+                            object.value.native.os.hostname = '$$__hostname__$$';
                         }
                     }
                 }
@@ -467,7 +471,7 @@ export class BackupRestore {
      *
      * @param _objects - array of all objects to be set
      */
-    private async _setObjHelper(_objects: ioBroker.GetObjectListItem[]): Promise<void> {
+    private async _setObjHelper(_objects: BackupObject[]): Promise<void> {
         for (let i = 0; i < _objects.length; i++) {
             // Disable all adapters.
             if (
@@ -477,13 +481,13 @@ export class BackupRestore {
                 !_objects[i].id.startsWith('system.adapter.admin.') &&
                 !_objects[i].id.startsWith('system.adapter.backitup.')
             ) {
-                if (_objects[i].doc.common && _objects[i].doc.common.enabled) {
-                    _objects[i].doc.common.enabled = false;
+                if (_objects[i].value.common?.enabled) {
+                    _objects[i].value.common.enabled = false;
                 }
             }
 
             try {
-                await this.objects.setObjectAsync(_objects[i].id, _objects[i].doc);
+                await this.objects.setObjectAsync(_objects[i].id, _objects[i].value);
             } catch (err) {
                 console.warn(`host.${hostname} Cannot restore ${_objects[i].id}: ${err.message}`);
             }
@@ -677,7 +681,7 @@ export class BackupRestore {
         // replace all hostnames of instances etc with the new host
         data = data.replace(/\$\$__hostname__\$\$/g, hostname);
         fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
-        let restore: BackupObject;
+        let restore: Backup;
         try {
             restore = JSON.parse(data);
         } catch (err) {
@@ -792,7 +796,7 @@ export class BackupRestore {
     private _ensureCompatibility(
         controllerDir: string,
         backupHostname: string,
-        backupObjects: ioBroker.GetObjectListItem[],
+        backupObjects: BackupObject[],
         force: boolean
     ): void | number {
         try {

@@ -706,7 +706,6 @@ export class Upload {
         logger: Logger | typeof console
     ): Promise<string> {
         // Update all instances of this host
-        // @ts-expect-error fixed with #1917
         const res = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: `system.adapter.${name}.`,
             endkey: `system.adapter.${name}.\u9999`

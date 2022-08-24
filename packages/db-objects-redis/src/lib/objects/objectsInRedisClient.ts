@@ -4306,7 +4306,7 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        options: CallOptions | undefined,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
 
@@ -4354,7 +4354,7 @@ export class ObjectsInRedisClient {
         design: string,
         search: string,
         params: ioBroker.GetObjectViewParams,
-        options: CallOptions
+        options?: CallOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         return new Promise((resolve, reject) =>
             this.getObjectView(design, search, params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
