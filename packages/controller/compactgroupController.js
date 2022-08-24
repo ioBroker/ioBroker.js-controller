@@ -9,7 +9,7 @@ const controller = require('./main');
 
 const compactGroup = parseInt(process.argv[2], 10);
 if (isNaN(compactGroup) || compactGroup < 1) {
-    console.log('Invalid compact group (' + compactGroup + ') as first parameter. Exit.');
+    console.log(`Invalid compact group (${compactGroup}) as first parameter. Exit.`);
     process.exit();
 }
 

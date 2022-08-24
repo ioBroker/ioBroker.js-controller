@@ -19,7 +19,7 @@ function extractBinding(format) {
     let result = null;
     if (oid) {
         if (oid.length > 50) {
-            console.warn('Too many bindings in one widget: ' + oid.length + '[max = 50]');
+            console.warn(`Too many bindings in one widget: ${oid.length}[max = 50]`);
         }
         for (let p = 0; p < oid.length && p < 50; p++) {
             const _oid = oid[p].substring(1, oid[p].length - 1);

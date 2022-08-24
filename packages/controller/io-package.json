@@ -177,6 +177,9 @@
         },
         "custom": {
           "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
+        },
+        "chart": {
+          "map": "function(doc) { if (doc.type === 'chart') emit(doc._id, doc) }"
         }
       },
       "acl": {

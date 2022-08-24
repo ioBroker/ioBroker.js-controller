@@ -392,7 +392,7 @@ function register(it, expect, context) {
                 objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
                     expect(err).to.be.not.ok;
                     expect(data).to.be.equal('dataInFile');
-                    expect(mimeType).to.be.equal('text/javascript');
+                    expect(mimeType).to.be.equal('text/plain');
                     objects.rm(testId, 'myFile/*', (err, files) => {
                         expect(err).to.be.not.ok;
                         const file = files.find(f => f.file === 'abc.txt');
@@ -410,11 +410,11 @@ function register(it, expect, context) {
 
     it(testName + 'should read directory', done => {
         const objects = context.objects;
-        objects.writeFile(testId, 'myFile/abc1.txt', 'dataInFile', err => {
+        objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
             expect(err).to.be.not.ok;
-            objects.writeFile(testId, 'myFile/abc2.txt', Buffer.from('ABC'), err => {
+            objects.writeFile(testId, 'myFileA/abc2.txt', Buffer.from('ABC'), err => {
                 expect(err).to.be.not.ok;
-                objects.readDir(testId, 'myFile/', (err, data) => {
+                objects.readDir(testId, 'myFileA/', (err, data) => {
                     expect(err).to.be.not.ok;
                     expect(data.length).to.be.equal(2);
                     expect(data[0].file).to.be.equal('abc1.txt');
@@ -428,25 +428,25 @@ function register(it, expect, context) {
 
     it(testName + 'should read file and prevent path traversing', done => {
         const objects = context.objects;
-        objects.readFile(testId, '../../myFile/abc1.txt', (err, data, _mimeType) => {
+        objects.readFile(testId, '../../myFileA/abc1.txt', (err, data, _mimeType) => {
             expect(err).to.be.not.ok;
             expect(data).to.be.equal('dataInFile');
-            objects.readFile(testId, '/myFile/abc1.txt', (err, data, _mimeType) => {
+            objects.readFile(testId, '/myFileA/abc1.txt', (err, data, _mimeType) => {
                 expect(err).to.be.not.ok;
                 expect(data).to.be.equal('dataInFile');
-                objects.readFile(testId, '/../../myFile/abc1.txt', (err, data, _mimeType) => {
+                objects.readFile(testId, '/../../myFileA/abc1.txt', (err, data, _mimeType) => {
                     expect(err).to.be.not.ok;
                     expect(data).to.be.equal('dataInFile');
-                    objects.readFile(testId, 'myFile/../blubb/../myFile/abc1.txt', (err, data, _mimeType) => {
+                    objects.readFile(testId, 'myFileA/../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
                         expect(err).to.be.not.ok;
                         expect(data).to.be.equal('dataInFile');
-                        objects.readFile(testId, '/myFile/../blubb/../myFile/abc1.txt', (err, data, _mimeType) => {
+                        objects.readFile(testId, '/myFileA/../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
                             expect(err).to.be.not.ok;
                             expect(data).to.be.equal('dataInFile');
-                            objects.readFile(testId, '../blubb/../myFile/abc1.txt', (err, data, _mimeType) => {
+                            objects.readFile(testId, '../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
                                 expect(err).to.be.not.ok;
                                 expect(data).to.be.equal('dataInFile');
-                                objects.readFile(testId, '/../blubb/../myFile/abc1.txt', (err, data, _mimeType) => {
+                                objects.readFile(testId, '/../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
                                     expect(err).to.be.not.ok;
                                     expect(data).to.be.equal('dataInFile');
                                     done();
@@ -461,9 +461,9 @@ function register(it, expect, context) {
 
     it(testName + 'should unlink file', done => {
         const objects = context.objects;
-        objects.unlink(testId, 'myFile/abc1.txt', err => {
+        objects.unlink(testId, 'myFileA/abc1.txt', err => {
             expect(err).to.be.not.ok;
-            objects.unlink(testId, 'myFile/abc1.txt', err => {
+            objects.unlink(testId, 'myFileA/abc1.txt', err => {
                 expect(err.message).to.be.equal('Not exists');
                 done();
             });
@@ -474,9 +474,9 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
             expect(err).to.be.not.ok;
-            objects.rename(testId, 'myFile1/abcRename.txt', 'myFile/abc3.txt', err => {
+            objects.rename(testId, 'myFile1/abcRename.txt', 'myFileA/abc3.txt', err => {
                 expect(err).to.be.not.ok;
-                objects.readFile(testId, 'myFile/abc3.txt', (err, data, _meta) => {
+                objects.readFile(testId, 'myFileA/abc3.txt', (err, data, _meta) => {
                     expect(err).to.be.not.ok;
                     expect(data.toString('utf8')).to.be.equal('abcd');
                     objects.readFile(testId, 'myFile1/abcRename.txt', err => {
@@ -490,14 +490,14 @@ function register(it, expect, context) {
 
     it(testName + 'should touch file', done => {
         const objects = context.objects;
-        objects.readDir(testId, 'myFile', (err, files) => {
+        objects.readDir(testId, 'myFileA', (err, files) => {
             expect(err).to.be.not.ok;
             const file = files.find(f => f.file === 'abc3.txt');
 
             setTimeout(() => {
-                objects.touch(testId, 'myFile/abc3.txt', err => {
+                objects.touch(testId, 'myFileA/abc3.txt', err => {
                     expect(err).to.be.not.ok;
-                    objects.readDir(testId, 'myFile', (_err, files) => {
+                    objects.readDir(testId, 'myFileA', (_err, files) => {
                         const file1 = files.find(f => f.file === 'abc3.txt');
                         expect(file1.modifiedAt).to.be.not.equal(file.modifiedAt);
                         done();

@@ -740,7 +740,9 @@ async function processCommand(command, args, params, callback) {
                                 const notificationHandler = new NotificationHandler(notificationSettings);
 
                                 try {
-                                    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
+                                    const ioPackage = fs.readJsonSync(
+                                        path.join(tools.getControllerDir(), 'io-package.json')
+                                    );
                                     await notificationHandler.addConfig(ioPackage.notifications);
 
                                     await notificationHandler.addMessage(
@@ -1299,10 +1301,11 @@ async function processCommand(command, args, params, callback) {
 
                 try {
                     const filePath = await backup.createBackup(name);
-                    console.log('Backup created: ' + filePath);
+                    console.log(`Backup created: ${filePath}`);
+                    console.log('This backup can only be restored with js-controller version up from 4.1');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (err) {
-                    console.log('Cannot create backup: ' + err);
+                    console.log(`Cannot create backup: ${err}`);
                     return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                 }
             });
@@ -2091,8 +2094,8 @@ async function processCommand(command, args, params, callback) {
                 dependencies: {},
                 author: 'bluefox <dogafox@gmail.com>'
             };
-            json.dependencies[tools.appName + '.js-controller'] = '*';
-            json.dependencies[tools.appName + '.admin'] = '*';
+            json.dependencies[`${tools.appName}.js-controller`] = '*';
+            json.dependencies[`${tools.appName}.admin`] = '*';
 
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
                 if (sources) {
@@ -2111,7 +2114,10 @@ async function processCommand(command, args, params, callback) {
                     }
                 }
 
-                fs.writeFileSync(__dirname + '/../../../package.json', JSON.stringify(json, null, 2));
+                fs.writeFileSync(
+                    path.join(tools.getControllerDir(), '..', '..', 'package.json'),
+                    JSON.stringify(json, null, 2)
+                );
                 return void callback();
             });
             break;
@@ -3064,8 +3070,8 @@ async function checkSystemOffline(onlyCheck) {
  * returns {Promise<void>}
  */
 function initializePlugins(config) {
-    const ioPackage = fs.readJsonSync(path.join(__dirname, '..', 'io-package.json'));
-    const packageJson = fs.readJsonSync(path.join(__dirname, '..', 'package.json'));
+    const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
+    const packageJson = fs.readJsonSync(path.join(tools.getControllerDir(), 'package.json'));
     const hostname = tools.getHostName();
 
     const pluginSettings = {
@@ -3086,8 +3092,8 @@ function initializePlugins(config) {
     };
 
     pluginHandler = new PluginHandler(pluginSettings);
-    pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
-    pluginHandler.addPlugins(config.plugins, __dirname); // ... plugins from iobroker.json
+    pluginHandler.addPlugins(ioPackage.common.plugins, tools.getControllerDir()); // Plugins from io-package have priority over ...
+    pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return new Promise(resolve => {
