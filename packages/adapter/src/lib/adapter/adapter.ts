@@ -41,7 +41,6 @@ import {
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
-    AdapterConfig,
     AdapterOptions,
     AliasDetails,
     CalculatePermissionsCallback,
@@ -98,7 +97,7 @@ import type {
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
     TimeoutCallback,
-    VoidLikeCallback
+    MaybePromise
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -614,7 +613,7 @@ export class AdapterClass extends EventEmitter {
     // @ts-expect-error decide how to handle it
     private _utils: Utils;
     /** contents of io-package.json */
-    protected adapterConfig?: AdapterConfig | null;
+    protected adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null;
     protected connected?: boolean;
     protected adapterDir: string;
     /** contents of package.json */
@@ -1224,9 +1223,9 @@ export class AdapterClass extends EventEmitter {
     }
 
     // real types overload
-    getSession(id: string, callback: ioBroker.GetSessionCallback): VoidLikeCallback;
+    getSession(id: string, callback: ioBroker.GetSessionCallback): MaybePromise;
     // unknown guard implementation
-    getSession(id: unknown, callback: unknown): VoidLikeCallback {
+    getSession(id: unknown, callback: unknown): MaybePromise {
         Utils.assertString(id, 'id');
         Utils.assertCallback(callback, 'callback');
 
@@ -1234,7 +1233,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // actual implementation
-    private _getSession(options: InternalGetSessionOptions): VoidLikeCallback {
+    private _getSession(options: InternalGetSessionOptions): MaybePromise {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} getSession not processed because States database not connected`);
@@ -1245,10 +1244,10 @@ export class AdapterClass extends EventEmitter {
     }
 
     // overload for docs
-    setSession(id: string, ttl: number, data: Record<string, any>, callback?: ioBroker.ErrorCallback): VoidLikeCallback;
+    setSession(id: string, ttl: number, data: Record<string, any>, callback?: ioBroker.ErrorCallback): MaybePromise;
 
     // unknown implementation guards
-    setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): VoidLikeCallback {
+    setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): MaybePromise {
         Utils.assertString(id, 'id');
         Utils.assertOptionalCallback(callback, 'callback');
         Utils.assertNumber(ttl, 'ttl');
@@ -1258,7 +1257,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // actual implementation
-    private _setSession(options: InternalSetSessionOptions): VoidLikeCallback {
+    private _setSession(options: InternalSetSessionOptions): MaybePromise {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} setSession not processed because States database not connected`);
@@ -1268,8 +1267,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // real types overload
-    destroySession(id: string, callback?: ioBroker.ErrorCallback): VoidLikeCallback;
-    destroySession(id: unknown, callback: unknown): VoidLikeCallback {
+    destroySession(id: string, callback?: ioBroker.ErrorCallback): MaybePromise;
+    destroySession(id: unknown, callback: unknown): MaybePromise {
         Utils.assertString(id, 'id');
         Utils.assertOptionalCallback(callback, 'callback');
 
@@ -3150,7 +3149,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): VoidLikeCallback {
+    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): MaybePromise {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3179,7 +3178,7 @@ export class AdapterClass extends EventEmitter {
         return this._setForeignObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private _setForeignObject(_options: InternalSetObjectOptions): VoidLikeCallback {
+    private _setForeignObject(_options: InternalSetObjectOptions): MaybePromise {
         const { options, callback, obj } = _options;
         let { id } = _options;
 
@@ -3959,7 +3958,7 @@ export class AdapterClass extends EventEmitter {
         enums?: unknown,
         options?: unknown,
         callback?: unknown
-    ): VoidLikeCallback {
+    ): MaybePromise {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4135,12 +4134,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): VoidLikeCallback;
-    getForeignObject<T extends string>(
-        id: T,
-        options: unknown,
-        callback: ioBroker.GetObjectCallback<T>
-    ): VoidLikeCallback;
+    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): MaybePromise;
+    getForeignObject<T extends string>(id: T, options: unknown, callback: ioBroker.GetObjectCallback<T>): MaybePromise;
 
     /**
      * Get any object.
@@ -4156,7 +4151,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    getForeignObject(id: unknown, options: unknown, callback?: unknown): VoidLikeCallback {
+    getForeignObject(id: unknown, options: unknown, callback?: unknown): MaybePromise {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4173,7 +4168,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignObject({ id, options, callback });
     }
 
-    private _getForeignObject(options: InternalGetObjectOptions): VoidLikeCallback {
+    private _getForeignObject(options: InternalGetObjectOptions): MaybePromise {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getForeignObject not processed because Objects database not connected`
@@ -5274,7 +5269,7 @@ export class AdapterClass extends EventEmitter {
         channelName: unknown,
         options: unknown,
         callback?: unknown
-    ): VoidLikeCallback {
+    ): MaybePromise {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6543,13 +6538,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        </code></pre>
      */
-    writeFile(
-        _adapter: unknown,
-        filename: unknown,
-        data: unknown,
-        options: unknown,
-        callback?: unknown
-    ): VoidLikeCallback {
+    writeFile(_adapter: unknown, filename: unknown, data: unknown, options: unknown, callback?: unknown): MaybePromise {
         if (_adapter === null) {
             _adapter = this.name;
         }

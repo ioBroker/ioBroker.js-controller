@@ -42,12 +42,10 @@ export interface AdapterOptions {
     /** called when adapter is ready */
     ready?: ioBroker.ReadyHandler;
     /** called on reconnection to DB */
-    reconnect?: () => VoidLikeCallback;
+    reconnect?: () => MaybePromise;
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
 }
-
-export type AdapterConfig = AdapterOptions | ioBroker.InstanceObject;
 
 export interface AdapterOptionsConfig {
     log: {
@@ -90,7 +88,7 @@ export interface GetUserGroupsOptions {
 
 export type CheckStateCommand = 'getState' | 'setState' | 'delState';
 
-export type VoidLikeCallback = Promise<void> | void;
+export type MaybePromise = Promise<void> | void;
 
 export interface InternalSetSessionOptions {
     id: string;
