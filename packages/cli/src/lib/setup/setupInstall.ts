@@ -1649,7 +1649,7 @@ class Install {
                     console.log(
                         `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`
                     );
-                    // Install using the npm Github URL syntax `npm i user/repo_name`:
+                    // Install using the npm GitHub URL syntax `npm i user/repo_name`:
                     url = `${user}/${repo}`;
                 }
             } else {
@@ -1675,7 +1675,7 @@ class Install {
                 }
             } else {
                 const githubUrlParts = tools.parseShortGithubUrl(url);
-                // Try to extract the adapter name from the github url if possible
+                // Try to extract the adapter name from the GitHub url if possible
                 // Otherwise fall back to the complete URL
                 if (githubUrlParts) {
                     name = githubUrlParts.repo;
@@ -1721,7 +1721,7 @@ class Install {
             await this.upload.uploadAdapter(name, false, true);
             await this.upload.upgradeAdapterObjects(name);
         } else {
-            // Try to find io-package.json with newest date
+            // Try to find io-package.json with the newest date
             const dirs = fs.readdirSync(installDir);
             let date = null;
             let dir = null;

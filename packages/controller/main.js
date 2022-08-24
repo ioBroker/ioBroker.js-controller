@@ -2177,7 +2177,7 @@ async function sendTo(objName, command, message, callback) {
     try {
         await states.pushMessage(objName, obj);
     } catch (e) {
-        // do not stringify the object, we had issue invalid string length on serialization
+        // do not stringify the object, we had the issue with the invalid string length on serialization
         logger.error(
             `${hostLogPrefix} [sendTo] Could not push message "${inspect(obj)}" to "${objName}": ${e.message}`
         );
@@ -2872,15 +2872,17 @@ async function processMessage(msg) {
         case 'writeDirAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
             try {
-                zipFiles.writeDirAsZip(
+                await zipFiles.writeDirAsZip(
                     objects,
                     msg.message.id,
                     msg.message.name,
                     Buffer.from(msg.message.data, 'base64'),
-                    msg.message.options,
-                    error => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
+                    msg.message.options
                 );
+
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback);
             } catch (error) {
+                logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
                 msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
             }
             break;

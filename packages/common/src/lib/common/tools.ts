@@ -2158,21 +2158,26 @@ export function getDefaultDataDir(): string {
  * Returns the path of the config file
  */
 export function getConfigFileName(): string {
-    let configDir: string | string[] = __dirname.replace(/\\/g, '/');
-    configDir = configDir.split('/');
     const _appName = appName.toLowerCase();
+    let devConfigDir;
 
     if (_isDevInstallation()) {
+        devConfigDir = __dirname.replace(/\\/g, '/');
+        const devConfigParts = devConfigDir.split('/');
+
         // dev install -> Remove /lib
-        configDir.splice(configDir.length - 4, 4);
-        configDir = configDir.join('/');
-        configDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${configDir}/conf/${_appName}.json`)) {
-            return `${configDir}/conf/${_appName}.json`;
-        } else {
-            return `${configDir}/data/${_appName}.json`;
+        devConfigParts.splice(devConfigParts.length - 4, 4);
+        devConfigDir = devConfigParts.join('/');
+        devConfigDir += '/controller'; // go inside controller dir
+        if (fs.existsSync(`${devConfigDir}/conf/${_appName}.json`)) {
+            return `${devConfigDir}/conf/${_appName}.json`;
+        } else if (fs.existsSync(`${devConfigDir}/data/${_appName}.json`)) {
+            return `${devConfigDir}/data/${_appName}.json`;
         }
     }
+
+    let configDir = __dirname.replace(/\\/g, '/');
+    const configParts = configDir.split('/');
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
     if (
@@ -2180,12 +2185,16 @@ export function getConfigFileName(): string {
         fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${_appName}.js-controller`)
     ) {
         // remove /node_modules/' + appName + '.js-controller/lib
-        configDir.splice(configDir.length - 8, 8);
-        configDir = configDir.join('/');
+        configParts.splice(configParts.length - 8, 8);
+        configDir = configParts.join('/');
     } else {
         // If installed with npm -> remove node_modules/@iobroker/js-controller-common/src/lib/common
-        configDir.splice(configDir.length - 6, 6);
-        configDir = configDir.join('/');
+        configParts.splice(configParts.length - 6, 6);
+        configDir = configParts.join('/');
+    }
+
+    if (!fs.existsSync(`${configDir}/${_appName}-data/${_appName}.json`) && devConfigDir) {
+        return `${devConfigDir}/data/${_appName}.json`;
     }
 
     return `${configDir}/${_appName}-data/${_appName}.json`;

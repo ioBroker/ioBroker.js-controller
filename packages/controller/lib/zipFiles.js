@@ -168,79 +168,63 @@ function _checkDir(objects, id, root, parts, options, callback) {
     });
 }
 
-async function _writeOneFile(objects, zip, id, name, filename, options, callback) {
-    try {
-        let data = await zip.files[filename].async('nodebuffer');
-        let _err;
-        if (options.parse) {
-            try {
-                data = options.parse(name, filename, data, options ? options.settings : null);
-            } catch (e) {
-                _err = e;
-            }
+async function _writeOneFile(objects, zip, id, name, filename, options) {
+    let data = await zip.files[filename].async('nodebuffer');
+    let _err;
+    if (options.parse) {
+        try {
+            data = options.parse(name, filename, data, options ? options.settings : null);
+        } catch (e) {
+            _err = e;
         }
-        const fName = name + filename;
-        const parts = fName.split('/');
-        parts.pop();
-        _checkDir(objects, id, '', parts, options, () =>
-            objects.writeFile(id, name + filename, data, options, err => callback(_err || err))
-        );
-    } catch (e) {
-        callback(e.message);
     }
+    const fName = name + filename;
+    const parts = fName.split('/');
+    parts.pop();
+    return new Promise((resolve, reject) =>
+        _checkDir(objects, id, '', parts, options, () =>
+            objects.writeFile(id, name + filename, data, options, err =>
+                _err || err ? reject(_err || err) : resolve()
+            )
+        )
+    );
 }
 
-async function writeDirAsZip(objects, id, name, data, options, callback) {
+async function writeDirAsZip(objects, id, name, data, options) {
     JSZip = JSZip || require('jszip');
     const zip = new JSZip();
 
     options = options || {};
 
     let adapter = id;
-    if (adapter.indexOf('.') !== -1) {
+    if (adapter.includes('.')) {
         adapter = id.split('.')[0];
     }
 
     // try to load processor of adapter
     try {
-        options.parse = require(tools.appName + '.' + adapter + '/lib/convert.js').parse;
+        options.parse = require(`${tools.appName}.${adapter}/lib/convert.js`).parse;
     } catch {
         // OK
     }
 
-    try {
-        await zip.loadAsync(data);
-        let count = 0;
-        const error = [];
-        if (name[name.length - 1] !== '/') {
-            name += '/';
+    await zip.loadAsync(data);
+    const errors = [];
+    if (name[name.length - 1] !== '/') {
+        name += '/';
+    }
+    for (const filename of Object.keys(zip.files)) {
+        if (!filename || filename[filename.length - 1] === '/') {
+            continue;
         }
-        for (const filename of Object.keys(zip.files)) {
-            if (!filename || filename[filename.length - 1] === '/') {
-                continue;
-            }
-            count++;
-            try {
-                _writeOneFile(objects, zip, id, name, filename, options, err => {
-                    err && error.push('Cannot write file "' + filename + '":' + err.toString());
-
-                    if (!--count && callback) {
-                        callback(error.length ? error.join(', ') : null);
-                        callback = null;
-                    }
-                });
-            } catch (error) {
-                if (callback) {
-                    callback(error.toString());
-                    callback = null;
-                }
-            }
+        try {
+            await _writeOneFile(objects, zip, id, name, filename, options);
+        } catch (error) {
+            errors.push(`Cannot write file "${filename}": ${error.toString()}`);
         }
-    } catch (error) {
-        if (callback) {
-            callback(error.toString());
-            callback = null;
-        }
+    }
+    if (errors.length) {
+        throw new Error(errors.join(', '));
     }
 }
 
@@ -255,7 +239,7 @@ function readObjectsAsZip(objects, rootId, adapter, options, callback) {
     if (adapter) {
         // try to load processor of adapter
         try {
-            options.stringify = require(tools.appName + '.' + adapter + '/lib/convert.js').stringify;
+            options.stringify = require(`${tools.appName}.${adapter}/lib/convert.js`).stringify;
         } catch {
             // OK
         }
@@ -312,13 +296,13 @@ async function _writeOneObject(objects, zip, rootId, filename, options, callback
             try {
                 data.data = JSON.parse(data.data);
             } catch (e) {
-                callback(`Cannot parse "${data.id}": ${e}`);
+                callback(`Cannot parse "${data.id}": ${e.message}`);
                 return;
             }
         }
         if (data && data.id && data.data) {
             options.ts = new Date().getTime();
-            options.from = 'system.host.' + tools.getHostName() + '.cli';
+            options.from = `system.host.${tools.getHostName()}.cli`;
             objects.setObject(data.id, data.data, options, err => callback(err));
         } else {
             if (data && data.error) {
@@ -340,7 +324,7 @@ async function writeObjectsAsZip(objects, rootId, adapter, data, options, callba
     if (adapter) {
         // try to load processor of adapter
         try {
-            options.parse = require(tools.appName + '.' + adapter + '/lib/convert.js').parse;
+            options.parse = require(`${tools.appName}.${adapter}/lib/convert.js`).parse;
         } catch {
             // OK
         }
