@@ -66,6 +66,7 @@ export class RedisHandler extends EventEmitter {
     private stop: boolean;
     private readonly activeMultiCalls: MultiCallElement[];
     private readonly writeQueue: WriteQueueElement[];
+    private responseId: number;
     private readonly resp: any;
 
     /**
@@ -91,6 +92,7 @@ export class RedisHandler extends EventEmitter {
 
         this.activeMultiCalls = [];
         this.writeQueue = [];
+        this.responseId = 0;
 
         this.handleBuffers = false;
         const respOptions: Record<string, any> = {};
@@ -160,8 +162,10 @@ export class RedisHandler extends EventEmitter {
             }
         }
 
-        const t = process.hrtime();
-        const responseId = t[0] * 1e3 + t[1] / 1e6;
+        if (this.responseId === Number.MAX_VALUE) {
+            this.responseId = 0;
+        }
+        const responseId = ++this.responseId;
 
         if (this.options.enhancedLogging) {
             this.log.silly(
