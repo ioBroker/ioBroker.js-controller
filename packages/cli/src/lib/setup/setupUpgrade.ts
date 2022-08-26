@@ -20,17 +20,24 @@ const debug = Debug('iobroker:cli');
 
 type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>;
 
+interface CLIUpgradeOptions {
+    processExit: (exitCode?: number) => void;
+    restartController: () => void;
+    getRepository: (repoName: string | undefined, params: Record<string, any>) => Record<string, any>;
+    objects: ObjectsInRedisClient;
+    params: Record<string, any>;
+}
+
 export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
     private readonly install: Install;
     private objects: ObjectsInRedisClient;
-    private readonly processExit: any;
-    private readonly params: any;
-    private readonly getRepository: any;
+    private readonly processExit: CLIUpgradeOptions['processExit'];
+    private readonly params: CLIUpgradeOptions['params'];
+    private readonly getRepository: CLIUpgradeOptions['getRepository'];
 
-    // TODO: type options
-    constructor(options: Record<string, any>) {
+    constructor(options: CLIUpgradeOptions) {
         options = options || {};
 
         if (!options.processExit) {
@@ -325,8 +332,8 @@ export class Upgrade {
             sources = repoUrlOrObject;
         }
 
-        // TODO: not really instance object but close enough
-        const finishUpgrade = async (name: string, ioPack?: ioBroker.InstanceObject) => {
+        // TODO: not really adapter object but close enough
+        const finishUpgrade = async (name: string, ioPack?: ioBroker.AdapterObject) => {
             if (!ioPack) {
                 const adapterDir = tools.getAdapterDir(name);
                 try {
@@ -378,7 +385,7 @@ export class Upgrade {
         }
 
         // TODO: not 100 % true but should be correct enough
-        let ioInstalled: Partial<ioBroker.InstanceObject>;
+        let ioInstalled: Partial<ioBroker.AdapterObject>;
         if (fs.existsSync(`${adapterDir}/io-package.json`)) {
             ioInstalled = fs.readJsonSync(`${adapterDir}/io-package.json`);
         } else {
@@ -487,7 +494,6 @@ export class Upgrade {
                     }
                     answer = rl.question(
                         `Would you like to ${isUpgrade ? 'upgrade' : 'downgrade'} ${adapter} from @${
-                            // @ts-expect-error adapter-core#455
                             ioInstalled.common!.version
                         } to @${version || sources[adapter].version} now? [(y)es, (n)o]: `,
                         {
@@ -526,9 +532,7 @@ export class Upgrade {
 
             if (
                 !forceDowngrade &&
-                // @ts-expect-error adapter-core#455
                 (sources[adapter].version === ioInstalled.common!.version ||
-                    // @ts-expect-error adapter-core#455
                     tools.upToDate(sources[adapter].version, ioInstalled.common!.version))
             ) {
                 return console.log(
@@ -539,16 +543,15 @@ export class Upgrade {
             } else {
                 const targetVersion = version || sources[adapter].version;
                 try {
-                    // @ts-expect-error adapter-core#455
                     if (!showUpgradeDialog(ioInstalled.common!.version, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
-                // @ts-expect-error adapter-core#455
                 console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${targetVersion}`);
                 // Get the adapter from web site
+                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -558,17 +561,15 @@ export class Upgrade {
             }
         } else if (sources[adapter].meta) {
             // Read repository from url or file
-            const ioPack = await tools.getJsonAsync(sources[adapter].meta);
+            const ioPack = (await tools.getJsonAsync(sources[adapter].meta)) as ioBroker.AdapterObject;
             if (!ioPack) {
                 return console.error(`Cannot parse file${sources[adapter].meta}`);
             }
 
             if (!forceDowngrade) {
                 try {
-                    await this._checkDependencies(
-                        ioPack.common && ioPack.common.dependencies,
-                        ioPack.common && ioPack.common.globalDependencies
-                    );
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    await this._checkDependencies(ioPack.common.dependencies, ioPack.common.globalDependencies);
                 } catch (err) {
                     return console.error(`Cannot check dependencies: ${err.message}`);
                 }
@@ -576,9 +577,7 @@ export class Upgrade {
 
             if (
                 !version &&
-                // @ts-expect-error adapter-core #455
                 (ioPack.common.version === ioInstalled.common!.version ||
-                    // @ts-expect-error adapter-core #455
                     (!forceDowngrade && tools.upToDate(ioPack.common.version, ioInstalled.common!.version)))
             ) {
                 console.log(
@@ -590,15 +589,14 @@ export class Upgrade {
                 // Get the adapter from web site
                 const targetVersion = version || ioPack.common.version;
                 try {
-                    // @ts-expect-error adapter-core #455
                     if (!showUpgradeDialog(ioInstalled.common!.version, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
-                // @ts-expect-error adapter-core #455
                 console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${targetVersion}`);
+                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -609,7 +607,6 @@ export class Upgrade {
         } else {
             if (forceDowngrade) {
                 try {
-                    // @ts-expect-error adapter-core #455
                     if (!showUpgradeDialog(ioInstalled.common!.version, version, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
@@ -617,9 +614,9 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
-                // @ts-expect-error adapter-core #455
                 console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${version}`);
                 // Get the adapter from web site
+                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(packetName);
                 await this.install.enableInstances(stoppedList, true);
@@ -646,7 +643,7 @@ export class Upgrade {
             try {
                 const result = await this.getRepository(repoUrlOrObject, this.params);
                 if (!result) {
-                    return console.warn(`Cannot get repository under "${repoUrl}"`);
+                    return console.warn(`Cannot get repository under "${repoUrlOrObject}"`);
                 }
                 sources = result;
             } catch (err) {

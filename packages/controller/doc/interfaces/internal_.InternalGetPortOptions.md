@@ -8,14 +8,35 @@
 
 ### Properties
 
+- [callback](internal_.InternalGetPortOptions.md#callback)
 - [host](internal_.InternalGetPortOptions.md#host)
 - [port](internal_.InternalGetPortOptions.md#port)
 
-### Methods
-
-- [callback](internal_.InternalGetPortOptions.md#callback)
-
 ## Properties
+
+### callback
+
+• `Optional` **callback**: (`port`: `number`) => `void`
+
+#### Type declaration
+
+▸ (`port`): `void`
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `port` | `number` |
+
+##### Returns
+
+`void`
+
+#### Defined in
+
+[packages/adapter/src/lib/_Types.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L113)
+
+___
 
 ### host
 
@@ -23,7 +44,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:112](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L112)
+[packages/adapter/src/lib/_Types.ts:112](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L112)
 
 ___
 
@@ -33,24 +54,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:111](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L111)
-
-## Methods
-
-### callback
-
-▸ `Optional` **callback**(`port`): `void`
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `port` | `number` |
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[packages/adapter/src/lib/_Types.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L113)
+[packages/adapter/src/lib/_Types.ts:111](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L111)

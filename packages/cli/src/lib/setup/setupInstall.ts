@@ -29,9 +29,8 @@ const RECOMMENDED_NPM_VERSION = 8;
 
 export interface CLIInstallOptions {
     params: Record<string, any>;
-    // TODO type it as soon as we have typed setup.js where this function origins
-    getRepository: any;
-    states: StatesRedisClient;
+    getRepository: (repoName: string | undefined, params: Record<string, any>) => Record<string, any>;
+    states?: StatesRedisClient;
     objects: ObjectsRedisClient;
     processExit: (exitCode?: number) => void;
 }
@@ -63,9 +62,9 @@ export class Install {
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
-    private readonly processExit: (exitCode?: number) => void;
-    private readonly getRepository: any;
-    private readonly params: Record<string, any>;
+    private readonly processExit: CLIInstallOptions['processExit'];
+    private readonly getRepository: CLIInstallOptions['getRepository'];
+    private readonly params: CLIInstallOptions['params'];
     private readonly tarballRegex: RegExp;
     private upload: Upload;
     private packetManager?: PacketManager;

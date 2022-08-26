@@ -17,21 +17,21 @@
 
 ### binary
 
-• **binary**: [`Buffer`](../modules/internal_.md#buffer)
+• **binary**: `Buffer`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L293)
+[packages/adapter/src/lib/_Types.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L293)
 
 ___
 
 ### callback
 
-• `Optional` **callback**: [`SetStateCallback`](../modules/internal_.md#setstatecallback)
+• `Optional` **callback**: `SetStateCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:294](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L294)
+[packages/adapter/src/lib/_Types.ts:294](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L294)
 
 ___
 
@@ -41,14 +41,14 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L291)
+[packages/adapter/src/lib/_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L291)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L292)
+[packages/adapter/src/lib/_Types.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L292)

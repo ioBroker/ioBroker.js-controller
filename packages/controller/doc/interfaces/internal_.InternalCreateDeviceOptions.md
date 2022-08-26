@@ -18,31 +18,31 @@
 
 ### \_native
 
-• `Optional` **\_native**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **\_native**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:256](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L256)
+[packages/adapter/src/lib/_Types.ts:256](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L256)
 
 ___
 
 ### callback
 
-• `Optional` **callback**: [`SetObjectCallback`](../modules/internal_.md#setobjectcallback)
+• `Optional` **callback**: `SetObjectCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L258)
+[packages/adapter/src/lib/_Types.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L258)
 
 ___
 
 ### common
 
-• `Optional` **common**: [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](internal_.DeviceCommon.md)\>
+• `Optional` **common**: `Partial`<`DeviceCommon`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L255)
+[packages/adapter/src/lib/_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L255)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L254)
+[packages/adapter/src/lib/_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L254)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L257)
+[packages/adapter/src/lib/_Types.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L257)

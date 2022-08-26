@@ -20,24 +20,24 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L236)
+[packages/adapter/src/lib/_Types.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L236)
 
 ___
 
 ### callback
 
-• `Optional` **callback**: [`GetEnumCallback`](../modules/internal_.md#getenumcallback)
+• `Optional` **callback**: `GetEnumCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L238)
+[packages/adapter/src/lib/_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L238)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L237)
+[packages/adapter/src/lib/_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L237)

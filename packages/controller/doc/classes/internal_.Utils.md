@@ -32,20 +32,22 @@
 
 • **new Utils**(`objects`, `states`, `namespaceLog`, `logger`, `namespace`, `namespaceRegExp`)
 
+Utils for internal adapter.js usage
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `objects` | `any` |  |
-| `states` | `any` |  |
-| `namespaceLog` | `string` |  |
-| `logger` | `any` |  |
-| `namespace` | `string` |  |
-| `namespaceRegExp` | `RegExp` |  |
+| `objects` | `any` | Objects DB |
+| `states` | `any` | States DB |
+| `namespaceLog` | `string` | Log prefix |
+| `logger` | `any` | Logger instance |
+| `namespace` | `string` | the namespace of the adapter |
+| `namespaceRegExp` | `RegExp` | the namespace RegExp of the adapter adapter.0 |
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L37)
+[packages/adapter/src/lib/adapter/utils.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L37)
 
 ## Methods
 
@@ -53,12 +55,14 @@
 
 ▸ **fixId**(`id`, `isPattern?`): [`ID`](../modules/internal_.md#id)
 
+Adds the namespace to the id if it is missing, if an object is passed it will be converted to an id string
+
 #### Parameters
 
 | Name | Type | Default value | Description |
 | :------ | :------ | :------ | :------ |
-| `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) | `undefined` |  |
-| `isPattern` | `boolean` | `false` |  |
+| `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) | `undefined` | id which will be fixed |
+| `isPattern` | `boolean` | `false` | if the id is a pattern |
 
 #### Returns
 
@@ -66,7 +70,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L354)
+[packages/adapter/src/lib/adapter/utils.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L354)
 
 ___
 
@@ -74,12 +78,15 @@ ___
 
 ▸ **performStrictObjectCheck**(`id`, `state`): `Promise`<`void`\>
 
+Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
+additionally it rounds state values whose objects have a common.step attribute defined
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `state` | [`SettableState`](../modules/internal_.md#settablestate) |  |
+| `id` | `string` | id of the state |
+| `state` | `SettableState` | ioBroker setState object |
 
 #### Returns
 
@@ -87,7 +94,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L60)
+[packages/adapter/src/lib/adapter/utils.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L60)
 
 ___
 
@@ -95,13 +102,19 @@ ___
 
 ▸ **validateId**(`id`, `isForeignId`, `options`): asserts id is ID
 
+Checks if a passed ID is valid. Throws an error if id is invalid
+
+**`Throws`**
+
+Error when id is invalid
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `any` |  |
-| `isForeignId` | `boolean` |  |
-| `options` | `any` |  |
+| `id` | `any` | id to check or object with properties device, channel and state |
+| `isForeignId` | `boolean` | true&false if the ID is a foreign/full ID or only an "adapter local" id |
+| `options` | `any` | optional |
 
 #### Returns
 
@@ -109,7 +122,7 @@ asserts id is ID
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L163)
+[packages/adapter/src/lib/adapter/utils.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L163)
 
 ___
 
@@ -117,11 +130,13 @@ ___
 
 ▸ **validateSetStateObjectArgument**(`obj`): `void`
 
+Validates the object-type argument that is passed to setState
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `obj` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
+| `obj` | `Record`<`string`, `any`\> | object to validate |
 
 #### Returns
 
@@ -129,7 +144,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L385)
+[packages/adapter/src/lib/adapter/utils.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L385)
 
 ___
 
@@ -137,12 +152,14 @@ ___
 
 ▸ `Static` **assertBoolean**(`value`, `name`): asserts value is boolean
 
+Throws if type is not matching the expected type
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -150,7 +167,7 @@ asserts value is boolean
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L279)
+[packages/adapter/src/lib/adapter/utils.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L279)
 
 ___
 
@@ -158,12 +175,14 @@ ___
 
 ▸ `Static` **assertBuffer**(`value`, `name`): asserts value is Buffer
 
+Throws if type is not an optional callback
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -171,7 +190,7 @@ asserts value is Buffer
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L316)
+[packages/adapter/src/lib/adapter/utils.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L316)
 
 ___
 
@@ -179,12 +198,14 @@ ___
 
 ▸ `Static` **assertCallback**(`value`, `name`): asserts value is Callback
 
+Throws if type is not an optional callback
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -192,7 +213,7 @@ asserts value is Callback
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L340)
+[packages/adapter/src/lib/adapter/utils.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L340)
 
 ___
 
@@ -200,12 +221,14 @@ ___
 
 ▸ `Static` **assertNumber**(`value`, `name`): asserts value is number
 
+Throws if type is not matching the expected type
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -213,7 +236,7 @@ asserts value is number
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L292)
+[packages/adapter/src/lib/adapter/utils.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L292)
 
 ___
 
@@ -221,12 +244,14 @@ ___
 
 ▸ `Static` **assertObject**(`value`, `name`): asserts value is Record<string, any\>
 
+Throws if type is not matching the expected type
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -234,7 +259,7 @@ asserts value is Record<string, any\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L305)
+[packages/adapter/src/lib/adapter/utils.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L305)
 
 ___
 
@@ -242,12 +267,14 @@ ___
 
 ▸ `Static` **assertOptionalCallback**(`value`, `name`): asserts value is OptionalCallback
 
+Throws if type is not an optional callback
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -255,7 +282,7 @@ asserts value is OptionalCallback
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L327)
+[packages/adapter/src/lib/adapter/utils.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L327)
 
 ___
 
@@ -263,12 +290,14 @@ ___
 
 ▸ `Static` **assertPattern**(`value`, `name`): asserts value is Pattern
 
+Throws if type is not a pattern
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -276,7 +305,7 @@ asserts value is Pattern
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L258)
+[packages/adapter/src/lib/adapter/utils.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L258)
 
 ___
 
@@ -284,12 +313,14 @@ ___
 
 ▸ `Static` **assertString**(`value`, `name`): asserts value is string
 
+Throws if type is not matching the expected type
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `value` | `unknown` |  |
-| `name` | `string` |  |
+| `value` | `unknown` | value to check type of |
+| `name` | `string` | name of the parameter for logging |
 
 #### Returns
 
@@ -297,7 +328,7 @@ asserts value is string
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L245)
+[packages/adapter/src/lib/adapter/utils.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L245)
 
 ___
 
@@ -305,16 +336,20 @@ ___
 
 ▸ `Static` **getErrorText**(`code`): `string`
 
+Look up the error description for an error code
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `code` | `number` |  |
+| `code` | `number` | error code |
 
 #### Returns
 
 `string`
 
+error description
+
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L235)
+[packages/adapter/src/lib/adapter/utils.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/adapter/utils.ts#L235)

@@ -6,26 +6,30 @@
 
 ## Table of contents
 
-### Methods
+### Properties
 
 - [callback](internal_.InternalGetAdapterObjectsOptions.md#callback)
 
-## Methods
+## Properties
 
 ### callback
 
-▸ `Optional` **callback**(`objects`): `void`
+• `Optional` **callback**: (`objects`: `Record`<`string`, `AdapterScopedObject`\>) => `void`
 
-#### Parameters
+#### Type declaration
+
+▸ (`objects`): `void`
+
+##### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `objects` | [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\> |
+| `objects` | `Record`<`string`, `AdapterScopedObject`\> |
 
-#### Returns
+##### Returns
 
 `void`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L224)
+[packages/adapter/src/lib/_Types.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/cbd40230/packages/adapter/src/lib/_Types.ts#L224)

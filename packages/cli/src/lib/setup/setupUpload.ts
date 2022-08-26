@@ -21,7 +21,7 @@ import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/co
 const hostname = tools.getHostName();
 
 export interface CLIUploadOptions {
-    states: StatesRedisClient;
+    states?: StatesRedisClient;
     objects: ObjectsRedisClient;
 }
 
