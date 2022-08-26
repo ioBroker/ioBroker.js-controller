@@ -675,7 +675,7 @@ export class AdapterClass extends EventEmitter {
             throw new Error(`Cannot find ${configFileName}`);
         }
 
-        if (!this._options || !this._options.config) {
+        if (!this._options) {
             throw new Error('Configuration not set!');
         }
 
