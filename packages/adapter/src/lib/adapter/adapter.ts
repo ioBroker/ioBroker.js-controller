@@ -8936,7 +8936,7 @@ export class AdapterClass extends EventEmitter {
         return this._delState({ id, options, callback });
     }
 
-    _delState(_options: InternalDelStateOptions) {
+    private _delState(_options: InternalDelStateOptions) {
         const { options, callback } = _options;
         let { id } = _options;
 
@@ -8980,7 +8980,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignState({ id, options, callback });
     }
 
-    _delForeignState(_options: InternalDelStateOptions) {
+    private _delForeignState(_options: InternalDelStateOptions) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
