@@ -13,7 +13,6 @@ import path from 'path';
 import semver from 'semver';
 import child_process from 'child_process';
 import axios from 'axios';
-import { platform } from 'os';
 import deepClone from 'deep-clone';
 import { URL } from 'url';
 import { Upload } from './setupUpload';
@@ -22,7 +21,7 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 const hostname = tools.getHostName();
-const osPlatform = platform();
+const osPlatform = process.platform;
 
 /** Note: this is duplicated in preinstallCheck */
 const RECOMMENDED_NPM_VERSION = 8;
@@ -186,7 +185,7 @@ export class Install {
 
         // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
         if (
-            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
+            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || osPlatform === 'win32') &&
             !stoppedList.length
         ) {
             stoppedList = await this._getInstancesOfAdapter(packetName);
@@ -602,7 +601,7 @@ export class Install {
 
         console.log(`host.${hostname} install adapter ${fullName}`);
 
-        if (!fs.existsSync(adapterDir + '/io-package.json')) {
+        if (!fs.existsSync(`${adapterDir}/io-package.json`)) {
             if (_installCount === 2) {
                 console.error(`host.${hostname} Cannot install ${adapter}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
@@ -615,7 +614,7 @@ export class Install {
             await this.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
             return adapter;
         }
-        let adapterConf;
+        let adapterConf: ioBroker.AdapterObject;
         try {
             adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
         } catch (err) {
@@ -630,22 +629,21 @@ export class Install {
                     `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`
                 );
                 return this.processExit(EXIT_CODES.INVALID_OS);
-            } else {
-                if (!adapterConf.common.os.includes(osPlatform)) {
-                    console.error(
-                        `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
-                            ', '
-                        )}. Actual platform: ${osPlatform}`
-                    );
-                    return this.processExit(EXIT_CODES.INVALID_OS);
-                }
+                // @ts-expect-error yes we want to check if it's in it ;-)
+            } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform)) {
+                console.error(
+                    `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
+                        ', '
+                    )}. Actual platform: ${osPlatform}`
+                );
+                return this.processExit(EXIT_CODES.INVALID_OS);
             }
         }
 
         let engineVersion;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const p = JSON.parse(fs.readFileSync(adapterDir + '/package.json', 'utf8'));
+            const p = JSON.parse(fs.readFileSync(`${adapterDir}/package.json`, 'utf8'));
             engineVersion = p && p.engines && p.engines.node;
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
@@ -661,14 +659,9 @@ export class Install {
             }
         }
 
-        if (adapterConf.common.osDependencies && adapterConf.common.osDependencies[process.platform]) {
+        if (adapterConf.common.osDependencies) {
             // install linux/osx libraries
-            try {
-                this.packetManager = this.packetManager || new PacketManager();
-                await this.packetManager.install(adapterConf.common.osDependencies[process.platform]);
-            } catch (err) {
-                console.error(`host.${hostname} Could not install required OS packages: ${err.message}`);
-            }
+            await this.installOSPackages(adapterConf.common.osDependencies);
         }
 
         await this.upload.uploadAdapter(adapter, true, true);
@@ -677,6 +670,18 @@ export class Install {
         await this._uploadStaticObjects(adapter);
         await this.upload.upgradeAdapterObjects(adapter);
         return adapter;
+    }
+
+    async installOSPackages(osDependencies: NonNullable<ioBroker.AdapterCommon['osDependencies']>): Promise<void> {
+        if (osPlatform in osDependencies) {
+            try {
+                this.packetManager = this.packetManager || new PacketManager();
+                // @ts-expect-error we have checked that platform is a valid key
+                await this.packetManager.install(osDependencies[osPlatform]);
+            } catch (err) {
+                console.error(`host.${hostname} Could not install required OS packages: ${err.message}`);
+            }
+        }
     }
 
     async callInstallOfAdapter(adapter: string, config: Record<string, any>) {
@@ -1702,7 +1707,7 @@ export class Install {
         /** list of stopped instances for windows */
         let stoppedList: ioBroker.InstanceObject[] = [];
 
-        if (process.platform === 'win32') {
+        if (osPlatform === 'win32') {
             stoppedList = await this._getInstancesOfAdapter(name);
             await this.enableInstances(stoppedList, false);
         }

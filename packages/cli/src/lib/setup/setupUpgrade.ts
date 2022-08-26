@@ -344,6 +344,11 @@ export class Upgrade {
                 }
             }
 
+            if (ioPack!.common.osDependencies) {
+                // install linux/osx libraries
+                await this.install.installOSPackages(ioPack!.common.osDependencies);
+            }
+
             // Upload www and admin files of adapter into CouchDB
             await this.upload.uploadAdapter(name, false, true);
             // extend all adapter instance default configs with current config
