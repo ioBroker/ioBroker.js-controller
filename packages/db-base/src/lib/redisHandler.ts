@@ -66,7 +66,7 @@ export class RedisHandler extends EventEmitter {
     private stop: boolean;
     private readonly activeMultiCalls: MultiCallElement[];
     private readonly writeQueue: WriteQueueElement[];
-    private responseId: number;
+    private responseId: number = 0;
     private readonly resp: any;
 
     /**
@@ -92,7 +92,6 @@ export class RedisHandler extends EventEmitter {
 
         this.activeMultiCalls = [];
         this.writeQueue = [];
-        this.responseId = 0;
 
         this.handleBuffers = false;
         const respOptions: Record<string, any> = {};
