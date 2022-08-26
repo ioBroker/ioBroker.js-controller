@@ -43,7 +43,7 @@ interface InternalLogObject extends LogObject {
     _id: number;
 }
 
-type ChangeFunction = (id: string, state: Record<string, any> | null) => void;
+type ChangeFunction = (id: string, state: ioBroker.State | null) => void;
 
 interface StatesSettings {
     connected?: () => void;
@@ -62,7 +62,7 @@ interface StatesSettings {
     redisNamespace?: string;
 }
 
-interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
+export interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
     _id?: number;
 }
 
@@ -1081,8 +1081,8 @@ export class StateRedisClient {
         return tools.maybeCallbackWithError(callback, null, obj);
     }
 
-    async subscribe(pattern: string, callback: ioBroker.ErrorCallback): Promise<void>;
-    async subscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
+    async subscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
+    async subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
 
     /**
      * @method subscribe
@@ -1093,7 +1093,7 @@ export class StateRedisClient {
      */
     async subscribe(
         pattern: string,
-        asUser: boolean | ioBroker.ErrorCallback,
+        asUser?: boolean | ioBroker.ErrorCallback,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
@@ -1135,12 +1135,12 @@ export class StateRedisClient {
      * @param pattern
      * @param {function(Error|undefined):void} callback callback function (optional)
      */
-    subscribeUser(pattern: string, callback: ioBroker.ErrorCallback): Promise<void> {
+    subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.subscribe(pattern, true, callback);
     }
 
-    async unsubscribe(pattern: string, asUser: boolean, callback: ioBroker.ErrorCallback): Promise<void>;
-    async unsubscribe(pattern: string, callback: ioBroker.ErrorCallback): Promise<void>;
+    async unsubscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
+    async unsubscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
      * @param pattern
@@ -1149,7 +1149,7 @@ export class StateRedisClient {
      */
     async unsubscribe(
         pattern: string,
-        asUser: boolean | ioBroker.ErrorCallback,
+        asUser?: boolean | ioBroker.ErrorCallback,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
@@ -1191,14 +1191,14 @@ export class StateRedisClient {
      * @param pattern
      * @param callback callback function (optional)
      */
-    unsubscribeUser(pattern: string, callback: ioBroker.ErrorCallback): Promise<void> {
+    unsubscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.unsubscribe(pattern, true, callback);
     }
 
     async pushMessage(
         id: string,
         state: PushableState,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1271,14 +1271,14 @@ export class StateRedisClient {
     async pushLog(
         id: string,
         log: LogObject,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void>;
 
     // implementation uses an modified pushLog with internal _id
     async pushLog(
         id: string,
         log: InternalLogObject,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

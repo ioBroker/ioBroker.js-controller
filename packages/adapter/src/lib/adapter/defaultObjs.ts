@@ -1,4 +1,4 @@
-function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> {
+export function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> {
     return {
         'level.dimmer': {
             type: 'number',
@@ -41,5 +41,3 @@ function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> {
         }
     } as const;
 }
-
-export = createDefaults;

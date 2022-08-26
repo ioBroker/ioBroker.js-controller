@@ -1,6 +1,16 @@
 import { SYSTEM_ADMIN_USER } from './constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
+type OpaqueString<T extends string> = string & {
+    __type: T;
+};
+
+export type ID = OpaqueString<'ID'>;
+
+type Callback = (...args: any[]) => void | Promise<void>;
+type OptionalCallback = undefined | Callback;
+type Pattern = string | string[];
+
 export interface IdObject {
     device?: string;
     channel?: string;
@@ -47,7 +57,7 @@ export class Utils {
      * @param id - id of the state
      * @param state - ioBroker setState object
      */
-    async performStrictObjectCheck(id: string, state: ioBroker.State): Promise<void> {
+    async performStrictObjectCheck(id: string, state: ioBroker.SettableState): Promise<void> {
         // TODO: in js-c 3.5 (or 2 releases after 3.3) we should let it throw and add tests, maybe we
         // can already let the non existing object case throw with 3.4 because this is already producing a warning
         try {
@@ -150,7 +160,7 @@ export class Utils {
      * @param options optional
      * @throws Error when id is invalid
      */
-    validateId(id: string | any, isForeignId: boolean, options: any): void {
+    validateId(id: string | any, isForeignId: boolean, options: any): asserts id is ID {
         // there is special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;
@@ -228,12 +238,120 @@ export class Utils {
     }
 
     /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertString(value: unknown, name: string): asserts value is string {
+        if (typeof value !== 'string') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not a pattern
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertPattern(value: unknown, name: string): asserts value is Pattern {
+        if (typeof value !== 'string' && !Array.isArray(value)) {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`
+            );
+        } else if (Array.isArray(value)) {
+            for (const entry of value) {
+                if (typeof entry !== 'string') {
+                    throw new Error(
+                        `Paramter "${name}" needs to be of type "string" or an array of type "string", but the array contains a value of type "${typeof value}"`
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertBoolean(value: unknown, name: string): asserts value is boolean {
+        if (typeof value !== 'boolean') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertNumber(value: unknown, name: string): asserts value is number {
+        if (typeof value !== 'number') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not matching the expected type
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
+        if (!tools.isObject(value)) {
+            throw new Error(`Paramter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
+        }
+    }
+
+    /**
+     * Throws if type is not an optional callback
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertBuffer(value: unknown, name: string): asserts value is Buffer {
+        if (!Buffer.isBuffer(value)) {
+            throw new Error(`Paramter "${name}" needs to be a Buffer but type "${typeof value}" has been passed`);
+        }
+    }
+
+    /**
+     * Throws if type is not an optional callback
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
+        if (value && typeof value !== 'function') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
+     * Throws if type is not an optional callback
+     * @param value value to check type of
+     * @param name name of the parameter for logging
+     */
+    static assertCallback(value: unknown, name: string): asserts value is Callback {
+        if (typeof value !== 'function') {
+            throw new Error(
+                `Paramter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`
+            );
+        }
+    }
+
+    /**
      * Adds the namespace to the id if it is missing, if an object is passed it will be converted to an id string
      *
      * @param id id which will be fixed
      * @param isPattern if the id is a pattern
      */
-    fixId(id: string | IdObject, isPattern = false): string {
+    fixId(id: string | IdObject, isPattern = false): ID {
         if (!id) {
             id = '';
         }
@@ -257,7 +375,7 @@ export class Utils {
                 id.state ? id.state : ''
             }`;
         }
-        return result;
+        return result as ID;
     }
 
     /**

@@ -3,7 +3,7 @@
  *
  * It prefixes every message with the given namespace
  */
-class Log {
+export class Log {
     private readonly namespaceLog: string;
     private readonly level: string;
     private readonly logger: any;
@@ -49,5 +49,3 @@ class Log {
         this.logger.warn(`${this.namespaceLog} ${msg}`);
     }
 }
-
-export = Log;

@@ -30,8 +30,8 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 
 const ERRORS = CONSTS.ERRORS;
 
-type ChangeFunction = (id: string, object: Record<string, any> | null) => void;
-type ChangeFileFunction = (id: string, fileName: string, size: number | null) => void;
+type ChangeFunction = (id: string, object: ioBroker.Object | null) => void;
+export type ChangeFileFunction = (id: string, fileName: string, size: number | null) => void;
 
 type GetUserGroupCallbackNoError = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
@@ -55,7 +55,7 @@ interface ObjectsSettings {
     change?: ChangeFunction;
     changeUser?: ChangeFunction;
     changeFileUser?: ChangeFileFunction;
-    autoConnect: boolean;
+    autoConnect?: boolean;
     logger: InternalLogger;
     hostname?: string;
     namespace?: string;
@@ -1204,14 +1204,19 @@ export class ObjectsInRedisClient {
     }
 
     // User has provided no callback, we will return the Promise
-    readFile(id: string, name: string, options: CallOptions | null): ioBroker.ReadFilePromise;
+    readFile(id: string, name: string, options?: CallOptions | null): ioBroker.ReadFilePromise;
 
     // User has provided a callback, thus we will call it
-    readFile(id: string, name: string, options: CallOptions | null, callback: ioBroker.ReadFileCallback): void;
     readFile(
         id: string,
         name: string,
-        options: CallOptions | null,
+        options: CallOptions | null | undefined,
+        callback: ioBroker.ReadFileCallback
+    ): void;
+    readFile(
+        id: string,
+        name: string,
+        options?: CallOptions | null,
         callback?: ioBroker.ReadFileCallback
     ): void | ioBroker.ReadFilePromise {
         if (typeof options === 'function') {
@@ -1302,7 +1307,7 @@ export class ObjectsInRedisClient {
      * @param name name of the file
      * @param options optional user context
      */
-    async fileExists(id: string, name: string, options: CallOptions): Promise<boolean> {
+    async fileExists(id: string, name: string, options?: CallOptions | null): Promise<boolean> {
         if (typeof name !== 'string') {
             name = '';
         }
@@ -1354,7 +1359,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    unlink(id: string, name: string, options: CallOptions | null, callback: ioBroker.RmCallback): void {
+    unlink(id: string, name: string, options: CallOptions | null | undefined, callback?: ioBroker.RmCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1561,7 +1566,12 @@ export class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
-    readDir(id: string, name: string, options: CallOptions | null, callback: ioBroker.ReadDirCallback): void {
+    readDir(
+        id: string,
+        name: string,
+        options: CallOptions | null | undefined,
+        callback: ioBroker.ReadDirCallback
+    ): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -1730,7 +1740,7 @@ export class ObjectsInRedisClient {
         id: string,
         oldName: string,
         newName: string,
-        options: CallOptions | null,
+        options?: CallOptions | null,
         callback?: ioBroker.ErrorCallback
     ): void | Promise<void> {
         if (typeof options === 'function') {
@@ -1972,7 +1982,12 @@ export class ObjectsInRedisClient {
     }
 
     // simulate. redis has no dirs
-    mkdir(id: string, dirName: string, options: CallOptions | null, callback: ioBroker.ErrorCallback): void {
+    mkdir(
+        id: string,
+        dirName: string,
+        options: CallOptions | null | undefined,
+        callback?: ioBroker.ErrorCallback
+    ): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2501,7 +2516,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    subscribeUserFile(id: string, pattern: string, options?: CallOptions): Promise<void> {
+    subscribeUserFile(id: string, pattern: string, options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
@@ -2515,7 +2530,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unsubscribeUserFile(id: string, pattern: string, options?: CallOptions): Promise<void> {
+    unsubscribeUserFile(id: string, pattern: string, options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
@@ -2587,11 +2602,11 @@ export class ObjectsInRedisClient {
         });
     }
 
-    subscribe(pattern: string | string[], options: CallOptions, callback?: ioBroker.ErrorCallback): void {
+    subscribe(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void {
         return this.subscribeConfig(pattern, options, callback);
     }
 
-    subscribeAsync(pattern: string | string[], options: CallOptions): Promise<void> {
+    subscribeAsync(pattern: string | string[], options?: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribe(pattern, options, err => (err ? reject(err) : resolve()))
         );
@@ -2600,8 +2615,8 @@ export class ObjectsInRedisClient {
     // User has called the method without providing options
     subscribeUser(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
     // User has called the method by providing options
-    subscribeUser(pattern: string | string[], options: CallOptions, callback?: ioBroker.ErrorCallback): void;
-    subscribeUser(pattern: string | string[], options: any, callback?: ioBroker.ErrorCallback): void {
+    subscribeUser(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void;
+    subscribeUser(pattern: string | string[], options?: any, callback?: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3039,7 +3054,7 @@ export class ObjectsInRedisClient {
     // cb version with options
     getObject<T extends string>(
         id: T,
-        options: Record<string, any> | undefined,
+        options: Record<string, any> | undefined | null,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
     // no options but cb
@@ -3047,7 +3062,7 @@ export class ObjectsInRedisClient {
     // Promise version
     getObject<T extends string>(
         id: T,
-        options?: Record<string, any>
+        options?: Record<string, any> | null
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
     getObject<T extends string>(
         id: T,
@@ -3081,7 +3096,7 @@ export class ObjectsInRedisClient {
 
     getObjectAsync<T extends string>(
         id: T,
-        options?: Record<string, any>
+        options?: Record<string, any> | null
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
         return new Promise((resolve, reject) =>
             this.getObject(id, options, (err, obj) => (err ? reject(err) : resolve(obj)))
@@ -3615,6 +3630,21 @@ export class ObjectsInRedisClient {
         await this.client.publish(this.objNamespace + id, message);
         return { id };
     }
+
+    // method called without options
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
+        callback?: ioBroker.SetObjectCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+
+    // method called with options
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>,
+        options?: CallOptions | null,
+        callback?: ioBroker.SetObjectCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * set anew or update object
@@ -4298,7 +4328,7 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams,
-        options?: CallOptions
+        options?: CallOptions | null
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
     // callback and options provided, we send result in callback
@@ -4306,7 +4336,7 @@ export class ObjectsInRedisClient {
         design: Design,
         search: Search,
         params: ioBroker.GetObjectViewParams,
-        options: CallOptions | undefined,
+        options: CallOptions | undefined | null,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
 

@@ -116,7 +116,6 @@ export function enumObjects<T extends string>(
 ): Promise<(ioBroker.InferGetObjectViewItemType<'system', T> | null)[]> {
     return new Promise((resolve, reject) => {
         const endkey = `${startkey}\u9999`;
-        // @ts-expect-error #1917
         objects.getObjectView('system', type, { startkey, endkey }, null, (err, res) => {
             if (err) {
                 return reject(err);
