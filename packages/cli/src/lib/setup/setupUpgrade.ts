@@ -6,54 +6,66 @@
  *      MIT License
  *
  */
+import Debug from 'debug';
+import * as fs from 'fs-extra';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import semver from 'semver';
+import { Upload } from './setupUpload';
+import { Install } from './setupInstall';
+import rl from 'readline-sync';
+import tty from 'tty';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
 
-'use strict';
-const debug = require('debug')('iobroker:cli');
+const debug = Debug('iobroker:cli');
 
-/** @class */
-function Upgrade(options) {
-    const fs = require('fs-extra');
-    const { tools } = require('@iobroker/js-controller-common');
+type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>;
 
-    options = options || {};
+export class Upgrade {
+    private readonly hostname = tools.getHostName();
+    private readonly upload: Upload;
+    private readonly install: Install;
+    private objects: ObjectsInRedisClient;
+    private readonly processExit: any;
+    private readonly params: any;
+    private readonly getRepository: any;
 
-    if (!options.processExit) {
-        throw new Error('Invalid arguments: processExit is missing');
+    // TODO: type options
+    constructor(options: Record<string, any>) {
+        options = options || {};
+
+        if (!options.processExit) {
+            throw new Error('Invalid arguments: processExit is missing');
+        }
+        if (!options.restartController) {
+            throw new Error('Invalid arguments: restartController is missing');
+        }
+        if (!options.getRepository) {
+            throw new Error('Invalid arguments: getRepository is missing');
+        }
+
+        this.processExit = options.processExit;
+        this.getRepository = options.getRepository;
+        this.params = options.params;
+        this.objects = options.objects;
+
+        this.upload = new Upload(options);
+        this.install = new Install(options);
     }
-    if (!options.restartController) {
-        throw new Error('Invalid arguments: restartController is missing');
-    }
-    if (!options.getRepository) {
-        throw new Error('Invalid arguments: getRepository is missing');
-    }
-
-    const processExit = options.processExit;
-    const getRepository = options.getRepository;
-    const params = options.params;
-    const objects = options.objects;
-    /** @type {import("semver")} */
-    const semver = require('semver');
-    let rl;
-    let tty;
-
-    const hostname = tools.getHostName();
-    const { EXIT_CODES } = require('@iobroker/js-controller-common');
-
-    const Upload = require('@iobroker/js-controller-cli').setupUpload;
-    const upload = new Upload(options);
-
-    const Install = require('@iobroker/js-controller-cli').setupInstall;
-    const install = new Install(options);
 
     /**
      * Sorts the adapters by their dependencies and then upgrades multiple adapters from the given repository url
      *
-     * @param {object} repo the repository content
-     * @param {string[]} list list of adapters to upgrade
-     * @param {boolean} forceDowngrade flag to force downgrade
-     * @param {boolean} autoConfirm automatically confirm the tty questions (bypass)
+     * @param repo the repository content
+     * @param list list of adapters to upgrade
+     * @param forceDowngrade flag to force downgrade
+     * @param autoConfirm automatically confirm the tty questions (bypass)
      */
-    this.upgradeAdapterHelper = async (repo, list, forceDowngrade, autoConfirm) => {
+    async upgradeAdapterHelper(
+        repo: Record<string, any>,
+        list: string[],
+        forceDowngrade: boolean,
+        autoConfirm: boolean
+    ): Promise<void> {
         const relevantAdapters = [];
         // check which adapters are upgradeable and sort them according to their dependencies
         for (const adapter of list) {
@@ -63,7 +75,7 @@ function Upgrade(options) {
             }
             const adapterDir = tools.getAdapterDir(adapter);
             if (fs.existsSync(`${adapterDir}/io-package.json`)) {
-                const ioInstalled = require(`${adapterDir}/io-package.json`);
+                const ioInstalled = fs.readJsonSync(`${adapterDir}/io-package.json`);
                 if (!tools.upToDate(repo[adapter].version, ioInstalled.common.version)) {
                     // not up to date, we need to put it into account for our dependency check
                     relevantAdapters.push(adapter);
@@ -86,7 +98,6 @@ function Upgrade(options) {
                         relevantAdapters.splice(relevantAdapters.indexOf(relAdapter), 1);
                         oneAdapterAdded = true;
                     } else {
-                        /** @type {Record<string, string>} */
                         const allDeps = {
                             ...tools.parseDependencies(repo[relAdapter].dependencies),
                             ...tools.parseDependencies(repo[relAdapter].globalDependencies)
@@ -125,24 +136,23 @@ function Upgrade(options) {
 
             debug(`upgrade order is "${sortedAdapters.join(', ')}"`);
 
-            for (let i = 0; i < sortedAdapters.length; i++) {
-                if (repo[sortedAdapters[i]] && repo[sortedAdapters[i]].controller) {
+            for (const sortedAdapter of sortedAdapters) {
+                if (repo[sortedAdapter]?.controller) {
                     continue;
                 }
-                await this.upgradeAdapter(repo, sortedAdapters[i], forceDowngrade, autoConfirm, true);
+                await this.upgradeAdapter(repo, sortedAdapter, forceDowngrade, autoConfirm, true);
             }
         } else {
             console.log('All adapters are up to date');
         }
-    };
+    }
 
     /**
      * Checks that local and global deps are fulfilled else rejects promise
-     * @param {string[]|object[]|object} deps local dependencies - required on this host
-     * @param {string[]|object[]|object} globalDeps global dependencies - required on one of the hosts
-     * @return {Promise<void>}
+     * @param deps local dependencies - required on this host
+     * @param globalDeps global dependencies - required on one of the hosts
      */
-    async function checkDependencies(deps, globalDeps) {
+    private async _checkDependencies(deps: IoPackDependencies, globalDeps: IoPackDependencies): Promise<void> {
         if (!deps && !globalDeps) {
             return Promise.resolve();
         }
@@ -155,14 +165,14 @@ function Upgrade(options) {
         // Get all installed adapters
         let objs;
         try {
-            objs = await objects.getObjectViewAsync(
+            objs = await this.objects.getObjectViewAsync(
                 'system',
                 'instance',
                 {
                     startkey: 'system.adapter.',
                     endkey: 'system.adapter.\u9999'
                 },
-                null
+                undefined
             );
         } catch (err) {
             return Promise.reject(err);
@@ -193,8 +203,8 @@ function Upgrade(options) {
                         }
                     }
                 } else {
-                    let gInstances = [];
-                    let locInstances = [];
+                    let gInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
+                    let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
                     // if global dep get all instances of adapter
                     if (globalDeps[dName] !== undefined) {
                         gInstances = objs.rows.filter(
@@ -209,7 +219,7 @@ function Upgrade(options) {
                                 obj.value &&
                                 obj.value.common &&
                                 obj.value.common.name === dName &&
-                                obj.value.common.host === hostname
+                                obj.value.common.host === this.hostname
                         );
                         if (locInstances.length === 0) {
                             return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));
@@ -221,13 +231,17 @@ function Upgrade(options) {
                     for (const instance of locInstances) {
                         try {
                             if (
-                                !semver.satisfies(instance.value.common.version, deps[dName], {
+                                // @ts-expect-error InstaceCommon has version: TODO fix types
+                                !semver.satisfies(instance.value!.common.version, deps[dName], {
                                     includePrerelease: true
                                 })
                             ) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${deps[dName]}`
+                                        `Invalid version of "${dName}". Installed "${
+                                            // @ts-expect-error InstaceCommon has version: TODO fix types
+                                            instance.value!.common.version
+                                        }", required "${deps[dName]}`
                                     )
                                 );
                             }
@@ -235,7 +249,10 @@ function Upgrade(options) {
                             console.log(`Can not check dependency requirement: ${err.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${deps[dName]}`
+                                    `Invalid version of "${dName}". Installed "${
+                                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                                        instance.value!.common.version
+                                    }", required "${deps[dName]}`
                                 )
                             );
                         }
@@ -245,13 +262,17 @@ function Upgrade(options) {
                     for (const instance of gInstances) {
                         try {
                             if (
-                                !semver.satisfies(instance.value.common.version, globalDeps[dName], {
+                                // @ts-expect-error InstaceCommon has version: TODO fix types
+                                !semver.satisfies(instance.value!.common.version, globalDeps[dName], {
                                     includePrerelease: true
                                 })
                             ) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${globalDeps[dName]}`
+                                        `Invalid version of "${dName}". Installed "${
+                                            // @ts-expect-error InstaceCommon has version: TODO fix types
+                                            instance.value!.common.version
+                                        }", required "${globalDeps[dName]}`
                                     )
                                 );
                             }
@@ -259,7 +280,10 @@ function Upgrade(options) {
                             console.log(`Can not check dependency requirement: ${err.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${instance.value.common.version}", required "${globalDeps[dName]}`
+                                    `Invalid version of "${dName}". Installed "${
+                                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                                        instance.value!.common.version
+                                    }", required "${globalDeps[dName]}`
                                 )
                             );
                         }
@@ -277,42 +301,51 @@ function Upgrade(options) {
     /**
      * Try to async upgrade adapter from given source with some checks
      *
-     * @param {string|object} repoUrl url of the selected repository or parsed repo
-     * @param {string} adapter name of the adapter
-     * @param {boolean} forceDowngrade flag to force downgrade
-     * @param {boolean} autoConfirm automatically confirm the tty questions (bypass)
-     * @param {boolean} upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
+     * @param repoUrl url of the selected repository or parsed repo
+     * @param adapter name of the adapter
+     * @param forceDowngrade flag to force downgrade
+     * @param autoConfirm automatically confirm the tty questions (bypass)
+     * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
      */
-    this.upgradeAdapter = async function (repoUrl, adapter, forceDowngrade, autoConfirm, upgradeAll) {
-        if (!repoUrl || typeof repoUrl !== 'object') {
+    async upgradeAdapter(
+        repoUrlOrObject: string | Record<string, any>,
+        adapter: string,
+        forceDowngrade: boolean,
+        autoConfirm: boolean,
+        upgradeAll: boolean
+    ) {
+        let sources: Record<string, any>;
+        if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                repoUrl = await getRepository(repoUrl, params);
+                sources = await this.getRepository(repoUrlOrObject, this.params);
             } catch (e) {
-                return processExit(e);
+                return this.processExit(e);
             }
+        } else {
+            sources = repoUrlOrObject;
         }
 
-        const finishUpgrade = async (name, ioPack) => {
+        // TODO: not really instance object but close enough
+        const finishUpgrade = async (name: string, ioPack?: ioBroker.InstanceObject) => {
             if (!ioPack) {
                 const adapterDir = tools.getAdapterDir(name);
                 try {
                     ioPack = fs.readJSONSync(`${adapterDir}/io-package.json`);
                 } catch {
                     console.error(`Cannot find io-package.json in ${adapterDir}`);
-                    return processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                    return this.processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                 }
             }
 
             // Upload www and admin files of adapter into CouchDB
-            await upload.uploadAdapter(name, false, true);
+            await this.upload.uploadAdapter(name, false, true);
             // extend all adapter instance default configs with current config
             // (introduce potentially new attributes while keeping current settings)
-            await upload.upgradeAdapterObjects(name, ioPack);
-            await upload.uploadAdapter(name, true, true);
+            await this.upload.upgradeAdapterObjects(name, ioPack);
+            await this.upload.uploadAdapter(name, true, true);
         };
 
-        const sources = repoUrl;
-        let version;
+        let version: string;
         if (adapter.includes('@')) {
             const parts = adapter.split('@');
             adapter = parts[0];
@@ -335,35 +368,35 @@ function Upgrade(options) {
             );
         }
         // Get the url of io-package.json or direct the version
-        if (!repoUrl[adapter]) {
+        if (!sources[adapter]) {
             console.log(`Adapter "${adapter}" is not in the repository and cannot be updated.`);
         }
-        if (repoUrl[adapter].controller) {
+        if (sources[adapter].controller) {
             return console.log(
                 `Cannot update ${adapter} using this command. Please use "iobroker upgrade self" instead!`
             );
         }
 
-        let ioInstalled;
+        // TODO: not 100 % true but should be correct enough
+        let ioInstalled: Partial<ioBroker.InstanceObject>;
         if (fs.existsSync(`${adapterDir}/io-package.json`)) {
-            ioInstalled = require(`${adapterDir}/io-package.json`);
-        }
-        if (!ioInstalled) {
+            ioInstalled = fs.readJsonSync(`${adapterDir}/io-package.json`);
+        } else {
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             ioInstalled = { common: { version: '0.0.0' } };
         }
 
         /**
          * We show changelog (news) and ask user if he really wants to upgrade but only if fd is associated with a tty, returns true if upgrade desired
-         * @param {string} installedVersion - installed version of adapter
-         * @param {string} targetVersion - target version of adapter
-         * @param {string} adapterName - name of the adapter
+         * @param installedVersion - installed version of adapter
+         * @param targetVersion - target version of adapter
+         * @param adapterName - name of the adapter
          * @return {boolean}
          */
-        const showUpgradeDialog = (installedVersion, targetVersion, adapterName) => {
+        const showUpgradeDialog = (installedVersion: string, targetVersion: string, adapterName: string) => {
             // major upgrade or downgrade
             const isMajor = semver.major(installedVersion) !== semver.major(targetVersion);
 
-            tty = tty || require('tty');
             if (autoConfirm || (!tty.isatty(process.stdout.fd) && (!isMajor || !upgradeAll))) {
                 // force flag or script on non major or single adapter upgrade -> always upgrade
                 return true;
@@ -379,8 +412,8 @@ function Upgrade(options) {
             const isDowngrade = semver.lt(targetVersion, installedVersion);
 
             // if information in repo files -> show news
-            if (repoUrl[adapter] && repoUrl[adapter].news) {
-                const news = repoUrl[adapter].news;
+            if (sources[adapter] && sources[adapter].news) {
+                const news = sources[adapter].news;
 
                 let first = true;
                 // check if upgrade or downgrade
@@ -440,7 +473,6 @@ function Upgrade(options) {
                 }
             }
 
-            rl = rl || require('readline-sync');
             let answer;
 
             // ask user if he really wants to upgrade/downgrade/reinstall - repeat until (y)es or (n)o given
@@ -455,8 +487,9 @@ function Upgrade(options) {
                     }
                     answer = rl.question(
                         `Would you like to ${isUpgrade ? 'upgrade' : 'downgrade'} ${adapter} from @${
-                            ioInstalled.common.version
-                        } to @${version || repoUrl[adapter].version} now? [(y)es, (n)o]: `,
+                            // @ts-expect-error adapter-core#455
+                            ioInstalled.common!.version
+                        } to @${version || sources[adapter].version} now? [(y)es, (n)o]: `,
                         {
                             defaultInput: 'n'
                         }
@@ -464,7 +497,7 @@ function Upgrade(options) {
                 } else {
                     answer = rl.question(
                         `Would you like to reinstall version ${
-                            version || repoUrl[adapter].version
+                            version || sources[adapter].version
                         } of ${adapter} now? [(y)es, (n)o]: `,
                         {
                             defaultInput: 'n'
@@ -482,10 +515,10 @@ function Upgrade(options) {
         };
 
         // If version is included in repository
-        if (repoUrl[adapter].version) {
+        if (sources[adapter].version) {
             if (!forceDowngrade) {
                 try {
-                    await checkDependencies(repoUrl[adapter].dependencies, repoUrl[adapter].globalDependencies);
+                    await this._checkDependencies(sources[adapter].dependencies, sources[adapter].globalDependencies);
                 } catch (err) {
                     return console.error(`Cannot check dependencies: ${err.message}`);
                 }
@@ -493,8 +526,10 @@ function Upgrade(options) {
 
             if (
                 !forceDowngrade &&
-                (repoUrl[adapter].version === ioInstalled.common.version ||
-                    tools.upToDate(repoUrl[adapter].version, ioInstalled.common.version))
+                // @ts-expect-error adapter-core#455
+                (sources[adapter].version === ioInstalled.common!.version ||
+                    // @ts-expect-error adapter-core#455
+                    tools.upToDate(sources[adapter].version, ioInstalled.common!.version))
             ) {
                 return console.log(
                     `Adapter "${adapter}"${
@@ -502,34 +537,35 @@ function Upgrade(options) {
                     } is up to date.`
                 );
             } else {
-                const targetVersion = version || repoUrl[adapter].version;
+                const targetVersion = version || sources[adapter].version;
                 try {
-                    if (!showUpgradeDialog(ioInstalled.common.version, targetVersion, adapter)) {
+                    // @ts-expect-error adapter-core#455
+                    if (!showUpgradeDialog(ioInstalled.common!.version, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
-
-                console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
+                // @ts-expect-error adapter-core#455
+                console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${targetVersion}`);
                 // Get the adapter from web site
-                const { packetName, stoppedList } = await install.downloadPacket(
+                const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
                 );
                 await finishUpgrade(packetName);
-                await install.enableInstances(stoppedList, true);
+                await this.install.enableInstances(stoppedList, true);
             }
-        } else if (repoUrl[adapter].meta) {
+        } else if (sources[adapter].meta) {
             // Read repository from url or file
-            const ioPack = await tools.getJsonAsync(repoUrl[adapter].meta);
+            const ioPack = await tools.getJsonAsync(sources[adapter].meta);
             if (!ioPack) {
-                return console.error(`Cannot parse file${repoUrl[adapter].meta}`);
+                return console.error(`Cannot parse file${sources[adapter].meta}`);
             }
 
             if (!forceDowngrade) {
                 try {
-                    await checkDependencies(
+                    await this._checkDependencies(
                         ioPack.common && ioPack.common.dependencies,
                         ioPack.common && ioPack.common.globalDependencies
                     );
@@ -540,8 +576,10 @@ function Upgrade(options) {
 
             if (
                 !version &&
-                (ioPack.common.version === ioInstalled.common.version ||
-                    (!forceDowngrade && tools.upToDate(ioPack.common.version, ioInstalled.common.version)))
+                // @ts-expect-error adapter-core #455
+                (ioPack.common.version === ioInstalled.common!.version ||
+                    // @ts-expect-error adapter-core #455
+                    (!forceDowngrade && tools.upToDate(ioPack.common.version, ioInstalled.common!.version)))
             ) {
                 console.log(
                     `Adapter "${adapter}"${
@@ -552,82 +590,94 @@ function Upgrade(options) {
                 // Get the adapter from web site
                 const targetVersion = version || ioPack.common.version;
                 try {
-                    if (!showUpgradeDialog(ioInstalled.common.version, targetVersion, adapter)) {
+                    // @ts-expect-error adapter-core #455
+                    if (!showUpgradeDialog(ioInstalled.common!.version, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
-                console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${targetVersion}`);
-                const { packetName, stoppedList } = await install.downloadPacket(
+                // @ts-expect-error adapter-core #455
+                console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${targetVersion}`);
+                const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
                 );
                 await finishUpgrade(packetName, ioPack);
-                await install.enableInstances(stoppedList, true);
+                await this.install.enableInstances(stoppedList, true);
             }
         } else {
             if (forceDowngrade) {
                 try {
-                    if (!showUpgradeDialog(ioInstalled.common.version, version, adapter)) {
+                    // @ts-expect-error adapter-core #455
+                    if (!showUpgradeDialog(ioInstalled.common!.version, version, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
-                console.log(`Update ${adapter} from @${ioInstalled.common.version} to @${version}`);
+                // @ts-expect-error adapter-core #455
+                console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${version}`);
                 // Get the adapter from web site
-                const { packetName, stoppedList } = await install.downloadPacket(sources, `${adapter}@${version}`);
+                const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(packetName);
-                await install.enableInstances(stoppedList, true);
+                await this.install.enableInstances(stoppedList, true);
             } else {
                 return console.error(`Unable to get version for "${adapter}".`);
             }
         }
-    };
+    }
 
     /**
      * Upgrade the js-controller
      *
-     * @param {string} repoUrl
-     * @param {boolean} forceDowngrade
-     * @param {boolean} controllerRunning
-     * @return {Promise<void>}
+     * @param repoUrl
+     * @param forceDowngrade
+     * @param controllerRunning
      */
-    this.upgradeController = async function (repoUrl, forceDowngrade, controllerRunning) {
-        if (!repoUrl || typeof repoUrl !== 'object') {
+    async upgradeController(
+        repoUrlOrObject: string,
+        forceDowngrade: boolean,
+        controllerRunning: boolean
+    ): Promise<void> {
+        let sources: Record<string, any>;
+        if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                const result = await getRepository(repoUrl, params);
+                const result = await this.getRepository(repoUrlOrObject, this.params);
                 if (!result) {
                     return console.warn(`Cannot get repository under "${repoUrl}"`);
                 }
-                repoUrl = result;
+                sources = result;
             } catch (err) {
-                return processExit(err);
+                return this.processExit(err);
             }
+        } else {
+            sources = repoUrlOrObject;
         }
 
         const installed = fs.readJSONSync(`${tools.getControllerDir()}/io-package.json`);
         if (!installed || !installed.common || !installed.common.version) {
             return console.error(
-                `Host "${hostname}"${hostname.length < 15 ? ''.padStart(15 - hostname.length) : ''} is not installed.`
+                `Host "${this.hostname}"${
+                    this.hostname.length < 15 ? ''.padStart(15 - this.hostname.length) : ''
+                } is not installed.`
             );
         }
-        if (!repoUrl[installed.common.name]) {
+        if (!sources[installed.common.name]) {
             // no info for controller
             return console.error(`Cannot find this controller "${installed.common.name}" in repository.`);
         }
 
-        if (repoUrl[installed.common.name].version) {
+        if (sources[installed.common.name].version) {
             if (
                 !forceDowngrade &&
-                (repoUrl[installed.common.name].version === installed.common.version ||
-                    tools.upToDate(repoUrl[installed.common.name].version, installed.common.version))
+                (sources[installed.common.name].version === installed.common.version ||
+                    tools.upToDate(sources[installed.common.name].version, installed.common.version))
             ) {
                 console.log(
-                    `Host    "${hostname}"${
-                        hostname.length < 15 ? new Array(15 - hostname.length).join(' ') : ''
+                    `Host    "${this.hostname}"${
+                        this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
                     } is up to date.`
                 );
             } else if (controllerRunning) {
@@ -635,18 +685,18 @@ function Upgrade(options) {
             } else {
                 console.log(
                     `Update ${installed.common.name} from @${installed.common.version} to @${
-                        repoUrl[installed.common.name].version
+                        sources[installed.common.name].version
                     }`
                 );
                 // Get the controller from web site
-                await install.downloadPacket(
-                    repoUrl,
-                    `${installed.common.name}@${repoUrl[installed.common.name].version}`,
+                await this.install.downloadPacket(
+                    sources,
+                    `${installed.common.name}@${sources[installed.common.name].version}`,
                     { stopDb: true }
                 );
             }
         } else {
-            const ioPack = await tools.getJsonAsync(repoUrl[installed.common.name].meta);
+            const ioPack = await tools.getJsonAsync(sources[installed.common.name].meta);
             if ((!ioPack || !ioPack.common) && !forceDowngrade) {
                 return console.warn(
                     `Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`
@@ -665,8 +715,8 @@ function Upgrade(options) {
                     tools.upToDate(ioPack.common.version, installed.common.version))
             ) {
                 console.log(
-                    `Host    "${hostname}"${
-                        hostname.length < 15 ? new Array(15 - hostname.length).join(' ') : ''
+                    `Host    "${this.hostname}"${
+                        this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
                     } is up to date.`
                 );
             } else if (controllerRunning) {
@@ -675,10 +725,8 @@ function Upgrade(options) {
                 const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : installed.common.name;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
-                await install.downloadPacket(repoUrl, name + version, { stopDb: true });
+                await this.install.downloadPacket(sources, name + version, { stopDb: true });
             }
         }
-    };
+    }
 }
-
-module.exports = Upgrade;

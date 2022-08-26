@@ -760,7 +760,7 @@ export async function getJson(
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
  */
-export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Record<string, any> | null> {
+export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<Record<string, any> | null> {
     agent = agent || '';
 
     let sources = {};

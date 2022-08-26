@@ -1180,7 +1180,7 @@ async function processCommand(command, args, params, callback) {
             }
 
             dbConnect(params, async () => {
-                const Upgrade = require('./setup/setupUpgrade.js');
+                const Upgrade = require('@iobroker/js-controller-cli').setupUpgrade;
                 const upgrade = new Upgrade({
                     objects,
                     states,

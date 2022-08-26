@@ -58,7 +58,7 @@ interface CreateInstanceOptions {
     port?: number;
 }
 
-class Install {
+export class Install {
     private unsafePermAlways: string[];
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
@@ -137,7 +137,7 @@ class Install {
      * @param stoppedList
      */
     async downloadPacket(
-        repoUrl: string | undefined,
+        repoUrl: string | undefined | Record<string, any>,
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[]
@@ -150,7 +150,7 @@ class Install {
         stoppedList = stoppedList || [];
         let sources: Record<string, any>;
 
-        if (!repoUrl || typeof repoUrl !== 'object') {
+        if (!repoUrl || !tools.isObject(repoUrl)) {
             try {
                 sources = await this.getRepository(repoUrl, this.params);
             } catch (err) {
@@ -479,14 +479,14 @@ class Install {
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
                         if (
-                            // @ts-expect-error InstaceCommon has version: TODO fix tpes
+                            // @ts-expect-error InstaceCommon has version: TODO fix types
                             !semver.satisfies(instance.value!.common.version, deps[dName], {
                                 includePrerelease: true
                             })
                         ) {
                             console.error(
                                 `host.${hostname} Invalid version of "${dName}". Installed "${
-                                    // @ts-expect-error InstaceCommon has version: TODO fix tpes
+                                    // @ts-expect-error InstaceCommon has version: TODO fix types
                                     instance.value!.common.version
                                 }", required "${deps[dName]}"`
                             );
@@ -1908,5 +1908,3 @@ class Install {
         return instances as ioBroker.InstanceObject[];
     }
 }
-
-module.exports = { Install };
