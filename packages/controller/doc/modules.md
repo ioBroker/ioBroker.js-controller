@@ -4,6 +4,10 @@
 
 ## Table of contents
 
+### Modules
+
+- [&lt;internal\&gt;](modules/internal_.md)
+
 ### Classes
 
 - [AdapterClass](classes/AdapterClass.md)
@@ -20,4 +24,4 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:11982](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L11982)
+[packages/adapter/src/lib/adapter/adapter.ts:11982](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L11982)

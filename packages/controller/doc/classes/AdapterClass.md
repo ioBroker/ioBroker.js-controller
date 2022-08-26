@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-- `EventEmitter`
+- [`EventEmitter`](internal_.EventEmitter-1.md)
 
   ↳ **`AdapterClass`**
 
@@ -257,11 +257,15 @@
 
 | Name | Type |
 | :------ | :------ |
-| `options` | `string` \| `AdapterOptions` |
+| `options` | `string` \| [`AdapterOptions`](../interfaces/internal_.AdapterOptions.md) |
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[constructor](internal_.EventEmitter-1.md#constructor)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L654)
+[packages/adapter/src/lib/adapter/adapter.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L654)
 
 ## Properties
 
@@ -271,17 +275,17 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:598](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L598)
+[packages/adapter/src/lib/adapter/adapter.ts:598](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L598)
 
 ___
 
 ### adapterConfig
 
-• `Protected` `Optional` **adapterConfig**: ``null`` \| `AdapterOptions` \| `InstanceObject`
+• `Protected` `Optional` **adapterConfig**: ``null`` \| [`AdapterOptions`](../interfaces/internal_.AdapterOptions.md) \| [`InstanceObject`](../interfaces/internal_.InstanceObject.md)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L616)
+[packages/adapter/src/lib/adapter/adapter.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L616)
 
 ___
 
@@ -291,7 +295,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L618)
+[packages/adapter/src/lib/adapter/adapter.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L618)
 
 ___
 
@@ -301,27 +305,27 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:565](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L565)
+[packages/adapter/src/lib/adapter/adapter.ts:565](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L565)
 
 ___
 
 ### common
 
-• `Protected` `Optional` **common**: `Record`<`string`, `any`\>
+• `Protected` `Optional` **common**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:641](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L641)
+[packages/adapter/src/lib/adapter/adapter.ts:641](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L641)
 
 ___
 
 ### config
 
-• `Protected` `Optional` **config**: `Record`<`string`, `any`\>
+• `Protected` `Optional` **config**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L639)
+[packages/adapter/src/lib/adapter/adapter.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L639)
 
 ___
 
@@ -331,7 +335,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L617)
+[packages/adapter/src/lib/adapter/adapter.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L617)
 
 ___
 
@@ -341,7 +345,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L628)
+[packages/adapter/src/lib/adapter/adapter.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L628)
 
 ___
 
@@ -351,7 +355,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:640](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L640)
+[packages/adapter/src/lib/adapter/adapter.ts:640](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L640)
 
 ___
 
@@ -361,17 +365,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L612)
+[packages/adapter/src/lib/adapter/adapter.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L612)
 
 ___
 
 ### ioPack
 
-• `Protected` **ioPack**: `Record`<`string`, `any`\>
+• `Protected` **ioPack**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L622)
+[packages/adapter/src/lib/adapter/adapter.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L622)
 
 ___
 
@@ -381,7 +385,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L630)
+[packages/adapter/src/lib/adapter/adapter.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L630)
 
 ___
 
@@ -399,17 +403,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L645)
+[packages/adapter/src/lib/adapter/adapter.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L645)
 
 ___
 
 ### language
 
-• `Protected` `Optional` **language**: `Languages`
+• `Protected` `Optional` **language**: [`Languages`](../modules/internal_.md#languages)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L632)
+[packages/adapter/src/lib/adapter/adapter.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L632)
 
 ___
 
@@ -419,17 +423,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:636](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L636)
+[packages/adapter/src/lib/adapter/adapter.ts:636](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L636)
 
 ___
 
 ### log
 
-• `Protected` `Optional` **log**: `Log`
+• `Protected` `Optional` **log**: [`Log`](internal_.Log.md)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L584)
+[packages/adapter/src/lib/adapter/adapter.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L584)
 
 ___
 
@@ -439,7 +443,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L634)
+[packages/adapter/src/lib/adapter/adapter.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L634)
 
 ___
 
@@ -449,7 +453,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L591)
+[packages/adapter/src/lib/adapter/adapter.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L591)
 
 ___
 
@@ -459,37 +463,37 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L590)
+[packages/adapter/src/lib/adapter/adapter.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L590)
 
 ___
 
 ### oObjects
 
-• `Protected` `Optional` **oObjects**: `Record`<`string`, `undefined` \| `Object`\>
+• `Protected` `Optional` **oObjects**: [`Record`](../modules/internal_.md#record)<`string`, `undefined` \| [`Object`](../modules/internal_.md#object)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L577)
+[packages/adapter/src/lib/adapter/adapter.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L577)
 
 ___
 
 ### oStates
 
-• `Protected` `Optional` **oStates**: `Record`<`string`, `undefined` \| `State`\>
+• `Protected` `Optional` **oStates**: [`Record`](../modules/internal_.md#record)<`string`, `undefined` \| [`State`](../interfaces/internal_.State.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L572)
+[packages/adapter/src/lib/adapter/adapter.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L572)
 
 ___
 
 ### pack
 
-• `Protected` `Optional` **pack**: `Record`<`string`, `any`\>
+• `Protected` `Optional` **pack**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L620)
+[packages/adapter/src/lib/adapter/adapter.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L620)
 
 ___
 
@@ -513,7 +517,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L646)
+[packages/adapter/src/lib/adapter/adapter.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L646)
 
 ___
 
@@ -537,7 +541,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L647)
+[packages/adapter/src/lib/adapter/adapter.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L647)
 
 ___
 
@@ -555,17 +559,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:643](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L643)
+[packages/adapter/src/lib/adapter/adapter.ts:643](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L643)
 
 ___
 
 ### systemConfig
 
-• `Protected` `Optional` **systemConfig**: `Record`<`string`, `any`\>
+• `Protected` `Optional` **systemConfig**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L626)
+[packages/adapter/src/lib/adapter/adapter.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L626)
 
 ___
 
@@ -575,13 +579,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:644](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L644)
+[packages/adapter/src/lib/adapter/adapter.ts:644](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L644)
 
 ___
 
 ### captureRejectionSymbol
 
 ▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](AdapterClass.md#capturerejectionsymbol)
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[captureRejectionSymbol](internal_.EventEmitter-1.md#capturerejectionsymbol)
 
 #### Defined in
 
@@ -593,6 +601,10 @@ ___
 
 ▪ `Static` **captureRejections**: `boolean`
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[captureRejections](internal_.EventEmitter-1.md#capturerejections)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:278
@@ -603,6 +615,10 @@ ___
 
 ▪ `Static` **defaultMaxListeners**: `number`
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[defaultMaxListeners](internal_.EventEmitter-1.md#defaultmaxlisteners)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:279
@@ -612,6 +628,10 @@ ___
 ### errorMonitor
 
 ▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](AdapterClass.md#errormonitor)
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[errorMonitor](internal_.EventEmitter-1.md#errormonitor)
 
 #### Defined in
 
@@ -627,7 +647,7 @@ node_modules/@types/node/events.d.ts:272
 
 | Name | Type |
 | :------ | :------ |
-| `_options` | `InternalDelStateOptions` |
+| `_options` | [`InternalDelStateOptions`](../interfaces/internal_.InternalDelStateOptions.md) |
 
 #### Returns
 
@@ -635,7 +655,7 @@ node_modules/@types/node/events.d.ts:272
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8983](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8983)
+[packages/adapter/src/lib/adapter/adapter.ts:8983](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8983)
 
 ___
 
@@ -647,7 +667,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `_options` | `InternalDelStateOptions` |
+| `_options` | [`InternalDelStateOptions`](../interfaces/internal_.InternalDelStateOptions.md) |
 
 #### Returns
 
@@ -655,7 +675,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8939](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8939)
+[packages/adapter/src/lib/adapter/adapter.ts:8939](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8939)
 
 ___
 
@@ -671,7 +691,7 @@ ___
 | `addTo` | `string` |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -679,7 +699,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5249](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5249)
+[packages/adapter/src/lib/adapter/adapter.ts:5249](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5249)
 
 ▸ **addChannelToEnum**(`enumName`, `addTo`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -692,7 +712,7 @@ ___
 | `parentDevice` | `string` |
 | `channelName` | `string` |
 | `options` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -700,7 +720,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5256](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5256)
+[packages/adapter/src/lib/adapter/adapter.ts:5256](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5256)
 
 ___
 
@@ -724,7 +744,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L180)
+[packages/adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L180)
 
 ___
 
@@ -742,6 +762,10 @@ ___
 #### Returns
 
 [`AdapterClass`](AdapterClass.md)
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[addListener](internal_.EventEmitter-1.md#addlistener)
 
 #### Defined in
 
@@ -762,7 +786,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -770,7 +794,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5935](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5935)
+[packages/adapter/src/lib/adapter/adapter.ts:5935](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5935)
 
 ▸ **addStateToEnum**(`enumName`, `addTo`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -784,7 +808,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -792,7 +816,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5943](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5943)
+[packages/adapter/src/lib/adapter/adapter.ts:5943](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5943)
 
 ___
 
@@ -817,70 +841,70 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L197)
+[packages/adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L197)
 
 ___
 
 ### calculatePermissions
 
-▸ **calculatePermissions**(`user`, `commandsPermissions`, `options?`, `callback?`): `Promise`<`void` \| `PermissionSet`\>
+▸ **calculatePermissions**(`user`, `commandsPermissions`, `options?`, `callback?`): `Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `user` | `string` |  |
-| `commandsPermissions` | `CommandsPermissions` |  |
-| `options?` | `Record`<`string`, `any`\> | - |
-| `callback?` | `CalculatePermissionsCallback` | - |
+| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) |  |
+| `options?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | - |
+| `callback?` | [`CalculatePermissionsCallback`](../modules/internal_.md#calculatepermissionscallback) | - |
 
 #### Returns
 
-`Promise`<`void` \| `PermissionSet`\>
+`Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1810](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1810)
+[packages/adapter/src/lib/adapter/adapter.ts:1810](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1810)
 
-▸ **calculatePermissions**(`user`, `commandsPermissions`, `callback?`): `Promise`<`void` \| `PermissionSet`\>
+▸ **calculatePermissions**(`user`, `commandsPermissions`, `callback?`): `Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `user` | `string` |  |
-| `commandsPermissions` | `CommandsPermissions` |  |
-| `callback?` | `CalculatePermissionsCallback` | - |
+| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) |  |
+| `callback?` | [`CalculatePermissionsCallback`](../modules/internal_.md#calculatepermissionscallback) | - |
 
 #### Returns
 
-`Promise`<`void` \| `PermissionSet`\>
+`Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1816](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1816)
+[packages/adapter/src/lib/adapter/adapter.ts:1816](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1816)
 
 ___
 
 ### calculatePermissionsAsync
 
-▸ **calculatePermissionsAsync**(`user`, `commandsPermissions`, `options?`): `Promise`<`PermissionSet`\>
+▸ **calculatePermissionsAsync**(`user`, `commandsPermissions`, `options?`): `Promise`<[`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `user` | `string` |
-| `commandsPermissions` | `CommandsPermissions` |
+| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`Promise`<`PermissionSet`\>
+`Promise`<[`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L287)
+[packages/adapter/src/lib/adapter/adapter.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L287)
 
 ___
 
@@ -894,8 +918,8 @@ ___
 | :------ | :------ | :------ |
 | `user` | `string` |  |
 | `group` | `string` |  |
-| `options` | `Record`<`string`, `any`\> | - |
-| `callback?` | `CheckGroupCallback` |  |
+| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | - |
+| `callback?` | [`CheckGroupCallback`](../modules/internal_.md#checkgroupcallback) |  |
 
 #### Returns
 
@@ -903,7 +927,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1726](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1726)
+[packages/adapter/src/lib/adapter/adapter.ts:1726](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1726)
 
 ▸ **checkGroup**(`user`, `group`, `callback?`): `Promise`<`void`\>
 
@@ -913,7 +937,7 @@ ___
 | :------ | :------ | :------ |
 | `user` | `string` |  |
 | `group` | `string` |  |
-| `callback?` | `CheckGroupCallback` |  |
+| `callback?` | [`CheckGroupCallback`](../modules/internal_.md#checkgroupcallback) |  |
 
 #### Returns
 
@@ -921,7 +945,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1727](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1727)
+[packages/adapter/src/lib/adapter/adapter.ts:1727](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1727)
 
 ___
 
@@ -943,7 +967,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L285)
+[packages/adapter/src/lib/adapter/adapter.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L285)
 
 ___
 
@@ -957,8 +981,8 @@ ___
 | :------ | :------ | :------ |
 | `user` | `string` |  |
 | `pw` | `string` |  |
-| `options` | `Record`<`string`, `any`\> | - |
-| `callback` | `CheckPasswordCallback` |  |
+| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | - |
+| `callback` | [`CheckPasswordCallback`](../modules/internal_.md#checkpasswordcallback) |  |
 
 #### Returns
 
@@ -966,7 +990,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1487](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1487)
+[packages/adapter/src/lib/adapter/adapter.ts:1487](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1487)
 
 ▸ **checkPassword**(`user`, `pw`, `callback`): `Promise`<`void`\>
 
@@ -976,7 +1000,7 @@ ___
 | :------ | :------ | :------ |
 | `user` | `string` |  |
 | `pw` | `string` |  |
-| `callback` | `CheckPasswordCallback` |  |
+| `callback` | [`CheckPasswordCallback`](../modules/internal_.md#checkpasswordcallback) |  |
 
 #### Returns
 
@@ -984,7 +1008,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1493](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1493)
+[packages/adapter/src/lib/adapter/adapter.ts:1493](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1493)
 
 ___
 
@@ -1006,7 +1030,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L281)
+[packages/adapter/src/lib/adapter/adapter.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L281)
 
 ___
 
@@ -1020,8 +1044,8 @@ ___
 | :------ | :------ | :------ |
 | `adapter` | ``null`` \| `string` | - |
 | `path` | `string` |  |
-| `options` | `Record`<`string`, `any`\> \| { `mode`: `string` \| `number`  } |  |
-| `callback` | `ChownFileCallback` |  |
+| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `mode`: `string` \| `number`  } |  |
+| `callback` | [`ChownFileCallback`](../modules/internal_.md#chownfilecallback) |  |
 
 #### Returns
 
@@ -1029,7 +1053,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6213](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6213)
+[packages/adapter/src/lib/adapter/adapter.ts:6213](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6213)
 
 ▸ **chmodFile**(`adapter`, `path`, `callback`): `void`
 
@@ -1039,7 +1063,7 @@ ___
 | :------ | :------ | :------ |
 | `adapter` | ``null`` \| `string` | - |
 | `path` | `string` |  |
-| `callback` | `ChownFileCallback` |  |
+| `callback` | [`ChownFileCallback`](../modules/internal_.md#chownfilecallback) |  |
 
 #### Returns
 
@@ -1047,13 +1071,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6220](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6220)
+[packages/adapter/src/lib/adapter/adapter.ts:6220](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6220)
 
 ___
 
 ### chmodFileAsync
 
-▸ **chmodFileAsync**(`adapter`, `path`, `options`): `Promise`<{ `entries`: `ChownFileResult`[] ; `id`: `string`  }\>
+▸ **chmodFileAsync**(`adapter`, `path`, `options`): `Promise`<{ `entries`: [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[] ; `id`: `string`  }\>
 
 #### Parameters
 
@@ -1061,15 +1085,15 @@ ___
 | :------ | :------ |
 | `adapter` | ``null`` \| `string` |
 | `path` | `string` |
-| `options` | `Record`<`string`, `any`\> \| { `mode`: `string` \| `number`  } |
+| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `mode`: `string` \| `number`  } |
 
 #### Returns
 
-`Promise`<{ `entries`: `ChownFileResult`[] ; `id`: `string`  }\>
+`Promise`<{ `entries`: [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[] ; `id`: `string`  }\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L213)
+[packages/adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L213)
 
 ___
 
@@ -1084,7 +1108,7 @@ ___
 | `_adapter` | `string` |  |
 | `path` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | (`err?`: ``null`` \| `Error`, `processedFiles?`: `any`) => `void` |  |
+| `callback` | (`err?`: ``null`` \| [`Error`](../modules/internal_.md#error), `processedFiles?`: `any`) => `void` |  |
 
 #### Returns
 
@@ -1092,7 +1116,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6260](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6260)
+[packages/adapter/src/lib/adapter/adapter.ts:6260](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6260)
 
 ▸ **chownFile**(`_adapter`, `path`, `callback`): `void`
 
@@ -1102,7 +1126,7 @@ ___
 | :------ | :------ | :------ |
 | `_adapter` | `string` |  |
 | `path` | `string` |  |
-| `callback` | (`err?`: ``null`` \| `Error`, `processedFiles?`: `any`) => `void` |  |
+| `callback` | (`err?`: ``null`` \| [`Error`](../modules/internal_.md#error), `processedFiles?`: `any`) => `void` |  |
 
 #### Returns
 
@@ -1110,7 +1134,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6267](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6267)
+[packages/adapter/src/lib/adapter/adapter.ts:6267](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6267)
 
 ___
 
@@ -1130,7 +1154,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L219)
+[packages/adapter/src/lib/adapter/adapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L219)
 
 ___
 
@@ -1142,7 +1166,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `interval` | `Timeout` |  |
+| `interval` | [`Timeout`](../interfaces/internal_.Timeout.md) |  |
 
 #### Returns
 
@@ -1150,7 +1174,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2538](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2538)
+[packages/adapter/src/lib/adapter/adapter.ts:2538](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2538)
 
 ___
 
@@ -1162,7 +1186,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `timer` | `Timeout` |  |
+| `timer` | [`Timeout`](../interfaces/internal_.Timeout.md) |  |
 
 #### Returns
 
@@ -1170,7 +1194,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2461](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2461)
+[packages/adapter/src/lib/adapter/adapter.ts:2461](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2461)
 
 ___
 
@@ -1184,7 +1208,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `callback?` | `SetObjectCallback` |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1192,7 +1216,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4890](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4890)
+[packages/adapter/src/lib/adapter/adapter.ts:4890](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4890)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1202,8 +1226,8 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
-| `callback?` | `SetObjectCallback` |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1211,7 +1235,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4891](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4891)
+[packages/adapter/src/lib/adapter/adapter.ts:4891](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4891)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1221,9 +1245,9 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
-| `callback?` | `SetObjectCallback` |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1231,7 +1255,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4897](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4897)
+[packages/adapter/src/lib/adapter/adapter.ts:4897](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4897)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1241,10 +1265,10 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 | `options` | `unknown` |
-| `callback?` | `SetObjectCallback` |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1252,13 +1276,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4904](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4904)
+[packages/adapter/src/lib/adapter/adapter.ts:4904](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4904)
 
 ___
 
 ### createChannelAsync
 
-▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon?`): `SetObjectPromise`
+▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
@@ -1266,17 +1290,17 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon?` | `string` \| `Partial`<`ChannelCommon`\> |
+| `roleOrCommon?` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L454)
+[packages/adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L454)
 
-▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native?`): `SetObjectPromise`
+▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
@@ -1284,18 +1308,18 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
-| `native?` | `Record`<`string`, `any`\> |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
+| `native?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L459)
+[packages/adapter/src/lib/adapter/adapter.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L459)
 
-▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options?`): `SetObjectPromise`
+▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
@@ -1303,17 +1327,17 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L465)
+[packages/adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L465)
 
 ___
 
@@ -1326,7 +1350,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `callback?` | `SetObjectCallback` |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1334,7 +1358,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4816](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4816)
+[packages/adapter/src/lib/adapter/adapter.ts:4816](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4816)
 
 ▸ **createDevice**(`deviceName`, `common`, `callback?`): `void`
 
@@ -1343,8 +1367,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | `Partial`<`DeviceCommon`\> |
-| `callback?` | `SetObjectCallback` |
+| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1352,7 +1376,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4817](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4817)
+[packages/adapter/src/lib/adapter/adapter.ts:4817](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4817)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `callback?`): `void`
 
@@ -1361,9 +1385,9 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | `Partial`<`DeviceCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
-| `callback?` | `SetObjectCallback` |
+| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1371,7 +1395,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4822](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4822)
+[packages/adapter/src/lib/adapter/adapter.ts:4822](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4822)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `options`, `callback?`): `void`
 
@@ -1380,10 +1404,10 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | `Partial`<`DeviceCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
+| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 | `options` | `unknown` |
-| `callback?` | `SetObjectCallback` |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1391,65 +1415,65 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4828](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4828)
+[packages/adapter/src/lib/adapter/adapter.ts:4828](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4828)
 
 ___
 
 ### createDeviceAsync
 
-▸ **createDeviceAsync**(`deviceName`, `common?`): `SetObjectPromise`
+▸ **createDeviceAsync**(`deviceName`, `common?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common?` | `Partial`<`DeviceCommon`\> |
+| `common?` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L433)
+[packages/adapter/src/lib/adapter/adapter.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L433)
 
-▸ **createDeviceAsync**(`deviceName`, `common`, `native?`): `SetObjectPromise`
+▸ **createDeviceAsync**(`deviceName`, `common`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | `Partial`<`DeviceCommon`\> |
-| `native?` | `Record`<`string`, `any`\> |
+| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
+| `native?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L434)
+[packages/adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L434)
 
-▸ **createDeviceAsync**(`deviceName`, `common`, `native`, `options?`): `SetObjectPromise`
+▸ **createDeviceAsync**(`deviceName`, `common`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | `Partial`<`DeviceCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
+| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L439)
+[packages/adapter/src/lib/adapter/adapter.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L439)
 
 ___
 
@@ -1464,7 +1488,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `callback?` | `SetObjectCallback` |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1472,7 +1496,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4975](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4975)
+[packages/adapter/src/lib/adapter/adapter.ts:4975](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4975)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1483,8 +1507,8 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
-| `callback?` | `SetObjectCallback` |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1492,7 +1516,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4981](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4981)
+[packages/adapter/src/lib/adapter/adapter.ts:4981](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4981)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1503,9 +1527,9 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
-| `callback?` | `SetObjectCallback` |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1513,7 +1537,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4988](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4988)
+[packages/adapter/src/lib/adapter/adapter.ts:4988](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4988)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1524,10 +1548,10 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 | `options` | `unknown` |
-| `callback?` | `SetObjectCallback` |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
@@ -1535,13 +1559,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4996](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4996)
+[packages/adapter/src/lib/adapter/adapter.ts:4996](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4996)
 
 ___
 
 ### createStateAsync
 
-▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon?`): `SetObjectPromise`
+▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
@@ -1550,17 +1574,17 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon?` | `string` \| `Partial`<`StateCommon`\> |
+| `roleOrCommon?` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L476)
+[packages/adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L476)
 
-▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native?`): `SetObjectPromise`
+▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
@@ -1569,18 +1593,18 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
-| `native?` | `Record`<`string`, `any`\> |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
+| `native?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L482)
+[packages/adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L482)
 
-▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options?`): `SetObjectPromise`
+▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
@@ -1589,17 +1613,17 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
-| `native` | `Record`<`string`, `any`\> |
+| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
+| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L489)
+[packages/adapter/src/lib/adapter/adapter.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L489)
 
 ___
 
@@ -1620,7 +1644,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1185)
+[packages/adapter/src/lib/adapter/adapter.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1185)
 
 ▸ **decrypt**(`value`): `string`
 
@@ -1636,7 +1660,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1186](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1186)
+[packages/adapter/src/lib/adapter/adapter.ts:1186](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1186)
 
 ___
 
@@ -1649,7 +1673,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -1657,7 +1681,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10185](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10185)
+[packages/adapter/src/lib/adapter/adapter.ts:10185](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10185)
 
 ▸ **delBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1667,7 +1691,7 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `options` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -1675,7 +1699,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10186](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10186)
+[packages/adapter/src/lib/adapter/adapter.ts:10186](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10186)
 
 ___
 
@@ -1696,7 +1720,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L273)
+[packages/adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L273)
 
 ___
 
@@ -1710,7 +1734,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -1718,7 +1742,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L371)
+[packages/adapter/src/lib/adapter/adapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L371)
 
 ▸ **delFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -1729,7 +1753,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -1737,7 +1761,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L372)
+[packages/adapter/src/lib/adapter/adapter.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L372)
 
 ___
 
@@ -1759,7 +1783,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L225)
+[packages/adapter/src/lib/adapter/adapter.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L225)
 
 ___
 
@@ -1772,7 +1796,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -1780,7 +1804,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10126](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10126)
+[packages/adapter/src/lib/adapter/adapter.ts:10126](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10126)
 
 ▸ **delForeignBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1790,7 +1814,7 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `options` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -1798,7 +1822,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10127](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10127)
+[packages/adapter/src/lib/adapter/adapter.ts:10127](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10127)
 
 ___
 
@@ -1819,7 +1843,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L267)
+[packages/adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L267)
 
 ___
 
@@ -1832,7 +1856,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -1840,7 +1864,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4260](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4260)
+[packages/adapter/src/lib/adapter/adapter.ts:4260](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4260)
 
 ▸ **delForeignObject**(`id`, `options`, `callback?`): `void`
 
@@ -1849,8 +1873,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `options` | `DelObjectOptions` | - |
-| `callback?` | `ErrorCallback` | - |
+| `options` | [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -1858,7 +1882,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4261](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4261)
+[packages/adapter/src/lib/adapter/adapter.ts:4261](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4261)
 
 ___
 
@@ -1871,7 +1895,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `options?` | `DelObjectOptions` |
+| `options?` | [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) |
 
 #### Returns
 
@@ -1879,7 +1903,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L158)
+[packages/adapter/src/lib/adapter/adapter.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L158)
 
 ___
 
@@ -1892,7 +1916,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -1900,7 +1924,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8955](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8955)
+[packages/adapter/src/lib/adapter/adapter.ts:8955](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8955)
 
 ▸ **delForeignState**(`id`, `options`, `callback?`): `void`
 
@@ -1910,7 +1934,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -1918,7 +1942,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8956](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8956)
+[packages/adapter/src/lib/adapter/adapter.ts:8956](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8956)
 
 ___
 
@@ -1939,7 +1963,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L239)
+[packages/adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L239)
 
 ___
 
@@ -1952,7 +1976,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -1960,7 +1984,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4200](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4200)
+[packages/adapter/src/lib/adapter/adapter.ts:4200](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4200)
 
 ▸ **delObject**(`id`, `options?`, `callback?`): `void`
 
@@ -1969,8 +1993,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `options?` | ``null`` \| `DelObjectOptions` | - |
-| `callback?` | `ErrorCallback` | - |
+| `options?` | ``null`` \| [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -1978,7 +2002,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4201](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4201)
+[packages/adapter/src/lib/adapter/adapter.ts:4201](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4201)
 
 ___
 
@@ -1991,7 +2015,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `options?` | `DelObjectOptions` |
+| `options?` | [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) |
 
 #### Returns
 
@@ -1999,7 +2023,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L156)
+[packages/adapter/src/lib/adapter/adapter.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L156)
 
 ___
 
@@ -2012,7 +2036,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2020,7 +2044,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8903](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8903)
+[packages/adapter/src/lib/adapter/adapter.ts:8903](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8903)
 
 ▸ **delState**(`id`, `options`, `callback?`): `void`
 
@@ -2030,7 +2054,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2038,7 +2062,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8904](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8904)
+[packages/adapter/src/lib/adapter/adapter.ts:8904](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8904)
 
 ___
 
@@ -2059,7 +2083,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L237)
+[packages/adapter/src/lib/adapter/adapter.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L237)
 
 ___
 
@@ -2079,7 +2103,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2476](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2476)
+[packages/adapter/src/lib/adapter/adapter.ts:2476](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2476)
 
 ___
 
@@ -2092,7 +2116,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `channelName` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2100,7 +2124,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5497](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5497)
+[packages/adapter/src/lib/adapter/adapter.ts:5497](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5497)
 
 ▸ **deleteChannel**(`channelName`, `options?`, `callback?`): `void`
 
@@ -2110,7 +2134,7 @@ ___
 | :------ | :------ | :------ |
 | `channelName` | `string` |  |
 | `options?` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2118,7 +2142,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5498](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5498)
+[packages/adapter/src/lib/adapter/adapter.ts:5498](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5498)
 
 ▸ **deleteChannel**(`parentDevice`, `channelName`, `options?`, `callback?`): `void`
 
@@ -2129,7 +2153,7 @@ ___
 | `parentDevice` | `string` |  |
 | `channelName` | `string` |  |
 | `options?` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2137,7 +2161,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5499](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5499)
+[packages/adapter/src/lib/adapter/adapter.ts:5499](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5499)
 
 ___
 
@@ -2158,7 +2182,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L501)
+[packages/adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L501)
 
 ▸ **deleteChannelAsync**(`parentDevice`, `channelName`, `options?`): `Promise`<`void`\>
 
@@ -2176,7 +2200,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L502)
+[packages/adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L502)
 
 ___
 
@@ -2191,7 +2215,7 @@ ___
 | `enumName` | `string` |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2199,7 +2223,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5382](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5382)
+[packages/adapter/src/lib/adapter/adapter.ts:5382](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5382)
 
 ▸ **deleteChannelFromEnum**(`enumName`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -2211,7 +2235,7 @@ ___
 | `parentDevice` | `string` |
 | `channelName` | `string` |
 | `options` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2219,7 +2243,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5388](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5388)
+[packages/adapter/src/lib/adapter/adapter.ts:5388](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5388)
 
 ___
 
@@ -2242,7 +2266,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L187)
+[packages/adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L187)
 
 ___
 
@@ -2255,7 +2279,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `deviceName` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2263,7 +2287,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5183](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5183)
+[packages/adapter/src/lib/adapter/adapter.ts:5183](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5183)
 
 ▸ **deleteDevice**(`deviceName`, `options`, `callback?`): `void`
 
@@ -2273,7 +2297,7 @@ ___
 | :------ | :------ | :------ |
 | `deviceName` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -2281,7 +2305,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5184](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5184)
+[packages/adapter/src/lib/adapter/adapter.ts:5184](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5184)
 
 ___
 
@@ -2302,7 +2326,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L179)
+[packages/adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L179)
 
 ___
 
@@ -2316,7 +2340,7 @@ ___
 | :------ | :------ |
 | `stateName` | `string` |
 | `options?` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2324,7 +2348,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5605](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5605)
+[packages/adapter/src/lib/adapter/adapter.ts:5605](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5605)
 
 ▸ **deleteState**(`parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2335,7 +2359,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options?` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2343,7 +2367,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5606](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5606)
+[packages/adapter/src/lib/adapter/adapter.ts:5606](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5606)
 
 ▸ **deleteState**(`parentDevice`, `parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2355,7 +2379,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options?` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2363,7 +2387,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5607](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5607)
+[packages/adapter/src/lib/adapter/adapter.ts:5607](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5607)
 
 ___
 
@@ -2384,7 +2408,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L507)
+[packages/adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L507)
 
 ▸ **deleteStateAsync**(`parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2402,7 +2426,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L508)
+[packages/adapter/src/lib/adapter/adapter.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L508)
 
 ▸ **deleteStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2421,7 +2445,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L509)
+[packages/adapter/src/lib/adapter/adapter.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L509)
 
 ___
 
@@ -2437,7 +2461,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2445,7 +2469,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6082](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6082)
+[packages/adapter/src/lib/adapter/adapter.ts:6082](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6082)
 
 ▸ **deleteStateFromEnum**(`enumName`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -2458,7 +2482,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options` | `unknown` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
@@ -2466,7 +2490,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6089](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6089)
+[packages/adapter/src/lib/adapter/adapter.ts:6089](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6089)
 
 ___
 
@@ -2490,42 +2514,42 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L205)
+[packages/adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L205)
 
 ___
 
 ### destroySession
 
-▸ **destroySession**(`id`, `callback?`): `MaybePromise`
+▸ **destroySession**(`id`, `callback?`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback?` | `ErrorCallback` |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
-`MaybePromise`
+[`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1270](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1270)
+[packages/adapter/src/lib/adapter/adapter.ts:1270](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1270)
 
 ___
 
 ### disable
 
-▸ **disable**(): `SetObjectPromise`
+▸ **disable**(): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2354](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2354)
+[packages/adapter/src/lib/adapter/adapter.ts:2354](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2354)
 
 ___
 
@@ -2543,6 +2567,10 @@ ___
 #### Returns
 
 `boolean`
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[emit](internal_.EventEmitter-1.md#emit)
 
 #### Defined in
 
@@ -2567,7 +2595,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1205](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1205)
+[packages/adapter/src/lib/adapter/adapter.ts:1205](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1205)
 
 ▸ **encrypt**(`value`): `string`
 
@@ -2583,7 +2611,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1206](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1206)
+[packages/adapter/src/lib/adapter/adapter.ts:1206](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1206)
 
 ___
 
@@ -2594,6 +2622,10 @@ ___
 #### Returns
 
 (`string` \| `symbol`)[]
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[eventNames](internal_.EventEmitter-1.md#eventnames)
 
 #### Defined in
 
@@ -2616,8 +2648,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `objPart` | `PartialObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | - |
-| `callback?` | `SetObjectCallback` | - |
+| `objPart` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -2625,7 +2657,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3231](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3231)
+[packages/adapter/src/lib/adapter/adapter.ts:3231](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3231)
 
 ▸ **extendForeignObject**<`T`\>(`id`, `objPart`, `options`, `callback?`): `void`
 
@@ -2640,9 +2672,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `objPart` | `PartialObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | - |
-| `options` | `ExtendObjectOptions` | - |
-| `callback?` | `SetObjectCallback` | - |
+| `objPart` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | - |
+| `options` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -2650,13 +2682,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3236](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3236)
+[packages/adapter/src/lib/adapter/adapter.ts:3236](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3236)
 
 ___
 
 ### extendForeignObjectAsync
 
-▸ **extendForeignObjectAsync**<`T`\>(`id`, `objPart`, `options?`): `SetObjectPromise`
+▸ **extendForeignObjectAsync**<`T`\>(`id`, `objPart`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Type parameters
 
@@ -2669,16 +2701,16 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `objPart` | `PartialObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |
-| `options?` | `ExtendObjectOptions` |
+| `objPart` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
+| `options?` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L128)
+[packages/adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L128)
 
 ___
 
@@ -2691,8 +2723,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `objPart` | `PartialStateObject` & { `type?`: ``"state"``  } & `PartialChannelObject` & { `type?`: ``"state"``  } & `PartialDeviceObject` & { `type?`: ``"state"``  } & `PartialFolderObject` & { `type?`: ``"state"``  } & `PartialEnumObject` & { `type?`: ``"state"``  } & `PartialMetaObject` & { `type?`: ``"state"``  } & `PartialHostObject` & { `type?`: ``"state"``  } & `PartialAdapterObject` & { `type?`: ``"state"``  } & `PartialInstanceObject` & { `type?`: ``"state"``  } & `PartialUserObject` & { `type?`: ``"state"``  } & `PartialGroupObject` & { `type?`: ``"state"``  } & `PartialScriptObject` & { `type?`: ``"state"``  } & `PartialOtherObject` & { `type?`: ``"state"``  } \| `PartialStateObject` & { `type?`: ``"channel"``  } & `PartialChannelObject` & { `type?`: ``"channel"``  } & `PartialDeviceObject` & { `type?`: ``"channel"``  } & `PartialFolderObject` & { `type?`: ``"channel"``  } & `PartialEnumObject` & { `type?`: ``"channel"``  } & `PartialMetaObject` & { `type?`: ``"channel"``  } & `PartialHostObject` & { `type?`: ``"channel"``  } & `PartialAdapterObject` & { `type?`: ``"channel"``  } & `PartialInstanceObject` & { `type?`: ``"channel"``  } & `PartialUserObject` & { `type?`: ``"channel"``  } & `PartialGroupObject` & { `type?`: ``"channel"``  } & `PartialScriptObject` & { `type?`: ``"channel"``  } & `PartialOtherObject` & { `type?`: ``"channel"``  } \| `PartialStateObject` & { `type?`: ``"device"``  } & `PartialChannelObject` & { `type?`: ``"device"``  } & `PartialDeviceObject` & { `type?`: ``"device"``  } & `PartialFolderObject` & { `type?`: ``"device"``  } & `PartialEnumObject` & { `type?`: ``"device"``  } & `PartialMetaObject` & { `type?`: ``"device"``  } & `PartialHostObject` & { `type?`: ``"device"``  } & `PartialAdapterObject` & { `type?`: ``"device"``  } & `PartialInstanceObject` & { `type?`: ``"device"``  } & `PartialUserObject` & { `type?`: ``"device"``  } & `PartialGroupObject` & { `type?`: ``"device"``  } & `PartialScriptObject` & { `type?`: ``"device"``  } & `PartialOtherObject` & { `type?`: ``"device"``  } \| `PartialStateObject` & { `type?`: ``"folder"``  } & `PartialChannelObject` & { `type?`: ``"folder"``  } & `PartialDeviceObject` & { `type?`: ``"folder"``  } & `PartialFolderObject` & { `type?`: ``"folder"``  } & `PartialEnumObject` & { `type?`: ``"folder"``  } & `PartialMetaObject` & { `type?`: ``"folder"``  } & `PartialHostObject` & { `type?`: ``"folder"``  } & `PartialAdapterObject` & { `type?`: ``"folder"``  } & `PartialInstanceObject` & { `type?`: ``"folder"``  } & `PartialUserObject` & { `type?`: ``"folder"``  } & `PartialGroupObject` & { `type?`: ``"folder"``  } & `PartialScriptObject` & { `type?`: ``"folder"``  } & `PartialOtherObject` & { `type?`: ``"folder"``  } \| `PartialStateObject` & { `type?`: ``"enum"``  } & `PartialChannelObject` & { `type?`: ``"enum"``  } & `PartialDeviceObject` & { `type?`: ``"enum"``  } & `PartialFolderObject` & { `type?`: ``"enum"``  } & `PartialEnumObject` & { `type?`: ``"enum"``  } & `PartialMetaObject` & { `type?`: ``"enum"``  } & `PartialHostObject` & { `type?`: ``"enum"``  } & `PartialAdapterObject` & { `type?`: ``"enum"``  } & `PartialInstanceObject` & { `type?`: ``"enum"``  } & `PartialUserObject` & { `type?`: ``"enum"``  } & `PartialGroupObject` & { `type?`: ``"enum"``  } & `PartialScriptObject` & { `type?`: ``"enum"``  } & `PartialOtherObject` & { `type?`: ``"enum"``  } \| `PartialStateObject` & { `type?`: ``"meta"``  } & `PartialChannelObject` & { `type?`: ``"meta"``  } & `PartialDeviceObject` & { `type?`: ``"meta"``  } & `PartialFolderObject` & { `type?`: ``"meta"``  } & `PartialEnumObject` & { `type?`: ``"meta"``  } & `PartialMetaObject` & { `type?`: ``"meta"``  } & `PartialHostObject` & { `type?`: ``"meta"``  } & `PartialAdapterObject` & { `type?`: ``"meta"``  } & `PartialInstanceObject` & { `type?`: ``"meta"``  } & `PartialUserObject` & { `type?`: ``"meta"``  } & `PartialGroupObject` & { `type?`: ``"meta"``  } & `PartialScriptObject` & { `type?`: ``"meta"``  } & `PartialOtherObject` & { `type?`: ``"meta"``  } \| `PartialStateObject` & { `type?`: ``"host"``  } & `PartialChannelObject` & { `type?`: ``"host"``  } & `PartialDeviceObject` & { `type?`: ``"host"``  } & `PartialFolderObject` & { `type?`: ``"host"``  } & `PartialEnumObject` & { `type?`: ``"host"``  } & `PartialMetaObject` & { `type?`: ``"host"``  } & `PartialHostObject` & { `type?`: ``"host"``  } & `PartialAdapterObject` & { `type?`: ``"host"``  } & `PartialInstanceObject` & { `type?`: ``"host"``  } & `PartialUserObject` & { `type?`: ``"host"``  } & `PartialGroupObject` & { `type?`: ``"host"``  } & `PartialScriptObject` & { `type?`: ``"host"``  } & `PartialOtherObject` & { `type?`: ``"host"``  } \| `PartialStateObject` & { `type?`: ``"adapter"``  } & `PartialChannelObject` & { `type?`: ``"adapter"``  } & `PartialDeviceObject` & { `type?`: ``"adapter"``  } & `PartialFolderObject` & { `type?`: ``"adapter"``  } & `PartialEnumObject` & { `type?`: ``"adapter"``  } & `PartialMetaObject` & { `type?`: ``"adapter"``  } & `PartialHostObject` & { `type?`: ``"adapter"``  } & `PartialAdapterObject` & { `type?`: ``"adapter"``  } & `PartialInstanceObject` & { `type?`: ``"adapter"``  } & `PartialUserObject` & { `type?`: ``"adapter"``  } & `PartialGroupObject` & { `type?`: ``"adapter"``  } & `PartialScriptObject` & { `type?`: ``"adapter"``  } & `PartialOtherObject` & { `type?`: ``"adapter"``  } \| `PartialStateObject` & { `type?`: ``"instance"``  } & `PartialChannelObject` & { `type?`: ``"instance"``  } & `PartialDeviceObject` & { `type?`: ``"instance"``  } & `PartialFolderObject` & { `type?`: ``"instance"``  } & `PartialEnumObject` & { `type?`: ``"instance"``  } & `PartialMetaObject` & { `type?`: ``"instance"``  } & `PartialHostObject` & { `type?`: ``"instance"``  } & `PartialAdapterObject` & { `type?`: ``"instance"``  } & `PartialInstanceObject` & { `type?`: ``"instance"``  } & `PartialUserObject` & { `type?`: ``"instance"``  } & `PartialGroupObject` & { `type?`: ``"instance"``  } & `PartialScriptObject` & { `type?`: ``"instance"``  } & `PartialOtherObject` & { `type?`: ``"instance"``  } \| `PartialStateObject` & { `type?`: ``"user"``  } & `PartialChannelObject` & { `type?`: ``"user"``  } & `PartialDeviceObject` & { `type?`: ``"user"``  } & `PartialFolderObject` & { `type?`: ``"user"``  } & `PartialEnumObject` & { `type?`: ``"user"``  } & `PartialMetaObject` & { `type?`: ``"user"``  } & `PartialHostObject` & { `type?`: ``"user"``  } & `PartialAdapterObject` & { `type?`: ``"user"``  } & `PartialInstanceObject` & { `type?`: ``"user"``  } & `PartialUserObject` & { `type?`: ``"user"``  } & `PartialGroupObject` & { `type?`: ``"user"``  } & `PartialScriptObject` & { `type?`: ``"user"``  } & `PartialOtherObject` & { `type?`: ``"user"``  } \| `PartialStateObject` & { `type?`: ``"group"``  } & `PartialChannelObject` & { `type?`: ``"group"``  } & `PartialDeviceObject` & { `type?`: ``"group"``  } & `PartialFolderObject` & { `type?`: ``"group"``  } & `PartialEnumObject` & { `type?`: ``"group"``  } & `PartialMetaObject` & { `type?`: ``"group"``  } & `PartialHostObject` & { `type?`: ``"group"``  } & `PartialAdapterObject` & { `type?`: ``"group"``  } & `PartialInstanceObject` & { `type?`: ``"group"``  } & `PartialUserObject` & { `type?`: ``"group"``  } & `PartialGroupObject` & { `type?`: ``"group"``  } & `PartialScriptObject` & { `type?`: ``"group"``  } & `PartialOtherObject` & { `type?`: ``"group"``  } \| `PartialStateObject` & { `type?`: ``"script"``  } & `PartialChannelObject` & { `type?`: ``"script"``  } & `PartialDeviceObject` & { `type?`: ``"script"``  } & `PartialFolderObject` & { `type?`: ``"script"``  } & `PartialEnumObject` & { `type?`: ``"script"``  } & `PartialMetaObject` & { `type?`: ``"script"``  } & `PartialHostObject` & { `type?`: ``"script"``  } & `PartialAdapterObject` & { `type?`: ``"script"``  } & `PartialInstanceObject` & { `type?`: ``"script"``  } & `PartialUserObject` & { `type?`: ``"script"``  } & `PartialGroupObject` & { `type?`: ``"script"``  } & `PartialScriptObject` & { `type?`: ``"script"``  } & `PartialOtherObject` & { `type?`: ``"script"``  } \| `PartialStateObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialChannelObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialDeviceObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialFolderObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialEnumObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialMetaObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialHostObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialAdapterObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialInstanceObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialUserObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialGroupObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialScriptObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialOtherObject` & { `type?`: ``"config"`` \| ``"chart"``  } | - |
-| `callback?` | `SetObjectCallback` | - |
+| `objPart` | [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"state"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"state"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"state"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"state"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"state"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"state"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"state"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"state"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"state"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"state"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"state"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"state"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"state"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"channel"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"channel"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"channel"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"channel"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"channel"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"channel"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"channel"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"channel"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"channel"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"channel"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"channel"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"channel"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"channel"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"device"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"device"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"device"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"device"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"device"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"device"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"device"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"device"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"device"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"device"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"device"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"device"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"device"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"folder"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"folder"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"folder"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"folder"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"folder"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"folder"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"folder"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"folder"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"folder"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"folder"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"folder"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"folder"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"folder"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"enum"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"enum"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"enum"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"enum"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"enum"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"enum"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"enum"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"enum"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"enum"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"enum"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"enum"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"enum"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"enum"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"meta"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"meta"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"meta"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"meta"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"meta"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"meta"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"meta"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"meta"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"meta"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"meta"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"meta"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"meta"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"meta"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"host"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"host"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"host"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"host"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"host"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"host"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"host"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"host"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"host"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"host"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"host"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"host"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"host"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"adapter"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"adapter"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"adapter"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"adapter"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"adapter"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"adapter"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"adapter"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"adapter"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"adapter"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"adapter"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"adapter"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"adapter"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"adapter"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"instance"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"instance"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"instance"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"instance"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"instance"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"instance"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"instance"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"instance"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"instance"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"instance"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"instance"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"instance"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"instance"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"user"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"user"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"user"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"user"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"user"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"user"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"user"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"user"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"user"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"user"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"user"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"user"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"user"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"group"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"group"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"group"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"group"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"group"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"group"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"group"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"group"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"group"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"group"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"group"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"group"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"group"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"script"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"script"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"script"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"script"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"script"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"script"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"script"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"script"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"script"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"script"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"script"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"script"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"script"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -2700,7 +2732,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2854](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2854)
+[packages/adapter/src/lib/adapter/adapter.ts:2854](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2854)
 
 ▸ **extendObject**(`id`, `objPart`, `options`, `callback?`): `void`
 
@@ -2709,9 +2741,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `objPart` | `PartialStateObject` & { `type?`: ``"state"``  } & `PartialChannelObject` & { `type?`: ``"state"``  } & `PartialDeviceObject` & { `type?`: ``"state"``  } & `PartialFolderObject` & { `type?`: ``"state"``  } & `PartialEnumObject` & { `type?`: ``"state"``  } & `PartialMetaObject` & { `type?`: ``"state"``  } & `PartialHostObject` & { `type?`: ``"state"``  } & `PartialAdapterObject` & { `type?`: ``"state"``  } & `PartialInstanceObject` & { `type?`: ``"state"``  } & `PartialUserObject` & { `type?`: ``"state"``  } & `PartialGroupObject` & { `type?`: ``"state"``  } & `PartialScriptObject` & { `type?`: ``"state"``  } & `PartialOtherObject` & { `type?`: ``"state"``  } \| `PartialStateObject` & { `type?`: ``"channel"``  } & `PartialChannelObject` & { `type?`: ``"channel"``  } & `PartialDeviceObject` & { `type?`: ``"channel"``  } & `PartialFolderObject` & { `type?`: ``"channel"``  } & `PartialEnumObject` & { `type?`: ``"channel"``  } & `PartialMetaObject` & { `type?`: ``"channel"``  } & `PartialHostObject` & { `type?`: ``"channel"``  } & `PartialAdapterObject` & { `type?`: ``"channel"``  } & `PartialInstanceObject` & { `type?`: ``"channel"``  } & `PartialUserObject` & { `type?`: ``"channel"``  } & `PartialGroupObject` & { `type?`: ``"channel"``  } & `PartialScriptObject` & { `type?`: ``"channel"``  } & `PartialOtherObject` & { `type?`: ``"channel"``  } \| `PartialStateObject` & { `type?`: ``"device"``  } & `PartialChannelObject` & { `type?`: ``"device"``  } & `PartialDeviceObject` & { `type?`: ``"device"``  } & `PartialFolderObject` & { `type?`: ``"device"``  } & `PartialEnumObject` & { `type?`: ``"device"``  } & `PartialMetaObject` & { `type?`: ``"device"``  } & `PartialHostObject` & { `type?`: ``"device"``  } & `PartialAdapterObject` & { `type?`: ``"device"``  } & `PartialInstanceObject` & { `type?`: ``"device"``  } & `PartialUserObject` & { `type?`: ``"device"``  } & `PartialGroupObject` & { `type?`: ``"device"``  } & `PartialScriptObject` & { `type?`: ``"device"``  } & `PartialOtherObject` & { `type?`: ``"device"``  } \| `PartialStateObject` & { `type?`: ``"folder"``  } & `PartialChannelObject` & { `type?`: ``"folder"``  } & `PartialDeviceObject` & { `type?`: ``"folder"``  } & `PartialFolderObject` & { `type?`: ``"folder"``  } & `PartialEnumObject` & { `type?`: ``"folder"``  } & `PartialMetaObject` & { `type?`: ``"folder"``  } & `PartialHostObject` & { `type?`: ``"folder"``  } & `PartialAdapterObject` & { `type?`: ``"folder"``  } & `PartialInstanceObject` & { `type?`: ``"folder"``  } & `PartialUserObject` & { `type?`: ``"folder"``  } & `PartialGroupObject` & { `type?`: ``"folder"``  } & `PartialScriptObject` & { `type?`: ``"folder"``  } & `PartialOtherObject` & { `type?`: ``"folder"``  } \| `PartialStateObject` & { `type?`: ``"enum"``  } & `PartialChannelObject` & { `type?`: ``"enum"``  } & `PartialDeviceObject` & { `type?`: ``"enum"``  } & `PartialFolderObject` & { `type?`: ``"enum"``  } & `PartialEnumObject` & { `type?`: ``"enum"``  } & `PartialMetaObject` & { `type?`: ``"enum"``  } & `PartialHostObject` & { `type?`: ``"enum"``  } & `PartialAdapterObject` & { `type?`: ``"enum"``  } & `PartialInstanceObject` & { `type?`: ``"enum"``  } & `PartialUserObject` & { `type?`: ``"enum"``  } & `PartialGroupObject` & { `type?`: ``"enum"``  } & `PartialScriptObject` & { `type?`: ``"enum"``  } & `PartialOtherObject` & { `type?`: ``"enum"``  } \| `PartialStateObject` & { `type?`: ``"meta"``  } & `PartialChannelObject` & { `type?`: ``"meta"``  } & `PartialDeviceObject` & { `type?`: ``"meta"``  } & `PartialFolderObject` & { `type?`: ``"meta"``  } & `PartialEnumObject` & { `type?`: ``"meta"``  } & `PartialMetaObject` & { `type?`: ``"meta"``  } & `PartialHostObject` & { `type?`: ``"meta"``  } & `PartialAdapterObject` & { `type?`: ``"meta"``  } & `PartialInstanceObject` & { `type?`: ``"meta"``  } & `PartialUserObject` & { `type?`: ``"meta"``  } & `PartialGroupObject` & { `type?`: ``"meta"``  } & `PartialScriptObject` & { `type?`: ``"meta"``  } & `PartialOtherObject` & { `type?`: ``"meta"``  } \| `PartialStateObject` & { `type?`: ``"host"``  } & `PartialChannelObject` & { `type?`: ``"host"``  } & `PartialDeviceObject` & { `type?`: ``"host"``  } & `PartialFolderObject` & { `type?`: ``"host"``  } & `PartialEnumObject` & { `type?`: ``"host"``  } & `PartialMetaObject` & { `type?`: ``"host"``  } & `PartialHostObject` & { `type?`: ``"host"``  } & `PartialAdapterObject` & { `type?`: ``"host"``  } & `PartialInstanceObject` & { `type?`: ``"host"``  } & `PartialUserObject` & { `type?`: ``"host"``  } & `PartialGroupObject` & { `type?`: ``"host"``  } & `PartialScriptObject` & { `type?`: ``"host"``  } & `PartialOtherObject` & { `type?`: ``"host"``  } \| `PartialStateObject` & { `type?`: ``"adapter"``  } & `PartialChannelObject` & { `type?`: ``"adapter"``  } & `PartialDeviceObject` & { `type?`: ``"adapter"``  } & `PartialFolderObject` & { `type?`: ``"adapter"``  } & `PartialEnumObject` & { `type?`: ``"adapter"``  } & `PartialMetaObject` & { `type?`: ``"adapter"``  } & `PartialHostObject` & { `type?`: ``"adapter"``  } & `PartialAdapterObject` & { `type?`: ``"adapter"``  } & `PartialInstanceObject` & { `type?`: ``"adapter"``  } & `PartialUserObject` & { `type?`: ``"adapter"``  } & `PartialGroupObject` & { `type?`: ``"adapter"``  } & `PartialScriptObject` & { `type?`: ``"adapter"``  } & `PartialOtherObject` & { `type?`: ``"adapter"``  } \| `PartialStateObject` & { `type?`: ``"instance"``  } & `PartialChannelObject` & { `type?`: ``"instance"``  } & `PartialDeviceObject` & { `type?`: ``"instance"``  } & `PartialFolderObject` & { `type?`: ``"instance"``  } & `PartialEnumObject` & { `type?`: ``"instance"``  } & `PartialMetaObject` & { `type?`: ``"instance"``  } & `PartialHostObject` & { `type?`: ``"instance"``  } & `PartialAdapterObject` & { `type?`: ``"instance"``  } & `PartialInstanceObject` & { `type?`: ``"instance"``  } & `PartialUserObject` & { `type?`: ``"instance"``  } & `PartialGroupObject` & { `type?`: ``"instance"``  } & `PartialScriptObject` & { `type?`: ``"instance"``  } & `PartialOtherObject` & { `type?`: ``"instance"``  } \| `PartialStateObject` & { `type?`: ``"user"``  } & `PartialChannelObject` & { `type?`: ``"user"``  } & `PartialDeviceObject` & { `type?`: ``"user"``  } & `PartialFolderObject` & { `type?`: ``"user"``  } & `PartialEnumObject` & { `type?`: ``"user"``  } & `PartialMetaObject` & { `type?`: ``"user"``  } & `PartialHostObject` & { `type?`: ``"user"``  } & `PartialAdapterObject` & { `type?`: ``"user"``  } & `PartialInstanceObject` & { `type?`: ``"user"``  } & `PartialUserObject` & { `type?`: ``"user"``  } & `PartialGroupObject` & { `type?`: ``"user"``  } & `PartialScriptObject` & { `type?`: ``"user"``  } & `PartialOtherObject` & { `type?`: ``"user"``  } \| `PartialStateObject` & { `type?`: ``"group"``  } & `PartialChannelObject` & { `type?`: ``"group"``  } & `PartialDeviceObject` & { `type?`: ``"group"``  } & `PartialFolderObject` & { `type?`: ``"group"``  } & `PartialEnumObject` & { `type?`: ``"group"``  } & `PartialMetaObject` & { `type?`: ``"group"``  } & `PartialHostObject` & { `type?`: ``"group"``  } & `PartialAdapterObject` & { `type?`: ``"group"``  } & `PartialInstanceObject` & { `type?`: ``"group"``  } & `PartialUserObject` & { `type?`: ``"group"``  } & `PartialGroupObject` & { `type?`: ``"group"``  } & `PartialScriptObject` & { `type?`: ``"group"``  } & `PartialOtherObject` & { `type?`: ``"group"``  } \| `PartialStateObject` & { `type?`: ``"script"``  } & `PartialChannelObject` & { `type?`: ``"script"``  } & `PartialDeviceObject` & { `type?`: ``"script"``  } & `PartialFolderObject` & { `type?`: ``"script"``  } & `PartialEnumObject` & { `type?`: ``"script"``  } & `PartialMetaObject` & { `type?`: ``"script"``  } & `PartialHostObject` & { `type?`: ``"script"``  } & `PartialAdapterObject` & { `type?`: ``"script"``  } & `PartialInstanceObject` & { `type?`: ``"script"``  } & `PartialUserObject` & { `type?`: ``"script"``  } & `PartialGroupObject` & { `type?`: ``"script"``  } & `PartialScriptObject` & { `type?`: ``"script"``  } & `PartialOtherObject` & { `type?`: ``"script"``  } \| `PartialStateObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialChannelObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialDeviceObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialFolderObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialEnumObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialMetaObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialHostObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialAdapterObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialInstanceObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialUserObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialGroupObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialScriptObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialOtherObject` & { `type?`: ``"config"`` \| ``"chart"``  } | - |
-| `options` | `ExtendObjectOptions` | - |
-| `callback?` | `SetObjectCallback` | - |
+| `objPart` | [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"state"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"state"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"state"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"state"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"state"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"state"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"state"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"state"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"state"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"state"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"state"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"state"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"state"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"channel"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"channel"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"channel"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"channel"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"channel"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"channel"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"channel"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"channel"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"channel"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"channel"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"channel"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"channel"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"channel"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"device"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"device"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"device"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"device"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"device"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"device"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"device"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"device"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"device"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"device"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"device"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"device"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"device"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"folder"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"folder"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"folder"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"folder"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"folder"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"folder"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"folder"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"folder"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"folder"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"folder"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"folder"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"folder"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"folder"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"enum"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"enum"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"enum"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"enum"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"enum"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"enum"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"enum"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"enum"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"enum"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"enum"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"enum"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"enum"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"enum"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"meta"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"meta"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"meta"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"meta"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"meta"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"meta"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"meta"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"meta"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"meta"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"meta"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"meta"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"meta"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"meta"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"host"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"host"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"host"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"host"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"host"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"host"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"host"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"host"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"host"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"host"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"host"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"host"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"host"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"adapter"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"adapter"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"adapter"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"adapter"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"adapter"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"adapter"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"adapter"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"adapter"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"adapter"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"adapter"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"adapter"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"adapter"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"adapter"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"instance"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"instance"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"instance"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"instance"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"instance"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"instance"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"instance"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"instance"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"instance"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"instance"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"instance"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"instance"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"instance"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"user"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"user"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"user"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"user"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"user"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"user"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"user"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"user"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"user"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"user"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"user"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"user"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"user"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"group"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"group"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"group"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"group"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"group"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"group"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"group"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"group"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"group"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"group"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"group"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"group"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"group"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"script"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"script"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"script"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"script"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"script"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"script"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"script"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"script"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"script"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"script"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"script"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"script"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"script"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } | - |
+| `options` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -2719,29 +2751,29 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2855](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2855)
+[packages/adapter/src/lib/adapter/adapter.ts:2855](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2855)
 
 ___
 
 ### extendObjectAsync
 
-▸ **extendObjectAsync**(`id`, `objPart`, `options?`): `SetObjectPromise`
+▸ **extendObjectAsync**(`id`, `objPart`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `objPart` | `PartialStateObject` & { `type?`: ``"state"``  } & `PartialChannelObject` & { `type?`: ``"state"``  } & `PartialDeviceObject` & { `type?`: ``"state"``  } & `PartialFolderObject` & { `type?`: ``"state"``  } & `PartialEnumObject` & { `type?`: ``"state"``  } & `PartialMetaObject` & { `type?`: ``"state"``  } & `PartialHostObject` & { `type?`: ``"state"``  } & `PartialAdapterObject` & { `type?`: ``"state"``  } & `PartialInstanceObject` & { `type?`: ``"state"``  } & `PartialUserObject` & { `type?`: ``"state"``  } & `PartialGroupObject` & { `type?`: ``"state"``  } & `PartialScriptObject` & { `type?`: ``"state"``  } & `PartialOtherObject` & { `type?`: ``"state"``  } \| `PartialStateObject` & { `type?`: ``"channel"``  } & `PartialChannelObject` & { `type?`: ``"channel"``  } & `PartialDeviceObject` & { `type?`: ``"channel"``  } & `PartialFolderObject` & { `type?`: ``"channel"``  } & `PartialEnumObject` & { `type?`: ``"channel"``  } & `PartialMetaObject` & { `type?`: ``"channel"``  } & `PartialHostObject` & { `type?`: ``"channel"``  } & `PartialAdapterObject` & { `type?`: ``"channel"``  } & `PartialInstanceObject` & { `type?`: ``"channel"``  } & `PartialUserObject` & { `type?`: ``"channel"``  } & `PartialGroupObject` & { `type?`: ``"channel"``  } & `PartialScriptObject` & { `type?`: ``"channel"``  } & `PartialOtherObject` & { `type?`: ``"channel"``  } \| `PartialStateObject` & { `type?`: ``"device"``  } & `PartialChannelObject` & { `type?`: ``"device"``  } & `PartialDeviceObject` & { `type?`: ``"device"``  } & `PartialFolderObject` & { `type?`: ``"device"``  } & `PartialEnumObject` & { `type?`: ``"device"``  } & `PartialMetaObject` & { `type?`: ``"device"``  } & `PartialHostObject` & { `type?`: ``"device"``  } & `PartialAdapterObject` & { `type?`: ``"device"``  } & `PartialInstanceObject` & { `type?`: ``"device"``  } & `PartialUserObject` & { `type?`: ``"device"``  } & `PartialGroupObject` & { `type?`: ``"device"``  } & `PartialScriptObject` & { `type?`: ``"device"``  } & `PartialOtherObject` & { `type?`: ``"device"``  } \| `PartialStateObject` & { `type?`: ``"folder"``  } & `PartialChannelObject` & { `type?`: ``"folder"``  } & `PartialDeviceObject` & { `type?`: ``"folder"``  } & `PartialFolderObject` & { `type?`: ``"folder"``  } & `PartialEnumObject` & { `type?`: ``"folder"``  } & `PartialMetaObject` & { `type?`: ``"folder"``  } & `PartialHostObject` & { `type?`: ``"folder"``  } & `PartialAdapterObject` & { `type?`: ``"folder"``  } & `PartialInstanceObject` & { `type?`: ``"folder"``  } & `PartialUserObject` & { `type?`: ``"folder"``  } & `PartialGroupObject` & { `type?`: ``"folder"``  } & `PartialScriptObject` & { `type?`: ``"folder"``  } & `PartialOtherObject` & { `type?`: ``"folder"``  } \| `PartialStateObject` & { `type?`: ``"enum"``  } & `PartialChannelObject` & { `type?`: ``"enum"``  } & `PartialDeviceObject` & { `type?`: ``"enum"``  } & `PartialFolderObject` & { `type?`: ``"enum"``  } & `PartialEnumObject` & { `type?`: ``"enum"``  } & `PartialMetaObject` & { `type?`: ``"enum"``  } & `PartialHostObject` & { `type?`: ``"enum"``  } & `PartialAdapterObject` & { `type?`: ``"enum"``  } & `PartialInstanceObject` & { `type?`: ``"enum"``  } & `PartialUserObject` & { `type?`: ``"enum"``  } & `PartialGroupObject` & { `type?`: ``"enum"``  } & `PartialScriptObject` & { `type?`: ``"enum"``  } & `PartialOtherObject` & { `type?`: ``"enum"``  } \| `PartialStateObject` & { `type?`: ``"meta"``  } & `PartialChannelObject` & { `type?`: ``"meta"``  } & `PartialDeviceObject` & { `type?`: ``"meta"``  } & `PartialFolderObject` & { `type?`: ``"meta"``  } & `PartialEnumObject` & { `type?`: ``"meta"``  } & `PartialMetaObject` & { `type?`: ``"meta"``  } & `PartialHostObject` & { `type?`: ``"meta"``  } & `PartialAdapterObject` & { `type?`: ``"meta"``  } & `PartialInstanceObject` & { `type?`: ``"meta"``  } & `PartialUserObject` & { `type?`: ``"meta"``  } & `PartialGroupObject` & { `type?`: ``"meta"``  } & `PartialScriptObject` & { `type?`: ``"meta"``  } & `PartialOtherObject` & { `type?`: ``"meta"``  } \| `PartialStateObject` & { `type?`: ``"host"``  } & `PartialChannelObject` & { `type?`: ``"host"``  } & `PartialDeviceObject` & { `type?`: ``"host"``  } & `PartialFolderObject` & { `type?`: ``"host"``  } & `PartialEnumObject` & { `type?`: ``"host"``  } & `PartialMetaObject` & { `type?`: ``"host"``  } & `PartialHostObject` & { `type?`: ``"host"``  } & `PartialAdapterObject` & { `type?`: ``"host"``  } & `PartialInstanceObject` & { `type?`: ``"host"``  } & `PartialUserObject` & { `type?`: ``"host"``  } & `PartialGroupObject` & { `type?`: ``"host"``  } & `PartialScriptObject` & { `type?`: ``"host"``  } & `PartialOtherObject` & { `type?`: ``"host"``  } \| `PartialStateObject` & { `type?`: ``"adapter"``  } & `PartialChannelObject` & { `type?`: ``"adapter"``  } & `PartialDeviceObject` & { `type?`: ``"adapter"``  } & `PartialFolderObject` & { `type?`: ``"adapter"``  } & `PartialEnumObject` & { `type?`: ``"adapter"``  } & `PartialMetaObject` & { `type?`: ``"adapter"``  } & `PartialHostObject` & { `type?`: ``"adapter"``  } & `PartialAdapterObject` & { `type?`: ``"adapter"``  } & `PartialInstanceObject` & { `type?`: ``"adapter"``  } & `PartialUserObject` & { `type?`: ``"adapter"``  } & `PartialGroupObject` & { `type?`: ``"adapter"``  } & `PartialScriptObject` & { `type?`: ``"adapter"``  } & `PartialOtherObject` & { `type?`: ``"adapter"``  } \| `PartialStateObject` & { `type?`: ``"instance"``  } & `PartialChannelObject` & { `type?`: ``"instance"``  } & `PartialDeviceObject` & { `type?`: ``"instance"``  } & `PartialFolderObject` & { `type?`: ``"instance"``  } & `PartialEnumObject` & { `type?`: ``"instance"``  } & `PartialMetaObject` & { `type?`: ``"instance"``  } & `PartialHostObject` & { `type?`: ``"instance"``  } & `PartialAdapterObject` & { `type?`: ``"instance"``  } & `PartialInstanceObject` & { `type?`: ``"instance"``  } & `PartialUserObject` & { `type?`: ``"instance"``  } & `PartialGroupObject` & { `type?`: ``"instance"``  } & `PartialScriptObject` & { `type?`: ``"instance"``  } & `PartialOtherObject` & { `type?`: ``"instance"``  } \| `PartialStateObject` & { `type?`: ``"user"``  } & `PartialChannelObject` & { `type?`: ``"user"``  } & `PartialDeviceObject` & { `type?`: ``"user"``  } & `PartialFolderObject` & { `type?`: ``"user"``  } & `PartialEnumObject` & { `type?`: ``"user"``  } & `PartialMetaObject` & { `type?`: ``"user"``  } & `PartialHostObject` & { `type?`: ``"user"``  } & `PartialAdapterObject` & { `type?`: ``"user"``  } & `PartialInstanceObject` & { `type?`: ``"user"``  } & `PartialUserObject` & { `type?`: ``"user"``  } & `PartialGroupObject` & { `type?`: ``"user"``  } & `PartialScriptObject` & { `type?`: ``"user"``  } & `PartialOtherObject` & { `type?`: ``"user"``  } \| `PartialStateObject` & { `type?`: ``"group"``  } & `PartialChannelObject` & { `type?`: ``"group"``  } & `PartialDeviceObject` & { `type?`: ``"group"``  } & `PartialFolderObject` & { `type?`: ``"group"``  } & `PartialEnumObject` & { `type?`: ``"group"``  } & `PartialMetaObject` & { `type?`: ``"group"``  } & `PartialHostObject` & { `type?`: ``"group"``  } & `PartialAdapterObject` & { `type?`: ``"group"``  } & `PartialInstanceObject` & { `type?`: ``"group"``  } & `PartialUserObject` & { `type?`: ``"group"``  } & `PartialGroupObject` & { `type?`: ``"group"``  } & `PartialScriptObject` & { `type?`: ``"group"``  } & `PartialOtherObject` & { `type?`: ``"group"``  } \| `PartialStateObject` & { `type?`: ``"script"``  } & `PartialChannelObject` & { `type?`: ``"script"``  } & `PartialDeviceObject` & { `type?`: ``"script"``  } & `PartialFolderObject` & { `type?`: ``"script"``  } & `PartialEnumObject` & { `type?`: ``"script"``  } & `PartialMetaObject` & { `type?`: ``"script"``  } & `PartialHostObject` & { `type?`: ``"script"``  } & `PartialAdapterObject` & { `type?`: ``"script"``  } & `PartialInstanceObject` & { `type?`: ``"script"``  } & `PartialUserObject` & { `type?`: ``"script"``  } & `PartialGroupObject` & { `type?`: ``"script"``  } & `PartialScriptObject` & { `type?`: ``"script"``  } & `PartialOtherObject` & { `type?`: ``"script"``  } \| `PartialStateObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialChannelObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialDeviceObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialFolderObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialEnumObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialMetaObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialHostObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialAdapterObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialInstanceObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialUserObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialGroupObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialScriptObject` & { `type?`: ``"config"`` \| ``"chart"``  } & `PartialOtherObject` & { `type?`: ``"config"`` \| ``"chart"``  } |
-| `options?` | `ExtendObjectOptions` |
+| `objPart` | [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"state"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"state"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"state"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"state"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"state"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"state"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"state"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"state"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"state"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"state"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"state"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"state"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"state"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"channel"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"channel"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"channel"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"channel"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"channel"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"channel"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"channel"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"channel"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"channel"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"channel"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"channel"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"channel"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"channel"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"device"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"device"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"device"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"device"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"device"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"device"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"device"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"device"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"device"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"device"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"device"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"device"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"device"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"folder"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"folder"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"folder"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"folder"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"folder"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"folder"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"folder"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"folder"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"folder"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"folder"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"folder"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"folder"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"folder"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"enum"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"enum"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"enum"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"enum"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"enum"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"enum"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"enum"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"enum"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"enum"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"enum"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"enum"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"enum"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"enum"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"meta"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"meta"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"meta"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"meta"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"meta"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"meta"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"meta"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"meta"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"meta"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"meta"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"meta"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"meta"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"meta"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"host"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"host"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"host"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"host"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"host"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"host"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"host"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"host"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"host"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"host"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"host"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"host"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"host"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"adapter"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"adapter"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"adapter"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"adapter"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"adapter"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"adapter"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"adapter"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"adapter"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"adapter"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"adapter"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"adapter"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"adapter"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"adapter"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"instance"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"instance"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"instance"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"instance"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"instance"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"instance"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"instance"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"instance"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"instance"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"instance"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"instance"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"instance"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"instance"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"user"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"user"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"user"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"user"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"user"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"user"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"user"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"user"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"user"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"user"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"user"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"user"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"user"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"group"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"group"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"group"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"group"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"group"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"group"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"group"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"group"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"group"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"group"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"group"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"group"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"group"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"script"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"script"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"script"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"script"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"script"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"script"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"script"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"script"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"script"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"script"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"script"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"script"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"script"``  } \| [`PartialStateObject`](../interfaces/internal_.PartialStateObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialChannelObject`](../interfaces/internal_.PartialChannelObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialDeviceObject`](../interfaces/internal_.PartialDeviceObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialFolderObject`](../interfaces/internal_.PartialFolderObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialEnumObject`](../interfaces/internal_.PartialEnumObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialMetaObject`](../interfaces/internal_.PartialMetaObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialHostObject`](../interfaces/internal_.PartialHostObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialAdapterObject`](../interfaces/internal_.PartialAdapterObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialInstanceObject`](../interfaces/internal_.PartialInstanceObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialUserObject`](../interfaces/internal_.PartialUserObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialGroupObject`](../interfaces/internal_.PartialGroupObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialScriptObject`](../interfaces/internal_.PartialScriptObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } & [`PartialOtherObject`](../interfaces/internal_.PartialOtherObject.md) & { `type?`: ``"config"`` \| ``"chart"``  } |
+| `options?` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L114)
+[packages/adapter/src/lib/adapter/adapter.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L114)
 
 ___
 
@@ -2755,7 +2787,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | `GenericCallback`<`boolean`\> |
+| `callback` | [`GenericCallback`](../modules/internal_.md#genericcallback)<`boolean`\> |
 
 #### Returns
 
@@ -2763,7 +2795,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6569](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6569)
+[packages/adapter/src/lib/adapter/adapter.ts:6569](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6569)
 
 ▸ **fileExists**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -2774,7 +2806,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | `GenericCallback`<`boolean`\> |
+| `callback` | [`GenericCallback`](../modules/internal_.md#genericcallback)<`boolean`\> |
 
 #### Returns
 
@@ -2782,7 +2814,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6570](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6570)
+[packages/adapter/src/lib/adapter/adapter.ts:6570](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6570)
 
 ___
 
@@ -2804,7 +2836,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L232)
+[packages/adapter/src/lib/adapter/adapter.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L232)
 
 ___
 
@@ -2818,7 +2850,7 @@ ___
 | :------ | :------ | :------ |
 | `idOrName` | `string` | - |
 | `type` | `string` |  |
-| `callback` | `FindObjectCallback` |  |
+| `callback` | [`FindObjectCallback`](../modules/internal_.md#findobjectcallback) |  |
 
 #### Returns
 
@@ -2826,7 +2858,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4083](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4083)
+[packages/adapter/src/lib/adapter/adapter.ts:4083](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4083)
 
 ▸ **findForeignObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
@@ -2837,7 +2869,7 @@ ___
 | `idOrName` | `string` | - |
 | `type` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `FindObjectCallback` |  |
+| `callback` | [`FindObjectCallback`](../modules/internal_.md#findobjectcallback) |  |
 
 #### Returns
 
@@ -2845,7 +2877,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4084](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4084)
+[packages/adapter/src/lib/adapter/adapter.ts:4084](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4084)
 
 ___
 
@@ -2866,7 +2898,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L449)
+[packages/adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L449)
 
 ___
 
@@ -2887,7 +2919,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6652](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6652)
+[packages/adapter/src/lib/adapter/adapter.ts:6652](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6652)
 
 ▸ **formatDate**(`dateObj`, `isDuration`, `format`): `string`
 
@@ -2905,7 +2937,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6653](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6653)
+[packages/adapter/src/lib/adapter/adapter.ts:6653](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6653)
 
 ___
 
@@ -2926,7 +2958,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6617](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6617)
+[packages/adapter/src/lib/adapter/adapter.ts:6617](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6617)
 
 ▸ **formatValue**(`value`, `decimals`, `format`): `string`
 
@@ -2944,41 +2976,41 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6618](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6618)
+[packages/adapter/src/lib/adapter/adapter.ts:6618](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6618)
 
 ___
 
 ### getAdapterObjects
 
-▸ **getAdapterObjects**(`callback`): `Promise`<`void` \| `Record`<`string`, `AdapterScopedObject`\>\>
+▸ **getAdapterObjects**(`callback`): `Promise`<`void` \| [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | (`objects`: `Record`<`string`, `AdapterScopedObject`\>) => `void` |  |
+| `callback` | (`objects`: [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>) => `void` |  |
 
 #### Returns
 
-`Promise`<`void` \| `Record`<`string`, `AdapterScopedObject`\>\>
+`Promise`<`void` \| [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2772](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2772)
+[packages/adapter/src/lib/adapter/adapter.ts:2772](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2772)
 
 ___
 
 ### getAdapterObjectsAsync
 
-▸ **getAdapterObjectsAsync**(): `Promise`<`Record`<`string`, `AdapterScopedObject`\>\>
+▸ **getAdapterObjectsAsync**(): `Promise`<[`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
 
 #### Returns
 
-`Promise`<`Record`<`string`, `AdapterScopedObject`\>\>
+`Promise`<[`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L303)
+[packages/adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L303)
 
 ___
 
@@ -2991,7 +3023,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback` | `GetBinaryStateCallback` |  |
+| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
 
 #### Returns
 
@@ -2999,7 +3031,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10109](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10109)
+[packages/adapter/src/lib/adapter/adapter.ts:10109](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10109)
 
 ▸ **getBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -3009,7 +3041,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `GetBinaryStateCallback` |  |
+| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
 
 #### Returns
 
@@ -3017,13 +3049,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10110](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10110)
+[packages/adapter/src/lib/adapter/adapter.ts:10110](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10110)
 
 ___
 
 ### getBinaryStateAsync
 
-▸ **getBinaryStateAsync**(`id`, `options?`): `GetBinaryStatePromise`
+▸ **getBinaryStateAsync**(`id`, `options?`): [`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
 
 #### Parameters
 
@@ -3034,11 +3066,11 @@ ___
 
 #### Returns
 
-`GetBinaryStatePromise`
+[`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L265)
+[packages/adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L265)
 
 ___
 
@@ -3053,7 +3085,7 @@ ___
 | `publicName?` | `string` | - |
 | `privateName?` | `string` | - |
 | `chainedName?` | `string` | - |
-| `callback?` | `GetCertificatesCallback` |  |
+| `callback?` | [`GetCertificatesCallback`](../modules/internal_.md#getcertificatescallback) |  |
 
 #### Returns
 
@@ -3061,7 +3093,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2198](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2198)
+[packages/adapter/src/lib/adapter/adapter.ts:2198](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2198)
 
 ___
 
@@ -3081,7 +3113,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L301)
+[packages/adapter/src/lib/adapter/adapter.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L301)
 
 ___
 
@@ -3093,7 +3125,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
 
 #### Returns
 
@@ -3101,7 +3133,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L521)
+[packages/adapter/src/lib/adapter/adapter.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L521)
 
 ▸ **getChannels**(`parentDevice`, `callback`): `void`
 
@@ -3110,7 +3142,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `parentDevice` | `string` |
-| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
 
 #### Returns
 
@@ -3118,7 +3150,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L522)
+[packages/adapter/src/lib/adapter/adapter.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L522)
 
 ▸ **getChannels**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3128,7 +3160,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `options` | `unknown` |
-| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
 
 #### Returns
 
@@ -3136,23 +3168,23 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L523)
+[packages/adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L523)
 
 ___
 
 ### getChannelsAsync
 
-▸ **getChannelsAsync**(): `Promise`<`ChannelObject`[]\>
+▸ **getChannelsAsync**(): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Returns
 
-`Promise`<`ChannelObject`[]\>
+`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L533)
+[packages/adapter/src/lib/adapter/adapter.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L533)
 
-▸ **getChannelsAsync**(`parentDevice`, `options?`): `Promise`<`ChannelObject`[]\>
+▸ **getChannelsAsync**(`parentDevice`, `options?`): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Parameters
 
@@ -3163,11 +3195,11 @@ ___
 
 #### Returns
 
-`Promise`<`ChannelObject`[]\>
+`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L534)
+[packages/adapter/src/lib/adapter/adapter.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L534)
 
 ___
 
@@ -3179,7 +3211,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
 
 #### Returns
 
@@ -3187,7 +3219,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5761](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5761)
+[packages/adapter/src/lib/adapter/adapter.ts:5761](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5761)
 
 ▸ **getChannelsOf**(`parentDevice`, `callback`): `void`
 
@@ -3196,7 +3228,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `parentDevice` | `string` |
-| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
 
 #### Returns
 
@@ -3204,7 +3236,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5762](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5762)
+[packages/adapter/src/lib/adapter/adapter.ts:5762](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5762)
 
 ▸ **getChannelsOf**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3214,7 +3246,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `options` | `unknown` |
-| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
 
 #### Returns
 
@@ -3222,23 +3254,23 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5763](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5763)
+[packages/adapter/src/lib/adapter/adapter.ts:5763](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5763)
 
 ___
 
 ### getChannelsOfAsync
 
-▸ **getChannelsOfAsync**(): `Promise`<`ChannelObject`[]\>
+▸ **getChannelsOfAsync**(): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Returns
 
-`Promise`<`ChannelObject`[]\>
+`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L515)
+[packages/adapter/src/lib/adapter/adapter.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L515)
 
-▸ **getChannelsOfAsync**(`parentDevice`, `options?`): `Promise`<`ChannelObject`[]\>
+▸ **getChannelsOfAsync**(`parentDevice`, `options?`): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Parameters
 
@@ -3249,11 +3281,11 @@ ___
 
 #### Returns
 
-`Promise`<`ChannelObject`[]\>
+`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L516)
+[packages/adapter/src/lib/adapter/adapter.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L516)
 
 ___
 
@@ -3265,7 +3297,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | `GetObjectsCallback3`<`DeviceObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)\> |
 
 #### Returns
 
@@ -3273,7 +3305,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5707](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5707)
+[packages/adapter/src/lib/adapter/adapter.ts:5707](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5707)
 
 ▸ **getDevices**(`options`, `callback`): `void`
 
@@ -3282,7 +3314,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `options` | `unknown` |
-| `callback` | `GetObjectsCallback3`<`DeviceObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)\> |
 
 #### Returns
 
@@ -3290,13 +3322,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5708](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5708)
+[packages/adapter/src/lib/adapter/adapter.ts:5708](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5708)
 
 ___
 
 ### getDevicesAsync
 
-▸ **getDevicesAsync**(`options?`): `Promise`<`DeviceObject`[]\>
+▸ **getDevicesAsync**(`options?`): `Promise`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)[]\>
 
 #### Parameters
 
@@ -3306,11 +3338,11 @@ ___
 
 #### Returns
 
-`Promise`<`DeviceObject`[]\>
+`Promise`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L195)
+[packages/adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L195)
 
 ___
 
@@ -3323,7 +3355,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `attribute` | `string` |  |
-| `callback?` | `GetEncryptedConfigCallback` | - |
+| `callback?` | [`GetEncryptedConfigCallback`](../modules/internal_.md#getencryptedconfigcallback) | - |
 
 #### Returns
 
@@ -3331,7 +3363,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2371](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2371)
+[packages/adapter/src/lib/adapter/adapter.ts:2371](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2371)
 
 ___
 
@@ -3343,7 +3375,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | `GetEnumCallback` |  |
+| `callback` | [`GetEnumCallback`](../modules/internal_.md#getenumcallback) |  |
 
 #### Returns
 
@@ -3351,7 +3383,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3650](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3650)
+[packages/adapter/src/lib/adapter/adapter.ts:3650](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3650)
 
 ▸ **getEnum**(`name`, `callback`): `void`
 
@@ -3360,7 +3392,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `name` | `string` | - |
-| `callback` | `GetEnumCallback` |  |
+| `callback` | [`GetEnumCallback`](../modules/internal_.md#getenumcallback) |  |
 
 #### Returns
 
@@ -3368,7 +3400,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3651](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3651)
+[packages/adapter/src/lib/adapter/adapter.ts:3651](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3651)
 
 ▸ **getEnum**(`name`, `options`, `callback`): `void`
 
@@ -3378,7 +3410,7 @@ ___
 | :------ | :------ | :------ |
 | `name` | `string` | - |
 | `options` | `unknown` | - |
-| `callback` | `GetEnumCallback` |  |
+| `callback` | [`GetEnumCallback`](../modules/internal_.md#getenumcallback) |  |
 
 #### Returns
 
@@ -3386,13 +3418,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3652](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3652)
+[packages/adapter/src/lib/adapter/adapter.ts:3652](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3652)
 
 ___
 
 ### getEnumAsync
 
-▸ **getEnumAsync**(`name`, `options?`): `Promise`<{ `requestEnum`: `string` ; `result`: `Record`<`string`, `any`\>  }\>
+▸ **getEnumAsync**(`name`, `options?`): `Promise`<{ `requestEnum`: `string` ; `result`: [`Record`](../modules/internal_.md#record)<`string`, `any`\>  }\>
 
 #### Parameters
 
@@ -3403,11 +3435,11 @@ ___
 
 #### Returns
 
-`Promise`<{ `requestEnum`: `string` ; `result`: `Record`<`string`, `any`\>  }\>
+`Promise`<{ `requestEnum`: `string` ; `result`: [`Record`](../modules/internal_.md#record)<`string`, `any`\>  }\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L152)
+[packages/adapter/src/lib/adapter/adapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L152)
 
 ___
 
@@ -3419,7 +3451,7 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | `GetEnumsCallback` |  |
+| `callback` | [`GetEnumsCallback`](../modules/internal_.md#getenumscallback) |  |
 
 #### Returns
 
@@ -3427,7 +3459,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3739](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3739)
+[packages/adapter/src/lib/adapter/adapter.ts:3739](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3739)
 
 ▸ **getEnums**(`enumList`, `callback`): `void`
 
@@ -3435,8 +3467,8 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `enumList` | `EnumList` | - |
-| `callback` | `GetEnumsCallback` |  |
+| `enumList` | [`EnumList`](../modules/internal_.md#enumlist) | - |
+| `callback` | [`GetEnumsCallback`](../modules/internal_.md#getenumscallback) |  |
 
 #### Returns
 
@@ -3444,7 +3476,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3740](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3740)
+[packages/adapter/src/lib/adapter/adapter.ts:3740](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3740)
 
 ▸ **getEnums**(`enumList`, `options`, `callback`): `void`
 
@@ -3452,9 +3484,9 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `enumList` | `EnumList` | - |
+| `enumList` | [`EnumList`](../modules/internal_.md#enumlist) | - |
 | `options` | `unknown` | - |
-| `callback` | `GetEnumsCallback` |  |
+| `callback` | [`GetEnumsCallback`](../modules/internal_.md#getenumscallback) |  |
 
 #### Returns
 
@@ -3462,28 +3494,28 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3741](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3741)
+[packages/adapter/src/lib/adapter/adapter.ts:3741](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3741)
 
 ___
 
 ### getEnumsAsync
 
-▸ **getEnumsAsync**(`enumList`, `options?`): `GetEnumsPromise`
+▸ **getEnumsAsync**(`enumList`, `options?`): [`GetEnumsPromise`](../modules/internal_.md#getenumspromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `enumList` | `EnumList` |
+| `enumList` | [`EnumList`](../modules/internal_.md#enumlist) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`GetEnumsPromise`
+[`GetEnumsPromise`](../modules/internal_.md#getenumspromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L154)
+[packages/adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L154)
 
 ___
 
@@ -3496,7 +3528,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback` | `GetBinaryStateCallback` |  |
+| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
 
 #### Returns
 
@@ -3504,7 +3536,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10035](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10035)
+[packages/adapter/src/lib/adapter/adapter.ts:10035](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10035)
 
 ▸ **getForeignBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -3514,7 +3546,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `GetBinaryStateCallback` |  |
+| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
 
 #### Returns
 
@@ -3522,13 +3554,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10036](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10036)
+[packages/adapter/src/lib/adapter/adapter.ts:10036](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10036)
 
 ___
 
 ### getForeignBinaryStateAsync
 
-▸ **getForeignBinaryStateAsync**(`id`, `options?`): `GetBinaryStatePromise`
+▸ **getForeignBinaryStateAsync**(`id`, `options?`): [`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
 
 #### Parameters
 
@@ -3539,17 +3571,17 @@ ___
 
 #### Returns
 
-`GetBinaryStatePromise`
+[`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L260)
+[packages/adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L260)
 
 ___
 
 ### getForeignObject
 
-▸ **getForeignObject**<`T`\>(`id`, `callback`): `MaybePromise`
+▸ **getForeignObject**<`T`\>(`id`, `callback`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Type parameters
 
@@ -3562,17 +3594,17 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `callback` | `GetObjectCallback`<`T`\> |  |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`T`\> |  |
 
 #### Returns
 
-`MaybePromise`
+[`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4137](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4137)
+[packages/adapter/src/lib/adapter/adapter.ts:4137](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4137)
 
-▸ **getForeignObject**<`T`\>(`id`, `options`, `callback`): `MaybePromise`
+▸ **getForeignObject**<`T`\>(`id`, `options`, `callback`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Type parameters
 
@@ -3586,21 +3618,21 @@ ___
 | :------ | :------ | :------ |
 | `id` | `T` |  |
 | `options` | `unknown` | - |
-| `callback` | `GetObjectCallback`<`T`\> |  |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`T`\> |  |
 
 #### Returns
 
-`MaybePromise`
+[`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4138](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4138)
+[packages/adapter/src/lib/adapter/adapter.ts:4138](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4138)
 
 ___
 
 ### getForeignObjectAsync
 
-▸ **getForeignObjectAsync**<`T`\>(`id`, `options?`): `GetObjectPromise`<`T`\>
+▸ **getForeignObjectAsync**<`T`\>(`id`, `options?`): [`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`T`\>
 
 #### Type parameters
 
@@ -3617,11 +3649,11 @@ ___
 
 #### Returns
 
-`GetObjectPromise`<`T`\>
+[`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`T`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L306)
+[packages/adapter/src/lib/adapter/adapter.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L306)
 
 ___
 
@@ -3634,7 +3666,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback` | `GetObjectsCallback` |  |
+| `callback` | [`GetObjectsCallback`](../modules/internal_.md#getobjectscallback) |  |
 
 #### Returns
 
@@ -3642,7 +3674,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3886](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3886)
+[packages/adapter/src/lib/adapter/adapter.ts:3886](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3886)
 
 ▸ **getForeignObjects**(`pattern`, `options`, `callback`): `void`
 
@@ -3652,7 +3684,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback` | `GetObjectsCallback` |  |
+| `callback` | [`GetObjectsCallback`](../modules/internal_.md#getobjectscallback) |  |
 
 #### Returns
 
@@ -3660,7 +3692,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3887](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3887)
+[packages/adapter/src/lib/adapter/adapter.ts:3887](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3887)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `callback`): `void`
 
@@ -3668,7 +3700,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `ObjectType` |
+| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
 
 #### Parameters
 
@@ -3676,7 +3708,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `type` | `T` |  |
-| `callback` | `GetObjectsCallbackTyped`<`T`\> |  |
+| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> |  |
 
 #### Returns
 
@@ -3684,7 +3716,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3888](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3888)
+[packages/adapter/src/lib/adapter/adapter.ts:3888](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3888)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `callback`): `void`
 
@@ -3692,7 +3724,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `ObjectType` |
+| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
 
 #### Parameters
 
@@ -3700,8 +3732,8 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `type` | `T` |  |
-| `enums` | `EnumList` |  |
-| `callback` | `GetObjectsCallbackTyped`<`T`\> |  |
+| `enums` | [`EnumList`](../modules/internal_.md#enumlist) |  |
+| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> |  |
 
 #### Returns
 
@@ -3709,7 +3741,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3893](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3893)
+[packages/adapter/src/lib/adapter/adapter.ts:3893](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3893)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `options`, `callback`): `void`
 
@@ -3717,7 +3749,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `ObjectType` |
+| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
 
 #### Parameters
 
@@ -3726,7 +3758,7 @@ ___
 | `pattern` | `string` |  |
 | `type` | `T` |  |
 | `options` | `unknown` | - |
-| `callback` | `GetObjectsCallbackTyped`<`T`\> |  |
+| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> |  |
 
 #### Returns
 
@@ -3734,7 +3766,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3899](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3899)
+[packages/adapter/src/lib/adapter/adapter.ts:3899](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3899)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `options`, `callback`): `void`
 
@@ -3742,7 +3774,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `ObjectType` |
+| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
 
 #### Parameters
 
@@ -3750,9 +3782,9 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `type` | `T` |  |
-| `enums` | ``null`` \| `EnumList` |  |
+| `enums` | ``null`` \| [`EnumList`](../modules/internal_.md#enumlist) |  |
 | `options` | `unknown` | - |
-| `callback` | `GetObjectsCallbackTyped`<`T`\> |  |
+| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> |  |
 
 #### Returns
 
@@ -3760,19 +3792,19 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3905](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3905)
+[packages/adapter/src/lib/adapter/adapter.ts:3905](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3905)
 
 ___
 
 ### getForeignObjectsAsync
 
-▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `enums`, `options?`): `GetObjectsPromiseTyped`<`T`\>
+▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `enums`, `options?`): [`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `ObjectType` |
+| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
 
 #### Parameters
 
@@ -3780,24 +3812,24 @@ ___
 | :------ | :------ |
 | `pattern` | `string` |
 | `type` | `T` |
-| `enums` | `EnumList` |
+| `enums` | [`EnumList`](../modules/internal_.md#enumlist) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`GetObjectsPromiseTyped`<`T`\>
+[`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L417)
+[packages/adapter/src/lib/adapter/adapter.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L417)
 
-▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `options?`): `GetObjectsPromiseTyped`<`T`\>
+▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `options?`): [`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `ObjectType` |
+| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
 
 #### Parameters
 
@@ -3809,13 +3841,13 @@ ___
 
 #### Returns
 
-`GetObjectsPromiseTyped`<`T`\>
+[`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L423)
+[packages/adapter/src/lib/adapter/adapter.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L423)
 
-▸ **getForeignObjectsAsync**(`pattern`, `options?`): `GetObjectsPromise`
+▸ **getForeignObjectsAsync**(`pattern`, `options?`): [`GetObjectsPromise`](../modules/internal_.md#getobjectspromise)
 
 #### Parameters
 
@@ -3826,11 +3858,11 @@ ___
 
 #### Returns
 
-`GetObjectsPromise`
+[`GetObjectsPromise`](../modules/internal_.md#getobjectspromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L428)
+[packages/adapter/src/lib/adapter/adapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L428)
 
 ___
 
@@ -3843,7 +3875,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback` | `GetStateCallback` |  |
+| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) |  |
 
 #### Returns
 
@@ -3851,7 +3883,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8497](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8497)
+[packages/adapter/src/lib/adapter/adapter.ts:8497](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8497)
 
 ▸ **getForeignState**(`id`, `options`, `callback`): `void`
 
@@ -3861,7 +3893,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `GetStateCallback` |  |
+| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) |  |
 
 #### Returns
 
@@ -3869,13 +3901,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8498](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8498)
+[packages/adapter/src/lib/adapter/adapter.ts:8498](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8498)
 
 ___
 
 ### getForeignStateAsync
 
-▸ **getForeignStateAsync**(`id`, `options?`): `GetStatePromise`
+▸ **getForeignStateAsync**(`id`, `options?`): [`GetStatePromise`](../modules/internal_.md#getstatepromise)
 
 #### Parameters
 
@@ -3886,11 +3918,11 @@ ___
 
 #### Returns
 
-`GetStatePromise`
+[`GetStatePromise`](../modules/internal_.md#getstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L279)
+[packages/adapter/src/lib/adapter/adapter.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L279)
 
 ___
 
@@ -3903,7 +3935,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] |  |
-| `callback` | `GetStatesCallback` |  |
+| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) |  |
 
 #### Returns
 
@@ -3911,7 +3943,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9139](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9139)
+[packages/adapter/src/lib/adapter/adapter.ts:9139](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9139)
 
 ▸ **getForeignStates**(`pattern`, `options`, `callback`): `void`
 
@@ -3921,7 +3953,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] |  |
 | `options` | `unknown` |  |
-| `callback` | `GetStatesCallback` |  |
+| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) |  |
 
 #### Returns
 
@@ -3929,13 +3961,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9140](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9140)
+[packages/adapter/src/lib/adapter/adapter.ts:9140](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9140)
 
 ___
 
 ### getForeignStatesAsync
 
-▸ **getForeignStatesAsync**(`pattern`, `options?`): `GetStatesPromise`
+▸ **getForeignStatesAsync**(`pattern`, `options?`): [`GetStatesPromise`](../modules/internal_.md#getstatespromise)
 
 #### Parameters
 
@@ -3946,11 +3978,11 @@ ___
 
 #### Returns
 
-`GetStatesPromise`
+[`GetStatesPromise`](../modules/internal_.md#getstatespromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L243)
+[packages/adapter/src/lib/adapter/adapter.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L243)
 
 ___
 
@@ -3963,8 +3995,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `options` | `GetHistoryOptions` |  |
-| `callback` | `GetHistoryCallback` |  |
+| `options` | [`GetHistoryOptions`](../interfaces/internal_.GetHistoryOptions.md) |  |
+| `callback` | [`GetHistoryCallback`](../modules/internal_.md#gethistorycallback) |  |
 
 #### Returns
 
@@ -3972,7 +4004,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8776](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8776)
+[packages/adapter/src/lib/adapter/adapter.ts:8776](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8776)
 
 ▸ **getHistory**(`id`, `callback`): `void`
 
@@ -3981,7 +4013,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback` | `GetHistoryCallback` |  |
+| `callback` | [`GetHistoryCallback`](../modules/internal_.md#gethistorycallback) |  |
 
 #### Returns
 
@@ -3989,7 +4021,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8777](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8777)
+[packages/adapter/src/lib/adapter/adapter.ts:8777](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8777)
 
 ___
 
@@ -4009,7 +4041,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L235)
+[packages/adapter/src/lib/adapter/adapter.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L235)
 
 ___
 
@@ -4020,6 +4052,10 @@ ___
 #### Returns
 
 `number`
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[getMaxListeners](internal_.EventEmitter-1.md#getmaxlisteners)
 
 #### Defined in
 
@@ -4036,7 +4072,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback` | `GetObjectCallback`<`string`\> |  |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`string`\> |  |
 
 #### Returns
 
@@ -4044,7 +4080,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3435](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3435)
+[packages/adapter/src/lib/adapter/adapter.ts:3435](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3435)
 
 ▸ **getObject**(`id`, `options`, `callback`): `void`
 
@@ -4054,7 +4090,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` | - |
-| `callback` | `GetObjectCallback`<`string`\> |  |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`string`\> |  |
 
 #### Returns
 
@@ -4062,13 +4098,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3436](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3436)
+[packages/adapter/src/lib/adapter/adapter.ts:3436](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3436)
 
 ___
 
 ### getObjectAsync
 
-▸ **getObjectAsync**(`id`, `options?`): `GetObjectPromise`<`string`\>
+▸ **getObjectAsync**(`id`, `options?`): [`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`string`\>
 
 #### Parameters
 
@@ -4079,11 +4115,11 @@ ___
 
 #### Returns
 
-`GetObjectPromise`<`string`\>
+[`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`string`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L134)
+[packages/adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L134)
 
 ___
 
@@ -4095,8 +4131,8 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `params` | ``null`` \| `GetObjectViewParams` |  |
-| `callback` | `GetObjectListCallback` |  |
+| `params` | ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |  |
+| `callback` | [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback) |  |
 
 #### Returns
 
@@ -4104,7 +4140,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3594](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3594)
+[packages/adapter/src/lib/adapter/adapter.ts:3594](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3594)
 
 ▸ **getObjectList**(`params`, `options`, `callback`): `void`
 
@@ -4112,9 +4148,9 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `params` | ``null`` \| `GetObjectViewParams` |  |
-| `options` | `Record`<`string`, `any`\> \| { `sorted?`: `boolean`  } |  |
-| `callback` | `GetObjectListCallback` |  |
+| `params` | ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |  |
+| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `sorted?`: `boolean`  } |  |
+| `callback` | [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback) |  |
 
 #### Returns
 
@@ -4122,28 +4158,28 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3595](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3595)
+[packages/adapter/src/lib/adapter/adapter.ts:3595](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3595)
 
 ___
 
 ### getObjectListAsync
 
-▸ **getObjectListAsync**(`params`, `options?`): `GetObjectListPromise`
+▸ **getObjectListAsync**(`params`, `options?`): [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `params` | ``null`` \| `GetObjectViewParams` |
-| `options?` | `Record`<`string`, `any`\> \| { `sorted?`: `boolean`  } |
+| `params` | ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
+| `options?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `sorted?`: `boolean`  } |
 
 #### Returns
 
-`GetObjectListPromise`
+[`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L147)
+[packages/adapter/src/lib/adapter/adapter.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L147)
 
 ___
 
@@ -4164,8 +4200,8 @@ ___
 | :------ | :------ | :------ |
 | `design` | `Design` |  |
 | `search` | `Search` |  |
-| `params` | `undefined` \| ``null`` \| `GetObjectViewParams` |  |
-| `callback` | `GetObjectViewCallback`<`InferGetObjectViewItemType`<`Design`, `Search`\>\> |  |
+| `params` | `undefined` \| ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |  |
+| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\> |  |
 
 #### Returns
 
@@ -4173,7 +4209,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3478](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3478)
+[packages/adapter/src/lib/adapter/adapter.ts:3478](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3478)
 
 ▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
@@ -4190,9 +4226,9 @@ ___
 | :------ | :------ | :------ |
 | `design` | `Design` |  |
 | `search` | `Search` |  |
-| `params` | `undefined` \| ``null`` \| `GetObjectViewParams` |  |
+| `params` | `undefined` \| ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |  |
 | `options` | `unknown` |  |
-| `callback` | `GetObjectViewCallback`<`InferGetObjectViewItemType`<`Design`, `Search`\>\> |  |
+| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\> |  |
 
 #### Returns
 
@@ -4200,13 +4236,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3484](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3484)
+[packages/adapter/src/lib/adapter/adapter.ts:3484](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3484)
 
 ___
 
 ### getObjectViewAsync
 
-▸ **getObjectViewAsync**<`Design`, `Search`\>(`design`, `search`, `params`, `options?`): `GetObjectViewPromise`<`InferGetObjectViewItemType`<`Design`, `Search`\>\>
+▸ **getObjectViewAsync**<`Design`, `Search`\>(`design`, `search`, `params`, `options?`): [`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
 
 #### Type parameters
 
@@ -4221,22 +4257,22 @@ ___
 | :------ | :------ |
 | `design` | `Design` |
 | `search` | `Search` |
-| `params` | `undefined` \| ``null`` \| `GetObjectViewParams` |
+| `params` | `undefined` \| ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`GetObjectViewPromise`<`InferGetObjectViewItemType`<`Design`, `Search`\>\>
+[`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L140)
+[packages/adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L140)
 
 ___
 
 ### getPluginConfig
 
-▸ **getPluginConfig**(`name`): ``null`` \| `Record`<`string`, `any`\>
+▸ **getPluginConfig**(`name`): ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Parameters
 
@@ -4246,17 +4282,17 @@ ___
 
 #### Returns
 
-``null`` \| `Record`<`string`, `any`\>
+``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10221](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10221)
+[packages/adapter/src/lib/adapter/adapter.ts:10221](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10221)
 
 ___
 
 ### getPluginInstance
 
-▸ **getPluginInstance**(`name`): ``null`` \| `Plugin`
+▸ **getPluginInstance**(`name`): ``null`` \| [`Plugin`](../modules/internal_.md#plugin)
 
 #### Parameters
 
@@ -4266,11 +4302,11 @@ ___
 
 #### Returns
 
-``null`` \| `Plugin`
+``null`` \| [`Plugin`](../modules/internal_.md#plugin)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10203](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10203)
+[packages/adapter/src/lib/adapter/adapter.ts:10203](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10203)
 
 ___
 
@@ -4292,7 +4328,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1399](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1399)
+[packages/adapter/src/lib/adapter/adapter.ts:1399](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1399)
 
 ▸ **getPort**(`port`, `callback?`): `void`
 
@@ -4309,7 +4345,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1400](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1400)
+[packages/adapter/src/lib/adapter/adapter.ts:1400](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1400)
 
 ___
 
@@ -4329,28 +4365,28 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L277)
+[packages/adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L277)
 
 ___
 
 ### getSession
 
-▸ **getSession**(`id`, `callback`): `MaybePromise`
+▸ **getSession**(`id`, `callback`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback` | `GetSessionCallback` |
+| `callback` | [`GetSessionCallback`](../modules/internal_.md#getsessioncallback) |
 
 #### Returns
 
-`MaybePromise`
+[`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1226](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1226)
+[packages/adapter/src/lib/adapter/adapter.ts:1226](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1226)
 
 ___
 
@@ -4363,7 +4399,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `callback` | `GetStateCallback` |  |
+| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) |  |
 
 #### Returns
 
@@ -4371,7 +4407,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8466](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8466)
+[packages/adapter/src/lib/adapter/adapter.ts:8466](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8466)
 
 ▸ **getState**(`id`, `options`, `callback`): `void`
 
@@ -4381,7 +4417,7 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `GetStateCallback` |  |
+| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) |  |
 
 #### Returns
 
@@ -4389,13 +4425,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8467](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8467)
+[packages/adapter/src/lib/adapter/adapter.ts:8467](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8467)
 
 ___
 
 ### getStateAsync
 
-▸ **getStateAsync**(`id`, `options?`): `GetStatePromise`
+▸ **getStateAsync**(`id`, `options?`): [`GetStatePromise`](../modules/internal_.md#getstatepromise)
 
 #### Parameters
 
@@ -4406,11 +4442,11 @@ ___
 
 #### Returns
 
-`GetStatePromise`
+[`GetStatePromise`](../modules/internal_.md#getstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L164)
+[packages/adapter/src/lib/adapter/adapter.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L164)
 
 ___
 
@@ -4423,7 +4459,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback` | `GetStatesCallback` |  |
+| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) |  |
 
 #### Returns
 
@@ -4431,7 +4467,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9014](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9014)
+[packages/adapter/src/lib/adapter/adapter.ts:9014](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9014)
 
 ▸ **getStates**(`pattern`, `options`, `callback`): `void`
 
@@ -4441,7 +4477,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `GetStatesCallback` |  |
+| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) |  |
 
 #### Returns
 
@@ -4449,13 +4485,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9015](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9015)
+[packages/adapter/src/lib/adapter/adapter.ts:9015](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9015)
 
 ___
 
 ### getStatesAsync
 
-▸ **getStatesAsync**(`pattern`, `options?`): `GetStatesPromise`
+▸ **getStatesAsync**(`pattern`, `options?`): [`GetStatesPromise`](../modules/internal_.md#getstatespromise)
 
 #### Parameters
 
@@ -4466,11 +4502,11 @@ ___
 
 #### Returns
 
-`GetStatesPromise`
+[`GetStatesPromise`](../modules/internal_.md#getstatespromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L241)
+[packages/adapter/src/lib/adapter/adapter.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L241)
 
 ___
 
@@ -4482,7 +4518,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | `GetObjectsCallback3`<`StateObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
 
 #### Returns
 
@@ -4490,7 +4526,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5830](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5830)
+[packages/adapter/src/lib/adapter/adapter.ts:5830](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5830)
 
 ▸ **getStatesOf**(`parentDevice`, `callback`): `void`
 
@@ -4499,7 +4535,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `parentDevice` | `string` |
-| `callback` | `GetObjectsCallback3`<`StateObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
 
 #### Returns
 
@@ -4507,7 +4543,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5831](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5831)
+[packages/adapter/src/lib/adapter/adapter.ts:5831](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5831)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `callback`): `void`
 
@@ -4517,7 +4553,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
-| `callback` | `GetObjectsCallback3`<`StateObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
 
 #### Returns
 
@@ -4525,7 +4561,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5832](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5832)
+[packages/adapter/src/lib/adapter/adapter.ts:5832](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5832)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `options`, `callback`): `void`
 
@@ -4536,7 +4572,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `options` | `unknown` |
-| `callback` | `GetObjectsCallback3`<`StateObject`\> |
+| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
 
 #### Returns
 
@@ -4544,23 +4580,23 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5837](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L5837)
+[packages/adapter/src/lib/adapter/adapter.ts:5837](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L5837)
 
 ___
 
 ### getStatesOfAsync
 
-▸ **getStatesOfAsync**(): `Promise`<`StateObject`[]\>
+▸ **getStatesOfAsync**(): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
 #### Returns
 
-`Promise`<`StateObject`[]\>
+`Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L541)
+[packages/adapter/src/lib/adapter/adapter.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L541)
 
-▸ **getStatesOfAsync**(`parentDevice`, `parentChannel?`): `Promise`<`StateObject`[]\>
+▸ **getStatesOfAsync**(`parentDevice`, `parentChannel?`): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
 #### Parameters
 
@@ -4571,13 +4607,13 @@ ___
 
 #### Returns
 
-`Promise`<`StateObject`[]\>
+`Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L542)
+[packages/adapter/src/lib/adapter/adapter.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L542)
 
-▸ **getStatesOfAsync**(`parentDevice`, `parentChannel`, `options?`): `Promise`<`StateObject`[]\>
+▸ **getStatesOfAsync**(`parentDevice`, `parentChannel`, `options?`): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
 #### Parameters
 
@@ -4589,11 +4625,11 @@ ___
 
 #### Returns
 
-`Promise`<`StateObject`[]\>
+`Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L543)
+[packages/adapter/src/lib/adapter/adapter.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L543)
 
 ___
 
@@ -4613,7 +4649,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10267](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10267)
+[packages/adapter/src/lib/adapter/adapter.ts:10267](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10267)
 
 ___
 
@@ -4633,7 +4669,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1589](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1589)
+[packages/adapter/src/lib/adapter/adapter.ts:1589](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1589)
 
 ___
 
@@ -4653,7 +4689,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8868](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8868)
+[packages/adapter/src/lib/adapter/adapter.ts:8868](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8868)
 
 ___
 
@@ -4670,6 +4706,10 @@ ___
 #### Returns
 
 `number`
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[listenerCount](internal_.EventEmitter-1.md#listenercount)
 
 #### Defined in
 
@@ -4691,6 +4731,10 @@ ___
 
 `Function`[]
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[listeners](internal_.EventEmitter-1.md#listeners)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:484
@@ -4707,7 +4751,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -4715,7 +4759,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6434](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6434)
+[packages/adapter/src/lib/adapter/adapter.ts:6434](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6434)
 
 ▸ **mkdir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -4726,7 +4770,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -4734,7 +4778,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6435](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6435)
+[packages/adapter/src/lib/adapter/adapter.ts:6435](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6435)
 
 ___
 
@@ -4756,7 +4800,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L227)
+[packages/adapter/src/lib/adapter/adapter.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L227)
 
 ___
 
@@ -4774,6 +4818,10 @@ ___
 #### Returns
 
 [`AdapterClass`](AdapterClass.md)
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[off](internal_.EventEmitter-1.md#off)
 
 #### Defined in
 
@@ -4796,6 +4844,10 @@ ___
 
 [`AdapterClass`](AdapterClass.md)
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[on](internal_.EventEmitter-1.md#on)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:330
@@ -4816,6 +4868,10 @@ ___
 #### Returns
 
 [`AdapterClass`](AdapterClass.md)
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[once](internal_.EventEmitter-1.md#once)
 
 #### Defined in
 
@@ -4838,6 +4894,10 @@ ___
 
 [`AdapterClass`](AdapterClass.md)
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[prependListener](internal_.EventEmitter-1.md#prependlistener)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:579
@@ -4859,6 +4919,10 @@ ___
 
 [`AdapterClass`](AdapterClass.md)
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[prependOnceListener](internal_.EventEmitter-1.md#prependoncelistener)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:595
@@ -4879,6 +4943,10 @@ ___
 
 `Function`[]
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[rawListeners](internal_.EventEmitter-1.md#rawlisteners)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:514
@@ -4895,7 +4963,7 @@ ___
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` |  |
-| `callback` | `ReadDirCallback` |  |
+| `callback` | [`ReadDirCallback`](../modules/internal_.md#readdircallback) |  |
 
 #### Returns
 
@@ -4903,7 +4971,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6308](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6308)
+[packages/adapter/src/lib/adapter/adapter.ts:6308](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6308)
 
 ▸ **readDir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -4914,7 +4982,7 @@ ___
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` |  |
 | `options` | `unknown` |  |
-| `callback` | `ReadDirCallback` |  |
+| `callback` | [`ReadDirCallback`](../modules/internal_.md#readdircallback) |  |
 
 #### Returns
 
@@ -4922,13 +4990,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6309](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6309)
+[packages/adapter/src/lib/adapter/adapter.ts:6309](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6309)
 
 ___
 
 ### readDirAsync
 
-▸ **readDirAsync**(`adapterName`, `path`, `options?`): `ReadDirPromise`
+▸ **readDirAsync**(`adapterName`, `path`, `options?`): [`ReadDirPromise`](../modules/internal_.md#readdirpromise)
 
 #### Parameters
 
@@ -4940,11 +5008,11 @@ ___
 
 #### Returns
 
-`ReadDirPromise`
+[`ReadDirPromise`](../modules/internal_.md#readdirpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L221)
+[packages/adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L221)
 
 ___
 
@@ -4958,7 +5026,7 @@ ___
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `callback` | `ReadFileCallback` |  |
+| `callback` | [`ReadFileCallback`](../modules/internal_.md#readfilecallback) |  |
 
 #### Returns
 
@@ -4966,7 +5034,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6460](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6460)
+[packages/adapter/src/lib/adapter/adapter.ts:6460](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6460)
 
 ▸ **readFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -4977,7 +5045,7 @@ ___
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
 | `options` | `unknown` |  |
-| `callback` | `ReadFileCallback` |  |
+| `callback` | [`ReadFileCallback`](../modules/internal_.md#readfilecallback) |  |
 
 #### Returns
 
@@ -4985,13 +5053,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6461](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6461)
+[packages/adapter/src/lib/adapter/adapter.ts:6461](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6461)
 
 ___
 
 ### readFileAsync
 
-▸ **readFileAsync**(`adapterName`, `path`, `options?`): `ReadFilePromise`
+▸ **readFileAsync**(`adapterName`, `path`, `options?`): [`ReadFilePromise`](../modules/internal_.md#readfilepromise)
 
 #### Parameters
 
@@ -5003,11 +5071,11 @@ ___
 
 #### Returns
 
-`ReadFilePromise`
+[`ReadFilePromise`](../modules/internal_.md#readfilepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L229)
+[packages/adapter/src/lib/adapter/adapter.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L229)
 
 ___
 
@@ -5026,7 +5094,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `scope` | `Scope` |  |
-| `category` | ``null`` \| `NotificationScopes`[`Scope`] |  |
+| `category` | ``null`` \| [`NotificationScopes`](../interfaces/internal_.NotificationScopes.md)[`Scope`] |  |
 | `message` | `string` |  |
 
 #### Returns
@@ -5035,7 +5103,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7098](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7098)
+[packages/adapter/src/lib/adapter/adapter.ts:7098](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7098)
 
 ___
 
@@ -5052,6 +5120,10 @@ ___
 #### Returns
 
 [`AdapterClass`](AdapterClass.md)
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[removeAllListeners](internal_.EventEmitter-1.md#removealllisteners)
 
 #### Defined in
 
@@ -5074,6 +5146,10 @@ ___
 
 [`AdapterClass`](AdapterClass.md)
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[removeListener](internal_.EventEmitter-1.md#removelistener)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:439
@@ -5091,7 +5167,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `oldName` | `string` |
 | `newName` | `string` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -5099,7 +5175,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6400](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6400)
+[packages/adapter/src/lib/adapter/adapter.ts:6400](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6400)
 
 ▸ **rename**(`adapterName`, `oldName`, `newName`, `options`, `callback`): `void`
 
@@ -5111,7 +5187,7 @@ ___
 | `oldName` | `string` |
 | `newName` | `string` |
 | `options` | `unknown` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -5119,7 +5195,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6401](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6401)
+[packages/adapter/src/lib/adapter/adapter.ts:6401](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6401)
 
 ___
 
@@ -5142,7 +5218,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L226)
+[packages/adapter/src/lib/adapter/adapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L226)
 
 ___
 
@@ -5156,7 +5232,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2304](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2304)
+[packages/adapter/src/lib/adapter/adapter.ts:2304](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2304)
 
 ___
 
@@ -5169,8 +5245,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `instanceName` | `string` |  |
-| `message` | `MessagePayload` |  |
-| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | - |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |  |
+| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | - |
 
 #### Returns
 
@@ -5178,7 +5254,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6806](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6806)
+[packages/adapter/src/lib/adapter/adapter.ts:6806](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6806)
 
 ▸ **sendTo**(`instanceName`, `command`, `message`, `callback?`): `void`
 
@@ -5188,8 +5264,8 @@ ___
 | :------ | :------ | :------ |
 | `instanceName` | `string` |  |
 | `command` | `string` |  |
-| `message` | `MessagePayload` |  |
-| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | - |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |  |
+| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | - |
 
 #### Returns
 
@@ -5197,30 +5273,30 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6811](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6811)
+[packages/adapter/src/lib/adapter/adapter.ts:6811](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6811)
 
 ___
 
 ### sendToAsync
 
-▸ **sendToAsync**(`instanceName`, `message`): `Promise`<`undefined` \| `Message`\>
+▸ **sendToAsync**(`instanceName`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `instanceName` | `string` |
-| `message` | `MessagePayload` |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
 
 #### Returns
 
-`Promise`<`undefined` \| `Message`\>
+`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L361)
+[packages/adapter/src/lib/adapter/adapter.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L361)
 
-▸ **sendToAsync**(`instanceName`, `command`, `message`): `Promise`<`undefined` \| `Message`\>
+▸ **sendToAsync**(`instanceName`, `command`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Parameters
 
@@ -5228,15 +5304,15 @@ ___
 | :------ | :------ |
 | `instanceName` | `string` |
 | `command` | `string` |
-| `message` | `MessagePayload` |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
 
 #### Returns
 
-`Promise`<`undefined` \| `Message`\>
+`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L362)
+[packages/adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L362)
 
 ___
 
@@ -5249,8 +5325,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `hostName` | `string` |  |
-| `message` | `MessagePayload` |  |
-| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | - |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |  |
+| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | - |
 
 #### Returns
 
@@ -5258,7 +5334,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6965](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6965)
+[packages/adapter/src/lib/adapter/adapter.ts:6965](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6965)
 
 ▸ **sendToHost**(`hostName`, `command`, `message`, `callback?`): `void`
 
@@ -5268,8 +5344,8 @@ ___
 | :------ | :------ | :------ |
 | `hostName` | `string` |  |
 | `command` | `string` |  |
-| `message` | `MessagePayload` |  |
-| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | - |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |  |
+| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | - |
 
 #### Returns
 
@@ -5277,30 +5353,30 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6970](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6970)
+[packages/adapter/src/lib/adapter/adapter.ts:6970](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6970)
 
 ___
 
 ### sendToHostAsync
 
-▸ **sendToHostAsync**(`hostName`, `message`): `Promise`<`undefined` \| `Message`\>
+▸ **sendToHostAsync**(`hostName`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `hostName` | `string` |
-| `message` | `MessagePayload` |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
 
 #### Returns
 
-`Promise`<`undefined` \| `Message`\>
+`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L351)
+[packages/adapter/src/lib/adapter/adapter.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L351)
 
-▸ **sendToHostAsync**(`hostName`, `command`, `message`): `Promise`<`undefined` \| `Message`\>
+▸ **sendToHostAsync**(`hostName`, `command`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Parameters
 
@@ -5308,15 +5384,15 @@ ___
 | :------ | :------ |
 | `hostName` | `string` |
 | `command` | `string` |
-| `message` | `MessagePayload` |
+| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
 
 #### Returns
 
-`Promise`<`undefined` \| `Message`\>
+`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L352)
+[packages/adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L352)
 
 ___
 
@@ -5329,8 +5405,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `binary` | `Buffer` |  |
-| `callback` | `SetStateCallback` | - |
+| `binary` | [`Buffer`](../modules/internal_.md#buffer) |  |
+| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5338,7 +5414,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10016](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10016)
+[packages/adapter/src/lib/adapter/adapter.ts:10016](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10016)
 
 ▸ **setBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -5347,9 +5423,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `binary` | `Buffer` |  |
+| `binary` | [`Buffer`](../modules/internal_.md#buffer) |  |
 | `options` | `unknown` | - |
-| `callback` | `SetStateCallback` | - |
+| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5357,29 +5433,29 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10017](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L10017)
+[packages/adapter/src/lib/adapter/adapter.ts:10017](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L10017)
 
 ___
 
 ### setBinaryStateAsync
 
-▸ **setBinaryStateAsync**(`id`, `binary`, `options?`): `SetStatePromise`
+▸ **setBinaryStateAsync**(`id`, `binary`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `binary` | `Buffer` |
+| `binary` | [`Buffer`](../modules/internal_.md#buffer) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L259)
+[packages/adapter/src/lib/adapter/adapter.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L259)
 
 ___
 
@@ -5403,7 +5479,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L120)
+[packages/adapter/src/lib/adapter/adapter.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L120)
 
 ___
 
@@ -5416,8 +5492,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `binary` | `Buffer` |  |
-| `callback` | `SetStateCallback` | - |
+| `binary` | [`Buffer`](../modules/internal_.md#buffer) |  |
+| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5425,7 +5501,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9875](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9875)
+[packages/adapter/src/lib/adapter/adapter.ts:9875](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9875)
 
 ▸ **setForeignBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -5434,9 +5510,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `binary` | `Buffer` |  |
+| `binary` | [`Buffer`](../modules/internal_.md#buffer) |  |
 | `options` | `unknown` | - |
-| `callback` | `SetStateCallback` | - |
+| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5444,29 +5520,29 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9876](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9876)
+[packages/adapter/src/lib/adapter/adapter.ts:9876](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9876)
 
 ___
 
 ### setForeignBinaryStateAsync
 
-▸ **setForeignBinaryStateAsync**(`id`, `binary`, `options?`): `SetStatePromise`
+▸ **setForeignBinaryStateAsync**(`id`, `binary`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `binary` | `Buffer` |
+| `binary` | [`Buffer`](../modules/internal_.md#buffer) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L253)
+[packages/adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L253)
 
 ___
 
@@ -5485,8 +5561,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |  |
-| `callback?` | `SetObjectCallback` | - |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |  |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -5494,7 +5570,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3124](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3124)
+[packages/adapter/src/lib/adapter/adapter.ts:3124](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3124)
 
 ▸ **setForeignObject**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
@@ -5509,9 +5585,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |  |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetObjectCallback` | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -5519,13 +5595,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3129](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L3129)
+[packages/adapter/src/lib/adapter/adapter.ts:3129](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L3129)
 
 ___
 
 ### setForeignObjectAsync
 
-▸ **setForeignObjectAsync**<`T`\>(`id`, `obj`, `options?`): `SetObjectPromise`
+▸ **setForeignObjectAsync**<`T`\>(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Type parameters
 
@@ -5538,16 +5614,16 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L295)
+[packages/adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L295)
 
 ___
 
@@ -5566,8 +5642,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |  |
-| `callback?` | `SetObjectCallback` | - |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |  |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -5575,7 +5651,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4701](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4701)
+[packages/adapter/src/lib/adapter/adapter.ts:4701](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4701)
 
 ▸ **setForeignObjectNotExists**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
@@ -5590,9 +5666,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` |  |
-| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |  |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetObjectCallback` | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -5600,13 +5676,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4706](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4706)
+[packages/adapter/src/lib/adapter/adapter.ts:4706](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4706)
 
 ___
 
 ### setForeignObjectNotExistsAsync
 
-▸ **setForeignObjectNotExistsAsync**<`T`\>(`id`, `obj`, `options?`): `SetObjectPromise`
+▸ **setForeignObjectNotExistsAsync**<`T`\>(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Type parameters
 
@@ -5619,16 +5695,16 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L172)
+[packages/adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L172)
 
 ___
 
@@ -5641,8 +5717,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
-| `callback?` | `SetStateCallback` | - |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5650,7 +5726,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8024](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8024)
+[packages/adapter/src/lib/adapter/adapter.ts:8024](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8024)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -5659,9 +5735,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
-| `callback?` | `SetStateCallback` | - |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5669,7 +5745,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8029](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8029)
+[packages/adapter/src/lib/adapter/adapter.ts:8029](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8029)
 
 ▸ **setForeignState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -5678,9 +5754,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateCallback` | - |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5688,7 +5764,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8035](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8035)
+[packages/adapter/src/lib/adapter/adapter.ts:8035](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8035)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -5697,10 +5773,10 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateCallback` | - |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -5708,66 +5784,66 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8041](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8041)
+[packages/adapter/src/lib/adapter/adapter.ts:8041](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8041)
 
 ___
 
 ### setForeignStateAsync
 
-▸ **setForeignStateAsync**(`id`, `state`, `ack?`): `SetStatePromise`
+▸ **setForeignStateAsync**(`id`, `state`, `ack?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack?` | `boolean` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L397)
+[packages/adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L397)
 
-▸ **setForeignStateAsync**(`id`, `state`, `options?`): `SetStatePromise`
+▸ **setForeignStateAsync**(`id`, `state`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L402)
+[packages/adapter/src/lib/adapter/adapter.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L402)
 
-▸ **setForeignStateAsync**(`id`, `state`, `ack`, `options`): `SetStatePromise`
+▸ **setForeignStateAsync**(`id`, `state`, `ack`, `options`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L407)
+[packages/adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L407)
 
 ___
 
@@ -5780,8 +5856,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
-| `callback?` | `SetStateChangedCallback` | - |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -5789,7 +5865,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8333](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8333)
+[packages/adapter/src/lib/adapter/adapter.ts:8333](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8333)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -5798,9 +5874,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
-| `callback?` | `SetStateChangedCallback` | - |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -5808,7 +5884,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8338](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8338)
+[packages/adapter/src/lib/adapter/adapter.ts:8338](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8338)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -5817,9 +5893,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateChangedCallback` | - |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -5827,7 +5903,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8344](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8344)
+[packages/adapter/src/lib/adapter/adapter.ts:8344](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8344)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -5836,10 +5912,10 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateChangedCallback` | - |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -5847,88 +5923,88 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8350](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L8350)
+[packages/adapter/src/lib/adapter/adapter.ts:8350](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L8350)
 
 ___
 
 ### setForeignStateChangedAsync
 
-▸ **setForeignStateChangedAsync**(`id`, `state`, `ack?`): `SetStateChangedPromise`
+▸ **setForeignStateChangedAsync**(`id`, `state`, `ack?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack?` | `boolean` |
 
 #### Returns
 
-`SetStateChangedPromise`
+[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L311)
+[packages/adapter/src/lib/adapter/adapter.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L311)
 
-▸ **setForeignStateChangedAsync**(`id`, `state`, `options?`): `SetStateChangedPromise`
+▸ **setForeignStateChangedAsync**(`id`, `state`, `options?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetStateChangedPromise`
+[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L316)
+[packages/adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L316)
 
-▸ **setForeignStateChangedAsync**(`id`, `state`, `ack`, `options`): `SetStateChangedPromise`
+▸ **setForeignStateChangedAsync**(`id`, `state`, `ack`, `options`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-`SetStateChangedPromise`
+[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L321)
+[packages/adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L321)
 
 ___
 
 ### setInterval
 
-▸ **setInterval**(`cb`, `timeout`, ...`args`): `void` \| `Timeout`
+▸ **setInterval**(`cb`, `timeout`, ...`args`): `void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cb` | `TimeoutCallback` |  |
+| `cb` | [`TimeoutCallback`](../modules/internal_.md#timeoutcallback) |  |
 | `timeout` | `number` |  |
 | `...args` | `any`[] |  |
 
 #### Returns
 
-`void` \| `Timeout`
+`void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2504](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2504)
+[packages/adapter/src/lib/adapter/adapter.ts:2504](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2504)
 
 ___
 
@@ -5946,6 +6022,10 @@ ___
 
 [`AdapterClass`](AdapterClass.md)
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[setMaxListeners](internal_.EventEmitter-1.md#setmaxlisteners)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:465
@@ -5960,9 +6040,9 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `ID` |  |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |  |
-| `callback?` | `SetObjectCallback` | - |
+| `id` | [`ID`](../modules/internal_.md#id) |  |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |  |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -5970,7 +6050,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2552](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2552)
+[packages/adapter/src/lib/adapter/adapter.ts:2552](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2552)
 
 ▸ **setObject**(`id`, `obj`, `options`, `callback?`): `Promise`<`void`\>
 
@@ -5978,10 +6058,10 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `ID` |  |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |  |
+| `id` | [`ID`](../modules/internal_.md#id) |  |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetObjectCallback` | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -5989,7 +6069,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2553](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2553)
+[packages/adapter/src/lib/adapter/adapter.ts:2553](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2553)
 
 ▸ **setObject**(`id`, `obj`, `callback?`): `Promise`<`void`\>
 
@@ -5997,9 +6077,9 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `ID` |  |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |  |
-| `callback?` | `SetObjectCallback` | - |
+| `id` | [`ID`](../modules/internal_.md#id) |  |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |  |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -6007,29 +6087,29 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2559](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2559)
+[packages/adapter/src/lib/adapter/adapter.ts:2559](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2559)
 
 ___
 
 ### setObjectAsync
 
-▸ **setObjectAsync**(`id`, `obj`, `options?`): `SetObjectPromise`
+▸ **setObjectAsync**(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L293)
+[packages/adapter/src/lib/adapter/adapter.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L293)
 
 ___
 
@@ -6042,8 +6122,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |  |
-| `callback?` | `SetObjectCallback` | - |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |  |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -6051,7 +6131,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4600](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4600)
+[packages/adapter/src/lib/adapter/adapter.ts:4600](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4600)
 
 ▸ **setObjectNotExists**(`id`, `obj`, `options`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| { `id`: `string`  }\>
 
@@ -6060,9 +6140,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |  |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetObjectCallback` | - |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
 
 #### Returns
 
@@ -6070,29 +6150,29 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4605](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4605)
+[packages/adapter/src/lib/adapter/adapter.ts:4605](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4605)
 
 ___
 
 ### setObjectNotExistsAsync
 
-▸ **setObjectNotExistsAsync**(`id`, `obj`, `options?`): `SetObjectPromise`
+▸ **setObjectNotExistsAsync**(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `StateACL`  } \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: `ObjectACL`  } |
+| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L170)
+[packages/adapter/src/lib/adapter/adapter.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L170)
 
 ___
 
@@ -6106,8 +6186,8 @@ ___
 | :------ | :------ | :------ |
 | `user` | `string` |  |
 | `pw` | `string` |  |
-| `options` | `Record`<`string`, `any`\> | - |
-| `callback?` | `ErrorCallback` | - |
+| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6115,7 +6195,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1620](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1620)
+[packages/adapter/src/lib/adapter/adapter.ts:1620](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1620)
 
 ▸ **setPassword**(`user`, `pw`, `callback?`): `Promise`<`void`\>
 
@@ -6125,7 +6205,7 @@ ___
 | :------ | :------ | :------ |
 | `user` | `string` |  |
 | `pw` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6133,7 +6213,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1627](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1627)
+[packages/adapter/src/lib/adapter/adapter.ts:1627](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1627)
 
 ___
 
@@ -6155,13 +6235,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L283)
+[packages/adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L283)
 
 ___
 
 ### setSession
 
-▸ **setSession**(`id`, `ttl`, `data`, `callback?`): `MaybePromise`
+▸ **setSession**(`id`, `ttl`, `data`, `callback?`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Parameters
 
@@ -6169,16 +6249,16 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `ttl` | `number` |
-| `data` | `Record`<`string`, `any`\> |
-| `callback?` | `ErrorCallback` |
+| `data` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
-`MaybePromise`
+[`MaybePromise`](../modules/internal_.md#maybepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1247](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1247)
+[packages/adapter/src/lib/adapter/adapter.ts:1247](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1247)
 
 ___
 
@@ -6190,9 +6270,9 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` \| `IdObject` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
-| `callback?` | `SetStateCallback` | - |
+| `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -6200,7 +6280,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7136](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7136)
+[packages/adapter/src/lib/adapter/adapter.ts:7136](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7136)
 
 ▸ **setState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6208,10 +6288,10 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` \| `IdObject` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
-| `callback?` | `SetStateCallback` | - |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -6219,7 +6299,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7141](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7141)
+[packages/adapter/src/lib/adapter/adapter.ts:7141](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7141)
 
 ▸ **setState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6227,10 +6307,10 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` \| `IdObject` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateCallback` | - |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -6238,7 +6318,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7147](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7147)
+[packages/adapter/src/lib/adapter/adapter.ts:7147](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7147)
 
 ▸ **setState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6246,11 +6326,11 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` \| `IdObject` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateCallback` | - |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
 
 #### Returns
 
@@ -6258,66 +6338,66 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7153](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7153)
+[packages/adapter/src/lib/adapter/adapter.ts:7153](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7153)
 
 ___
 
 ### setStateAsync
 
-▸ **setStateAsync**(`id`, `state`, `ack?`): `SetStatePromise`
+▸ **setStateAsync**(`id`, `state`, `ack?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack?` | `boolean` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L377)
+[packages/adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L377)
 
-▸ **setStateAsync**(`id`, `state`, `options?`): `SetStatePromise`
+▸ **setStateAsync**(`id`, `state`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L382)
+[packages/adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L382)
 
-▸ **setStateAsync**(`id`, `state`, `ack`, `options`): `SetStatePromise`
+▸ **setStateAsync**(`id`, `state`, `ack`, `options`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-`SetStatePromise`
+[`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L387)
+[packages/adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L387)
 
 ___
 
@@ -6330,8 +6410,8 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
-| `callback?` | `SetStateChangedCallback` | - |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -6339,7 +6419,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7878](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7878)
+[packages/adapter/src/lib/adapter/adapter.ts:7878](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7878)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6348,9 +6428,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
-| `callback?` | `SetStateChangedCallback` | - |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -6358,7 +6438,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7883](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7883)
+[packages/adapter/src/lib/adapter/adapter.ts:7883](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7883)
 
 ▸ **setStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6367,9 +6447,9 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateChangedCallback` | - |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -6377,7 +6457,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7889](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7889)
+[packages/adapter/src/lib/adapter/adapter.ts:7889](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7889)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6386,10 +6466,10 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` |  |
-| `state` | `State` \| `SettableState` \| `StateValue` |  |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |  |
 | `ack` | `boolean` | - |
 | `options` | `unknown` | - |
-| `callback?` | `SetStateChangedCallback` | - |
+| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | - |
 
 #### Returns
 
@@ -6397,88 +6477,88 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7895](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L7895)
+[packages/adapter/src/lib/adapter/adapter.ts:7895](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L7895)
 
 ___
 
 ### setStateChangedAsync
 
-▸ **setStateChangedAsync**(`id`, `state`, `ack?`): `SetStateChangedPromise`
+▸ **setStateChangedAsync**(`id`, `state`, `ack?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack?` | `boolean` |
 
 #### Returns
 
-`SetStateChangedPromise`
+[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L331)
+[packages/adapter/src/lib/adapter/adapter.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L331)
 
-▸ **setStateChangedAsync**(`id`, `state`, `options?`): `SetStateChangedPromise`
+▸ **setStateChangedAsync**(`id`, `state`, `options?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `options?` | `unknown` |
 
 #### Returns
 
-`SetStateChangedPromise`
+[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L336)
+[packages/adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L336)
 
-▸ **setStateChangedAsync**(`id`, `state`, `ack`, `options`): `SetStateChangedPromise`
+▸ **setStateChangedAsync**(`id`, `state`, `ack`, `options`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | `State` \| `SettableState` \| `StateValue` |
+| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-`SetStateChangedPromise`
+[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L341)
+[packages/adapter/src/lib/adapter/adapter.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L341)
 
 ___
 
 ### setTimeout
 
-▸ **setTimeout**(`cb`, `timeout`, ...`args`): `void` \| `Timeout`
+▸ **setTimeout**(`cb`, `timeout`, ...`args`): `void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cb` | `TimeoutCallback` |  |
+| `cb` | [`TimeoutCallback`](../modules/internal_.md#timeoutcallback) |  |
 | `timeout` | `number` |  |
 | `...args` | `any`[] |  |
 
 #### Returns
 
-`void` \| `Timeout`
+`void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2422](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2422)
+[packages/adapter/src/lib/adapter/adapter.ts:2422](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2422)
 
 ___
 
@@ -6491,7 +6571,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6499,7 +6579,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4539](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4539)
+[packages/adapter/src/lib/adapter/adapter.ts:4539](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4539)
 
 ▸ **subscribeForeignFiles**(`pattern`, `options`, `callback?`): `void`
 
@@ -6509,7 +6589,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6517,7 +6597,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4540](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4540)
+[packages/adapter/src/lib/adapter/adapter.ts:4540](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4540)
 
 ___
 
@@ -6530,7 +6610,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6538,7 +6618,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4460](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4460)
+[packages/adapter/src/lib/adapter/adapter.ts:4460](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4460)
 
 ▸ **subscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -6548,7 +6628,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6556,7 +6636,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4461](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4461)
+[packages/adapter/src/lib/adapter/adapter.ts:4461](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4461)
 
 ___
 
@@ -6577,7 +6657,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L166)
+[packages/adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L166)
 
 ___
 
@@ -6590,7 +6670,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6598,7 +6678,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9402](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9402)
+[packages/adapter/src/lib/adapter/adapter.ts:9402](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9402)
 
 ▸ **subscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -6608,7 +6688,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6616,7 +6696,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9403](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9403)
+[packages/adapter/src/lib/adapter/adapter.ts:9403](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9403)
 
 ___
 
@@ -6637,7 +6717,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L245)
+[packages/adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L245)
 
 ___
 
@@ -6650,7 +6730,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6658,7 +6738,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4373](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4373)
+[packages/adapter/src/lib/adapter/adapter.ts:4373](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4373)
 
 ▸ **subscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -6668,7 +6748,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6676,7 +6756,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4374](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4374)
+[packages/adapter/src/lib/adapter/adapter.ts:4374](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4374)
 
 ___
 
@@ -6697,7 +6777,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L160)
+[packages/adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L160)
 
 ___
 
@@ -6710,7 +6790,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6718,7 +6798,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9789](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9789)
+[packages/adapter/src/lib/adapter/adapter.ts:9789](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9789)
 
 ▸ **subscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -6728,7 +6808,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6736,7 +6816,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9790](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9790)
+[packages/adapter/src/lib/adapter/adapter.ts:9790](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9790)
 
 ___
 
@@ -6757,7 +6837,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L249)
+[packages/adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L249)
 
 ___
 
@@ -6777,7 +6857,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1463](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1463)
+[packages/adapter/src/lib/adapter/adapter.ts:1463](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1463)
 
 ___
 
@@ -6797,7 +6877,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1313](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1313)
+[packages/adapter/src/lib/adapter/adapter.ts:1313](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1313)
 
 ▸ **terminate**(`reason?`, `exitCode?`): `never`
 
@@ -6814,7 +6894,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1314](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L1314)
+[packages/adapter/src/lib/adapter/adapter.ts:1314](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L1314)
 
 ___
 
@@ -6828,7 +6908,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -6836,7 +6916,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6372](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6372)
+[packages/adapter/src/lib/adapter/adapter.ts:6372](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6372)
 
 ▸ **unlink**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -6847,7 +6927,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | `ErrnoCallback` |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
 
 #### Returns
 
@@ -6855,7 +6935,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6373](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6373)
+[packages/adapter/src/lib/adapter/adapter.ts:6373](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6373)
 
 ___
 
@@ -6877,7 +6957,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L223)
+[packages/adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L223)
 
 ___
 
@@ -6890,7 +6970,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6898,7 +6978,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4568](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4568)
+[packages/adapter/src/lib/adapter/adapter.ts:4568](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4568)
 
 ▸ **unsubscribeForeignFiles**(`pattern`, `options`, `callback?`): `void`
 
@@ -6908,7 +6988,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6916,7 +6996,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4569](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4569)
+[packages/adapter/src/lib/adapter/adapter.ts:4569](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4569)
 
 ___
 
@@ -6929,7 +7009,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6937,7 +7017,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4498](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4498)
+[packages/adapter/src/lib/adapter/adapter.ts:4498](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4498)
 
 ▸ **unsubscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -6947,7 +7027,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6955,7 +7035,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4499](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4499)
+[packages/adapter/src/lib/adapter/adapter.ts:4499](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4499)
 
 ___
 
@@ -6976,7 +7056,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L168)
+[packages/adapter/src/lib/adapter/adapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L168)
 
 ___
 
@@ -6989,7 +7069,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -6997,7 +7077,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9641](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9641)
+[packages/adapter/src/lib/adapter/adapter.ts:9641](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9641)
 
 ▸ **unsubscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7007,7 +7087,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -7015,7 +7095,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9642](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9642)
+[packages/adapter/src/lib/adapter/adapter.ts:9642](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9642)
 
 ___
 
@@ -7036,7 +7116,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L247)
+[packages/adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L247)
 
 ___
 
@@ -7049,7 +7129,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -7057,7 +7137,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4416](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4416)
+[packages/adapter/src/lib/adapter/adapter.ts:4416](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4416)
 
 ▸ **unsubscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -7067,7 +7147,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -7075,7 +7155,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4417](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L4417)
+[packages/adapter/src/lib/adapter/adapter.ts:4417](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L4417)
 
 ___
 
@@ -7096,7 +7176,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L162)
+[packages/adapter/src/lib/adapter/adapter.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L162)
 
 ___
 
@@ -7109,7 +7189,7 @@ ___
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -7117,7 +7197,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9831](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9831)
+[packages/adapter/src/lib/adapter/adapter.ts:9831](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9831)
 
 ▸ **unsubscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7127,7 +7207,7 @@ ___
 | :------ | :------ | :------ |
 | `pattern` | `string` |  |
 | `options` | `unknown` | - |
-| `callback?` | `ErrorCallback` | - |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
 
 #### Returns
 
@@ -7135,7 +7215,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9832](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L9832)
+[packages/adapter/src/lib/adapter/adapter.ts:9832](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L9832)
 
 ___
 
@@ -7156,27 +7236,27 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L251)
+[packages/adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L251)
 
 ___
 
 ### updateConfig
 
-▸ **updateConfig**(`newConfig`): `SetObjectPromise`
+▸ **updateConfig**(`newConfig`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `newConfig` | `Record`<`string`, `any`\> |  |
+| `newConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
 
 #### Returns
 
-`SetObjectPromise`
+[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2313](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L2313)
+[packages/adapter/src/lib/adapter/adapter.ts:2313](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L2313)
 
 ___
 
@@ -7190,8 +7270,8 @@ ___
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `data` | `string` \| `Buffer` |  |
-| `callback` | `ErrnoCallback` | - |
+| `data` | `string` \| [`Buffer`](../modules/internal_.md#buffer) |  |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) | - |
 
 #### Returns
 
@@ -7199,7 +7279,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6511](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6511)
+[packages/adapter/src/lib/adapter/adapter.ts:6511](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6511)
 
 ▸ **writeFile**(`adapterName`, `path`, `data`, `options`, `callback`): `void`
 
@@ -7209,9 +7289,9 @@ ___
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `data` | `string` \| `Buffer` |  |
+| `data` | `string` \| [`Buffer`](../modules/internal_.md#buffer) |  |
 | `options` | `unknown` | - |
-| `callback` | `ErrnoCallback` | - |
+| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) | - |
 
 #### Returns
 
@@ -7219,7 +7299,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6512](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L6512)
+[packages/adapter/src/lib/adapter/adapter.ts:6512](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L6512)
 
 ___
 
@@ -7233,7 +7313,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `data` | `string` \| `Buffer` |
+| `data` | `string` \| [`Buffer`](../modules/internal_.md#buffer) |
 | `options?` | `unknown` |
 
 #### Returns
@@ -7242,7 +7322,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/d2cf6a05/packages/adapter/src/lib/adapter/adapter.ts#L230)
+[packages/adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/eaf12470/packages/adapter/src/lib/adapter/adapter.ts#L230)
 
 ___
 
@@ -7254,12 +7334,16 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `emitter` | `EventEmitter` \| `DOMEventTarget` |
+| `emitter` | `EventEmitter` \| [`DOMEventTarget`](../interfaces/internal_.DOMEventTarget.md) |
 | `name` | `string` \| `symbol` |
 
 #### Returns
 
 `Function`[]
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[getEventListeners](internal_.EventEmitter-1.md#geteventlisteners)
 
 #### Defined in
 
@@ -7282,6 +7366,10 @@ ___
 
 `number`
 
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[listenerCount](internal_.EventEmitter-1.md#listenercount-1)
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:234
@@ -7290,7 +7378,7 @@ ___
 
 ### on
 
-▸ `Static` **on**(`emitter`, `eventName`, `options?`): `AsyncIterableIterator`<`any`\>
+▸ `Static` **on**(`emitter`, `eventName`, `options?`): [`AsyncIterableIterator`](../interfaces/internal_.AsyncIterableIterator.md)<`any`\>
 
 #### Parameters
 
@@ -7298,11 +7386,15 @@ ___
 | :------ | :------ | :------ |
 | `emitter` | `EventEmitter` | - |
 | `eventName` | `string` |  |
-| `options?` | `StaticEventEmitterOptions` | - |
+| `options?` | [`StaticEventEmitterOptions`](../interfaces/internal_.StaticEventEmitterOptions.md) | - |
 
 #### Returns
 
-`AsyncIterableIterator`<`any`\>
+[`AsyncIterableIterator`](../interfaces/internal_.AsyncIterableIterator.md)<`any`\>
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[on](internal_.EventEmitter-1.md#on-1)
 
 #### Defined in
 
@@ -7318,13 +7410,17 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `emitter` | `NodeEventTarget` |
+| `emitter` | [`NodeEventTarget`](../interfaces/internal_.NodeEventTarget.md) |
 | `eventName` | `string` \| `symbol` |
-| `options?` | `StaticEventEmitterOptions` |
+| `options?` | [`StaticEventEmitterOptions`](../interfaces/internal_.StaticEventEmitterOptions.md) |
 
 #### Returns
 
 `Promise`<`any`[]\>
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[once](internal_.EventEmitter-1.md#once-1)
 
 #### Defined in
 
@@ -7336,13 +7432,17 @@ node_modules/@types/node/events.d.ts:157
 
 | Name | Type |
 | :------ | :------ |
-| `emitter` | `DOMEventTarget` |
+| `emitter` | [`DOMEventTarget`](../interfaces/internal_.DOMEventTarget.md) |
 | `eventName` | `string` |
-| `options?` | `StaticEventEmitterOptions` |
+| `options?` | [`StaticEventEmitterOptions`](../interfaces/internal_.StaticEventEmitterOptions.md) |
 
 #### Returns
 
 `Promise`<`any`[]\>
+
+#### Inherited from
+
+[EventEmitter](internal_.EventEmitter-1.md).[once](internal_.EventEmitter-1.md#once-1)
 
 #### Defined in
 
