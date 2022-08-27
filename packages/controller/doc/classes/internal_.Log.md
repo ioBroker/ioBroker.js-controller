@@ -38,7 +38,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/log.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/56c41ba6/packages/adapter/src/lib/adapter/log.ts#L16)
+[packages/adapter/src/lib/adapter/log.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/20e3f437/packages/adapter/src/lib/adapter/log.ts#L16)
 
 ## Methods
 
@@ -58,7 +58,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/log.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/56c41ba6/packages/adapter/src/lib/adapter/log.ts#L36)
+[packages/adapter/src/lib/adapter/log.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/20e3f437/packages/adapter/src/lib/adapter/log.ts#L36)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/log.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/56c41ba6/packages/adapter/src/lib/adapter/log.ts#L44)
+[packages/adapter/src/lib/adapter/log.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/20e3f437/packages/adapter/src/lib/adapter/log.ts#L44)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/log.ts:40](https://github.com/ioBroker/ioBroker.js-controller/blob/56c41ba6/packages/adapter/src/lib/adapter/log.ts#L40)
+[packages/adapter/src/lib/adapter/log.ts:40](https://github.com/ioBroker/ioBroker.js-controller/blob/20e3f437/packages/adapter/src/lib/adapter/log.ts#L40)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/log.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/56c41ba6/packages/adapter/src/lib/adapter/log.ts#L32)
+[packages/adapter/src/lib/adapter/log.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/20e3f437/packages/adapter/src/lib/adapter/log.ts#L32)
 
 ___
 
@@ -138,4 +138,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/log.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/56c41ba6/packages/adapter/src/lib/adapter/log.ts#L48)
+[packages/adapter/src/lib/adapter/log.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/20e3f437/packages/adapter/src/lib/adapter/log.ts#L48)
